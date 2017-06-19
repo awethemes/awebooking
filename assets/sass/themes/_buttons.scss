@@ -1,0 +1,80 @@
+/* awebooking Button
+----------------------------------*/
+// .awebooking,
+// .awebooking-wrapper,
+// .awebooking-widget {
+//   a.awebooking-btn {
+//     margin: 0;
+//     border-radius: 0;
+
+//     display: inline-block;
+//     background-image: none !important;
+
+//     text-align: center;
+//     white-space: nowrap;
+
+//     vertical-align: middle;
+//     touch-action: manipulation;
+
+//     &:hover,
+//     &:focus {
+//       text-decoration: none;
+//     }
+
+//     &:active,
+//     &.active {
+//       outline: 0;
+//       box-shadow: none;
+//     }
+//   }
+// }
+
+// .awebooking .awebooking-btn {
+//   border: none;
+//   transition: all 0.25s ease;
+
+//   font-size: $awebooking-font-size-small;
+//   font-weight: $awebooking-font-weight;
+//   text-transform: uppercase;
+//   padding: 12px 20px; // !Set Late.
+//   display: inline-block;
+//   line-height: 1;
+
+//   &,
+//   &:visited {
+//     color: #FFF;
+//     background-color: $awebooking-highlight-color;
+//   }
+
+//   &:hover,
+//   &:focus {
+//     border: none;
+//     box-shadow: none;
+
+//     background-color: $awebooking-highlight-hover-color;
+//     background-image: none;
+//   }
+
+//   &:active {
+//     padding: 12px 20px;
+//   }
+// }
+
+.button {
+  display: inline-block;
+  background: #1a1a1a;
+  border: 0;
+  border-radius: 2px;
+  color: #fff;
+  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.046875em;
+  line-height: 1;
+  padding: 0.84375em 0.875em 0.78125em;
+  text-transform: uppercase;
+
+  &:hover {
+    color: #fff;
+    background-color: $awebooking-highlight-color;
+  }
+}

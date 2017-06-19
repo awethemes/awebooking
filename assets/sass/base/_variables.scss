@@ -1,0 +1,49 @@
+// awebooking Color
+// -------------------------------------------------------------------
+$awebooking-primary               : #333 !default;  // Primary color  #333
+$awebooking-secondary             : #b7b7b7 !default; // Secondary color #b7b7b7
+$awebooking-background            : #f7f7f7 !default; // Background color #f7f7f7
+$awebooking-background-secondary  : #FFF !default; // Background secondary #FFF
+$awebooking-highlight-color       : #007acc !default; // Highlight color #007acc
+$awebooking-highlight--hover-color: lighten($awebooking-highlight-color, 5%) !default; // Highlight hover color #e93c4f
+$awebooking-border-color          : #e4e4e4 !default; // Border color #e4e4e4
+$awebooking-success               : #57d03b !default; // Success color #57d03b
+$awebooking-error                 : #e93c4f !default; // Error color #e93c4f
+$awebooking-warning               : #ffcc00 !default; // Warning color #ffcc00
+$awebooking-info                  : #007acc !default; // Info color #007acc
+
+// awebooking Container & Breakpoints
+// -------------------------------------------------------------------
+$awebooking-gutter-width          : 30px !default;
+$awebooking-container-sm          : (720px + $awebooking-gutter-width) !default;
+$awebooking-container-md          : (940px + $awebooking-gutter-width) !default;
+$awebooking-container-lg          : (1140px + $awebooking-gutter-width) !default;
+$breakpoints                      : (xs: 480px, sm: 768px, md: 992px, lg: 1200px); // No !default please.
+
+// awebooking Fonts & Typo
+// -------------------------------------------------------------------
+$awebooking-font-size-base        : 14px !default;
+$awebooking-font-size-small       : 12px !default;
+$awebooking-font-size-large       : 16px !default;
+
+$awebooking-font-family           : 'Roboto', sans-serif !default;
+$awebooking-line-height-base      : 1.428571429 !default; // 20/14
+$awebooking-font-weight           : 400 !default;
+
+$awebooking-heading-font-family   : inherit !default;
+$awebooking-heading-line-height   : 1.1 !default;
+$awebooking-heading-font-weight   : 700 !default;
+
+// Forms Element
+// -------------------------------------------------------------------
+$awebooking-field-margin          : 20px !default;
+$awebooking-input-padding         : 7px 15px !default;
+$awebooking-input-icon            : true !default;
+
+// $awebooking-input-bg           : #fff !default;
+$awebooking-input-color           : #333 !default;
+$awebooking-input-border          : #eee !default;
+
+$awebooking-input-focus-bg        : #fff !default;
+$awebooking-input-focus-color     : #333 !default;
+$awebooking-input-focus-border:  $awebooking-background !default;

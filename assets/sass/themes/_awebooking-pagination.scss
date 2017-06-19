@@ -1,0 +1,21 @@
+.awebooking-pagination {
+  > li > a,
+  > li > span {
+    color: $awebooking-secondary;
+    line-height: $awebooking-line-height-base;
+    background-color: $awebooking-background;
+    border: 1px solid transparent;
+
+    &:hover,
+    &:focus {
+      color: $awebooking-secondary;
+      background-color: $awebooking-background;
+    }
+  }
+
+  > li.active > a,
+  > li.active > span {
+    color: $awebooking-secondary;
+    background-color: $awebooking-background;
+  }
+}

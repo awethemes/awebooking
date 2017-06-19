@@ -1,0 +1,27 @@
+/* Popup datepicker */
+.ui-datepicker.awebooking-datepicker {
+  background-color: white;
+}
+
+/* Awebooking Month */
+.fc-widget-header table {
+  margin-bottom: 0;
+}
+
+@include media('>=md') {
+  .awebooking-month {
+    float: left;
+    padding: 10px;
+    width: 49%;
+  }
+}
+
+/* Fix fullcalendar */
+.fc-day-grid .fc-row {
+  height: 42px;
+}
+@include media('>=xs') {
+  .fc-day-grid .fc-row {
+    height: 58px;
+  }
+}

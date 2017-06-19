@@ -1,0 +1,132 @@
+/* Awebooking OwlCarousel
+----------------------------------*/
+
+/* Preloader */
+.awebooking-product_image:not(.awebooking-owl-carousel),
+.awebooking-product_thumb:not(.awebooking-owl-carousel)  {
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+
+  &:after {
+    content: '';
+    z-index: 10;
+    @include absolute(0,0,0,0);
+
+    background: url('../img/loading.gif') no-repeat center rgba(white, 0.95);
+    background-size: 32px;
+  }
+
+  .awebooking-product_thumb_item,
+  .awebooking-product_image_item {
+    float: left;
+  }
+}
+
+.awebooking-product_image:not(.awebooking-owl-carousel) {
+  height: 550px;
+
+  .awebooking-product_image_item {
+    width: 100%;
+  }
+}
+
+.awebooking-product_thumb:not(.awebooking-owl-carousel) {
+  height: 80px;
+}
+
+/* Awebooking Product Carousel */
+.awebooking-product_image {
+  margin-bottom: 10px;
+
+  .awebooking-product_image_item {
+    background-color: $awebooking-background;
+    text-align: center;
+
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+.awebooking-product_thumb {
+  .awebooking-product_thumb_item {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .awebooking-product_thumb_item > a {
+    display: block;
+    position: relative;
+
+    &:after {
+      @include absolute(0,0,0,0);
+
+      content: '';
+      background-color: rgba(white, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .owl-item.synced > .awebooking-product_thumb_item > a:after {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Next & Prev
+  .owl-next,
+  .owl-prev {
+    top: 0;
+    z-index: 10;
+    position: absolute;
+
+    width: 30px;
+    height: 100%;
+
+    background-color: rgba(white, 0.75);
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+    text-indent: -100px;
+    transition: all 0.25s ease;
+  }
+
+  .owl-prev {
+    left: 0;
+    @extend %awebooking-arrow-prev;
+  }
+
+  .owl-next {
+    right: 0;
+    @extend %awebooking-arrow-next;
+  }
+
+  @include media('>=md') {
+    .owl-next,
+    .owl-prev {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .owl-prev {
+     transform: translateX(10px);
+    }
+
+    .owl-next {
+      transform: translateX(-10px);
+    }
+
+    &:hover .owl-next,
+    &:hover .owl-prev {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+    }
+  }
+}

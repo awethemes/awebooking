@@ -1,0 +1,315 @@
+/* Awebooking Datepicker
+----------------------------------*/
+
+/* Awebooking-Datepicker */
+.awebooking-calendar_wrap {
+  padding: 7px 15px 15px 15px;
+  background-color: $awebooking-background;
+
+  @include media('>=sm') {
+    padding: 10px 20px 20px 20px;
+  }
+}
+
+/* Awebooking Datepicker */
+.awebooking-calendar .ui-datepicker,
+.ui-datepicker.awebooking-datepicker {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+
+  &.ui-widget-content {
+    color: inherit;
+    background-image: none !important;
+  }
+  &.ui-datepicker-multi .ui-datepicker-calendar {
+    margin-top: 10px;
+  }
+
+  .ui-widget-header {
+    background-image: none;
+    background-color: transparent;
+    border: none;
+
+    .ui-icon {
+      font-size: 0;
+      text-indent: 0;
+      background-image: none;
+    }
+  }
+
+  table {
+    margin: 0;
+    border: none;
+    line-height: 1;
+    width: 100%;
+
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+
+  th {
+    color: $awebooking-primary;
+    background-color: transparent;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 3px;
+  }
+
+  .ui-state-disabled span {
+    background: transparent;
+    opacity: 0.2;
+  }
+
+  td a,
+  td span,
+  th span {
+    background-image: none;
+    font-size: $awebooking-font-size-small;
+  }
+
+  td a {
+    color: $awebooking-primary;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+
+  .ui-datepicker-title {
+    text-transform: uppercase;
+    color: $awebooking-primary;
+
+    margin-left: 0;
+    margin-right: 0;
+
+    padding-left: 30px;
+    padding-right: 30px;
+
+    &,
+    & span {
+      font-size: $awebooking-font-size-base;
+      font-weight: $awebooking-font-weight;
+    }
+  }
+
+  // Next and Prev
+  .ui-datepicker-prev,
+  .ui-datepicker-next {
+    @include size(24px);
+    border-radius: 0;
+
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    // opacity: 0.35;
+    cursor: pointer;
+    border: solid 1px $awebooking-secondary;
+
+    &:hover,
+    &:focus {
+      // opacity: 0.75;
+      border: solid 1px $awebooking-highlight-color;
+      color: $awebooking-highlight-color;
+    }
+
+    &.ui-state-disabled {
+      opacity: 0.1;
+    }
+  }
+
+  .ui-datepicker-prev {
+    top: 3px;
+    left: 3px;
+
+    &:hover,
+    &:focus {
+      top: 3px;
+      left: 3px;
+    }
+  }
+
+  .ui-datepicker-next {
+    top: 3px;
+    right: 3px;
+
+    &:hover,
+    &:focus {
+      top: 3px;
+      right: 3px;
+    }
+  }
+}
+
+/* Calendar Icons */
+.awebooking,
+.ui-datepicker.awebooking-datepicker {
+  .awebookingfc-next > span,
+  .awebookingfc-prev > span,
+  .ui-datepicker-prev > span,
+  .ui-datepicker-next > span {
+    @include size(24px);
+    margin-left: -12px;
+    margin-top: -12px;
+
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .awebookingfc-next > span,
+  .ui-datepicker-next > span {
+    @extend %awebooking-arrow-next;
+
+    &:hover:after {
+      color: $awebooking-highlight-color;
+    }
+  }
+
+  .awebookingfc-prev > span,
+  .ui-datepicker-prev > span {
+    @extend %awebooking-arrow-prev;
+
+    &:hover:after {
+      color: $awebooking-highlight-color;
+    }
+  }
+}
+
+/* Inline datepicker */
+.awebooking-calendar .ui-datepicker-inline {
+  background-color: transparent;
+
+  td a,
+  td span {
+    border: none;
+    padding: 8px;
+    background-color: $awebooking-background-secondary;
+
+    @include media('>=sm') {
+      padding: 10px;
+    }
+  }
+
+  td a:hover,
+  td a:focus,
+  td.awebooking-highlight a {
+    color: #fff;;
+    background-color: $awebooking-highlight-color;
+  }
+
+  @include media('<sm') {
+    &.ui-datepicker-multi-2 .ui-datepicker-group {
+      width: 100%;
+    }
+  }
+}
+
+/* Popup datepicker */
+.ui-datepicker.awebooking-datepicker {
+  width: 20em;
+  padding: 5px 10px 10px;
+  background-color: #FFF;
+  box-shadow: 0 1px 25px rgba(black, 0.1);
+
+  td a,
+  td span {
+    padding: 7px;
+    text-align: center;
+
+    border: solid 1px $awebooking-border-color;
+    background-color: transparent;
+  }
+
+  td a:hover,
+  td a:focus,
+  td.awebooking-highlight a,
+  .ui-state-active {
+    color: $awebooking-highlight-color;
+    border-color: $awebooking-highlight-color;
+  }
+
+  .ui-state-active {
+    color: #fff !important;
+    background-color: $awebooking-highlight-color;
+  }
+
+  &.ui-datepicker-multi {
+    td a,
+    td span {
+      padding: 5px;
+    }
+  }
+
+  .ui-datepicker-header {
+    margin-left: -10px;
+    margin-right: -10px;
+
+    margin-bottom: 7px;
+    padding-bottom: 7px;
+
+    border-bottom: solid 1px $awebooking-border-color;
+  }
+
+  .ui-datepicker-title {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .ui-datepicker-prev {
+    left: 18px;
+
+    &:hover,
+    &:focus {
+      left: 18px;
+    }
+  }
+
+  .ui-datepicker-next {
+    right: 18px;
+
+    &:hover,
+    &:focus {
+      right: 18px;
+    }
+  }
+}
+.ui-datepicker.awebooking-datepicker
+
+/* Fullcalendar */
+.fc-toolbar h2 {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.awebooking-fc-nav {
+  @include size(24px);
+
+  font-size: 0;
+  line-height: 24px;
+  text-align: center;
+
+  overflow: hidden;
+  display: inline-block;
+  border: solid 1px #eee;
+
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &:hover,
+  &:focus {
+    border-color: $awebooking-primary;
+  }
+}
+.awebooking-fc-next {
+  float: right;
+  @extend %awebooking-arrow-next;
+}
+.awebooking-fc-prev {
+  float: left;
+  @extend %awebooking-arrow-prev;
+}

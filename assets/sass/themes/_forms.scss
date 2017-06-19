@@ -1,0 +1,136 @@
+/* awebooking Form
+----------------------------------*/
+.awebooking-check-form {
+  background-color: $awebooking-background;
+}
+
+.awebooking-select,
+.awebooking-input.awebooking-datepicker {
+  background-color: $awebooking-background-secondary;
+  border-color: $awebooking-border-color;
+  border-width: 1px;
+  border-style: solid;
+  color: $awebooking-primary;
+
+  padding: $awebooking-input-padding;
+  font-size: $awebooking-font-size-small;
+  line-height: $awebooking-line-height-base;
+  background-image: none;
+}
+
+/* Icons Input */
+.awebooking-select,
+.awebooking-input.awebooking-calendar {
+  // Use vendor prefixes as `appearance` isn't part of the CSS spec.
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  padding-right: 30px;
+}
+
+/* awebooking Field */
+.awebooking-field {
+  margin-bottom: $awebooking-field-margin;
+
+  > label {
+    font-weight: 700;
+    font-size: $awebooking-font-size-small;
+    text-transform: uppercase;
+
+    display: block;
+    margin-bottom: 5px;
+
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.awebooking-field-group {
+  position: relative;
+
+  .fa,
+  .awebookingf,
+  .icon {
+    top: 50%;
+    right: 10px;
+    position: absolute;
+    font-size: 14px;
+    color: $awebooking-secondary;
+    transform: translateY(-50%);
+  }
+
+  .awebookingf-select {
+    right: 12px;
+    font-size: 10px;
+  }
+}
+
+.awebooking-checkout-form {
+  abbr.required {
+      color: red;
+      font-weight: 700;
+      border: 0;
+  }
+  .awebooking-input{
+    width: 100%;
+  }
+
+  input, textarea {
+      border: 1px solid  $awebooking-border-color;
+      font-family: inherit;
+      padding: 5px;
+      background-color: transparent;
+  }
+
+  .awebooking-billing-fields {
+    width: 48%;
+    float: left;
+  }
+
+  .awebooking-billing-fields--right{
+    float: right;
+    width: 48%;
+
+    textarea{
+      width: 100%;
+      height: 175px;
+    }
+  }
+
+  .form-row-first,
+  .form-row-last{
+    float: left;
+    width: 47%;
+    overflow: visible;
+
+    &::after {
+      content: '';
+      clear: both;
+    }
+  }
+
+  .form-row-last {
+      float: right;
+
+  }
+
+  .form-row-wide{
+    width: 100%;
+  }
+
+  .clear{
+      clear: both;
+  }
+
+  .awebooking-validate-required {
+    .awebooking-input{
+      border-color: #a00;
+    }
+
+    label {
+       color: #a00;
+    }
+  }
+}

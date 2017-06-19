@@ -1,0 +1,58 @@
+.awebooking-room-type__check-form {
+  background-color: $awebooking-background;
+}
+
+.awebooking-room-type__title {
+  padding: 15px 15px 0;
+}
+
+.awebooking-room-type__price {
+  padding: 0 15px 15px;
+}
+
+.awebooking-room-type__check-form {
+  .awebooking-heading {
+    font-size: 16px !important;
+  }
+}
+
+.awebooking-amenities__item:not(:last-child) {
+  border-bottom: 1px solid $awebooking-border-color;
+  margin-bottom: 30px;
+}
+
+.single-room_type {
+  .awebooking-service__item {
+    font-size: 20px;
+    border-bottom: 1px solid $awebooking-border-color;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    .awebooking-service__content {
+      font-size: 14px;
+      padding-left: 0;
+    }
+  }
+}
+
+.awebooking-room-type__header {
+  .awebooking-room-type__title,
+  .awebooking-room-type__price {
+    margin-bottom: 0;
+  }
+
+  .awebooking-room-type__price {
+    border-bottom: none;
+  }
+}
+
+.awebooking-room-type__check-form {
+  .awebooking-room-type__title,
+  .awebooking-room-type__price {
+    display: none;
+  }
+}

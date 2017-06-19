@@ -1,0 +1,17 @@
+.awebooking-step ul {
+  display: table;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  padding-left: 0;
+  list-style-type: none;
+}
+
+@include media('>sm') {
+  .awebooking-step ul > li {
+	  width: 1%;
+	  display: table-cell;
+	  position: relative;
+	}
+}

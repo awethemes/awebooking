@@ -1,0 +1,40 @@
+.awebooking-checkout-table, th, td {
+  border-color: lighten($awebooking-border-color, 5%);
+}
+
+.awebooking-checkout-table {
+  margin-bottom: 30px;
+
+  thead, tfoot {
+    background-color: lighten($awebooking-background, 2%);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  tfoot th {
+    border-bottom: 1px solid lighten($awebooking-border-color, 5%);
+  }
+
+  caption, th, td {
+    text-align: center;
+  }
+
+  th, td {
+    border-top: none;
+    padding: 10px;
+  }
+
+  th {
+    font-size: 14px;
+    color: darken($awebooking-secondary, 25%);
+    border-bottom: none;
+  }
+}
+
+.awebooking-checkout-table--extra {
+  float: right;
+}
+
+.awebooking-checkout-table .awebooking-checkout-table__total-price {
+  font-size: 24px;
+}

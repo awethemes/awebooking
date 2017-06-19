@@ -1,0 +1,67 @@
+/* Awebooking Steper
+----------------------------------*/
+$awebooking-steper-bg:                  $awebooking-background !default;
+$awebooking-steper-color:               darken($awebooking-steper-bg, 25%) !default;
+$awebooking-steper-padding:             12px 25px !default;
+
+$awebooking-steper-muted:               $awebooking-steper-color !default;
+$awebooking-steper-hightlight:          $awebooking-highlight-color !default;
+
+$awebooking-steper-number-color:        #fff !default;
+$awebooking-steper-number-size:         25px !default;
+
+.awebooking-step {
+  color: $awebooking-secondary;
+  padding: $awebooking-steper-padding;
+  background-color: $awebooking-steper-bg;
+  margin-bottom: 40px;
+}
+
+.awebooking-step ul > li {
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  color: $awebooking-primary;
+
+  // Item number.
+  > span {
+    color: $awebooking-steper-number-color;
+    background-color: $awebooking-secondary;
+
+    font-size: 12px;
+    display: inline-block;
+
+    @include size($awebooking-steper-number-size);
+    line-height: $awebooking-steper-number-size;
+    margin-right: ($awebooking-steper-number-size/2);
+
+    text-align: center;
+    border-radius: 50%;
+  }
+
+  @include media('<sm') {
+    font-size: 11px;
+  }
+}
+
+// Active step
+.awebooking-step ul > li.active,
+.awebooking-step ul > li.step-complete {
+  color: $awebooking-steper-hightlight;
+
+  > span {
+    background-color: $awebooking-steper-hightlight;
+  }
+}
+
+// Complete step
+.awebooking-step ul > li.step-complete {
+  overflow: hidden;
+
+  > span {
+    text-indent: -1000px;
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAABm1BMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////861ouVAAAAiHRSTlMAAQIDBQYHCAoLDQ4PEBETFBcaGxweHyAhIiMnKCkrNTw/QUJERkhOUFFSVFVcXl9iZWZna2xub3B0dXh5e3x9fn+AhoeJiouMj5CRk5WXmJmcnaCnqayur7GytLW2vL2+wMLDxMfJy83Oz9HT1dbX2Nnb3N3e4OLj6Ors7fDx8/T19/j5+vv92LIm4AAAAXhJREFUeAFt0en3CnEcxfGrEmWXJUl2k1DIUnaiiJJIMtFiSVkqJVmSLLl/tt/pOzPNMq8nc895nzMPPl9o9lxv/+H8H2fPzm2G2d4m+TIbDx9LFLvkw+3Gep/fE1ugCNwhT2NpTYs3V0Fn02MWoHL3eBAmSZbU2WYQFlHeFSPHQ7BxjRJWhJiBrc7UBaD1A/b8vAoEeNZa1l6OAaj9Bm7QY6nuJp8AOMB9eP/GUh11jnYBcDKNvxlLrXEsjtptgHFT9TY43ilmeYS5ZKzbeuz4IWQmmIcXa3XxoqhDvvZCkfsGJkQmUwB8Q75wQ1X9iF95MSUyjY0DNl3QjGQ0xhAiZOEd67q6jhdwhlshHCdZcWApxiDW8x4UR7/I0Ot9BvBoeVUxVIcZAbCBVdhx/uwvvqd43i7L3CFGgVFrfcAT6iwxZX7wMpPQZPlqt76GZ8YfShM+PaLc2nfyA1tBGHiuTMm3ldt5uU/2I7Daf+v5p8nXQeVSCJr/85ZbETTRHpAAAAAASUVORK5CYII=);
+  }
+}

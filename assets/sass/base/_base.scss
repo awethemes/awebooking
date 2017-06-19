@@ -1,0 +1,29 @@
+// Variables and mixins
+@import "./include-media";
+@import "./variables";
+@import "./mixins";
+
+%awebooking-arrow-prev,
+%awebooking-arrow-next {
+  font-family: 'Awebooking';
+  color: $awebooking-secondary;
+}
+%awebooking-arrow-prev:after,
+%awebooking-arrow-next:after {
+  font-size: 12px;
+}
+
+%awebooking-arrow-prev:after {
+  content: "\e901";
+}
+%awebooking-arrow-next:after {
+  content: "\e900";
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}

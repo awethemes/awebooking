@@ -1,0 +1,26 @@
+.awebooking-informations__title,
+.awebooking-informations__table,
+.awebooking-service__title {
+  margin-bottom: 20px;
+}
+
+.awebooking-informations__media,
+.awebooking-informations__content {
+  padding: 0 15px;
+}
+
+.awebooking-informations__media {
+  float: left;
+  width: 40%;
+}
+
+.awebooking-informations__content {
+  float: right;
+  width: 60%;
+}
+
+.awebooking-service__wrapper {
+  overflow: hidden;
+  margin-left: -15px;
+  margin-right: -15px;
+}

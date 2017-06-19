@@ -1,0 +1,163 @@
+/**
+ * Bootstrap Transition.
+ */
+.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.tab-content > .tab-pane {
+  display: block;
+  overflow-y: hidden;
+  height: 0;
+}
+
+.tab-content > .active {
+  height: auto;
+}
+
+/**
+ * Bootstrap Collapse.
+ */
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+tr.collapse.in {
+  display: table-row;
+}
+
+tbody.collapse.in {
+  display: table-row-group;
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  transition-property: height, visibility;
+  transition-duration: 0.35s;
+  transition-timing-function: ease;
+}
+
+/**
+ * Bootstrap Modal.
+ */
+.awebooking-modal-open {
+  overflow: hidden;
+}
+
+.awebooking-modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  background-color: rgba(white, 0.35);
+}
+
+.awebooking-modal .awebooking-modal-dialog {
+  transform: translate(0, -25%);
+  transition: transform 0.3s ease-out;
+}
+
+.awebooking-modal.in .awebooking-modal-dialog {
+  transform: translate(0, 0);
+}
+
+.awebooking-modal-open .awebooking-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.awebooking-modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 15px;
+}
+
+.awebooking-modal-content {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #eee;
+  background-clip: padding-box;
+  outline: 0;
+}
+
+.awebooking-modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.42857143px;
+  position: relative;
+}
+
+.awebooking-modal-header .close {
+  margin-top: -2px;
+}
+
+.awebooking-modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+.awebooking-modal-body {
+  position: relative;
+  padding: 15px;
+}
+
+.awebooking-modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+@media (min-width: 601px) {
+  .awebooking-modal-dialog {
+    margin: 50px 30px;
+  }
+}
+
+@media (min-width: 783px) {
+  .awebooking-modal-dialog {
+    width: 600px;
+    margin: 120px auto 30px;
+  }
+
+  .awebooking-modal-content {
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.abp-close-modal {
+  color: #999;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  text-align: center;
+  line-height: 24px;
+  font-size: 14px;
+  font-family: serif;
+  border-radius: 2px;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    background-color: #f9f9f9;
+  }
+}

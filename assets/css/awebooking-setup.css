@@ -1,0 +1,227 @@
+@font-face {
+  font-family: 'Awebooking';
+  src:  url('../fonts/Awebooking.eot?48ykob');
+  src:  url('../fonts/Awebooking.eot?48ykob#iefix') format('embedded-opentype'),
+    url('../fonts/Awebooking.ttf?48ykob') format('truetype'),
+    url('../fonts/Awebooking.woff?48ykob') format('woff'),
+    url('../fonts/Awebooking.svg?48ykob#Awebooking') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.awebookingf {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'Awebooking' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.awebookingf-logo:before {
+  content: "\e903";
+}
+
+body {
+	font-size: 16px;
+}
+
+p {
+	font-size: 16px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.awebooking-setup {
+	padding: 0;
+	margin: 60px auto 25px;
+}
+
+#awebooking-logo {
+	text-align: center;
+	margin: 0;
+	padding: 20px 0;
+	background-color: #2196F3;
+	border-bottom: 2px solid #096cba;
+}
+
+#awebooking-logo a {
+	display: inline-block;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#awebooking-logo i {
+	font-size: 70px;
+}
+
+.awebooking-setup-steps {
+	position: relative;
+	padding: 45px 15px 30px;
+	margin: 0;
+	list-style: none;
+	text-align: center;
+}
+
+.awebooking-setup-steps__item {
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	font-size: 18px;
+	font-weight: 500;
+	font-style: italic;
+}
+
+.awebooking-setup-steps__number {
+	display: inline-block;
+	position: relative;
+	font-size: 20px;
+	color: #cccccc;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	vertical-align: bottom;
+}
+
+.awebooking-setup-steps__number-effect {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	border: 2px solid #e0e0e0;
+	background-color: #f0f0f0;
+	transform-style: preserve-3d;
+	transform: rotate(45deg);
+}
+
+.awebooking-setup-steps__number i {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+.awebooking-setup-steps__title {
+	display: inline-block;
+	padding: 0 30px 0 20px;
+}
+
+.awebooking-setup-steps__item:last-child .awebooking-setup-steps__title {
+	padding-right: 0;
+}
+
+.awebooking-setup-steps__item.active .awebooking-setup-steps__number-effect,
+.awebooking-setup-steps__item.done .awebooking-setup-steps__number-effect {
+	border-color: #096cba;
+	background-color: #2196F3;
+}
+
+.awebooking-setup-steps__item.active i,
+.awebooking-setup-steps__item.done i {
+	color: #ffffff;
+}
+
+.awebooking-setup-steps__item.active .awebooking-setup-steps__title,
+.awebooking-setup-steps__item.done .awebooking-setup-steps__title {
+	color: #2196F3;
+}
+
+.awebooking-setup-introduction {
+	padding: 50px 0 30px;
+}
+
+.awebooking-setup-actions {
+	border-top: 1px solid #e0e0e0;
+	padding-top: 20px;
+}
+
+.awebooking-setup-content {
+	padding: 0 15px 15px;
+}
+
+.awebooking-setup-welcome {
+	padding-bottom: 15px;
+	font-size: 32px;
+	font-weight: 500;
+}
+
+.awebooking-setup-pages {
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+.awebooking-setup-pages thead {
+	background-color: #f0f0f0;
+}
+
+.awebooking-setup-pages th,
+.awebooking-setup-pages td {
+	padding: 15px 10px;
+}
+
+.awebooking-setup-pages th:not(:first-child),
+.awebooking-setup-pages td:not(:first-child) {
+	border-left: 1px solid #e0e0e0;
+}
+
+.awebooking-setup-pages tbody td {
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.form-table th {
+	vertical-align: middle;
+}
+
+.form-table input[type="text"],
+.form-table select {
+	min-width: 220px;
+	border-color: #aaaaaa;
+	border-radius: 4px;
+}
+
+.form-table select {
+	min-width: 232px;
+	padding: 5px;
+}
+
+.awebooking-setup-next-steps ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.awebooking-setup__footer {
+	padding: 0 15px;
+}
+
+.awebooking-setup__footer .awebooking-setup-actions {
+	padding-bottom: 20px;
+	margin-bottom: 0;
+}
+
+.select2-container--default .select2-selection--single {
+	border-radius: 0;
+	border-color: #dddddd;
+}
