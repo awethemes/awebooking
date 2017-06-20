@@ -16,6 +16,10 @@ git clone https://github.com/awethemes/awebooking.git
 cd awebooking & composer install
 ```
 
+Or try our demo at: http://demo.awethemes.com/awebooking
+
+(Leave your email at: "TRY A DEMO", we will send a admin account so you can see the admin)
+
 ## Contribute
 
 Found any bugs? Free contribute by create a [pull request](https://github.com/awethemes/awebooking/pulls)
