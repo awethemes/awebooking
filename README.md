@@ -2,6 +2,8 @@
 
 A hotel management tool for WordPress
 
+![rm-status](https://user-images.githubusercontent.com/1529454/27292370-7c52c392-553d-11e7-80de-b3397a50e958.png)
+
 ## Installation
 
 This plugin still alpha version, there are no "zip" file for ready.
