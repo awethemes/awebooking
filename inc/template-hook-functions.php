@@ -113,3 +113,11 @@ add_action( 'awebooking/check_availability_area', 'abkng_template_check_availabi
  * @see abkng_pagination()
  */
 add_action( 'awebooking/after_archive_loop', 'abkng_pagination', 10 );
+
+/**
+ * Checkout.
+ *
+ * @see abkng_template_checkout_customer_form()
+ */
+add_action( 'awebooking/checkout/extra_service_details', 'abkng_template_checkout_extra_service_details', 10 );
+add_action( 'awebooking/checkout/customer_form', 'abkng_template_checkout_customer_form', 10 );

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "54c71c7d9266fb531fceb9616a140a99",
+    "content-hash": "e488ff669bd76a470e0f4f53b75af39d",
     "packages": [
         {
             "name": "WebDevStudios/Taxonomy_Single_Term",
@@ -237,16 +237,16 @@
         },
         {
             "name": "roomify/bat",
-            "version": "dev-type-hint",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/anhskohbo/bat.git",
-                "reference": "77b5c234aa5b856293c10159712bdf6191b9fcc2"
+                "url": "https://github.com/Roomify/bat.git",
+                "reference": "82e31a29bf9f9a46e6259fd781c743994797b36c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anhskohbo/bat/zipball/77b5c234aa5b856293c10159712bdf6191b9fcc2",
-                "reference": "77b5c234aa5b856293c10159712bdf6191b9fcc2",
+                "url": "https://api.github.com/repos/Roomify/bat/zipball/82e31a29bf9f9a46e6259fd781c743994797b36c",
+                "reference": "82e31a29bf9f9a46e6259fd781c743994797b36c",
                 "shasum": ""
             },
             "require": {
@@ -264,16 +264,7 @@
                     "Roomify\\Bat\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Roomify\\Bat\\Test\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -296,10 +287,7 @@
                 "roomify",
                 "sharing economy"
             ],
-            "support": {
-                "source": "https://github.com/anhskohbo/bat/tree/type-hint"
-            },
-            "time": "2017-06-16T10:12:59+00:00"
+            "time": "2017-06-19T08:23:42+00:00"
         }
     ],
     "packages-dev": [],
