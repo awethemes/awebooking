@@ -61,31 +61,7 @@ class Shortcode_Checkout {
 				return;
 			}
 
-			$extra_services = $availability->get_request()->get_request( 'extra_services' );
-
-			$extra_services_infos = [];
-
-			foreach ( $extra_services as $key => $id ) {
-				$extra_service = new Service( $id );
-				$cal = new Service_Calculator( $extra_service, $booking_request );
-				$extra_service_info['name'] = $extra_service->get_name();
-				$extra_service_info['label'] = $extra_service->get_price_label( $booking_request );
-				$a = $cal->handle( $availability->get_price() );
-				$extra_service_info['price_calculator'] = $a->subtract( $availability->get_price() );
-				$extra_services_infos[] = $extra_service_info;
-			}
-
-			$extra_services_name = [];
-
-			foreach ( $extra_services as $key => $id ) {
-				$term = get_term( $id, AweBooking::HOTEL_EXTRA_SERVICE );
-				$extra_services_name[] = $term->name;
-			}
-
 			Template::get_template( 'checkout.php', array(
-				'extra_services_name' => $extra_services_name,
-				'extra_services_infos' => $extra_services_infos,
-				'extra_services' => $extra_services,
 				'availability' => $availability,
 				'room_type' => $room_type,
 			));
