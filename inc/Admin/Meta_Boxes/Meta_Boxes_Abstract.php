@@ -109,7 +109,7 @@ abstract class Meta_Boxes_Abstract {
 		$wp_screen = get_current_screen();
 
 		// Prevent on edit.php.
-		if ( 'edit' === $wp_screen->base ) {
+		if ( 'edit' === $wp_screen->base || ! empty( $wp_screen->taxonomy ) ) {
 			return false;
 		}
 
