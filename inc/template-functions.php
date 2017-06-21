@@ -698,7 +698,7 @@ if ( ! function_exists( 'abkng_template_checkout_extra_service_details' ) ) :
 	 *
 	 * @return void
 	 */
-	function abkng_template_checkout_extra_service_details( $availability ) {
+	function abkng_template_checkout_general_informations( $availability, $room_type ) {
 		$extra_services = $availability->get_request()->get_request( 'extra_services' );
 		$extra_services_name = [];
 
@@ -706,9 +706,10 @@ if ( ! function_exists( 'abkng_template_checkout_extra_service_details' ) ) :
 			$term = get_term( $id, AweBooking::HOTEL_EXTRA_SERVICE );
 			$extra_services_name[] = $term->name;
 		}
-		abkng_get_template( 'checkout/extra-services.php', array(
+		abkng_get_template( 'checkout/general-informations.php', array(
 			'extra_services_name' => $extra_services_name,
-			'availability'        => $availability
+			'availability'        => $availability,
+			'room_type'           => $room_type,
 		));
 	}
 endif;

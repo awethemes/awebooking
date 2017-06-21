@@ -117,7 +117,8 @@ add_action( 'awebooking/after_archive_loop', 'abkng_pagination', 10 );
 /**
  * Checkout.
  *
+ * @see abkng_template_checkout_general_informations()
  * @see abkng_template_checkout_customer_form()
  */
-add_action( 'awebooking/checkout/extra_service_details', 'abkng_template_checkout_extra_service_details', 10 );
+add_action( 'awebooking/checkout/detail_tables', 'abkng_template_checkout_general_informations', 10, 2 );
 add_action( 'awebooking/checkout/customer_form', 'abkng_template_checkout_customer_form', 10 );
