@@ -412,6 +412,8 @@ class Admin_Setup_Wizard {
 		?>
 		<h1 class="awebooking-setup-welcome text-center"><?php esc_html_e( 'Your hotel is ready!', 'awebooking' ); ?></h1>
 
+		<p><?php printf( __( 'You will need to <a href="%1$s" target="_blank">create some room types</a>. to start using awebooking plugin for your hotel. Enjoy your plugin! If you\'re not sure how, please check plugin document <a href="%2$s" target="_blank">here</a>.', 'awebooking' ), esc_url( admin_url( 'post-new.php?post_type=room_type&tutorial=true' ) ), esc_url( 'http://docs.awethemes.com/awebooking/' ) ); ?>
+		</p>
 		<div class="awebooking-setup-next-steps">
 			<div class="awebooking-setup-next-steps-last">
 				<h2><?php _e( 'Learn more', 'awebooking' ); ?></h2>
