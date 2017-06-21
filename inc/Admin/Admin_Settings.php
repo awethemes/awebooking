@@ -50,19 +50,22 @@ class Admin_Settings extends Admin_Page {
 	public function register_general_settings() {
 		$section = $this->add_section( 'general', [
 			'title' => esc_html__( 'General', 'awebooking' ),
+			'priority' => 10,
 		]);
 
 		$section->add_field( array(
 			'id'   => '__general_system__',
 			'type' => 'title',
 			'name' => esc_html__( 'AweBooking General', 'awebooking' ),
+			'priority' => 10,
 		) );
 
 		$section->add_field( array(
 			'id'       => 'enable_location',
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Multi hotel location?', 'awebooking' ),
-			'default' => $this->config->get_default( 'enable_location' ),
+			'default'  => $this->config->get_default( 'enable_location' ),
+			'priority' => 10,
 		) );
 
 		$section->add_field( array(
@@ -76,6 +79,7 @@ class Admin_Settings extends Admin_Page {
 			) ),
 			'validate'   => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
+			'priority' => 15,
 		) );
 
 		$section->add_field( array(
@@ -84,12 +88,14 @@ class Admin_Settings extends Admin_Page {
 			'name'     => esc_html__( 'Date format', 'awebooking' ),
 			'default'  => $this->config->get_default( 'date_format' ),
 			'render_field_cb'   => array( $this, '_date_format_field_callback' ),
+			'priority' => 20,
 		) );
 
 		$section->add_field( array(
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
+			'priority' => 25,
 		) );
 
 		$section->add_field( array(
@@ -98,6 +104,7 @@ class Admin_Settings extends Admin_Page {
 			'name'     => esc_html__( 'Currency', 'awebooking' ),
 			'default' => $this->config->get_default( 'currency' ),
 			'options'  => awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' ),
+			'priority' => 25,
 		) );
 
 		$section->add_field( array(
@@ -108,6 +115,7 @@ class Admin_Settings extends Admin_Page {
 			'default'  => $this->config->get_default( 'currency_position' ),
 			'validate' => 'required',
 			'options'  => awebooking( 'currency_manager' )->get_positions(),
+			'priority' => 30,
 		) );
 
 		$section->add_field( array(
@@ -117,6 +125,7 @@ class Admin_Settings extends Admin_Page {
 			// 'desc'     => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
 			'default'  => $this->config->get_default( 'price_thousand_separator' ),
 			'validate' => 'required',
+			'priority' => 35,
 		) );
 
 		$section->add_field( array(
@@ -126,6 +135,7 @@ class Admin_Settings extends Admin_Page {
 			// 'desc'     => esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ),
 			'default'  => $this->config->get_default( 'price_decimal_separator' ),
 			'validate' => 'required',
+			'priority' => 40,
 		) );
 
 		$section->add_field( array(
@@ -138,11 +148,13 @@ class Admin_Settings extends Admin_Page {
 				'min'  => 0,
 				'type' => 'number',
 			),
+			'priority' => 45,
 		) );
 
 		// Display.
 		$display = $this->add_section( 'display', [
 			'title' => esc_html__( 'Display', 'awebooking' ),
+			'priority' => 20,
 		]);
 
 		$display->add_field( array(
@@ -150,6 +162,7 @@ class Admin_Settings extends Admin_Page {
 			'type' => 'title',
 			'name' => esc_html__( 'Awebooking Pages', 'awebooking' ),
 			'description' => esc_html__( 'These pages need to be set so that Awebooking knows where to send users to handle.', 'awebooking' ),
+			'priority' => 10,
 		) );
 
 		$display->add_field( array(
@@ -161,6 +174,7 @@ class Admin_Settings extends Admin_Page {
 			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'   => 'integer',
 			'show_option_none' => true,
+			'priority' => 10,
 		) );
 
 		$display->add_field( array(
@@ -172,6 +186,7 @@ class Admin_Settings extends Admin_Page {
 			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'   => 'integer',
 			'show_option_none' => true,
+			'priority' => 15,
 		) );
 
 		$display->add_field( array(
@@ -183,12 +198,14 @@ class Admin_Settings extends Admin_Page {
 			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'   => 'integer',
 			'show_option_none' => true,
+			'priority' => 20,
 		) );
 
 		$display->add_field( array(
 			'id'   => '__display_check_availability__',
 			'type' => 'title',
 			'name' => esc_html__( 'Check availability', 'awebooking' ),
+			'priority' => 25,
 		) );
 
 		$display->add_field( array(
@@ -199,6 +216,7 @@ class Admin_Settings extends Admin_Page {
 			'default'  => $this->config->get_default( 'check_availability_max_adults' ),
 			'validate'   => 'integer|min:1',
 			'sanitization_cb' => 'absint',
+			'priority' => 30,
 		) );
 
 		$display->add_field( array(
@@ -209,11 +227,13 @@ class Admin_Settings extends Admin_Page {
 			'default'  => $this->config->get_default( 'check_availability_max_children' ),
 			'validate'   => 'integer|min:0',
 			'sanitization_cb' => 'absint',
+			'priority' => 35,
 		) );
 
 		// Email.
 		$email = $this->add_section( 'email', [
 			'title' => esc_html__( 'Email', 'awebooking' ),
+			'priority' => 30,
 		]);
 
 		$email->add_field([
