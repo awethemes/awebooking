@@ -257,22 +257,6 @@ class Formatting {
 		return $label;
 	}
 
-	public static function get_extra_service_type( Service $extra_service ) {
-		$label = '';
-
-		switch ( $extra_service->get_type() ) {
-			case Service::OPTIONAL:
-				$label = esc_html__( 'Optional', 'awebooking' );
-				break;
-
-			case Service::MANDATORY:
-				$label = esc_html__( 'Mandatory', 'awebooking' );
-				break;
-		}
-
-		return $label;
-	}
-
 	/**
 	 * //
 	 *

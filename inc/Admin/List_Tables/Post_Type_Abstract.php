@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin\Post_Types;
+namespace AweBooking\Admin\List_Tables;
 
 abstract class Post_Type_Abstract {
 	/**
@@ -76,8 +76,8 @@ abstract class Post_Type_Abstract {
 	 *
 	 * @access private
 	 *
-	 * @param array $column  Array of registered column names.
-	 * @param int   $post_id Current post ID.
+	 * @param string $column  The name of the column to display.
+	 * @param int    $post_id Current post ID.
 	 */
 	public function columns_display( $column, $post_id ) {}
 

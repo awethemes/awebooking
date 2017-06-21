@@ -1,12 +1,12 @@
 <?php
-namespace AweBooking\Admin\Post_Types;
+namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Booking;
 use AweBooking\AweBooking;
 use AweBooking\Support\Utils;
 use AweBooking\Support\Date_Period;
 
-class Booking_Post_Type extends Post_Type_Abstract {
+class Booking_List_Table extends Post_Type_Abstract {
 	/**
 	 * Post type slug.
 	 *
@@ -73,8 +73,8 @@ class Booking_Post_Type extends Post_Type_Abstract {
 	 *
 	 * @access private
 	 *
-	 * @param array $column  Array of registered column names.
-	 * @param int   $post_id Current post ID.
+	 * @param string $column  The name of the column to display.
+	 * @param int    $post_id Current post ID.
 	 */
 	public function columns_display( $column, $post_id ) {
 		global $the_booking, $post;

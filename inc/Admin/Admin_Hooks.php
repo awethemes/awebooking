@@ -93,8 +93,9 @@ class Admin_Hooks extends Service_Hooks {
 
 		new Admin_Settings( $awebooking['config'], $awebooking['admin_menu'] );
 
-		new Post_Types\Booking_Post_Type;
-		new Post_Types\Room_Type_Post_Type;
+		new List_Tables\Booking_List_Table;
+		new List_Tables\Room_Type_List_Table;
+		new List_Tables\Service_List_Table;
 
 		new Meta_Boxes\Room_Type_Meta_Boxes;
 		new Meta_Boxes\Booking_Meta_Boxes;

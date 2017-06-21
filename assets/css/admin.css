@@ -520,6 +520,10 @@ ul.list-rooms > li.abkng-inline-room {
 	color: #881f25;
 	background-color: #ffdbde;
 }
+.awebooking-label--warning {
+	color: #b17419;
+	background-color: #fff8ba;
+}
 
 .awebooking-invalid {
 	color: #d42215;

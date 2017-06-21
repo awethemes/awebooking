@@ -1,9 +1,9 @@
 <?php
-namespace AweBooking\Admin\Post_Types;
+namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\AweBooking;
 
-class Room_Type_Post_Type extends Post_Type_Abstract {
+class Room_Type_List_Table extends Post_Type_Abstract {
 	/**
 	 * Post type slug.
 	 *
@@ -70,8 +70,8 @@ class Room_Type_Post_Type extends Post_Type_Abstract {
 	 *
 	 * @access private
 	 *
-	 * @param array $column  Array of registered column names.
-	 * @param int   $post_id Current post ID.
+	 * @param string $column  The name of the column to display.
+	 * @param int    $post_id Current post ID.
 	 */
 	public function columns_display( $column, $post_id ) {
 		global $room_type;
