@@ -38,6 +38,8 @@ class Admin_Settings extends Admin_Page {
 
 		// Register the settings.
 		$this->register_general_settings();
+
+		do_action( 'awebooking/admin_settings/register', $this );
 	}
 
 	/**

@@ -74,6 +74,8 @@ class AweBooking extends SkeletonContainer {
 
 		new Service_Tax;
 
+		do_action( 'awebooking/booting', $this );
+
 		static::$instance = $this;
 	}
 
@@ -155,6 +157,8 @@ class AweBooking extends SkeletonContainer {
 	 * Fire registerd service hooks.
 	 */
 	public function boot() {
+		do_action( 'awebooking/init', $this );
+
 		parent::boot();
 
 		Shortcodes::init();
@@ -162,6 +166,8 @@ class AweBooking extends SkeletonContainer {
 		new Support\Plugin_Updater;
 
 		$this['flash_message']->setup_message();
+
+		do_action( 'awebooking/booted', $this );
 	}
 
 	/**
