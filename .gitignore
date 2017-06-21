@@ -6,3 +6,4 @@ vendor/
 skeleton/
 *.zip
 *.tar.gz
+composer.lock
