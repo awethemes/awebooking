@@ -14,10 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<form id="awebooking-checkout-form" class="awebooking-checkout-form" method="POST">
-	<?php wp_nonce_field( 'awebooking-checkout-nonce' ); ?>
-	<input type="hidden" name="awebooking-action" value="checkout">
-
+<div class="clearfix clear">
 	<div class="awebooking-billing-fields">
 		<h2 class="awebooking-checkout-form__title"><?php esc_html_e( 'Booking Details', 'awebooking' ); ?></h2>
 
@@ -54,7 +51,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label><?php esc_html_e( 'Note', 'awebooking' ); ?></label>
 			<textarea name="customer_note"></textarea>
 		</div>
-
-		<button type="submit" class="button" data-type="awebooking"><?php esc_html_e( 'Submit', 'awebooking' ); ?></button>
 	</div>
-</form>
+</div>

@@ -63,7 +63,7 @@ class Request_Handler extends Service_Hooks {
 			'customer_phone'      => 'required',
 		]));
 
-		$validator->labels( apply_filters( '', [
+		$validator->labels( apply_filters( 'awebooking/checkout/validator_labels', [
 			'customer_first_name' => esc_html__( 'First name', 'awebooking' ),
 			'customer_first_name' => esc_html__( 'Last name', 'awebooking' ),
 			'customer_email'      => esc_html__( 'Email address', 'awebooking' ),
@@ -127,11 +127,11 @@ class Request_Handler extends Service_Hooks {
 				return; // Something went wrong.
 			}
 
+			do_action( 'awebooking/checkout_completed', $booking, $availability );
+
 			// Clear booking request and set booking ID.
 			Utils::setcookie( 'awebooking-request', null, time() - 1000 );
 			Utils::setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
-
-			do_action( 'awebooking/checkout_completed', $booking );
 
 			return wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
 
