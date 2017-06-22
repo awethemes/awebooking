@@ -65,12 +65,12 @@ class AweBooking extends SkeletonContainer {
 
 		$this->setup();
 
-		$this->trigger( new WP_Core_Hooks( $this ) );
-		$this->trigger( new WP_Query_Hooks( $this ) );
-		$this->trigger( new Admin_Hooks( $this ) );
-		$this->trigger( new Template_Hooks( $this ) );
-		$this->trigger( new Request_Handler( $this ) );
-		$this->trigger( new Ajax_Controller_Hooks( $this ) );
+		$this->trigger( new WP_Core_Hooks );
+		$this->trigger( new WP_Query_Hooks );
+		$this->trigger( new Admin_Hooks );
+		$this->trigger( new Template_Hooks );
+		$this->trigger( new Request_Handler );
+		$this->trigger( new Ajax_Controller_Hooks );
 
 		new Service_Tax;
 
