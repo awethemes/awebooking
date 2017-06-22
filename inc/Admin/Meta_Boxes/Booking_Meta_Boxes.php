@@ -67,7 +67,21 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			return;
 		}
 
+		$the_booking = new Booking( $post );
+
 		printf( '<h1 class="wp-heading-inline awebooking-title">%s <span>#%s</span></h1>', esc_html__( 'Booking', 'awebooking' ), $post->ID );
+
+		if ( $the_booking['transaction_id'] ) {
+			echo '<br>';
+
+			if ( $the_booking['payment_method_title'] ) {
+				echo '<span class="">' . esc_html__( 'Via', 'awebooking' ) . ' ' . esc_html( $the_booking->get_payment_method_title() ) . '</span>';
+			}
+
+			echo ' | ';
+
+			echo '<span class="">' . esc_html__( 'Transaction ID:', 'awebooking' ) . ' ' . esc_html( $the_booking->get_transaction_id() ) . '</span>';
+		}
 	}
 
 	/**
