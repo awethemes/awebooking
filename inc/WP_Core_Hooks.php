@@ -205,7 +205,7 @@ class WP_Core_Hooks extends Service_Hooks {
 					'show_in_admin_status_list' => true,
 					'label_count'               => _n_noop( 'Pending <span class="count">(%s)</span>', 'Pending <span class="count">(%s)</span>', 'awebooking' ),
 				),
-				'awebooking-processing' => array(
+				'awebooking-inprocess' => array(
 					'label'                     => _x( 'Processing', 'Booking status', 'awebooking' ),
 					'public'                    => false,
 					'exclude_from_search'       => false,

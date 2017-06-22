@@ -13,7 +13,7 @@ use Roomify\Bat\Event\Event;
 class Booking extends WP_Object {
 	/* Booking Status */
 	const PENDING    = 'awebooking-pending';
-	const PROCESSING = 'awebooking-processing';
+	const PROCESSING = 'awebooking-inprocess';
 	const COMPLETED  = 'awebooking-completed';
 	const CANCELLED  = 'awebooking-cancelled';
 
@@ -106,6 +106,10 @@ class Booking extends WP_Object {
 		'booking_room_type_id'    => 'room_type_id',
 		'booking_room_type_title' => 'room_type_title',
 		'booking_hotel_location'  => 'hotel_location',
+
+		'_payment_method'          => 'payment_method',
+		'_payment_method_title'    => 'payment_method_title',
+		'_payment_transaction_id'  => 'transaction_id',
 	];
 
 	/**

@@ -15,7 +15,7 @@ class Utils {
 	public static function get_booking_statuses() {
 		return apply_filters( 'awebooking/order_statuses', [
 			Booking::PENDING    => _x( 'Pending', 'Booking status', 'awebooking' ),
-			// Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
+			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
 			Booking::COMPLETED  => _x( 'Completed', 'Booking status', 'awebooking' ),
 			Booking::CANCELLED  => _x( 'Cancelled', 'Booking status', 'awebooking' ),
 		]);
