@@ -105,13 +105,17 @@ class Utils {
 	}
 
 	public static function get_first_term( $taxonomy, $args ) {
-
 		$term = get_terms( $taxonomy, $args );
 
-		if ( $term && isset( $term[0] ) ) {
+		if ( is_wp_error( $term ) ) {
+			return;
+		}
+
+		if ( is_array( $term ) && isset( $term[0] ) ) {
 			return $term[0];
 		}
 
+		// TODO: ...
 		return $term;
 	}
 

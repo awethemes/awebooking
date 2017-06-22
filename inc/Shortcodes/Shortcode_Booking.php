@@ -45,7 +45,7 @@ class Shortcode_Booking {
 
 			// Session_Booking_Request::set_instance( $booking_request );
 
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			$message_error = $e->getMessage();
 		}
 
