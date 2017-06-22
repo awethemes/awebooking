@@ -62,7 +62,7 @@ class Admin_Settings extends Admin_Page {
 			'id'       => 'enable_location',
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Multi hotel location?', 'awebooking' ),
-			'default' => $this->config->get_default( 'enable_location' ),
+			'default'  => $this->config->get_default( 'enable_location' ),
 		) );
 
 		$section->add_field( array(
@@ -71,10 +71,10 @@ class Admin_Settings extends Admin_Page {
 			'name'     => esc_html__( 'Default location', 'awebooking' ),
 			'description' => esc_html__( 'Select a default location.', 'awebooking' ),
 			'options'  => wp_data( 'terms',  array(
-			    'taxonomy' => AweBooking::HOTEL_LOCATION,
-			    'hide_empty' => true,
+				'taxonomy'   => AweBooking::HOTEL_LOCATION,
+				'hide_empty' => false,
 			) ),
-			'validate'   => 'integer',
+			'validate' => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
 		) );
 
