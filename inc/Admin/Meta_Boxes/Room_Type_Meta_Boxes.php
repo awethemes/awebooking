@@ -221,6 +221,8 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 			'name'       => esc_html__( 'Extra Services', 'awebooking' ),
 			'show_on_cb' => [ $this, '_render_extra_services_callback' ],
 		));
+
+		do_action( 'awebooking/register_metabox/room_type', $metabox );
 	}
 
 	/**
