@@ -1,16 +1,10 @@
 <?php
 namespace AweBooking\Widgets;
-/**
- * AweBooking Check Availability Form Widgets
- *
- * @package AweBooking/Widgets
- */
-use WP_Widget;
 
 /**
  * Awebooking_Check_Availability_Widget
  */
-class Check_Availability_Widget extends WP_Widget {
+class Check_Availability_Widget extends \WP_Widget {
 
 	/**
 	 * Constructor of class
@@ -21,7 +15,7 @@ class Check_Availability_Widget extends WP_Widget {
 			'description' => esc_html__( 'Display AweBooking Check Availability Form.', 'awebooking' ),
 		);
 
-		parent::__construct( 'awebooking-check-availability', esc_html__( 'AweBooking: Check Availability Form', 'awebooking' ), $widget_ops );
+		parent::__construct( 'awebooking_check_availability', esc_html__( 'AweBooking: Check Availability Form', 'awebooking' ), $widget_ops );
 	}
 
 	/**
@@ -33,8 +27,10 @@ class Check_Availability_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$title = $instance['title'];
-
-		$hide_location = isset( $instance['hide_location'] ) ? $instance['hide_location'] : false;
+		$hide_location = '';
+		if ( abkng_config( 'enable_location' ) ) {
+			$hide_location = $instance['hide_location'] ? true : '';
+		}
 
 		echo $args['before_widget']; // WPCS: XSS OK.
 
@@ -42,16 +38,7 @@ class Check_Availability_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title']; // WPCS: XSS OK.
 		}
 
-		if ( $hide_location ) {
-			$GLOBALS['awebooking-hide-location'] = true;
-		}
-
-		/**
-		 * awebooking/check_availability_area hook.
-		 *
-		 * @hooked abkng_template_check_availability_form - 10
-		 */
-		do_action( 'awebooking/check_availability_area' );
+		do_shortcode( '[awebooking_check_form hide_location="' . $hide_location . '"]' );
 
 		echo $args['after_widget']; // WPCS: XSS OK.
 	}
@@ -65,14 +52,13 @@ class Check_Availability_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'hide_location' => '' ) );
 		$title = strip_tags( $instance['title'] );
-		$hide_location = strip_tags( $instance['hide_location'] );
 		?>
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'awebooking' ); ?></label>
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 			</p>
 
-			<?php if ( abkng_config( 'enable_location' ) ) : ?>
+			<?php if ( abkng_config( 'enable_location' ) ) : $hide_location = strip_tags( $instance['hide_location'] );?>
 				<p>
 					<input class="checkbox" type="checkbox" <?php checked( $instance[ 'hide_location' ], 'on' ); ?> id="<?php echo $this->get_field_id( 'hide_location' ); ?>" name="<?php echo $this->get_field_name( 'hide_location' ); ?>" />
 					<label for="<?php echo $this->get_field_id( 'hide_location' ); ?>"><?php esc_html_e( 'Hide Location?', 'awebooking' ); ?></label>
@@ -91,10 +77,10 @@ class Check_Availability_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
-		$instance['title'] = $new_instance['title'];
+		$instance['title'] = sanitize_text_field( $new_instance['title'] );
 
-		if ( isset( $instance['hide_location'] ) ) {
-			$instance['hide_location'] = $new_instance['hide_location'];
+		if ( abkng_config( 'enable_location' ) ) {
+			$instance['hide_location'] = isset( $new_instance['hide_location'] ) ? sanitize_text_field( $new_instance['hide_location'] ) : '';
 		}
 
 		return $instance;

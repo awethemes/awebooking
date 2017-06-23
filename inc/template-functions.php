@@ -645,15 +645,28 @@ function abkng_display_room_type_attributes( $room_type ) {
 }
 
 /**
- * Outputs a list of room type attributes for a room type.
- *
- * @param  Room_Type $room_type room type obj.
+ * Outputs check availability form.
  */
 function abkng_template_check_availability_form() {
+	abkng_get_template( 'check-availability-form.php' );
+}
+
+/**
+ * Outputs check availability form for input time.
+ */
+function abkng_template_check_form_input_time() {
 	$date_format  = abkng_config( 'date_format' );
-	$date_format = Formatting::php_to_js_dateformat( $date_format ); // TODO: error "F"
-	$max_adults   = abkng_config( 'check_availability_max_adults' );
-	$max_children = abkng_config( 'check_availability_max_children' );
+	$date_format = Formatting::php_to_js_dateformat( $date_format );
+
+	abkng_get_template( 'check-form/input-time.php', array(
+		'date_format'   => $date_format,
+	) );
+}
+
+/**
+ * Outputs check availability form for input location.
+ */
+function abkng_template_check_form_input_location() {
 
 	$locations = get_terms( 'hotel_location', array(
 		'hide_empty' => true,
@@ -661,12 +674,22 @@ function abkng_template_check_availability_form() {
 
 	$term_default = Utils::get_hotel_location_default();
 
-	abkng_get_template( 'check-availability-form.php', array(
-		'date_format'   => $date_format,
-		'max_adults' 	=> $max_adults,
-		'max_children' 	=> $max_children,
+	abkng_get_template( 'check-form/input-location.php', array(
 		'locations'     => $locations,
 		'term_default'  => $term_default,
+	) );
+}
+
+/**
+ * Outputs check availability form for input capacity.
+ */
+function abkng_template_check_form_input_capacity() {
+	$max_adults   = abkng_config( 'check_availability_max_adults' );
+	$max_children = abkng_config( 'check_availability_max_children' );
+
+	abkng_get_template( 'check-form/input-capacity.php', array(
+		'max_adults' 	=> $max_adults,
+		'max_children' 	=> $max_children,
 	) );
 }
 
@@ -678,38 +701,5 @@ if ( ! function_exists( 'abkng_template_notices' ) ) :
 	 */
 	function abkng_template_notices() {
 		abkng_get_template( 'global/notices.php' );
-	}
-endif;
-
-if ( ! function_exists( 'abkng_template_checkout_customer_form' ) ) :
-	/**
-	 * AweBooking checkout customer form template.
-	 *
-	 * @return void
-	 */
-	function abkng_template_checkout_customer_form() {
-		abkng_get_template( 'checkout/customer-form.php' );
-	}
-endif;
-
-if ( ! function_exists( 'abkng_template_checkout_extra_service_details' ) ) :
-	/**
-	 * AweBooking checkout extra service details template.
-	 *
-	 * @return void
-	 */
-	function abkng_template_checkout_general_informations( $availability, $room_type ) {
-		$extra_services = $availability->get_request()->get_request( 'extra_services' );
-		$extra_services_name = [];
-
-		foreach ( $extra_services as $key => $id ) {
-			$term = get_term( $id, AweBooking::HOTEL_EXTRA_SERVICE );
-			$extra_services_name[] = $term->name;
-		}
-		abkng_get_template( 'checkout/general-informations.php', array(
-			'extra_services_name' => $extra_services_name,
-			'availability'        => $availability,
-			'room_type'           => $room_type,
-		));
 	}
 endif;
