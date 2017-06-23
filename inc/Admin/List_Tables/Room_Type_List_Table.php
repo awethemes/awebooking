@@ -36,7 +36,7 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 			'thumb'           => sprintf( '<span class="awebooking-column-image" title="%1$s">%1$s</span>', esc_html__( 'Image', 'awebooking' ) ),
 			'title'           => esc_html__( 'Title', 'awebooking' ),
 			'start_price'     => esc_html__( 'Starting Price', 'awebooking' ),
-			'number_of_rooms' => esc_html__( 'No. rooms', 'awebooking' ),
+			'number_of_rooms' => esc_html__( 'No. of rooms', 'awebooking' ),
 			'capacity'        => esc_html__( 'Capacity', 'awebooking' ),
 		];
 
