@@ -16,7 +16,7 @@ use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Support\Mail;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-210';
+	const VERSION = '3.0.0-alpha-221';
 
 	/**
 	 * Only using ISO-8601 date-format for all of process.
