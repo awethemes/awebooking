@@ -30,7 +30,7 @@
       this.$el.data('pricing-calendar', this);
 
       // Trigger date-range handler.
-      this.$el.find('.day')
+      this.$el.find('.abkngcal__day')
         .on('mousedown', this.clickDay.bind(this))
         .on('mouseenter', this.hoverDay.bind(this))
         .on('mouseover', this.ui.hoverHeadingOver.bind(this))
@@ -59,7 +59,7 @@
       this.clearStartDay();
       this.off();
 
-      this.$el.find('.day').off();
+      this.$el.find('.abkngcal__day').off();
       this.$el.removeData();
 
       if (this.options.rangePicker) {
@@ -83,7 +83,7 @@
         date = date.format(this.format);
       }
 
-      return this.$el.find('.day[data-date="' + date + '"]');
+      return this.$el.find('.abkngcal__day[data-date="' + date + '"]');
     },
 
     setStartDay: function(day) {
@@ -132,10 +132,6 @@
       var $target = $(e.currentTarget);
       var targetDay = moment($target.data('date'));
 
-      if ($target.hasClass('day--past')) {
-        return;
-      }
-
       // Picking start date in first time.
       if (!this.startDay && !this.endDay) {
         this.setStartDay(targetDay.clone());
@@ -148,11 +144,6 @@
         this.clearEndDay();
         this.setStartDay(targetDay.clone());
         return;
-      }
-
-      // Set end-day with current targetDay.
-      if (! targetDay.isSame(this.startDay, 'day')) {
-
       }
 
       this.setEndDay(targetDay.clone());
@@ -173,7 +164,7 @@
       var $modal = $('.pricing-calendar-modal', document);
       var template = wp.template('pricing-calendar-form');
 
-      this.data_id = this.getElementDay(this.startDay).data('roomType');
+      this.data_id = this.$el.closest('.abkngcal-container').data('roomType');
 
       $modal.find('.media-modal-content').html(template(this));
       $modal.toggle();
@@ -201,24 +192,24 @@
 
     ui: {
       onSetStartDay: function(startDay, $el) {
-        this.$el.find('.day').removeClass('range-start');
+        this.$el.find('.abkngcal__day').removeClass('range-start');
         $el.addClass('range-start');
       },
 
       onSetEndDay: function(endDay, $el) {
-        this.$el.find('.day').removeClass('range-end');
+        this.$el.find('.abkngcal__day').removeClass('range-end');
         $el.addClass('range-end');
       },
 
       onClearStartDay: function() {
-        this.$el.find('.day')
+        this.$el.find('.abkngcal__day')
           .removeClass('range-start')
           .removeClass('range-end')
           .removeClass('in-range');
       },
 
       onClearEndDay: function() {
-        this.$el.find('.day')
+        this.$el.find('.abkngcal__day')
           .removeClass('range-end')
           .removeClass('in-range');
       },
@@ -226,23 +217,22 @@
       // UI hover heading
       hoverHeadingOver: function(e) {
         var $target  = $(e.currentTarget);
-        var selector = '.day-heading[data-day="' + $target.data('day') + '"],' +
+        var selector = '.abkngcal__day-heading[data-day="' + $target.data('day') + '"],' +
           '.abkngcal__month-heading[data-month="' +  $target.data('month') + '"]';
 
         this.$el.find(selector).addClass('hover');
       },
 
       hoverHeadingLeave: function(e) {
-        var selector = '.day-heading.hover, .abkngcal__month-heading.hover';
+        var selector = '.abkngcal__day-heading.hover, .abkngcal__month-heading.hover';
         this.$el.find(selector).removeClass('hover');
       },
-      //
 
       buildRangeDays: function(targetDay, $currentTarget) {
         var endDay = this.endDay;
         var startDay  = this.startDay;
 
-        this.$el.find('.day').each(function(index, el) {
+        this.$el.find('.abkngcal__day').each(function(index, el) {
           var dt = moment($(el).data('date'));
           var $el = $(el);
 
@@ -268,7 +258,7 @@
 
     window.PricingCalendar = PricingCalendar;
 
-    $('.pricing-calendar tbody > tr', document).each(function(index, el) {
+    $('.abkngcal--pricing-calendar', document).each(function(index, el) {
       new PricingCalendar(el);
     });
 

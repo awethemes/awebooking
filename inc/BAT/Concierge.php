@@ -77,6 +77,10 @@ class Concierge implements Concierge_Interface {
 	public function set_room_price( Rate $rate, Date_Period $period, Price_Interface $amount, array $options = [] ) {
 		$rate = new Rate_Pricing( $rate, $period->get_start_date(), $period->get_end_date(), $amount );
 
+		if ( ! empty( $options['only_days'] ) && is_array( $options['only_days'] ) ) {
+			$rate->set_only_days( $options['only_days'] );
+		}
+
 		return $rate->save();
 	}
 

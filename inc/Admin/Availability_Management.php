@@ -9,7 +9,7 @@ use AweBooking\Room_State;
 use AweBooking\BAT\Calendar;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 use AweBooking\Support\Date_Period;
-use  AweBooking\Support\Date_Utils;
+use AweBooking\Support\Date_Utils;
 
 class Availability_Management extends WP_List_Table {
 

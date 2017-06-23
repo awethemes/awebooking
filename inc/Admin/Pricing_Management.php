@@ -9,6 +9,8 @@ use AweBooking\Room_Type;
 use AweBooking\Rate_Pricing;
 use AweBooking\Pricing\Price;
 use AweBooking\Admin\Calendar\Pricing_Calendar;
+use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Date_Period;
 
 class Pricing_Management extends WP_List_Table {
 	/**
@@ -18,28 +20,25 @@ class Pricing_Management extends WP_List_Table {
 	 */
 	protected $the_query;
 
+	protected $_year;
+
 	/**
 	 * Pricing_Management constructor.
 	 */
 	public function __construct() {
 		parent::__construct( [ 'plural' => 'pricing_management' ] );
 
-		// $this->screen->add_option( 'per_page' );
+
+
+		$current_year = date( 'Y' );
+		$_year = isset( $_GET['year'] ) ? (int) $_GET['year'] : $current_year;
+
+		if ( ! Date_Utils::is_validate_year( $_year ) ) {
+			$_year = $current_year;
+		}
+		$this->_year = $_year;
 
 		$this->the_query = $this->setup_the_query();
-
-		// TODO:
-		if (isset($_POST['action']) && 'set_pricing' === $_POST['action'] ) {
-
-			$start_day = abkng_create_datetime( $_POST['start_date'] )->startOfDay();
-			$end_day = abkng_create_datetime( $_POST['end_date'] )->startOfDay();
-
-			$rate = new Rate( $_REQUEST['room_type'] );
-			$price = new Price( $_REQUEST['price'] );
-
-			$pricing = new Rate_Pricing( $rate, $start_day, $end_day, $price );
-			$pricing->save();
-		}
 	}
 
 	/**
@@ -53,10 +52,88 @@ class Pricing_Management extends WP_List_Table {
 		wp_enqueue_style( 'media-views' );
 		wp_enqueue_script( 'media-views' );
 
+		wp_enqueue_style( 'daterangepicker' );
+		wp_enqueue_script( 'daterangepicker' );
+
 		wp_enqueue_script( 'awebooking-pricing-calendar' );
 
 		?><div class="wrap">
 			<h1><?php esc_html_e( 'Bulk Pricing Manager', 'awebooking' ); ?></h1>
+
+			<form action="" method="POST">
+
+			<div class="wp-filter" style="margin-bottom: 0;">
+				<div style="float: left; margin: 10px 0;">
+					<label>From night</label>
+					<input type="text" class="init-daterangepicker-start" name="datepicker-start" style="width: 100px;">
+
+					<label>to night</label>
+					<input type="text" class="init-daterangepicker-end" name="datepicker-end" style="width: 100px;">
+
+					<div id="edit-day-options" class="form-checkboxes" style="display: inline-block;">
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-1" name="day_options[]" value="1" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Mon </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-2" name="day_options[]" value="2" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-2">Tue </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-3" name="day_options[]" value="3" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-3">Wed </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-4" name="day_options[]" value="4" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-4">Thu </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-5" name="day_options[]" value="5" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-5">Fri </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-6" name="day_options[]" value="6" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-6">Sat </label>
+						</div>
+
+						<div class="form-item form-type-checkbox">
+						<input type="checkbox" id="edit-day-options-0" name="day_options[]" value="0" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Sun </label>
+						</div>
+					</div>
+
+					<input type="number" name="bulk-price" style="width: 100px;">
+
+					<input type="hidden" name="action" value="bulk-update">
+					<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ) ?></button>
+				</div>
+
+				<div class="" style="position: relative; float: right;">
+					<?php
+					$screen = get_current_screen();
+					$_year = $this->_year;
+					$years = [ $_year - 1, $_year, $_year + 1 ];
+					?>
+					<button type="button" class="button drawer-toggle toggle-year" aria-expanded="false"><?php echo $_year; ?></button>
+
+					<ul class="split-button-body">
+						<?php foreach ( $years as $year ) : ?>
+							<li>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-pricing&amp;=' . $screen->parent_base . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
+							</li>
+						<?php endforeach ?>
+					</ul>
+				</div>
+
+				<style type="text/css">
+					.drawer-toggle.toggle-year:before {
+						color: #333;
+						font-size: 16px;
+						content: "\f145";
+					}
+					.form-item {
+						display: inline-block;
+					}
+				</style>
+			</div>
 
 			<?php $this->display(); ?>
 
@@ -91,6 +168,23 @@ class Pricing_Management extends WP_List_Table {
 				</div>
 			</div>
 
+			<script type="text/javascript">
+			jQuery(function($) {
+				$('.init-daterangepicker-start').daterangepicker({
+					showDropdowns: true,
+					singleDatePicker: true,
+					locale: { format: 'YYYY-MM-DD' }
+				});
+
+				$('.init-daterangepicker-end').daterangepicker({
+					showDropdowns: true,
+					singleDatePicker: true,
+					locale: { format: 'YYYY-MM-DD' }
+				});
+			});
+			</script>
+
+		</form>
 		</div><?php
 	}
 
@@ -101,7 +195,7 @@ class Pricing_Management extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return [
-			// 'cb'   => '<input type="checkbox">',
+			'cb'   => '<input type="checkbox">',
 			'calendar' => esc_html__( 'Calendar', 'awebooking' ),
 		];
 	}
@@ -125,7 +219,7 @@ class Pricing_Management extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_calendar( $room_type ) {
-		(new Pricing_Calendar( $room_type ))->display();
+		(new Pricing_Calendar( $room_type, $this->_year ))->display();
 	}
 
 	/**
@@ -136,6 +230,8 @@ class Pricing_Management extends WP_List_Table {
 	public function prepare_items() {
 		/** Process bulk action */
 		$this->process_bulk_action();
+
+		$this->process_action();
 
 		$this->set_pagination_args([
 			'total_items' => $this->the_query->found_posts,
@@ -185,5 +281,54 @@ class Pricing_Management extends WP_List_Table {
 		<?php endwhile;
 
 		wp_reset_postdata();
+	}
+
+	public function process_action() {
+		// TODO: ...
+		if ( isset( $_POST['action'] ) && 'set_pricing' === $_POST['action'] ) {
+			if ( empty( $_REQUEST['room_type'] ) ) {
+				return;
+			}
+
+			try {
+				$price = new Price( $_REQUEST['price'] );
+				$date_period = new Date_Period( $_POST['start_date'], $_POST['end_date'], false );
+
+				$rate = new Rate( $_REQUEST['room_type'] );
+
+				awebooking( 'concierge' )->set_room_price( $rate, $date_period, $price );
+			} catch ( \Exception $e ) {
+				// ...
+			}
+		}
+	}
+
+	public function process_bulk_action() {
+		if ( ! empty( $_POST ) && ! empty( $_POST['bulk-update'] ) && 'bulk-update' === $this->current_action() ) {
+			$ids = $_POST['bulk-update'];
+			if ( empty( $ids ) ) {
+				return;
+			}
+
+			$only_days = [];
+			if ( isset( $_POST['day_options'] ) && is_array( $_POST['day_options'] ) ) {
+				$only_days = array_map( 'absint', $_POST['day_options'] );
+			}
+
+			try {
+				$date_period = new Date_Period( $_POST['datepicker-start'], $_POST['datepicker-end'], false );
+				$price = new Price( $_REQUEST['bulk-price'] );
+
+				foreach ( $ids as $id ) {
+					$rate = new Rate( (int) $id );
+
+					awebooking( 'concierge' )->set_room_price( $rate, $date_period, $price, [
+						'only_days' => $only_days,
+					]);
+				}
+			} catch ( \Exception $e ) {
+				// ...
+			}
+		}
 	}
 }
