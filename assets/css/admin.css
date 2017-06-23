@@ -656,10 +656,10 @@ table.wp-list-table .column-booking_total {
 
 
 .abkngcal__day:not(.abkngcal__day--past) .abkngcal__price {
-	background-color: #f0ffff;
+	background-color: #efffd7;
 }
 .abkngcal__price-change {
-	background-color: #fff8dc;
+	background-color: #ffead6;
 }
 .abkngcal__night-selection {
 	z-index: 25;
