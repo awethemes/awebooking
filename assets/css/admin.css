@@ -648,10 +648,23 @@ table.wp-list-table .column-booking_total {
 }
 
 
+.abkngcal-container--fullwidth {
+	display: block;
+}
+.abkngcal-container--fullwidth table {
+	width: 100%;
+}
+
 
 .abkngcal--pricing-calendar .abkngcal__day > span,
-.abkngcal--pricing-calendar .abkngcal__day-heading > span {
-	width: 42px;
+.abkngcal--pricing-calendar .abkngcal__day-heading > span  {
+	width: 100%;
+}
+
+.abkngcal--pricing-calendar .abkngcal__day,
+.abkngcal--pricing-calendar .abkngcal__day-heading {
+	width: auto;
+	min-width: 32px;
 }
 
 
@@ -664,6 +677,9 @@ table.wp-list-table .column-booking_total {
 .abkngcal__night-selection {
 	z-index: 25;
 	position: absolute;
+}
+.abkngcal__month-heading {
+	width: 65px;
 }
 
 .range-start > .abkngcal__night-selection,

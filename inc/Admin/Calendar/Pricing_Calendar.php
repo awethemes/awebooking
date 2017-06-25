@@ -53,7 +53,7 @@ class Pricing_Calendar {
 	public function display() {
 		global $wp_locale;
 
-		echo '<div class="abkngcal-container" data-room-type="' . esc_attr( $this->room_type->get_id() ) . '">';
+		echo '<div class="abkngcal-container abkngcal-container--fullwidth" data-room-type="' . esc_attr( $this->room_type->get_id() ) . '">';
 
 		echo '<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
 		echo '<h2>' . esc_html( $this->room_type->get_title() ) . '</h2>';
