@@ -1,12 +1,10 @@
 <?php
-
 namespace AweBooking\Currency;
 
 use AweBooking\Interfaces\Config;
-use AweBooking\Interfaces\Currency;
-use AweBooking\Interfaces\Currency_Manager as Currency_Manager_Interface;
+use AweBooking\Interfaces\Currency as Currency_Interface;
 
-class Currency_Manager implements Currency_Manager_Interface {
+class Currency_Manager {
 	/**
 	 * AweBooking Config instance.
 	 *
@@ -73,10 +71,10 @@ class Currency_Manager implements Currency_Manager_Interface {
 		$currency = $this->get_currency();
 
 		return array(
-			Currency::POS_LEFT        => sprintf( esc_html__( 'Left (%s99.99)', 'awebooking' ), $currency['symbol'] ),
-			Currency::POS_RIGHT       => sprintf( esc_html__( 'Right (99.99%s)', 'awebooking' ), $currency['symbol'] ),
-			Currency::POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $currency['symbol'] ),
-			Currency::POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $currency['symbol'] ),
+			Currency_Interface::POS_LEFT        => sprintf( esc_html__( 'Left (%s99.99)', 'awebooking' ), $currency['symbol'] ),
+			Currency_Interface::POS_RIGHT       => sprintf( esc_html__( 'Right (99.99%s)', 'awebooking' ), $currency['symbol'] ),
+			Currency_Interface::POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $currency['symbol'] ),
+			Currency_Interface::POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $currency['symbol'] ),
 		);
 	}
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Currency;
 
 use AweBooking\Interfaces\Currency as Currency_Interface;
