@@ -44,6 +44,10 @@ class Shortcode_Checkout {
 	 * Show the checkout.
 	 */
 	private static function checkout() {
+		if ( isset( $_GET['step'] ) && $_GET['step'] === 'cancelled' ) {
+			Template::get_template( 'cancelled.php' );
+			return;
+		}
 
 		if ( isset( $_GET['step'] ) && $_GET['step'] === 'complete' && ! empty( $_COOKIE['awebooking-booking-id'] ) ) {
 			Template::get_template( 'complete.php' );
