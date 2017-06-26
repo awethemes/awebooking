@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Interfaces;
 
 use AweBooking\Rate;

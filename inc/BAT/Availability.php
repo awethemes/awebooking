@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\BAT;
 
 use AweBooking\Room;

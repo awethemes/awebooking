@@ -1,11 +1,4 @@
 <?php
-/**
- * AweBooking Main Class.
- *
- * @package  AweBooking
- * @author   awethemes
- */
-
 namespace AweBooking;
 
 use Skeleton\WP_Option;

@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Admin;
 
 use WP_List_Table;

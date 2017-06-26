@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking;
 
 use Skeleton\WP_Option;

@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking;
 
 class Installer {

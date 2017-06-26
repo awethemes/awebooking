@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Admin\Meta_Boxes;
 
 use AweBooking\Room;
