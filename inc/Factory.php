@@ -50,7 +50,7 @@ class Factory {
 
 		$insert_id = wp_insert_post([
 			'post_status'   => $args['status'],
-			'post_type'     => AweBooking::BOOKING_POST_TYPE,
+			'post_type'     => AweBooking::BOOKING,
 		], true );
 
 		if ( is_wp_error( $insert_id ) ) {

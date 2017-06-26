@@ -18,24 +18,15 @@ use AweBooking\Support\Mail;
 class AweBooking extends SkeletonContainer {
 	const VERSION = '3.0.0-alpha-221';
 
-	/**
-	 * Only using ISO-8601 date-format for all of process.
-	 *
-	 * @see https://en.wikipedia.org/wiki/ISO_8601
-	 */
+	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
 	const JS_DATE_FORMAT = 'YYYY-MM-DD';
 
-	const STANDARD_DATE_FORMAT  = 'Y-m-d';
-
-	/* Constants */
-	const ROOM_TYPE           = 'room_type';
-	const HOTEL_LOCATION      = 'hotel_location';
-	const HOTEL_AMENITY       = 'hotel_amenity';
-	const HOTEL_SERVICE       = 'hotel_extra_service';
-	const BOOKING_POST_TYPE   = 'awebooking';
-
-	const HOTEL_EXTRA_SERVICE = 'hotel_extra_service';
+	const BOOKING        = 'awebooking';
+	const ROOM_TYPE      = 'room_type';
+	const HOTEL_LOCATION = 'hotel_location';
+	const HOTEL_AMENITY  = 'hotel_amenity';
+	const HOTEL_SERVICE  = 'hotel_extra_service';
 
 	/**
 	 * The current globally available container (if any).

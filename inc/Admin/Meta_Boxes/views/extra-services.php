@@ -6,7 +6,7 @@ use AweBooking\Service;
 $operation_options = Service_Tax::operation_options();
 $type_options = Service_Tax::type_options();
 
-$all_services = get_terms( AweBooking::HOTEL_EXTRA_SERVICE, array(
+$all_services = get_terms( AweBooking::HOTEL_SERVICE, array(
 	'hide_empty' => false,
 ) );
 

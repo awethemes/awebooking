@@ -204,7 +204,7 @@ class Availability implements Availability_Interface {
 		}
 
 		foreach ( $this->request->get_request( 'extra_services' ) as $service ) {
-			$term_instance = get_term( $service, AweBooking::HOTEL_EXTRA_SERVICE );
+			$term_instance = get_term( $service, AweBooking::HOTEL_SERVICE );
 			if ( is_null( $term_instance ) || is_wp_error( $term_instance ) ) {
 				continue;
 			}

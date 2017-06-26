@@ -46,9 +46,9 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		remove_meta_box( 'submitdiv', $this->post_type, 'side' );
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
-		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING_POST_TYPE, 'side', 'high' );
+		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
 
-		// add_meta_box( 'awebooking_booking_infomations', esc_html__( 'Booking Infomation', 'awebooking' ), [ $this, 'output_booking_infomation' ], AweBooking::BOOKING_POST_TYPE );
+		// add_meta_box( 'awebooking_booking_infomations', esc_html__( 'Booking Infomation', 'awebooking' ), [ $this, 'output_booking_infomation' ], AweBooking::BOOKING );
 	}
 
 	public function output_booking_infomation() {
@@ -63,7 +63,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @return void
 	 */
 	public function booking_title( $post ) {
-		if ( AweBooking::BOOKING_POST_TYPE !== $post->post_type ) {
+		if ( AweBooking::BOOKING !== $post->post_type ) {
 			return;
 		}
 

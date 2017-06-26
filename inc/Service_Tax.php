@@ -10,7 +10,7 @@ class Service_Tax extends Taxonomy {
 	 */
 	public function __construct() {
 		parent::__construct(
-			AweBooking::HOTEL_EXTRA_SERVICE,
+			AweBooking::HOTEL_SERVICE,
 			'room_type',
 			esc_html__( 'Extra Service', 'awebooking' ),
 			esc_html__( 'Extra Services', 'awebooking' )
@@ -225,7 +225,7 @@ class Service_Tax extends Taxonomy {
 		$service_type = isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '';
 		$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 
-		$set_post_term = wp_set_post_terms( $post_id, $service_name, AweBooking::HOTEL_EXTRA_SERVICE, true );
+		$set_post_term = wp_set_post_terms( $post_id, $service_name, AweBooking::HOTEL_SERVICE, true );
 
 		if ( ! is_wp_error( $set_post_term ) ) {
 			// Get term_id, set default as 0 if not set

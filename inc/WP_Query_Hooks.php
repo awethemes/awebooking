@@ -96,7 +96,7 @@ class WP_Query_Hooks extends Service_Hooks {
 				$GLOBALS['room_type'] = new Room_Type( $post );
 				break;
 
-			case AweBooking::BOOKING_POST_TYPE:
+			case AweBooking::BOOKING:
 				unset( $GLOBALS['the_booking'] );
 				$GLOBALS['the_booking'] = new Booking( $post );
 				break;
