@@ -93,7 +93,6 @@ class Service_Tax extends Taxonomy {
 				displayCallback();
 				$('#operation').on('change', displayCallback);
 			});
-
 		</script>
 		<?php
 		skeleton_display_field_errors( $price );
