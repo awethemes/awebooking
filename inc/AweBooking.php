@@ -9,7 +9,7 @@ use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Support\Mail;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-221';
+	const VERSION = '3.0.0-alpha-225';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';

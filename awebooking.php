@@ -7,7 +7,7 @@
  * Author URI:      http://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /i18n/languages
- * Version:         3.0.0-alpha-221
+ * Version:         3.0.0-alpha-225
  *
  * @package         AweBooking
  */
