@@ -38,17 +38,15 @@ class Shortcode_Booking {
 		try {
 			$room_type = Factory::create_room_from_request();
 
-			$booking_request = Factory::create_booking_request();
+			$booking_request = new Session_Booking_Request;
 			$booking_request->set_request( 'room-type', $room_type->get_id() );
 
 			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
 
-			// Session_Booking_Request::set_instance( $booking_request );
+			Template::get_template( 'booking.php', array( 'availability' => $availability, 'room_type' => $room_type ) );
 
 		} catch ( \Exception $e ) {
-			$message_error = $e->getMessage();
+			echo $e->getMessage();
 		}
-
-		Template::get_template( 'booking.php', array( 'availability' => $availability, 'room_type' => $room_type ) );
 	}
 }
