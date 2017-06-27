@@ -21,12 +21,9 @@ class WP_Query_Hooks extends Service_Hooks {
 		// Setup the awebooking objects into the main query.
 		add_action( 'the_post', array( $this, 'setup_awebooking_objects' ) );
 
-		add_action( 'pre_get_posts', [ $this, 'hook_to_awebooking_status' ] );
 		add_action( 'pre_get_posts', [ $this, 'loction_filter' ], 10, 1 );
 
 		add_action( 'save_post', [ $this, 'handler_save_booking' ], 10 );
-		add_action( 'delete_post', [ $this, 'handler_delete_booking' ], 10 );
-
 		add_action( 'delete_post', [ $this, 'delete_rooms' ] );
 	}
 
@@ -102,30 +99,6 @@ class WP_Query_Hooks extends Service_Hooks {
 		}
 	}
 
-	/**
-	 * Add custom statuses to 'All'.
-	 *
-	 * @param  void $query query.
-	 * @return void        query.
-	 */
-	public function hook_to_awebooking_status( $query ) {
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		global $pagenow;
-
-		if ( ( 'awebooking' != $query->query['post_type'] ) || ( 'edit.php' != $pagenow ) ) {
-			return;
-		}
-
-		if ( ! isset( $_GET['post_status'] ) || empty( $_GET['post_status'] ) || ( isset($_GET['post_status'] ) && $_GET['post_status'] == 'all') ) {
-			$post_statuses = array_keys( get_post_statuses() );
-			$awebooking_statuses = [ 'awebooking-pending', 'awebooking-completed', 'awebooking-cancelled' ];
-
-			$query->set( 'post_status', array_merge( $post_statuses, $awebooking_statuses ) );
-		}
-	}
 
 
 
@@ -161,9 +134,6 @@ class WP_Query_Hooks extends Service_Hooks {
 
 		$booking = new Booking( $post_id );
 		$booking->save();
-	}
-
-	public function handler_delete_booking( $post_id ) {
 	}
 
 
