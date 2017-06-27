@@ -89,14 +89,10 @@ class Shortcodes {
 			'hide_location' => '',
 		), $atts, 'awebooking_check_form' );
 
-		$layout = 'vertical';
+		$template = 'check-availability-form.php';
 
-		if ( '' === $atts['layout'] ) {
-			$layout = 'check-availability-form.php';
-		}
+		$template = apply_filters( 'awebooking/check_availability/layout', $template, $atts );
 
-		$layout = apply_filters( 'awebooking/check_availability/layout', $layout, $atts );
-
-		abkng_get_template( $layout, array( 'atts' => $atts ) );
+		abkng_get_template( $template, array( 'atts' => $atts ) );
 	}
 }
