@@ -85,8 +85,10 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 				switch ( $the_booking['status'] ) {
 					case Booking::PENDING:
-					case Booking::PROCESSING:
 						$status_color = 'awebooking-label--info';
+						break;
+					case Booking::PROCESSING:
+						$status_color = 'awebooking-label--warning';
 						break;
 					case Booking::CANCELLED:
 						$status_color = 'awebooking-label--danger';
@@ -233,7 +235,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 	 * @return array
 	 */
 	public function request_query( $query_vars ) {
-		global $typenow, $wp_query;
+		global $typenow, $wp_query, $wp_post_statuses;
 
 		// Prevent actions if not current post type.
 		if ( $this->post_type !== $typenow ) {
@@ -250,6 +252,19 @@ class Booking_List_Table extends Post_Type_Abstract {
 					]);
 					break;
 			}
+		}
+
+		// Added booking status only in "All" section in list-table.
+		if ( ! isset( $query_vars['post_status'] ) ) {
+			$statuses = Utils::get_booking_statuses();
+
+			foreach ( $statuses as $status => $display_name ) {
+				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {
+					unset( $statuses[ $status ] );
+				}
+			}
+
+			$query_vars['post_status'] = array_keys( $statuses );
 		}
 
 		return $query_vars;
