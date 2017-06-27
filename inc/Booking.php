@@ -16,13 +16,14 @@ class Booking extends WP_Object {
 	const PROCESSING = 'awebooking-inprocess';
 	const COMPLETED  = 'awebooking-completed';
 	const CANCELLED  = 'awebooking-cancelled';
+	const FAILED     = 'awebooking-failed';
 
 	/**
 	 * Name of this object type.
 	 *
 	 * @var string
 	 */
-	protected $object_type = AweBooking::BOOKING_POST_TYPE;
+	protected $object_type = AweBooking::BOOKING;
 
 	/**
 	 * The attributes for this object.

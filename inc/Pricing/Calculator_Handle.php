@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Pricing;
 
 interface Calculator_Handle {

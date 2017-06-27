@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Stores;
 
 use WP_Query;

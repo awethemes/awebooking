@@ -703,3 +703,37 @@ if ( ! function_exists( 'abkng_template_notices' ) ) :
 		abkng_get_template( 'global/notices.php' );
 	}
 endif;
+
+if ( ! function_exists( 'abkng_template_checkout_customer_form' ) ) :
+	/**
+	 * AweBooking checkout customer form template.
+	 *
+	 * @return void
+	 */
+	function abkng_template_checkout_customer_form() {
+		abkng_get_template( 'checkout/customer-form.php' );
+	}
+endif;
+
+if ( ! function_exists( 'abkng_template_checkout_extra_service_details' ) ) :
+	/**
+	 * AweBooking checkout extra service details template.
+	 *
+	 * @return void
+	 */
+	function abkng_template_checkout_general_informations( $availability, $room_type ) {
+		$extra_services = $availability->get_request()->get_request( 'extra_services' );
+		$extra_services_name = [];
+
+		foreach ( $extra_services as $key => $id ) {
+			$term = get_term( $id, AweBooking::HOTEL_SERVICE );
+			$extra_services_name[] = $term->name;
+		}
+
+		abkng_get_template( 'checkout/general-informations.php', array(
+			'extra_services_name' => $extra_services_name,
+			'availability'        => $availability,
+			'room_type'           => $room_type,
+		));
+	}
+endif;

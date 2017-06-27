@@ -646,3 +646,45 @@ table.wp-list-table .column-booking_total {
 	bottom: 0px;
 	right: 0px;
 }
+
+
+.abkngcal-container--fullwidth {
+	display: block;
+}
+.abkngcal-container--fullwidth table {
+	width: 100%;
+}
+
+
+.abkngcal--pricing-calendar .abkngcal__day > span,
+.abkngcal--pricing-calendar .abkngcal__day-heading > span  {
+	width: 100%;
+}
+
+.abkngcal--pricing-calendar .abkngcal__day,
+.abkngcal--pricing-calendar .abkngcal__day-heading {
+	width: auto;
+	min-width: 32px;
+}
+
+
+.abkngcal__day:not(.abkngcal__day--past) .abkngcal__price {
+	background-color: #efffd7;
+}
+.abkngcal__price-change {
+	background-color: #ffead6;
+}
+.abkngcal__night-selection {
+	z-index: 25;
+	position: absolute;
+}
+.abkngcal__month-heading {
+	width: 65px;
+}
+
+.range-start > .abkngcal__night-selection,
+.range-end > .abkngcal__night-selection,
+.in-range > .abkngcal__night-selection,
+.in-hover > .abkngcal__night-selection {
+	background-color: rgba(188, 232, 241, 0.75);
+}

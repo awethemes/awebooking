@@ -12,7 +12,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 	 *
 	 * @var string
 	 */
-	protected $post_type = AweBooking::BOOKING_POST_TYPE;
+	protected $post_type = AweBooking::BOOKING;
 
 	/**
 	 * List table primary column.

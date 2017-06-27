@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Admin;
 
 class Permalink_Settings {

@@ -1,9 +1,7 @@
 <?php
 
+// We require our framework if needed.
 if ( ! defined( 'SKELETON_LOADED' ) ) {
-	/**
-	 * We require our framework if needed.
-	 */
 	if ( file_exists( __DIR__ . '/skeleton/skeleton.php' ) ) {
 		require_once trailingslashit( __DIR__ ) . '/skeleton/skeleton.php';
 	} else if ( file_exists( __DIR__ . '/vendor/awethemes/skeleton/skeleton.php' ) ) {
@@ -16,10 +14,7 @@ if ( ! defined( 'SKELETON_LOADED' ) ) {
 require_once trailingslashit( __DIR__ ) . '/vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
 require trailingslashit( __DIR__ ) . '/inc/functions.php';
 
-skeleton_psr4_autoloader(
-	'AweBooking\\',
-	trailingslashit( __DIR__ ) . 'inc/'
-);
+skeleton_psr4_autoloader( 'AweBooking\\', trailingslashit( __DIR__ ) . 'inc/' );
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
