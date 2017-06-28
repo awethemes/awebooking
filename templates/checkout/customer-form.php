@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="clearfix clear">
 	<div class="awebooking-billing-fields">
-		<h2 class="awebooking-checkout-form__title"><?php esc_html_e( 'Booking Details', 'awebooking' ); ?></h2>
+		<h3 class="awebooking-checkout-form__title"><?php esc_html_e( 'Booking Details', 'awebooking' ); ?></h3>
 
 		<div class="awebooking-field form-row-first">
 			<label><?php esc_html_e( 'First Name', 'awebooking' ); ?> <abbr class="required" title="required">*</abbr></label>
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<div class="awebooking-billing-fields awebooking-billing-fields--right">
-		<h2 class="awebooking-checkout-form__title"><?php esc_html_e( 'Additional Information', 'awebooking' ); ?></h2>
+		<h3 class="awebooking-checkout-form__title"><?php esc_html_e( 'Additional Information', 'awebooking' ); ?></h3>
 
 		<div class="awebooking-field">
 			<label><?php esc_html_e( 'Note', 'awebooking' ); ?></label>
