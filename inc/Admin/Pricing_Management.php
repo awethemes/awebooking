@@ -290,10 +290,15 @@ class Pricing_Management extends WP_List_Table {
 			}
 
 			try {
-				$price = new Price( $_REQUEST['price'] );
-				$date_period = new Date_Period( $_POST['start_date'], $_POST['end_date'], false );
+				$price = new Price( sanitize_text_field( wp_unslash( $_POST['price'] ) ) );
 
-				$rate = new Rate( $_REQUEST['room_type'] );
+				$date_period = new Date_Period(
+					sanitize_text_field( wp_unslash( $_POST['start_date'] ) ),
+					sanitize_text_field( wp_unslash( $_POST['end_date'] ) ),
+					false
+				);
+
+				$rate = new Rate( absint( $_REQUEST['room_type'] ) );
 
 				awebooking( 'concierge' )->set_room_price( $rate, $date_period, $price );
 			} catch ( \Exception $e ) {
@@ -316,7 +321,7 @@ class Pricing_Management extends WP_List_Table {
 
 			try {
 				$date_period = new Date_Period( $_POST['datepicker-start'], $_POST['datepicker-end'], false );
-				$price = new Price( $_REQUEST['bulk-price'] );
+				$price = new Price( sanitize_text_field( wp_unslash( $_REQUEST['bulk-price'] ) ) );
 
 				foreach ( $ids as $id ) {
 					$rate = new Rate( (int) $id );

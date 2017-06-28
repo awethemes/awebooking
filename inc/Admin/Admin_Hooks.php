@@ -34,15 +34,6 @@ class Admin_Hooks extends Service_Hooks {
 			},
 		));
 
-		// $container['admin_welcome']->add_tab( array(
-		// 	'id'       => 'documents',
-		// 	'title'    => esc_html__( 'Documents', 'awebooking' ),
-		// 	'nowrap'   => true,
-		// 	'callback' => function() {
-		// 		include_once __DIR__ . '/views/welcome-tabs/documents.php';
-		// 	},
-		// ));
-
 		$container['admin_menu'] = new Menu_Page( 'awebooking', array(
 			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
 			'menu_title' => esc_html__( 'AweBooking', 'awebooking' ),

@@ -91,8 +91,12 @@ class Admin_Ajax {
 			return wp_send_json_error( [ 'message' => esc_html__( 'No room available', 'awebooking' ) ] );
 		}
 
+		if ( empty( $_REQUEST['booking_id'] ) ) {
+			return wp_send_json_error();
+		}
+
 		// Get booking.
-		$booking = get_post( $_REQUEST['booking_id'] );
+		$booking = get_post( absint( $_REQUEST['booking_id'] ) );
 		if ( ! $booking ) {
 			return wp_send_json_error();
 		}
@@ -125,15 +129,21 @@ class Admin_Ajax {
 	}
 
 
+	// TODO: remove...
 	public function set_pricing() {
-		$start = $_REQUEST['start'];
-		$end = $_REQUEST['end'];
+		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || empty( $_REQUEST['rate_id'] ) ) {
+			return wp_send_json_error();
+		}
+
+		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
+		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
+		$price = sanitize_text_field( wp_unslash( $_REQUEST['price'] ) );
 
 		$start_day = abkng_create_datetime( $start )->startOfDay();
 		$end_day = abkng_create_datetime( $end )->startOfDay()->subMinute();
 
-		$rate = new Rate( $_REQUEST['rate_id'] );
-		$pricing = new Room_State( $rate, $start_day, $end_day, $_REQUEST['price'] );
+		$rate = new Rate( absint( $_REQUEST['rate_id'] ) );
+		$pricing = new Room_State( $rate, $start_day, $end_day, $price );
 
 		$pricing->save();
 
@@ -141,21 +151,35 @@ class Admin_Ajax {
 	}
 
 	public function get_yearly_calendar() {
-		$room = new Room( $_REQUEST['room'] );
-		$calendar = new Yearly_Calendar( $_REQUEST['year'], $room );
-		$calendar->display();
+		$room = new Room( absint( $_REQUEST['room'] ) );
+
+		if ( $room->exists() ) {
+			$calendar = new Yearly_Calendar( absint( $_REQUEST['year'] ), $room );
+			$calendar->display();
+		}
+
 		exit;
 	}
 
 	public function set_event() {
-		$start = $_REQUEST['start'];
-		$end = $_REQUEST['end'];
+		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || empty( $_REQUEST['state'] ) ) {
+			return wp_send_json_error();
+		}
 
-		$date_period = new Date_Period( $start, $end, false );
-		$room = new Room( $_REQUEST['room_id'] );
+		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
+		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
 
-		awebooking( 'concierge' )->set_room_state( $room, $date_period, $_REQUEST['state'] );
+		try {
+			$date_period = new Date_Period( $start, $end, false );
+			$room = new Room( absint( $_REQUEST['room_id'] ) );
 
-		wp_send_json_success();
+			if ( $room->exists() ) {
+				awebooking( 'concierge' )->set_room_state( $room, $date_period, absint( $_REQUEST['state'] ) );
+			}
+
+			return wp_send_json_success();
+		} catch ( \Exception $e ) {
+			return wp_send_json_error();
+		}
 	}
 }
