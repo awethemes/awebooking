@@ -1,7 +1,7 @@
 === AweBooking ===
-Contributors:      awethemes, anhskohbo
+Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
-Tags:              booking, hotel booking, reservations
+Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
 Tested up to:      4.8
 Stable tag:        3.0.0-alpha-225
