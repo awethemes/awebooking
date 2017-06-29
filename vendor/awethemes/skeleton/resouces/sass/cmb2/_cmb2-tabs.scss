@@ -1,0 +1,305 @@
+// Handler tab display
+.cmb2-tab-pane {
+  display: none;
+
+  &.active {
+    display: block !important;
+  }
+}
+
+// CSS nav-tabs
+.cmb2-nav-default {
+  margin: 0 0 20px;
+  padding: 9px 0 0;
+  border-bottom: 1px solid #ccc;
+
+  // CSS nav in metabox
+  .postbox-container & {
+    margin: 0 0 20px;
+    padding-top: 8px;
+
+    background-color: #f9f9f9;
+    border-bottom: solid 1px #e9e9e9;
+  }
+
+  // Tabs default styles
+  ul.cmb2-tabs {
+    > li {
+      float: left;
+      margin-bottom: 0;
+
+      z-index: 100;
+      position: relative;
+
+      &.active {
+        margin-bottom: -1px;
+      }
+
+      &.has-child > a:after {
+        @include dashicons("\f347");
+
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+
+        margin-left: 3px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    > li > a {
+      border: 1px solid #ccc;
+      border-bottom: none;
+
+      padding: 5px 15px;
+      margin-left: 0.5em;
+      display: inline-block;
+
+      color: #555;
+      background: #e5e5e5;
+
+      font-size: 14px;
+      line-height: 24px;
+      font-weight: 600;
+
+      white-space: nowrap;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        color: #444;
+        background-color: #fff;
+      }
+    }
+
+    > .active > a,
+    > .active > a:hover,
+    > .active > a:focus,
+    > .active > a:focus:active {
+      color: #000;
+      background: #f1f1f1;
+      border-bottom: 1px solid #f1f1f1;
+    }
+
+    // CSS sub tabs.
+    .cmb2-sub-tabs {
+      display: none;
+
+      top: 45px;
+      left: 0;
+      z-index: 101;
+      position: absolute;
+
+      min-width: 180px;
+      max-width: 100%;
+
+      margin: 0;
+      padding: 8px;
+      list-style: none;
+
+      background-color: #fff;
+      box-shadow: -1px 0px 1px rgba(0,0,0,.15);
+
+      &:after,
+      &:before {
+        content: "";
+        left: 12px;
+        position: absolute;
+
+        width: 0;
+        height: 0;
+        display: block;
+        border-style: solid;
+        border-color: transparent;
+      }
+
+      &:before {
+        top: -18px;
+        right: 11px;
+        border-width: 9px;
+        border-bottom-color: #ccc;
+      }
+
+      &:after {
+        top: -16px;
+        border-width: 8px;
+        border-bottom-color: #fff;
+      }
+    }
+    .open > .cmb2-sub-tabs {
+      display: block
+    }
+
+    .cmb2-sub-tabs > li > a {
+      display: block;
+      // padding: 5px 15px;
+      margin: 0;
+      // width: 100%;
+      text-align: left;
+      line-height: 2
+    }
+  }
+
+  // Overwite tabs default in metabox
+  .postbox-container & ul.cmb2-tabs {
+    > li > a {
+      line-height: 1.3;
+      background: #f1f1f1;
+
+      border: 1px solid #d9d9d9;
+      border-bottom: none;
+    }
+
+    > .active > a,
+    > .active > a:hover,
+    > .active > a:focus,
+    > .active > a:focus:active {
+      color: #000;
+      background: #fff;
+      border-bottom: 1px solid #fff;
+    }
+  }
+}
+
+// Vertical styled
+.cmb2-nav-vertical {
+  $nav-vertical-bg: #fafafa;
+  $nav-vertical-border: #eee;
+
+  float: left;
+  width: 256px;
+
+  & + .cmb2-tab-content {
+    overflow: hidden;
+    position: relative;
+    margin-left: 256px;
+  }
+
+  ul.cmb2-tabs {
+    margin: 0;
+    padding: 0 0 10px;
+    line-height: 1em;
+
+    background-color: $nav-vertical-bg;
+    border-right: 1px solid $nav-vertical-border;
+
+    position: relative;
+    box-sizing: border-box;
+
+    &:after {
+      content: "";
+
+      width: 100%;
+      height: 9999em;
+      display: block;
+
+      left: 0;
+      bottom: -9999em;
+      position: absolute;
+
+      background-color: $nav-vertical-bg;
+      border-right: 1px solid $nav-vertical-border;
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+      display: block;
+      position: relative;
+
+      &.has-child > a:after {
+        @include dashicons("\f347");
+
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        color: #999;
+        font-size: 18px;
+
+        top: 7px;
+        right: 7px;
+        position: absolute;
+
+        transform: rotate(-90deg);
+        transition: all 0.25s ease;
+      }
+
+      &.has-child.active > a:after {
+        transform: rotate(0);
+      }
+    }
+
+    li > a {
+      margin: 0;
+      padding: 10px 15px;
+      display: block;
+      box-shadow: none;
+      text-decoration: none;
+      line-height: 20px !important;
+      border-bottom: 1px solid $nav-vertical-border;
+      background-color: #fafafa;
+    }
+
+    li > a.active,
+    li.active > a,
+    li:hover > a,
+    li:focus:active > a {
+      position: relative;
+      background-color: #fff;
+    }
+  }
+
+  .cmb2-sub-tabs {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    // display: none;
+
+    li > a {
+      padding-left: 20px;
+      border-left: 4px solid transparent;
+    }
+
+    li.active > a,
+    li:hover > a,
+    li:focus:active > a {
+      border-left-color: #0073aa;
+    }
+  }
+  .open > .cmb2-sub-tabs,
+  .active > .cmb2-sub-tabs {
+    height: auto;
+  }
+}
+
+.cmb2-tab-imgicon,
+.cmb2-tab-fonticon,
+.cmb2-tab-dashicons {
+  width: 20px;
+  height: 20px;
+  margin: 0 5px 0 0;
+  padding: 0;
+
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+
+  .postbox-container & {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    margin-left: 0;
+    margin-right: 2px;
+  }
+}
+
+.cmb2-tab-imgicon {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.cmb2-tab.active {
+  display: block;
+}

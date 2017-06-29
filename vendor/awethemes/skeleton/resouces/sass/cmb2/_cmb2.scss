@@ -1,0 +1,89 @@
+// Better readonly input.
+.cmb-row input.readonly, input[readonly],
+.cmb-row textarea.readonly, textarea[readonly] {
+  opacity: 0.65;
+}
+
+// Fixed datepicker select.
+.cmb2-element.ui-datepicker select.ui-datepicker-month option,
+.cmb2-element.ui-datepicker select.ui-datepicker-year option {
+  color: #333;
+  background-color: #fff;
+}
+
+// Fixed long radio, checkbox with a scollbar.
+.cmb-type-radio ul.cmb2-radio-list,
+.cmb-type-taxonomy-radio ul.cmb2-radio-list,
+.cmb-type-multicheck ul.cmb2-checkbox-list,
+.cmb-type-taxonomy-multicheck ul.cmb2-checkbox-list {
+  overflow: auto;
+  max-height: 320px;
+}
+
+// Fixed CMB2-Post-Search style.
+.cmb-type-post-search-text .cmb-td {
+  position: relative;
+
+  .dashicons {
+    position: absolute;
+    right: 17px;
+    margin-top: 5px;
+  }
+}
+
+.cmb2-metabox .cmb-type-group {
+  max-width: 100%;
+}
+
+.cmb-row[data-deps] {
+  display: none;
+}
+
+.cmb2-validate-error {
+  color: #F44336;
+  margin-bottom: 0;
+  margin-top: 0.5em;
+}
+
+.inner-sidebar .cmb2-wrap > .cmb-field-list > .cmb-row,
+#side-sortables .cmb2-wrap > .cmb-field-list > .cmb-row {
+  padding: 1rem !important;
+}
+
+
+/* Input Group */
+.skeleton-input-group {
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.skeleton-input-group input,
+.skeleton-input-group__addon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.skeleton-input-group input {
+  margin-right: 0;
+}
+
+.skeleton-input-group__addon {
+  white-space: nowrap;
+  padding: 6px 12px;
+
+  color: #444;
+  line-height: 1;
+  font-weight: normal;
+  text-align: center;
+
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+
+  &:first-child {
+    border-right: 0;
+  }
+
+  &:last-child {
+    border-left: 0;
+  }
+}

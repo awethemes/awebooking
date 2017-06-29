@@ -1,0 +1,256 @@
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  -o-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+.fade.in {
+  opacity: 1;
+}
+.collapse {
+  display: none;
+}
+.collapse.in {
+  display: block;
+}
+tr.collapse.in {
+  display: table-row;
+}
+tbody.collapse.in {
+  display: table-row-group;
+}
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition-property: height, visibility;
+  -o-transition-property: height, visibility;
+     transition-property: height, visibility;
+  -webkit-transition-duration: 0.35s;
+  -o-transition-duration: 0.35s;
+     transition-duration: 0.35s;
+  -webkit-transition-timing-function: ease;
+  -o-transition-timing-function: ease;
+     transition-timing-function: ease;
+}
+
+#upload-icon.open {
+  display: block !important;
+}
+
+.ac-icon-manager .toggle-indicator:before {
+  content: "\f333";
+  display: inline-block;
+  font: 400 20px/1 dashicons;
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none !important
+}
+
+.ac-icon-manager .handlediv:focus .toggle-indicator:before {
+  box-shadow: none !important;
+}
+
+.ac-icon-manager {
+  margin-left: -10px;
+  margin-right: -10px;
+  overflow: hidden;
+}
+
+.ac-icon-manager .spinner {
+  top: 75px;
+  left: 50%;
+  position: absolute;
+  margin: 0 0 -10px;
+}
+
+.ac-icon-manager .dashicons {
+  color: #999;
+  font-size: 14px;
+  position: relative;
+  top: 2px;
+}
+
+.ac-icon-manager__box {
+  width: 50%;
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+.ac-icon-manager__box.loading {
+  opacity: 0.35;
+}
+
+.ac-icon-manager__box .postbox .inside {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.ac-icon-manager__box .inside-icons {
+  height: 250px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ac-icon-manager__box .postbox .hndle {
+  cursor: default;
+}
+
+.ac-icon-manager__box .postbox-search-icons {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+}
+
+.handlediv + .postbox-search-icons {
+  right: 37px;
+}
+
+ul.ac-icon-manager__icons {
+  margin-top: 1px;
+  margin-left: 1px;
+  margin-bottom: 0;
+  clear: bold;
+}
+
+ul.ac-icon-manager__icons li {
+  float: left;
+  display: block;
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  font-size: 18px;
+  text-align: center;
+
+  margin-bottom: 0;
+  border: solid 1px #efefef;
+  margin: -1px 0 0 -1px;
+}
+
+ul.ac-icon-manager__icons .zoom-icon {
+  width: 64px;
+  height: 64px;
+  line-height: 50px;
+  font-size: 35px;
+
+  top: -12px;
+  left: -12px;
+  position: absolute;
+  background-color: #fff;
+  z-index: 20;
+
+  display: none;
+  box-shadow: 0px 1px 2px rgba(0,0,0,.25);
+}
+
+ul.ac-icon-manager__icons li:hover .zoom-icon {
+  display: block;
+}
+
+ul.ac-icon-manager__icons .icon-label {
+  font-size: 10px;
+  line-height: 1;
+  display: block;
+
+  padding: 3px;
+  white-space: nowrap;
+
+  color: #fff;
+  background-color: rgba(0,0,0,.75);
+
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+
+  box-sizing: border-box;
+}
+
+
+
+
+.split-button-body {
+  display: none;
+  position: absolute;
+  top: 39px;
+  right: 0;
+  background-color: #fff;
+  min-width: 180px;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  box-shadow: -1px 0px 1px rgba(0,0,0,.15);
+}
+
+.open > .split-button-body {
+  display: block
+}
+
+.split-button-body:after,
+.split-button-body:before {
+  position: absolute;
+  right: 12px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+  content: ""
+}
+
+.split-button-body:before {
+  top: -18px;
+  border-bottom-color: #ccc;
+  border-width: 9px;
+  right: 11px
+}
+
+.split-button-body:after {
+  top: -16px;
+  border-bottom-color: #fff;
+  border-width: 8px
+}
+
+.split-button-body .split-button-option {
+  display: block;
+  padding: 5px 15px;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  line-height: 2
+}
+
+.delete-button {
+  color: #a00;
+}
+
+.ac-pagination {
+  text-align: center;
+}
+.ac-pagination > li {
+  margin-bottom: 0;
+  display: inline-block;
+}
+.ac-pagination > li + li {
+  margin-left: 5px;
+}
+.ac-pagination > li > a {
+  padding: 7px 12px;
+
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+
+  text-decoration: none;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.ac-pagination > .active > a {
+  border-color: #ddd;
+  background-color: #f7f7f7;
+}

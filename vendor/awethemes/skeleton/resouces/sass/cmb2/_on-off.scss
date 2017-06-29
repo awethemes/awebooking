@@ -1,0 +1,103 @@
+// Thanks: https://proto.io/freebies/onoff
+.onoffswitch {
+  position: relative;
+  user-select: none;
+}
+
+.onoffswitch-checkbox {
+  display: none !important;
+}
+
+.onoffswitch-label {
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  transition: background-color 0.15s ease-in;
+
+  &:before {
+    content: "";
+    display: block;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    transition: all 0.2s ease-in 0s;
+  }
+}
+
+.onoffswitch:not(.ios) {
+  width: 50px;
+
+  .onoffswitch-label {
+    height: 17px;
+    padding: 0;
+    line-height: 17px;
+    border: 0px solid #fff;
+    border-radius: 25px;
+    background-color: #ddd;
+
+    &:before {
+      width: 25px;
+      margin: -4px;
+      background: #fff;
+      right: 29px;
+      border-radius: 25px;
+      box-shadow: 0 6px 12px 0px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label {
+    background-color: #47acff;
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label,
+  .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    border-color: #47acff;
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    right: 4px;
+    background-color: #fff;
+    box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.onoffswitch.ios {
+  width: 52px;
+
+  .onoffswitch-label {
+    height: 21px;
+    padding: 0;
+    line-height: 21px;
+    border: 2px solid #ddd;
+    border-radius: 21px;
+    background-color: #fff;
+
+    &:before {
+      width: 21px;
+      margin: 0px;
+      background: #fff;
+      right: 29px;
+      border: 2px solid #ddd;
+      border-radius: 21px;
+    }
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label {
+    background-color: #49E845;
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label,
+  .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    border-color: #49E845;
+  }
+
+  .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    right: 0px;
+  }
+}

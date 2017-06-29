@@ -1,0 +1,150 @@
+.cmb2-image-upload .tf-image-preview,
+.cmb2-image-upload .tf-image-preview:before,
+.tf-file .tf-file-upload {
+  transition: all .3s;
+}
+.cmb2-image-upload .tf-image-preview {
+  line-height: 0;
+  position: relative;
+  display: inline-block;
+  min-width: 150px;
+  min-height: 150px;
+  background: #FAFAFA;
+  box-shadow: inset 0 0 0 1px #EEE;
+  cursor: pointer;
+}
+.cmb2-image-upload .tf-image-preview:hover {
+  box-shadow: inset 0 0 0 4px #EEE;
+}
+
+.tf-gallery .tf-image-preview {
+  display: inline-flex;
+  margin-right: 5px;
+}
+
+.cmb2-image-upload .tf-image-preview:before {
+  content: '\f132';
+  font-family: 'dashicons';
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  width: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 30px;
+  color: #ddd;
+}
+.cmb2-image-upload .tf-image-preview:hover:before {
+  color: #bbb;
+}
+.cmb2-image-upload .tf-image-preview i.remove:hover {
+  border-color: #999;
+}
+.cmb2-image-upload .tf-image-preview i.remove {
+  opacity: 1;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  cursor: pointer;
+  background: #FAFAFA;
+  width: 30px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 30px;
+  color: #444;
+  top: 0;
+  border: 1px solid #DDD;
+  right: 0;
+  height: auto;
+}
+.cmb2-image-upload .tf-image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  position: relative;
+  z-index: 1;
+  display: block;
+  cursor: pointer;
+}
+
+
+
+.iconpicker-fonts-browser .media-toolbar-secondary {
+  min-width: 40%;
+}
+.iconpicker-item ._icon {
+  display: inline-block;
+  margin-top: 8px;
+  color: #555;
+}
+.iconpicker-items .selected ._icon {
+  color: #222;
+}
+
+.iconpicker-item ._icon i {
+  font-size: 100px;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.attachment .svg-icon img {
+  min-width: 80%;
+  max-width: 100%;
+}
+
+/** Field **/
+.ipf-select {
+  cursor: pointer;
+}
+.ipf .has-icon {
+  display: block;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  margin-bottom: 1em;
+  text-align: center;
+  padding: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) inset, 0 0 0 1px rgba(0, 0, 0, .05) inset;
+  background: #eee;
+}
+.ipf ._icon {
+  display: inline-block;
+  color: #333;
+  font-size: 6em;
+  width: 100%;
+  height: 100%;
+}
+.ipf ._icon::before {
+  line-height: 100px;
+}
+
+/** CMB **/
+.cmb_metabox .Icon_Picker_Field_Cmb.repeatable > .field-item {
+  float: left;
+  height: 100px;
+  line-height: 100px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) inset, 0 0 0 1px rgba(0, 0, 0, .05) inset;
+  background: #eee;
+  min-width: 100px;
+  text-align: center;
+}
+.Icon_Picker_Field_Cmb.repeatable .button {
+  display: inline-block;
+  vertical-align: middle;
+}
+.Icon_Picker_Field_Cmb.repeatable .has-icon {
+  margin-bottom: 0;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+}
+.Icon_Picker_Field_Cmb.repeatable .ipf-remove {
+  display: none;
+}
+.Icon_Picker_Field_Cmb .cmb-delete-field {
+  right: 3px;
+}

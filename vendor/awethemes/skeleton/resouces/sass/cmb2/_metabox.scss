@@ -1,0 +1,33 @@
+// Better display in metabox.
+.postbox-container {
+  .cmb2-metabox {
+    overflow: hidden;
+    margin: -6px -12px -12px -12px;
+  }
+
+  .cmb2-wrap > .cmb-field-list .cmb-row {
+    &:not(.cmb-repeatable-grouping) {
+      margin: 0;
+      padding: 1em;
+    }
+
+    .cmb-td > span.cmb2-metabox-description {
+      display: block;
+      padding-top: .5em;
+    }
+  }
+
+  .cmb2-wrap > .cmb-field-list .cmb-row.cmb-type-title {
+    background-color: #fafafa;
+
+    .cmb2-metabox-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 0;
+    }
+
+    .cmb2-metabox-description {
+      padding-top: 0;
+    }
+  }
+}

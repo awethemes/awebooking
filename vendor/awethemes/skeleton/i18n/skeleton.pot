@@ -1,0 +1,1231 @@
+# Copyright (C) 2017 awethemes/skeleton
+# This file is distributed under the same license as the awethemes/skeleton package.
+msgid ""
+msgstr ""
+"Project-Id-Version: awethemes/skeleton\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: i18n/validation.php:4
+msgid "is required"
+msgstr ""
+
+#: i18n/validation.php:5
+msgid "must be the same as '%s'"
+msgstr ""
+
+#: i18n/validation.php:6
+msgid "must be different than '%s'"
+msgstr ""
+
+#: i18n/validation.php:7
+msgid "must be accepted"
+msgstr ""
+
+#: i18n/validation.php:8
+msgid "must be numeric"
+msgstr ""
+
+#: i18n/validation.php:9
+msgid "must be an integer (0-9)"
+msgstr ""
+
+#: i18n/validation.php:10
+msgid "must be at least %d long"
+msgstr ""
+
+#: i18n/validation.php:11
+msgid "must be at least %s"
+msgstr ""
+
+#: i18n/validation.php:12
+msgid "must be no more than %s"
+msgstr ""
+
+#: i18n/validation.php:13, i18n/validation.php:14
+msgid "contains invalid value"
+msgstr ""
+
+#: i18n/validation.php:15
+msgid "is not a valid IP address"
+msgstr ""
+
+#: i18n/validation.php:16
+msgid "is not a valid email address"
+msgstr ""
+
+#: i18n/validation.php:17
+msgid "not a URL"
+msgstr ""
+
+#: i18n/validation.php:18
+msgid "must be an active domain"
+msgstr ""
+
+#: i18n/validation.php:19
+msgid "must contain only letters a-z"
+msgstr ""
+
+#: i18n/validation.php:20
+msgid "must contain only letters a-z and/or numbers 0-9"
+msgstr ""
+
+#: i18n/validation.php:21
+msgid "must contain only letters a-z, numbers 0-9, dashes and underscores"
+msgstr ""
+
+#: i18n/validation.php:22
+msgid "contains invalid characters"
+msgstr ""
+
+#: i18n/validation.php:23
+msgid "is not a valid date"
+msgstr ""
+
+#: i18n/validation.php:24
+msgid "must be date with format '%s'"
+msgstr ""
+
+#: i18n/validation.php:25
+msgid "must be date before '%s'"
+msgstr ""
+
+#: i18n/validation.php:26
+msgid "must be date after '%s'"
+msgstr ""
+
+#: i18n/validation.php:27
+msgid "must contain %s"
+msgstr ""
+
+#: i18n/validation.php:28
+msgid "must be a boolean"
+msgstr ""
+
+#: i18n/validation.php:29
+msgid "must be between %1$d and %2$d characters"
+msgstr ""
+
+#: i18n/validation.php:30
+msgid "must be a valid credit card number"
+msgstr ""
+
+#: i18n/validation.php:31
+msgid "must be at least %d characters long"
+msgstr ""
+
+#: i18n/validation.php:32
+msgid "must not exceed %d characters"
+msgstr ""
+
+#: i18n/validation.php:33
+msgid "must be an instance of '%s'"
+msgstr ""
+
+#: inc/Admin_Page.php:157
+msgid "Save Changes"
+msgstr ""
+
+#: inc/Admin_Page.php:158
+msgid "Settings updated."
+msgstr ""
+
+#: inc/Admin_Page.php:159
+msgid "One or more error occurred."
+msgstr ""
+
+#: inc/Post_Type.php:82
+msgid "`%s` post type has never been registered before."
+msgstr ""
+
+#: inc/Post_Type.php:144, inc/Post_Type.php:145, inc/Taxonomy.php:226
+msgid "Add New %s"
+msgstr ""
+
+#: inc/Post_Type.php:146, inc/Taxonomy.php:223
+msgid "Edit %s"
+msgstr ""
+
+#: inc/Post_Type.php:147
+msgid "New %s"
+msgstr ""
+
+#: inc/Post_Type.php:148, inc/Taxonomy.php:222
+msgid "All %s"
+msgstr ""
+
+#: inc/Post_Type.php:149, inc/Taxonomy.php:224
+msgid "View %s"
+msgstr ""
+
+#: inc/Post_Type.php:150, inc/Taxonomy.php:221
+msgid "Search %s"
+msgstr ""
+
+#: inc/Post_Type.php:151, inc/Taxonomy.php:229
+msgid "No %s"
+msgstr ""
+
+#: inc/Post_Type.php:152
+msgid "No %s found in Trash"
+msgstr ""
+
+#: inc/Post_Type.php:153, inc/Taxonomy.php:233
+msgid "Parent %s:"
+msgstr ""
+
+#: inc/Post_Type.php:155
+msgid "Insert into %s"
+msgstr ""
+
+#: inc/Post_Type.php:156
+msgid "Uploaded to this %s"
+msgstr ""
+
+#: inc/Post_Type.php:157
+msgid "%s list"
+msgstr ""
+
+#: inc/Post_Type.php:158
+msgid "%s list navigation"
+msgstr ""
+
+#: inc/Post_Type.php:159
+msgid "Filter %s list"
+msgstr ""
+
+#: inc/Post_Type.php:196
+msgid "Custom field updated."
+msgstr ""
+
+#: inc/Post_Type.php:197
+msgid "Custom field deleted."
+msgstr ""
+
+#: inc/Post_Type.php:198, inc/Post_Type.php:212
+msgid "%1$s updated."
+msgstr ""
+
+#: inc/Post_Type.php:200
+msgid "%1$s restored to revision from %2$s"
+msgstr ""
+
+#: inc/Post_Type.php:201
+msgid "%1$s saved."
+msgstr ""
+
+#: inc/Post_Type.php:205
+msgid "%1$s updated. <a href=\"%2$s\">View %1$s</a>"
+msgstr ""
+
+#: inc/Post_Type.php:206
+msgid "%1$s published. <a href=\"%2$s\">View %1$s</a>"
+msgstr ""
+
+#: inc/Post_Type.php:207
+msgid "%1$s submitted. <a target=\"_blank\" href=\"%2$s\">Preview %1$s</a>"
+msgstr ""
+
+#. translators: Publish box date format, see http://php.net/date.
+#: inc/Post_Type.php:209
+msgid "%1$s scheduled for: <strong>%2$s</strong>. <a target=\"_blank\" href=\"%3$s\">Preview %1$s</a>"
+msgstr ""
+
+#: inc/Post_Type.php:210
+msgid "%1$s draft updated. <a target=\"_blank\" href=\"%2$s\">Preview %1$s</a>"
+msgstr ""
+
+#: inc/Post_Type.php:213
+msgid "%1$s published."
+msgstr ""
+
+#: inc/Post_Type.php:214
+msgid "%1$s submitted."
+msgstr ""
+
+#. translators: Publish box date format, see http://php.net/date.
+#: inc/Post_Type.php:216
+msgid "%1$s scheduled for: <strong>%2$s</strong>."
+msgstr ""
+
+#: inc/Post_Type.php:217
+msgid "%1$s draft updated."
+msgstr ""
+
+#: inc/Post_Type.php:235
+msgid "%1$s %2$s updated."
+msgid_plural "%1$s %3$s updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Post_Type.php:236
+msgid "%1$s %2$s not updated, somebody is editing it."
+msgid_plural "%1$s %3$s not updated, somebody is editing them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Post_Type.php:237
+msgid "%1$s %2$s permanently deleted."
+msgid_plural "%1$s %3$s permanently deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Post_Type.php:238
+msgid "%1$s %2$s moved to the Trash."
+msgid_plural "%1$s %3$s moved to the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Post_Type.php:239
+msgid "%1$s %2$s restored from the Trash."
+msgid_plural "%1$s %3$s restored from the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: singular
+#: inc/Post_Type.php:254
+msgid "%s Title"
+msgstr ""
+
+#: inc/Taxonomy.php:100
+msgid "`%s` taxonomy has never been registered before."
+msgstr ""
+
+#: inc/Taxonomy.php:134
+msgid "%s base"
+msgstr ""
+
+#: inc/Taxonomy.php:225
+msgid "Update %s"
+msgstr ""
+
+#: inc/Taxonomy.php:227
+msgid "New %s Name"
+msgstr ""
+
+#: inc/Taxonomy.php:228
+msgid "No %s found."
+msgstr ""
+
+#: inc/Taxonomy.php:232
+msgid "Parent %s"
+msgstr ""
+
+#: inc/Taxonomy.php:236
+msgid "Popular %s"
+msgstr ""
+
+#: inc/Taxonomy.php:237
+msgid "Separate %s with commas"
+msgstr ""
+
+#: inc/Taxonomy.php:238
+msgid "Add or remove %s"
+msgstr ""
+
+#: inc/Taxonomy.php:239
+msgid "Choose from the most used %s"
+msgstr ""
+
+#: inc/CMB2/Ajax_Hooks.php:76
+msgid "Invalid CMB2 ID."
+msgstr ""
+
+#: inc/CMB2/Backups.php:77
+msgid "Nothing to backup."
+msgstr ""
+
+#: inc/CMB2/Backups.php:83
+msgid "Invalid payload received."
+msgstr ""
+
+#: inc/CMB2/CMB2.php:68
+msgid "Set field priority instead of."
+msgstr ""
+
+#: inc/CMB2/Scripts_Hooks.php:59
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+#: inc/Iconfonts/Iconfonts_Hooks.php:73
+msgid "Icon Picker"
+msgstr ""
+
+#: inc/Iconfonts/Iconfonts_Hooks.php:74
+msgid "All"
+msgstr ""
+
+#: inc/Iconfonts/Iconfonts_Hooks.php:75
+msgid "Select Icon"
+msgstr ""
+
+#: inc/Iconfonts/Installer.php:78
+msgid "Not support"
+msgstr ""
+
+#: inc/Support/Filesystem.php:43
+msgid "Incompatible archive"
+msgstr ""
+
+#: inc/Webfonts/Webfonts.php:154
+msgid "Web Safe Fonts"
+msgstr ""
+
+#: inc/Webfonts/Webfonts.php:158
+msgid "Google Fonts"
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:26, inc/Iconfonts/Icons/Dashicons.php:922
+msgid "Backup"
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:27
+msgid "Here you can copy/<a href=\"%s\" target=\"_blank\">download</a> current settings. Keep this safe as you can use it as a backup should anything go wrong."
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:34
+msgid "Restore a backup"
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:35
+msgid "Copy-paste your backup string here:"
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:39
+msgid "Backup Now"
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:40
+msgid "or <a href=\"%s\" class=\"cmb2-reset-backup\">reset</a> to defaults."
+msgstr ""
+
+#: inc/CMB2/Fields/Backups_Field.php:43
+msgid "Warning! This will overwrite all existing options, please proceed with caution!"
+msgstr ""
+
+#: inc/CMB2/Fields/Link_Color_Field.php:36
+msgid "Color"
+msgstr ""
+
+#: inc/CMB2/Fields/Link_Color_Field.php:37
+msgid "Hover color"
+msgstr ""
+
+#: inc/CMB2/Fields/Link_Color_Field.php:38
+msgid "Active color"
+msgstr ""
+
+#: inc/Iconfonts/Extractor/Elusive_Extractor.php:53
+msgid "Elusive"
+msgstr ""
+
+#: inc/Iconfonts/Extractor/Extractor_Abstract.php:105
+msgid "Invalid Directory Structure."
+msgstr ""
+
+#: inc/Iconfonts/Extractor/Extractor_Abstract.php:109
+msgid "The metadata file too large, maximum is less than 2MB"
+msgstr ""
+
+#: inc/Iconfonts/Extractor/Extractor_Abstract.php:120
+msgid "Invalid icon pack data."
+msgstr ""
+
+#: inc/Iconfonts/Extractor/Fontawesome_Extractor.php:53
+msgid "Font Awesome"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:42
+msgid "Admin"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:46
+msgid "Post Formats"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:50
+msgid "Welcome Screen"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:54
+msgid "Image Editor"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:58
+msgid "Text Editor"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:62
+msgid "Post"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:66
+msgid "Sorting"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:70
+msgid "Social"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:74
+msgid "Jobs"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:78
+msgid "Internal/Products"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:82
+msgid "Taxonomies"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:86
+msgid "Alerts/Notifications"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:90, inc/Iconfonts/Icons/Dashicons.php:157
+msgid "Media"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:94
+msgid "Misc./Post Types"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:117
+msgid "Appearance"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:122
+msgid "Collapse"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:127, inc/Iconfonts/Icons/Dashicons.php:262
+msgid "Comments"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:132
+msgid "Customizer"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:137
+msgid "Dashboard"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:142
+msgid "Generic"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:147, inc/Iconfonts/Icons/Dashicons.php:297
+msgid "Filter"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:152
+msgid "Home"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:162
+msgid "Menu"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:167
+msgid "Multisite"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:172
+msgid "Network"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:177
+msgid "Page"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:182
+msgid "Plugins"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:187
+msgid "Settings"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:192
+msgid "Site"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:197
+msgid "Tools"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:202
+msgid "Users"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:207
+msgid "Standard"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:212
+msgid "Aside"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:217
+msgid "Image"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:222, inc/Iconfonts/Icons/Dashicons.php:427, inc/Iconfonts/Icons/Dashicons.php:892, inc/Iconfonts/Icons/Dashicons.php:1157, inc/Iconfonts/Icons/Dashicons.php:1162, inc/Iconfonts/Icons/Dashicons.php:1167
+msgid "Video"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:227, inc/Iconfonts/Icons/Dashicons.php:857
+msgid "Audio"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:232, inc/Iconfonts/Icons/Dashicons.php:357
+msgid "Quote"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:237
+msgid "Gallery"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:242
+msgid "Links"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:247
+msgid "Status"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:252
+msgid "Chat"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:257
+msgid "Add page"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:267
+msgid "Edit page"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:272
+msgid "Learn More"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:277
+msgid "View Site"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:282
+msgid "Widgets"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:287
+msgid "Write Blog"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:292
+msgid "Crop"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:302
+msgid "Rotate"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:307
+msgid "Rotate Left"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:312
+msgid "Rotate Right"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:317
+msgid "Flip Vertical"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:322
+msgid "Flip Horizontal"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:327
+msgid "Undo"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:332
+msgid "Redo"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:337
+msgid "Bold"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:342
+msgid "Italic"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:347
+msgid "Unordered List"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:352
+msgid "Ordered List"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:362, inc/Iconfonts/Icons/Dashicons.php:467
+msgid "Align Left"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:367, inc/Iconfonts/Icons/Dashicons.php:477
+msgid "Align Center"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:372, inc/Iconfonts/Icons/Dashicons.php:472
+msgid "Align Right"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:377
+msgid "Insert More"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:382
+msgid "Spell Check"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:387
+msgid "Distraction-free"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:392
+msgid "Kitchensink"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:397
+msgid "Underline"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:402
+msgid "Justify"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:407
+msgid "Text Color"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:412
+msgid "Paste Word"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:417
+msgid "Paste Text"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:422
+msgid "Clear Formatting"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:432
+msgid "Custom Characters"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:437
+msgid "Indent"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:442
+msgid "Outdent"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:447
+msgid "Help"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:452
+msgid "Strikethrough"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:457
+msgid "Unlink"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:462
+msgid "RTL"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:482
+msgid "Align None"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:487
+msgid "Lock"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:492, inc/Iconfonts/Icons/Dashicons.php:497
+msgid "Calendar"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:502
+msgid "Hidden"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:507
+msgid "Visibility"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:512
+msgid "Post Status"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:517
+msgid "Post Trash"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:522
+msgid "Edit"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:527
+msgid "Trash"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:532, inc/Iconfonts/Icons/Dashicons.php:552, inc/Iconfonts/Icons/Dashicons.php:572
+msgid "Arrow: Up"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:537, inc/Iconfonts/Icons/Dashicons.php:557, inc/Iconfonts/Icons/Dashicons.php:577
+msgid "Arrow: Down"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:542, inc/Iconfonts/Icons/Dashicons.php:562, inc/Iconfonts/Icons/Dashicons.php:582
+msgid "Arrow: Left"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:547, inc/Iconfonts/Icons/Dashicons.php:567, inc/Iconfonts/Icons/Dashicons.php:587
+msgid "Arrow: Right"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:592
+msgid "Left-Right"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:597
+msgid "Sort"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:602
+msgid "List View"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:607
+msgid "Excerpt View"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:612
+msgid "Grid View"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:617, inc/Iconfonts/Icons/Dashicons.php:622, inc/Iconfonts/Icons/Dashicons.php:627
+msgid "Share"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:632
+msgid "Twitter"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:637
+msgid "RSS"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:642, inc/Iconfonts/Icons/Dashicons.php:647
+msgid "Email"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:652, inc/Iconfonts/Icons/Dashicons.php:657
+msgid "Facebook"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:662
+msgid "Google+"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:667
+msgid "Networking"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:672
+msgid "Art"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:677
+msgid "Hammer"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:682
+msgid "Migrate"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:687
+msgid "Performance"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:692, inc/Iconfonts/Icons/Dashicons.php:697
+msgid "WordPress"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:702
+msgid "PressThis"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:707
+msgid "Update"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:712
+msgid "Screen Options"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:717
+msgid "Info"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:722
+msgid "Cart"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:727
+msgid "Feedback"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:732
+msgid "Cloud"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:737
+msgid "Translation"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:742
+msgid "Tag"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:747
+msgid "Category"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:752
+msgid "Yes"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:757, inc/Iconfonts/Icons/Dashicons.php:762
+msgid "No"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:767
+msgid "Plus"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:772
+msgid "Minus"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:777, inc/Iconfonts/views/upload-form.php:16
+msgid "Dismiss"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:782
+msgid "Marker"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:787
+msgid "Star: Filled"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:792
+msgid "Star: Half"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:797
+msgid "Star: Empty"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:802
+msgid "Flag"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:807
+msgid "Skip Back"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:812
+msgid "Back"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:817
+msgid "Play"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:822
+msgid "Pause"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:827
+msgid "Forward"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:832
+msgid "Skip Forward"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:837
+msgid "Repeat"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:842
+msgid "Volume: On"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:847
+msgid "Volume: Off"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:852
+msgid "Archive"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:862
+msgid "Code"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:867
+msgid "Default"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:872
+msgid "Document"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:877
+msgid "Interactive"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:882
+msgid "Spreadsheet"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:887
+msgid "Text"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:897
+msgid "Audio Playlist"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:902
+msgid "Video Playlist"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:907
+msgid "Album"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:912
+msgid "Analytics"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:917
+msgid "Awards"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:927
+msgid "Building"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:932
+msgid "Businessman"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:937
+msgid "Camera"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:942
+msgid "Carrot"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:947
+msgid "Chart: Pie"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:952
+msgid "Chart: Bar"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:957
+msgid "Chart: Line"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:962
+msgid "Chart: Area"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:967
+msgid "Desktop"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:972
+msgid "Forms"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:977
+msgid "Groups"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:982, inc/Iconfonts/Icons/Dashicons.php:987
+msgid "ID"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:992, inc/Iconfonts/Icons/Dashicons.php:997
+msgid "Images"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1002
+msgid "Index Card"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1007
+msgid "Layout"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1012, inc/Iconfonts/Icons/Dashicons.php:1017
+msgid "Location"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1022
+msgid "Products"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1027
+msgid "Portfolio"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1032, inc/Iconfonts/Icons/Dashicons.php:1037
+msgid "Book"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1042
+msgid "Download"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1047
+msgid "Upload"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1052
+msgid "Clock"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1057
+msgid "Lightbulb"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1062
+msgid "Money"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1067
+msgid "Palm Tree"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1072
+msgid "Phone"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1077
+msgid "Search"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1082, inc/Iconfonts/Icons/Dashicons.php:1087
+msgid "Shield"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1092
+msgid "Slides"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1097
+msgid "Smartphone"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1102
+msgid "Smiley"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1107
+msgid "S.O.S."
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1112
+msgid "Sticky"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1117
+msgid "Store"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1122
+msgid "Tablet"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1127
+msgid "Testimonial"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1132
+msgid "Tickets"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1137
+msgid "Thumbs Up"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1142
+msgid "Thumbs Down"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1147
+msgid "Unlock"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1152
+msgid "Vault"
+msgstr ""
+
+#: inc/Iconfonts/Icons/Dashicons.php:1172
+msgid "Warning"
+msgstr ""
+
+#: inc/Iconfonts/views/upload-form.php:16
+msgid "Dismiss the upload form"
+msgstr ""
+
+#: inc/Iconfonts/views/upload-form.php:20
+msgid "Select Your Files"
+msgstr ""
+
+#: inc/Iconfonts/views/upload-form.php:21
+msgid "Let’s get started importing your custom icon pack"
+msgstr ""
+
+#: inc/Iconfonts/views/upload-form.php:22
+msgid "To get started, simply upload a zip file downloaded from <a href=\"http://fontello.com\" target=\"_blank\">Fontello</a> or <a href=\"https://icomoon.io/app\" target=\"_blank\">IcoMoon App</a>."
+msgstr ""
+
+#: inc/Iconfonts/views/upload-form.php:29
+msgid "Install Now"
+msgstr ""

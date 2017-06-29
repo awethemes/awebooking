@@ -1,0 +1,83 @@
+.cmb2-wrap .cmb-row.cmb-repeat .cmb2-metabox-description {
+  font-size: 14px;
+  padding-bottom: 1em;
+}
+
+.cmb-repeat-table.cmb-nested {
+  background-color: #fbfbfb;
+  border: 1px solid #e9e9e9;
+  border-bottom: none;
+
+  & + .cmb-add-row {
+    margin-top: 0;
+
+    &:before {
+      content: '';
+      width: 1px;
+      height: 20px;
+      display: block;
+      margin-left: 17px;
+      background-color: #eee;
+    }
+  }
+}
+
+.cmb2-wrap .cmb-row.cmb-repeat-row {
+  margin-bottom: 0;
+  padding: 10px 10px 10px 50px !important;
+  display: block !important;
+  border-bottom: solid 1px #e9e9e9;
+  position: relative;
+  counter-increment: el;
+
+  &:before {
+    content: counter(el);
+    display: block;
+
+    top: 0;
+    left: 0;
+    color: #999;
+    position: absolute;
+
+    width: 35px;
+    height: 100%;
+    line-height: 35px;
+
+    text-align: center;
+    box-sizing: border-box;
+    border-right: solid 1px #e9e9e9;
+  }
+
+  .cmb-td {
+    padding: 0 !important;
+  }
+
+  .cmb-remove-row {
+    top: 7px;
+    right: 7px;
+    position: absolute;
+
+    width: auto !important;
+    display: none !important;
+    padding-right: 0 !important;
+
+    > .button.cmb-remove-row-button {
+      overflow: hidden;
+      text-indent: -1000px;
+      font-size: 20px;
+
+      height: auto;
+      line-height: 1;
+      padding-bottom: 0;
+      position: relative;
+
+      &:before {
+        @include center_dashicons("\f335");
+      }
+    }
+  }
+
+  &:hover .cmb-remove-row {
+    display: block !important;
+  }
+}

@@ -1,0 +1,38 @@
+.cmb-row.cmb-type-backups {
+  .cmb2-reset-backup {
+    color: #e14d43;
+    text-decoration: none;
+
+    &:hover,
+    &:active {
+      color: #f00;
+    }
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h4 + p {
+    margin-top: 5px;
+  }
+
+  hr {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  textarea {
+    width: 100%;
+    background-color: #fff;
+  }
+}
+
+.cmb2-warning {
+  color: #ff5722;
+  background: #fff;
+  border-left: 4px solid #ff9800;
+  padding: 1px 12px;
+  box-shadow: 0 1px 1px 0 rgba(black, 0.1);
+}

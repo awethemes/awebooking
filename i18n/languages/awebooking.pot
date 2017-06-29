@@ -1,0 +1,427 @@
+# Copyright (C) 2017 awethemes/awebooking
+# This file is distributed under the same license as the awethemes/awebooking package.
+msgid ""
+msgstr ""
+"Project-Id-Version: awethemes/awebooking\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: inc/Ajax_Controller_Hooks.php:56
+msgid "Unavailable room type."
+msgstr ""
+
+#: inc/Config.php:102
+msgid " - Powered by Awebooking"
+msgstr ""
+
+#: inc/Service_Tax.php:15
+msgid "Extra Service"
+msgstr ""
+
+#: inc/Service_Tax.php:16, inc/template-functions.php:571
+msgid "Extra Services"
+msgstr ""
+
+#: inc/Service_Tax.php:65
+msgid "Add to price"
+msgstr ""
+
+#: inc/Service_Tax.php:66
+msgid "Add to price per night"
+msgstr ""
+
+#: inc/Service_Tax.php:68
+msgid "Add to price per person"
+msgstr ""
+
+#: inc/Service_Tax.php:69
+msgid "Add to price per person per night"
+msgstr ""
+
+#: inc/Service_Tax.php:71
+msgid "Subtract from price"
+msgstr ""
+
+#: inc/Service_Tax.php:72
+msgid "Subtract from price per night"
+msgstr ""
+
+#: inc/Service_Tax.php:73
+msgid "Increase price by % amount"
+msgstr ""
+
+#: inc/Service_Tax.php:74
+msgid "Decrease price by % amount"
+msgstr ""
+
+#: inc/Service_Tax.php:85
+msgid "Optional"
+msgstr ""
+
+#: inc/Service_Tax.php:86
+msgid "Mandatory"
+msgstr ""
+
+#: inc/template-functions.php:346
+msgid "Placeholder"
+msgstr ""
+
+#: inc/template-functions.php:553
+msgid "Description"
+msgstr ""
+
+#: inc/template-functions.php:562, inc/WP_Core_Hooks.php:84
+msgid "Amenities"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:83
+msgid "Amenity"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:95
+msgid "Location"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:96
+msgid "Locations"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:145
+msgid "Room Type Image"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:146
+msgid "Set room type image"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:147
+msgid "Use as room type image"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:148
+msgid "Remove room type image"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:132
+msgid "Room Type"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:133
+msgid "Room Types"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:154
+msgid "Pricing Rule"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:155
+msgid "Pricing Rules"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:185, inc/WP_Core_Hooks.php:170
+msgid "Bookings"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:169, inc/Admin/Admin_Hooks.php:50, inc/Admin/Admin_Hooks.php:51
+msgid "Booking"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:207
+msgctxt "Booking status"
+msgid "Pending"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:212
+msgid "Pending <span class=\"count\">(%s)</span>"
+msgid_plural "Pending <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/WP_Core_Hooks.php:215
+msgctxt "Booking status"
+msgid "Completed"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:220
+msgid "Completed <span class=\"count\">(%s)</span>"
+msgid_plural "Completed <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/WP_Core_Hooks.php:223
+msgctxt "Booking status"
+msgid "Cancelled"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:228
+msgid "Cancelled <span class=\"count\">(%s)</span>"
+msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/WP_Core_Hooks.php:243, inc/Admin/Admin_Hooks.php:25, inc/Admin/Admin_Hooks.php:26
+msgid "AweBooking"
+msgstr ""
+
+#: inc/Admin/Admin_Ajax.php:42
+msgid "No room available"
+msgstr ""
+
+#: inc/Admin/Admin_Hooks.php:32, inc/Admin/Admin_Hooks.php:33
+msgid "Manager Availability"
+msgstr ""
+
+#: inc/Admin/Admin_Hooks.php:41, inc/Admin/Admin_Hooks.php:42
+msgid "Manager Pricing"
+msgstr ""
+
+#: inc/Admin/Admin_Hooks.php:129, inc/Admin/Admin_Hooks.php:130
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:27, inc/Admin/Admin_Post_Types.php:46, inc/Widgets/Check_Availability_Widget.php:71
+msgid "Title"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:28
+msgid "Start price"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:29
+msgid "Capacity"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:30
+msgid "No. rooms"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:31
+msgid "Date"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:47
+msgid "Booking Date"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:48
+msgid "Status"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:99, inc/Utils/Utils.php:38
+msgid "Pending"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:100, inc/Utils/Utils.php:39
+msgid "Booked"
+msgstr ""
+
+#: inc/Admin/Admin_Post_Types.php:101
+msgid "Cancelled"
+msgstr ""
+
+#: inc/Admin/Admin_Settings.php:28
+msgid "Your settings have been saved."
+msgstr ""
+
+#: inc/Admin/Permalink_Settings.php:35
+msgid "Room type base"
+msgstr ""
+
+#: inc/Admin/Pricing_Management.php:59
+msgid "Bulk Pricing Manager"
+msgstr ""
+
+#: inc/Admin/Pricing_Management.php:74
+msgid "Price:"
+msgstr ""
+
+#: inc/Admin/Pricing_Management.php:105, inc/Admin/Rooms_Manager.php:169
+msgid "Calendar"
+msgstr ""
+
+#: inc/Admin/Rooms_Manager.php:148
+msgid "All Room Types"
+msgstr ""
+
+#: inc/BAT/Factory.php:65
+msgid "Start date and end date must be shown."
+msgstr ""
+
+#: inc/BAT/Factory.php:122
+msgid "Room type was not found."
+msgstr ""
+
+#: inc/Currency/Currency_Manager.php:76
+msgid "Left (%s99.99)"
+msgstr ""
+
+#: inc/Currency/Currency_Manager.php:77
+msgid "Right (99.99%s)"
+msgstr ""
+
+#: inc/Currency/Currency_Manager.php:78
+msgid "Left with space (%s 99.99)"
+msgstr ""
+
+#: inc/Currency/Currency_Manager.php:79
+msgid "Right with space (99.99 %s)"
+msgstr ""
+
+#: inc/Pricing/Price.php:79
+msgid "Price amount must be numeric."
+msgstr ""
+
+#: inc/Pricing/Price.php:135
+msgid "Divisor is 0"
+msgstr ""
+
+#: inc/Utils/Date_Period.php:132
+msgid "The period is invalid."
+msgstr ""
+
+#: inc/Utils/Date_Period.php:142
+msgid "Start-date and end-date cannot on the same day."
+msgstr ""
+
+#: inc/Utils/Date_Period.php:146
+msgid "Past day exception."
+msgstr ""
+
+#: inc/Utils/Formatting.php:220
+msgid "+ %s to price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:224
+msgid "+ %s per night to price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:228
+msgid "+ %s per person to price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:232
+msgid "+ %s per person per night to price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:236
+msgid "- %s from price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:240
+msgid "- %s to per night from price"
+msgstr ""
+
+#: inc/Utils/Formatting.php:244
+msgid "Replace price with %s"
+msgstr ""
+
+#: inc/Utils/Formatting.php:248
+msgid "Increase price by %s%%"
+msgstr ""
+
+#: inc/Utils/Formatting.php:252
+msgid "Decrease price by %s%%"
+msgstr ""
+
+#: inc/Utils/Utils.php:36, inc/Admin/Calendar/Yearly_Calendar.php:199
+msgid "Available"
+msgstr ""
+
+#: inc/Utils/Utils.php:37, inc/Admin/Calendar/Yearly_Calendar.php:192
+msgid "Unavailable"
+msgstr ""
+
+#: inc/Widgets/Check_Availability_Widget.php:21
+msgid "Display AweBooking Check Availability Form."
+msgstr ""
+
+#: inc/Widgets/Check_Availability_Widget.php:24
+msgid "AweBooking: Check Availability Form"
+msgstr ""
+
+#: inc/Widgets/Check_Availability_Widget.php:78
+msgid "Hide Location?"
+msgstr ""
+
+#: inc/Admin/Calendar/Pricing_Calendar.php:92
+msgid "Standard Price"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:55
+msgid "Booking #%s"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:68
+msgid "Booking Action"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:74
+msgid "Booking Rooms"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:93
+msgid "Delete permanently"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:95
+msgid "Move to trash"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:104
+msgid "Create"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Booking_Meta_Boxes.php:104
+msgid "Update"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Room_Type_Meta_Boxes.php:265, inc/Admin/Meta_Boxes/Room_Type_Meta_Boxes.php:287
+msgid "adults"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/Room_Type_Meta_Boxes.php:270, inc/Admin/Meta_Boxes/Room_Type_Meta_Boxes.php:292
+msgid "children"
+msgstr ""
+
+#: inc/Admin/views/page-rooms-manager.php:2
+msgid "Availability Rooms Management"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:31
+msgid "Choose an Extra Service"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:38
+msgid "Add"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:55
+msgid "+ Add New Extra Service"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:61
+msgid "Name"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:71
+msgid "Price"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:81
+msgid "Operation"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:95
+msgid "Type"
+msgstr ""
+
+#: inc/Admin/Meta_Boxes/views/extra-services.php:110
+msgid "Add New Extra Service"
+msgstr ""

@@ -1,0 +1,33 @@
+.cmb-row.cmb-type-radio-image .cmb2-radio-list {
+  display: block;
+  @include clearfix;
+
+  input[type="radio"] {
+    display: none !important;
+  }
+
+  li {
+    padding: 0;
+    margin: 0 3px 0;
+    display: inline-block;
+  }
+
+  input[type="radio"] + label {
+    padding: 4px;
+    display: block;
+    // background-color: #fff;
+    // border: solid 1px #d9d9d9;
+    user-select: none;
+  }
+
+  input[type="radio"]:checked + label {
+    border-color: #fff;
+    box-shadow: 0 0 0 5px #000;
+  }
+
+  li > label > img {
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+}

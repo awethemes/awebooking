@@ -1,0 +1,58 @@
+// Better display in option pages.
+.wrap.cmb2-options-page {
+  max-width: 1300px;
+
+  .cmb2-tab-pane > .cmb-row,
+  .cmb2-wrap > .cmb-field-list > .cmb-row {
+    padding: 1em;
+    margin-top: -1px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(black, 0.04);
+
+    span.cmb2-metabox-description {
+      display: block;
+      padding-top: .5em;
+    }
+  }
+
+  .cmb-repeatable-group,
+  .cmb2-tab-pane > .cmb-row,
+  .cmb2-wrap > .cmb-field-list > .cmb-row {
+    > .cmb-th {
+      padding: 0;
+      width: 200px;
+      font-weight: initial;
+    }
+
+    > .cmb-th + .cmb-td {
+      float: none;
+      padding: 0 0 0 1em;
+      margin-left: 200px;
+    }
+  }
+
+  .cmb2-tab-pane > .cmb-row.cmb-type-title,
+  .cmb2-wrap > .cmb-field-list > .cmb-row.cmb-type-title {
+    margin-top: 1em;
+    padding: 8px 12px;
+    background-color: #fafafa;
+
+    .cmb2-metabox-title {
+      font-size: 12px;
+      text-transform: uppercase;
+
+      margin-top: 0;
+      margin-bottom: 0
+    }
+
+    .cmb2-metabox-description {
+      margin: 0;
+      padding-top: 0;
+    }
+  }
+
+  .cmb-form .button-primary {
+    margin-top: 2em;
+  }
+}
