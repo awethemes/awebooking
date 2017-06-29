@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name:     AweBooking
- * Plugin URI:      http://awethemes.com/plugins/awebooking
+ * Plugin URI:      https://awethemes.com/plugins/awebooking
  * Description:     AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily.
- * Author:          awethemes
- * Author URI:      http://awethemes.com
+ * Author:          Awethemes
+ * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /i18n/languages
  * Version:         3.0.0-alpha-225
