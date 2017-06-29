@@ -147,8 +147,6 @@ class AweBooking extends SkeletonContainer {
 
 		Shortcodes::init();
 
-		new Support\Plugin_Updater;
-
 		$this['flash_message']->setup_message();
 
 		do_action( 'awebooking/booted', $this );
