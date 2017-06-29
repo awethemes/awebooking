@@ -91,6 +91,20 @@ class WP_Core_Hooks extends Service_Hooks {
 			]));
 		}
 
+		// Register 'awebooking_pricing_rules' taxonomy.
+		Taxonomy::make(
+			'awebooking_pricing_rules',
+			apply_filters( 'awebooking/taxonomy_objects/awebooking_pricing_rules', [ 'room_type' ] ),
+			esc_html__( 'Pricing Rule', 'awebooking' ),
+			esc_html__( 'Pricing Rules', 'awebooking' )
+		)
+		->set( apply_filters( 'awebooking/taxonomy_args/awebooking_pricing_rules', [
+			'public'             => false,
+			'hierarchical'       => true,
+			'show_admin_column'  => false,
+			'show_in_quick_edit' => true,
+		]));
+
 		/**
 		 * Fire a action after registered taxonomies.
 		 *
@@ -141,20 +155,27 @@ class WP_Core_Hooks extends Service_Hooks {
 		]));
 
 		// Register 'awebooking_rae' post type.
-		Post_Type::make(
+		/*Post_Type::make(
 			'awebooking_rate',
 			esc_html__( 'Pricing Rule', 'awebooking' ),
 			esc_html__( 'Pricing Rules', 'awebooking' )
 		)
 		->set( apply_filters( 'awebooking/post_type_args/awebooking_rate', [
-			'supports'           => array( 'title' ),
-			'public'             => false,
-			'publicly_queryable' => false,
-			'rewrite'            => false,
-			'show_ui'            => false,
-			'hierarchical'       => true,
-			'show_in_menu'       => false,
-		]));
+			'public'              => false,
+			'rewrite'             => false,
+			'query_var'           => false,
+			'has_archive'         => false,
+			'publicly_queryable'  => false,
+			'show_in_nav_menus'   => false,
+			'show_in_admin_bar'   => false,
+			'exclude_from_search' => true,
+			'show_ui'             => true,
+			'show_in_menu'        => 'edit.php?post_type=room_type',
+			'supports'            => array( 'title' ),
+			'labels'              => array(
+				'all_items' => esc_html__( 'Pricing Rules', 'awebooking' ),
+			),
+		]));*/
 
 		// Register 'awebooking' post type.
 		Post_Type::make(
@@ -172,8 +193,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'show_in_admin_bar'   => false,
 			'exclude_from_search' => true,
 			'show_ui'             => true,
-			'supports'            => array( 'comments' ),
 			'show_in_menu'        => false,
+			'supports'            => array( 'comments' ),
 			'labels'              => array(
 				'all_items' => esc_html__( 'Bookings', 'awebooking' ),
 			),

@@ -105,14 +105,30 @@ class Availability implements Availability_Interface {
 		return count( $this->get_rooms() );
 	}
 
+	public function get_overflow_adults() {
+		$adults = $this->get_adults();
+
+		if ( $this->room_type->get_max_adults() <= 0 ) {
+			return 0;
+		}
+
+		return ($adults - $this->room_type->get_number_adults() );
+	}
+
 	/**
 	 * Get price.
 	 *
 	 * @return Price
 	 */
 	public function get_price() {
-		return awebooking( 'concierge' )
+		$price = awebooking( 'concierge' )
 			->get_room_price( $this->room_type, $this->request );
+
+		$pipes = apply_filters( 'awebooking/availability/room_price_pipes', [], $this->request, $this );
+
+		return (new Price_Calculator( $price ))
+			->through( $pipes )
+			->process();
 	}
 
 	/**
@@ -140,7 +156,7 @@ class Availability implements Availability_Interface {
 	 */
 	public function get_total_price() {
 		$price = $this->get_price();
-		$pipes = [];
+		$pipes = apply_filters( 'awebooking/availability/total_price_pipes', [], $this->request, $this );
 
 		if ( $this->request->has_request( 'extra_services' ) ) {
 			$this->through_services( $pipes );

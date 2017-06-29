@@ -688,3 +688,10 @@ table.wp-list-table .column-booking_total {
 .in-hover > .abkngcal__night-selection {
 	background-color: rgba(188, 232, 241, 0.75);
 }
+
+
+
+.abkngcal-container--pricing-rule .abkngcal__month-heading > span {
+	width: 125px;
+	text-align: left;
+}
