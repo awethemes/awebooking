@@ -4,21 +4,17 @@ A hotel management tool for WordPress
 
 ![rm-status](https://user-images.githubusercontent.com/1529454/27292370-7c52c392-553d-11e7-80de-b3397a50e958.png)
 
+## Features
+
+Detail plugin features here: http://awethemes.com/plugins/awebooking
+
 ## Installation
 
-This plugin still alpha version, there are no "zip" file for ready.
+Get latest version at [here](https://wordpress.org/plugins/awebooking/).
 
-But you can build from the source by command:
+Or try our demo by visit: http://demo.awethemes.com/awebooking
 
-```
-cd {your-wp-plugins-directory}
-git clone https://github.com/awethemes/awebooking.git
-cd awebooking & composer install
-```
-
-Or try our demo at: http://demo.awethemes.com/awebooking
-
-(Leave your email at: "TRY A DEMO", we will send a admin account so you can see the admin)
+(If you want to test backend, just leave email to get access)
 
 ## Contribute
 
