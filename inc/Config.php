@@ -75,7 +75,7 @@ class Config implements Config_Interface {
 	 */
 	protected function prepare_default_settings() {
 		$this->defaults = apply_filters( 'awebooking/default_settings', array(
-			'enable_location'          => true,
+			'enable_location'          => false,
 
 			// Currency and price format.
 			'currency'                 => 'USD',

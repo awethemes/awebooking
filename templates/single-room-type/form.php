@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="awebooking-check-form__wrapper">
 		<h2 class="awebooking-heading"><?php esc_html_e( 'Your Reservation', 'awebooking' ); ?></h2>
 		<div class="awebooking-check-form__content">
-			<div class="awebooking-field">
+			<div class="awebooking-field awebooking-arrival-field">
 				<label for=""><?php esc_html_e( 'Arrival Date', 'awebooking' ); ?></label>
 				<div class="awebooking-field-group">
 					<i class="awebookingf awebookingf-calendar"></i>
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 
-			<div class="awebooking-field">
+			<div class="awebooking-field awebooking-departure-field">
 				<label for=""><?php esc_html_e( 'Departure Date', 'awebooking' ); ?></label>
 				<div class="awebooking-field-group">
 					<i class="awebookingf awebookingf-calendar"></i>
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="list-room">
 				<div class="awebooking-sidebar-group">
 					<?php if ( $max_adults ) : ?>
-					<div class="awebooking-field">
+					<div class="awebooking-field awebooking-adults-field">
 						<label for=""><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
 						<div class="awebooking-field-group">
 							<i class="awebookingf awebookingf-select"></i>
@@ -54,7 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php endif; ?>
 
 					<?php if ( $max_children ) : ?>
-					<div class="awebooking-field">
+					<div class="awebooking-field awebooking-children-field">
 						<label for=""><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
 						<div class="awebooking-field-group">
 							<i class="awebookingf awebookingf-select"></i>
