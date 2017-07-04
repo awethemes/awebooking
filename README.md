@@ -18,4 +18,4 @@ Or try our demo by visit: http://demo.awethemes.com/awebooking
 
 ## Contribute
 
-Found any bugs? Free contribute by create a [pull request](https://github.com/awethemes/awebooking/pulls)
+Found any bugs? Feel free to contribute by creating a [pull request](https://github.com/awethemes/awebooking/pulls)
