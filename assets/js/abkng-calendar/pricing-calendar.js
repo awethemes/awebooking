@@ -48,7 +48,14 @@
         $(this).parents('.pricing-calendar-modal').hide();
         self.clearStartDay();
         self.clearEndDay();
-      })
+      });
+
+      $(document).on('click', function(e) {
+        /*if (! $.contains(self.$el[0], e.target)) {
+          self.clearStartDay();
+          self.clearEndDay();
+        }*/
+      });
     },
 
     /**
@@ -165,15 +172,10 @@
       var $modal = $('.pricing-calendar-modal', document);
       var template = wp.template('pricing-calendar-form');
 
-      this.data_id = this.$el.closest('.abkngcal-container').data('roomType');
+      this.data_id = this.$el.closest('[data-unit]').data('unit');
 
       $modal.find('.media-modal-content').html(template(this));
       $modal.toggle();
-
-      $('#pricing-calendar-form', document).on('submit', function(e) {
-        // e.preventDefault();
-      });
-
     },
 
     showComments: function() {
