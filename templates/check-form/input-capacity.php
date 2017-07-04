@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="list-room">
 		<div class="awebooking-sidebar-group">
 			<?php if ( $max_adults ) : ?>
-			<div class="awebooking-field">
+			<div class="awebooking-field awebooking-adults-field">
 				<label for="<?php esc_html_e( 'Adults', 'awebooking' ); ?>"><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
 				<div class="awebooking-field-group">
 					<i class="awebookingf awebookingf-select"></i>
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 
 			<?php if ( $max_children ) : ?>
-			<div class="awebooking-field">
+			<div class="awebooking-field awebooking-children-field">
 				<label for="<?php esc_html_e( 'Children', 'awebooking' ); ?>"><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
 				<div class="awebooking-field-group">
 					<i class="awebookingf awebookingf-select"></i>

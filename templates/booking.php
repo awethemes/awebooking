@@ -54,7 +54,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 			</tbody>
 		</table>
 
-		<div class="awebooking-informations__wrapper clearfix">
+		<div class="awebooking-informations__wrapper">
 			<div class="awebooking-informations__media">
 				<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>"><?php echo get_the_post_thumbnail( $room_type->get_id() ); ?></a>
 			</div>
@@ -71,7 +71,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 						<tr>
 							<td colspan="2">
 								<div class="awebooking-service" id="awebooking-service">
-									<form action="" id="awebooking-booking-form" class="awebooking-service__wrapper clearfix">
+									<form action="" id="awebooking-booking-form" class="awebooking-service__wrapper">
 										<?php foreach ( $room_type->get_services() as $service ) : ?>
 											<?php $mandatory = ( 'mandatory' === $service->get_type()  ) ? 'checked="checked" disabled="disabled"' : ''; ?>
 											<div class="awebooking-service__item">
