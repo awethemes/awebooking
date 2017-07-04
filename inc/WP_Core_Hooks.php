@@ -15,10 +15,6 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		$this->register_taxonomies();
-		$this->register_post_types();
-		$this->register_post_status();
-
 		// Don't push into $this->init, this hook only active in register method.
 		add_action( 'after_setup_theme', array( $this, 'register_sidebar' ) );
 	}
@@ -31,6 +27,11 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
+		// Don't push into $this->register, this contructors only active in init method.
+		$this->register_taxonomies();
+		$this->register_post_types();
+		$this->register_post_status();
+
 		// Enable single term for location taxonomy.
 		if ( $awebooking->is_multi_location() ) {
 			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION );
