@@ -193,6 +193,9 @@ class Request_Handler extends Service_Hooks {
 			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
+				$booking_request->set_request( 'room-type', $room_type->get_id() );
+				Session_Booking_Request::set_instance( $booking_request );
+
 				return wp_redirect( Utils::get_booking_url( $availability ), 302 );
 			}
 
