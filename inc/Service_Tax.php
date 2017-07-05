@@ -37,7 +37,7 @@ class Service_Tax extends Taxonomy {
 			'type'      => 'select',
 			'options'   => static::operation_options(),
 			'sanitization_cb' => array( $this, 'sanitize_operation' ),
-			'render_field_cb'   => array( $this, '_room_field_callback' ),
+			'render_field_cb'   => array( $this, '_operation_field_callback' ),
 		]);
 
 		$this->add_field([
@@ -63,7 +63,7 @@ class Service_Tax extends Taxonomy {
 	 *
 	 * @return void
 	 */
-	public function _room_field_callback( $field_args, $field ) {
+	public function _operation_field_callback( $field_args, $field ) {
 		$cmb2 = $field->get_cmb();
 		$price = $cmb2->get_field( 'price' );
 
