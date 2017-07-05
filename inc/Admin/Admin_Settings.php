@@ -201,6 +201,7 @@ class Admin_Settings extends Admin_Page {
 			'priority' => 20,
 		) );
 
+
 		$display->add_field( array(
 			'id'   => '__display_check_availability__',
 			'type' => 'title',
@@ -228,6 +229,28 @@ class Admin_Settings extends Admin_Page {
 			'validate'   => 'integer|min:0',
 			'sanitization_cb' => 'absint',
 			'priority' => 35,
+		) );
+
+		$display->add_field( array(
+			'id'   => 'page_for_check_availability',
+			'type' => 'title',
+			'name' => esc_html__( 'Page for check availability ', 'awebooking' ),
+			'priority' => 40,
+		) );
+
+		$display->add_field( array(
+			'id'       => 'showing_prices',
+			'type'     => 'select',
+			'name'     => esc_html__( 'Showing prices', 'awebooking' ),
+			'description' => esc_html__( 'Selected a type of price to showing in the checking availability page.', 'awebooking' ),
+			'default'  => $this->config->get_default( 'page_showing_price' ),
+			'options'	 => array(
+				'start_prices'	 => esc_html__( 'Starting prices', 'awebooking' ),
+				'average_prices'  => esc_html__( 'Average prices', 'awebooking' ),
+				'total_prices' 	 => esc_html__( 'Total prices', 'awebooking' ),
+			),
+			'show_option_none' => false,
+			'priority' => 45,
 		) );
 
 		// Email.
