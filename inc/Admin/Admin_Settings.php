@@ -239,15 +239,15 @@ class Admin_Settings extends Admin_Page {
 		) );
 
 		$display->add_field( array(
-			'id'       => 'showing_prices',
+			'id'       => 'showing_price',
 			'type'     => 'select',
-			'name'     => esc_html__( 'Showing prices', 'awebooking' ),
+			'name'     => esc_html__( 'Showing price', 'awebooking' ),
 			'description' => esc_html__( 'Selected a type of price to showing in the checking availability page.', 'awebooking' ),
-			'default'  => $this->config->get_default( 'page_showing_price' ),
+			'default'  => $this->config->get_default( 'showing_price' ),
 			'options'	 => array(
-				'start_prices'	 => esc_html__( 'Starting prices', 'awebooking' ),
-				'average_prices'  => esc_html__( 'Average prices', 'awebooking' ),
-				'total_prices' 	 => esc_html__( 'Total prices', 'awebooking' ),
+				'start_price'	 => esc_html__( 'Starting price', 'awebooking' ),
+				'average_price'  => esc_html__( 'Average price', 'awebooking' ),
+				'total_price' 	 => esc_html__( 'Total price', 'awebooking' ),
 			),
 			'show_option_none' => false,
 			'priority' => 45,

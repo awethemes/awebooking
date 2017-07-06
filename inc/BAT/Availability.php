@@ -177,28 +177,6 @@ class Availability implements Availability_Interface {
 
 		return $this;
 	}
-	/**
-	 * Show the price by a type.
-	 *
-	 * @return int
-	 */
-	public function showing_price() {
-		$type = abkng_config( 'showing_prices' );
-
-		switch ( $type ) {
-			case 'average_prices':
-				return $this->get_price_average();
-				break;
-
-			case 'total_prices':
-				return $this->get_total_price();
-				break;
-
-			default:
-				return $this->room_type->get_base_price();
-				break;
-		}
-	}
 
 	/**
 	 * //
