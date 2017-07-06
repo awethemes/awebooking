@@ -100,7 +100,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 					</tbody>
 				</table>
 				<?php endif; ?>
-
+				<?php do_action( 'awebooking/booking/before_total_cost', $availability, $room_type ); ?>
 				<table class="awebooking-informations__table">
 					<thead>
 						<tr>
