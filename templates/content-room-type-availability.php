@@ -9,7 +9,6 @@
  * @version 1.0.0
  */
 use AweBooking\Support\Date_Utils;
-use AweBooking\BAT\Availability;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

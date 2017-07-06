@@ -201,7 +201,6 @@ class Admin_Settings extends Admin_Page {
 			'priority' => 20,
 		) );
 
-
 		$display->add_field( array(
 			'id'   => '__display_check_availability__',
 			'type' => 'title',
