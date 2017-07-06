@@ -156,11 +156,12 @@ class Availability implements Availability_Interface {
 	 */
 	public function get_total_price() {
 		$price = $this->get_price();
-		$pipes = apply_filters( 'awebooking/availability/total_price_pipes', [], $this->request, $this );
 
 		if ( $this->request->has_request( 'extra_services' ) ) {
-			$this->through_services( $pipes );
+			$price = $this->get_price()->add( $this->get_extra_services_price() );
 		}
+
+		$pipes = apply_filters( 'awebooking/availability/total_price_pipes', [], $this->request, $this );
 
 		return (new Price_Calculator( $price ))
 			->through( $pipes )
