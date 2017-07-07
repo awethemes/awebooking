@@ -27,9 +27,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td><?php echo esc_html( implode( $extra_services_name , ', ') ); ?></td>
 			<td><?php print $availability->get_extra_services_price(); // WPCS: xss ok.?></td>
 		</tr>
-		<tr>
-			<td colspan="2" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-			<td><b><?php print $availability->get_total_price(); // WPCS: xss ok.?></b></td>
-		</tr>
 	</tbody>
 </table>
