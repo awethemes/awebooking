@@ -328,14 +328,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			],
 		));
 
-		$metabox->add_field( array(
-			'id'                => 'customer_id',
-			'type'              => 'select',
-			'name'              => esc_html__( 'Customer', 'awebooking' ),
-			'options'           => wp_data( 'users' ),
-			'show_option_none'  => esc_html__( 'Guest', 'awebooking' ),
-		));
-
 		// This field is special, we set name as "post_status" standard of
 		// WordPress post status, so we'll leave to WP care about that.
 		$metabox->add_field( array(
@@ -355,7 +347,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			'id'                => 'customer_id',
 			'type'              => 'select',
 			'name'              => esc_html__( 'Customer', 'awebooking' ),
-			'options'           => wp_data( 'users' ),
+			'options_cb'        => wp_data_callback( 'users' ),
 			'show_option_none'  => esc_html__( 'Guest', 'awebooking' ),
 		));
 
