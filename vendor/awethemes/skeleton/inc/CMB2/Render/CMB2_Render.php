@@ -379,7 +379,14 @@ class CMB2_Render implements Render_Interface {
 			return;
 		}
 
-		$id = $field->id( true );
+		// Found the ID, try get field "_original_id" first.
+		// This support for widget can be get correct ID.
+		if ( $field->prop( '_original_id' ) ) {
+			$id = $field->prop( '_original_id' );
+		} else {
+			$id = $field->id( true );
+		}
+
 		$errors = $cmb2->get_errors();
 
 		if ( isset( $errors[ $id ] ) ) {

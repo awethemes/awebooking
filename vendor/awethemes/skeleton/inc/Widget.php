@@ -1,14 +1,10 @@
 <?php
 namespace Skeleton;
 
-class Widget extends \WP_Widget {
-	/**
-	 * Array of widget fields args.
-	 *
-	 * @var array
-	 */
-	public $fields = array();
+use WP_Widget;
+use Skeleton\CMB2\CMB2;
 
+abstract class Widget extends WP_Widget {
 	/**
 	 * Array of default values for widget settings.
 	 *
@@ -17,7 +13,7 @@ class Widget extends \WP_Widget {
 	public $defaults = array();
 
 	/**
-	 * Store the instance properties as property.
+	 * Store the instance properties.
 	 *
 	 * @var array
 	 */
@@ -36,27 +32,6 @@ class Widget extends \WP_Widget {
 	 */
 	public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
 		parent::__construct( $id_base, $name, $widget_options, $control_options );
-
-		// Register widget update form fields.
-		$this->fields = $this->fields();
-
-		// Hooks some where to delete widget cache.
-		add_action( 'save_post',    array( $this, '_flush_widget_cache' ) );
-		add_action( 'deleted_post', array( $this, '_flush_widget_cache' ) );
-		add_action( 'switch_theme', array( $this, '_flush_widget_cache' ) );
-	}
-
-	/**
-	 * Front-end display of widget.
-	 *
-	 * @param  array $args      The widget arguments set up when a sidebar is registered.
-	 * @param  array $instance  The widget settings as set by user.
-	 */
-	public function widget( $args, $instance ) {
-		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Categories' ) : $instance['title'], $instance, $this->id_base );
-
-		var_dump($this->defaults);
 	}
 
 	/**
@@ -64,8 +39,34 @@ class Widget extends \WP_Widget {
 	 *
 	 * @var array
 	 */
-	public function fields() {
-		return array();
+	public function fields() {}
+
+	/**
+	 * Setup the CMB2 after created.
+	 *
+	 * @param  CMB2 $cmb2 CMB2 instance.
+	 * @return void
+	 */
+	public function setup_cmb2( $cmb2 ) {}
+
+	/**
+	 * Front-end display of widget.
+	 *
+	 * @param  array $args      The widget arguments set up when a sidebar is registered.
+	 * @param  array $instance  The widget settings as set by user.
+	 */
+	public function widget( $args, $instance ) {}
+
+	/**
+	 * Outputs the settings update form.
+	 *
+	 * @param array $instance Current settings.
+	 */
+	public function form( $instance ) {
+		// If there are no settings, set up defaults.
+		$this->_instance = wp_parse_args( (array) $instance, (array) $this->defaults );
+
+		$this->get_cmb2()->show_form();
 	}
 
 	/**
@@ -76,72 +77,57 @@ class Widget extends \WP_Widget {
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$this->_flush_widget_cache();
-		// return $this->cmb2( true )->get_sanitized_values( $new_instance );
-		return $new_instance;
+		$cmb2 = $this->get_cmb2( true );
+		$sanitized = $cmb2->get_sanitized_values( $new_instance );
+
+		// Get the validation errors.
+		$cmb2_errors = $cmb2->get_errors();
+
+		// If any field not pass validation, it will be remove from $sanitized,
+		// so we need add old value in to the return to avoid widget remove that field too.
+		foreach ( $old_instance as $key => $value ) {
+			if ( ! isset( $sanitized[ $key ] ) && isset( $cmb2_errors[ $key ] ) ) {
+				$sanitized[ $key ] = $value;
+			}
+		}
+
+		return $sanitized;
 	}
 
 	/**
-	 * Delete this widget's cache.
-	 */
-	public function _flush_widget_cache() {
-		wp_cache_delete( $this->id, 'widget' );
-	}
-
-	/**
-	 * Outputs the settings update form.
+	 * Return a new instance of CMB2.
 	 *
-	 * @param array $instance Current settings.
-	 */
-	public function form( $instance ) {
-		$cmb2 = $this->cmb2();
-		$cmb2->object_id( $this->option_name );
-
-		$this->_instance = wp_parse_args( (array) $instance, $this->defaults );
-		$cmb2->show_form();
-	}
-
-	/**
-	 * Creates a new instance of CMB2 and adds some fields.
-	 *
+	 * @param  bool $saving //.
 	 * @return CMB2
 	 */
-	public function cmb2( $saving = false ) {
-		$cmb2 = new \CMB2( array(
-			'id'      => $this->option_name . '_box', // Option name is taken from the WP_Widget class.
-			'hookup'  => false,
-			'show_on' => array(
+	public function get_cmb2( $saving = false ) {
+		$cmb2 = new CMB2( array(
+			'id'           => 'widget_' . $this->option_name . '_' . $this->number,
+			'widget'       => true,
+			'hookup'       => false,
+			'show_on'      => array(
 				'key'   => 'options-page', // Tells CMB2 to handle this as an option.
 				'value' => array( $this->option_name ),
 			),
-		), $this->option_name );
+		));
 
-		foreach ( $this->fields as $field ) {
-			// Cache original field ID.
-			$field['_original_id'] = $field['id'];
+		$cmb2->object_id( '_' );
+		$cmb2->object_type( 'options-page' );
+		$cmb2->get_render()->navigation_class = 'wp-clearfix cmb2-nav-default';
 
-			// Because we disable hookup and CMB2 can't get multidimensional data,
-			// so we need set default/value field by manually.
-			if ( isset( $field['default'] ) ) {
-				$field['_original_default'] = $field['default'];
+		// Setup CMB2 for the Widget.
+		$this->setup_cmb2( $cmb2 );
 
-				// A fallback to setting defaults property.
-				if ( ! isset( $this->defaults[ $field['_original_id'] ] ) ) {
-					$this->defaults[ $field['_original_id'] ] = $field['_original_default'];
-				}
-
-				// Never setting a default value in field.
-				$field['default'] = null;
-			}
-
-			// And setting default callback.
-			$field['default_cb'] = array( $this, '_field_default_callback' );
-
-			// Re-setting field ID with widet ID style
-			// if CMB2 show on widget update form.
+		// Register fields into the CMB2.
+		foreach ( (array) $this->fields() as $field ) {
+			// Set fields ID with widget ID style if CMB2 show on widget update form.
 			if ( ! $saving ) {
+				$field['_original_id'] = $field['id'];
 				$field['id'] = $this->get_field_name( $field['id'] );
 			}
+
+			$field['default']    = null;
+			$field['default_cb'] = array( $this, '_default_field_cb' );
 
 			$cmb2->add_field( $field );
 		}
@@ -152,13 +138,15 @@ class Widget extends \WP_Widget {
 	/**
 	 * Sets the field default, or the field value.
 	 *
-	 * @param  array       $field_args CMB2 field args array.
-	 * @param  \CMB2_Field $field      CMB2 Field object.
+	 * @access private
+	 *
+	 * @param  array      $field_args CMB2 field args array.
+	 * @param  CMB2_Field $field      CMB2 Field object.
 	 * @return mixed
 	 */
-	public function _field_default_callback( $field_args, $field ) {
+	public function _default_field_cb( $field_args, $field ) {
 		return isset( $this->_instance[ $field->args( '_original_id' ) ] )
 			? $this->_instance[ $field->args( '_original_id' ) ]
-			: null ;
+			: null;
 	}
 }

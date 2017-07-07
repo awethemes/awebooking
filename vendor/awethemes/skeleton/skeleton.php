@@ -1,16 +1,10 @@
 <?php
 /**
- * Plugin Name:  Skeleton
- * Plugin URI:   https://github.com/awethemes/skeleton
- * Description:  The last WordPress framework with everything you'll ever need.
- * Author:       awethemes
- * Author URI:   http://awethemes.com
- * Version:      0.1.0
- * Text Domain:  skeleton
- * Domain Path:  i18n/
+ * Skeleton - The last WordPress framework with everything you'll ever need.
  *
- * @category     WordPress_Plugin
- * @package      Skeleton
+ * @author    awethemes <http://awethemes.com>
+ * @link      https://github.com/awethemes/skeleton
+ * @package   Skeleton
  */
 
 // If this file is called directly, abort.

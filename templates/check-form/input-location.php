@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<?php if ( abkng_config( 'enable_location' ) && $locations && empty( $GLOBALS['awebooking-hide-location'] ) ) : ?>
-	<div class="awebooking-field">
-		<label for=""><?php esc_html_e( 'Location', 'awebooking' ); ?></label>
+<?php if ( abkng_config( 'enable_location' ) ) : ?>
+	<div class="awebooking-field awebooking-location-field">
+		<label for="<?php esc_html_e( 'Location', 'awebooking' ); ?>"><?php esc_html_e( 'Location', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">
 			<i class="awebookingf awebookingf-select"></i>
 			<select name="location" class="awebooking-select">

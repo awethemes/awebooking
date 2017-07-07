@@ -70,15 +70,26 @@ window.Skeleton = window.Skeleton || {};
         // Do nothing if invalid metabox ID.
         if (! metaboxID) return;
 
+        // Get the target ID.
         var targetID = $current.data('target');
 
+        var hasPanel = $current.hasClass('.cmb2-panel') || $current.closest('.cmb2-panel').length > 0;
+        if (hasPanel && ! targetID) {
+          targetID = $current.parent().find('.cmb2-sub-tabs .cmb2-tab-link').first().data('target');
+        }
+
         // Remove prev active from tab-pane and tab-li.
-        $metabox.find('.cmb2-tab').removeClass('active');
         $metabox.find('.cmb2-tab-pane').removeClass('active');
+        $metabox.find('.cmb2-tab, .cmb2-panel').removeClass('active');
 
         // Add active class to current.
-        $(targetID).addClass('active');
+        $(targetID, $metabox).addClass('active');
         $current.closest('.cmb2-tab').addClass('active');
+
+        // Active panel.
+        if (hasPanel) {
+          $current.closest('.cmb2-panel').addClass('active');
+        }
 
         // Add current active to sessionStorage
         if (window.sessionStorage) {
@@ -104,7 +115,7 @@ window.Skeleton = window.Skeleton || {};
         }
 
         // Active tab when click on nav-link.
-        $metabox.find('.cmb2-tab-link').on('click', function(e) {
+        $metabox.find('.cmb2-tab-link, .cmb2-panel-link').on('click', function(e) {
           e.preventDefault();
           setActiveTab($(this), $metabox, metaboxID);
         });
@@ -160,6 +171,11 @@ window.Skeleton = window.Skeleton || {};
   $(function() {
     window.Skeleton.init();
     window.Skeleton.deps();
+
+    // Trigger reload JS when widget changed.
+    $(document).on('widget-added widget-updated', function( event, $widget ) {
+      window.Skeleton.triggerTabs();
+    });
   });
 
 })(jQuery, window.Skeleton);

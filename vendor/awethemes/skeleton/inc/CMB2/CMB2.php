@@ -72,15 +72,18 @@ class CMB2 extends CMB2Base {
 	}
 
 	/**
-	 *
 	 * Add a group field to the metabox.
 	 *
-	 * @param  array    $id       Group ID.
+	 * @param  string   $id       Group ID.
 	 * @param  callable $callback Group builder callback.
 	 * @return Group
 	 */
 	public function add_group( $id, $callback = null ) {
-		$id = $this->add_field( array( 'id' => $id, 'type' => 'group' ) );
+		$id = $this->add_field( array(
+			'id'   => $id,
+			'type' => 'group',
+		) );
+
 		$builder = new Group( $this, $id );
 
 		if ( is_callable( $callback ) ) {
@@ -88,6 +91,21 @@ class CMB2 extends CMB2Base {
 		}
 
 		return $builder;
+	}
+
+	/**
+	 * Add a "row" to the metabox.
+	 *
+	 * @param  string $id     Row ID.
+	 * @param  array  $fields An array of fields.
+	 * @return int
+	 */
+	public function add_row( $id, array $fields ) {
+		return $this->add_field( array(
+			'id'     => $id,
+			'type'   => 'row',
+			'fields' => $fields,
+		));
 	}
 
 	/**
@@ -336,13 +354,13 @@ class CMB2 extends CMB2Base {
 	 * Prepare fields validate.
 	 */
 	protected function prepare_validate() {
-		$transient_name = $this->transient_id( '_errors' );
+		$errors = get_transient( $this->transient_id( '_errors' ) );
 
-		if ( $errors = get_transient( $transient_name ) ) {
+		if ( $errors ) {
 			$this->validate_errors = $errors;
 		}
 
-		delete_transient( $transient_name );
+		delete_transient( $this->transient_id( '_errors' ) );
 	}
 
 	/**
@@ -492,6 +510,37 @@ class CMB2 extends CMB2Base {
 		}
 
 		$this->render_form_close( $object_id, $object_type );
+	}
+
+	/**
+	 * Renders a field based on the field type.
+	 *
+	 * @param  array $field_args A field configuration array.
+	 * @return mixed CMB2_Field object if successful.
+	 */
+	public function render_field( $field_args ) {
+		switch ( $field_args['type'] ) {
+			case 'row':
+				$field = $this->get_field( $field_args );
+
+				echo '<div class="cmb2-flex-row ' . esc_attr( $field->row_classes() ) . '">';
+				foreach ( $field->args( 'fields' ) as $_field ) {
+					$this->add_field( $_field );
+
+					$_field['context']    = $this->prop( 'context' );
+					$_field['show_names'] = $this->prop( 'show_names' );
+
+					$this->get_field( $_field )->render_field();
+				}
+				echo '</div>';
+				break;
+
+			default:
+				$field = parent::render_field( $field_args );
+				break;
+		}
+
+		return $field;
 	}
 
 	/**

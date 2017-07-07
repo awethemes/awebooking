@@ -141,50 +141,6 @@
         ]
     },
     {
-        "name": "erusev/parsedown",
-        "version": "1.6.2",
-        "version_normalized": "1.6.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/erusev/parsedown.git",
-            "reference": "1bf24f7334fe16c88bf9d467863309ceaf285b01"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/erusev/parsedown/zipball/1bf24f7334fe16c88bf9d467863309ceaf285b01",
-            "reference": "1bf24f7334fe16c88bf9d467863309ceaf285b01",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2017-03-29T16:04:15+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Parsedown": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Emanuil Rusev",
-                "email": "hello@erusev.com",
-                "homepage": "http://erusev.com"
-            }
-        ],
-        "description": "Parser for Markdown.",
-        "homepage": "http://parsedown.org",
-        "keywords": [
-            "markdown",
-            "parser"
-        ]
-    },
-    {
         "name": "roomify/bat",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -241,18 +197,62 @@
         ]
     },
     {
+        "name": "erusev/parsedown",
+        "version": "1.6.3",
+        "version_normalized": "1.6.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/erusev/parsedown.git",
+            "reference": "728952b90a333b5c6f77f06ea9422b94b585878d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/erusev/parsedown/zipball/728952b90a333b5c6f77f06ea9422b94b585878d",
+            "reference": "728952b90a333b5c6f77f06ea9422b94b585878d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-05-14T14:47:48+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Parsedown": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Emanuil Rusev",
+                "email": "hello@erusev.com",
+                "homepage": "http://erusev.com"
+            }
+        ],
+        "description": "Parser for Markdown.",
+        "homepage": "http://parsedown.org",
+        "keywords": [
+            "markdown",
+            "parser"
+        ]
+    },
+    {
         "name": "awethemes/skeleton",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/awethemes/skeleton.git",
-            "reference": "d4e2485638bad0ef4f1a003695993e9ce6bc1e4d"
+            "reference": "99fbee2bc5a0c1c644c4343cef03f69da547d089"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/awethemes/skeleton/zipball/d4e2485638bad0ef4f1a003695993e9ce6bc1e4d",
-            "reference": "d4e2485638bad0ef4f1a003695993e9ce6bc1e4d",
+            "url": "https://api.github.com/repos/awethemes/skeleton/zipball/99fbee2bc5a0c1c644c4343cef03f69da547d089",
+            "reference": "99fbee2bc5a0c1c644c4343cef03f69da547d089",
             "shasum": ""
         },
         "require": {
@@ -266,7 +266,7 @@
             "vlucas/valitron": "^1.2",
             "webdevstudios/cmb2": "^2.2.3"
         },
-        "time": "2017-06-28T03:12:54+00:00",
+        "time": "2017-07-05T20:48:52+00:00",
         "type": "wordpress-plugin",
         "extra": {
             "installer-paths": {

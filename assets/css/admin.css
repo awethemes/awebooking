@@ -654,15 +654,12 @@ table.wp-list-table .column-booking_total {
 .abkngcal-container--fullwidth table {
 	width: 100%;
 }
-
-
-.abkngcal--pricing-calendar .abkngcal__day > span,
-.abkngcal--pricing-calendar .abkngcal__day-heading > span  {
+.abkngcal-container--fullwidth .abkngcal__day > span,
+.abkngcal-container--fullwidth .abkngcal__day-heading > span  {
 	width: 100%;
 }
-
-.abkngcal--pricing-calendar .abkngcal__day,
-.abkngcal--pricing-calendar .abkngcal__day-heading {
+.abkngcal-container--fullwidth .abkngcal__day,
+.abkngcal-container--fullwidth .abkngcal__day-heading {
 	width: auto;
 	min-width: 32px;
 }
@@ -682,9 +679,17 @@ table.wp-list-table .column-booking_total {
 	width: 65px;
 }
 
+
 .range-start > .abkngcal__night-selection,
 .range-end > .abkngcal__night-selection,
 .in-range > .abkngcal__night-selection,
 .in-hover > .abkngcal__night-selection {
 	background-color: rgba(188, 232, 241, 0.75);
+}
+
+
+
+.abkngcal-container--pricing-rule .abkngcal__month-heading > span {
+	width: 125px;
+	text-align: left;
 }

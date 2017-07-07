@@ -40,14 +40,22 @@
       this.on('set:endDay', this.ui.onSetEndDay.bind(this))
         .on('set:startDay', this.ui.onSetStartDay.bind(this))
         .on('clear:endDay', this.ui.onClearEndDay.bind(this))
-        .on('clear:startDay', this.ui.onClearEndDay.bind(this))
+        .on('clear:startDay', this.ui.onClearStartDay.bind(this))
         .on('apply', this.toggleModal.bind(this));
 
       var self = this;
       $('.media-modal-close').on('click', function() {
         $(this).parents('.pricing-calendar-modal').hide();
         self.clearStartDay();
-      })
+        self.clearEndDay();
+      });
+
+      $(document).on('click', function(e) {
+        /*if (! $.contains(self.$el[0], e.target)) {
+          self.clearStartDay();
+          self.clearEndDay();
+        }*/
+      });
     },
 
     /**
@@ -164,15 +172,10 @@
       var $modal = $('.pricing-calendar-modal', document);
       var template = wp.template('pricing-calendar-form');
 
-      this.data_id = this.$el.closest('.abkngcal-container').data('roomType');
+      this.data_id = this.$el.closest('[data-unit]').data('unit');
 
       $modal.find('.media-modal-content').html(template(this));
       $modal.toggle();
-
-      $('#pricing-calendar-form', document).on('submit', function(e) {
-        // e.preventDefault();
-      });
-
     },
 
     showComments: function() {
@@ -254,9 +257,9 @@
     }
   });
 
-  $(function() {
+  window.PricingCalendar = PricingCalendar;
 
-    window.PricingCalendar = PricingCalendar;
+  $(function() {
 
     $('.abkngcal--pricing-calendar', document).each(function(index, el) {
       new PricingCalendar(el);

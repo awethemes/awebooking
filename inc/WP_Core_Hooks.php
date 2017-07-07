@@ -15,10 +15,6 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		$this->register_taxonomies();
-		$this->register_post_types();
-		$this->register_post_status();
-
 		// Don't push into $this->init, this hook only active in register method.
 		add_action( 'after_setup_theme', array( $this, 'register_sidebar' ) );
 	}
@@ -31,6 +27,11 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
+		// Don't push into $this->register, this contructors only active in init method.
+		$this->register_taxonomies();
+		$this->register_post_types();
+		$this->register_post_status();
+
 		// Enable single term for location taxonomy.
 		if ( $awebooking->is_multi_location() ) {
 			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION );
@@ -140,22 +141,6 @@ class WP_Core_Hooks extends Service_Hooks {
 			],
 		]));
 
-		// Register 'awebooking_rae' post type.
-		Post_Type::make(
-			'awebooking_rate',
-			esc_html__( 'Pricing Rule', 'awebooking' ),
-			esc_html__( 'Pricing Rules', 'awebooking' )
-		)
-		->set( apply_filters( 'awebooking/post_type_args/awebooking_rate', [
-			'supports'           => array( 'title' ),
-			'public'             => false,
-			'publicly_queryable' => false,
-			'rewrite'            => false,
-			'show_ui'            => false,
-			'hierarchical'       => true,
-			'show_in_menu'       => false,
-		]));
-
 		// Register 'awebooking' post type.
 		Post_Type::make(
 			'awebooking',
@@ -172,8 +157,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'show_in_admin_bar'   => false,
 			'exclude_from_search' => true,
 			'show_ui'             => true,
-			'supports'            => array( 'comments' ),
 			'show_in_menu'        => false,
+			'supports'            => array( 'comments' ),
 			'labels'              => array(
 				'all_items' => esc_html__( 'Bookings', 'awebooking' ),
 			),

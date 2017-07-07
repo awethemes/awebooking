@@ -142,7 +142,11 @@
   }
 
   // Overwite tabs default in metabox
+  .widget-content & ul.cmb2-tabs,
   .postbox-container & ul.cmb2-tabs {
+    margin: 0;
+    padding: 0;
+
     > li > a {
       line-height: 1.3;
       background: #f1f1f1;

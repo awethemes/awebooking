@@ -73,10 +73,10 @@ class Admin_Settings extends Admin_Page {
 			'type'     => 'select',
 			'name'     => esc_html__( 'Default location', 'awebooking' ),
 			'description' => esc_html__( 'Select a default location.', 'awebooking' ),
-			'options'  => wp_data( 'terms',  array(
+			'options_cb'  => wp_data_callback( 'terms',  array(
 				'taxonomy'   => AweBooking::HOTEL_LOCATION,
 				'hide_empty' => false,
-			) ),
+			)),
 			'validate' => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
 			'priority' => 15,
@@ -166,73 +166,95 @@ class Admin_Settings extends Admin_Page {
 		) );
 
 		$display->add_field( array(
-			'id'       => 'page_check_availability',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Check Availability', 'awebooking' ),
-			'description' => esc_html__( 'Selected page to display check availability form.', 'awebooking' ),
-			'default'  => $this->config->get_default( 'page_check_availability' ),
-			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'   => 'integer',
+			'id'           => 'page_check_availability',
+			'type'         => 'select',
+			'name'         => esc_html__( 'Check Availability', 'awebooking' ),
+			'description'  => esc_html__( 'Selected page to display check availability form.', 'awebooking' ),
+			'default'      => $this->config->get_default( 'page_check_availability' ),
+			'options_cb'   => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
+			'validate'     => 'integer',
+			'priority'     => 10,
 			'show_option_none' => true,
-			'priority' => 10,
 		) );
 
 		$display->add_field( array(
-			'id'       => 'page_booking',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Booking Informations', 'awebooking' ),
+			'id'          => 'page_booking',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Booking Informations', 'awebooking' ),
 			'description' => esc_html__( 'Selected page to display booking informations.', 'awebooking' ),
-			'default'  => $this->config->get_default( 'page_booking' ),
-			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'   => 'integer',
+			'default'     => $this->config->get_default( 'page_booking' ),
+			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
+			'validate'    => 'integer',
+			'priority'    => 15,
 			'show_option_none' => true,
-			'priority' => 15,
 		) );
 
 		$display->add_field( array(
-			'id'       => 'page_checkout',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Confirm Booking', 'awebooking' ),
+			'id'          => 'page_checkout',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Confirm Booking', 'awebooking' ),
 			'description' => esc_html__( 'Selected page to display checkout informations.', 'awebooking' ),
-			'default'  => $this->config->get_default( 'page_checkout' ),
-			'options'  => wp_data( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'   => 'integer',
+			'default'     => $this->config->get_default( 'page_checkout' ),
+			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
+			'validate'    => 'integer',
+			'priority'    => 20,
 			'show_option_none' => true,
-			'priority' => 20,
 		) );
 
 		$display->add_field( array(
-			'id'   => '__display_check_availability__',
-			'type' => 'title',
-			'name' => esc_html__( 'Check availability', 'awebooking' ),
+			'id'       => '__display_check_availability__',
+			'type'     => 'title',
+			'name'     => esc_html__( 'Check availability', 'awebooking' ),
 			'priority' => 25,
 		) );
 
 		$display->add_field( array(
-			'id'       => 'check_availability_max_adults',
-			'type'     => 'text_small',
+			'id'         => 'check_availability_max_adults',
+			'type'       => 'text_small',
 			'attributes' => array( 'type' => 'number' ),
-			'name'     => esc_html__( 'Max adults', 'awebooking' ),
-			'default'  => $this->config->get_default( 'check_availability_max_adults' ),
+			'name'       => esc_html__( 'Max adults', 'awebooking' ),
+			'default'    => $this->config->get_default( 'check_availability_max_adults' ),
 			'validate'   => 'integer|min:1',
+			'priority'   => 30,
 			'sanitization_cb' => 'absint',
-			'priority' => 30,
 		) );
 
 		$display->add_field( array(
-			'id'       => 'check_availability_max_children',
-			'type'     => 'text_small',
+			'id'         => 'check_availability_max_children',
+			'type'       => 'text_small',
 			'attributes' => array( 'type' => 'number' ),
-			'name'     => esc_html__( 'Max children', 'awebooking' ),
-			'default'  => $this->config->get_default( 'check_availability_max_children' ),
+			'name'       => esc_html__( 'Max children', 'awebooking' ),
+			'default'    => $this->config->get_default( 'check_availability_max_children' ),
 			'validate'   => 'integer|min:0',
+			'priority'   => 35,
 			'sanitization_cb' => 'absint',
-			'priority' => 35,
+		) );
+
+		$display->add_field( array(
+			'id'   => 'page_for_check_availability',
+			'type' => 'title',
+			'name' => esc_html__( 'Page for check availability ', 'awebooking' ),
+			'priority' => 40,
+		) );
+
+		$display->add_field( array(
+			'id'       => 'showing_price',
+			'type'     => 'select',
+			'name'     => esc_html__( 'Showing price', 'awebooking' ),
+			'description' => esc_html__( 'Selected a type of price to showing in the checking availability page.', 'awebooking' ),
+			'default'  => $this->config->get_default( 'showing_price' ),
+			'options'	 => array(
+				'start_price'	 => esc_html__( 'Starting price', 'awebooking' ),
+				'average_price'  => esc_html__( 'Average price', 'awebooking' ),
+				'total_price' 	 => esc_html__( 'Total price', 'awebooking' ),
+			),
+			'show_option_none' => false,
+			'priority' => 45,
 		) );
 
 		// Email.
 		$email = $this->add_section( 'email', [
-			'title' => esc_html__( 'Email', 'awebooking' ),
+			'title'    => esc_html__( 'Email', 'awebooking' ),
 			'priority' => 30,
 		]);
 

@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="awebooking-field">
-	<label for=""><?php esc_html_e( 'Arrival Date', 'awebooking' ); ?></label>
+<div class="awebooking-field awebooking-arrival-field">
+	<label for="<?php esc_html_e( 'Arrival Date', 'awebooking' ); ?>"><?php esc_html_e( 'Arrival Date', 'awebooking' ); ?></label>
 	<div class="awebooking-field-group">
 		<i class="awebookingf awebookingf-calendar"></i>
 		<input type="text" class="awebooking-datepicker awebooking-input awebooking-start-date" data-init="datepicker" data-alt-field="#start-date" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-min-nights="1" placeholder="<?php esc_html_e( 'Arrival Date', 'awebooking' ); ?>">
@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </div>
 
-<div class="awebooking-field">
-	<label for=""><?php esc_html_e( 'Departure Date', 'awebooking' ); ?></label>
+<div class="awebooking-field awebooking-departure-field">
+	<label for="<?php esc_html_e( 'Departure Date', 'awebooking' ); ?>"><?php esc_html_e( 'Departure Date', 'awebooking' ); ?></label>
 	<div class="awebooking-field-group">
 		<i class="awebookingf awebookingf-calendar"></i>
 		<input type="text" class="awebooking-datepicker awebooking-input awebooking-end-date" data-init="datepicker" data-alt-field="#end-date" data-date-format="<?php echo esc_attr( $date_format ); ?>" placeholder="<?php esc_html_e( 'Departure Date', 'awebooking' ); ?>">

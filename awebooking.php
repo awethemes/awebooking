@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:     AweBooking
- * Plugin URI:      http://awethemes.com/plugins/awebooking
+ * Plugin URI:      https://awethemes.com/plugins/awebooking
  * Description:     AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily.
- * Author:          awethemes
- * Author URI:      http://awethemes.com
+ * Author:          Awethemes
+ * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /i18n/languages
- * Version:         3.0.0-alpha-225
+ * Version:         3.0.0-alpha-230
  *
  * @package         AweBooking
  */
@@ -66,13 +66,36 @@ add_action( 'skeleton/init', array( $GLOBALS['awebooking'], 'boot' ) );
 register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'create_tables' ) );
 
 /**
+ * Show row meta on the plugin screen.
+ *
+ * @param	mixed $links Plugin row meta.
+ * @param	mixed $file  Plugin base file.
+ * @return	array
+ */
+function awebooking_plugin_row_meta( $links, $file ) {
+	if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
+		$row_meta = array(
+			'docs'    => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
+			'apidocs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking-apidocs' ) . '" aria-label="' . esc_attr__( 'View AweBooking API docs', 'awebooking' ) . '">' . esc_html__( 'API docs', 'awebooking' ) . '</a>',
+			'support' => '<a href="' . esc_url( 'https://awethemes.com/forum/plugin-support/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit customer support', 'awebooking' ) . '">' . esc_html__( 'Support', 'awebooking' ) . '</a>',
+			'demo'    => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
+		);
+
+		return array_merge( $links, $row_meta );
+	}
+
+	return (array) $links;
+}
+add_filter( 'plugin_row_meta', 'awebooking_plugin_row_meta', 10, 2 );
+
+/**
  * Redirect to welcome page.
  *
  * @param  string $plugin plugin.
  */
-function abkng_redirect_to_welcome_page( $plugin ) {
+function awebooking_redirect_to_welcome_page( $plugin ) {
 	if ( ( plugin_basename( __FILE__ ) == $plugin ) && ! get_option( 'awebooking_installed' ) ) {
 		exit( wp_redirect( admin_url( 'index.php?page=awebooking-setup' ) ) );
 	}
 }
-add_action( 'activated_plugin', 'abkng_redirect_to_welcome_page' );
+add_action( 'activated_plugin', 'awebooking_redirect_to_welcome_page' );

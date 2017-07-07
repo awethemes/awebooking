@@ -51,6 +51,7 @@ class Scripts_Hooks extends Service_Hooks {
 		wp_register_script( 'icon-picker', $skeleton_url . 'js/vendor/icon-picker' . $suffix . '.js', array( 'media-views' ), '0.5.0', true );
 
 		// Enqueue Skeleton.
+		wp_enqueue_style( 'skeleton' );
 		wp_enqueue_script( 'skeleton' );
 
 		wp_localize_script( 'skeleton', 'Skeleton', array(

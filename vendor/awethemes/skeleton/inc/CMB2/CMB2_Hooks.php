@@ -89,7 +89,7 @@ class CMB2_Hooks extends Service_Hooks {
 
 		// Options page updating...
 		if ( 'options-page' === $args['type'] || empty( $args['id'] ) ) {
-			$options = cmb2_options( $args['id'] )->get( $id_data['base'], array() );
+			$options = (array) cmb2_options( $args['id'] )->get( $id_data['base'], array() );
 			$repace_value = $args['value'];
 
 			if ( ! $args['single'] ) {
@@ -133,15 +133,26 @@ class CMB2_Hooks extends Service_Hooks {
 		if ( empty( $id_data['keys'] ) ) {
 			return $no_override;
 		}
-		
-		// NOTE: Maybe have bugs, just fixed for temp.
-		$id_keys = '[' . implode( '][', $id_data['keys'] ) . ']';
+
+		$ids = $id_data['keys'];
+
+		// For infomation for debug in the future.
+		// If have one id-data keys, that mean we only delete that key.
+		if ( 1 === count( $ids ) ) {
+			$delete_key = $ids[0];
+
+		// If more than one keys in id-data,
+		// we need build a multidimensional from that.
+		} else {
+			$id_base = array_shift( $ids );
+			$delete_key = $id_base . '[' . implode( '][', $ids ) . ']';
+		}
 
 		// Handler delete options.
 		if ( 'options-page' === $args['type'] || empty( $args['id'] ) ) {
-			$options = cmb2_options( $args['id'] )->get( $id_data['base'], array() );
+			$options = (array) cmb2_options( $args['id'] )->get( $id_data['base'], array() );
 
-			Multidimensional::delete( $options, $id_data['keys'] );
+			Multidimensional::delete( $options, $delete_key );
 
 			return cmb2_options( $args['id'] )->update( $id_data['base'], $options, false, true );
 		}
@@ -149,7 +160,7 @@ class CMB2_Hooks extends Service_Hooks {
 		// Handler delete metadata.
 		$metadata = (array) get_metadata( $args['type'], $args['id'], $id_data['base'], true );
 
-		Multidimensional::delete( $metadata, $id_data['keys'] );
+		Multidimensional::delete( $metadata, $delete_key );
 
 		return update_metadata( $args['type'], $args['id'], $id_data['base'], $metadata );
 	}
@@ -173,7 +184,7 @@ class CMB2_Hooks extends Service_Hooks {
 		}
 
 		if ( 'options-page' === $args['type'] ) {
-			$metadata = cmb2_options( $args['id'] )->get( $id_data['base'] );
+			$metadata = (array) cmb2_options( $args['id'] )->get( $id_data['base'] );
 		} else {
 			// NOTE: Maybe have bugs in this case, see: CMB2_Field::get_data().
 			$metadata = get_metadata( $args['type'], $args['id'], $id_data['base'], true );
