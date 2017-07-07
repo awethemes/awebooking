@@ -106,6 +106,9 @@ class Config implements Config_Interface {
 			'email_new_enable'            => true,
 			'email_cancelled_enable'      => true,
 			'email_complete_enable'       => true,
+
+			// Showing price.
+			'showing_price'			  => 'start_prices',
 		) );
 	}
 }
