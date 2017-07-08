@@ -54,6 +54,9 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
+### [3.0.0-alpha-300] - 2017-07-09
+#### Added
+- Added tool allow migration from awebooking v2.
 
 ### [3.0.0-alpha-230] - 2017-07-07
 #### Added

@@ -9,7 +9,7 @@ use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Support\Mail;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-230';
+	const VERSION = '3.0.0-alpha-300';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
@@ -146,6 +146,8 @@ class AweBooking extends SkeletonContainer {
 		parent::boot();
 
 		Shortcodes::init();
+
+		new Migrations\AweBooking2_Migration;
 
 		$this['flash_message']->setup_message();
 
