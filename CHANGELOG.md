@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0-alpha-300] - 2017-07-09
+## Added
+- Added tool allow migration from awebooking v2
+
 ## [3.0.0-alpha-230] - 2017-07-07
 ## Added
 - Add more core hooks.

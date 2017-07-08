@@ -1,4 +1,4 @@
-=== AweBooking ===
+=== AweBooking - Hotel Booking System ===
 Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
@@ -49,17 +49,14 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 * Activate AweBooking from your Plugins page. (You'll be greeted with a Setup page.)
 * Visit `Room type > Add new room type` and create some room types. (You can always delete these later.)
 
-== Contribution ==
-
-Development occurs on Github, and all contributions welcome. [https://github.com/awethemes/awebooking](https://github.com/awethemes/awebooking)
-
-A complete list of all our awesome contributors found here: [github.com/awethemes/awebooking/graphs/contributors](https://github.com/awethemes/awebooking/graphs/contributors)
-
 == Upgrade Notice ==
 
 If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
+### [3.0.0-alpha-300] - 2017-07-09
+#### Added
+- Added tool allow migration from awebooking v2.
 
 ### [3.0.0-alpha-230] - 2017-07-07
 #### Added
