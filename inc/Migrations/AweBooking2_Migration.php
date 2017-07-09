@@ -66,6 +66,10 @@ class AweBooking2_Migration {
 			return;
 		}
 
+		if ( ! $this->exists_old_version() ) {
+			return;
+		}
+
 		?><div class="notice notice-warning is-dismissible">
 			<p><strong>AweBooking Migration</strong> – Seem you just upgraded from AweBooking v2.x.</p>
 			<p>This version not compatible with old version, so if you need migrate database from old version <a href="<?php echo esc_url( admin_url( 'tools.php?page=awebooking-migrate' ) ); ?>">click here to run it now.</a></p>
