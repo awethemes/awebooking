@@ -333,7 +333,7 @@ class Admin_Settings extends Admin_Page {
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_new_subject',
 			'type'    => 'textarea_small',
-			'default' => '[{site_title}] New customer booking ({order_number}) - {order_date}',
+			'default' => '[{site_title}] New customer booking #{order_number} - {order_date}',
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ). ': [{site_title}] New customer booking ({order_number}) - {order_date}',
 			'attributes' => array( 'style' => 'height:50px;' ),
 		) );

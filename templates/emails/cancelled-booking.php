@@ -1,15 +1,15 @@
 <?php
 /**
- * New booking email.
+ * Cancelled booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/new-booking.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/emails/cancelled-booking.php.
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
  * @version     1.0.0
  */
 
-esc_html_e( 'Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:', 'awebooking' ) . "\n\n";
+printf( __( 'Your booking #%1$d from %2$s has been cancelled.', 'awebooking' ), $booking_id, $customer_first_name );
 ?>
 <h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Order #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
 
