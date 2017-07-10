@@ -50,15 +50,15 @@ $room_type_id = $result->get_room_type()->get_id();
 
 			switch ( abkng_config( 'showing_price' ) ) {
 				case 'average_price':
-					printf( esc_html__( 'Average: %s/ night', 'awebooking' ), $result->get_price_average() );
+					printf( esc_html__( 'Average: %s/night', 'awebooking' ), $result->get_price_average() );
 					break;
 
 				case 'total_price':
-					printf( esc_html__( 'Total %s', 'awebooking' ), $result->get_total_price() );
+					printf( esc_html__( 'Total :%s', 'awebooking' ), $result->get_total_price() );
 					break;
 
 				default:
-					printf( esc_html__( 'From %s/ night', 'awebooking' ), $result->get_room_type()->get_base_price() );
+					printf( esc_html__( 'From :%s/night', 'awebooking' ), $result->get_room_type()->get_base_price() );
 					break;
 			}
 			?></span>
