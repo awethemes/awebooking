@@ -16,10 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <?php if ( abkng_config( 'enable_location' ) && $locations && empty( $GLOBALS['awebooking-hide-location'] ) ) : ?>
 	<div class="awebooking-field">
-		<label for="<?php esc_html_e( 'Location', 'awebooking' ); ?>"><?php esc_html_e( 'Location', 'awebooking' ); ?></label>
+		<label for="awebooking-location"><?php esc_html_e( 'Location', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">
 			<i class="awebookingf awebookingf-select"></i>
-			<select name="location" class="awebooking-select">
+			<select name="location" class="awebooking-select" id="awebooking-location">
 				<?php foreach ( $locations as $location ) : ?>
 				<option value="<?php echo esc_attr( $location->slug ); ?>" <?php echo isset( $_GET['location'] ) ? selected( $_GET['location'], $location->slug, false ) : selected( $term_default->slug, $location->slug, false ); ?>><?php echo esc_attr( $location->name ); ?></option>
 				<?php endforeach; ?>
