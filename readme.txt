@@ -1,10 +1,10 @@
-=== AweBooking ===
+=== AweBooking - Hotel Booking System ===
 Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
 Tested up to:      4.8
-Stable tag:        3.0.0-alpha-225
+Stable tag:        3.0.0-alpha-301
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,3 +48,31 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 * Search for `awebooking`
 * Activate AweBooking from your Plugins page. (You'll be greeted with a Setup page.)
 * Visit `Room type > Add new room type` and create some room types. (You can always delete these later.)
+
+== Upgrade Notice ==
+
+If you have 2.x version, please do not upgrade to this version.
+
+== Changelog ==
+### [3.0.0-alpha-301] - 2017-07-09
+#### Fixed
+- Fixed the migration notice always show.
+
+### [3.0.0-alpha-300] - 2017-07-09
+#### Added
+- Added tool allow migration from awebooking v2.
+
+### [3.0.0-alpha-230] - 2017-07-07
+#### Added
+- Add more core hooks.
+
+#### Changes
+- Update latest Skeleton v0.3.
+- Widget now using Skeleton Widget.
+- Some template changes.
+
+#### Fixed
+- Fixed start-day not clear in Calendar.
+- Fixed check availability in single room not working.
+- Fixed memory and queries issues.
+- Minor bugs fixed.

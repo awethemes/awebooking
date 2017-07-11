@@ -53,12 +53,12 @@ class Pricing_Calendar {
 	public function display() {
 		global $wp_locale;
 
-		echo '<div class="abkngcal-container abkngcal-container--fullwidth" data-room-type="' . esc_attr( $this->room_type->get_id() ) . '">';
+		echo '<div class="abkngcal-container abkngcal-container--fullwidth">';
 
 		echo '<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
 		echo '<h2>' . esc_html( $this->room_type->get_title() ) . '</h2>';
 
-		echo '<table class="abkngcal abkngcal--pricing-calendar">';
+		echo '<table class="abkngcal abkngcal--pricing-calendar" data-unit="' . esc_attr( $this->room_type->get_id() ) . '">';
 		$this->display_thead();
 
 		echo '</tbody>';

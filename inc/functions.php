@@ -65,13 +65,20 @@ function abkng_sanitize_price( $number ) {
 	return Formatting::format_decimal( $number, true );
 }
 
-
-
-
-
-
-
-
+if ( ! function_exists( 'wp_data_callback' ) ) :
+	/**
+	 * Get Wordpress specific data from the DB and return in a usable array.
+	 *
+	 * @param  string $type Data type.
+	 * @param  mixed  $args Optional, data query args or something else.
+	 * @return array
+	 */
+	function wp_data_callback( $type, $args = array() ) {
+		return function() use ( $type, $args ) {
+			return Skeleton\Support\WP_Data::get( $type, $args );
+		};
+	}
+endif;
 
 
 

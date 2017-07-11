@@ -1,88 +1,86 @@
 <?php
 namespace AweBooking\Widgets;
 
-/**
- * Awebooking_Check_Availability_Widget
- */
-class Check_Availability_Widget extends \WP_Widget {
+use Skeleton\Widget;
+
+
+class Check_Availability_Widget extends Widget {
+	/**
+	 * Array of default values for widget settings.
+	 *
+	 * @var array
+	 */
+	public $defaults = array(
+		'title'         => '',
+		'hide_location' => false,
+	);
 
 	/**
-	 * Constructor of class
+	 * Contructor the widget.
 	 */
 	public function __construct() {
-		$widget_ops = array(
-			'classname'   => 'awebooking-check-availability-widget',
-			'description' => esc_html__( 'Display AweBooking Check Availability Form.', 'awebooking' ),
+		parent::__construct(
+			'awebooking_check_availability',
+			esc_html__( 'AweBooking: Check Availability', 'awebooking' ),
+			[
+				'classname'   => 'awebooking-check-availability-widget',
+				'description' => esc_html__( 'Display availability check form.', 'awebooking' ),
+			]
 		);
-
-		parent::__construct( 'awebooking_check_availability', esc_html__( 'AweBooking: Check Availability Form', 'awebooking' ), $widget_ops );
 	}
 
 	/**
-	 * Display widget.
+	 * Front-end display of widget.
 	 *
-	 * @param  array $args     Sidebar data.
-	 * @param  array $instance Widget data.
-	 * @return void
+	 * @param  array $args      The widget arguments set up when a sidebar is registered.
+	 * @param  array $instance  The widget settings as set by user.
 	 */
 	public function widget( $args, $instance ) {
-		$title = $instance['title'];
-		$hide_location = '';
-		if ( abkng_config( 'enable_location' ) ) {
-			$hide_location = $instance['hide_location'] ? true : '';
-		}
+		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget']; // WPCS: XSS OK.
+		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+		$title = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 
+		// Build shortcode attributes.
+		$attributes = apply_filters( 'awebooking/widget/check_availability_attributes', [
+			'hide_location' => ( awebooking()->is_multi_location() && $instance['hide_location'] ) ? '1' : '0',
+		]);
+
+		// Output the widget.
+		echo $args['before_widget'];
 		if ( $title ) {
-			echo $args['before_title'] . $title . $args['after_title']; // WPCS: XSS OK.
+			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		do_shortcode( '[awebooking_check_form hide_location="' . $hide_location . '"]' );
+		$html_attributes = '';
+		foreach ( $attributes as $key => $value ) {
+			$html_attributes .= $key . '="' . esc_attr( $value ) . '" ';
+		}
 
+		do_shortcode( '[awebooking_check_form ' . $html_attributes . ']' );
 		echo $args['after_widget']; // WPCS: XSS OK.
 	}
 
 	/**
-	 * Display widget control.
+	 * Array of widget fields args.
 	 *
-	 * @param  array $instance Widget data.
-	 * @return void
+	 * @var array
 	 */
-	public function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'hide_location' => '' ) );
-		$title = strip_tags( $instance['title'] );
-		?>
-			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'awebooking' ); ?></label>
-				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-			</p>
+	public function fields() {
+		$fields[] = [
+			'id'   => 'title',
+			'type' => 'text',
+			'name' => esc_html__( 'Title', 'awebooking' ),
+		];
 
-			<?php if ( abkng_config( 'enable_location' ) ) : $hide_location = strip_tags( $instance['hide_location'] );?>
-				<p>
-					<input class="checkbox" type="checkbox" <?php checked( $instance[ 'hide_location' ], 'on' ); ?> id="<?php echo $this->get_field_id( 'hide_location' ); ?>" name="<?php echo $this->get_field_name( 'hide_location' ); ?>" />
-					<label for="<?php echo $this->get_field_id( 'hide_location' ); ?>"><?php esc_html_e( 'Hide Location?', 'awebooking' ); ?></label>
-				</p>
-			<?php endif ?>
-		<?php
-	}
-
-	/**
-	 * Save widget data.
-	 *
-	 * @param  array $new_instance New instance.
-	 * @param  array $old_instance Old instnace.
-	 * @return array Save data.
-	 */
-	public function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-
-		$instance['title'] = sanitize_text_field( $new_instance['title'] );
-
-		if ( abkng_config( 'enable_location' ) ) {
-			$instance['hide_location'] = isset( $new_instance['hide_location'] ) ? sanitize_text_field( $new_instance['hide_location'] ) : '';
+		if ( awebooking()->is_multi_location() ) {
+			$fields[] = [
+				'id'   => 'hide_location',
+				'type' => 'checkbox',
+				'desc' => esc_html__( 'Hide Location?', 'awebooking' ),
+			];
 		}
 
-		return $instance;
+		return $fields;
 	}
 }

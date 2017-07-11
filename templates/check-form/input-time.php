@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="awebooking-field">
+<div class="awebooking-field awebooking-arrival-field">
 	<label for="start-date-placeholder"><?php esc_html_e( 'Arrival Date', 'awebooking' ); ?></label>
 	<div class="awebooking-field-group">
 		<i class="awebookingf awebookingf-calendar"></i>
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </div>
 
-<div class="awebooking-field">
+<div class="awebooking-field awebooking-departure-field">
 	<label for="end-date-placeholder"><?php esc_html_e( 'Departure Date', 'awebooking' ); ?></label>
 	<div class="awebooking-field-group">
 		<i class="awebookingf awebookingf-calendar"></i>

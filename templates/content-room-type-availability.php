@@ -44,7 +44,25 @@ $room_type_id = $result->get_room_type()->get_id();
 			</a>
 		</h2>
 
-		<p class="awebooking-loop-room-type__price"><?php printf( esc_html__( 'Start from %s / Night', 'awebooking' ), '<span>' . $result->get_price_average() . '</span>' ); // WPCS: xss ok. ?></p>
+
+		<p class="awebooking-loop-room-type__price">
+			<span><?php
+
+			switch ( abkng_config( 'showing_price' ) ) {
+				case 'average_price':
+					printf( esc_html__( 'Average: %s/night', 'awebooking' ), $result->get_price_average() );
+					break;
+
+				case 'total_price':
+					printf( esc_html__( 'Total :%s', 'awebooking' ), $result->get_total_price() );
+					break;
+
+				default:
+					printf( esc_html__( 'From :%s/night', 'awebooking' ), $result->get_room_type()->get_base_price() );
+					break;
+			}
+			?></span>
+		</p>
 
 		<div class="awebooking-loop-room-type__desc">
 			<?php print wp_trim_words( $result->get_room_type()->get_description(), 25, '...' ); // WPCS: xss ok. ?>

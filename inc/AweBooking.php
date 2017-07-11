@@ -8,7 +8,7 @@ use AweBooking\BAT\Availability;
 use AweBooking\Admin\Admin_Hooks;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-225';
+	const VERSION = '3.0.0-alpha-301';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
@@ -147,6 +147,8 @@ class AweBooking extends SkeletonContainer {
 		parent::boot();
 
 		Shortcodes::init();
+
+		new Migrations\AweBooking2_Migration;
 
 		$this['flash_message']->setup_message();
 
