@@ -162,7 +162,7 @@ class Admin_Ajax {
 	}
 
 	public function set_event() {
-		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || empty( $_REQUEST['state'] ) ) {
+		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || ! isset( $_REQUEST['state'] ) ) {
 			return wp_send_json_error();
 		}
 
