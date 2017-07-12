@@ -5,12 +5,6 @@
  * @package AweBooking
  */
 
-use Carbon\Carbon;
-use AweBooking\Room;
-use AweBooking\AweBooking;
-use AweBooking\Support\Date_Utils;
-use AweBooking\Support\Formatting;
-
 require_once trailingslashit( __DIR__ ) . '/template-functions.php';
 require_once trailingslashit( __DIR__ ) . '/template-hook-functions.php';
 
@@ -43,26 +37,87 @@ function abkng_config( $key = null ) {
 }
 
 /**
- * The datetime should be a string using
- * ISO-8601 "Y-m-d" date format, eg: 2017-05-10.
+ * Returns true if on a page which uses AweBooking templates.
  *
- * @param string $datetime The date string.
- * @return Carbon
- *
- * @throws InvalidArgumentException //.
+ * @return boolean
  */
-function abkng_create_datetime( $datetime ) {
-	return Date_Utils::create_date( $datetime );
+function is_awebooking() {
+	$is_awebooking = (
+		is_room_type_archive() || is_room_type() ||
+		is_check_availability_page() || is_booking_info_page() || is_booking_checkout_page()
+	) ? true : false;
+
+	return apply_filters( 'is_awebooking', $is_awebooking );
 }
 
-/**
- * Sanitize price number.
- *
- * @param  string|numeric $number Raw numeric.
- * @return float
- */
-function abkng_sanitize_price( $number ) {
-	return Formatting::format_decimal( $number, true );
+if ( ! function_exists( 'is_room_type_archive' ) ) :
+	/**
+	 * Is current page is archive of "room_type".
+	 *
+	 * @return boolean
+	 */
+	function is_room_type_archive() {
+		return is_post_type_archive( AweBooking::ROOM_TYPE );
+	}
+endif;
+
+if ( ! function_exists( 'is_room_type' ) ) :
+	/**
+	 * Returns true when viewing a single room-type.
+	 *
+	 * @return boolean
+	 */
+	function is_room_type() {
+		return is_singular( AweBooking::ROOM_TYPE );
+	}
+endif;
+
+if ( ! function_exists( 'is_check_availability_page' ) ) :
+	/**
+	 * Returns true when viewing a "search availability results " page.
+	 *
+	 * @return boolean
+	 */
+	function is_check_availability_page() {
+		global $wp_query;
+
+		$current_id = $wp_query->get_queried_object_id();
+		$page_id = (int) awebooking( 'config' )->get( 'page_check_availability' );
+
+		return ( is_page() && $current_id === $page_id );
+	}
+endif;
+
+if ( ! function_exists( 'is_booking_info_page' ) ) :
+	/**
+	 * Returns true when viewing a "booking review" page.
+	 *
+	 * @return boolean
+	 */
+	function is_booking_info_page() {
+		global $wp_query;
+
+		$current_id = $wp_query->get_queried_object_id();
+		$page_id = (int) awebooking( 'config' )->get( 'page_booking' );
+
+		return ( is_page() && $current_id === $page_id );
+	}
+endif;
+
+if ( ! function_exists( 'is_booking_checkout_page' ) ) {
+	/**
+	 * Returns true when viewing a "booking checkout" page.
+	 *
+	 * @return boolean
+	 */
+	function is_booking_checkout_page() {
+		global $wp_query;
+
+		$current_id = $wp_query->get_queried_object_id();
+		$page_id = (int) awebooking( 'config' )->get( 'page_checkout' );
+
+		return ( is_page() && $current_id === $page_id );
+	}
 }
 
 if ( ! function_exists( 'wp_data_callback' ) ) :
@@ -80,85 +135,31 @@ if ( ! function_exists( 'wp_data_callback' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'priority_list' ) ) :
+	/**
+	 * Make a list stack
+	 *
+	 * @param  array $values An array values.
+	 * @return static
+	 */
+	function priority_list( array $values ) {
+		$stack = new Skeleton\Support\Priority_List;
 
+		foreach ( $values as $key => $value ) {
+			$priority = is_object( $value ) ? $value->priority : $value['priority'];
+			$stack->insert( $key, $value, $priority );
+		}
 
-
-
-
-
-
-
-
-
+		return $stack;
+	}
+endif;
 
 /**
- * is_awebooking - Returns true if on a page which uses AweBooking templates (cart and checkout are standard pages with shortcodes and thus are not included).
- * @return bool
+ * Sanitize price number.
+ *
+ * @param  string|numeric $number Raw numeric.
+ * @return float
  */
-function is_awebooking() {
-	return apply_filters( 'is_awebooking', ( is_room_type_archive() || is_room_type() || is_check_availability_page() || is_booking_info_page() || is_booking_checkout_page() ) ? true : false );
-}
-
-if ( ! function_exists( 'is_room_type_archive' ) ) {
-
-	/**
-	 * is_room_type_archive
-	 * @return bool
-	 */
-	function is_room_type_archive() {
-		return ( is_post_type_archive( 'room_type' ) );
-	}
-}
-
-if ( ! function_exists( 'is_room_type' ) ) {
-
-	/**
-	 * is_room_type - Returns true when viewing a single room type.
-	 * @return bool
-	 */
-	function is_room_type() {
-		return is_singular( array( 'room_type' ) );
-	}
-}
-
-if ( ! function_exists( 'is_check_availability_page' ) ) {
-
-	/**
-	 * is_check_availability_page - Returns true when viewing a single room type.
-	 * @return bool
-	 */
-	function is_check_availability_page() {
-		global $wp_query;
-		$page_id = $wp_query->get_queried_object_id();
-
-		return ( is_page() && ( intval( abkng_config( 'page_check_availability' ) ) === $page_id ) );
-	}
-}
-
-if ( ! function_exists( 'is_booking_info_page' ) ) {
-
-	/**
-	 * is_check_availability_page - Returns true when viewing a single room type.
-	 * @return bool
-	 */
-	function is_booking_info_page() {
-		global $wp_query;
-		$page_id = $wp_query->get_queried_object_id();
-
-		return ( is_page() && ( intval( abkng_config( 'page_booking' ) ) === $page_id ) );
-	}
-}
-
-if ( ! function_exists( 'is_booking_checkout_page' ) ) {
-
-	/**
-	 * is_check_availability_page - Returns true when viewing a single room type.
-	 * @return bool
-	 */
-	function is_booking_checkout_page() {
-		global $wp_query;
-		$page_id = $wp_query->get_queried_object_id();
-
-		return ( is_page() && ( intval( abkng_config( 'page_checkout' ) ) === $page_id ) );
-	}
+function abkng_sanitize_price( $number ) {
+	return AweBooking\Support\Formatting::format_decimal( $number, true );
 }

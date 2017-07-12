@@ -17,7 +17,6 @@ class Admin_Ajax {
 		$ajax_hooks = [
 			'set_event' => 'set_event',
 			'get_yearly_calendar' => 'get_yearly_calendar',
-			'set_pricing' => 'set_pricing',
 			'check_availability' => 'check_availability',
 			'add_booking_item' => 'add_booking_item',
 		];
@@ -126,28 +125,6 @@ class Admin_Ajax {
 		$response['nights'] = (string) $availability->get_nights();
 
 		return wp_send_json_success( $response );
-	}
-
-
-	// TODO: remove...
-	public function set_pricing() {
-		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || empty( $_REQUEST['rate_id'] ) ) {
-			return wp_send_json_error();
-		}
-
-		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
-		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
-		$price = sanitize_text_field( wp_unslash( $_REQUEST['price'] ) );
-
-		$start_day = abkng_create_datetime( $start )->startOfDay();
-		$end_day = abkng_create_datetime( $end )->startOfDay()->subMinute();
-
-		$rate = new Rate( absint( $_REQUEST['rate_id'] ) );
-		$pricing = new Room_State( $rate, $start_day, $end_day, $price );
-
-		$pricing->save();
-
-		wp_send_json_success();
 	}
 
 	public function get_yearly_calendar() {
