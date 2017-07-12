@@ -58,8 +58,6 @@ class AweBooking extends SkeletonContainer {
 
 		new Service_Tax;
 
-		do_action( 'awebooking/booting', $this );
-
 		static::$instance = $this;
 	}
 
