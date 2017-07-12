@@ -67,7 +67,8 @@ class Factory {
 		$period = new Date_Period(
 			sanitize_text_field( wp_unslash( $start_date ) ),
 			sanitize_text_field( wp_unslash( $end_date ) ),
-			$strict
+			$strict,
+			Date_Period::EXCLUDE_END_DATE
 		);
 
 		// Take accept requests.
