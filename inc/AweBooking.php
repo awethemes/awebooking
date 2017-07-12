@@ -6,7 +6,6 @@ use Skeleton\Container\Container as SkeletonContainer;
 
 use AweBooking\BAT\Availability;
 use AweBooking\Admin\Admin_Hooks;
-use AweBooking\Support\Mail;
 
 class AweBooking extends SkeletonContainer {
 	const VERSION = '3.0.0-alpha-301';
@@ -126,6 +125,7 @@ class AweBooking extends SkeletonContainer {
 		});
 
 		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+
 	}
 
 	/**

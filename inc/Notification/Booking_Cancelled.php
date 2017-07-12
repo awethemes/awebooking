@@ -5,7 +5,7 @@ use AweBooking\AweBooking;
 use AweBooking\Support\Mail\Mailable;
 use AweBooking\Support\Formatting;
 
-class Booking_Created extends Mailable {
+class Booking_Cancelled extends Mailable {
 	protected $booking;
 	protected $avai;
 
@@ -34,7 +34,7 @@ class Booking_Created extends Mailable {
 			}
 		}
 
-		return $this->get_template( 'new-booking', [
+		return $this->get_template( 'cancelled-booking', [
 			'booking_id'           => $this->booking->get_id(),
 			'room_name'            => $this->avai->get_room_type()->get_title(),
 			'check_in'             => $this->avai->get_check_in()->format( 'Y-m-d' ),
@@ -59,7 +59,7 @@ class Booking_Created extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = abkng_config( 'email_new_subject' );
+		$subject = abkng_config( 'email_cancelled_subject' );
 		return $this->format_string( $subject );
 	}
 
