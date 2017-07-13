@@ -80,10 +80,8 @@ register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'create_tabl
 function awebooking_plugin_row_meta( $links, $file ) {
 	if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
 		$row_meta = array(
-			'docs'    => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
-			'apidocs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking-apidocs' ) . '" aria-label="' . esc_attr__( 'View AweBooking API docs', 'awebooking' ) . '">' . esc_html__( 'API docs', 'awebooking' ) . '</a>',
-			'support' => '<a href="' . esc_url( 'https://awethemes.com/forum/plugin-support/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit customer support', 'awebooking' ) . '">' . esc_html__( 'Support', 'awebooking' ) . '</a>',
-			'demo'    => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
+			'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
+			'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
 		);
 
 		return array_merge( $links, $row_meta );
