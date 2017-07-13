@@ -28,6 +28,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	 */
 	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type ); ?>
 
+	<table>
+		<tbody>
+			<tr>
+				<td colspan="2" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
+				<td><b><?php print $availability->get_total_price(); // WPCS: xss ok.?></b></td>
+			</tr>
+		</tbody>
+	</table>
+
 	<form id="awebooking-checkout-form" class="awebooking-checkout-form" method="POST">
 		<?php wp_nonce_field( 'awebooking-checkout-nonce' ); ?>
 		<input type="hidden" name="awebooking-action" value="checkout">

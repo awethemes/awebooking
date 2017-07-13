@@ -20,7 +20,7 @@ namespace AweBooking;
 
 		<div class="col">
 			<h3><?php esc_html_e( 'What\' news', 'awebooking' ); ?></h3>
-			<p><?php printf( __( 'Always stay up-to-date with the latest version of Awebooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ) , esc_url( 'http://docs.awethemes.com/awebooking/change-logs/' ) );	?>
+			<p><?php printf( __( 'Always stay up-to-date with the latest version of Awebooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/change-logs/' ) );	?>
 			</p>
 
 			<h3><?php esc_html_e( 'How to use', 'awebooking' ); ?></h3>

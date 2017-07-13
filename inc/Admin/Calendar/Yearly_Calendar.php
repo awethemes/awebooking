@@ -171,7 +171,7 @@ class Yearly_Calendar {
 
 		$this->display_thead();
 
-		echo '</tbody>';
+		echo '<tbody>';
 
 		for ( $month = 1; $month <= 12; $month++ ) {
 			$working_month = Carbon::createFromDate( $this->year, $month, 1 );

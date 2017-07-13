@@ -165,6 +165,19 @@ class Booking_Request implements Booking_Request_Interface {
 	}
 
 	/**
+	 * Remove a booking request.
+	 *
+	 * @param  string $key   Booking request key.
+	 * @param  string $value Booking request value.
+	 * @return $this
+	 */
+	public function remove_request( $key ) {
+		unset( $this->requests[ $key ] );
+
+		return $this;
+	}
+
+	/**
 	 * Return valid states for the Calendar.
 	 *
 	 * @return array

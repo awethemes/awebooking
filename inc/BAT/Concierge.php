@@ -6,6 +6,8 @@ use Carbon\Carbon;
 
 use AweBooking\Room;
 use AweBooking\Room_State;
+use AweBooking\Booking;
+use AweBooking\Booking_Event;
 use AweBooking\Rate;
 use AweBooking\Rate_Pricing;
 use AweBooking\Room_Type;
@@ -129,6 +131,29 @@ class Concierge implements Concierge_Interface {
 		}
 
 		return $state->save();
+	}
+
+	/**
+	 * Set the booking event.
+	 *
+	 * @param  Booking     $booking The Booking instance.
+	 * @param  Date_Period $period  Date period instance.
+	 * @param  array       $options Setting options.
+	 * @return boolean
+	 */
+	public function set_booking_event( Booking $booking, Date_Period $period, array $options = [] ) {
+		$options = wp_parse_args( $options, [
+			'clear' => false,
+		]);
+
+		$event = new Booking_Event(
+			$booking,
+			$period->get_start_date(),
+			$period->get_end_date()->subMinute(),
+			$options['clear']
+		);
+
+		return $event->save();
 	}
 
 	/**

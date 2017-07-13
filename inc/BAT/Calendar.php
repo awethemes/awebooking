@@ -2,12 +2,15 @@
 namespace AweBooking\BAT;
 
 use DateTime;
-use Roomify\Bat\Event\Event;
 use Roomify\Bat\Unit\UnitInterface;
 use Roomify\Bat\Store\StoreInterface;
-use Roomify\Bat\Calendar\Calendar as BatCalendar;
+use Roomify\Bat\Calendar\Calendar as BAT_Calendar;
 
-class Calendar extends BatCalendar {
+class Calendar extends BAT_Calendar {
+	/* Constants */
+	const BAT_DAY   = 'bat_day';
+	const BAT_DAILY = 'bat_daily';
+
 	/**
 	 * Calendar constructor.
 	 *
@@ -58,7 +61,7 @@ class Calendar extends BatCalendar {
 	public function getEvents( DateTime $start_date, DateTime $end_date, $reset = true ) {
 		if ( $reset || empty( $this->itemized_events ) ) {
 			// We first get events in the itemized format.
-			$this->itemized_events = $this->getEventsItemized( $start_date, $end_date, Event::BAT_DAILY );
+			$this->itemized_events = $this->getEventsItemized( $start_date, $end_date, static::BAT_DAILY );
 		}
 
 		// We then normalize those events to create Events that get added to an array.

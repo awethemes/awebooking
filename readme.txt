@@ -4,7 +4,7 @@ Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
 Tested up to:      4.8
-Stable tag:        3.0.0-alpha-301
+Stable tag:        3.0.0-alpha-305
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ Awebooking is a well-coded plugin with an excellent user interface, perfect for 
 Your customers will be impressed by how easy-to-use, fast and clear to check availability and send a booking request. However, it is not harder to use than any other hotel booking WordPress plugins. Moreover, we believe that it's even much easier! And there's a good reason for that: amount of time and effort that we invested in Awebooking to bring you the best hotel booking Wordpress plugin ever.
 
 You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also provide WordPress admin demo if you want to take a look.
+
+> Checkout 2 themes using AweBooking 3.0: [Fleurdesel](http://demo.awethemes.com/fleurdesel/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree) & [Hillter](http://demo.awethemes.com/hillter/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree)
 
 == Plugin features ==
 
@@ -42,6 +44,8 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 6. Booking list
 7. Plugin settings
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
+
 == Installation ==
 
 * From your WordPress dashboard, Visit `Plugins > Add New`
@@ -54,6 +58,16 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
+### [3.0.0-alpha-305] - 2017-07-09
+#### Changes
+- Template changes.
+
+#### Fixed
+- Fixed email not work.
+- Fixed can't set "Available" state in Rooms Management.
+- After delete a room-type, AweBooking data related to this room-type will be removed too.
+- After delete a booking, room state now restore to "available" and booking event will be clear.
+
 ### [3.0.0-alpha-301] - 2017-07-09
 #### Fixed
 - Fixed the migration notice always show.

@@ -6,10 +6,9 @@ use Skeleton\Container\Container as SkeletonContainer;
 
 use AweBooking\BAT\Availability;
 use AweBooking\Admin\Admin_Hooks;
-use AweBooking\Support\Mail;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-301';
+	const VERSION = '3.0.0-alpha-305';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
@@ -51,14 +50,14 @@ class AweBooking extends SkeletonContainer {
 
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
+		$this->trigger( new Logic_Hooks );
+
 		$this->trigger( new Admin_Hooks );
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
 		$this->trigger( new Ajax_Controller_Hooks );
 
 		new Service_Tax;
-
-		do_action( 'awebooking/booting', $this );
 
 		static::$instance = $this;
 	}
@@ -128,6 +127,7 @@ class AweBooking extends SkeletonContainer {
 		});
 
 		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+
 	}
 
 	/**

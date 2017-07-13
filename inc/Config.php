@@ -104,6 +104,7 @@ class Config implements Config_Interface {
 			'email_notify_another_emails' => '',
 
 			'email_new_enable'            => true,
+			'email_new_subject'           => '[{site_title}] New customer booking #{order_number} - {order_date}',
 			'email_cancelled_enable'      => true,
 			'email_complete_enable'       => true,
 

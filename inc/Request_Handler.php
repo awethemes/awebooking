@@ -2,21 +2,23 @@
 namespace AweBooking;
 
 use Exception;
-use AweBooking\AweBooking;
-
-use AweBooking\Support\Date_Period;
-use AweBooking\Support\Date_Utils;
-use AweBooking\BAT\Booking_Request;
-use AweBooking\BAT\Factory;
-use AweBooking\Support\Utils;
-use AweBooking\BAT\Session_Booking_Request;
-use AweBooking\Support\Formatting;
 use AweBooking\Room_Type;
-use AweBooking\Support\Mail;
-use AweBooking\Mails\Booking_Created;
-
-use Skeleton\Support\Validator;
+use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
+
+use AweBooking\BAT\Factory;
+use AweBooking\BAT\Booking_Request;
+use AweBooking\BAT\Session_Booking_Request;
+
+use AweBooking\Support\Utils;
+use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Formatting;
+use AweBooking\Support\Date_Period;
+use AweBooking\Support\Mail\Mailer;
+use Skeleton\Support\Validator;
+
+use AweBooking\Notification\Booking_Created;
+use AweBooking\Notification\Admin_Booking_Created;
 
 class Request_Handler extends Service_Hooks {
 	/**
@@ -124,6 +126,15 @@ class Request_Handler extends Service_Hooks {
 			if ( ! $booking ) {
 				wp_die( esc_html__( 'Something went wrong', 'awebooking' ) );
 				return; // Something went wrong.
+			}
+
+			if ( abkng_config( 'email_new_enable' ) ) {
+				try {
+					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking, $availability ) );
+					Mailer::to( Utils::get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking, $availability ) );
+				} catch ( Exception $e ) {
+					// ...
+				}
 			}
 
 			do_action( 'awebooking/checkout_completed', $booking, $availability );

@@ -693,3 +693,7 @@ table.wp-list-table .column-booking_total {
 	width: 125px;
 	text-align: left;
 }
+
+.cmb-type-post-search-text .cmb-td .dashicons {
+    right: auto !important;
+}
