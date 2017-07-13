@@ -185,7 +185,7 @@ class BAT_Store extends Base_Store {
 
 			if ( count( $unit_ids ) > 0 ) {
 				// Unit ids are defined so add this as a filter.
-				$parameters .= 'AND `' . $this->foreign_key . '` IN (' . implode( ',' , $unit_ids ) . ') ';
+				$parameters .= 'AND `' . $this->foreign_key . '` IN (' . implode( ',', $unit_ids ) . ') ';
 			}
 
 			$year_count++;
