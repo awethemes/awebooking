@@ -44,10 +44,6 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 6. Booking list
 7. Plugin settings
 
-== Video ==
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
-
 == Installation ==
 
 * From your WordPress dashboard, Visit `Plugins > Add New`
@@ -92,3 +88,7 @@ If you have 2.x version, please do not upgrade to this version.
 - Fixed check availability in single room not working.
 - Fixed memory and queries issues.
 - Minor bugs fixed.
+
+## Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
