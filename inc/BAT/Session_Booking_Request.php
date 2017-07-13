@@ -36,7 +36,7 @@ class Session_Booking_Request extends Booking_Request {
 
 		$requests = maybe_unserialize( wp_unslash( $_COOKIE['awebooking-request'] ) );
 
-		$period = new Date_Period( $requests['check_in'], $requests['check_out'] );
+		$period = new Date_Period( $requests['check_in'], $requests['check_out'], true, Date_Period::EXCLUDE_END_DATE );
 		parent::__construct( $period, $requests );
 	}
 }
