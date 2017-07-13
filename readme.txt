@@ -18,7 +18,7 @@ Your customers will be impressed by how easy-to-use, fast and clear to check ava
 
 You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also provide WordPress admin demo if you want to take a look.
 
-> Checkout 2 themes using AweBooking 3.0: [Fleurdesel](http://demo.awethemes.com/fleurdesel/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree) & [Hillter](http://demo.awethemes.com/hillter/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree)
+> Checkout 2 themes using AweBooking 3.0: [Fleurdesel](http://demo.awethemes.com/?theme=Fleurdesel&utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree) & [Hillter](http://demo.awethemes.com/?theme=Hillter&utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree)
 
 == Plugin features ==
 
