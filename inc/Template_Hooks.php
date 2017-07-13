@@ -16,7 +16,6 @@ class Template_Hooks extends Service_Hooks {
 		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
 		add_filter( 'body_class', array( $this, 'awebooking_body_class' ) );
-		// add_filter( 'template_include', array( $this, 'handle_check_availability_form' ), 5 );
 	}
 
 	/**

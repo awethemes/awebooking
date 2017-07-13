@@ -1,11 +1,8 @@
 <?php
 namespace AweBooking;
 
-use Skeleton\Container\Service_Hooks;
 use AweBooking\Support\Utils;
-use AweBooking\Support\Date_Period;
-use AweBooking\BAT\Factory;
-use Roomify\Bat\Unit\Unit;
+use Skeleton\Container\Service_Hooks;
 
 class WP_Query_Hooks extends Service_Hooks {
 	/**
@@ -16,15 +13,13 @@ class WP_Query_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
+		// Apply query clauses in the WP_Query.
 		add_filter( 'posts_clauses', [ $this, 'apply_query_clauses' ], 10, 2 );
 
 		// Setup the awebooking objects into the main query.
 		add_action( 'the_post', array( $this, 'setup_awebooking_objects' ) );
 
 		add_action( 'pre_get_posts', [ $this, 'loction_filter' ], 10, 1 );
-
-		add_action( 'save_post', [ $this, 'handler_save_booking' ], 10 );
-		add_action( 'delete_post', [ $this, 'delete_rooms' ] );
 	}
 
 	/**
@@ -76,7 +71,7 @@ class WP_Query_Hooks extends Service_Hooks {
 	}
 
 	/**
-	 * When the_post is called, setup the awebooking objects.
+	 * When `the_post()` is called, setup the awebooking objects.
 	 *
 	 * @param  WP_Post $post The WP_Post object (passed by reference).
 	 * @return mixed
@@ -98,44 +93,6 @@ class WP_Query_Hooks extends Service_Hooks {
 				break;
 		}
 	}
-
-
-
-
-
-	/**
-	 * //
-	 *
-	 * @param  int $post_id //.
-	 * @return void
-	 */
-	public function delete_rooms( $post_id ) {
-		global $wpdb;
-
-		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = %d", $post_id ) );
-	}
-
-
-
-
-
-
-
-
-	public function handler_save_booking( $post_id ) {
-		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
-
-		$post_type = get_post_type( $post_id );
-		if ( 'awebooking' != $post_type ) {
-			return;
-		}
-
-		$booking = new Booking( $post_id );
-		$booking->save();
-	}
-
 
 	/**
 	 * Filter by locations.

@@ -5,7 +5,6 @@ use Skeleton\Taxonomy;
 use Skeleton\Post_Type;
 use Taxonomy_Single_Term;
 use Skeleton\Container\Service_Hooks;
-use AweBooking\Support\Date_Period;
 
 class WP_Core_Hooks extends Service_Hooks {
 	/**
@@ -40,26 +39,6 @@ class WP_Core_Hooks extends Service_Hooks {
 			$location_tax->set( 'force_selection', true );
 			$location_tax->set( 'priority', 'default' );
 		}
-
-		add_action( 'before_delete_post', array( $this, 'update_room_state' ) );
-	}
-	/**
-	 * Update room state.
-	 *
-	 * @param  string $postid id.
-	 * @return void
-	 */
-	public function update_room_state( $postid ) {
-		global $post_type;
-		if ( 'awebooking' !== $post_type ) {
-			return;
-		}
-
-		$booking_info = new Booking( absint( $postid ) );
-		$room = $booking_info->get_booking_room();
-		$period = new Date_Period( $booking_info['check_in'], $booking_info['check_out'], false );
-
-		awebooking( 'concierge' )->set_room_state( $room, $period, Room_State::AVAILABLE, [ 'force' => true ] );
 	}
 
 	/**
