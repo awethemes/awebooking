@@ -44,6 +44,8 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 6. Booking list
 7. Plugin settings
 
+== Video ==
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Installation ==
