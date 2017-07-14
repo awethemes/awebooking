@@ -94,14 +94,17 @@ abstract class Abstract_Calendar {
 		$output  = '<table class="' . esc_attr( $this->get_html_class( '& &--month' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
 
-		$year_heading = $year;
+		$year_heading = "<span>{$year}</span>";
 		if ( method_exists( $this, 'custom_year_heading' ) ) {
 			$year_heading = $this->custom_year_heading( $year );
 		}
 
 		$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__year-heading' ) ) . '">' . $year_heading . '</th>';
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__day-heading' ) ) . '" data-day="' . esc_attr( $i ) . '">' . esc_html( $i ) . '</th>';
+			$output .= "\n\t\t" . sprintf( '<th class="%1$s" data-day="%2$s"><span>%2$s</span></th>',
+				esc_attr( $this->get_html_class( '&__day-heading' ) ),
+				esc_html( $i )
+			);
 		}
 
 		$output .= "\n\t</tr>\n</thead>";
@@ -117,7 +120,7 @@ abstract class Abstract_Calendar {
 			}
 
 			$output .= "\n\t<tr>";
-			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $m ) . '">' . esc_html( $this->get_month_label( $m ) ) . '</th>';
+			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $m ) . '">' . esc_html( $this->get_month_name( $m ) ) . '</th>';
 
 			for ( $d = 1; $d <= 31; $d++ ) {
 				// @codingStandardsIgnoreLine
@@ -156,7 +159,11 @@ abstract class Abstract_Calendar {
 			$wd = (int) ( $i + $this->week_begins ) % 7;
 			$wd_class = ( Carbon::SUNDAY == $wd || Carbon::SATURDAY == $wd ) ? '&--weekend' : '&--weekday';
 
-			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( $wd_class ) ) . '">' . esc_html( $this->get_weekday_label( $wd ) ) . '</th>';
+			$output .= "\n\t\t" . sprintf( '<th class="%1$s"><span title="%3$s">%2$s</span></th>',
+				esc_attr( $this->get_html_class( $wd_class ) ),
+				esc_html( $this->get_weekday_name( $wd ) ),
+				esc_attr( $this->get_weekday_name( $wd, 'full' ) )
+			);
 		}
 
 		$output .= "\n\t</tr>\n</thead>";
@@ -291,9 +298,10 @@ abstract class Abstract_Calendar {
 	 * Retrieve month label by month number depend "month_label" option.
 	 *
 	 * @param  string|int $month Month number from '01' through '12'.
+	 * @param  string     $type  Optional, if null given using value from "month_label" option.
 	 * @return string
 	 */
-	protected function get_month_label( $month ) {
+	protected function get_month_name( $month, $type = null ) {
 		global $wp_locale;
 
 		$month_name = $wp_locale->get_month( $month );
@@ -308,15 +316,17 @@ abstract class Abstract_Calendar {
 	/**
 	 * Retrieve weekday label depend "month_label" option.
 	 *
-	 * @param  int $weekday Weekday number, 0 for Sunday through 6 Saturday.
+	 * @param  int    $weekday Weekday number, 0 for Sunday through 6 Saturday.
+	 * @param  string $type    Optional, if null given using value from "weekday_label" option.
 	 * @return string
 	 */
-	protected function get_weekday_label( $weekday ) {
+	protected function get_weekday_name( $weekday, $type = null ) {
 		global $wp_locale;
 
+		$type = is_null( $type ) ? $this->get_option( 'weekday_label' ) : $type;
 		$weekday_name = $wp_locale->get_weekday( $weekday );
 
-		switch ( $this->get_option( 'weekday_label' ) ) {
+		switch ( $type ) {
 			case 'initial':
 				return $wp_locale->get_weekday_initial( $weekday_name );
 			case 'abbrev':
