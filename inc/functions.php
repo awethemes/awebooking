@@ -25,15 +25,30 @@ function awebooking( $make = null ) {
 /**
  * Get awebooking config instance or special key ID.
  *
- * @param  string $key Optional, special key ID if need.
+ * @since 3.0.0-beta Added $default parameter.
+ *
+ * @param  string $key     Optional, special key ID if need.
+ * @param  mixed  $default Default value will be return if key not set,
+ *                         if null pass, default setting value will be return.
  * @return mixed
  */
-function abkng_config( $key = null ) {
+function awebooking_config( $key = null, $default = null ) {
 	if ( is_null( $key ) ) {
 		return awebooking()->make( 'config' );
 	}
 
-	return awebooking( 'config' )->get( $key );
+	return awebooking( 'config' )->get( $key, $default );
+}
+
+/**
+ * Deprecated function, will be removed in 3.0.0 release.
+ *
+ * @param  string $key Optional, special key ID if need.
+ * @return mixed
+ */
+function abkng_config( $key = null ) {
+	_deprecated_function( __FUNCTION__, '3.0.0-beta', 'awebooking_config' );
+	return awebooking_config( $key );
 }
 
 /**
@@ -135,24 +150,22 @@ if ( ! function_exists( 'wp_data_callback' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'priority_list' ) ) :
-	/**
-	 * Make a list stack
-	 *
-	 * @param  array $values An array values.
-	 * @return static
-	 */
-	function priority_list( array $values ) {
-		$stack = new Skeleton\Support\Priority_List;
+/**
+ * Make a list sort by priority.
+ *
+ * @param  array $values An array values.
+ * @return Skeleton\Support\Priority_List
+ */
+function awebooking_priority_list( array $values ) {
+	$stack = new Skeleton\Support\Priority_List;
 
-		foreach ( $values as $key => $value ) {
-			$priority = is_object( $value ) ? $value->priority : $value['priority'];
-			$stack->insert( $key, $value, $priority );
-		}
-
-		return $stack;
+	foreach ( $values as $key => $value ) {
+		$priority = is_object( $value ) ? $value->priority : $value['priority'];
+		$stack->insert( $key, $value, $priority );
 	}
-endif;
+
+	return $stack;
+}
 
 /**
  * Sanitize price number.
@@ -160,6 +173,6 @@ endif;
  * @param  string|numeric $number Raw numeric.
  * @return float
  */
-function abkng_sanitize_price( $number ) {
+function awebooking_sanitize_price( $number ) {
 	return AweBooking\Support\Formatting::format_decimal( $number, true );
 }
