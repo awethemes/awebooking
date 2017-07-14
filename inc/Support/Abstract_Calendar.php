@@ -309,9 +309,10 @@ abstract class Abstract_Calendar {
 	protected function get_month_name( $month, $type = null ) {
 		global $wp_locale;
 
+		$type = is_null( $type ) ? $this->get_option( 'month_label' ) : $type;
 		$month_name = $wp_locale->get_month( $month );
 
-		if ( 'abbrev' === $this->get_option( 'month_label' ) ) {
+		if ( 'abbrev' === $type ) {
 			return $wp_locale->get_month_abbrev( $month_name );
 		}
 
