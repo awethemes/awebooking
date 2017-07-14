@@ -448,7 +448,7 @@ class Admin_Settings extends Admin_Page {
 
 		foreach ( $date_formats as $format ) {
 			echo "\t<label><input type='radio' name='date_format_default' value='" . esc_attr( $format ) . "'";
-			if ( abkng_config( 'date_format' ) === $format ) { // checked() uses "==" rather than "==="
+			if ( awebooking_config( 'date_format' ) === $format ) { // checked() uses "==" rather than "==="
 				echo " checked='checked'";
 				$custom = false;
 			}
@@ -463,7 +463,7 @@ class Admin_Settings extends Admin_Page {
 		skeleton_render_field( $field );
 
 		echo '</span>' .
-		'<span class="screen-reader-text">' . __( 'example:' ) . ' </span> <span class="example">' . date_i18n( abkng_config( 'date_format' ) ) . '</span>' .
+		'<span class="screen-reader-text">' . __( 'example:' ) . ' </span> <span class="example">' . date_i18n( awebooking_config( 'date_format' ) ) . '</span>' .
 		"<span class='spinner'></span>\n";
 
 			?>

@@ -23,8 +23,8 @@ if ( post_password_required() ) {
 
 		<div class="awebooking-room-type__header">
 			<?php
-				abkng_template_single_title();
-				abkng_template_single_price();
+			awebookingtemplate_single_title();
+				awebooking_template_single_price();
 			?>
 		</div>
 
@@ -34,7 +34,7 @@ if ( post_password_required() ) {
 				/**
 				 * awebooking/before_single_room_type_summary hook.
 				 *
-				 * @hooked abkng_show_room_type_images - 20
+				 * @hooked awebooking_show_room_type_images - 20
 				 */
 				do_action( 'awebooking/before_single_room_type_summary' );
 			?>
@@ -46,12 +46,12 @@ if ( post_password_required() ) {
 				/**
 				 * awebooking/single_room_type_summary hook.
 				 *
-				 * @hooked abkng_template_single_title - 5
-				 * @hooked abkng_template_single_price - 10
-				 * @hooked abkng_template_single_form - 15
-				 * @hooked abkng_template_single_excerpt - 20 TODO
-				 * @hooked abkng_template_single_meta - 40 TODO
-				 * @hooked abkng_template_single_sharing - 50 TODO
+				 * @hooked awebooking_template_single_title - 5
+				 * @hooked awebooking_template_single_price - 10
+				 * @hooked awebooking_template_single_form - 15
+				 * @hooked awebooking_template_single_excerpt - 20 TODO
+				 * @hooked awebooking_template_single_meta - 40 TODO
+				 * @hooked awebooking_template_single_sharing - 50 TODO
 				 */
 				do_action( 'awebooking/single_room_type_summary' );
 			?>
@@ -65,7 +65,7 @@ if ( post_password_required() ) {
 			/**
 			 * awebooking/after_single_room_type_summary hook.
 			 *
-			 * @hooked abkng_output_room_type_data_tabs - 10
+			 * @hooked awebooking_output_room_type_data_tabs - 10
 			 */
 			do_action( 'awebooking/after_single_room_type_summary' );
 		?>

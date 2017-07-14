@@ -116,7 +116,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 				</table>
 
 				<div class="text-right">
-					<?php $checkout_link = get_permalink( absint( abkng_config( 'page_checkout' ) ) ); ?>
+					<?php $checkout_link = get_permalink( absint( awebooking_config( 'page_checkout' ) ) ); ?>
 					<a class="button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Confirm Booking', 'awebooking' ); ?></a>
 				</div>
 			</div>

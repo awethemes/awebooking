@@ -29,8 +29,8 @@ $room_type_id = $result->get_room_type()->get_id();
 		<?php
 		if ( has_post_thumbnail( $room_type_id ) ) {
 			echo get_the_post_thumbnail( $room_type_id, 'awebooking_catalog' );
-		} elseif ( abkng_placeholder_img_src() ) {
-			echo abkng_placeholder_img( 'awebooking_catalog' ); // WPCS: xss ok.
+		} elseif ( awebooking_placeholder_img_src() ) {
+			echo awebooking_placeholder_img( 'awebooking_catalog' ); // WPCS: xss ok.
 		}
 		?>
 		</a>
@@ -48,7 +48,7 @@ $room_type_id = $result->get_room_type()->get_id();
 		<p class="awebooking-loop-room-type__price">
 			<span><?php
 
-			switch ( abkng_config( 'showing_price' ) ) {
+			switch ( awebooking_config( 'showing_price' ) ) {
 				case 'average_price':
 					printf( esc_html__( 'Average: %s/night', 'awebooking' ), $result->get_price_average() );
 					break;

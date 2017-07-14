@@ -54,7 +54,7 @@ class Request_Handler extends Service_Hooks {
 
 		// Setup somethings.
 		$flash_message = awebooking()->make( 'flash_message' );
-		$checkout_url  = get_the_permalink( absint( abkng_config( 'page_checkout' ) ) );
+		$checkout_url  = get_the_permalink( absint( awebooking_config( 'page_checkout' ) ) );
 
 		// Do validator the input before doing checkout.
 		$validator = new Validator( $_POST, apply_filters( 'awebooking/checkout/validator_rules', [
@@ -128,7 +128,7 @@ class Request_Handler extends Service_Hooks {
 				return; // Something went wrong.
 			}
 
-			if ( abkng_config( 'email_new_enable' ) ) {
+			if ( awebooking_config( 'email_new_enable' ) ) {
 				try {
 					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking, $availability ) );
 					Mailer::to( Utils::get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking, $availability ) );
@@ -172,7 +172,7 @@ class Request_Handler extends Service_Hooks {
 			Session_Booking_Request::set_instance( $booking_request );
 
 			$default_args = Date_Utils::get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
-			$link = add_query_arg( (array) $default_args, get_the_permalink( intval( abkng_config( 'page_booking' ) ) ) );
+			$link = add_query_arg( (array) $default_args, get_the_permalink( intval( awebooking_config( 'page_booking' ) ) ) );
 
 			return wp_redirect( $link, 302 );
 
