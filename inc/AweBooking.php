@@ -103,15 +103,15 @@ class AweBooking extends SkeletonContainer {
 
 		// Binding stores.
 		$this->bind( 'store.booking', function() {
-			return new Stores\BAT_Store( 'awebooking_booking', 'room_id' );
+			return new BAT\Store( 'awebooking_booking', 'room_id' );
 		});
 
 		$this->bind( 'store.availability', function() {
-			return new Stores\BAT_Store( 'awebooking_availability', 'room_id' );
+			return new BAT\Store( 'awebooking_availability', 'room_id' );
 		});
 
 		$this->bind( 'store.pricing', function() {
-			return new Stores\BAT_Store( 'awebooking_pricing', 'rate_id' );
+			return new BAT\Store( 'awebooking_pricing', 'rate_id' );
 		});
 
 		$this->bind( 'store.room', function() {
@@ -123,7 +123,7 @@ class AweBooking extends SkeletonContainer {
 		});
 
 		$this->bind( 'concierge', function( $awebooking ) {
-			return new BAT\Concierge( $awebooking['store.availability'] );
+			return new BAT\Concierge( $awebooking );
 		});
 
 		add_action( 'widgets_init', [ $this, 'register_widgets' ] );

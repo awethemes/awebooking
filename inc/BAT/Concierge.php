@@ -29,20 +29,13 @@ use AweBooking\Interfaces\Availability as Availability_Interface;
 use Roomify\Bat\Event\Event;
 
 class Concierge implements Concierge_Interface {
-	/**
-	 * BAT Store instance.
-	 *
-	 * @var \Roomify\Bat\Store\StoreInterface
-	 */
-	protected $store;
+	protected $awebooking;
 
 	/**
 	 * Concierge constructor.
-	 *
-	 * @param StoreInterface $store Store instance.
 	 */
-	public function __construct( StoreInterface $store ) {
-		$this->store = $store;
+	public function __construct( AweBooking $awebooking ) {
+		$this->awebooking = $awebooking;
 	}
 
 	/**
@@ -241,7 +234,7 @@ class Concierge implements Concierge_Interface {
 	 * @return array
 	 */
 	public function check_rooms_available( array $rooms, Request_Interface $request ) {
-		$calendar = new Calendar( $rooms, $this->store );
+		$calendar = new Calendar( $rooms, awebooking( 'store.availability' ) );
 
 		$response = $calendar->getMatchingUnits(
 			$request->get_check_in(),
