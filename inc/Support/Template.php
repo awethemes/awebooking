@@ -3,6 +3,13 @@ namespace AweBooking\Support;
 
 class Template {
 	/**
+	 * Custom templates directory.
+	 *
+	 * @var array
+	 */
+	public static $template_dirs = [];
+
+	/**
 	 * Locate a template and return the path for inclusion.
 	 *
 	 * @param  string $template_name Template name.
@@ -16,6 +23,21 @@ class Template {
 			// In your {theme}/.
 			$template_name,
 		]);
+
+		// Try seach in custom templates directory.
+		// TODO: ...
+		if ( is_array( static::$template_dirs ) && ! empty( static::$template_dirs ) ) {
+			foreach ( static::$template_dirs as $template_dir ) {
+				if ( ! $template_dir ) {
+					continue;
+				}
+
+				if ( file_exists( $template_dir . '/' . $template_name ) ) {
+					$template = trailingslashit( $template_dir ) . $template_name;
+					break;
+				}
+			}
+		}
 
 		// Using default template in "awebooking/templates/" directory.
 		if ( ! $template ) {
