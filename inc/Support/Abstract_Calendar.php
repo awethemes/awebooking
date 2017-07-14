@@ -70,17 +70,20 @@ abstract class Abstract_Calendar {
 	/**
 	 * Prepare setup the data.
 	 *
+	 * @param  mixed  $input   Mixed input data.
+	 * @param  string $context Context from Calendar.
 	 * @return mixed
 	 */
-	abstract protected function prepare_data();
+	abstract protected function prepare_data( $input, $context );
 
 	/**
 	 * Setup date data before prints.
 	 *
-	 * @param  Carbon $date Current day instance.
+	 * @param  Carbon $date   Date instance.
+	 * @param  string $context Context from Calendar.
 	 * @return void
 	 */
-	abstract protected function setup_date( Carbon $date );
+	abstract protected function setup_date( Carbon $date, $context );
 
 	/**
 	 * Generate HTML Calendar in a year.
@@ -90,6 +93,7 @@ abstract class Abstract_Calendar {
 	 */
 	protected function generate_year_calendar( $year ) {
 		$year = ( $year instanceof Carbon ) ? $year->year : $year;
+		$this->data = $this->prepare_data( $year, 'year' );
 
 		$output  = '<table class="' . esc_attr( $this->get_html_class( '& &--month' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
@@ -130,7 +134,7 @@ abstract class Abstract_Calendar {
 				}
 
 				$day = $month->copy()->day( $d );
-				$this->setup_date( $day );
+				$this->setup_date( $day, 'year' );
 
 				$output .= "\n\t\t" . $this->generate_cell_date( $day, 'year' );
 			}
@@ -150,7 +154,8 @@ abstract class Abstract_Calendar {
 	 * @return string
 	 */
 	protected function generate_month_calendar( Carbon $month ) {
-		$month->startOfMonth();
+		$month = $month->startOfMonth();
+		$this->data = $this->prepare_data( $month, 'month' );
 
 		$output  = '<table class="' . esc_attr( $this->get_html_class( '& &--month' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
@@ -184,7 +189,7 @@ abstract class Abstract_Calendar {
 			$newrow = false;
 			$day = $month->copy()->day( $d );
 
-			$this->setup_date( $day );
+			$this->setup_date( $day, 'month' );
 			$output .= "\n\t\t" . $this->generate_cell_date( $day, 'month' );
 
 			// @codingStandardsIgnoreLine
@@ -209,10 +214,10 @@ abstract class Abstract_Calendar {
 	 * Generate HTML cell of a day.
 	 *
 	 * @param  Carbon $date    Current day instance.
-	 * @param  string $context Optional, context from Calendar.
+	 * @param  string $context Context from Calendar.
 	 * @return string
 	 */
-	protected function generate_cell_date( Carbon $date, $context = '' ) {
+	protected function generate_cell_date( Carbon $date, $context ) {
 		return sprintf( '<td class="%6$s" data-day="%1$s" data-month="%2$s" data-year="%3$s" data-date="%4$s" title="%5$s">' . $this->get_date_contents( $date, $context ) . '</td>',
 			esc_attr( $date->day ),
 			esc_attr( $date->month ),
@@ -244,11 +249,11 @@ abstract class Abstract_Calendar {
 	 * Override this method if want custom contents.
 	 *
 	 * @param  Carbon $date    Current day instance.
-	 * @param  string $context Optional, context from Calendar.
+	 * @param  string $context Context from Calendar.
 	 * @return array
 	 */
 	protected function get_date_contents( Carbon $date, $context ) {
-		return '<span class="' . esc_attr( $this->get_html_class( '&__state' ) ) . '">' . ( 'month' === $context ? '%1$s' : '' ) . '</span>';
+		return '<span class="' . esc_attr( $this->get_html_class( '&__state' ) ) . '">' . ( 'month' === $context ? '%1$s' : '&nbsp;' ) . '</span>';
 	}
 
 	/**
