@@ -95,7 +95,7 @@ abstract class Abstract_Calendar {
 		$year = ( $year instanceof Carbon ) ? $year->year : $year;
 		$this->data = $this->prepare_data( $year, 'year' );
 
-		$output  = '<table class="' . esc_attr( $this->get_html_class( '& &--month' ) ) . '">';
+		$output  = '<table class="' . esc_attr( $this->get_html_class( '&__table &__table--year' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
 
 		$year_heading = "<span>{$year}</span>";
@@ -157,15 +157,15 @@ abstract class Abstract_Calendar {
 		$month = $month->startOfMonth();
 		$this->data = $this->prepare_data( $month, 'month' );
 
-		$output  = '<table class="' . esc_attr( $this->get_html_class( '& &--month' ) ) . '">';
+		$output  = '<table class="' . esc_attr( $this->get_html_class( '&__table &__table--month' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
 
 		for ( $i = 0; $i <= 6; $i++ ) {
 			$wd = (int) ( $i + $this->week_begins ) % 7;
-			$wd_class = ( Carbon::SUNDAY == $wd || Carbon::SATURDAY == $wd ) ? '&--weekend' : '&--weekday';
+			$wd_class = ( Carbon::SUNDAY == $wd || Carbon::SATURDAY == $wd ) ? '&__day-heading--weekend' : '&__day-heading--weekday';
 
 			$output .= "\n\t\t" . sprintf( '<th class="%1$s"><span title="%3$s">%2$s</span></th>',
-				esc_attr( $this->get_html_class( $wd_class ) ),
+				esc_attr( $this->get_html_class( '&__day-heading ' . $wd_class ) ),
 				esc_html( $this->get_weekday_name( $wd ) ),
 				esc_attr( $this->get_weekday_name( $wd, 'full' ) )
 			);
@@ -268,9 +268,9 @@ abstract class Abstract_Calendar {
 		// Is current day is today, future or past.
 		if ( $date->isToday() ) {
 			$classes[] = $this->get_html_class( '&__day--today' );
-		} elseif ( $date->lt( $this->today ) ) {
+		} elseif ( $date->isPast() ) {
 			$classes[] = $this->get_html_class( '&__day--past' );
-		} elseif ( $date->gt( $this->today ) ) {
+		} elseif ( $date->isFuture() ) {
 			$classes[] = $this->get_html_class( '&__day--future' );
 		}
 
