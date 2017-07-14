@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 <?php else : ?>
 	<div class="awebooking-room-type__image">
-		<img src="<?php echo esc_url( abkng_placeholder_img_src() ) ?>" alt="<?php echo esc_html__( 'Awaiting room type image', 'awebooking' ) ?>" class="wp-post-image" />
+		<img src="<?php echo esc_url( awebooking_placeholder_img_src() ) ?>" alt="<?php echo esc_html__( 'Awaiting room type image', 'awebooking' ) ?>" class="wp-post-image" />
 	</div>
 <?php endif; ?>
 <?php do_action( 'awebooking/room_type_thumbnails' ); ?>

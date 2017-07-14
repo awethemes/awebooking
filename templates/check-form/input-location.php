@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<?php if ( abkng_config( 'enable_location' ) ) : ?>
+<?php if ( awebooking_config( 'enable_location' ) ) : ?>
 	<div class="awebooking-field awebooking-location-field">
 		<label for="awebooking-location"><?php esc_html_e( 'Location', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">

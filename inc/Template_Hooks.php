@@ -120,9 +120,9 @@ class Template_Hooks extends Service_Hooks {
 	 * Add Awebooking Image sizes to WP.
 	 */
 	public function add_image_sizes() {
-		$awebooking_thumbnail = abkng_get_image_size( 'awebooking_thumbnail' );
-		$awebooking_catalog	= abkng_get_image_size( 'awebooking_catalog' );
-		$awebooking_single	= abkng_get_image_size( 'awebooking_single' );
+		$awebooking_thumbnail = awebooking_get_image_size( 'awebooking_thumbnail' );
+		$awebooking_catalog	= awebooking_get_image_size( 'awebooking_catalog' );
+		$awebooking_single	= awebooking_get_image_size( 'awebooking_single' );
 
 		add_image_size( 'awebooking_thumbnail', $awebooking_thumbnail['width'], $awebooking_thumbnail['height'], $awebooking_thumbnail['crop'] );
 		add_image_size( 'awebooking_catalog', $awebooking_catalog['width'], $awebooking_catalog['height'], $awebooking_catalog['crop'] );
@@ -138,15 +138,15 @@ class Template_Hooks extends Service_Hooks {
 	 * @return array
 	 */
 	public function page_state( $post_states, $post ) {
-		if ( intval( abkng_config( 'page_check_availability' ) ) === $post->ID ) {
+		if ( intval( awebooking_config( 'page_check_availability' ) ) === $post->ID ) {
 			$post_states['page_check_availability'] = __( 'Check Availability Page' );
 		}
 
-		if ( intval( abkng_config( 'page_booking' ) ) === $post->ID ) {
+		if ( intval( awebooking_config( 'page_booking' ) ) === $post->ID ) {
 			$post_states['page_booking'] = __( 'Booking Informations Page' );
 		}
 
-		if ( intval( abkng_config( 'page_checkout' ) ) === $post->ID ) {
+		if ( intval( awebooking_config( 'page_checkout' ) ) === $post->ID ) {
 			$post_states['page_checkout'] = __( 'Checkout Page' );
 		}
 

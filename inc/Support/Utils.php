@@ -91,7 +91,7 @@ class Utils {
 
 	public static function get_booking_url( Availability $availability ) {
 
-		$booking_link = get_the_permalink( intval( abkng_config( 'page_booking' ) ) );
+		$booking_link = get_the_permalink( intval( awebooking_config( 'page_booking' ) ) );
 
 		$args = apply_filters( 'awebooking/get_booking_url', [
 			'start-date' => Formatting::standard_date_format( $availability->get_check_in() ),
@@ -121,8 +121,8 @@ class Utils {
 
 	public static function get_hotel_location_default() {
 
-		if ( abkng_config( 'location_default' ) ) {
-			$term_default = get_term( intval( abkng_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
+		if ( awebooking_config( 'location_default' ) ) {
+			$term_default = get_term( intval( awebooking_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
 		} else {
 			$term_default = static::get_first_term( AweBooking::HOTEL_LOCATION, array(
 				'hide_empty' => false,
@@ -135,11 +135,11 @@ class Utils {
 	public static function get_admin_notify_emails() {
 		$admin_emails = [];
 
-		if ( abkng_config( 'email_admin_notify' ) ) {
+		if ( awebooking_config( 'email_admin_notify' ) ) {
 			$admin_emails[] = get_option( 'admin_email' );
 		}
 
-		$another_emails = abkng_config( 'email_notify_another_emails' );
+		$another_emails = awebooking_config( 'email_notify_another_emails' );
 		if ( ! empty( $another_emails ) ) {
 			$another_emails = array_map( 'trim', explode( ',', $another_emails ) );
 			$admin_emails   = array_merge( $admin_emails, $another_emails );

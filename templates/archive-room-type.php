@@ -19,7 +19,7 @@ get_header( 'booking' ); ?>
 		/**
 		 * awebooking/before_main_content hook.
 		 *
-		 * @hooked abkng_output_content_wrapper - 10 (outputs opening divs for the content)
+		 * @hooked awebooking_output_content_wrapper - 10 (outputs opening divs for the content)
 		 */
 		do_action( 'awebooking/before_main_content' );
 	?>
@@ -29,8 +29,8 @@ get_header( 'booking' ); ?>
 			/**
 			 * awebooking/before_archive_loop hook.
 			 *
-			 * @hooked abkng_location_filter - 10
-			 * @hooked abkng_catalog_ordering - 20
+			 * @hooked awebooking_location_filter - 10
+			 * @hooked awebooking_catalog_ordering - 20
 			 */
 			do_action( 'awebooking/before_archive_loop' );
 		?>
@@ -38,27 +38,27 @@ get_header( 'booking' ); ?>
 
 		<?php if ( have_posts() ) : ?>
 
-			<?php abkng_room_type_loop_start(); ?>
+			<?php awebooking_room_type_loop_start(); ?>
 
 				<?php while ( have_posts() ) : the_post(); ?>
 
-					<?php abkng_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
+					<?php awebooking_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
 
 				<?php endwhile; // end of the loop. ?>
 
-			<?php abkng_room_type_loop_end(); ?>
+			<?php awebooking_room_type_loop_end(); ?>
 
 			<?php
 				/**
 				 * awebooking/after_archive_loop hook.
 				 *
-				 * @hooked abkng_pagination - 10
+				 * @hooked awebooking_pagination - 10
 				 */
 				do_action( 'awebooking/after_archive_loop' );
 			?>
 
 		<?php else : ?>
-			<?php abkng_get_template( 'loop/no-room-types-found.php' ); ?>
+			<?php awebooking_get_template( 'loop/no-room-types-found.php' ); ?>
 
 		<?php endif; ?>
 
@@ -66,7 +66,7 @@ get_header( 'booking' ); ?>
 		/**
 		 * awebooking/after_main_content hook.
 		 *
-		 * @hooked abkng_output_content_wrapper_end - 10 (outputs closing divs for the content)
+		 * @hooked awebooking_output_content_wrapper_end - 10 (outputs closing divs for the content)
 		 */
 		do_action( 'awebooking/after_main_content' );
 	?>
@@ -75,7 +75,7 @@ get_header( 'booking' ); ?>
 		/**
 		 * awebooking/sidebar hook.
 		 *
-		 * @hooked abkng_get_sidebar - 10
+		 * @hooked awebooking_get_sidebar - 10
 		 */
 		do_action( 'awebooking/sidebar' );
 	?>

@@ -59,7 +59,7 @@ class Booking_Cancelled extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = abkng_config( 'email_cancelled_subject' );
+		$subject = awebooking_config( 'email_cancelled_subject' );
 		return $this->format_string( $subject );
 	}
 

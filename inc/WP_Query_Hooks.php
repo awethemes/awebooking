@@ -106,7 +106,7 @@ class WP_Query_Hooks extends Service_Hooks {
 			return;
 		}
 
-		if ( ! is_post_type_archive( AweBooking::ROOM_TYPE ) || ! abkng_config( 'enable_location' ) ) {
+		if ( ! is_post_type_archive( AweBooking::ROOM_TYPE ) || ! awebooking_config( 'enable_location' ) ) {
 			return;
 		}
 
@@ -120,8 +120,8 @@ class WP_Query_Hooks extends Service_Hooks {
 			));
 		} else {
 
-			if ( abkng_config( 'location_default' ) ) {
-				$term_default = get_term( intval( abkng_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
+			if ( awebooking_config( 'location_default' ) ) {
+				$term_default = get_term( intval( awebooking_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
 			} else {
 				$term_default = Utils::get_first_term( AweBooking::HOTEL_LOCATION, array(
 					'hide_empty' => false,
