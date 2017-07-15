@@ -23,7 +23,7 @@ if ( post_password_required() ) {
 
 		<div class="awebooking-room-type__header">
 			<?php
-			awebookingtemplate_single_title();
+				awebooking_template_single_title();
 				awebooking_template_single_price();
 			?>
 		</div>

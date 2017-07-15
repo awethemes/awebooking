@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	/**
 	 * awebooking/checkout/detail_tables hook.
 	 *
-	 * @hookedawebookingtemplate_checkout_general_informations - 10
+	 * @hooked awebooking_template_checkout_general_informations - 10
 	 */
 	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type ); ?>
 
