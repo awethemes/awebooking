@@ -30,8 +30,6 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Email notification
 * Shortcodes
 
-You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
-
 == Screenshots ==
 
 1. Room type list
