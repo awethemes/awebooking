@@ -10,7 +10,6 @@ use AweBooking\Pricing\Price;
 use AweBooking\Currency\Currency;
 use AweBooking\Support\Date_Period;
 use AweBooking\Support\Formatting;
-use AweBooking\Support\Utils;
 use Skeleton\CMB2\CMB2;
 use AweBooking\Support\Date_Utils;
 

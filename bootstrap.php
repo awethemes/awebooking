@@ -11,8 +11,10 @@ if ( ! defined( 'SKELETON_LOADED' ) ) {
 	}
 }
 
-require_once trailingslashit( __DIR__ ) . '/vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
-require trailingslashit( __DIR__ ) . '/inc/functions.php';
+require_once trailingslashit( __DIR__ ) . 'vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
+
+require_once trailingslashit( __DIR__ ) . 'inc/Support/functions.php';
+require_once trailingslashit( __DIR__ ) . 'inc/Support/template-functions.php';
 
 skeleton_psr4_autoloader( 'AweBooking\\', trailingslashit( __DIR__ ) . 'inc/' );
 

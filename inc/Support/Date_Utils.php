@@ -76,23 +76,16 @@ class Date_Utils {
 		return (int) $carbon->daysInMonth;
 	}
 
-	public static function is_validate_year( $year ) {
-		try {
-			$received_year = Carbon::createFromDate( $year, 1, 1 );
-		} catch ( \Exception $e ) {
-			return false;
-		}
+	/**
+	 * Returns true if a year is valid.
+	 *
+	 * @param  [type]  $year [description]
+	 * @return boolean       [description]
+	 */
+	public static function is_valid_year( $year ) {
+		$current_year = (int) date( 'Y' );
 
-		$current_year  = Carbon::now()->startOfYear();
-
-		return $received_year->between(
-			$current_year->copy()->subYears( 50 ), // 50 years back.
-			$current_year->copy()->addYears( 50 )  // To next 50 years.
-		);
-	}
-
-	// TODO: Remove this.
-	public static function get_booking_request_query( $extra_args = array() ) {
-		return Utils::get_booking_request_query( $extra_args );
+		// TODO...
+		return ( is_int( $year ) && ( $current_year + 50 ) > $year );
 	}
 }

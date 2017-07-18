@@ -99,7 +99,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 				}
 
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					Utils::get_booking_status_name( $the_booking->get_status() ),
+					awebooking_get_booking_status_name( $the_booking->get_status() ),
 					$status_color
 				);
 			break;
@@ -256,7 +256,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		// Added booking status only in "All" section in list-table.
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = Utils::get_booking_statuses();
+			$statuses = awebooking_get_booking_statuses();
 
 			foreach ( $statuses as $status => $display_name ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

@@ -17,26 +17,15 @@ class Template {
 	 */
 	public static function locate_template( $template_name ) {
 		// Look within passed path within the theme - this is priority.
-		$template = locate_template( [
+		$template = locate_template([
 			// In your {theme}/awebooking.
 			trailingslashit( awebooking()->template_path() ) . $template_name,
 			// In your {theme}/.
 			$template_name,
 		]);
 
-		// Try seach in custom templates directory.
-		// TODO: ...
-		if ( is_array( static::$template_dirs ) && ! empty( static::$template_dirs ) ) {
-			foreach ( static::$template_dirs as $template_dir ) {
-				if ( ! $template_dir ) {
-					continue;
-				}
-
-				if ( file_exists( $template_dir . '/' . $template_name ) ) {
-					$template = trailingslashit( $template_dir ) . $template_name;
-					break;
-				}
-			}
+		if ( ! $template ) {
+			$template = static::locate_custom_dirs_template( $template_name );
 		}
 
 		// Using default template in "awebooking/templates/" directory.
@@ -66,5 +55,25 @@ class Template {
 
 		// Allow 3rd party plugin filter template file from their plugin.
 		include apply_filters( 'awebooking/get_template', $located, $template_name, $args );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  string $template_name //.
+	 * @return array
+	 */
+	protected static function locate_custom_dirs_template( $template_name ) {
+		$template = '';
+
+		foreach ( static::$template_dirs as $directory ) {
+			$template_path = trailingslashit( $directory ) . $template_name;
+
+			if ( file_exists( $template_path ) ) {
+				$template = $template_path;
+			}
+		}
+
+		return $template;
 	}
 }

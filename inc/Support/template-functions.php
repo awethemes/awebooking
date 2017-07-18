@@ -1,6 +1,5 @@
 <?php
 
-use AweBooking\Support\Utils;
 use AweBooking\Support\Formatting;
 
 /**
@@ -14,47 +13,7 @@ function awebooking_template_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'awebooking_template_scripts', 20 );
 
-/**
- * Get template part.
- *
- * @param mixed  $slug slug.
- * @param string $name (default: '').
- */
-function awebooking_get_template_part( $slug, $name = '' ) {
-	$template = '';
 
-	// Look in yourtheme/slug-name.php and yourtheme/awebooking/slug-name.php .
-	if ( $name ) {
-		$template = locate_template( array( "{$slug}-{$name}.php", AweBooking()->template_path() . "{$slug}-{$name}.php" ) );
-	}
-
-	// Get default slug-name.php .
-	if ( ! $template && $name && file_exists( AweBooking()->plugin_path() . "/templates/{$slug}-{$name}.php" ) ) {
-		$template = AweBooking()->plugin_path() . "/templates/{$slug}-{$name}.php";
-	}
-
-	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/awebooking/slug.php .
-	if ( ! $template ) {
-		$template = locate_template( array( "{$slug}.php", AweBooking()->template_path() . "{$slug}.php" ) );
-	}
-
-	// Allow 3rd party plugins to filter template file from their plugin.
-	$template = apply_filters( 'awebooking_get_template_part', $template, $slug, $name );
-
-	if ( $template ) {
-		load_template( $template, false );
-	}
-}
-
-/**
- * Include a template by given a template name.
- *
- * @param string $template_name Template name.
- * @param array  $args          Template arguments.
- */
-function awebooking_get_template( $template_name, $args = array() ) {
-	AweBooking\Support\Template::get_template( $template_name, $args );
-}
 
 if ( ! function_exists( 'awebooking_output_content_wrapper' ) ) {
 

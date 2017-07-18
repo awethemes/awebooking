@@ -21,6 +21,13 @@ class AweBooking extends SkeletonContainer {
 	const HOTEL_SERVICE  = 'hotel_extra_service';
 
 	/**
+	 * //
+	 *
+	 * @var array
+	 */
+	protected $ajax = [];
+
+	/**
 	 * The current globally available container (if any).
 	 *
 	 * @var static
@@ -60,6 +67,7 @@ class AweBooking extends SkeletonContainer {
 		new Service_Tax;
 
 		static::$instance = $this;
+		do_action( 'awebooking/booting', $this );
 	}
 
 	/**
@@ -95,6 +103,10 @@ class AweBooking extends SkeletonContainer {
 			return new Currency\Currency( $code,
 				$awebooking['currency_manager']->get_currency( $code )
 			);
+		};
+
+		$this['request'] = function () {
+			return new Support\Http_Request;
 		};
 
 		$this['flash_message'] = function () {
@@ -151,7 +163,29 @@ class AweBooking extends SkeletonContainer {
 
 		$this['flash_message']->setup_message();
 
+		add_filter( 'plugin_row_meta', [ $this, 'awebooking_plugin_row_meta' ], 10, 2 );
+
 		do_action( 'awebooking/booted', $this );
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @param	mixed $links Plugin row meta.
+	 * @param	mixed $file  Plugin base file.
+	 * @return	array
+	 */
+	public function awebooking_plugin_row_meta( $links, $file ) {
+		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
+			$row_meta = array(
+				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
+				'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
+			);
+
+			return array_merge( $links, $row_meta );
+		}
+
+		return (array) $links;
 	}
 
 	/**

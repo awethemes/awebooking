@@ -68,6 +68,37 @@ class Config implements Config_Interface {
 		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
 	}
 
+
+	public static function get_hotel_location_default() {
+
+		if ( awebooking_config( 'location_default' ) ) {
+			$term_default = get_term( intval( awebooking_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
+		} else {
+			$term_default = static::get_first_term( AweBooking::HOTEL_LOCATION, array(
+				'hide_empty' => false,
+			) );
+		}
+
+		return $term_default;
+	}
+
+
+	public function get_admin_notify_emails() {
+		$admin_emails = [];
+
+		if ( awebooking_config( 'email_admin_notify' ) ) {
+			$admin_emails[] = get_option( 'admin_email' );
+		}
+
+		$another_emails = awebooking_config( 'email_notify_another_emails' );
+		if ( ! empty( $another_emails ) ) {
+			$another_emails = array_map( 'trim', explode( ',', $another_emails ) );
+			$admin_emails   = array_merge( $admin_emails, $another_emails );
+		}
+
+		return $admin_emails;
+	}
+
 	/**
 	 * Prepare setup default settings.
 	 *
