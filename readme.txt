@@ -4,7 +4,7 @@ Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
 Tested up to:      4.8
-Stable tag:        3.0.0-alpha-305
+Stable tag:        3.0.0-alpha-306
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,8 @@ Your customers will be impressed by how easy-to-use, fast and clear to check ava
 
 You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also provide WordPress admin demo if you want to take a look.
 
+> Checkout 2 themes using AweBooking 3.0: [Fleurdesel](http://demo.awethemes.com/fleurdesel/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree) & [Hillter](http://demo.awethemes.com/hillter/?utm_source=wporg&utm_medium=abkfree&utm_campaign=abkfree)
+
 == Plugin features ==
 
 * Room type and rooms
@@ -30,6 +32,8 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Email notification
 * Shortcodes
 
+You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
+
 == Screenshots ==
 
 1. Room type list
@@ -39,6 +43,8 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 5. Pricing management
 6. Booking list
 7. Plugin settings
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Installation ==
 
@@ -52,7 +58,11 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
-### [3.0.0-alpha-305] - 2017-07-09
+### [3.0.0-alpha-306] - 2017-07-18
+#### Added
+- WPML compatibility.
+
+### [3.0.0-alpha-305] - 2017-07-13
 #### Changes
 - Template changes.
 
@@ -84,7 +94,3 @@ If you have 2.x version, please do not upgrade to this version.
 - Fixed check availability in single room not working.
 - Fixed memory and queries issues.
 - Minor bugs fixed.
-
-## Video
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>

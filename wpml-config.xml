@@ -1,0 +1,11 @@
+<wpml-config>
+	<custom-types>
+		<custom-type translate="1">room_type</custom-type>
+		<custom-type translate="0">awebooking</custom-type>
+	</custom-types>
+	<taxonomies>
+		<taxonomy translate="1">hotel_amenity</taxonomy>
+		<taxonomy translate="1">hotel_location</taxonomy>
+		<taxonomy translate="1">hotel_extra_service</taxonomy>
+	</taxonomies>
+</wpml-config>
