@@ -13,9 +13,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$link = get_the_permalink( intval( abkng_config( 'page_check_availability' ) ) );
+$page_id = intval( abkng_config( 'page_check_availability' ) );
+$link = get_the_permalink( $page_id );
 ?>
 <form action="<?php echo esc_url( $link ); ?>" class="awebooking-check-form">
+	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
+		<input type="hidden" name="p" value="<?php echo esc_attr( $page_id ) ?>">
+	<?php endif ?>
+
+	<?php if ( awebooking()->is_multi_language() ) : ?>
+		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_active_language() ) ?>">
+	<?php endif ?>
+
 	<div class="awebooking-check-form__wrapper">
 		<h2 class="awebooking-heading"><?php esc_html_e( 'Your Reservation', 'awebooking' ); ?></h2>
 		<div class="awebooking-check-form__content">
