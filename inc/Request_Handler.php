@@ -29,9 +29,9 @@ class Request_Handler extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'template_redirect', array( $this, 'booking_handler' ) );
-		add_action( 'template_redirect', array( $this, 'checkout_handler' ) );
-		add_action( 'template_redirect', array( $this, 'single_check_availability_handler' ) );
+		add_action( 'wp_loaded', array( $this, 'booking_handler' ) );
+		add_action( 'wp_loaded', array( $this, 'checkout_handler' ) );
+		add_action( 'wp_loaded', array( $this, 'single_check_availability_handler' ) );
 	}
 
 	/**

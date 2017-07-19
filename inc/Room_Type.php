@@ -79,13 +79,57 @@ class Room_Type extends WP_Object {
 	];
 
 	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_post()
+	 *
+	 * @return boolean
+	 */
+	protected function perform_insert() {
+		$insert_id = wp_insert_post([
+			'post_type'    => $this->object_type,
+			'post_title'   => $this->get_title(),
+			'post_content' => $this->get_description(),
+			'post_excerpt' => $this->get_short_description(),
+		], true );
+
+		if ( ! is_wp_error( $insert_id ) ) {
+			// Alway remeber set new ID when success.
+			$this->set_id( $insert_id );
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_post()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return boolean
+	 */
+	protected function perform_update( array $changes ) {
+		$postarr = [];
+
+		// Only update the post when the post data changes.
+		if ( $changes['title'] ) {
+			// $postarr['post_title'] =
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns an array of room types.
 	 * query_room_types
 	 *
 	 * @param  array $args //
 	 * @return WP_Query
 	 */
-	public static function query( $args = array() ) {
+	public static function query( array $args ) {
 		/**
 		 * Generate WP_Query args.
 		 */

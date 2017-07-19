@@ -118,12 +118,56 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		$this->sync_original();
 	}
 
+	public static function query( array $args ) {
+	}
+
 	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void
 	 */
 	abstract protected function setup();
+
+	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_post()
+	 * @see wp_insert_term()
+	 *
+	 * @return boolean
+	 */
+	abstract protected function perform_insert();
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_post()
+	 * @see wp_update_term()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return boolean
+	 */
+	abstract protected function perform_update( array $changes );
+
+	/**
+	 * Run perform update object metadata.
+	 *
+	 * @see update_post_meta()
+	 * @see update_term_meta()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return void
+	 */
+	protected function perform_update_metadata( array $changes ) {}
+
+	/**
+	 * Perform delete object.
+	 *
+	 * Overwrite this method if object type is not "post" or "term".
+	 *
+	 * @return boolean
+	 */
+	protected function perform_delete_object() {}
 
 	/**
 	 * Return an array of attributes for this object.
@@ -134,62 +178,118 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 */
 	protected function setup_attributes() {}
 
+	/**
+	 * Save the wp-object to the database.
+	 *
+	 * @return boolean
+	 */
 	public function save() {
-		if ( $this->exists() ) {
-			$this->update();
-		} else {
-			static::create();
+		// If the "prev_save" filter returns false we'll bail out of the save and return
+		// false, indicating that the save failed. This provides a chance for any
+		// listeners to cancel save operations if validations fail or whatever.
+		if ( false === apply_filters( $this->prefix( 'prev_save' ), true ) ) {
+			return false;
 		}
 
-		$this->doing_update_metadata();
+		/**
+		 * Fires saving action.
+		 *
+		 * @see wp_delete_post()
+		 * @see wp_delete_term()
+		 *
+		 * @param static $wp_object Current object instance.
+		 */
+		do_action( $this->prefix( 'saving' ), $this );
+
+		// Get the changes.
+		$changes = $this->get_changes();
+
+		// If the model already exists in the database we can
+		// just update changes. Otherwise, we'll just insert them.
+		if ( $this->exists() ) {
+			$saved = ( count( $changes ) > 0 ) ? $this->perform_update( $changes ) : true;
+		} else {
+			$saved = $this->perform_insert();
+		}
+
+		if ( $saved ) {
+			// When saved, the metadata will be updated too.
+			if ( $this->meta_type ) {
+				$this->perform_update_metadata( $changes );
+			}
+
+			// Run sync orginal attributes.
+			$this->sync_original();
+
+			/**
+			 * Fires saved action.
+			 *
+			 * @param static $wp_object Current object instance.
+			 */
+			do_action( $this->prefix( 'saved' ), $this );
+		}
+
+		return $saved;
 	}
 
 	/**
-	 * Trash or delete a WP_Object.
+	 * Trash or delete a wp-object.
+	 *
+	 * @see wp_delete_post()
+	 * @see wp_delete_term()
 	 *
 	 * @param  boolean $force Optional. Whether to bypass trash and force deletion.
-	 * @return bool|null
+	 * @return boolean|null
 	 */
 	public function delete( $force = false ) {
-		// If the model doesn't exist, there is nothing to delete
+		// If the object doesn't exist, there is nothing to delete
 		// so we'll just return immediately and not do anything else.
 		if ( ! $this->exists() ) {
 			return;
 		}
 
+		// If the "prev_delete" filter returns false we'll bail out of the delete
+		// and just return. Indicating that the delete failed.
+		if ( false === apply_filters( $this->prefix( 'prev_delete' ), true ) ) {
+			return;
+		}
+
 		/**
-		 * Fires before a post is deleted, at the start of wp_delete_post().
+		 * Fires before a wp-object is deleted.
 		 *
-		 * @since 3.2.0
-		 *
-		 * @see wp_delete_post()
-		 *
-		 * @param int $postid Post ID.
+		 * @param static $wp_object Current object instance.
 		 */
 		do_action( $this->prefix( 'deleting' ), $this );
 
 		switch ( $this->meta_type ) {
 			case 'post':
-				$deleted = wp_delete_post( $this->id, $force );
+				$delete  = wp_delete_post( $this->get_id(), $force );
+				$deleted = ( ! is_wp_error( $delete ) && false !== $delete );
 				break;
 
-			case 'post':
-				$deleted = wp_delete_post();
+			case 'term':
+				$delete  = wp_delete_term( $this->get_id(), $force );
+				$deleted = ( ! is_wp_error( $delete ) && true === $delete );
+				break;
+
+			default:
+				$deleted = $this->perform_delete_object();
 				break;
 		}
 
 		if ( $deleted ) {
+			// Now object will not exists.
+			$this->exists = false;
+
 			/**
 			 * Fires after a WP_Object is deleted.
 			 *
 			 * @param int $object_id Object ID was deleted.
 			 */
-			do_action( $this->prefix( 'deleted' ), $this->id );
-
-			return true;
+			do_action( $this->prefix( 'deleted' ), $this->get_id() );
 		}
 
-		return false;
+		return $deleted;
 	}
 
 	/**

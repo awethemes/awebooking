@@ -52,7 +52,7 @@ class WP_Object_Test extends WP_UnitTestCase {
 		$this->assertSame($object->episodes, 7);
 	}
 
-	public function testChanges() {
+	public function testGetChanges() {
 		$object = new AweBooking_Post_WP_Object( $this->got );
 
 		$object['title'] = 'Changed';
@@ -71,8 +71,55 @@ class WP_Object_Test extends WP_UnitTestCase {
 		$this->assertFalse($object->has_change('unknown'));
 	}
 
-	public function test_save() {
+	public function testSoftDelete() {
+		$post_id = $this->factory->post->create();
+		$object = new AweBooking_Post_WP_Object( $post_id );
 
+		$this->assertTrue($object->delete()); // Soft delete.
+		$this->assertEquals('trash', get_post_status($post_id));
+		$this->assertFalse($object->exists());
+		$this->assertNull($object->delete());
+	}
+
+	public function testForceDelete() {
+		$post_id = $this->factory->post->create();
+		$object = new AweBooking_Post_WP_Object( $post_id );
+
+		$this->assertTrue($object->delete( true ));
+		$this->assertNull(get_post($post_id));
+		$this->assertFalse($object->exists());
+		$this->assertNull($object->delete());
+	}
+
+	public function testFailedDelete() {
+		$object = new AweBooking_Post_WP_Object(0);
+		$this->assertNull($object->delete());
+	}
+
+	public function testInsert() {
+		$a = new AweBooking_Post_WP_Object;
+		$a['title'] = 'HAHA';
+		$a['description'] = 'HEHE';
+		$a->save();
+
+		$post = get_post( $a->get_id() );
+		$this->assertEquals($a['title'], $post->post_title);
+		$this->assertEquals($a['description'], $post->post_excerpt);
+	}
+
+	public function testUpdate() {
+		$id = $this->factory->post->create([
+			'post_title'   => 'Game of Thrones',
+			'post_excerpt' => 'Season 7',
+		]);
+
+		$a = new AweBooking_Post_WP_Object( $id );
+		$a['description'] = 'Season7';
+		$a->save();
+
+		$post = get_post( $a->get_id() );
+		$this->assertEquals($a['title'], $post->post_title);
+		$this->assertEquals($a['description'], $post->post_excerpt);
 	}
 }
 
@@ -91,6 +138,27 @@ class AweBooking_Post_WP_Object extends WP_Object {
 	protected $casts = [
 		'episodes' => 'int',
 	];
+
+	protected function perform_insert() {
+		$post_id = wp_insert_post([
+			'post_title' => $this['title'],
+			'post_excerpt' => $this['description'],
+		]);
+
+		$this->set_id( $post_id );
+
+		return true;
+	}
+
+	protected function perform_update( array $changes ) {
+		wp_update_post([
+			'ID' => $this->get_id(),
+			'post_title' => $this['title'],
+			'post_excerpt' => $this['description'],
+		]);
+
+		return true;
+	}
 
 	protected function setup() {
 		$this['title'] = $this->instance->post_title;

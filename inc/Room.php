@@ -47,6 +47,12 @@ class Room extends WP_Object implements UnitInterface {
 		$this->setDefaultValue( Room_State::AVAILABLE );
 	}
 
+	protected function perform_insert() {
+	}
+
+	protected function perform_update( array $changes ) {
+	}
+
 	/**
 	 * Setup the object attributes.
 	 *
