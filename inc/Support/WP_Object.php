@@ -263,12 +263,17 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 
 		switch ( $this->meta_type ) {
 			case 'post':
-				$delete  = wp_delete_post( $this->get_id(), $force );
+				if ( ! $force && 'trash' !== get_post_status( $this->get_id() ) && EMPTY_TRASH_DAYS ) {
+					$delete = wp_trash_post( $this->get_id() );
+				} else {
+					$delete = wp_delete_post( $this->get_id(), true );
+				}
+
 				$deleted = ( ! is_wp_error( $delete ) && false !== $delete );
 				break;
 
 			case 'term':
-				$delete  = wp_delete_term( $this->get_id(), $force );
+				$delete = wp_delete_term( $this->get_id(), $force );
 				$deleted = ( ! is_wp_error( $delete ) && true === $delete );
 				break;
 
