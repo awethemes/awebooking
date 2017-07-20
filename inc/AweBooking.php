@@ -199,23 +199,12 @@ class AweBooking extends SkeletonContainer {
 	}
 
 	/**
-	 * Show row meta on the plugin screen.
+	 * Is running in multi language system?
 	 *
-	 * @param	mixed $links Plugin row meta.
-	 * @param	mixed $file  Plugin base file.
-	 * @return	array
+	 * @return bool
 	 */
-	public function awebooking_plugin_row_meta( $links, $file ) {
-		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
-			$row_meta = array(
-				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
-				'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
-			);
-
-			return array_merge( $links, $row_meta );
-		}
-
-		return (array) $links;
+	public function is_multi_language() {
+		return $this['multilingual']->is_polylang() || $this['multilingual']->is_wpml();
 	}
 
 	/**
@@ -307,5 +296,25 @@ class AweBooking extends SkeletonContainer {
 			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
 			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
 		]);
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @param	mixed $links Plugin row meta.
+	 * @param	mixed $file  Plugin base file.
+	 * @return	array
+	 */
+	public function awebooking_plugin_row_meta( $links, $file ) {
+		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
+			$row_meta = array(
+				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
+				'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
+			);
+
+			return array_merge( $links, $row_meta );
+		}
+
+		return (array) $links;
 	}
 }
