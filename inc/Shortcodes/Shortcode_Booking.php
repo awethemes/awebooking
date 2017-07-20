@@ -1,10 +1,11 @@
 <?php
 namespace AweBooking\Shortcodes;
 
+use AweBooking\Room_Type;
 use AweBooking\BAT\Factory;
-use AweBooking\BAT\Session_Booking_Request;
-use AweBooking\Support\Formatting;
 use AweBooking\Support\Template;
+use AweBooking\Support\Formatting;
+use AweBooking\BAT\Session_Booking_Request;
 
 class Shortcode_Booking {
 
@@ -36,10 +37,8 @@ class Shortcode_Booking {
 	 */
 	private static function booking() {
 		try {
-			$room_type = Factory::create_room_from_request();
-
 			$booking_request = new Session_Booking_Request;
-			$booking_request->set_request( 'room-type', $room_type->get_id() );
+			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
 
 			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
 
