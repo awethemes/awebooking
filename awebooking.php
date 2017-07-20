@@ -64,6 +64,7 @@ $awebooking = new AweBooking;
 
 add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
 
-$GLOBALS['awebooking'] = $awebooking;
-
 register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'create_tables' ) );
+// register_deactivation_hook( __FILE__, '' );
+
+$GLOBALS['awebooking'] = $awebooking;
