@@ -4,7 +4,7 @@ Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
 Tested up to:      4.8
-Stable tag:        3.0.0-alpha-307
+Stable tag:        3.0-beta
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,9 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
+### [3.0.0-alpha-307] - 2017-07-18
+- Release AweBooking first beta version.
+
 ### [3.0.0-alpha-307] - 2017-07-18
 #### Changes
 - Continue working with multilingual support.
