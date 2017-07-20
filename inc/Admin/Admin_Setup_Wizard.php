@@ -304,11 +304,11 @@ class Admin_Setup_Wizard {
 		$currency_pos   = awebooking( 'currency_manager' )->get_positions();
 
 		// Defaults
-		$currency_default = awebooking_config( 'currency' ) ? awebooking_config( 'currency' ) : awebooking_config()->get_default( 'currency' );
-		$currency_pos_default = awebooking_config( 'currency_position' ) ? awebooking_config( 'currency_position' ) : awebooking_config()->get_default( 'currency_position' );
-		$thousand_sep   = awebooking_config( 'price_thousand_separator' ) ? awebooking_config( 'price_thousand_separator' ) : awebooking_config()->get_default( 'price_thousand_separator' );
-		$decimal_sep   = awebooking_config( 'price_decimal_separator' ) ? awebooking_config( 'price_decimal_separator' ) : awebooking_config()->get_default( 'price_decimal_separator' );
-		$num_decimals   = awebooking_config( 'price_number_decimals' ) ? awebooking_config( 'price_number_decimals' ) : awebooking_config()->get_default( 'price_number_decimals' );
+		$currency_default = awebooking_option( 'currency' ) ? awebooking_option( 'currency' ) : awebooking_option()->get_default( 'currency' );
+		$currency_pos_default = awebooking_option( 'currency_position' ) ? awebooking_option( 'currency_position' ) : awebooking_option()->get_default( 'currency_position' );
+		$thousand_sep   = awebooking_option( 'price_thousand_separator' ) ? awebooking_option( 'price_thousand_separator' ) : awebooking_option()->get_default( 'price_thousand_separator' );
+		$decimal_sep   = awebooking_option( 'price_decimal_separator' ) ? awebooking_option( 'price_decimal_separator' ) : awebooking_option()->get_default( 'price_decimal_separator' );
+		$num_decimals   = awebooking_option( 'price_number_decimals' ) ? awebooking_option( 'price_number_decimals' ) : awebooking_option()->get_default( 'price_number_decimals' );
 		?>
 		<h1><?php esc_html_e( 'General setup', 'awebooking' ); ?></h1>
 		<form method="post">
@@ -317,7 +317,7 @@ class Admin_Setup_Wizard {
 				<tr>
 					<th scope="row"><label for="enable_location"><?php esc_html_e( 'Multi-location?', 'awebooking' ); ?></label></th>
 					<td>
-						<input class="checkbox" type="checkbox" <?php checked( awebooking_config( 'enable_location' ), 'on' ); ?> id="enable_location" name="enable_location" />
+						<input class="checkbox" type="checkbox" <?php checked( awebooking_option( 'enable_location' ), 'on' ); ?> id="enable_location" name="enable_location" />
 					</td>
 				</tr>
 				<tr>

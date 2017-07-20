@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $link = get_the_permalink();
 
 if ( is_check_availability_page() ) {
-	$default_args = Date_Utils::get_booking_request_query( array( 'room-type' => get_the_ID() ) );
+	$default_args = awebooking_get_booking_request_query( array( 'room-type' => get_the_ID() ) );
 	$link = add_query_arg( $default_args, get_the_permalink() );
 }
 ?>

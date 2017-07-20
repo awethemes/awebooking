@@ -10,7 +10,6 @@ use AweBooking\BAT\Factory;
 use AweBooking\BAT\Booking_Request;
 use AweBooking\BAT\Session_Booking_Request;
 
-use AweBooking\Support\Utils;
 use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Formatting;
 use AweBooking\Support\Date_Period;
@@ -54,7 +53,7 @@ class Request_Handler extends Service_Hooks {
 
 		// Setup somethings.
 		$flash_message = awebooking()->make( 'flash_message' );
-		$checkout_url  = get_the_permalink( absint( awebooking_config( 'page_checkout' ) ) );
+		$checkout_url  = get_the_permalink( absint( awebooking_option( 'page_checkout' ) ) );
 
 		// Do validator the input before doing checkout.
 		$validator = new Validator( $_POST, apply_filters( 'awebooking/checkout/validator_rules', [
@@ -128,10 +127,10 @@ class Request_Handler extends Service_Hooks {
 				return; // Something went wrong.
 			}
 
-			if ( awebooking_config( 'email_new_enable' ) ) {
+			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {
 					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking, $availability ) );
-					Mailer::to( Utils::get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking, $availability ) );
+					Mailer::to( awebooking( 'config' )->get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking, $availability ) );
 				} catch ( Exception $e ) {
 					// ...
 				}
@@ -140,8 +139,8 @@ class Request_Handler extends Service_Hooks {
 			do_action( 'awebooking/checkout_completed', $booking, $availability );
 
 			// Clear booking request and set booking ID.
-			Utils::setcookie( 'awebooking-request', null, time() - 1000 );
-			Utils::setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
+			awebooking_setcookie( 'awebooking-request', null, time() - 1000 );
+			awebooking_setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
 
 			return wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
 
@@ -171,8 +170,8 @@ class Request_Handler extends Service_Hooks {
 
 			Session_Booking_Request::set_instance( $booking_request );
 
-			$default_args = Date_Utils::get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
-			$link = add_query_arg( (array) $default_args, get_the_permalink( intval( awebooking_config( 'page_booking' ) ) ) );
+			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
+			$link = add_query_arg( (array) $default_args, get_the_permalink( intval( awebooking_option( 'page_booking' ) ) ) );
 
 			return wp_redirect( $link, 302 );
 
@@ -205,9 +204,10 @@ class Request_Handler extends Service_Hooks {
 
 			if ( $availability->available() ) {
 				$booking_request->set_request( 'room-type', $room_type->get_id() );
+
 				Session_Booking_Request::set_instance( $booking_request );
 
-				return wp_redirect( Utils::get_booking_url( $availability ), 302 );
+				return wp_redirect( $availability->get_booking_url(), 302 );
 			}
 
 			$flash_message->error( esc_html__( 'No room available', 'awebooking' ) );
@@ -218,7 +218,7 @@ class Request_Handler extends Service_Hooks {
 		} catch ( \Exception $e ) {
 			$flash_message->error( $e->getMessage() );
 
-			$request_args = Utils::get_booking_request_query();
+			$request_args = awebooking_get_booking_request_query();
 			unset( $request_args['end-date'] );
 
 			$link = get_the_permalink( $room_type->get_id() );

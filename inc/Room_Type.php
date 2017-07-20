@@ -115,90 +115,27 @@ class Room_Type extends WP_Object {
 		$postarr = [];
 
 		// Only update the post when the post data changes.
-		if ( $changes['title'] ) {
-			// $postarr['post_title'] =
+		if ( isset( $changes['title'] ) ) {
+			$postarr['post_title'] = $this->get_title();
+		}
+
+		if ( isset( $changes['description'] ) ) {
+			$postarr['post_content'] = $this->get_description();
+		}
+
+		if ( isset( $changes['short_description'] ) ) {
+			$postarr['post_excerpt'] = $this->get_short_description();
+		}
+
+		if ( ! empty( $postarr ) ) {
+			$updated = wp_update_post(
+				array_merge( $postarr, [ 'ID' => $this->get_id() ] ), true
+			);
+
+			return ! is_wp_error( $updated );
 		}
 
 		return true;
-	}
-
-	/**
-	 * Returns an array of room types.
-	 * query_room_types
-	 *
-	 * @param  array $args //
-	 * @return WP_Query
-	 */
-	public static function query( array $args ) {
-		/**
-		 * Generate WP_Query args.
-		 */
-		$wp_query_args = array(
-			'post_type'        => AweBooking::ROOM_TYPE,
-			'tax_query'        => [],
-			'booking_adults'   => -1,
-			'booking_children' => -1,
-			'booking_nights'   => -1,
-			// 'hotel_location'   => '',
-			'posts_per_page'   => -1,
-		);
-
-		if ( awebooking()->is_multi_location() && ! empty( $args['hotel_location'] ) ) {
-			/*$wp_query_args['tax_query'][] = array(
-				'taxonomy' => AweBooking::HOTEL_LOCATION,
-				'terms'    => sanitize_text_field( $args['hotel_location'] ),
-				'field'    => 'slug',
-			);*/
-		}
-
-		$args = wp_parse_args( $args, $wp_query_args );
-
-		return new WP_Query( $args );
-	}
-
-
-	/**
-	 * Bulk sync rooms.
-	 *
-	 * @param  int   $room_type     The room-type ID.
-	 * @param  array $request_rooms The request rooms.
-	 * @return void
-	 */
-	protected function bulk_sync_rooms( $room_type, array $request_rooms ) {
-		// Current list room of room-type.
-		$db_rooms_ids = array_map( 'absint',
-			wp_list_pluck( $this->room_store->list_by_room_type( $room_type ), 'id' )
-		);
-
-		$touch_ids = [];
-		foreach ( $request_rooms as $raw_room ) {
-			// Ignore in-valid rooms from request.
-			if ( ! isset( $raw_room['id'] ) || ! isset( $raw_room['name'] ) ) {
-				continue;
-			}
-
-			// Sanitize data before working with database.
-			$room_args = array_map( 'sanitize_text_field', $raw_room );
-			$room_args['room_type'] = $room_type;
-
-			if ( $room_args['id'] > 0 && in_array( (int) $room_args['id'], $db_rooms_ids ) ) {
-				$working_id = $this->room_store->update( (int) $room_args['id'], $room_args );
-			} else {
-				$working_id = $this->room_store->insert( $room_type, $room_args['name'] );
-			}
-
-			// We'll map current working ID in $touch_ids...
-			if ( $working_id ) {
-				$touch_ids[] = $working_id;
-			}
-		}
-
-		// Fimally, delete invisible rooms.
-		$delete_ids = array_diff( $db_rooms_ids, $touch_ids );
-
-		if ( ! empty( $delete_ids ) ) {
-			$this->room_store->delete( $delete_ids );
-		}
 	}
 
 	/**

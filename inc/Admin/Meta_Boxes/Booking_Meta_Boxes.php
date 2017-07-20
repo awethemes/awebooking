@@ -289,7 +289,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'default'         => 0,
 			'validate'        => 'required|numeric:min:0',
-			'sanitization_cb' => 'awebooking_sanitize_price',
+			'sanitization_cb' => 'awebooking_sanitize_price_number',
 			'before'          => '<div class="skeleton-input-group">',
 			'after'           => '<span class="skeleton-input-group__addon">' . awebooking( 'currency' )->get_symbol() . '</span></div>',
 		));
@@ -338,7 +338,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 				global $post;
 				return get_post_status( $post );
 			},
-			'options'           => Utils::get_booking_statuses(),
+			'options'           => awebooking()->get_booking_statuses(),
 		));
 
 		// Customer infomation.
@@ -357,10 +357,11 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		));
 
 		$metabox->add_field( array(
-			'id'      => 'customer_title',
-			'type'    => 'select',
-			'name'    => esc_html__( 'Title', 'awebooking' ),
-			'options' => Utils::get_common_titles(),
+			'id'               => 'customer_title',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Title', 'awebooking' ),
+			'options'          => awebooking_get_common_titles(),
+			'show_option_none' => true,
 		));
 
 		$metabox->add_field( array(

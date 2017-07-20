@@ -49,16 +49,6 @@ class Date_Utils {
 	}
 
 	/**
-	 * Determine if the given value is a standard date format.
-	 *
-	 * @param  string $date A string of "Y-m-d" date format.
-	 * @return bool
-	 */
-	public static function is_standard_date_format( $date ) {
-		return preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
-	}
-
-	/**
 	 * Get days in month.
 	 *
 	 * @param  int        $month Number of month from 1 to 12.
@@ -77,15 +67,31 @@ class Date_Utils {
 	}
 
 	/**
-	 * Returns true if a year is valid.
+	 * Returns true if year is valid.
 	 *
-	 * @param  [type]  $year [description]
-	 * @return boolean       [description]
+	 * We'll check if input year in range of current year -20, +30.
+	 *
+	 * @param  int $year Input year to validate.
+	 * @return boolean
 	 */
 	public static function is_valid_year( $year ) {
 		$current_year = (int) date( 'Y' );
 
-		// TODO...
-		return ( is_int( $year ) && ( $current_year + 50 ) > $year );
+		return filter_var( $year, FILTER_VALIDATE_INT, [
+			'options' => [
+				'min_range' => $current_year - 20,
+				'max_range' => $current_year - 30,
+			],
+		]);
+	}
+
+	/**
+	 * Determine if the given value is a standard date format.
+	 *
+	 * @param  string $date A string of "Y-m-d" date format.
+	 * @return bool
+	 */
+	public static function is_standard_date_format( $date ) {
+		return preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
 	}
 }

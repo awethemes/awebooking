@@ -3,7 +3,6 @@ namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Booking;
 use AweBooking\AweBooking;
-use AweBooking\Support\Utils;
 use AweBooking\Support\Date_Period;
 
 class Booking_List_Table extends Post_Type_Abstract {
@@ -256,7 +255,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		// Added booking status only in "All" section in list-table.
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = awebooking_get_booking_statuses();
+			$statuses = awebooking()->get_booking_statuses();
 
 			foreach ( $statuses as $status => $display_name ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

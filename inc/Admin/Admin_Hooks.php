@@ -88,8 +88,8 @@ class Admin_Hooks extends Service_Hooks {
 		new List_Tables\Room_Type_List_Table;
 		new List_Tables\Service_List_Table;
 
-		// new Meta_Boxes\Room_Type_Meta_Boxes;
-		// new Meta_Boxes\Booking_Meta_Boxes;
+		new Meta_Boxes\Room_Type_Meta_Boxes;
+		new Meta_Boxes\Booking_Meta_Boxes;
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_register_scripts' ), 20 );
 
@@ -139,15 +139,15 @@ class Admin_Hooks extends Service_Hooks {
 	 * @return array
 	 */
 	public function page_state( $post_states, $post ) {
-		if ( intval( awebooking_config( 'page_check_availability' ) ) === $post->ID ) {
+		if ( intval( awebooking_option( 'page_check_availability' ) ) === $post->ID ) {
 			$post_states['page_check_availability'] = __( 'Check Availability Page' );
 		}
 
-		if ( intval( awebooking_config( 'page_booking' ) ) === $post->ID ) {
+		if ( intval( awebooking_option( 'page_booking' ) ) === $post->ID ) {
 			$post_states['page_booking'] = __( 'Booking Informations Page' );
 		}
 
-		if ( intval( awebooking_config( 'page_checkout' ) ) === $post->ID ) {
+		if ( intval( awebooking_option( 'page_checkout' ) ) === $post->ID ) {
 			$post_states['page_checkout'] = __( 'Checkout Page' );
 		}
 

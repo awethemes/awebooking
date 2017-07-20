@@ -13,7 +13,6 @@ use AweBooking\Rate_Pricing;
 use AweBooking\Room_Type;
 use AweBooking\AweBooking;
 
-use AweBooking\Support\Utils;
 use AweBooking\Support\Mail;
 use AweBooking\Support\Date_Period;
 use AweBooking\Pricing\Price;
@@ -88,7 +87,7 @@ class Concierge implements Concierge_Interface {
 	 * @return boolean
 	 */
 	public function set_room_state( Room $room, Date_Period $period, $state = Room_State::AVAILABLE, array $options = [] ) {
-		if ( ! array_key_exists( $state, Utils::get_room_states() ) ) {
+		if ( ! array_key_exists( $state, awebooking()->get_room_states() ) ) {
 			return false;
 		}
 

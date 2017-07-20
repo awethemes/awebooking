@@ -68,29 +68,44 @@ class Config implements Config_Interface {
 		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
 	}
 
+	/**
+	 * //
+	 *
+	 * @return WP_Term
+	 */
+	public function get_default_hotel_location() {
+		$default_location = (int) $this->get( 'location_default' );
 
-	public static function get_hotel_location_default() {
-
-		if ( awebooking_config( 'location_default' ) ) {
-			$term_default = get_term( intval( awebooking_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
+		if ( $default_location && 0 < $default_location ) {
+			$term = get_term( $default_location, AweBooking::HOTEL_LOCATION );
 		} else {
-			$term_default = static::get_first_term( AweBooking::HOTEL_LOCATION, array(
+			$terms = get_terms([
+				'taxonomy'   => AweBooking::HOTEL_LOCATION,
 				'hide_empty' => false,
-			) );
+			]);
+
+			if ( is_array( $terms ) && isset( $terms[0] ) ) {
+				$term = $terms[0];
+			} else {
+				$term = null;
+			}
 		}
 
-		return $term_default;
-	}
+		if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
+			return $term;
+		}
 
+		return null;
+	}
 
 	public function get_admin_notify_emails() {
 		$admin_emails = [];
 
-		if ( awebooking_config( 'email_admin_notify' ) ) {
+		if ( $this->get( 'email_admin_notify' ) ) {
 			$admin_emails[] = get_option( 'admin_email' );
 		}
 
-		$another_emails = awebooking_config( 'email_notify_another_emails' );
+		$another_emails = $this->get( 'email_notify_another_emails' );
 		if ( ! empty( $another_emails ) ) {
 			$another_emails = array_map( 'trim', explode( ',', $another_emails ) );
 			$admin_emails   = array_merge( $admin_emails, $another_emails );

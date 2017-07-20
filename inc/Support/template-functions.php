@@ -10,10 +10,13 @@ function awebooking_template_scripts() {
 
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'awebooking', AweBooking()->plugin_url() . '/assets/js/front-end/awebooking.js', array( 'jquery' ), AweBooking::VERSION, true );
+
+	wp_enqueue_script( 'booking-ajax', AweBooking()->plugin_url() . '/assets/js/front-end/booking-handler.js', array( 'jquery' ), AweBooking::VERSION, true );
+	wp_localize_script( 'booking-ajax', 'booking_ajax', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+	));
 }
 add_action( 'wp_enqueue_scripts', 'awebooking_template_scripts', 20 );
-
-
 
 if ( ! function_exists( 'awebooking_output_content_wrapper' ) ) {
 
@@ -94,7 +97,7 @@ if ( ! function_exists( 'awebooking_location_filter' ) ) {
 	 */
 	function awebooking_location_filter() {
 
-		if ( ! awebooking_config( 'enable_location' ) ) {
+		if ( ! awebooking_option( 'enable_location' ) ) {
 			return;
 		}
 
@@ -102,7 +105,7 @@ if ( ! function_exists( 'awebooking_location_filter' ) ) {
 			'hide_empty' => true,
 		) );
 
-		$term_default = Utils::get_hotel_location_default();
+		$term_default = awebooking( 'config' )->get_default_hotel_location();
 
 		awebooking_get_template( 'loop/location-filter.php', array(
 			'locations'   => $locations,
@@ -370,10 +373,10 @@ if ( ! function_exists( 'awebooking_template_single_form' ) ) {
 	 */
 	function awebooking_template_single_form() {
 		global $room_type;
-		$date_format  = awebooking_config( 'date_format' );
+		$date_format  = awebooking_option( 'date_format' );
 		$date_format = Formatting::php_to_js_dateformat( $date_format ); // TODO: error "F"
-		$max_adults   = awebooking_config( 'check_availability_max_adults' );
-		$max_children = awebooking_config( 'check_availability_max_children' );
+		$max_adults   = awebooking_option( 'check_availability_max_adults' );
+		$max_children = awebooking_option( 'check_availability_max_children' );
 		$min_night = is_room_type() ? $room_type->get_minimum_night() : 1;
 
 		awebooking_get_template( 'single-room-type/form.php', array(
@@ -503,7 +506,7 @@ function awebooking_template_check_availability_form() {
  * Outputs check availability form for input time.
  */
 function awebooking_template_check_form_input_time() {
-	$date_format  = awebooking_config( 'date_format' );
+	$date_format  = awebooking_option( 'date_format' );
 	$date_format = Formatting::php_to_js_dateformat( $date_format );
 
 	awebooking_get_template( 'check-form/input-time.php', array(
@@ -520,7 +523,7 @@ function awebooking_template_check_form_input_location() {
 		'hide_empty' => true,
 	) );
 
-	$term_default = Utils::get_hotel_location_default();
+	$term_default = awebooking( 'config' )->get_default_hotel_location();
 
 	awebooking_get_template( 'check-form/input-location.php', array(
 		'locations'     => $locations,
@@ -532,8 +535,8 @@ function awebooking_template_check_form_input_location() {
  * Outputs check availability form for input capacity.
  */
 function awebooking_template_check_form_input_capacity() {
-	$max_adults   = awebooking_config( 'check_availability_max_adults' );
-	$max_children = awebooking_config( 'check_availability_max_children' );
+	$max_adults   = awebooking_option( 'check_availability_max_adults' );
+	$max_children = awebooking_option( 'check_availability_max_children' );
 
 	awebooking_get_template( 'check-form/input-capacity.php', array(
 		'max_adults' 	=> $max_adults,

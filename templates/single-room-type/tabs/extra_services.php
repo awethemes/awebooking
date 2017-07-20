@@ -30,7 +30,7 @@ $heading = esc_html( apply_filters( 'awebooking/room_type_extra_services_heading
 		<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>">
 
 		<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ) ?></label>
-		<span><?php print Formatting::get_extra_service_label( $service ); // WPCS: xss ok.?> <?php echo ( 'mandatory' === $service->get_type() ) ? '(*' . esc_html__( 'mandatory', 'awebooking' ) . ')' : '';?></span>
+		<span><?php print $service->get_describe(); // WPCS: xss ok.?> <?php echo ( 'mandatory' === $service->get_type() ) ? '(*' . esc_html__( 'mandatory', 'awebooking' ) . ')' : '';?></span>
 
 		<div class="awebooking-service__content">
 			<?php if ( $service->get_description() ) : ?>

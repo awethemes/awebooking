@@ -52,7 +52,7 @@ class Service_List_Table extends Taxonomy_Abstract {
 				break;
 
 			case 'details':
-				echo Formatting::get_extra_service_label( $service );
+				echo $service->get_describe();
 				break;
 		} // End switch().
 	}

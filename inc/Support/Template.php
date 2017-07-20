@@ -58,6 +58,45 @@ class Template {
 	}
 
 	/**
+	 * Load a template part into a template.
+	 *
+	 * @param string $slug The slug name for the generic template.
+	 * @param string $name The name of the specialised template.
+	 */
+	public static function get_template_part( $slug, $name = '' ) {
+		$template = '';
+
+		// Look in {theme}/slug-name.php and {theme}/awebooking/slug-name.php.
+		if ( $name ) {
+			$template = locate_template([
+				trailingslashit( awebooking()->template_path() ) . "{$slug}-{$name}.php",
+				"{$slug}-{$name}.php",
+			]);
+		}
+
+		// Look in default slug-name.php.
+		if ( ! $template && $name && file_exists( awebooking()->plugin_path() . "/templates/{$slug}-{$name}.php" ) ) {
+			$template = awebooking()->plugin_path() . "/templates/{$slug}-{$name}.php";
+		}
+
+		// If template file doesn't exist,
+		// look in {theme}/slug.php and {theme}/awebooking/slug.php.
+		if ( ! $template ) {
+			$template = locate_template([
+				trailingslashit( awebooking()->template_path() ) . "{$slug}.php",
+				"{$slug}.php",
+			]);
+		}
+
+		// Allow 3rd party plugins to filter template file from their plugin.
+		$template = apply_filters( 'awebooking/get_template_part', $template, $slug, $name );
+
+		if ( $template ) {
+			load_template( $template, false );
+		}
+	}
+
+	/**
 	 * //
 	 *
 	 * @param  string $template_name //.

@@ -1,9 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Support\Utils;
-use AweBooking\Support\Formatting;
-
 class Shortcodes {
 
 	/**

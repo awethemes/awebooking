@@ -232,4 +232,50 @@ class AweBooking extends SkeletonContainer {
 	public function template_path() {
 		return apply_filters( 'awebooking/template_path', 'awebooking/' );
 	}
+
+	/**
+	 * Return list room states.
+	 *
+	 * @return array
+	 */
+	public function get_room_states() {
+		return [
+			Room_State::AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			Room_State::UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			Room_State::PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			Room_State::BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+		];
+	}
+
+	/**
+	 * Get all order statuses.
+	 *
+	 * @return array
+	 */
+	public function get_booking_statuses() {
+		return apply_filters( 'awebooking/order_statuses', [
+			Booking::PENDING    => _x( 'Pending',    'Booking status', 'awebooking' ),
+			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
+			Booking::COMPLETED  => _x( 'Completed',  'Booking status', 'awebooking' ),
+			Booking::CANCELLED  => _x( 'Cancelled',  'Booking status', 'awebooking' ),
+		]);
+	}
+
+	/**
+	 * Get all service operations.
+	 *
+	 * @return array
+	 */
+	public function get_service_operations() {
+		return apply_filters( 'awebooking/service_operations', [
+			Service::OP_ADD               => esc_html__( 'Add to price', 'awebooking' ),
+			Service::OP_ADD_DAILY         => esc_html__( 'Add to price per night', 'awebooking' ),
+			Service::OP_ADD_PERSON        => esc_html__( 'Add to price per person', 'awebooking' ),
+			Service::OP_ADD_PERSON_DAILY  => esc_html__( 'Add to price per person per night', 'awebooking' ),
+			Service::OP_SUB               => esc_html__( 'Subtract from price', 'awebooking' ),
+			Service::OP_SUB_DAILY         => esc_html__( 'Subtract from price per night', 'awebooking' ),
+			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
+			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
+		]);
+	}
 }

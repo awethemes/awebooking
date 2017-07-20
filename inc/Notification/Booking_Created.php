@@ -59,7 +59,7 @@ class Booking_Created extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = awebooking_config( 'email_new_subject' );
+		$subject = awebooking_option( 'email_new_subject' );
 		return $this->format_string( $subject );
 	}
 

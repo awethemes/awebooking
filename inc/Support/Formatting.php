@@ -184,7 +184,7 @@ class Formatting {
 	 * @return string
 	 */
 	public static function php_to_js_dateformat( $format ) {
-		// oOrder is relevant here, since the replacement will be done sequentially.
+		// Order is relevant here, since the replacement will be done sequentially.
 		$supported_options = array(
 			'd' => 'dd',  // Day, leading 0
 			'j' => 'd',   // Day, no 0
@@ -212,7 +212,7 @@ class Formatting {
 			$format = preg_replace( "~(?<!\\\\)$php~", $js, $format );
 		}
 
-		$format = preg_replace_callback( '~(?:\\\.)+~', array( CMB2_Utils(), 'wrap_escaped_chars' ), $format );
+		$format = preg_replace_callback( '~(?:\\\.)+~', array( 'CMB2_Utils', 'wrap_escaped_chars' ), $format );
 
 		return $format;
 	}

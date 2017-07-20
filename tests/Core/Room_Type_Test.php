@@ -1,5 +1,7 @@
 <?php
 
+use AweBooking\Room_Type;
+
 class Room_Type_Test extends WP_UnitTestCase {
 	/**
 	 * Set up the test fixture.
@@ -21,7 +23,7 @@ class Room_Type_Test extends WP_UnitTestCase {
 	}
 
 	public function test_room_type_object() {
-		$room_type = new AweBooking\Room_Type( $this->postid );
+		$room_type = new Room_Type( $this->postid );
 		$this->assertInstanceOf( 'AweBooking\\Support\\WP_Object', $room_type );
 
 		$this->assertEquals($room_type['title'], 'VIP');
@@ -35,7 +37,36 @@ class Room_Type_Test extends WP_UnitTestCase {
 	}
 
 	public function test_no_exists_room_type() {
-		$room_type = new AweBooking\Room_Type( 0 );
+		$room_type = new Room_Type( 0 );
 		$this->assertFalse($room_type->exists());
+	}
+
+	public function testDelete() {
+		$post_id = $this->factory->post->create([ 'post_type' => 'room_type' ]);
+		$room_type = new Room_Type( $post_id );
+
+		$this->assertTrue($room_type->delete());
+		$this->assertFalse($room_type->exists());
+		$this->assertEquals('trash', get_post_status( $post_id ) );
+
+		$room_type = new Room_Type( $post_id );
+		$this->assertTrue($room_type->delete(true));
+		$this->assertNull(get_post($post_id));
+
+		$room_type->save();
+		$this->assertNotSame($room_type->get_id(), $post_id);
+	}
+
+	public function testInsert() {
+		$room_type = new Room_Type;
+		$room_type['title'] = 'Luxury';
+		$room_type['description'] = 'Desc';
+		$room_type['short_description'] = 'Short Desc';
+		$room_type->save();
+
+		$post = get_post( $room_type->get_id() );
+		$this->assertEquals($room_type['title'], $post->post_title);
+		$this->assertEquals($room_type['description'], $post->post_content);
+		$this->assertEquals($room_type['short_description'], $post->post_excerpt);
 	}
 }
