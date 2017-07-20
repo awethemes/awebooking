@@ -40,4 +40,5 @@ before_script:
     fi
 
 script:
+  - composer install
   - phpunit
