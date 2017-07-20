@@ -46,7 +46,6 @@ before_script:
     else
       composer global require "phpunit/phpunit=4.8.*"
     fi
-
-install: travis_retry composer install --no-interaction --prefer-source --no-suggest
+  - composer install --no-interaction --prefer-source --no-suggest
 
 script: phpunit
