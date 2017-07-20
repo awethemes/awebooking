@@ -13,14 +13,10 @@ use AweBooking\Rate_Pricing;
 use AweBooking\Room_Type;
 use AweBooking\AweBooking;
 
-use AweBooking\Support\Utils;
-use AweBooking\Support\Mail;
 use AweBooking\Support\Date_Period;
 use AweBooking\Pricing\Price;
 use Roomify\Bat\Store\StoreInterface;
 use Roomify\Bat\Valuator\IntervalValuator;
-
-use AweBooking\Mails\Booking_Created;
 
 use AweBooking\Interfaces\Price as Price_Interface;
 use AweBooking\Interfaces\Concierge as Concierge_Interface;
@@ -29,20 +25,13 @@ use AweBooking\Interfaces\Availability as Availability_Interface;
 use Roomify\Bat\Event\Event;
 
 class Concierge implements Concierge_Interface {
-	/**
-	 * BAT Store instance.
-	 *
-	 * @var \Roomify\Bat\Store\StoreInterface
-	 */
-	protected $store;
+	protected $awebooking;
 
 	/**
 	 * Concierge constructor.
-	 *
-	 * @param StoreInterface $store Store instance.
 	 */
-	public function __construct( StoreInterface $store ) {
-		$this->store = $store;
+	public function __construct( AweBooking $awebooking ) {
+		$this->awebooking = $awebooking;
 	}
 
 	/**
@@ -95,7 +84,7 @@ class Concierge implements Concierge_Interface {
 	 * @return boolean
 	 */
 	public function set_room_state( Room $room, Date_Period $period, $state = Room_State::AVAILABLE, array $options = [] ) {
-		if ( ! array_key_exists( $state, Utils::get_room_states() ) ) {
+		if ( ! array_key_exists( $state, awebooking()->get_room_states() ) ) {
 			return false;
 		}
 
@@ -241,7 +230,7 @@ class Concierge implements Concierge_Interface {
 	 * @return array
 	 */
 	public function check_rooms_available( array $rooms, Request_Interface $request ) {
-		$calendar = new Calendar( $rooms, $this->store );
+		$calendar = new Calendar( $rooms, awebooking( 'store.availability' ) );
 
 		$response = $calendar->getMatchingUnits(
 			$request->get_check_in(),

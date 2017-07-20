@@ -35,7 +35,7 @@ class Service_Tax extends Taxonomy {
 			'name'      => esc_html__( 'Operation', 'awebooking' ),
 			'id'        => 'operation',
 			'type'      => 'select',
-			'options'   => static::operation_options(),
+			'options'   => awebooking()->get_service_operations(),
 			'sanitization_cb' => array( $this, 'sanitize_operation' ),
 			'render_field_cb'   => array( $this, '_operation_field_callback' ),
 		]);
@@ -45,7 +45,7 @@ class Service_Tax extends Taxonomy {
 			'id'   => 'price',
 			'type' => 'text_small',
 			'validate'   => 'required|numeric:min:0',
-			'sanitization_cb' => 'abkng_sanitize_price',
+			'sanitization_cb' => 'awebooking_sanitize_price_number',
 			'show_on_cb' => '__return_false',
 		]);
 
@@ -99,26 +99,6 @@ class Service_Tax extends Taxonomy {
 	}
 
 	/**
-	 * Operation options supported.
-	 *
-	 * @return array
-	 */
-	public static function operation_options() {
-		return [
-			'add'        => esc_html__( 'Add to price', 'awebooking' ),
-			'add-daily'  => esc_html__( 'Add to price per night', 'awebooking' ),
-
-			'add-person'        => esc_html__( 'Add to price per person', 'awebooking' ),
-			'add-person-daily'  => esc_html__( 'Add to price per person per night', 'awebooking' ),
-
-			'sub'        => esc_html__( 'Subtract from price', 'awebooking' ),
-			'sub-daily'  => esc_html__( 'Subtract from price per night', 'awebooking' ),
-			'increase'   => esc_html__( 'Increase price by % amount', 'awebooking' ),
-			'decrease'   => esc_html__( 'Decrease price by % amount', 'awebooking' ),
-		];
-	}
-
-	/**
 	 * Type options supported.
 	 *
 	 * @return array
@@ -137,7 +117,7 @@ class Service_Tax extends Taxonomy {
 	 * @return string
 	 */
 	public function sanitize_operation( $value ) {
-		$operation_options = static::operation_options();
+		$operation_options = awebooking()->get_service_operations();
 		$valid_values = [];
 		foreach ( $operation_options as $key => $operation_option ) {
 			$valid_values[] = $key;

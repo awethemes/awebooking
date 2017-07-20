@@ -62,43 +62,9 @@ require trailingslashit( __DIR__ ) . '/bootstrap.php';
  */
 $awebooking = new AweBooking;
 
-do_action( 'awebooking/booting', $awebooking );
-
 add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
 
-$GLOBALS['awebooking'] = $awebooking;
-
 register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'create_tables' ) );
+// register_deactivation_hook( __FILE__, '' );
 
-/**
- * Show row meta on the plugin screen.
- *
- * @param	mixed $links Plugin row meta.
- * @param	mixed $file  Plugin base file.
- * @return	array
- */
-function awebooking_plugin_row_meta( $links, $file ) {
-	if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
-		$row_meta = array(
-			'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
-			'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
-		);
-
-		return array_merge( $links, $row_meta );
-	}
-
-	return (array) $links;
-}
-add_filter( 'plugin_row_meta', 'awebooking_plugin_row_meta', 10, 2 );
-
-/**
- * Redirect to welcome page.
- *
- * @param  string $plugin plugin.
- */
-function awebooking_redirect_to_welcome_page( $plugin ) {
-	if ( ( plugin_basename( __FILE__ ) == $plugin ) && ! get_option( 'awebooking_installed' ) ) {
-		exit( wp_redirect( admin_url( 'index.php?page=awebooking-setup' ) ) );
-	}
-}
-add_action( 'activated_plugin', 'awebooking_redirect_to_welcome_page' );
+$GLOBALS['awebooking'] = $awebooking;

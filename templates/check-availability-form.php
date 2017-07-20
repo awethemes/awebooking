@@ -13,12 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$page_id = intval( abkng_config( 'page_check_availability' ) );
-$link = get_the_permalink( $page_id );
+$link = awebooking_get_page_permalink( 'check_availability' );
 ?>
-<form action="<?php echo esc_url( $link ); ?>" class="awebooking-check-form">
+<form action="<?php echo esc_url( $link ); ?>" class="awebooking-check-form" method="GET">
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
-		<input type="hidden" name="p" value="<?php echo esc_attr( $page_id ) ?>">
+		<input type="hidden" name="p" value="<?php echo esc_attr( awebooking_get_page_id( 'check_availability' ) ) ?>">
 	<?php endif ?>
 
 	<?php if ( awebooking()->is_multi_language() ) : ?>
@@ -29,15 +28,15 @@ $link = get_the_permalink( $page_id );
 		<h2 class="awebooking-heading"><?php esc_html_e( 'Your Reservation', 'awebooking' ); ?></h2>
 		<div class="awebooking-check-form__content">
 
-			<?php abkng_template_check_form_input_time(); ?>
+			<?php awebooking_template_check_form_input_time(); ?>
 
 			<?php
 			if ( ! $atts['hide_location'] ) {
-				abkng_template_check_form_input_location();
+				awebooking_template_check_form_input_location();
 			}
 			?>
 
-			<?php abkng_template_check_form_input_capacity(); ?>
+			<?php awebooking_template_check_form_input_capacity(); ?>
 
 			<div class="awebooking-field mb-0">
 				<div class="awebooking-field-group">

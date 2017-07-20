@@ -69,6 +69,52 @@ class Config implements Config_Interface {
 	}
 
 	/**
+	 * //
+	 *
+	 * @return WP_Term
+	 */
+	public function get_default_hotel_location() {
+		$default_location = (int) $this->get( 'location_default' );
+
+		if ( $default_location && 0 < $default_location ) {
+			$term = get_term( $default_location, AweBooking::HOTEL_LOCATION );
+		} else {
+			$terms = get_terms([
+				'taxonomy'   => AweBooking::HOTEL_LOCATION,
+				'hide_empty' => false,
+			]);
+
+			if ( is_array( $terms ) && isset( $terms[0] ) ) {
+				$term = $terms[0];
+			} else {
+				$term = null;
+			}
+		}
+
+		if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
+			return $term;
+		}
+
+		return null;
+	}
+
+	public function get_admin_notify_emails() {
+		$admin_emails = [];
+
+		if ( $this->get( 'email_admin_notify' ) ) {
+			$admin_emails[] = get_option( 'admin_email' );
+		}
+
+		$another_emails = $this->get( 'email_notify_another_emails' );
+		if ( ! empty( $another_emails ) ) {
+			$another_emails = array_map( 'trim', explode( ',', $another_emails ) );
+			$admin_emails   = array_merge( $admin_emails, $another_emails );
+		}
+
+		return $admin_emails;
+	}
+
+	/**
 	 * Prepare setup default settings.
 	 *
 	 * @return void

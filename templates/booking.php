@@ -78,7 +78,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 												<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>">
 
 												<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ) ?></label>
-												<span><?php echo Formatting::get_extra_service_label( $service ); ?></span>
+												<span><?php echo $service->get_describe(); ?></span>
 
 												<div class="awebooking-service__content">
 													<?php if ( $service->get_description() ) : ?>
@@ -116,7 +116,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 				</table>
 
 				<div class="text-right">
-					<?php $checkout_link = get_permalink( absint( abkng_config( 'page_checkout' ) ) ); ?>
+					<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
 					<a class="button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Confirm Booking', 'awebooking' ); ?></a>
 				</div>
 			</div>

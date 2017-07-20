@@ -153,7 +153,7 @@ class Flash_Message {
 		$this->messages[] = $message;
 
 		// Send the values to the cookie for page reload display.
-		Utils::setcookie( static::COOKIE_NAME, maybe_serialize( $this->messages ), time() + 60 * 60 * 24 );
+		awebooking_setcookie( static::COOKIE_NAME, maybe_serialize( $this->messages ), time() + 60 * 60 * 24 );
 
 		return $this;
 	}
@@ -181,7 +181,7 @@ class Flash_Message {
 			}
 
 			$this->messages = $messages;
-			Utils::setcookie( static::COOKIE_NAME, null, time() - 1000 );
+			awebooking_setcookie( static::COOKIE_NAME, null, time() - 1000 );
 		}
 	}
 }

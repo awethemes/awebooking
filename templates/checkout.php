@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	/**
 	 * awebooking/checkout/detail_tables hook.
 	 *
-	 * @hooked abkng_template_checkout_general_informations - 10
+	 * @hooked awebooking_template_checkout_general_informations - 10
 	 */
 	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type ); ?>
 
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		/**
 		 * Hook: 'awebooking/checkout/customer_form'.
 		 *
-		 * @hooked abkng_template_checkout_customer_form - 10
+		 * @hooked awebooking_template_checkout_customer_form - 10
 		 */
 		do_action( 'awebooking/checkout/customer_form', $availability ); ?>
 

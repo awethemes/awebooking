@@ -15,7 +15,7 @@ class Admin_Utils {
 	public static function create_page( $slug, $option = '', $page_title = '', $page_content = '', $post_parent = 0 ) {
 		global $wpdb;
 
-		$option_value     = abkng_config( $option );
+		$option_value     = awebooking_option( $option );
 
 		if ( $option_value > 0 ) {
 			$page_object = get_post( $option_value );

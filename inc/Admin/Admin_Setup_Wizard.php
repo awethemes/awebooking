@@ -41,22 +41,22 @@ class Admin_Setup_Wizard {
 		$default_steps = array(
 			'introduction' => array(
 				'name'    => __( 'Introduction', 'awebooking' ),
-				'view'    => array( $this, 'abkng_setup_introduction' ),
+				'view'    => array( $this, 'setup_introduction' ),
 				'handler' => '',
 			),
 			'pages' => array(
 				'name'    => __( 'Page setup', 'awebooking' ),
-				'view'    => array( $this, 'abkng_setup_pages' ),
-				'handler' => array( $this, 'abkng_setup_pages_save' ),
+				'view'    => array( $this, 'setup_pages' ),
+				'handler' => array( $this, 'setup_pages_save' ),
 			),
 			'locale' => array(
 				'name'    => __( 'General setup', 'awebooking' ),
-				'view'    => array( $this, 'abkng_setup_locale' ),
-				'handler' => array( $this, 'abkng_setup_locale_save' ),
+				'view'    => array( $this, 'setup_locale' ),
+				'handler' => array( $this, 'setup_locale_save' ),
 			),
 			'next_steps' => array(
 				'name'    => __( 'Ready!', 'awebooking' ),
-				'view'    => array( $this, 'abkng_setup_ready' ),
+				'view'    => array( $this, 'setup_ready' ),
 				'handler' => '',
 			),
 		);
@@ -206,7 +206,7 @@ class Admin_Setup_Wizard {
 	/**
 	 * Introduction step.
 	 */
-	public function abkng_setup_introduction() {
+	public function setup_introduction() {
 		?>
 		<div class="awebooking-setup-introduction">
 			<h1 class="awebooking-setup-welcome text-center"><?php esc_html_e( 'Welcome to the AweBooking!', 'awebooking' ); ?></h1>
@@ -223,7 +223,7 @@ class Admin_Setup_Wizard {
 	/**
 	 * Page setup.
 	 */
-	public function abkng_setup_pages() {
+	public function setup_pages() {
 		?>
 		<h1><?php esc_html_e( 'Page setup', 'awebooking' ); ?></h1>
 		<form method="post">
@@ -267,7 +267,7 @@ class Admin_Setup_Wizard {
 	/**
 	 * Save Page Settings.
 	 */
-	public function abkng_setup_pages_save() {
+	public function setup_pages_save() {
 		check_admin_referer( 'awebooking-setup' );
 
 		$pages = apply_filters( 'awebooking/create_pages', array(
@@ -299,16 +299,16 @@ class Admin_Setup_Wizard {
 	/**
 	 * Locale settings.
 	 */
-	public function abkng_setup_locale() {
+	public function setup_locale() {
 		$currencies       = awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
 		$currency_pos   = awebooking( 'currency_manager' )->get_positions();
 
 		// Defaults
-		$currency_default = abkng_config( 'currency' ) ? abkng_config( 'currency' ) : abkng_config()->get_default( 'currency' );
-		$currency_pos_default = abkng_config( 'currency_position' ) ? abkng_config( 'currency_position' ) : abkng_config()->get_default( 'currency_position' );
-		$thousand_sep   = abkng_config( 'price_thousand_separator' ) ? abkng_config( 'price_thousand_separator' ) : abkng_config()->get_default( 'price_thousand_separator' );
-		$decimal_sep   = abkng_config( 'price_decimal_separator' ) ? abkng_config( 'price_decimal_separator' ) : abkng_config()->get_default( 'price_decimal_separator' );
-		$num_decimals   = abkng_config( 'price_number_decimals' ) ? abkng_config( 'price_number_decimals' ) : abkng_config()->get_default( 'price_number_decimals' );
+		$currency_default = awebooking_option( 'currency' ) ? awebooking_option( 'currency' ) : awebooking_option()->get_default( 'currency' );
+		$currency_pos_default = awebooking_option( 'currency_position' ) ? awebooking_option( 'currency_position' ) : awebooking_option()->get_default( 'currency_position' );
+		$thousand_sep   = awebooking_option( 'price_thousand_separator' ) ? awebooking_option( 'price_thousand_separator' ) : awebooking_option()->get_default( 'price_thousand_separator' );
+		$decimal_sep   = awebooking_option( 'price_decimal_separator' ) ? awebooking_option( 'price_decimal_separator' ) : awebooking_option()->get_default( 'price_decimal_separator' );
+		$num_decimals   = awebooking_option( 'price_number_decimals' ) ? awebooking_option( 'price_number_decimals' ) : awebooking_option()->get_default( 'price_number_decimals' );
 		?>
 		<h1><?php esc_html_e( 'General setup', 'awebooking' ); ?></h1>
 		<form method="post">
@@ -317,7 +317,7 @@ class Admin_Setup_Wizard {
 				<tr>
 					<th scope="row"><label for="enable_location"><?php esc_html_e( 'Multi-location?', 'awebooking' ); ?></label></th>
 					<td>
-						<input class="checkbox" type="checkbox" <?php checked( abkng_config( 'enable_location' ), 'on' ); ?> id="enable_location" name="enable_location" />
+						<input class="checkbox" type="checkbox" <?php checked( awebooking_option( 'enable_location' ), 'on' ); ?> id="enable_location" name="enable_location" />
 					</td>
 				</tr>
 				<tr>
@@ -374,7 +374,7 @@ class Admin_Setup_Wizard {
 	/**
 	 * Save Locale Settings.
 	 */
-	public function abkng_setup_locale_save() {
+	public function setup_locale_save() {
 		check_admin_referer( 'awebooking-setup' );
 
 		$enable_location           = isset( $_POST['enable_location'] ) ? sanitize_text_field( $_POST['enable_location'] ) : '';
@@ -400,15 +400,15 @@ class Admin_Setup_Wizard {
 	/**
 	 * Actions on the final step.
 	 */
-	private function abkng_setup_ready_actions() {
+	private function setup_ready_actions() {
 		add_option( 'awebooking_installed', 'true' );
 	}
 
 	/**
 	 * Final step.
 	 */
-	public function abkng_setup_ready() {
-		$this->abkng_setup_ready_actions();
+	public function setup_ready() {
+		$this->setup_ready_actions();
 		?>
 		<h1 class="awebooking-setup-welcome text-center"><?php esc_html_e( 'Your hotel is ready!', 'awebooking' ); ?></h1>
 

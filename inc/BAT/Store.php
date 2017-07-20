@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Stores;
+namespace AweBooking\BAT;
 
 use DateTime;
 use Carbon\Carbon;
@@ -9,7 +9,7 @@ use Roomify\Bat\Event\EventItemizer;
 use Roomify\Bat\Store\Store as Base_Store;
 use AweBooking\Support\Date_Utils;
 
-class BAT_Store extends Base_Store {
+class Store extends Base_Store {
 	/**
 	 * The table that holds day data.
 	 *

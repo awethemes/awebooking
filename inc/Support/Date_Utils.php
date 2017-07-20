@@ -49,16 +49,6 @@ class Date_Utils {
 	}
 
 	/**
-	 * Determine if the given value is a standard date format.
-	 *
-	 * @param  string $date A string of "Y-m-d" date format.
-	 * @return bool
-	 */
-	public static function is_standard_date_format( $date ) {
-		return preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
-	}
-
-	/**
 	 * Get days in month.
 	 *
 	 * @param  int        $month Number of month from 1 to 12.
@@ -76,23 +66,32 @@ class Date_Utils {
 		return (int) $carbon->daysInMonth;
 	}
 
-	public static function is_validate_year( $year ) {
-		try {
-			$received_year = Carbon::createFromDate( $year, 1, 1 );
-		} catch ( \Exception $e ) {
-			return false;
-		}
+	/**
+	 * Returns true if year is valid.
+	 *
+	 * We'll check if input year in range of current year -20, +30.
+	 *
+	 * @param  int $year Input year to validate.
+	 * @return boolean
+	 */
+	public static function is_valid_year( $year ) {
+		$current_year = (int) date( 'Y' );
 
-		$current_year  = Carbon::now()->startOfYear();
-
-		return $received_year->between(
-			$current_year->copy()->subYears( 50 ), // 50 years back.
-			$current_year->copy()->addYears( 50 )  // To next 50 years.
-		);
+		return filter_var( $year, FILTER_VALIDATE_INT, [
+			'options' => [
+				'min_range' => $current_year - 20,
+				'max_range' => $current_year - 30,
+			],
+		]);
 	}
 
-	// TODO: Remove this.
-	public static function get_booking_request_query( $extra_args = array() ) {
-		return Utils::get_booking_request_query( $extra_args );
+	/**
+	 * Determine if the given value is a standard date format.
+	 *
+	 * @param  string $date A string of "Y-m-d" date format.
+	 * @return bool
+	 */
+	public static function is_standard_date_format( $date ) {
+		return preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
 	}
 }

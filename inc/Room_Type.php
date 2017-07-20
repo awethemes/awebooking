@@ -79,6 +79,66 @@ class Room_Type extends WP_Object {
 	];
 
 	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_post()
+	 *
+	 * @return boolean
+	 */
+	protected function perform_insert() {
+		$insert_id = wp_insert_post([
+			'post_type'    => $this->object_type,
+			'post_title'   => $this->get_title(),
+			'post_content' => $this->get_description(),
+			'post_excerpt' => $this->get_short_description(),
+		], true );
+
+		if ( ! is_wp_error( $insert_id ) ) {
+			// Alway remeber set new ID when success.
+			$this->set_id( $insert_id );
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_post()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return boolean
+	 */
+	protected function perform_update( array $changes ) {
+		$postarr = [];
+
+		// Only update the post when the post data changes.
+		if ( isset( $changes['title'] ) ) {
+			$postarr['post_title'] = $this->get_title();
+		}
+
+		if ( isset( $changes['description'] ) ) {
+			$postarr['post_content'] = $this->get_description();
+		}
+
+		if ( isset( $changes['short_description'] ) ) {
+			$postarr['post_excerpt'] = $this->get_short_description();
+		}
+
+		if ( ! empty( $postarr ) ) {
+			$updated = wp_update_post(
+				array_merge( $postarr, [ 'ID' => $this->get_id() ] ), true
+			);
+
+			return ! is_wp_error( $updated );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void

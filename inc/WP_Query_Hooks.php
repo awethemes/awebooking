@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Support\Utils;
 use Skeleton\Container\Service_Hooks;
 
 class WP_Query_Hooks extends Service_Hooks {
@@ -97,8 +96,10 @@ class WP_Query_Hooks extends Service_Hooks {
 	/**
 	 * Filter by locations.
 	 *
-	 * @param  array $query $query.
-	 * @return array        $query
+	 * TODO: Improve this.
+	 *
+	 * @param  array $query //.
+	 * @return array
 	 */
 	public function loction_filter( $query ) {
 		$meta_query = $query->get( 'meta_query' );
@@ -106,7 +107,7 @@ class WP_Query_Hooks extends Service_Hooks {
 			return;
 		}
 
-		if ( ! is_post_type_archive( AweBooking::ROOM_TYPE ) || ! abkng_config( 'enable_location' ) ) {
+		if ( ! is_post_type_archive( AweBooking::ROOM_TYPE ) || ! awebooking_option( 'enable_location' ) ) {
 			return;
 		}
 
@@ -118,25 +119,20 @@ class WP_Query_Hooks extends Service_Hooks {
 					'field'    => 'slug',
 				),
 			));
-		} else {
 
-			if ( abkng_config( 'location_default' ) ) {
-				$term_default = get_term( intval( abkng_config( 'location_default' ) ), AweBooking::HOTEL_LOCATION );
-			} else {
-				$term_default = Utils::get_first_term( AweBooking::HOTEL_LOCATION, array(
-					'hide_empty' => false,
-				) );
-			}
+			return;
+		}
 
-			if ( $term_default ) {
-				$query->set( 'tax_query', array(
-					array(
-						'taxonomy' => AweBooking::HOTEL_LOCATION,
-						'terms'    => $term_default->slug,
-						'field'    => 'slug',
-					),
-				));
-			}
+		$default_location = awebooking( 'config' )->get_default_hotel_location();
+
+		if ( $default_location ) {
+			$query->set( 'tax_query', array(
+				array(
+					'taxonomy' => AweBooking::HOTEL_LOCATION,
+					'terms'    => $default_location->slug,
+					'field'    => 'slug',
+				),
+			));
 		}
 	}
 }

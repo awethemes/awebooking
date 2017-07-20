@@ -25,28 +25,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( isset( $results ) && $results ) : ?>
 
-		<?php abkng_room_type_loop_start(); ?>
+		<?php awebooking_room_type_loop_start(); ?>
 
 			<?php foreach ( $results as $post => $result ) : ?>
 
-				<?php abkng_get_template( 'content-room-type-availability.php', array( 'result' => $result ) ); ?>
+				<?php awebooking_get_template( 'content-room-type-availability.php', array( 'result' => $result ) ); ?>
 
 			<?php endforeach; // end of the loop.
 			wp_reset_postdata(); ?>
 
-		<?php abkng_room_type_loop_end(); ?>
+		<?php awebooking_room_type_loop_end(); ?>
 
 		<?php
 			/**
 			 * awebooking/after_archive_loop hook.
 			 *
-			 * @hooked abkng_pagination - 10
+			 * @hooked awebooking_pagination - 10
 			 */
 			do_action( 'awebooking/after_archive_loop' );
 		?>
 	<?php else : ?>
 
-		<?php abkng_get_template( 'loop/no-room-types-found.php' ); ?>
+		<?php awebooking_get_template( 'loop/no-room-types-found.php' ); ?>
 
 	<?php endif; ?>
 </div>

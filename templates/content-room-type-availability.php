@@ -29,8 +29,8 @@ $room_type_id = $result->get_room_type()->get_id();
 		<?php
 		if ( has_post_thumbnail( $room_type_id ) ) {
 			echo get_the_post_thumbnail( $room_type_id, 'awebooking_catalog' );
-		} elseif ( abkng_placeholder_img_src() ) {
-			echo abkng_placeholder_img( 'awebooking_catalog' ); // WPCS: xss ok.
+		} elseif ( awebooking_placeholder_img_src() ) {
+			echo awebooking_placeholder_img( 'awebooking_catalog' ); // WPCS: xss ok.
 		}
 		?>
 		</a>
@@ -48,7 +48,7 @@ $room_type_id = $result->get_room_type()->get_id();
 		<p class="awebooking-loop-room-type__price">
 			<span><?php
 
-			switch ( abkng_config( 'showing_price' ) ) {
+			switch ( awebooking_option( 'showing_price' ) ) {
 				case 'average_price':
 					printf( esc_html__( 'Average: %s/night', 'awebooking' ), $result->get_price_average() );
 					break;
@@ -69,13 +69,13 @@ $room_type_id = $result->get_room_type()->get_id();
 		</div>
 
 		<?php
-			$default_args = Date_Utils::get_booking_request_query( array( 'room-type' => $room_type_id ) );
+			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type_id ) );
 			$link = add_query_arg( $default_args, get_the_permalink( $room_type_id ) );
 		?>
 		<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
 
 		<?php
-			$default_args = Date_Utils::get_booking_request_query( array( 'room-type' => $room_type_id ) );
+			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type_id ) );
 			$link = add_query_arg( array_merge( array( 'add-booking' => 1 ), (array) $default_args ), get_the_permalink() );
 		?>
 		<a class="awebooking-loop-room-type__button-booking" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'Book Room', 'awebooking' ); ?></a>

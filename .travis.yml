@@ -15,6 +15,7 @@ notifications:
 branches:
   only:
     - master
+    - bigchange-beta
 
 php:
   - 5.4
@@ -25,15 +26,18 @@ php:
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=3.7 WP_MULTISITE=0
-  - WP_VERSION=4.7.3 WP_MULTISITE=0
+  - WP_VERSION=4.7.5 WP_MULTISITE=0
+  - WP_VERSION=4.6.6 WP_MULTISITE=0
 
 matrix:
-  include:
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=1
+  fast_finish: true
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 before_script:
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
@@ -42,10 +46,6 @@ before_script:
     else
       composer global require "phpunit/phpunit=4.8.*"
     fi
-  - |
-    composer global require wp-coding-standards/wpcs
-    phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+  - composer install --no-interaction --prefer-source --no-suggest
 
-script:
-  - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
-  - phpunit
+script: phpunit

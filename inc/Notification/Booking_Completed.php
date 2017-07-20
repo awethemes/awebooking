@@ -2,7 +2,7 @@
 namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
-use AweBooking\Support\Mail\Mailable;
+use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
 
 class Booking_Completed extends Mailable {
@@ -59,7 +59,7 @@ class Booking_Completed extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = abkng_config( 'email_new_subject' );
+		$subject = awebooking_option( 'email_new_subject' );
 		return $this->format_string( $subject );
 	}
 
