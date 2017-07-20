@@ -12,12 +12,15 @@ bin
 circle.yml
 composer.json
 composer.lock
+gulpfile.js
 Gruntfile.js
 package.json
+package-lock.json
 phpunit.xml
 phpunit.xml.dist
 multisite.xml
 multisite.xml.dist
+phpcs.xml
 phpcs.ruleset.xml
 README.md
 wp-cli.local.yml
