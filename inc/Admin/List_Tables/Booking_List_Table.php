@@ -80,9 +80,13 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		switch ( $column ) {
 			case 'booking_status':
-				$status_color = '';
+				$status = $the_booking->get_status();
+				$statuses = awebooking()->get_booking_statuses();
 
-				switch ( $the_booking['status'] ) {
+				$status_color = '';
+				$status_label = $statuses[ $status ] ? $statuses[ $status ] : '';
+
+				switch ( $status ) {
 					case Booking::PENDING:
 						$status_color = 'awebooking-label--info';
 						break;
@@ -97,10 +101,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 						break;
 				}
 
-				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					awebooking_get_booking_status_name( $the_booking->get_status() ),
-					$status_color
-				);
+				printf( '<span class="awebooking-label %2$s">%1$s</span>', $status_label, $status_color );
 			break;
 
 			case 'booking_title':
