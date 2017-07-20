@@ -8,7 +8,7 @@ use AweBooking\BAT\Availability;
 use AweBooking\Admin\Admin_Hooks;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-alpha-305';
+	const VERSION = '3.0.0-alpha-307';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
@@ -19,6 +19,8 @@ class AweBooking extends SkeletonContainer {
 	const HOTEL_LOCATION = 'hotel_location';
 	const HOTEL_AMENITY  = 'hotel_amenity';
 	const HOTEL_SERVICE  = 'hotel_extra_service';
+
+	const SETTING_KEY    = 'awebooking_settings';
 
 	/**
 	 * //
@@ -79,10 +81,28 @@ class AweBooking extends SkeletonContainer {
 		$this['url'] = $this->plugin_url();
 		$this['path'] = $this->plugin_path();
 
-		// We use WP_Option for fetch/modify WP options
-		// This class have same function get_option() or some like that.
-		$this['wp_option'] = function () {
-			return new WP_Option( 'awebooking_settings' );
+		$this['multilingual'] = function () {
+			return new Support\Multilingual;
+		};
+
+		$this->bind( 'option_key', function( $a ) {
+			$setting_key = AweBooking::SETTING_KEY;
+
+			if ( $a->is_multi_language() ) {
+				$active_language = $a['multilingual']->get_active_language();
+
+				// If active language is "en", or all.
+				if ( ! in_array( $active_language , [ '', 'en', 'all' ] ) ) {
+					$setting_key .= '_' . $active_language;
+				}
+			}
+
+			return $setting_key;
+		});
+
+		// We use WP_Option for fetch/modify WP options.
+		$this['wp_option'] = function ( $a ) {
+			return new WP_Option( $a['option_key'] );
 		};
 
 		$this['config'] = function ( $awebooking ) {
@@ -160,6 +180,16 @@ class AweBooking extends SkeletonContainer {
 		Shortcodes::init();
 
 		new Migrations\AweBooking2_Migration;
+
+		// Make sure the options are copied if needed.
+		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {
+			$current_options = $this['wp_option']->all();
+			$original_options = (array) get_option( static::SETTING_KEY, [] );
+
+			if ( ! empty( $original_options ) && empty( $current_options ) ) {
+				update_option( $this['option_key'], $original_options );
+			}
+		}
 
 		$this['flash_message']->setup_message();
 

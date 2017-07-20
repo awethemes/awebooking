@@ -1,0 +1,19 @@
+<wpml-config>
+	<custom-types>
+		<custom-type translate="1">room_type</custom-type>
+		<custom-type translate="0">awebooking</custom-type>
+	</custom-types>
+	<taxonomies>
+		<taxonomy translate="1">hotel_amenity</taxonomy>
+		<taxonomy translate="1">hotel_location</taxonomy>
+		<taxonomy translate="1">hotel_extra_service</taxonomy>
+	</taxonomies>
+	<custom-fields>
+		<custom-field action="copy">base_price</custom-field>
+		<custom-field action="copy">max_adults</custom-field>
+		<custom-field action="copy">max_children</custom-field>
+		<custom-field action="copy">minimum_night</custom-field>
+		<custom-field action="copy">number_adults</custom-field>
+		<custom-field action="copy">number_children</custom-field>
+	</custom-fields>
+</wpml-config>

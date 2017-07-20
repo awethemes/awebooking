@@ -27,7 +27,7 @@ class Admin_Settings extends Admin_Page {
 			'updated' => esc_html__( 'Your settings have been saved.', 'awebooking' ),
 		);
 
-		parent::__construct( 'awebooking_settings', $menu_page );
+		parent::__construct( awebooking( 'option_key' ), $menu_page );
 
 		$this->set(array(
 			// A page-id should only use alpha-dash styles.

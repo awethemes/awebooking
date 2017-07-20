@@ -16,7 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 $link = awebooking_get_page_permalink( 'check_availability' );
 ?>
 <form action="<?php echo esc_url( $link ); ?>" class="awebooking-check-form" method="GET">
-	<input type="hidden" name="page_id" value="<?php echo intval( awebooking_option( 'page_check_availability' ) ); ?>">
+	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
+		<input type="hidden" name="p" value="<?php echo esc_attr( awebooking_get_page_id( 'check_availability' ) ) ?>">
+	<?php endif ?>
+
+	<?php if ( awebooking()->is_multi_language() ) : ?>
+		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_active_language() ) ?>">
+	<?php endif ?>
 
 	<div class="awebooking-check-form__wrapper">
 		<h2 class="awebooking-heading"><?php esc_html_e( 'Your Reservation', 'awebooking' ); ?></h2>
