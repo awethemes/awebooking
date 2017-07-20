@@ -5,17 +5,11 @@ use Exception;
 use AweBooking\Room_Type;
 use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
-
 use AweBooking\BAT\Factory;
 use AweBooking\BAT\Booking_Request;
 use AweBooking\BAT\Session_Booking_Request;
-
-use AweBooking\Support\Date_Utils;
-use AweBooking\Support\Formatting;
-use AweBooking\Support\Date_Period;
 use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
-
 use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Admin_Booking_Created;
 
@@ -28,9 +22,9 @@ class Request_Handler extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'wp_loaded', array( $this, 'booking_handler' ) );
-		add_action( 'wp_loaded', array( $this, 'checkout_handler' ) );
-		add_action( 'wp_loaded', array( $this, 'single_check_availability_handler' ) );
+		add_action( 'template_redirect', array( $this, 'booking_handler' ) );
+		add_action( 'template_redirect', array( $this, 'checkout_handler' ) );
+		add_action( 'template_redirect', array( $this, 'single_check_availability_handler' ) );
 	}
 
 	/**
@@ -53,7 +47,7 @@ class Request_Handler extends Service_Hooks {
 
 		// Setup somethings.
 		$flash_message = awebooking()->make( 'flash_message' );
-		$checkout_url  = get_the_permalink( absint( awebooking_option( 'page_checkout' ) ) );
+		$checkout_url  = awebooking_get_page_permalink( 'checkout' );
 
 		// Do validator the input before doing checkout.
 		$validator = new Validator( $_POST, apply_filters( 'awebooking/checkout/validator_rules', [
@@ -170,10 +164,7 @@ class Request_Handler extends Service_Hooks {
 
 			Session_Booking_Request::set_instance( $booking_request );
 
-			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
-			$link = add_query_arg( (array) $default_args, get_the_permalink( intval( awebooking_option( 'page_booking' ) ) ) );
-
-			return wp_redirect( $link, 302 );
+			return wp_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
 
 		} catch ( Exception $e ) {
 			// ...

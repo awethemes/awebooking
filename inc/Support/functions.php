@@ -1,6 +1,7 @@
 <?php
 use AweBooking\Room_State;
 use AweBooking\Support\Template;
+use AweBooking\Support\Formatting;
 
 /**
  * Get the available container instance.

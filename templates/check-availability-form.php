@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$link = get_the_permalink( intval( awebooking_option( 'page_check_availability' ) ) );
+$link = awebooking_get_page_permalink( 'check_availability' );
 ?>
 <form action="<?php echo esc_url( $link ); ?>" class="awebooking-check-form" method="GET">
 	<input type="hidden" name="page_id" value="<?php echo intval( awebooking_option( 'page_check_availability' ) ); ?>">
