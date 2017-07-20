@@ -45,7 +45,7 @@ class Service_Tax extends Taxonomy {
 			'id'   => 'price',
 			'type' => 'text_small',
 			'validate'   => 'required|numeric:min:0',
-			'sanitization_cb' => 'abkng_sanitize_price',
+			'sanitization_cb' => 'awebooking_sanitize_price_number',
 			'show_on_cb' => '__return_false',
 		]);
 

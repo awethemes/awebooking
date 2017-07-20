@@ -5,6 +5,17 @@ use Skeleton\Container\Service_Hooks;
 
 class Template_Hooks extends Service_Hooks {
 	/**
+	 * Registers services on the given container.
+	 *
+	 * This method should only be used to configure services and parameters.
+	 *
+	 * @param AweBooking $awebooking AweBooking Container instance.
+	 */
+	public function register( $awebooking ) {
+		$this->template_hooks();
+	}
+
+	/**
 	 * Init service provider.
 	 *
 	 * This method will be run after container booted.
@@ -15,8 +26,6 @@ class Template_Hooks extends Service_Hooks {
 		add_filter( 'template_include', array( $this, 'template_loader' ), 10 );
 		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 		add_filter( 'body_class', array( $this, 'awebooking_body_class' ) );
-
-		$this->template_hooks();
 	}
 
 	/**
