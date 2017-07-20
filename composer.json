@@ -27,12 +27,6 @@
         "erusev/parsedown": "^1.6"
     },
     "scripts": {
-        "post-install-cmd": [
-            "Skeleton\\Support\\Composer_Scripts::clean"
-        ],
-        "post-update-cmd": [
-            "Skeleton\\Support\\Composer_Scripts::clean"
-        ],
         "phpunit": [
             "bash bin/install-wp-tests.sh wptest_framework root 'secret' localhost latest false",
             "php vendor/bin/phpunit"
