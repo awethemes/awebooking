@@ -13,13 +13,10 @@ use AweBooking\Rate_Pricing;
 use AweBooking\Room_Type;
 use AweBooking\AweBooking;
 
-use AweBooking\Support\Mail;
 use AweBooking\Support\Date_Period;
 use AweBooking\Pricing\Price;
 use Roomify\Bat\Store\StoreInterface;
 use Roomify\Bat\Valuator\IntervalValuator;
-
-use AweBooking\Mails\Booking_Created;
 
 use AweBooking\Interfaces\Price as Price_Interface;
 use AweBooking\Interfaces\Concierge as Concierge_Interface;

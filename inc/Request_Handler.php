@@ -13,7 +13,7 @@ use AweBooking\BAT\Session_Booking_Request;
 use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Formatting;
 use AweBooking\Support\Date_Period;
-use AweBooking\Support\Mail\Mailer;
+use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
 
 use AweBooking\Notification\Booking_Created;

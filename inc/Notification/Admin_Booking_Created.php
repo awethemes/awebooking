@@ -2,7 +2,7 @@
 namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
-use AweBooking\Support\Mail\Mailable;
+use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
 
 class Admin_Booking_Created extends Mailable {
