@@ -29,6 +29,13 @@ env:
   - WP_VERSION=4.7.5 WP_MULTISITE=0
   - WP_VERSION=4.6.6 WP_MULTISITE=0
 
+matrix:
+  fast_finish: true
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -39,6 +46,6 @@ before_script:
       composer global require "phpunit/phpunit=4.8.*"
     fi
 
-script:
-  - composer install
-  - phpunit
+install: travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+script: phpunit
