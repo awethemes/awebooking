@@ -26,7 +26,7 @@ class Availability_Management extends WP_List_Table {
 		$current_year = date( 'Y' );
 		$_year = isset( $_GET['year'] ) ? (int) $_GET['year'] : $current_year;
 
-		if ( ! Date_Utils::is_validate_year( $_year ) ) {
+		if ( ! Date_Utils::is_valid_year( $_year ) ) {
 			$_year = $current_year;
 		}
 		$this->_year = $_year;

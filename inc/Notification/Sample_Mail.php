@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Notification;
 
-use AweBooking\Support\Mail\Mailable;
+use AweBooking\Support\Mailable;
 
 class Sample_Mail extends Mailable {
 	/**

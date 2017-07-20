@@ -1,8 +1,7 @@
 <?php
-namespace AweBooking\Support\Mail;
+namespace AweBooking\Support;
 
 use Pelago\Emogrifier;
-use AweBooking\Support\Template;
 use AweBooking\Interfaces\Mailable as Mailable_Interface;
 
 abstract class Mailable implements Mailable_Interface {

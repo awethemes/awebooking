@@ -1,24 +1,14 @@
 <?php
-namespace Skeleton\Http;
+namespace AweThemes\Support;
 
 use Skeleton\Skeleton;
 use Skeleton\Support\Multidimensional;
 
 class Http_Request {
 	/**
-	 * The globally available instance of the skeleton container.
-	 *
-	 * @var Skeleton
-	 */
-	protected $skeleton;
-
-	/**
 	 * Constructor.
-	 *
-	 * @param Skeleton $skeleton The skeleton container instance.
 	 */
-	public function __construct( Skeleton $skeleton ) {
-		$this->skeleton = $skeleton;
+	public function __construct() {
 	}
 
 	/**

@@ -1,0 +1,58 @@
+/* Awebooking Room Item
+----------------------------------*/
+/* Room Item */
+.awebooking-room_item {
+  @include clearfix;
+  margin-bottom: 50px;
+}
+
+.awebooking-room_img {
+  position: relative;
+
+  a {
+    display: block;
+    transition: all 0.25s ease;
+
+    &:empty {
+      display: none;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 0.85;
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+
+  @include media('>=sm') {
+    width: 370px;
+    float: left;
+    margin-right: 30px;
+  }
+
+  @include media('<sm') {
+    margin-bottom: 15px;
+  }
+}
+
+.awebooking-sale-icon {
+  position: absolute;
+  display: inline-block;
+  width: 64px;
+
+  top: 0;
+  left: 0;
+}
+
+.awebooking-room_text {
+  overflow: hidden;
+  line-height: 1.567;
+  text-align: left;
+
+  ul {
+    padding-left: 15px;
+  }
+}

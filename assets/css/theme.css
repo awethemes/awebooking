@@ -333,6 +333,7 @@
     background-color: rgba(255, 255, 255, 0.5);
     opacity: 0;
     visibility: hidden;
+    -webkit-transition: all 0.25s ease;
     transition: all 0.25s ease; }
   .awebooking-product_thumb .awebooking-product_thumb_item > a img {
     width: 100%; }
@@ -353,6 +354,7 @@
   background-repeat: no-repeat;
   overflow: hidden;
   text-indent: -100px;
+  -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease; }
 
 .awebooking-product_thumb .owl-prev {
@@ -570,7 +572,8 @@
   width: 20em;
   padding: 5px 10px 10px;
   background-color: #FFF;
-  box-shadow: 0 1px 25px rgba(0, 0, 0, 0.1); }
+  -webkit-box-shadow: 0 1px 25px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 25px rgba(0, 0, 0, 0.1); }
   .ui-datepicker.awebooking-datepicker td a,
   .ui-datepicker.awebooking-datepicker td span {
     padding: 7px;
@@ -936,6 +939,7 @@
   .awebooking-room_name a,
   .awebooking-room_name a:visited {
     color: #333;
+    -webkit-transition: all 0.25s ease;
     transition: all 0.25s ease; }
   .awebooking-room_name a:hover,
   .awebooking-room_name a:focus {
@@ -979,6 +983,7 @@
   font-weight: bold;
   text-transform: uppercase;
   border: 1px solid #b7b7b7;
+  -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
   padding: 15px;
   position: relative; }
@@ -991,6 +996,7 @@
     width: 16px;
     height: 16px;
     display: inline-block;
+    -webkit-transition: all 0.25s ease;
     transition: all 0.25s ease;
     background: url(data:image/gif;base64,R0lGODlhIQATAKIFAO/v7xAQEM/Pz5+fnwAAAP///wAAAAAAACH5BAEAAAUALAAAAAAhABMAAANfWCWi/jBGpkQITWptMQgEgW2kY4VBMYRiVkpnOCgr6r4mKD91i+esGaQ3wsUIwgjxxtEhSUvSMbmJwpxUKKv4mP5o25v3C7ZVsGReeJx2ENHtISsYl/SedfsurxlkSQkAOw==) no-repeat center center;
     background-size: 16px;

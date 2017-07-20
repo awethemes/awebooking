@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking;
 
+use AweBooking\AweBooking;
 use AweBooking\Support\Date_Period;
 use Skeleton\Container\Service_Hooks;
 
@@ -13,10 +14,24 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'save_post', [ $this, 'after_save_booking' ] );
-
+		add_action( 'save_post', [ $this, 'save_booking' ] );
 		add_action( 'deleted_post', [ $this, 'deleted_room_type' ] );
-		add_action( 'before_delete_post', [ $this, 'before_delete_booking' ] );
+		add_action( 'before_delete_post', [ $this, 'delete_booking' ] );
+		add_action( 'pre_delete_term', [ $this, 'pre_delete_term' ], 10, 2 );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  int    $term     Term ID.
+	 * @param  string $taxonomy Taxonomy Name.
+	 * @return void
+	 */
+	public function pre_delete_term( $term, $taxonomy ) {
+		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
+			// TODO: ...
+			wp_die( 1 ); // We don't know how prevent, so just using wp_die( 1 ) here.
+		}
 	}
 
 	/**
@@ -27,7 +42,7 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param  int $postid Current booking ID.
 	 * @return void
 	 */
-	public function after_save_booking( $postid ) {
+	public function save_booking( $postid ) {
 		if ( wp_is_post_revision( $postid ) ) {
 			return;
 		}
@@ -39,6 +54,13 @@ class Logic_Hooks extends Service_Hooks {
 		// Just re-save to update booking meta-data.
 		$booking = new Booking( $postid );
 		$booking->save();
+
+		/**
+		 * Fire action after a booking saved.
+		 *
+		 * @param AweBooking\Booking $booking The booking instance.
+		 */
+		do_action( 'awebooking/save_booking', $booking );
 	}
 
 	/**
@@ -51,7 +73,7 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param  string $postid The booking ID will be delete.
 	 * @return void
 	 */
-	public function before_delete_booking( $postid ) {
+	public function delete_booking( $postid ) {
 		if ( get_post_type( $postid ) !== AweBooking::BOOKING ) {
 			return;
 		}
@@ -74,6 +96,13 @@ class Logic_Hooks extends Service_Hooks {
 				// TODO: Log exception error.
 			}
 		}
+
+		/**
+		 * Fire action after a booking deleted.
+		 *
+		 * @param int $booking_id The booking ID was deleted.
+		 */
+		do_action( 'awebooking/delete_booking', $postid );
 	}
 
 	/**
@@ -115,5 +144,12 @@ class Logic_Hooks extends Service_Hooks {
 
 		// Delete all `rate` in "awebooking_pricing" table.
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_pricing` WHERE `rate_id` = %d", $postid ) );
+
+		/**
+		 * Fire action after a room-type deleted.
+		 *
+		 * @param int $room_type_id The room-type ID was deleted.
+		 */
+		do_action( 'awebooking/deleted_room_type', $postid );
 	}
 }

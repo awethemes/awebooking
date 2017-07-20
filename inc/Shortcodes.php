@@ -1,9 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Support\Utils;
-use AweBooking\Support\Formatting;
-
 class Shortcodes {
 
 	/**
@@ -93,6 +90,6 @@ class Shortcodes {
 
 		$template = apply_filters( 'awebooking/check_availability/layout', $template, $atts );
 
-		abkng_get_template( $template, array( 'atts' => $atts ) );
+		awebooking_get_template( $template, array( 'atts' => $atts ) );
 	}
 }

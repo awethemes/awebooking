@@ -26,6 +26,13 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	protected $instance;
 
 	/**
+	 * Additional metadata of this object.
+	 *
+	 * @var array
+	 */
+	protected $metadata;
+
+	/**
 	 * Indicates if the object exists.
 	 *
 	 * @var bool
@@ -79,13 +86,6 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	protected $maps = [];
 
 	/**
-	 * Additional metadata of this object.
-	 *
-	 * @var array
-	 */
-	protected $metadata;
-
-	/**
 	 * WP Object constructor.
 	 *
 	 * @param mixed $object Object ID we'll working for.
@@ -118,12 +118,56 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		$this->sync_original();
 	}
 
+	public static function query( array $args ) {
+	}
+
 	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void
 	 */
 	abstract protected function setup();
+
+	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_post()
+	 * @see wp_insert_term()
+	 *
+	 * @return boolean
+	 */
+	abstract protected function perform_insert();
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_post()
+	 * @see wp_update_term()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return boolean
+	 */
+	abstract protected function perform_update( array $changes );
+
+	/**
+	 * Run perform update object metadata.
+	 *
+	 * @see update_post_meta()
+	 * @see update_term_meta()
+	 *
+	 * @param  array $changes The attributes changed.
+	 * @return void
+	 */
+	protected function perform_update_metadata( array $changes ) {}
+
+	/**
+	 * Perform delete object.
+	 *
+	 * Overwrite this method if object type is not "post" or "term".
+	 *
+	 * @return boolean
+	 */
+	protected function perform_delete_object() {}
 
 	/**
 	 * Return an array of attributes for this object.
@@ -133,6 +177,125 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return void
 	 */
 	protected function setup_attributes() {}
+
+	/**
+	 * Save the wp-object to the database.
+	 *
+	 * @return boolean
+	 */
+	public function save() {
+		// If the "prev_save" filter returns false we'll bail out of the save and return
+		// false, indicating that the save failed. This provides a chance for any
+		// listeners to cancel save operations if validations fail or whatever.
+		if ( false === apply_filters( $this->prefix( 'prev_save' ), true ) ) {
+			return false;
+		}
+
+		/**
+		 * Fires saving action.
+		 *
+		 * @see wp_delete_post()
+		 * @see wp_delete_term()
+		 *
+		 * @param static $wp_object Current object instance.
+		 */
+		do_action( $this->prefix( 'saving' ), $this );
+
+		// Get the changes.
+		$changes = $this->get_changes();
+
+		// If the model already exists in the database we can
+		// just update changes. Otherwise, we'll just insert them.
+		if ( $this->exists() ) {
+			$saved = ( count( $changes ) > 0 ) ? $this->perform_update( $changes ) : true;
+		} else {
+			$saved = $this->perform_insert();
+		}
+
+		if ( $saved ) {
+			// When saved, the metadata will be updated too.
+			if ( $this->meta_type ) {
+				$this->perform_update_metadata( $changes );
+			}
+
+			// Run sync orginal attributes.
+			$this->sync_original();
+
+			/**
+			 * Fires saved action.
+			 *
+			 * @param static $wp_object Current object instance.
+			 */
+			do_action( $this->prefix( 'saved' ), $this );
+		}
+
+		return $saved;
+	}
+
+	/**
+	 * Trash or delete a wp-object.
+	 *
+	 * @see wp_delete_post()
+	 * @see wp_delete_term()
+	 *
+	 * @param  boolean $force Optional. Whether to bypass trash and force deletion.
+	 * @return boolean|null
+	 */
+	public function delete( $force = false ) {
+		// If the object doesn't exist, there is nothing to delete
+		// so we'll just return immediately and not do anything else.
+		if ( ! $this->exists() ) {
+			return;
+		}
+
+		// If the "prev_delete" filter returns false we'll bail out of the delete
+		// and just return. Indicating that the delete failed.
+		if ( false === apply_filters( $this->prefix( 'prev_delete' ), true ) ) {
+			return;
+		}
+
+		/**
+		 * Fires before a wp-object is deleted.
+		 *
+		 * @param static $wp_object Current object instance.
+		 */
+		do_action( $this->prefix( 'deleting' ), $this );
+
+		switch ( $this->meta_type ) {
+			case 'post':
+				if ( ! $force && 'trash' !== get_post_status( $this->get_id() ) && EMPTY_TRASH_DAYS ) {
+					$delete = wp_trash_post( $this->get_id() );
+				} else {
+					$delete = wp_delete_post( $this->get_id(), true );
+				}
+
+				$deleted = ( ! is_wp_error( $delete ) && false !== $delete );
+				break;
+
+			case 'term':
+				$delete = wp_delete_term( $this->get_id(), $force );
+				$deleted = ( ! is_wp_error( $delete ) && true === $delete );
+				break;
+
+			default:
+				$deleted = $this->perform_delete_object();
+				break;
+		}
+
+		if ( $deleted ) {
+			// Now object will not exists.
+			$this->exists = false;
+
+			/**
+			 * Fires after a WP_Object is deleted.
+			 *
+			 * @param int $object_id Object ID was deleted.
+			 */
+			do_action( $this->prefix( 'deleted' ), $this->get_id() );
+		}
+
+		return $deleted;
+	}
 
 	/**
 	 * Get the object ID.
@@ -330,24 +493,72 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	/**
 	 * Determine if the object or given attribute(s) have been modified.
 	 *
-	 * TODO: Need the code.
-	 *
 	 * @param  array|string|null $attributes Optional, a special attribute or an array of attributes.
 	 * @return bool
 	 */
-	public function has_change( $attributes ) {
+	public function has_change( $attributes = null ) {
+		$changes = $this->get_changes();
+
+		// If no specific attributes were provided,
+		// we will just see if have any changes.
+		if ( is_null( $attributes ) ) {
+			return count( $changes ) > 0;
+		}
+
+		// Here we will spin through every attribute
+		// and see if this is in the array of change attributes.
+		$attributes = is_array( $attributes ) ? $attributes : func_get_args();
+		foreach ( $attributes as $attribute ) {
+			if ( array_key_exists( $attribute, $changes ) ) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
 	/**
 	 * Get the attributes that have been changed.
 	 *
-	 * TODO: Need the code.
-	 *
 	 * @return array
 	 */
 	public function get_changes() {
-		return [];
+		$changes = [];
+
+		foreach ( $this->get_attributes() as $key => $value ) {
+			if ( ! $this->original_is_equivalent( $key, $value ) ) {
+				$changes[ $key ] = $value;
+			}
+		}
+
+		return $changes;
+	}
+
+	/**
+	 * Determine if the new and old values for a given key are equivalent.
+	 *
+	 * @param  string $key     //.
+	 * @param  mixed  $current //.
+	 * @return bool
+	 */
+	protected function original_is_equivalent( $key, $current ) {
+		if ( ! array_key_exists( $key, $this->original ) ) {
+			return false;
+		}
+
+		$original = $this->original[ $key ];
+
+		if ( $current === $original ) {
+			return true;
+		} elseif ( is_null( $current ) ) {
+			return false;
+		} elseif ( $this->has_cast( $key ) ) {
+			return $this->cast_attribute( $key, $current ) === $this->cast_attribute( $key, $original );
+		}
+
+		// Binary safe string comparison for numberic attribute.
+		return is_numeric( $current ) && is_numeric( $original ) &&
+			strcmp( (string) $current, (string) $original ) === 0;
 	}
 
 	/**
@@ -497,7 +708,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 			return;
 		}
 
-		throw new InvalidArgumentException( esc_html__( 'Unsupported the instance of WP Object.', 'awebooking' ) );
+		throw new InvalidArgumentException( 'Unsupported the instance of WP Object.' );
 	}
 
 	/**

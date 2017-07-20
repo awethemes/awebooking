@@ -1,0 +1,81 @@
+.awebooking-modal .modal-content {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.awebooking-modal .modal-content .modal-title {
+  color: #333;
+  font-size: 16px;
+  padding: 20px 20px;
+  text-transform: uppercase;
+}
+
+.awebooking-modal .modal-content .modal-title span {
+  color: #46598b;
+  margin-left: 30px;
+}
+
+.awebooking-modal .modal-content .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #cccccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+.awebooking-modal .modal-content .modal-close:hover {
+  color: #46598B;
+}
+
+.awebooking-list-price {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 20px;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.awebooking-list-price .awebooking-col-6 {
+  float: left;
+  width: 50%;
+}
+
+.awebooking-list-price h6 {
+  color: #333;
+  font-size: 12px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ebebeb;
+  font-weight: bold;
+  margin: 0;
+  padding: 15px 20px;
+  text-transform: uppercase;
+}
+
+.awebooking-list-price .awebooking-col-6>span {
+  display: block;
+  background-color: #fff;
+  color: #333333;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.awebooking-list-price .awebooking-col-6>span:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.awebooking-list-price .awebooking-col-6>span span {
+  color: #46598b;
+  font-weight: bold;
+}
+
+#awebooking_calendar .ui-datepicker td {
+}
+
+#awebooking_calendar .ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all.ui-datepicker-multi-2.ui-datepicker-multi {
+  width: 100%!important;
+  background: none;
+  border: none;
+}

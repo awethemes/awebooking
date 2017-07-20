@@ -1,0 +1,32 @@
+/**
+ * AweBooking Layout
+ */
+
+// Base
+@import "base/base";
+
+// Layouts
+@import "layouts/container";
+@import "layouts/layouts";
+
+@import "layouts/loop";
+@import "layouts/single-room-type";
+@import "layouts/booking-room";
+@import "layouts/checkout-room";
+
+@import "layouts/bootstrap";
+@import "layouts/jquery-ui.structure";
+
+// Compoments
+@import "layouts/datepicker";
+@import "layouts/loading";
+
+@import "layouts/tabs";
+@import "layouts/steper";
+@import "layouts/awebooking-pagination";
+
+@import "layouts/sidebar";
+@import "layouts/room";
+
+// Themes
+@import "theme";

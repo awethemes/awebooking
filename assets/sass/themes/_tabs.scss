@@ -1,0 +1,32 @@
+/* Awebooking TABs
+----------------------------------*/
+.awebooking-tab__controls {
+  li {
+    position: relative;
+    border: 1px solid $awebooking-input-border;
+    border-bottom: none;
+    background-color: $awebooking-background;
+
+    a {
+      display: block;
+      padding: 10px 20px;
+      outline: none;
+    }
+  }
+
+  .active {
+    background-color: #fff;
+    z-index: 2;
+
+    a {
+      color: #686868;
+    }
+  }
+}
+
+.awebooking-tab__wrapper {
+  position: relative;
+  border-top: 1px solid $awebooking-input-border;
+  margin-top: -1px;
+  padding: 30px 0;
+}

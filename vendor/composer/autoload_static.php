@@ -13,7 +13,12 @@ class ComposerStaticInit48c0bb513f4247bb4a2d6e59a938acf3
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Pelago\\' => 7,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
         ),
     );
 
@@ -22,9 +27,17 @@ class ComposerStaticInit48c0bb513f4247bb4a2d6e59a938acf3
         array (
             0 => __DIR__ . '/..' . '/roomify/bat/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Pelago\\' => 
         array (
             0 => __DIR__ . '/..' . '/pelago/emogrifier/Classes',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
     );
 

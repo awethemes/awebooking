@@ -9,23 +9,6 @@ use AweBooking\Service;
 
 class Formatting {
 	/**
-	 * Format the date.
-	 *
-	 * @param  DateTime $datetime DateTime instance.
-	 * @param  string   $format   Display date time format.
-	 * @return string
-	 */
-	public static function date_format( DateTime $datetime, $format = null ) {
-		if ( ! $format ) {
-			$format = awebooking( 'config' )->get( 'date_format' );
-		}
-
-		$formatted = date_i18n( $format, $datetime->getTimestamp() );
-
-		return apply_filters( 'awebooking/date_format', $formatted, $datetime, $format );
-	}
-
-	/**
 	 * Format a number with grouped thousands.
 	 *
 	 * @param float $number The number being formatted.
@@ -172,6 +155,23 @@ class Formatting {
 	}
 
 	/**
+	 * Format the date.
+	 *
+	 * @param  DateTime $datetime DateTime instance.
+	 * @param  string   $format   Display date time format.
+	 * @return string
+	 */
+	public static function date_format( DateTime $datetime, $format = null ) {
+		if ( ! $format ) {
+			$format = awebooking( 'config' )->get( 'date_format' );
+		}
+
+		$formatted = date_i18n( $format, $datetime->getTimestamp() );
+
+		return apply_filters( 'awebooking/date_format', $formatted, $datetime, $format );
+	}
+
+	/**
 	 * Takes a php date() format string and returns a string formatted to suit for the date/time pickers
 	 * It will work with only with the following subset ot date() options: d, j, z, m, n, y, and Y.
 	 *
@@ -180,11 +180,11 @@ class Formatting {
 	 * Other options are ignored, because they would either bring compatibility problems between PHP and JS, or
 	 * bring even more translation troubles.
 	 *
-	 * @param string $format php date format //.
-	 * @return string reformatted string
+	 * @param  string $format php date format //.
+	 * @return string
 	 */
 	public static function php_to_js_dateformat( $format ) {
-		// order is relevant here, since the replacement will be done sequentially.
+		// Order is relevant here, since the replacement will be done sequentially.
 		$supported_options = array(
 			'd' => 'dd',  // Day, leading 0
 			'j' => 'd',   // Day, no 0
@@ -204,7 +204,7 @@ class Formatting {
 			'i' => 'mm',  // Minute with leading 0,
 			's' => 'ss',  // Second with leading 0,
 			'a' => 'tt',  // am/pm
-			'A' => 'TT',  // AM/PM
+			'A' => 'TT',  // AM/PM.
 		);
 
 		foreach ( $supported_options as $php => $js ) {
@@ -212,58 +212,8 @@ class Formatting {
 			$format = preg_replace( "~(?<!\\\\)$php~", $js, $format );
 		}
 
-		$format = preg_replace_callback( '~(?:\\\.)+~', array( CMB2_Utils(), 'wrap_escaped_chars' ), $format );
+		$format = preg_replace_callback( '~(?:\\\.)+~', array( 'CMB2_Utils', 'wrap_escaped_chars' ), $format );
 
 		return $format;
-	}
-
-	public static function get_extra_service_label( Service $extra_service, $before_value = '', $after_value = '' ) {
-		$label = '';
-
-		switch ( $extra_service->get_operation() ) {
-			case Service::OP_ADD:
-				$label = sprintf( esc_html__( '%2$s + %1$s %3$s to price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_ADD_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x night %3$s to price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_ADD_PERSON:
-				$label = sprintf( esc_html__( '%2$s + %1$s x person %3$s to price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_ADD_PERSON_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x person x night %3$s to price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_SUB:
-				$label = sprintf( esc_html__( '%2$s - %1$s %3$s from price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_SUB_DAILY:
-				$label = sprintf( esc_html__( '%2$s - %1$s x night %3$s from price', 'awebooking' ), $extra_service->get_price(), $before_value, $after_value );
-				break;
-
-			case Service::OP_INCREASE:
-				$label = sprintf( esc_html__( '%2$s + %1$s%% %3$s to price', 'awebooking' ), $extra_service->get_value(), $before_value, $after_value );
-				break;
-
-			case Service::OP_DECREASE:
-				$label = sprintf( esc_html__( '%2$s - %1$s%% %3$s from price', 'awebooking' ), $extra_service->get_value(), $before_value, $after_value );
-				break;
-		}
-
-		return $label;
-	}
-
-	/**
-	 * //
-	 *
-	 * @param  DateTime $datetime //.
-	 * @return string
-	 */
-	public static function standard_date_format( DateTime $datetime ) {
-		return $datetime->format( AweBooking::DATE_FORMAT );
 	}
 }

@@ -27,6 +27,6 @@ $heading = esc_html( apply_filters( 'awebooking/room_type_amenities_heading', __
 /**
  * awebooking/room_type_amenities hook.
  *
- * @hooked abkng_display_room_type_attributes - 10
+ * @hooked awebooking_display_room_type_attributes - 10
  */
 do_action( 'awebooking/room_type_amenities', $room_type ); ?>

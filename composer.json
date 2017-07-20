@@ -1,0 +1,42 @@
+{
+    "name": "awethemes/awebooking",
+    "description": "Online hotel booking plugin for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPLv2 or later",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "awethemes",
+            "email": "support@awethemes.com"
+        },
+        {
+            "name": "anhskohbo",
+            "email": "anhskohbo@gmail.com"
+        }
+    ],
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git" }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "roomify/bat": "dev-master",
+        "pelago/emogrifier": "^1.2",
+        "nesbot/carbon": "1.17.0",
+        "awethemes/skeleton": "dev-master",
+        "webdevstudios/taxonomy_single_term": "dev-master",
+        "erusev/parsedown": "^1.6"
+    },
+    "scripts": {
+        "phpunit": [
+            "bash bin/install-wp-tests.sh wptest_framework root 'secret' localhost latest false",
+            "php vendor/bin/phpunit"
+        ]
+    },
+    "extra": {
+        "installer-paths": {
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}

@@ -1,0 +1,19 @@
+/* Awebooking Loading
+----------------------------------*/
+$awebooking-loading-bg:        rgba(white, 0.95) !default;
+$awebooking-loading-img:       '../img/loading.gif' !default;
+$awebooking-loading-img-size:  30px !default;
+
+.awebooking-loading {
+  background-color: $awebooking-loading-bg;
+
+  > span {
+    background: url(#{$awebooking-loading-img}) no-repeat center center;
+    background-size: $awebooking-loading-img-size $awebooking-loading-img-size;
+    @include center($awebooking-loading-img-size, $awebooking-loading-img-size);
+
+    overflow: hidden;
+    text-indent: -2048px;
+    display: inline-block;
+  }
+}

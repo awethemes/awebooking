@@ -136,6 +136,12 @@ class Booking extends WP_Object {
 		parent::__construct( $booking );
 	}
 
+	protected function perform_insert() {
+	}
+
+	protected function perform_update( array $changes ) {
+	}
+
 	/**
 	 * Setup the object attributes.
 	 *

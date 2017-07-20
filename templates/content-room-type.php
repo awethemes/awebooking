@@ -28,15 +28,15 @@ if ( empty( $room_type ) ) {
 		/**
 		 * awebooking/before_archive_loop_item hook.
 		 *
-		 * @hooked abkng_template_loop_room_type_link_open - 10
+		 * @hooked awebooking_template_loop_room_type_link_open - 10
 		 */
 		do_action( 'awebooking/before_archive_loop_item' );
 
 		/**
 		 * awebooking/before_archive_loop_item_title hook.
 		 *
-		 * @hooked abkng_template_loop_room_type_thumbnail - 10
-		 * @hooked abkng_template_loop_room_type_link_close - 20
+		 * @hooked awebooking_template_loop_room_type_thumbnail - 10
+		 * @hooked awebooking_template_loop_room_type_link_close - 20
 		 */
 		do_action( 'awebooking/before_archive_loop_item_title' ); ?>
 
@@ -48,22 +48,22 @@ if ( empty( $room_type ) ) {
 		/**
 		 * awebooking/archive_loop_item_title hook.
 		 *
-		 * @hooked abkng_template_loop_room_type_title - 10
+		 * @hooked awebooking_template_loop_room_type_title - 10
 		 */
 		do_action( 'awebooking/archive_loop_item_title' );
 
 		/**
 		 * awebooking/after_archive_loop_item_title hook.
 		 *
-		 * @hooked abkng_template_loop_price - 10
-		 * @hooked abkng_template_loop_description - 20
+		 * @hooked awebooking_template_loop_price - 10
+		 * @hooked awebooking_template_loop_description - 20
 		 */
 		do_action( 'awebooking/after_archive_loop_item_title' );
 
 		/**
 		 * awebooking/after_archive_loop_item hook.
 		 *
-		 * @hooked abkng_template_loop_view_more - 10
+		 * @hooked awebooking_template_loop_view_more - 10
 		 */
 		do_action( 'awebooking/after_archive_loop_item' ); ?>
 

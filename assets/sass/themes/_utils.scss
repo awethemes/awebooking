@@ -1,0 +1,44 @@
+/* awebooking RESET CSS
+----------------------------------*/
+.awebooking-notice {
+  padding: 10px 15px;
+  color: #fff;
+  background-color: $awebooking-error;
+  margin-bottom: 15px;
+}
+
+.awebooking-notice--success {
+  background-color: $awebooking-success;
+}
+
+.awebooking-notice--info {
+  background-color: $awebooking-info;
+}
+
+.awebooking-notice--warning {
+  background-color: $awebooking-warning;
+}
+
+@each $mt in 0 {
+  .mt-#{$mt} {
+    margin-top: #{$mt}px !important;
+  }
+}
+
+@each $mr in 0 {
+  .mr-#{$mr} {
+    margin-right: #{$mr}px !important;
+  }
+}
+
+@each $mb in 0 {
+  .mb-#{$mb} {
+    margin-bottom: #{$mb}px !important;
+  }
+}
+
+@each $ml in 0 {
+  .ml-#{$ml} {
+    margin-left: #{$ml}px !important;
+  }
+}

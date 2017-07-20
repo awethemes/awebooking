@@ -3,7 +3,7 @@ use AweBooking\AweBooking;
 use AweBooking\Service_Tax;
 use AweBooking\Service;
 
-$operation_options = Service_Tax::operation_options();
+$operation_options = awebooking()->get_service_operations();
 $type_options = Service_Tax::type_options();
 
 $all_services = get_terms( AweBooking::HOTEL_SERVICE, array(

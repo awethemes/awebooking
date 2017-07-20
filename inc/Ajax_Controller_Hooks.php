@@ -18,25 +18,9 @@ class Ajax_Controller_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_ajax_nopriv_awebooking/price_calculator', array( $this, 'price_calculator' ) );
 		add_action( 'wp_ajax_awebooking/price_calculator', array( $this, 'price_calculator' ) );
 	}
-
-	/**
-	 * Enqueue.
-	 *
-	 * @param mixed $template //.
-	 * @return string
-	 */
-	public function enqueue_scripts() {
-		// if ( is_booking_info_page() ) {
-			wp_enqueue_script( 'booking-ajax', AweBooking()->plugin_url() . '/assets/js/front-end/booking-handler.js', array( 'jquery' ), AweBooking::VERSION, true );
-			wp_localize_script( 'booking-ajax', 'booking_ajax', array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-			));
-		// }
-	 }
 
 	/**
 	 * This function contains output data.

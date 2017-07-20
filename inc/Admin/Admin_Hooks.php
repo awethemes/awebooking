@@ -98,7 +98,62 @@ class Admin_Hooks extends Service_Hooks {
 		add_filter( 'custom_menu_order', '__return_true' );
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
+
+		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
+
+		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 	}
+
+	/**
+	 * Handle redirects to setup/welcome page after install and updates.
+	 *
+	 * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
+	 */
+	public function admin_redirects() {
+		/*if ( ( plugin_basename( __FILE__ ) == $plugin ) && ! get_option( 'awebooking_installed' ) ) {
+			exit( wp_redirect( admin_url( 'index.php?page=awebooking-setup' ) ) );
+		}
+
+		// Setup wizard redirect
+		if ( get_transient( '_wc_activation_redirect' ) ) {
+			delete_transient( '_wc_activation_redirect' );
+
+			if ( ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'wc-setup' ) ) ) || is_network_admin() || isset( $_GET['activate-multi'] ) || ! current_user_can( 'manage_woocommerce' ) || apply_filters( 'woocommerce_prevent_automatic_wizard_redirect', false ) ) {
+				return;
+			}
+
+			// If the user needs to install, send them to the setup wizard
+			if ( WC_Admin_Notices::has_notice( 'install' ) ) {
+				wp_safe_redirect( admin_url( 'index.php?page=wc-setup' ) );
+				exit;
+			}
+		}*/
+	}
+
+	/**
+	 * Add state for check availability page. TODO: Move to admin page.
+	 *
+	 * @param  array $post_states post_states.
+	 * @param  void  $post        post object.
+	 *
+	 * @return array
+	 */
+	public function page_state( $post_states, $post ) {
+		if ( intval( awebooking_option( 'page_check_availability' ) ) === $post->ID ) {
+			$post_states['page_check_availability'] = __( 'Check Availability Page' );
+		}
+
+		if ( intval( awebooking_option( 'page_booking' ) ) === $post->ID ) {
+			$post_states['page_booking'] = __( 'Booking Informations Page' );
+		}
+
+		if ( intval( awebooking_option( 'page_checkout' ) ) === $post->ID ) {
+			$post_states['page_checkout'] = __( 'Checkout Page' );
+		}
+
+		return $post_states;
+	}
+
 
 	public function admin_menu() {
 		global $menu;

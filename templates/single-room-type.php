@@ -19,7 +19,7 @@ get_header( 'booking' ); ?>
 		/**
 		 * awebooking/before_main_content hook.
 		 *
-		 * @hooked abkng_output_content_wrapper - 10 (outputs opening divs for the content)
+		 * @hooked awebooking_output_content_wrapper - 10 (outputs opening divs for the content)
 		 */
 		do_action( 'awebooking/before_main_content' );
 
@@ -28,7 +28,7 @@ get_header( 'booking' ); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php abkng_get_template_part( 'content', apply_filters( 'awebooking/content_single_layout', 'single-room-type' ) ); ?>
+			<?php awebooking_get_template_part( 'content', apply_filters( 'awebooking/content_single_layout', 'single-room-type' ) ); ?>
 
 		<?php endwhile; // end of the loop. ?>
 
@@ -36,7 +36,7 @@ get_header( 'booking' ); ?>
 		/**
 		 * awebooking/after_main_content hook.
 		 *
-		 * @hooked abkng_output_content_wrapper_end - 10 (outputs closing divs for the content)
+		 * @hooked awebooking_output_content_wrapper_end - 10 (outputs closing divs for the content)
 		 */
 		do_action( 'awebooking/after_main_content' );
 	?>

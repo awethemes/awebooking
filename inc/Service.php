@@ -80,6 +80,12 @@ class Service extends WP_Object {
 		parent::__construct( $service );
 	}
 
+	protected function perform_insert() {
+	}
+
+	protected function perform_update( array $changes ) {
+	}
+
 	/**
 	 * Setup the object attributes.
 	 *
@@ -149,6 +155,53 @@ class Service extends WP_Object {
 
 	public function get_type() {
 		return $this->get_attr( 'type' );
+	}
+
+	/**
+	 * Return describe label for display.
+	 *
+	 * @param  string $before_value  String before value.
+	 * @param  string $after_value   String after value.
+	 * @return string
+	 */
+	public function get_describe( $before_value = '', $after_value = '' ) {
+		$label = '';
+
+		switch ( $this->get_operation() ) {
+			case Service::OP_ADD:
+				$label = sprintf( esc_html__( '%2$s + %1$s %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_ADD_DAILY:
+				$label = sprintf( esc_html__( '%2$s + %1$s x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_ADD_PERSON:
+				$label = sprintf( esc_html__( '%2$s + %1$s x person %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_ADD_PERSON_DAILY:
+				$label = sprintf( esc_html__( '%2$s + %1$s x person x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_SUB:
+				$label = sprintf( esc_html__( '%2$s - %1$s %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_SUB_DAILY:
+				$label = sprintf( esc_html__( '%2$s - %1$s x night %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
+				break;
+
+			case Service::OP_INCREASE:
+				$label = sprintf( esc_html__( '%2$s + %1$s%% %3$s to price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
+				break;
+
+			case Service::OP_DECREASE:
+				$label = sprintf( esc_html__( '%2$s - %1$s%% %3$s from price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
+				break;
+		}
+
+		return $label;
 	}
 
 	public function get_price_label( Booking_Request $booking_request, $before_value = '', $after_value = '' ) {

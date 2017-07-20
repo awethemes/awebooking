@@ -2,18 +2,9 @@
 namespace AweBooking\Shortcodes;
 
 use Exception;
-use AweBooking\AweBooking;
-use AweBooking\BAT\Factory;
-use AweBooking\BAT\Session_Booking_Request;
-use AweBooking\Support\Formatting;
 use AweBooking\Room_Type;
-use AweBooking\Support\Mail;
-use AweBooking\Mails\Booking_Created;
-use AweBooking\Support\Date_Period;
 use AweBooking\Support\Template;
-use AweBooking\Service;
-use AweBooking\Pricing\Calculator\Service_Calculator;
-use AweBooking\Pricing\Price;
+use AweBooking\BAT\Session_Booking_Request;
 
 class Shortcode_Checkout {
 

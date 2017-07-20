@@ -3,7 +3,6 @@ namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Booking;
 use AweBooking\AweBooking;
-use AweBooking\Support\Utils;
 use AweBooking\Support\Date_Period;
 
 class Booking_List_Table extends Post_Type_Abstract {
@@ -81,9 +80,13 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		switch ( $column ) {
 			case 'booking_status':
-				$status_color = '';
+				$status = $the_booking->get_status();
+				$statuses = awebooking()->get_booking_statuses();
 
-				switch ( $the_booking['status'] ) {
+				$status_color = '';
+				$status_label = $statuses[ $status ] ? $statuses[ $status ] : '';
+
+				switch ( $status ) {
 					case Booking::PENDING:
 						$status_color = 'awebooking-label--info';
 						break;
@@ -98,10 +101,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 						break;
 				}
 
-				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					Utils::get_booking_status_name( $the_booking->get_status() ),
-					$status_color
-				);
+				printf( '<span class="awebooking-label %2$s">%1$s</span>', $status_label, $status_color );
 			break;
 
 			case 'booking_title':
@@ -256,7 +256,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		// Added booking status only in "All" section in list-table.
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = Utils::get_booking_statuses();
+			$statuses = awebooking()->get_booking_statuses();
 
 			foreach ( $statuses as $status => $display_name ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

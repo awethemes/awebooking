@@ -179,6 +179,18 @@ class Availability implements Availability_Interface {
 		return $this;
 	}
 
+	public function get_booking_url() {
+		$args = apply_filters( 'awebooking/get_booking_url', [
+			'start-date' => $this->get_check_in()->toDateString(),
+			'end-date' => $this->get_check_out()->toDateString(),
+			'children' => $this->get_children(),
+			'adults' => $this->get_adults(),
+			'room-type' => $this->get_room_type()->get_id(),
+		]);
+
+		return add_query_arg( $args, awebooking_get_page_permalink( 'booking' ) );
+	}
+
 	/**
 	 * //
 	 *

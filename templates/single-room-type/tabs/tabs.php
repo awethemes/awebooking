@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Filter tabs and allow third parties to add their own.
  *
  * Each tab is an array containing title, callback and priority.
- * @see abkng_default_room_type_tabs()
+ * @see awebooking_default_room_type_tabs()
  */
 $tabs = apply_filters( 'awebooking/room_type_tabs', array() );
 

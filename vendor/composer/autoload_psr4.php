@@ -7,5 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Roomify\\Bat\\' => array($vendorDir . '/roomify/bat/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Pelago\\' => array($vendorDir . '/pelago/emogrifier/Classes'),
+    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );

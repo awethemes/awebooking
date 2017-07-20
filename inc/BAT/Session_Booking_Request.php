@@ -3,7 +3,6 @@ namespace AweBooking\BAT;
 
 use Carbon\Carbon;
 use AweBooking\Room_State;
-use AweBooking\Support\Utils;
 use AweBooking\Support\Date_Period;
 use AweBooking\Interfaces\Booking_Request as Booking_Request_Interface;
 
@@ -20,7 +19,7 @@ class Session_Booking_Request extends Booking_Request {
 		$request_args['check_in'] = $request->get_check_in()->format( 'Y-m-d' );
 		$request_args['check_out'] = $request->get_check_out()->format( 'Y-m-d' );
 
-		Utils::setcookie( 'awebooking-request', maybe_serialize( $request_args ) );
+		awebooking_setcookie( 'awebooking-request', maybe_serialize( $request_args ) );
 		return $request;
 	}
 
