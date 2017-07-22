@@ -48,7 +48,7 @@ class Http_Request {
 	/**
 	 * Determines whether the current request is a WordPress Ajax request.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_ajax() {
 		if ( function_exists( 'wp_doing_ajax' ) ) {

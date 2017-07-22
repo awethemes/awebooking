@@ -55,7 +55,7 @@ class Calendar extends BAT_Calendar {
 	 *
 	 * @param  DateTime $start_date //.
 	 * @param  DateTime $end_date   //.
-	 * @param  boolean  $reset      //.
+	 * @param  bool     $reset      //.
 	 * @return array
 	 */
 	public function getEvents( DateTime $start_date, DateTime $end_date, $reset = true ) {

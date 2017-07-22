@@ -13,7 +13,7 @@ class Booking_Event extends Event {
 	 * @param Booking  $booking    The booking instance.
 	 * @param DateTime $start_date Start of date of booking event.
 	 * @param DateTime $end_date   End of date of  booking event.
-	 * @param boolean  $clear      If true, we consider this event will be removed.
+	 * @param bool     $clear      If true, we consider this event will be removed.
 	 *
 	 * @throws RuntimeException
 	 */
@@ -35,7 +35,7 @@ class Booking_Event extends Event {
 	/**
 	 * Save current state into the database.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function save() {
 		return awebooking( 'store.booking' )->storeEvent( $this );

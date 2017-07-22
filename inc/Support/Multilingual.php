@@ -73,7 +73,7 @@ class Multilingual {
 	/**
 	 * Determine if we're using PolyLang.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_polylang() {
 		return defined( 'POLYLANG_VERSION' );
@@ -84,7 +84,7 @@ class Multilingual {
 	 *
 	 * Since PolyLang has a compatibility layer for WPML, we'll have to consider that too.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_wpml() {
 		return ( defined( 'ICL_SITEPRESS_VERSION' ) && ! $this->is_polylang() );

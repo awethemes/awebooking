@@ -43,7 +43,7 @@ class Rate_Pricing extends Event {
 	/**
 	 * Save current state into the database.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function save() {
 		return awebooking( 'store.pricing' )->storeEvent( $this );

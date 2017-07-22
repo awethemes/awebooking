@@ -63,7 +63,7 @@ class Room_State extends Event {
 	/**
 	 * If current state is booked.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_booked() {
 		return $this->getValue() === static::BOOKED;
@@ -72,7 +72,7 @@ class Room_State extends Event {
 	/**
 	 * If current state is available.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_available() {
 		return $this->getValue() === static::AVAILABLE;
@@ -81,7 +81,7 @@ class Room_State extends Event {
 	/**
 	 * If current state is pending.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_pending() {
 		return $this->getValue() === static::PENDING;
@@ -90,7 +90,7 @@ class Room_State extends Event {
 	/**
 	 * If current state is unavailable.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_unavailable() {
 		return $this->getValue() === static::UNAVAILABLE;
@@ -99,7 +99,7 @@ class Room_State extends Event {
 	/**
 	 * Save current state into the database.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function save() {
 		return awebooking( 'store.availability' )->storeEvent( $this );

@@ -153,7 +153,7 @@ class Price implements Price_Interface {
 	 * Is price same with other price.
 	 *
 	 * @param  Price $other Other price.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function equals( Price $other ) {
 		$this->assert_same_currency( $this, $other );
@@ -164,7 +164,7 @@ class Price implements Price_Interface {
 	/**
 	 * If zero amount.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_zero() {
 		return $this->get_amount() === 0.00;
@@ -187,7 +187,7 @@ class Price implements Price_Interface {
 	/**
 	 * Get price number as amount (integer).
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function to_amount() {
 		return Formatting::decimal_to_amount(

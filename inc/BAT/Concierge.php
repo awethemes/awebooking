@@ -62,7 +62,7 @@ class Concierge implements Concierge_Interface {
 	 * @param  Date_Period     $period  Date period instance.
 	 * @param  Price_Interface $amount  The price instance.
 	 * @param  array           $options Price setting options.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function set_room_price( Rate $rate, Date_Period $period, Price_Interface $amount, array $options = [] ) {
 		$rate = new Rate_Pricing( $rate, $period->get_start_date(), $period->get_end_date(), $amount );
@@ -81,7 +81,7 @@ class Concierge implements Concierge_Interface {
 	 * @param  Date_Period $period  Date period instance.
 	 * @param  integer     $state   Room state, default is Room_State::AVAILABLE.
 	 * @param  array       $options Setting options.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function set_room_state( Room $room, Date_Period $period, $state = Room_State::AVAILABLE, array $options = [] ) {
 		if ( ! array_key_exists( $state, awebooking()->get_room_states() ) ) {
@@ -128,7 +128,7 @@ class Concierge implements Concierge_Interface {
 	 * @param  Booking     $booking The Booking instance.
 	 * @param  Date_Period $period  Date period instance.
 	 * @param  array       $options Setting options.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function set_booking_event( Booking $booking, Date_Period $period, array $options = [] ) {
 		$options = wp_parse_args( $options, [

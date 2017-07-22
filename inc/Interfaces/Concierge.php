@@ -23,7 +23,7 @@ interface Concierge {
 	 * @param  Date_Period $period  Date period instance.
 	 * @param  Price       $amount  The price instance.
 	 * @param  array       $options Price setting options.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function set_room_price( Rate $rate, Date_Period $period, Price $amount, array $options = [] );
 
@@ -34,7 +34,7 @@ interface Concierge {
 	 * @param  Date_Period $period  Date period instance.
 	 * @param  integer     $state   Room state, default is Room_State::UNAVAILABLE.
 	 * @param  array       $options Setting options.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function set_room_state( Room $room, Date_Period $period, $state = Room_State::UNAVAILABLE, array $options = [] );
 

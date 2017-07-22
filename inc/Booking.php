@@ -172,7 +172,7 @@ class Booking extends WP_Object {
 	/**
 	 * Save the booking.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function save() {
 		if ( ! $this->exists ) {
@@ -285,7 +285,7 @@ class Booking extends WP_Object {
 	/**
 	 * Get booking number of adults.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_adults() {
 		return apply_filters( $this->prefix( 'get_adults' ), $this['adults'], $this );
@@ -294,7 +294,7 @@ class Booking extends WP_Object {
 	/**
 	 * Get booking number of children.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_children() {
 		return apply_filters( $this->prefix( 'get_children' ), $this['children'], $this );

@@ -54,7 +54,7 @@ class Date_Period implements \IteratorAggregate {
 	 *
 	 * @param string|Carbon $start_date Start of the time period.
 	 * @param string|Carbon $end_date   End of the time period.
-	 * @param boolean       $strict     //.
+	 * @param bool          $strict     //.
 	 * @param int           $options    //.
 	 *
 	 * @throws InvalidArgumentException
@@ -91,7 +91,7 @@ class Date_Period implements \IteratorAggregate {
 	/**
 	 * Get number of nights.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function nights() {
 		return $this->get_end_date()->diffInDays(
@@ -136,7 +136,7 @@ class Date_Period implements \IteratorAggregate {
 	 *
 	 * @param string|Carbon $start_date Start of the time period.
 	 * @param string|Carbon $end_date   End of the time period.
-	 * @param boolean       $strict     Using strict mode.
+	 * @param bool          $strict     Using strict mode.
 	 *
 	 * @throws LogicException
 	 */

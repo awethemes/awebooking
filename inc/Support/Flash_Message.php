@@ -41,7 +41,7 @@ class Flash_Message {
 	 * Checks if have any message.
 	 *
 	 * @param  string $type Optional, specify message type.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $type = null ) {
 		if ( is_null( $type ) ) {

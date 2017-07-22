@@ -232,7 +232,7 @@ abstract class Abstract_Calendar {
 	 * Generate cell padding.
 	 *
 	 * @param  integer $pad     How how much we should pad.
-	 * @param  boolean $colspan Using colspan attribute.
+	 * @param  bool    $colspan Using colspan attribute.
 	 * @return string
 	 */
 	protected function generate_cell_pad( $pad = 1, $colspan = true ) {
@@ -370,7 +370,7 @@ abstract class Abstract_Calendar {
 	 * If the Calendar has a option.
 	 *
 	 * @param  string $option Option key name.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has_option( $option ) {
 		return isset( $this->options[ $option ] );

@@ -93,7 +93,7 @@ if ( ! function_exists( 'is_awebooking' ) ) :
 	/**
 	 * Returns true if on a page which uses AweBooking templates.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_awebooking() {
 		$is_awebooking = (
@@ -109,7 +109,7 @@ if ( ! function_exists( 'is_room_type_archive' ) ) :
 	/**
 	 * Is current page is archive of "room_type".
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_room_type_archive() {
 		return is_post_type_archive( AweBooking::ROOM_TYPE );
@@ -120,7 +120,7 @@ if ( ! function_exists( 'is_room_type' ) ) :
 	/**
 	 * Returns true when viewing a single room-type.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_room_type() {
 		return is_singular( AweBooking::ROOM_TYPE );
@@ -131,7 +131,7 @@ if ( ! function_exists( 'is_check_availability_page' ) ) :
 	/**
 	 * Returns true when viewing a "search availability results " page.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_check_availability_page() {
 		global $wp_query;
@@ -147,7 +147,7 @@ if ( ! function_exists( 'is_booking_info_page' ) ) :
 	/**
 	 * Returns true when viewing a "booking review" page.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_booking_info_page() {
 		global $wp_query;
@@ -163,7 +163,7 @@ if ( ! function_exists( 'is_booking_checkout_page' ) ) :
 	/**
 	 * Returns true when viewing a "booking checkout" page.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	function is_booking_checkout_page() {
 		global $wp_query;

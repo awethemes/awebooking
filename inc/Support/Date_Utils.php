@@ -72,7 +72,7 @@ class Date_Utils {
 	 * We'll check if input year in range of current year -20, +30.
 	 *
 	 * @param  int $year Input year to validate.
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function is_valid_year( $year ) {
 		$current_year = (int) date( 'Y' );

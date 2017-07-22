@@ -77,7 +77,7 @@ class Availability implements Availability_Interface {
 	/**
 	 * Is room-type available for booking.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function available() {
 		return $this->total_available_rooms() > 0;
@@ -86,7 +86,7 @@ class Availability implements Availability_Interface {
 	/**
 	 * Is room-type unavailable.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function unavailable() {
 		return ! $this->available();

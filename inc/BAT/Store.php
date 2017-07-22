@@ -71,7 +71,7 @@ class Store extends Base_Store {
 	 *
 	 * @param Event  $event      Event instance.
 	 * @param string $deprecated Not used, deprecated argument.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function storeEvent( Event $event, $deprecated = null ) {
 		global $wpdb;

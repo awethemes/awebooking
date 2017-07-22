@@ -9,7 +9,7 @@ class Admin_Hooks extends Service_Hooks {
 	/**
 	 * Determine run init action only in admin.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $in_admin = true;
 

@@ -102,7 +102,7 @@ abstract class Meta_Boxes_Abstract {
 	/**
 	 * Check current screen in current CPT.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function check_current_screen() {
 		$wp_screen = get_current_screen();

@@ -98,7 +98,7 @@ class Mailer {
 	 * Send mailable template.
 	 *
 	 * @param  Mailable_Interface $mail Mailable object instance.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function send( Mailable_Interface $mail ) {
 		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );

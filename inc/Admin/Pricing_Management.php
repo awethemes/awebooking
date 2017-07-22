@@ -260,7 +260,7 @@ class Pricing_Management extends WP_List_Table {
 	/**
 	 * Whether the table has items to display or not.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has_items() {
 		return $this->the_query->have_posts();

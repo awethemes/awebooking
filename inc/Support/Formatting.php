@@ -96,7 +96,7 @@ class Formatting {
 	 * Sanitize, remove locale formatting, and optionally round.
 	 *
 	 * @param  float|string $number Expects either a float or a string with a decimal separator only (no thousands).
-	 * @param  boolean|int  $dp     Using number of decimal points or not.
+	 * @param  bool|int     $dp     Using number of decimal points or not.
 	 * @return float
 	 */
 	public static function format_decimal( $number, $dp = false ) {
@@ -130,7 +130,7 @@ class Formatting {
 	 * @see https://github.com/Roomify/bat/issues/20
 	 *
 	 * @param  float $decimal Decimal number.
-	 * @return integer
+	 * @return int
 	 */
 	public static function decimal_to_amount( $decimal ) {
 		$decimal  = static::format_decimal( $decimal, true );

@@ -71,7 +71,7 @@ class Booking_Request implements Booking_Request_Interface {
 	/**
 	 * Get number of adults.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_adults() {
 		return $this->has_request( 'adults' ) ? $this->get_request( 'adults' ) : -1;
@@ -80,7 +80,7 @@ class Booking_Request implements Booking_Request_Interface {
 	/**
 	 * Get number of children.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_children() {
 		return $this->has_request( 'children' ) ? $this->get_request( 'children' ) : -1;
@@ -89,7 +89,7 @@ class Booking_Request implements Booking_Request_Interface {
 	/**
 	 * Get people.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_people() {
 		$people = $this->get_adults() + $this->get_children();
@@ -124,7 +124,7 @@ class Booking_Request implements Booking_Request_Interface {
 	 * If has a booking request.
 	 *
 	 * @param  string $request Booking request.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has_request( $request ) {
 		return isset( $this->requests[ $request ] );

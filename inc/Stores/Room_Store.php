@@ -27,7 +27,7 @@ class Room_Store {
 	 *
 	 * @param  int $room_id   Room ID to check.
 	 * @param  int $room_type Optional, room-type ID.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $room_id, $room_type = null ) {
 		global $wpdb;
@@ -142,7 +142,7 @@ class Room_Store {
 	 * Delete room(s) by IDs.
 	 *
 	 * @param  int|array $ids Room id or ids.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function delete( $ids ) {
 		global $wpdb;

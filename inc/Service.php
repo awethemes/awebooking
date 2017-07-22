@@ -99,7 +99,7 @@ class Service extends WP_Object {
 	/**
 	 * If this is optional service.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_optional() {
 		return static::OPTIONAL === $this->get_type();
@@ -108,7 +108,7 @@ class Service extends WP_Object {
 	/**
 	 * If this is mandatory service.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_mandatory() {
 		return static::MANDATORY === $this->get_type();
