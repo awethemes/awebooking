@@ -93,24 +93,24 @@ class Booking extends WP_Object {
 		'customer_company',
 
 		// TODO: ...
-		'total_price' => 'total',
-		'booking_request_services' => 'request_services',
+		'total' => 'total_price',
+		'request_services' => 'booking_request_services',
 
-		'booking_adults'    => 'adults',
-		'booking_children'  => 'children',
-		'booking_check_in'  => 'check_in',
-		'booking_check_out' => 'check_out',
+		'adults'    => 'booking_adults',
+		'children'  => 'booking_children',
+		'check_in'  => 'booking_check_in',
+		'check_out' => 'booking_check_out',
 
-		'booking_currency'        => 'currency',
-		'booking_room_id'         => 'room_id',
-		'booking_room_name'       => 'room_name',
-		'booking_room_type_id'    => 'room_type_id',
-		'booking_room_type_title' => 'room_type_title',
-		'booking_hotel_location'  => 'hotel_location',
+		'currency'        => 'booking_currency',
+		'room_id'         => 'booking_room_id',
+		'room_name'       => 'booking_room_name',
+		'room_type_id'    => 'booking_room_type_id',
+		'room_type_title' => 'booking_room_type_title',
+		'hotel_location'  => 'booking_hotel_location',
 
-		'_payment_method'          => 'payment_method',
-		'_payment_method_title'    => 'payment_method_title',
-		'_payment_transaction_id'  => 'transaction_id',
+		'payment_method'          => '_payment_method',
+		'payment_method_title'    => '_payment_method_title',
+		'transaction_id'          => '_payment_transaction_id',
 	];
 
 	/**

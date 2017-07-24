@@ -62,11 +62,18 @@ class Room_Type_Test extends WP_UnitTestCase {
 		$room_type['title'] = 'Luxury';
 		$room_type['description'] = 'Desc';
 		$room_type['short_description'] = 'Short Desc';
+
+		$room_type['base_price'] = 125;
+		$room_type['number_adults'] = 2;
+		$room_type['number_children'] = 1;
 		$room_type->save();
 
 		$post = get_post( $room_type->get_id() );
 		$this->assertEquals($room_type['title'], $post->post_title);
 		$this->assertEquals($room_type['description'], $post->post_content);
 		$this->assertEquals($room_type['short_description'], $post->post_excerpt);
+
+		$this->assertEquals($room_type['number_adults'], get_post_meta( $post->ID, 'number_adults', true ));
+		$this->assertEquals($room_type['number_children'], get_post_meta( $post->ID, 'number_children', true ));
 	}
 }

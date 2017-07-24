@@ -29,11 +29,11 @@ class Room_Type extends WP_Object {
 
 		// Room infomations.
 		'base_price'        => 0.00,
-		'number_adults'     => 2,
+		'number_adults'     => 0,
 		'number_children'   => 0,
 		'max_adults'        => 0,
 		'max_children'      => 0,
-		'minimum_night'     => 1,
+		'minimum_night'     => 0,
 
 		'rooms'             => [],
 		'room_ids'          => [],
@@ -75,68 +75,9 @@ class Room_Type extends WP_Object {
 		'max_adults',
 		'max_children',
 		'minimum_night',
-		'gallery' => 'gallery_ids',
+		'gallery_ids'  => 'gallery',
+		'thumbnail_id' => '_thumbnail_id',
 	];
-
-	/**
-	 * Run perform insert object into database.
-	 *
-	 * @see wp_insert_post()
-	 *
-	 * @return boolean
-	 */
-	protected function perform_insert() {
-		$insert_id = wp_insert_post([
-			'post_type'    => $this->object_type,
-			'post_title'   => $this->get_title(),
-			'post_content' => $this->get_description(),
-			'post_excerpt' => $this->get_short_description(),
-		], true );
-
-		if ( ! is_wp_error( $insert_id ) ) {
-			// Alway remeber set new ID when success.
-			$this->set_id( $insert_id );
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Run perform update object.
-	 *
-	 * @see wp_update_post()
-	 *
-	 * @param  array $changes The attributes changed.
-	 * @return boolean
-	 */
-	protected function perform_update( array $changes ) {
-		$postarr = [];
-
-		// Only update the post when the post data changes.
-		if ( isset( $changes['title'] ) ) {
-			$postarr['post_title'] = $this->get_title();
-		}
-
-		if ( isset( $changes['description'] ) ) {
-			$postarr['post_content'] = $this->get_description();
-		}
-
-		if ( isset( $changes['short_description'] ) ) {
-			$postarr['post_excerpt'] = $this->get_short_description();
-		}
-
-		if ( ! empty( $postarr ) ) {
-			$updated = wp_update_post(
-				array_merge( $postarr, [ 'ID' => $this->get_id() ] ), true
-			);
-
-			return ! is_wp_error( $updated );
-		}
-
-		return true;
-	}
 
 	/**
 	 * Setup the object attributes.
@@ -152,7 +93,6 @@ class Room_Type extends WP_Object {
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
 
-		$this['thumbnail_id'] = (int) get_post_thumbnail_id( $this->get_id() );
 		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
 			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
 		}
@@ -173,6 +113,61 @@ class Room_Type extends WP_Object {
 		 * @param Room_Type $room_type The room type object instance.
 		 */
 		do_action( $this->prefix( 'after_setup' ), $this );
+	}
+
+	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_post()
+	 *
+	 * @return bool
+	 */
+	protected function perform_insert() {
+		$insert_id = wp_insert_post([
+			'post_type'    => $this->object_type,
+			'post_title'   => $this->get_title(),
+			'post_content' => $this->get_description(),
+			'post_excerpt' => $this->get_short_description(),
+		], true );
+
+		if ( ! is_wp_error( $insert_id ) ) {
+			return $insert_id;
+		}
+	}
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_post()
+	 *
+	 * @param  array $dirty The attributes changed.
+	 * @return bool
+	 */
+	protected function perform_update( array $dirty ) {
+		$postarr = [];
+
+		// Only update the post when the post data dirty.
+		if ( isset( $dirty['title'] ) ) {
+			$postarr['post_title'] = $this->get_title();
+		}
+
+		if ( isset( $dirty['description'] ) ) {
+			$postarr['post_content'] = $this->get_description();
+		}
+
+		if ( isset( $dirty['short_description'] ) ) {
+			$postarr['post_excerpt'] = $this->get_short_description();
+		}
+
+		if ( ! empty( $postarr ) ) {
+			$updated = wp_update_post(
+				array_merge( $postarr, [ 'ID' => $this->get_id() ] ), true
+			);
+
+			return ! is_wp_error( $updated );
+		}
+
+		return true;
 	}
 
 	/**
@@ -223,7 +218,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get number adults available for this room-type.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_number_adults() {
 		return apply_filters( $this->prefix( 'get_number_adults' ), $this['number_adults'], $this );
@@ -232,7 +227,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get number children available for this room-type.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_number_children() {
 		return apply_filters( $this->prefix( 'get_number_children' ), $this['number_children'], $this );
@@ -241,7 +236,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get max overflow children.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_max_children() {
 		return apply_filters( $this->prefix( 'get_max_children' ), $this['max_children'], $this );
@@ -250,7 +245,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get max overflow adults.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_max_adults() {
 		return apply_filters( $this->prefix( 'get_max_adults' ), $this['max_adults'], $this );
@@ -259,7 +254,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get minimum nights.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_minimum_night() {
 		return apply_filters( $this->prefix( 'get_minimum_night' ), $this['minimum_night'], $this );
@@ -277,7 +272,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Return total rooms.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_total_rooms() {
 		return count( $this->get_room_ids() );
@@ -364,7 +359,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get room thumbnail ID.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_thumbnail_id() {
 		return apply_filters( $this->prefix( 'get_thumbnail_id' ), $this['thumbnail_id'], $this );
@@ -373,7 +368,7 @@ class Room_Type extends WP_Object {
 	/**
 	 * Get gallery IDs.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get_gallery_ids() {
 		return apply_filters( $this->prefix( 'get_gallery_ids' ), $this['gallery_ids'], $this );
