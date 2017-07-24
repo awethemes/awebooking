@@ -405,6 +405,7 @@ class Room_Type extends WP_Object {
 				$r['room_type'] = absint( $r['room_type'] );
 
 				wp_cache_add( $r['id'], $r, 'awebooking/room' );
+				unset( $r );
 			}
 
 			// Add this results to cache.
