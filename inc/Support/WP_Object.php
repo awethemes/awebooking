@@ -21,7 +21,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	protected $object_type = 'post';
 
 	/**
-	 * WordPress type for object, support only "post" and "term".
+	 * WordPress type for object, Eg: "post" and "term".
 	 *
 	 * @var string
 	 */
@@ -278,7 +278,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @see wp_insert_post()
 	 * @see wp_insert_term()
 	 *
-	 * @return bool|void
+	 * @return int|void
 	 */
 	protected function perform_insert() {}
 
