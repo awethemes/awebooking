@@ -5,7 +5,7 @@ use AweBooking\Support\WP_Object;
 use Roomify\Bat\Unit\UnitInterface;
 
 class Room extends WP_Object implements UnitInterface {
-	use BAT\Traits\Unit_Trait;
+	use Support\Traits\BAT_Unit;
 
 	/**
 	 * Name of object type.
@@ -15,6 +15,13 @@ class Room extends WP_Object implements UnitInterface {
 	 * @var string
 	 */
 	protected $object_type = 'room';
+
+	/**
+	 * WordPress type for object.
+	 *
+	 * @var string
+	 */
+	protected $wp_type = 'awebooking_rooms';
 
 	/**
 	 * This object does not support metadata.

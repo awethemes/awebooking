@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\BAT\Traits;
+namespace AweBooking\Support\Traits;
 
-trait Unit_Trait {
+trait BAT_Unit {
 	/**
 	 * Default unit value.
 	 *
