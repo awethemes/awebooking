@@ -311,6 +311,8 @@ trait Object_Attributes {
 				return (float) $value;
 			case 'string':
 				return (string) $value;
+			case 'array':
+				return (array) $value;
 			case 'bool':
 			case 'boolean':
 				return (bool) $value;
