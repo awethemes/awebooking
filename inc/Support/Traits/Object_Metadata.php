@@ -235,11 +235,26 @@ trait Object_Metadata {
 		foreach ( $changes as $attribute ) {
 			$meta_key = $this->get_mapping_metakey( $attribute );
 
-			if ( $meta_key && $this->update_meta( $meta_key, $this->get_attr( $attribute ) ) ) {
+			$meta_value = $this->sanitize_meta_value( $meta_key,
+				$this->get_attr( $attribute )
+			);
+
+			if ( $meta_key && $this->update_meta( $meta_key, $meta_value ) ) {
 				$updated[] = $attribute;
 			}
 		}
 
 		return $updated;
+	}
+
+	/**
+	 * Santize meta value before save.
+	 *
+	 * @param  string $meta_key   Meta key.
+	 * @param  mixed  $meta_value Meta value.
+	 * @return mixed
+	 */
+	protected function sanitize_meta_value( $meta_key, $meta_value ) {
+		return $meta_value;
 	}
 }
