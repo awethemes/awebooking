@@ -1,9 +1,9 @@
 <?php
-namespace AweBooking;
+namespace AweBooking\BAT\Booking;
 
 use AweBooking\Support\WP_Object;
 
-class Booking_Item extends WP_Object {
+abstract class Booking_Item extends WP_Object {
 	/**
 	 * Name of object type.
 	 *
@@ -49,24 +49,11 @@ class Booking_Item extends WP_Object {
 	];
 
 	/**
-	 * An array of attributes mapped with metadata.
-	 *
-	 * @var array
-	 */
-	protected $maps = [
-		// ...
-	];
-
-	/**
-	 * Get booking item type.
-	 *
-	 * !! Overridden by child classes.
+	 * Returns booking item type.
 	 *
 	 * @return string
 	 */
-	public function get_type() {
-		return '';
-	}
+	abstract public function get_type();
 
 	/**
 	 * Get booking item name.
@@ -87,6 +74,16 @@ class Booking_Item extends WP_Object {
 	}
 
 	/**
+	 * Set the booking ID this item belongs to.
+	 *
+	 * @param  int $booking_id The booking ID.
+	 * @return $this
+	 */
+	public function set_booking_id( $booking_id ) {
+		return $this->set_attr( 'booking_id', absint( $booking_id ) );
+	}
+
+	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void
@@ -104,7 +101,7 @@ class Booking_Item extends WP_Object {
 	protected function perform_insert() {
 		global $wpdb;
 
-		// Validate before insert, we need a booking ID.
+		// We need a booking ID.
 		$booking_id = $this->get_booking_id();
 		if ( $booking_id <= 0 ) {
 			return;
@@ -135,16 +132,27 @@ class Booking_Item extends WP_Object {
 	protected function perform_update( array $dirty ) {
 		global $wpdb;
 
-		// Booking-item can be only update the name,
-		// so if "name" attribute is not modified, we just return true.
-		if ( ! isset( $dirty['name'] ) ) {
+		// We just update the "name", "booking_id" attributes. So if
+		// that attributes is not modified, just leave and return true,
+		// mark current action is done as success because nothing todo.
+		if ( ! isset( $dirty['name'] ) && ! isset( $dirty['booking_id'] ) ) {
 			return true;
 		}
 
-		$updated = $wpdb->update(
-			$wpdb->prefix . 'awebooking_booking_items',
-			[ 'booking_item_name' => $this->get_name() ],
-			[ 'booking_item_id' => $this->get_id() ]
+		// We need a booking ID.
+		$booking_id = $this->get_booking_id();
+		if ( $booking_id <= 0 ) {
+			return;
+		}
+
+		$updated = $wpdb->update( $wpdb->prefix . 'awebooking_booking_items',
+			[
+				'booking_id'        => $booking_id,
+				'booking_item_name' => $this->get_name(),
+			],
+			[
+				'booking_item_id' => $this->get_id(),
+			]
 		);
 
 		return false !== $updated;

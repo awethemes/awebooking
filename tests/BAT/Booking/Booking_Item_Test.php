@@ -1,6 +1,12 @@
 <?php
 
-use AweBooking\Booking_Item;
+use AweBooking\BAT\Booking\Booking_Item;
+
+class Test_Booking_Item extends Booking_Item {
+	public function get_type() {
+		return 'line_items';
+	}
+}
 
 class Booking_Item_Test extends WP_UnitTestCase {
 	/**
@@ -11,7 +17,7 @@ class Booking_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testInsert() {
-		$booking_item = new Booking_Item;
+		$booking_item = new Test_Booking_Item;
 		$booking_item['name'] = 'Room Type Luxury';
 		$booking_item['booking_id'] = 10;
 		$booking_item->save();
@@ -21,19 +27,19 @@ class Booking_Item_Test extends WP_UnitTestCase {
 
 		$this->assertEquals($booking_item->get_id(), $dbBookingItem['booking_item_id']);
 		$this->assertEquals($booking_item['name'], $dbBookingItem['booking_item_name']);
-		$this->assertEquals($booking_item['type'], $dbBookingItem['booking_item_type']);
+		$this->assertEquals($dbBookingItem['booking_item_type'], 'line_items');
 		$this->assertEquals($booking_item['booking_id'], $dbBookingItem['booking_id']);
 	}
 
 	public function testInsertFailed() {
-		$booking_item = new Booking_Item;
+		$booking_item = new Test_Booking_Item;
 		$saved = $booking_item->save();
 
 		$this->assertFalse($saved);
 		$this->assertFalse($booking_item->exists());
 		$this->assertEmpty($booking_item->get_id());
 
-		$booking_item2 = new Booking_Item;
+		$booking_item2 = new Test_Booking_Item;
 		$booking_item['name'] = 'Room Type Luxury';
 		$saved = $booking_item2->save();
 
@@ -43,7 +49,7 @@ class Booking_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testInsertAndUpdate() {
-		$booking_item = new Booking_Item;
+		$booking_item = new Test_Booking_Item;
 		$booking_item['name'] = 'Room Type Luxury';
 		$booking_item['booking_id'] = 10;
 		$booking_item->save();
@@ -55,19 +61,19 @@ class Booking_Item_Test extends WP_UnitTestCase {
 		$dbBookingItem = $this->getBookingItemInDB($booking_item->get_id());
 		$this->assertEquals($booking_item['name'], $dbBookingItem['booking_item_name']);
 
-		// Update Failed.
+		// Update with booking ID.
 		$booking_item['name'] = 'Luxury 1';
 		$booking_item['booking_id'] = 200;
 		$booking_item->save();
 
 		$dbBookingItem = $this->getBookingItemInDB($booking_item->get_id());
 		$this->assertEquals($booking_item['name'], $dbBookingItem['booking_item_name']);
-		$this->assertNotEquals($booking_item['booking_id'], $dbBookingItem['booking_id']);
-		$this->assertEquals($dbBookingItem['booking_id'], 10);
+		$this->assertEquals($booking_item['booking_id'], $dbBookingItem['booking_id']);
+		$this->assertEquals($dbBookingItem['booking_id'], 200);
 	}
 
 	public function testDelete() {
-		$booking_item = new Booking_Item;
+		$booking_item = new Test_Booking_Item;
 		$booking_item['name'] = 'Room Type Luxury';
 		$booking_item['booking_id'] = 10;
 		$booking_item->save();
