@@ -67,6 +67,14 @@ trait Object_Attributes {
 	 * @return $this
 	 */
 	public function set_attr( $key, $value ) {
+		// First we will check for the presence of a "set_$key" method,
+		// which simply lets the developers tweak the attribute as it is
+		// set on the object.
+		$method = 'set_' . str_replace( '-', '_', $key );
+		if ( method_exists( $this, $method ) ) {
+			return $this->{$method}( $value );
+		}
+
 		$this->attributes[ $key ] = $value;
 
 		return $this;
