@@ -62,21 +62,25 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 */
 	public function __construct( $object = 0 ) {
 		if ( is_numeric( $object ) && $object > 0 ) {
-			$this->set_id( $object );
+			$this->id = $object;
 		} elseif ( 'post' === $this->meta_type && ! empty( $object->ID ) ) {
-			$this->set_id( $object->ID );
+			$this->id = $object->ID;
 		} elseif ( 'term' === $this->meta_type && ! empty( $object->term_id ) ) {
-			$this->set_id( $object->term_id );
+			$this->id = $object->term_id;
+		} elseif ( $object instanceof WP_Object ) {
+			$this->id = $object->get_id();
 		}
 
 		// Setup the wp core object instance.
-		$this->setup_instance();
-		$this->exists = ! is_null( $this->instance );
+		if ( ! is_null( $this->id ) ) {
+			$this->setup_instance();
+			$this->exists = ! is_null( $this->instance );
 
-		// If object mark exists, setup the attributes.
-		if ( $this->exists ) {
-			$this->setup_metadata();
-			$this->setup();
+			// If object mark exists, setup the attributes.
+			if ( $this->exists() ) {
+				$this->setup_metadata();
+				$this->setup();
+			}
 		}
 
 		// Set original to attributes so we can track and reset attributes if needed.
@@ -170,9 +174,34 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return void
 	 */
 	protected function finish_save() {
+		$this->clean_cache();
+
 		$this->perform_update_metadata(
 			$this->recently_created ? $this->get_dirty() : $this->get_changes()
 		);
+
+		$this->resetup();
+	}
+
+	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {}
+
+	/**
+	 * Resetup the object.
+	 *
+	 * @return void
+	 */
+	protected function resetup() {
+		$this->setup_instance();
+
+		$this->metadata = $this->fetch_metadata();
+		$this->setup_metadata();
+
+		// $this->setup();
 	}
 
 	/**
@@ -253,7 +282,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 
 		if ( is_int( $insert_id ) && $insert_id > 0 ) {
 			// Set new ID after insert success.
-			$this->set_id( $insert_id );
+			$this->id = $insert_id;
 
 			$this->exists = true;
 
@@ -311,6 +340,8 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		$deleted = $this->perform_delete( $force );
 
 		if ( $deleted ) {
+			$this->clean_cache();
+
 			// Now object will not exists.
 			$this->exists = false;
 
@@ -363,15 +394,6 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	}
 
 	/**
-	 * Set object ID.
-	 *
-	 * @param integer $id Object ID to set.
-	 */
-	public function set_id( $id ) {
-		$this->id = absint( $id );
-	}
-
-	/**
 	 * Get the object instance,
 	 *
 	 * @return mixed
@@ -381,27 +403,24 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	}
 
 	/**
-	 * Set object instance with WP Core Object (WP_Post, WP_Term).
-	 *
-	 * @param  mixed $wp_object WP Core Object instance.
-	 * @throws InvalidArgumentException
-	 */
-	public function set_instance( $wp_object ) {
-		// Only support WP_Post and WP_Term by default.
-		if ( $wp_object instanceof \WP_Post || $wp_object instanceof \WP_Term ) {
-			$this->instance = $wp_object;
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Determine if object exists.
 	 *
 	 * @return bool
 	 */
 	public function exists() {
 		return $this->exists;
+	}
+
+	/**
+	 * Set the object instance,
+	 *
+	 * @param  mixed $instance The object instance.
+	 * @return mixed
+	 */
+	protected function set_instance( $instance ) {
+		$this->instance = $instance;
+
+		return $this;
 	}
 
 	/**
