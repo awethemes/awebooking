@@ -201,7 +201,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		$this->metadata = $this->fetch_metadata();
 		$this->setup_metadata();
 
-		// $this->setup();
+		$this->setup();
 	}
 
 	/**
@@ -480,7 +480,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return mixed
 	 */
 	public function __get( $key ) {
-		return $this->get_attr( $key );
+		return $this->get_attribute( $key );
 	}
 
 	/**
@@ -491,7 +491,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return void
 	 */
 	public function __set( $key, $value ) {
-		$this->set_attr( $key, $value );
+		$this->set_attribute( $key, $value );
 	}
 
 	/**
@@ -501,7 +501,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return bool
 	 */
 	public function __isset( $key ) {
-		return $this->offsetExists( $key );
+		return ! is_null( $this->get_attribute( $key ) );
 	}
 
 	/**
@@ -511,7 +511,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return void
 	 */
 	public function __unset( $key ) {
-		$this->offsetUnset( $key );
+		unset( $this->attributes[ $key ] );
 	}
 
 	/**
@@ -521,7 +521,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return mixed
 	 */
 	public function offsetGet( $offset ) {
-		return $this->get_attr( $offset );
+		return $this->$offset;
 	}
 
 	/**
@@ -531,7 +531,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @param mixed  $value  The value to set.
 	 */
 	public function offsetSet( $offset, $value ) {
-		$this->set_attr( $offset, $value );
+		$this->$offset = $value;
 	}
 
 	/**
@@ -541,7 +541,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return bool
 	 */
 	public function offsetExists( $offset ) {
-		return ! is_null( $this->get_attr( $offset ) );
+		return isset( $this->$offset );
 	}
 
 	/**
@@ -550,7 +550,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @param string $offset The offset to unset.
 	 */
 	public function offsetUnset( $offset ) {
-		unset( $this->attributes[ $offset ] );
+		unset( $this->$offset );
 	}
 
 	/**

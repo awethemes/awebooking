@@ -38,7 +38,7 @@ trait Object_Attributes {
 	 * @param  string $key Attribute key name.
 	 * @return mixed|null
 	 */
-	public function get_attr( $key ) {
+	public function get_attribute( $key ) {
 		if ( 'id' === $key ) {
 			return $this->get_id();
 		}
@@ -66,15 +66,16 @@ trait Object_Attributes {
 	 * @param  mixed  $value Value of new attribute.
 	 * @return $this
 	 */
-	public function set_attr( $key, $value ) {
-		// First we will check for the presence of a "set_$key" method,
-		// which simply lets the developers tweak the attribute as it is
-		// set on the object.
+	public function set_attribute( $key, $value ) {
 		$method = 'set_' . str_replace( '-', '_', $key );
+
+		// First, we'll check present of `set_$key()` method,
+		// if available just call that method.
 		if ( method_exists( $this, $method ) ) {
 			return $this->{$method}( $value );
 		}
 
+		// If not just set attribute by normally.
 		$this->attributes[ $key ] = $value;
 
 		return $this;
@@ -99,7 +100,7 @@ trait Object_Attributes {
 		$results = [];
 
 		foreach ( is_array( $attributes ) ? $attributes : func_get_args() as $attribute ) {
-			$results[ $attribute ] = $this->get_attr( $attribute );
+			$results[ $attribute ] = $this->get_attribute( $attribute );
 		}
 
 		return $results;
@@ -117,7 +118,7 @@ trait Object_Attributes {
 				continue;
 			}
 
-			$this->set_attr( $key, $value );
+			$this->set_attribute( $key, $value );
 		}
 
 		return $this;
@@ -363,5 +364,16 @@ trait Object_Attributes {
 	 */
 	public function get_casts() {
 		return $this->casts;
+	}
+
+	/**
+	 * Santize attribute value before save.
+	 *
+	 * @param  string $key   Attribute key name.
+	 * @param  mixed  $value Attribute value.
+	 * @return mixed
+	 */
+	protected function sanitize_attribute( $key, $value ) {
+		return $value;
 	}
 }
