@@ -13,9 +13,18 @@ env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=4.6.6 WP_MULTISITE=0
 
+branches:
+  only:
+    - master
+    - bigchange-beta
+
 cache:
   directories:
     - $HOME/.composer/cache
+
+before_install:
+  # Allow MySQL to finish starting
+  - while ! mysqladmin ping --silent; do sleep 5; echo "Waiting for MySQL..."; done
 
 before_script:
   - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
@@ -40,8 +49,3 @@ notifications:
       - slack: awethemes-team:lTIE3YWB1BNdxPtJoJBdIemh
     on_success: never
     on_failure: change
-
-branches:
-  only:
-    - master
-    - bigchange-beta
