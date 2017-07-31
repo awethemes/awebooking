@@ -452,6 +452,8 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 
 	/**
 	 * Handler booking actions.
+	 *
+	 * @param  AweBooking\Booking $booking booking obj.
 	 */
 	public function handler_booking_actions( Booking $booking ) {
 

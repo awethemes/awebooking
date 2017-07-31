@@ -30,6 +30,10 @@ jQuery(function($) {
     e.preventDefault();
     var el = $(this);
 
+    if ( ! $( 'textarea#add_booking_note' ).val() ) {
+      return;
+    }
+
     $.ajax({
       url: awebooking_booking_ajax.ajax_url,
       type: 'POST',
