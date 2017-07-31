@@ -272,7 +272,7 @@ class Booking extends WP_Object {
 	}
 
 	/**
-	 * Gets order currency.
+	 * Gets booking currency.
 	 *
 	 * @return string
 	 */
@@ -415,7 +415,7 @@ class Booking extends WP_Object {
 	}
 
 	/**
-	 * Checks the order status against a passed in status.
+	 * Checks the booking status against a passed in status.
 	 *
 	 * @param  string|array $status //.
 	 * @return bool
@@ -435,5 +435,51 @@ class Booking extends WP_Object {
 		$editable = in_array( $this->get_status(), [ static::PENDING, 'auto-draft' ] );
 
 		return apply_filters( $this->prefix( 'is_editable' ), $editable, $this );
+	}
+
+	/**
+	 * Adds a note (comment) to the booking. Booking must exist.
+	 *
+	 * @param string $note Note to add.
+	 * @param int $is_customer_note (default: 0) Is this a note for the customer?
+	 * @param  bool added_by_user Was the note added by a user?
+	 * @return int Comment ID.
+	 */
+	public function add_booking_note( $note, $is_customer_note = 0, $added_by_user = false ) {
+		if ( ! $this->get_id() ) {
+			return 0;
+		}
+
+		if ( is_user_logged_in() && $added_by_user ) {
+			$user                 = get_user_by( 'id', get_current_user_id() );
+			$comment_author       = $user->display_name;
+			$comment_author_email = $user->user_email;
+		} else {
+			$comment_author       = __( 'AweBooking', 'awebooking' );
+			$comment_author_email = strtolower( __( 'AweBooking', 'awebooking' ) ) . '@';
+			$comment_author_email .= isset( $_SERVER['HTTP_HOST'] ) ? str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) : 'noreply.com';
+			$comment_author_email = sanitize_email( $comment_author_email );
+		}
+		$commentdata = apply_filters( 'awebooking/new_booking_note_data', array(
+			'comment_post_ID'      => $this->get_id(),
+			'comment_author'       => $comment_author,
+			'comment_author_email' => $comment_author_email,
+			'comment_author_url'   => '',
+			'comment_content'      => $note,
+			'comment_agent'        => 'AweBooking',
+			'comment_type'         => 'booking_note',
+			'comment_parent'       => 0,
+			'comment_approved'     => 1,
+		), array( 'booking_id' => $this->get_id(), 'is_customer_note' => $is_customer_note ) );
+
+		$comment_id = wp_insert_comment( $commentdata );
+
+		if ( $is_customer_note ) {
+			add_comment_meta( $comment_id, 'is_customer_note', 1 );
+
+			do_action( 'awebooking/new_customer_note', array( 'booking_id' => $this->get_id(), 'customer_note' => $commentdata['comment_content'] ) );
+		}
+
+		return $comment_id;
 	}
 }
