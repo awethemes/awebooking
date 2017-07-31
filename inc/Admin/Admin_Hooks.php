@@ -21,6 +21,14 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
+		$container->bind( 'admin.add_booking_item', function() {
+			return new Pages\Add_Booking_Item;
+		});
+
+		$container->bind( 'admin.edit_booking_item', function() {
+			return new Pages\Edit_Booking_Item;
+		});
+
 		$container->bind( 'admin_welcome', function() {
 			return new Admin_Welcome;
 		});
@@ -77,8 +85,11 @@ class Admin_Hooks extends Service_Hooks {
 	 */
 	public function init( $awebooking ) {
 		$awebooking->make( 'admin_menu' )->init();
+		$awebooking->make( 'admin.add_booking_item' )->init();
+		$awebooking->make( 'admin.edit_booking_item' )->init();
 
 		new Admin_Ajax;
+		new Action_Handler;
 		new Permalink_Settings;
 		new Admin_Setup_Wizard;
 
@@ -154,7 +165,6 @@ class Admin_Hooks extends Service_Hooks {
 		return $post_states;
 	}
 
-
 	public function admin_menu() {
 		global $menu;
 		$menu[] = array( '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' );
@@ -182,12 +192,15 @@ class Admin_Hooks extends Service_Hooks {
 	 * Highlights the correct top level admin menu item for post type add screens.
 	 */
 	public function menu_highlight() {
-		global $parent_file, $submenu_file, $post_type;
+		global $parent_file, $submenu_file;
 
-		switch ( $post_type ) {
+		$current_screen = get_current_screen();
+
+		switch ( $current_screen->id ) {
 			case 'awebooking':
-			case 'awebooking_rate':
-				$parent_file = 'awebooking';
+			case 'admin_page_awebooking-add-item':
+				$parent_file  = 'awebooking';
+				$submenu_file = 'edit.php?post_type=awebooking';
 			break;
 		}
 	}

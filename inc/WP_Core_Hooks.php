@@ -15,8 +15,10 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		// Don't push into $this->init, this hook only active in register method.
+		// Don't push into $this->init(), this hook only active in register method.
 		add_action( 'after_setup_theme', array( $this, 'register_sidebar' ) );
+
+		add_action( 'init', array( $this, 'wpdb_table' ), 0 );
 	}
 
 	/**
@@ -39,6 +41,16 @@ class WP_Core_Hooks extends Service_Hooks {
 			$location_tax->set( 'force_selection', true );
 			$location_tax->set( 'priority', 'default' );
 		}
+	}
+
+	/**
+	 * Booking item meta.
+	 */
+	public function wpdb_table() {
+		global $wpdb;
+
+		$wpdb->tables[] = 'awebooking_booking_itemmeta';
+		$wpdb->booking_itemmeta = $wpdb->prefix . 'awebooking_booking_itemmeta';
 	}
 
 	/**

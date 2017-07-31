@@ -62,11 +62,11 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 */
 	public function __construct( $object = 0 ) {
 		if ( is_numeric( $object ) && $object > 0 ) {
-			$this->id = $object;
+			$this->id = (int) $object;
 		} elseif ( 'post' === $this->meta_type && ! empty( $object->ID ) ) {
-			$this->id = $object->ID;
+			$this->id = (int) $object->ID;
 		} elseif ( 'term' === $this->meta_type && ! empty( $object->term_id ) ) {
-			$this->id = $object->term_id;
+			$this->id = (int) $object->term_id;
 		} elseif ( $object instanceof WP_Object ) {
 			$this->id = $object->get_id();
 		}
@@ -390,7 +390,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return int
 	 */
 	public function get_id() {
-		return $this->id;
+		return (int) $this->id;
 	}
 
 	/**

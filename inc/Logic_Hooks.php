@@ -30,7 +30,7 @@ class Logic_Hooks extends Service_Hooks {
 	public function pre_delete_term( $term, $taxonomy ) {
 		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
 			// TODO: ...
-			wp_die( 1 ); // We don't know how prevent, so just using wp_die( 1 ) here.
+			// wp_die( 1 ); // We don't know how prevent, so just using wp_die( 1 ) here.
 		}
 	}
 
@@ -52,15 +52,15 @@ class Logic_Hooks extends Service_Hooks {
 		}
 
 		// Just re-save to update booking meta-data.
-		$booking = new Booking( $postid );
-		$booking->save();
+		// $booking = new Booking( $postid );
+		// $booking->save();
 
 		/**
 		 * Fire action after a booking saved.
 		 *
 		 * @param AweBooking\Booking $booking The booking instance.
 		 */
-		do_action( 'awebooking/save_booking', $booking );
+		// do_action( 'awebooking/save_booking', $booking );
 	}
 
 	/**

@@ -24,7 +24,8 @@
         "nesbot/carbon": "1.17.0",
         "awethemes/skeleton": "dev-master",
         "webdevstudios/taxonomy_single_term": "dev-master",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "ericmann/wp-session-manager": "^1.2"
     },
     "scripts": {
         "phpunit": [

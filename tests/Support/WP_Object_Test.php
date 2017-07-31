@@ -164,6 +164,28 @@ class WP_Object_Test extends WP_UnitTestCase {
 		$object = new AweBooking_Post_WP_Object(0);
 		$this->assertNull($object->delete());
 	}
+
+	public function testMixed() {
+		$a = new AweBooking_Post_WP_Object;
+		$a->fill([
+			'title'        => 'Game of Thrones',
+			'description'  => 'Season 7',
+			'episodes'     => 7,
+			'release'      => '7-2017',
+		])->save();
+
+		$this->assertEquals($a['episodes'], get_post_meta($a->get_id(), '_number_of_episodes', true));
+		$this->assertEquals($a['release'], get_post_meta($a->get_id(), '_number_release', true));
+
+		$a['episodes'] = 8;
+		$a['description'] = 'Season 8';
+		$a->update_meta('_number_release', '08-2018');
+		$a->save();
+
+		$this->assertEquals($a['release'], '08-2018');
+		$this->assertEquals($a['description'], 'Season 8');
+		$this->assertEquals(get_post_meta($a->get_id(), '_number_release', true), '08-2018');
+	}
 }
 
 class AweBooking_Post_WP_Object extends WP_Object {
@@ -205,7 +227,6 @@ class AweBooking_Post_WP_Object extends WP_Object {
 	protected function setup() {
 		$this['title'] = $this->instance->post_title;
 		$this['description'] = $this->instance->post_excerpt;
-		$this['release'] = get_post_meta( $this->id, '_release_date', true );
 	}
 
 	public function test_get_changes_only($a, $b) {

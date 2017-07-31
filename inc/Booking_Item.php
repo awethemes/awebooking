@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\BAT\Booking;
+namespace AweBooking;
 
 use AweBooking\Support\WP_Object;
 
@@ -25,7 +25,7 @@ abstract class Booking_Item extends WP_Object {
 	 *
 	 * @var string
 	 */
-	protected $meta_type = 'awebooking_item';
+	protected $meta_type = 'booking_item';
 
 	/**
 	 * The attributes for this object.
@@ -80,7 +80,52 @@ abstract class Booking_Item extends WP_Object {
 	 * @return $this
 	 */
 	public function set_booking_id( $booking_id ) {
-		return $this->set_attr( 'booking_id', absint( $booking_id ) );
+		$this->attributes['booking_id'] = absint( $booking_id );
+
+		return $this;
+	}
+
+	/**
+	 * Return edit URL.
+	 *
+	 * @param  array $query_args Additional query args.
+	 * @return string|null
+	 */
+	public function get_edit_url( array $query_args = [] ) {
+		if ( ! $this->exists() ) {
+			return;
+		}
+
+		$query_args = array_merge([
+			'booking' => $this->get_booking_id(),
+			'item'    => $this->get_id(),
+		], $query_args );
+
+		return add_query_arg( $query_args,
+			admin_url( 'admin.php?page=awebooking-edit-item' )
+		);
+	}
+
+	/**
+	 * Return delete URL.
+	 *
+	 * @return string|null
+	 */
+	public function get_delete_url() {
+		if ( ! $this->exists() ) {
+			return;
+		}
+
+		$post_type   = get_post_type_object( AweBooking::BOOKING );
+		$delete_link = admin_url( sprintf( $post_type->_edit_link, $this->get_booking_id() ) );
+
+		$delete_link = add_query_arg([
+			'action'    => 'delete_awebooking_item',
+			'item'      => $this->get_id(),
+			'item_type' => $this->get_type(),
+		], $delete_link );
+
+		return wp_nonce_url( $delete_link, "delete_item_awebooking_{$this->get_booking_id()}" );
 	}
 
 	/**
@@ -89,8 +134,17 @@ abstract class Booking_Item extends WP_Object {
 	 * @return void
 	 */
 	protected function setup() {
-		$this['name'] = $this->instance['name'];
+		$this['name'] = $this->instance['booking_item_name'];
 		$this['booking_id'] = absint( $this->instance['booking_id'] );
+	}
+
+	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), 'awebooking_cache_booking_item' );
 	}
 
 	/**

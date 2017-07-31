@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking;
 
+use WP_Query;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
 
@@ -78,6 +79,68 @@ class Room_Type extends WP_Object {
 		'gallery_ids'  => 'gallery',
 		'thumbnail_id' => '_thumbnail_id',
 	];
+
+	/**
+	 * //
+	 *
+	 * @param  array $args //.
+	 * @return WP_Query
+	 */
+	public static function query( array $args = [] ) {
+		$query = wp_parse_args( $args, [
+			'post_type'        => AweBooking::ROOM_TYPE,
+			'booking_adults'   => -1,
+			'booking_children' => -1,
+			'booking_nights'   => -1,
+			'posts_per_page'   => -1,
+		]);
+
+		return new WP_Query( $query );
+	}
+
+	/**
+	 * Bulk sync rooms.
+	 *
+	 * @param  int   $room_type     The room-type ID.
+	 * @param  array $request_rooms The request rooms.
+	 * @return void
+	 */
+	public function bulk_sync_rooms( $room_type, array $request_rooms ) {
+		// Current list room of room-type.
+		$db_rooms_ids = array_map( 'absint',
+			wp_list_pluck( $this->room_store->list_by_room_type( $room_type ), 'id' )
+		);
+
+		$touch_ids = [];
+		foreach ( $request_rooms as $raw_room ) {
+			// Ignore in-valid rooms from request.
+			if ( ! isset( $raw_room['id'] ) || ! isset( $raw_room['name'] ) ) {
+				continue;
+			}
+
+			// Sanitize data before working with database.
+			$room_args = array_map( 'sanitize_text_field', $raw_room );
+			$room_args['room_type'] = $room_type;
+
+			if ( $room_args['id'] > 0 && in_array( (int) $room_args['id'], $db_rooms_ids ) ) {
+				$working_id = $this->room_store->update( (int) $room_args['id'], $room_args );
+			} else {
+				$working_id = $this->room_store->insert( $room_type, $room_args['name'] );
+			}
+
+			// We'll map current working ID in $touch_ids...
+			if ( $working_id ) {
+				$touch_ids[] = $working_id;
+			}
+		}
+
+		// Fimally, delete invisible rooms.
+		$delete_ids = array_diff( $db_rooms_ids, $touch_ids );
+
+		if ( ! empty( $delete_ids ) ) {
+			$this->room_store->delete( $delete_ids );
+		}
+	}
 
 	/**
 	 * Setup the object attributes.

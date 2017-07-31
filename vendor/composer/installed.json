@@ -422,5 +422,41 @@
             "logging",
             "psr-3"
         ]
+    },
+    {
+        "name": "ericmann/wp-session-manager",
+        "version": "1.2.2",
+        "version_normalized": "1.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ericmann/wp-session-manager.git",
+            "reference": "8a4aacd25e4a89429e93a85df70a068052853cae"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/8a4aacd25e4a89429e93a85df70a068052853cae",
+            "reference": "8a4aacd25e4a89429e93a85df70a068052853cae",
+            "shasum": ""
+        },
+        "time": "2017-04-26T13:27:37+00:00",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Eric Mann",
+                "email": "eric@eamann.com",
+                "homepage": "https://eamann.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Prototype session management for WordPress.",
+        "homepage": "https://github.com/ericmann/wp-session-manager",
+        "keywords": [
+            "session"
+        ]
     }
 ]

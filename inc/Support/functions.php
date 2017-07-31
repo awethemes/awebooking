@@ -202,6 +202,10 @@ function awebooking_priority_list( array $values ) {
 	return $stack;
 }
 
+function awebooking_factory( array $ids, $class = '' ) {
+
+}
+
 if ( ! function_exists( 'wp_data_callback' ) ) :
 	/**
 	 * Get Wordpress specific data from the DB and return in a usable array.

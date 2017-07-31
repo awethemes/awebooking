@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\BAT\Booking\Booking_Item;
+use AweBooking\Booking_Item;
 
 class Test_Booking_Item extends Booking_Item {
 	public function get_type() {
@@ -9,9 +9,6 @@ class Test_Booking_Item extends Booking_Item {
 }
 
 class Booking_Item_Test extends WP_UnitTestCase {
-	/**
-	 * Set up the test fixture.
-	 */
 	public function setUp() {
 		parent::setUp();
 	}

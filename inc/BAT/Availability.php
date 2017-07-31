@@ -65,6 +65,10 @@ class Availability implements Availability_Interface {
 		return $this->rooms;
 	}
 
+	public function get_rooms_ids() {
+		return array_keys( wp_list_pluck( $this->rooms, 'name' ) );
+	}
+
 	/**
 	 * Get request instance.
 	 *

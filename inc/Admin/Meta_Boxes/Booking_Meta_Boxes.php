@@ -28,7 +28,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		parent::__construct();
 
 		// Register metaboxes.
-		$this->register_main_metabox();
+		// $this->register_main_metabox();
 		$this->register_customer_metabox();
 
 		// Register/un-register metaboxes.
@@ -45,11 +45,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
-
-		// add_meta_box( 'awebooking_booking_infomations', esc_html__( 'Booking Infomation', 'awebooking' ), [ $this, 'output_booking_infomation' ], AweBooking::BOOKING );
-	}
-
-	public function output_booking_infomation() {
 	}
 
 	/**
@@ -67,19 +62,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 
 		$the_booking = new Booking( $post );
 
-		printf( '<h1 class="wp-heading-inline awebooking-title">%s <span>#%s</span></h1>', esc_html__( 'Booking', 'awebooking' ), $post->ID );
-
-		if ( $the_booking['transaction_id'] ) {
-			echo '<br>';
-
-			if ( $the_booking['payment_method_title'] ) {
-				echo '<span class="">' . esc_html__( 'Via', 'awebooking' ) . ' ' . esc_html( $the_booking->get_payment_method_title() ) . '</span>';
-			}
-
-			echo ' | ';
-
-			echo '<span class="">' . esc_html__( 'Transaction ID:', 'awebooking' ) . ' ' . esc_html( $the_booking->get_transaction_id() ) . '</span>';
-		}
+		include trailingslashit( __DIR__ ) . 'views/booking.php';
 	}
 
 	/**

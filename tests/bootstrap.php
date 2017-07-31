@@ -41,10 +41,10 @@ tests_add_filter( 'setup_theme', function () {
 	// Clean existing install first.
 	define( 'WP_UNINSTALL_PLUGIN', true );
 	define( 'AWEBOOKING_REMOVE_ALL_DATA', true );
+
 	require dirname( __DIR__ ) . '/uninstall.php';
 
-	// Create the plugin data.
-	AweBooking\Installer::create_tables();
+	AweBooking\Support\Installer::create_tables();
 
 	echo 'Installing AweBooking...' . PHP_EOL;
 });

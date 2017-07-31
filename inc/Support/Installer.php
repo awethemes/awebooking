@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking;
+namespace AweBooking\Support;
 
 class Installer {
 
@@ -64,6 +64,25 @@ CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
   `month` integer NOT NULL DEFAULT 0,
   " . static::generate_days_schema() . "
   PRIMARY KEY (`rate_id`, `year`, `month`)
+) $collate;
+
+CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
+  booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
+  booking_item_name TEXT NOT NULL,
+  booking_item_type varchar(200) NOT NULL DEFAULT '',
+  booking_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY  (booking_item_id),
+  KEY booking_id (booking_id)
+) $collate;
+
+CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
+  meta_id BIGINT UNSIGNED NOT NULL auto_increment,
+  booking_item_id BIGINT UNSIGNED NOT NULL,
+  meta_key varchar(255) default NULL,
+  meta_value longtext NULL,
+  PRIMARY KEY  (meta_id),
+  KEY booking_item_id (booking_item_id),
+  KEY meta_key (meta_key(32))
 ) $collate;
 		";
 

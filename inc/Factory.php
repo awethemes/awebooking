@@ -10,7 +10,7 @@ class Factory {
 	/**
 	 * //
 	 *
-	 * @var AweBooking]
+	 * @var AweBooking
 	 */
 	protected $awebooking;
 
@@ -21,6 +21,34 @@ class Factory {
 	 */
 	public function __construct( AweBooking $awebooking ) {
 		$this->awebooking = $awebooking;
+	}
+
+	public static function get_booking( $booking ) {
+		return new Booking( $booking );
+	}
+
+	public static function get_booking_item( $a ) {
+		if ( $a instanceof Booking_Item ) {
+			return $a;
+		}
+
+		$class = static::reslove_booking_item_class( $a->booking_item_type );
+
+		return new $class( $a->booking_item_id );
+	}
+
+	protected static function reslove_booking_item_class( $type ) {
+		$maps = [
+			'line_item' => 'AweBooking\\Booking_Room_Item',
+		];
+
+		if ( isset( $maps[ $type ] ) ) {
+			return $maps[ $type ];
+		}
+	}
+
+	public function create_room_type( array $args ) {
+
 	}
 
 	/**

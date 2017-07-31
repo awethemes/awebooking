@@ -80,20 +80,14 @@ class Service extends WP_Object {
 		parent::__construct( $service );
 	}
 
-	protected function perform_insert() {
-	}
-
-	protected function perform_update( array $changes ) {
-	}
-
 	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void
 	 */
 	protected function setup() {
-		$this->set_attr( 'name', $this->instance->name );
-		$this->set_attr( 'description', $this->instance->description );
+		$this->set_attribute( 'name', $this->instance->name );
+		$this->set_attribute( 'description', $this->instance->description );
 	}
 
 	/**
@@ -146,15 +140,15 @@ class Service extends WP_Object {
 	}
 
 	public function get_operation() {
-		return $this->get_attr( 'operation' );
+		return $this->get_attribute( 'operation' );
 	}
 
 	public function get_value() {
-		return $this->get_attr( 'price' );
+		return $this->get_attribute( 'price' );
 	}
 
 	public function get_type() {
-		return $this->get_attr( 'type' );
+		return $this->get_attribute( 'type' );
 	}
 
 	/**

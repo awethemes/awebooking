@@ -9,7 +9,7 @@ use Skeleton\Container\Service_Hooks;
 use AweBooking\Pricing\Price_Calculator;
 use AweBooking\Pricing\Calculator\Service_Calculator;
 
-class Ajax_Controller_Hooks extends Service_Hooks {
+class Ajax_Hooks extends Service_Hooks {
 	/**
 	 * Init service provider.
 	 *

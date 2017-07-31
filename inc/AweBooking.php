@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking;
 
+use WP_Session;
 use Skeleton\WP_Option;
 use Skeleton\Container\Container as SkeletonContainer;
 
@@ -12,7 +13,7 @@ class AweBooking extends SkeletonContainer {
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';
-	const JS_DATE_FORMAT = 'YYYY-MM-DD';
+	const JS_DATE_FORMAT = 'yy-mm-dd';
 
 	const BOOKING        = 'awebooking';
 	const ROOM_TYPE      = 'room_type';
@@ -64,11 +65,12 @@ class AweBooking extends SkeletonContainer {
 		$this->trigger( new Admin_Hooks );
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
-		$this->trigger( new Ajax_Controller_Hooks );
+		$this->trigger( new Ajax_Hooks );
 
 		new Service_Tax;
 
 		static::$instance = $this;
+
 		do_action( 'awebooking/booting', $this );
 	}
 
@@ -129,6 +131,10 @@ class AweBooking extends SkeletonContainer {
 			return new Support\Http_Request;
 		};
 
+		$this->bind( 'session', function () {
+			return WP_Session::get_instance();
+		});
+
 		$this['flash_message'] = function () {
 			return new Support\Flash_Message;
 		};
@@ -146,20 +152,11 @@ class AweBooking extends SkeletonContainer {
 			return new BAT\Store( 'awebooking_pricing', 'rate_id' );
 		});
 
-		$this->bind( 'store.room', function() {
-			return new Stores\Room_Store;
-		});
-
-		$this->bind( 'store.room_type', function( $awebooking ) {
-			return new Stores\Room_Type_Store( $awebooking['store.room'] );
-		});
-
 		$this->bind( 'concierge', function( $awebooking ) {
 			return new BAT\Concierge( $awebooking );
 		});
 
 		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
-
 	}
 
 	/**
@@ -177,9 +174,9 @@ class AweBooking extends SkeletonContainer {
 
 		parent::boot();
 
-		Shortcodes::init();
+		Shortcodes\Shortcodes::init();
 
-		new Migrations\AweBooking2_Migration;
+		// new Migrations\AweBooking2_Migration;
 
 		// Make sure the options are copied if needed.
 		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {

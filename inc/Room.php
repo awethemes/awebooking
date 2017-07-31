@@ -2,19 +2,18 @@
 namespace AweBooking;
 
 use AweBooking\Support\WP_Object;
+use AweBooking\Support\Traits\BAT_Unit;
 use Roomify\Bat\Unit\UnitInterface;
 
 class Room extends WP_Object implements UnitInterface {
-	use Support\Traits\BAT_Unit;
+	use BAT_Unit;
 
 	/**
 	 * Name of object type.
 	 *
-	 * NOTE: This's not standard WP object type.
-	 *
 	 * @var string
 	 */
-	protected $object_type = 'room';
+	protected $object_type = 'awebooking_rooms';
 
 	/**
 	 * WordPress type for object.
@@ -26,7 +25,7 @@ class Room extends WP_Object implements UnitInterface {
 	/**
 	 * This object does not support metadata.
 	 *
-	 * @var string
+	 * @var false
 	 */
 	protected $meta_type = false;
 
@@ -39,7 +38,7 @@ class Room extends WP_Object implements UnitInterface {
 	 */
 	protected $attributes = [
 		'name' => '',
-		'room_type' => 0,
+		'room_type_id' => 0,
 	];
 
 	/**
@@ -50,24 +49,28 @@ class Room extends WP_Object implements UnitInterface {
 	public function __construct( $room_id = 0 ) {
 		parent::__construct( $room_id );
 
-		// By default room state is "available".
+		// By default, room state is alway available.
 		$this->setDefaultValue( Room_State::AVAILABLE );
 	}
 
-	protected function perform_insert() {
-	}
-
-	protected function perform_update( array $changes ) {
-	}
-
 	/**
-	 * Setup the object attributes.
+	 * Get list room by room-type ID(s).
 	 *
-	 * @return void
+	 * @param  int|array $ids The room-type ID(s).
+	 * @return array|null
 	 */
-	protected function setup() {
-		$this['name'] = $this->instance['name'];
-		$this['room_type'] = absint( $this->instance['room_type'] );
+	public static function get_by_room_type( $ids ) {
+		global $wpdb;
+
+		if ( is_array( $ids ) ) {
+			$ids = implode( "', '", array_map( 'esc_sql', $ids ) );
+			$query = "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN ('{$ids}')";
+		} else {
+			$query = $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d'", $ids );
+		}
+
+		// @codingStandardsIgnoreLine
+		return $wpdb->get_results( $query, ARRAY_A );
 	}
 
 	/**
@@ -85,18 +88,83 @@ class Room extends WP_Object implements UnitInterface {
 	 * @return Room_Type
 	 */
 	public function get_room_type() {
-		return apply_filters( $this->prefix( 'get_room_type' ), new Room_Type( $this['room_type'] ), $this );
+		return apply_filters( $this->prefix( 'get_room_type' ), new Room_Type( $this['room_type_id'] ), $this );
 	}
 
 	/**
-	 * Set the room instance.
+	 * Setup the object attributes.
 	 *
-	 * @param  mixed $the_room An array of valid room.
+	 * @return void
 	 */
-	public function set_instance( $the_room ) {
-		if ( ! empty( $the_room['id'] ) && ! empty( $the_room['room_type'] ) ) {
-			$this->instance = $the_room;
+	protected function setup() {
+		$this['name'] = $this->instance['name'];
+		$this['room_type_id'] = absint( $this->instance['room_type'] );
+	}
+
+	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), 'awebooking_cache_room' );
+	}
+
+	/**
+	 * Run perform insert object into database.
+	 *
+	 * @return int|void
+	 */
+	protected function perform_insert() {
+		global $wpdb;
+
+		// We need a room-type present.
+		if ( ! $this['room_type_id'] ) {
+			return;
 		}
+
+		$wpdb->insert( $wpdb->prefix . 'awebooking_rooms',
+			[ 'name' => $this['name'], 'room_type' => $this['room_type_id'] ],
+			[ '%s', '%d' ]
+		);
+
+		return absint( $wpdb->insert_id );
+	}
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @param  array $dirty The attributes has been modified.
+	 * @return bool|void
+	 */
+	protected function perform_update( array $dirty ) {
+		global $wpdb;
+
+		// We need a room-type present for the update.
+		if ( ! $this['room_type_id'] ) {
+			return;
+		}
+
+		$updated = $wpdb->update( $wpdb->prefix . 'awebooking_rooms',
+			[ 'name' => $this['name'], 'room_type' => $this['room_type_id'] ],
+			[ 'id' => $this->get_id() ]
+		);
+
+		return false !== $updated;
+	}
+
+	/**
+	 * Perform delete object.
+	 *
+	 * @param  bool $force Force delete or not.
+	 * @return bool
+	 */
+	protected function perform_delete( $force ) {
+		global $wpdb;
+
+		$deleted = $wpdb->delete( $wpdb->prefix . 'awebooking_rooms', [ 'id' => $this->get_id() ], '%d' );
+
+		return false !== $deleted;
 	}
 
 	/**
@@ -108,7 +176,7 @@ class Room extends WP_Object implements UnitInterface {
 		global $wpdb;
 
 		// Try get in the cache.
-		$the_room = wp_cache_get( $this->get_id(), 'awebooking/room' );
+		$the_room = wp_cache_get( $this->get_id(), 'awebooking_cache_room' );
 
 		if ( false === $the_room ) {
 			// Get the room in database.
@@ -126,7 +194,7 @@ class Room extends WP_Object implements UnitInterface {
 			$the_room['id'] = (int) $the_room['id'];
 			$the_room['room_type'] = (int) $the_room['room_type'];
 
-			wp_cache_add( $the_room['id'], $the_room, 'awebooking/room' );
+			wp_cache_add( $the_room['id'], $the_room, 'awebooking_cache_room' );
 		}
 
 		$this->set_instance( $the_room );

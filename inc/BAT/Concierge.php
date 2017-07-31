@@ -12,6 +12,7 @@ use AweBooking\Rate;
 use AweBooking\Rate_Pricing;
 use AweBooking\Room_Type;
 use AweBooking\AweBooking;
+use AweBooking\Room_Booking;
 
 use AweBooking\Support\Date_Period;
 use AweBooking\Pricing\Price;
@@ -130,16 +131,16 @@ class Concierge implements Concierge_Interface {
 	 * @param  array       $options Setting options.
 	 * @return bool
 	 */
-	public function set_booking_event( Booking $booking, Date_Period $period, array $options = [] ) {
+	public function store_room_booking( Room $room, Date_Period $period, $booking_id, array $options = [] ) {
 		$options = wp_parse_args( $options, [
 			'clear' => false,
 		]);
 
-		$event = new Booking_Event(
-			$booking,
+		$event = new Room_Booking(
+			$room,
 			$period->get_start_date(),
 			$period->get_end_date()->subMinute(),
-			$options['clear']
+			$booking_id
 		);
 
 		return $event->save();
@@ -152,7 +153,7 @@ class Concierge implements Concierge_Interface {
 	 * @return array
 	 */
 	public function check_availability( Request_Interface $request ) {
-		$room_types = awebooking( 'store.room_type' )->query_room_types([
+		$room_types = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
 			'booking_nights'   => $request->get_nights(),
@@ -162,7 +163,7 @@ class Concierge implements Concierge_Interface {
 		$room_types = $room_types->posts;
 
 		$room_ids = wp_list_pluck( $room_types, 'ID' );
-		$rooms = awebooking( 'store.room' )->list_by_room_type( $room_ids );
+		$rooms = Room::get_by_room_type( $room_ids );
 
 		if ( empty( $rooms ) ) {
 			return [];
@@ -196,7 +197,7 @@ class Concierge implements Concierge_Interface {
 	 * @return Availability
 	 */
 	public function check_room_type_availability( Room_Type $room_type, Request_Interface $request ) {
-		$found = awebooking( 'store.room_type' )->query_room_types([
+		$found = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
 			'booking_nights'   => $request->get_nights(),

@@ -11,6 +11,7 @@ if ( ! defined( 'SKELETON_LOADED' ) ) {
 	}
 }
 
+// require_once trailingslashit( __DIR__ ) . 'vendor/ericmann/wp-session-manager/wp-session-manager.php';
 require_once trailingslashit( __DIR__ ) . 'vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
 
 require_once trailingslashit( __DIR__ ) . 'inc/Support/functions.php';
@@ -20,3 +21,6 @@ skeleton_psr4_autoloader( 'AweBooking\\', trailingslashit( __DIR__ ) . 'inc/' );
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
+
+// Skeleton Support.
+skeleton()->trigger( new AweBooking\Support\Skeleton_Support );

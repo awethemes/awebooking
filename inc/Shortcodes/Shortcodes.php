@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking;
+namespace AweBooking\Shortcodes;
 
 class Shortcodes {
 
