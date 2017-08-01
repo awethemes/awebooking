@@ -167,6 +167,20 @@ trait Object_Attributes {
 	}
 
 	/**
+	 * Revert a attribute to the original value.
+	 *
+	 * @param  string $attribute The attribute to revert.
+	 * @return $this
+	 */
+	public function revert_attribute( $attribute ) {
+		if ( array_key_exists( $attributes, $this->attributes ) ) {
+			$this->attributes[ $attribute ] = $this->original[ $attribute ];
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Sync the changed attributes.
 	 *
 	 * @return $this

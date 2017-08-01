@@ -144,6 +144,10 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		 */
 		do_action( $this->prefix( 'saving' ), $this );
 
+		// Allow sub-class overwrite before_save method, here we can
+		// validate the attribute data before save or doing something else.
+		$this->before_save();
+
 		// If the object already exists we can update changes.
 		// Otherwise, we'll just insert them.
 		if ( $this->exists() ) {
@@ -169,7 +173,14 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	}
 
 	/**
-	 * Do somethings when finish save.
+	 * Do something before doing save.
+	 *
+	 * @return void
+	 */
+	protected function before_save() {}
+
+	/**
+	 * Do something when finish save.
 	 *
 	 * @return void
 	 */
