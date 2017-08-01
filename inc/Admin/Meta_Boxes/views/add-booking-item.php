@@ -64,7 +64,7 @@ $cmb2->add_field( array(
 	'type'       => 'text_small',
 	'name'       => esc_html__( 'Price (per night)', 'awebooking' ),
 	'validate'   => 'required|numeric:min:0',
-	'sanitization_cb' => 'awebooking_sanitize_price_number',
+	'sanitization_cb' => 'awebooking_sanitize_price',
 ));
 
 if ( ! empty( $_REQUEST['check_in'] ) ) {

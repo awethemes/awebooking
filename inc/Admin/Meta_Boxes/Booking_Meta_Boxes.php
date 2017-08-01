@@ -272,7 +272,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'default'         => 0,
 			'validate'        => 'required|numeric:min:0',
-			'sanitization_cb' => 'awebooking_sanitize_price_number',
+			'sanitization_cb' => 'awebooking_sanitize_price',
 			'before'          => '<div class="skeleton-input-group">',
 			'after'           => '<span class="skeleton-input-group__addon">' . awebooking( 'currency' )->get_symbol() . '</span></div>',
 		));

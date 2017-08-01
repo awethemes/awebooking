@@ -105,7 +105,7 @@ class Add_Booking_Item extends CMB2 {
 			'type'       => 'text_small',
 			'name'       => esc_html__( 'Price (per night)', 'awebooking' ),
 			'validate'   => 'required|numeric:min:0',
-			'sanitization_cb' => 'awebooking_sanitize_price_number',
+			'sanitization_cb' => 'awebooking_sanitize_price',
 		));
 	}
 

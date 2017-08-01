@@ -181,7 +181,7 @@ endif;
  * @param  string|numeric $number Raw numeric.
  * @return float
  */
-function awebooking_sanitize_price_number( $number ) {
+function awebooking_sanitize_price( $number ) {
 	return Formatting::format_decimal( $number, true );
 }
 
