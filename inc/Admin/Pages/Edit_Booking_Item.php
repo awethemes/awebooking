@@ -64,15 +64,6 @@ class Edit_Booking_Item extends CMB2 {
 		));
 
 		$this->add_field( array(
-			'id'          => 'add_room',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Room', 'awebooking' ),
-			'validate'    => 'required|integer|min:1',
-			'sanitization_cb'  => 'absint',
-			'show_option_none' => esc_html__( 'Choose a room...', 'awebooking' ),
-		));
-
-		$this->add_field( array(
 			'id'               => 'adults',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Number of adults', 'awebooking' ),
@@ -166,57 +157,56 @@ class Edit_Booking_Item extends CMB2 {
 			wp_die( esc_html__( 'You attempted to edit an item that doesn&#8217;t exist or doesn&#8217;t belong to this booking. Perhaps it was deleted?.', 'awebooking' ) );
 		}
 
-		// Fill CMB2 field value.
-		foreach ( $this->prop( 'fields' ) as $field_args ) {
-			$this->get_field( $field_args['id'] )->set_id( );
-		}
-
 		$this->booking = $the_booking;
 		$this->booking_item = $the_booking->get_item( $item_id );
+		$the_room = $this->booking_item->get_booking_room();
+
+		$room_type = $the_room->get_room_type();
+		$max_adults = $room_type->get_number_adults() + $room_type->get_max_adults();
+		$max_children = $room_type->get_number_children() + $room_type->get_max_children();
+
+		$a = range( 1, $max_adults );
+		$b = range( 0, $max_children );
+		$this->get_field( 'adults' )->set_prop( 'options', array_combine( $a, $a ) );
+		$this->get_field( 'children' )->set_prop( 'options', array_combine( $b, $b ) );
+
+		// Fill CMB2 field value.
+		$this->get_field( 'price' )->value = $this->booking_item->get_total()->get_amount();
+		$this->get_field( 'adults' )->value = $this->booking_item->get_adults();
+		$this->get_field( 'children' )->value = $this->booking_item->get_children();
+
+		$this->get_field( 'check_in_out' )->value = [
+			$this->booking_item->get_check_in(),
+			$this->booking_item->get_check_out(),
+		];
+
+		dd($this->booking_item->is_available_for_changes());
 	}
 
 	protected function handle_form() {
 		if ( isset( $_POST[ $this->nonce() ] ) && wp_verify_nonce( $_POST[ $this->nonce() ], $this->nonce() ) ) {
 			$input_data = $this->get_sanitized_values( $_POST );
 
-			$room = new Room( $input_data['add_room'] );
+			if ( ! empty( $input_data ) ) {
+				// Fill the input data then save them.
+				$this->booking_item['adults'] = $input_data['adults'];
+				$this->booking_item['children'] = $input_data['children'];
 
-			$concierge = awebooking()->make( 'concierge' );
+				if ( isset( $input_data['price'] ) ) {
+					$this->booking_item['total'] = $input_data['price'];
+				}
 
-			try {
-				$date_period = new Date_Period( $input_data['check_in_out'][0], $input_data['check_in_out'][1], false );
-			} catch ( \Exception $e ) {
-				return;
+				if ( isset( $input_data['check_in_out'] ) ) {
+					$this->booking_item['check_in'] = $input_data['check_in_out'][0];
+					$this->booking_item['check_out'] = $input_data['check_in_out'][1];
+				}
+
+				$this->booking_item->save();
 			}
 
-			$request = new Booking_Request( $date_period, [
-				'adults'   => $input_data['adults'],
-				'children' => $input_data['children'],
-			]);
-
-			$availability = $concierge->check_room_type_availability(
-				$room->get_room_type(), $request
-			);
-
-			if ( $availability->available() && in_array( $room->get_id(), $availability->get_rooms_ids() ) ) {
-				$item = new Booking_Room_Item;
-
-				$item['name'] = $room->get_name();
-				$item['check_in'] = $date_period->get_start_date()->toDateString();
-				$item['check_out'] = $date_period->get_end_date()->toDateString();
-				$item['adults'] = $input_data['adults'];
-				$item['children'] = $input_data['children'];
-				$item['room_id'] = $room->get_id();
-				$item['total'] = $input_data['price'];
-				$item['subtotal'] = $input_data['price'];
-
-				$this->booking->add_item( $item );
-				$this->booking->save();
-			}
-
-			wp_safe_redirect(
+			/*wp_redirect(
 				get_edit_post_link( $this->booking->get_id(), 'link' )
-			);
+			);*/
 		} // End if().
 	}
 
@@ -228,12 +218,12 @@ class Edit_Booking_Item extends CMB2 {
 	public function output() {
 		$this->prepare_setup();
 
-		// $this->handle_form();
+		$this->handle_form();
 
 		require_once ABSPATH . 'wp-admin/admin-header.php';
 
 		?><div class="wrap cmb2-options-page">
-			<h1 class="wp-heading-inline" style="margin-bottom: 15px;">Add room to booking #</h1>
+			<h1 class="wp-heading-inline" style="margin-bottom: 15px;">Edit Item "<?php echo esc_html( $this->booking_item->get_name() ); ?>"</h1>
 			<hr class="wp-header-end">
 
 			<style type="text/css">
@@ -246,6 +236,25 @@ class Edit_Booking_Item extends CMB2 {
 			<form method="POST" action="">
 				<input type="hidden" name="page" value="<?php echo esc_attr( $this->page ); ?>">
 
+				<div class="postbox" style="width: 270px; float: left; margin-right: 15px;">
+					<div class="" style="padding: 0 15px;">
+						<p>
+							<strong><?php echo esc_html__( 'Booking Reference:', 'awebooking' ) ?></strong>
+							<span><?php echo $this->booking->get_id(); ?></span>
+						</p>
+
+						<p>
+							<strong><?php echo esc_html__( 'Room Type:', 'awebooking' ) ?></strong>
+							<span><?php echo $this->booking_item->get_name(); ?></span>
+						</p>
+
+						<p>
+							<strong><?php echo esc_html__( 'Booked Room:', 'awebooking' ) ?></strong>
+							<span><?php echo $this->booking_item->get_room_id(); ?></span>
+						</p>
+					</div>
+				</div>
+
 				<div class="" style="width: 475px; float: left; margin-right: 15px;">
 					<?php $this->show_form(); ?>
 
@@ -253,7 +262,7 @@ class Edit_Booking_Item extends CMB2 {
 					<br>
 
 					<a href="<?php echo esc_url( get_edit_post_link( $this->booking->get_id() ) ); ?>" class="button button-primary"><?php echo esc_html__( 'Cancel', 'awebooking' ) ?></a>
-					<input class="button" type="submit" name="add_room_submit" value="Add Room" style="float: right">
+					<input class="button" type="submit" name="add_room_submit" value="Update" style="float: right">
 
 				</div>
 			</form>

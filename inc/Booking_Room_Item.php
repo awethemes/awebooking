@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking;
 
+use AweBooking\BAT\Request;
+use AweBooking\BAT\Calendar;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Date_Period;
 
@@ -22,13 +24,11 @@ class Booking_Room_Item extends Booking_Item {
 	protected $attributes = [
 		'name'         => '',
 		'booking_id'   => 0,
-
+		'room_id'      => 0,
 		'check_in'     => '',
 		'check_out'    => '',
 		'adults'       => 0,
 		'children'     => 0,
-		'room_id'      => 0,
-
 		'subtotal'     => 0,
 		'total'        => 0,
 	];
@@ -85,6 +85,10 @@ class Booking_Room_Item extends Booking_Item {
 		return new Room( $this['room_id'] );
 	}
 
+	public function get_room_id() {
+		return $this['room_id'];
+	}
+
 	public function get_check_in() {
 		return apply_filters( $this->prefix( 'get_check_in' ), $this['check_in'], $this );
 	}
@@ -93,7 +97,7 @@ class Booking_Room_Item extends Booking_Item {
 		return apply_filters( $this->prefix( 'get_check_out' ), $this['check_out'], $this );
 	}
 
-	public function get_period() {
+	public function get_date_period() {
 		return new Date_Period( $this->get_check_in(), $this->get_check_out(), false );
 	}
 
@@ -115,7 +119,7 @@ class Booking_Room_Item extends Booking_Item {
 
 	public function get_total_price() {
 		return $this->get_total()->multiply(
-			$this->get_period()->nights()
+			$this->get_date_period()->nights()
 		);
 	}
 
@@ -139,21 +143,53 @@ class Booking_Room_Item extends Booking_Item {
 	 * @throws WC_Data_Exception
 	 */
 	public function set_subtotal( $value ) {
-		$this->attributes['subtotal'] = floatval( $value );
+		$this->attributes['subtotal'] = awebooking_sanitize_price( $value );
 	}
 
 	/**
 	 * Line total (after discounts).
 	 *
 	 * @param string $value
-	 * @throws WC_Data_Exception
 	 */
 	public function set_total( $value ) {
-		$this->attributes['total'] = floatval( $value );
+		$this->attributes['total'] = awebooking_sanitize_price( $value );
 
 		// Subtotal cannot be less than total.
 		if ( ! $this->get_subtotal() || $this['subtotal'] < $this['total'] ) {
 			$this->attributes['subtotal'] = $value;
+		}
+	}
+
+	/**
+	 * Do something before doing save.
+	 *
+	 * @throws \LogicException
+	 * @throws \RuntimeException
+	 *
+	 * @return void
+	 */
+	protected function before_save() {
+		$date_period = $this->get_date_period();
+
+		// A booking stay cannot less than one night.
+		// BTW, an Exception will be throws in $this->get_date_period()
+		// if check-in and check-out date is invalid date format.
+		if ( $date_period->nights() < 1 ) {
+			throw new \LogicException( esc_html__( 'Required minimum one night for the booking.', 'awebooking' ) );
+		}
+
+		// If this save action considered as update, we check `check_in`, `check_out`
+		// have changes, we'll re-check available of booking room again to make sure
+		// everything in AweBooking it is working perfect.
+		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) && ! $this->is_room_available() ) {
+			throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
+		}
+
+		// To prevent change `room_id` and `booking_id`, we don't
+		// allow change them, so just set to original value.
+		if ( $this->exists() && $this->is_dirty( 'room_id', 'booking_id' ) ) {
+			$this->revert_attribute( 'room_id' );
+			$this->revert_attribute( 'booking_id' );
 		}
 	}
 
@@ -170,7 +206,7 @@ class Booking_Room_Item extends Booking_Item {
 
 		try {
 			$concierge = awebooking( 'concierge' );
-			$date_period = $this->get_period();
+			$date_period = $this->get_date_period();
 
 			$concierge->set_room_state( $the_room, $date_period, $booking->get_state_status(), [
 				'force' => true,
@@ -181,6 +217,69 @@ class Booking_Room_Item extends Booking_Item {
 		} catch ( \Exception $e ) {
 			return;
 		}
+	}
+
+	public function is_available_for_changes() {
+		$request  = $this->get_booking_request( '2017-09-03', '2017-09-08' );
+		$calendar = new Calendar( [ $this->get_booking_room() ], awebooking( 'store.availability' ) );
+
+		$response = $calendar->getMatchingUnits(
+			$request->get_check_in(),
+			$request->get_check_out()->subMinute(),
+			$request->valid_states()
+		);
+
+		// If the change date-period available for made booking,
+		// just return true, tell that available for moving next action.
+		/*if ( $available ) {
+			return true;
+		}*/
+
+		// Check if we working on this date.
+
+		// Get the booking ID of current.
+
+		dd( $response );
+	}
+
+	/**
+	 * The the booking request.
+	 *
+	 * If check_in and check_out not present,
+	 * using default $this->get_date_period() method.
+	 *
+	 * @param  string|Carbon $check_in  Optional, check-in date.
+	 * @param  string|Carbon $check_out Optional, check-out date.
+	 * @return AweBooking\BAT\Request
+	 */
+	protected function get_booking_request( $check_in = null, $check_out = null ) {
+		if ( ! is_null( $check_in ) && ! is_null( $check_out ) ) {
+			$date_period = new Date_Period( $check_in, $check_out, false );
+		} else {
+			$date_period = $this->get_date_period();
+		}
+
+		return new Request( $date_period, [
+			'adults'   => $this->get_adults(),
+			'children' => $this->get_children(),
+		]);
+	}
+
+	/**
+	 * //
+	 *
+	 * @return boolean
+	 */
+	protected function is_room_available() {
+		$the_room = $this->get_booking_room();
+
+		$availability = awebooking( 'concierge' )->check_room_type_availability(
+			$the_room->get_room_type(),
+			$this->get_booking_request()
+		);
+
+		return $availability->available() &&
+			in_array( $the_room->get_id(), $availability->get_rooms_ids() );
 	}
 
 	/**
@@ -203,14 +302,14 @@ class Booking_Room_Item extends Booking_Item {
 
 		$concierge->set_room_state(
 			$this->get_booking_room(),
-			$this->get_period(),
+			$this->get_date_period(),
 			Room_State::AVAILABLE,
 			[ 'force' => true ]
 		);
 
 		$concierge->store_room_booking(
 			$this->get_booking_room(),
-			$this->get_period(),
+			$this->get_date_period(),
 			0
 		);
 

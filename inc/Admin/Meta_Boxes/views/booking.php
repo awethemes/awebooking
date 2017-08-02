@@ -48,7 +48,7 @@
 
 						<?php
 						try {
-							$date_period = $room_item->get_period();
+							$date_period = $room_item->get_date_period();
 
 							printf( '(<strong>%s %s</strong> <span>%s</span> - <span>%s</span>)',
 								$date_period->nights(),
@@ -81,7 +81,7 @@
 					<td>
 						<?php echo esc_html( $room_item->get_total() ); ?> / night
 						<br>
-						<strong>(x <?php echo $room_item->get_period()->nights() ?>  = <?php echo $room_item->get_total_price(); ?>)</strong>
+						<strong>(x <?php echo $room_item->get_date_period()->nights() ?>  = <?php echo $room_item->get_total_price(); ?>)</strong>
 					</td>
 
 					<td>

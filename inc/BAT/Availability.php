@@ -66,7 +66,9 @@ class Availability implements Availability_Interface {
 	}
 
 	public function get_rooms_ids() {
-		return array_keys( wp_list_pluck( $this->rooms, 'name' ) );
+		$ids = array_keys( wp_list_pluck( $this->rooms, 'name' ) );
+
+		return array_map( 'absint', $ids );
 	}
 
 	/**
