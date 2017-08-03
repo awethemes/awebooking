@@ -32,14 +32,14 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6', '<' ) ) {
 }
 
 /**
- * And only works with PHP 5.4.0 or later.
+ * And only works with PHP 5.5.9 or later.
  */
-if ( version_compare( phpversion(), '5.4.0', '<' ) ) {
+if ( version_compare( phpversion(), '5.5.9', '<' ) ) {
 	/**
 	 * Adds a message for outdate PHP version.
 	 */
 	function awebooking_php_upgrade_notice() {
-		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.4.0 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
+		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.5.9 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
 	}
 

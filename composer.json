@@ -18,14 +18,16 @@
         { "type": "vcs", "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git" }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.9",
         "roomify/bat": "dev-master",
         "pelago/emogrifier": "^1.2",
         "nesbot/carbon": "1.17.0",
         "awethemes/skeleton": "dev-master",
         "webdevstudios/taxonomy_single_term": "dev-master",
         "erusev/parsedown": "^1.6",
-        "ericmann/wp-session-manager": "^1.2"
+        "ericmann/wp-session-manager": "^1.2",
+        "league/period": "^3.3",
+        "monolog/monolog": "^1.23"
     },
     "scripts": {
         "phpunit": [
