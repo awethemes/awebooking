@@ -13,6 +13,7 @@ class Template_Hooks extends Service_Hooks {
 	 */
 	public function register( $awebooking ) {
 		$this->template_hooks();
+		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 	}
 
 	/**
@@ -24,7 +25,6 @@ class Template_Hooks extends Service_Hooks {
 	 */
 	public function init( $awebooking ) {
 		add_filter( 'template_include', array( $this, 'template_loader' ), 10 );
-		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
 		add_filter( 'body_class', array( $this, 'awebooking_body_class' ) );
 	}
 

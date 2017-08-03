@@ -1,8 +1,8 @@
 <?php
 namespace AweBooking\Support;
 
-use DateTime;
 use Carbon\Carbon;
+use DateTimeInterface;
 
 class Date_Utils {
 	/**
@@ -92,6 +92,6 @@ class Date_Utils {
 	 * @return bool
 	 */
 	public static function is_standard_date_format( $date ) {
-		return preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
+		return (bool) preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
 	}
 }

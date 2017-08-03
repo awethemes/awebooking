@@ -191,6 +191,7 @@ class Room_Type extends WP_Object {
 			'post_title'   => $this->get_title(),
 			'post_content' => $this->get_description(),
 			'post_excerpt' => $this->get_short_description(),
+			'post_status'  => $this->get_status(),
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
@@ -438,6 +439,15 @@ class Room_Type extends WP_Object {
 	}
 
 	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), 'awebooking/rooms_in_room_types' );
+	}
+
+	/**
 	 * Retrieve the rooms of this room type.
 	 *
 	 * @param string $pluck //.
@@ -454,7 +464,7 @@ class Room_Type extends WP_Object {
 		if ( false === $the_rooms ) {
 			// Get rooms in a room type from database, limit 100 results for performance.
 			$the_rooms = $wpdb->get_results(
-				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d' ORDER BY LENGTH(`name`) ASC, `name` ASC LIMIT 100", $this->get_id() ),
+				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d' ORDER BY LENGTH(`name`) ASC, `name` ASC LIMIT 1000", $this->get_id() ),
 				ARRAY_A
 			);
 
