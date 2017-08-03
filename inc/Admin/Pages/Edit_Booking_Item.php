@@ -179,13 +179,17 @@ class Edit_Booking_Item extends CMB2 {
 			$this->booking_item->get_check_in(),
 			$this->booking_item->get_check_out(),
 		];
-
-		dd($this->booking_item->is_available_for_changes());
 	}
 
 	protected function handle_form() {
 		if ( isset( $_POST[ $this->nonce() ] ) && wp_verify_nonce( $_POST[ $this->nonce() ], $this->nonce() ) ) {
 			$input_data = $this->get_sanitized_values( $_POST );
+
+			$working_url = add_query_arg([
+					'booking' => $this->booking->get_id(),
+					'item'    => $this->booking_item->get_id(),
+				], admin_url( 'admin.php?page=awebooking-edit-item' )
+			);
 
 			if ( ! empty( $input_data ) ) {
 				// Fill the input data then save them.
@@ -201,12 +205,18 @@ class Edit_Booking_Item extends CMB2 {
 					$this->booking_item['check_out'] = $input_data['check_in_out'][1];
 				}
 
-				$this->booking_item->save();
+				try {
+					$this->booking_item->save();
+				} catch ( \Exception $e ) {
+					$this->add_validation_error( 'check_in_out', $e->getMessage() );
+					// wp_redirect( $working_url );
+					return;
+				}
 			}
 
-			/*wp_redirect(
+			wp_redirect(
 				get_edit_post_link( $this->booking->get_id(), 'link' )
-			);*/
+			);
 		} // End if().
 	}
 

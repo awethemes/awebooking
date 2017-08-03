@@ -1,67 +1,143 @@
 <?php
 
+use AweBooking\Room;
 use AweBooking\Room_Type;
+use AweBooking\Room_State;
+use AweBooking\Booking_Room_Item;
+use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Date_Period;
-use AweBooking\BAT\Booking_Request;
 
 class Concierge_Test extends WP_UnitTestCase {
-	/**
-	 * Set up the test fixture.
-	 */
 	public function setUp() {
 		parent::setUp();
 
-		$this->room_type_id1 = $this->factory->post->create([ 'name' => 'Luxury', 'post_type' => 'room_type' ]);
-		$this->room_type_id2 = $this->factory->post->create([ 'name' => 'VIP', 'post_type' => 'room_type' ]);
-		$this->room_type_id3 = $this->factory->post->create([ 'name' => 'Standard', 'post_type' => 'room_type' ]);
-
-		$this->update_meta( $this->room_type_id1 );
-		$this->update_meta( $this->room_type_id2 );
-		$this->update_meta( $this->room_type_id3 );
-
-		/*awebooking( 'store.room_type' )->bulk_sync_rooms( $this->room_type_id1, [
-			[ 'id' => -1, 'name' => 'Luxury 1' ],
-			[ 'id' => -1, 'name' => 'Luxury 2' ],
-			[ 'id' => -1, 'name' => 'Luxury 3' ],
-		]);*/
-
-		/*awebooking( 'store.room_type' )->bulk_sync_rooms( $this->room_type_id2, [
-			[ 'id' => -1, 'name' => 'VIP 1' ],
-			[ 'id' => -1, 'name' => 'VIP 2' ],
-		]);
-
-		awebooking( 'store.room_type' )->bulk_sync_rooms( $this->room_type_id3, [
-			[ 'id' => -1, 'name' => 'Standard 1' ],
-			[ 'id' => -1, 'name' => 'Standard 2' ],
-			[ 'id' => -1, 'name' => 'Standard 3' ],
-			[ 'id' => -1, 'name' => 'Standard 4' ],
-		]);*/
-
-		// $this->concierge = awebooking( 'concierge' );
+		$this->concierge = awebooking()->make( 'concierge' );
+		$this->luxury = $this->setupLuxuryRoomType();
 	}
 
-	public function testA() {
+	public function testHasEmptyRoom() {
+		$rooms = $this->luxury->get_rooms();
+
+		$state = new Room_State($rooms[0], Date_Utils::create_date('2017-06-06'), Date_Utils::create_date('2017-06-07'), Room_State::UNAVAILABLE);
+		$state->save();
+
+		$state2 = new Room_State($rooms[0], Date_Utils::create_date('2017-06-10'), Date_Utils::create_date('2017-06-15'), Room_State::UNAVAILABLE);
+		$state2->save();
+
+		$this->assertTrue($rooms[0]->is_free(new Date_Period( '2017-06-01', '2017-06-06' )));
+		$this->assertTrue($rooms[0]->is_free(new Date_Period( '2017-06-08', '2017-06-10' )));
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-06', '2017-06-07' )));
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-06', '2017-06-08' )));
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-06', '2017-06-09' )));
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-05', '2017-06-09' )));
+
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-01', '2017-06-15' )));
+		$this->assertFalse($rooms[0]->is_free(new Date_Period( '2017-06-08', '2017-06-13' )));
 	}
 
-	public function __test_check_availability() {
-		$date = new Date_Period( '2017-07-10', '2017-07-13', false );
-		$request = new Booking_Request( $date, [ 'adults'   => 1, 'children' => 1 ]);
+	public function testChangeable() {
+		// 1. Same
+		// --------------|===============|--------------
+		// --------------|===============|--------------
+		//
+		// 2. Inside
+		// --------------|===============|--------------
+		// ------------------|========|-----------------
+		//
+		// 3. Wrap
+		// --------------|===============|--------------
+		// -----------|=====================|----------
+		//
+		// 4. Same startpoint
+		// --------------|===============|--------------
+		// --------------|=====================|--------
+		//
+		// 5. Same endpoint.
+		// --------------|===============|--------------
+		// --------|=====================|--------------
+		//
+		// 6. Diff
+		// --------------|===============|--------------
+		// --------|==============|---------------------
+		//
+		// 7. Outside left
+		// --------------|===============|--------------
+		// ---|=====|-----------------------------------
+		//
+		// 8. Outside right
+		// --------------|===============|--------------
+		// -----------------------------------|=====|---
+		//
 
-		$results = $this->concierge->check_availability( $request );
-		$this->assertNotEmpty( $results );
+		$rooms = $this->luxury->get_rooms();
 
-		foreach ($results as $avai) {
-			$this->assertInstanceOf( 'AweBooking\\BAT\\Availability', $avai);
-			$this->assertTrue($avai->available());
+		$state = new Room_State($rooms[0], Date_Utils::create_date('2017-06-12'), Date_Utils::create_date('2017-06-13'), Room_State::UNAVAILABLE);
+		$state->save();
+
+		$state2 = new Room_State($rooms[0], Date_Utils::create_date('2017-05-25'), Date_Utils::create_date('2017-05-26'), Room_State::BOOKED);
+		$state2->save();
+
+		$booking_item = new Booking_Room_Item;
+		$booking_item['name']       = 'Luxury';
+		$booking_item['room_id']    = $rooms[0]->get_id();
+		$booking_item['booking_id'] = 100;
+		$booking_item['check_in']   = '2017-06-01';
+		$booking_item['check_out']  = '2017-06-05';
+		$booking_item->save();
+
+		$booking_item2 = new Booking_Room_Item;
+		$booking_item2['name']       = 'Luxury';
+		$booking_item2['room_id']    = $rooms[0]->get_id();
+		$booking_item2['booking_id'] = 100;
+		$booking_item2['check_in']   = '2017-06-10';
+		$booking_item2['check_out']  = '2017-06-15';
+		$booking_item2->save();
+
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-01', '2017-06-05' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-03', '2017-06-04' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-05-27', '2017-06-10' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-01', '2017-06-10' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-05-27', '2017-06-05' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-05-27', '2017-06-03' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-04', '2017-06-10' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-05-27', '2017-05-28' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-06', '2017-06-10' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-05-27', '2017-06-01' )));
+		$this->assertTrue($booking_item->is_changeable(new Date_Period( '2017-06-05', '2017-06-10' )));
+
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-05-25', '2017-06-07' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-06-01', '2017-06-11' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-06-05', '2017-06-15' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-05-05', '2017-06-04' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-06-03', '2017-06-15' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-05-25', '2017-05-26' )));
+		$this->assertFalse($booking_item->is_changeable(new Date_Period( '2017-06-10', '2017-06-15' )));
+	}
+
+	protected function debugTable() {
+		global $wpdb;
+		$results = $wpdb->get_row("SELECT * FROM `{$wpdb->prefix}awebooking_availability`", ARRAY_A);
+		var_dump( $results );
+	}
+
+	protected function setupLuxuryRoomType() {
+		$luxury = new Room_Type;
+		$luxury['title'] = 'Luxury';
+		$luxury['status'] = 'publish';
+		$luxury['base_price'] = 150;
+		$luxury['number_adults'] = 2;
+		$luxury['number_children'] = 2;
+		$luxury->save();
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$luxury_room = new Room;
+			$luxury_room['name'] = 'Luxury - 10' . $i;
+			$luxury_room['room_type_id'] = $luxury->get_id();
+			$luxury_room->save();
 		}
-	}
 
-	protected function update_meta( $id ) {
-		add_post_meta( $id, 'base_price', '150' );
-		add_post_meta( $id, 'number_adults', '2' );
-		add_post_meta( $id, 'number_children', '2' );
-		add_post_meta( $id, 'max_adults', '1' );
-		add_post_meta( $id, 'max_children', '1' );
-		add_post_meta( $id, 'minimum_night', '1' );
+		wp_cache_delete( $luxury->get_id(), 'awebooking/rooms_in_room_types' );
+
+		return new Room_Type( $luxury->get_id() );
 	}
 }

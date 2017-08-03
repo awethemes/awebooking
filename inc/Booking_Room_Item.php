@@ -98,7 +98,7 @@ class Booking_Room_Item extends Booking_Item {
 	}
 
 	public function get_date_period() {
-		return new Date_Period( $this->get_check_in(), $this->get_check_out(), false );
+		return new Date_Period( $this->get_check_in(), $this->get_check_out() );
 	}
 
 	public function get_adults() {
@@ -181,8 +181,10 @@ class Booking_Room_Item extends Booking_Item {
 		// If this save action considered as update, we check `check_in`, `check_out`
 		// have changes, we'll re-check available of booking room again to make sure
 		// everything in AweBooking it is working perfect.
-		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) && ! $this->is_room_available() ) {
-			throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
+		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) ) {
+			if ( ! $this->is_changeable( $date_period ) ) {
+				throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
+			}
 		}
 
 		// To prevent change `room_id` and `booking_id`, we don't
@@ -201,85 +203,80 @@ class Booking_Room_Item extends Booking_Item {
 	protected function finish_save() {
 		parent::finish_save();
 
+		$date_period = $this->get_date_period();
+
 		$booking = $this->get_booking();
 		$the_room = $this->get_booking_room();
 
-		try {
-			$concierge = awebooking( 'concierge' );
-			$date_period = $this->get_date_period();
+		$concierge = awebooking()->make( 'concierge' );
 
-			$concierge->set_room_state( $the_room, $date_period, $booking->get_state_status(), [
+		// Moveing date period.
+		if ( ! $this->recently_created && $this->is_dirty( 'check_in', 'check_out' ) && $this->is_changeable( $date_period ) ) {
+			$original_period = new Date_Period(
+				$this->original['check_in'], $this->original['check_out']
+			);
+
+			$concierge->set_room_state( $the_room, $original_period, Room_State::AVAILABLE, [
 				'force' => true,
 			]);
 
-			$concierge->store_room_booking( $the_room, $date_period, $booking->get_id() );
+			$concierge->store_room_booking( $the_room, $original_period, 0 );
+		}
 
-		} catch ( \Exception $e ) {
+		$concierge->set_room_state( $the_room, $date_period, $booking->get_state_status(), [
+			'force' => true,
+		]);
+
+		$concierge->store_room_booking( $the_room, $date_period, $booking->get_id() );
+	}
+
+	/**
+	 * Determines whether the new period can be changeable.
+	 *
+	 * @throws \LogicException
+	 *
+	 * @param  Date_Period $to_period Change to date period.
+	 * @return bool|null
+	 */
+	public function is_changeable( Date_Period $to_period ) {
+		if ( $to_period->nights() < 1 ) {
+			throw new \LogicException( esc_html__( 'The date period must be have minimum one night.', 'awebooking' ) );
+		}
+
+		$room_unit = $this->get_booking_room();
+		if ( ! $room_unit->exists() ) {
 			return;
 		}
-	}
 
-	public function is_available_for_changes() {
-		$request  = $this->get_booking_request( '2017-09-03', '2017-09-08' );
-		$calendar = new Calendar( [ $this->get_booking_room() ], awebooking( 'store.availability' ) );
-
-		$response = $calendar->getMatchingUnits(
-			$request->get_check_in(),
-			$request->get_check_out()->subMinute(),
-			$request->valid_states()
+		$original_period = new Date_Period(
+			$this->original['check_in'], $this->original['check_out']
 		);
 
-		// If the change date-period available for made booking,
-		// just return true, tell that available for moving next action.
-		/*if ( $available ) {
+		// If new period inside the current-period,
+		// so it alway can be change.
+		if ( $original_period->contains( $to_period ) ) {
 			return true;
-		}*/
-
-		// Check if we working on this date.
-
-		// Get the booking ID of current.
-
-		dd( $response );
-	}
-
-	/**
-	 * The the booking request.
-	 *
-	 * If check_in and check_out not present,
-	 * using default $this->get_date_period() method.
-	 *
-	 * @param  string|Carbon $check_in  Optional, check-in date.
-	 * @param  string|Carbon $check_out Optional, check-out date.
-	 * @return AweBooking\BAT\Request
-	 */
-	protected function get_booking_request( $check_in = null, $check_out = null ) {
-		if ( ! is_null( $check_in ) && ! is_null( $check_out ) ) {
-			$date_period = new Date_Period( $check_in, $check_out, false );
-		} else {
-			$date_period = $this->get_date_period();
 		}
 
-		return new Request( $date_period, [
-			'adults'   => $this->get_adults(),
-			'children' => $this->get_children(),
-		]);
-	}
+		// If both period object not overlaps, so we just
+		// determines new period is bookable or not.
+		if ( ! $original_period->overlaps( $to_period ) ) {
+			return $room_unit->is_free( $to_period );
+		}
 
-	/**
-	 * //
-	 *
-	 * @return boolean
-	 */
-	protected function is_room_available() {
-		$the_room = $this->get_booking_room();
+		// Create an array difference between two Period.
+		// @see http://period.thephpleague.com/api/comparing/#perioddiff .
+		$diff = $original_period->diff( $to_period );
 
-		$availability = awebooking( 'concierge' )->check_room_type_availability(
-			$the_room->get_room_type(),
-			$this->get_booking_request()
-		);
+		// Loop each piece of diff-period, if one of them
+		// un-available for changing just leave and return false.
+		foreach ( $diff as $piece ) {
+			if ( ! $original_period->contains( $piece ) && ! $room_unit->is_free( $piece ) ) {
+				return false;
+			}
+		}
 
-		return $availability->available() &&
-			in_array( $the_room->get_id(), $availability->get_rooms_ids() );
+		return true;
 	}
 
 	/**
