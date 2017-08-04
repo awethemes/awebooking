@@ -11,8 +11,13 @@
       display: block;
       padding: 10px 20px;
       outline: none;
+
+      @media (max-width: 480px) {
+        padding: 10px 15px;
+      }
+
     }
-  }
+}
 
   .active {
     background-color: #fff;
