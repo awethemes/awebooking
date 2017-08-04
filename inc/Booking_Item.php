@@ -5,20 +5,6 @@ use AweBooking\Support\WP_Object;
 
 class Booking_Item extends WP_Object {
 	/**
-	 * The booking object instance this item belong to.
-	 *
-	 * @var Booking
-	 */
-	protected $booking;
-
-	/**
-	 * The booking item object instance.
-	 *
-	 * @var Booking_Item|mixed
-	 */
-	protected $parent;
-
-	/**
 	 * Name of object type.
 	 *
 	 * Normally is name of custom-post-type or custom-taxonomy.
@@ -90,12 +76,6 @@ class Booking_Item extends WP_Object {
 		$this['name']       = $this->instance['booking_item_name'];
 		$this['parent_id']  = absint( $this->instance['booking_item_parent'] );
 		$this['booking_id'] = absint( $this->instance['booking_id'] );
-
-		$this->booking = Factory::get_booking( $this['booking_id'] );
-
-		if ( $this['parent_id'] ) {
-			$this->parent = Factory::get_booking_item( $this['parent_id'] );
-		}
 	}
 
 	/**
@@ -122,7 +102,9 @@ class Booking_Item extends WP_Object {
 	 * @return Booking|null
 	 */
 	public function get_booking() {
-		return $this->booking;
+		$booking = Factory::get_booking( $this['booking_id'] );
+
+		return apply_filters( $this->prefix( 'get_booking' ), $booking, $this );
 	}
 
 	/**
@@ -152,7 +134,9 @@ class Booking_Item extends WP_Object {
 	 * @return Bookign_Item|mixed|null
 	 */
 	public function get_parent() {
-		return $this->parent;
+		$parent = Factory::get_booking_item( $this['parent_id'] );
+
+		return apply_filters( $this->prefix( 'get_parent' ), $parent, $this );
 	}
 
 	/**

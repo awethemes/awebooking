@@ -152,13 +152,7 @@ class Booking extends WP_Object {
 	}
 
 	public function get_room_items() {
-		$aa = [];
-
-		foreach ($this->get_items() as $a ) {
-			$aa[] = \AweBooking\Factory::get_booking_item( $a );
-		}
-
-		return $aa;
+		return $this->get_items();
 	}
 
 	// public function get_services_items( $)
@@ -396,11 +390,11 @@ class Booking extends WP_Object {
 			global $wpdb;
 
 			$get_items_sql = $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`;", $this->get_id() );
-			$items         = $wpdb->get_results( $get_items_sql );
+			$items = $wpdb->get_results( $get_items_sql );
 
 			$aa = [];
-			foreach ($items as $a ) {
-				$aa[] = \AweBooking\Factory::get_booking_item( $a );
+			foreach ( $items as $a ) {
+				$aa[] = Factory::get_booking_item( $a );
 			}
 
 			$this->items = $aa;
@@ -531,6 +525,7 @@ class Booking extends WP_Object {
 			$comment_author_email .= isset( $_SERVER['HTTP_HOST'] ) ? str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) : 'noreply.com';
 			$comment_author_email = sanitize_email( $comment_author_email );
 		}
+
 		$commentdata = apply_filters( 'awebooking/new_booking_note_data', array(
 			'comment_post_ID'      => $this->get_id(),
 			'comment_author'       => $comment_author,

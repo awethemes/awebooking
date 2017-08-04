@@ -29,14 +29,13 @@ class Add_Booking_Item {
 	protected $booking;
 
 	protected $form;
-	protected $form_service;
+	protected $services = [];
 
 	/**
 	 * Add booking item constructor.
 	 */
 	public function __construct( Add_Booking_Form $form ) {
 		$this->form = $form;
-		$this->form_service = new Service_Form;
 	}
 
 	/**
@@ -108,7 +107,7 @@ class Add_Booking_Item {
 				$this->generate_select_rooms( $results )
 			);
 
-			$the_room = new Room( $this->form->get_value( 'add_room' ) );
+			$the_room = new Room( $this->form['add_room']->get_value() );
 
 			if ( $the_room->exists() ) {
 				$room_type = $the_room->get_room_type();
@@ -126,11 +125,7 @@ class Add_Booking_Item {
 				$this->set_fields_visibility( true );
 
 				// Setup extra services form.
-				$services = [];
-				foreach ( $room_type->get_services() as $service ) {
-					$services[ $service->get_id() ] = $service->get_describe();
-				}
-				$this->form_service->get_field( 'extra_services' )->set_prop( 'options', $services );
+				$this->services = $room_type->get_services();
 			}
 		} // End if().
 	}
@@ -185,7 +180,7 @@ class Add_Booking_Item {
 	protected function handle_form() {
 		if ( isset( $_POST[ $this->form->nonce() ] ) && wp_verify_nonce( $_POST[ $this->form->nonce() ], $this->form->nonce() ) ) {
 			$input_data = $this->form->get_sanitized_values( $_POST );
-			$service_data = $this->form_service->get_sanitized_values( $_POST );
+			$service_data = $_POST;
 
 			$room = new Room( $input_data['add_room'] );
 			$room_type = $room->get_room_type();
@@ -219,6 +214,7 @@ class Add_Booking_Item {
 				$item['total'] = $input_data['price'];
 				$item['subtotal'] = $input_data['price'];
 				$this->booking->add_item( $item );
+				$item->save();
 
 				// handler services.
 				$service_data = array_map(function($s) {
@@ -233,7 +229,7 @@ class Add_Booking_Item {
 					// Add service item into booking.
 					$service_item = new Booking_Service_Item;
 					$service_item['name'] = $service->get_name();
-					// $service_item['room_id'] = $room->get_id();
+					$service_item['parent'] = $item->get_id();
 					$service_item['service_id'] = $service->get_id();
 					$service_item['price'] = $service->get_price()->get_amount();
 
@@ -285,10 +281,6 @@ class Add_Booking_Item {
 
 					<a href="<?php echo esc_url( get_edit_post_link( $this->booking->get_id() ) ); ?>" class="button button-primary"><?php echo esc_html__( 'Cancel', 'awebooking' ) ?></a>
 					<input class="button" type="submit" name="add_room_submit" value="Add Room" style="float: right">
-				</div>
-
-				<div class="" style="width: 475px; float: left; margin-right: 15px;">
-					<?php $this->form_service->output(); ?>
 				</div>
 			</form>
 
