@@ -27,6 +27,10 @@
 	float: left;
 	padding: 0 15px;
   position: relative;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 }
 
 .awebooking-room-type__image {
@@ -36,6 +40,10 @@
 .awebooking-room-type__check-form {
 	width: 25%;
 	float: left;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 }
 
 .awebooking-room-type__sale-flash {

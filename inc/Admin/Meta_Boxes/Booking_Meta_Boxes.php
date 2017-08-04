@@ -12,6 +12,10 @@ use AweBooking\Support\Date_Period;
 use AweBooking\Support\Formatting;
 use Skeleton\CMB2\CMB2;
 use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Mailer;
+use AweBooking\Notification\Booking_Cancelled;
+use AweBooking\Notification\Booking_Processing;
+use AweBooking\Notification\Booking_Completed;
 
 class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	/**
@@ -34,6 +38,12 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		// Register/un-register metaboxes.
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
+		add_action( 'awebooking/save_booking', [ $this, 'handler_booking_actions' ], 10, 1 );
+		add_action( 'admin_init', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_ajax_nopriv_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
+		add_action( 'wp_ajax_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
+		add_action( 'wp_ajax_nopriv_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
+		add_action( 'wp_ajax_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
 	}
 
 	/**
@@ -45,6 +55,19 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
+		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'default' );
+
+		// add_meta_box( 'awebooking_booking_infomations', esc_html__( 'Booking Infomation', 'awebooking' ), [ $this, 'output_booking_infomation' ], AweBooking::BOOKING );
+	}
+
+	public function output_booking_infomation() {
+	}
+
+	public function enqueue_scripts() {
+		wp_enqueue_script( 'awebooking-booking', AweBooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery' ), AweBooking::VERSION, true );
+		wp_localize_script( 'awebooking-booking', 'awebooking_booking_ajax', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		));
 	}
 
 	/**
@@ -412,6 +435,236 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			new Date_Period( $check_in, $check_out, false );
 		} catch ( \Exception $e ) {
 			$validity->add( 'date_period', $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Handler booking actions.
+	 *
+	 * @param  AweBooking\Booking $booking booking obj.
+	 */
+	public function handler_booking_actions( Booking $booking ) {
+
+		// Handle button actions.
+		if ( empty( $_POST['awebooking_action'] ) ) {
+			return;
+		}
+
+		$action = $_POST['awebooking_action'];
+
+		if ( strstr( $action, 'send_email_' ) ) {
+
+			do_action( 'awebooking/before_resend_order_emails', $booking );
+
+			// Load mailer.
+			$email_to_send = str_replace( 'send_email_', '', $action );
+
+			switch ( $email_to_send ) {
+				case 'cancelled_order':
+					try {
+						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Cancelled( $booking ) );
+					} catch ( \Exception $e ) {
+						// ...
+					}
+
+					if ( $mail ) {
+						$booking->add_booking_note( __( 'Cancelled email notification manually sent.', 'awebooking' ), false, true );
+					}
+					break;
+
+				case 'customer_processing_order':
+					try {
+						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Processing( $booking ) );
+					} catch ( \Exception $e ) {
+						// ...
+					}
+					if ( $mail ) {
+						$booking->add_booking_note( __( 'Processing email notification manually sent.', 'awebooking' ), false, true );
+					}
+					break;
+
+				case 'customer_completed_order':
+					try {
+						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Completed( $booking ) );
+					} catch ( \Exception $e ) {
+						// ...
+					}
+
+					if ( $mail ) {
+						$booking->add_booking_note( __( 'Completed email notification manually sent.', 'awebooking' ), false, true );
+					}
+					break;
+
+				default:
+					return;
+					break;
+			}
+
+			do_action( 'awebooking/after_resend_order_email', $booking, $email_to_send );
+		}
+	}
+
+	/**
+	 * Output the metabox.
+	 *
+	 * @param WP_Post $post post.
+	 */
+	public function booking_note_output( $post ) {
+		global $post;
+
+		$args = array(
+			'post_id'   => $post->ID,
+			'orderby'   => 'comment_ID',
+			'order'     => 'DESC',
+			'approve'   => 'approve',
+			'type'      => 'booking_note',
+		);
+
+		remove_filter( 'comments_clauses', array( $this, 'exclude_order_comments' ), 10, 1 );
+
+		$notes = get_comments( $args );
+
+		add_filter( 'comments_clauses', array( $this, 'exclude_order_comments' ), 10, 1 );
+
+		echo '<ul class="booking_notes">';
+
+		if ( $notes ) {
+
+			foreach ( $notes as $note ) {
+
+				$note_classes   = array( 'note' );
+				$note_classes[] = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? 'customer-note' : '';
+				$note_classes[] = ( __( 'AweBooking', 'awebooking' ) === $note->comment_author ) ? 'system-note' : '';
+				$note_classes   = apply_filters( 'awebooking/booking_note_class', array_filter( $note_classes ), $note );
+				?>
+				<li rel="<?php echo absint( $note->comment_ID ); ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
+					<div class="note_content">
+						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
+					</div>
+					<p class="meta">
+						<abbr class="exact-date" title="<?php echo $note->comment_date; ?>"><?php printf( esc_html__( 'added on %1$s at %2$s', 'awebooking' ), date_i18n( awebooking_option( 'date_format' ), strtotime( $note->comment_date ) ), date_i18n( get_option( 'time_format' ), strtotime( $note->comment_date ) ) ); ?></abbr>
+						<?php
+						if ( __( 'AweBooking', 'awebooking' ) !== $note->comment_author ) :
+							/* translators: %s: note author */
+							printf( ' ' . esc_html__( 'by %s', 'awebooking' ), $note->comment_author );
+						endif;
+						?>
+						<a href="#" class="delete_note" role="button"><?php esc_html_e( 'Delete note', 'awebooking' ); ?></a>
+					</p>
+				</li>
+				<?php
+			}
+		} else {
+			echo '<li>' . esc_html__( 'There are no notes yet.', 'awebooking' ) . '</li>';
+		}
+
+		echo '</ul>';
+		?>
+		<div class="add_note">
+			<p>
+				<label for="add_booking_note"><?php esc_html_e( 'Add note', 'awebooking' ); ?></label>
+				<textarea type="text" name="order_note" id="add_booking_note" class="input-text" cols="20" rows="5"></textarea>
+			</p>
+
+			<p>
+			<?php
+			/**
+				<label for="booking_note_type" class="screen-reader-text"><?php _e( 'Note type', 'awebooking' ); ?></label>
+				<select name="booking_note_type" id="booking_note_type">
+					<option value=""><?php _e( 'Private note', 'awebooking' ); ?></option>
+					<option value="customer"><?php _e( 'Note to customer', 'awebooking' ); ?></option>
+				</select>
+			**/
+			?>
+				<button type="button" class="add_note button"><?php esc_html_e( 'Add', 'awebooking' ); ?></button>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Exclude booking comments from queries and RSS.
+	 *
+	 * @param  array $clauses clauses.
+	 * @return array
+	 */
+	public function exclude_booking_comments( $clauses ) {
+		$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
+		return $clauses;
+	}
+
+	/**
+	 * Add booking note via ajax.
+	 */
+	public function add_booking_note() {
+		$booking_id   = absint( $_POST['booking_id'] );
+		$note      = wp_kses_post( trim( stripslashes( $_POST['note'] ) ) );
+		$note_type = $_POST['note_type'];
+
+		$is_customer_note = ( isset( $note_type ) && ( 'customer' === $note_type ) ) ? 1 : 0;
+
+		if ( $booking_id > 0 ) {
+			$booking      = new Booking( $booking_id );
+			$comment_id = $booking->add_booking_note( $note, $is_customer_note, true );
+
+			$new_note = '<li rel="' . esc_attr( $comment_id ) . '" class="note ';
+			if ( $is_customer_note ) {
+				$new_note .= 'customer-note';
+			}
+			$new_note .= '"><div class="note_content">';
+			$new_note .= wpautop( wptexturize( $note ) );
+			$new_note .= '</div><p class="meta"><a href="#" class="delete_note">' . __( 'Delete note', 'awebooking' ) . '</a></p>';
+			$new_note .= '</li>';
+
+			return wp_send_json_success( [ 'new_note' => $new_note ], 200 );
+		}
+		wp_die();
+	}
+
+	/**
+	 * Delete booking note via ajax.
+	 *
+	 * @param string $booking_id booking ID
+	 * @param string $id note ID
+	 * @return WP_Error|array error or deleted message
+	 */
+	/**
+	 * This function contains output data.
+	 */
+	public function delete_booking_note() {
+		$note_id = sanitize_text_field( $_POST['note_id'] );
+		$booking_id = sanitize_text_field( $_POST['booking_id'] );
+
+		try {
+			if ( empty( $note_id ) ) {
+				return wp_send_json_error( [ 'message' => __( 'Invalid booking note ID', 'awebooking' ) ], 400 );
+			}
+
+			// Ensure note ID is valid.
+			$note = get_comment( $note_id );
+
+			if ( is_null( $note ) ) {
+				return wp_send_json_error( [ 'message' => __( 'A booking note with the provided ID could not be found', 'awebooking' ) ], 404 );
+			}
+
+			// Ensure note ID is associated with given order.
+			if ( $note->comment_post_ID != $booking_id ) {
+				return wp_send_json_error( [ 'message' => __( 'The booking note ID provided is not associated with the booking', 'awebooking' ) ], 400 );
+			}
+
+			// Force delete since trashed booking notes could not be managed through comments list table.
+			$result = wp_delete_comment( $note->comment_ID, true );
+
+			if ( ! $result ) {
+				return wp_send_json_error( [ 'message' => __( 'This booking note cannot be deleted', 'awebooking' ) ], 500 );
+			}
+
+			do_action( 'awebooking/api_delete_booking_note', $note->comment_ID, $note_id, $this );
+
+			return wp_send_json_success( [ 'note_id' => $note_id ], 200 );
+
+		} catch ( \Exception $e ) {
+			//
 		}
 	}
 }

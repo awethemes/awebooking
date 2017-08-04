@@ -2,13 +2,12 @@
 	<div id="actions" style="padding: 10px;">
 		<select name="awebooking_action">
 			<option value=""><?php esc_html_e( 'Actions', 'awebooking' ); ?></option>
-			<option value="send_email_cancelled_order">Resend Cancelled order</option>
-			<option value="send_email_customer_processing_order">Resend Processing order</option>
-			<option value="send_email_customer_completed_order">Resend Completed order</option>
-			<option value="send_email_customer_invoice">Resend Customer invoice</option>
+			<option value="send_email_cancelled_order"><?php esc_html_e( 'Resend Cancelled order', 'awebooking' ); ?></option>
+			<option value="send_email_customer_processing_order"><?php esc_html_e( 'Resend Processing order', 'awebooking' ); ?></option>
+			<option value="send_email_customer_completed_order"><?php esc_html_e( 'Resend Completed order', 'awebooking' ); ?></option>
 		</select>
 
-		<button class="button wc-reload"><span><?php esc_html_e( 'Apply', 'awebooking' ); ?></span></button>
+		<button class="button awebooking-reload"><span><?php esc_html_e( 'Apply', 'awebooking' ); ?></span></button>
 	</div>
 </div>
 
