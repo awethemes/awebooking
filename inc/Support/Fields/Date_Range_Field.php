@@ -60,25 +60,26 @@ class Date_Range_Field extends Field_Abstract {
 	 */
 	public function sanitization( $override_value, $value, $object_id, $field_args, $sanitizer ) {
 		$value = (array) $value;
+		$sanitized = [ '', '' ];
 
-		if ( isset( $value[0] ) && isset( $value[1] ) ) {
-			try {
-				$period = new Date_Period(
-					$value[0], $value[1], false
-				);
-
-				if ( $period->nights() > 0 ) {
-					return [
-						$period->get_start_date()->toDateString(),
-						$period->get_end_date()->toDateString(),
-					];
-				}
-			} catch ( \Exception $e ) {
-				// ...
-			}
+		if ( empty( $value[0] ) || empty( $value[1] ) ) {
+			return $sanitized;
 		}
 
-		return [ '', '' ];
+		try {
+			$period = new Date_Period( $value[0], $value[1] );
+		} catch ( \Exception $e ) {
+			return $sanitized;
+		}
+
+		if ( $period->nights() > 0 ) {
+			$sanitized = [
+				$period->get_start_date()->toDateString(),
+				$period->get_end_date()->toDateString(),
+			];
+		}
+
+		return $sanitized;
 	}
 
 	/**
