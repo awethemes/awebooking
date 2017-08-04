@@ -7,7 +7,8 @@ use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
 use AweBooking\Support\Date_Utils;
 
-class Booking_Created extends Mailable {
+
+class Booking_Processing extends Mailable {
 	protected $booking;
 
 	public function __construct( $booking ) {
@@ -36,7 +37,7 @@ class Booking_Created extends Mailable {
 
 		$room_type = new Room_Type( $this->booking['room_type_id'] );
 
-		return $this->get_template( 'new-booking', [
+		return $this->get_template( 'processing-booking', [
 			'booking_id'           => $this->booking->get_id(),
 			'room_name'            => $room_type->get_title(),
 			'check_in'             => Date_Utils::create_date( $this->booking['check_in'] )->format( 'Y/m/d' ),
@@ -61,7 +62,7 @@ class Booking_Created extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = awebooking_option( 'email_new_subject' );
+		$subject = '[{site_title}] Processing your booking #{order_number} - {order_date}';
 		return $this->format_string( $subject );
 	}
 

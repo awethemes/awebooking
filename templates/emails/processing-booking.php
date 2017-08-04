@@ -1,16 +1,15 @@
 <?php
 /**
- * New booking email.
+ * Completed booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/new-booking.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/emails/completed-booking.php.
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
  * @version     1.0.0
  */
-
-esc_html_e( 'Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:', 'awebooking' ) . "\n\n";
 ?>
+<p><?php printf( __( "Hi there. Your recent booking on %s is being processed. Your booking details are shown below for your reference:", 'awebooking' ), get_option( 'blogname' ) ); ?></p>
 <h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Order #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
 
 <div class="table">
@@ -64,6 +63,7 @@ esc_html_e( 'Your booking is on-hold until we confirm payment has been received.
 	<li><strong><?php esc_html_e( 'Email', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_email ); ?></span></li>
 	<li><strong><?php esc_html_e( 'Phone', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_phone ); ?></span></li>
 	<li><strong><?php esc_html_e( 'Company', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_company ); ?></span></li>
+
 	<?php if ( $customer_note ) : ?>
 		<li><strong><?php esc_html_e( 'Note', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_note ); ?></span></li>
 	<?php endif; ?>
