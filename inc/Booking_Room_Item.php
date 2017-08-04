@@ -17,13 +17,9 @@ class Booking_Room_Item extends Booking_Item {
 	/**
 	 * The attributes for this object.
 	 *
-	 * Name value pairs (name + default value).
-	 *
 	 * @var array
 	 */
-	protected $attributes = [
-		'name'         => '',
-		'booking_id'   => 0,
+	protected $extra_attributes = [
 		'room_id'      => 0,
 		'check_in'     => '',
 		'check_out'    => '',
@@ -38,9 +34,8 @@ class Booking_Room_Item extends Booking_Item {
 	 *
 	 * @var array
 	 */
-	protected $casts = [
+	protected $extra_casts = [
 		'room_id'    => 'int',
-		'booking_id' => 'int',
 		'adults'     => 'int',
 		'children'   => 'int',
 		'total'      => 'float',
@@ -62,8 +57,6 @@ class Booking_Room_Item extends Booking_Item {
 		'total'     => '_line_total',
 	];
 
-	protected $_booking;
-
 	/**
 	 * Returns booking item type.
 	 *
@@ -73,14 +66,11 @@ class Booking_Room_Item extends Booking_Item {
 		return 'line_item';
 	}
 
-	public function get_booking() {
-		if ( is_null( $this->_booking ) ) {
-			$this->_booking = new Booking( $this->get_booking_id() );
-		}
-
-		return $this->_booking;
-	}
-
+	/**
+	 * //
+	 *
+	 * @return [type] [description]
+	 */
 	public function get_booking_room() {
 		return new Room( $this['room_id'] );
 	}
@@ -121,19 +111,6 @@ class Booking_Room_Item extends Booking_Item {
 		return $this->get_total()->multiply(
 			$this->get_date_period()->nights()
 		);
-	}
-
-	/**
-	 * Set Room ID.
-	 *
-	 * @param int $value
-	 * @throws WC_Data_Exception
-	 */
-	public function set_product_id( $value ) {
-		if ( $value > 0 && 'product' !== get_post_type( absint( $value ) ) ) {
-			$this->error( 'order_item_product_invalid_product_id', __( 'Invalid product ID', 'woocommerce' ) );
-		}
-		$this->set_prop( 'product_id', absint( $value ) );
 	}
 
 	/**

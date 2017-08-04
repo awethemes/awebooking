@@ -109,14 +109,14 @@ class Booking_List_Table extends Post_Type_Abstract {
 				echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
 				break;
 
-			case 'booking_date':
+			case 'booking_dates':
 				printf( '<abbr title="%s">%s</abbr>',
 					esc_attr( $the_booking->get_booking_date()->toDateTimeString() ),
 					esc_html( $the_booking->get_booking_date()->format( 'Y/m/d' ) )
 				);
 				break;
 
-			case 'booking_guests':
+			case 'booking_guestss':
 				printf( '<span class="">%1$d %2$s</span>',
 					$the_booking->get_adults(),
 					_n( 'adult', 'adults', $the_booking->get_adults(), 'awebooking' )
@@ -131,17 +131,13 @@ class Booking_List_Table extends Post_Type_Abstract {
 				break;
 
 			case 'check_in_out_date':
-				try {
-					$date_period = new Date_Period( $the_booking['check_in'], $the_booking['check_out'], false );
-
-					printf( '<strong>%s %s</strong> <br> <span>%s</span> - <span>%s</span>',
-						$date_period->nights(),
-						_n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
-						$date_period->get_start_date()->format( 'Y/m/d' ),
-						$date_period->get_end_date()->format( 'Y/m/d' )
+				if ( $the_booking->get_check_in() ) {
+					printf( '<strong></strong> <br> <span>%s</span> - <span>%s</span>',
+						// $date_period->nights(),
+						// _n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
+						$the_booking->get_check_in()->toDateString(),
+						$the_booking->get_check_out()->toDateString()
 					);
-				} catch ( \Exception $e ) {
-					echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
 				}
 				break;
 
@@ -156,7 +152,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 				}
 			break;
 
-			case 'booking_room':
+			case 'booking_rooms':
 				$the_room = $the_booking->get_booking_room();
 
 				if ( is_null( $the_room ) ) {

@@ -154,11 +154,66 @@ class Booking extends WP_Object {
 	public function get_room_items() {
 		$aa = [];
 
-		foreach ($this->items as $a ) {
+		foreach ($this->get_items() as $a ) {
 			$aa[] = \AweBooking\Factory::get_booking_item( $a );
 		}
 
 		return $aa;
+	}
+
+	// public function get_services_items( $)
+
+	public function get_items( $type = 'line_item' ) {
+		return array_filter( $this->items, function( $item ) use ($type) {
+			return $item->get_type() === $type;
+		});
+	}
+
+	public function get_subtotal() {
+		$subtotal = 0;
+
+		foreach ( $this->get_items() as $item ) {
+			$subtotal += $item->get_total_price()->get_amount();
+		}
+
+		return $subtotal;
+	}
+
+	public function get_check_in() {
+		$period = $this->merge_item_periods();
+
+		return ! is_null( $period ) ? $period->get_start_date() : null;
+	}
+
+	public function get_check_out() {
+		$period = $this->merge_item_periods();
+
+		return ! is_null( $period ) ? $period->get_end_date() : null;
+	}
+
+	/**
+	 * Merge item periods to a single period.
+	 *
+	 * @return Date_Period|null
+	 */
+	protected function merge_item_periods() {
+		$items = $this->get_items();
+
+		if ( count( $items ) === 1 ) {
+			return $items[0]->get_date_period();
+		}
+
+		$period = null;
+		foreach ( $items as $item ) {
+			if ( is_null( $period ) ) {
+				$period = $item->get_date_period();
+				continue;
+			}
+
+			$period = $period->merge( $item->get_date_period() );
+		}
+
+		return $period;
 	}
 
 	/**

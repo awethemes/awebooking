@@ -66,8 +66,8 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 */
 	public function doing_save( $post_id, $post, $update ) {
 		if ( isset( $_POST['abkng_rooms'] ) && is_array( $_POST['abkng_rooms'] ) ) {
-			$request_rooms = wp_unslash( $_POST['abkng_rooms'] );
-			awebooking()->make( 'store.room_type' )->bulk_sync_rooms( $post_id, $request_rooms );
+			// $request_rooms = wp_unslash( $_POST['abkng_rooms'] );
+			// awebooking()->make( 'store.room_type' )->bulk_sync_rooms( $post_id, $request_rooms );
 		}
 	}
 

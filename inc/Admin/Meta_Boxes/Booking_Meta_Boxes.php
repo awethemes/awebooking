@@ -62,7 +62,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 
 		$the_booking = new Booking( $post );
 
-		include trailingslashit( __DIR__ ) . 'views/booking.php';
+		include trailingslashit( __DIR__ ) . 'views/html-booking.php';
 	}
 
 	/**

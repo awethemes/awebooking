@@ -23,6 +23,16 @@ class Factory {
 		$this->awebooking = $awebooking;
 	}
 
+	/**
+	 * Get the a room unit.
+	 *
+	 * @param  mixed $room_unit Room unit ID or instance.
+	 * @return AweBooking\Room
+	 */
+	public function get_room_unit( $room_unit ) {
+		return new Room( $room_unit );
+	}
+
 	public static function get_booking( $booking ) {
 		return new Booking( $booking );
 	}
@@ -38,17 +48,16 @@ class Factory {
 	}
 
 	protected static function reslove_booking_item_class( $type ) {
-		$maps = [
-			'line_item' => 'AweBooking\\Booking_Room_Item',
-		];
+		$class_maps = apply_filters( 'awebooking/booking_item_class_maps', [
+			'line_item'    => 'AweBooking\\Booking_Room_Item',
+			'service_item' => 'AweBooking\\Booking_Service_Item',
+		]);
 
-		if ( isset( $maps[ $type ] ) ) {
-			return $maps[ $type ];
+		if ( isset( $class_maps[ $type ] ) ) {
+			return $class_maps[ $type ];
 		}
-	}
 
-	public function create_room_type( array $args ) {
-
+		return 'AweBooking\\Booking_Item';
 	}
 
 	/**

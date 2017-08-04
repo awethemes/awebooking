@@ -28,29 +28,31 @@
 		<table class="awebooking-striped-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th>Room Type</th>
-					<th>Unit number</th>
+					<th>Room</th>
+					<th>Nights</th>
 					<th>Guests</th>
 					<th>Price</th>
 					<th>Charge / stay</th>
-					<th>#</th>
+					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
-			<?php foreach ( $the_booking->get_room_items() as $room_item ) : ?>
+			<?php foreach ( $the_booking->get_room_items() as $room_item ) :
+				$room_unit = $room_item->get_booking_room(); ?>
 				<tr>
-					<td></td>
-
 					<td>
 						<?php echo esc_html( $room_item->get_name() ); ?>
 						<br>
+						(<?php echo esc_html( $room_unit->get_name() ); ?>)
+					</td>
 
+					<td>
 						<?php
 						try {
 							$date_period = $room_item->get_date_period();
 
-							printf( '(<strong>%s %s</strong> <span>%s</span> - <span>%s</span>)',
+							printf( '<strong>%s %s</strong> <br> <span>%s</span> - <span>%s</span>',
 								$date_period->nights(),
 								_n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
 								$date_period->get_start_date()->toDateString(),
@@ -80,12 +82,10 @@
 
 					<td>
 						<?php echo esc_html( $room_item->get_total() ); ?> / night
-						<br>
-						<strong>(x <?php echo $room_item->get_date_period()->nights() ?>  = <?php echo $room_item->get_total_price(); ?>)</strong>
 					</td>
 
 					<td>
-						<!-- // ... -->
+						<strong><?php echo $room_item->get_total_price(); ?></strong>
 					</td>
 
 					<td style="text-align: right;">
@@ -111,7 +111,7 @@
 					</td>
 
 					<td colspan="2">
-						<strong>Total charge:</strong>
+						<strong>Total charge: <?php echo $the_booking->get_subtotal(); ?></strong>
 					</td>
 				</tr>
 			</tfoot>

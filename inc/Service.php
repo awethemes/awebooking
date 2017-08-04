@@ -30,6 +30,13 @@ class Service extends WP_Object {
 	protected $object_type = AweBooking::HOTEL_SERVICE;
 
 	/**
+	 * WordPress type for object, Eg: "post" and "term".
+	 *
+	 * @var string
+	 */
+	protected $wp_type = 'term';
+
+	/**
 	 * Type of object metadata is for (e.g., term, post).
 	 *
 	 * @var string

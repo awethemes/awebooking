@@ -7,13 +7,18 @@ use Skeleton\CMB2\CMB2;
 use AweBooking\Room;
 use AweBooking\Booking;
 use AweBooking\Booking_Room_Item;
+use AweBooking\Booking_Service_Item;
 use AweBooking\AweBooking;
+use AweBooking\Service;
 
 use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Date_Period;
 use AweBooking\BAT\Booking_Request;
 
-class Add_Booking_Item extends CMB2 {
+use AweBooking\Admin\Forms\Service_Form;
+use AweBooking\Admin\Forms\Add_Booking_Form;
+
+class Add_Booking_Item {
 	/**
 	 * The admin page ID.
 	 *
@@ -23,90 +28,22 @@ class Add_Booking_Item extends CMB2 {
 
 	protected $booking;
 
+	protected $form;
+	protected $form_service;
+
 	/**
 	 * Add booking item constructor.
 	 */
-	public function __construct() {
-		parent::__construct([
-			'id'           => $this->page,
-			'object_types' => 'options-page',
-			'hookup'       => false,
-			'cmb_styles'   => false,
-			'show_on'      => [ 'options-page' => $this->page ],
-		]);
-
-		$this->object_id( $this->page );
-		$this->object_type( 'options-page' );
-
-		$this->register_fields();
+	public function __construct( Add_Booking_Form $form ) {
+		$this->form = $form;
+		$this->form_service = new Service_Form;
 	}
 
 	/**
 	 * Init page hooks.
 	 */
 	public function init() {
-		add_action( 'admin_menu', array( $this, '_register_page' ) );
-	}
-
-	/**
-	 * Register fields in to the CMB2.
-	 *
-	 * @return void
-	 */
-	protected function register_fields() {
-		$this->add_field( array(
-			'id'          => 'check_in_out',
-			'type'        => 'date_range',
-			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
-			'validate'    => 'required',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'required' => true ],
-			'date_format' => AweBooking::DATE_FORMAT,
-		));
-
-		/*$this->add_field( array(
-			'id'          => 'check_out',
-			'type'        => 'text_date',
-			'name'        => esc_html__( 'Check-out', 'awebooking' ),
-			'validate'    => 'required|date',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'required' => true ],
-			'date_format' => AweBooking::DATE_FORMAT,
-		));*/
-
-		$this->add_field( array(
-			'id'          => 'add_room',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Room', 'awebooking' ),
-			'validate'    => 'required|integer|min:1',
-			'sanitization_cb'  => 'absint',
-			'show_option_none' => esc_html__( 'Choose a room...', 'awebooking' ),
-		));
-
-		$this->add_field( array(
-			'id'               => 'adults',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Number of adults', 'awebooking' ),
-			'default'          => 1,
-			'validate'         => 'required|numeric|min:1',
-			'validate_label'   => esc_html__( 'Adults', 'awebooking' ),
-			'sanitization_cb'  => 'absint',
-		));
-
-		$this->add_field( array(
-			'id'              => 'children',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Number of children', 'awebooking' ),
-			'default'         => 0,
-			'validate'        => 'required|numeric|min:0',
-			'sanitization_cb' => 'absint',
-		));
-
-		$this->add_field( array(
-			'id'         => 'price',
-			'type'       => 'text_small',
-			'name'       => esc_html__( 'Price (per night)', 'awebooking' ),
-			'validate'   => 'required|numeric:min:0',
-			'sanitization_cb' => 'awebooking_sanitize_price',
-		));
+		add_action( 'admin_menu', array( $this, 'register_page' ) );
 	}
 
 	/**
@@ -116,32 +53,15 @@ class Add_Booking_Item extends CMB2 {
 	 *
 	 * @access private
 	 */
-	public function _register_page() {
-		$page_hook = add_submenu_page( null, 'A', 'A', 'manage_options', $this->page, [ $this, 'output' ] );
+	public function register_page() {
+		$page_hook = add_submenu_page( null, '', '', 'manage_options', $this->page, [ $this, 'output' ] );
 
-		add_action( 'load-' . $page_hook, [ $this, '_no_header' ] );
+		add_action( 'load-' . $page_hook, function() {
+			$_GET['noheader'] = true;
+		});
 
 		// Include CMB CSS in the head to avoid FOUC.
-		add_action( "admin_print_styles-{$page_hook}", [ $this, '_enqueue_scripts' ] );
-	}
-
-	/**
-	 * Page with no header.
-	 *
-	 * @access private
-	 */
-	public function _no_header() {
-		$_GET['noheader'] = true;
-	}
-
-	/**
-	 * Enqueue CMB2 and our styles, scripts.
-	 *
-	 * @access private
-	 */
-	public function _enqueue_scripts() {
-		CMB2_hookup::enqueue_cmb_js();
-		CMB2_hookup::enqueue_cmb_css();
+		add_action( "admin_print_styles-{$page_hook}", [ $this->form, 'enqueue_scripts' ] );
 	}
 
 	/**
@@ -159,7 +79,7 @@ class Add_Booking_Item extends CMB2 {
 
 			try {
 				$date_period = new Date_Period( $check_in, $check_out, false );
-				$this->get_field( 'check_in_out' )->set_prop( 'default', [ $check_in, $check_out ] );
+				$this->form->get_field( 'check_in_out' )->set_prop( 'default', [ $check_in, $check_out ] );
 			} catch ( \Exception $e ) {
 				$this->add_validation_error( 'check_in_out', $e->getMessage() );
 				return;
@@ -170,7 +90,7 @@ class Add_Booking_Item extends CMB2 {
 			}
 
 			if ( isset( $_REQUEST['add_room'] ) ) {
-				$this->get_field( 'add_room' )->set_prop( 'default',
+				$this->form->get_field( 'add_room' )->set_prop( 'default',
 					sanitize_text_field( wp_unslash( $_REQUEST['add_room'] ) )
 				);
 			} else {
@@ -184,14 +104,11 @@ class Add_Booking_Item extends CMB2 {
 				new Booking_Request( $date_period )
 			);
 
-			$this->get_field( 'add_room' )->set_prop( 'options',
+			$this->form->get_field( 'add_room' )->set_prop( 'options',
 				$this->generate_select_rooms( $results )
 			);
 
-			// ...
-			$the_room = new Room(
-				$this->get_field_value( 'add_room' )
-			);
+			$the_room = new Room( $this->form->get_value( 'add_room' ) );
 
 			if ( $the_room->exists() ) {
 				$room_type = $the_room->get_room_type();
@@ -202,11 +119,18 @@ class Add_Booking_Item extends CMB2 {
 				$a = range( 1, $max_adults );
 				$b = range( 0, $max_children );
 
-				$this->get_field( 'adults' )->set_prop( 'options', array_combine( $a, $a ) );
-				$this->get_field( 'children' )->set_prop( 'options', array_combine( $b, $b ) );
-				$this->get_field( 'price' )->set_prop( 'default', $room_type->get_base_price()->get_amount() );
+				$this->form->get_field( 'adults' )->set_prop( 'options', array_combine( $a, $a ) );
+				$this->form->get_field( 'children' )->set_prop( 'options', array_combine( $b, $b ) );
+				$this->form->get_field( 'price' )->set_prop( 'default', $room_type->get_base_price()->get_amount() );
 
 				$this->set_fields_visibility( true );
+
+				// Setup extra services form.
+				$services = [];
+				foreach ( $room_type->get_services() as $service ) {
+					$services[ $service->get_id() ] = $service->get_describe();
+				}
+				$this->form_service->get_field( 'extra_services' )->set_prop( 'options', $services );
 			}
 		} // End if().
 	}
@@ -214,25 +138,9 @@ class Add_Booking_Item extends CMB2 {
 	protected function set_fields_visibility( $show = true ) {
 		$callback = $show ? '__return_true' : '__return_false';
 
-		$this->get_field( 'price' )->set_prop( 'show_on_cb', $callback );
-		$this->get_field( 'adults' )->set_prop( 'show_on_cb', $callback );
-		$this->get_field( 'children' )->set_prop( 'show_on_cb', $callback );
-	}
-
-	/**
-	 * //
-	 *
-	 * @param  [type] $field_id [description]
-	 * @return [type]           [description]
-	 */
-	protected function get_field_value( $field_id ) {
-		$field = $this->get_field( $field_id );
-
-		if ( false === $field ) {
-			return;
-		}
-
-		return $field->val_or_default( $field->value() );
+		$this->form->get_field( 'price' )->set_prop( 'show_on_cb', $callback );
+		$this->form->get_field( 'adults' )->set_prop( 'show_on_cb', $callback );
+		$this->form->get_field( 'children' )->set_prop( 'show_on_cb', $callback );
 	}
 
 	/**
@@ -275,10 +183,12 @@ class Add_Booking_Item extends CMB2 {
 	}
 
 	protected function handle_form() {
-		if ( isset( $_POST[ $this->nonce() ] ) && wp_verify_nonce( $_POST[ $this->nonce() ], $this->nonce() ) ) {
-			$input_data = $this->get_sanitized_values( $_POST );
+		if ( isset( $_POST[ $this->form->nonce() ] ) && wp_verify_nonce( $_POST[ $this->form->nonce() ], $this->form->nonce() ) ) {
+			$input_data = $this->form->get_sanitized_values( $_POST );
+			$service_data = $this->form_service->get_sanitized_values( $_POST );
 
 			$room = new Room( $input_data['add_room'] );
+			$room_type = $room->get_room_type();
 
 			$concierge = awebooking()->make( 'concierge' );
 
@@ -300,7 +210,7 @@ class Add_Booking_Item extends CMB2 {
 			if ( $availability->available() && in_array( $room->get_id(), $availability->get_rooms_ids() ) ) {
 				$item = new Booking_Room_Item;
 
-				$item['name'] = $room->get_name();
+				$item['name'] = $room_type->get_title();
 				$item['check_in'] = $date_period->get_start_date()->toDateString();
 				$item['check_out'] = $date_period->get_end_date()->toDateString();
 				$item['adults'] = $input_data['adults'];
@@ -308,8 +218,28 @@ class Add_Booking_Item extends CMB2 {
 				$item['room_id'] = $room->get_id();
 				$item['total'] = $input_data['price'];
 				$item['subtotal'] = $input_data['price'];
-
 				$this->booking->add_item( $item );
+
+				// handler services.
+				$service_data = array_map(function($s) {
+					return new Service( $s );
+				}, $service_data['extra_services']);
+
+				foreach ( $service_data as $service ) {
+					if ( ! $service->exists() ) {
+						continue;
+					}
+
+					// Add service item into booking.
+					$service_item = new Booking_Service_Item;
+					$service_item['name'] = $service->get_name();
+					// $service_item['room_id'] = $room->get_id();
+					$service_item['service_id'] = $service->get_id();
+					$service_item['price'] = $service->get_price()->get_amount();
+
+					$this->booking->add_item( $service_item );
+				}
+
 				$this->booking->save();
 			}
 
@@ -348,14 +278,17 @@ class Add_Booking_Item extends CMB2 {
 				<input type="hidden" name="page" value="<?php echo esc_attr( $this->page ); ?>">
 
 				<div class="" style="width: 475px; float: left; margin-right: 15px;">
-					<?php $this->show_form(); ?>
+					<?php $this->form->output(); ?>
 
 					<div class="clear"></div>
 					<br>
 
 					<a href="<?php echo esc_url( get_edit_post_link( $this->booking->get_id() ) ); ?>" class="button button-primary"><?php echo esc_html__( 'Cancel', 'awebooking' ) ?></a>
 					<input class="button" type="submit" name="add_room_submit" value="Add Room" style="float: right">
+				</div>
 
+				<div class="" style="width: 475px; float: left; margin-right: 15px;">
+					<?php $this->form_service->output(); ?>
 				</div>
 			</form>
 
@@ -384,7 +317,7 @@ class Add_Booking_Item extends CMB2 {
 				};
 
 				$(function($) {
-					var $el = $('#cmb2-metabox-awebooking-add-item');
+					var $el = $('#cmb2-metabox-add_booking_form');
 
 					var updateFirst = function() {
 						var $check_in  = $el.find('#check_in_out_0');

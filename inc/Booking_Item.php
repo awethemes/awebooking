@@ -3,7 +3,21 @@ namespace AweBooking;
 
 use AweBooking\Support\WP_Object;
 
-abstract class Booking_Item extends WP_Object {
+class Booking_Item extends WP_Object {
+	/**
+	 * The booking object instance this item belong to.
+	 *
+	 * @var Booking
+	 */
+	protected $booking;
+
+	/**
+	 * The booking item object instance.
+	 *
+	 * @var Booking_Item|mixed
+	 */
+	protected $parent;
+
 	/**
 	 * Name of object type.
 	 *
@@ -35,7 +49,8 @@ abstract class Booking_Item extends WP_Object {
 	 * @var array
 	 */
 	protected $attributes = [
-		'name' => '',
+		'name'       => '',
+		'parent_id'  => 0,
 		'booking_id' => 0,
 	];
 
@@ -45,15 +60,52 @@ abstract class Booking_Item extends WP_Object {
 	 * @var array
 	 */
 	protected $casts = [
+		'parent_id'  => 'int',
 		'booking_id' => 'int',
 	];
+
+	/**
+	 * Booking item constructor.
+	 *
+	 * @param mixed $object Object ID we'll working for.
+	 */
+	public function __construct( $object = 0 ) {
+		if ( property_exists( $this, 'extra_attributes' ) ) {
+			$this->attributes = array_merge( $this->attributes, $this->extra_attributes );
+		}
+
+		if ( property_exists( $this, 'extra_casts' ) ) {
+			$this->casts = array_merge( $this->casts, $this->extra_casts );
+		}
+
+		parent::__construct( $object );
+	}
+
+	/**
+	 * Setup the object attributes.
+	 *
+	 * @return void
+	 */
+	protected function setup() {
+		$this['name']       = $this->instance['booking_item_name'];
+		$this['parent_id']  = absint( $this->instance['booking_item_parent'] );
+		$this['booking_id'] = absint( $this->instance['booking_id'] );
+
+		$this->booking = Factory::get_booking( $this['booking_id'] );
+
+		if ( $this['parent_id'] ) {
+			$this->parent = Factory::get_booking_item( $this['parent_id'] );
+		}
+	}
 
 	/**
 	 * Returns booking item type.
 	 *
 	 * @return string
 	 */
-	abstract public function get_type();
+	public function get_type() {
+		return '';
+	}
 
 	/**
 	 * Get booking item name.
@@ -65,12 +117,21 @@ abstract class Booking_Item extends WP_Object {
 	}
 
 	/**
+	 * Returns the booking instance.
+	 *
+	 * @return Booking|null
+	 */
+	public function get_booking() {
+		return $this->booking;
+	}
+
+	/**
 	 * Get booking ID this item belongs to.
 	 *
 	 * @return int
 	 */
 	public function get_booking_id() {
-		return apply_filters( $this->prefix( 'get_booking_id' ), $this['booking_id'], $this );
+		return $this->get_attribute( 'booking_id' );
 	}
 
 	/**
@@ -81,6 +142,36 @@ abstract class Booking_Item extends WP_Object {
 	 */
 	public function set_booking_id( $booking_id ) {
 		$this->attributes['booking_id'] = absint( $booking_id );
+
+		return $this;
+	}
+
+	/**
+	 * Returns the parent object.
+	 *
+	 * @return Bookign_Item|mixed|null
+	 */
+	public function get_parent() {
+		return $this->parent;
+	}
+
+	/**
+	 * Get parent ID this item belongs to.
+	 *
+	 * @return int
+	 */
+	public function get_parent_id() {
+		return $this->get_attribute( 'parent_id' );
+	}
+
+	/**
+	 * Set the parent ID this item belongs to.
+	 *
+	 * @param  int $parent_id The parent ID.
+	 * @return $this
+	 */
+	public function set_parent_id( $parent_id ) {
+		$this->attributes['parent_id'] = absint( $parent_id );
 
 		return $this;
 	}
@@ -129,16 +220,6 @@ abstract class Booking_Item extends WP_Object {
 	}
 
 	/**
-	 * Setup the object attributes.
-	 *
-	 * @return void
-	 */
-	protected function setup() {
-		$this['name'] = $this->instance['booking_item_name'];
-		$this['booking_id'] = absint( $this->instance['booking_id'] );
-	}
-
-	/**
 	 * Clean object cache after saved.
 	 *
 	 * @return void
@@ -163,13 +244,15 @@ abstract class Booking_Item extends WP_Object {
 
 		$wpdb->insert( $wpdb->prefix . 'awebooking_booking_items',
 			[
-				'booking_item_name' => $this->get_name(),
-				'booking_item_type' => $this->get_type(),
-				'booking_id'        => $booking_id,
+				'booking_item_name'   => $this->get_name(),
+				'booking_item_type'   => $this->get_type(),
+				'booking_item_parent' => $this->get_parent_id(),
+				'booking_id'          => $booking_id,
 			],
 			[
 				'%s',
 				'%s',
+				'%d',
 				'%d',
 			]
 		);
@@ -186,10 +269,7 @@ abstract class Booking_Item extends WP_Object {
 	protected function perform_update( array $dirty ) {
 		global $wpdb;
 
-		// We just update the "name", "booking_id" attributes. So if
-		// that attributes is not modified, just leave and return true,
-		// mark current action is done as success because nothing todo.
-		if ( ! isset( $dirty['name'] ) && ! isset( $dirty['booking_id'] ) ) {
+		if ( ! $this->is_dirty( 'name', 'parent_id', 'booking_id' ) ) {
 			return true;
 		}
 
@@ -201,8 +281,9 @@ abstract class Booking_Item extends WP_Object {
 
 		$updated = $wpdb->update( $wpdb->prefix . 'awebooking_booking_items',
 			[
-				'booking_id'        => $booking_id,
-				'booking_item_name' => $this->get_name(),
+				'booking_id'          => $booking_id,
+				'booking_item_name'   => $this->get_name(),
+				'booking_item_parent' => $this->get_parent_id(),
 			],
 			[
 				'booking_item_id' => $this->get_id(),

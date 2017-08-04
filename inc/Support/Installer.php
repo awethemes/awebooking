@@ -70,9 +70,11 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
   booking_item_name TEXT NOT NULL,
   booking_item_type varchar(200) NOT NULL DEFAULT '',
+  booking_item_parent BIGINT UNSIGNED NOT NULL,
   booking_id BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY  (booking_item_id),
-  KEY booking_id (booking_id)
+  KEY booking_id (booking_id),
+  KEY booking_item_parent (booking_item_parent)
 ) $collate;
 
 CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (

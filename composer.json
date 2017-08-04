@@ -27,7 +27,8 @@
         "erusev/parsedown": "^1.6",
         "ericmann/wp-session-manager": "^1.2",
         "league/period": "^3.3",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "tightenco/collect": "5.2.*"
     },
     "scripts": {
         "phpunit": [

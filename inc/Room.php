@@ -32,6 +32,13 @@ class Room extends WP_Object implements Unit_Interface {
 	protected $meta_type = false;
 
 	/**
+	 * Store room-type this room unit belong to.
+	 *
+	 * @var Room_Type
+	 */
+	protected $room_type;
+
+	/**
 	 * The attributes for this object.
 	 *
 	 * Name value pairs (name + default value).
@@ -53,6 +60,18 @@ class Room extends WP_Object implements Unit_Interface {
 
 		// By default, room state is alway available.
 		$this->setDefaultValue( Room_State::AVAILABLE );
+	}
+
+	/**
+	 * Setup the object attributes.
+	 *
+	 * @return void
+	 */
+	protected function setup() {
+		$this['name'] = $this->instance['name'];
+		$this['room_type_id'] = absint( $this->instance['room_type'] );
+
+		$this->room_type = new Room_Type( $this['room_type_id'] );
 	}
 
 	/**
@@ -90,7 +109,7 @@ class Room extends WP_Object implements Unit_Interface {
 	 * @return Room_Type
 	 */
 	public function get_room_type() {
-		return apply_filters( $this->prefix( 'get_room_type' ), new Room_Type( $this['room_type_id'] ), $this );
+		return $this->room_type;
 	}
 
 	/**
@@ -126,16 +145,6 @@ class Room extends WP_Object implements Unit_Interface {
 		return array_key_exists( $this->get_id(),
 			$response->getIncluded()
 		);
-	}
-
-	/**
-	 * Setup the object attributes.
-	 *
-	 * @return void
-	 */
-	protected function setup() {
-		$this['name'] = $this->instance['name'];
-		$this['room_type_id'] = absint( $this->instance['room_type'] );
 	}
 
 	/**

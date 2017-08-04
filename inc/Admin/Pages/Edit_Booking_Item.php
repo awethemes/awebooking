@@ -12,8 +12,9 @@ use AweBooking\AweBooking;
 use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Date_Period;
 use AweBooking\BAT\Booking_Request;
+use AweBooking\Admin\Forms\Edit_Booking_Form;
 
-class Edit_Booking_Item extends CMB2 {
+class Edit_Booking_Item {
 	/**
 	 * The admin page ID.
 	 *
@@ -22,23 +23,13 @@ class Edit_Booking_Item extends CMB2 {
 	protected $page = 'awebooking-edit-item';
 
 	protected $booking;
+	protected $form;
 
 	/**
 	 * Add booking item constructor.
 	 */
-	public function __construct() {
-		parent::__construct([
-			'id'           => $this->page,
-			'object_types' => 'options-page',
-			'hookup'       => false,
-			'cmb_styles'   => false,
-			'show_on'      => [ 'options-page' => $this->page ],
-		]);
-
-		$this->object_id( $this->page );
-		$this->object_type( 'options-page' );
-
-		$this->register_fields();
+	public function __construct( Edit_Booking_Form $form ) {
+		$this->form = $form;
 	}
 
 	/**
@@ -49,49 +40,6 @@ class Edit_Booking_Item extends CMB2 {
 	}
 
 	/**
-	 * Register fields in to the CMB2.
-	 *
-	 * @return void
-	 */
-	protected function register_fields() {
-		$this->add_field( array(
-			'id'          => 'check_in_out',
-			'type'        => 'date_range',
-			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
-			'validate'    => 'required',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'required' => true ],
-			'date_format' => AweBooking::DATE_FORMAT,
-		));
-
-		$this->add_field( array(
-			'id'               => 'adults',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Number of adults', 'awebooking' ),
-			'default'          => 1,
-			'validate'         => 'required|numeric|min:1',
-			'validate_label'   => esc_html__( 'Adults', 'awebooking' ),
-			'sanitization_cb'  => 'absint',
-		));
-
-		$this->add_field( array(
-			'id'              => 'children',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Number of children', 'awebooking' ),
-			'default'         => 0,
-			'validate'        => 'required|numeric|min:0',
-			'sanitization_cb' => 'absint',
-		));
-
-		$this->add_field( array(
-			'id'         => 'price',
-			'type'       => 'text_small',
-			'name'       => esc_html__( 'Price (per night)', 'awebooking' ),
-			'validate'   => 'required|numeric:min:0',
-			'sanitization_cb' => 'awebooking_sanitize_price_number',
-		));
-	}
-
-	/**
 	 * Adds submenu page if there are plugin actions to take.
 	 *
 	 * @see https://developer.wordpress.org/reference/functions/add_submenu_page
@@ -99,47 +47,14 @@ class Edit_Booking_Item extends CMB2 {
 	 * @access private
 	 */
 	public function _register_page() {
-		$page_hook = add_submenu_page( null, 'A', 'A', 'manage_options', $this->page, [ $this, 'output' ] );
+		$page_hook = add_submenu_page( null, '', '', 'manage_options', $this->page, [ $this, 'output' ] );
 
-		add_action( 'load-' . $page_hook, [ $this, '_no_header' ] );
+		add_action( 'load-' . $page_hook, function() {
+			$_GET['noheader'] = true;
+		});
 
 		// Include CMB CSS in the head to avoid FOUC.
-		add_action( "admin_print_styles-{$page_hook}", [ $this, '_enqueue_scripts' ] );
-	}
-
-	/**
-	 * Page with no header.
-	 *
-	 * @access private
-	 */
-	public function _no_header() {
-		$_GET['noheader'] = true;
-	}
-
-	/**
-	 * Enqueue CMB2 and our styles, scripts.
-	 *
-	 * @access private
-	 */
-	public function _enqueue_scripts() {
-		CMB2_hookup::enqueue_cmb_js();
-		CMB2_hookup::enqueue_cmb_css();
-	}
-
-	/**
-	 * //
-	 *
-	 * @param  [type] $field_id [description]
-	 * @return [type]           [description]
-	 */
-	protected function get_field_value( $field_id ) {
-		$field = $this->get_field( $field_id );
-
-		if ( false === $field ) {
-			return;
-		}
-
-		return $field->val_or_default( $field->value() );
+		add_action( "admin_print_styles-{$page_hook}", [ $this->form, 'enqueue_scripts' ] );
 	}
 
 	protected function prepare_setup() {
@@ -167,23 +82,25 @@ class Edit_Booking_Item extends CMB2 {
 
 		$a = range( 1, $max_adults );
 		$b = range( 0, $max_children );
-		$this->get_field( 'adults' )->set_prop( 'options', array_combine( $a, $a ) );
-		$this->get_field( 'children' )->set_prop( 'options', array_combine( $b, $b ) );
+		$this->form->get_field( 'adults' )->set_prop( 'options', array_combine( $a, $a ) );
+		$this->form->get_field( 'children' )->set_prop( 'options', array_combine( $b, $b ) );
 
 		// Fill CMB2 field value.
-		$this->get_field( 'price' )->value = $this->booking_item->get_total()->get_amount();
-		$this->get_field( 'adults' )->value = $this->booking_item->get_adults();
-		$this->get_field( 'children' )->value = $this->booking_item->get_children();
+		$this->form->get_field( 'price' )->value = $this->booking_item->get_total()->get_amount();
+		$this->form->get_field( 'adults' )->value = $this->booking_item->get_adults();
+		$this->form->get_field( 'children' )->value = $this->booking_item->get_children();
 
-		$this->get_field( 'check_in_out' )->value = [
+		$this->form->get_field( 'check_in_out' )->value = [
 			$this->booking_item->get_check_in(),
 			$this->booking_item->get_check_out(),
 		];
 	}
 
 	protected function handle_form() {
-		if ( isset( $_POST[ $this->nonce() ] ) && wp_verify_nonce( $_POST[ $this->nonce() ], $this->nonce() ) ) {
-			$input_data = $this->get_sanitized_values( $_POST );
+		$nonce = $this->form->nonce();
+
+		if ( isset( $_POST[ $nonce ] ) && wp_verify_nonce( $_POST[ $nonce ], $nonce ) ) {
+			$input_data = $this->form->get_sanitized_values( $_POST );
 
 			$working_url = add_query_arg([
 					'booking' => $this->booking->get_id(),
@@ -266,7 +183,7 @@ class Edit_Booking_Item extends CMB2 {
 				</div>
 
 				<div class="" style="width: 475px; float: left; margin-right: 15px;">
-					<?php $this->show_form(); ?>
+					<?php $this->form->show_form(); ?>
 
 					<div class="clear"></div>
 					<br>

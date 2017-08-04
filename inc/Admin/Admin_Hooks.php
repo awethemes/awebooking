@@ -5,6 +5,11 @@ use Skeleton\Menu_Page;
 use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
 
+use AweBooking\Admin\Pages\Add_Booking_Item;
+use AweBooking\Admin\Forms\Add_Booking_Form;
+use AweBooking\Admin\Pages\Edit_Booking_Item;
+use AweBooking\Admin\Forms\Edit_Booking_Form;
+
 class Admin_Hooks extends Service_Hooks {
 	/**
 	 * Determine run init action only in admin.
@@ -22,11 +27,11 @@ class Admin_Hooks extends Service_Hooks {
 	 */
 	public function register( $container ) {
 		$container->bind( 'admin.add_booking_item', function() {
-			return new Pages\Add_Booking_Item;
+			return new Add_Booking_Item( new Add_Booking_Form );
 		});
 
 		$container->bind( 'admin.edit_booking_item', function() {
-			return new Pages\Edit_Booking_Item;
+			return new Edit_Booking_Item( new Edit_Booking_Form );
 		});
 
 		$container->bind( 'admin_welcome', function() {

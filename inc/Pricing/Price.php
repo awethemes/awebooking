@@ -89,6 +89,8 @@ class Price implements Price_Interface {
 		}
 
 		$this->amount = (float) $amount;
+
+		return $this;
 	}
 
 	/**
