@@ -12,10 +12,6 @@ use AweBooking\Support\Date_Period;
 use AweBooking\Support\Formatting;
 use Skeleton\CMB2\CMB2;
 use AweBooking\Support\Date_Utils;
-use AweBooking\Support\Mailer;
-use AweBooking\Notification\Booking_Cancelled;
-use AweBooking\Notification\Booking_Processing;
-use AweBooking\Notification\Booking_Completed;
 
 class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	/**
@@ -38,7 +34,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		// Register/un-register metaboxes.
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
-		add_action( 'awebooking/save_booking', [ $this, 'handler_booking_actions' ], 10, 1 );
 	}
 
 	/**
@@ -434,59 +429,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			new Date_Period( $check_in, $check_out, false );
 		} catch ( \Exception $e ) {
 			$validity->add( 'date_period', $e->getMessage() );
-		}
-	}
-
-	/**
-	 * Handler booking actions.
-	 */
-	public function handler_booking_actions( Booking $booking ) {
-
-		// Handle button actions.
-		if ( empty( $_POST['awebooking_action'] ) ) {
-			return;
-		}
-
-		$action = $_POST['awebooking_action'];
-
-		if ( strstr( $action, 'send_email_' ) ) {
-
-			do_action( 'awebooking/before_resend_order_emails', $booking );
-
-			// Load mailer.
-			$email_to_send = str_replace( 'send_email_', '', $action );
-
-			switch ( $email_to_send ) {
-				case 'cancelled_order':
-					try {
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Cancelled( $booking ) );
-					} catch ( Exception $e ) {
-						// ...
-					}
-					break;
-
-				case 'customer_processing_order':
-					try {
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Processing( $booking ) );
-					} catch ( Exception $e ) {
-						// ...
-					}
-					break;
-
-				case 'customer_completed_order':
-					try {
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Completed( $booking ) );
-					} catch ( Exception $e ) {
-						// ...
-					}
-					break;
-
-				default:
-					return;
-					break;
-			}
-
-			do_action( 'awebooking/after_resend_order_email', $booking, $email_to_send );
 		}
 	}
 }

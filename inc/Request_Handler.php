@@ -123,8 +123,8 @@ class Request_Handler extends Service_Hooks {
 
 			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {
-					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking ) );
-					Mailer::to( awebooking( 'config' )->get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking ) );
+					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking, $availability ) );
+					Mailer::to( awebooking( 'config' )->get_admin_notify_emails() )->send( new Admin_Booking_Created( $booking, $availability ) );
 				} catch ( Exception $e ) {
 					// ...
 				}
