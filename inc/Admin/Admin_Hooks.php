@@ -3,8 +3,8 @@ namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
 use AweBooking\AweBooking;
+use AweBooking\Support\Admin_Notices;
 use Skeleton\Container\Service_Hooks;
-
 use AweBooking\Admin\Pages\Add_Booking_Item;
 use AweBooking\Admin\Forms\Add_Booking_Form;
 use AweBooking\Admin\Pages\Edit_Booking_Item;
@@ -26,6 +26,10 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
+		$container->bind( 'admin_notices', function() {
+			return new Admin_Notices;
+		});
+
 		$container->bind( 'admin.add_booking_item', function() {
 			return new Add_Booking_Item( new Add_Booking_Form );
 		});
@@ -118,6 +122,7 @@ class Admin_Hooks extends Service_Hooks {
 		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
 
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
+		add_action( 'admin_notices', [ $awebooking['admin_notices'], 'display' ] );
 	}
 
 	/**
