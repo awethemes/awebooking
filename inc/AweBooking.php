@@ -127,10 +127,6 @@ class AweBooking extends SkeletonContainer {
 			);
 		};
 
-		$this['request'] = function () {
-			return new Support\Http_Request;
-		};
-
 		$this->bind( 'session', function () {
 			return WP_Session::get_instance();
 		});
