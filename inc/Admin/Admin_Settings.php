@@ -418,7 +418,7 @@ class Admin_Settings extends Admin_Page {
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_complete_subject',
 			'type'    => 'textarea_small',
-			'default' => 'Your {site_title} booking from {order_date} is WP_Customize_Panel->print_template();',
+			'default' => 'Your {site_title} booking from {order_date} is complete',
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is complete',
 			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
@@ -432,14 +432,6 @@ class Admin_Settings extends Admin_Page {
 		) );
 	}
 
-	/**
-	* Filters the default date formats.
-	*
-	* @since 2.7.0
-	* @since 4.0.0 Added ISO date standard YYYY-MM-DD format.
-	*
-	* @param array $default_date_formats Array of default date formats.
-	*/
 	public function _date_format_field_callback( $field_args, $field ) {
 
 		$date_formats = array_unique( apply_filters( 'awebooking/date_formats', array( __( 'F j, Y' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) );
