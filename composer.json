@@ -31,19 +31,18 @@
         "tightenco/collect": "5.2.*"
     },
     "autoload": {
-        "psr-4": {
-            "AweBooking\\": "inc/"
-        }
+        "psr-4": { "AweBooking\\": "inc/" },
+        "classmap": [ "bin/composer-cleaner.php" ]
     },
     "scripts": {
         "post-install-cmd": [
-            "AweBooking\\Support\\Composer_Cleanup::clean"
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
         ],
         "post-update-cmd": [
-            "AweBooking\\Support\\Composer_Cleanup::clean"
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
         ],
         "clean": [
-            "AweBooking\\Support\\Composer_Cleanup::clean"
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
         ],
         "install-wp-test": [
             "bash bin/install-wp-tests.sh wptest_awebooking root 'secret' localhost latest"
