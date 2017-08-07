@@ -21,8 +21,8 @@ class Add_Booking_Form extends Form_Abstract {
 			'id'          => 'check_in_out',
 			'type'        => 'date_range',
 			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
-			'validate'    => 'required',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'required' => true ],
+			'validate'    => 'required|datePeriod',
+			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT ],
 			'date_format' => AweBooking::DATE_FORMAT,
 		]);
 

@@ -17,15 +17,14 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	 */
 	public function __construct() {
 		parent::__construct([
-			'id'           => $this->form_id,
-			'hookup'       => false,
-			'cmb_styles'   => false,
-			'show_on'      => [ 'options-page' => $this->form_id ],
-			'object_types' => 'options-page',
+			'id'         => $this->form_id,
+			'hookup'     => false,
+			'cmb_styles' => false,
 		]);
 
-		// Prevent CMB2 get field data from database.
-		$this->object_id( 0 );
+		// Prevent CMB2 get field data from database,
+		// please don't change this.
+		$this->object_id( '_' );
 		$this->object_type( 'options-page' );
 
 		$this->register_fields();

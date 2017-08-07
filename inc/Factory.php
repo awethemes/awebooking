@@ -29,7 +29,7 @@ class Factory {
 	 * @param  mixed $room_unit Room unit ID or instance.
 	 * @return AweBooking\Room
 	 */
-	public function get_room_unit( $room_unit ) {
+	public static function get_room_unit( $room_unit ) {
 		return new Room( $room_unit );
 	}
 

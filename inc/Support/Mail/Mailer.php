@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking\Support\Mail;
 
 use AweBooking\Interfaces\Mailable as Mailable_Interface;
 

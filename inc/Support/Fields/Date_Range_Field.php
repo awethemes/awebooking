@@ -59,27 +59,7 @@ class Date_Range_Field extends Field_Abstract {
 	 * @param CMB2_Sanitize $sanitizer  The `CMB2_Sanitize` object.
 	 */
 	public function sanitization( $override_value, $value, $object_id, $field_args, $sanitizer ) {
-		$value = (array) $value;
-		$sanitized = [ '', '' ];
-
-		if ( empty( $value[0] ) || empty( $value[1] ) ) {
-			return $sanitized;
-		}
-
-		try {
-			$period = new Date_Period( $value[0], $value[1] );
-		} catch ( \Exception $e ) {
-			return $sanitized;
-		}
-
-		if ( $period->nights() > 0 ) {
-			$sanitized = [
-				$period->get_start_date()->toDateString(),
-				$period->get_end_date()->toDateString(),
-			];
-		}
-
-		return $sanitized;
+		return awebooking_sanitize_period( $value );
 	}
 
 	/**

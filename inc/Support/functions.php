@@ -2,6 +2,7 @@
 use AweBooking\Room_State;
 use AweBooking\Support\Template;
 use AweBooking\Support\Formatting;
+use AweBooking\Support\Date_Period;
 
 /**
  * Get the available container instance.
@@ -183,6 +184,35 @@ endif;
  */
 function awebooking_sanitize_price( $number ) {
 	return Formatting::format_decimal( $number, true );
+}
+
+/**
+ * Sanitize period.
+ *
+ * @param  array|mixed $value  Raw date period.
+ * @param  bool        $strict Strict validation.
+ * @return array
+ */
+function awebooking_sanitize_period( $value, $strict = false ) {
+	$value = (array) $value;
+	if ( empty( $value[0] ) || empty( $value[1] ) ) {
+		return [];
+	}
+
+	try {
+		$period = new Date_Period( $value[0], $value[1], $strict );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+	if ( $period->nights() < 1 ) {
+		return [];
+	}
+
+	return [
+		$period->get_start_date()->toDateString(),
+		$period->get_end_date()->toDateString(),
+	];
 }
 
 /**

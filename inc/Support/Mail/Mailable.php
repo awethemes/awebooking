@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking\Support\Mail;
 
 use Pelago\Emogrifier;
 use AweBooking\Interfaces\Mailable as Mailable_Interface;

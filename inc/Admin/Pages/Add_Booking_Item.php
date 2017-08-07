@@ -177,74 +177,6 @@ class Add_Booking_Item {
 		$this->booking = $the_booking;
 	}
 
-	protected function handle_form() {
-		if ( isset( $_POST[ $this->form->nonce() ] ) && wp_verify_nonce( $_POST[ $this->form->nonce() ], $this->form->nonce() ) ) {
-			$input_data = $this->form->get_sanitized_values( $_POST );
-			$service_data = $_POST;
-
-			$room = new Room( $input_data['add_room'] );
-			$room_type = $room->get_room_type();
-
-			$concierge = awebooking()->make( 'concierge' );
-
-			try {
-				$date_period = new Date_Period( $input_data['check_in_out'][0], $input_data['check_in_out'][1], false );
-			} catch ( \Exception $e ) {
-				return;
-			}
-
-			$request = new Booking_Request( $date_period, [
-				'adults'   => $input_data['adults'],
-				'children' => $input_data['children'],
-			]);
-
-			$availability = $concierge->check_room_type_availability(
-				$room->get_room_type(), $request
-			);
-
-			if ( $availability->available() && in_array( $room->get_id(), $availability->get_rooms_ids() ) ) {
-				$item = new Booking_Room_Item;
-
-				$item['name'] = $room_type->get_title();
-				$item['check_in'] = $date_period->get_start_date()->toDateString();
-				$item['check_out'] = $date_period->get_end_date()->toDateString();
-				$item['adults'] = $input_data['adults'];
-				$item['children'] = $input_data['children'];
-				$item['room_id'] = $room->get_id();
-				$item['total'] = $input_data['price'];
-				$item['subtotal'] = $input_data['price'];
-				$this->booking->add_item( $item );
-				$item->save();
-
-				// handler services.
-				$service_data = array_map(function($s) {
-					return new Service( $s );
-				}, $service_data['extra_services']);
-
-				foreach ( $service_data as $service ) {
-					if ( ! $service->exists() ) {
-						continue;
-					}
-
-					// Add service item into booking.
-					$service_item = new Booking_Service_Item;
-					$service_item['name'] = $service->get_name();
-					$service_item['parent'] = $item->get_id();
-					$service_item['service_id'] = $service->get_id();
-					$service_item['price'] = $service->get_price()->get_amount();
-
-					$this->booking->add_item( $service_item );
-				}
-
-				$this->booking->save();
-			}
-
-			wp_safe_redirect(
-				get_edit_post_link( $this->booking->get_id(), 'link' )
-			);
-		} // End if().
-	}
-
 	/**
 	 * Admin page markup. Mostly handled by CMB2.
 	 *
@@ -254,8 +186,6 @@ class Add_Booking_Item {
 		$this->prepare_setup();
 
 		$this->setup_request_data();
-
-		$this->handle_form();
 
 		require_once ABSPATH . 'wp-admin/admin-header.php';
 
@@ -270,7 +200,7 @@ class Add_Booking_Item {
 				}
 			</style>
 
-			<form method="POST" action="">
+			<form method="POST" action="<?php echo esc_url( admin_url( 'post.php?post=' . $this->booking->get_id() . '&action=add_awebooking_room_item' ) ); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr( $this->page ); ?>">
 
 				<div class="" style="width: 475px; float: left; margin-right: 15px;">

@@ -742,3 +742,152 @@ ul.booking_notes li a.delete_note {
     width: 100%;
     height: 50px;
 }
+
+
+
+
+
+
+
+
+
+.wc-backbone-modal * {
+    box-sizing: border-box
+}
+
+.wc-backbone-modal .wc-backbone-modal-content {
+    position: fixed;
+    background: #fff;
+    z-index: 100000;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 500px
+}
+
+.wc-backbone-modal .wc-backbone-modal-content article {
+    overflow: auto
+}
+
+.wc-backbone-modal.wc-backbone-modal-shipping-method-settings .wc-backbone-modal-content {
+    width: 75%;
+    min-width: 500px
+}
+
+.wc-backbone-modal .select2-container {
+    width: 100%!important
+}
+
+.wc-backbone-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 360px;
+    background: #000;
+    opacity: .7;
+    z-index: 99900
+}
+
+.wc-backbone-modal-main {
+    padding-bottom: 55px
+}
+
+.wc-backbone-modal-main article,.wc-backbone-modal-main header {
+    display: block;
+    position: relative
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header {
+    height: auto;
+    background: #fcfcfc;
+    padding: 1em 1.5em;
+    border-bottom: 1px solid #ddd
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.5em
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link {
+    cursor: pointer;
+    color: #777;
+    height: 54px;
+    width: 54px;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    border: 0;
+    border-left: 1px solid #ddd;
+    background-color: transparent;
+    -webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
+    transition: color .1s ease-in-out,background .1s ease-in-out
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link::before {
+    font: normal 22px/50px dashicons!important;
+    color: #666;
+    display: block;
+    content: '\f335';
+    font-weight: 300
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:focus,.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:hover {
+    background: #ddd;
+    border-color: #ccc;
+    color: #000
+}
+
+.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:focus {
+    outline: 0
+}
+
+.wc-backbone-modal-main article {
+    padding: 1.5em
+}
+
+.wc-backbone-modal-main article p {
+    margin: 1.5em 0
+}
+
+.wc-backbone-modal-main article p:first-child {
+    margin-top: 0
+}
+
+.wc-backbone-modal-main article p:last-child {
+    margin-bottom: 0
+}
+
+.wc-backbone-modal-main article .pagination {
+    padding: 10px 0 0;
+    text-align: center
+}
+
+.wc-backbone-modal-main footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    padding: 1em 1.5em;
+    background: #fcfcfc;
+    border-top: 1px solid #dfdfdf;
+    box-shadow: 0 -4px 4px -4px rgba(0,0,0,.1)
+}
+
+.wc-backbone-modal-main footer .inner {
+    float: right;
+    line-height: 23px
+}
+
+.wc-backbone-modal-main footer .inner .button {
+    margin-bottom: 0
+}

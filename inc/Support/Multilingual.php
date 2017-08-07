@@ -14,7 +14,7 @@ class Multilingual {
 	 *
 	 * @var string
 	 */
-	protected $main_language;
+	protected $default_language;
 
 	/**
 	 * An array of all available languages.
@@ -56,18 +56,18 @@ class Multilingual {
 	 * @return string|null
 	 */
 	public function get_default_language() {
-		if ( $this->main_language ) {
-			return $this->main_language;
+		if ( $this->default_language ) {
+			return $this->default_language;
 		}
 
 		if ( $this->is_wpml() ) {
 			global $sitepress;
-			$this->main_language = $sitepress->get_default_language();
+			$this->default_language = $sitepress->get_default_language();
 		} elseif ( $this->is_polylang() ) {
-			$this->main_language = pll_default_language( 'slug' );
+			$this->default_language = pll_default_language( 'slug' );
 		}
 
-		return $this->main_language;
+		return $this->default_language;
 	}
 
 	/**
