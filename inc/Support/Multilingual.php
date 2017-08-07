@@ -42,10 +42,10 @@ class Multilingual {
 		if ( $this->is_wpml() ) {
 			global $sitepress;
 			$this->active_language = $sitepress->get_current_language();
+		} elseif ( $this->is_polylang() ) {
+			$current = pll_current_language( 'slug' );
+			$this->active_language = false === $current ? 'all' : $current;
 		}
-
-		// TODO: ...
-		// Polylang support...
 
 		return $this->active_language;
 	}
