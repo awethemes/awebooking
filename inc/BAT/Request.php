@@ -32,6 +32,27 @@ class Request implements Booking_Request_Interface {
 		$this->requests = $requests;
 	}
 
+	public static function instance() {
+		if ( ! isset( $_COOKIE['awebooking-request'] ) ) {
+			throw new \RuntimeException( 'Missing booking data' );
+		}
+
+		$requests = maybe_unserialize( wp_unslash( $_COOKIE['awebooking-request'] ) );
+
+		$period = new Date_Period( $requests['check_in'], $requests['check_out'], true, Date_Period::EXCLUDE_END_DATE );
+		parent::__construct( $period, $requests );
+	}
+
+	public function store() {
+		$wp_session = awebooking()->make( 'session' );
+
+		$store_request              = $request->get_requests();
+		$store_request['check_in']  = $request->get_check_in()->toDateString();
+		$store_request['check_out'] = $request->get_check_out()->toDateString();
+
+		$wp_session['awebooking_request'] = $store_request;
+	}
+
 	/**
 	 * Return the check-in day.
 	 *

@@ -7,7 +7,6 @@ use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
 use AweBooking\Support\Date_Utils;
 
-
 class Booking_Completed extends Mailable {
 	protected $booking;
 

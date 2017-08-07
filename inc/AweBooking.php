@@ -83,6 +83,10 @@ class AweBooking extends SkeletonContainer {
 		$this['url'] = $this->plugin_url();
 		$this['path'] = $this->plugin_path();
 
+		$this->bind( 'session', function () {
+			return WP_Session::get_instance();
+		});
+
 		$this['multilingual'] = function () {
 			return new Support\Multilingual;
 		};
@@ -127,9 +131,6 @@ class AweBooking extends SkeletonContainer {
 			);
 		};
 
-		$this->bind( 'session', function () {
-			return WP_Session::get_instance();
-		});
 
 		$this['flash_message'] = function () {
 			return new Support\Flash_Message;

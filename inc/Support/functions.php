@@ -32,6 +32,174 @@ function awebooking_option( $key, $default = null ) {
 }
 
 /**
+ * ------------------------------------------------------
+ * AweBooking sanitize functions
+ * ------------------------------------------------------
+ */
+
+/**
+ * Sanitize price number.
+ *
+ * @param  string|numeric $number Raw numeric.
+ * @return float
+ */
+function awebooking_sanitize_price( $number ) {
+	return Formatting::format_decimal( $number, true );
+}
+
+/**
+ * Sanitize period.
+ *
+ * @param  array|mixed $value  Raw date period.
+ * @param  bool        $strict Strict validation.
+ * @return array
+ */
+function awebooking_sanitize_period( $value, $strict = false ) {
+	$value = (array) $value;
+	if ( empty( $value[0] ) || empty( $value[1] ) ) {
+		return [];
+	}
+
+	try {
+		$period = new Date_Period( $value[0], $value[1], $strict );
+	} catch ( Exception $e ) {
+		return [];
+	}
+
+	if ( $period->nights() < 1 ) {
+		return [];
+	}
+
+	return [
+		$period->get_start_date()->toDateString(),
+		$period->get_end_date()->toDateString(),
+	];
+}
+
+
+/**
+ * ------------------------------------------------------
+ * Helper functions
+ * ------------------------------------------------------
+ */
+
+/**
+ * Make a list sort by priority.
+ *
+ * @param  array $values An array values.
+ * @return Skeleton\Support\Priority_List
+ */
+function awebooking_priority_list( array $values ) {
+	$stack = new Skeleton\Support\Priority_List;
+
+	foreach ( $values as $key => $value ) {
+		$priority = is_object( $value ) ? $value->priority : $value['priority'];
+		$stack->insert( $key, $value, $priority );
+	}
+
+	return $stack;
+}
+
+function awebooking_factory( array $ids, $class = '' ) {
+}
+
+if ( ! function_exists( 'wp_data_callback' ) ) :
+	/**
+	 * Get Wordpress specific data from the DB and return in a usable array.
+	 *
+	 * @param  string $type Data type.
+	 * @param  mixed  $args Optional, data query args or something else.
+	 * @return array
+	 */
+	function wp_data_callback( $type, $args = array() ) {
+		return function() use ( $type, $args ) {
+			return Skeleton\Support\WP_Data::get( $type, $args );
+		};
+	}
+endif;
+
+/**
+ * Run a MySQL transaction query, if supported.
+ *
+ * @param  string $type Transaction type, start (default), commit, rollback.
+ * @return void
+ */
+function awebooking_transaction_query( $type = 'start' ) {
+	global $wpdb;
+
+	$wpdb->hide_errors();
+
+	if ( ! defined( 'AWEBOOKING_USE_TRANSACTIONS' ) ) {
+		define( 'AWEBOOKING_USE_TRANSACTIONS', true );
+	}
+
+	if ( AWEBOOKING_USE_TRANSACTIONS ) {
+		switch ( $type ) {
+			case 'commit' :
+				$wpdb->query( 'COMMIT' );
+				break;
+			case 'rollback' :
+				$wpdb->query( 'ROLLBACK' );
+				break;
+			default :
+				$wpdb->query( 'START TRANSACTION' );
+			break;
+		}
+	}
+}
+
+/**
+ * Set a cookie - Wrapper for setcookie using WP constants.
+ *
+ * @param  string  $name   Name of the cookie being set.
+ * @param  string  $value  Value of the cookie.
+ * @param  integer $expire Expiry of the cookie.
+ * @param  string  $secure Whether the cookie should be served only over https.
+ */
+function awebooking_setcookie( $name, $value, $expire = 0, $secure = null ) {
+	$secure = is_null( $secure ) ? is_ssl() : $secure;
+
+	if ( ! headers_sent() ) {
+		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure );
+	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		headers_sent( $file, $line );
+		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );
+	}
+}
+
+/**
+ * Return list of common titles.
+ *
+ * @return string
+ */
+function awebooking_get_common_titles() {
+	return apply_filters( 'awebooking/customer_titles', array(
+		'mr'   => esc_html__( 'Mr.', 'awebooking' ),
+		'ms'   => esc_html__( 'Ms.', 'awebooking' ),
+		'mrs'  => esc_html__( 'Mrs.', 'awebooking' ),
+		'miss' => esc_html__( 'Miss.', 'awebooking' ),
+		'dr'   => esc_html__( 'Dr.', 'awebooking' ),
+		'prof' => esc_html__( 'Prof.', 'awebooking' ),
+	));
+}
+
+function awebooking_get_booking_request_query( $extra_args = array() ) {
+	$raw = [ 'start-date', 'end-date', 'children', 'adults' ];
+	$clean = [];
+	foreach ( $raw as $key ) {
+		$clean[ $key ] = isset( $_REQUEST[ $key ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ) : '';
+	}
+
+	return array_merge( $clean, $extra_args );
+}
+
+/**
+ * ------------------------------------------------------
+ * Templates and frontend functions
+ * ------------------------------------------------------
+ */
+
+/**
  * Locate a template and return the path for inclusion.
  *
  * @param  string $template_name Template name.
@@ -175,153 +343,3 @@ if ( ! function_exists( 'is_booking_checkout_page' ) ) :
 		return ( is_page() && $current_id === $page_id );
 	}
 endif;
-
-/**
- * Sanitize price number.
- *
- * @param  string|numeric $number Raw numeric.
- * @return float
- */
-function awebooking_sanitize_price( $number ) {
-	return Formatting::format_decimal( $number, true );
-}
-
-/**
- * Sanitize period.
- *
- * @param  array|mixed $value  Raw date period.
- * @param  bool        $strict Strict validation.
- * @return array
- */
-function awebooking_sanitize_period( $value, $strict = false ) {
-	$value = (array) $value;
-	if ( empty( $value[0] ) || empty( $value[1] ) ) {
-		return [];
-	}
-
-	try {
-		$period = new Date_Period( $value[0], $value[1], $strict );
-	} catch ( Exception $e ) {
-		return [];
-	}
-
-	if ( $period->nights() < 1 ) {
-		return [];
-	}
-
-	return [
-		$period->get_start_date()->toDateString(),
-		$period->get_end_date()->toDateString(),
-	];
-}
-
-/**
- * Make a list sort by priority.
- *
- * @param  array $values An array values.
- * @return Skeleton\Support\Priority_List
- */
-function awebooking_priority_list( array $values ) {
-	$stack = new Skeleton\Support\Priority_List;
-
-	foreach ( $values as $key => $value ) {
-		$priority = is_object( $value ) ? $value->priority : $value['priority'];
-		$stack->insert( $key, $value, $priority );
-	}
-
-	return $stack;
-}
-
-function awebooking_factory( array $ids, $class = '' ) {
-
-}
-
-if ( ! function_exists( 'wp_data_callback' ) ) :
-	/**
-	 * Get Wordpress specific data from the DB and return in a usable array.
-	 *
-	 * @param  string $type Data type.
-	 * @param  mixed  $args Optional, data query args or something else.
-	 * @return array
-	 */
-	function wp_data_callback( $type, $args = array() ) {
-		return function() use ( $type, $args ) {
-			return Skeleton\Support\WP_Data::get( $type, $args );
-		};
-	}
-endif;
-
-/**
- * Run a MySQL transaction query, if supported.
- *
- * @param  string $type Transaction type, start (default), commit, rollback.
- * @return void
- */
-function awebooking_transaction_query( $type = 'start' ) {
-	global $wpdb;
-
-	$wpdb->hide_errors();
-
-	if ( ! defined( 'AWEBOOKING_USE_TRANSACTIONS' ) ) {
-		define( 'AWEBOOKING_USE_TRANSACTIONS', true );
-	}
-
-	if ( AWEBOOKING_USE_TRANSACTIONS ) {
-		switch ( $type ) {
-			case 'commit' :
-				$wpdb->query( 'COMMIT' );
-				break;
-			case 'rollback' :
-				$wpdb->query( 'ROLLBACK' );
-				break;
-			default :
-				$wpdb->query( 'START TRANSACTION' );
-			break;
-		}
-	}
-}
-
-/**
- * Set a cookie - Wrapper for setcookie using WP constants.
- *
- * @param  string  $name   Name of the cookie being set.
- * @param  string  $value  Value of the cookie.
- * @param  integer $expire Expiry of the cookie.
- * @param  string  $secure Whether the cookie should be served only over https.
- */
-function awebooking_setcookie( $name, $value, $expire = 0, $secure = null ) {
-	$secure = is_null( $secure ) ? is_ssl() : $secure;
-
-	if ( ! headers_sent() ) {
-		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure );
-	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		headers_sent( $file, $line );
-		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );
-	}
-}
-
-/**
- * Return list of common titles.
- *
- * @return string
- */
-function awebooking_get_common_titles() {
-	return apply_filters( 'awebooking/customer_titles', array(
-		'mr'   => esc_html__( 'Mr.', 'awebooking' ),
-		'ms'   => esc_html__( 'Ms.', 'awebooking' ),
-		'mrs'  => esc_html__( 'Mrs.', 'awebooking' ),
-		'miss' => esc_html__( 'Miss.', 'awebooking' ),
-		'dr'   => esc_html__( 'Dr.', 'awebooking' ),
-		'prof' => esc_html__( 'Prof.', 'awebooking' ),
-	));
-}
-
-function awebooking_get_booking_request_query( $extra_args = array() ) {
-	$raw = [ 'start-date', 'end-date', 'children', 'adults' ];
-	$clean = [];
-	foreach ( $raw as $key ) {
-		$clean[ $key ] = isset( $_REQUEST[ $key ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ) : '';
-	}
-
-	return array_merge( $clean, $extra_args );
-}

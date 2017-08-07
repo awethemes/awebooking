@@ -30,18 +30,4 @@ interface Booking_Request {
 	 * @return mixed
 	 */
 	public function get_request( $request );
-
-	/**
-	 * Return valid states for the Calendar.
-	 *
-	 * @return array
-	 */
-	// public function get_states();
-
-	/**
-	 * Return array of constraints for the Calendar.
-	 *
-	 * @return array
-	 */
-	// public function get_constraints();
 }
