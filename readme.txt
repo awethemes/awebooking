@@ -64,6 +64,7 @@ If you have 2.x version, please do not upgrade to this version.
 - Polylang support
 
 #### Fixed
+- Fixed extra service percent calculator
 - Fixed hotel location cannot be deleted
 - Minor bugs fixed
 
