@@ -50,12 +50,12 @@ if ( version_compare( phpversion(), '5.5.9', '<' ) ) {
 /**
  * First, we need autoload via Composer to make everything works.
  */
-require trailingslashit( __DIR__ ) . '/vendor/autoload.php';
+require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
 
 /**
  * Next, load the bootstrap file.
  */
-require trailingslashit( __DIR__ ) . '/bootstrap.php';
+require trailingslashit( __DIR__ ) . 'bootstrap.php';
 
 /**
  * Yeah, now everything okay, we'll create the AweBooking.
