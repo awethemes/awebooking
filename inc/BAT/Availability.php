@@ -158,7 +158,7 @@ class Availability implements Availability_Interface {
 		$price = $this->get_price();
 
 		if ( $this->request->has_request( 'extra_services' ) ) {
-			$price = $this->get_price()->add( $this->get_extra_services_price() );
+			$price = $price->add( $this->get_extra_services_price() );
 		}
 
 		$pipes = apply_filters( 'awebooking/availability/total_price_pipes', [], $this->request, $this );
@@ -238,7 +238,7 @@ class Availability implements Availability_Interface {
 			}
 
 			$extra_service = new Service( $term_instance->term_id, $term_instance );
-			$pipes[] = new Service_Calculator( $extra_service, $this->get_request() );
+			$pipes[] = new Service_Calculator( $extra_service, $this );
 		}
 	}
 
