@@ -2,16 +2,16 @@
 namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
+use AweBooking\Room_Type;
 use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
+use AweBooking\Support\Date_Utils;
 
 class Admin_Booking_Created extends Mailable {
 	protected $booking;
-	protected $avai;
 
-	public function __construct( $booking, $avai ) {
+	public function __construct( $booking ) {
 		$this->booking = $booking;
-		$this->avai = $avai;
 		// Find/replace.
 		$this->find['order_number']    = '{order_number}';
 		$this->find['order_date']      = '{order_date}';
@@ -25,25 +25,27 @@ class Admin_Booking_Created extends Mailable {
 	 * @return mixed
 	 */
 	public function build() {
-		$extra_services = $this->avai->get_request()->get_request( 'extra_services' );
+		$extra_services = $this->booking['request_services'];
 		$extra_services_name = [];
 		if ( $extra_services ) {
-			foreach ( $extra_services as $key => $id ) {
+			foreach ( $extra_services as $id => $quantity ) {
 				$term = get_term( $id, AweBooking::HOTEL_SERVICE );
 				$extra_services_name[] = $term->name;
 			}
 		}
 
+		$room_type = new Room_Type( $this->booking['room_type_id'] );
+
 		return $this->get_template( 'admin-new-booking', [
 			'booking_id'           => $this->booking->get_id(),
-			'room_name'            => $this->avai->get_room_type()->get_title(),
-			'check_in'             => $this->avai->get_check_in()->format( 'Y-m-d' ),
-			'check_out'            => $this->avai->get_check_out()->format( 'Y-m-d' ),
-			'nights'               => $this->avai->get_nights(),
+			'room_name'            => $room_type->get_title(),
+			'check_in'             => Date_Utils::create_date( $this->booking['check_in'] )->format( 'Y/m/d' ),
+			'check_out'            => Date_Utils::create_date( $this->booking['check_out'] )->format( 'Y/m/d' ),
+			'nights'               => $this->booking->get_nights(),
 			'extra_services_name'  => $extra_services_name,
-			'room_type_price'      => (string) $this->avai->get_price(),
-			'extra_services_price' => (string) $this->avai->get_extra_services_price(),
-			'total_price'          => (string) $this->avai->get_total_price(),
+			'room_type_price'      => (string) $this->booking['room_total'],
+			'extra_services_price' => (string) $this->booking['services_total'],
+			'total_price'          => (string) $this->booking->get_total_price(),
 			'customer_first_name'  => $this->booking['customer_first_name'],
 			'customer_last_name'   => $this->booking['customer_last_name'],
 			'customer_email'       => $this->booking->get_customer_email(),
