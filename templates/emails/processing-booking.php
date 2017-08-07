@@ -9,7 +9,7 @@
  * @version     1.0.0
  */
 ?>
-<p><?php printf( __( "Hi there. Your recent booking on %s has been completed. Your booking details are shown below for your reference:", 'awebooking' ), get_option( 'blogname' ) ); ?></p>
+<p><?php printf( __( "Hi there. Your recent booking on %s is being processed. Your booking details are shown below for your reference:", 'awebooking' ), get_option( 'blogname' ) ); ?></p>
 <h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Order #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
 
 <div class="table">
@@ -55,3 +55,17 @@
 		</thead>
 	</table>
 </div>
+
+<h2><?php _e( 'Customer details', 'awebooking' ); ?></h2>
+<ul>
+	<li><strong><?php esc_html_e( 'First Name', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_first_name ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Last Name', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_last_name ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Email', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_email ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Phone', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_phone ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Company', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_company ); ?></span></li>
+
+	<?php if ( $customer_note ) : ?>
+		<li><strong><?php esc_html_e( 'Note', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_note ); ?></span></li>
+	<?php endif; ?>
+</ul>
+
