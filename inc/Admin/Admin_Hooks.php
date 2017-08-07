@@ -110,24 +110,19 @@ class Admin_Hooks extends Service_Hooks {
 	 * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
 	 */
 	public function admin_redirects() {
-		/*if ( ( plugin_basename( __FILE__ ) == $plugin ) && ! get_option( 'awebooking_installed' ) ) {
-			exit( wp_redirect( admin_url( 'index.php?page=awebooking-setup' ) ) );
-		}
+		// Setup wizard redirect.
+		if ( get_transient( '_awebooking_activation_redirect' ) ) {
+			delete_transient( '_awebooking_activation_redirect' );
 
-		// Setup wizard redirect
-		if ( get_transient( '_wc_activation_redirect' ) ) {
-			delete_transient( '_wc_activation_redirect' );
-
-			if ( ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'wc-setup' ) ) ) || is_network_admin() || isset( $_GET['activate-multi'] ) || ! current_user_can( 'manage_woocommerce' ) || apply_filters( 'woocommerce_prevent_automatic_wizard_redirect', false ) ) {
+			// Prevent redirect on some case.
+			if ( ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], [ 'awebooking-setup' ] ) ) || is_network_admin() ) {
 				return;
 			}
 
-			// If the user needs to install, send them to the setup wizard
-			if ( WC_Admin_Notices::has_notice( 'install' ) ) {
-				wp_safe_redirect( admin_url( 'index.php?page=wc-setup' ) );
-				exit;
-			}
-		}*/
+			// If the user needs to install, send them to the setup wizard.
+			wp_safe_redirect( admin_url( 'index.php?page=awebooking-setup' ) );
+			exit;
+		}
 	}
 
 	/**
