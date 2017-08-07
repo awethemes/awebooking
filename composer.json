@@ -26,10 +26,22 @@
         "webdevstudios/taxonomy_single_term": "dev-master",
         "erusev/parsedown": "^1.6"
     },
+    "autoload": {
+        "psr-4": { "AweBooking\\": "inc/" },
+        "classmap": [ "bin/composer-cleaner.php" ]
+    },
     "scripts": {
-        "phpunit": [
-            "bash bin/install-wp-tests.sh wptest_framework root 'secret' localhost latest false",
-            "php vendor/bin/phpunit"
+        "post-install-cmd": [
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
+        ],
+        "post-update-cmd": [
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
+        ],
+        "clean": [
+            "AweBooking\\Bin\\Composer_Cleaner::clean"
+        ],
+        "install-wp-test": [
+            "bash bin/install-wp-tests.sh wptest_awebooking root 'secret' localhost latest"
         ]
     },
     "extra": {
