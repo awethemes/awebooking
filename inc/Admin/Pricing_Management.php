@@ -27,14 +27,13 @@ class Pricing_Management extends WP_List_Table {
 	public function __construct() {
 		parent::__construct( [ 'plural' => 'pricing_management' ] );
 
-
-
-		$current_year = date( 'Y' );
+		$current_year = (int) date( 'Y' );
 		$_year = isset( $_GET['year'] ) ? (int) $_GET['year'] : $current_year;
 
 		if ( ! Date_Utils::is_valid_year( $_year ) ) {
 			$_year = $current_year;
 		}
+
 		$this->_year = $_year;
 
 		$this->the_query = $this->setup_the_query();

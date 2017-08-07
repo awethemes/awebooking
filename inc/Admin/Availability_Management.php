@@ -14,6 +14,7 @@ class Availability_Management extends WP_List_Table {
 
 	protected $store;
 	protected $current;
+	protected $room_type;
 
 	protected $_year;
 
@@ -127,7 +128,7 @@ class Availability_Management extends WP_List_Table {
 				<ul class="split-button-body">
 					<?php foreach ( $years as $year ) : ?>
 						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-awebooking&amp;=' . $screen->parent_base . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-awebooking&amp;=' . $screen->parent_base . '&room-type=' . $this->room_type . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
 						</li>
 					<?php endforeach ?>
 				</ul>
@@ -159,6 +160,7 @@ class Availability_Management extends WP_List_Table {
 		$this->process_bulk_action();
 
 		$room_type = isset( $_REQUEST['room-type'] ) ? absint( $_REQUEST['room-type'] ) : 0;
+		$this->room_type = $room_type;
 
 		$per_page = $this->get_items_per_page( 'customers_per_page', 15 );
 
