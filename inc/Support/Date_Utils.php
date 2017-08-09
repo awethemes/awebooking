@@ -75,12 +75,10 @@ class Date_Utils {
 	 * @return bool
 	 */
 	public static function is_valid_year( $year ) {
-		$current_year = (int) date( 'Y' );
-
 		return filter_var( $year, FILTER_VALIDATE_INT, [
 			'options' => [
-				'min_range' => $current_year - 20,
-				'max_range' => $current_year - 30,
+				'min_range' => intval( date( 'Y' ) ) - 20,
+				'max_range' => intval( date( 'Y' ) ) + 30,
 			],
 		]);
 	}

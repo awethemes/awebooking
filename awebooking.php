@@ -7,7 +7,7 @@
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /i18n/languages
- * Version:         3.0.0-beta
+ * Version:         3.0.0-beta2
  *
  * @package         AweBooking
  */
@@ -64,6 +64,6 @@ $awebooking = new AweBooking;
 
 add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
 
-register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'create_tables' ) );
+register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'install' ) );
 
 $GLOBALS['awebooking'] = $awebooking;

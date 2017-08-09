@@ -2,6 +2,27 @@
 namespace AweBooking;
 
 class Installer {
+	/**
+	 * Install the AweBooking.
+	 *
+	 * @return void
+	 */
+	public static function install() {
+		static::create_tables();
+
+		$current_version = get_option( 'awebooking_version', null );
+		$current_db_version = get_option( 'awebooking_db_version', null );
+
+		// No versions? This is a new install :).
+		if ( is_null( $current_version ) && is_null( $current_db_version ) && apply_filters( 'awebooking/enable_setup_wizard', true ) ) {
+			set_transient( '_awebooking_activation_redirect', 1, 30 );
+		}
+
+		delete_option( 'awebooking_version' );
+		add_option( 'awebooking_version', AweBooking::VERSION );
+
+		@flush_rewrite_rules();
+	}
 
 	/**
 	 * Set up the database tables which the plugin needs to function.
@@ -10,12 +31,9 @@ class Installer {
 	 */
 	public static function create_tables() {
 		global $wpdb;
-
 		$wpdb->hide_errors();
-		// $wpdb->show_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
 		dbDelta( static::get_schema() );
 	}
 

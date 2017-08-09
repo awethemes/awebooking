@@ -132,15 +132,9 @@ class Store extends Base_Store {
 			return $days;
 		}
 
-		global $wp_locale;
-
-		$only_days = array_map( function( $i ) use ( $wp_locale ) {
-			return $wp_locale->get_weekday( $i );
-		}, $only_days );
-
 		foreach ( $days as $tday => $value ) {
 			$day = Carbon::createFromDate( $year, $month, substr( $tday, 1 ) );
-			if ( ! in_array( $day->format( 'l' ), $only_days ) ) {
+			if ( ! in_array( $day->dayOfWeek, $only_days ) ) {
 				continue;
 			}
 

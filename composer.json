@@ -34,6 +34,10 @@
         "psr-4": { "AweBooking\\": "inc/" },
         "classmap": [ "bin/composer-cleaner.php" ]
     },
+    "autoload": {
+        "psr-4": { "AweBooking\\": "inc/" },
+        "classmap": [ "bin/composer-cleaner.php" ]
+    },
     "scripts": {
         "post-install-cmd": [
             "AweBooking\\Bin\\Composer_Cleaner::clean"

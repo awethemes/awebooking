@@ -30,7 +30,6 @@ class Logic_Hooks extends Service_Hooks {
 	public function pre_delete_term( $term, $taxonomy ) {
 		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
 			// TODO: ...
-			// wp_die( 1 ); // We don't know how prevent, so just using wp_die( 1 ) here.
 		}
 	}
 

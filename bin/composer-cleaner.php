@@ -21,7 +21,7 @@ class Composer_Cleaner extends Composer_Scripts {
 		$rules['nesbot/carbon']   = [ $docs, $tests ];
 		$rules['monolog/monolog'] = [ $docs, $tests, '.php_cs' ];
 		$rules['league/period']   = [ $docs, $tests, 'humbug.json' ];
-		$rules['pelago/emogrifier'] = [ $docs, $tests ];
+		$rules['pelago/emogrifier'] = [ $docs, $tests, 'Configuration', 'CODE_OF_CONDUCT.md' ];
 		$rules['tightenco/collect'] = [ $docs, $tests, 'collect-logo.png', 'composer.lock' ];
 		$rules['ericmann/wp-session-manager'] = [ $docs, $tests ];
 

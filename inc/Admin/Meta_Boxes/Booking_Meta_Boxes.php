@@ -40,6 +40,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
 		add_action( 'awebooking/save_booking', [ $this, 'handler_booking_actions' ], 10, 1 );
 		add_action( 'admin_init', [ $this, 'enqueue_scripts' ] );
+
 		add_action( 'wp_ajax_nopriv_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
 		add_action( 'wp_ajax_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
 		add_action( 'wp_ajax_nopriv_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
@@ -478,6 +479,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 					} catch ( \Exception $e ) {
 						// ...
 					}
+
 					if ( $mail ) {
 						$booking->add_booking_note( __( 'Processing email notification manually sent.', 'awebooking' ), false, true );
 					}
