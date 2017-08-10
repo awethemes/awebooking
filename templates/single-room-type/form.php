@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+$page_id = get_the_ID();
+
 ?>
 <form action="<?php echo esc_url( get_the_permalink() ); ?>" class="awebooking-check-form" method="POST">
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
