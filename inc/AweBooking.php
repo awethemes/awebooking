@@ -9,7 +9,7 @@ use AweBooking\BAT\Availability;
 use AweBooking\Admin\Admin_Hooks;
 
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-beta2';
+	const VERSION = '3.0.0-beta3';
 
 	/* Constants */
 	const DATE_FORMAT    = 'Y-m-d';

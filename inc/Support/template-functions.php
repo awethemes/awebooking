@@ -15,6 +15,19 @@ function awebooking_template_scripts() {
 	wp_localize_script( 'booking-ajax', 'booking_ajax', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 	));
+
+	global $wp_locale;
+
+	wp_localize_script( 'awebooking', '_awebookingDateSetting', array(
+		'i10n' => [
+			'locale'        => get_locale(),
+			'months'        => array_values( $wp_locale->month ),
+			'monthsShort'   => array_values( $wp_locale->month_abbrev ),
+			'weekdays'      => array_values( $wp_locale->weekday ),
+			'weekdaysMin'   => array_values( $wp_locale->weekday_initial ),
+			'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
+		],
+	));
 }
 add_action( 'wp_enqueue_scripts', 'awebooking_template_scripts', 20 );
 

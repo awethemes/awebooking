@@ -8,8 +8,13 @@
         var el = $(this);
 
         var datePickerDefault = {
-          altFormat: "yy-mm-dd",
           minDate: 0,
+          altFormat: 'yy-mm-dd',
+          monthNames: _awebookingDateSetting.i10n.months,
+          monthNamesShort: _awebookingDateSetting.i10n.monthsShort,
+          dayNames: _awebookingDateSetting.i10n.weekdays,
+          dayNamesMin: _awebookingDateSetting.i10n.weekdaysMin,
+          dayNamesShort: _awebookingDateSetting.i10n.weekdaysShort,
           beforeShow: function() {
             $('#ui-datepicker-div').addClass('awebooking-datepicker');
           }
