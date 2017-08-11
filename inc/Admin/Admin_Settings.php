@@ -38,6 +38,7 @@ class Admin_Settings extends Admin_Page {
 
 		// Register the settings.
 		$this->register_general_settings();
+		$this->register_backups();
 
 		do_action( 'awebooking/admin_settings/register', $this );
 	}
@@ -430,6 +431,23 @@ class Admin_Settings extends Admin_Page {
 			'default' => esc_html__( 'Your booking is completed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed.', 'awebooking' ),
 		) );
+	}
+
+	/**
+	 * Register backup and restore.
+	 *
+	 * @return void
+	 */
+	public function register_backups() {
+		$backup_section = $this->add_section( 'backup', [
+			'title' => esc_html__( 'Backups', 'awebooking' ),
+			'priority' => 60,
+		]);
+
+		$backup_section->add_field([
+			'id'   => 'backups',
+			'type' => 'backups',
+		]);
 	}
 
 	public function _date_format_field_callback( $field_args, $field ) {
