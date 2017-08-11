@@ -26,7 +26,7 @@ require_once $_tests_dir . '/includes/functions.php';
  */
 tests_add_filter( 'muplugins_loaded', function () {
 	// Load Skeleton (and CMB2) by manually.
-	require_once dirname( __DIR__ ) . '/vendor/awethemes/skeleton/libs/cmb2/bootstrap.php';
+	// require_once dirname( __DIR__ ) . '/vendor/webdevstudios/cmb2/bootstrap.php';
 	require_once dirname( __DIR__ ) . '/vendor/awethemes/skeleton/skeleton.php';
 
 	require dirname( __DIR__ ) . '/awebooking.php';
