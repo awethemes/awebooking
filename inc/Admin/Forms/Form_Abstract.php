@@ -3,6 +3,8 @@ namespace AweBooking\Admin\Forms;
 
 use CMB2_hookup;
 use Skeleton\CMB2\CMB2;
+use AweBooking\Admin\Forms\Exceptions\ValidationException;
+use AweBooking\Admin\Forms\Exceptions\NonceMismatchException;
 
 abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	/**
@@ -27,7 +29,7 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 		$this->object_id( '_' );
 		$this->object_type( 'options-page' );
 
-		$this->register_fields();
+		$this->fields();
 	}
 
 	/**
@@ -35,16 +37,53 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
-	abstract protected function register_fields();
+	abstract protected function fields();
 
 	/**
-	 * Output the form, alias of CMB2::show_form().
+	 * Handle process the form.
+	 *
+	 * @param  array|null $data        An array input data, if null $_POST will be use.
+	 * @param  boolean    $check_nonce Run verity nonce from request.
+	 * @return array|mixed
+	 *
+	 * @throws NonceMismatchException
+	 * @throws ValidationException
+	 */
+	public function handle( array $data = null, $check_nonce = true ) {
+		$data  = is_null( $data ) ? $_POST : $data;
+		$nonce = $this->nonce();
+
+		if ( $check_nonce && ( ! isset( $data[ $nonce ] ) || ! wp_verify_nonce( $data[ $nonce ], $nonce ) ) ) {
+			throw new NonceMismatchException;
+		}
+
+		// Get sanitized values from input data.
+		$sanitized = $this->get_sanitized_values( $data );
+
+		if ( $this->fails() ) {
+			throw new ValidationException( esc_html__( 'Input data has failed validation, please check again.', 'awebooking' ) );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Output the form.
 	 *
 	 * @return void
 	 */
 	public function output() {
+		$this->setup_fields();
+
 		$this->show_form();
 	}
+
+	/**
+	 * Setup the fields value, attributes, etc...
+	 *
+	 * @return void
+	 */
+	public function setup_fields() {}
 
 	/**
 	 * Enqueue CMB2 and our styles, scripts.

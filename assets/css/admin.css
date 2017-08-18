@@ -1,309 +1,255 @@
+.ui-datepicker {
+  display: none; }
+
 /**
  * AweBooking rooms creator
  */
 .list-rooms {
-	padding-top: 15px;
-	max-width: 650px;
-	list-style: none;
-}
+  padding-top: 15px;
+  max-width: 650px;
+  list-style: none; }
 
 ul.list-rooms > li.abkng-inline-room {
-	margin: 0 7px 7px 0;
-}
+  margin: 0 7px 7px 0; }
 
 .abkng-inline-room * {
-	box-sizing: border-box;
-}
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .abkng-inline-room {
-	width: 150px;
-	display: block;
-
-	float: left;
-	position: relative;
-
-	border: solid 1px #ddd;
-	background-color: #f7f7f7;
-}
+  width: 150px;
+  display: block;
+  float: left;
+  position: relative;
+  border: solid 1px #ddd;
+  background-color: #f7f7f7; }
 
 .abkng-inline-room.new-room {
-	border-color: #4caf50;
-}
+  border-color: #4caf50; }
 
 .abkng-inline-room > span {
-	width: 35px;
-	height: 26px;
-	padding: 0 3px;
-	line-height: 26px;
-
-	float: left;
-	display: inline-block;
-
-	color: #898989;
-	font-size: 12px;
-	text-align: center;
-}
+  width: 35px;
+  height: 26px;
+  padding: 0 3px;
+  line-height: 26px;
+  float: left;
+  display: inline-block;
+  color: #898989;
+  font-size: 12px;
+  text-align: center; }
 
 .abkng-inline-room input {
-	margin: 0;
-	padding: 3px;
+  margin: 0;
+  padding: 3px;
+  width: 115px;
+  height: 26px;
+  line-height: 26px;
+  float: left;
+  border: none;
+  display: inline-block; }
 
-	width: 115px;
-	height: 26px;
-	line-height: 26px;
-
-	float: left;
-	border: none;
-	display: inline-block;
-}
 .abkng-inline-room input:focus {
-	box-shadow: none
-}
+  -webkit-box-shadow: none;
+          box-shadow: none; }
 
 .abkng-inline-room button {
-	position: absolute;
-	right: 0;
+  position: absolute;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  color: #f44336;
+  font-size: 18px;
+  font-weight: 400;
+  border: none;
+  background-color: #eee;
+  display: none; }
 
-	width: 26px;
-	height: 26px;
-
-	color: #f44336;
-	font-size: 18px;
-	font-weight: 400;
-
-	border: none;
-	background-color: #eee;
-
-	display: none;
-}
 .abkng-inline-room:hover > button {
-	display: block;
-}
+  display: block; }
 
 /**
  * Mixed
  */
 .daterangepicker,
 .daterangepicker_input {
-	display: none;
-}
+  display: none; }
+
 .daterangepicker {
-	border-radius: 1px;
-	border: solid 1px #e7e7e7;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
+  border-radius: 1px;
+  border: solid 1px #e7e7e7;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
 
 .column-room {
-	width: 100px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  width: 100px; }
 
 /**
  * AweBooking Yearly Calendar
  */
 .abkngcal-container {
-	padding: 5px;
-	display: inline-block;
-	position: relative;
-	z-index: 10;
-
-	background: #fff;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-}
+  padding: 5px;
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); }
 
 .abkngcal-container > h2 {
-	margin: 0 0 10px;
-	padding: 0 0 5px 0;
-	border-bottom: solid 1px #eee;
-}
+  margin: 0 0 10px;
+  padding: 0 0 5px 0;
+  border-bottom: solid 1px #eee; }
 
 .abkngcal-container .datepicker-container {
-	padding-top: 5px;
-}
+  padding-top: 5px; }
 
 .abkngcal-ajax-loading {
-	z-index: 15;
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	background-color: rgba(255,255,255,0.85);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+  z-index: 15;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 .abkngcal-ajax-loading > .spinner {
-	float: none;
-	margin: auto auto;
-	visibility: visible;
-	display: block;
-}
+  float: none;
+  margin: auto auto;
+  visibility: visible;
+  display: block; }
 
 .abkngcal {
-	border-spacing: 1px;
-	border-collapse: separate;
-	font-family: Arial, Helvetica, sans-serif;
-}
+  border-spacing: 1px;
+  border-collapse: separate;
+  font-family: Arial, Helvetica, sans-serif; }
 
 .abkngcal th,
 .abkngcal td {
-	margin: 0 !important;
-	padding: 0 !important;
-	user-select: none;
-}
+  margin: 0 !important;
+  padding: 0 !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 .abkngcal select {
-	width: 65px;
-	height: 24px;
-	line-height: 24px;
-}
-
+  width: 65px;
+  height: 24px;
+  line-height: 24px; }
 
 /* Layouts */
 .abkngcal__day > span,
 .abkngcal__day-heading > span,
 .abkngcal__month-heading > span {
-	width: 24px;
-	height: 24px;
-	line-height: 24px;
-	display: block;
-	font-size: 12px;
-	text-align: center;
-	box-sizing: border-box;
-}
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  display: block;
+  font-size: 12px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
 .abkngcal__month-heading > span {
-	width: 65px;
-}
+  width: 65px; }
 
 /* ... */
 .abkngcal__day {
-	z-index: 10;
-	position: relative;
-}
+  z-index: 10;
+  position: relative; }
+
 .abkngcal__day-state,
 .abkngcal__day-selection {
-	z-index: 15;
-	position: absolute;
-}
+  z-index: 15;
+  position: absolute; }
+
 .abkngcal__day-selection {
-	z-index: 20;
-}
+  z-index: 20; }
 
 /* Colors */
 .abkngcal__day,
 .abkngcal__day-heading,
 .abkngcal__month-heading,
 .abkngcal__day--past > .abkngcal__day-state {
-	background-color: #f3f3f3;
-}
+  background-color: #f3f3f3; }
+
 .abkngcal__day-heading.hover,
 .abkngcal__month-heading.hover {
-	background-color: #ddd;
-}
-.abkngcal__day-state {
-	background-color: #ddffcc;
-}
-.abkngcal__day--today > .abkngcal__day-state {
-	border: solid 1px #03a9f4;
-}
+  background-color: #ddd; }
 
+.abkngcal__day-state {
+  background-color: #ddffcc; }
+
+.abkngcal__day--today > .abkngcal__day-state {
+  border: solid 1px #03a9f4; }
 
 .triangle-start > .abkngcal__day-state:before,
 .triangle-end > .abkngcal__day-state:after,
-
 .range-start > .abkngcal__day-selection:before,
 .range-end > .abkngcal__day-selection:after,
 .in-hover > .abkngcal__day-selection:after {
-	content: '';
-
-	width: 0;
-	height: 0;
-	border: solid transparent;
-
-	top: 0;
-	left: 0;
-	position: absolute;
-}
-
+  content: '';
+  width: 0;
+  height: 0;
+  border: solid transparent;
+  top: 0;
+  left: 0;
+  position: absolute; }
 
 .triangle-start > .abkngcal__day-state:before,
 .range-start > .abkngcal__day-selection:before {
-	border-width: 0 0 24px 24px;
-}
+  border-width: 0 0 24px 24px; }
 
 .triangle-end > .abkngcal__day-state:after,
 .range-end > .abkngcal__day-selection:after,
 .in-hover > .abkngcal__day-selection:after {
-	border-width: 24px 24px 0 0;
-}
-
+  border-width: 24px 24px 0 0; }
 
 .unavailable > .abkngcal__day-state {
-	background-color: #ffc0bd;
-}
-.unavailable-start > .abkngcal__day-state:before {
-	border-bottom-color: #ffc0bd;
-}
-.unavailable-end > .abkngcal__day-state:after {
-	border-top-color: #ffc0bd;
-}
+  background-color: #ffc0bd; }
 
+.unavailable-start > .abkngcal__day-state:before {
+  border-bottom-color: #ffc0bd; }
+
+.unavailable-end > .abkngcal__day-state:after {
+  border-top-color: #ffc0bd; }
 
 .booked > .abkngcal__day-state {
-	background-color: #57c1f1;
-}
-.booked-start > .abkngcal__day-state:before {
-	border-bottom-color: #57c1f1;
-}
-.booked-end > .abkngcal__day-state:after {
-	border-top-color: #57c1f1;
-}
+  background-color: #57c1f1; }
 
+.booked-start > .abkngcal__day-state:before {
+  border-bottom-color: #57c1f1; }
+
+.booked-end > .abkngcal__day-state:after {
+  border-top-color: #57c1f1; }
 
 .pending > .abkngcal__day-state {
-	background-color: #f9d465;
-}
+  background-color: #f9d465; }
+
 .pending-start > .abkngcal__day-state:before {
-	border-bottom-color: #f9d465;
-}
+  border-bottom-color: #f9d465; }
+
 .pending-end > .abkngcal__day-state:after {
-	border-top-color: #f9d465;
-}
-
-
+  border-top-color: #f9d465; }
 
 .in-range > .abkngcal__day-selection {
-	background-color: rgba(188, 232, 241, 0.75);
-}
+  background-color: rgba(188, 232, 241, 0.75); }
+
 .range-start > .abkngcal__day-selection:before {
-	border-bottom-color: rgba(188, 232, 241, 0.75);
-}
+  border-bottom-color: rgba(188, 232, 241, 0.75); }
+
 .in-hover > .abkngcal__day-selection:after,
 .range-end > .abkngcal__day-selection:after {
-	border-top-color: rgba(188, 232, 241, 0.75);
-}
-
-
-
+  border-top-color: rgba(188, 232, 241, 0.75); }
 
 /**
  *
@@ -319,7 +265,8 @@ ul.list-rooms > li.abkng-inline-room {
   margin: 0;
   padding: 8px;
   list-style: none;
-  box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15); }
+  -webkit-box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
+          box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15); }
 
 .open > .split-button-body {
   display: block; }
@@ -358,536 +305,414 @@ ul.list-rooms > li.abkng-inline-room {
  * AweBooking settings.
  */
 .cmb2-date-time-text {
-	min-width: 10em;
-	line-height: 2em;
-	display: inline-block;
-}
-
-
-
-
-
-
-
-
-
-
-
-
+  min-width: 10em;
+  line-height: 2em;
+  display: inline-block; }
 
 .atabss {
-	width: 100%;
-	max-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse; }
 
-	border-spacing: 0;
-	border-collapse: collapse;
-}
 .sad-tae {
-	width: 100%;
-	max-width: 100%;
-
-	border-spacing: 0;
-	border-collapse: collapse;
-
-	background-color: #fff;
-}
+  width: 100%;
+  max-width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  background-color: #fff; }
 
 .sad-tae * {
-	box-sizing: border-box;
-}
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .sad-tae thead th {
-	height: 20px;
-	min-width: 50px;
-	background-color: #f5f5f5;
-	padding: 0;
-}
+  height: 20px;
+  min-width: 50px;
+  background-color: #f5f5f5;
+  padding: 0; }
 
 .sad-tae th,
 .sad-tae td {
-	border: solid 1px #ddd;
-}
+  border: solid 1px #ddd; }
 
 .sad-tae tbody .day {
-	height: 25px;
-	min-width: 50px;
-}
+  height: 25px;
+  min-width: 50px; }
 
 .dbale {
-	border: solid 1px #ddd;
-	background-color: #f5f5f5;
-}
+  border: solid 1px #ddd;
+  background-color: #f5f5f5; }
 
 .dbale-left {
-	width: 200px;
-	float: left;
-}
+  width: 200px;
+  float: left; }
 
 .awebooking-service-item .cmb-remove-group-row {
-	left: auto !important;
-	right: 0;
-	visibility: hidden;
-	opacity: 0;
-}
+  left: auto !important;
+  right: 0;
+  visibility: hidden;
+  opacity: 0; }
 
-.awebooking-service-item:hover .cmb-remove-group-row{
-	visibility: visible;
-	opacity: 1.0;
-}
-
-
-
+.awebooking-service-item:hover .cmb-remove-group-row {
+  visibility: visible;
+  opacity: 1.0; }
 
 #awebooking_booking_action .inside {
-	margin: 0;
-	padding: 0;
-}
+  margin: 0;
+  padding: 0; }
+
 #awebooking_booking_action .deletion {
-	color: #a00;
-}
+  color: #a00; }
+
 #awebooking_booking_action .deletion:hover,
 #awebooking_booking_action .deletion:focus {
-	color: #f00;
-	border: none;
-}
-
-
-
-
-
-
-
+  color: #f00;
+  border: none; }
 
 .awebooking-list-item {
-	list-style-type: none;
-	margin: 0;
-}
+  list-style-type: none;
+  margin: 0; }
+
 .awebooking-list-item > li {
-	display: inline-block;
-	margin-right: 10px;
-}
+  display: inline-block;
+  margin-right: 10px; }
 
 .awebooking-availability {
-	display: inline-block;
-	vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  border: solid 1px transparent;
+  background-color: #f7f7f7; }
 
-	width: 18px;
-	height: 18px;
-	margin-right: 5px;
-
-	border: solid 1px transparent;
-	background-color: #f7f7f7;
-}
 .awebooking-availability + span {
-	vertical-align: middle;
-}
+  vertical-align: middle; }
 
 .awebooking-availability.available {
-	background-color: #ddffcc;
-	border: solid 1px #ddd;
-}
-.awebooking-availability.unavailable {
-	background-color: #ffc0bd;
-}
-.awebooking-availability.pending {
-	background-color: #f9d465;
-}
-.awebooking-availability.booked {
-	background-color: #57c1f1;
-}
+  background-color: #ddffcc;
+  border: solid 1px #ddd; }
 
+.awebooking-availability.unavailable {
+  background-color: #ffc0bd; }
+
+.awebooking-availability.pending {
+  background-color: #f9d465; }
+
+.awebooking-availability.booked {
+  background-color: #57c1f1; }
 
 /* Labels and Badges */
 .awebooking-label {
-	padding: 2px 10px;
-	display: inline-block;
-	border-radius: 15px;
+  padding: 2px 10px;
+  display: inline-block;
+  border-radius: 15px;
+  color: #343434;
+  background-color: #f7f7f7; }
 
-	color: #343434;
-	background-color: #f7f7f7;
-}
 .awebooking-label--square {
-	border-radius: 2px;
-}
+  border-radius: 2px; }
+
 .awebooking-label--info {
-	background-color: #deebff;
-}
+  background-color: #deebff; }
+
 .awebooking-label--success {
-	color: #03551f;
-	background-color: #cafcc2;
-}
+  color: #03551f;
+  background-color: #cafcc2; }
+
 .awebooking-label--danger {
-	color: #881f25;
-	background-color: #ffdbde;
-}
+  color: #881f25;
+  background-color: #ffdbde; }
+
 .awebooking-label--warning {
-	color: #b17419;
-	background-color: #fff8ba;
-}
+  color: #b17419;
+  background-color: #fff8ba; }
 
 .awebooking-invalid {
-	color: #d42215;
-	background: #ffe2e0;
-	display: inline-block;
-	padding: 1px 5px;
-	border-radius: 1px;
-}
-
-
-
+  color: #d42215;
+  background: #ffe2e0;
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 1px; }
 
 /* List column */
 table.wp-list-table .column-thumb {
-	width: 52px;
-	text-align: center;
-	white-space: nowrap
-}
+  width: 52px;
+  text-align: center;
+  white-space: nowrap; }
 
 table.wp-list-table .column-thumb img {
-	border-radius: 2px;
-}
+  border-radius: 2px; }
 
 table.wp-list-table .column-start_price,
 table.wp-list-table .column-capacity,
 table.wp-list-table .column-number_of_rooms,
 table.wp-list-table .column-location {
-	width: 15%;
-}
-
+  width: 15%; }
 
 table.wp-list-table .column-booking_status {
-	width: 100px;
-}
+  width: 100px; }
+
 table.wp-list-table .column-booking_title,
 table.wp-list-table .column-check_in_out_date {
-	width: 15%;
-}
+  width: 15%; }
+
 table.wp-list-table .column-booking_date,
 table.wp-list-table .column-booking_guests,
 table.wp-list-table .column-booking_total {
-	width: 10%;
-}
-
-
-
+  width: 10%; }
 
 .awebooking-no-image {
-	width: 38px;
-	height: 38px;
-	display: inline-block;
-	background-color: #f7f7f7;
-	box-sizing: border-box;
-	border: solid 1px #eee;
-	border-radius: 2px;
-}
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  background-color: #f7f7f7;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: solid 1px #eee;
+  border-radius: 2px; }
 
 .wp-list-table .awebooking-column-image {
-	display: block;
-    text-indent: -9999px;
-    position: relative;
-    height: 1em;
-    width: 1em;
-    margin: 0 auto;
-}
+  display: block;
+  text-indent: -9999px;
+  position: relative;
+  height: 1em;
+  width: 1em;
+  margin: 0 auto; }
 
 .wp-list-table .awebooking-column-image:before {
-	font-family: Dashicons;
-    speak: none;
-    font-weight: 400;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    text-indent: 0px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    content: "\f128";
-    font-variant: normal normal;
-    margin: 0px;
-}
-
-
+  font-family: Dashicons;
+  speak: none;
+  font-weight: 400;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-indent: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  content: "\f128";
+  font-variant: normal normal;
+  margin: 0px; }
 
 .widefat small.meta {
   display: block;
   color: #999;
   font-size: inherit;
-  margin: 3px 0
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  margin: 3px 0; }
 
 .wp-badge.awebooking-badge {
-	background-image: url("../img/awebooking.png");
-	background-color: #2196F3;
-}
-
+  background-image: url("../img/awebooking.png");
+  background-color: #2196F3; }
 
 .abkngcal__day i {
-	position: absolute;
-	z-index: 25;
-	font-size: 10px;
-	bottom: 0px;
-	right: 0px;
-}
-
+  position: absolute;
+  z-index: 25;
+  font-size: 10px;
+  bottom: 0px;
+  right: 0px; }
 
 .abkngcal-container--fullwidth {
-	display: block;
-}
+  display: block; }
+
 .abkngcal-container--fullwidth table {
-	width: 100%;
-}
+  width: 100%; }
+
 .abkngcal-container--fullwidth .abkngcal__day > span,
-.abkngcal-container--fullwidth .abkngcal__day-heading > span  {
-	width: 100%;
-}
+.abkngcal-container--fullwidth .abkngcal__day-heading > span {
+  width: 100%; }
+
 .abkngcal-container--fullwidth .abkngcal__day,
 .abkngcal-container--fullwidth .abkngcal__day-heading {
-	width: auto;
-	min-width: 32px;
-}
-
+  width: auto;
+  min-width: 32px; }
 
 .abkngcal__day:not(.abkngcal__day--past) .abkngcal__price {
-	background-color: #efffd7;
-}
-.abkngcal__price-change {
-	background-color: #ffead6;
-}
-.abkngcal__night-selection {
-	z-index: 25;
-	position: absolute;
-}
-.abkngcal__month-heading {
-	width: 65px;
-}
+  background-color: #efffd7; }
 
+.abkngcal__price-change {
+  background-color: #ffead6; }
+
+.abkngcal__night-selection {
+  z-index: 25;
+  position: absolute; }
+
+.abkngcal__month-heading {
+  width: 65px; }
 
 .range-start > .abkngcal__night-selection,
 .range-end > .abkngcal__night-selection,
 .in-range > .abkngcal__night-selection,
 .in-hover > .abkngcal__night-selection {
-	background-color: rgba(188, 232, 241, 0.75);
-}
-
-
+  background-color: rgba(188, 232, 241, 0.75); }
 
 .abkngcal-container--pricing-rule .abkngcal__month-heading > span {
-	width: 125px;
-	text-align: left;
-}
+  width: 125px;
+  text-align: left; }
 
 .cmb-type-post-search-text .cmb-td .dashicons {
-    right: auto !important;
-}
+  right: auto !important; }
 
 ul.booking_notes li .note_content {
-    padding: 10px;
-    background: #efefef;
-    position: relative;
-}
+  padding: 10px;
+  background: #efefef;
+  position: relative; }
 
 ul.booking_notes li .note_content::after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: -10px;
-    left: 20px;
-    width: 0;
-    height: 0;
-    border-width: 10px 10px 0 0;
-    border-style: solid;
-    border-color: #efefef transparent;
-}
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-width: 10px 10px 0 0;
+  border-style: solid;
+  border-color: #efefef transparent; }
 
 ul.booking_notes li .note_content p {
-    margin: 0;
-    padding: 0;
-    word-wrap: break-word;
-}
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word; }
 
 ul.booking_notes li p.meta .exact-date {
-    border-bottom: 1px dotted #999;
-}
+  border-bottom: 1px dotted #999; }
 
 ul.booking_notes li p.meta {
-    padding: 10px;
-    color: #999;
-    margin: 0;
-    font-size: 11px;
-}
+  padding: 10px;
+  color: #999;
+  margin: 0;
+  font-size: 11px; }
 
 ul.booking_notes li a.delete_note {
-    color: #a00;
-}
+  color: #a00; }
 
 .add_note #add_booking_note {
-    width: 100%;
-    height: 50px;
-}
-
-
-
-
-
-
-
-
+  width: 100%;
+  height: 50px; }
 
 .wc-backbone-modal * {
-    box-sizing: border-box
-}
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .wc-backbone-modal .wc-backbone-modal-content {
-    position: fixed;
-    background: #fff;
-    z-index: 100000;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-    width: 500px
-}
+  position: fixed;
+  background: #fff;
+  z-index: 100000;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 500px; }
 
 .wc-backbone-modal .wc-backbone-modal-content article {
-    overflow: auto
-}
+  overflow: auto; }
 
 .wc-backbone-modal.wc-backbone-modal-shipping-method-settings .wc-backbone-modal-content {
-    width: 75%;
-    min-width: 500px
-}
+  width: 75%;
+  min-width: 500px; }
 
 .wc-backbone-modal .select2-container {
-    width: 100%!important
-}
+  width: 100% !important; }
 
 .wc-backbone-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: 360px;
-    background: #000;
-    opacity: .7;
-    z-index: 99900
-}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 360px;
+  background: #000;
+  opacity: .7;
+  z-index: 99900; }
 
 .wc-backbone-modal-main {
-    padding-bottom: 55px
-}
+  padding-bottom: 55px; }
 
-.wc-backbone-modal-main article,.wc-backbone-modal-main header {
-    display: block;
-    position: relative
-}
+.wc-backbone-modal-main article, .wc-backbone-modal-main header {
+  display: block;
+  position: relative; }
 
 .wc-backbone-modal-main .wc-backbone-modal-header {
-    height: auto;
-    background: #fcfcfc;
-    padding: 1em 1.5em;
-    border-bottom: 1px solid #ddd
-}
+  height: auto;
+  background: #fcfcfc;
+  padding: 1em 1.5em;
+  border-bottom: 1px solid #ddd; }
 
 .wc-backbone-modal-main .wc-backbone-modal-header h1 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.5em
-}
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5em; }
 
 .wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link {
-    cursor: pointer;
-    color: #777;
-    height: 54px;
-    width: 54px;
-    padding: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    text-align: center;
-    border: 0;
-    border-left: 1px solid #ddd;
-    background-color: transparent;
-    -webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
-    transition: color .1s ease-in-out,background .1s ease-in-out
-}
+  cursor: pointer;
+  color: #777;
+  height: 54px;
+  width: 54px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  border: 0;
+  border-left: 1px solid #ddd;
+  background-color: transparent;
+  -webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
+  transition: color .1s ease-in-out,background .1s ease-in-out; }
 
 .wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link::before {
-    font: normal 22px/50px dashicons!important;
-    color: #666;
-    display: block;
-    content: '\f335';
-    font-weight: 300
-}
+  font: normal 22px/50px dashicons !important;
+  color: #666;
+  display: block;
+  content: '\f335';
+  font-weight: 300; }
 
-.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:focus,.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:hover {
-    background: #ddd;
-    border-color: #ccc;
-    color: #000
-}
+.wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:focus, .wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:hover {
+  background: #ddd;
+  border-color: #ccc;
+  color: #000; }
 
 .wc-backbone-modal-main .wc-backbone-modal-header .modal-close-link:focus {
-    outline: 0
-}
+  outline: 0; }
 
 .wc-backbone-modal-main article {
-    padding: 1.5em
-}
+  padding: 1.5em; }
 
 .wc-backbone-modal-main article p {
-    margin: 1.5em 0
-}
+  margin: 1.5em 0; }
 
 .wc-backbone-modal-main article p:first-child {
-    margin-top: 0
-}
+  margin-top: 0; }
 
 .wc-backbone-modal-main article p:last-child {
-    margin-bottom: 0
-}
+  margin-bottom: 0; }
 
 .wc-backbone-modal-main article .pagination {
-    padding: 10px 0 0;
-    text-align: center
-}
+  padding: 10px 0 0;
+  text-align: center; }
 
 .wc-backbone-modal-main footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    padding: 1em 1.5em;
-    background: #fcfcfc;
-    border-top: 1px solid #dfdfdf;
-    box-shadow: 0 -4px 4px -4px rgba(0,0,0,.1)
-}
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  padding: 1em 1.5em;
+  background: #fcfcfc;
+  border-top: 1px solid #dfdfdf;
+  -webkit-box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1); }
 
 .wc-backbone-modal-main footer .inner {
-    float: right;
-    line-height: 23px
-}
+  float: right;
+  line-height: 23px; }
 
 .wc-backbone-modal-main footer .inner .button {
-    margin-bottom: 0
-}
+  margin-bottom: 0; }
+
+/*# sourceMappingURL=admin.css.map */

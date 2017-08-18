@@ -289,6 +289,24 @@ class Room_Type extends WP_Object {
 	}
 
 	/**
+	 * Get max overflow adults.
+	 *
+	 * @return int
+	 */
+	public function get_max_adults() {
+		return apply_filters( $this->prefix( 'get_max_adults' ), $this['max_adults'], $this );
+	}
+
+	/**
+	 * Returns allowed number adults for this room-type.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_adults() {
+		return $this->get_number_adults() + $this->get_max_adults();
+	}
+
+	/**
 	 * Get number children available for this room-type.
 	 *
 	 * @return int
@@ -307,12 +325,12 @@ class Room_Type extends WP_Object {
 	}
 
 	/**
-	 * Get max overflow adults.
+	 * Returns allowed number children for this room-type.
 	 *
 	 * @return int
 	 */
-	public function get_max_adults() {
-		return apply_filters( $this->prefix( 'get_max_adults' ), $this['max_adults'], $this );
+	public function get_allowed_children() {
+		return $this->get_number_children() + $this->get_max_children();
 	}
 
 	/**

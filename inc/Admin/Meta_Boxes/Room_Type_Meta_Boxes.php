@@ -146,7 +146,7 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 			'id'         => 'base_price',
 			'type'       => 'text_small',
 			'name'       => sprintf( esc_html__( 'Starting price (%s)', 'awebooking' ), esc_html( $currency->get_symbol() ) ),
-			'validate'   => 'required|numeric:min:0',
+			'validate'   => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
 			'before'     => '<div class="skeleton-input-group">',
 			'after'      => '<span class="skeleton-input-group__addon">per night</span></div>',

@@ -1,3 +1,6 @@
-## AweBooking Beta 2
+TODO:
 
-	☐ New Booking way
+	✔ Clean "inc/Admin/Pages" @done (17-08-18 15:09)
+	☐ Improve Form API
+	☐ Controller ajax add booking item in booking page
+	☐ Controller edit booking item in booking page

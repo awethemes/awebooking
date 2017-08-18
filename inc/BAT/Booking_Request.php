@@ -6,7 +6,7 @@ use AweBooking\Room_State;
 use AweBooking\Support\Date_Period;
 use AweBooking\Interfaces\Booking_Request as Booking_Request_Interface;
 
-class Request implements Booking_Request_Interface {
+class Booking_Request implements Booking_Request_Interface {
 	/**
 	 * Date Period instance.
 	 *

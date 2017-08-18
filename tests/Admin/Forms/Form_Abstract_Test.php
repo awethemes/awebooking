@@ -4,7 +4,7 @@ use AweBooking\Admin\Forms\Form_Abstract;
 
 class Test_Admin_Form extends Form_Abstract {
 	protected $form_id = 'asdfghjkl';
-	public function register_fields() {
+	public function fields() {
 		$this->add_field([
 			'id' => 'id_1',
 			'type' => 'text',

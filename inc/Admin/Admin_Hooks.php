@@ -30,14 +30,6 @@ class Admin_Hooks extends Service_Hooks {
 			return new Admin_Notices;
 		});
 
-		$container->bind( 'admin.add_booking_item', function() {
-			return new Add_Booking_Item( new Add_Booking_Form );
-		});
-
-		$container->bind( 'admin.edit_booking_item', function() {
-			return new Edit_Booking_Item( new Edit_Booking_Form );
-		});
-
 		$container->bind( 'admin_welcome', function() {
 			return new Admin_Welcome;
 		});
@@ -94,8 +86,6 @@ class Admin_Hooks extends Service_Hooks {
 	 */
 	public function init( $awebooking ) {
 		$awebooking->make( 'admin_menu' )->init();
-		$awebooking->make( 'admin.add_booking_item' )->init();
-		$awebooking->make( 'admin.edit_booking_item' )->init();
 
 		new Admin_Ajax;
 		new Action_Handler;
@@ -257,6 +247,9 @@ class Admin_Hooks extends Service_Hooks {
 
 		wp_enqueue_style( 'awebooking-admin' );
 		wp_enqueue_script( 'awebooking-admin' );
+
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
 
 		do_action( 'awebooking/register_admin_scripts', $current_screen );
 	}

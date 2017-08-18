@@ -1,3 +1,10 @@
+<?php
+
+use AweBooking\Admin\Forms\Booking_Form;
+use AweBooking\Admin\Forms\Add_Booking_Form;
+
+?>
+
 <style type="text/css">
 	table.awebooking-striped-table {
 		border-left: none;
@@ -106,7 +113,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="4">
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-add-item&booking=' . $the_booking->get_id() ) ); ?>" class="button"><?php echo esc_html__( 'Add accommodation', 'awebooking' ); ?></a>
+						<a href="#" class="button open-my-dialog"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
 						<a href="#" class="button">Add service</a>
 					</td>
 
@@ -120,4 +127,14 @@
 	</div>
 
 	</div>
+</div>
+
+
+<!-- The modal / dialog box, hidden somewhere near the footer -->
+<div id="my-dialog" class="hidden" style="max-width:800px">
+	<div class="dialog-contents">
+		<?php echo (new Add_Booking_Form)->output(); ?>
+	</div>
+
+	<button class="button">Submit</button>
 </div>

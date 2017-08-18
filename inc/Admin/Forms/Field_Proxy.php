@@ -19,6 +19,13 @@ class Field_Proxy {
 	protected $field;
 
 	/**
+	 * Cache the field visible.
+	 *
+	 * @var bool
+	 */
+	protected static $visible = true;
+
+	/**
 	 * Create a new proxy instance.
 	 *
 	 * @param Form_Abstract $form  The Form instance.
@@ -58,6 +65,43 @@ class Field_Proxy {
 	 */
 	public function set_value( $value ) {
 		$this->field->value = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Show the field.
+	 *
+	 * @return $this
+	 */
+	public function hide() {
+		static::$visible = true;
+
+		return $this->toggle();
+	}
+
+	/**
+	 * Hide the field.
+	 *
+	 * @return $this
+	 */
+	public function show() {
+		static::$visible = false;
+
+		return $this->toggle();
+	}
+
+	/**
+	 * Set or toggle field visibility.
+	 *
+	 * @return $this
+	 */
+	public function toggle() {
+		static::$visible = ! static::$visible;
+
+		$this->field->set_prop( 'show_on_cb',
+			static::$visible ? '__return_true' : '__return_false'
+		);
 
 		return $this;
 	}

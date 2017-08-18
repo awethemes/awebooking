@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\BAT\Request;
+use AweBooking\BAT\Booking_Request;
 use AweBooking\Support\Date_Period;
 // use AweBooking\Interfaces\Booking_Request;
 
@@ -12,7 +12,7 @@ class Booking_Request_Test extends WP_UnitTestCase {
 		parent::setUp();
 
 		$this->period = new Date_Period( '2017-10-10', '2017-10-20', false );
-		$this->request = new Request( $this->period, [
+		$this->request = new Booking_Request( $this->period, [
 			'adults' => 10,
 			'children' => 2,
 		]);

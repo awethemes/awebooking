@@ -79,19 +79,30 @@ class Date_Period extends Period {
 	}
 
 	/**
-	 * Validate the period in strict.
+	 * Validate period for require minimum night(s).
+	 *
+	 * @param  integer $nights Minimum night(s) to required, default 1.
+	 * @return void
 	 *
 	 * @throws \LogicException
-	 * @throws \RangeException
+	 */
+	public function require_minimum_nights( $nights = 1 ) {
+		if ( $this->nights() < $nights ) {
+			throw new \LogicException(
+				sprintf( esc_html__( 'The date period must be have minimum %s night(s).', 'awebooking' ), $nights )
+			);
+		}
+	}
+
+	/**
+	 * Validate the period in strict.
 	 *
 	 * @param  bool $strict Strict mode validation past date.
 	 * @return void
+	 *
+	 * @throws \RangeException
 	 */
 	protected function validate_period( $strict ) {
-		/*if ( $this->nights() === 0 ) {
-			throw new \LogicException( esc_html__( 'The date period must be have minimum one night.', 'awebooking' ) );
-		}*/
-
 		if ( $strict && $this->isBefore( Carbon::today() ) ) {
 			throw new \RangeException( esc_html__( 'The date period must be greater or equal to the today.', 'awebooking' ) );
 		}
