@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Support\Mail;
 
-use AweBooking\Interfaces\Mailable as Mailable_Interface;
-
 class Mailer {
 	/**
 	 * Email addresses to send message.
@@ -97,10 +95,10 @@ class Mailer {
 	/**
 	 * Send mailable template.
 	 *
-	 * @param  Mailable_Interface $mail Mailable object instance.
+	 * @param  Mailable $mail Mailable object instance.
 	 * @return bool
 	 */
-	public function send( Mailable_Interface $mail ) {
+	public function send( Mailable $mail ) {
 		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
 		add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
 

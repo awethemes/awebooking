@@ -5,7 +5,6 @@ use DateTime;
 use AweBooking\AweBooking;
 use AweBooking\Interfaces\Price;
 use AweBooking\Interfaces\Currency;
-use AweBooking\Service;
 
 class Formatting {
 	/**

@@ -50,16 +50,7 @@ class Logic_Hooks extends Service_Hooks {
 			return;
 		}
 
-		// Just re-save to update booking meta-data.
-		// $booking = new Booking( $postid );
-		// $booking->save();
-
-		/**
-		 * Fire action after a booking saved.
-		 *
-		 * @param AweBooking\Booking $booking The booking instance.
-		 */
-		// do_action( 'awebooking/save_booking', $booking );
+		// ...
 	}
 
 	/**
@@ -82,7 +73,7 @@ class Logic_Hooks extends Service_Hooks {
 
 		// First, restore the room state to "available".
 		$the_booking  = new Booking( absint( $postid ) );
-		$booking_room = $the_booking->get_booking_room();
+		$booking_room = $the_booking->get_room_unit();
 
 		if ( $booking_room instanceof Room && $booking_room->exists() ) {
 			try {

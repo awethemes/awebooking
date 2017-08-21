@@ -2,13 +2,12 @@
 namespace AweBooking\Admin;
 
 use WP_List_Table;
-use Carbon\Carbon;
-use AweBooking\Room;
-use AweBooking\Room_State;
-use AweBooking\BAT\Calendar;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_State;
+use AweBooking\Booking\Calendar;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 use AweBooking\Support\Date_Period;
-use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Carbonate;
 
 class Availability_Management extends WP_List_Table {
 
@@ -22,12 +21,12 @@ class Availability_Management extends WP_List_Table {
 		parent::__construct();
 
 		$this->store = awebooking()->make( 'store.room' );
-		$this->current = new Carbon;
+		$this->current = new Carbonate;
 
 		$current_year = date( 'Y' );
 		$_year = isset( $_GET['year'] ) ? (int) $_GET['year'] : $current_year;
 
-		if ( ! Date_Utils::is_valid_year( $_year ) ) {
+		if ( ! Carbonate::is_valid_year( $_year ) ) {
 			$_year = $current_year;
 		}
 		$this->_year = $_year;
@@ -268,7 +267,7 @@ class Availability_Management extends WP_List_Table {
 	/**
 	 * Handles the default column output.
 	 *
-	 * @param \AweBooking\Room $room        The Room object.
+	 * @param \AweBooking\Hotel\Room $room        The Room object.
 	 * @param string           $column_name Column name.
 	 */
 	protected function column_default( $room, $column_name ) {

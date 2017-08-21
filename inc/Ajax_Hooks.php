@@ -2,8 +2,7 @@
 namespace AweBooking;
 
 use AweBooking\AweBooking;
-use AweBooking\BAT\Factory;
-use AweBooking\BAT\Session_Booking_Request;
+use AweBooking\Booking\Session_Booking_Request;
 use AweBooking\Support\Formatting;
 use Skeleton\Container\Service_Hooks;
 use AweBooking\Pricing\Price_Calculator;

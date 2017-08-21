@@ -4,11 +4,10 @@ namespace AweBooking\Admin;
 use WP_Query;
 use WP_List_Table;
 use AweBooking\Rate;
-use AweBooking\Room_Type;
-use AweBooking\Rate_Pricing;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\Pricing\Price;
 use AweBooking\Admin\Calendar\Pricing_Calendar;
-use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Date_Period;
 
 class Pricing_Management extends WP_List_Table {
@@ -30,7 +29,7 @@ class Pricing_Management extends WP_List_Table {
 		$current_year = (int) date( 'Y' );
 		$_year = isset( $_GET['year'] ) ? (int) $_GET['year'] : $current_year;
 
-		if ( ! Date_Utils::is_valid_year( $_year ) ) {
+		if ( ! Carbonate::is_valid_year( $_year ) ) {
 			$_year = $current_year;
 		}
 

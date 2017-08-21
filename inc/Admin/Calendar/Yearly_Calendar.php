@@ -3,9 +3,9 @@
 namespace AweBooking\Admin\Calendar;
 
 use Carbon\Carbon;
-use AweBooking\Room;
-use AweBooking\Room_State;
-use AweBooking\BAT\Calendar;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_State;
+use AweBooking\Booking\Calendar;
 use AweBooking\Support\Date_Period;
 
 class Yearly_Calendar {

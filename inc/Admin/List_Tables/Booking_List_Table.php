@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
-use AweBooking\Booking;
+use AweBooking\Booking\Booking;
 use AweBooking\AweBooking;
 use AweBooking\Support\Date_Period;
 
@@ -153,7 +153,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			break;
 
 			case 'booking_rooms':
-				$the_room = $the_booking->get_booking_room();
+				$the_room = $the_booking->get_room_unit();
 
 				if ( is_null( $the_room ) ) {
 					printf( '<span class="awebooking-invalid">%s</span>', esc_html__( 'Room was not available by time selected', 'awebooking' ) );

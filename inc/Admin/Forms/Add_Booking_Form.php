@@ -3,8 +3,8 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking_Room_Item;
-use AweBooking\BAT\Booking_Request;
+use AweBooking\Booking\Booking_Room_Item;
+use AweBooking\Booking\Booking_Request;
 use AweBooking\Support\Date_Period;
 
 class Add_Booking_Form extends Form_Abstract {

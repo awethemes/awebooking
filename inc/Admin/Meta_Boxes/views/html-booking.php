@@ -45,8 +45,8 @@ use AweBooking\Admin\Forms\Add_Booking_Form;
 			</thead>
 
 			<tbody>
-			<?php foreach ( $the_booking->get_room_items() as $room_item ) :
-				$room_unit = $room_item->get_booking_room(); ?>
+			<?php foreach ( $the_booking->get_line_items() as $room_item ) :
+				$room_unit = $room_item->get_room_unit(); ?>
 				<tr>
 					<td>
 						<?php echo esc_html( $room_item->get_name() ); ?>

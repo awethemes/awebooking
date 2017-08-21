@@ -1,10 +1,10 @@
 <?php
 
-use AweBooking\Room;
-use AweBooking\Room_type;
-use AweBooking\Support\Date_Utils;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_type;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Date_Period;
-use AweBooking\BAT\Booking_Request;
+use AweBooking\Booking\Booking_Request;
 use Skeleton\CMB2\CMB2;
 
 $cmb2 = new CMB2([
@@ -70,7 +70,7 @@ $cmb2->add_field( array(
 if ( ! empty( $_REQUEST['check_in'] ) ) {
 	$check_in_request = sanitize_text_field( wp_unslash( $_REQUEST['check_in'] ) );
 
-	if ( Date_Utils::is_standard_date_format( $check_in_request ) ) {
+	if ( Carbonate::is_standard_date_format( $check_in_request ) ) {
 		$cmb2->get_field( 'check_in' )->set_prop( 'default', $check_in_request );
 	}
 }
@@ -78,7 +78,7 @@ if ( ! empty( $_REQUEST['check_in'] ) ) {
 if ( ! empty( $_REQUEST['check_out'] ) ) {
 	$check_out_request = sanitize_text_field( wp_unslash( $_REQUEST['check_out'] ) );
 
-	if ( Date_Utils::is_standard_date_format( $check_out_request ) ) {
+	if ( Carbonate::is_standard_date_format( $check_out_request ) ) {
 		$cmb2->get_field( 'check_out' )->set_prop( 'default', $check_out_request );
 	}
 }

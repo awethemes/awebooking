@@ -1,8 +1,8 @@
 <?php
 namespace AweBooking\Admin\Meta_Boxes;
 
-use AweBooking\Room;
-use AweBooking\Room_Type;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_Type;
 
 class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	/**

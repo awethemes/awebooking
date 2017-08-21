@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking_Room_Item;
+use AweBooking\Booking\Booking_Room_Item;
 
 class Edit_Booking_Form extends Form_Abstract {
 	/**

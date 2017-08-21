@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Carbonate;
 
 class Booking_Form extends Form_Abstract {
 	/**
@@ -44,7 +44,7 @@ class Booking_Form extends Form_Abstract {
 			'time_format'       => 'H:i:s',
 			'default_cb'        => function( $a ) {
 				global $post;
-				return Date_Utils::create_datetime( $post->post_date )->getTimestamp();
+				return Carbonate::create_datetime( $post->post_date )->getTimestamp();
 			},
 			'attributes'        => [
 				'data-timepicker' => json_encode([

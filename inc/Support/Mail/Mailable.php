@@ -2,9 +2,8 @@
 namespace AweBooking\Support\Mail;
 
 use Pelago\Emogrifier;
-use AweBooking\Interfaces\Mailable as Mailable_Interface;
 
-abstract class Mailable implements Mailable_Interface {
+abstract class Mailable {
 	/**
 	 * Styling for mailable.
 	 *

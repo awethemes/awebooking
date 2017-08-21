@@ -3,15 +3,18 @@ namespace AweBooking;
 
 use WP_Session;
 use Skeleton\WP_Option;
+use AweBooking\Hotel\Service;
+use AweBooking\Hotel\Room_State;
+use AweBooking\Booking\Booking;
+use AweBooking\Booking\Concierge;
+use AweBooking\Admin\Admin_Hooks;
+use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as SkeletonContainer;
 
-use AweBooking\BAT\Availability;
-use AweBooking\Admin\Admin_Hooks;
-
 class AweBooking extends SkeletonContainer {
-	const VERSION = '3.0.0-beta3';
-
 	/* Constants */
+	const VERSION        = '3.0.0-beta3';
+
 	const DATE_FORMAT    = 'Y-m-d';
 	const JS_DATE_FORMAT = 'yy-mm-dd';
 
@@ -22,13 +25,6 @@ class AweBooking extends SkeletonContainer {
 	const HOTEL_SERVICE  = 'hotel_extra_service';
 
 	const SETTING_KEY    = 'awebooking_settings';
-
-	/**
-	 * //
-	 *
-	 * @var array
-	 */
-	protected $ajax = [];
 
 	/**
 	 * The current globally available container (if any).
@@ -66,8 +62,6 @@ class AweBooking extends SkeletonContainer {
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
 		$this->trigger( new Ajax_Hooks );
-
-		new Service_Tax;
 
 		static::$instance = $this;
 
@@ -131,36 +125,26 @@ class AweBooking extends SkeletonContainer {
 			);
 		};
 
-
 		$this['flash_message'] = function () {
 			return new Support\Flash_Message;
 		};
 
 		// Binding stores.
 		$this->bind( 'store.booking', function() {
-			return new BAT\Store( 'awebooking_booking', 'room_id' );
+			return new Booking_Store( 'awebooking_booking', 'room_id' );
 		});
 
 		$this->bind( 'store.availability', function() {
-			return new BAT\Store( 'awebooking_availability', 'room_id' );
+			return new Booking_Store( 'awebooking_availability', 'room_id' );
 		});
 
 		$this->bind( 'store.pricing', function() {
-			return new BAT\Store( 'awebooking_pricing', 'rate_id' );
+			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
 		});
 
 		$this->bind( 'concierge', function( $awebooking ) {
-			return new BAT\Concierge( $awebooking );
+			return new Concierge( $awebooking );
 		});
-
-		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
-	}
-
-	/**
-	 * Register Awebooking_Check_Availability_Widget
-	 */
-	public function register_widgets() {
-		register_widget( 'AweBooking\\Widgets\\Check_Availability_Widget' );
 	}
 
 	/**
@@ -170,10 +154,6 @@ class AweBooking extends SkeletonContainer {
 		do_action( 'awebooking/init', $this );
 
 		parent::boot();
-
-		Shortcodes\Shortcodes::init();
-
-		// new Migrations\AweBooking2_Migration;
 
 		// Make sure the options are copied if needed.
 		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {

@@ -3,7 +3,7 @@ namespace AweBooking\Admin;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking_Room_Item;
+use AweBooking\Booking\Booking_Room_Item;
 use AweBooking\Support\Date_Period;
 use AweBooking\Admin\Forms\Add_Booking_Form;
 use Skeleton\Support\Validator;

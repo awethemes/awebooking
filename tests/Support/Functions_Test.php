@@ -1,7 +1,5 @@
 <?php
 
-use AweBooking\Support\Date_Utils;
-
 class Functions_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();

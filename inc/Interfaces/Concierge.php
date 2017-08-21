@@ -2,8 +2,8 @@
 namespace AweBooking\Interfaces;
 
 use AweBooking\Rate;
-use AweBooking\Room;
-use AweBooking\Room_Type;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\Support\Date_Period;
 
 interface Concierge {

@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
-use AweBooking\Service;
+use AweBooking\Hotel\Service;
 use AweBooking\AweBooking;
 use AweBooking\Support\Formatting;
 

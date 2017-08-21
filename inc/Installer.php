@@ -13,6 +13,8 @@ class Installer {
 		$current_version = get_option( 'awebooking_version', null );
 		$current_db_version = get_option( 'awebooking_db_version', null );
 
+		// TODO: Must run create CPT, taxonomy...
+
 		// No versions? This is a new install :).
 		if ( is_null( $current_version ) && is_null( $current_db_version ) && apply_filters( 'awebooking/enable_setup_wizard', true ) ) {
 			set_transient( '_awebooking_activation_redirect', 1, 30 );

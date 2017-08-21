@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin;
 
-use AweBooking\Room;
+use AweBooking\Hotel\Room;
 use AweBooking\Support\Date_Period;
 use AweBooking\Admin\Forms\Add_Booking_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;

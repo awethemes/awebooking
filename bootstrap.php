@@ -19,8 +19,8 @@ if ( ! defined( 'SKELETON_LOADED' ) ) {
 require_once trailingslashit( __DIR__ ) . 'vendor/ericmann/wp-session-manager/wp-session-manager.php';
 require_once trailingslashit( __DIR__ ) . 'vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
 
-require_once trailingslashit( __DIR__ ) . 'inc/Support/functions.php';
-require_once trailingslashit( __DIR__ ) . 'inc/Support/template-functions.php';
+require_once trailingslashit( __DIR__ ) . 'inc/functions.php';
+require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );

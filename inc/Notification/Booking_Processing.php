@@ -2,10 +2,10 @@
 namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
-use AweBooking\Room_Type;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\Support\Mailable;
 use AweBooking\Support\Formatting;
-use AweBooking\Support\Date_Utils;
+use AweBooking\Support\Carbonate;
 
 class Booking_Processing extends Mailable {
 	protected $booking;
@@ -39,8 +39,8 @@ class Booking_Processing extends Mailable {
 		return $this->get_template( 'processing-booking', [
 			'booking_id'           => $this->booking->get_id(),
 			'room_name'            => $room_type->get_title(),
-			'check_in'             => Date_Utils::create_date( $this->booking['check_in'] )->format( 'Y/m/d' ),
-			'check_out'            => Date_Utils::create_date( $this->booking['check_out'] )->format( 'Y/m/d' ),
+			'check_in'             => Carbonate::create_date( $this->booking['check_in'] )->format( 'Y/m/d' ),
+			'check_out'            => Carbonate::create_date( $this->booking['check_out'] )->format( 'Y/m/d' ),
 			'nights'               => $this->booking->get_nights(),
 			'extra_services_name'  => $extra_services_name,
 			'room_type_price'      => (string) $this->booking['room_total'],

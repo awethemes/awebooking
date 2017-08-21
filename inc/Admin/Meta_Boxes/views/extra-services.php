@@ -1,7 +1,7 @@
 <?php
 use AweBooking\AweBooking;
-use AweBooking\Service_Tax;
-use AweBooking\Service;
+use AweBooking\Hotel\Service_Tax;
+use AweBooking\Hotel\Service;
 
 $operation_options = awebooking()->get_service_operations();
 $type_options = Service_Tax::type_options();

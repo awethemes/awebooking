@@ -13,6 +13,7 @@ composer.json
 composer.lock
 gulpfile.js
 Gruntfile.js
+webpack.mix.js
 package.json
 package-lock.json
 phpunit.xml

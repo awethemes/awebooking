@@ -2,12 +2,10 @@
 namespace AweBooking;
 
 use Exception;
-use AweBooking\Room_Type;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
-use AweBooking\BAT\Factory;
-use AweBooking\BAT\Booking_Request;
-use AweBooking\BAT\Session_Booking_Request;
+use AweBooking\Booking\Booking_Request;
 use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
 use AweBooking\Notification\Booking_Created;

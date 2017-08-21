@@ -234,7 +234,7 @@ class Admin_Hooks extends Service_Hooks {
 		wp_register_script( 'awebooking-create-booking', $awebooking_url . '/assets/js/admin/create-booking' . $suffix . '.js', array( 'awebooking-admin' ), $version, true );
 
 		// Send AweBooking object.
-		wp_localize_script( 'awebooking-admin', 'ABKNG', array(
+		wp_localize_script( 'awebooking-admin', '_awebookingConfigs', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'strings'  => array(
 				'warning' => esc_html__( 'Are you sure you want to do this?', 'awebooking' ),

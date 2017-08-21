@@ -2,8 +2,8 @@
 namespace AweBooking\Migrations;
 
 use Carbon\Carbon;
-use AweBooking\Booking;
-use AweBooking\Room_State;
+use AweBooking\Booking\Booking;
+use AweBooking\Hotel\Room_State;
 use AweBooking\Support\Formatting;
 
 class AweBooking2_Migration {

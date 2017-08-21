@@ -1,17 +1,17 @@
 <?php
 namespace AweBooking\Admin\Meta_Boxes;
 
-use AweBooking\Room;
-use AweBooking\Booking;
-use AweBooking\Room_Type;
-use AweBooking\Service;
+use AweBooking\Factory;
 use AweBooking\AweBooking;
+use AweBooking\Hotel\Room;
+use AweBooking\Booking\Booking;
+use AweBooking\Hotel\Room_Type;
+use AweBooking\Hotel\Service;
 use AweBooking\Pricing\Price;
 use AweBooking\Currency\Currency;
 use AweBooking\Support\Date_Period;
 use AweBooking\Support\Formatting;
 use Skeleton\CMB2\CMB2;
-use AweBooking\Support\Date_Utils;
 use AweBooking\Support\Mailer;
 use AweBooking\Notification\Booking_Cancelled;
 use AweBooking\Notification\Booking_Processing;
@@ -55,7 +55,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	}
 
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'awebooking-booking', AweBooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery' ), AweBooking::VERSION, true );
+		wp_enqueue_script( 'awebooking-booking', awebooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery' ), AweBooking::VERSION, true );
 		wp_localize_script( 'awebooking-booking', 'awebooking_booking_ajax', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		));
@@ -74,8 +74,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			return;
 		}
 
-		$the_booking = new Booking( $post );
-
+		$the_booking = Factory::get_booking( $post );
 		include trailingslashit( __DIR__ ) . 'views/html-booking.php';
 	}
 
@@ -163,7 +162,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	/**
 	 * Handler booking actions.
 	 *
-	 * @param  AweBooking\Booking $booking booking obj.
+	 * @param  AweBooking\Booking\Booking $booking booking obj.
 	 */
 	public function handler_booking_actions( Booking $booking ) {
 
