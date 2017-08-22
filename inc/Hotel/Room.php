@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Hotel;
 
-use AweBooking\Booking\Calendar;
+use AweBooking\Factory;
 use AweBooking\Support\WP_Object;
 use AweBooking\Support\Date_Period;
 use AweBooking\Support\Traits\BAT_Unit;
@@ -128,9 +128,7 @@ class Room extends WP_Object implements Unit_Interface {
 		}
 
 		// Create the availability calendar.
-		$calendar = new Calendar( [ $this ],
-			awebooking()->make( 'store.availability' )
-		);
+		$calendar = Factory::create_availability_calendar( [ $this ] );
 
 		// Here that's why we subtract a minute from end date:
 		// We have period from: 2017-10-10 to 2017-10-13, so have 3 nights (10-11, 11-12, 12-13).

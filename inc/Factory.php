@@ -3,6 +3,7 @@ namespace AweBooking;
 
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
+use AweBooking\Hotel\Room_State;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Calendar;
 use AweBooking\Booking\Items\Booking_Item;
@@ -14,17 +15,6 @@ use AweBooking\Booking\Items\Booking_Item;
  */
 class Factory {
 	/**
-	 * Create availability calendar.
-	 *
-	 * @param  array   $rooms         Array of rooms.
-	 * @param  integer $default_state Default availability state.
-	 * @return Calendar
-	 */
-	public static function create_availability_calendar( array $rooms, $default_state = Room_State::AVAILABLE ) {
-		return new Calendar( $rooms, awebooking( 'store.availability' ), $default_state );
-	}
-
-	/**
 	 * Create booking calendar.
 	 *
 	 * @param  array   $rooms      Array of rooms.
@@ -33,6 +23,17 @@ class Factory {
 	 */
 	public static function create_booking_calendar( array $rooms, $booking_id = 0 ) {
 		return new Calendar( $rooms, awebooking( 'store.booking' ), $booking_id );
+	}
+
+	/**
+	 * Create availability calendar.
+	 *
+	 * @param  array   $rooms         Array of rooms.
+	 * @param  integer $default_state Default availability state.
+	 * @return Calendar
+	 */
+	public static function create_availability_calendar( array $rooms, $default_state = Room_State::AVAILABLE ) {
+		return new Calendar( $rooms, awebooking( 'store.availability' ), $default_state );
 	}
 
 	/**
@@ -155,20 +156,20 @@ class Factory {
 			return;
 		}
 
+
+
 		return new $class( $a['booking_item_id'] );
 	}
 
 	protected static function resolve_booking_item_class( $type ) {
 		$class_maps = apply_filters( 'awebooking/booking_item_class_maps', [
-			'line_item'    => 'AweBooking\\Booking_Room_Item',
-			'service_item' => 'AweBooking\\Booking_Service_Item',
+			'line_item'    => 'AweBooking\\Booking\\Line_Item',
+			'service_item' => 'AweBooking\\\Booking\\Service_Item',
 		]);
 
 		if ( isset( $class_maps[ $type ] ) ) {
 			return $class_maps[ $type ];
 		}
-
-		return 'AweBooking\\Booking_Item';
 	}
 
 	/**

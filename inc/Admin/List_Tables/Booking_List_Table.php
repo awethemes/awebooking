@@ -195,7 +195,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 		}
 
 		printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
-			'<a href="' . admin_url( 'post.php?post=' . absint( $booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $booking->get_booking_id() ) . '</strong></a>',
+			'<a href="' . admin_url( 'post.php?post=' . absint( $booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $booking->get_id() ) . '</strong></a>',
 			$username
 		);
 

@@ -1,9 +1,10 @@
 <?php
-namespace AweBooking\Booking\Items;
+namespace AweBooking\Booking\Traits;
 
 use AweBooking\Factory;
+use AweBooking\Support\Collection;
 
-trait Booking_Item_Trait {
+trait Booking_Items_Trait {
 	/**
 	 * Booking items will be stored here.
 	 *
@@ -57,15 +58,13 @@ trait Booking_Item_Trait {
 	 * @return boolean
 	 */
 	public function remove_item( $item_id ) {
-		$item = Factory::resolve_booking_item( $item_id );
-
-		if ( ! $item || ! $this->has_item( $item_id ) ) {
+		if ( ! $this->has_item( $item_id ) ) {
 			return false;
 		}
 
 		// Unset and remove later.
 		foreach ( $this->items->all() as $index => $_item ) {
-			if ( $item->get_id() === $_item->get_id() ) {
+			if ( (int) $item_id === $_item->get_id() ) {
 				$this->items->forget( $index );
 				break;
 			}
@@ -93,10 +92,16 @@ trait Booking_Item_Trait {
 	 * @return Booking_Item|null
 	 */
 	public function get_item( $item_id ) {
-		$item_id = ( $item_id instanceof Booking_Item ) ? $item_id->get_id() : (int) $item_id;
+		$found_item = Factory::resolve_booking_item( $item_id );
+
+		if ( ! $found_item || ! $found_item->exists() ) {
+			return;
+		}
+
+		$this->setup_booking_items();
 
 		foreach ( $this->items->all() as $key => $item ) {
-			if ( $item->get_id() === $item_id ) {
+			if ( $item->get_id() === $found_item->get_id() ) {
 				return $item;
 			}
 		}
@@ -109,9 +114,36 @@ trait Booking_Item_Trait {
 	 * @return Collection
 	 */
 	public function get_items( $type ) {
+		$this->setup_booking_items();
+
 		return $this->items->filter(function( $item ) {
 			return $item->get_type() === $type;
 		});
+	}
+
+	/**
+	 * Returns collection of line items.
+	 *
+	 * @return Collection
+	 */
+	public function get_line_items() {
+		return $this->get_items( 'line_item' );
+	}
+
+	/**
+	 * Gets the count of booking items of a certain type.
+	 *
+	 * @param  string $item_type Item type.
+	 * @return string
+	 */
+	public function get_item_count( $item_type = 'line_item' ) {
+		$count = 0;
+
+		foreach ( $this->get_items( $item_type ) as $item ) {
+			$count += $item->get_quantity();
+		}
+
+		return apply_filters( $this->prefix( 'get_item_count' ), $count, $item_type, $this );
 	}
 
 	/**
@@ -131,16 +163,7 @@ trait Booking_Item_Trait {
 	}
 
 	/**
-	 * Returns collection of line items.
-	 *
-	 * @return Collection
-	 */
-	public function get_line_items() {
-		return $this->get_items( 'line_item' );
-	}
-
-	/**
-	 * Get and setup booking items from database.
+	 * Setup booking items from database.
 	 *
 	 * @return void
 	 */
@@ -149,19 +172,25 @@ trait Booking_Item_Trait {
 			return;
 		}
 
-		// Try get in the cache first.
-		$items = wp_cache_get( $this->get_id(), 'awebooking_cache_booking_items' );
+		if ( ! is_null( $this->items ) ) {
+			return;
+		}
 
-		if ( false === $items ) {
+		$this->items = new Collection;
+
+		// Try get in the cache first.
+		$db_items = wp_cache_get( $this->get_id(), 'awebooking_cache_booking_items' );
+
+		if ( false === $db_items ) {
 			global $wpdb;
 
-			$items = $wpdb->get_results(
+			$db_items = $wpdb->get_results(
 				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`", $this->get_id() ),
 				ARRAY_A
 			);
 
 			// Cache each single item.
-			foreach ( $items as &$item ) {
+			foreach ( $db_items as &$item ) {
 				// Santize before cache current booking-item.
 				$item['booking_id'] = (int) $item['booking_id'];
 				$item['booking_item_id'] = (int) $item['booking_item_id'];
@@ -169,18 +198,14 @@ trait Booking_Item_Trait {
 				wp_cache_add( $item['booking_item_id'], $item, 'awebooking_cache_booking_item' );
 			}
 
-			wp_cache_add( $this->get_id(), $items, 'awebooking_cache_booking_items' );
+			wp_cache_add( $this->get_id(), $db_items, 'awebooking_cache_booking_items' );
 		}
 
-		// TODO: ...
-		foreach ( $items as $item ) {
+		foreach ( $db_items as $item ) {
 			$booking_item = Factory::resolve_booking_item( $item );
-			if ( ! $booking_item ) {
-				continue;
+			if ( $booking_item ) {
+				$this->add_item( $booking_item );
 			}
-
-			// Maybe have bugs in this.
-			$this->add_item( $booking_item );
-		}
+		} // End foreach().
 	}
 }

@@ -84,6 +84,29 @@ function awebooking_sanitize_period( $value, $strict = false ) {
  */
 
 /**
+ * Create an array of instantiated of a class.
+ *
+ * @param  array           $ids   An array IDs.
+ * @param  string|callable $class Class or callable instance.
+ * @return array
+ */
+function awebooking_create_instance( array $ids, $class ) {
+	$returns = array_map( function( $id ) {
+		if ( ! is_numeric( $id ) ) {
+			return;
+		}
+
+		if ( class_exists( $class ) ) {
+			return new $class( $id );
+		} elseif ( is_callable( $class ) ) {
+			return call_user_func_array( $class, [ $id ] );
+		}
+	}, $ids );
+
+	return array_filter( $returns );
+}
+
+/**
  * Make a list sort by priority.
  *
  * @param  array $values An array values.
@@ -98,9 +121,6 @@ function awebooking_priority_list( array $values ) {
 	}
 
 	return $stack;
-}
-
-function awebooking_factory( array $ids, $class = '' ) {
 }
 
 if ( ! function_exists( 'wp_data_callback' ) ) :

@@ -17,7 +17,7 @@ if ( ! defined( 'SKELETON_LOADED' ) ) {
 }
 
 require_once trailingslashit( __DIR__ ) . 'vendor/ericmann/wp-session-manager/wp-session-manager.php';
-require_once trailingslashit( __DIR__ ) . 'vendor/WebDevStudios/Taxonomy_Single_Term/class.taxonomy-single-term.php';
+require_once trailingslashit( __DIR__ ) . 'vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php';
 
 require_once trailingslashit( __DIR__ ) . 'inc/functions.php';
 require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';

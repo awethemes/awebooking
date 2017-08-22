@@ -1,18 +1,13 @@
 <?php
 namespace AweBooking\Booking;
 
-use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Pricing\Price;
 use AweBooking\Hotel\Room_State;
-use AweBooking\Currency\Currency;
 use AweBooking\Support\WP_Object;
-use AweBooking\Support\Collection;
-use AweBooking\Support\Carbonate;
-use AweBooking\Support\Date_Period;
 
 class Booking extends WP_Object {
-	use Items\Booking_Item_Trait;
+	use Traits\Booking_Items_Trait,
+		Traits\Booking_Attributes_Trait;
 
 	/* Booking Status */
 	const PENDING    = 'awebooking-pending';
@@ -30,8 +25,6 @@ class Booking extends WP_Object {
 
 	/**
 	 * The attributes for this object.
-	 *
-	 * Name value pairs (name + default value).
 	 *
 	 * @var array
 	 */
@@ -61,9 +54,6 @@ class Booking extends WP_Object {
 		'customer_company'        => '',
 		'customer_phone'          => '',
 		'customer_email'          => '',
-		'customer_note'           => '',
-		'customer_ip_address'     => '',
-		'customer_user_agent'     => '',
 
 		// Payments attributes.
 		'payment_method'          => '',
@@ -71,7 +61,9 @@ class Booking extends WP_Object {
 		'transaction_id'          => '',
 		'created_via'             => '',
 		'date_paid'               => null,
-		'date_completed'          => null,
+		'customer_note'           => '',
+		'customer_ip_address'     => '',
+		'customer_user_agent'     => '',
 	];
 
 	/**
@@ -81,9 +73,9 @@ class Booking extends WP_Object {
 	 */
 	protected $casts = [
 		'total'          => 'float',
+		'discount_total' => 'float',
 		'checked_in'     => 'bool',
 		'checked_out'    => 'bool',
-		'discount_total' => 'float',
 		'customer_id'    => 'integer',
 	];
 
@@ -93,63 +85,19 @@ class Booking extends WP_Object {
 	 * @param mixed $booking The booking ID we'll working for.
 	 */
 	public function __construct( $booking = 0 ) {
-		$this->items = new Collection;
-
 		$this->maping_metadata();
 
 		parent::__construct( $booking );
 	}
-
 	/**
-	 * Calculate totals by looking at the contents of the order. Stores the totals and returns the orders final total.
+	 * Setup the object attributes.
 	 *
-	 * @since 2.2
-	 * @param  bool $and_taxes Calc taxes if true.
-	 * @return float calculated grand total.
+	 * @return void
 	 */
-	public function calculate_totals( $and_taxes = true ) {
-		$cart_subtotal     = 0;
-		$cart_total        = 0;
-		$fee_total         = 0;
-		$cart_subtotal_tax = 0;
-		$cart_total_tax    = 0;
-
-		if ( $and_taxes ) {
-			$this->calculate_taxes();
-		}
-
-		// line items
-		foreach ( $this->get_items() as $item ) {
-			$cart_subtotal     += $item->get_subtotal();
-			$cart_total        += $item->get_total();
-			$cart_subtotal_tax += $item->get_subtotal_tax();
-			$cart_total_tax    += $item->get_total_tax();
-		}
-
-		$this->calculate_shipping();
-
-		foreach ( $this->get_fees() as $item ) {
-			$fee_total += $item->get_total();
-		}
-
-		$grand_total = round( $cart_total + $fee_total + $this->get_shipping_total() + $this->get_cart_tax() + $this->get_shipping_tax(), wc_get_price_decimals() );
-
-		$this->set_discount_total( $cart_subtotal - $cart_total );
-		$this->set_discount_tax( $cart_subtotal_tax - $cart_total_tax );
-		$this->set_total( $grand_total );
-		$this->save();
-
-		return $grand_total;
-	}
-
-	public function get_subtotal() {
-		$subtotal = 0;
-
-		foreach ( $this->get_items() as $item ) {
-			$subtotal += $item->get_total_price()->get_amount();
-		}
-
-		return $subtotal;
+	protected function setup() {
+		$this['status']        = $this->instance->post_status;
+		$this['date_created']  = $this->instance->post_date;
+		$this['date_modified'] = $this->instance->post_modified;
 	}
 
 	public function get_check_in() {
@@ -189,107 +137,67 @@ class Booking extends WP_Object {
 		return $period;
 	}
 
-	/**
-	 * Get the booking number.
-	 *
-	 * @return int
-	 */
-	public function get_booking_id() {
-		return apply_filters( $this->prefix( 'get_booking_id' ), $this->get_id(), $this );
+	/*
+	| ------------------------------------------------------
+	| Pricing and calculator.
+	| ------------------------------------------------------
+	*/
+
+	public function get_subtotal() {
+		$subtotal = 0;
+
+		foreach ( $this->get_line_items() as $item ) {
+			$subtotal += $item->get_total_price()->get_amount();
+		}
+
+		return $subtotal;
 	}
 
 	/**
-	 * Get the booking date time.
+	 * Calculate totals by looking at the contents of the order. Stores the totals and returns the orders final total.
 	 *
-	 * @return \Carbon\Carbon
+	 * @since 2.2
+	 * @param  bool $and_taxes Calc taxes if true.
+	 * @return float calculated grand total.
 	 */
-	public function get_booking_date() {
-		return apply_filters( $this->prefix( 'get_booking_date' ), Carbonate::create_datetime( $this['booking_date'] ), $this );
+	public function calculate_totals( $and_taxes = true ) {
+		$cart_subtotal     = 0;
+		$cart_total        = 0;
+		$fee_total         = 0;
+		$cart_subtotal_tax = 0;
+		$cart_total_tax    = 0;
+
+		foreach ( $this->get_line_items() as $item ) {
+			$cart_subtotal     += $item->get_subtotal();
+			$cart_total        += $item->get_total();
+			$cart_subtotal_tax += $item->get_subtotal_tax();
+			$cart_total_tax    += $item->get_total_tax();
+		}
+
+		foreach ( $this->get_fees() as $item ) {
+			$fee_total += $item->get_total();
+		}
+
+		$grand_total = round( $cart_total + $fee_total + $this->get_shipping_total() + $this->get_cart_tax() + $this->get_shipping_tax(), wc_get_price_decimals() );
+
+		$this->set_discount_total( $cart_subtotal - $cart_total );
+		$this->set_discount_tax( $cart_subtotal_tax - $cart_total_tax );
+		$this->set_total( $grand_total );
+		$this->save();
+
+		return $grand_total;
 	}
 
 	/**
-	 * Get booking status.
+	 * Checks the booking status against a passed in status.
 	 *
-	 * @return string
+	 * @param  string|array $status //.
+	 * @return bool
 	 */
-	public function get_status() {
-		return apply_filters( $this->prefix( 'get_status' ), $this['status'], $this );
-	}
+	public function has_status( $status ) {
+		$has_status = in_array( $this->get_status(), (array) $status );
 
-	/**
-	 * Gets booking currency.
-	 *
-	 * @return string
-	 */
-	public function get_currency() {
-		$currency = $this['currency'] ? new Currency( $this['currency'] ) : awebooking( 'currency' );
-
-		return apply_filters( $this->prefix( 'get_currency' ), $currency, $this );
-	}
-
-	/**
-	 * //
-	 *
-	 * @return Price
-	 */
-	public function get_total_price() {
-		$price = new Price( $this['total'], $this->get_currency() );
-
-		return apply_filters( $this->prefix( 'get_currency' ), $price, $this );
-	}
-
-	/**
-	 * Get customer ID.
-	 *
-	 * @return int
-	 */
-	public function get_customer_id() {
-		return $this->get_attribute( 'customer_id' );
-	}
-
-	/**
-	 * Get customer company.
-	 *
-	 * @return string
-	 */
-	public function get_customer_company() {
-		return $this->get_attribute( 'customer_company' );
-	}
-
-	/**
-	 * Get customer email address.
-	 *
-	 * @return string
-	 */
-	public function get_customer_email() {
-		return $this->get_attribute( 'customer_email' );
-	}
-
-	/**
-	 * Get the payment method.
-	 *
-	 * @return string
-	 */
-	public function get_payment_method() {
-		return apply_filters( $this->prefix( 'get_payment_method' ), $this['payment_method'], $this );
-	}
-
-	/**
-	 * Get payment_method_title.
-	 *
-	 * @return string
-	 */
-	public function get_payment_method_title() {
-		return apply_filters( $this->prefix( 'get_payment_method_title' ), $this['payment_method_title'], $this );
-	}
-
-	/**
-	 * Get transaction_id.
-	 *
-	 * @return string
-	 */
-	public function get_transaction_id() {
-		return apply_filters( $this->prefix( 'get_transaction_id' ), $this['transaction_id'], $this );
+		return apply_filters( $this->prefix( 'has_status' ), $has_status, $this );
 	}
 
 	/**
@@ -309,18 +217,6 @@ class Booking extends WP_Object {
 	}
 
 	/**
-	 * Checks the booking status against a passed in status.
-	 *
-	 * @param  string|array $status //.
-	 * @return bool
-	 */
-	public function has_status( $status ) {
-		$has_status = in_array( $this->get_status(), (array) $status );
-
-		return apply_filters( $this->prefix( 'has_status' ), $has_status, $this );
-	}
-
-	/**
 	 * Checks if an booking can be edited.
 	 *
 	 * @return bool
@@ -329,6 +225,19 @@ class Booking extends WP_Object {
 		$editable = in_array( $this->get_status(), [ static::PENDING, 'auto-draft' ] );
 
 		return apply_filters( $this->prefix( 'is_editable' ), $editable, $this );
+	}
+
+	/**
+	 * Returns edit url.
+	 *
+	 * @param  array  $query_args Extra query url.
+	 * @param  string $context    See get_edit_post_link().
+	 * @return string
+	 */
+	public function get_edit_url( array $query_args = [], $context = 'raw' ) {
+		return add_query_arg( $query_args,
+			get_edit_post_link( $this->get_id(), $context )
+		);
 	}
 
 	/**
@@ -377,41 +286,11 @@ class Booking extends WP_Object {
 		return $comment_id;
 	}
 
-	/**
-	 * Returns edit url.
-	 *
-	 * @param  array  $query_args Extra query url.
-	 * @param  string $context    See get_edit_post_link().
-	 * @return string
-	 */
-	public function get_edit_url( array $query_args = [], $context = 'raw' ) {
-		return add_query_arg( $query_args,
-			get_edit_post_link( $this->get_id(), $context )
-		);
-	}
-
-	/**
-	 * Get a title for the new post type.
-	 *
-	 * @return string
-	 */
-	protected function get_booking_title() {
-		// @codingStandardsIgnoreStart
-		/* translators: %s: Booking date */
-		return sprintf( __( 'Order &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) );
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
-	 * Setup the object attributes.
-	 *
-	 * @return void
-	 */
-	protected function setup() {
-		$this['status'] = $this->instance->post_status;
-		$this['date_created'] = $this->instance->post_date;
-		$this['date_modified'] = $this->instance->post_modified;
-	}
+	/*
+	| ------------------------------------------------------
+	| Private
+	| ------------------------------------------------------
+	*/
 
 	/**
 	 * Do somethings when finish save.
@@ -421,7 +300,17 @@ class Booking extends WP_Object {
 	protected function finish_save() {
 		parent::finish_save();
 
+		// Save items.
 		$this->save_items();
+	}
+
+	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), 'awebooking_cache_booking_items' );
 	}
 
 	/**
@@ -438,9 +327,9 @@ class Booking extends WP_Object {
 
 		$insert_id = wp_insert_post( apply_filters( $this->prefix( 'insert_data' ), [
 			'post_type'     => $this->object_type,
-			'post_status'   => $this['status'],
+			'post_status'   => $this->get_status(),
 			'post_title'    => $this->get_booking_title(),
-			'post_excerpt'  => $this['customer_note'],
+			'post_excerpt'  => $this->get_customer_note(),
 			'post_password' => uniqid( 'booking_' ),
 			'ping_status'   => 'closed',
 			'post_author'   => 1,
@@ -463,7 +352,7 @@ class Booking extends WP_Object {
 	protected function perform_update( array $dirty ) {
 		$changes = $this->get_changes_only( $dirty, [ 'status', 'customer_note' ] );
 		if ( empty( $changes ) ) {
-			return;
+			return true;
 		}
 
 		$this['status'] = $this['status'] ? $this['status'] : Booking::PENDING;
@@ -472,6 +361,18 @@ class Booking extends WP_Object {
 			'post_status'  => $this['status'],
 			'post_excerpt' => $this['customer_note'],
 		]);
+	}
+
+	/**
+	 * Get a title for the new post type.
+	 *
+	 * @return string
+	 */
+	protected function get_booking_title() {
+		// @codingStandardsIgnoreStart
+		/* translators: %s: Booking date */
+		return sprintf( __( 'Order &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) );
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -510,7 +411,6 @@ class Booking extends WP_Object {
 			'transaction_id'          => '_transaction_id',
 			'created_via'             => '_created_via',
 			'date_paid'               => '_date_paid',
-			'date_completed'          => '_date_completed',
 		]);
 	}
 }
