@@ -3,10 +3,9 @@ namespace AweBooking\Pricing;
 
 use InvalidArgumentException;
 use AweBooking\Support\Formatting;
-use AweBooking\Interfaces\Currency;
-use AweBooking\Interfaces\Price as Price_Interface;
+use AweBooking\Currency\Currency;
 
-class Price implements Price_Interface {
+class Price {
 	/**
 	 * The price amount.
 	 *

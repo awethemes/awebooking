@@ -1,18 +1,14 @@
 <?php
-namespace AweBooking\Pricing;
+namespace AweBooking\Booking\Events;
 
 use DateTime;
 use Carbon\Carbon;
 use Roomify\Bat\Event\Event;
-use AweBooking\Interfaces\Price;
+use AweBooking\Pricing\Price;
+use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Rate_Pricing extends Event {
-	/**
-	 * Set only days.
-	 *
-	 * @var array
-	 */
-	protected $only_days = [];
+	use BAT_Only_Days;
 
 	/**
 	 * Room state in a time period.
@@ -30,14 +26,6 @@ class Rate_Pricing extends Event {
 		$this->start_date = Carbon::instance( $start_date );
 
 		$this->value = $price->to_amount();
-	}
-
-	public function get_only_days() {
-		return $this->only_days; // Ex: [0, 1, 3, 4, 5, 6].
-	}
-
-	public function set_only_days( $days ) {
-		$this->only_days = $days;
 	}
 
 	/**

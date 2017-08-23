@@ -1,8 +1,6 @@
 <?php
-use AweBooking\Hotel\Room_State;
+
 use AweBooking\Support\Template;
-use AweBooking\Support\Formatting;
-use AweBooking\Support\Date_Period;
 
 /**
  * Get the available container instance.
@@ -44,7 +42,7 @@ function awebooking_option( $key, $default = null ) {
  * @return float
  */
 function awebooking_sanitize_price( $number ) {
-	return Formatting::format_decimal( $number, true );
+	return AweBooking\Support\Formatting::format_decimal( $number, true );
 }
 
 /**
@@ -61,7 +59,7 @@ function awebooking_sanitize_period( $value, $strict = false ) {
 	}
 
 	try {
-		$period = new Date_Period( $value[0], $value[1], $strict );
+		$period = new AweBooking\Support\Date_Period( $value[0], $value[1], $strict );
 	} catch ( Exception $e ) {
 		return [];
 	}
@@ -84,26 +82,22 @@ function awebooking_sanitize_period( $value, $strict = false ) {
  */
 
 /**
- * Create an array of instantiated of a class.
+ * Create an array instance.
  *
  * @param  array           $ids   An array IDs.
- * @param  string|callable $class Class or callable instance.
+ * @param  string|callable $class Class instance or a callable.
  * @return array
  */
-function awebooking_create_instance( array $ids, $class ) {
-	$returns = array_map( function( $id ) {
-		if ( ! is_numeric( $id ) ) {
-			return;
-		}
-
-		if ( class_exists( $class ) ) {
-			return new $class( $id );
-		} elseif ( is_callable( $class ) ) {
-			return call_user_func_array( $class, [ $id ] );
-		}
-	}, $ids );
-
-	return array_filter( $returns );
+function awebooking_map_instance( array $ids, $class ) {
+	return array_filter(
+		array_map( function( $id ) use ( $class ) {
+			if ( is_string( $class ) && class_exists( $class ) ) {
+				return new $class( $id );
+			} elseif ( is_callable( $class ) ) {
+				return call_user_func( $class, $id );
+			}
+		}, $ids )
+	);
 }
 
 /**

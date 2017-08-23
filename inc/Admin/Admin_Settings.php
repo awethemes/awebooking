@@ -3,7 +3,7 @@ namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
 use Skeleton\Admin_Page;
-use AweBooking\Interfaces\Config;
+use AweBooking\Config;
 use AweBooking\AweBooking;
 
 class Admin_Settings extends Admin_Page {

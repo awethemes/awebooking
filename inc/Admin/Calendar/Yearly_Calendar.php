@@ -3,8 +3,9 @@
 namespace AweBooking\Admin\Calendar;
 
 use Carbon\Carbon;
+use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_State;
+use AweBooking\Booking\Events\Room_State;
 use AweBooking\Booking\Calendar;
 use AweBooking\Support\Date_Period;
 
@@ -236,14 +237,14 @@ class Yearly_Calendar {
 				<input type="text" name="" class="daterange" style="display: none;">
 
 				<label>
-					<input type="radio" name="state" disabled="" value="<?php echo esc_attr( Room_State::UNAVAILABLE ); ?>">
+					<input type="radio" name="state" disabled="" value="<?php echo esc_attr( AweBooking::STATE_UNAVAILABLE ); ?>">
 					<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
 				</label>
 
 				<span>|</span>
 
 				<label>
-					<input type="radio" name="state" disabled="" checked="" value="<?php echo esc_attr( Room_State::AVAILABLE ); ?>">
+					<input type="radio" name="state" disabled="" checked="" value="<?php echo esc_attr( AweBooking::STATE_AVAILABLE ); ?>">
 					<?php echo esc_html__( 'Available', 'awebooking' ); ?>
 				</label>
 

@@ -4,9 +4,7 @@ namespace AweBooking;
 use WP_Session;
 use Skeleton\WP_Option;
 use AweBooking\Hotel\Service;
-use AweBooking\Hotel\Room_State;
 use AweBooking\Booking\Booking;
-use AweBooking\Booking\Concierge;
 use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as SkeletonContainer;
@@ -14,6 +12,7 @@ use Skeleton\Container\Container as SkeletonContainer;
 class AweBooking extends SkeletonContainer {
 	/* Constants */
 	const VERSION        = '3.0.0-beta3';
+	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';
 	const JS_DATE_FORMAT = 'yy-mm-dd';
@@ -24,7 +23,10 @@ class AweBooking extends SkeletonContainer {
 	const HOTEL_AMENITY  = 'hotel_amenity';
 	const HOTEL_SERVICE  = 'hotel_extra_service';
 
-	const SETTING_KEY    = 'awebooking_settings';
+	const STATE_AVAILABLE   = 0;
+	const STATE_UNAVAILABLE = 1;
+	const STATE_PENDING     = 2;
+	const STATE_BOOKED      = 3;
 
 	/**
 	 * The current globally available container (if any).
@@ -143,7 +145,7 @@ class AweBooking extends SkeletonContainer {
 		});
 
 		$this->bind( 'concierge', function( $awebooking ) {
-			return new Concierge( $awebooking );
+			return new Booking\Concierge( $awebooking );
 		});
 	}
 
@@ -233,10 +235,10 @@ class AweBooking extends SkeletonContainer {
 	 */
 	public function get_room_states() {
 		return [
-			Room_State::AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
-			Room_State::UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
-			Room_State::PENDING     => esc_html__( 'Pending', 'awebooking' ),
-			Room_State::BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+			static::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			static::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			static::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			static::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
 		];
 	}
 

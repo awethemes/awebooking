@@ -3,7 +3,6 @@ namespace AweBooking\Booking\Items;
 
 use AweBooking\Factory;
 use AweBooking\Pricing\Price;
-use AweBooking\Hotel\Room_State;
 use AweBooking\Support\Date_Period;
 
 class Line_Item extends Booking_Item {

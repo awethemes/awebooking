@@ -2,10 +2,9 @@
 namespace AweBooking;
 
 use Skeleton\WP_Option;
-use AweBooking\Interfaces\Config as Config_Interface;
 use AweBooking\AweBooking;
 
-class Config implements Config_Interface {
+class Config {
 	/**
 	 * WP_Option instance.
 	 *

@@ -5,25 +5,17 @@ use DateInterval;
 use Carbon\Carbon;
 
 use AweBooking\Factory;
+use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_State;
-use AweBooking\Booking\Booking;
-use AweBooking\Booking\Booking_Event;
+use AweBooking\Booking\Events\Room_State;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\Rate;
 use AweBooking\Rate_Pricing;
-use AweBooking\Hotel\Room_Type;
-use AweBooking\AweBooking;
-use AweBooking\Hotel\Room_Booking;
+use AweBooking\Booking\Events\Room_Booking;
 
-use AweBooking\Support\Date_Period;
 use AweBooking\Pricing\Price;
-use Roomify\Bat\Store\StoreInterface;
+use AweBooking\Support\Date_Period;
 use Roomify\Bat\Valuator\IntervalValuator;
-
-use AweBooking\Interfaces\Price as Price_Interface;
-use AweBooking\Interfaces\Booking_Request as Request_Interface;
-use AweBooking\Interfaces\Availability as Availability_Interface;
-use Roomify\Bat\Event\Event;
 
 class Concierge {
 	protected $awebooking;
@@ -45,7 +37,7 @@ class Concierge {
 	 */
 	public function set_room_state( Room $room, Date_Period $period, array $options = [] ) {
 		$options = wp_parse_args( $options, [
-			'state'         => Room_State::AVAILABLE,
+			'state'         => AweBooking::STATE_AVAILABLE,
 			'only_days'     => null,
 			'clean'         => false,
 			'booking_id'    => null,
@@ -55,10 +47,10 @@ class Concierge {
 		$state = new Room_State( $room, $period->get_start_date(), $period->get_end_date()->subMinute(), $options['state'] );
 
 		// Find room state booked, pending.
-		$calendar = Factory::create_availability_calendar( [ $room ], Room_State::PENDING );
+		$calendar = Factory::create_availability_calendar( [ $room ], AweBooking::STATE_PENDING );
 
 		if ( ! $options['force'] ) {
-			$ignore = [ Room_State::PENDING, Room_State::BOOKED ];
+			$ignore = [ AweBooking::STATE_PENDING, AweBooking::STATE_BOOKED ];
 
 			$response_events = $calendar->getEvents(
 				$period->get_start_date(),
@@ -101,10 +93,10 @@ class Concierge {
 	 * Get room price by booking request.
 	 *
 	 * @param  Room_Type         $room_type Room type instance.
-	 * @param  Request_Interface $request   Booking request instance.
+	 * @param  Request $request   Booking request instance.
 	 * @return Price
 	 */
-	public function get_room_price( Room_Type $room_type, Request_Interface $request ) {
+	public function get_room_price( Room_Type $room_type, Request $request ) {
 		$valuator = new IntervalValuator(
 			$request->get_check_in(),
 			$request->get_check_out()->subMinute(),
@@ -123,11 +115,11 @@ class Concierge {
 	 *
 	 * @param  Rate            $rate    The rate instance.
 	 * @param  Date_Period     $period  Date period instance.
-	 * @param  Price_Interface $amount  The price instance.
+	 * @param  Price $amount  The price instance.
 	 * @param  array           $options Price setting options.
 	 * @return bool
 	 */
-	public function set_room_price( Rate $rate, Date_Period $period, Price_Interface $amount, array $options = [] ) {
+	public function set_room_price( Rate $rate, Date_Period $period, Price $amount, array $options = [] ) {
 		$rate = new Rate_Pricing( $rate, $period->get_start_date(), $period->get_end_date(), $amount );
 
 		if ( ! empty( $options['only_days'] ) && is_array( $options['only_days'] ) ) {
@@ -140,10 +132,10 @@ class Concierge {
 	/**
 	 * Check available.
 	 *
-	 * @param  Request_Interface $request Booking request instance.
+	 * @param  Request $request Booking request instance.
 	 * @return array
 	 */
-	public function check_availability( Request_Interface $request ) {
+	public function check_availability( Request $request ) {
 		$room_types = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
@@ -184,10 +176,10 @@ class Concierge {
 	 * TODO: ...
 	 *
 	 * @param  Room_Type         $room_type Room type instance.
-	 * @param  Request_Interface $request   Booking request instance.
+	 * @param  Request $request   Booking request instance.
 	 * @return Availability
 	 */
-	public function check_room_type_availability( Room_Type $room_type, Request_Interface $request ) {
+	public function check_room_type_availability( Room_Type $room_type, Request $request ) {
 		$found = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
@@ -218,10 +210,10 @@ class Concierge {
 	 * Check available for a list of single rooms.
 	 *
 	 * @param  array             $rooms   List of single rooms.
-	 * @param  Request_Interface $request Booking request instance.
+	 * @param  Request $request Booking request instance.
 	 * @return array
 	 */
-	public function check_rooms_available( array $rooms, Request_Interface $request ) {
+	public function check_rooms_available( array $rooms, Request $request ) {
 		$calendar = new Calendar( $rooms, awebooking( 'store.availability' ) );
 
 		$response = $calendar->getMatchingUnits(
@@ -235,22 +227,13 @@ class Concierge {
 	}
 
 	/**
-	 * Make new booking.
-	 *
-	 * @param  Availability_Interface $availability //.
-	 * @return false|int
-	 */
-	public function make_booking( Availability_Interface $availability ) {
-	}
-
-	/**
 	 * Mapping single-room to that room_type.
 	 *
 	 * @param  CalendarResponse  $response //.
-	 * @param  Request_Interface $request //.
+	 * @param  Request $request //.
 	 * @return array
 	 */
-	protected function mapto_room_types( $response, Request_Interface $request ) {
+	protected function mapto_room_types( $response, Request $request ) {
 		$room_type = [];
 
 		foreach ( $response->getIncluded() as $room_id => $accept ) {

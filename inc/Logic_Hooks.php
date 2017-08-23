@@ -79,7 +79,7 @@ class Logic_Hooks extends Service_Hooks {
 			try {
 				$period = new Date_Period( $the_booking['check_in'], $the_booking['check_out'], false );
 
-				$concierge->set_room_state( $booking_room, $period, Room_State::AVAILABLE, [ 'force' => true ] );
+				$concierge->set_room_state( $booking_room, $period, AweBooking::STATE_AVAILABLE, [ 'force' => true ] );
 				$concierge->set_booking_event( $the_booking, $period, [ 'clear' => true ] );
 
 			} catch ( \Exception $e ) {

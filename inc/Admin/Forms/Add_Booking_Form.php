@@ -3,8 +3,8 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking\Booking_Room_Item;
-use AweBooking\Booking\Booking_Request;
+use AweBooking\Booking\Request;
+use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Support\Date_Period;
 
 class Add_Booking_Form extends Form_Abstract {
@@ -26,7 +26,7 @@ class Add_Booking_Form extends Form_Abstract {
 			'type'        => 'date_range',
 			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
 			'validate'    => 'required|datePeriod',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT ],
+			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'tabindex' => '-1' ],
 			'date_format' => AweBooking::DATE_FORMAT,
 		]);
 
@@ -72,7 +72,7 @@ class Add_Booking_Form extends Form_Abstract {
 	 *
 	 * @param  array|null $data        An array input data, if null $_POST will be use.
 	 * @param  boolean    $check_nonce Run verity nonce from request.
-	 * @return Booking_Room_Item|false
+	 * @return Line_Item|false
 	 */
 	public function handle( array $data = null, $check_nonce = true ) {
 		$sanitized = parent::handle( $data, $check_nonce );
@@ -97,7 +97,7 @@ class Add_Booking_Form extends Form_Abstract {
 		}
 
 		if ( $the_room->is_free( $period ) ) {
-			$the_item = new Booking_Room_Item;
+			$the_item = new Line_Item;
 
 			$the_item['room_id']   = $the_room->get_id();
 			$the_item['name']      = $the_room->get_room_type()->get_title();
@@ -152,9 +152,7 @@ class Add_Booking_Form extends Form_Abstract {
 		}
 
 		// Next, call to Concierge and check availability our hotel.
-		$results = awebooking( 'concierge' )->check_availability(
-			new Booking_Request( $period )
-		);
+		$results = awebooking( 'concierge' )->check_availability( new Request( $period ) );
 
 		$rooms_options = $this->generate_select_rooms( $results );
 		$this['add_room']->set_prop( 'options', $rooms_options );

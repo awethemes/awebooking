@@ -2,7 +2,6 @@
 namespace AweBooking\Booking;
 
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room_State;
 use AweBooking\Support\WP_Object;
 
 class Booking extends WP_Object {
@@ -85,10 +84,13 @@ class Booking extends WP_Object {
 	 * @param mixed $booking The booking ID we'll working for.
 	 */
 	public function __construct( $booking = 0 ) {
+		$this->boot_traits();
+
 		$this->maping_metadata();
 
 		parent::__construct( $booking );
 	}
+
 	/**
 	 * Setup the object attributes.
 	 *
@@ -99,6 +101,12 @@ class Booking extends WP_Object {
 		$this['date_created']  = $this->instance->post_date;
 		$this['date_modified'] = $this->instance->post_modified;
 	}
+
+
+
+
+
+
 
 	public function get_check_in() {
 		$period = $this->merge_item_periods();
@@ -121,17 +129,17 @@ class Booking extends WP_Object {
 		$items = $this->get_items();
 
 		if ( count( $items ) === 1 ) {
-			return $items[0]->get_date_period();
+			return $items[0]->get_period();
 		}
 
 		$period = null;
 		foreach ( $items as $item ) {
 			if ( is_null( $period ) ) {
-				$period = $item->get_date_period();
+				$period = $item->get_period();
 				continue;
 			}
 
-			$period = $period->merge( $item->get_date_period() );
+			$period = $period->merge( $item->get_period() );
 		}
 
 		return $period;
@@ -147,7 +155,7 @@ class Booking extends WP_Object {
 		$subtotal = 0;
 
 		foreach ( $this->get_line_items() as $item ) {
-			$subtotal += $item->get_total_price()->get_amount();
+			$subtotal += $item->get_total();
 		}
 
 		return $subtotal;
@@ -188,6 +196,12 @@ class Booking extends WP_Object {
 		return $grand_total;
 	}
 
+
+
+
+
+
+
 	/**
 	 * Checks the booking status against a passed in status.
 	 *
@@ -208,11 +222,11 @@ class Booking extends WP_Object {
 	public function get_state_status() {
 		switch ( $this->get_status() ) {
 			case static::COMPLETED:
-				return Room_State::BOOKED;
+				return AweBooking::STATE_BOOKED;
 			case static::CANCELLED:
-				return Room_State::AVAILABLE;
+				return AweBooking::STATE_AVAILABLE;
 			default:
-				return Room_State::PENDING;
+				return AweBooking::STATE_PENDING;
 		}
 	}
 
@@ -373,6 +387,24 @@ class Booking extends WP_Object {
 		/* translators: %s: Booking date */
 		return sprintf( __( 'Order &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) );
 		// @codingStandardsIgnoreEnd
+	}
+
+	/**
+	 * Loop through traits and call boot method.
+	 *
+	 * @return void
+	 */
+	protected function boot_traits() {
+		$traits = class_uses( $this );
+
+		foreach ( $traits as $trait ) {
+			$reflect = new \ReflectionClass( $trait );
+			$method  = 'boot_' . str_replace( '_trait', '', strtolower( $reflect->getShortName() ) );
+
+			if ( method_exists( $this, $method ) ) {
+				call_user_func( [ $this, $method ] );
+			}
+		}
 	}
 
 	/**

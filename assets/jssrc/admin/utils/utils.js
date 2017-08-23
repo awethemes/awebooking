@@ -1,3 +1,5 @@
+var $ = window.jQuery;
+
 const Utils = {
 
   getSelectorFromElement(el) {

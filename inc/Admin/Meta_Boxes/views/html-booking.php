@@ -1,17 +1,3 @@
-<?php
-
-use AweBooking\Admin\Forms\Booking_Form;
-use AweBooking\Admin\Forms\Add_Booking_Form;
-
-?>
-
-<style type="text/css">
-	table.awebooking-striped-table {
-		border-left: none;
-		border-right: none;
-	}
-</style>
-
 <div class="postbox">
 	<div class="">
 
@@ -45,75 +31,76 @@ use AweBooking\Admin\Forms\Add_Booking_Form;
 			</thead>
 
 			<tbody>
-			<?php foreach ( $the_booking->get_line_items() as $room_item ) :
-				$room_unit = $room_item->get_room_unit(); ?>
-				<tr>
-					<td>
-						<?php echo esc_html( $room_item->get_name() ); ?>
-						<br>
-						(<?php echo esc_html( $room_unit->get_name() ); ?>)
-					</td>
+				<?php foreach ( $the_booking->get_line_items() as $room_item ) :
+					$room_unit = $room_item->get_room_unit(); ?>
+					<tr>
+						<td>
+							<?php echo esc_html( $room_item->get_name() ); ?>
+							<br>
+							(<?php echo esc_html( $room_unit->get_name() ); ?>)
+						</td>
 
-					<td>
+						<td>
+							<?php
+							try {
+								$date_period = $room_item->get_period();
+
+								printf( '<strong>%s %s</strong> <br> <span>%s</span> - <span>%s</span>',
+									$date_period->nights(),
+									_n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
+									$date_period->get_start_date()->toDateString(),
+									$date_period->get_end_date()->toDateString()
+								);
+							} catch ( \Exception $e ) {
+								echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
+							}
+						?>
+						</td>
+
+						<td>
 						<?php
-						try {
-							$date_period = $room_item->get_date_period();
-
-							printf( '<strong>%s %s</strong> <br> <span>%s</span> - <span>%s</span>',
-								$date_period->nights(),
-								_n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
-								$date_period->get_start_date()->toDateString(),
-								$date_period->get_end_date()->toDateString()
-							);
-						} catch ( \Exception $e ) {
-							echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
-						}
-					?>
-					</td>
-
-					<td>
-					<?php
-					printf( '<span class="">%1$d %2$s</span>',
-						$room_item->get_adults(),
-						_n( 'adult', 'adults', $room_item->get_adults(), 'awebooking' )
-					);
-
-					if ( $room_item->get_children() ) {
-						printf( ' &amp; <span class="">%1$d %2$s</span>',
-							$room_item->get_children(),
-							_n( 'child', 'children', $room_item->get_children(), 'awebooking' )
+						printf( '<span class="">%1$d %2$s</span>',
+							$room_item->get_adults(),
+							_n( 'adult', 'adults', $room_item->get_adults(), 'awebooking' )
 						);
-					}
-					?>
-					</td>
 
-					<td>
-						<?php echo esc_html( $room_item->get_total() ); ?> / night
-					</td>
+						if ( $room_item->get_children() ) {
+							printf( ' &amp; <span class="">%1$d %2$s</span>',
+								$room_item->get_children(),
+								_n( 'child', 'children', $room_item->get_children(), 'awebooking' )
+							);
+						}
+						?>
+						</td>
 
-					<td>
-						<strong><?php echo $room_item->get_total_price(); ?></strong>
-					</td>
+						<td>
+							<?php echo esc_html( $room_item->get_total() ); ?> / night
+						</td>
 
-					<td style="text-align: right;">
-						<a href="<?php echo esc_url( $room_item->get_edit_url() ); ?>">
-							<span class="dashicons dashicons-edit"></span>
-							<span class="screen-reader-text"><?php echo esc_html__( 'Edit Room', 'awebooking' ) ?></span>
-						</a>
+						<td>
+							<strong><?php echo $room_item->get_total(); ?></strong>
+						</td>
 
-						<a href="<?php echo esc_url( $room_item->get_delete_url() ); ?>">
-							<span class="dashicons dashicons-trash"></span>
-							<span class="screen-reader-text"><?php echo esc_html__( 'Delete Room', 'awebooking' ) ?></span>
-						</a>
-					</td>
-				</tr>
-			<?php endforeach ?>
+						<td style="text-align: right;">
+							<a href="#">
+								<span class="dashicons dashicons-edit"></span>
+								<span class="screen-reader-text"><?php echo esc_html__( 'Edit Room', 'awebooking' ) ?></span>
+							</a>
+
+							<a href="<?php echo esc_url( $room_item->get_delete_url() ); ?>">
+								<span class="dashicons dashicons-trash"></span>
+								<span class="screen-reader-text"><?php echo esc_html__( 'Delete Room', 'awebooking' ) ?></span>
+							</a>
+						</td>
+					</tr>
+				<?php endforeach ?>
 			</tbody>
 
 			<tfoot>
 				<tr>
 					<td colspan="4">
-						<a href="#" class="button open-my-dialog"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
+						<a href="#my-dialogsss" class="button" title="Add" data-toggle="awebooking-popup"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
+						<a href="#my-dialogsss" class="button" title="Add" data-toggle="awebooking-popup"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
 						<a href="#" class="button">Add service</a>
 					</td>
 
@@ -127,14 +114,4 @@ use AweBooking\Admin\Forms\Add_Booking_Form;
 	</div>
 
 	</div>
-</div>
-
-
-<!-- The modal / dialog box, hidden somewhere near the footer -->
-<div id="my-dialog" class="hidden" style="max-width:800px">
-	<div class="dialog-contents">
-		<?php echo (new Add_Booking_Form)->output(); ?>
-	</div>
-
-	<button class="button">Submit</button>
 </div>

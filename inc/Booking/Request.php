@@ -2,7 +2,7 @@
 namespace AweBooking\Booking;
 
 use Carbon\Carbon;
-use AweBooking\Hotel\Room_State;
+use AweBooking\AweBooking;
 use AweBooking\Support\Date_Period;
 
 class Request {
@@ -202,7 +202,7 @@ class Request {
 	 * @return array
 	 */
 	public function valid_states() {
-		return [ Room_State::AVAILABLE ];
+		return [ AweBooking::STATE_AVAILABLE ];
 	}
 
 	/**

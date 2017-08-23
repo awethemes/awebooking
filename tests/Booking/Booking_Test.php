@@ -6,7 +6,7 @@ use AweBooking\Booking\Items\Booking_Item;
 
 class Test2_Booking_Item extends Booking_Item {
 	public function get_type() {
-		return 'line_items';
+		return 'line_item';
 	}
 }
 

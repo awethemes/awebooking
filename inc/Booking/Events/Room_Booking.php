@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Hotel;
+namespace AweBooking\Booking\Events;
 
 use DateTime;
 use Carbon\Carbon;

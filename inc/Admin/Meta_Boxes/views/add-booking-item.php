@@ -4,7 +4,7 @@ use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_type;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Date_Period;
-use AweBooking\Booking\Booking_Request;
+use AweBooking\Booking\Request;
 use Skeleton\CMB2\CMB2;
 
 $cmb2 = new CMB2([
@@ -102,7 +102,7 @@ if ( ! empty( $_REQUEST['check_in'] ) && ! empty( $_REQUEST['check_out'] ) ) {
 	if ( isset( $date_period ) ) {
 		$concierge = awebooking( 'concierge' );
 
-		$request = new Booking_Request( $date_period );
+		$request = new Request( $date_period );
 		$results = $concierge->check_availability( $request );
 
 		$options = [];

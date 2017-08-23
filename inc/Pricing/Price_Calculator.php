@@ -1,12 +1,7 @@
 <?php
 namespace AweBooking\Pricing;
 
-use RuntimeException;
-use InvalidArgumentException;
-use AweBooking\Interfaces\Pipeline;
-use AweBooking\Interfaces\Price as Price_Interface;
-
-class Price_Calculator implements Pipeline {
+class Price_Calculator {
 	/**
 	 * The price being passed through the pipeline.
 	 *
@@ -54,7 +49,7 @@ class Price_Calculator implements Pipeline {
 	 * @param callable|Price_Calculator_Handle| $pipe Pipe callable or Calculator_Handle object.
 	 * @return $this
 	 *
-	 * @throws InvalidArgumentException If given wrong parameter.
+	 * @throws \InvalidArgumentException If given wrong parameter.
 	 */
 	public function pipe( $pipe ) {
 		if ( is_callable( $pipe ) || $pipe instanceof Calculator_Handle ) {
@@ -63,14 +58,14 @@ class Price_Calculator implements Pipeline {
 			return $this;
 		}
 
-		throw new InvalidArgumentException( 'A Calculator_Handle class or callable given.' );
+		throw new \InvalidArgumentException( 'A Calculator_Handle class or callable given.' );
 	}
 
 	/**
 	 * Process the pipeline.
 	 *
 	 * @return Price
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function process() {
 		$price = $this->price;
@@ -78,8 +73,8 @@ class Price_Calculator implements Pipeline {
 		foreach ( $this->pipes as $pipe ) {
 			$price = is_callable( $pipe ) ? $pipe ( $price ) : $pipe->handle( $price );
 
-			if ( ! $price instanceof Price_Interface ) {
-				throw new RuntimeException( 'Price handler must be return a Price.' );
+			if ( ! $price instanceof Price ) {
+				throw new \RuntimeException( 'Price handler must be return a Price.' );
 			}
 		}
 

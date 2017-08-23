@@ -2,53 +2,54 @@ const $ = window.jQuery;
 const Utils = require('./utils.js');
 
 class Popup {
+  /**
+   * Wrapper the jquery-ui-popup.
+   */
   constructor(el) {
-    this.$el = $(el);
+    this.el = el;
+    this.target = Utils.getSelectorFromElement(el);
 
-    $(document).on('click', this.$el, function(e) {
-      e.preventDefault();
-    });
+    if (this.target) {
+      this.setup();
 
-
-    console.log(Utils.getSelectorFromElement(this.$el[0]));
+      $(this.el).on('click', $.proxy(this.open, this));
+      $(this.target).on('click', '[data-dismiss="awebooking-popup"]', $.proxy(this.close, this));
+    }
   }
 
-  setupDialog() {
-    $('#my-dialog').dialog({
-      title: 'My Dialog',
-      dialogClass: 'wp-dialog',
+  open(e) {
+    e && e.preventDefault();
+    $(this.target).dialog('open');
+  }
+
+  close(e) {
+    e && e.preventDefault();
+    $(this.target).dialog('close');
+  }
+
+  setup() {
+    if ($(this.target).dialog('instance')) {
+      return;
+    }
+
+    $(this.target).dialog({
+      title: $(this.el).attr('title'),
+      dialogClass: 'wp-dialog awebooking-dialog',
+      modal: true,
+      width: 'auto',
+      height: 'auto',
       autoOpen: false,
       draggable: false,
-      width: 'auto',
-      modal: true,
       resizable: false,
       closeOnEscape: true,
-      position: {
-        at: "center top+30%",
-      },
+      position: { at: 'center top+35%' },
       open: function () {
-        $("body").css({ overflow: 'hidden' })
-        // close dialog by clicking the overlay behind it
-        $('.ui-widget-overlay').bind('click', function(){
-          // $('#my-dialog').dialog('close');
-        })
+        $('body').css({ overflow: 'hidden' });
       },
       beforeClose: function(event, ui) {
-      $("body").css({ overflow: 'inherit' })
-     },
-      create: function () {
-        // style fix for WordPress admin
-        // $('.ui-dialog-titlebar-close').addClass('ui-button');
-      },
+        $('body').css({ overflow: 'inherit' });
+     }
     });
-  }
-
-  openPopup() {
-
-  }
-
-  closePopup() {
-
   }
 }
 

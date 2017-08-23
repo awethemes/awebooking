@@ -3,6 +3,7 @@ namespace AweBooking\Booking\Traits;
 
 use AweBooking\Factory;
 use AweBooking\Support\Collection;
+use AweBooking\Booking\Items\Booking_Item;
 
 trait Booking_Items_Trait {
 	/**
@@ -18,6 +19,22 @@ trait Booking_Items_Trait {
 	 * @var array
 	 */
 	protected $items_to_delete = [];
+
+	/**
+	 * If items did setup or not.
+	 *
+	 * @var array
+	 */
+	protected $did_setup_items = false;
+
+	/**
+	 * Boot the trait.
+	 *
+	 * @return void
+	 */
+	public function boot_booking_items() {
+		$this->items = new Collection;
+	}
 
 	/**
 	 * Adds a booking item to this booking.
@@ -58,27 +75,28 @@ trait Booking_Items_Trait {
 	 * @return boolean
 	 */
 	public function remove_item( $item_id ) {
-		if ( ! $this->has_item( $item_id ) ) {
+		$item = Factory::get_booking_item( $item_id );
+		if ( ! $item ) {
 			return false;
 		}
 
 		// Unset and remove later.
 		foreach ( $this->items->all() as $index => $_item ) {
-			if ( (int) $item_id === $_item->get_id() ) {
+			if ( $item->get_id() === $_item->get_id() ) {
 				$this->items->forget( $index );
-				break;
+				$this->items_to_delete[] = $_item;
+
+				return true;
 			}
 		}
 
-		$this->items_to_delete[] = $item;
-
-		return true;
+		return false;
 	}
 
 	/**
 	 * Determines an item ID have in items.
 	 *
-	 * @param  int $item_id Booking item ID.
+	 * @param  Booking_Item|int $item_id Booking item ID.
 	 * @return boolean
 	 */
 	public function has_item( $item_id ) {
@@ -92,16 +110,15 @@ trait Booking_Items_Trait {
 	 * @return Booking_Item|null
 	 */
 	public function get_item( $item_id ) {
-		$found_item = Factory::resolve_booking_item( $item_id );
+		$this->setup_booking_items();
 
-		if ( ! $found_item || ! $found_item->exists() ) {
+		$item = Factory::get_booking_item( $item_id );
+		if ( ! $item ) {
 			return;
 		}
 
-		$this->setup_booking_items();
-
-		foreach ( $this->items->all() as $key => $item ) {
-			if ( $item->get_id() === $found_item->get_id() ) {
+		foreach ( $this->items->all() as $_item ) {
+			if ( $item->get_id() === $_item->get_id() ) {
 				return $item;
 			}
 		}
@@ -116,7 +133,7 @@ trait Booking_Items_Trait {
 	public function get_items( $type ) {
 		$this->setup_booking_items();
 
-		return $this->items->filter(function( $item ) {
+		return $this->items->filter(function( $item ) use ( $type ) {
 			return $item->get_type() === $type;
 		});
 	}
@@ -150,6 +167,10 @@ trait Booking_Items_Trait {
 	 * Save all boooking items which are part of this boooking.
 	 */
 	protected function save_items() {
+		if ( count( $this->items ) === 0 ) {
+			return;
+		}
+
 		foreach ( $this->items_to_delete as $delete_item ) {
 			$delete_item->delete();
 		}
@@ -172,11 +193,9 @@ trait Booking_Items_Trait {
 			return;
 		}
 
-		if ( ! is_null( $this->items ) ) {
+		if ( $this->did_setup_items ) {
 			return;
 		}
-
-		$this->items = new Collection;
 
 		// Try get in the cache first.
 		$db_items = wp_cache_get( $this->get_id(), 'awebooking_cache_booking_items' );
@@ -201,11 +220,10 @@ trait Booking_Items_Trait {
 			wp_cache_add( $this->get_id(), $db_items, 'awebooking_cache_booking_items' );
 		}
 
-		foreach ( $db_items as $item ) {
-			$booking_item = Factory::resolve_booking_item( $item );
-			if ( $booking_item ) {
-				$this->add_item( $booking_item );
-			}
-		} // End foreach().
+		$this->items = new Collection(
+			awebooking_map_instance( $db_items, [ Factory::class, 'get_booking_item' ] )
+		);
+
+		$this->did_setup_items = true;
 	}
 }

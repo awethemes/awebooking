@@ -220,21 +220,21 @@ class Admin_Hooks extends Service_Hooks {
 
 		// Register vendor styles and scripts.
 		wp_register_style( 'daterangepicker', $awebooking_url . '/assets/css/daterangepicker' . $suffix . '.css', array(), '2.1.25' );
-		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin' . $suffix . '.css', array(), $version );
+		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin' . $suffix . '.css', array( 'wp-jquery-ui-dialog' ), $version );
 
 		wp_register_script( 'vuejs', $awebooking_url . '/assets/js/vuejs/vue' . $suffix . '.js', array(), '2.3.0' );
 		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment' . $suffix . '.js', array(), '2.18.1' );
 		wp_register_script( 'daterangepicker', $awebooking_url . '/assets/js/daterangepicker/daterangepicker' . $suffix . '.js', array( 'jquery', 'moment' ), '2.1.25', true );
 
 		// Register awebooking main styles and scripts.
-		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking' . $suffix . '.js', array( 'vuejs', 'wp-util', 'wp-backbone', 'jquery-effects-highlight' ), $version, true );
+		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking' . $suffix . '.js', array( 'vuejs', 'wp-util', 'wp-backbone', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ), $version, true );
 		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', array( 'wp-backbone', 'daterangepicker' ), $version, true );
 		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', array( 'wp-backbone', 'daterangepicker' ), $version, true );
 		wp_register_script( 'awebooking-room-type-meta-boxes', $awebooking_url . '/assets/js/admin/room-type-meta-boxes' . $suffix . '.js', array( 'awebooking-admin' ), $version, true );
 		wp_register_script( 'awebooking-create-booking', $awebooking_url . '/assets/js/admin/create-booking' . $suffix . '.js', array( 'awebooking-admin' ), $version, true );
 
 		// Send AweBooking object.
-		wp_localize_script( 'awebooking-admin', '_awebookingConfigs', array(
+		wp_localize_script( 'awebooking-admin', '_awebookingSettings', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'strings'  => array(
 				'warning' => esc_html__( 'Are you sure you want to do this?', 'awebooking' ),
@@ -247,9 +247,6 @@ class Admin_Hooks extends Service_Hooks {
 
 		wp_enqueue_style( 'awebooking-admin' );
 		wp_enqueue_script( 'awebooking-admin' );
-
-		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		wp_enqueue_script( 'jquery-ui-dialog' );
 
 		do_action( 'awebooking/register_admin_scripts', $current_screen );
 	}

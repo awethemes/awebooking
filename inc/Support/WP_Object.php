@@ -3,9 +3,8 @@ namespace AweBooking\Support;
 
 use ArrayAccess;
 use JsonSerializable;
-use AweBooking\Interfaces\Store;
-use AweBooking\Interfaces\Jsonable;
-use AweBooking\Interfaces\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
 abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
 	use Traits\Object_Attributes,
@@ -578,7 +577,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 *
 	 * @return array
 	 */
-	public function to_array() {
+	public function toArray() {
 		return array_merge( [ 'id' => $this->get_id() ], $this->attributes );
 	}
 
@@ -588,7 +587,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @param  int $options JSON encode options.
 	 * @return string
 	 */
-	public function to_json( $options = 0 ) {
+	public function toJson( $options = 0 ) {
 		$json = json_encode( $this->jsonSerialize(), $options );
 
 		if ( JSON_ERROR_NONE !== json_last_error() ) {
@@ -597,6 +596,25 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 		}
 
 		return $json;
+	}
+
+	/**
+	 * Alias of `toArray()` method.
+	 *
+	 * @return string
+	 */
+	public function to_array() {
+		return $this->toArray();
+	}
+
+	/**
+	 * Alias of `toJson()` method.
+	 *
+	 * @param  int $options JSON encode options.
+	 * @return string
+	 */
+	public function to_json( $options = 0 ) {
+		return $this->toJson();
 	}
 
 	/**

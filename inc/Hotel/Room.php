@@ -2,6 +2,7 @@
 namespace AweBooking\Hotel;
 
 use AweBooking\Factory;
+use AweBooking\AweBooking;
 use AweBooking\Support\WP_Object;
 use AweBooking\Support\Date_Period;
 use AweBooking\Support\Traits\BAT_Unit;
@@ -59,7 +60,7 @@ class Room extends WP_Object implements Unit_Interface {
 		parent::__construct( $room_id );
 
 		// By default, room state is alway available.
-		$this->setDefaultValue( Room_State::AVAILABLE );
+		$this->setDefaultValue( AweBooking::STATE_AVAILABLE );
 	}
 
 	/**
@@ -137,7 +138,7 @@ class Room extends WP_Object implements Unit_Interface {
 		$response = $calendar->getMatchingUnits(
 			$period->get_start_date(),
 			$period->get_end_date()->subMinute(),
-			[ Room_State::AVAILABLE ]
+			[ AweBooking::STATE_AVAILABLE ]
 		);
 
 		return array_key_exists( $this->get_id(),

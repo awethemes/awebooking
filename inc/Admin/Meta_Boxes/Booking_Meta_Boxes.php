@@ -32,14 +32,14 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		parent::__construct();
 
 		// Register metaboxes.
-		// $this->register_main_metabox();
 		$this->register_customer_metabox();
 
 		// Register/un-register metaboxes.
-		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
-		add_action( 'awebooking/save_booking', [ $this, 'handler_booking_actions' ], 10, 1 );
+		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
+
 		add_action( 'admin_init', [ $this, 'enqueue_scripts' ] );
+		add_action( 'admin_footer', [ $this, 'footer' ] );
 	}
 
 	/**
@@ -59,6 +59,10 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		wp_localize_script( 'awebooking-booking', 'awebooking_booking_ajax', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		));
+	}
+
+	public function footer() {
+		include trailingslashit( __DIR__ ) . 'views/html-booking-templates.php';
 	}
 
 	/**
@@ -157,73 +161,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 			'name' => esc_html__( 'Customer Notes', 'awebooking' ),
 			'sanitization_cb' => 'sanitize_textarea_field',
 		));
-	}
-
-	/**
-	 * Handler booking actions.
-	 *
-	 * @param  AweBooking\Booking\Booking $booking booking obj.
-	 */
-	public function handler_booking_actions( Booking $booking ) {
-
-		// Handle button actions.
-		if ( empty( $_POST['awebooking_action'] ) ) {
-			return;
-		}
-
-		$action = $_POST['awebooking_action'];
-
-		if ( strstr( $action, 'send_email_' ) ) {
-
-			do_action( 'awebooking/before_resend_order_emails', $booking );
-
-			// Load mailer.
-			$email_to_send = str_replace( 'send_email_', '', $action );
-
-			switch ( $email_to_send ) {
-				case 'cancelled_order':
-					try {
-						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Cancelled( $booking ) );
-					} catch ( \Exception $e ) {
-						// ...
-					}
-
-					if ( $mail ) {
-						$booking->add_booking_note( __( 'Cancelled email notification manually sent.', 'awebooking' ), false, true );
-					}
-					break;
-
-				case 'customer_processing_order':
-					try {
-						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Processing( $booking ) );
-					} catch ( \Exception $e ) {
-						// ...
-					}
-
-					if ( $mail ) {
-						$booking->add_booking_note( __( 'Processing email notification manually sent.', 'awebooking' ), false, true );
-					}
-					break;
-
-				case 'customer_completed_order':
-					try {
-						$mail = Mailer::to( $booking->get_customer_email() )->send( new Booking_Completed( $booking ) );
-					} catch ( \Exception $e ) {
-						// ...
-					}
-
-					if ( $mail ) {
-						$booking->add_booking_note( __( 'Completed email notification manually sent.', 'awebooking' ), false, true );
-					}
-					break;
-
-				default:
-					return;
-					break;
-			}
-
-			do_action( 'awebooking/after_resend_order_email', $booking, $email_to_send );
-		}
 	}
 
 	/**

@@ -1,20 +1,15 @@
 <?php
-namespace AweBooking\Hotel;
+namespace AweBooking\Booking\Events;
 
 use DateTime;
 use Carbon\Carbon;
 use AweBooking\Factory;
+use AweBooking\AweBooking;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Room_State extends Event {
 	use BAT_Only_Days;
-
-	/* State */
-	const AVAILABLE   = 0;
-	const UNAVAILABLE = 1;
-	const PENDING     = 2;
-	const BOOKED      = 3;
 
 	/**
 	 * Create new instance from Event object.
@@ -39,7 +34,7 @@ class Room_State extends Event {
 	 * @param DateTime $end_date   End of date of state.
 	 * @param int      $state      State status.
 	 */
-	public function __construct( Room $room, DateTime $start_date, DateTime $end_date, $state = Room_State::AVAILABLE ) {
+	public function __construct( Room $room, DateTime $start_date, DateTime $end_date, $state = AweBooking::STATE_AVAILABLE ) {
 		$this->unit = $room;
 		$this->unit_id = $room->getUnitId();
 

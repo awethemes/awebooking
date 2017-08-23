@@ -6,7 +6,7 @@ use AweBooking\Booking\Calendar;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Date_Period;
 
-class Booking_Service_Item extends Booking_Item {
+class Service_Item extends Booking_Item {
 	/**
 	 * Name of object type.
 	 *

@@ -21,13 +21,13 @@ class Admin_Ajax {
 
 		// Booking ajax hooks.
 		add_action( 'wp_ajax_awebooking_booking_add_item', [ $this, 'add_booking_item' ] );
-		add_action( 'wp_ajax_awebooking_booking_add_item_form', [ $this, 'booking_add_item_form' ] );
+		add_action( 'wp_ajax_awebooking/get_booking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
 
 		add_action( 'wp_ajax_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
 		add_action( 'wp_ajax_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
 	}
 
-	public function booking_add_item_form() {
+	public function get_booking_add_item_form() {
 		(new Add_Booking_Form)->output();
 		exit;
 	}

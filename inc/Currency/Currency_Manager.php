@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Currency;
 
-use AweBooking\Interfaces\Config;
+use AweBooking\Config;
 use AweBooking\Interfaces\Currency as Currency_Interface;
 
 class Currency_Manager {

@@ -1,13 +1,11 @@
 <?php
 namespace AweBooking\Support;
 
-use AweBooking\Interfaces\Jsonable;
-use AweBooking\Interfaces\Arrayable;
-use Illuminate\Support\Collection as Illuminate_Collection;
+use Illuminate\Support\Collection as Base_Collection;
 
-class Collection extends Illuminate_Collection implements Arrayable, Jsonable {
+class Collection extends Base_Collection {
 	/**
-	 * Get the collection of items as a plain array.
+	 * Alias of `toArray` method.
 	 *
 	 * @return array
 	 */
@@ -16,7 +14,7 @@ class Collection extends Illuminate_Collection implements Arrayable, Jsonable {
 	}
 
 	/**
-	 * Get the collection of items as JSON.
+	 * Alias of `toJson` method.
 	 *
 	 * @param  int $options JSON encode options.
 	 * @return string

@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use AweBooking\AweBooking;
-use AweBooking\Booking\Session_Booking_Request;
+use AweBooking\Booking\Request;
 use AweBooking\Support\Formatting;
 use Skeleton\Container\Service_Hooks;
 use AweBooking\Pricing\Price_Calculator;
@@ -41,7 +41,7 @@ class Ajax_Hooks extends Service_Hooks {
 		$extra_services = array_map( 'absint', $_REQUEST['extra-services'] );
 		$availability->get_request()->set_request( 'extra_services', $extra_services );
 
-		Session_Booking_Request::set_instance( $availability->get_request() );
+		Request::set_instance( $availability->get_request() );
 
 		return wp_send_json_success( [ 'total_price' => (string) $availability->get_total_price() ], 200 );
 	}

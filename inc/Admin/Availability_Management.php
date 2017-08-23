@@ -3,7 +3,6 @@ namespace AweBooking\Admin;
 
 use WP_List_Table;
 use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_State;
 use AweBooking\Booking\Calendar;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 use AweBooking\Support\Date_Period;

@@ -3,9 +3,10 @@ namespace AweBooking;
 
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
-use AweBooking\Hotel\Room_State;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Calendar;
+use AweBooking\Booking\Items\Line_Item;
+use AweBooking\Booking\Items\Service_Item;
 use AweBooking\Booking\Items\Booking_Item;
 
 /**
@@ -14,6 +15,95 @@ use AweBooking\Booking\Items\Booking_Item;
  * Create all things related to AweBooking.
  */
 class Factory {
+	/**
+	 * Gets room unit by ID.
+	 *
+	 * @param  int $room_unit Room unit ID.
+	 * @return AweBooking\Hotel\Room
+	 */
+	public static function get_room_unit( $room_unit ) {
+		return new Room( $room_unit );
+	}
+
+	/**
+	 * Gets room type by ID.
+	 *
+	 * @param  int $room_type Room type ID or instance.
+	 * @return AweBooking\Hotel\Room_Type
+	 */
+	public static function get_room_type( $room_type ) {
+		return new Room_Type( $room_type );
+	}
+
+	/**
+	 * Gets booking by ID.
+	 *
+	 * @param  int $booking_id Booking ID.
+	 * @return AweBooking\Booking\Booking
+	 */
+	public static function get_booking( $booking_id ) {
+		return new Booking( $booking_id );
+	}
+
+	/**
+	 * Gets booking item instance by ID.
+	 *
+	 * @param  int $item_id Booking item ID.
+	 * @return mixed|false|null
+	 */
+	public static function get_booking_item( $item_id ) {
+		if ( is_numeric( $item_id ) ) {
+			global $wpdb;
+			$item_data = $wpdb->get_row( $wpdb->prepare( "SELECT `booking_item_type` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = %d LIMIT 1", $item_id ), ARRAY_A );
+
+			$id        = $item_id;
+			$item_type = isset( $item_data['booking_item_type'] ) ? $item_data['booking_item_type'] : false;
+		} elseif ( $item_id instanceof Booking_Item ) {
+			$id        = $item_id->get_id();
+			$item_type = $item_id->get_type();
+		} elseif ( is_array( $item_id ) && ! empty( $item_id['booking_item_type'] ) ) {
+			$id        = $item_id['booking_item_id'];
+			$item_type = $item_id['booking_item_type'];
+		} else {
+			$id        = false;
+			$item_type = false;
+		}
+
+		// Found invalid ID or type, just return.
+		if ( ! $id || ! $item_type ) {
+			return;
+		}
+
+		// Resolve booking item class by type.
+		$classname = static::resolve_booking_item_class( $item_type );
+		if ( ! $classname || ! class_exists( $classname ) ) {
+			return false;
+		}
+
+		try {
+			return new $classname( $id );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+	}
+
+	/**
+	 * Resolve booking item class by type.
+	 *
+	 * @param  string $type Booking item type.
+	 * @return string|null
+	 */
+	protected static function resolve_booking_item_class( $type ) {
+		$maps = apply_filters( 'awebooking/booking_item_class_maps', [
+			'line_item'    => Line_Item::class,
+			'service_item' => Service_Item::class,
+		]);
+
+		if ( array_key_exists( $type, $maps ) ) {
+			return $maps[ $type ];
+		}
+	}
+
 	/**
 	 * Create booking calendar.
 	 *
@@ -32,7 +122,7 @@ class Factory {
 	 * @param  integer $default_state Default availability state.
 	 * @return Calendar
 	 */
-	public static function create_availability_calendar( array $rooms, $default_state = Room_State::AVAILABLE ) {
+	public static function create_availability_calendar( array $rooms, $default_state = AweBooking::STATE_AVAILABLE ) {
 		return new Calendar( $rooms, awebooking( 'store.availability' ), $default_state );
 	}
 
@@ -46,6 +136,20 @@ class Factory {
 	public static function create_pricing_calendar( array $rates, $default_price = 0 ) {
 		return new Calendar( $rooms, awebooking( 'store.pricing' ), $default_price );
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/**
 	 * Create booking request from request data,
@@ -96,7 +200,7 @@ class Factory {
 			$booking_requests['children'] = absint( $booking_requests['children'] );
 		}
 
-		return new Booking_Request( $period, $booking_requests );
+		return new Request( $period, $booking_requests );
 	}
 
 	/**
@@ -132,45 +236,6 @@ class Factory {
 		return new Room_Type( $room_type );
 	}
 
-	/**
-	 * Get the a room unit.
-	 *
-	 * @param  mixed $room_unit Room unit ID or instance.
-	 * @return AweBooking\Hotel\Room
-	 */
-	public static function get_room_unit( $room_unit ) {
-		return new Room( $room_unit );
-	}
-
-	public static function get_booking( $booking ) {
-		return new Booking( $booking );
-	}
-
-	public static function resolve_booking_item( $a ) {
-		if ( $a instanceof Booking_Item ) {
-			return $a;
-		}
-
-		$class = static::resolve_booking_item_class( $a['booking_item_type'] );
-		if ( $class && ! class_exists( $class ) ) {
-			return;
-		}
-
-
-
-		return new $class( $a['booking_item_id'] );
-	}
-
-	protected static function resolve_booking_item_class( $type ) {
-		$class_maps = apply_filters( 'awebooking/booking_item_class_maps', [
-			'line_item'    => 'AweBooking\\Booking\\Line_Item',
-			'service_item' => 'AweBooking\\\Booking\\Service_Item',
-		]);
-
-		if ( isset( $class_maps[ $type ] ) ) {
-			return $class_maps[ $type ];
-		}
-	}
 
 	/**
 	 * Create new booking.

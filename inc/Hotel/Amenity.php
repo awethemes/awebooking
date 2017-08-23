@@ -3,7 +3,6 @@ namespace AweBooking\Hotel;
 
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
-use AweBooking\Interfaces\Booking_Request;
 
 class Amenity extends WP_Object {
 	/**

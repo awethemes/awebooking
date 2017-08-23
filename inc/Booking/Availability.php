@@ -21,7 +21,7 @@ class Availability {
 	/**
 	 * Bookign request instance.
 	 *
-	 * @var Request_Interface
+	 * @var Request
 	 */
 	protected $request;
 
@@ -36,9 +36,9 @@ class Availability {
 	 * Availability of a room-type.
 	 *
 	 * @param Room_Type         $room_type //.
-	 * @param Request_Interface $request   //.
+	 * @param Request $request   //.
 	 */
-	public function __construct( Room_Type $room_type, Request_Interface $request ) {
+	public function __construct( Room_Type $room_type, Request $request ) {
 		$this->request = $request;
 		$this->room_type = $room_type;
 
@@ -72,7 +72,7 @@ class Availability {
 	/**
 	 * Get request instance.
 	 *
-	 * @return Request_Interface
+	 * @return Request
 	 */
 	public function get_request() {
 		return $this->request;

@@ -205,7 +205,7 @@ class Service extends WP_Object {
 		return $label;
 	}
 
-	public function get_price_label( Booking_Request $booking_request, $before_value = '', $after_value = '' ) {
+	public function get_price_label( Request $booking_request, $before_value = '', $after_value = '' ) {
 		$label = '';
 
 		switch ( $this->get_operation() ) {
