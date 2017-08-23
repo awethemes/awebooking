@@ -36,6 +36,7 @@ class Booking extends WP_Object {
 		'date_modified'           => null,
 		'checked_in'              => false,
 		'checked_out'             => false,
+		'featured'                => false,
 		'discount_total'          => 0,
 		'total'                   => 0,
 
@@ -75,6 +76,7 @@ class Booking extends WP_Object {
 		'discount_total' => 'float',
 		'checked_in'     => 'bool',
 		'checked_out'    => 'bool',
+		'featured'       => 'bool',
 		'customer_id'    => 'integer',
 	];
 
@@ -191,6 +193,7 @@ class Booking extends WP_Object {
 		$this->set_discount_total( $cart_subtotal - $cart_total );
 		$this->set_discount_tax( $cart_subtotal_tax - $cart_total_tax );
 		$this->set_total( $grand_total );
+
 		$this->save();
 
 		return $grand_total;
@@ -228,6 +231,15 @@ class Booking extends WP_Object {
 			default:
 				return AweBooking::STATE_PENDING;
 		}
+	}
+
+	/**
+	 * Returns whether or not the booking is featured.
+	 *
+	 * @return bool
+	 */
+	public function is_featured() {
+		return apply_filters( $this->prefix( 'is_featured' ), $this['featured'], $this );
 	}
 
 	/**
@@ -418,6 +430,7 @@ class Booking extends WP_Object {
 			'version'                 => '_version',
 			'checked_in'              => '_checked_in',
 			'checked_out'             => '_checked_out',
+			'featured'                => '_featured',
 			'discount_total'          => '_discount_total',
 			'total'                   => '_total',
 

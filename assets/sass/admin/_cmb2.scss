@@ -1,0 +1,76 @@
+.awebooking-form {
+  &.ajax-loading {
+    z-index: 10;
+    position: relative;
+    visibility: visible;
+  }
+
+  &__loading {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.75);
+    display: none;
+
+    .ajax-loading & {
+      display: block;
+    }
+  }
+
+  &__loading > .spinner {
+    float: none;
+    display: block;
+    margin: auto auto;
+    visibility: visible;
+
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    margin-top: -10px;
+    margin-left: -10px;
+  }
+}
+
+
+.awebooking-dialog {
+  .ui-dialog-content {
+    padding: 0;
+  }
+
+  .ui-button.ui-dialog-titlebar-close {
+    border-left: 1px solid #dfdfdf;
+  }
+
+  .awebooking-dialog-buttons {
+    padding: 1em;
+    text-align: right;
+  }
+}
+
+.awebooking-dialog-contents {
+  min-width: 500px;
+
+  .cmb2-wrap .cmb-row {
+    padding: 1em;
+    margin-top: -1px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(black, 0.04);
+
+    > .cmb-th {
+      padding: 0;
+      width: 200px;
+      font-weight: initial;
+    }
+
+    > .cmb-th + .cmb-td {
+      float: none;
+      padding: 0 0 0 1em;
+      margin-left: 200px;
+    }
+  }
+}

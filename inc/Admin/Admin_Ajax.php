@@ -1,9 +1,11 @@
 <?php
 namespace AweBooking\Admin;
 
+use WP_Error;
+use AweBooking\Factory;
 use AweBooking\Hotel\Room;
 use AweBooking\Support\Date_Period;
-use AweBooking\Admin\Forms\Add_Booking_Form;
+use AweBooking\Admin\Forms\Add_Line_Item_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 
 class Admin_Ajax {
@@ -11,39 +13,63 @@ class Admin_Ajax {
 	 * Run admin ajax hooks.
 	 */
 	public function __construct() {
-		$ajax_hooks = [
-			'set_event' => 'set_event',
-			'get_yearly_calendar' => 'get_yearly_calendar',
-		];
-		foreach ( $ajax_hooks as $id => $action ) {
-			add_action( 'wp_ajax_awebooking/' . $id, [ $this, $action ] );
-		}
-
 		// Booking ajax hooks.
-		add_action( 'wp_ajax_awebooking_booking_add_item', [ $this, 'add_booking_item' ] );
-		add_action( 'wp_ajax_awebooking/get_booking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
+		add_action( 'wp_ajax_add_awebooking_line_item', [ $this, 'add_booking_line_item' ] );
+		add_action( 'wp_ajax_get_awebooking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
 
 		add_action( 'wp_ajax_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
 		add_action( 'wp_ajax_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
 	}
 
-	public function get_booking_add_item_form() {
-		(new Add_Booking_Form)->output();
-		exit;
-	}
-
 	/**
-	 * Run ajax add booking item.
+	 * Gets the add booking form HTML template.
 	 *
 	 * @return void
 	 */
-	public function add_booking_item() {
-		$form = new Add_Booking_Form;
+	public function get_booking_add_item_form() {
+		if ( empty( $_REQUEST['booking_id'] ) ) {
+			wp_send_json_error();
+		}
+
+		$the_booking = Factory::get_booking( absint( $_REQUEST['booking_id'] ) );
+		if ( ! $the_booking || ! $the_booking->exists() ) {
+			wp_send_json_error();
+		}
 
 		try {
-			$form->handle( $_POST, true );
-		} catch (Exception $e) {
-			// ...
+			$form = new Add_Line_Item_Form( $the_booking );
+			wp_send_json_success( [ 'html' => $form->contents() ] );
+		} catch ( \Exception $e ) {
+			wp_send_json_error( new WP_Error( 'error', $e->getMessage() ) );
+		}
+	}
+
+	/**
+	 * Handler ajax add booking line item.
+	 *
+	 * @return void
+	 */
+	public function add_booking_line_item() {
+		if ( empty( $_REQUEST['booking_id'] ) ) {
+			wp_send_json_error();
+		}
+
+		$the_booking = Factory::get_booking( absint( $_REQUEST['booking_id'] ) );
+		if ( ! $the_booking || ! $the_booking->exists() ) {
+			wp_send_json_error();
+		}
+
+		try {
+			$form = new Add_Line_Item_Form( $the_booking );
+			$response = $form->handle( $_POST, true );
+
+			if ( $response ) {
+				wp_send_json_success();
+			}
+
+			wp_send_json_error();
+		} catch ( \Exception $e ) {
+			wp_send_json_error( new WP_Error( 'error', $e->getMessage() ) );
 		}
 	}
 

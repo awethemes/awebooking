@@ -35,7 +35,7 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 */
 	public function setup_room_type( $post ) {
 		// If this isn't a 'room_type', do nothing.
-		if ( ! $this->check_current_screen() ) {
+		if ( ! $this->is_current_screen() ) {
 			return;
 		}
 

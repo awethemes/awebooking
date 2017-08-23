@@ -1,21 +1,44 @@
 <div class="postbox">
 	<div class="">
 
-	<?php
-	printf( '<h1 class="wp-heading-inline awebooking-title">%s <span>#%s</span></h1>', esc_html__( 'Booking', 'awebooking' ), $post->ID );
+	<div>
+		<a href="#" class="awebooking-featured js-awebooking-toggle-featured">
+			<?php if ( $the_booking->is_featured() ) : ?>
+				<span class="dashicons dashicons-star-filled"></span>
+			<?php else : ?>
+				<span class="dashicons dashicons-star-empty"></span>
+			<?php endif ?>
+		</a>
 
-	if ( $the_booking['transaction_id'] ) {
-		echo '<br>';
+		<?php
+		printf( '<h1 class="wp-heading-inline awebooking-title">%s <span>#%s</span></h1>', esc_html__( 'Booking', 'awebooking' ), $post->ID );
 
-		if ( $the_booking['payment_method_title'] ) {
-			echo '<span class="">' . esc_html__( 'Via', 'awebooking' ) . ' ' . esc_html( $the_booking->get_payment_method_title() ) . '</span>';
+		if ( $the_booking['transaction_id'] ) {
+			echo '<br>';
+
+			if ( $the_booking['payment_method_title'] ) {
+				echo '<span class="">' . esc_html__( 'Via', 'awebooking' ) . ' ' . esc_html( $the_booking->get_payment_method_title() ) . '</span>';
+			}
+
+			echo ' | ';
+			echo '<span class="">' . esc_html__( 'Transaction ID:', 'awebooking' ) . ' ' . esc_html( $the_booking->get_transaction_id() ) . '</span>';
 		}
+		?>
 
-		echo ' | ';
+		<div style="float: right;">
+			<label>
+				<input type="checkbox" name="">
+				<span><?php echo esc_html__( 'Checked-in', 'awebooking' ) ?></span>
+			</label>
 
-		echo '<span class="">' . esc_html__( 'Transaction ID:', 'awebooking' ) . ' ' . esc_html( $the_booking->get_transaction_id() ) . '</span>';
-	}
-	?>
+			<label>
+				<input type="checkbox" name="">
+				<span><?php echo esc_html__( 'Checked-out', 'awebooking' ) ?></span>
+			</label>
+		</div>
+	</div>
+
+	<hr>
 
 	<div class="table-responsive">
 		<table class="awebooking-striped-table widefat fixed striped">
@@ -99,8 +122,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="4">
-						<a href="#my-dialogsss" class="button" title="Add" data-toggle="awebooking-popup"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
-						<a href="#my-dialogsss" class="button" title="Add" data-toggle="awebooking-popup"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
+						<a href="#awebooking-add-line-item-popup" class="button" data-toggle="awebooking-popup"><?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?></a>
 						<a href="#" class="button">Add service</a>
 					</td>
 

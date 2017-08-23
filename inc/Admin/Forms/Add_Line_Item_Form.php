@@ -3,17 +3,36 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
+use AweBooking\Booking\Booking;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Support\Date_Period;
 
-class Add_Booking_Form extends Form_Abstract {
+class Add_Line_Item_Form extends Form_Abstract {
 	/**
 	 * Form ID.
 	 *
 	 * @var string
 	 */
 	protected $form_id = 'add_booking_form';
+
+	/**
+	 * The booking instance.
+	 *
+	 * @var Booking
+	 */
+	protected $booking;
+
+	/**
+	 * Form constructor.
+	 *
+	 * @param Booking $booking The Booking to add line item.
+	 */
+	public function __construct( Booking $booking ) {
+		parent::__construct();
+
+		$this->booking = $booking;
+	}
 
 	/**
 	 * Register fields in to the CMB2.
@@ -68,6 +87,15 @@ class Add_Booking_Form extends Form_Abstract {
 	}
 
 	/**
+	 * Display some HTML or hidden input after form.
+	 *
+	 * @return void
+	 */
+	public function after_form() {
+		printf( '<input type="hidden" name="booking_id" value="%d" />', esc_attr( $this->booking->get_id() ) );
+	}
+
+	/**
 	 * Handle process the form.
 	 *
 	 * @param  array|null $data        An array input data, if null $_POST will be use.
@@ -77,22 +105,14 @@ class Add_Booking_Form extends Form_Abstract {
 	public function handle( array $data = null, $check_nonce = true ) {
 		$sanitized = parent::handle( $data, $check_nonce );
 
-		if ( empty( $data['booking_id'] ) ) {
-			return false;
-		}
-
 		$period = new Date_Period(
 			$sanitized['add_check_in_out'][0],
 			$sanitized['add_check_in_out'][1]
 		);
 
-		$booking_id = absint( $data['booking_id'] );
-
-		// Get objects from input.
+		// Get room unit object from input.
 		$the_room = Factory::get_room_unit( $sanitized['add_room'] );
-		$the_booking = Factory::get_booking( $booking_id );
-
-		if ( ! $the_room->exists() || ! $the_booking->exists() ) {
+		if ( ! $the_room->exists() ) {
 			return false;
 		}
 
@@ -105,11 +125,11 @@ class Add_Booking_Form extends Form_Abstract {
 			$the_item['check_out'] = $period->get_end_date()->toDateString();
 			$the_item['adults']    = isset( $sanitized['add_adults'] ) ? absint( $sanitized['add_adults'] ) : 0;
 			$the_item['children']  = isset( $sanitized['add_children'] ) ? absint( $sanitized['add_children'] ) : 0;
-			$the_item['total']     = $sanitized['add_price'];
+			$the_item['price']     = $sanitized['add_price'];
 
 			// Add booking item then save.
-			$the_booking->add_item( $the_item );
-			$the_booking->save();
+			$this->booking->add_item( $the_item );
+			$this->booking->save();
 
 			return $the_item;
 		}
@@ -128,15 +148,15 @@ class Add_Booking_Form extends Form_Abstract {
 		$this['add_children']->hide();
 
 		// Required check_in and check_out from request to continue.
-		if ( empty( $_REQUEST['check_in'] ) || empty( $_REQUEST['check_out'] ) ) {
+		if ( empty( $_REQUEST['add_check_in_out'][0] ) || empty( $_REQUEST['add_check_in_out'][1] ) ) {
 			return;
 		}
 
 		// First, try validate and the check-in check-out input.
 		try {
 			$period = new Date_Period(
-				sanitize_text_field( wp_unslash( $_REQUEST['check_in'] ) ),
-				sanitize_text_field( wp_unslash( $_REQUEST['check_out'] ) )
+				sanitize_text_field( wp_unslash( $_REQUEST['add_check_in_out'][0] ) ),
+				sanitize_text_field( wp_unslash( $_REQUEST['add_check_in_out'][1] ) )
 			);
 
 			// Alway require minimum one night for booking.

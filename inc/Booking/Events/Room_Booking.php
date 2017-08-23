@@ -2,9 +2,9 @@
 namespace AweBooking\Booking\Events;
 
 use DateTime;
-use Carbon\Carbon;
-use RuntimeException;
+use AweBooking\Hotel\Room;
 use Roomify\Bat\Event\Event;
+use AweBooking\Support\Carbonate;
 
 class Room_Booking extends Event {
 	/**
@@ -19,8 +19,8 @@ class Room_Booking extends Event {
 		$this->unit       = $the_room;
 		$this->unit_id    = $the_room->getUnitId();
 		$this->value      = $booking_id;
-		$this->end_date   = Carbon::instance( $end_date );
-		$this->start_date = Carbon::instance( $start_date );
+		$this->end_date   = Carbonate::instance( $end_date );
+		$this->start_date = Carbonate::instance( $start_date );
 	}
 
 	/**

@@ -2,10 +2,11 @@
 namespace AweBooking\Booking\Events;
 
 use DateTime;
-use Carbon\Carbon;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
+use AweBooking\Hotel\Room;
 use Roomify\Bat\Event\Event;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Room_State extends Event {
@@ -38,8 +39,8 @@ class Room_State extends Event {
 		$this->unit = $room;
 		$this->unit_id = $room->getUnitId();
 
-		$this->end_date = Carbon::instance( $end_date );
-		$this->start_date = Carbon::instance( $start_date );
+		$this->end_date = Carbonate::instance( $end_date );
+		$this->start_date = Carbonate::instance( $start_date );
 
 		$this->value = $state;
 	}

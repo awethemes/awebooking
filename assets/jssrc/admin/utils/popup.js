@@ -33,8 +33,6 @@ class Popup {
     }
 
     $(this.target).dialog({
-      title: $(this.el).attr('title'),
-      dialogClass: 'wp-dialog awebooking-dialog',
       modal: true,
       width: 'auto',
       height: 'auto',
@@ -42,6 +40,7 @@ class Popup {
       draggable: false,
       resizable: false,
       closeOnEscape: true,
+      dialogClass: 'wp-dialog awebooking-dialog',
       position: { at: 'center top+35%' },
       open: function () {
         $('body').css({ overflow: 'hidden' });

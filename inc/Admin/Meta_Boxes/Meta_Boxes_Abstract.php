@@ -92,7 +92,7 @@ abstract class Meta_Boxes_Abstract {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		if ( ! $this->check_current_screen() ) {
+		if ( ! $this->is_current_screen() ) {
 			return;
 		}
 
@@ -104,7 +104,7 @@ abstract class Meta_Boxes_Abstract {
 	 *
 	 * @return bool
 	 */
-	protected function check_current_screen() {
+	protected function is_current_screen() {
 		$wp_screen = get_current_screen();
 
 		// Prevent on edit.php.

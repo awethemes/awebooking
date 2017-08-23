@@ -17,29 +17,27 @@ const AweBooking = _.extend(settings, {
   },
 
   /**
-   * Make a ajax request
-   */
-  ajax(action, data) {
-    var requestData = _.extend(data, {
-      action: 'awebooking/' + action
-    });
-
-    return $.ajax({
-        url: this.ajax_url,
-        type: 'POST',
-        data: requestData,
-      })
-      .fail(function() {
-        console.log("error");
-      });
-  },
-
-  /**
    * Get a translator string
    */
   trans(context) {
     return this.strings[context] ? this.strings[context] : '';
-  }
+  },
+
+  /**
+   * Make form ajax request.
+   */
+  ajaxSubmit(form, action) {
+    const serialize = require('form-serialize');
+    const data = serialize(form, { hash: true });
+
+    // Add .ajax-loading class in to the form.
+    $(form).addClass('ajax-loading');
+
+    return wp.ajax.post(action, data)
+      .always(function() {
+        $(form).removeClass('ajax-loading');
+      });
+  },
 });
 
 $(function() {

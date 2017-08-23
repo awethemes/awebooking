@@ -3,9 +3,7 @@ namespace AweBooking\Admin;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking\Booking_Room_Item;
 use AweBooking\Support\Date_Period;
-use AweBooking\Admin\Forms\Add_Booking_Form;
 use Skeleton\Support\Validator;
 
 class Action_Handler {
@@ -16,33 +14,6 @@ class Action_Handler {
 	 */
 	public function __construct() {
 		add_action( 'post_action_delete_awebooking_item', [ $this, 'delete_booking_item' ] );
-		add_action( 'post_action_add_awebooking_room_item', [ $this, 'add_booking_room_item' ] );
-	}
-
-	/**
-	 * Handle add booking room item.
-	 *
-	 * @param  int $post_id Raw post_id from request.
-	 * @return void
-	 */
-	public function add_booking_room_item( $post_id ) {
-		// Check post type correctly first.
-		if ( AweBooking::BOOKING !== get_post_type( $post_id ) ) {
-			wp_die( esc_html__( 'Invalid post type.', 'awebooking' ) );
-		}
-
-		$form = new Add_Booking_Form;
-
-		$handled = $form->handle(
-			array_merge( $_POST, [ 'booking_id' => $post_id ] )
-		);
-
-		if ( ! $handled ) {
-			// error message.
-		}
-
-		// wp_redirect( $redirect_back );
-		exit;
 	}
 
 	/**

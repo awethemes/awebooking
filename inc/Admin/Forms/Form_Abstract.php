@@ -76,6 +76,19 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 		$this->setup_fields();
 
 		$this->show_form();
+
+		$this->after_form();
+	}
+
+	/**
+	 * Returns contents of form.
+	 *
+	 * @return string
+	 */
+	public function contents() {
+		ob_start();
+		$this->output();
+		return ob_get_clean();
 	}
 
 	/**
@@ -84,6 +97,13 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	 * @return void
 	 */
 	public function setup_fields() {}
+
+	/**
+	 * Display some HTML or hidden input after form.
+	 *
+	 * @return void
+	 */
+	public function after_form() {}
 
 	/**
 	 * Enqueue CMB2 and our styles, scripts.

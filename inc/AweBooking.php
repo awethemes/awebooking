@@ -5,6 +5,7 @@ use WP_Session;
 use Skeleton\WP_Option;
 use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
+use AweBooking\Booking\Concierge;
 use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as SkeletonContainer;
@@ -145,7 +146,7 @@ class AweBooking extends SkeletonContainer {
 		});
 
 		$this->bind( 'concierge', function( $awebooking ) {
-			return new Booking\Concierge( $awebooking );
+			return new Concierge( $awebooking );
 		});
 	}
 

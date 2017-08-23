@@ -55,14 +55,18 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	}
 
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'awebooking-booking', awebooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery' ), AweBooking::VERSION, true );
+		wp_enqueue_script( 'awebooking-booking', awebooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery', 'awebooking-admin' ), AweBooking::VERSION, true );
 		wp_localize_script( 'awebooking-booking', 'awebooking_booking_ajax', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		));
 	}
 
 	public function footer() {
-		include trailingslashit( __DIR__ ) . 'views/html-booking-templates.php';
+		$screen = get_current_screen();
+
+		if ( $this->is_current_screen() ) {
+			include trailingslashit( __DIR__ ) . 'views/html-booking-templates.php';
+		}
 	}
 
 	/**
@@ -100,7 +104,8 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	 */
 	public function register_customer_metabox() {
 		$metabox = $this->create_metabox( 'awebooking_booking_general', [
-			'title' => esc_html__( 'Details', 'awebooking' ),
+			'title'  => esc_html__( 'Details', 'awebooking' ),
+			'closed' => true,
 		]);
 
 		$customer = $metabox->add_section( 'customer_infomation', [

@@ -5,10 +5,6 @@ use Skeleton\Menu_Page;
 use AweBooking\AweBooking;
 use AweBooking\Support\Admin_Notices;
 use Skeleton\Container\Service_Hooks;
-use AweBooking\Admin\Pages\Add_Booking_Item;
-use AweBooking\Admin\Forms\Add_Booking_Form;
-use AweBooking\Admin\Pages\Edit_Booking_Item;
-use AweBooking\Admin\Forms\Edit_Booking_Form;
 
 class Admin_Hooks extends Service_Hooks {
 	/**
@@ -227,7 +223,7 @@ class Admin_Hooks extends Service_Hooks {
 		wp_register_script( 'daterangepicker', $awebooking_url . '/assets/js/daterangepicker/daterangepicker' . $suffix . '.js', array( 'jquery', 'moment' ), '2.1.25', true );
 
 		// Register awebooking main styles and scripts.
-		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking' . $suffix . '.js', array( 'vuejs', 'wp-util', 'wp-backbone', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ), $version, true );
+		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking' . $suffix . '.js', array( 'vuejs', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ), $version, true );
 		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', array( 'wp-backbone', 'daterangepicker' ), $version, true );
 		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', array( 'wp-backbone', 'daterangepicker' ), $version, true );
 		wp_register_script( 'awebooking-room-type-meta-boxes', $awebooking_url . '/assets/js/admin/room-type-meta-boxes' . $suffix . '.js', array( 'awebooking-admin' ), $version, true );

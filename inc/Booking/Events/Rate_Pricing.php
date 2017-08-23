@@ -2,9 +2,10 @@
 namespace AweBooking\Booking\Events;
 
 use DateTime;
-use Carbon\Carbon;
 use Roomify\Bat\Event\Event;
+use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Rate_Pricing extends Event {
@@ -22,8 +23,8 @@ class Rate_Pricing extends Event {
 		$this->unit = $rate;
 		$this->unit_id = $rate->getUnitId();
 
-		$this->end_date = Carbon::instance( $end_date );
-		$this->start_date = Carbon::instance( $start_date );
+		$this->end_date = Carbonate::instance( $end_date );
+		$this->start_date = Carbonate::instance( $start_date );
 
 		$this->value = $price->to_amount();
 	}
