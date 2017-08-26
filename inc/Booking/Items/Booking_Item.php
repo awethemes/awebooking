@@ -133,7 +133,7 @@ class Booking_Item extends WP_Object {
 	/**
 	 * Returns the parent object.
 	 *
-	 * @return Booking_Item|mixed|null
+	 * @return mixed|null
 	 */
 	public function get_parent() {
 		$parent = Factory::get_booking_item( $this['parent_id'] );
@@ -318,8 +318,14 @@ class Booking_Item extends WP_Object {
 		$booking_item = wp_cache_get( $this->get_id(), 'awebooking_cache_booking_item' );
 
 		if ( false === $booking_item ) {
+			$type_query = '';
+			if ( $this->get_type() ) {
+				$type_query = "AND `booking_item_type` = '" . esc_sql( $this->get_type() ) . "' ";
+			}
+
 			$booking_item = $wpdb->get_row(
-				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = '%d' LIMIT 1", $this->get_id() ),
+				// @codingStandardsIgnoreLine
+				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = '%d' {$type_query} LIMIT 1", $this->get_id() ),
 				ARRAY_A
 			);
 

@@ -2,15 +2,13 @@
 namespace AweBooking;
 
 use WP_Session;
-use Skeleton\WP_Option;
 use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Concierge;
-use AweBooking\Admin\Admin_Hooks;
 use AweBooking\Booking\Store as Booking_Store;
-use Skeleton\Container\Container as SkeletonContainer;
+use Skeleton\Container\Container as Skeleton_Container;
 
-class AweBooking extends SkeletonContainer {
+class AweBooking extends Skeleton_Container {
 	/* Constants */
 	const VERSION        = '3.0.0-beta3';
 	const SETTING_KEY    = 'awebooking_settings';
@@ -55,18 +53,17 @@ class AweBooking extends SkeletonContainer {
 	public function __construct() {
 		parent::__construct();
 
-		$this->setup();
+		static::$instance = $this;
 
+		$this->setup();
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
 
-		$this->trigger( new Admin_Hooks );
+		$this->trigger( new Admin\Admin_Hooks );
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
 		$this->trigger( new Ajax_Hooks );
-
-		static::$instance = $this;
 
 		do_action( 'awebooking/booting', $this );
 	}
@@ -103,13 +100,13 @@ class AweBooking extends SkeletonContainer {
 			return $setting_key;
 		});
 
-		// We use WP_Option for fetch/modify WP options.
-		$this['wp_option'] = function ( $a ) {
-			return new WP_Option( $a['option_key'] );
-		};
+		$this->bind( 'setting', function ( $a ) {
+			return new Setting( $a['option_key'] );
+		});
 
+		// TODO: Remove this!!!
 		$this['config'] = function ( $awebooking ) {
-			return new Config( $awebooking['wp_option'] );
+			return $awebooking['setting'];
 		};
 
 		$this['factory'] = function ( $awebooking ) {
@@ -120,12 +117,8 @@ class AweBooking extends SkeletonContainer {
 			return new Currency\Currency_Manager( $awebooking['config'] );
 		};
 
-		$this['currency'] = function ( $awebooking ) {
-			$code = $awebooking['currency_manager']->get_current_currency();
-
-			return new Currency\Currency( $code,
-				$awebooking['currency_manager']->get_currency( $code )
-			);
+		$this['currency'] = function ( $a ) {
+			return new Currency\Currency( $a['setting']->get( 'currency' ) );
 		};
 
 		$this['flash_message'] = function () {
@@ -144,10 +137,6 @@ class AweBooking extends SkeletonContainer {
 		$this->bind( 'store.pricing', function() {
 			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
 		});
-
-		$this->bind( 'concierge', function( $awebooking ) {
-			return new Concierge( $awebooking );
-		});
 	}
 
 	/**
@@ -160,17 +149,17 @@ class AweBooking extends SkeletonContainer {
 
 		// Make sure the options are copied if needed.
 		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {
-			$current_options = $this['wp_option']->all();
+			/*$current_options = $this['wp_option']->all();
 			$original_options = (array) get_option( static::SETTING_KEY, [] );
 
 			if ( ! empty( $original_options ) && empty( $current_options ) ) {
 				update_option( $this['option_key'], $original_options );
-			}
+			}*/
 		}
 
 		$this['flash_message']->setup_message();
 
-		add_filter( 'plugin_row_meta', [ $this, 'awebooking_plugin_row_meta' ], 10, 2 );
+		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
 
 		do_action( 'awebooking/booted', $this );
 	}
@@ -230,59 +219,13 @@ class AweBooking extends SkeletonContainer {
 	}
 
 	/**
-	 * Return list room states.
-	 *
-	 * @return array
-	 */
-	public function get_room_states() {
-		return [
-			static::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
-			static::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
-			static::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
-			static::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
-		];
-	}
-
-	/**
-	 * Get all order statuses.
-	 *
-	 * @return array
-	 */
-	public function get_booking_statuses() {
-		return apply_filters( 'awebooking/order_statuses', [
-			Booking::PENDING    => _x( 'Pending',    'Booking status', 'awebooking' ),
-			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
-			Booking::COMPLETED  => _x( 'Completed',  'Booking status', 'awebooking' ),
-			Booking::CANCELLED  => _x( 'Cancelled',  'Booking status', 'awebooking' ),
-		]);
-	}
-
-	/**
-	 * Get all service operations.
-	 *
-	 * @return array
-	 */
-	public function get_service_operations() {
-		return apply_filters( 'awebooking/service_operations', [
-			Service::OP_ADD               => esc_html__( 'Add to price', 'awebooking' ),
-			Service::OP_ADD_DAILY         => esc_html__( 'Add to price per night', 'awebooking' ),
-			Service::OP_ADD_PERSON        => esc_html__( 'Add to price per person', 'awebooking' ),
-			Service::OP_ADD_PERSON_DAILY  => esc_html__( 'Add to price per person per night', 'awebooking' ),
-			Service::OP_SUB               => esc_html__( 'Subtract from price', 'awebooking' ),
-			Service::OP_SUB_DAILY         => esc_html__( 'Subtract from price per night', 'awebooking' ),
-			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
-			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
-		]);
-	}
-
-	/**
 	 * Show row meta on the plugin screen.
 	 *
 	 * @param	mixed $links Plugin row meta.
 	 * @param	mixed $file  Plugin base file.
 	 * @return	array
 	 */
-	public function awebooking_plugin_row_meta( $links, $file ) {
+	public function _plugin_row_meta( $links, $file ) {
 		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
 			$row_meta = array(
 				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',

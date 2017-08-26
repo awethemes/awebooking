@@ -10,10 +10,10 @@ class Popup {
     this.target = Utils.getSelectorFromElement(el);
 
     if (this.target) {
-      this.setup();
+      Popup.setup(this.target);
 
-      $(this.el).on('click', $.proxy(this.open, this));
-      $(this.target).on('click', '[data-dismiss="awebooking-popup"]', $.proxy(this.close, this));
+      $(this.el).on('click', this.open.bind(this));
+      $(this.target).on('click', '[data-dismiss="awebooking-popup"]', this.close.bind(this));
     }
   }
 
@@ -27,12 +27,23 @@ class Popup {
     $(this.target).dialog('close');
   }
 
-  setup() {
-    if ($(this.target).dialog('instance')) {
+  static setup(target) {
+    const $target = $(target);
+    if (! $target.length) {
       return;
     }
 
-    $(this.target).dialog({
+    if ($target.dialog('instance')) {
+      return;
+    }
+
+    let _triggerResize = function() {
+      if ($target.dialog('isOpen')) {
+        $target.dialog('option', 'position', { my: 'center', at: 'center top+25%', of: window });
+      }
+    }
+
+    let dialog = $target.dialog({
       modal: true,
       width: 'auto',
       height: 'auto',
@@ -41,7 +52,7 @@ class Popup {
       resizable: false,
       closeOnEscape: true,
       dialogClass: 'wp-dialog awebooking-dialog',
-      position: { at: 'center top+35%' },
+      position: { my: 'center', at: 'center top+25%', of: window },
       open: function () {
         $('body').css({ overflow: 'hidden' });
       },
@@ -49,6 +60,10 @@ class Popup {
         $('body').css({ overflow: 'inherit' });
      }
     });
+
+    $(window).on('resize', _.debounce(_triggerResize, 250));
+
+    return dialog;
   }
 }
 

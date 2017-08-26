@@ -3,13 +3,13 @@ namespace AweBooking\Booking;
 
 use Carbon\Carbon;
 use AweBooking\AweBooking;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
 
 class Request {
 	/**
 	 * Date Period instance.
 	 *
-	 * @var Date_Period
+	 * @var Period
 	 */
 	protected $period;
 
@@ -23,10 +23,10 @@ class Request {
 	/**
 	 * Booking request constructor.
 	 *
-	 * @param Date_Period $period   Period days.
+	 * @param Period $period   Period days.
 	 * @param array       $requests An array of booking requests.
 	 */
-	public function __construct( Date_Period $period, array $requests = [] ) {
+	public function __construct( Period $period, array $requests = [] ) {
 		$this->period = $period;
 		$this->requests = $requests;
 	}
@@ -38,7 +38,7 @@ class Request {
 
 		$requests = maybe_unserialize( wp_unslash( $_COOKIE['awebooking-request'] ) );
 
-		$period = new Date_Period( $requests['check_in'], $requests['check_out'], true, Date_Period::EXCLUDE_END_DATE );
+		$period = new Period( $requests['check_in'], $requests['check_out'], true, Period::EXCLUDE_END_DATE );
 		parent::__construct( $period, $requests );
 	}
 
@@ -82,7 +82,7 @@ class Request {
 	/**
 	 * Get the date period instance.
 	 *
-	 * @return Date_Period
+	 * @return Period
 	 */
 	public function get_period() {
 		return $this->period;

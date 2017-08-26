@@ -9,7 +9,6 @@ class Collection_Test extends WP_UnitTestCase {
 			'b' => 2,
 		]);
 
-		$this->assertInstanceOf("AweBooking\\Interfaces\\Arrayable", $collect);
 		$this->assertSame($collect->to_array(), $collect->toArray());
 	}
 
@@ -19,7 +18,6 @@ class Collection_Test extends WP_UnitTestCase {
 			'b' => 2,
 		]);
 
-		$this->assertInstanceOf("AweBooking\\Interfaces\\Jsonable", $collect);
 		$this->assertSame($collect->to_json(), $collect->toJson());
 	}
 }

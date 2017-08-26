@@ -70,7 +70,7 @@ class Template_Hooks extends Service_Hooks {
 	}
 
 	/**
-	 * Add Awebooking Image sizes to WP.
+	 * Add AweBooking Image sizes to WP.
 	 */
 	public function add_image_sizes() {
 		$awebooking_thumbnail = awebooking_get_image_size( 'awebooking_thumbnail' );

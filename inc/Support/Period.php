@@ -2,9 +2,9 @@
 namespace AweBooking\Support;
 
 use DateTimeImmutable;
-use League\Period\Period;
+use League\Period\Period as League_Period;
 
-class Date_Period extends Period {
+class Period extends League_Period {
 	/**
 	 * Create date period.
 	 *
@@ -84,7 +84,7 @@ class Date_Period extends Period {
 	 *
 	 * @throws \LogicException
 	 */
-	public function require_minimum_nights( $nights = 1 ) {
+	public function required_minimum_nights( $nights = 1 ) {
 		if ( $this->nights() < $nights ) {
 			throw new \LogicException( sprintf( esc_html__( 'The date period must be have minimum %s night(s).', 'awebooking' ), $nights ) );
 		}

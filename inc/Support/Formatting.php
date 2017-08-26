@@ -4,7 +4,7 @@ namespace AweBooking\Support;
 use DateTime;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
-use AweBooking\Interfaces\Currency;
+use AweBooking\Currency\Currency;
 
 class Formatting {
 	/**

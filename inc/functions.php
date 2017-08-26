@@ -59,7 +59,7 @@ function awebooking_sanitize_period( $value, $strict = false ) {
 	}
 
 	try {
-		$period = new AweBooking\Support\Date_Period( $value[0], $value[1], $strict );
+		$period = new AweBooking\Support\Period( $value[0], $value[1], $strict );
 	} catch ( Exception $e ) {
 		return [];
 	}
@@ -138,7 +138,7 @@ endif;
  * @param  string $type Transaction type, start (default), commit, rollback.
  * @return void
  */
-function awebooking_transaction_query( $type = 'start' ) {
+function awebooking_wpdb_transaction( $type = 'start' ) {
 	global $wpdb;
 
 	$wpdb->hide_errors();

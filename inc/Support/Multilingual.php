@@ -76,7 +76,7 @@ class Multilingual {
 	 * @return bool
 	 */
 	public function is_polylang() {
-		return defined( 'POLYLANG_VERSION' );
+		return defined( 'POLYLANG_VERSION' ) && function_exists( 'pll_current_language' );
 	}
 
 	/**

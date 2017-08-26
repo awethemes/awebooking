@@ -2,7 +2,9 @@ let mix = require('laravel-mix').mix;
 
 // Complide scss and js
 mix.js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
-   .js('assets/jssrc/admin/booking.js', 'assets/js/admin')
+   .js('assets/jssrc/admin/edit-booking.js', 'assets/js/admin')
+   .js('assets/jssrc/admin/manager-pricing.js', 'assets/js/admin')
+   .js('assets/jssrc/admin/manager-availability.js', 'assets/js/admin');
 
 mix.sass('assets/sass/admin.scss', 'assets/css');
 

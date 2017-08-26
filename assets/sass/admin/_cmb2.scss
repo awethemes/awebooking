@@ -1,3 +1,13 @@
+.button.cmb2-date-range-lock {
+  padding: 0 2px;
+  line-height: 1;
+  height: auto;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
 .awebooking-form {
   &.ajax-loading {
     z-index: 10;
@@ -32,22 +42,6 @@
     position: absolute;
     margin-top: -10px;
     margin-left: -10px;
-  }
-}
-
-
-.awebooking-dialog {
-  .ui-dialog-content {
-    padding: 0;
-  }
-
-  .ui-button.ui-dialog-titlebar-close {
-    border-left: 1px solid #dfdfdf;
-  }
-
-  .awebooking-dialog-buttons {
-    padding: 1em;
-    text-align: right;
   }
 }
 

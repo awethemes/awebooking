@@ -3,7 +3,6 @@ namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
 use Skeleton\Admin_Page;
-use AweBooking\Config;
 use AweBooking\AweBooking;
 
 class Admin_Settings extends Admin_Page {
@@ -20,8 +19,8 @@ class Admin_Settings extends Admin_Page {
 	 * @param Config         $config    //.
 	 * @param Menu_Page|null $menu_page //.
 	 */
-	public function __construct( Config $config, Menu_Page $menu_page = null ) {
-		$this->config = $config;
+	public function __construct( Menu_Page $menu_page = null ) {
+		$this->config = awebooking( 'config' );
 
 		$this->strings = array(
 			'updated' => esc_html__( 'Your settings have been saved.', 'awebooking' ),
@@ -115,7 +114,7 @@ class Admin_Settings extends Admin_Page {
 			// 'desc'     => esc_html__( 'Controls the position of the currency symbol.', 'awebooking' ),
 			'default'  => $this->config->get_default( 'currency_position' ),
 			'validate' => 'required',
-			'options'  => awebooking( 'currency_manager' )->get_positions(),
+			'options'  => awebooking( 'config' )->get_currency_positions(),
 			'priority' => 30,
 		) );
 
@@ -161,8 +160,8 @@ class Admin_Settings extends Admin_Page {
 		$display->add_field( array(
 			'id'   => '__display_pages__',
 			'type' => 'title',
-			'name' => esc_html__( 'Awebooking Pages', 'awebooking' ),
-			'description' => esc_html__( 'These pages need to be set so that Awebooking knows where to send users to handle.', 'awebooking' ),
+			'name' => esc_html__( 'AweBooking Pages', 'awebooking' ),
+			'description' => esc_html__( 'These pages need to be set so that AweBooking knows where to send users to handle.', 'awebooking' ),
 			'priority' => 10,
 		) );
 

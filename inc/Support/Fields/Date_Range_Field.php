@@ -24,6 +24,15 @@ class Date_Range_Field extends Field_Abstract {
 	public function output( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
 		$escaped_value = (array) $escaped_value;
 
+		$is_locked = false;
+		if ( $field->prop( 'locked' ) ) {
+			$is_locked = true;
+
+			$field->args['attributes'] = array_merge( $field->args['attributes'], [
+				'disabled' => true,
+			]);
+		}
+
 		print $field_type_object->input( array( // WPCS: XSS OK.
 			'type'    => 'text',
 			'id'      => $field_type_object->_id( '_0' ),
@@ -40,9 +49,18 @@ class Date_Range_Field extends Field_Abstract {
 			'class'   => 'cmb2-text-small cmb2-date-range',
 		) );
 
+		if ( $is_locked ) {
+			printf(
+				'<span id="%s" class="button cmb2-date-range-lock" title="%s"><span class="dashicons dashicons-edit"></span></span>',
+				esc_attr( $field_type_object->_id( '_togglelock' ) ),
+				esc_html__( 'Edit period date', 'awebooking' )
+			);
+		}
+
 		$this->prints_inline_js(
 			$field_type_object->_id( '_0' ),
-			$field_type_object->_id( '_1' )
+			$field_type_object->_id( '_1' ),
+			$is_locked ? $field_type_object->_id( '_togglelock' ) : null
 		);
 
 		$field->add_js_dependencies( [ 'jquery-ui-core', 'jquery-ui-datepicker' ] );
@@ -64,18 +82,19 @@ class Date_Range_Field extends Field_Abstract {
 	/**
 	 * Prints inline JS for the datepicker range.
 	 *
-	 * @param  string $start Start ID.
-	 * @param  string $end   End ID.
-	 *  @return void
+	 * @param string $start_date_id Start date ID.
+	 * @param string $end_date_id   End date ID.
+	 * @param string $toggle_lock   Toggle lock ID.
+	 * @return void
 	 */
-	protected function prints_inline_js( $start, $end ) {
+	protected function prints_inline_js( $start_date_id, $end_date_id, $toggle_lock ) {
 		?><script type="text/javascript">
 			;(function($) {
 				'use strict';
 
 				var _dateFormat = '<?php echo esc_attr( AweBooking::JS_DATE_FORMAT ); ?>',
-					_fromDateID = '#<?php echo esc_attr( $start ); ?>',
-					_toDateID   = '#<?php echo esc_attr( $end ); ?>';
+					_fromDateID = '#<?php echo esc_attr( $start_date_id ); ?>',
+					_toDateID   = '#<?php echo esc_attr( $end_date_id ); ?>';
 
 				var _beforeShowCallback = function() {
 					$('#ui-datepicker-div').addClass('cmb2-element');
@@ -103,6 +122,7 @@ class Date_Range_Field extends Field_Abstract {
 						} catch(e) {}
 					};
 
+
 					fromDate = $(_fromDateID).datepicker({
 						onClose: _closeCallback,
 						beforeShow: _beforeShowCallback,
@@ -117,6 +137,16 @@ class Date_Range_Field extends Field_Abstract {
 
 					applyToChange();
 					applyFromChange();
+
+					<?php if ( $toggle_lock ) : ?>
+						$('#<?php echo esc_attr( $toggle_lock ); ?>').on('click', function(e) {
+							e.preventDefault();
+
+							$(this).toggleClass('active');
+							$(_fromDateID).prop('disabled', ! $(_fromDateID).prop('disabled'));
+							$(_toDateID).prop('disabled', ! $(_toDateID).prop('disabled'));
+						});
+					<?php endif; ?>
 				});
 			})(jQuery);
 		</script><?php

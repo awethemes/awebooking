@@ -1,7 +1,7 @@
 TODO:
 
 	✔ Clean "inc/Admin/Pages" @done (17-08-18 15:09)
-	☐ Improve `Booking.php`, complete all API.
-	☐ Improve Form API
-	☐ Controller ajax add booking item in booking page
-	☐ Controller edit booking item in booking page
+	✔ Improve `Booking.php`, complete all API. @done (17-08-25 16:15)
+	✔ Improve Form API @done (17-08-25 16:15)
+	✔ Controller ajax add booking item in booking page @done (17-08-25 16:15)
+	✔ Controller edit booking item in booking page @done (17-08-25 16:15)

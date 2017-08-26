@@ -1,6 +1,8 @@
 @import "admin/abkngcal";
 @import "admin/booking-notes";
 @import "admin/cmb2";
+@import "admin/dialog";
+@import "admin/edit-booking";
 
 .ui-datepicker {
   display: none;
@@ -142,7 +144,7 @@ ul.list-rooms > li.abkng-inline-room {
   list-style: none;
   box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15); }
 
-.open > .split-button-body {
+.active > .split-button-body {
   display: block; }
 
 .split-button-body:after,
@@ -174,6 +176,11 @@ ul.list-rooms > li.abkng-inline-room {
   width: 100%;
   text-align: left;
   line-height: 2; }
+
+.split-button-body > li > a {
+  display: block;
+  padding: 3px 1px;
+}
 
 /*
  * AweBooking settings.

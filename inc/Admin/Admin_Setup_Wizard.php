@@ -1,9 +1,6 @@
 <?php
 namespace AweBooking\Admin;
 
-use Skeleton\Menu_Page;
-use Skeleton\Admin_Page;
-use AweBooking\Config;
 use AweBooking\AweBooking;
 use AweBooking\Admin\Admin_Utils;
 use Skeleton\Support\Priority_List;

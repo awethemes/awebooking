@@ -2,6 +2,8 @@
 namespace AweBooking\Booking;
 
 use AweBooking\AweBooking;
+use AweBooking\Support\Period;
+use AweBooking\Support\Period_Collection;
 use AweBooking\Support\WP_Object;
 
 class Booking extends WP_Object {
@@ -104,47 +106,47 @@ class Booking extends WP_Object {
 		$this['date_modified'] = $this->instance->post_modified;
 	}
 
+	/**
+	 * Determines this booking have multiple rooms.
+	 *
+	 * @return boolean
+	 */
+	public function is_multiple_rooms() {
+		return $this->get_line_items()->count() > 1;
+	}
 
-
-
-
-
-
+	/**
+	 * //
+	 *
+	 * @return Carbonate
+	 */
 	public function get_check_in() {
-		$period = $this->merge_item_periods();
+		$period = $this->get_period_collection()->merge();
 
 		return ! is_null( $period ) ? $period->get_start_date() : null;
 	}
 
+	/**
+	 * //
+	 *
+	 * @return Carbonate
+	 */
 	public function get_check_out() {
-		$period = $this->merge_item_periods();
+		$period = $this->get_period_collection()->merge();
 
 		return ! is_null( $period ) ? $period->get_end_date() : null;
 	}
 
-	/**
-	 * Merge item periods to a single period.
-	 *
-	 * @return Date_Period|null
-	 */
-	protected function merge_item_periods() {
-		$items = $this->get_items();
+	public function is_continuous_periods() {
+		return $this->get_period_collection()->is_continuous();
+	}
 
-		if ( count( $items ) === 1 ) {
-			return $items[0]->get_period();
-		}
-
-		$period = null;
-		foreach ( $items as $item ) {
-			if ( is_null( $period ) ) {
-				$period = $item->get_period();
-				continue;
-			}
-
-			$period = $period->merge( $item->get_period() );
-		}
-
-		return $period;
+	protected function get_period_collection() {
+		return new Period_Collection(
+			$this->get_line_items()->map(function( $item ) {
+				return $item->get_period();
+			})->to_array()
+		);
 	}
 
 	/*

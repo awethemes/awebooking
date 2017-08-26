@@ -22,3 +22,14 @@ $add_item_form = new Add_Line_Item_Form( $the_booking );
 	</form>
 </div>
 
+<div id="awebooking-edit-line-item-popup" class="hidden" title="<?php echo esc_html__( 'Edit Room Unit', 'awebooking' ) ?>">
+	<form action="post" class="awebooking-form">
+		<div class="awebooking-dialog-contents">
+			<!-- No contents here, we'll use ajax to handle dynamic HTML -->
+		</div>
+
+		<div class="awebooking-dialog-buttons">
+			<button class="button button-primary" type="submit"><?php echo esc_html__( 'Save changes', 'awebooking' ) ?></button>
+		</div>
+	</form>
+</div>

@@ -1,5 +1,7 @@
 {
     "/js/admin/awebooking.js": "/js/admin/awebooking.js",
     "/css/admin.css": "/css/admin.css",
-    "/js/admin/booking.js": "/js/admin/booking.js"
+    "/js/admin/edit-booking.js": "/js/admin/edit-booking.js",
+    "/js/admin/manager-pricing.js": "/js/admin/manager-pricing.js",
+    "/js/admin/manager-availability.js": "/js/admin/manager-availability.js"
 }

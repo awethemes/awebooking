@@ -1,9 +1,11 @@
 const $ = window.jQuery;
 const settings = window._awebookingSettings || {};
 
-const Popup = require('./utils/popup.js');
-
 const AweBooking = _.extend(settings, {
+  Popup: require('./utils/popup.js'),
+  ToggleClass: require('./utils/toggle-class.js'),
+  RangeDatepicker: require('./utils/range-datepicker.js'),
+
   /**
    * Init the AweBooking
    */
@@ -12,7 +14,11 @@ const AweBooking = _.extend(settings, {
 
     // Init the popup, use jquery-ui-popup.
     $('[data-toggle="awebooking-popup"]').each(function() {
-      $(this).data('awebooking-popup', new Popup(this));
+      $(this).data('awebooking-popup', new self.Popup(this));
+    });
+
+    $('[data-init="awebooking-toggle"]').each(function() {
+      $(this).data('awebooking-toggle', new self.ToggleClass(this));
     });
   },
 

@@ -3,9 +3,12 @@ namespace AweBooking\Admin;
 
 use WP_Error;
 use AweBooking\Factory;
+use AweBooking\Concierge;
 use AweBooking\Hotel\Room;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
+use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Admin\Forms\Add_Line_Item_Form;
+use AweBooking\Admin\Forms\Edit_Line_Item_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 
 class Admin_Ajax {
@@ -13,9 +16,15 @@ class Admin_Ajax {
 	 * Run admin ajax hooks.
 	 */
 	public function __construct() {
+		// Calendar ajax.
+		add_action( 'wp_ajax_get_awebooking_yearly_calendar', [ $this, 'get_yearly_calendar' ] );
+		add_action( 'wp_ajax_set_awebooking_availability', [ $this, 'set_availability' ] );
+
 		// Booking ajax hooks.
 		add_action( 'wp_ajax_add_awebooking_line_item', [ $this, 'add_booking_line_item' ] );
+		add_action( 'wp_ajax_edit_awebooking_line_item', [ $this, 'edit_booking_line_item' ] );
 		add_action( 'wp_ajax_get_awebooking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
+		add_action( 'wp_ajax_get_awebooking_edit_line_item_form', [ $this, 'get_edit_line_item_form' ] );
 
 		add_action( 'wp_ajax_awebooking/delete_booking_note', array( $this, 'delete_booking_note' ) );
 		add_action( 'wp_ajax_awebooking/add_booking_note', array( $this, 'add_booking_note' ) );
@@ -36,12 +45,27 @@ class Admin_Ajax {
 			wp_send_json_error();
 		}
 
-		try {
-			$form = new Add_Line_Item_Form( $the_booking );
-			wp_send_json_success( [ 'html' => $form->contents() ] );
-		} catch ( \Exception $e ) {
-			wp_send_json_error( new WP_Error( 'error', $e->getMessage() ) );
+		$form = new Add_Line_Item_Form( $the_booking );
+		wp_send_json_success( [ 'html' => $form->contents() ] );
+	}
+
+	/**
+	 * //
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_edit_line_item_form() {
+		if ( empty( $_REQUEST['line_item_id'] ) ) {
+			wp_send_json_error();
 		}
+
+		$line_item = new Line_Item( absint( $_REQUEST['line_item_id'] ) );
+		if ( ! $line_item || ! $line_item->exists() ) {
+			wp_send_json_error();
+		}
+
+		$form = new Edit_Line_Item_Form( $line_item );
+		wp_send_json_success( [ 'html' => $form->contents() ] );
 	}
 
 	/**
@@ -69,20 +93,46 @@ class Admin_Ajax {
 
 			wp_send_json_error();
 		} catch ( \Exception $e ) {
-			wp_send_json_error( new WP_Error( 'error', $e->getMessage() ) );
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
 		}
 	}
 
+	/**
+	 * Handler ajax edit booking line item.
+	 *
+	 * @return void
+	 */
+	public function edit_booking_line_item() {
+		if ( empty( $_REQUEST['line_item_id'] ) ) {
+			wp_send_json_error();
+		}
 
+		$line_item = Factory::get_booking_item( absint( $_REQUEST['line_item_id'] ) );
+		if ( ! $line_item || ! $line_item->exists() ) {
+			wp_send_json_error();
+		}
 
+		try {
+			$form = new Edit_Line_Item_Form( $line_item );
+			$response = $form->handle( $_POST, true );
 
+			if ( $response ) {
+				wp_send_json_success();
+			}
 
+			wp_send_json_error();
+		} catch ( \Exception $e ) {
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
+		}
+	}
 
+	// ==============
 
-
-
-
-
+	/**
+	 * //
+	 *
+	 * @return void
+	 */
 	public function get_yearly_calendar() {
 		$room = new Room( absint( $_REQUEST['room'] ) );
 
@@ -94,7 +144,7 @@ class Admin_Ajax {
 		exit;
 	}
 
-	public function set_event() {
+	public function set_availability() {
 		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || ! isset( $_REQUEST['state'] ) ) {
 			return wp_send_json_error();
 		}
@@ -103,18 +153,20 @@ class Admin_Ajax {
 		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
 
 		try {
-			$date_period = new Date_Period( $start, $end, false );
+			$date_period = new Period( $start, $end, false );
 			$room = new Room( absint( $_REQUEST['room_id'] ) );
 
 			if ( $room->exists() ) {
-				awebooking( 'concierge' )->set_room_state( $room, $date_period, absint( $_REQUEST['state'] ) );
+				Concierge::set_availability( $room, $date_period, absint( $_REQUEST['state'] ) );
+				return wp_send_json_success();
 			}
-
-			return wp_send_json_success();
 		} catch ( \Exception $e ) {
-			return wp_send_json_error();
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
 		}
 	}
+
+
+
 
 
 

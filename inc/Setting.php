@@ -2,16 +2,11 @@
 namespace AweBooking;
 
 use Skeleton\WP_Option;
-use AweBooking\AweBooking;
+use AweBooking\Hotel\Service;
+use AweBooking\Booking\Booking;
+use AweBooking\Currency\Currency;
 
-class Config {
-	/**
-	 * WP_Option instance.
-	 *
-	 * @var WP_Option
-	 */
-	protected $wp_option;
-
+class Setting extends WP_Option {
 	/**
 	 * Default all settings of AweBooking.
 	 *
@@ -20,25 +15,14 @@ class Config {
 	protected $defaults;
 
 	/**
-	 * AweBooking configure.
+	 * Initiate the setting.
 	 *
-	 * This class should only for get setting default and from databases.
-	 *
-	 * @param WP_Option|null $wp_option WP_Option class.
+	 * @param string $key Option key where data will be saved.
 	 */
-	public function __construct( WP_Option $wp_option ) {
-		$this->wp_option = $wp_option;
-		$this->prepare_default_settings();
-	}
+	public function __construct( $key ) {
+		parent::__construct( $key );
 
-	/**
-	 * //
-	 *
-	 * @return array
-	 */
-	public function all() {
-		// TODO: ...
-		return $this->wp_option->all();
+		$this->prepare_default_settings();
 	}
 
 	/**
@@ -54,14 +38,14 @@ class Config {
 			$default = $this->get_default( $key );
 		}
 
-		return $this->wp_option->get( $key, $default );
+		return parent::get( $key, $default );
 	}
 
 	/**
-	 * Get default setting by key.
+	 * Get default setting by key ID.
 	 *
-	 * @param  string $key Default setting ket.
-	 * @return null|mixed
+	 * @param  string $key Default setting key.
+	 * @return mixed|null
 	 */
 	public function get_default( $key ) {
 		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
@@ -114,6 +98,68 @@ class Config {
 	}
 
 	/**
+	 * Return list room states.
+	 *
+	 * @return array
+	 */
+	public function get_room_states() {
+		return [
+			AweBooking::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			AweBooking::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			AweBooking::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			AweBooking::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+		];
+	}
+
+	/**
+	 * Get all order statuses.
+	 *
+	 * @return array
+	 */
+	public function get_booking_statuses() {
+		return apply_filters( 'awebooking/order_statuses', [
+			Booking::PENDING    => _x( 'Pending',    'Booking status', 'awebooking' ),
+			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
+			Booking::COMPLETED  => _x( 'Completed',  'Booking status', 'awebooking' ),
+			Booking::CANCELLED  => _x( 'Cancelled',  'Booking status', 'awebooking' ),
+		]);
+	}
+
+	/**
+	 * Get all service operations.
+	 *
+	 * @return array
+	 */
+	public function get_service_operations() {
+		return apply_filters( 'awebooking/service_operations', [
+			Service::OP_ADD               => esc_html__( 'Add to price', 'awebooking' ),
+			Service::OP_ADD_DAILY         => esc_html__( 'Add to price per night', 'awebooking' ),
+			Service::OP_ADD_PERSON        => esc_html__( 'Add to price per person', 'awebooking' ),
+			Service::OP_ADD_PERSON_DAILY  => esc_html__( 'Add to price per person per night', 'awebooking' ),
+			Service::OP_SUB               => esc_html__( 'Subtract from price', 'awebooking' ),
+			Service::OP_SUB_DAILY         => esc_html__( 'Subtract from price per night', 'awebooking' ),
+			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
+			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
+		]);
+	}
+
+	/**
+	 * Get list position for dropdown.
+	 *
+	 * @return arrays
+	 */
+	public function get_currency_positions() {
+		$symbol = awebooking( 'currency' )->get_symbol();
+
+		return array(
+			Currency::POS_LEFT        => sprintf( esc_html__( 'Left (%s99.99)', 'awebooking' ), $symbol ),
+			Currency::POS_RIGHT       => sprintf( esc_html__( 'Right (99.99%s)', 'awebooking' ), $symbol ),
+			Currency::POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $symbol ),
+			Currency::POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $symbol ),
+		);
+	}
+
+	/**
 	 * Prepare setup default settings.
 	 *
 	 * @return void
@@ -143,7 +189,7 @@ class Config {
 			'email_bg_color'            => '#fdfdfd',
 			'email_body_bg_color'       => '#fdfdfd',
 			'email_body_text_color'     => '#505050',
-			'email_copyright'           => get_bloginfo() . esc_html__( ' - Powered by Awebooking', 'awebooking' ),
+			'email_copyright'           => get_bloginfo() . esc_html__( ' - Powered by AweBooking', 'awebooking' ),
 
 			'email_admin_notify'          => true,
 			'email_notify_another_emails' => '',

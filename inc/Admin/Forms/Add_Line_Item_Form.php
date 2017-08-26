@@ -3,10 +3,12 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
+use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;
-use AweBooking\Support\Date_Period;
+use AweBooking\Booking\Items\Service_Item;
+use AweBooking\Support\Period;
 
 class Add_Line_Item_Form extends Form_Abstract {
 	/**
@@ -30,7 +32,6 @@ class Add_Line_Item_Form extends Form_Abstract {
 	 */
 	public function __construct( Booking $booking ) {
 		parent::__construct();
-
 		$this->booking = $booking;
 	}
 
@@ -84,6 +85,13 @@ class Add_Line_Item_Form extends Form_Abstract {
 			'validate'        => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
 		]);
+
+		// TODO: ...
+		$this->add_field([
+			'id'              => 'add_services',
+			'type'            => 'multicheck',
+			'name'            => esc_html__( 'Services', 'awebooking' ),
+		]);
 	}
 
 	/**
@@ -105,7 +113,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 	public function handle( array $data = null, $check_nonce = true ) {
 		$sanitized = parent::handle( $data, $check_nonce );
 
-		$period = new Date_Period(
+		$period = new Period(
 			$sanitized['add_check_in_out'][0],
 			$sanitized['add_check_in_out'][1]
 		);
@@ -131,8 +139,31 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$this->booking->add_item( $the_item );
 			$this->booking->save();
 
+			// TODO: ...
+			if ( isset( $sanitized['add_services'] ) && ! empty( $sanitized['add_services'] ) ) {
+				$add_services = array_map( 'absint', $sanitized['add_services'] );
+
+				foreach ( $add_services as $service_id ) {
+					$service = new Service( $service_id );
+					if ( ! $service->exists() ) {
+						continue;
+					}
+
+					$service_item = new Service_Item;
+					$service_item['name']       = $service->get_name();
+					$service_item['parent_id']  = $the_item->get_id();
+					$service_item['service_id'] = $service->get_id();
+					$service_item['price']      = $service->get_price()->get_amount();
+
+					$this->booking->add_item( $service_item );
+				}
+
+				// Re-save the booking.
+				$this->booking->save();
+			}
+
 			return $the_item;
-		}
+		} // End if().
 
 		return false;
 	}
@@ -146,6 +177,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 		$this['add_price']->hide();
 		$this['add_adults']->hide();
 		$this['add_children']->hide();
+		$this['add_services']->hide();
 
 		// Required check_in and check_out from request to continue.
 		if ( empty( $_REQUEST['add_check_in_out'][0] ) || empty( $_REQUEST['add_check_in_out'][1] ) ) {
@@ -154,7 +186,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 
 		// First, try validate and the check-in check-out input.
 		try {
-			$period = new Date_Period(
+			$period = new Period(
 				sanitize_text_field( wp_unslash( $_REQUEST['add_check_in_out'][0] ) ),
 				sanitize_text_field( wp_unslash( $_REQUEST['add_check_in_out'][1] ) )
 			);
@@ -201,6 +233,13 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$this['add_children']
 				->show()
 				->set_prop( 'options', array_combine( $b, $b ) );
+
+			// TODO: ...
+			$services = collect( $room_type->get_services() );
+
+			$this['add_services']
+				->show()
+				->set_prop( 'options', $services->pluck( 'name', 'id' )->toArray() );
 		} // End if().
 	}
 

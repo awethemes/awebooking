@@ -2,7 +2,6 @@
 namespace AweBooking\Shortcodes;
 
 use AweBooking\Booking\Factory;
-use AweBooking\Support\Date_Period;
 use AweBooking\Support\Template;
 
 class Shortcode_Check_Availability {

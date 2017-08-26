@@ -118,7 +118,7 @@ class Service_Tax extends Taxonomy {
 	 * @return string
 	 */
 	public function sanitize_operation( $value ) {
-		$operation_options = awebooking()->get_service_operations();
+		$operation_options = awebooking( 'setting' )->get_service_operations();
 		$valid_values = [];
 		foreach ( $operation_options as $key => $operation_option ) {
 			$valid_values[] = $key;

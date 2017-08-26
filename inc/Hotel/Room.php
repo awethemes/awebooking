@@ -4,7 +4,7 @@ namespace AweBooking\Hotel;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Support\WP_Object;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
 use AweBooking\Support\Traits\BAT_Unit;
 use Roomify\Bat\Unit\UnitInterface as Unit_Interface;
 
@@ -111,39 +111,6 @@ class Room extends WP_Object implements Unit_Interface {
 	 */
 	public function get_room_type() {
 		return $this->room_type;
-	}
-
-	/**
-	 * Check this room-unit is free in a period (could be available for booking).
-	 *
-	 * This method check only available state, no constraints apply.
-	 *
-	 * @param  Date_Period $period  The date period.
-	 * @return bool|null
-	 */
-	public function is_free( Date_Period $period ) {
-		// Make sure we have an exists room unit,
-		// if not just leave and return.
-		if ( ! $this->exists() ) {
-			return;
-		}
-
-		// Create the availability calendar.
-		$calendar = Factory::create_availability_calendar( [ $this ] );
-
-		// Here that's why we subtract a minute from end date:
-		// We have period from: 2017-10-10 to 2017-10-13, so have 3 nights (10-11, 11-12, 12-13).
-		// The BAT system calculate by nightly, so if we past from "2017-10-10" to "2017-10-13"
-		// by default we'll receive result of `4` nights (10, 11, 12, 13).
-		$response = $calendar->getMatchingUnits(
-			$period->get_start_date(),
-			$period->get_end_date()->subMinute(),
-			[ AweBooking::STATE_AVAILABLE ]
-		);
-
-		return array_key_exists( $this->get_id(),
-			$response->getIncluded()
-		);
 	}
 
 	/**

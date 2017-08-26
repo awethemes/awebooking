@@ -89,7 +89,7 @@ class WP_Core_Hooks extends Service_Hooks {
 		]));
 
 		// Register 'hotel_service' taxonomy.
-		/*Taxonomy::make(
+		Taxonomy::make(
 			AweBooking::HOTEL_SERVICE,
 			apply_filters( 'awebooking/taxonomy_objects/hotel_service', AweBooking::ROOM_TYPE ),
 			esc_html__( 'Service', 'awebooking' ),
@@ -100,7 +100,7 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'       => false,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
-		]));*/
+		]));
 
 		// Register 'hotel_location' taxonomy.
 		if ( $awebooking->is_multi_location() ) {

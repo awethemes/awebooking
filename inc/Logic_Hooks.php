@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use AweBooking\AweBooking;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
 use Skeleton\Container\Service_Hooks;
 
 class Logic_Hooks extends Service_Hooks {
@@ -77,7 +77,7 @@ class Logic_Hooks extends Service_Hooks {
 
 		if ( $booking_room instanceof Room && $booking_room->exists() ) {
 			try {
-				$period = new Date_Period( $the_booking['check_in'], $the_booking['check_out'], false );
+				$period = new Period( $the_booking['check_in'], $the_booking['check_out'], false );
 
 				$concierge->set_room_state( $booking_room, $period, AweBooking::STATE_AVAILABLE, [ 'force' => true ] );
 				$concierge->set_booking_event( $the_booking, $period, [ 'clear' => true ] );

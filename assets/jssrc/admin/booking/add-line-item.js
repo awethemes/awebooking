@@ -1,7 +1,7 @@
 const $ = window.jQuery;
 const awebooking = window.TheAweBooking;
 
-class EditBooking {
+class AddLineItem {
   constructor(form) {
     this.form  = (form instanceof jQuery) ? form[0] : form;
     this.$form = $(this.form);
@@ -25,6 +25,11 @@ class EditBooking {
           window.location.reload();
         }, 250);
 
+      })
+      .fail(function(response) {
+        if (response.error) {
+          alert(response.error);
+        }
       });
   }
 
@@ -75,10 +80,4 @@ class EditBooking {
   }
 }
 
-$(function() {
-
-  const $form = $('#awebooking-add-line-item-form');
-  if ($form.length > 0) {
-    new EditBooking($form);
-  }
-});
+module.exports = AddLineItem;

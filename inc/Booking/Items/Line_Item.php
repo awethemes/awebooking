@@ -2,8 +2,9 @@
 namespace AweBooking\Booking\Items;
 
 use AweBooking\Factory;
+use AweBooking\Concierge;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
 
 class Line_Item extends Booking_Item {
 	/**
@@ -117,10 +118,10 @@ class Line_Item extends Booking_Item {
 	 *
 	 * Note: An exception or more will be thrown if any invalid found.
 	 *
-	 * @return Date_Period
+	 * @return Period
 	 */
 	public function get_period() {
-		return new Date_Period( $this->get_check_in(), $this->get_check_out() );
+		return new Period( $this->get_check_in(), $this->get_check_out() );
 	}
 
 	/**
@@ -194,6 +195,53 @@ class Line_Item extends Booking_Item {
 	}
 
 	/**
+	 * Gets formatted nights stayed.
+	 *
+	 * @param  boolean $echo Echo or return output.
+	 * @return string|void
+	 */
+	public function get_formatted_nights_stayed( $echo = true ) {
+		$nights = $this->get_nights_stayed();
+		$nights = $nights . ' ' . _n( 'night', 'nights', $nights, 'awebooking' );
+
+		if ( $echo ) {
+			print $nights; // WPCS: XSS OK.
+		} else {
+			return $nights;
+		}
+	}
+
+	/**
+	 * Gets formatted guest number HTML.
+	 *
+	 * @param  boolean $echo Echo or return output.
+	 * @return string|void
+	 */
+	public function get_fomatted_guest_number( $echo = true ) {
+		$html = '';
+
+		$html .= sprintf(
+			'<span class="">%1$d %2$s</span>',
+			$this->get_adults(),
+			_n( 'adult', 'adults', $this->get_adults(), 'awebooking' )
+		);
+
+		if ( $this['children'] ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$this->get_children(),
+				_n( 'child', 'children', $this->get_children(), 'awebooking' )
+			);
+		}
+
+		if ( $echo ) {
+			print $html; // WPCS: XSS OK.
+		} else {
+			return $html;
+		}
+	}
+
+	/**
 	 * Determines if the current item is able to be saved.
 	 *
 	 * @return bool
@@ -211,20 +259,18 @@ class Line_Item extends Booking_Item {
 	 *
 	 * @throws \LogicException
 	 *
-	 * @param  Date_Period $to_period Change to date period.
+	 * @param  Period $to_period Change to date period.
 	 * @return bool|null
 	 */
-	public function is_changeable( Date_Period $to_period ) {
-		if ( $to_period->nights() < 1 ) {
-			throw new \LogicException( esc_html__( 'The date period must be have minimum one night.', 'awebooking' ) );
-		}
+	public function is_changeable( Period $to_period ) {
+		$to_period->required_minimum_nights();
 
 		$room_unit = $this->get_room_unit();
 		if ( ! $room_unit->exists() ) {
 			return;
 		}
 
-		$original_period = new Date_Period(
+		$original_period = new Period(
 			$this->original['check_in'], $this->original['check_out']
 		);
 
@@ -237,7 +283,7 @@ class Line_Item extends Booking_Item {
 		// If both period object not overlaps, so we just
 		// determines new period is bookable or not.
 		if ( ! $original_period->overlaps( $to_period ) ) {
-			return $room_unit->is_free( $to_period );
+			return Concierge::is_available( $room_unit, $to_period );
 		}
 
 		// Create an array difference between two Period.
@@ -247,7 +293,7 @@ class Line_Item extends Booking_Item {
 		// Loop each piece of diff-period, if one of them
 		// un-available for changing just leave and return false.
 		foreach ( $diff as $piece ) {
-			if ( ! $original_period->contains( $piece ) && ! $room_unit->is_free( $piece ) ) {
+			if ( ! $original_period->contains( $piece ) && ! Concierge::is_available( $room_unit, $piece ) ) {
 				return false;
 			}
 		}
@@ -303,12 +349,12 @@ class Line_Item extends Booking_Item {
 
 		// Moving date period.
 		if ( ! $this->recently_created && $this->is_dirty( 'check_in', 'check_out' ) && $this->is_changeable( $period ) ) {
+			// ...
+		}
 
-		} else {
-			awebooking( 'concierge' )->set_room_state( $this->get_room_unit(), $period, [
-				'state'      => $booking->get_state_status(),
-				'booking_id' => $booking->get_id(),
-			]);
+		$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
+		if ( ! $saved_state ) {
+			throw new \RuntimeException( 'Error Processing Request' );
 		}
 	}
 
@@ -320,10 +366,10 @@ class Line_Item extends Booking_Item {
 	 */
 	protected function perform_delete( $force ) {
 		// Before we delete a room unit, restore available state and booking room.
-		awebooking( 'concierge' )->set_room_state( $this->get_room_unit(), $this->get_period(), [
+		/*awebooking( 'concierge' )->set_room_state( $this->get_room_unit(), $this->get_period(), [
 			'clean'      => true,
 			'booking_id' => $this->get_booking_id(),
-		]);
+		]);*/
 
 		return parent::perform_delete( $force );
 	}

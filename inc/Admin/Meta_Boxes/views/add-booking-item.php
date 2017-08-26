@@ -3,7 +3,7 @@
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_type;
 use AweBooking\Support\Carbonate;
-use AweBooking\Support\Date_Period;
+use AweBooking\Support\Period;
 use AweBooking\Booking\Request;
 use Skeleton\CMB2\CMB2;
 
@@ -90,7 +90,7 @@ if ( ! empty( $_REQUEST['add_room'] ) ) {
 
 if ( ! empty( $_REQUEST['check_in'] ) && ! empty( $_REQUEST['check_out'] ) ) {
 	try {
-		$date_period = new Date_Period(
+		$date_period = new Period(
 			sanitize_text_field( wp_unslash( $_REQUEST['check_in'] ) ),
 			sanitize_text_field( wp_unslash( $_REQUEST['check_out'] ) ),
 			false

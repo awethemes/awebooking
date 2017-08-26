@@ -3,7 +3,6 @@ namespace AweBooking\Admin;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Support\Date_Period;
 use Skeleton\Support\Validator;
 
 class Action_Handler {
@@ -49,6 +48,10 @@ class Action_Handler {
 
 		// Delete the booking item.
 		$booking_item->delete();
+
+		awebooking( 'admin_notices' )->info(
+			sprintf( esc_html__( 'The booking item #%s has been deleted.', 'awebooking' ), esc_html( $post_id ) )
+		);
 
 		wp_redirect( $the_booking->get_edit_url() );
 		exit;

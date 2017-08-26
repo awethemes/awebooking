@@ -4,7 +4,6 @@ namespace AweBooking\Booking\Items;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Calendar;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\Date_Period;
 
 class Service_Item extends Booking_Item {
 	/**

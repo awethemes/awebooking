@@ -9,7 +9,6 @@ use AweBooking\Hotel\Room_Type;
 use AweBooking\Hotel\Service;
 use AweBooking\Pricing\Price;
 use AweBooking\Currency\Currency;
-use AweBooking\Support\Date_Period;
 use AweBooking\Support\Formatting;
 use Skeleton\CMB2\CMB2;
 use AweBooking\Support\Mailer;
@@ -55,8 +54,8 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	}
 
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'awebooking-booking', awebooking()->plugin_url() . '/assets/js/admin/booking.js', array( 'jquery', 'awebooking-admin' ), AweBooking::VERSION, true );
-		wp_localize_script( 'awebooking-booking', 'awebooking_booking_ajax', array(
+		wp_enqueue_script( 'awebooking-edit-booking', awebooking()->plugin_url() . '/assets/js/admin/edit-booking.js', array( 'jquery', 'awebooking-admin' ), AweBooking::VERSION, true );
+		wp_localize_script( 'awebooking-edit-booking', 'awebooking_booking_ajax', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		));
 	}

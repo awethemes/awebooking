@@ -1,26 +1,25 @@
 <?php
 namespace AweBooking\Booking\Events;
 
-use DateTime;
 use AweBooking\Hotel\Room;
 use Roomify\Bat\Event\Event;
-use AweBooking\Support\Carbonate;
+use AweBooking\Support\Period;
+use AweBooking\Booking\Booking;
 
 class Room_Booking extends Event {
 	/**
 	 * Booking event constructor.
 	 *
-	 * @param Room     $the_room   The room instance.
-	 * @param DateTime $start_date Start of date of booking event.
-	 * @param DateTime $end_date   End of date of  booking event.
-	 * @param bool     $booking_id //.
+	 * @param Room    $room_unit The room unit instance.
+	 * @param Period  $period    The period of event.
+	 * @param Booking $booking   The booking instance.
 	 */
-	public function __construct( Room $the_room, DateTime $start_date, DateTime $end_date, $booking_id ) {
-		$this->unit       = $the_room;
-		$this->unit_id    = $the_room->getUnitId();
-		$this->value      = $booking_id;
-		$this->end_date   = Carbonate::instance( $end_date );
-		$this->start_date = Carbonate::instance( $start_date );
+	public function __construct( Room $room_unit, Period $period, Booking $booking ) {
+		$this->unit       = $room_unit;
+		$this->unit_id    = $room_unit->getUnitId();
+		$this->value      = $booking->get_id();
+		$this->start_date = $period->get_start_date();
+		$this->end_date   = $period->get_end_date()->subMinute();
 	}
 
 	/**

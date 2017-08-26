@@ -4,10 +4,6 @@ namespace AweBooking\Support;
 use Carbon\Carbon;
 
 class Carbonate extends Carbon {
-	public function date_i18n( $format = 'Y-m-d' ) {
-		return date_i18n( $format );
-	}
-
 	/**
 	 * Return a datetime as Carbon object with time set to 00:00:00.
 	 *
@@ -35,6 +31,10 @@ class Carbonate extends Carbon {
 			return static::instance( $datetime );
 		}
 
+		if ( $datetime instanceof \DateTimeImmutable ) {
+			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
+		}
+
 		// If this value is an integer, we will assume it is a UNIX timestamp's value
 		// and format a Carbon object from this timestamp.
 		if ( is_numeric( $datetime ) ) {
@@ -43,7 +43,7 @@ class Carbonate extends Carbon {
 
 		// If the value is in simply "Y-m-d" format, we will instantiate the
 		// Carbon instances from that format. And reset the time to 00:00:00.
-		if ( static::is_standard_date_format( $datetime ) ) {
+		if ( is_string( $datetime ) && static::is_standard_date_format( $datetime ) ) {
 			return static::createFromFormat( 'Y-m-d', $datetime )->startOfDay();
 		}
 
@@ -94,5 +94,14 @@ class Carbonate extends Carbon {
 	 */
 	public static function is_standard_date_format( $date ) {
 		return (bool) preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
+	}
+
+	/**
+	 * Format the instance as a string.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return date_i18n( awebooking_option( 'date_format' ), $this->getTimestamp() );
 	}
 }

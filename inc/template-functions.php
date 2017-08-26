@@ -252,7 +252,7 @@ function awebooking_get_image_size( $image_size ) {
  * @return string
  */
 function awebooking_placeholder_img_src() {
-	return apply_filters( 'awebooking/placeholder_img_src', Awebooking()->plugin_url() . '/assets/img/placeholder.png' );
+	return apply_filters( 'awebooking/placeholder_img_src', awebooking()->plugin_url() . '/assets/img/placeholder.png' );
 }
 
 /**

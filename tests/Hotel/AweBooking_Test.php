@@ -16,9 +16,6 @@ class AweBooking_Test extends WP_UnitTestCase {
 	}
 
 	public function test_class_instances() {
-		$this->assertInstanceOf( 'Skeleton\\WP_Option', $this->awebooking['wp_option'] );
-		$this->assertInstanceOf( 'AweBooking\\Interfaces\\Config', $this->awebooking['config'] );
-
 		$this->assertInstanceOf( 'AweBooking\\Currency\\Currency', $this->awebooking['currency'] );
 		$this->assertInstanceOf( 'AweBooking\\Currency\\Currency_Manager', $this->awebooking['currency_manager'] );
 

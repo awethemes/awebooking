@@ -1,17 +1,7 @@
 <?php
 namespace AweBooking\Currency;
 
-use AweBooking\Config;
-use AweBooking\Interfaces\Currency as Currency_Interface;
-
 class Currency_Manager {
-	/**
-	 * AweBooking Config instance.
-	 *
-	 * @var Config
-	 */
-	protected $config;
-
 	/**
 	 * List all currency.
 	 *
@@ -21,24 +11,11 @@ class Currency_Manager {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param Config $config AweBooking Config instance.
 	 */
-	public function __construct( Config $config ) {
-		$this->config = $config;
-
+	public function __construct() {
 		$this->currencies = apply_filters( 'awebooking/currencies',
 			include( trailingslashit( __DIR__ ) . '/currencies.php' )
 		);
-	}
-
-	/**
-	 * Get all currencies.
-	 *
-	 * @return array
-	 */
-	public function get_currencies() {
-		return $this->currencies;
 	}
 
 	/**
@@ -54,28 +31,43 @@ class Currency_Manager {
 	}
 
 	/**
+	 * Add a currency in to the manager.
+	 *
+	 * @param  string|Currency $code Unique currency code or Currency instance.
+	 * @param  array|null      $args Currency args.
+	 * @return bool
+	 */
+	public function add_currency( $code, array $args = null ) {
+		if ( $code instanceof Currency ) {
+			$code = $code->get_code();
+			$args = $code->to_array();
+		}
+
+		if ( empty( $args['name'] ) || empty( $args['symbol'] ) ) {
+			return false;
+		}
+
+		$this->currencies[ $code ] = $args;
+
+		return true;
+	}
+
+	/**
+	 * Get all currencies.
+	 *
+	 * @return array
+	 */
+	public function get_currencies() {
+		return $this->currencies;
+	}
+
+	/**
 	 * Return current currency code.
 	 *
 	 * @return array
 	 */
 	public function get_current_currency() {
-		return $this->config->get( 'currency' );
-	}
-
-	/**
-	 * Get list position for dropdown.
-	 *
-	 * @return arrays
-	 */
-	public function get_positions() {
-		$currency = $this->get_currency();
-
-		return array(
-			Currency_Interface::POS_LEFT        => sprintf( esc_html__( 'Left (%s99.99)', 'awebooking' ), $currency['symbol'] ),
-			Currency_Interface::POS_RIGHT       => sprintf( esc_html__( 'Right (99.99%s)', 'awebooking' ), $currency['symbol'] ),
-			Currency_Interface::POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $currency['symbol'] ),
-			Currency_Interface::POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $currency['symbol'] ),
-		);
+		return awebooking_option( 'currency' );
 	}
 
 	/**
@@ -95,8 +87,8 @@ class Currency_Manager {
 			}
 
 			$currency = str_replace(
-				[ '%code', '%name', '%symbol', '%format' ],
-				[ $code, $currency['name'], $currency['symbol'], $currency['format'] ],
+				[ '%code', '%name', '%symbol' ],
+				[ $code, $currency['name'], $currency['symbol'] ],
 				$format
 			);
 		});

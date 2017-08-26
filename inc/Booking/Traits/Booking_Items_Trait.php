@@ -148,6 +148,15 @@ trait Booking_Items_Trait {
 	}
 
 	/**
+	 * Returns collection of service items.
+	 *
+	 * @return Collection
+	 */
+	public function get_service_items() {
+		return $this->get_items( 'service_item' );
+	}
+
+	/**
 	 * Gets the count of booking items of a certain type.
 	 *
 	 * @param  string $item_type Item type.
