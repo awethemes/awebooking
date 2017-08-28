@@ -23,21 +23,19 @@ class Service extends WP_Object {
 	/**
 	 * This is the name of this object type.
 	 *
-	 * Normally is name of custom-post-type or custom-taxonomy.
-	 *
 	 * @var string
 	 */
 	protected $object_type = AweBooking::HOTEL_SERVICE;
 
 	/**
-	 * WordPress type for object, Eg: "post" and "term".
+	 * WordPress type for object.
 	 *
 	 * @var string
 	 */
 	protected $wp_type = 'term';
 
 	/**
-	 * Type of object metadata is for (e.g., term, post).
+	 * Type of object metadata is for.
 	 *
 	 * @var string
 	 */
@@ -53,9 +51,20 @@ class Service extends WP_Object {
 	protected $attributes = [
 		'name'        => '',
 		'description' => '',
-		'price'       => 0.0,
 		'operation'   => 'add',
+		'value'       => 0,
 		'type'        => 'optional',
+	];
+
+	/**
+	 * An array of attributes mapped with metadata.
+	 *
+	 * @var array
+	 */
+	protected $maps = [
+		'operation' => '_service_operation',
+		'value'     => '_service_value',
+		'type'      => '_service_type',
 	];
 
 	/**
@@ -64,28 +73,8 @@ class Service extends WP_Object {
 	 * @var array
 	 */
 	protected $casts = [
-		'price' => 'float',
+		'value' => 'float',
 	];
-
-	/**
-	 * An array of meta data mapped with attributes.
-	 *
-	 * @var array
-	 */
-	protected $maps = [
-		'price',
-		'operation',
-		'type',
-	];
-
-	/**
-	 * Create new Extra Service.
-	 *
-	 * @param integer $service Extra service ID or instance of WP_Term.
-	 */
-	public function __construct( $service = 0 ) {
-		parent::__construct( $service );
-	}
 
 	/**
 	 * Setup the object attributes.
@@ -93,26 +82,8 @@ class Service extends WP_Object {
 	 * @return void
 	 */
 	protected function setup() {
-		$this->set_attribute( 'name', $this->instance->name );
-		$this->set_attribute( 'description', $this->instance->description );
-	}
-
-	/**
-	 * If this is optional service.
-	 *
-	 * @return bool
-	 */
-	public function is_optional() {
-		return static::OPTIONAL === $this->get_type();
-	}
-
-	/**
-	 * If this is mandatory service.
-	 *
-	 * @return bool
-	 */
-	public function is_mandatory() {
-		return static::MANDATORY === $this->get_type();
+		$this['name'] = $this->instance->name;
+		$this['description'] = $this->instance->description;
 	}
 
 	/**
@@ -134,28 +105,48 @@ class Service extends WP_Object {
 	}
 
 	/**
-	 * The room-type title.
+	 * Returns value.
 	 *
-	 * @return Price
+	 * @return float
 	 */
-	public function get_price() {
-		if ( in_array( $this->get_operation(), [ static::OP_INCREASE, static::OP_DECREASE ] ) ) {
-			return new Price( 0 );
-		}
-
-		return new Price( $this['price'] );
-	}
-
-	public function get_operation() {
-		return $this->get_attribute( 'operation' );
-	}
-
 	public function get_value() {
-		return $this->get_attribute( 'price' );
+		return apply_filters( $this->prefix( 'get_value' ), $this['value'], $this );
 	}
 
+	/**
+	 * Returns service operation.
+	 *
+	 * @return string
+	 */
+	public function get_operation() {
+		return apply_filters( $this->prefix( 'get_operation' ), $this['operation'], $this );
+	}
+
+	/**
+	 * Returns "optional" or "mandatory".
+	 *
+	 * @return string
+	 */
 	public function get_type() {
-		return $this->get_attribute( 'type' );
+		return apply_filters( $this->prefix( 'get_type' ), $this['type'], $this );
+	}
+
+	/**
+	 * If this is optional service.
+	 *
+	 * @return bool
+	 */
+	public function is_optional() {
+		return static::OPTIONAL === $this->get_type();
+	}
+
+	/**
+	 * If this is mandatory service.
+	 *
+	 * @return bool
+	 */
+	public function is_mandatory() {
+		return static::MANDATORY === $this->get_type();
 	}
 
 	/**
@@ -205,6 +196,19 @@ class Service extends WP_Object {
 		return $label;
 	}
 
+	/**
+	 * The room-type title.
+	 *
+	 * @return Price
+	 */
+	public function get_price() {
+		if ( in_array( $this->get_operation(), [ static::OP_INCREASE, static::OP_DECREASE ] ) ) {
+			return new Price( 0 );
+		}
+
+		return new Price( $this['value'] );
+	}
+
 	public function get_price_label( Request $booking_request, $before_value = '', $after_value = '' ) {
 		$label = '';
 
@@ -243,5 +247,45 @@ class Service extends WP_Object {
 		}
 
 		return $label;
+	}
+
+	/**
+	 * Run perform insert object into database.
+	 *
+	 * @see wp_insert_term()
+	 *
+	 * @return int|void
+	 */
+	protected function perform_insert() {
+		$inserted = wp_insert_term( $this->get_name(), $this->object_type, [
+			'description' => $this->get_description(),
+		]);
+
+		if ( is_wp_error( $inserted ) ) {
+			return;
+		}
+
+		return $inserted['term_id'];
+	}
+
+	/**
+	 * Run perform update object.
+	 *
+	 * @see wp_update_term()
+	 *
+	 * @param  array $dirty The attributes has been modified.
+	 * @return bool|void
+	 */
+	protected function perform_update( array $dirty ) {
+		if ( ! $this->is_dirty( 'name', 'description' ) ) {
+			return true;
+		}
+
+		$updated = wp_update_term( $this->get_id(), $this->object_type, [
+			'name'        => $this->get_name(),
+			'description' => $this->get_description(),
+		]);
+
+		return ! is_wp_error( $updated );
 	}
 }

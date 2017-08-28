@@ -51,8 +51,6 @@ class Yearly_Calendar {
 		$current_year = Carbonate::createFromDate( $this->year, 1, 1 );
 		$events = $calendar->getEvents( $current_year, $current_year->copy()->addYear() );
 
-		dd($events);
-
 		$states = [];
 		foreach ( $events[ $room->get_id() ] as $state ) {
 			$state = Room_State::instance( $state );
@@ -80,9 +78,6 @@ class Yearly_Calendar {
 
 		$range = [];
 		foreach ( $this->state as $state ) {
-			var_dump($state->getStartDate());
-			var_dump($state->getEndDate());
-
 			try {
 				$period = new Period( $state->getStartDate(), $state->getEndDate() );
 			} catch ( Exception $e ) {
@@ -167,23 +162,18 @@ class Yearly_Calendar {
 	public function display() {
 		global $wp_locale;
 
-		?>
+		$room_type = $this->room->get_room_type();
+
+		?><div class="abkngcal-container" data-room="<?php echo esc_attr( $this->room->get_id() ) ?>">
+			<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>
+
+		<h2><?php echo $this->room->get_name(); ?> ( <?php echo esc_html( $room_type->get_title() ) ?> )</h2>
+
+		<table class="abkngcal abkngcal--yearly">
+
+		<?php $this->display_thead(); ?>
 
 		<?php
-
-		echo '<div class="abkngcal-container" data-room="' . $this->room->get_id() . '">';
-		echo '<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
-
-		?>
-
-		<h2><?php echo $this->room->name; ?> ( <?php echo get_the_title( $this->room->room_type ) ?> )</h2>
-
-		<?php
-
-		echo '<table class="abkngcal abkngcal--yearly">';
-
-		$this->display_thead();
-
 		echo '<tbody>';
 
 		for ( $month = 1; $month <= 12; $month++ ) {
@@ -238,9 +228,7 @@ class Yearly_Calendar {
 			echo '</tr>';
 		}// End for().
 
-		echo '</tbody></table>';
-
-		?>
+		echo '</tbody></table>'; ?>
 
 		<div class="datepicker-container">
 			<div class="write-here"></div>

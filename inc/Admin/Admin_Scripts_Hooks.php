@@ -5,6 +5,12 @@ use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
 
 class Admin_Scripts_Hooks extends Service_Hooks {
+	/**
+	 * Determine run init action only in admin.
+	 *
+	 * @var boolean
+	 */
+	public $in_admin = true;
 
 	/**
 	 * Init service provider.
@@ -32,21 +38,22 @@ class Admin_Scripts_Hooks extends Service_Hooks {
 		// Register vendor styles and scripts.
 		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin.css', array( 'wp-jquery-ui-dialog' ), $version );
 
-		wp_register_script( 'vuejs', $awebooking_url . '/assets/js/vuejs/vue.js', array(), '2.3.0' );
 		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment.js', array(), '2.18.1' );
-
-		// Register awebooking main styles and scripts.
-		$deps = [ 'vuejs', 'moment', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ];
-		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking.js', $deps, $version, true );
-
 		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', array( 'wp-backbone' ), $version, true );
 		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', array( 'wp-backbone' ), $version, true );
 
-		wp_register_script( 'awebooking-admin-manager-pricing', $awebooking_url . '/assets/js/admin/manager-pricing.js', [ 'awebooking-admin', 'awebooking-pricing-calendar' ], $version, true );
-		wp_register_script( 'awebooking-admin-manager-availability', $awebooking_url . '/assets/js/admin/manager-availability.js', [ 'awebooking-admin', 'awebooking-yearly-calendar' ], $version, true );
+		// Register awebooking main styles and scripts.
+		$deps = [ 'awebooking-admin-manifest', 'awebooking-admin-vendor', 'moment', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ];
+		wp_register_script( 'awebooking-admin-manifest', $awebooking_url . '/assets/js/admin/manifest.js', [], $version, true );
+		wp_register_script( 'awebooking-admin-vendor', $awebooking_url . '/assets/js/admin/vendor.js', [], $version, true );
+		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking.js', $deps, $version, true );
 
-		wp_register_script( 'awebooking-room-type-meta-boxes', $awebooking_url . '/assets/js/admin/room-type-meta-boxes.js', array( 'awebooking-admin' ), $version, true );
-		wp_register_script( 'awebooking-create-booking', $awebooking_url . '/assets/js/admin/create-booking.js', array( 'awebooking-admin' ), $version, true );
+		wp_register_script( 'awebooking-edit-booking', awebooking()->plugin_url() . '/assets/js/admin/edit-booking.js', array( 'awebooking-admin' ), $version, true );
+		wp_register_script( 'awebooking-edit-service', awebooking()->plugin_url() . '/assets/js/admin/edit-service.js', array( 'awebooking-admin' ), $version, true );
+		wp_register_script( 'awebooking-edit-room-type', awebooking()->plugin_url() . '/assets/js/admin/edit-room-type.js', array( 'awebooking-admin' ), $version, true );
+
+		wp_register_script( 'awebooking-manager-pricing', $awebooking_url . '/assets/js/admin/manager-pricing.js', [ 'awebooking-admin', 'awebooking-pricing-calendar' ], $version, true );
+		wp_register_script( 'awebooking-manager-availability', $awebooking_url . '/assets/js/admin/manager-availability.js', [ 'awebooking-admin', 'awebooking-yearly-calendar' ], $version, true );
 
 		// Send AweBooking object.
 		wp_localize_script( 'awebooking-admin', '_awebookingSettings', array(
@@ -68,18 +75,30 @@ class Admin_Scripts_Hooks extends Service_Hooks {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		$current_screen = get_current_screen();
+		$screen = get_current_screen();
 
 		wp_enqueue_style( 'cmb2-styles' );
 		wp_enqueue_style( 'awebooking-admin' );
 		wp_enqueue_script( 'awebooking-admin' );
 
-		if ( 'awebooking_page_manager-pricing' === $current_screen->id ) {
-			wp_enqueue_script( 'awebooking-admin-manager-pricing' );
+		if ( AweBooking::ROOM_TYPE === $screen->id ) {
+			wp_enqueue_script( 'awebooking-edit-room-type' );
 		}
 
-		if ( 'awebooking_page_manager-awebooking' === $current_screen->id ) {
-			wp_enqueue_script( 'awebooking-admin-manager-availability' );
+		if ( AweBooking::BOOKING === $screen->id ) {
+			wp_enqueue_script( 'awebooking-edit-booking' );
+		}
+
+		if ( 'edit-hotel_extra_service' === $screen->id ) {
+			// wp_enqueue_script( 'awebooking-edit-service' );
+		}
+
+		if ( 'awebooking_page_manager-pricing' === $screen->id ) {
+			wp_enqueue_script( 'awebooking-manager-pricing' );
+		}
+
+		if ( 'awebooking_page_manager-awebooking' === $screen->id ) {
+			wp_enqueue_script( 'awebooking-manager-availability' );
 		}
 	}
 }

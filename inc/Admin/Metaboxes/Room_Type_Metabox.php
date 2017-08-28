@@ -1,10 +1,11 @@
 <?php
-namespace AweBooking\Admin\Meta_Boxes;
+namespace AweBooking\Admin\Metaboxes;
 
+use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 
-class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
+class Room_Type_Metabox extends Post_Type_Metabox {
 	/**
 	 * Post type ID to register meta-boxes.
 	 *
@@ -19,10 +20,18 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 		parent::__construct();
 
 		$this->register_main_metabox();
-		$this->register_gallery_metabox();
 		$this->register_description_metabox();
+		$this->register_gallery_metabox();
 
 		add_action( 'edit_form_top', [ $this, 'setup_room_type' ] );
+		add_action( 'admin_menu', array( $this, 'remove_meta_box' ) );
+	}
+
+	/**
+	 * Unset `hotel_extra_service` metabox.
+	 */
+	public function remove_meta_box() {
+		remove_meta_box( 'hotel_extra_servicediv', $this->post_type, 'side' );
 	}
 
 	/**
@@ -34,25 +43,10 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @param WP_Post $post Post object.
 	 */
 	public function setup_room_type( $post ) {
-		// If this isn't a 'room_type', do nothing.
-		if ( ! $this->is_current_screen() ) {
-			return;
+		if ( $this->is_current_screen() ) {
+			global $room_type;
+			$room_type = new Room_Type( $post->ID );
 		}
-
-		global $room_type;
-
-		$room_type = new Room_Type( $post->ID );
-	}
-
-	/**
-	 * Enqueue scripts only in this CPT.
-	 *
-	 * @access private
-	 *
-	 * @return void
-	 */
-	public function admin_scripts() {
-		wp_enqueue_script( 'awebooking-room-type-meta-boxes' );
 	}
 
 	/**
@@ -65,9 +59,26 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @param bool $update  Whether this is an existing post being updated or not.
 	 */
 	public function doing_save( $post_id, $post, $update ) {
+		// If this is just a revision, don't do anything.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		$room_type = new Room_Type( $post_id );
+
 		if ( isset( $_POST['abkng_rooms'] ) && is_array( $_POST['abkng_rooms'] ) ) {
-			// $request_rooms = wp_unslash( $_POST['abkng_rooms'] );
-			// awebooking()->make( 'store.room_type' )->bulk_sync_rooms( $post_id, $request_rooms );
+			$request_rooms = wp_unslash( $_POST['abkng_rooms'] );
+			$room_type->bulk_sync_rooms( $request_rooms );
+		}
+
+		if ( isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ) {
+			$services = array_unique(
+				array_map( 'intval', $_POST['awebooking_services'] )
+			);
+
+			$term_taxonomy_ids = wp_set_object_terms(
+				$post_id, $services, AweBooking::HOTEL_SERVICE, false
+			);
 		}
 	}
 
@@ -104,15 +115,20 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 */
 	public function register_description_metabox() {
 		$metabox = $this->create_metabox( 'room_type_description', [
-			'title'    => esc_html__( 'Description', 'awebooking' ),
+			'title'    => esc_html__( 'Short Description', 'awebooking' ),
 			'context'  => 'advanced',
 			'priority' => 'default',
 		]);
 
 		$metabox->add_field( array(
-			'id'      => 'short_description',
-			'type'    => 'wysiwyg',
-			'options' => array(
+			'id'          => 'excerpt',
+			'type'        => 'wysiwyg',
+			'save_field'  => false,
+			'escape_cb'   => false,
+			'default_cb'  => function() {
+				return get_post_field( 'post_excerpt', get_the_ID() );
+			},
+			'options'     => array(
 				// 'tinymce'       => false,
 				// 'media_buttons' => false,
 				'textarea_rows' => 7,
@@ -230,12 +246,7 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @return void
 	 */
 	public function _render_rooms_callback( $field ) {
-		global $room_type;
-
-		$screen = get_current_screen();
-		$is_edit = $screen->action === 'add';
-
-		include trailingslashit( __DIR__ ) . '/views/rooms.php';
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-rooms.php';
 	}
 
 	/**
@@ -244,12 +255,7 @@ class Room_Type_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @return void
 	 */
 	public function _render_extra_services_callback( $field ) {
-		global $room_type;
-
-		$screen = get_current_screen();
-		$is_edit = $screen->action === 'add';
-
-		include trailingslashit( __DIR__ ) . '/views/extra-services.php';
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-services.php';
 	}
 
 	/**

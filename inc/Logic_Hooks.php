@@ -17,7 +17,7 @@ class Logic_Hooks extends Service_Hooks {
 		add_action( 'save_post', [ $this, 'save_booking' ] );
 		add_action( 'deleted_post', [ $this, 'deleted_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking' ] );
-		add_action( 'pre_delete_term', [ $this, 'pre_delete_term' ], 10, 2 );
+		add_action( 'pre_delete_term', [ $this, 'pre_delete_location' ], 10, 2 );
 	}
 
 	/**
@@ -27,7 +27,7 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param  string $taxonomy Taxonomy Name.
 	 * @return void
 	 */
-	public function pre_delete_term( $term, $taxonomy ) {
+	public function pre_delete_location( $term, $taxonomy ) {
 		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
 			// TODO: ...
 		}
@@ -58,7 +58,6 @@ class Logic_Hooks extends Service_Hooks {
 	 *
 	 * 1. Restore available state of booking room.
 	 * 2. Remove booking event in `awebooking_booking` table.
-	 * 3. ...
 	 *
 	 * @param  string $postid The booking ID will be delete.
 	 * @return void
@@ -67,32 +66,6 @@ class Logic_Hooks extends Service_Hooks {
 		if ( get_post_type( $postid ) !== AweBooking::BOOKING ) {
 			return;
 		}
-
-		// Call this hotel concierge.
-		$concierge = awebooking()->make( 'concierge' );
-
-		// First, restore the room state to "available".
-		$the_booking  = new Booking( absint( $postid ) );
-		$booking_room = $the_booking->get_room_unit();
-
-		if ( $booking_room instanceof Room && $booking_room->exists() ) {
-			try {
-				$period = new Period( $the_booking['check_in'], $the_booking['check_out'], false );
-
-				$concierge->set_room_state( $booking_room, $period, AweBooking::STATE_AVAILABLE, [ 'force' => true ] );
-				$concierge->set_booking_event( $the_booking, $period, [ 'clear' => true ] );
-
-			} catch ( \Exception $e ) {
-				// TODO: Log exception error.
-			}
-		}
-
-		/**
-		 * Fire action after a booking deleted.
-		 *
-		 * @param int $booking_id The booking ID was deleted.
-		 */
-		do_action( 'awebooking/delete_booking', $postid );
 	}
 
 	/**

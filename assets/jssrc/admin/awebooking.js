@@ -2,6 +2,7 @@ const $ = window.jQuery;
 const settings = window._awebookingSettings || {};
 
 const AweBooking = _.extend(settings, {
+  Vue: require('vue'),
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
   RangeDatepicker: require('./utils/range-datepicker.js'),

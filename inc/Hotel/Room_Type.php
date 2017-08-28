@@ -103,15 +103,15 @@ class Room_Type extends WP_Object {
 	/**
 	 * Bulk sync rooms.
 	 *
+	 * TODO: Remove late.
+	 *
 	 * @param  int   $room_type     The room-type ID.
 	 * @param  array $request_rooms The request rooms.
 	 * @return void
 	 */
-	public function bulk_sync_rooms( $room_type, array $request_rooms ) {
+	public function bulk_sync_rooms( array $request_rooms ) {
 		// Current list room of room-type.
-		$db_rooms_ids = array_map( 'absint',
-			wp_list_pluck( $this->room_store->list_by_room_type( $room_type ), 'id' )
-		);
+		$db_rooms_ids = array_map( 'absint', $this->list_the_rooms( 'id' ) );
 
 		$touch_ids = [];
 		foreach ( $request_rooms as $raw_room ) {
@@ -122,17 +122,21 @@ class Room_Type extends WP_Object {
 
 			// Sanitize data before working with database.
 			$room_args = array_map( 'sanitize_text_field', $raw_room );
-			$room_args['room_type'] = $room_type;
 
 			if ( $room_args['id'] > 0 && in_array( (int) $room_args['id'], $db_rooms_ids ) ) {
-				$working_id = $this->room_store->update( (int) $room_args['id'], $room_args );
+				$room_unit = new Room( $room_args['id'] );
+				$room_unit['name'] = $room_args['name'];
+				$room_unit->save();
 			} else {
-				$working_id = $this->room_store->insert( $room_type, $room_args['name'] );
+				$room_unit = new Room;
+				$room_unit['name'] = $room_args['name'];
+				$room_unit['room_type_id'] = $this->get_id();
+				$room_unit->save();
 			}
 
 			// We'll map current working ID in $touch_ids...
-			if ( $working_id ) {
-				$touch_ids[] = $working_id;
+			if ( $room_unit->exists() ) {
+				$touch_ids[] = $room_unit->get_id();
 			}
 		}
 
@@ -140,7 +144,11 @@ class Room_Type extends WP_Object {
 		$delete_ids = array_diff( $db_rooms_ids, $touch_ids );
 
 		if ( ! empty( $delete_ids ) ) {
-			$this->room_store->delete( $delete_ids );
+			global $wpdb;
+			$delete_ids = implode( ',', $delete_ids );
+
+			// @codingStandardsIgnoreLine
+			$wpdb->query( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` IN ({$delete_ids})" );
 		}
 	}
 
@@ -370,15 +378,9 @@ class Room_Type extends WP_Object {
 	public function get_rooms() {
 		// If we have any rooms, and see empty the rooms, let build it.
 		if ( empty( $this['rooms'] ) ) {
-			$the_rooms = $this->get_room_ids();
-
-			// Loop through the rooms and create the Room instance.
-			foreach ( $the_rooms as &$room ) {
-				$room = new Room( $room );
-			}
-
-			// Apply the rooms object.
-			$this['rooms'] = $the_rooms;
+			$this['rooms'] = awebooking_map_instance(
+				$this->get_room_ids(), Room::class
+			);
 		}
 
 		return apply_filters( $this->prefix( 'get_rooms' ), $this['rooms'], $this );

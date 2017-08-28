@@ -5,9 +5,11 @@ use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Calendar;
+use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 use AweBooking\Booking\Items\Booking_Item;
+use AweBooking\Support\Period;
 
 /**
  * Simple Factory Pattern
@@ -137,21 +139,6 @@ class Factory {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * Create booking request from request data,
 	 * If null given, using default $_REQUEST.
@@ -161,7 +148,7 @@ class Factory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public static function create_booking_request( array $request = null, $strict = true ) {
+	public static function create_booking_request( array $request = null ) {
 		if ( is_null( $request ) ) {
 			$request = $_REQUEST;
 		}
@@ -179,8 +166,7 @@ class Factory {
 		$period = new Period(
 			sanitize_text_field( wp_unslash( $start_date ) ),
 			sanitize_text_field( wp_unslash( $end_date ) ),
-			$strict,
-			Period::EXCLUDE_END_DATE
+			true
 		);
 
 		// Take accept requests.

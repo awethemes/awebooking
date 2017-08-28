@@ -96,8 +96,9 @@ class Admin_Hooks extends Service_Hooks {
 		new List_Tables\Room_Type_List_Table;
 		new List_Tables\Service_List_Table;
 
-		new Meta_Boxes\Room_Type_Meta_Boxes;
-		new Meta_Boxes\Booking_Meta_Boxes;
+		new Metaboxes\Room_Type_Metabox;
+		new Metaboxes\Booking_Metabox;
+		new Metaboxes\Service_Metabox;
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_filter( 'menu_order', array( $this, 'menu_order' ) );

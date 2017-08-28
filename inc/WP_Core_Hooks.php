@@ -85,7 +85,7 @@ class WP_Core_Hooks extends Service_Hooks {
 			'public'             => false,
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
-			'show_in_quick_edit' => true,
+			'show_in_quick_edit' => false,
 		]));
 
 		// Register 'hotel_service' taxonomy.
@@ -97,7 +97,7 @@ class WP_Core_Hooks extends Service_Hooks {
 		)
 		->set( apply_filters( 'awebooking/taxonomy_args/hotel_service', [
 			'public'             => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
 		]));
@@ -160,6 +160,7 @@ class WP_Core_Hooks extends Service_Hooks {
 				'with_front' => false,
 			],
 			'labels'    => [
+				'add_new'               => esc_html__( 'New Room Type', 'awebooking' ),
 				'featured_image'        => esc_html__( 'Room Type Image', 'awebooking' ),
 				'set_featured_image'    => esc_html__( 'Set room type image', 'awebooking' ),
 				'use_featured_image'    => esc_html__( 'Use as room type image', 'awebooking' ),

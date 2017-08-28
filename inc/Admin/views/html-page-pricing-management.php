@@ -19,10 +19,10 @@
 		<div class="wp-filter" style="margin-bottom: 0;">
 			<div style="float: left; margin: 10px 0;">
 				<label>From</label>
-				<input type="text" class="init-daterangepicker-start" name="datepicker-start" style="width: 100px;">
+				<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
 
-				<label>to</label>
-				<input type="text" class="init-daterangepicker-end" name="datepicker-end" style="width: 100px;">
+				<label>To</label>
+				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
 				<div id="edit-day-options" class="form-checkboxes" style="display: inline-block;">
 					<div class="form-item form-type-checkbox">

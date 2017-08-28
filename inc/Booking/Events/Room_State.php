@@ -6,6 +6,7 @@ use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Period;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Room_State extends Event {
@@ -20,7 +21,9 @@ class Room_State extends Event {
 	public static function instance( Event $event ) {
 		$room_unit = Factory::get_room_unit( $event->getUnitId() );
 
-		$period = new Period( $event->getStartDate(), $event->getEndDate() );
+		$period = new Period( $event->getStartDate(),
+			Carbonate::instance( $event->getEndDate() )->addMinute()
+		);
 
 		return new static( $room_unit, $period, $event->getValue() );
 	}

@@ -63,7 +63,7 @@ class Date_Range_Field extends Field_Abstract {
 			$is_locked ? $field_type_object->_id( '_togglelock' ) : null
 		);
 
-		$field->add_js_dependencies( [ 'jquery-ui-core', 'jquery-ui-datepicker' ] );
+		$field->add_js_dependencies( [ 'awebooking-admin' ] );
 	}
 
 	/**
@@ -89,66 +89,25 @@ class Date_Range_Field extends Field_Abstract {
 	 */
 	protected function prints_inline_js( $start_date_id, $end_date_id, $toggle_lock ) {
 		?><script type="text/javascript">
-			;(function($) {
+			jQuery(function($) {
 				'use strict';
 
-				var _dateFormat = '<?php echo esc_attr( AweBooking::JS_DATE_FORMAT ); ?>',
-					_fromDateID = '#<?php echo esc_attr( $start_date_id ); ?>',
+				var _fromDateID = '#<?php echo esc_attr( $start_date_id ); ?>',
 					_toDateID   = '#<?php echo esc_attr( $end_date_id ); ?>';
 
-				var _beforeShowCallback = function() {
-					$('#ui-datepicker-div').addClass('cmb2-element');
-				};
+				var rangepicker = new TheAweBooking.RangeDatepicker(_fromDateID, _toDateID);
+				rangepicker.init();
 
-				var _closeCallback = function() {
-					$('#ui-datepicker-div').addClass('cmb2-element');
-				};
+				<?php if ( $toggle_lock ) : ?>
+					$('#<?php echo esc_attr( $toggle_lock ); ?>').on('click', function(e) {
+						e.preventDefault();
 
-				$(function() {
-					var fromDate, toDate;
-
-					var applyFromChange = function() {
-						try {
-							var _minDate = $.datepicker.parseDate(_dateFormat, $(_fromDateID).val());
-							_minDate.setDate(_minDate.getDate() + 1);
-							toDate.datepicker('option', 'minDate', _minDate);
-						} catch(e) {}
-					};
-
-					var applyToChange = function() {
-						try {
-							var _maxDate = $.datepicker.parseDate(_dateFormat, $(_toDateID).val());
-							fromDate.datepicker('option', 'maxDate', _maxDate);
-						} catch(e) {}
-					};
-
-
-					fromDate = $(_fromDateID).datepicker({
-						onClose: _closeCallback,
-						beforeShow: _beforeShowCallback,
-						dateFormat: _dateFormat,
-					}).on('change', applyFromChange);
-
-					toDate = $(_toDateID).datepicker({
-						onClose: _closeCallback,
-						beforeShow: _beforeShowCallback,
-						dateFormat: _dateFormat,
-					}).on('change', applyToChange);
-
-					applyToChange();
-					applyFromChange();
-
-					<?php if ( $toggle_lock ) : ?>
-						$('#<?php echo esc_attr( $toggle_lock ); ?>').on('click', function(e) {
-							e.preventDefault();
-
-							$(this).toggleClass('active');
-							$(_fromDateID).prop('disabled', ! $(_fromDateID).prop('disabled'));
-							$(_toDateID).prop('disabled', ! $(_toDateID).prop('disabled'));
-						});
-					<?php endif; ?>
-				});
-			})(jQuery);
+						$(this).toggleClass('active');
+						$(_fromDateID).prop('disabled', ! $(_fromDateID).prop('disabled'));
+						$(_toDateID).prop('disabled', ! $(_toDateID).prop('disabled'));
+					});
+				<?php endif; ?>
+			});
 		</script><?php
 	}
 }

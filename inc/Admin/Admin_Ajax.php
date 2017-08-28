@@ -4,12 +4,16 @@ namespace AweBooking\Admin;
 use WP_Error;
 use AweBooking\Factory;
 use AweBooking\Concierge;
+use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_Type;
+use AweBooking\Hotel\Service;
 use AweBooking\Support\Period;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Admin\Forms\Add_Line_Item_Form;
 use AweBooking\Admin\Forms\Edit_Line_Item_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
+use Skeleton\Support\Validator;
 
 class Admin_Ajax {
 	/**
@@ -19,6 +23,9 @@ class Admin_Ajax {
 		// Calendar ajax.
 		add_action( 'wp_ajax_get_awebooking_yearly_calendar', [ $this, 'get_yearly_calendar' ] );
 		add_action( 'wp_ajax_set_awebooking_availability', [ $this, 'set_availability' ] );
+
+		// Service ajax.
+		add_action( 'wp_ajax_add_awebooking_service', [ $this, 'add_service' ] );
 
 		// Booking ajax hooks.
 		add_action( 'wp_ajax_add_awebooking_line_item', [ $this, 'add_booking_line_item' ] );
@@ -165,10 +172,49 @@ class Admin_Ajax {
 		}
 	}
 
+	/**
+	 * Add a new service to a room-type.
+	 *
+	 * TODO: Show error log message.
+	 *
+	 * @return void
+	 */
+	public function add_service() {
+		$validator = new Validator( $_POST, [
+			'name'      => 'required',
+			'value'     => 'required|numeric',
+			'operation' => 'required',
+			'type'      => 'required',
+			'room_type' => 'required|int|min:1',
+		]);
 
+		// If have any errors.
+		if ( $validator->fails() ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Validation error', 'awebooking' ) ] );
+		}
 
+		$room_type = new Room_Type( absint( $_POST['room_type'] ) );
+		if ( ! $room_type->exists() ) {
+			wp_send_json_error();
+		}
 
+		$service = new Service;
+		$service['name']      = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+		$service['value']     = sanitize_text_field( wp_unslash( $_POST['value'] ) );
+		$service['operation'] = sanitize_text_field( wp_unslash( $_POST['operation'] ) );
+		$service['type']      = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$service->save();
 
+		if ( $service->exists() ) {
+			$tt_ids = wp_set_object_terms( $room_type->get_id(), $service->get_id(), AweBooking::HOTEL_SERVICE, true );
+
+			if ( ! is_wp_error( $tt_ids ) ) {
+				wp_send_json_success( $service );
+			}
+		}
+
+		wp_send_json_error();
+	}
 
 	/**
 	 * Add booking note via ajax.

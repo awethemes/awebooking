@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\AweBooking;
 use AweBooking\Booking\Request;
 use AweBooking\Support\Formatting;
 use Skeleton\Container\Service_Hooks;
@@ -28,7 +27,7 @@ class Ajax_Hooks extends Service_Hooks {
 			$room_type = Factory::create_room_from_request();
 			$booking_request = Factory::create_booking_request();
 
-			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 		} catch ( \Exception $e ) {
 			return wp_send_json_error( [ 'message' => $e->getMessage() ], 400 );

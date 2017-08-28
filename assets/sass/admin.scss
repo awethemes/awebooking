@@ -8,6 +8,13 @@
   display: none;
 }
 
+.taxonomy-hotel_amenity .form-field.term-slug-wrap,
+.taxonomy-hotel_amenity .form-field.term-parent-wrap,
+.taxonomy-hotel_extra_service .form-field.term-slug-wrap,
+.taxonomy-hotel_extra_service .form-field.term-parent-wrap {
+  display: none;
+}
+
 /**
  * AweBooking rooms creator
  */

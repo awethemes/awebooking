@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
+use AweBooking\Concierge;
 use AweBooking\AweBooking;
 use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
@@ -124,7 +125,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			return false;
 		}
 
-		if ( $the_room->is_free( $period ) ) {
+		if ( Concierge::is_available( $the_room, $period ) ) {
 			$the_item = new Line_Item;
 
 			$the_item['room_id']   = $the_room->get_id();
@@ -192,7 +193,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			);
 
 			// Alway require minimum one night for booking.
-			$period->require_minimum_nights();
+			$period->required_minimum_nights();
 
 			$this['add_check_in_out']->set_value([
 				$period->get_start_date()->toDateString(),
@@ -204,7 +205,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 		}
 
 		// Next, call to Concierge and check availability our hotel.
-		$results = awebooking( 'concierge' )->check_availability( new Request( $period ) );
+		$results = Concierge::check_availability( new Request( $period ) );
 
 		$rooms_options = $this->generate_select_rooms( $results );
 		$this['add_room']->set_prop( 'options', $rooms_options );

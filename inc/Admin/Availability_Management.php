@@ -2,6 +2,7 @@
 namespace AweBooking\Admin;
 
 use WP_List_Table;
+use AweBooking\Concierge;
 use AweBooking\Hotel\Room;
 use AweBooking\Booking\Calendar;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
@@ -66,15 +67,15 @@ class Availability_Management extends WP_List_Table {
 		// ------------------------------------------------------
 		global $wpdb;
 		$select_query = "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` AS `room`";
-		$join_clause = " INNER JOIN `{$wpdb->posts}` AS post ON (post.ID = room.room_type AND post.post_status = 'publish' AND post.post_type = 'room_type')";
+		$join_clause = " INNER JOIN `{$wpdb->posts}` AS `post` ON (post.ID = room.room_type AND post.post_status = 'publish' AND post.post_type = 'room_type')";
 
 		$where_clause = '';
 		if ( ! empty( $room_type ) ) {
-			$where_clause = ' WHERE `room`.`room_type` = ' . esc_sql( $room_type );
+			$where_clause = ' WHERE room.room_type = ' . esc_sql( $room_type );
 		}
 
 		$offset = ( $this->get_pagenum() - 1 ) * $per_page;
-		$order_limit_clause = ' ORDER  BY `room`.`name` ASC LIMIT ' . esc_sql( $per_page ) . ' OFFSET ' . esc_sql( $offset );
+		$order_limit_clause = ' ORDER BY post.ID DESC, room.id ASC LIMIT ' . esc_sql( $per_page ) . ' OFFSET ' . esc_sql( $offset );
 
 		// @codingStandardsIgnoreLine
 		$results = $wpdb->get_results( $select_query . $join_clause . $where_clause . $order_limit_clause , ARRAY_A );
@@ -99,35 +100,30 @@ class Availability_Management extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
-		if ( 'top' === $which ) {
-			echo '<div class="alignleft actions">'; ?>
+		if ( 'top' === $which ) { ?>
+			<div class="alignleft actions">
+				<ul class="awebooking-list-item">
+					<li>
+						<span class="awebooking-availability available"></span>
+						<span><?php echo esc_html__( 'Available', 'awebooking' ) ?></span>
+					</li>
 
-			<ul class="awebooking-list-item">
-				<li>
-					<span class="awebooking-availability available"></span>
-					<span><?php echo esc_html__( 'Available', 'awebooking' ) ?></span>
-				</li>
+					<li>
+						<span class="awebooking-availability unavailable"></span>
+						<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
+					</li>
 
-				<li>
-					<span class="awebooking-availability unavailable"></span>
-					<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
-				</li>
+					<li>
+						<span class="awebooking-availability pending"></span>
+						<span><?php echo esc_html__( 'Pending', 'awebooking' ) ?></span>
+					</li>
 
-				<li>
-					<span class="awebooking-availability pending"></span>
-					<span><?php echo esc_html__( 'Pending', 'awebooking' ) ?></span>
-				</li>
-
-				<li>
-					<span class="awebooking-availability booked"></span>
-					<span><?php echo esc_html__( 'Booked', 'awebooking' ) ?></span>
-				</li>
-			</ul>
-
-			<?php
-			// $this->categories_dropdown();
-			// submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
-			echo '</div>';
+					<li>
+						<span class="awebooking-availability booked"></span>
+						<span><?php echo esc_html__( 'Booked', 'awebooking' ) ?></span>
+					</li>
+				</ul>
+			</div><?php
 		}
 	}
 
@@ -196,6 +192,9 @@ class Availability_Management extends WP_List_Table {
 	public function process_bulk_action() {
 		if ( ! empty( $_POST ) && ! empty( $_POST['bulk-update'] ) && 'bulk-update' === $this->current_action() ) {
 			$ids = $_POST['bulk-update'];
+			if ( empty( $ids ) ) {
+				return;
+			}
 
 			$only_days = [];
 			if ( isset( $_POST['day_options'] ) && is_array( $_POST['day_options'] ) ) {
@@ -203,16 +202,16 @@ class Availability_Management extends WP_List_Table {
 			}
 
 			try {
-				$date_period = new Period( $_POST['datepicker-start'], $_POST['datepicker-end'] );
+				$date = new Period( $_POST['datepicker-start'], $_POST['datepicker-end'] );
 
 				foreach ( $ids as $id ) {
 					$room = new Room( (int) $id );
 
-					awebooking( 'concierge' )->set_room_state( $room, $date_period, $_REQUEST['state'], [
+					Concierge::set_availability( $room, $date, $_REQUEST['state'], [
 						'only_days' => $only_days,
 					]);
 				}
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				// ...
 			}
 		}

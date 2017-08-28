@@ -9,24 +9,23 @@ class RangeDatepicker {
   }
 
   init() {
-    let beforeShowCallback = function() {
-      $('#ui-datepicker-div').addClass('cmb2-element');
-    };
-
-    let closeCallback = function() {
+    const beforeShowCallback = function() {
       $('#ui-datepicker-div').addClass('cmb2-element');
     };
 
     $(this.fromDate).datepicker({
-      onClose: closeCallback,
-      beforeShow: beforeShowCallback,
       dateFormat: DATE_FORMAT,
+      beforeShow: beforeShowCallback,
+      onClose: () => {
+        if ($(this.fromDate).datepicker('getDate')) {
+          $(this.toDate).datepicker('show');
+        }
+      },
     }).on('change', this.applyFromChange.bind(this));
 
     $(this.toDate).datepicker({
-      onClose: closeCallback,
-      beforeShow: beforeShowCallback,
       dateFormat: DATE_FORMAT,
+      beforeShow: beforeShowCallback,
     }).on('change', this.applyToChange.bind(this));
 
     this.applyToChange();
@@ -35,16 +34,20 @@ class RangeDatepicker {
 
   applyFromChange() {
     try {
-      var minDate = $.datepicker.parseDate(DATE_FORMAT, $(this.fromDate).val());
+      const minDate = $.datepicker.parseDate(DATE_FORMAT, $(this.fromDate).val());
       minDate.setDate(minDate.getDate() + 1);
-
       $(this.toDate).datepicker('option', 'minDate', minDate);
+
+      const toDateVal = $(this.toDate).datepicker('getDate');
+      if (! toDateVal) {
+        // $(this.toDate).datepicker('setDate', minDate);
+      }
     } catch(e) {}
   }
 
   applyToChange() {
     try {
-      var maxDate = $.datepicker.parseDate(DATE_FORMAT, $(this.toDate).val());
+      const maxDate = $.datepicker.parseDate(DATE_FORMAT, $(this.toDate).val());
       $(this.fromDate).datepicker('option', 'maxDate', maxDate);
     } catch(e) {}
   }

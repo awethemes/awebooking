@@ -310,20 +310,15 @@ class Line_Item extends Booking_Item {
 	 * @return void
 	 */
 	protected function before_save() {
-		$date_period = $this->get_period();
-
-		// A booking stay cannot less than one night.
-		// An Exception will be throws in $this->get_period()
-		// if check-in and check-out date is invalid date format.
-		if ( $date_period->nights() < 1 ) {
-			throw new \LogicException( esc_html__( 'Required minimum one night for the booking.', 'awebooking' ) );
-		}
+		$period = $this->get_period();
+		$period->required_minimum_nights();
 
 		// If this save action considered as update, we check `check_in`, `check_out`
 		// have changes, we'll re-check available of booking room again to make sure
 		// everything in AweBooking it is working perfect.
 		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) ) {
-			if ( ! $this->is_changeable( $date_period ) ) {
+			if ( ! $this->is_changeable( $period ) ) {
+				exit;
 				throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
 			}
 		}
@@ -339,22 +334,44 @@ class Line_Item extends Booking_Item {
 	/**
 	 * Do somethings when finish save.
 	 *
+	 * BUGS: ...
+	 *
 	 * @return void
 	 */
 	protected function finish_save() {
-		parent::finish_save();
-
-		$period  = $this->get_period();
-		$booking = $this->get_booking();
+		$period    = $this->get_period();
+		$booking   = $this->get_booking();
+		$room_unit = $this->get_room_unit();
 
 		// Moving date period.
 		if ( ! $this->recently_created && $this->is_dirty( 'check_in', 'check_out' ) && $this->is_changeable( $period ) ) {
-			// ...
+			// Start a mysql transaction.
+			awebooking_wpdb_transaction( 'start' );
+
+			$original_period = new Period(
+				$this->original['check_in'], $this->original['check_out']
+			);
+
+			// Clear booking and availability state.
+			$clear_result = Concierge::clear_booking_state( $room_unit, $original_period, $booking );
+			$set_result = Concierge::set_booking_state( $room_unit, $period, $booking );
+
+			if ( ! $clear_result || ! $set_result ) {
+				awebooking_wpdb_transaction( 'rollback' );
+			} else {
+				awebooking_wpdb_transaction( 'commit' );
+			}
+
+			$saved_state = ( $clear_result && $set_result );
+		} elseif ( $this->recently_created ) {
+			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
 		}
 
-		$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
-		if ( ! $saved_state ) {
-			throw new \RuntimeException( 'Error Processing Request' );
+		if ( isset( $saved_state ) && $saved_state ) {
+			$this['check_in'] = $period->get_start_date()->toDateString();
+			$this['check_out'] = $period->get_end_date()->toDateString();
+
+			parent::finish_save();
 		}
 	}
 
@@ -365,11 +382,10 @@ class Line_Item extends Booking_Item {
 	 * @return bool
 	 */
 	protected function perform_delete( $force ) {
-		// Before we delete a room unit, restore available state and booking room.
-		/*awebooking( 'concierge' )->set_room_state( $this->get_room_unit(), $this->get_period(), [
-			'clean'      => true,
-			'booking_id' => $this->get_booking_id(),
-		]);*/
+		// Before we delete room unit, restore available state and set booking room to zero.
+		Concierge::clear_booking_state(
+			$this->get_room_unit(), $this->get_period(), $this->get_booking()
+		);
 
 		return parent::perform_delete( $force );
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Pricing\Calculator;
+namespace AweBooking\Calculator;
 
 use AweBooking\Pricing\Price;
 use AweBooking\Hotel\Room\Service;

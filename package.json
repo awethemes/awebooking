@@ -14,6 +14,7 @@
     "node-wp-i18n": "^1.0.2"
   },
   "dependencies": {
-    "form-serialize": "^0.7.2"
+    "form-serialize": "^0.7.2",
+    "vue": "^2.4.2"
   }
 }

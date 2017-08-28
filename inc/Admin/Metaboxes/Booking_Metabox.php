@@ -1,22 +1,11 @@
 <?php
-namespace AweBooking\Admin\Meta_Boxes;
+namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room;
 use AweBooking\Booking\Booking;
-use AweBooking\Hotel\Room_Type;
-use AweBooking\Hotel\Service;
-use AweBooking\Pricing\Price;
-use AweBooking\Currency\Currency;
-use AweBooking\Support\Formatting;
-use Skeleton\CMB2\CMB2;
-use AweBooking\Support\Mailer;
-use AweBooking\Notification\Booking_Cancelled;
-use AweBooking\Notification\Booking_Processing;
-use AweBooking\Notification\Booking_Completed;
 
-class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
+class Booking_Metabox extends Post_Type_Metabox {
 	/**
 	 * Post type ID to register meta-boxes.
 	 *
@@ -36,8 +25,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 		// Register/un-register metaboxes.
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
-
-		add_action( 'admin_init', [ $this, 'enqueue_scripts' ] );
 		add_action( 'admin_footer', [ $this, 'footer' ] );
 	}
 
@@ -51,13 +38,6 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'default' );
-	}
-
-	public function enqueue_scripts() {
-		wp_enqueue_script( 'awebooking-edit-booking', awebooking()->plugin_url() . '/assets/js/admin/edit-booking.js', array( 'jquery', 'awebooking-admin' ), AweBooking::VERSION, true );
-		wp_localize_script( 'awebooking-edit-booking', 'awebooking_booking_ajax', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-		));
 	}
 
 	public function footer() {
@@ -91,7 +71,7 @@ class Booking_Meta_Boxes extends Meta_Boxes_Abstract {
 	 * @param WP_Post $post WP_Post object instance.
 	 */
 	public function output_action_metabox( $post ) {
-		include __DIR__ . '/views/booking-action.php';
+		include trailingslashit( __DIR__ ) . 'views/html-booking-action.php';
 	}
 
 	/**

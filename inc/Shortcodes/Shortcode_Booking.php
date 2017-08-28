@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Shortcodes;
 
+use AweBooking\Concierge;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Support\Template;
 
@@ -37,7 +38,7 @@ class Shortcode_Booking {
 			$booking_request = new Session_Booking_Request;
 			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
 
-			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			Template::get_template( 'booking.php', array( 'availability' => $availability, 'room_type' => $room_type ) );
 

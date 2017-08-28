@@ -64,6 +64,7 @@ class AweBooking extends Skeleton_Container {
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
 		$this->trigger( new Ajax_Hooks );
+		$this->trigger( new Widgets\Widget_Hooks );
 
 		do_action( 'awebooking/booting', $this );
 	}
@@ -149,14 +150,15 @@ class AweBooking extends Skeleton_Container {
 
 		// Make sure the options are copied if needed.
 		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {
-			/*$current_options = $this['wp_option']->all();
+			$current_options = $this['config']->all();
 			$original_options = (array) get_option( static::SETTING_KEY, [] );
 
 			if ( ! empty( $original_options ) && empty( $current_options ) ) {
 				update_option( $this['option_key'], $original_options );
-			}*/
+			}
 		}
 
+		Shortcodes\Shortcodes::init();
 		$this['flash_message']->setup_message();
 
 		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );

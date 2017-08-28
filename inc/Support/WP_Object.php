@@ -378,7 +378,7 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	protected function perform_delete( $force ) {
 		switch ( $this->wp_type ) {
 			case 'term':
-				$delete = wp_delete_term( $this->get_id(), $force );
+				$delete = wp_delete_term( $this->get_id(), $this->object_type );
 				return ( ! is_wp_error( $delete ) && true === $delete );
 
 			case 'post':

@@ -153,8 +153,6 @@ class Pricing_Management extends WP_List_Table {
 			}
 
 			try {
-
-
 				$price = new Price( sanitize_text_field( wp_unslash( $_POST['price'] ) ) );
 
 				$period = new Period(
@@ -185,7 +183,7 @@ class Pricing_Management extends WP_List_Table {
 			}
 
 			try {
-				$period = new Period( $_POST['datepicker-start'], $_POST['datepicker-end'], false );
+				$period = new Period( $_POST['datepicker-start'], $_POST['datepicker-end'] );
 				$price = new Price( sanitize_text_field( wp_unslash( $_REQUEST['bulk-price'] ) ) );
 
 				foreach ( $ids as $id ) {

@@ -4,6 +4,8 @@ namespace AweBooking;
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Booking;
+use AweBooking\Booking\Request;
+use AweBooking\Booking\Availability;
 use AweBooking\Booking\Events\Room_State;
 use AweBooking\Booking\Events\Rate_Pricing;
 use AweBooking\Booking\Events\Room_Booking;
@@ -11,6 +13,8 @@ use Roomify\Bat\Valuator\IntervalValuator;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Period;
+use AweBooking\Support\Collection;
+use Roomify\Bat\Calendar\CalendarResponse;
 
 class Concierge {
 	/**
@@ -208,14 +212,6 @@ class Concierge {
 		return $rate->save();
 	}
 
-
-
-
-
-
-
-
-
 	/**
 	 * Check available.
 	 *
@@ -223,47 +219,34 @@ class Concierge {
 	 * @return array
 	 */
 	public static function check_availability( Request $request ) {
-		$room_types = Room_Type::query([
+		$query = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
 			'booking_nights'   => $request->get_nights(),
 			'hotel_location'   => $request->get_request( 'location' ),
 		]);
 
-		$room_types = $room_types->posts;
-
-		$room_ids = wp_list_pluck( $room_types, 'ID' );
+		$room_ids = wp_list_pluck( $query->posts, 'ID' );
 		$rooms = Room::get_by_room_type( $room_ids );
 
 		if ( empty( $rooms ) ) {
 			return [];
 		}
 
-		$rooms = array_map( function( $args ) {
-			return new Room( $args['id'] );
-		}, $rooms );
+		$rooms = awebooking_map_instance(
+			wp_list_pluck( $rooms, 'id' ), Room::class
+		);
 
-		// Temp code, exclude room from request.
-		if ( $request->get_request( 'exclude_rooms' ) ) {
-			$exclude_rooms = (array) $request->get_request( 'exclude_rooms' );
-			$exclude_rooms = array_map( 'absint', $exclude_rooms );
-
-			foreach ( $rooms as $key => $room ) {
-				if ( in_array( $room->get_id(), $exclude_rooms ) ) {
-					unset( $rooms[ $key ] );
-				}
-			}
-		}
-
-		return $this->check_rooms_available( $rooms, $request );
+		return static::check_rooms_available( $rooms, $request );
 	}
 
 	/**
 	 * Check available a room type.
+	 *
 	 * TODO: ...
 	 *
-	 * @param  Room_Type         $room_type Room type instance.
-	 * @param  Request $request   Booking request instance.
+	 * @param  Room_Type $room_type Room type instance.
+	 * @param  Request   $request   Booking request instance.
 	 * @return Availability
 	 */
 	public static function check_room_type_availability( Room_Type $room_type, Request $request ) {
@@ -284,8 +267,7 @@ class Concierge {
 			return new Availability( $room_type, $request );
 		}
 
-		$available = $this->check_rooms_available( $rooms, $request );
-
+		$available = static::check_rooms_available( $rooms, $request );
 		if ( isset( $available[ $room_type->get_id() ] ) ) {
 			return $available[ $room_type->get_id() ];
 		}
@@ -301,7 +283,7 @@ class Concierge {
 	 * @return array
 	 */
 	public static function check_rooms_available( array $rooms, Request $request ) {
-		$calendar = new Calendar( $rooms, awebooking( 'store.availability' ) );
+		$calendar = Factory::create_availability_calendar( $rooms );
 
 		$response = $calendar->getMatchingUnits(
 			$request->get_check_in(),
@@ -310,17 +292,17 @@ class Concierge {
 			$request->constraints()
 		);
 
-		return $this->mapto_room_types( $response, $request );
+		return static::mapto_room_types( $response, $request );
 	}
 
 	/**
 	 * Mapping single-room to that room_type.
 	 *
-	 * @param  CalendarResponse  $response //.
-	 * @param  Request $request //.
+	 * @param  CalendarResponse $response //.
+	 * @param  Request          $request  //.
 	 * @return array
 	 */
-	protected static function mapto_room_types( $response, Request $request ) {
+	protected static function mapto_room_types( CalendarResponse $response, Request $request ) {
 		$room_type = [];
 
 		foreach ( $response->getIncluded() as $room_id => $accept ) {
@@ -335,7 +317,6 @@ class Concierge {
 
 		return $room_type;
 	}
-
 
 	/**
 	 * Create new booking.
@@ -403,5 +384,4 @@ class Concierge {
 
 		return $booking;
 	}
-
 }

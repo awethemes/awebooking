@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Booking;
 
+use AweBooking\Concierge;
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\AweBooking;
@@ -125,8 +126,7 @@ class Availability {
 	 * @return Price
 	 */
 	public function get_price() {
-		$price = awebooking( 'concierge' )
-			->get_room_price( $this->room_type, $this->request );
+		$price = Concierge::get_room_price( $this->room_type, $this->request );
 
 		$pipes = apply_filters( 'awebooking/availability/room_price_pipes', [], $this->request, $this );
 
