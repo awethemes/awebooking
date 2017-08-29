@@ -3,7 +3,7 @@ namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
 use AweBooking\Hotel\Room_Type;
-use AweBooking\Support\Mailable;
+use AweBooking\Support\Mail\Mailable;
 use AweBooking\Support\Formatting;
 use AweBooking\Support\Carbonate;
 
@@ -17,6 +17,29 @@ class Booking_Created extends Mailable {
 		$this->find['order_date']      = '{order_date}';
 		$this->replace['order_number'] = $this->booking->get_id();
 		$this->replace['order_date']   = Formatting::date_format( $this->booking->get_booking_date() );
+	}
+
+	/**
+	 * Get dumy data for email preview.
+	 */
+	public function dummy() {
+		return $this->get_template( 'new-booking', apply_filters( 'awebooking/new_email_dummy_data', [
+			'booking_id'           => 1,
+			'room_name'            => esc_html__( 'Dummy Room', 'awebooking' ),
+			'check_in'             => Carbonate::create_date( '2017-08-29 07:20:09' )->format( 'Y/m/d' ),
+			'check_out'            => Carbonate::create_date( '2017-08-31 07:20:09' )->format( 'Y/m/d' ),
+			'nights'               => 3,
+			'extra_services_name'  => array( esc_html__( 'Dummy Service 1' ), esc_html__( 'Dummy Service 2' ) ),
+			'room_type_price'      => '50 $',
+			'extra_services_price' => '10 $',
+			'total_price'          => '60 $',
+			'customer_first_name'  => 'John',
+			'customer_last_name'   => 'Cena',
+			'customer_email'       => 'customer@email.com',
+			'customer_phone'       => '+84xxxxxxxx',
+			'customer_company'     => 'AweThemes',
+			'customer_note'        => 'The email preview',
+		] ) );
 	}
 
 	/**

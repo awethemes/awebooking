@@ -2,6 +2,7 @@
 namespace AweBooking\Support\Mail;
 
 use Pelago\Emogrifier;
+use AweBooking\Support\Template;
 
 abstract class Mailable {
 	/**
@@ -19,11 +20,25 @@ abstract class Mailable {
 	protected $layout = 'layout.php';
 
 	/**
+	 * Is dummy
+	 *
+	 * @var boolean
+	 */
+	protected $dummy = false;
+
+	/**
 	 * Build the message.
 	 *
 	 * @return string
 	 */
 	abstract protected function build();
+
+	/**
+	 * Build dummy message.
+	 *
+	 * @return string
+	 */
+	abstract protected function dummy();
 
 	/**
 	 * Get email subject.
@@ -45,7 +60,12 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function message() {
-		$content = $this->build();
+		if ( $this->dummy ) {
+			$content = $this->dummy();
+		} else {
+			$content = $this->build();
+		}
+
 		$content = static::get_template( 'layouts/' . $this->layout, compact( 'content' ) );
 
 		try {
@@ -143,5 +163,9 @@ abstract class Mailable {
 	 */
 	protected function get_blogname() {
 		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+	}
+
+	public function set_dummy( $dummy = true ) {
+		$this->dummy = $dummy;
 	}
 }
