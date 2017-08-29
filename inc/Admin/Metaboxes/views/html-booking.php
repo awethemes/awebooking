@@ -20,14 +20,12 @@
 			</label>
 		</div>
 
-		<?php
-		printf( '<h2 class="awebooking-heading__title">%s <span>#%s</span></h2>', esc_html__( 'Booking', 'awebooking' ), $post->ID );
-		?>
+		<?php printf( '<h2 class="awebooking-heading__title">%s <span>#%s</span></h2>', esc_html__( 'Booking', 'awebooking' ), $post->ID ); ?>
 	</div><!-- /.awebooking-booking-heading -->
 
 	<?php
-	$the_booking['transaction_id'] = '113333';
-	$the_booking['payment_method_title'] = 'PayPal';
+	// $the_booking['transaction_id'] = '113333';
+	// $the_booking['payment_method_title'] = 'PayPal';
 
 	if ( $the_booking['transaction_id'] ) {
 		echo '<br>';
@@ -44,7 +42,7 @@
 
 	<div class="clear">
 		<div class="booking-column">
-
+			<!-- // -->
 		</div>
 
 		<div class="booking-column">
@@ -67,7 +65,6 @@
 	</div>
 
 	<div class="clear"></div>
-
 </div><!-- /.postbox -->
 
 <div class="table-responsive">
@@ -152,10 +149,8 @@
 			<tr>
 				<td colspan="4">
 					<a href="#awebooking-add-line-item-popup" class="button" data-toggle="awebooking-popup">
-						<!-- <span class="dashicons dashicons-plus"></span> -->
 						<?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?>
 					</a>
-					<a href="#" class="button">Add service</a>
 				</td>
 
 				<td colspan="1" style="text-align: right;">

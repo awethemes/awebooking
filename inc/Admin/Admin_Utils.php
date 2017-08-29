@@ -38,7 +38,7 @@ class Admin_Utils {
 
 		if ( $valid_page_found ) {
 			if ( $option ) {
-				awebooking( 'wp_option' )->set( $option, $valid_page_found );
+				awebooking( 'setting' )->set( $option, $valid_page_found );
 			}
 			return $valid_page_found;
 		}
@@ -74,7 +74,7 @@ class Admin_Utils {
 		}
 
 		if ( $option ) {
-			awebooking( 'wp_option' )->set( $option, $page_id );
+			awebooking( 'setting' )->set( $option, $page_id );
 		}
 
 		return $page_id;

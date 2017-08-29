@@ -382,13 +382,13 @@ class Admin_Setup_Wizard {
 		$price_decimal_separator   = sanitize_text_field( $_POST['price_decimal_separator'] );
 		$price_number_decimals     = sanitize_text_field( $_POST['price_number_decimals'] );
 
-		awebooking( 'wp_option' )->set( 'enable_location', $enable_location );
+		awebooking( 'setting' )->set( 'enable_location', $enable_location );
 
-		awebooking( 'wp_option' )->set( 'currency', $currency );
-		awebooking( 'wp_option' )->set( 'currency_position', $currency_position );
-		awebooking( 'wp_option' )->set( 'price_thousand_separator', $price_thousand_separator );
-		awebooking( 'wp_option' )->set( 'price_decimal_separator', $price_decimal_separator );
-		awebooking( 'wp_option' )->set( 'price_number_decimals', $price_number_decimals );
+		awebooking( 'setting' )->set( 'currency', $currency );
+		awebooking( 'setting' )->set( 'currency_position', $currency_position );
+		awebooking( 'setting' )->set( 'price_thousand_separator', $price_thousand_separator );
+		awebooking( 'setting' )->set( 'price_decimal_separator', $price_decimal_separator );
+		awebooking( 'setting' )->set( 'price_number_decimals', $price_number_decimals );
 
 		wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
 		exit;
