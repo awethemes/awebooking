@@ -20,15 +20,14 @@
     "require": {
         "php": ">=5.5.9",
         "roomify/bat": "dev-master",
-        "pelago/emogrifier": "^1.2",
-        "nesbot/carbon": "1.17.0",
         "awethemes/skeleton": "dev-develop",
         "webdevstudios/taxonomy_single_term": "dev-master",
-        "erusev/parsedown": "^1.6",
         "ericmann/wp-session-manager": "^1.2",
+        "erusev/parsedown": "^1.6",
+        "pelago/emogrifier": "^1.2",
         "league/period": "^3.3",
-        "monolog/monolog": "^1.23",
-        "tightenco/collect": "5.2.*"
+        "tightenco/collect": "5.2.*",
+        "nesbot/carbon": "^1.22"
     },
     "autoload": {
         "psr-4": { "AweBooking\\": "inc/" },

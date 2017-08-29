@@ -20,6 +20,19 @@ class Request {
 	 */
 	protected $requests;
 
+	public static function instance() {
+		$wp_session = awebooking()->make( 'session' );
+
+		if ( empty( $wp_session['awebooking_request'] ) ) {
+			throw new \RuntimeException( 'Missing booking data' );
+		}
+
+		$requests = $wp_session['awebooking_request']->toArray();
+		$period = new Period( $requests['check_in'], $requests['check_out'], true );
+
+		return new static( $period, $requests );
+	}
+
 	/**
 	 * Booking request constructor.
 	 *
@@ -31,25 +44,15 @@ class Request {
 		$this->requests = $requests;
 	}
 
-	public static function instance() {
-		if ( ! isset( $_COOKIE['awebooking-request'] ) ) {
-			throw new \RuntimeException( 'Missing booking data' );
-		}
-
-		$requests = maybe_unserialize( wp_unslash( $_COOKIE['awebooking-request'] ) );
-
-		$period = new Period( $requests['check_in'], $requests['check_out'], true, Period::EXCLUDE_END_DATE );
-		parent::__construct( $period, $requests );
-	}
-
 	public function store() {
 		$wp_session = awebooking()->make( 'session' );
 
-		$store_request              = $request->get_requests();
-		$store_request['check_in']  = $request->get_check_in()->toDateString();
-		$store_request['check_out'] = $request->get_check_out()->toDateString();
+		$store_request              = $this->get_requests();
+		$store_request['check_in']  = $this->get_check_in()->toDateString();
+		$store_request['check_out'] = $this->get_check_out()->toDateString();
 
 		$wp_session['awebooking_request'] = $store_request;
+		wp_session_commit();
 	}
 
 	/**
@@ -122,19 +125,19 @@ class Request {
 	 *
 	 * @return array
 	 */
-	public function get_request_services() {
+	public function get_services() {
 		if ( ! $this->has_request( 'extra_services' ) ) {
 			return [];
 		}
 
 		$services = [];
-		foreach ( (array) $this->get_request( 'extra_services' ) as $slug => $number ) {
-			if ( is_int( $slug ) ) {
-				$slug = $number;
-				$number = 1;
+		foreach ( (array) $this->get_request( 'extra_services' ) as $service_id => $quantity ) {
+			if ( is_int( $service_id ) ) {
+				$service_id = $quantity;
+				$quantity = 1;
 			}
 
-			$services[ $slug ] = $number ? absint( $number ) : 1;
+			$services[ $service_id ] = $quantity ? absint( $quantity ) : 1;
 		}
 
 		return $services;

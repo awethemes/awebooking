@@ -3,6 +3,7 @@ namespace AweBooking\Shortcodes;
 
 use AweBooking\Concierge;
 use AweBooking\Hotel\Room_Type;
+use AweBooking\Booking\Request;
 use AweBooking\Support\Template;
 
 class Shortcode_Booking {
@@ -23,19 +24,10 @@ class Shortcode_Booking {
 	 * @param array $atts
 	 */
 	public static function output( $atts ) {
-
 		$atts = shortcode_atts( array(), $atts, 'awebooking_booking' );
 
-		self::booking();
-
-	}
-
-	/**
-	 * Show the checkout.
-	 */
-	private static function booking() {
 		try {
-			$booking_request = new Session_Booking_Request;
+			$booking_request = Request::instance();
 			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
 
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );

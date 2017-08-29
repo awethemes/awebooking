@@ -166,39 +166,17 @@ class Booking extends WP_Object {
 	}
 
 	/**
-	 * Calculate totals by looking at the contents of the order. Stores the totals and returns the orders final total.
+	 * Calculate totals by looking at the contents of the booking.
 	 *
-	 * @since 2.2
-	 * @param  bool $and_taxes Calc taxes if true.
+	 * Stores the totals and returns the orders final total.
+	 *
 	 * @return float calculated grand total.
 	 */
-	public function calculate_totals( $and_taxes = true ) {
-		$cart_subtotal     = 0;
-		$cart_total        = 0;
-		$fee_total         = 0;
-		$cart_subtotal_tax = 0;
-		$cart_total_tax    = 0;
-
-		foreach ( $this->get_line_items() as $item ) {
-			$cart_subtotal     += $item->get_subtotal();
-			$cart_total        += $item->get_total();
-			$cart_subtotal_tax += $item->get_subtotal_tax();
-			$cart_total_tax    += $item->get_total_tax();
-		}
-
-		foreach ( $this->get_fees() as $item ) {
-			$fee_total += $item->get_total();
-		}
-
-		$grand_total = round( $cart_total + $fee_total + $this->get_shipping_total() + $this->get_cart_tax() + $this->get_shipping_tax(), wc_get_price_decimals() );
-
-		$this->set_discount_total( $cart_subtotal - $cart_total );
-		$this->set_discount_tax( $cart_subtotal_tax - $cart_total_tax );
-		$this->set_total( $grand_total );
-
+	public function calculate_totals() {
+		$this['total'] = $this->get_subtotal();
 		$this->save();
 
-		return $grand_total;
+		return $this['total'];
 	}
 
 

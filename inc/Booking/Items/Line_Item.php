@@ -318,7 +318,6 @@ class Line_Item extends Booking_Item {
 		// everything in AweBooking it is working perfect.
 		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) ) {
 			if ( ! $this->is_changeable( $period ) ) {
-				exit;
 				throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
 			}
 		}
