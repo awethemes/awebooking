@@ -17,7 +17,9 @@ esc_html_e( 'Your booking is on-hold until we confirm payment has been received.
 	<table>
 		<thead>
 			<tr>
-				<th colspan="2" style="text-align: left;"><?php printf( esc_html__( 'Room type: %s', 'awebooking' ), esc_html( $room_name ) ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Room', 'awebooking' ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Nights', 'awebooking' ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Guest', 'awebooking' ); ?></th>
 				<th style="text-align: right;"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
 			</tr>
 

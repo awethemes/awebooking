@@ -10,7 +10,7 @@ use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Admin_Booking_Created;
-use AweBooking\Support\Mailer;
+use AweBooking\Support\Mail\Mailer;
 use Skeleton\Support\Validator;
 use Skeleton\Container\Service_Hooks;
 

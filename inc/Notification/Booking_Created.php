@@ -2,6 +2,7 @@
 namespace AweBooking\Notification;
 
 use AweBooking\AweBooking;
+use AweBooking\Booking\Booking;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Support\Mail\Mailable;
 use AweBooking\Support\Formatting;
@@ -10,7 +11,7 @@ use AweBooking\Support\Carbonate;
 class Booking_Created extends Mailable {
 	protected $booking;
 
-	public function __construct( $booking ) {
+	public function __construct( Booking $booking ) {
 		$this->booking = $booking;
 		// Find/replace.
 		$this->find['order_number']    = '{order_number}';
@@ -57,7 +58,8 @@ class Booking_Created extends Mailable {
 			}
 		}
 
-		$room_type = new Room_Type( $this->booking['room_type_id'] );
+		$room_type = $this->booking->get_line_items();
+		dd($room_type->pluck('name')->implode(', '));
 
 		return $this->get_template( 'new-booking', [
 			'booking_id'           => $this->booking->get_id(),
