@@ -9,7 +9,7 @@ use AweBooking\Hotel\Service;
 
 use AweBooking\Pricing\Price;
 use AweBooking\Pricing\Price_Calculator;
-use AweBooking\Pricing\Calculator\Service_Calculator;
+use AweBooking\Calculator\Service_Calculator;
 
 class Availability {
 	/**
@@ -126,7 +126,7 @@ class Availability {
 	 * @return Price
 	 */
 	public function get_price() {
-		$price = Concierge::get_room_price( $this->room_type, $this->request );
+		$price = Concierge::get_room_price( $this->room_type, $this->request->get_period() );
 
 		$pipes = apply_filters( 'awebooking/availability/room_price_pipes', [], $this->request, $this );
 
@@ -184,15 +184,7 @@ class Availability {
 	}
 
 	public function get_booking_url() {
-		$args = apply_filters( 'awebooking/get_booking_url', [
-			'start-date' => $this->get_check_in()->toDateString(),
-			'end-date' => $this->get_check_out()->toDateString(),
-			'children' => $this->get_children(),
-			'adults' => $this->get_adults(),
-			'room-type' => $this->get_room_type()->get_id(),
-		]);
-
-		return add_query_arg( $args, awebooking_get_page_permalink( 'booking' ) );
+		return awebooking_get_page_permalink( 'booking' );
 	}
 
 	/**

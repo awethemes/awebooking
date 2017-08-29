@@ -38,9 +38,9 @@ class Ajax_Hooks extends Service_Hooks {
 		}
 
 		$extra_services = array_map( 'absint', $_REQUEST['extra-services'] );
-		$availability->get_request()->set_request( 'extra_services', $extra_services );
 
-		Request::set_instance( $availability->get_request() );
+		$availability->get_request()->set_request( 'extra_services', $extra_services );
+		$availability->get_request()->store();
 
 		return wp_send_json_success( [ 'total_price' => (string) $availability->get_total_price() ], 200 );
 	}

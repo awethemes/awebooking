@@ -77,6 +77,19 @@ class Service extends WP_Object {
 	];
 
 	/**
+	 * Get service by given a slug.
+	 *
+	 * @param  string $slug Service slug.
+	 * @return static
+	 */
+	public static function get_by_slug( $slug ) {
+		$service = get_term_by( 'slug', $slug, AweBooking::HOTEL_SERVICE );
+		if ( $service instanceof \WP_Term ) {
+			return new static( $service->term_id );
+		}
+	}
+
+	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void

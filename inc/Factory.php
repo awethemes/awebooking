@@ -160,7 +160,7 @@ class Factory {
 			( isset( $request['end_date'] ) ? $request['end_date'] : null );
 
 		if ( empty( $start_date ) || empty( $start_date ) ) {
-			throw new RuntimeException( esc_html__( 'Start date and end date must be shown.', 'awebooking' ) );
+			throw new \RuntimeException( esc_html__( 'Start date and end date must be shown.', 'awebooking' ) );
 		}
 
 		$period = new Period(
@@ -217,7 +217,7 @@ class Factory {
 		// Validation room-id.
 		$room_type = get_post( $room_type_id );
 		if ( is_null( $room_type ) ) {
-			throw new RuntimeException( esc_html__( 'Room type was not found.', 'awebooking' ) );
+			throw new \RuntimeException( esc_html__( 'Room type was not found.', 'awebooking' ) );
 		}
 
 		return new Room_Type( $room_type );
