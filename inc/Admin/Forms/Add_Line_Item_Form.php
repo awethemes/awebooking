@@ -252,7 +252,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 	 * @param  array $results //.
 	 * @return array
 	 */
-	protected function generate_select_rooms( array $results ) {
+	protected function generate_select_rooms( $results ) {
 		$options = [];
 
 		foreach ( $results as $availability ) {

@@ -25,7 +25,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 		// Register/un-register metaboxes.
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
-		add_action( 'admin_footer', [ $this, 'footer' ] );
+		add_action( 'admin_footer', [ $this, 'booking_templates' ] );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'default' );
 	}
 
-	public function footer() {
+	public function booking_templates() {
 		$screen = get_current_screen();
 
 		if ( $this->is_current_screen() ) {
@@ -149,80 +149,23 @@ class Booking_Metabox extends Post_Type_Metabox {
 
 	/**
 	 * Output the metabox.
-	 *
-	 * @param WP_Post $post post.
 	 */
-	public function booking_note_output( $post ) {
+	public function booking_note_output() {
 		global $post;
 
-		$args = array(
+		remove_filter( 'comments_clauses', array( $this, 'exclude_booking_comments' ), 10, 1 );
+
+		$notes = get_comments( array(
 			'post_id'   => $post->ID,
 			'orderby'   => 'comment_ID',
 			'order'     => 'DESC',
 			'approve'   => 'approve',
 			'type'      => 'booking_note',
-		);
-
-		remove_filter( 'comments_clauses', array( $this, 'exclude_booking_comments' ), 10, 1 );
-
-		$notes = get_comments( $args );
+		) );
 
 		add_filter( 'comments_clauses', array( $this, 'exclude_booking_comments' ), 10, 1 );
 
-		echo '<ul class="booking_notes">';
-
-		if ( $notes ) {
-
-			foreach ( $notes as $note ) {
-
-				$note_classes   = array( 'note' );
-				$note_classes[] = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? 'customer-note' : '';
-				$note_classes[] = ( __( 'AweBooking', 'awebooking' ) === $note->comment_author ) ? 'system-note' : '';
-				$note_classes   = apply_filters( 'awebooking/booking_note_class', array_filter( $note_classes ), $note );
-				?>
-				<li rel="<?php echo absint( $note->comment_ID ); ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
-					<div class="note_content">
-						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
-					</div>
-					<p class="meta">
-						<abbr class="exact-date" title="<?php echo $note->comment_date; ?>"><?php printf( esc_html__( 'added on %1$s at %2$s', 'awebooking' ), date_i18n( awebooking_option( 'date_format' ), strtotime( $note->comment_date ) ), date_i18n( get_option( 'time_format' ), strtotime( $note->comment_date ) ) ); ?></abbr>
-						<?php
-						if ( __( 'AweBooking', 'awebooking' ) !== $note->comment_author ) :
-							/* translators: %s: note author */
-							printf( ' ' . esc_html__( 'by %s', 'awebooking' ), $note->comment_author );
-						endif;
-						?>
-						<a href="#" class="delete_note" role="button"><?php esc_html_e( 'Delete note', 'awebooking' ); ?></a>
-					</p>
-				</li>
-				<?php
-			}
-		} else {
-			echo '<li>' . esc_html__( 'There are no notes yet.', 'awebooking' ) . '</li>';
-		}
-
-		echo '</ul>';
-		?>
-		<div class="add_note">
-			<p>
-				<label for="add_booking_note"><?php esc_html_e( 'Add note', 'awebooking' ); ?></label>
-				<textarea type="text" name="order_note" id="add_booking_note" class="input-text" cols="20" rows="5"></textarea>
-			</p>
-
-			<p>
-			<?php
-			/**
-				<label for="booking_note_type" class="screen-reader-text"><?php _e( 'Note type', 'awebooking' ); ?></label>
-				<select name="booking_note_type" id="booking_note_type">
-					<option value=""><?php _e( 'Private note', 'awebooking' ); ?></option>
-					<option value="customer"><?php _e( 'Note to customer', 'awebooking' ); ?></option>
-				</select>
-			**/
-			?>
-				<button type="button" class="add_note button"><?php esc_html_e( 'Add', 'awebooking' ); ?></button>
-			</p>
-		</div>
-		<?php
+		include trailingslashit( __DIR__ ) . 'views/html-booking-notes.php';
 	}
 
 	/**
@@ -233,6 +176,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	 */
 	public function exclude_booking_comments( $clauses ) {
 		$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
+
 		return $clauses;
 	}
 }

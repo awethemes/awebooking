@@ -97,6 +97,16 @@ class Carbonate extends Carbon {
 	}
 
 	/**
+	 * Format datetime use `date_i18n`.
+	 *
+	 * @param  string $fomrat A valid date format string.
+	 * @return string
+	 */
+	public function date_i18n( $fomrat ) {
+		return date_i18n( $fomrat, $this->getTimestamp() );
+	}
+
+	/**
 	 * Format the instance as a string.
 	 *
 	 * @return string

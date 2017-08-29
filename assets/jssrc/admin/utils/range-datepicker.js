@@ -16,11 +16,6 @@ class RangeDatepicker {
     $(this.fromDate).datepicker({
       dateFormat: DATE_FORMAT,
       beforeShow: beforeShowCallback,
-      onClose: () => {
-        if ($(this.fromDate).datepicker('getDate')) {
-          $(this.toDate).datepicker('show');
-        }
-      },
     }).on('change', this.applyFromChange.bind(this));
 
     $(this.toDate).datepicker({
@@ -37,11 +32,6 @@ class RangeDatepicker {
       const minDate = $.datepicker.parseDate(DATE_FORMAT, $(this.fromDate).val());
       minDate.setDate(minDate.getDate() + 1);
       $(this.toDate).datepicker('option', 'minDate', minDate);
-
-      const toDateVal = $(this.toDate).datepicker('getDate');
-      if (! toDateVal) {
-        // $(this.toDate).datepicker('setDate', minDate);
-      }
     } catch(e) {}
   }
 

@@ -25,7 +25,7 @@ class Admin_Setup_Wizard {
 	 * Add admin menus/screens.
 	 */
 	public function admin_menus() {
-		add_dashboard_page( '', '', 'manage_options', 'awebooking-setup', '' );
+		add_submenu_page( null, '', '', 'manage_options', 'awebooking-setup', '' );
 	}
 
 	/**

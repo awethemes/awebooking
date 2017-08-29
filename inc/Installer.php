@@ -8,12 +8,15 @@ class Installer {
 	 * @return void
 	 */
 	public static function install() {
+		$awebooking = awebooking();
+
+		$core_hooks = new WP_Core_Hooks( $awebooking );
+		$core_hooks->init( $awebooking );
+
 		static::create_tables();
 
 		$current_version = get_option( 'awebooking_version', null );
 		$current_db_version = get_option( 'awebooking_db_version', null );
-
-		// TODO: Must run create CPT, taxonomy...
 
 		// No versions? This is a new install :).
 		if ( is_null( $current_version ) && is_null( $current_db_version ) && apply_filters( 'awebooking/enable_setup_wizard', true ) ) {
@@ -37,6 +40,28 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( static::get_schema() );
+	}
+
+	private static function create_default() {
+		// Default category
+		$cat_name = __('Uncategorized');
+		/* translators: Default category slug */
+		$cat_slug = sanitize_title(_x('Uncategorized', 'Default category slug'));
+
+		if ( global_terms_enabled() ) {
+			$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
+			if ( $cat_id == null ) {
+				$wpdb->insert( $wpdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
+				$cat_id = $wpdb->insert_id;
+			}
+			update_option('default_category', $cat_id);
+		} else {
+			$cat_id = 1;
+		}
+
+		$wpdb->insert( $wpdb->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
+		$wpdb->insert( $wpdb->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
+		$cat_tt_id = $wpdb->insert_id;
 	}
 
 	/**

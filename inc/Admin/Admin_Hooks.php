@@ -185,12 +185,14 @@ class Admin_Hooks extends Service_Hooks {
 	 */
 	public function menu_highlight() {
 		global $parent_file, $submenu_file;
-
 		$current_screen = get_current_screen();
+
+		if ( ! $current_screen ) {
+			return;
+		}
 
 		switch ( $current_screen->id ) {
 			case 'awebooking':
-			case 'admin_page_awebooking-add-item':
 				$parent_file  = 'awebooking';
 				$submenu_file = 'edit.php?post_type=awebooking';
 			break;

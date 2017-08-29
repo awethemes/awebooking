@@ -144,8 +144,13 @@ class Request_Handler extends Service_Hooks {
 				'price'     => $availability->get_price()->get_amount(),
 			]);
 
-			$room_item->save();
 			$booking->add_item( $room_item );
+			$booking->save();
+
+			if ( ! $booking->exists() ) {
+				wp_die( esc_html__( 'Something went wrong', 'awebooking' ) );
+				return; // Something went wrong.
+			}
 
 			foreach ( $request->get_services() as $service_id => $quantity ) {
 				$service = new Service( $service_id );
@@ -163,12 +168,7 @@ class Request_Handler extends Service_Hooks {
 				$booking->add_item( $service_item );
 			}
 
-			$saved = $booking->save();
-
-			if ( ! $booking->exists() ) {
-				wp_die( esc_html__( 'Something went wrong', 'awebooking' ) );
-				return; // Something went wrong.
-			}
+			$booking->calculate_totals();
 
 			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {
