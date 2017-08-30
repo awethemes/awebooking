@@ -36,16 +36,19 @@ class Admin_Scripts_Hooks extends Service_Hooks {
 		$version = AweBooking::VERSION;
 
 		// Register vendor styles and scripts.
-		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin.css', array( 'wp-jquery-ui-dialog' ), $version );
+		wp_register_style( 'select2', $awebooking_url . '/assets/css/select2.css', [], '4.0.3' );
+		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin.css', [ 'wp-jquery-ui-dialog', 'select2' ], $version );
 
-		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment.js', array(), '2.18.1' );
-		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', array( 'wp-backbone' ), $version, true );
-		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', array( 'wp-backbone' ), $version, true );
+		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment.js', [], '2.18.1' );
+		wp_register_script( 'select2', $awebooking_url . '/assets/js/select2/select2.full.js', [ 'jquery' ], '4.0.3' );
+
+		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', [ 'wp-backbone' ], $version, true );
+		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', [ 'wp-backbone' ], $version, true );
 
 		// Register awebooking main styles and scripts.
-		$deps = [ 'awebooking-admin-manifest', 'awebooking-admin-vendor', 'moment', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ];
-		wp_register_script( 'awebooking-admin-manifest', $awebooking_url . '/assets/js/admin/manifest.js', [], $version, true );
-		wp_register_script( 'awebooking-admin-vendor', $awebooking_url . '/assets/js/admin/vendor.js', [], $version, true );
+		$deps = [ 'awebooking-manifest', 'awebooking-vendor', 'moment', 'select2', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker' ];
+		wp_register_script( 'awebooking-manifest', $awebooking_url . '/assets/js/admin/manifest.js', [], $version, true );
+		wp_register_script( 'awebooking-vendor', $awebooking_url . '/assets/js/admin/vendor.js', [], $version, true );
 		wp_register_script( 'awebooking-admin', $awebooking_url . '/assets/js/admin/awebooking.js', $deps, $version, true );
 
 		wp_register_script( 'awebooking-edit-booking', awebooking()->plugin_url() . '/assets/js/admin/edit-booking.js', array( 'awebooking-admin' ), $version, true );

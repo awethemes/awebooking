@@ -1,3 +1,8 @@
+<?php
+
+use AweBooking\Admin\Admin_Utils;
+
+?>
 <style type="text/css">
 	.drawer-toggle.toggle-year:before {
 		color: #333;
@@ -22,33 +27,7 @@
 				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
 				<div id="edit-day-options" class="form-checkboxes" style="display: inline-block;">
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-1" name="day_options[]" value="1" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Mon </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-2" name="day_options[]" value="2" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-2">Tue </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-3" name="day_options[]" value="3" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-3">Wed </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-4" name="day_options[]" value="4" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-4">Thu </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-5" name="day_options[]" value="5" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-5">Fri </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-6" name="day_options[]" value="6" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-6">Sat </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-0" name="day_options[]" value="0" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Sun </label>
-					</div>
+					<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'day_options' ] ); ?>
 				</div>
 
 				<select name="state">

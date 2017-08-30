@@ -4,6 +4,8 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Booking\Booking;
+use AweBooking\Admin\Forms\Booking_General_From;
+use AweBooking\Support\Carbonate;
 
 class Booking_Metabox extends Post_Type_Metabox {
 	/**
@@ -26,6 +28,42 @@ class Booking_Metabox extends Post_Type_Metabox {
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
 		add_action( 'admin_footer', [ $this, 'booking_templates' ] );
+	}
+
+	/**
+	 * Save CPT metadata when a custom post is saved.
+	 *
+	 * @access private
+	 *
+	 * @param int  $post_id The post ID.
+	 * @param post $post    The post object.
+	 * @param bool $update  Whether this is an existing post being updated or not.
+	 */
+	public function doing_save( $post_id, $post, $update ) {
+		// If this is just a revision, don't do anything.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		if ( empty( $_POST ) ) {
+			return;
+		}
+
+		$booking = Factory::get_booking( $post_id );
+		$general_form = new Booking_General_From( $booking );
+
+		try {
+			$sanitized = $general_form->handle( $_POST );
+			$datetime = Carbonate::create_datetime( $sanitized['booking_created_date'] );
+
+			$booking['date_created'] = $datetime->toDateTimeString();
+			$booking['status']       = $sanitized['booking_status'];
+			$booking['customer_id']  = isset( $sanitized['booking_customer'] ) ? (int) $sanitized['booking_customer'] : 0;
+			$booking->save();
+
+		} catch ( \Exception $e ) {
+			// ...
+		}
 	}
 
 	/**

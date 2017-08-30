@@ -356,7 +356,7 @@ class Booking extends WP_Object {
 	 * @return bool|void
 	 */
 	protected function perform_update( array $dirty ) {
-		$changes = $this->get_changes_only( $dirty, [ 'status', 'customer_note' ] );
+		$changes = $this->get_changes_only( $dirty, [ 'status', 'customer_note', 'date_created' ] );
 		if ( empty( $changes ) ) {
 			return true;
 		}
@@ -366,6 +366,7 @@ class Booking extends WP_Object {
 		return $this->update_the_post([
 			'post_status'  => $this['status'],
 			'post_excerpt' => $this['customer_note'],
+			'post_date'    => $this['date_created'],
 		]);
 	}
 

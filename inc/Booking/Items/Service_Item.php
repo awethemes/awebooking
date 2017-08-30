@@ -1,9 +1,10 @@
 <?php
 namespace AweBooking\Booking\Items;
 
+use AweBooking\Hotel\Service;
+use AweBooking\Pricing\Price;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Calendar;
-use AweBooking\Pricing\Price;
 
 class Service_Item extends Booking_Item {
 	/**
@@ -54,12 +55,17 @@ class Service_Item extends Booking_Item {
 		return 'service_item';
 	}
 
-	public function get_room_unit() {
-		return new Room( $this['room_id'] );
-	}
+	/**
+	 * Returns service instance.
+	 *
+	 * @return Service|null
+	 */
+	public function get_service() {
+		if ( ! $this->exists() ) {
+			return;
+		}
 
-	public function get_room_id() {
-		return $this['room_id'];
+		return new Service( $this['service_id'] );
 	}
 
 	public function get_price() {

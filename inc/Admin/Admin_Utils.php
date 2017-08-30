@@ -2,6 +2,48 @@
 namespace AweBooking\Admin;
 
 class Admin_Utils {
+
+	public static function prints_weekday_checkbox( array $args ) {
+		global $wp_locale;
+
+		$args = wp_parse_args( $args, [
+			'id'     => 'day_options',
+			'label'  => 'abbrev',
+			'before' => '',
+			'after'  => '',
+		]);
+
+		$output = '';
+		$week_begins = (int) get_option( 'start_of_week' );
+
+		for ( $i = 0; $i <= 6; $i++ ) {
+			$wd = (int) ( $i + $week_begins ) % 7;
+
+			$wd_name = $wp_locale->get_weekday( $wd );
+			switch ( $args['label'] ) {
+				case 'initial':
+					$wd_label = $wp_locale->get_weekday_initial( $wd_name );
+					break;
+				case 'abbrev':
+					$wd_label = $wp_locale->get_weekday_abbrev( $wd_name );
+					break;
+				default:
+					$wd_label = $wd_name;
+					break;
+			}
+
+			$output .= sprintf(
+				'<label title="%4$s"><input type="checkbox" name="%2$s[]" value="%1$s" checked="checked"><span>%3$s</span></label>',
+				esc_attr( $wd ),
+				esc_attr( $args['id'] ),
+				esc_html( $wd_label ),
+				esc_attr( $wd_name )
+			);
+		}
+
+		print $output;
+	}
+
 	/**
 	 * Create a page and store the ID in an option.
 	 *

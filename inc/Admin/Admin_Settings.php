@@ -15,18 +15,15 @@ class Admin_Settings extends Admin_Page {
 
 	/**
 	 * Make a new page settings.
-	 *
-	 * @param Config         $config    //.
-	 * @param Menu_Page|null $menu_page //.
 	 */
-	public function __construct( Menu_Page $menu_page = null ) {
+	public function __construct() {
 		$this->config = awebooking( 'config' );
 
 		$this->strings = array(
 			'updated' => esc_html__( 'Your settings have been saved.', 'awebooking' ),
 		);
 
-		parent::__construct( awebooking( 'option_key' ), $menu_page );
+		parent::__construct( awebooking( 'option_key' ) );
 
 		$this->set(array(
 			// A page-id should only use alpha-dash styles.
@@ -40,6 +37,24 @@ class Admin_Settings extends Admin_Page {
 		$this->register_backups();
 
 		do_action( 'awebooking/admin_settings/register', $this );
+	}
+
+	/**
+	 * Init page hooks.
+	 */
+	public function init() {
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+
+		awebooking( 'admin_menu' )->add_submenu( $this->menu_slug, array(
+			'page_title'  => $this->page_title,
+			'menu_title'  => $this->menu_title,
+			'function'    => $this->render_callback,
+		));
+
+		// Hook in our save notices.
+		add_action( "cmb2_save_options-page_fields_{$this->prop( 'id' )}", array( $this, 'settings_notices' ), 10, 3 );
+
+		return $this;
 	}
 
 	/**

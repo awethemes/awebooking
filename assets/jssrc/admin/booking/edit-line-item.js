@@ -33,7 +33,7 @@ class EditLineItem {
 
         // TODO: Improve this!
         setTimeout(function() {
-          // window.location.reload();
+          window.location.reload();
         }, 250);
 
       })

@@ -226,6 +226,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'show_on_cb' => [ $this, '_render_rooms_callback' ],
 		));
 
+		// ---
 		$extra_service = $metabox->add_section( 'extra_service', array(
 			'title' => esc_html__( 'Extra Services', 'awebooking' ),
 		));
@@ -236,6 +237,28 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'name'       => esc_html__( 'Extra Services', 'awebooking' ),
 			'show_on_cb' => [ $this, '_render_extra_services_callback' ],
 		));
+
+		// Register Metabox Sections.
+		$constraints = $metabox->add_section( 'constraints', array(
+			'title' => esc_html__( 'Constraints', 'awebooking' ),
+		));
+
+		$constraints->add_group( 'constraints', function( $group ) {
+			$group->set([
+				'options' => array(
+					'group_title'   => esc_html__( 'Entry {#}', 'awebooking' ),
+					'add_button'    => esc_html__( 'Add Another Entry', 'awebooking' ),
+					'remove_button' => esc_html__( 'Remove Entry', 'awebooking' ),
+					'sortable'      => true,
+				),
+			]);
+
+			$group->add_field( array(
+				'id'         => 'base_price',
+				'type'       => 'text_small',
+				'name'       => esc_html__( 'Extra Services', 'awebooking' ),
+			));
+		});
 
 		do_action( 'awebooking/register_metabox/room_type', $metabox );
 	}

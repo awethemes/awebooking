@@ -21,6 +21,8 @@ const AweBooking = _.extend(settings, {
     $('[data-init="awebooking-toggle"]').each(function() {
       $(this).data('awebooking-toggle', new self.ToggleClass(this));
     });
+
+    require('./utils/init-select2.js');
   },
 
   /**
