@@ -54,6 +54,41 @@ trait Booking_Attributes_Trait {
 	}
 
 	/**
+	 * Determines if this booking has been checked-in.
+	 *
+	 * @return boolean
+	 */
+	public function is_checked_in() {
+		return apply_filters( $this->prefix( 'is_checked_in' ), $this['checked_in'], $this );
+	}
+
+	/**
+	 * Determines if this booking has been checked-out.
+	 *
+	 * @return boolean
+	 */
+	public function is_checked_out() {
+		return apply_filters( $this->prefix( 'is_checked_out' ), $this['checked_out'], $this );
+	}
+
+	/**
+	 * By logic, if checked-out is set, checked-in is set too.
+	 *
+	 * @param  string|bool $value Set value.
+	 * @return $this
+	 */
+	public function set_checked_out( $value ) {
+		$checked = (bool) $value;
+		$this->attributes['checked_out'] = $checked;
+
+		if ( $checked && ! $this->is_checked_in() ) {
+			$this->attributes['checked_in'] = true;
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Gets booking grand total.
 	 *
 	 * @return Price

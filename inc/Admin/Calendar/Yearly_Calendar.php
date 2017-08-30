@@ -80,7 +80,7 @@ class Yearly_Calendar {
 		foreach ( $this->state as $state ) {
 			try {
 				$period = new Period( $state->getStartDate(), $state->getEndDate() );
-			} catch ( Exception $e ) {
+			} catch ( \Exception $e ) {
 				continue;
 			}
 

@@ -50,20 +50,25 @@ class Booking_Metabox extends Post_Type_Metabox {
 		}
 
 		$booking = Factory::get_booking( $post_id );
-		$general_form = new Booking_General_From( $booking );
 
 		try {
-			$sanitized = $general_form->handle( $_POST );
+			$sanitized = (new Booking_General_From( $booking ))->handle( $_POST );
 			$datetime = Carbonate::create_datetime( $sanitized['booking_created_date'] );
 
 			$booking['date_created'] = $datetime->toDateTimeString();
 			$booking['status']       = $sanitized['booking_status'];
 			$booking['customer_id']  = isset( $sanitized['booking_customer'] ) ? (int) $sanitized['booking_customer'] : 0;
-			$booking->save();
-
 		} catch ( \Exception $e ) {
 			// ...
 		}
+
+		// Set checked-in, checked-out.
+		$booking['checked_in']  = ( isset( $_POST['booking_checked_in'] ) && $_POST['booking_checked_in'] );
+		$booking['checked_out'] = ( isset( $_POST['booking_checked_out'] ) && $_POST['booking_checked_out'] );
+		$booking['featured']    = ( isset( $_POST['booking_featured'] ) && $_POST['booking_featured'] );
+
+		// Save the booking.
+		$booking->save();
 	}
 
 	/**

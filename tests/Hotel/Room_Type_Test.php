@@ -24,7 +24,7 @@ class Room_Type_Test extends WP_UnitTestCase {
 
 	public function test_room_type_object() {
 		$room_type = new Room_Type( $this->postid );
-		$this->assertInstanceOf( 'AweBooking\\Support\\WP_Object', $room_type );
+		$this->assertInstanceOf( 'AweBooking\\Model\\WP_Object', $room_type );
 
 		$this->assertEquals($room_type['title'], 'VIP');
 

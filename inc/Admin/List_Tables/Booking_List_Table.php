@@ -100,6 +100,10 @@ class Booking_List_Table extends Post_Type_Abstract {
 						break;
 				}
 
+				if ( $the_booking->is_featured() ) {
+					echo '<span class="dashicons dashicons-star-filled"></span>';
+				}
+
 				printf( '<span class="awebooking-label %2$s">%1$s</span>', $status_label, $status_color );
 			break;
 
@@ -108,10 +112,10 @@ class Booking_List_Table extends Post_Type_Abstract {
 				echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
 				break;
 
-			case 'booking_dates':
+			case 'booking_date':
 				printf( '<abbr title="%s">%s</abbr>',
 					esc_attr( $the_booking->get_booking_date()->toDateTimeString() ),
-					esc_html( $the_booking->get_booking_date()->format( 'Y/m/d' ) )
+					esc_html( $the_booking->get_booking_date() )
 				);
 				break;
 
@@ -242,7 +246,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			switch ( $query_vars['orderby'] ) {
 				case 'booking_total':
 					$query_vars = array_merge( $query_vars, [
-						'meta_key'  => 'total_price',
+						'meta_key'  => '_total',
 						'orderby'   => 'meta_value_num',
 					]);
 					break;

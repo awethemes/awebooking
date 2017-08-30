@@ -1,8 +1,8 @@
-
 ul.booking_notes li .note_content {
   padding: 10px;
   background: #efefef;
   position: relative;
+  border-radius: 3px;
 }
 
 ul.booking_notes li .note_content::after {
@@ -22,10 +22,6 @@ ul.booking_notes li .note_content p {
   margin: 0;
   padding: 0;
   word-wrap: break-word;
-}
-
-ul.booking_notes li p.meta .exact-date {
-  border-bottom: 1px dotted #999;
 }
 
 ul.booking_notes li p.meta {
