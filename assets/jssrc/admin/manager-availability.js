@@ -1,98 +1,93 @@
 const $ = window.jQuery;
-const awebooking = window.TheAweBooking;
+const AweBooking = window.TheAweBooking;
 
 $(function() {
 
-  const rangepicker = new awebooking.RangeDatepicker(
+  const $dialog = AweBooking.Popup.setup('#awebooking-set-availability-popup');
+
+  const rangepicker = new AweBooking.RangeDatepicker(
     'input[name="datepicker-start"]',
     'input[name="datepicker-end"]'
   );
 
-  rangepicker.init();
+  const showComments = function(calendar) {
+    const nights = calendar.getNights();
+    const toNight = calendar.endDay;
 
-  const showComments = function() {
-    var $text = this.$el.parent().find('.datepicker-container').find('.write-here');
-    var nights = this.endDay.diff(this.startDay, 'days');
-    var text = '';
-
-    var thatNight = this.endDay.clone().subtract(1, 'day');
-
+    let text = '';
     if (nights === 1) {
-      text = 'One night: ' + thatNight.format(this.format);
+      text = 'One night: ' + toNight.format(calendar.format);
     } else {
-      text = nights + ' nights, from  ' + this.startDay.format(this.format) + ' to ' + thatNight.format(this.format) + ' night.';
+      text = `<b>${nights}</b> nights` + ' nights, from <b>' + calendar.startDay.format(calendar.format) + '</b> to <b>' + toNight.format(calendar.format) + '</b>';
     }
 
-    $text.html(text);
+    return text;
+  };
 
-    this.$el.parent().find('input[name="state"]').prop('disabled', false);
-    this.$el.parent().find('button').prop('disabled', false);
+  const onApplyCalendar = function() {
+    let calendar = this;
+
+    calendar.room_name = this.$el.closest('.abkngcal-container').find('h2').text();
+    calendar.data_id   = this.$el.closest('[data-room]').data('room');
+    calendar.comments  = showComments(calendar);
+
+    const formTemplate = wp.template('availability-calendar-form');
+    $dialog.find('.awebooking-dialog-contents').html(formTemplate(calendar));
+
+    $dialog.find('form').data('calendar', calendar);
+    $dialog.dialog('open');
   };
 
   const ajaxGetCalendar = function(calendar) {
-    var $container = calendar.$el.parents('.abkngcal-container');
+    const $container = calendar.$el.parents('.abkngcal-container');
     $container.find('.abkngcal-ajax-loading').show();
 
-    $.ajax({
-      url: ajaxurl,
-      type: 'POST',
-      data: {
-        action: 'get_awebooking_yearly_calendar',
-        year: $container.find('.abkngcal select').val(),
-        room: $container.data('room'),
-      }
+    wp.ajax.post( 'get_awebooking_yearly_calendar', {
+      year: $container.find('.abkngcal select').val(),
+      room: $container.data('room'),
     })
-    .done(function(response) {
+    .done(function(data) {
       calendar.destroy();
       calendar.$el.find('select').off();
-      calendar.$el.parent().find('button').off();
 
-      $container.html($(response).html());
+      $container.html($(data.html).html());
       calendar.$el = $container.find('.abkngcal.abkngcal--yearly');
 
       calendar.initialize();
-      calendar.on('apply', showComments);
-      calendar.$el.parent().find('button').on('click', ajaxSaveState.bind(calendar));
-      calendar.$el.find('select').on('change', function() {
-        ajaxGetCalendar(calendar);
-      });
-
-    });
-  };
-
-  const ajaxSaveState = function(e) {
-    e.preventDefault();
-    var calendar = this;
-    var $container = this.$el.parents('.abkngcal-container');
-
-    $.ajax({
-      url: ajaxurl,
-      type: 'POST',
-      data: {
-        action: 'set_awebooking_availability',
-        start: this.startDay.format(this.format),
-        end: this.endDay.format(this.format),
-        room_id: $container.data('room'),
-        state: this.$el.parent().find('input[name="state"]:checked').val(),
-      },
-    })
-    .done(function() {
-      ajaxGetCalendar(calendar);
+      calendar.on('apply', onApplyCalendar);
+      calendar.$el.find('select').on('change', ajaxGetCalendar.bind(null, calendar));
     });
   };
 
   $('.abkngcal.abkngcal--yearly', document).each(function(index, el) {
     let calendar = new window.AweBookingYearlyCalendar(el);
-    let $button = calendar.$el.parent().find('button');
+    $(el).data('availability-calendar', calendar);
 
-    calendar.on('apply', showComments);
-    $button.on('click', ajaxSaveState.bind(calendar));
-
-    calendar.$el.find('select').on('change', function() {
-      ajaxGetCalendar(calendar);
-    });
-
-    $button.prop('disabled', true);
+    calendar.on('apply', onApplyCalendar);
+    calendar.$el.find('select').on('change', ajaxGetCalendar.bind(null, calendar));
   });
 
+  $dialog.find('form').on('submit', function(e) {
+    e.preventDefault();
+
+    const $el = $(this);
+    const calendar = $el.data('calendar');
+
+    $el.addClass('ajax-loading');
+    AweBooking.ajaxSubmit(this, 'set_awebooking_availability')
+      .always(function() {
+        $el.removeClass('ajax-loading');
+      })
+      .done(function(data) {
+        ajaxGetCalendar(calendar);
+        $dialog.dialog('close');
+      })
+      .fail(function(e) {
+        if (e.error && typeof e.error === 'string') {
+          alert(e.error);
+        }
+      });
+  });
+
+  rangepicker.init();
 });

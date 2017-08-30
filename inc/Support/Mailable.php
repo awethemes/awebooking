@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support\Mail;
+namespace AweBooking\Support;
 
 use Pelago\Emogrifier;
 
@@ -139,6 +139,7 @@ abstract class Mailable {
 
 	/**
 	 * Get blog name formatted for emails.
+	 *
 	 * @return string
 	 */
 	protected function get_blogname() {

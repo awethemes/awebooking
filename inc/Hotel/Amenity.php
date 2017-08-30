@@ -2,7 +2,7 @@
 namespace AweBooking\Hotel;
 
 use AweBooking\Pricing\Price;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class Amenity extends WP_Object {
 	/**

@@ -5,7 +5,7 @@ use WP_Query;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class Room_Type extends WP_Object {
 	/**

@@ -4,7 +4,7 @@ namespace AweBooking\Booking;
 use AweBooking\AweBooking;
 use AweBooking\Support\Period;
 use AweBooking\Support\Period_Collection;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class Booking extends WP_Object {
 	use Traits\Booking_Items_Trait,

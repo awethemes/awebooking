@@ -15,6 +15,15 @@
   display: none;
 }
 
+.inline-weekday-checkbox {
+  display: inline-block;
+
+  > label {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+
 /**
  * AweBooking rooms creator
  */

@@ -27,6 +27,16 @@
   };
 
   $.extend(YearlyCalendar.prototype, Backbone.Events, {
+    debug: function() {
+      if (this.startDay && this.endDay) {
+        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
+      } else if (this.startDay) {
+        console.log(this.startDay.format(this.format) + ' - null');
+      } else if( this.endDay) {
+        console.log('null' + ' - ' + this.endDay.format(this.format));
+      }
+    },
+
     /**
      * Initialize the Calendar.
      *
@@ -38,8 +48,8 @@
 
       // Trigger date-range handler.
       this.$el.find('.abkngcal__day')
-        .on('mousedown', this.clickDay.bind(this))
-        .on('mouseenter', this.hoverDay.bind(this))
+        .on('mousedown', this._clickDay.bind(this))
+        .on('mouseenter', this._hoverDay.bind(this))
         .on('mouseover', this.ui.hoverHeadingOver.bind(this))
         .on('mouseleave', this.ui.hoverHeadingLeave.bind(this));
 
@@ -48,6 +58,8 @@
         .on('set:startDay', this.ui.onSetStartDay.bind(this))
         .on('clear:endDay', this.ui.onClearEndDay.bind(this))
         .on('clear:startDay', this.ui.onClearStartDay.bind(this));
+
+      $(document).on('click', this._documentClick.bind(this));
     },
 
     /**
@@ -63,14 +75,12 @@
       this.$el.removeData();
     },
 
-    debug: function() {
-      if (this.startDay && this.endDay) {
-        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
-      } else if (this.startDay) {
-        console.log(this.startDay.format(this.format) + ' - null');
-      } else if( this.endDay) {
-        console.log('null' + ' - ' + this.endDay.format(this.format));
+    getNights: function() {
+      if (! this.endDay || ! this.startDay) {
+        return 0;
       }
+
+      return this.endDay.diff(this.startDay, 'days');
     },
 
     getElementDay: function(date) {
@@ -123,7 +133,7 @@
       this.trigger('clear:endDay');
     },
 
-    clickDay: function(e) {
+    _clickDay: function(e) {
       var $target = $(e.currentTarget);
       var targetDay = moment($target.data('date'));
 
@@ -151,7 +161,7 @@
       }
     },
 
-    hoverDay: function(e) {
+    _hoverDay: function(e) {
       if (! this.startDay || this.endDay) {
         return;
       }
@@ -160,6 +170,12 @@
       var targetDay = moment($currentTarget.data('date'));
 
       this.ui.buildRangeDays.call(this, targetDay, $currentTarget);
+    },
+
+    _documentClick: function(e) {
+      if (! $.contains(this.$el[0], e.target)) {
+        this.clearStartDay();
+      }
     },
 
     ui: {
@@ -177,13 +193,15 @@
         this.$el.find('.abkngcal__day')
           .removeClass('range-start')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       onClearEndDay: function() {
         this.$el.find('.abkngcal__day')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       hoverHeadingOver: function(e) {
@@ -226,5 +244,4 @@
   });
 
   window.AweBookingYearlyCalendar = YearlyCalendar;
-
 })(jQuery, Backbone);

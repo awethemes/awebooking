@@ -3,7 +3,6 @@ namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
 use AweBooking\AweBooking;
-use AweBooking\Support\Admin_Notices;
 use Skeleton\Container\Service_Hooks;
 
 class Admin_Hooks extends Service_Hooks {

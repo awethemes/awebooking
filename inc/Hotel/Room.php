@@ -3,13 +3,13 @@ namespace AweBooking\Hotel;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 use AweBooking\Support\Period;
-use AweBooking\Support\Traits\BAT_Unit;
+use AweBooking\Booking\BAT\Unit_Trait;
 use Roomify\Bat\Unit\UnitInterface as Unit_Interface;
 
 class Room extends WP_Object implements Unit_Interface {
-	use BAT_Unit;
+	use Unit_Trait;
 
 	/**
 	 * Name of object type.

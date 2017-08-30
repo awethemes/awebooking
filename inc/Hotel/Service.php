@@ -3,7 +3,7 @@ namespace AweBooking\Hotel;
 
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class Service extends WP_Object {
 	/* Constants */

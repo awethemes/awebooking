@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support\Mail;
+namespace AweBooking\Support;
 
 class Mailer {
 	/**

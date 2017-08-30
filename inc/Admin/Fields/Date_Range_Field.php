@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support\Fields;
+namespace AweBooking\Admin\Fields;
 
 use AweBooking\AweBooking;
 use Skeleton\CMB2\Fields\Field_Abstract;

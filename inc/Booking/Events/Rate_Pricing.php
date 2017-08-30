@@ -6,10 +6,9 @@ use Roomify\Bat\Event\Event;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Carbonate;
-use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Rate_Pricing extends Event {
-	use BAT_Only_Days;
+	use Only_Days_Trait;
 
 	/**
 	 * Room state in a time period.

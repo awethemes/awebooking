@@ -37,7 +37,7 @@ class Yearly_Calendar {
 	 *
 	 * @param int|null $year The year for the calendar.
 	 */
-	public function __construct( $year = null, $room ) {
+	public function __construct( $room, $year = null ) {
 		$this->today  = Carbonate::today();
 		$this->year = $year ? absint( $year ) : $this->today->year;
 
@@ -228,32 +228,7 @@ class Yearly_Calendar {
 			echo '</tr>';
 		}// End for().
 
-		echo '</tbody></table>'; ?>
-
-		<div class="datepicker-container">
-			<div class="write-here"></div>
-
-			<form>
-				<input type="text" name="" class="daterange" style="display: none;">
-
-				<label>
-					<input type="radio" name="state" disabled="" value="<?php echo esc_attr( AweBooking::STATE_UNAVAILABLE ); ?>">
-					<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
-				</label>
-
-				<span>|</span>
-
-				<label>
-					<input type="radio" name="state" disabled="" checked="" value="<?php echo esc_attr( AweBooking::STATE_AVAILABLE ); ?>">
-					<?php echo esc_html__( 'Available', 'awebooking' ); ?>
-				</label>
-
-				<button class="button">Set</button>
-
-			</form>
-		</div>
-
-		<?php
+		echo '</tbody></table>';
 		echo '</div>';
 	}
 

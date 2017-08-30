@@ -26,4 +26,4 @@ require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
 
 // Skeleton Support.
-skeleton()->trigger( new AweBooking\Support\Skeleton_Support );
+skeleton()->trigger( new AweBooking\Skeleton_Hooks );

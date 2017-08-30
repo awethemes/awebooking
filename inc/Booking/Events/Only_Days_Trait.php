@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\Support\Traits;
+namespace AweBooking\Booking\Events;
 
-trait BAT_Only_Days {
+trait Only_Days_Trait {
 	/**
 	 * Set only days.
 	 *

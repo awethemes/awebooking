@@ -152,6 +152,11 @@ class Pricing_Management extends WP_List_Table {
 				return;
 			}
 
+			$only_days = [];
+			if ( isset( $_POST['only_day_options'] ) && is_array( $_POST['only_day_options'] ) ) {
+				$only_days = array_map( 'absint', $_POST['only_day_options'] );
+			}
+
 			try {
 				$price = new Price( sanitize_text_field( wp_unslash( $_POST['price'] ) ) );
 
@@ -163,7 +168,10 @@ class Pricing_Management extends WP_List_Table {
 
 				$rate = new Rate( absint( $_REQUEST['room_type'] ) );
 
-				Concierge::set_room_price( $rate, $period, $price );
+				Concierge::set_room_price( $rate, $period, $price, [
+					'only_days' => $only_days,
+				]);
+
 			} catch ( \Exception $e ) {
 				// ...
 			}

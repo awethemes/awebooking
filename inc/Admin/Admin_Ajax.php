@@ -144,30 +144,58 @@ class Admin_Ajax {
 	 * @return void
 	 */
 	public function get_yearly_calendar() {
+		if ( empty( $_REQUEST['room'] ) || empty( $_REQUEST['year'] ) ) {
+			wp_send_json_error();
+		}
+
 		$room = new Room( absint( $_REQUEST['room'] ) );
 
 		if ( $room->exists() ) {
-			$calendar = new Yearly_Calendar( absint( $_REQUEST['year'] ), $room );
+			$calendar = new Yearly_Calendar( $room, absint( $_REQUEST['year'] ) );
+
+			ob_start();
 			$calendar->display();
+			$contents = ob_get_clean();
+
+			wp_send_json_success( [ 'html' => $contents ] );
 		}
 
-		exit;
+		wp_send_json_error();
 	}
 
 	public function set_availability() {
-		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || ! isset( $_REQUEST['state'] ) ) {
-			return wp_send_json_error();
+		$validator = new Validator( $_POST, [
+			'start_date' => 'required|date',
+			'end_date'   => 'required|date',
+			'room_id'    => 'required|int',
+			'state'      => 'required|int',
+			'state'      => 'required|int',
+			'only_day_options' => 'array',
+		]);
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Validation error', 'awebooking' ) ] );
 		}
 
-		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
-		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
+		$only_days = [];
+		if ( isset( $_POST['only_day_options'] ) && is_array( $_POST['only_day_options'] ) ) {
+			$only_days = array_map( 'absint', $_POST['only_day_options'] );
+		}
 
 		try {
-			$date_period = new Period( $start, $end, false );
-			$room = new Room( absint( $_REQUEST['room_id'] ) );
+			$room = new Room( absint( $_POST['room_id'] ) );
+
+			$period = new Period(
+				sanitize_text_field( wp_unslash( $_POST['start_date'] ) ),
+				sanitize_text_field( wp_unslash( $_POST['end_date'] ) )
+			);
 
 			if ( $room->exists() ) {
-				Concierge::set_availability( $room, $date_period, absint( $_REQUEST['state'] ) );
+				Concierge::set_availability( $room, $period, absint( $_POST['state'] ), [
+					'only_days' => $only_days,
+				]);
+
 				return wp_send_json_success();
 			}
 		} catch ( \Exception $e ) {

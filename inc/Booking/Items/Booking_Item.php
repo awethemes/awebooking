@@ -3,7 +3,7 @@ namespace AweBooking\Booking\Items;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class Booking_Item extends WP_Object {
 	/**
