@@ -88,6 +88,7 @@ class Admin_Hooks extends Service_Hooks {
 		new Action_Handler;
 		new Permalink_Settings;
 		new Admin_Setup_Wizard;
+		new Admin_Email_Preview;
 
 		new Admin_Settings( $awebooking['admin_menu'] );
 
