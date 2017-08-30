@@ -91,12 +91,16 @@ class Concierge {
 	 * @param  Booking $booking   The booking instance.
 	 * @return bool
 	 */
-	public static function set_booking_state( Room $room_unit, Period $period, Booking $booking ) {
+	public static function set_booking_state( Room $room_unit, Period $period, Booking $booking, array $options = [] ) {
 		$period->required_minimum_nights();
 
+		$options = wp_parse_args( $options, [
+			'force' => false,
+		]);
+
 		// We only can set if period is available.
-		if ( ! static::is_available( $room_unit, $period ) ) {
-			// return false;
+		if ( ! $options['force'] && ! static::is_available( $room_unit, $period ) ) {
+			return false;
 		}
 
 		try {
@@ -278,7 +282,7 @@ class Concierge {
 	/**
 	 * Check available for a list of single rooms.
 	 *
-	 * @param  array             $rooms   List of single rooms.
+	 * @param  array   $rooms   List of single rooms.
 	 * @param  Request $request Booking request instance.
 	 * @return array
 	 */

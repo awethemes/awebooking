@@ -363,9 +363,13 @@ class Line_Item extends Booking_Item {
 			}
 
 			$saved_state = ( $clear_result && $set_result );
+		} elseif ( $this->recently_created ) {
+			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
+		} else {
+			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking, [
+				'force' => true,
+			]);
 		}
-
-		$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
 
 		if ( isset( $saved_state ) && $saved_state ) {
 			$this['check_in'] = $period->get_start_date()->toDateString();
