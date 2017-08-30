@@ -26,7 +26,8 @@ class Line_Item extends Booking_Item {
 		'check_out'    => '',
 		'adults'       => 0,
 		'children'     => 0,
-		'price'        => 0,
+		'subtotal'     => 0, // Pre-discount.
+		'total'        => 0,
 	];
 
 	/**
@@ -38,7 +39,8 @@ class Line_Item extends Booking_Item {
 		'room_id'  => 'int',
 		'adults'   => 'int',
 		'children' => 'int',
-		'price'    => 'float',
+		'subtotal' => 'float',
+		'total'    => 'float',
 	];
 
 	/**
@@ -52,7 +54,8 @@ class Line_Item extends Booking_Item {
 		'children'  => '_children',
 		'check_in'  => '_check_in',
 		'check_out' => '_check_out',
-		'price'     => '_line_price',
+		'subtotal'  => '_line_subtotal',
+		'total'     => '_line_total',
 	];
 
 	/**
@@ -141,7 +144,7 @@ class Line_Item extends Booking_Item {
 	}
 
 	/**
-	 * Return number adults of line item.
+	 * Returns number adults of line item.
 	 *
 	 * @return int
 	 */
@@ -150,7 +153,7 @@ class Line_Item extends Booking_Item {
 	}
 
 	/**
-	 * Return number children of line item.
+	 * Returns number children of line item.
 	 *
 	 * @return int
 	 */
@@ -159,40 +162,44 @@ class Line_Item extends Booking_Item {
 	}
 
 	/**
-	 * Returns price (per night) of line item.
+	 * Gets subtotal.
 	 *
 	 * @return float
 	 */
-	public function get_price() {
-		return apply_filters( $this->prefix( 'get_price' ), $this['price'], $this );
+	public function get_subtotal() {
+		return apply_filters( $this->prefix( 'get_subtotal' ), $this['subtotal'], $this );
 	}
 
 	/**
-	 * Set line item price (per night).
-	 *
-	 * @param float|Price $price Price amount.
-	 */
-	public function set_price( $price ) {
-		if ( $price instanceof Price ) {
-			$this->attributes['price'] = $price->get_amount();
-		} else {
-			$this->attributes['price'] = awebooking_sanitize_price( $price );
-		}
-	}
-
-	/**
-	 * Returns total price of line item.
+	 * Get total.
 	 *
 	 * @return float
 	 */
 	public function get_total() {
-		$nights = $this->get_nights_stayed();
+		return apply_filters( $this->prefix( 'get_total' ), $this['total'], $this );
+	}
 
-		if ( $nights < 1 ) {
-			return 0;
+	/**
+	 * Set line subtotal (before discounts).
+	 *
+	 * @param mixed $value Input value.
+	 */
+	public function set_subtotal( $value ) {
+		$this->attributes['subtotal'] = awebooking_sanitize_price( $value );
+	}
+
+	/**
+	 * Set line total (after discounts).
+	 *
+	 * @param mixed $value Input value.
+	 */
+	public function set_total( $value ) {
+		$this->attributes['total'] = awebooking_sanitize_price( $value );
+
+		// Subtotal cannot be less than total.
+		if ( ! $this->get_subtotal() || $this->get_subtotal() < $this->get_total() ) {
+			$this->set_subtotal( $value );
 		}
-
-		return $this->get_price() * $nights;
 	}
 
 	/**
@@ -305,7 +312,6 @@ class Line_Item extends Booking_Item {
 	/**
 	 * Do something before doing save.
 	 *
-	 * @throws \LogicException
 	 * @throws \RuntimeException
 	 *
 	 * @return void
@@ -334,7 +340,7 @@ class Line_Item extends Booking_Item {
 	/**
 	 * Do somethings when finish save.
 	 *
-	 * BUGS: ...
+	 * TODO: Maybe we have bugs in this method.
 	 *
 	 * @return void
 	 */

@@ -105,8 +105,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<td><?php $room_item->get_fomatted_guest_number(); ?></td>
 
 					<td>
-						<?php echo esc_html( $room_item->get_price() ); ?> / night
-						<strong><?php // echo $room_item->get_total(); ?></strong>
+						<?php echo esc_html( $room_item->get_total() ); ?>
 					</td>
 
 					<td style="text-align: right;">

@@ -141,7 +141,7 @@ class Request_Handler extends Service_Hooks {
 				'check_out' => $request->get_check_out()->toDateString(),
 				'adults'    => $request->get_adults(),
 				'children'  => $request->get_children(),
-				'price'     => $availability->get_price()->get_amount(),
+				'total'     => $availability->get_price()->get_amount(),
 			]);
 
 			$booking->add_item( $room_item );

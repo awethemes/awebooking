@@ -70,7 +70,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		$this->add_field([
 			'id'              => 'edit_price',
 			'type'            => 'text_small',
-			'name'            => esc_html__( 'Price (per night)', 'awebooking' ),
+			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'validate'        => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
 		]);
@@ -162,7 +162,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 	 */
 	public function setup_fields() {
 		$this['edit_price']->set_value(
-			$this->line_item->get_price()
+			$this->line_item->get_subtotal()
 		);
 
 		$this['edit_check_in_out']->set_value([

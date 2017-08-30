@@ -82,7 +82,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 		$this->add_field([
 			'id'              => 'add_price',
 			'type'            => 'text_small',
-			'name'            => esc_html__( 'Price (per night)', 'awebooking' ),
+			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'validate'        => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
 		]);
@@ -128,13 +128,13 @@ class Add_Line_Item_Form extends Form_Abstract {
 		if ( Concierge::is_available( $the_room, $period ) ) {
 			$the_item = new Line_Item;
 
-			$the_item['room_id']   = $the_room->get_id();
 			$the_item['name']      = $the_room->get_room_type()->get_title();
+			$the_item['room_id']   = $the_room->get_id();
 			$the_item['check_in']  = $period->get_start_date()->toDateString();
 			$the_item['check_out'] = $period->get_end_date()->toDateString();
 			$the_item['adults']    = isset( $sanitized['add_adults'] ) ? absint( $sanitized['add_adults'] ) : 0;
 			$the_item['children']  = isset( $sanitized['add_children'] ) ? absint( $sanitized['add_children'] ) : 0;
-			$the_item['price']     = $sanitized['add_price'];
+			$the_item['total']     = $sanitized['add_price'];
 
 			// Add booking item then save.
 			$this->booking->add_item( $the_item );
@@ -220,12 +220,14 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$a = range( 1, $room_type->get_allowed_adults() );
 			$b = range( 0, $room_type->get_allowed_children() );
 
+			$price = Concierge::get_price( $room_type, $period );
+
 			$this['add_room']
 				->set_value( (int) $_REQUEST['add_room'] );
 
 			$this['add_price']
 				->show()
-				->set_value( $room_type->get_base_price()->get_amount() );
+				->set_value( $price->get_amount() );
 
 			$this['add_adults']
 				->show()

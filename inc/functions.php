@@ -38,10 +38,14 @@ function awebooking_option( $key, $default = null ) {
 /**
  * Sanitize price number.
  *
- * @param  string|numeric $number Raw numeric.
+ * @param  Price|numeric $number Raw numeric.
  * @return float
  */
 function awebooking_sanitize_price( $number ) {
+	if ( $number instanceof AweBooking\Pricing\Price ) {
+		$number = $number->get_amount();
+	}
+
 	return AweBooking\Support\Formatting::format_decimal( $number, true );
 }
 

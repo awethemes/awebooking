@@ -70,6 +70,9 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 			$this->id = $object->get_id();
 		}
 
+		// TODO: ...
+		$this->boot_traits();
+
 		// Setup the wp core object instance.
 		if ( ! is_null( $this->id ) ) {
 			$this->setup_instance();
@@ -84,6 +87,24 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 
 		// Set original to attributes so we can track and reset attributes if needed.
 		$this->sync_original();
+	}
+
+	/**
+	 * Loop through traits and call boot method.
+	 *
+	 * @return void
+	 */
+	protected function boot_traits() {
+		$traits = class_uses( $this );
+
+		foreach ( $traits as $trait ) {
+			$reflect = new \ReflectionClass( $trait );
+			$method  = 'boot_' . str_replace( '_trait', '', strtolower( $reflect->getShortName() ) );
+
+			if ( method_exists( $this, $method ) ) {
+				call_user_func( [ $this, $method ] );
+			}
+		}
 	}
 
 	/**

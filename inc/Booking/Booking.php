@@ -88,8 +88,6 @@ class Booking extends WP_Object {
 	 * @param mixed $booking The booking ID we'll working for.
 	 */
 	public function __construct( $booking = 0 ) {
-		$this->boot_traits();
-
 		$this->maping_metadata();
 
 		parent::__construct( $booking );
@@ -144,7 +142,7 @@ class Booking extends WP_Object {
 	protected function get_period_collection() {
 		$periods = $this->get_line_items()->map(function( $item ) {
 			return $item->get_period();
-		});
+		})->values();
 
 		return new Period_Collection( $periods->to_array() );
 	}
@@ -174,6 +172,7 @@ class Booking extends WP_Object {
 	 */
 	public function calculate_totals() {
 		$this['total'] = $this->get_subtotal();
+
 		$this->save();
 
 		return $this['total'];
@@ -380,24 +379,6 @@ class Booking extends WP_Object {
 		/* translators: %s: Booking date */
 		return sprintf( __( 'Order &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) );
 		// @codingStandardsIgnoreEnd
-	}
-
-	/**
-	 * Loop through traits and call boot method.
-	 *
-	 * @return void
-	 */
-	protected function boot_traits() {
-		$traits = class_uses( $this );
-
-		foreach ( $traits as $trait ) {
-			$reflect = new \ReflectionClass( $trait );
-			$method  = 'boot_' . str_replace( '_trait', '', strtolower( $reflect->getShortName() ) );
-
-			if ( method_exists( $this, $method ) ) {
-				call_user_func( [ $this, $method ] );
-			}
-		}
 	}
 
 	/**

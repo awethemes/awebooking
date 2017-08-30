@@ -183,7 +183,7 @@ class Concierge {
 	 * @param  Period    $period    A time period.
 	 * @return Price
 	 */
-	public static function get_room_price( Room_Type $room_type, Period $period ) {
+	public static function get_price( Room_Type $room_type, Period $period ) {
 		$valuator = new IntervalValuator(
 			$period->get_start_date(),
 			$period->get_end_date()->subMinute(),
@@ -197,6 +197,11 @@ class Concierge {
 		);
 	}
 
+	// TODO: Remove this
+	public static function get_room_price( Room_Type $room_type, Period $period ) {
+		return static::get_price( $room_type, $period );
+	}
+
 	/**
 	 * Set price for room (by rate).
 	 *
@@ -206,7 +211,7 @@ class Concierge {
 	 * @param  array  $options Price setting options.
 	 * @return bool
 	 */
-	public static function set_room_price( Rate $rate, Period $period, Price $amount, array $options = [] ) {
+	public static function set_price( Rate $rate, Period $period, Price $amount, array $options = [] ) {
 		$rate = new Rate_Pricing( $rate, $period->get_start_date(), $period->get_end_date(), $amount );
 
 		if ( ! empty( $options['only_days'] ) && is_array( $options['only_days'] ) ) {
@@ -214,6 +219,11 @@ class Concierge {
 		}
 
 		return $rate->save();
+	}
+
+	// TODO: Remove this
+	public static function set_room_price( Rate $rate, Period $period, Price $amount, array $options = [] ) {
+		return static::set_price( $rate, $period, $amount, $options );
 	}
 
 	/**
