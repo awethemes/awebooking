@@ -142,11 +142,11 @@ class Booking extends WP_Object {
 	}
 
 	protected function get_period_collection() {
-		return new Period_Collection(
-			$this->get_line_items()->map(function( $item ) {
-				return $item->get_period();
-			})->to_array()
-		);
+		$periods = $this->get_line_items()->map(function( $item ) {
+			return $item->get_period();
+		});
+
+		return new Period_Collection( $periods->to_array() );
 	}
 
 	/*

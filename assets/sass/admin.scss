@@ -1,3 +1,19 @@
+@mixin pseudo-dashicons( $glyph: "\f333" ) {
+  content: $glyph;
+  font-family: 'Dashicons';
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
 @import "admin/abkngcal";
 @import "admin/booking-notes";
 @import "admin/cmb2";

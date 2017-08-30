@@ -33,6 +33,50 @@
   }
 }
 
+
+// Featured checkbox.
+.awebooking-featured {
+  input[type=checkbox] {
+    display: none;
+  }
+
+  label {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: top;
+    color: #333;
+  }
+
+  input[type='checkbox'] + label:before {
+    @include pseudo-dashicons("\f154");
+  }
+
+  input[type='checkbox']:checked + label:before {
+    content: "\f155";
+    color: #ff9800;
+  }
+}
+
+.button.awebooking-button-dashicons {
+  padding: 0 3px;
+  height: auto;
+  line-height: 1;
+
+  .dashicons {
+    width: auto;
+    height: auto;
+  }
+}
+
+
+
+
+
+
+
+
 .booking-wrapper,
 .booking-row,
 .booking-column {

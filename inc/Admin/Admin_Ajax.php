@@ -100,11 +100,11 @@ class Admin_Ajax {
 			if ( $response ) {
 				wp_send_json_success();
 			}
-
-			wp_send_json_error();
 		} catch ( \Exception $e ) {
 			wp_send_json_error( [ 'error' => $e->getMessage() ] );
 		}
+
+		wp_send_json_error();
 	}
 
 	/**

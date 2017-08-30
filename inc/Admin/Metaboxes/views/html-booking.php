@@ -2,26 +2,21 @@
 
 use AweBooking\Admin\Forms\Booking_General_From;
 
-$general_from = new Booking_General_From( $the_booking );
-
 ?><div class="postbox">
 	<div class="awebooking-heading clear">
-		<a href="#" class="awebooking-featured js-awebooking-toggle-featured">
-			<?php if ( $the_booking->is_featured() ) : ?>
-				<span class="dashicons dashicons-star-filled"></span>
-			<?php else : ?>
-				<span class="dashicons dashicons-star-empty"></span>
-			<?php endif ?>
-		</a>
+		<div class="awebooking-featured js-awebooking-toggle-featured">
+			<input type="checkbox" name="booking_featured" id="booking-featured-checkbox" <?php echo ($the_booking->is_featured()) ? 'checked=""' : ''; ?>>
+			<label for="booking-featured-checkbox"></label>
+		</div>
 
 		<div class="awebooking-heading__toolbox">
 			<label>
-				<input type="checkbox" name="">
+				<input type="checkbox" name="booking_checked_in" value="1" <?php echo ($the_booking->is_checked_in()) ? 'checked=""' : ''; ?>>
 				<span><?php echo esc_html__( 'Checked-in', 'awebooking' ) ?></span>
 			</label>
 
 			<label>
-				<input type="checkbox" name="">
+				<input type="checkbox" name="booking_checked_out" value="1" <?php echo ($the_booking->is_checked_out()) ? 'checked=""' : ''; ?>>
 				<span><?php echo esc_html__( 'Checked-out', 'awebooking' ) ?></span>
 			</label>
 		</div>
@@ -50,7 +45,7 @@ $general_from = new Booking_General_From( $the_booking );
 
 			<div class="booking-column">
 				<div class="awebooking-block-form">
-					<?php $general_from->output(); ?>
+					<?php (new Booking_General_From( $the_booking ))->output(); ?>
 				</div>
 			</div>
 
@@ -116,7 +111,7 @@ $general_from = new Booking_General_From( $the_booking );
 
 					<td style="text-align: right;">
 						<div style="position: relative;">
-							<a href="#" class="button" data-init="awebooking-toggle">
+							<a href="#" class="button awebooking-button-dashicons" data-init="awebooking-toggle">
 								<span class="dashicons dashicons-arrow-down-alt2"></span>
 							</a>
 

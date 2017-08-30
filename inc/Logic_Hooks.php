@@ -14,7 +14,6 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param AweBooking $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'save_post', [ $this, 'save_booking' ] );
 		add_action( 'deleted_post', [ $this, 'deleted_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking' ] );
 		add_action( 'pre_delete_term', [ $this, 'pre_delete_location' ], 10, 2 );
@@ -31,26 +30,6 @@ class Logic_Hooks extends Service_Hooks {
 		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
 			// TODO: ...
 		}
-	}
-
-	/**
-	 * Fire actions after save booking.
-	 *
-	 * TODO: We need improve this.
-	 *
-	 * @param  int $postid Current booking ID.
-	 * @return void
-	 */
-	public function save_booking( $postid ) {
-		if ( wp_is_post_revision( $postid ) ) {
-			return;
-		}
-
-		if ( get_post_type( $postid ) !== AweBooking::BOOKING ) {
-			return;
-		}
-
-		// ...
 	}
 
 	/**

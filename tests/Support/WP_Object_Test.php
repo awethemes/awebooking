@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Support\WP_Object;
+use AweBooking\Model\WP_Object;
 
 class WP_Object_Test extends WP_UnitTestCase {
 	/**

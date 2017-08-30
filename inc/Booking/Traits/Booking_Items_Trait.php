@@ -178,10 +178,6 @@ trait Booking_Items_Trait {
 	protected function save_items() {
 		$this->setup_booking_items();
 
-		if ( count( $this->items ) === 0 ) {
-			return;
-		}
-
 		foreach ( $this->items_to_delete as $delete_item ) {
 			$delete_item->delete();
 		}
@@ -208,6 +204,8 @@ trait Booking_Items_Trait {
 			return;
 		}
 
+		$this->did_setup_items = true;
+
 		// Try get in the cache first.
 		$db_items = wp_cache_get( $this->get_id(), 'awebooking_cache_booking_items' );
 
@@ -231,10 +229,14 @@ trait Booking_Items_Trait {
 			wp_cache_add( $this->get_id(), $db_items, 'awebooking_cache_booking_items' );
 		}
 
-		$this->items = new Collection(
-			awebooking_map_instance( $db_items, [ Factory::class, 'get_booking_item' ] )
-		);
+		$items = awebooking_map_instance( $db_items, [ Factory::class, 'get_booking_item' ] );
 
-		$this->did_setup_items = true;
+		if ( 0 === count( $this->items ) ) {
+			$this->items = new Collection( $items );
+		} else {
+			foreach ( $items as $_item ) {
+				$this->items->push( $_item );
+			}
+		}
 	}
 }
