@@ -185,7 +185,7 @@ class Availability_Management extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_calendar( $item ) {
-		$calendar = new Yearly_Calendar( $this->_year, $item );
+		$calendar = new Yearly_Calendar( $item, $this->_year );
 		return $calendar->display();
 	}
 

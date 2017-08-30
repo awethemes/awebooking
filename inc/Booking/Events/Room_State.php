@@ -7,10 +7,9 @@ use AweBooking\Hotel\Room;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
-use AweBooking\Support\Traits\BAT_Only_Days;
 
 class Room_State extends Event {
-	use BAT_Only_Days;
+	use Only_Days_Trait;
 
 	/**
 	 * Create new instance from Event object.

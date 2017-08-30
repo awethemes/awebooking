@@ -1,3 +1,8 @@
+<?php
+
+use AweBooking\Admin\Admin_Utils;
+
+?>
 <style type="text/css">
 	.drawer-toggle.toggle-year:before {
 		color: #333;
@@ -21,34 +26,8 @@
 				<label>To</label>
 				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
-				<div id="edit-day-options" class="form-checkboxes" style="display: inline-block;">
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-1" name="day_options[]" value="1" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Mon </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-2" name="day_options[]" value="2" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-2">Tue </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-3" name="day_options[]" value="3" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-3">Wed </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-4" name="day_options[]" value="4" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-4">Thu </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-5" name="day_options[]" value="5" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-5">Fri </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-6" name="day_options[]" value="6" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-6">Sat </label>
-					</div>
-
-					<div class="form-item form-type-checkbox">
-					<input type="checkbox" id="edit-day-options-0" name="day_options[]" value="0" checked="checked" class="form-checkbox">  <label class="option" for="edit-day-options-1">Sun </label>
-					</div>
+				<div id="edit-day-options" class="inline-weekday-checkbox">
+					<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'day_options' ] ); ?>
 				</div>
 
 				<select name="state">
@@ -106,9 +85,54 @@
 					<?php endforeach ?>
 				</ul>
 			</div>
-
 		</div>
 
 		<?php $this->display(); ?>
 	</form>
 </div>
+
+
+<div id="awebooking-set-availability-popup" class="hidden" title="<?php echo esc_html__( 'Set availability', 'awebooking' ) ?>">
+	<form action="" class="awebooking-form" method="POST">
+		<div class="awebooking-form__loading"><span class="spinner"></span></div>
+
+		<div class="awebooking-dialog-contents" style="padding: 0 15px;">
+			<!-- No contents here, we'll use ajax to handle dynamic HTML -->
+		</div>
+
+		<div class="awebooking-dialog-buttons">
+			<button class="button button-primary" type="submit"><?php echo esc_html__( 'Save changes', 'awebooking' ) ?></button>
+		</div>
+	</form>
+</div>
+
+<script type="text/template" id="tmpl-availability-calendar-form">
+	<input type="hidden" name="room_id" value="{{ data.data_id }}">
+	<input type="hidden" name="end_date" value="{{ data.endDay.format('YYYY-MM-DD') }}">
+	<input type="hidden" name="start_date" value="{{ data.startDay.format('YYYY-MM-DD') }}">
+
+	<h3>{{{ data.room_name }}}</h3>
+	<p>{{{ data.comments }}}</p>
+
+	<p>
+		<label>
+			<input type="radio" name="state" checked="" value="<?php echo esc_attr( AweBooking::STATE_AVAILABLE ); ?>">
+			<?php echo esc_html__( 'Available', 'awebooking' ); ?>
+		</label>
+
+		<label>
+			<input type="radio" name="state" value="<?php echo esc_attr( AweBooking::STATE_UNAVAILABLE ); ?>">
+			<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
+		</label>
+	</p>
+
+	<# if ( data.getNights() > 4 ) { #>
+		<p>
+			<span><?php echo esc_html__( 'Apply only for', 'awebooking' ) ?></span>
+
+			<span class="inline-weekday-checkbox">
+				<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'only_day_options' ] ); ?>
+			</span>
+		</p>
+	<# } #>
+</script>

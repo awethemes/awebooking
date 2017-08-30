@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support\Traits;
+namespace AweBooking\Model;
 
 trait Object_Metadata {
 	/**

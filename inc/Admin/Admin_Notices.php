@@ -1,5 +1,7 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking\Admin;
+
+use AweBooking\Support\Flash_Message;
 
 class Admin_Notices extends Flash_Message {
 	/**

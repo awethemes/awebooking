@@ -35,6 +35,9 @@ class Admin_Ajax {
 
 		add_action( 'wp_ajax_add_awebooking_note', array( $this, 'add_booking_note' ) );
 		add_action( 'wp_ajax_delete_awebooking_note', array( $this, 'delete_booking_note' ) );
+
+		// Miscs.
+		add_action( 'wp_ajax_awebooking_json_search_customers', [ $this, 'json_search_customers' ] );
 	}
 
 	/**
@@ -141,30 +144,58 @@ class Admin_Ajax {
 	 * @return void
 	 */
 	public function get_yearly_calendar() {
+		if ( empty( $_REQUEST['room'] ) || empty( $_REQUEST['year'] ) ) {
+			wp_send_json_error();
+		}
+
 		$room = new Room( absint( $_REQUEST['room'] ) );
 
 		if ( $room->exists() ) {
-			$calendar = new Yearly_Calendar( absint( $_REQUEST['year'] ), $room );
+			$calendar = new Yearly_Calendar( $room, absint( $_REQUEST['year'] ) );
+
+			ob_start();
 			$calendar->display();
+			$contents = ob_get_clean();
+
+			wp_send_json_success( [ 'html' => $contents ] );
 		}
 
-		exit;
+		wp_send_json_error();
 	}
 
 	public function set_availability() {
-		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || ! isset( $_REQUEST['state'] ) ) {
-			return wp_send_json_error();
+		$validator = new Validator( $_POST, [
+			'start_date' => 'required|date',
+			'end_date'   => 'required|date',
+			'room_id'    => 'required|int',
+			'state'      => 'required|int',
+			'state'      => 'required|int',
+			'only_day_options' => 'array',
+		]);
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Validation error', 'awebooking' ) ] );
 		}
 
-		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
-		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
+		$only_days = [];
+		if ( isset( $_POST['only_day_options'] ) && is_array( $_POST['only_day_options'] ) ) {
+			$only_days = array_map( 'absint', $_POST['only_day_options'] );
+		}
 
 		try {
-			$date_period = new Period( $start, $end, false );
-			$room = new Room( absint( $_REQUEST['room_id'] ) );
+			$room = new Room( absint( $_POST['room_id'] ) );
+
+			$period = new Period(
+				sanitize_text_field( wp_unslash( $_POST['start_date'] ) ),
+				sanitize_text_field( wp_unslash( $_POST['end_date'] ) )
+			);
 
 			if ( $room->exists() ) {
-				Concierge::set_availability( $room, $date_period, absint( $_REQUEST['state'] ) );
+				Concierge::set_availability( $room, $period, absint( $_POST['state'] ), [
+					'only_days' => $only_days,
+				]);
+
 				return wp_send_json_success();
 			}
 		} catch ( \Exception $e ) {
@@ -284,5 +315,112 @@ class Admin_Ajax {
 		} catch ( \Exception $e ) {
 			// ...
 		}
+	}
+
+	/**
+	 * Search for customers and return json.
+	 */
+	public static function json_search_customers() {
+		ob_start();
+
+		// check_ajax_referer( 'search-customers', 'security' );
+
+		/*if ( ! current_user_can( 'edit_hotel_bookings' ) ) {
+			wp_die( -1 );
+		}*/
+
+		$term    = sanitize_text_field( wp_unslash( $_GET['term'] ) );
+		$exclude = array();
+		$limit   = '';
+
+		if ( empty( $term ) ) {
+			wp_die();
+		}
+
+		// Search by ID.
+		if ( is_numeric( $term ) ) {
+			$customer = get_userdata( intval( $term ) );
+
+			// Customer does not exists.
+			if ( $customer instanceof \WP_User ) {
+				wp_die();
+			}
+
+			$ids = array( $customer->ID );
+		} else {
+			// If search is smaller than 3 characters, limit result set to avoid
+			// too many rows being returned.
+			if ( 3 > strlen( $term ) ) {
+				$limit = 20;
+			}
+
+			$ids = $this->search_customers( $term, $limit );
+		}
+
+		$found_customers = array();
+
+		if ( ! empty( $_GET['exclude'] ) ) {
+			$ids = array_diff( $ids, (array) $_GET['exclude'] );
+		}
+
+		foreach ( $ids as $id ) {
+			$customer = get_userdata( $id );
+
+			/* translators: 1: user display name 2: user ID 3: user email */
+			$found_customers[ $id ] = sprintf(
+				esc_html__( '%1$s (#%2$s &ndash; %3$s)', 'awebooking' ),
+				$customer->first_name . ' ' . $customer->last_name,
+				$customer->ID,
+				$customer->user_email
+			);
+		}
+
+		wp_send_json( apply_filters( 'awebooking_json_search_found_customers', $found_customers ) );
+	}
+
+	/**
+	 * Search customers and return customer IDs.
+	 *
+	 * TODO: Move to new class.
+	 *
+	 * @param  string     $term  //.
+	 * @param  int|string $limit //.
+	 * @return array
+	 */
+	public function search_customers( $term, $limit = '' ) {
+		$query = new \WP_User_Query( apply_filters( 'awebooking/customer_search_customers', array(
+			'search'         => '*' . esc_attr( $term ) . '*',
+			'search_columns' => array( 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' ),
+			'fields'         => 'ID',
+			'number'         => $limit,
+		), $term, $limit, 'main_query' ) );
+
+		$query2 = new \WP_User_Query( apply_filters( 'awebooking/customer_search_customers', array(
+			'fields'         => 'ID',
+			'number'         => $limit,
+			'meta_query'     => array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'first_name',
+					'value'   => $term,
+					'compare' => 'LIKE',
+				),
+				array(
+					'key'     => 'last_name',
+					'value'   => $term,
+					'compare' => 'LIKE',
+				),
+			),
+		), $term, $limit, 'meta_query' ) );
+
+		$results = wp_parse_id_list(
+			array_merge( $query->get_results(), $query2->get_results() )
+		);
+
+		if ( $limit && count( $results ) > $limit ) {
+			$results = array_slice( $results, 0, $limit );
+		}
+
+		return $results;
 	}
 }

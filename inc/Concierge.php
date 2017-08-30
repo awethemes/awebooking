@@ -96,7 +96,7 @@ class Concierge {
 
 		// We only can set if period is available.
 		if ( ! static::is_available( $room_unit, $period ) ) {
-			return false;
+			// return false;
 		}
 
 		try {

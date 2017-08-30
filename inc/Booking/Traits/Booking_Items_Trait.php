@@ -176,6 +176,8 @@ trait Booking_Items_Trait {
 	 * Save all boooking items which are part of this boooking.
 	 */
 	protected function save_items() {
+		$this->setup_booking_items();
+
 		if ( count( $this->items ) === 0 ) {
 			return;
 		}

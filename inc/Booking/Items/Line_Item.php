@@ -2,6 +2,7 @@
 namespace AweBooking\Booking\Items;
 
 use AweBooking\Factory;
+use AweBooking\AweBooking;
 use AweBooking\Concierge;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Period;
@@ -362,16 +363,16 @@ class Line_Item extends Booking_Item {
 			}
 
 			$saved_state = ( $clear_result && $set_result );
-		} elseif ( $this->recently_created ) {
-			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
 		}
+
+		$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
 
 		if ( isset( $saved_state ) && $saved_state ) {
 			$this['check_in'] = $period->get_start_date()->toDateString();
 			$this['check_out'] = $period->get_end_date()->toDateString();
-
-			parent::finish_save();
 		}
+
+		parent::finish_save();
 	}
 
 	/**

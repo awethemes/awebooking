@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking\Model;
 
 use ArrayAccess;
 use JsonSerializable;
@@ -7,8 +7,8 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
 abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
-	use Traits\Object_Attributes,
-		Traits\Object_Metadata;
+	use Object_Attributes,
+		Object_Metadata;
 
 	/**
 	 * Name of object type.

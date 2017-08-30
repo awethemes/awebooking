@@ -61,11 +61,11 @@ class Admin_Setup_Wizard {
 		$this->steps = apply_filters( 'awebooking_setup_wizard_steps', $default_steps );
 		$this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
 		$suffix     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'select2', AweBooking()->plugin_url() . '/assets/js/select2/select2.full.js', array( 'jquery' ), '4.0.3' );
+		wp_register_script( 'select2', awebooking()->plugin_url() . '/assets/js/select2/select2.full.js', array( 'jquery' ), '4.0.3' );
 
-		wp_enqueue_style( 'awebooking_admin_styles', AweBooking()->plugin_url() . '/assets/css/admin.css', array(), AweBooking::VERSION );
-		wp_enqueue_style( 'awebooking-setup', AweBooking()->plugin_url() . '/assets/css/awebooking-setup.css', array( 'dashicons', 'install' ), AweBooking::VERSION );
-		wp_enqueue_style( 'select2', AweBooking()->plugin_url() . '/assets/css/select2.css', array( 'install' ), '4.0.3' );
+		wp_enqueue_style( 'awebooking_admin_styles', awebooking()->plugin_url() . '/assets/css/admin.css', array(), AweBooking::VERSION );
+		wp_enqueue_style( 'awebooking-setup', awebooking()->plugin_url() . '/assets/css/awebooking-setup.css', array( 'dashicons', 'install' ), AweBooking::VERSION );
+		wp_enqueue_style( 'select2', awebooking()->plugin_url() . '/assets/css/select2.css', array( 'install' ), '4.0.3' );
 
 		if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) {
 			call_user_func( $this->steps[ $this->step ]['handler'], $this );
@@ -382,13 +382,13 @@ class Admin_Setup_Wizard {
 		$price_decimal_separator   = sanitize_text_field( $_POST['price_decimal_separator'] );
 		$price_number_decimals     = sanitize_text_field( $_POST['price_number_decimals'] );
 
-		awebooking( 'wp_option' )->set( 'enable_location', $enable_location );
+		awebooking( 'setting' )->set( 'enable_location', $enable_location );
 
-		awebooking( 'wp_option' )->set( 'currency', $currency );
-		awebooking( 'wp_option' )->set( 'currency_position', $currency_position );
-		awebooking( 'wp_option' )->set( 'price_thousand_separator', $price_thousand_separator );
-		awebooking( 'wp_option' )->set( 'price_decimal_separator', $price_decimal_separator );
-		awebooking( 'wp_option' )->set( 'price_number_decimals', $price_number_decimals );
+		awebooking( 'setting' )->set( 'currency', $currency );
+		awebooking( 'setting' )->set( 'currency_position', $currency_position );
+		awebooking( 'setting' )->set( 'price_thousand_separator', $price_thousand_separator );
+		awebooking( 'setting' )->set( 'price_decimal_separator', $price_decimal_separator );
+		awebooking( 'setting' )->set( 'price_number_decimals', $price_number_decimals );
 
 		wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
 		exit;
