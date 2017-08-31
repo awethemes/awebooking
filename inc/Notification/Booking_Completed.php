@@ -39,7 +39,7 @@ class Booking_Completed extends Mailable {
 		$this->booking->add_item( $service_item );
 		$booking_room_units = $this->booking->get_line_items();
 
-		return $this->get_template( 'new-booking', apply_filters( 'awebooking/new_email_dummy_data', [
+		return $this->get_template( 'completed-booking', apply_filters( 'awebooking/new_email_dummy_data', [
 			'booking_id'           => 1,
 			'booking'              => $this->booking,
 			'booking_room_units'   => $booking_room_units,
@@ -59,7 +59,7 @@ class Booking_Completed extends Mailable {
 	 * @return mixed
 	 */
 	public function build() {
-		return $this->get_template( 'new-booking', [
+		return $this->get_template( 'completed-booking', [
 			'booking_id'           => $this->booking->get_id(),
 			'booking'              => $this->booking,
 			'booking_room_units'   => $this->booking->get_line_items(),

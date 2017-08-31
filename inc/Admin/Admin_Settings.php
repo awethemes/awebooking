@@ -346,7 +346,8 @@ class Admin_Settings extends Admin_Page {
 		$email->add_field( array(
 			'id'   => '__email_new_booking__',
 			'type' => 'title',
-			'description' => __( 'Email settings for new booking. Click <a href="?page=awebooking-email-preview&status=new" target="_blank">here</a> to preview.', 'awebooking' ),
+			'desc' => sprintf( esc_html__( 'Email settings for new booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=new' ) ) . '" target="_blank">here</a>' ),
+
 			'name' => esc_html__( 'New booking','awebooking' ),
 		) );
 
@@ -378,7 +379,7 @@ class Admin_Settings extends Admin_Page {
 		$email->add_field( array(
 			'id'   => '__email_cancelled_booking__',
 			'type' => 'title',
-			'description' => __( 'Email settings for cancelled booking. Click <a href="?page=awebooking-email-preview&status=cancelled" target="_blank">here</a> to preview.', 'awebooking' ),
+			'desc' => sprintf( esc_html__( 'Email settings for cancelled booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=cancelled' ) ) . '" target="_blank">here</a>' ),
 			'name' => esc_html__( 'Cancelled booking','awebooking' ),
 		) );
 
@@ -412,7 +413,7 @@ class Admin_Settings extends Admin_Page {
 			'id'   => '__email_completed_booking__',
 			'type' => 'title',
 			'name' => esc_html__( 'Completed booking','awebooking' ),
-			'description' => __( 'Email settings for completed booking. Click <a href="?page=awebooking-email-preview&status=completed" target="_blank">here</a> to preview.', 'awebooking' ),
+			'desc' => sprintf( esc_html__( 'Email settings for completed booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=completed' ) ) . '" target="_blank">here</a>' ),
 		) );
 
 		$email->add_field( array(
