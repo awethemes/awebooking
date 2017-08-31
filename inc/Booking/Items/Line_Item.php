@@ -2,7 +2,6 @@
 namespace AweBooking\Booking\Items;
 
 use AweBooking\Factory;
-use AweBooking\AweBooking;
 use AweBooking\Concierge;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Period;

@@ -135,10 +135,14 @@ class Booking_Item extends WP_Object {
 	 *
 	 * @return mixed|null
 	 */
-	public function get_parent() {
-		$parent = Factory::get_booking_item( $this['parent_id'] );
+	public function get_item_parent() {
+		if ( ! $this->get_parent_id() ) {
+			return;
+		}
 
-		return apply_filters( $this->prefix( 'get_parent' ), $parent, $this );
+		$parent = Factory::get_booking_item( $this->get_parent_id() );
+
+		return apply_filters( $this->prefix( 'get_item_parent' ), $parent, $this );
 	}
 
 	/**

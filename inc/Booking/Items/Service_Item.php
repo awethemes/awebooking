@@ -2,9 +2,6 @@
 namespace AweBooking\Booking\Items;
 
 use AweBooking\Hotel\Service;
-use AweBooking\Pricing\Price;
-use AweBooking\Booking\Request;
-use AweBooking\Booking\Calendar;
 
 class Service_Item extends Booking_Item {
 	/**
@@ -22,8 +19,7 @@ class Service_Item extends Booking_Item {
 	 * @var array
 	 */
 	protected $extra_attributes = [
-		'service_id'   => '',
-		'price'        => 0,
+		'service_id' => '',
 	];
 
 	/**
@@ -33,7 +29,6 @@ class Service_Item extends Booking_Item {
 	 */
 	protected $extra_casts = [
 		'service_id' => 'int',
-		'price'      => 'float',
 	];
 
 	/**
@@ -42,7 +37,6 @@ class Service_Item extends Booking_Item {
 	 * @var array
 	 */
 	protected $maps = [
-		'price'      => '_line_price',
 		'service_id' => '_service_id',
 	];
 
@@ -61,14 +55,6 @@ class Service_Item extends Booking_Item {
 	 * @return Service|null
 	 */
 	public function get_service() {
-		if ( ! $this->exists() ) {
-			return;
-		}
-
 		return new Service( $this['service_id'] );
-	}
-
-	public function get_price() {
-		return apply_filters( $this->prefix( 'get_price' ), new Price( $this['price'], $this->get_booking()->get_currency() ), $this );
 	}
 }
