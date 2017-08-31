@@ -56,7 +56,9 @@ class Pricing_Calendar {
 		echo '<div class="abkngcal-container abkngcal-container--fullwidth">';
 
 		echo '<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
-		echo '<h2>' . esc_html( $this->room_type->get_title() ) . '</h2>';
+
+		$checkbox = sprintf( '<span class="check-column"><input type="checkbox" name="bulk-update[]" value="%s" /></span>', esc_attr( $this->room_type->get_id() ) );
+		echo '<h2>' . $checkbox . esc_html( $this->room_type->get_title() ) . '</h2>';
 
 		echo '<table class="abkngcal abkngcal--pricing-calendar" data-unit="' . esc_attr( $this->room_type->get_id() ) . '">';
 		$this->display_thead();

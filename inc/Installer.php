@@ -14,6 +14,7 @@ class Installer {
 		$core_hooks->init( $awebooking );
 
 		static::create_tables();
+		static::create_default_location();
 
 		$current_version = get_option( 'awebooking_version', null );
 		$current_db_version = get_option( 'awebooking_db_version', null );
@@ -42,26 +43,14 @@ class Installer {
 		dbDelta( static::get_schema() );
 	}
 
-	private static function create_default() {
-		// Default category
-		$cat_name = __('Uncategorized');
-		/* translators: Default category slug */
-		$cat_slug = sanitize_title(_x('Uncategorized', 'Default category slug'));
+	private static function create_default_location() {
+		// Hotel location.
+		$cat_name = esc_html__( 'Hotel Location', 'awebooking' );
 
-		if ( global_terms_enabled() ) {
-			$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
-			if ( $cat_id == null ) {
-				$wpdb->insert( $wpdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
-				$cat_id = $wpdb->insert_id;
-			}
-			update_option('default_category', $cat_id);
-		} else {
-			$cat_id = 1;
-		}
+		/* translators: Default hotel location slug */
+		$cat_slug = sanitize_title( esc_html_x( 'Hotel Location', 'Default hotel location slug', 'awebooking' ) );
 
-		$wpdb->insert( $wpdb->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
-		$wpdb->insert( $wpdb->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
-		$cat_tt_id = $wpdb->insert_id;
+		// TODO: ...
 	}
 
 	/**

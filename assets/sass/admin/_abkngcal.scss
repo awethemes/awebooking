@@ -185,3 +185,98 @@
 .range-end > .abkngcal__day-selection:after {
   border-top-color: rgba(188, 232, 241, 0.75);
 }
+
+
+// Booking ID.
+.abkngcal__day i {
+  position: absolute;
+  z-index: 25;
+  font-size: 10px;
+  bottom: 0px;
+  right: 0px;
+}
+
+
+
+.abkngcal-container--fullwidth {
+  padding: 0;
+  display: block;
+  box-shadow: none;
+
+  > h2 {
+    padding: 7px 12px;
+    margin-bottom: 0;
+    border-top: solid 1px #eee;
+  }
+
+  > h2 input[type="checkbox"] {
+    margin-right: 10px;
+  }
+}
+.abkngcal-container--fullwidth table {
+  width: 100%;
+}
+.abkngcal-container--fullwidth .abkngcal__day > span,
+.abkngcal-container--fullwidth .abkngcal__day-heading > span  {
+  width: 100%;
+
+  height: 28px;
+  line-height: 28px;
+}
+
+.abkngcal-container--fullwidth .abkngcal__day,
+.abkngcal-container--fullwidth .abkngcal__day-heading {
+  width: auto;
+  min-width: 32px;
+}
+.abkngcal-container--fullwidth .abkngcal__day-heading:not(.hover) {
+  background-color: #fff;
+}
+
+.abkngcal__day:not(.abkngcal__day--past) .abkngcal__price {
+  background-color: #efffd7;
+}
+.abkngcal__price-change {
+  background-color: #ffead6;
+}
+.abkngcal__night-selection {
+  z-index: 25;
+  position: absolute;
+}
+.abkngcal__month-heading {
+  width: 65px;
+}
+
+.abkngcal-container--fullwidth .abkngcal__month-heading > span,
+.abkngcal-container--fullwidth .abkngcal__day-heading > span {
+  font-weight: 600;
+}
+
+.range-start > .abkngcal__night-selection,
+.range-end > .abkngcal__night-selection,
+.in-range > .abkngcal__night-selection,
+.in-hover > .abkngcal__night-selection {
+  background-color: rgba(188, 232, 241, 0.75);
+}
+
+.pricing_management.widefat .column-calendar {
+  padding: 1px 0;
+  background-color: #fff;
+}
+
+
+.awebooking-toolbar-container {
+  padding: 7px 12px;
+  margin-bottom: 0;
+
+  .button.drawer-toggle {
+    margin: 0;
+  }
+}
+
+.awebooking-sperator {
+  color: #999;
+  margin: 0 10px;
+  display: inline-block;
+  user-select: none;
+}

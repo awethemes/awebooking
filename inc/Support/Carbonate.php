@@ -5,6 +5,16 @@ use Carbon\Carbon;
 
 class Carbonate extends Carbon {
 	/**
+	 * Format datetime use `date_i18n`.
+	 *
+	 * @param  string $fomrat A valid date format string.
+	 * @return string
+	 */
+	public function date_i18n( $fomrat ) {
+		return date_i18n( $fomrat, $this->getTimestamp() );
+	}
+
+	/**
 	 * Return a datetime as Carbon object with time set to 00:00:00.
 	 *
 	 * @param  mixed $date The date format or UNIX timestamp.
@@ -94,24 +104,5 @@ class Carbonate extends Carbon {
 	 */
 	public static function is_standard_date_format( $date ) {
 		return (bool) preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
-	}
-
-	/**
-	 * Format datetime use `date_i18n`.
-	 *
-	 * @param  string $fomrat A valid date format string.
-	 * @return string
-	 */
-	public function date_i18n( $fomrat ) {
-		return date_i18n( $fomrat, $this->getTimestamp() );
-	}
-
-	/**
-	 * Format the instance as a string.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return date_i18n( awebooking_option( 'date_format' ), $this->getTimestamp() );
 	}
 }

@@ -21,8 +21,11 @@ use AweBooking\Admin\Admin_Utils;
 	<h1><?php esc_html_e( 'Bulk Pricing Manager', 'awebooking' ); ?></h1>
 
 	<form action="" method="POST">
-		<div class="wp-filter" style="margin-bottom: 0;">
-			<div style="float: left; margin: 10px 0;">
+		<div class="wp-filter awebooking-toolbar-container">
+			<div style="float: left;"">
+				<input class="wp-toggle-checkboxes" type="checkbox">
+				<span class="awebooking-sperator"> | </span>
+
 				<label>From</label>
 				<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
 
@@ -33,7 +36,7 @@ use AweBooking\Admin\Admin_Utils;
 					<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'day_options' ] ); ?>
 				</div>
 
-				<input type="number" name="bulk-price" style="width: 100px;">
+				<input type="number" step="any" name="bulk-price" style="width: 100px;">
 
 				<input type="hidden" name="action" value="bulk-update">
 				<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ) ?></button>
@@ -57,7 +60,18 @@ use AweBooking\Admin\Admin_Utils;
 			</div>
 		</div>
 
-		<?php $this->display(); ?>
+		<?php
+		$this->display_tablenav( 'top' );
+
+		$this->screen->render_screen_reader_content( 'heading_list' );
+		?><table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+
+			<tbody id="the-list">
+				<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+		</table>
+		<?php $this->display_tablenav( 'bottom' ); ?>
+
 	</form>
 </div><!-- //... -->
 
@@ -85,7 +99,7 @@ use AweBooking\Admin\Admin_Utils;
 	<p>
 		<label><?php echo esc_html__( 'Price', 'awebooking' ) ?></label>
 
-		<input type="number" name="price" style="width: 100px;">
+		<input type="number" step="any" name="price" style="width: 100px;">
 		<span><?php echo esc_html( awebooking( 'currency' )->get_symbol() ); ?></span>
 	</p>
 

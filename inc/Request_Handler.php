@@ -14,7 +14,6 @@ use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
 use Skeleton\Container\Service_Hooks;
 
-
 class Request_Handler extends Service_Hooks {
 	/**
 	 * Init service provider.
@@ -41,6 +40,7 @@ class Request_Handler extends Service_Hooks {
 
 		try {
 			$room_type = Factory::create_room_from_request();
+
 			$booking_request = Factory::create_booking_request();
 			$booking_request->set_request( 'room-type', $room_type->get_id() );
 
@@ -49,7 +49,10 @@ class Request_Handler extends Service_Hooks {
 			if ( $availability->available() ) {
 				$booking_request->store();
 
-				return wp_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
+				do_action( 'awebooking/add_booking', $availability );
+
+				wp_safe_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
+				exit;
 			}
 		} catch ( \Exception $e ) {
 			// ...
@@ -102,7 +105,8 @@ class Request_Handler extends Service_Hooks {
 
 			// TODO: May be we don't need redirect to back URL,
 			// but flash_message have trouble (BUGS) in case not redirect page.
-			return wp_redirect( $checkout_url );
+			wp_redirect( $checkout_url );
+			exit;
 		}
 
 		try {
@@ -115,7 +119,8 @@ class Request_Handler extends Service_Hooks {
 
 			if ( $availability->unavailable() ) {
 				$flash_message->error( esc_html__( 'Unavailable', 'awebooking' ) );
-				return wp_redirect( $checkout_url );
+				wp_redirect( $checkout_url );
+				exit;
 			}
 
 			// Take last room in list rooms available.
@@ -188,11 +193,13 @@ class Request_Handler extends Service_Hooks {
 
 			wp_session_commit();
 
-			return wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
-
+			wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
+			exit;
 		} catch ( \Exception $e ) {
 			$flash_message->error( $e->getMessage() );
-			return wp_redirect( $checkout_url );
+
+			wp_redirect( $checkout_url );
+			exit;
 		} // End try().
 	}
 
@@ -223,7 +230,8 @@ class Request_Handler extends Service_Hooks {
 				$booking_request->set_request( 'room-type', $room_type->get_id() );
 				$booking_request->store();
 
-				return wp_redirect( $availability->get_booking_url(), 302 );
+				wp_redirect( $availability->get_booking_url(), 302 );
+				exit;
 			}
 
 			$flash_message->error( esc_html__( 'No room available', 'awebooking' ) );
@@ -235,7 +243,8 @@ class Request_Handler extends Service_Hooks {
 			unset( $request_args['end-date'] );
 
 			$link = get_the_permalink( $room_type->get_id() );
-			return wp_redirect( add_query_arg( $request_args, $link ), 302 );
+			wp_redirect( add_query_arg( $request_args, $link ), 302 );
+			exit;
 		}
 	}
 }

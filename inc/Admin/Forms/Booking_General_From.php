@@ -63,7 +63,7 @@ class Booking_General_From extends Form_Abstract {
 		$this->add_field([
 			'id'         => 'booking_customer',
 			'type'       => 'select',
-			'name'       => esc_html__( 'Custome', 'awebooking' ),
+			'name'       => esc_html__( 'Customer', 'awebooking' ),
 			'default'    => 0,
 			'options_cb' => [ $this, '_get_customer' ],
 			'attributes' => [

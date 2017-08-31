@@ -50,19 +50,39 @@ use AweBooking\Admin\Forms\Booking_General_From;
 			</div>
 
 			<div class="booking-column">
-				<p>
-					<strong><?php echo esc_html__( 'Check-in:', 'awebooking' ) ?></strong>
-					<?php echo $the_booking->get_check_in(); ?>
-				</p>
 
-				<p>
-					<strong><?php echo esc_html__( 'Check-out:', 'awebooking' ) ?></strong>
-					<?php echo $the_booking->get_check_out(); ?>
-				</p>
+				<?php if ( ! $the_booking->is_multiple_rooms() ) : ?>
+					<p>
+						<?php
+						printf( esc_html__( 'Check-in %1$s, Check-out: %2$s', 'awebooking' ),
+							$the_booking->get_arrival_date(),
+							$the_booking->get_departure_date()
+						);
+						?>
+					</p>
+				<?php else : ?>
+					<p>
+						<strong><?php echo esc_html__( 'Arrival:', 'awebooking' ) ?></strong>
+						<?php echo $the_booking->get_arrival_date(); ?>
+					</p>
+
+					<p>
+						<strong><?php echo esc_html__( 'Departure:', 'awebooking' ) ?></strong>
+						<?php echo $the_booking->get_departure_date(); ?>
+					</p>
+
+					<p>
+						<?php if ( $the_booking->is_continuous_periods() ) : ?>
+							<!-- // -->
+						<?php endif ?>
+					</p>
+				<?php endif ?>
+
 			</div>
 
 			<div class="booking-column">
 				NOTE:
+				<?php echo $the_booking->get_customer_note(); ?>
 			</div>
 		</div>
 	</div>

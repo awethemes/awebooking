@@ -36,10 +36,8 @@ class WP_Core_Hooks extends Service_Hooks {
 
 		// Enable single term for location taxonomy.
 		if ( $awebooking->is_multi_location() ) {
-			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION );
-			$location_tax->set( 'input_element', 'select' );
+			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION, [], 'select', absint( awebooking_option( 'location_default' ) ) );
 			$location_tax->set( 'force_selection', true );
-			$location_tax->set( 'priority', 'default' );
 		}
 	}
 

@@ -162,12 +162,10 @@ class Formatting {
 	 */
 	public static function date_format( DateTime $datetime, $format = null ) {
 		if ( ! $format ) {
-			$format = awebooking( 'config' )->get( 'date_format' );
+			$format = awebooking( 'setting' )->get_date_format();
 		}
 
-		$formatted = date_i18n( $format, $datetime->getTimestamp() );
-
-		return apply_filters( 'awebooking/date_format', $formatted, $datetime, $format );
+		return date_i18n( $format, $datetime->getTimestamp() );
 	}
 
 	/**

@@ -1,6 +1,10 @@
 <?php
 
+use AweBooking\AweBooking;
+use AweBooking\Pricing\Price;
+use AweBooking\Support\Period;
 use AweBooking\Support\Template;
+use AweBooking\Support\Formatting;
 
 /**
  * Get the available container instance.
@@ -42,11 +46,11 @@ function awebooking_option( $key, $default = null ) {
  * @return float
  */
 function awebooking_sanitize_price( $number ) {
-	if ( $number instanceof AweBooking\Pricing\Price ) {
+	if ( $number instanceof Price ) {
 		$number = $number->get_amount();
 	}
 
-	return AweBooking\Support\Formatting::format_decimal( $number, true );
+	return Formatting::format_decimal( $number, true );
 }
 
 /**
@@ -63,7 +67,7 @@ function awebooking_sanitize_period( $value, $strict = false ) {
 	}
 
 	try {
-		$period = new AweBooking\Support\Period( $value[0], $value[1], $strict );
+		$period = new Period( $value[0], $value[1], $strict );
 	} catch ( Exception $e ) {
 		return [];
 	}

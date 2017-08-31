@@ -54,6 +54,15 @@ trait Booking_Attributes_Trait {
 	}
 
 	/**
+	 * Returns whether or not the booking is featured.
+	 *
+	 * @return bool
+	 */
+	public function is_featured() {
+		return apply_filters( $this->prefix( 'is_featured' ), $this['featured'], $this );
+	}
+
+	/**
 	 * Determines if this booking has been checked-in.
 	 *
 	 * @return boolean
@@ -89,7 +98,18 @@ trait Booking_Attributes_Trait {
 	}
 
 	/**
-	 * Gets booking grand total.
+	 * Gets discount total.
+	 *
+	 * @return Price
+	 */
+	public function get_discount_total() {
+		$discount_total = new Price( $this['discount_total'], $this->get_currency() );
+
+		return apply_filters( $this->prefix( 'get_discount_total' ), $discount_total, $this );
+	}
+
+	/**
+	 * Gets grand total.
 	 *
 	 * @return Price
 	 */
@@ -277,6 +297,7 @@ trait Booking_Attributes_Trait {
 	 */
 	public function get_date_paid() {
 		$date_paid = null;
+
 		if ( $this['date_paid'] ) {
 			$date_paid = Carbonate::create_datetime( $this['date_paid'] );
 		}

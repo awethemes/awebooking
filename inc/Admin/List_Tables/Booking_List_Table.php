@@ -83,7 +83,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 				$statuses = awebooking( 'setting' )->get_booking_statuses();
 
 				$status_color = '';
-				$status_label = $statuses[ $status ] ? $statuses[ $status ] : '';
+				$status_label = isset( $statuses[ $status ] ) ? $statuses[ $status ] : '';
 
 				switch ( $status ) {
 					case Booking::PENDING:
@@ -134,12 +134,12 @@ class Booking_List_Table extends Post_Type_Abstract {
 				break;
 
 			case 'check_in_out_date':
-				if ( $the_booking->get_check_in() ) {
+				if ( $the_booking->get_arrival_date() ) {
 					printf( '<strong></strong> <br> <span>%s</span> - <span>%s</span>',
 						// $date_period->nights(),
 						// _n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
-						$the_booking->get_check_in()->toDateString(),
-						$the_booking->get_check_out()->toDateString()
+						$the_booking->get_arrival_date()->toDateString(),
+						$the_booking->get_departure_date()->toDateString()
 					);
 				}
 				break;

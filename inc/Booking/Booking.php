@@ -105,6 +105,53 @@ class Booking extends WP_Object {
 	}
 
 	/**
+	 * Calculate and returns booking subtotal.
+	 *
+	 * @return float
+	 */
+	public function get_subtotal() {
+		$subtotal = 0;
+
+		foreach ( $this->get_line_items() as $item ) {
+			$subtotal += $item->get_subtotal();
+		}
+
+		return apply_filters( $this->prefix( 'get_subtotal' ), $subtotal, $this );
+	}
+
+	/**
+	 * Calculate totals by looking at the contents of the booking.
+	 *
+	 * @return float
+	 */
+	public function calculate_totals() {
+		$total    = 0;
+		$subtotal = 0;
+
+		foreach ( $this->get_line_items() as $item ) {
+			$subtotal += $item->get_subtotal();
+			$total    += $item->get_total();
+		}
+
+		$this['discount_total'] = $subtotal - $total;
+		$this['total']          = $total;
+		$this->save();
+
+		return $this;
+	}
+
+	/**
+	 * Checks if an booking can be edited.
+	 *
+	 * @return bool
+	 */
+	public function is_editable() {
+		$editable = in_array( $this->get_status(), [ static::PENDING, 'auto-draft' ] );
+
+		return apply_filters( $this->prefix( 'is_editable' ), $editable, $this );
+	}
+
+	/**
 	 * Determines this booking have multiple rooms.
 	 *
 	 * @return boolean
@@ -112,77 +159,6 @@ class Booking extends WP_Object {
 	public function is_multiple_rooms() {
 		return $this->get_line_items()->count() > 1;
 	}
-
-	/**
-	 * //
-	 *
-	 * @return Carbonate
-	 */
-	public function get_check_in() {
-		$period = $this->get_period_collection()->merge();
-
-		return ! is_null( $period ) ? $period->get_start_date() : null;
-	}
-
-	/**
-	 * //
-	 *
-	 * @return Carbonate
-	 */
-	public function get_check_out() {
-		$period = $this->get_period_collection()->merge();
-
-		return ! is_null( $period ) ? $period->get_end_date() : null;
-	}
-
-	public function is_continuous_periods() {
-		return $this->get_period_collection()->is_continuous();
-	}
-
-	protected function get_period_collection() {
-		$periods = $this->get_line_items()->map(function( $item ) {
-			return $item->get_period();
-		})->values();
-
-		return new Period_Collection( $periods->to_array() );
-	}
-
-	/*
-	| ------------------------------------------------------
-	| Pricing and calculator.
-	| ------------------------------------------------------
-	*/
-
-	public function get_subtotal() {
-		$subtotal = 0;
-
-		foreach ( $this->get_line_items() as $item ) {
-			$subtotal += $item->get_total();
-		}
-
-		return $subtotal;
-	}
-
-	/**
-	 * Calculate totals by looking at the contents of the booking.
-	 *
-	 * Stores the totals and returns the orders final total.
-	 *
-	 * @return float calculated grand total.
-	 */
-	public function calculate_totals() {
-		$this['total'] = $this->get_subtotal();
-
-		$this->save();
-
-		return $this['total'];
-	}
-
-
-
-
-
-
 
 	/**
 	 * Checks the booking status against a passed in status.
@@ -213,26 +189,6 @@ class Booking extends WP_Object {
 	}
 
 	/**
-	 * Returns whether or not the booking is featured.
-	 *
-	 * @return bool
-	 */
-	public function is_featured() {
-		return apply_filters( $this->prefix( 'is_featured' ), $this['featured'], $this );
-	}
-
-	/**
-	 * Checks if an booking can be edited.
-	 *
-	 * @return bool
-	 */
-	public function is_editable() {
-		$editable = in_array( $this->get_status(), [ static::PENDING, 'auto-draft' ] );
-
-		return apply_filters( $this->prefix( 'is_editable' ), $editable, $this );
-	}
-
-	/**
 	 * Returns edit url.
 	 *
 	 * @param  array  $query_args Extra query url.
@@ -243,6 +199,50 @@ class Booking extends WP_Object {
 		return add_query_arg( $query_args,
 			get_edit_post_link( $this->get_id(), $context )
 		);
+	}
+
+	/**
+	 * Returns the arrival date.
+	 *
+	 * @return Carbonate|null
+	 */
+	public function get_arrival_date() {
+		$period = $this->get_period_collection()->merge();
+
+		return ! is_null( $period ) ? $period->get_start_date() : null;
+	}
+
+	/**
+	 * Returns the departure date.
+	 *
+	 * @return Carbonate|null
+	 */
+	public function get_departure_date() {
+		$period = $this->get_period_collection()->merge();
+
+		return ! is_null( $period ) ? $period->get_end_date() : null;
+	}
+
+	/**
+	 * Determines periods of booking items is continuous.
+	 *
+	 * @return boolean
+	 */
+	public function is_continuous_periods() {
+		return $this->get_period_collection()->is_continuous();
+	}
+
+	/**
+	 * Returns Period collection of booking items.
+	 *
+	 * @return Period_Collection
+	 */
+	protected function get_period_collection() {
+		$periods = $this->get_line_items()->map(function( $item ) {
+			return $item->get_period();
+		})->values();
+
+		return new Period_Collection( $periods->to_array() );
 	}
 
 	/**
@@ -293,7 +293,7 @@ class Booking extends WP_Object {
 
 	/*
 	| ------------------------------------------------------
-	| Private
+	| Private zone
 	| ------------------------------------------------------
 	*/
 

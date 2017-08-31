@@ -12,7 +12,7 @@ if ( $notes ) {
 		$note_classes[] = ( __( 'AweBooking', 'awebooking' ) === $note->comment_author ) ? 'system-note' : '';
 		$note_classes   = apply_filters( 'awebooking/booking_note_class', array_filter( $note_classes ), $note );
 
-		$note_datatime = Carbonate::create_datetime( $note->comment_date );
+		$note_datetime = Carbonate::create_datetime( $note->comment_date );
 
 		?><li rel="<?php echo absint( $note->comment_ID ); ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
 			<div class="note_content">
@@ -23,8 +23,8 @@ if ( $notes ) {
 				<abbr class="exact-date" title="<?php echo $note->comment_date; ?>">
 					<?php
 					printf( esc_html__( 'added on %1$s at %2$s', 'awebooking' ),
-						$note_datatime->date_i18n( awebooking_option( 'date_format' ) ),
-						$note_datatime->date_i18n( get_option( 'time_format' ) )
+						$note_datetime->date_i18n( awebooking( 'setting' )->get_date_format() ),
+						$note_datetime->date_i18n( awebooking( 'setting' )->get_time_format() )
 					); ?>
 				</abbr>
 
@@ -53,15 +53,13 @@ echo '</ul>';
 	</p>
 
 	<p>
-	<?php
-	/**
-		<label for="booking_note_type" class="screen-reader-text"><?php _e( 'Note type', 'awebooking' ); ?></label>
-		<select name="booking_note_type" id="booking_note_type">
-			<option value=""><?php _e( 'Private note', 'awebooking' ); ?></option>
-			<option value="customer"><?php _e( 'Note to customer', 'awebooking' ); ?></option>
-		</select>
-	**/
-	?>
-		<button type="button" class="add_note button"><?php esc_html_e( 'Add', 'awebooking' ); ?></button>
+		<label>
+			<input type="checkbox" name="" checked="" disabled="">
+			<?php echo esc_html__( 'Private note', 'awebooking' ) ?>
+		</label>
+
+		<button type="button" class="add_note button" style="float: right;"><?php esc_html_e( 'Add note', 'awebooking' ); ?></button>
 	</p>
+
+	<div class="clear"></div>
 </div>

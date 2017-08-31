@@ -9,26 +9,30 @@ class Logic_Hooks extends Service_Hooks {
 	/**
 	 * Init service provider.
 	 *
-	 * This method will be run after container booted.
-	 *
-	 * @param AweBooking $awebooking AweBooking Container instance.
+	 * @param AweBooking $awebooking AweBooking instance.
 	 */
 	public function init( $awebooking ) {
-		add_action( 'deleted_post', [ $this, 'deleted_room_type' ] );
-		add_action( 'before_delete_post', [ $this, 'delete_booking' ] );
 		add_action( 'pre_delete_term', [ $this, 'pre_delete_location' ], 10, 2 );
+
+		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
+		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
 	}
 
 	/**
-	 * //
+	 * Prevent delete default hotel location.
 	 *
 	 * @param  int    $term     Term ID.
 	 * @param  string $taxonomy Taxonomy Name.
 	 * @return void
 	 */
 	public function pre_delete_location( $term, $taxonomy ) {
-		if ( AweBooking::HOTEL_LOCATION === $taxonomy ) {
-			// TODO: ...
+		if ( AweBooking::HOTEL_LOCATION !== $taxonomy ) {
+			return;
+		}
+
+		$default_location = absint( awebooking_option( 'location_default' ) );
+		if ( $default_location && $default_location === $term ) {
+			exit( 1 ); // Prevent delete default location.
 		}
 	}
 
@@ -41,26 +45,37 @@ class Logic_Hooks extends Service_Hooks {
 	 * @param  string $postid The booking ID will be delete.
 	 * @return void
 	 */
-	public function delete_booking( $postid ) {
+	public function delete_booking_items( $postid ) {
+		global $wpdb;
+
 		if ( get_post_type( $postid ) !== AweBooking::BOOKING ) {
 			return;
 		}
+
+		// Get booking object.
+		$booking = Factory::get_booking( $postid );
+
+		do_action( 'awebooking/delete_booking_items', $postid );
+
+		// Loop all item and run delete.
+		foreach ( $booking->get_all_items() as $item ) {
+			$item->delete();
+		}
+
+		do_action( 'awebooking/deleted_booking_items', $postid );
 	}
 
 	/**
 	 * Fire actions after a room-type deleted.
 	 *
-	 * In case of AweBooking, we'll fire below actions.
-	 *
 	 * 1. Delete all rooms.
 	 * 2. Delete all `unit` in "awebooking_availability" and "awebooking_booking" table.
 	 * 3. Delete all `rate` in "awebooking_pricing" table.
-	 * 4. ....
 	 *
 	 * @param  int $postid The room-type ID deleted.
 	 * @return void
 	 */
-	public function deleted_room_type( $postid ) {
+	public function delete_room_type( $postid ) {
 		global $wpdb;
 
 		if ( get_post_type( $postid ) !== AweBooking::ROOM_TYPE ) {
@@ -87,11 +102,6 @@ class Logic_Hooks extends Service_Hooks {
 		// Delete all `rate` in "awebooking_pricing" table.
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_pricing` WHERE `rate_id` = %d", $postid ) );
 
-		/**
-		 * Fire action after a room-type deleted.
-		 *
-		 * @param int $room_type_id The room-type ID was deleted.
-		 */
-		do_action( 'awebooking/deleted_room_type', $postid );
+		do_action( 'awebooking/delete_room_type', $postid );
 	}
 }

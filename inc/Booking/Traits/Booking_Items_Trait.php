@@ -81,7 +81,7 @@ trait Booking_Items_Trait {
 		}
 
 		// Unset and remove later.
-		foreach ( $this->items->all() as $index => $_item ) {
+		foreach ( $this->get_all_items() as $index => $_item ) {
 			if ( $item->get_id() === $_item->get_id() ) {
 				$this->items->forget( $index );
 				$this->items_to_delete[] = $_item;
@@ -110,18 +110,27 @@ trait Booking_Items_Trait {
 	 * @return Booking_Item|null
 	 */
 	public function get_item( $item_id ) {
-		$this->setup_booking_items();
-
 		$item = Factory::get_booking_item( $item_id );
 		if ( ! $item ) {
 			return;
 		}
 
-		foreach ( $this->items->all() as $_item ) {
+		foreach ( $this->get_all_items() as $_item ) {
 			if ( $item->get_id() === $_item->get_id() ) {
 				return $item;
 			}
 		}
+	}
+
+	/**
+	 * Returns all items.
+	 *
+	 * @return Collection
+	 */
+	public function get_all_items() {
+		$this->setup_booking_items();
+
+		return $this->items;
 	}
 
 	/**
@@ -131,9 +140,7 @@ trait Booking_Items_Trait {
 	 * @return Collection
 	 */
 	public function get_items( $type ) {
-		$this->setup_booking_items();
-
-		return $this->items->filter(function( $item ) use ( $type ) {
+		return $this->get_all_items()->filter(function( $item ) use ( $type ) {
 			return $item->get_type() === $type;
 		});
 	}
@@ -176,13 +183,11 @@ trait Booking_Items_Trait {
 	 * Save all boooking items which are part of this boooking.
 	 */
 	protected function save_items() {
-		$this->setup_booking_items();
-
 		foreach ( $this->items_to_delete as $delete_item ) {
 			$delete_item->delete();
 		}
 
-		foreach ( $this->items->all() as $item ) {
+		foreach ( $this->get_all_items() as $item ) {
 			$item->set_booking_id( $this->get_id() );
 			$item->save();
 		}

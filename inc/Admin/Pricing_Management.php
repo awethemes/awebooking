@@ -4,6 +4,7 @@ namespace AweBooking\Admin;
 use WP_Query;
 use WP_List_Table;
 use AweBooking\Concierge;
+use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Pricing\Price;
@@ -35,8 +36,6 @@ class Pricing_Management extends WP_List_Table {
 		}
 
 		$this->_year = $_year;
-
-		$this->the_query = $this->setup_the_query();
 	}
 
 	/**
@@ -57,9 +56,20 @@ class Pricing_Management extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return [
-			'cb'   => '<input type="checkbox">',
 			'calendar' => esc_html__( 'Calendar', 'awebooking' ),
 		];
+	}
+
+	/**
+	 * Public wrapper for WP_List_Table::get_default_primary_column_name().
+	 *
+	 * @since 4.4.0
+	 * @access public
+	 *
+	 * @return string Name of the default primary column.
+	 */
+	public function get_primary_column() {
+		return 'calendar';
 	}
 
 	/**
@@ -69,9 +79,7 @@ class Pricing_Management extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_cb( $room_type ) {
-		return sprintf(
-			'<input type="checkbox" name="bulk-update[]" value="%s" />', $room_type->get_id()
-		);
+		return sprintf( '<input type="checkbox" name="bulk-update[]" value="%s" />', esc_attr( $room_type->get_id() ) );
 	}
 
 	/**
@@ -90,6 +98,8 @@ class Pricing_Management extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
+		$this->the_query = $this->setup_the_query();
+
 		/** Process bulk action */
 		$this->process_bulk_action();
 
@@ -108,15 +118,13 @@ class Pricing_Management extends WP_List_Table {
 	 * @return WP_Query
 	 */
 	protected function setup_the_query() {
-		$per_page = $this->get_items_per_page( 'awebooking/pricing_management_per_page', 20 );
-
 		return new WP_Query([
-			'post_type'      => 'room_type',
-			'posts_per_page' => $per_page,
-			'paged'          => $this->get_pagenum(),
-			'post_status'    => 'publish',
+			'post_type'           => AweBooking::ROOM_TYPE,
+			'posts_per_page'      => $this->get_items_per_page( 'awebooking/management_per_page', 15 ),
+			'paged'               => $this->get_pagenum(),
+			'post_status'         => 'publish',
 			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
+			'no_found_rows'       => false,
 		]);
 	}
 
@@ -140,6 +148,7 @@ class Pricing_Management extends WP_List_Table {
 			<tr id="post-<?php echo esc_attr( $room_type->get_id() ); ?>">
 				<?php $this->single_row_columns( $room_type ); ?>
 			</tr>
+
 		<?php endwhile;
 
 		wp_reset_postdata();

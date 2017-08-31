@@ -18,16 +18,16 @@
         { "type": "vcs", "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git" }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "roomify/bat": "dev-master",
+        "php": ">=5.6.4",
         "awethemes/skeleton": "dev-develop",
-        "webdevstudios/taxonomy_single_term": "dev-master",
         "ericmann/wp-session-manager": "^1.2",
         "erusev/parsedown": "^1.6",
-        "pelago/emogrifier": "^1.2",
         "league/period": "^3.3",
-        "tightenco/collect": "5.2.*",
-        "nesbot/carbon": "^1.22"
+        "nesbot/carbon": "^1.22",
+        "pelago/emogrifier": "^1.2",
+        "roomify/bat": "dev-master",
+        "tightenco/collect": "^5.4",
+        "webdevstudios/taxonomy_single_term": "dev-master"
     },
     "autoload": {
         "psr-4": { "AweBooking\\": "inc/" },
@@ -48,6 +48,8 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     }
 }

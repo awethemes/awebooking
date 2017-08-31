@@ -1,6 +1,9 @@
 <?php
 
+use AweBooking\AweBooking;
 use AweBooking\Support\Formatting;
+
+require_once trailingslashit( __DIR__ ) . 'template-hooks.php';
 
 /**
  * Enqueue Scripts
@@ -341,18 +344,6 @@ if ( ! function_exists( 'awebooking_show_room_type_thumbnails' ) ) {
 	}
 }
 
-if ( ! function_exists( 'awebooking_output_room_type_data_tabs' ) ) {
-
-	/**
-	 * Output the room type tabs.
-	 *
-	 * @subpackage	Room type/Tabs
-	 */
-	function awebooking_output_room_type_data_tabs() {
-		awebooking_get_template( 'single-room-type/tabs/tabs.php' );
-	}
-}
-
 if ( ! function_exists( 'awebooking_template_single_title' ) ) {
 
 	/**
@@ -386,10 +377,14 @@ if ( ! function_exists( 'awebooking_template_single_form' ) ) {
 	 */
 	function awebooking_template_single_form() {
 		global $room_type;
-		$date_format  = awebooking_option( 'date_format' );
-		$date_format = Formatting::php_to_js_dateformat( $date_format ); // TODO: error "F"
+
+		$date_format = Formatting::php_to_js_dateformat(
+			awebooking( 'setting' )->get_date_format()
+		);
+
 		$max_adults   = awebooking_option( 'check_availability_max_adults' );
 		$max_children = awebooking_option( 'check_availability_max_children' );
+
 		$min_night = is_room_type() ? $room_type->get_minimum_night() : 1;
 
 		awebooking_get_template( 'single-room-type/form.php', array(
@@ -519,8 +514,9 @@ function awebooking_template_check_availability_form() {
  * Outputs check availability form for input time.
  */
 function awebooking_template_check_form_input_time() {
-	$date_format  = awebooking_option( 'date_format' );
-	$date_format = Formatting::php_to_js_dateformat( $date_format );
+	$date_format = Formatting::php_to_js_dateformat(
+		awebooking( 'setting' )->get_date_format()
+	);
 
 	awebooking_get_template( 'check-form/input-time.php', array(
 		'date_format'   => $date_format,

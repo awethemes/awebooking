@@ -98,15 +98,6 @@ class Admin_Settings extends Admin_Page {
 		) );
 
 		$section->add_field( array(
-			'id'       => 'date_format',
-			'type'     => 'text_small',
-			'name'     => esc_html__( 'Date format', 'awebooking' ),
-			'default'  => $this->config->get_default( 'date_format' ),
-			'render_field_cb'   => array( $this, '_date_format_field_callback' ),
-			'priority' => 20,
-		) );
-
-		$section->add_field( array(
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
@@ -465,47 +456,5 @@ class Admin_Settings extends Admin_Page {
 			'id'   => 'backups',
 			'type' => 'backups',
 		]);
-	}
-
-	public function _date_format_field_callback( $field_args, $field ) {
-
-		$date_formats = array_unique( apply_filters( 'awebooking/date_formats', array( __( 'F j, Y' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) );
-
-		$custom = true;
-
-		foreach ( $date_formats as $format ) {
-			echo "\t<label><input type='radio' name='date_format_default' value='" . esc_attr( $format ) . "'";
-			if ( awebooking_option( 'date_format' ) === $format ) { // checked() uses "==" rather than "==="
-				echo " checked='checked'";
-				$custom = false;
-			}
-			echo ' /> <span class="cmb2-date-time-text format-i18n">' . date_i18n( $format ) . '</span><code>' . esc_html( $format ) . "</code></label><br />\n";
-		}
-
-		echo '<label><input type="radio" name="date_format_default" id="date_format_radio" value="\c\u\s\t\o\m"';
-		checked( $custom );
-		echo '/> <span class="cmb2-date-time-text date-time-custom-text">' . __( 'Custom:' ) . '<span class="screen-reader-text"> ' . __( 'enter a custom date format in the following field' ) . '</span></label>' .
-			'<label for="date_format" class="screen-reader-text">' . __( 'Custom date format:' ) . '</label>';
-
-		skeleton_render_field( $field );
-
-		echo '</span>' .
-		'<span class="screen-reader-text">' . __( 'example:' ) . ' </span> <span class="example">' . date_i18n( awebooking_option( 'date_format' ) ) . '</span>' .
-		"<span class='spinner'></span>\n";
-
-			?>
-			<script type="text/javascript">
-				jQuery(function($) {
-					$("input[name='date_format_default']").click(function(){
-						if ( "date_format_radio" != $(this).attr("id") )
-							$( "input[name='date_format']" ).val( $( this ).val() ).siblings( '.example' ).text( $( this ).parent( 'label' ).children( '.format-i18n' ).text() );
-					});
-					$("input[name='date_format']").focus(function(){
-						$( '#date_format_radio' ).prop( 'checked', true );
-					});
-				})
-			</script>
-
-		<?php
 	}
 }

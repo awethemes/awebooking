@@ -51,6 +51,14 @@ class Setting extends WP_Option {
 		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
 	}
 
+	public function get_date_format() {
+		return apply_filters( 'awebooking/date_format', get_option( 'date_format' ) );
+	}
+
+	public function get_time_format() {
+		return apply_filters( 'awebooking/time_format', get_option( 'time_format' ) );
+	}
+
 	/**
 	 * //
 	 *
@@ -176,7 +184,6 @@ class Setting extends WP_Option {
 			'price_number_decimals'    => 2,
 
 			// Display.
-			'date_format'              => get_option( 'date_format' ),
 			'page_check_availability'  => 0,
 			'page_booking'             => 0,
 			'page_checkout'            => 0,

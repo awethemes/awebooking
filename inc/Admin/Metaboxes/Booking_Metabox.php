@@ -127,7 +127,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	public function register_customer_metabox() {
 		$metabox = $this->create_metabox( 'awebooking_booking_general', [
 			'title'  => esc_html__( 'Details', 'awebooking' ),
-			'closed' => true,
+			'closed' => false,
 		]);
 
 		$customer = $metabox->add_section( 'customer_infomation', [
@@ -135,7 +135,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 		]);
 
 		$customer->add_field( array(
-			'id'               => 'customer_title',
+			'id'               => '_customer_title',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Title', 'awebooking' ),
 			'options'          => awebooking_get_common_titles(),
@@ -143,49 +143,96 @@ class Booking_Metabox extends Post_Type_Metabox {
 		));
 
 		$customer->add_field( array(
-			'id'   => 'customer_first_name',
+			'id'   => '_customer_first_name',
 			'type' => 'text',
 			'name' => esc_html__( 'First name', 'awebooking' ),
 			'validate' => 'required',
 		));
 
 		$customer->add_field( array(
-			'id'   => 'customer_last_name',
+			'id'   => '_customer_last_name',
 			'type' => 'text',
 			'name' => esc_html__( 'Last name', 'awebooking' ),
 			'validate' => 'required',
 		));
 
 		$customer->add_field( array(
-			'id'   => 'customer_phone',
+			'id'   => '_customer_address',
+			'type' => 'text',
+			'name' => esc_html__( 'Address', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_address2',
+			'type' => 'text',
+			'name' => esc_html__( 'Address 2', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_city',
+			'type' => 'text',
+			'name' => esc_html__( 'City', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_state',
+			'type' => 'text',
+			'name' => esc_html__( 'State', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_postal_code',
+			'type' => 'text',
+			'name' => esc_html__( 'Postal code', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_country',
+			'type' => 'text',
+			'name' => esc_html__( 'Country', 'awebooking' ),
+		));
+
+		$customer->add_field( array(
+			'id'   => '_customer_phone',
 			'type' => 'text',
 			'name' => esc_html__( 'Phone number', 'awebooking' ),
 			'validate' => 'required',
 		));
 
 		$customer->add_field( array(
-			'id'   => 'customer_email',
+			'id'   => '_customer_email',
 			'type' => 'text',
 			'name' => esc_html__( 'Email address', 'awebooking' ),
 			'validate' => 'email',
 		));
 
 		$customer->add_field( array(
-			'id'   => 'customer_address',
-			'type' => 'text',
-			'name' => esc_html__( 'Address', 'awebooking' ),
-		));
-
-		$customer->add_field( array(
-			'id'   => 'customer_company',
+			'id'   => '_customer_company',
 			'type' => 'text',
 			'name' => esc_html__( 'Company', 'awebooking' ),
 		));
 
-		$customer->add_field( array(
-			'id'   => 'customer_note',
-			'type' => 'textarea',
-			'name' => esc_html__( 'Customer Notes', 'awebooking' ),
+		// Payment section.
+		$payment = $metabox->add_section( 'payment', [
+			'title' => esc_html__( 'Payment', 'awebooking' ),
+		]);
+
+		$payment->add_field( array(
+			'type'            => 'select',
+			'id'              => '_payment_method',
+			'name'            => esc_html__( 'Payment method', 'awebooking' ),
+		));
+
+		$payment->add_field( array(
+			'type' => 'text',
+			'id'   => '_transaction_id',
+			'name' => esc_html__( 'Transaction ID', 'awebooking' ),
+		));
+
+		$payment->add_field( array(
+			'id'              => '_customer_note',
+			'type'            => 'textarea',
+			'name'            => esc_html__( 'Customer provided note:', 'awebooking' ),
 			'sanitization_cb' => 'sanitize_textarea_field',
 		));
 	}
@@ -196,7 +243,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	public function booking_note_output() {
 		global $post;
 
-		remove_filter( 'comments_clauses', array( $this, 'exclude_booking_comments' ), 10, 1 );
+		remove_filter( 'comments_clauses', array( $this, '_exclude_booking_comments' ), 10, 1 );
 
 		$notes = get_comments( array(
 			'post_id'   => $post->ID,
@@ -206,7 +253,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 			'type'      => 'booking_note',
 		) );
 
-		add_filter( 'comments_clauses', array( $this, 'exclude_booking_comments' ), 10, 1 );
+		add_filter( 'comments_clauses', array( $this, '_exclude_booking_comments' ), 10, 1 );
 
 		include trailingslashit( __DIR__ ) . 'views/html-booking-notes.php';
 	}
@@ -217,7 +264,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	 * @param  array $clauses clauses.
 	 * @return array
 	 */
-	public function exclude_booking_comments( $clauses ) {
+	public function _exclude_booking_comments( $clauses ) {
 		$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
 
 		return $clauses;
