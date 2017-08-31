@@ -29,6 +29,10 @@ class Multilingual {
 	public function __construct() {
 	}
 
+	public function get_original_object_id( $object_id, $object_type = 'post' ) {
+		return icl_object_id( $object_id, $object_type, true, $this->get_default_language() );
+	}
+
 	/**
 	 * Get the main language.
 	 *
@@ -76,7 +80,7 @@ class Multilingual {
 	 * @return bool
 	 */
 	public function is_polylang() {
-		return defined( 'POLYLANG_VERSION' ) && function_exists( 'pll_current_language' );
+		return class_exists( 'Polylang' );
 	}
 
 	/**

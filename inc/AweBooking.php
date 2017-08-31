@@ -68,6 +68,7 @@ class AweBooking extends Skeleton_Container {
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
+		$this->trigger( new Multilingual_Hooks );
 
 		$this->trigger( new Admin\Admin_Hooks );
 		$this->trigger( new Template_Hooks );
@@ -91,23 +92,8 @@ class AweBooking extends Skeleton_Container {
 			return WP_Session::get_instance();
 		});
 
-		$this['multilingual'] = function () {
-			return new Support\Multilingual;
-		};
-
 		$this->bind( 'option_key', function( $a ) {
-			$setting_key = AweBooking::SETTING_KEY;
-
-			if ( $a->is_multi_language() ) {
-				$active_language = $a['multilingual']->get_active_language();
-
-				// If active language is "en", or all.
-				if ( ! in_array( $active_language , [ '', 'en', 'all' ] ) ) {
-					$setting_key .= '_' . $active_language;
-				}
-			}
-
-			return $setting_key;
+			return AweBooking::SETTING_KEY;
 		});
 
 		$this->bind( 'setting', function ( $a ) {
@@ -156,16 +142,6 @@ class AweBooking extends Skeleton_Container {
 		do_action( 'awebooking/init', $this );
 
 		parent::boot();
-
-		// Make sure the options are copied if needed.
-		if ( $this->is_multi_language() && static::SETTING_KEY !== $this['option_key'] ) {
-			$current_options = $this['config']->all();
-			$original_options = (array) get_option( static::SETTING_KEY, [] );
-
-			if ( ! empty( $original_options ) && empty( $current_options ) ) {
-				update_option( $this['option_key'], $original_options );
-			}
-		}
 
 		Shortcodes\Shortcodes::init();
 		$this['flash_message']->setup_message();
