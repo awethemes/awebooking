@@ -1,9 +1,8 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
-use AweBooking\Booking;
+use AweBooking\Booking\Booking;
 use AweBooking\AweBooking;
-use AweBooking\Support\Date_Period;
 
 class Booking_List_Table extends Post_Type_Abstract {
 	/**
@@ -81,10 +80,10 @@ class Booking_List_Table extends Post_Type_Abstract {
 		switch ( $column ) {
 			case 'booking_status':
 				$status = $the_booking->get_status();
-				$statuses = awebooking()->get_booking_statuses();
+				$statuses = awebooking( 'setting' )->get_booking_statuses();
 
 				$status_color = '';
-				$status_label = $statuses[ $status ] ? $statuses[ $status ] : '';
+				$status_label = isset( $statuses[ $status ] ) ? $statuses[ $status ] : '';
 
 				switch ( $status ) {
 					case Booking::PENDING:
@@ -101,6 +100,10 @@ class Booking_List_Table extends Post_Type_Abstract {
 						break;
 				}
 
+				if ( $the_booking->is_featured() ) {
+					echo '<span class="dashicons dashicons-star-filled"></span>';
+				}
+
 				printf( '<span class="awebooking-label %2$s">%1$s</span>', $status_label, $status_color );
 			break;
 
@@ -112,11 +115,11 @@ class Booking_List_Table extends Post_Type_Abstract {
 			case 'booking_date':
 				printf( '<abbr title="%s">%s</abbr>',
 					esc_attr( $the_booking->get_booking_date()->toDateTimeString() ),
-					esc_html( $the_booking->get_booking_date()->format( 'Y/m/d' ) )
+					esc_html( $the_booking->get_booking_date() )
 				);
 				break;
 
-			case 'booking_guests':
+			case 'booking_guestss':
 				printf( '<span class="">%1$d %2$s</span>',
 					$the_booking->get_adults(),
 					_n( 'adult', 'adults', $the_booking->get_adults(), 'awebooking' )
@@ -131,24 +134,20 @@ class Booking_List_Table extends Post_Type_Abstract {
 				break;
 
 			case 'check_in_out_date':
-				try {
-					$date_period = new Date_Period( $the_booking['check_in'], $the_booking['check_out'], false );
-
-					printf( '<strong>%s %s</strong> <br> <span>%s</span> - <span>%s</span>',
-						$date_period->nights(),
-						_n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
-						$date_period->get_start_date()->format( 'Y/m/d' ),
-						$date_period->get_end_date()->format( 'Y/m/d' )
+				if ( $the_booking->get_arrival_date() ) {
+					printf( '<strong></strong> <br> <span>%s</span> - <span>%s</span>',
+						// $date_period->nights(),
+						// _n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
+						$the_booking->get_arrival_date()->toDateString(),
+						$the_booking->get_departure_date()->toDateString()
 					);
-				} catch ( \Exception $e ) {
-					echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
 				}
 				break;
 
 			case 'booking_total' :
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					$the_booking->get_total_price(),
-					$the_booking->get_total_price()->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--info'
+					$the_booking->get_total(),
+					$the_booking->get_total()->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--info'
 				);
 
 				if ( $the_booking['payment_method_title'] ) {
@@ -156,8 +155,8 @@ class Booking_List_Table extends Post_Type_Abstract {
 				}
 			break;
 
-			case 'booking_room':
-				$the_room = $the_booking->get_booking_room();
+			case 'booking_rooms':
+				$the_room = $the_booking->get_room_unit();
 
 				if ( is_null( $the_room ) ) {
 					printf( '<span class="awebooking-invalid">%s</span>', esc_html__( 'Room was not available by time selected', 'awebooking' ) );
@@ -199,7 +198,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 		}
 
 		printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
-			'<a href="' . admin_url( 'post.php?post=' . absint( $booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $booking->get_booking_id() ) . '</strong></a>',
+			'<a href="' . admin_url( 'post.php?post=' . absint( $booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $booking->get_id() ) . '</strong></a>',
 			$username
 		);
 
@@ -247,7 +246,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			switch ( $query_vars['orderby'] ) {
 				case 'booking_total':
 					$query_vars = array_merge( $query_vars, [
-						'meta_key'  => 'total_price',
+						'meta_key'  => '_total',
 						'orderby'   => 'meta_value_num',
 					]);
 					break;
@@ -256,7 +255,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		// Added booking status only in "All" section in list-table.
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = awebooking()->get_booking_statuses();
+			$statuses = awebooking( 'setting' )->get_booking_statuses();
 
 			foreach ( $statuses as $status => $display_name ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

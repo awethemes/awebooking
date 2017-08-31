@@ -6,7 +6,7 @@
  * Author:          Awethemes
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
- * Domain Path:     /i18n/languages
+ * Domain Path:     /languages
  * Version:         3.0.0-beta3
  *
  * @package         AweBooking
@@ -26,36 +26,38 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6', '<' ) ) {
 		$message = sprintf( esc_html__( 'AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!', 'awebooking' ), $GLOBALS['wp_version'] );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
 	}
-
 	add_action( 'admin_notices', 'awebooking_wordpress_upgrade_notice' );
+
+	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	return;
 }
 
 /**
- * And only works with PHP 5.4.0 or later.
+ * And only works with PHP 5.6.4 or later.
  */
-if ( version_compare( phpversion(), '5.4.0', '<' ) ) {
+if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 	/**
 	 * Adds a message for outdate PHP version.
 	 */
 	function awebooking_php_upgrade_notice() {
-		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.4.0 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
+		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.6.4 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
 	}
-
 	add_action( 'admin_notices', 'awebooking_php_upgrade_notice' );
+
+	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	return;
 }
 
 /**
  * First, we need autoload via Composer to make everything works.
  */
-require trailingslashit( __DIR__ ) . '/vendor/autoload.php';
+require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
 
 /**
  * Next, load the bootstrap file.
  */
-require trailingslashit( __DIR__ ) . '/bootstrap.php';
+require trailingslashit( __DIR__ ) . 'bootstrap.php';
 
 /**
  * Yeah, now everything okay, we'll create the AweBooking.

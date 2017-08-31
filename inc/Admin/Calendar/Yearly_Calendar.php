@@ -2,11 +2,12 @@
 
 namespace AweBooking\Admin\Calendar;
 
-use Carbon\Carbon;
-use AweBooking\Room;
-use AweBooking\Room_State;
-use AweBooking\BAT\Calendar;
-use AweBooking\Support\Date_Period;
+use AweBooking\AweBooking;
+use AweBooking\Hotel\Room;
+use AweBooking\Booking\Events\Room_State;
+use AweBooking\Booking\Calendar;
+use AweBooking\Support\Period;
+use AweBooking\Support\Carbonate;
 
 class Yearly_Calendar {
 	/**
@@ -36,8 +37,8 @@ class Yearly_Calendar {
 	 *
 	 * @param int|null $year The year for the calendar.
 	 */
-	public function __construct( $year = null, $room ) {
-		$this->today  = Carbon::today();
+	public function __construct( $room, $year = null ) {
+		$this->today  = Carbonate::today();
 		$this->year = $year ? absint( $year ) : $this->today->year;
 
 		if ( ! $room instanceof Room ) {
@@ -47,7 +48,7 @@ class Yearly_Calendar {
 		$this->room = $room;
 		$calendar = new Calendar( [ $room ], awebooking( 'store.availability' ) );
 
-		$current_year = Carbon::createFromDate( $this->year, 1, 1 );
+		$current_year = Carbonate::createFromDate( $this->year, 1, 1 );
 		$events = $calendar->getEvents( $current_year, $current_year->copy()->addYear() );
 
 		$states = [];
@@ -62,7 +63,6 @@ class Yearly_Calendar {
 		}
 		$this->state = $states;
 
-
 		// Get all booking events.
 		$booking_calendar = new Calendar( [ $room ], awebooking( 'store.booking' ) );
 		$booking_events = $booking_calendar->getEvents( $current_year, $current_year->copy()->addYear() );
@@ -76,16 +76,17 @@ class Yearly_Calendar {
 			$this->bookings[] = $event;
 		}
 
-
 		$range = [];
 		foreach ( $this->state as $state ) {
 			try {
-				$period = new Date_Period( $state->getStartDate(), $state->getEndDate(), false );
+				$period = new Period( $state->getStartDate(), $state->getEndDate() );
 			} catch ( \Exception $e ) {
 				continue;
 			}
 
-			$count = iterator_count( $period );
+			$period = $period->get_period();
+			$_period = iterator_to_array( $period );
+			$_period[] = $period->getEndDate();
 
 			$state_class = 'unavailable';
 			if ( $state->is_booked() ) {
@@ -94,18 +95,25 @@ class Yearly_Calendar {
 				$state_class = 'pending';
 			}
 
-			foreach ( $period as $i => $day ) {
-				$carbon = new \Carbon\Carbon( $day );
+			foreach ( $_period as $i => $day ) {
+				$carbon = Carbonate::create_date( $day );
 				$next_carbon = $carbon->copy()->addDay();
 
 				$uid = $carbon->toDateString();
 				if ( ! isset( $range[ $uid ] ) ) {
-					$range[ $uid ] = [ 'datetime' => $carbon, 'classes' => [] ];
+					$range[ $uid ] = [
+						'datetime' => $carbon,
+						'classes' => [],
+					];
 				}
 
 				// Get next day.
 				$uid_next = $next_carbon->toDateString();
-				$range[ $uid_next ] = [ 'datetime' => $next_carbon, 'classes' => [], 'booking' => null ];
+				$range[ $uid_next ] = [
+					'datetime' => $next_carbon,
+					'classes' => [],
+					'booking' => null,
+				];
 
 				$classes = [];
 				$next_classes = [];
@@ -131,19 +139,19 @@ class Yearly_Calendar {
 
 				$range[ $uid ]['classes'] = array_merge( $range[ $uid ]['classes'], $classes );
 				$range[ $uid_next ]['classes'] = array_merge( $range[ $uid_next ]['classes'], $next_classes );
-			}
-		}
+			}// End foreach().
+		}// End foreach().
 
 		$this->range = $range;
 	}
 
-	public function get_booking( Carbon $day ) {
+	public function get_booking( Carbonate $day ) {
 		if ( empty( $this->bookings ) ) {
 			return false;
 		}
 
 		foreach ( $this->bookings as $event ) {
-			if ( $event->dateIsInRange( $day )) {
+			if ( $event->dateIsInRange( $day ) ) {
 				return $event;
 			}
 		}
@@ -154,27 +162,22 @@ class Yearly_Calendar {
 	public function display() {
 		global $wp_locale;
 
-		?>
+		$room_type = $this->room->get_room_type();
+
+		?><div class="abkngcal-container" data-room="<?php echo esc_attr( $this->room->get_id() ) ?>">
+			<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>
+
+		<h2><?php echo $this->room->get_name(); ?> ( <?php echo esc_html( $room_type->get_title() ) ?> )</h2>
+
+		<table class="abkngcal abkngcal--yearly">
+
+		<?php $this->display_thead(); ?>
 
 		<?php
-
-		echo '<div class="abkngcal-container" data-room="'.$this->room->get_id().'">';
-		echo '<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
-
-		?>
-
-		<h2><?php echo $this->room->name; ?> ( <?php echo get_the_title( $this->room->room_type ) ?> )</h2>
-
-		<?php
-
-		echo '<table class="abkngcal abkngcal--yearly">';
-
-		$this->display_thead();
-
 		echo '<tbody>';
 
 		for ( $month = 1; $month <= 12; $month++ ) {
-			$working_month = Carbon::createFromDate( $this->year, $month, 1 );
+			$working_month = Carbonate::createFromDate( $this->year, $month, 1 );
 
 			if ( $working_month->year === $this->today->year &&
 				$working_month->month < $this->today->month ) {
@@ -196,7 +199,7 @@ class Yearly_Calendar {
 					continue;
 				}
 
-				$working_day = Carbon::createFromDate( $this->year, $month, $day );
+				$working_day = Carbonate::createFromDate( $this->year, $month, $day );
 				$classes = $this->classes_for_a_day( $working_day, $working_month );
 
 				$date_string = $working_day->toDateString();
@@ -223,36 +226,9 @@ class Yearly_Calendar {
 			}
 
 			echo '</tr>';
-		}
+		}// End for().
 
 		echo '</tbody></table>';
-
-		?>
-
-		<div class="datepicker-container">
-			<div class="write-here"></div>
-
-			<form>
-				<input type="text" name="" class="daterange" style="display: none;">
-
-				<label>
-					<input type="radio" name="state" disabled="" value="<?php echo esc_attr( Room_State::UNAVAILABLE ); ?>">
-					<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
-				</label>
-
-				<span>|</span>
-
-				<label>
-					<input type="radio" name="state" disabled="" checked="" value="<?php echo esc_attr( Room_State::AVAILABLE ); ?>">
-					<?php echo esc_html__( 'Available', 'awebooking' ); ?>
-				</label>
-
-				<button class="button">Set</button>
-
-			</form>
-		</div>
-
-		<?php
 		echo '</div>';
 	}
 
@@ -263,7 +239,7 @@ class Yearly_Calendar {
 	 * @param  Carbon $working_month Working month.
 	 * @return array
 	 */
-	public function classes_for_a_day( Carbon $working_day, Carbon $working_month ) {
+	public function classes_for_a_day( Carbonate $working_day, Carbonate $working_month ) {
 		$classes = [];
 
 		// Is current day is today, future or past.
@@ -290,21 +266,23 @@ class Yearly_Calendar {
 	 */
 	protected function display_thead() {
 		$year = $this->year;
-		$years = [ $year-1, $year, $year+1 ];
+		$years = [ $year -1, $year, $year + 1 ];
 
 		$select_year = '<select>';
 
 		foreach ( $years as $year ) {
 			$selected = '';
-			if ($year === $this->year) {
+
+			if ( $year === $this->year ) {
 				$selected = 'selected';
 			}
-			$select_year .= '<option '.$selected.' value="'.$year.'">'.$year.'</option>';
+
+			$select_year .= '<option ' . $selected . ' value="' . $year . '">' . $year . '</option>';
 		}
 
 		$select_year .= '</select>';
 
-		$select_year = '<th>'.$select_year.'</th>';
+		$select_year = '<th>' . $select_year . '</th>';
 		$days = '';
 
 		for ( $day = 1; $day <= 31; $day++ ) {

@@ -72,7 +72,7 @@
         var $content = $el.find('.awebooking-tab__content');
 
         $control.find('li').eq(0).addClass('active');
-        $content.eq(0).fadeIn(300);
+        $content.eq(0).show();
 
         $control.find('li').each(function() {
           var $item = $(this);
@@ -84,8 +84,8 @@
             $control.find('li').removeClass('active');
             $(this).parent().addClass('active');
 
-            $content.fadeOut(300);
-            $(id).fadeIn(300);
+            $content.hide();
+            $(id).show();
           });
         });
       });

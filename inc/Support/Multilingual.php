@@ -14,7 +14,7 @@ class Multilingual {
 	 *
 	 * @var string
 	 */
-	protected $main_language;
+	protected $default_language;
 
 	/**
 	 * An array of all available languages.
@@ -27,6 +27,10 @@ class Multilingual {
 	 * Class constructor.
 	 */
 	public function __construct() {
+	}
+
+	public function get_original_object_id( $object_id, $object_type = 'post' ) {
+		return icl_object_id( $object_id, $object_type, true, $this->get_default_language() );
 	}
 
 	/**
@@ -56,27 +60,27 @@ class Multilingual {
 	 * @return string|null
 	 */
 	public function get_default_language() {
-		if ( $this->main_language ) {
-			return $this->main_language;
+		if ( $this->default_language ) {
+			return $this->default_language;
 		}
 
 		if ( $this->is_wpml() ) {
 			global $sitepress;
-			$this->main_language = $sitepress->get_default_language();
+			$this->default_language = $sitepress->get_default_language();
 		} elseif ( $this->is_polylang() ) {
-			$this->main_language = pll_default_language( 'slug' );
+			$this->default_language = pll_default_language( 'slug' );
 		}
 
-		return $this->main_language;
+		return $this->default_language;
 	}
 
 	/**
 	 * Determine if we're using PolyLang.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_polylang() {
-		return defined( 'POLYLANG_VERSION' );
+		return class_exists( 'Polylang' ) && function_exists( 'pll_current_language' );
 	}
 
 	/**
@@ -84,7 +88,7 @@ class Multilingual {
 	 *
 	 * Since PolyLang has a compatibility layer for WPML, we'll have to consider that too.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_wpml() {
 		return ( defined( 'ICL_SITEPRESS_VERSION' ) && ! $this->is_polylang() );

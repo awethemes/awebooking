@@ -87,11 +87,20 @@
   .awebooking-billing-fields {
     width: 48%;
     float: left;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+
   }
 
   .awebooking-billing-fields--right{
-    float: right;
     width: 48%;
+    float: right;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
 
     textarea{
       width: 100%;
@@ -132,5 +141,12 @@
     label {
        color: #a00;
     }
+  }
+}
+
+// Fix woocommerce.
+@media (min-width: 480px) and (max-width: 768px) {
+  .awebooking .twentysixteen .site-main {
+    margin-right: 7.69% !important;
   }
 }

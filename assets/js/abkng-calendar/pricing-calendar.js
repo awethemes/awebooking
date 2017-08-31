@@ -5,7 +5,7 @@
     this.$el = $(element);
 
     this.options = $.extend(options, {
-      debug: true
+      debug: false
     });
 
     // Do not change this format,
@@ -20,6 +20,16 @@
   };
 
   $.extend(PricingCalendar.prototype, Backbone.Events, {
+    debug: function() {
+      if (this.startDay && this.endDay) {
+        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
+      } else if (this.startDay) {
+        console.log(this.startDay.format(this.format) + ' - null');
+      } else if( this.endDay) {
+        console.log('null' + ' - ' + this.endDay.format(this.format));
+      }
+    },
+
     /**
      * Initialize the Calendar.
      *
@@ -31,8 +41,8 @@
 
       // Trigger date-range handler.
       this.$el.find('.abkngcal__day')
-        .on('mousedown', this.clickDay.bind(this))
-        .on('mouseenter', this.hoverDay.bind(this))
+        .on('mousedown', this._clickDay.bind(this))
+        .on('mouseenter', this._hoverDay.bind(this))
         .on('mouseover', this.ui.hoverHeadingOver.bind(this))
         .on('mouseleave', this.ui.hoverHeadingLeave.bind(this));
 
@@ -40,22 +50,9 @@
       this.on('set:endDay', this.ui.onSetEndDay.bind(this))
         .on('set:startDay', this.ui.onSetStartDay.bind(this))
         .on('clear:endDay', this.ui.onClearEndDay.bind(this))
-        .on('clear:startDay', this.ui.onClearStartDay.bind(this))
-        .on('apply', this.toggleModal.bind(this));
+        .on('clear:startDay', this.ui.onClearStartDay.bind(this));
 
-      var self = this;
-      $('.media-modal-close').on('click', function() {
-        $(this).parents('.pricing-calendar-modal').hide();
-        self.clearStartDay();
-        self.clearEndDay();
-      });
-
-      $(document).on('click', function(e) {
-        /*if (! $.contains(self.$el[0], e.target)) {
-          self.clearStartDay();
-          self.clearEndDay();
-        }*/
-      });
+      $(document).on('click', this._documentClick.bind(this));
     },
 
     /**
@@ -69,21 +66,14 @@
 
       this.$el.find('.abkngcal__day').off();
       this.$el.removeData();
-
-      if (this.options.rangePicker) {
-        this.picker.remove();
-        this.$picker = null;
-      }
     },
 
-    debug: function() {
-      if (this.startDay && this.endDay) {
-        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
-      } else if (this.startDay) {
-        console.log(this.startDay.format(this.format) + ' - null');
-      } else if( this.endDay) {
-        console.log('null' + ' - ' + this.endDay.format(this.format));
+    getNights: function() {
+      if (! this.endDay || ! this.startDay) {
+        return 0;
       }
+
+      return this.endDay.diff(this.startDay, 'days') + 1;
     },
 
     getElementDay: function(date) {
@@ -136,7 +126,7 @@
       this.trigger('clear:endDay');
     },
 
-    clickDay: function(e) {
+    _clickDay: function(e) {
       var $target = $(e.currentTarget);
       var targetDay = moment($target.data('date'));
 
@@ -157,7 +147,7 @@
       this.setEndDay(targetDay.clone());
     },
 
-    hoverDay: function(e) {
+    _hoverDay: function(e) {
       if (! this.startDay || this.endDay) {
         return;
       }
@@ -168,29 +158,10 @@
       this.ui.buildRangeDays.call(this, targetDay, $currentTarget);
     },
 
-    toggleModal: function() {
-      var $modal = $('.pricing-calendar-modal', document);
-      var template = wp.template('pricing-calendar-form');
-
-      this.data_id = this.$el.closest('[data-unit]').data('unit');
-
-      $modal.find('.media-modal-content').html(template(this));
-      $modal.toggle();
-    },
-
-    showComments: function() {
-      var nights = this.endDay.diff(this.startDay, 'days') + 1;
-      var text = '';
-
-      var thatNight = this.endDay;
-
-      if (nights === 1) {
-        text = 'One night: ' + thatNight.format(this.format);
-      } else {
-        text = nights + ' nights, from <b>' + this.startDay.format(this.format) + '</b> to <b>' + thatNight.format(this.format) + '</b> night.';
+    _documentClick: function(e) {
+      if (! $.contains(this.$el[0], e.target)) {
+        this.clearStartDay();
       }
-
-      return text;
     },
 
     ui: {
@@ -208,13 +179,15 @@
         this.$el.find('.abkngcal__day')
           .removeClass('range-start')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       onClearEndDay: function() {
         this.$el.find('.abkngcal__day')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       // UI hover heading
@@ -253,18 +226,8 @@
           $currentTarget.addClass('in-hover');
         }
       },
-
     }
   });
 
   window.PricingCalendar = PricingCalendar;
-
-  $(function() {
-
-    $('.abkngcal--pricing-calendar', document).each(function(index, el) {
-      new PricingCalendar(el);
-    });
-
-  });
-
 })(jQuery, Backbone);

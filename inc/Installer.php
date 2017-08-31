@@ -8,7 +8,13 @@ class Installer {
 	 * @return void
 	 */
 	public static function install() {
+		$awebooking = awebooking();
+
+		$core_hooks = new WP_Core_Hooks( $awebooking );
+		$core_hooks->init( $awebooking );
+
 		static::create_tables();
+		static::create_default_location();
 
 		$current_version = get_option( 'awebooking_version', null );
 		$current_db_version = get_option( 'awebooking_db_version', null );
@@ -35,6 +41,16 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( static::get_schema() );
+	}
+
+	private static function create_default_location() {
+		// Hotel location.
+		$cat_name = esc_html__( 'Hotel Location', 'awebooking' );
+
+		/* translators: Default hotel location slug */
+		$cat_slug = sanitize_title( esc_html_x( 'Hotel Location', 'Default hotel location slug', 'awebooking' ) );
+
+		// TODO: ...
 	}
 
 	/**
@@ -82,6 +98,27 @@ CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
   `month` integer NOT NULL DEFAULT 0,
   " . static::generate_days_schema() . "
   PRIMARY KEY (`rate_id`, `year`, `month`)
+) $collate;
+
+CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
+  booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
+  booking_item_name TEXT NOT NULL,
+  booking_item_type varchar(200) NOT NULL DEFAULT '',
+  booking_item_parent BIGINT UNSIGNED NOT NULL,
+  booking_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY  (booking_item_id),
+  KEY booking_id (booking_id),
+  KEY booking_item_parent (booking_item_parent)
+) $collate;
+
+CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
+  meta_id BIGINT UNSIGNED NOT NULL auto_increment,
+  booking_item_id BIGINT UNSIGNED NOT NULL,
+  meta_key varchar(255) default NULL,
+  meta_value longtext NULL,
+  PRIMARY KEY  (meta_id),
+  KEY booking_item_id (booking_item_id),
+  KEY meta_key (meta_key(32))
 ) $collate;
 		";
 

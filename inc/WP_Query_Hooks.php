@@ -83,12 +83,12 @@ class WP_Query_Hooks extends Service_Hooks {
 		switch ( $post->post_type ) {
 			case AweBooking::ROOM_TYPE:
 				unset( $GLOBALS['room_type'] );
-				$GLOBALS['room_type'] = new Room_Type( $post );
+				$GLOBALS['room_type'] = new Hotel\Room_Type( $post );
 				break;
 
 			case AweBooking::BOOKING:
 				unset( $GLOBALS['the_booking'] );
-				$GLOBALS['the_booking'] = new Booking( $post );
+				$GLOBALS['the_booking'] = new Booking\Booking( $post );
 				break;
 		}
 	}

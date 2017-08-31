@@ -1,7 +1,5 @@
 <?php
 
-use AweBooking\Support\Date_Utils;
-
 class Functions_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -10,9 +8,9 @@ class Functions_Test extends WP_UnitTestCase {
 		$this->page_checkout   = $this->factory->post->create();
 		$this->page_check_avai = $this->factory->post->create();
 
-		awebooking('wp_option')->set( 'page_check_availability', $this->page_check_avai );
-		awebooking('wp_option')->set( 'page_checkout', $this->page_checkout );
-		awebooking('wp_option')->set( 'page_booking', $this->page_booking );
+		awebooking('setting')->set( 'page_check_availability', $this->page_check_avai );
+		awebooking('setting')->set( 'page_checkout', $this->page_checkout );
+		awebooking('setting')->set( 'page_booking', $this->page_booking );
 	}
 
 	public function test_awebooking_get_page_id() {

@@ -1,9 +1,13 @@
 <?php
 namespace AweBooking\Currency;
 
-use AweBooking\Interfaces\Currency as Currency_Interface;
+class Currency {
+	/* Position constants */
+	const POS_LEFT = 'left';
+	const POS_RIGHT = 'right';
+	const POS_LEFT_SPACE = 'left_space';
+	const POS_RIGHT_SPACE = 'right_space';
 
-class Currency implements Currency_Interface {
 	/**
 	 * Currency code.
 	 *
@@ -12,25 +16,24 @@ class Currency implements Currency_Interface {
 	protected $code;
 
 	/**
-	 * Store currency array data.
+	 * Currency array args.
 	 *
 	 * @var array
 	 */
-	protected $currency;
+	protected $args;
 
 	/**
 	 * Create a currency object.
 	 *
-	 * @param string $code     Currency code.
-	 * @param array  $currency Array of currency data.
+	 * TODO: Maybe we need trigger an error when nothing currency found.
+	 *
+	 * @param string $code Currency code.
+	 * @param array  $args Optional, an array of currency args.
+	 *                     If null or empty, `use currency_manager` to fetch args.
 	 */
-	public function __construct( $code, array $currency = [] ) {
-		if ( empty( $currency ) ) {
-			$currency = awebooking( 'currency_manager' )->get_currency( $code );
-		}
-
+	public function __construct( $code, array $args = null ) {
 		$this->code = $code;
-		$this->currency = $currency;
+		$this->args = $this->parse_currency_args( $args );
 	}
 
 	/**
@@ -48,7 +51,7 @@ class Currency implements Currency_Interface {
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->currency['name'];
+		return $this->args['name'];
 	}
 
 	/**
@@ -57,7 +60,24 @@ class Currency implements Currency_Interface {
 	 * @return string
 	 */
 	public function get_symbol() {
-		return $this->currency['symbol'];
+		return $this->args['symbol'];
+	}
+
+	/**
+	 * Parse currency args.
+	 *
+	 * @param  array|null $args Optional, currency args.
+	 * @return array|null
+	 */
+	protected function parse_currency_args( $args ) {
+		if ( empty( $args ) ) {
+			return awebooking( 'currency_manager' )->get_currency( $this->code );
+		}
+
+		return wp_parse_args( $args, [
+			'name'   => '',
+			'symbol' => '',
+		]);
 	}
 
 	/**

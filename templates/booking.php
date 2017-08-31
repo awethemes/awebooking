@@ -25,39 +25,38 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 
 		<h1 class="awebooking-informations__title"><?php printf( esc_html__( 'Booking for %s', 'awebooking' ),  $room_type->get_title() ); // WPCS: xss ok. ?></h1>
 
-		<table class="awebooking-informations__table">
-			<thead>
-				<tr>
-					<th><?php esc_html_e( 'Arriving On', 'awebooking' ); ?></th>
-					<th><?php esc_html_e( 'Departing On', 'awebooking' ); ?></th>
-					<th><?php esc_html_e( 'Night', 'awebooking' ); ?></th>
-					<th><?php esc_html_e( 'Group Size', 'awebooking' ); ?></th>
-					<th><?php esc_html_e( 'Booking Cost', 'awebooking' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><?php print Formatting::date_format( $availability->get_check_in() ); // WPCS: xss ok. ?></td>
-					<td><?php print Formatting::date_format( $availability->get_check_out() ); // WPCS: xss ok. ?></td>
-					<td><?php print $availability->get_nights(); // WPCS: xss ok. ?></td>
-					<td>
-					<?php printf( _nx( '%s adult', '%s adults', (int) $availability->get_adults(), 'adult(s) information', 'awebooking' ), number_format_i18n( (int) $availability->get_adults() ) ); // WPCS: xss ok.?>
+		<div class="table-responsive">
+			<table class="awebooking-informations__table">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Arriving On', 'awebooking' ); ?></th>
+						<th><?php esc_html_e( 'Departing On', 'awebooking' ); ?></th>
+						<th><?php esc_html_e( 'Night', 'awebooking' ); ?></th>
+						<th><?php esc_html_e( 'Group Size', 'awebooking' ); ?></th>
+						<th><?php esc_html_e( 'Booking Cost', 'awebooking' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php print Formatting::date_format( $availability->get_check_in() ); // WPCS: xss ok. ?></td>
+						<td><?php print Formatting::date_format( $availability->get_check_out() ); // WPCS: xss ok. ?></td>
+						<td><?php print $availability->get_nights(); // WPCS: xss ok. ?></td>
+						<td>
+						<?php printf( _nx( '%s adult', '%s adults', (int) $availability->get_adults(), 'adult(s) information', 'awebooking' ), number_format_i18n( (int) $availability->get_adults() ) ); // WPCS: xss ok.?>
 
-					<?php
-						if ( $availability->get_children() ) {
-							printf( _nx( ' & %s child', ' & %s children', (int) $availability->get_children(), 'child(ren) information', 'awebooking' ), number_format_i18n( (int) $availability->get_children() ) ); // WPCS: xss ok.
-						}
-					?>
-					</td>
-					<td><?php print $availability->get_price(); // WPCS: xss ok. ?></td>
-				</tr>
-			</tbody>
-		</table>
+						<?php
+							if ( $availability->get_children() ) {
+								printf( _nx( ' & %s child', ' & %s children', (int) $availability->get_children(), 'child(ren) information', 'awebooking' ), number_format_i18n( (int) $availability->get_children() ) ); // WPCS: xss ok.
+							}
+						?>
+						</td>
+						<td><?php print $availability->get_price(); // WPCS: xss ok. ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
 		<div class="awebooking-informations__wrapper">
-			<div class="awebooking-informations__media">
-				<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>"><?php echo get_the_post_thumbnail( $room_type->get_id() ); ?></a>
-			</div>
 
 			<div class="awebooking-informations__content">
 				<?php if ( $room_type['service_ids'] ) : ?>
@@ -117,7 +116,7 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 
 				<div class="text-right">
 					<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
-					<a class="button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Confirm Booking', 'awebooking' ); ?></a>
+					<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Confirm Booking', 'awebooking' ); ?></a>
 				</div>
 			</div>
 		</div>

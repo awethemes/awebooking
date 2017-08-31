@@ -1,8 +1,8 @@
 <?php
 namespace AweBooking\Shortcodes;
 
-use AweBooking\BAT\Factory;
-use AweBooking\Support\Date_Period;
+use AweBooking\Factory;
+use AweBooking\Concierge;
 use AweBooking\Support\Template;
 
 class Shortcode_Check_Availability {
@@ -37,13 +37,9 @@ class Shortcode_Check_Availability {
 		$results = [];
 
 		if ( isset( $_REQUEST['start-date'] ) && isset( $_REQUEST['end-date'] ) ) {
-			// Let's start, we need your Concierge,
-			// he known everything about your hotel.
-			$concierge = awebooking()->make( 'concierge' );
-
 			try {
 				$booking_request = Factory::create_booking_request();
-				$results = $concierge->check_availability( $booking_request );
+				$results = Concierge::check_availability( $booking_request );
 			} catch ( \InvalidArgumentException $e ) {
 				$errors = esc_html__( 'Missing data, please enter the required data.', 'awebooking' );
 			} catch ( \LogicException $e ) {

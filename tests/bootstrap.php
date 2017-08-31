@@ -21,17 +21,17 @@ if ( ! $_tests_dir ) {
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
-// date_default_timezone_set( 'Asia/Ho_Chi_Minh' );
-
 /**
  * Manually load the plugin being tested.
  */
 tests_add_filter( 'muplugins_loaded', function () {
-	// Load Skeleton (and CMB2) by manually.
-	require_once dirname( __DIR__ ) . '/vendor/awethemes/skeleton/libs/cmb2/bootstrap.php';
-	require_once dirname( __DIR__ ) . '/vendor/awethemes/skeleton/skeleton.php';
+	require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 	require dirname( __DIR__ ) . '/awebooking.php';
+
+	// We have problem with session, so remove that actions.
+	remove_action( 'shutdown', 'wp_session_write_close' );
+	remove_action( 'plugins_loaded', 'wp_session_start' );
 });
 
 /**
@@ -41,9 +41,9 @@ tests_add_filter( 'setup_theme', function () {
 	// Clean existing install first.
 	define( 'WP_UNINSTALL_PLUGIN', true );
 	define( 'AWEBOOKING_REMOVE_ALL_DATA', true );
+
 	require dirname( __DIR__ ) . '/uninstall.php';
 
-	// Create the plugin data.
 	AweBooking\Installer::create_tables();
 
 	echo 'Installing AweBooking...' . PHP_EOL;

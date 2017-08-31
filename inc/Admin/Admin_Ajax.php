@@ -1,162 +1,426 @@
 <?php
 namespace AweBooking\Admin;
 
-use Carbon\Carbon;
-use AweBooking\Room;
-use AweBooking\Room_Type;
-use AweBooking\Room_State;
-use AweBooking\BAT\Calendar;
-use AweBooking\BAT\Factory;
-use AweBooking\Support\Date_Period;
+use WP_Error;
+use AweBooking\Factory;
+use AweBooking\Concierge;
+use AweBooking\AweBooking;
+use AweBooking\Hotel\Room;
+use AweBooking\Hotel\Room_Type;
+use AweBooking\Hotel\Service;
+use AweBooking\Support\Period;
+use AweBooking\Booking\Items\Line_Item;
+use AweBooking\Admin\Forms\Add_Line_Item_Form;
+use AweBooking\Admin\Forms\Edit_Line_Item_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
-use Roomify\Bat\Event\Event;
+use Skeleton\Support\Validator;
 
 class Admin_Ajax {
-
+	/**
+	 * Run admin ajax hooks.
+	 */
 	public function __construct() {
-		$ajax_hooks = [
-			'set_event' => 'set_event',
-			'get_yearly_calendar' => 'get_yearly_calendar',
-			'check_availability' => 'check_availability',
-			'add_booking_item' => 'add_booking_item',
-		];
+		// Calendar ajax.
+		add_action( 'wp_ajax_get_awebooking_yearly_calendar', [ $this, 'get_yearly_calendar' ] );
+		add_action( 'wp_ajax_set_awebooking_availability', [ $this, 'set_availability' ] );
 
-		foreach ( $ajax_hooks as $id => $action ) {
-			add_action( 'wp_ajax_awebooking/' . $id, [ $this, $action ] );
+		// Service ajax.
+		add_action( 'wp_ajax_add_awebooking_service', [ $this, 'add_service' ] );
+
+		// Booking ajax hooks.
+		add_action( 'wp_ajax_add_awebooking_line_item', [ $this, 'add_booking_line_item' ] );
+		add_action( 'wp_ajax_edit_awebooking_line_item', [ $this, 'edit_booking_line_item' ] );
+		add_action( 'wp_ajax_get_awebooking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
+		add_action( 'wp_ajax_get_awebooking_edit_line_item_form', [ $this, 'get_edit_line_item_form' ] );
+
+		add_action( 'wp_ajax_add_awebooking_note', array( $this, 'add_booking_note' ) );
+		add_action( 'wp_ajax_delete_awebooking_note', array( $this, 'delete_booking_note' ) );
+
+		// Miscs.
+		add_action( 'wp_ajax_awebooking_json_search_customers', [ $this, 'json_search_customers' ] );
+	}
+
+	/**
+	 * Gets the add booking form HTML template.
+	 *
+	 * @return void
+	 */
+	public function get_booking_add_item_form() {
+		if ( empty( $_REQUEST['booking_id'] ) ) {
+			wp_send_json_error();
 		}
+
+		$the_booking = Factory::get_booking( absint( $_REQUEST['booking_id'] ) );
+		if ( ! $the_booking || ! $the_booking->exists() ) {
+			wp_send_json_error();
+		}
+
+		$form = new Add_Line_Item_Form( $the_booking );
+		wp_send_json_success( [ 'html' => $form->contents() ] );
 	}
 
 	/**
 	 * //
 	 *
-	 * @return string
+	 * @return [type] [description]
 	 */
-	public function check_availability() {
-		try {
-			$booking_request = Factory::create_booking_request( $_REQUEST, false );
-
-			if ( isset( $_REQUEST['exclude_rooms'] ) ) {
-				$booking_request->set_request( 'exclude_rooms', (array) $_REQUEST['exclude_rooms'] );
-			}
-
-			$response = awebooking( 'concierge' )->check_availability( $booking_request );
-		} catch ( \Exception $e ) {
-			return wp_send_json_error( [ 'message' => $e->getMessage() ] );
+	public function get_edit_line_item_form() {
+		if ( empty( $_REQUEST['line_item_id'] ) ) {
+			wp_send_json_error();
 		}
 
-		if ( empty( $response ) ) {
-			return wp_send_json_error( [ 'message' => 'No room available' ] );
+		$line_item = new Line_Item( absint( $_REQUEST['line_item_id'] ) );
+		if ( ! $line_item || ! $line_item->exists() ) {
+			wp_send_json_error();
 		}
 
-		$return = [];
-		foreach ( $response as $availability ) {
-			if ( $availability->unavailable() ) {
-				continue;
-			}
-
-			$return[] = $availability->to_array();
-		}
-
-		return wp_send_json_success( $return );
+		$form = new Edit_Line_Item_Form( $line_item );
+		wp_send_json_success( [ 'html' => $form->contents() ] );
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-	public function add_booking_item() {
-		$concierge = awebooking( 'concierge' );
-
-		try {
-			$room_type = Factory::create_room_from_request();
-
-			$booking_request = Factory::create_booking_request( $_REQUEST, false );
-
-			$availability = $concierge->check_room_type_availability( $room_type, $booking_request );
-
-		} catch ( \Exception $e ) {
-			return wp_send_json_error( [ 'message' => $e->getMessage() ] );
-		}
-
-		if ( $availability->unavailable() ) {
-			return wp_send_json_error( [ 'message' => esc_html__( 'No room available', 'awebooking' ) ] );
-		}
-
+	/**
+	 * Handler ajax add booking line item.
+	 *
+	 * @return void
+	 */
+	public function add_booking_line_item() {
 		if ( empty( $_REQUEST['booking_id'] ) ) {
-			return wp_send_json_error();
+			wp_send_json_error();
 		}
 
-		// Get booking.
-		$booking = get_post( absint( $_REQUEST['booking_id'] ) );
-		if ( ! $booking ) {
-			return wp_send_json_error();
+		$the_booking = Factory::get_booking( absint( $_REQUEST['booking_id'] ) );
+		if ( ! $the_booking || ! $the_booking->exists() ) {
+			wp_send_json_error();
 		}
 
-		// Get last room from availability.
-		$rooms = $availability->get_rooms();
-		$room = end( $rooms );
+		try {
+			$form = new Add_Line_Item_Form( $the_booking );
+			$response = $form->handle( $_POST, true );
 
-		$response = [
-			'room_id'      => $room->get_id(),
-			'room_type_id' => $room_type->get_id(),
+			if ( $response ) {
+				wp_send_json_success();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
+		}
 
-			'extra_services' => [],
-
-			'adults' => $availability->get_adults(),
-			'children' => $availability->get_children(),
-
-			'check_in' => $availability->get_check_in()->toDateString(),
-			'check_out' => $availability->get_check_out()->toDateString(),
-		];
-
-		$response['price'] = (string) $availability->get_price();
-		$response['total_price'] = (string) $availability->get_total_price();
-
-		$response['room'] = $room->to_array();
-		$response['room_type'] = $room_type->to_array();
-		$response['nights'] = (string) $availability->get_nights();
-
-		return wp_send_json_success( $response );
+		wp_send_json_error();
 	}
 
+	/**
+	 * Handler ajax edit booking line item.
+	 *
+	 * @return void
+	 */
+	public function edit_booking_line_item() {
+		if ( empty( $_REQUEST['line_item_id'] ) ) {
+			wp_send_json_error();
+		}
+
+		$line_item = Factory::get_booking_item( absint( $_REQUEST['line_item_id'] ) );
+		if ( ! $line_item || ! $line_item->exists() ) {
+			wp_send_json_error();
+		}
+
+		try {
+			$form = new Edit_Line_Item_Form( $line_item );
+			$response = $form->handle( $_POST, true );
+
+			if ( $response ) {
+				wp_send_json_success();
+			}
+
+			wp_send_json_error();
+		} catch ( \Exception $e ) {
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
+		}
+	}
+
+	// ==============
+
+	/**
+	 * //
+	 *
+	 * @return void
+	 */
 	public function get_yearly_calendar() {
+		if ( empty( $_REQUEST['room'] ) || empty( $_REQUEST['year'] ) ) {
+			wp_send_json_error();
+		}
+
 		$room = new Room( absint( $_REQUEST['room'] ) );
 
 		if ( $room->exists() ) {
-			$calendar = new Yearly_Calendar( absint( $_REQUEST['year'] ), $room );
+			$calendar = new Yearly_Calendar( $room, absint( $_REQUEST['year'] ) );
+
+			ob_start();
 			$calendar->display();
+			$contents = ob_get_clean();
+
+			wp_send_json_success( [ 'html' => $contents ] );
 		}
 
-		exit;
+		wp_send_json_error();
 	}
 
-	public function set_event() {
-		if ( empty( $_REQUEST['start'] ) || empty( $_REQUEST['start'] ) || ! isset( $_REQUEST['state'] ) ) {
-			return wp_send_json_error();
+	public function set_availability() {
+		$validator = new Validator( $_POST, [
+			'start_date' => 'required|date',
+			'end_date'   => 'required|date',
+			'room_id'    => 'required|int',
+			'state'      => 'required|int',
+			'state'      => 'required|int',
+			'only_day_options' => 'array',
+		]);
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Validation error', 'awebooking' ) ] );
 		}
 
-		$start = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
-		$end = sanitize_text_field( wp_unslash( $_REQUEST['end'] ) );
+		$only_days = [];
+		if ( isset( $_POST['only_day_options'] ) && is_array( $_POST['only_day_options'] ) ) {
+			$only_days = array_map( 'absint', $_POST['only_day_options'] );
+		}
 
 		try {
-			$date_period = new Date_Period( $start, $end, false );
-			$room = new Room( absint( $_REQUEST['room_id'] ) );
+			$room = new Room( absint( $_POST['room_id'] ) );
+
+			$period = new Period(
+				sanitize_text_field( wp_unslash( $_POST['start_date'] ) ),
+				sanitize_text_field( wp_unslash( $_POST['end_date'] ) )
+			);
 
 			if ( $room->exists() ) {
-				awebooking( 'concierge' )->set_room_state( $room, $date_period, absint( $_REQUEST['state'] ) );
+				Concierge::set_availability( $room, $period, absint( $_POST['state'] ), [
+					'only_days' => $only_days,
+				]);
+
+				return wp_send_json_success();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
+		}
+	}
+
+	/**
+	 * Add a new service to a room-type.
+	 *
+	 * TODO: Show error log message.
+	 *
+	 * @return void
+	 */
+	public function add_service() {
+		$validator = new Validator( $_POST, [
+			'name'      => 'required',
+			'value'     => 'required|numeric',
+			'operation' => 'required',
+			'type'      => 'required',
+			'room_type' => 'required|int|min:1',
+		]);
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Validation error', 'awebooking' ) ] );
+		}
+
+		$room_type = new Room_Type( absint( $_POST['room_type'] ) );
+		if ( ! $room_type->exists() ) {
+			wp_send_json_error();
+		}
+
+		$service = new Service;
+		$service['name']      = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+		$service['value']     = sanitize_text_field( wp_unslash( $_POST['value'] ) );
+		$service['operation'] = sanitize_text_field( wp_unslash( $_POST['operation'] ) );
+		$service['type']      = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+		$service->save();
+
+		if ( $service->exists() ) {
+			$tt_ids = wp_set_object_terms( $room_type->get_id(), $service->get_id(), AweBooking::HOTEL_SERVICE, true );
+
+			if ( ! is_wp_error( $tt_ids ) ) {
+				wp_send_json_success( $service );
+			}
+		}
+
+		wp_send_json_error();
+	}
+
+	/**
+	 * Add booking note via ajax.
+	 */
+	public function add_booking_note() {
+		$booking_id = absint( $_POST['booking_id'] );
+		$note       = wp_kses_post( trim( stripslashes( $_POST['note'] ) ) );
+		$note_type  = isset( $_POST['note_type'] ) ? $_POST['note_type'] : null;
+
+		$is_customer_note = ( isset( $note_type ) && ( 'customer' === $note_type ) ) ? 1 : 0;
+
+		if ( $booking_id > 0 ) {
+			$booking      = Factory::get_booking( $booking_id );
+			$comment_id = $booking->add_booking_note( $note, $is_customer_note, true );
+
+			$new_note = '<li rel="' . esc_attr( $comment_id ) . '" class="note ';
+			if ( $is_customer_note ) {
+				$new_note .= 'customer-note';
 			}
 
-			return wp_send_json_success();
-		} catch ( \Exception $e ) {
-			return wp_send_json_error();
+			$new_note .= '"><div class="note_content">';
+			$new_note .= wpautop( wptexturize( $note ) );
+			$new_note .= '</div><p class="meta"><a href="#" class="delete_note">' . __( 'Delete note', 'awebooking' ) . '</a></p>';
+			$new_note .= '</li>';
+
+			return wp_send_json_success( [ 'new_note' => $new_note ], 200 );
 		}
+
+		wp_die();
+	}
+
+	/**
+	 * Delete booking note via ajax.
+	 */
+	public function delete_booking_note() {
+		$note_id = sanitize_text_field( $_POST['note_id'] );
+		$booking_id = sanitize_text_field( $_POST['booking_id'] );
+
+		try {
+			if ( empty( $note_id ) ) {
+				return wp_send_json_error( [ 'message' => __( 'Invalid booking note ID', 'awebooking' ) ], 400 );
+			}
+
+			// Ensure note ID is valid.
+			$note = get_comment( $note_id );
+
+			if ( is_null( $note ) ) {
+				return wp_send_json_error( [ 'message' => __( 'A booking note with the provided ID could not be found', 'awebooking' ) ], 404 );
+			}
+
+			// Ensure note ID is associated with given order.
+			if ( $note->comment_post_ID != $booking_id ) {
+				return wp_send_json_error( [ 'message' => __( 'The booking note ID provided is not associated with the booking', 'awebooking' ) ], 400 );
+			}
+
+			// Force delete since trashed booking notes could not be managed through comments list table.
+			$result = wp_delete_comment( $note->comment_ID, true );
+
+			if ( ! $result ) {
+				return wp_send_json_error( [ 'message' => __( 'This booking note cannot be deleted', 'awebooking' ) ], 500 );
+			}
+
+			do_action( 'awebooking/api_delete_booking_note', $note->comment_ID, $note_id, $this );
+
+			return wp_send_json_success( [ 'note_id' => $note_id ], 200 );
+
+		} catch ( \Exception $e ) {
+			// ...
+		}
+	}
+
+	/**
+	 * Search for customers and return json.
+	 */
+	public static function json_search_customers() {
+		ob_start();
+
+		// check_ajax_referer( 'search-customers', 'security' );
+
+		/*if ( ! current_user_can( 'edit_hotel_bookings' ) ) {
+			wp_die( -1 );
+		}*/
+
+		$term    = sanitize_text_field( wp_unslash( $_GET['term'] ) );
+		$exclude = array();
+		$limit   = '';
+
+		if ( empty( $term ) ) {
+			wp_die();
+		}
+
+		// Search by ID.
+		if ( is_numeric( $term ) ) {
+			$customer = get_userdata( intval( $term ) );
+
+			// Customer does not exists.
+			if ( $customer instanceof \WP_User ) {
+				wp_die();
+			}
+
+			$ids = array( $customer->ID );
+		} else {
+			// If search is smaller than 3 characters, limit result set to avoid
+			// too many rows being returned.
+			if ( 3 > strlen( $term ) ) {
+				$limit = 20;
+			}
+
+			$ids = $this->search_customers( $term, $limit );
+		}
+
+		$found_customers = array();
+
+		if ( ! empty( $_GET['exclude'] ) ) {
+			$ids = array_diff( $ids, (array) $_GET['exclude'] );
+		}
+
+		foreach ( $ids as $id ) {
+			$customer = get_userdata( $id );
+
+			/* translators: 1: user display name 2: user ID 3: user email */
+			$found_customers[ $id ] = sprintf(
+				esc_html__( '%1$s (#%2$s &ndash; %3$s)', 'awebooking' ),
+				$customer->first_name . ' ' . $customer->last_name,
+				$customer->ID,
+				$customer->user_email
+			);
+		}
+
+		wp_send_json( apply_filters( 'awebooking_json_search_found_customers', $found_customers ) );
+	}
+
+	/**
+	 * Search customers and return customer IDs.
+	 *
+	 * TODO: Move to new class.
+	 *
+	 * @param  string     $term  //.
+	 * @param  int|string $limit //.
+	 * @return array
+	 */
+	public function search_customers( $term, $limit = '' ) {
+		$query = new \WP_User_Query( apply_filters( 'awebooking/customer_search_customers', array(
+			'search'         => '*' . esc_attr( $term ) . '*',
+			'search_columns' => array( 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' ),
+			'fields'         => 'ID',
+			'number'         => $limit,
+		), $term, $limit, 'main_query' ) );
+
+		$query2 = new \WP_User_Query( apply_filters( 'awebooking/customer_search_customers', array(
+			'fields'         => 'ID',
+			'number'         => $limit,
+			'meta_query'     => array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'first_name',
+					'value'   => $term,
+					'compare' => 'LIKE',
+				),
+				array(
+					'key'     => 'last_name',
+					'value'   => $term,
+					'compare' => 'LIKE',
+				),
+			),
+		), $term, $limit, 'meta_query' ) );
+
+		$results = wp_parse_id_list(
+			array_merge( $query->get_results(), $query2->get_results() )
+		);
+
+		if ( $limit && count( $results ) > $limit ) {
+			$results = array_slice( $results, 0, $limit );
+		}
+
+		return $results;
 	}
 }

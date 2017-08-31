@@ -3,7 +3,6 @@ namespace AweBooking\Widgets;
 
 use Skeleton\Widget;
 
-
 class Check_Availability_Widget extends Widget {
 	/**
 	 * Array of default values for widget settings.

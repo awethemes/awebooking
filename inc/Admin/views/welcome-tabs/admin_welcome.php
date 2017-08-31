@@ -10,7 +10,7 @@ namespace AweBooking;
 <div class="wrap about-wrap">
 	<h1><?php esc_html_e( 'Welcome to AweBooking', 'awebooking' ); ?></h1>
 
-	<p class="about-text"><?php esc_html_e( 'Awebooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily.', 'awebooking' ); ?></p>
+	<p class="about-text"><?php esc_html_e( 'AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily.', 'awebooking' ); ?></p>
 	<div class="wp-badge awebooking-badge"><?php printf( esc_html__( 'Version %s', 'awebooking' ), AweBooking::VERSION ); ?></div>
 
 	<?php //awebooking( 'admin_welcome' )->display_nav_tabs( 'welcome' ); ?>
@@ -20,11 +20,11 @@ namespace AweBooking;
 
 		<div class="col">
 			<h3><?php esc_html_e( 'What\' news', 'awebooking' ); ?></h3>
-			<p><?php printf( __( 'Always stay up-to-date with the latest version of Awebooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/change-logs/' ) );	?>
+			<p><?php printf( __( 'Always stay up-to-date with the latest version of AweBooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/change-logs/' ) );	?>
 			</p>
 
 			<h3><?php esc_html_e( 'How to use', 'awebooking' ); ?></h3>
-			<p><?php printf( __( 'Check out <a href="%s">the plugin\'s documentation</a> if you need more information on how to use Awebooking.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/' ) ); // TODO: "and video tutorial" if video exist. ?></p>
+			<p><?php printf( __( 'Check out <a href="%s">the plugin\'s documentation</a> if you need more information on how to use AweBooking.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/' ) ); // TODO: "and video tutorial" if video exist. ?></p>
 		</div>
 
 		<!-- <div class="col">

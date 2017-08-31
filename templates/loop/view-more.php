@@ -9,8 +9,6 @@
  * @version     1.0.0
  */
 
-use AweBooking\Support\Date_Utils;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }

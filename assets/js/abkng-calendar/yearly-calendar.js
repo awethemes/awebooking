@@ -13,7 +13,6 @@
 
     this.options = $.extend(options, {
       debug: false,
-      rangePicker: false,
     });
 
     // Do not change this format,
@@ -28,6 +27,16 @@
   };
 
   $.extend(YearlyCalendar.prototype, Backbone.Events, {
+    debug: function() {
+      if (this.startDay && this.endDay) {
+        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
+      } else if (this.startDay) {
+        console.log(this.startDay.format(this.format) + ' - null');
+      } else if( this.endDay) {
+        console.log('null' + ' - ' + this.endDay.format(this.format));
+      }
+    },
+
     /**
      * Initialize the Calendar.
      *
@@ -37,30 +46,10 @@
       // Store this object in "yearly-calendar" element data.
       this.$el.data('yearly-calendar', this);
 
-      // Setup the range datepicker if enable.
-      if (this.options.rangePicker) {
-        var $picker = this.$el.parent().find('.daterange').daterangepicker({
-          autoApply: true,
-          linkedCalendars: true,
-          alwaysShowCalendars: true,
-          showCustomRangeLabel: false,
-          locale: {
-            format: this.format
-          }
-        });
-
-        this.$picker = $picker;
-        this.picker  = this.$picker.data('daterangepicker');
-
-        // Handler sync between calendar and picker.
-        this.on('apply', this.syncPickerWithCalendar.bind(this));
-        this.$picker.on('apply.daterangepicker', this.syncCalendarWithPicker.bind(this));
-      }
-
       // Trigger date-range handler.
       this.$el.find('.abkngcal__day')
-        .on('mousedown', this.clickDay.bind(this))
-        .on('mouseenter', this.hoverDay.bind(this))
+        .on('mousedown', this._clickDay.bind(this))
+        .on('mouseenter', this._hoverDay.bind(this))
         .on('mouseover', this.ui.hoverHeadingOver.bind(this))
         .on('mouseleave', this.ui.hoverHeadingLeave.bind(this));
 
@@ -68,41 +57,9 @@
       this.on('set:endDay', this.ui.onSetEndDay.bind(this))
         .on('set:startDay', this.ui.onSetStartDay.bind(this))
         .on('clear:endDay', this.ui.onClearEndDay.bind(this))
-        .on('clear:startDay', this.ui.onClearStartDay.bind(this))
-        .on('apply', this.ui.showComments.bind(this));
+        .on('clear:startDay', this.ui.onClearStartDay.bind(this));
 
-      // ...
-      var self = this;
-      var $container = this.$el.parents('.abkngcal-container');
-      var room_id = $container.data('room');
-
-      this.$el.parent().find('.button').on('click', function(e) {
-        e.preventDefault();
-
-        var currentState = $(this).parent().find('input[name="state"]:checked').val();
-        console.log(currentState);
-
-        $.ajax({
-          url: ajaxurl,
-          type: 'POST',
-          data: {
-            action: 'awebooking/set_event',
-            start: self.startDay.format(self.format),
-            end: self.endDay.format(self.format),
-            room_id: room_id,
-            state: currentState,
-          },
-        })
-        .done(function() {
-          self.ui.testReload(room_id, self.$el.find('select').val(), $container);
-        })
-        .fail(function() {
-          console.log("error");
-        })
-        .always(function() {
-          console.log("complete");
-        });
-      });
+      $(document).on('click', this._documentClick.bind(this));
     },
 
     /**
@@ -116,21 +73,14 @@
 
       this.$el.find('.abkngcal__day').off();
       this.$el.removeData();
-
-      if (this.options.rangePicker) {
-        this.picker.remove();
-        this.$picker = null;
-      }
     },
 
-    debug: function() {
-      if (this.startDay && this.endDay) {
-        console.log(this.startDay.format(this.format) + ' - ' + this.endDay.format(this.format));
-      } else if (this.startDay) {
-        console.log(this.startDay.format(this.format) + ' - null');
-      } else if( this.endDay) {
-        console.log('null' + ' - ' + this.endDay.format(this.format));
+    getNights: function() {
+      if (! this.endDay || ! this.startDay) {
+        return 0;
       }
+
+      return this.endDay.diff(this.startDay, 'days');
     },
 
     getElementDay: function(date) {
@@ -183,7 +133,7 @@
       this.trigger('clear:endDay');
     },
 
-    clickDay: function(e) {
+    _clickDay: function(e) {
       var $target = $(e.currentTarget);
       var targetDay = moment($target.data('date'));
 
@@ -211,7 +161,7 @@
       }
     },
 
-    hoverDay: function(e) {
+    _hoverDay: function(e) {
       if (! this.startDay || this.endDay) {
         return;
       }
@@ -222,14 +172,10 @@
       this.ui.buildRangeDays.call(this, targetDay, $currentTarget);
     },
 
-    syncPickerWithCalendar: function(self) {
-      this.picker.setEndDate(self.endDay);
-      this.picker.setStartDate(self.startDay);
-    },
-
-    syncCalendarWithPicker: function(e, picker) {
-      this.setStartDay(picker.startDate);
-      this.setEndDay(picker.endDate);
+    _documentClick: function(e) {
+      if (! $.contains(this.$el[0], e.target)) {
+        this.clearStartDay();
+      }
     },
 
     ui: {
@@ -247,13 +193,15 @@
         this.$el.find('.abkngcal__day')
           .removeClass('range-start')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       onClearEndDay: function() {
         this.$el.find('.abkngcal__day')
           .removeClass('range-end')
-          .removeClass('in-range');
+          .removeClass('in-range')
+          .removeClass('in-hover');
       },
 
       hoverHeadingOver: function(e) {
@@ -290,102 +238,10 @@
         if (targetDay && $currentTarget && ! startDay.isSameOrAfter(targetDay, 'day')) {
           $currentTarget.addClass('in-hover');
         }
-      },
+      }
 
-      showComments: function() {
-        var $text = this.$el.parent().find('.datepicker-container').find('.write-here');
-        var nights = this.endDay.diff(this.startDay, 'days');
-        var text = '';
-
-        var thatNight = this.endDay.clone().subtract(1, 'day');
-
-        if (nights === 1) {
-          text = 'One night: ' + thatNight.format(this.format);
-        } else {
-          text = nights + ' nights, from  ' + this.startDay.format(this.format) + ' to ' + thatNight.format(this.format) + ' night.';
-        }
-
-        $text.html(text);
-
-        this.$el.parent().find('input[name="state"]').prop('disabled', false);
-      },
-
-      testReload: function(room_id, requestYear, $container) {
-
-        $.ajax({
-          url: ajaxurl,
-          type: 'POST',
-          data: {
-            action: 'awebooking/get_yearly_calendar',
-            year: requestYear,
-            room: room_id,
-          }
-        })
-        .done(function(response) {
-          var calendar = $container.find('.abkngcal.abkngcal--yearly').data('yearly-calendar');
-
-          calendar.destroy();
-
-          $container.html($(response).html());
-          calendar.$el = $container.find('.abkngcal.abkngcal--yearly');
-
-          calendar.initialize();
-        })
-        .fail(function() {
-          console.log("error");
-        })
-        .always(function() {
-          console.log("complete");
-        });
-
-      },
     }
   });
 
-  $(function() {
-
-    window.YearlyCalendar = YearlyCalendar;
-
-    $('.abkngcal.abkngcal--yearly', document).each(function(index, el) {
-      new YearlyCalendar(el);
-    });
-
-    // Binding ajax handler.
-    $( document).on('change', '.abkngcal select', function() {
-      var $this = $(this);
-      var requestYear = $(this).val();
-      var $container = $this.parents('.abkngcal-container');
-
-      $container.find('.abkngcal-ajax-loading').show();
-      var room_id = $container.data('room');
-
-      $.ajax({
-        url: ajaxurl,
-        type: 'POST',
-        data: {
-          action: 'awebooking/get_yearly_calendar',
-          year: requestYear,
-          room: room_id,
-        }
-      })
-      .done(function(response) {
-        var calendar = $container.find('.abkngcal.abkngcal--yearly').data('yearly-calendar');
-
-        calendar.destroy();
-
-        $container.html($(response).html());
-        calendar.$el = $container.find('.abkngcal.abkngcal--yearly');
-
-        calendar.initialize();
-      })
-      .fail(function() {
-        console.log("error");
-      })
-      .always(function() {
-        console.log("complete");
-      });
-    });
-
-  });
-
+  window.AweBookingYearlyCalendar = YearlyCalendar;
 })(jQuery, Backbone);

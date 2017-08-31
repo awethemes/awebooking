@@ -15,8 +15,10 @@ class WP_Core_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		// Don't push into $this->init, this hook only active in register method.
+		// Don't push into $this->init(), this hook only active in register method.
 		add_action( 'after_setup_theme', array( $this, 'register_sidebar' ) );
+
+		add_action( 'init', array( $this, 'wpdb_table' ), 0 );
 	}
 
 	/**
@@ -34,11 +36,19 @@ class WP_Core_Hooks extends Service_Hooks {
 
 		// Enable single term for location taxonomy.
 		if ( $awebooking->is_multi_location() ) {
-			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION );
-			$location_tax->set( 'input_element', 'select' );
+			$location_tax = new Taxonomy_Single_Term( AweBooking::HOTEL_LOCATION, [], 'select', absint( awebooking_option( 'location_default' ) ) );
 			$location_tax->set( 'force_selection', true );
-			$location_tax->set( 'priority', 'default' );
 		}
+	}
+
+	/**
+	 * Booking item meta.
+	 */
+	public function wpdb_table() {
+		global $wpdb;
+
+		$wpdb->tables[] = 'awebooking_booking_itemmeta';
+		$wpdb->booking_itemmeta = $wpdb->prefix . 'awebooking_booking_itemmeta';
 	}
 
 	/**
@@ -73,11 +83,11 @@ class WP_Core_Hooks extends Service_Hooks {
 			'public'             => false,
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
-			'show_in_quick_edit' => true,
+			'show_in_quick_edit' => false,
 		]));
 
 		// Register 'hotel_service' taxonomy.
-		/*Taxonomy::make(
+		Taxonomy::make(
 			AweBooking::HOTEL_SERVICE,
 			apply_filters( 'awebooking/taxonomy_objects/hotel_service', AweBooking::ROOM_TYPE ),
 			esc_html__( 'Service', 'awebooking' ),
@@ -85,10 +95,10 @@ class WP_Core_Hooks extends Service_Hooks {
 		)
 		->set( apply_filters( 'awebooking/taxonomy_args/hotel_service', [
 			'public'             => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
-		]));*/
+		]));
 
 		// Register 'hotel_location' taxonomy.
 		if ( $awebooking->is_multi_location() ) {
@@ -148,6 +158,7 @@ class WP_Core_Hooks extends Service_Hooks {
 				'with_front' => false,
 			],
 			'labels'    => [
+				'add_new'               => esc_html__( 'New Room Type', 'awebooking' ),
 				'featured_image'        => esc_html__( 'Room Type Image', 'awebooking' ),
 				'set_featured_image'    => esc_html__( 'Set room type image', 'awebooking' ),
 				'use_featured_image'    => esc_html__( 'Use as room type image', 'awebooking' ),

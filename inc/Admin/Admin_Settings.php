@@ -3,7 +3,6 @@ namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
 use Skeleton\Admin_Page;
-use AweBooking\Interfaces\Config;
 use AweBooking\AweBooking;
 
 class Admin_Settings extends Admin_Page {
@@ -16,18 +15,15 @@ class Admin_Settings extends Admin_Page {
 
 	/**
 	 * Make a new page settings.
-	 *
-	 * @param Config         $config    //.
-	 * @param Menu_Page|null $menu_page //.
 	 */
-	public function __construct( Config $config, Menu_Page $menu_page = null ) {
-		$this->config = $config;
+	public function __construct() {
+		$this->config = awebooking( 'config' );
 
 		$this->strings = array(
 			'updated' => esc_html__( 'Your settings have been saved.', 'awebooking' ),
 		);
 
-		parent::__construct( awebooking( 'option_key' ), $menu_page );
+		parent::__construct( awebooking( 'option_key' ) );
 
 		$this->set(array(
 			// A page-id should only use alpha-dash styles.
@@ -38,8 +34,27 @@ class Admin_Settings extends Admin_Page {
 
 		// Register the settings.
 		$this->register_general_settings();
+		$this->register_backups();
 
 		do_action( 'awebooking/admin_settings/register', $this );
+	}
+
+	/**
+	 * Init page hooks.
+	 */
+	public function init() {
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+
+		awebooking( 'admin_menu' )->add_submenu( $this->menu_slug, array(
+			'page_title'  => $this->page_title,
+			'menu_title'  => $this->menu_title,
+			'function'    => $this->render_callback,
+		));
+
+		// Hook in our save notices.
+		add_action( "cmb2_save_options-page_fields_{$this->prop( 'id' )}", array( $this, 'settings_notices' ), 10, 3 );
+
+		return $this;
 	}
 
 	/**
@@ -83,15 +98,6 @@ class Admin_Settings extends Admin_Page {
 		) );
 
 		$section->add_field( array(
-			'id'       => 'date_format',
-			'type'     => 'text_small',
-			'name'     => esc_html__( 'Date format', 'awebooking' ),
-			'default'  => $this->config->get_default( 'date_format' ),
-			'render_field_cb'   => array( $this, '_date_format_field_callback' ),
-			'priority' => 20,
-		) );
-
-		$section->add_field( array(
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
@@ -114,7 +120,7 @@ class Admin_Settings extends Admin_Page {
 			// 'desc'     => esc_html__( 'Controls the position of the currency symbol.', 'awebooking' ),
 			'default'  => $this->config->get_default( 'currency_position' ),
 			'validate' => 'required',
-			'options'  => awebooking( 'currency_manager' )->get_positions(),
+			'options'  => awebooking( 'config' )->get_currency_positions(),
 			'priority' => 30,
 		) );
 
@@ -160,8 +166,8 @@ class Admin_Settings extends Admin_Page {
 		$display->add_field( array(
 			'id'   => '__display_pages__',
 			'type' => 'title',
-			'name' => esc_html__( 'Awebooking Pages', 'awebooking' ),
-			'description' => esc_html__( 'These pages need to be set so that Awebooking knows where to send users to handle.', 'awebooking' ),
+			'name' => esc_html__( 'AweBooking Pages', 'awebooking' ),
+			'description' => esc_html__( 'These pages need to be set so that AweBooking knows where to send users to handle.', 'awebooking' ),
 			'priority' => 10,
 		) );
 
@@ -340,6 +346,8 @@ class Admin_Settings extends Admin_Page {
 		$email->add_field( array(
 			'id'   => '__email_new_booking__',
 			'type' => 'title',
+			'desc' => sprintf( esc_html__( 'Email settings for new booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=new' ) ) . '" target="_blank">here</a>' ),
+
 			'name' => esc_html__( 'New booking','awebooking' ),
 		) );
 
@@ -371,6 +379,7 @@ class Admin_Settings extends Admin_Page {
 		$email->add_field( array(
 			'id'   => '__email_cancelled_booking__',
 			'type' => 'title',
+			'desc' => sprintf( esc_html__( 'Email settings for cancelled booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=cancelled' ) ) . '" target="_blank">here</a>' ),
 			'name' => esc_html__( 'Cancelled booking','awebooking' ),
 		) );
 
@@ -402,8 +411,9 @@ class Admin_Settings extends Admin_Page {
 
 		$email->add_field( array(
 			'id'   => '__email_completed_booking__',
-			'name' => esc_html__( 'Completed booking','awebooking' ),
 			'type' => 'title',
+			'name' => esc_html__( 'Completed booking','awebooking' ),
+			'desc' => sprintf( esc_html__( 'Email settings for completed booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=completed' ) ) . '" target="_blank">here</a>' ),
 		) );
 
 		$email->add_field( array(
@@ -432,45 +442,20 @@ class Admin_Settings extends Admin_Page {
 		) );
 	}
 
-	public function _date_format_field_callback( $field_args, $field ) {
+	/**
+	 * Register backup and restore.
+	 *
+	 * @return void
+	 */
+	public function register_backups() {
+		$backup_section = $this->add_section( 'backup', [
+			'title' => esc_html__( 'Backups', 'awebooking' ),
+			'priority' => 60,
+		]);
 
-		$date_formats = array_unique( apply_filters( 'awebooking/date_formats', array( __( 'F j, Y' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) );
-
-		$custom = true;
-
-		foreach ( $date_formats as $format ) {
-			echo "\t<label><input type='radio' name='date_format_default' value='" . esc_attr( $format ) . "'";
-			if ( awebooking_option( 'date_format' ) === $format ) { // checked() uses "==" rather than "==="
-				echo " checked='checked'";
-				$custom = false;
-			}
-			echo ' /> <span class="cmb2-date-time-text format-i18n">' . date_i18n( $format ) . '</span><code>' . esc_html( $format ) . "</code></label><br />\n";
-		}
-
-		echo '<label><input type="radio" name="date_format_default" id="date_format_radio" value="\c\u\s\t\o\m"';
-		checked( $custom );
-		echo '/> <span class="cmb2-date-time-text date-time-custom-text">' . __( 'Custom:' ) . '<span class="screen-reader-text"> ' . __( 'enter a custom date format in the following field' ) . '</span></label>' .
-			'<label for="date_format" class="screen-reader-text">' . __( 'Custom date format:' ) . '</label>';
-
-		skeleton_render_field( $field );
-
-		echo '</span>' .
-		'<span class="screen-reader-text">' . __( 'example:' ) . ' </span> <span class="example">' . date_i18n( awebooking_option( 'date_format' ) ) . '</span>' .
-		"<span class='spinner'></span>\n";
-
-			?>
-			<script type="text/javascript">
-				jQuery(function($) {
-					$("input[name='date_format_default']").click(function(){
-						if ( "date_format_radio" != $(this).attr("id") )
-							$( "input[name='date_format']" ).val( $( this ).val() ).siblings( '.example' ).text( $( this ).parent( 'label' ).children( '.format-i18n' ).text() );
-					});
-					$("input[name='date_format']").focus(function(){
-						$( '#date_format_radio' ).prop( 'checked', true );
-					});
-				})
-			</script>
-
-		<?php
+		$backup_section->add_field([
+			'id'   => 'backups',
+			'type' => 'backups',
+		]);
 	}
 }

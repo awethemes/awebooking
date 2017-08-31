@@ -1,0 +1,512 @@
+@mixin pseudo-dashicons( $glyph: "\f333" ) {
+  content: $glyph;
+  font-family: 'Dashicons';
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+@import "admin/abkngcal";
+@import "admin/booking-notes";
+@import "admin/cmb2";
+@import "admin/dialog";
+@import "admin/edit-booking";
+
+.ui-datepicker {
+  display: none;
+}
+
+.taxonomy-hotel_amenity .form-field.term-slug-wrap,
+.taxonomy-hotel_amenity .form-field.term-parent-wrap,
+.taxonomy-hotel_extra_service .form-field.term-slug-wrap,
+.taxonomy-hotel_extra_service .form-field.term-parent-wrap {
+  display: none;
+}
+
+.inline-weekday-checkbox {
+  display: inline-block;
+
+  > label {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+
+/**
+ * AweBooking rooms creator
+ */
+.list-rooms {
+	padding-top: 15px;
+	max-width: 650px;
+	list-style: none;
+}
+
+ul.list-rooms > li.abkng-inline-room {
+	margin: 0 7px 7px 0;
+}
+
+.abkng-inline-room * {
+	box-sizing: border-box;
+}
+
+.abkng-inline-room {
+	width: 150px;
+	display: block;
+
+	float: left;
+	position: relative;
+
+	border: solid 1px #ddd;
+	background-color: #f7f7f7;
+}
+
+.abkng-inline-room.new-room {
+	border-color: #4caf50;
+}
+
+.abkng-inline-room > span {
+	width: 35px;
+	height: 26px;
+	padding: 0 3px;
+	line-height: 26px;
+
+	float: left;
+	display: inline-block;
+
+	color: #898989;
+	font-size: 12px;
+	text-align: center;
+}
+
+.abkng-inline-room input {
+	margin: 0;
+	padding: 3px;
+
+	width: 115px;
+	height: 26px;
+	line-height: 26px;
+
+	float: left;
+	border: none;
+	display: inline-block;
+}
+.abkng-inline-room input:focus {
+	box-shadow: none
+}
+
+.abkng-inline-room button {
+	position: absolute;
+	right: 0;
+
+	width: 26px;
+	height: 26px;
+
+	color: #f44336;
+	font-size: 18px;
+	font-weight: 400;
+
+	border: none;
+	background-color: #eee;
+
+	display: none;
+}
+.abkng-inline-room:hover > button {
+	display: block;
+}
+
+/**
+ * Mixed
+ */
+.daterangepicker,
+.daterangepicker_input {
+	display: none;
+}
+.daterangepicker {
+	border-radius: 1px;
+	border: solid 1px #e7e7e7;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.column-room {
+	width: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ *
+ */
+.split-button-body {
+  display: none;
+  position: absolute;
+  top: 39px;
+  right: 0;
+  background-color: #fff;
+  min-width: 180px;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15); }
+
+.active > .split-button-body {
+  display: block; }
+
+.split-button-body:after,
+.split-button-body:before {
+  position: absolute;
+  right: 12px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+  content: ""; }
+
+.split-button-body:before {
+  top: -18px;
+  border-bottom-color: #ccc;
+  border-width: 9px;
+  right: 11px; }
+
+.split-button-body:after {
+  top: -16px;
+  border-bottom-color: #fff;
+  border-width: 8px; }
+
+.split-button-body .split-button-option {
+  display: block;
+  padding: 5px 15px;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  line-height: 2; }
+
+.split-button-body > li > a {
+  display: block;
+  padding: 3px 1px;
+}
+
+/*
+ * AweBooking settings.
+ */
+.cmb2-date-time-text {
+	min-width: 10em;
+	line-height: 2em;
+	display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.atabss {
+	width: 100%;
+	max-width: 100%;
+
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+.sad-tae {
+	width: 100%;
+	max-width: 100%;
+
+	border-spacing: 0;
+	border-collapse: collapse;
+
+	background-color: #fff;
+}
+
+.sad-tae * {
+	box-sizing: border-box;
+}
+
+.sad-tae thead th {
+	height: 20px;
+	min-width: 50px;
+	background-color: #f5f5f5;
+	padding: 0;
+}
+
+.sad-tae th,
+.sad-tae td {
+	border: solid 1px #ddd;
+}
+
+.sad-tae tbody .day {
+	height: 25px;
+	min-width: 50px;
+}
+
+.dbale {
+	border: solid 1px #ddd;
+	background-color: #f5f5f5;
+}
+
+.dbale-left {
+	width: 200px;
+	float: left;
+}
+
+.awebooking-service-item .cmb-remove-group-row {
+	left: auto !important;
+	right: 0;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.awebooking-service-item:hover .cmb-remove-group-row{
+	visibility: visible;
+	opacity: 1.0;
+}
+
+
+
+
+#awebooking_booking_action .inside {
+	margin: 0;
+	padding: 0;
+}
+#awebooking_booking_action .deletion {
+	color: #a00;
+}
+#awebooking_booking_action .deletion:hover,
+#awebooking_booking_action .deletion:focus {
+	color: #f00;
+	border: none;
+}
+
+
+
+
+
+
+
+
+.awebooking-list-item {
+	list-style-type: none;
+	margin: 0;
+}
+.awebooking-list-item > li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.awebooking-availability {
+	display: inline-block;
+	vertical-align: middle;
+
+	width: 18px;
+	height: 18px;
+	margin-right: 5px;
+
+	border: solid 1px transparent;
+	background-color: #f7f7f7;
+}
+.awebooking-availability + span {
+	vertical-align: middle;
+}
+
+.awebooking-availability.available {
+	background-color: #ddffcc;
+	border: solid 1px #ddd;
+}
+.awebooking-availability.unavailable {
+	background-color: #ffc0bd;
+}
+.awebooking-availability.pending {
+	background-color: #f9d465;
+}
+.awebooking-availability.booked {
+	background-color: #57c1f1;
+}
+
+
+/* Labels and Badges */
+.awebooking-label {
+	padding: 2px 10px;
+	display: inline-block;
+	border-radius: 15px;
+
+	color: #343434;
+	background-color: #f7f7f7;
+}
+.awebooking-label--square {
+	border-radius: 2px;
+}
+.awebooking-label--info {
+	background-color: #deebff;
+}
+.awebooking-label--success {
+	color: #03551f;
+	background-color: #cafcc2;
+}
+.awebooking-label--danger {
+	color: #881f25;
+	background-color: #ffdbde;
+}
+.awebooking-label--warning {
+	color: #b17419;
+	background-color: #fff8ba;
+}
+
+.awebooking-invalid {
+	color: #d42215;
+	background: #ffe2e0;
+	display: inline-block;
+	padding: 1px 5px;
+	border-radius: 1px;
+}
+
+
+
+
+/* List column */
+table.wp-list-table .column-thumb {
+	width: 52px;
+	text-align: center;
+	white-space: nowrap
+}
+
+table.wp-list-table .column-thumb img {
+	border-radius: 2px;
+}
+
+table.wp-list-table .column-start_price,
+table.wp-list-table .column-capacity,
+table.wp-list-table .column-number_of_rooms,
+table.wp-list-table .column-location {
+	width: 15%;
+}
+
+
+table.wp-list-table .column-booking_status {
+	width: 100px;
+}
+table.wp-list-table .column-booking_title,
+table.wp-list-table .column-check_in_out_date {
+	width: 15%;
+}
+table.wp-list-table .column-booking_date,
+table.wp-list-table .column-booking_guests,
+table.wp-list-table .column-booking_total {
+	width: 10%;
+}
+
+
+
+
+.awebooking-no-image {
+	width: 38px;
+	height: 38px;
+	display: inline-block;
+	background-color: #f7f7f7;
+	box-sizing: border-box;
+	border: solid 1px #eee;
+	border-radius: 2px;
+}
+
+.wp-list-table .awebooking-column-image {
+	display: block;
+    text-indent: -9999px;
+    position: relative;
+    height: 1em;
+    width: 1em;
+    margin: 0 auto;
+}
+
+.wp-list-table .awebooking-column-image:before {
+	font-family: Dashicons;
+    speak: none;
+    font-weight: 400;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    text-indent: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    content: "\f128";
+    font-variant: normal normal;
+    margin: 0px;
+}
+
+
+
+.widefat small.meta {
+  display: block;
+  color: #999;
+  font-size: inherit;
+  margin: 3px 0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.wp-badge.awebooking-badge {
+	background-image: url("../img/awebooking.png");
+	background-color: #2196F3;
+}
+
+
+
+
+
+.abkngcal-container--pricing-rule .abkngcal__month-heading > span {
+	width: 125px;
+	text-align: left;
+}
+
+.cmb-type-post-search-text .cmb-td .dashicons {
+    right: auto !important;
+}

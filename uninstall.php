@@ -12,6 +12,8 @@ if ( defined( 'AWEBOOKING_REMOVE_ALL_DATA' ) && true === AWEBOOKING_REMOVE_ALL_D
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_booking" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_pricing" );
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_availability" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_booking_items" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_booking_itemmeta" );
 
 	// Delete options.
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'awebooking\_%';" );

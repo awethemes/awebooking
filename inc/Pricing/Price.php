@@ -3,10 +3,9 @@ namespace AweBooking\Pricing;
 
 use InvalidArgumentException;
 use AweBooking\Support\Formatting;
-use AweBooking\Interfaces\Currency;
-use AweBooking\Interfaces\Price as Price_Interface;
+use AweBooking\Currency\Currency;
 
-class Price implements Price_Interface {
+class Price {
 	/**
 	 * The price amount.
 	 *
@@ -89,6 +88,8 @@ class Price implements Price_Interface {
 		}
 
 		$this->amount = (float) $amount;
+
+		return $this;
 	}
 
 	/**
@@ -153,7 +154,7 @@ class Price implements Price_Interface {
 	 * Is price same with other price.
 	 *
 	 * @param  Price $other Other price.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function equals( Price $other ) {
 		$this->assert_same_currency( $this, $other );
@@ -164,7 +165,7 @@ class Price implements Price_Interface {
 	/**
 	 * If zero amount.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_zero() {
 		return $this->get_amount() === 0.00;
@@ -187,7 +188,7 @@ class Price implements Price_Interface {
 	/**
 	 * Get price number as amount (integer).
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function to_amount() {
 		return Formatting::decimal_to_amount(

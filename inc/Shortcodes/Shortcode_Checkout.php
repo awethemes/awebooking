@@ -2,9 +2,10 @@
 namespace AweBooking\Shortcodes;
 
 use Exception;
-use AweBooking\Room_Type;
+use AweBooking\Concierge;
+use AweBooking\Hotel\Room_Type;
 use AweBooking\Support\Template;
-use AweBooking\BAT\Session_Booking_Request;
+use AweBooking\Booking\Request;
 
 class Shortcode_Checkout {
 
@@ -24,17 +25,8 @@ class Shortcode_Checkout {
 	 * @param array $atts
 	 */
 	public static function output( $atts ) {
-
 		$atts = shortcode_atts( array(), $atts, 'awebooking_checkout' );
 
-		self::checkout();
-
-	}
-
-	/**
-	 * Show the checkout.
-	 */
-	private static function checkout() {
 		if ( isset( $_GET['step'] ) && $_GET['step'] === 'cancelled' ) {
 			Template::get_template( 'cancelled.php' );
 			return;
@@ -46,11 +38,10 @@ class Shortcode_Checkout {
 		}
 
 		try {
-			$booking_request = new Session_Booking_Request;
+			$booking_request = Request::instance();
 
 			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
-
-			$availability = awebooking( 'concierge' )->check_room_type_availability( $room_type, $booking_request );
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->unavailable() ) {
 				return;
@@ -61,7 +52,7 @@ class Shortcode_Checkout {
 				'room_type' => $room_type,
 			));
 		} catch ( \Exception $e ) {
-			echo $message_error = $e->getMessage();
+			echo $e->getMessage();
 		}
 	}
 }

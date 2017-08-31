@@ -16,33 +16,44 @@
 	<table>
 		<thead>
 			<tr>
-				<th colspan="2" style="text-align: left;"><?php printf( esc_html__( 'Room type: %s', 'awebooking' ), esc_html( $room_name ) ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Room', 'awebooking' ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Nights', 'awebooking' ); ?></th>
+				<th style="text-align: left;"><?php esc_html_e( 'Guest', 'awebooking' ); ?></th>
 				<th style="text-align: right;"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
 			</tr>
 
 		</thead>
+	</table>
+</div>
+
+<?php foreach ( $booking_room_units as $key => $room_item ) : ?>
+<div class="table">
+	<table>
 		<tbody>
 			<tr>
-				<td colspan="3" style="text-align: left;"><b><?php esc_html_e( 'Detail', 'awebooking' ); ?></b></td>
+				<td style="text-align: left;"><b><?php echo esc_html( $room_item->get_name() ); ?></b></td>
+				<td style="text-align: left;"><?php printf( __( 'From %1$s to %2$s, %3$s nights', 'awebooking' ), $room_item->get_check_in(), $room_item->get_check_out(), $room_item->get_nights_stayed() ); // WPCS: xss ok. ?></td>
+				<td style="text-align: left;"><?php $room_item->get_fomatted_guest_number(); ?></td>
+				<td style="text-align: right;"><?php print $room_item->get_total(); // WPCS: xss ok. ?></td>
 			</tr>
-
-			<tr>
-				<td colspan="2" style="text-align: left;"><?php printf( __( 'From %1$s to %2$s, %3$s nights', 'awebooking' ), $check_in, $check_out, $nights ); // WPCS: xss ok. ?></td>
-				<td style="text-align: right;"><?php print $room_type_price; // WPCS: xss ok. ?></td>
-			</tr>
-
-			<tr>
-				<td colspan="3" style="text-align: left;"><b><?php esc_html_e( 'Extra services', 'awebooking' ); ?></b></td>
-			</tr>
-
-			<tr>
-				<td colspan="2" style="text-align: left;"><?php echo esc_html( implode( $extra_services_name , ', ') ); ?></td>
-				<td style="text-align: right;"><?php print $extra_services_price; // WPCS: xss ok. ?></td>
-			</tr>
-
+			
+			<?php if ( $service_items = $booking->get_service_items()->where( 'parent_id', $room_item->get_id() ) ) : ?>
+				<tr>
+					<td style="text-align: left;"><b><?php esc_html_e( 'Extra services', 'awebooking' ); ?></b></td>
+					<td colspan="2" style="text-align: left;">
+						<?php $service_name = []; ?>
+						<?php foreach ( $service_items as $service_item ) : ?>
+							<?php $service_name[] = $service_item->get_name(); ?>
+							<?php echo esc_html( implode( ', ', $service_name ) ); ?>
+						<?php endforeach; ?>
+					</td>
+					<td style="text-align: right;"><?php echo 123;// TODO: ... ?></td>
+				</tr>
+			<?php endif; ?>
 		</tbody>
 	</table>
 </div>
+<?php endforeach; ?>
 
 <div class="table">
 	<table>
@@ -55,3 +66,15 @@
 		</thead>
 	</table>
 </div>
+
+<h2><?php _e( 'Customer details', 'awebooking' ); ?></h2>
+<ul>
+	<li><strong><?php esc_html_e( 'First Name', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_first_name ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Last Name', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_last_name ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Email', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_email ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Phone', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_phone ); ?></span></li>
+	<li><strong><?php esc_html_e( 'Company', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_company ); ?></span></li>
+	<?php if ( $customer_note ) : ?>
+		<li><strong><?php esc_html_e( 'Note', 'awebooking' ); ?>:</strong> <span class="text"><?php echo esc_html( $customer_note ); ?></span></li>
+	<?php endif; ?>
+</ul>

@@ -8,12 +8,12 @@
 .DS_Store
 Thumbs.db
 behat.yml
-bin
 circle.yml
 composer.json
 composer.lock
 gulpfile.js
 Gruntfile.js
+webpack.mix.js
 package.json
 package-lock.json
 phpunit.xml
@@ -22,9 +22,9 @@ multisite.xml
 multisite.xml.dist
 phpcs.xml
 phpcs.ruleset.xml
-README.md
 wp-cli.local.yml
-tests
-node_modules
+bin/
+tests/
+node_modules/
 *.zip
 *.tar.gz

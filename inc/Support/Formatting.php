@@ -3,9 +3,8 @@ namespace AweBooking\Support;
 
 use DateTime;
 use AweBooking\AweBooking;
-use AweBooking\Interfaces\Price;
-use AweBooking\Interfaces\Currency;
-use AweBooking\Service;
+use AweBooking\Pricing\Price;
+use AweBooking\Currency\Currency;
 
 class Formatting {
 	/**
@@ -96,7 +95,7 @@ class Formatting {
 	 * Sanitize, remove locale formatting, and optionally round.
 	 *
 	 * @param  float|string $number Expects either a float or a string with a decimal separator only (no thousands).
-	 * @param  boolean|int  $dp     Using number of decimal points or not.
+	 * @param  bool|int     $dp     Using number of decimal points or not.
 	 * @return float
 	 */
 	public static function format_decimal( $number, $dp = false ) {
@@ -130,7 +129,7 @@ class Formatting {
 	 * @see https://github.com/Roomify/bat/issues/20
 	 *
 	 * @param  float $decimal Decimal number.
-	 * @return integer
+	 * @return int
 	 */
 	public static function decimal_to_amount( $decimal ) {
 		$decimal  = static::format_decimal( $decimal, true );
@@ -163,12 +162,10 @@ class Formatting {
 	 */
 	public static function date_format( DateTime $datetime, $format = null ) {
 		if ( ! $format ) {
-			$format = awebooking( 'config' )->get( 'date_format' );
+			$format = awebooking( 'setting' )->get_date_format();
 		}
 
-		$formatted = date_i18n( $format, $datetime->getTimestamp() );
-
-		return apply_filters( 'awebooking/date_format', $formatted, $datetime, $format );
+		return date_i18n( $format, $datetime->getTimestamp() );
 	}
 
 	/**
