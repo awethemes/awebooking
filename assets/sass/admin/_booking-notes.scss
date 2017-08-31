@@ -1,4 +1,5 @@
-ul.booking_notes li .note_content {
+ul.booking_notes li .note_content,
+.note-column .note_content {
   padding: 10px;
   background: #efefef;
   position: relative;
@@ -18,7 +19,8 @@ ul.booking_notes li .note_content::after {
   border-color: #efefef transparent;
 }
 
-ul.booking_notes li .note_content p {
+ul.booking_notes li .note_content p,
+.note-column .note_content p {
   margin: 0;
   padding: 0;
   word-wrap: break-word;
@@ -38,4 +40,14 @@ ul.booking_notes li a.delete_note {
 .add_note #add_booking_note {
   width: 100%;
   height: 50px;
+}
+
+.booking-column.info-column .awebooking-label {
+  margin: 0;
+  border-radius: 0;
+}
+
+.booking-column.note-column strong {
+  margin-bottom: 15px;
+  display: inline-block;
 }

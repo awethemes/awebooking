@@ -12,16 +12,16 @@ use AweBooking\Admin\Forms\Booking_General_From;
 		<div class="awebooking-heading__toolbox">
 			<label>
 				<input type="checkbox" name="booking_checked_in" value="1" <?php echo ($the_booking->is_checked_in()) ? 'checked=""' : ''; ?>>
-				<span><?php echo esc_html__( 'Checked-in', 'awebooking' ) ?></span>
+				<span><?php esc_html_e( 'Checked-in', 'awebooking' ); ?></span>
 			</label>
 
 			<label>
 				<input type="checkbox" name="booking_checked_out" value="1" <?php echo ($the_booking->is_checked_out()) ? 'checked=""' : ''; ?>>
-				<span><?php echo esc_html__( 'Checked-out', 'awebooking' ) ?></span>
+				<span><?php esc_html_e( 'Checked-out', 'awebooking' ); ?></span>
 			</label>
 		</div>
 
-		<?php printf( '<h2 class="awebooking-heading__title">%s <span>#%s</span></h2>', esc_html__( 'Booking', 'awebooking' ), $post->ID ); ?>
+		<?php printf( '<h2 class="awebooking-heading__title">%s <span>#%s</span></h2>', esc_html__( 'Booking', 'awebooking' ), absint( $post->ID ) ); ?>
 	</div><!-- /.awebooking-booking-heading -->
 
 	<?php
@@ -49,41 +49,53 @@ use AweBooking\Admin\Forms\Booking_General_From;
 				</div>
 			</div>
 
-			<div class="booking-column">
+			<div class="booking-column info-column">
 
 				<?php if ( ! $the_booking->is_multiple_rooms() ) : ?>
 					<p>
-						<?php
-						printf( esc_html__( 'Check-in %1$s, Check-out: %2$s', 'awebooking' ),
-							$the_booking->get_arrival_date(),
-							$the_booking->get_departure_date()
-						);
-						?>
+						<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
+						<?php echo esc_html( $the_booking->get_arrival_date() ); ?>
+
+						<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
+						<?php echo esc_html( $the_booking->get_departure_date() ); ?>
 					</p>
 				<?php else : ?>
 					<p>
-						<strong><?php echo esc_html__( 'Arrival:', 'awebooking' ) ?></strong>
-						<?php echo $the_booking->get_arrival_date(); ?>
+						<strong><?php esc_html_e( 'Arrival:', 'awebooking' ); ?></strong>
+						<?php echo esc_html( $the_booking->get_arrival_date() ); ?>
 					</p>
 
 					<p>
-						<strong><?php echo esc_html__( 'Departure:', 'awebooking' ) ?></strong>
-						<?php echo $the_booking->get_departure_date(); ?>
+						<strong><?php esc_html_e( 'Departure:', 'awebooking' ); ?></strong>
+						<?php echo esc_html( $the_booking->get_departure_date() ); ?>
 					</p>
 
-					<p>
-						<?php if ( $the_booking->is_continuous_periods() ) : ?>
-							<!-- // -->
-						<?php endif ?>
-					</p>
+					<?php if ( ! $the_booking->is_continuous_periods() ) : ?>
+						<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation. Please check the booking detail below.', 'awebooking' ); ?></p>
+					<?php endif ?>
 				<?php endif ?>
+				
+				<p>
+					<strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong>
+					<?php echo esc_html( $the_booking->calculate_nights_stayed() ); ?>
+				</p>
 
+				<p>
+					<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
+					<?php $the_booking->get_fomatted_guest_number(); ?>
+				</p>
 			</div>
-
-			<div class="booking-column">
-				NOTE:
-				<?php echo $the_booking->get_customer_note(); ?>
-			</div>
+			
+			<?php if ( $the_booking->get_customer_note() ) : ?>
+				<div class="booking-column note-column">
+					<strong><?php esc_html_e( 'Note:', 'awebooking' ); ?>&nbsp;</strong>
+					<div class="note_content">
+						<p>
+							<?php echo esc_html( $the_booking->get_customer_note() ); ?>
+						</p>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 
@@ -137,14 +149,14 @@ use AweBooking\Admin\Forms\Booking_General_From;
 							<ul class="split-button-body awebooking-main-toggle">
 								<li>
 									<a href="#" class="js-edit-line-item" data-line-item="<?php echo esc_attr( $room_item->get_id() ); ?>">
-										<span><?php echo esc_html__( 'Edit Room', 'awebooking' ) ?></span>
+										<span><?php esc_html_e( 'Edit Room', 'awebooking' ); ?></span>
 										<span class="dashicons dashicons-edit"></span>
 									</a>
 								</li>
 
 								<li>
 									<a href="<?php echo esc_url( $room_item->get_delete_url() ); ?>" class="js-delete-booking-item">
-										<span><?php echo esc_html__( 'Delete Room', 'awebooking' ) ?></span>
+										<span><?php esc_html_e( 'Delete Room', 'awebooking' ); ?></span>
 										<span class="dashicons dashicons-trash"></span>
 									</a>
 								</li>
@@ -174,8 +186,8 @@ use AweBooking\Admin\Forms\Booking_General_From;
 
 <div>
 	<a href="#awebooking-add-line-item-popup" class="button" data-toggle="awebooking-popup">
-		<?php echo esc_html__( 'Add Room Unit', 'awebooking' ); ?>
+		<?php esc_html_e( 'Add Room Unit', 'awebooking' ); ?>
 	</a>
 
-	<strong>Subtotal: <?php echo $the_booking->get_subtotal(); ?></strong>
+	<strong><?php printf( esc_html__( 'Subtotal: %s' ), $the_booking->get_subtotal() ); ?></strong>
 </div>
