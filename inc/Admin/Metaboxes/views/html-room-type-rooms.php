@@ -2,6 +2,16 @@
 
 global $room_type;
 
+$is_disabled = false;
+if ( awebooking()->is_multi_language() ) {
+	$rtype_id = $room_type->get_id();
+	$original_id = awebooking( 'multilingual' )->get_original_object_id( $rtype_id );
+
+	if ( $original_id !== $rtype_id ) {
+		$is_disabled = true;
+	}
+}
+
 ?><div class="cmb-row">
 	<div class="cmb-th">
 		<label for="number_of_rooms"><?php echo esc_html( $field->prop( 'name' ) ); ?></label>
@@ -19,8 +29,8 @@ global $room_type;
 <script type="text/template" id="awebooking-rooms-manager-template">
 	<div>
 		<div class="awebooking-rooms-count">
-			<input type="number" class="cmb2-text-small" v-model="totalRooms">
-			<button class="button" type="button" @click.prevent="regenerateRooms()">
+			<input type="number" class="cmb2-text-small" v-model="totalRooms" <?php echo $is_disabled ? 'disabled=""' : '' ?>>
+			<button class="button" type="button" @click.prevent="regenerateRooms()" <?php echo $is_disabled ? 'disabled=""' : '' ?>>
 				<?php echo esc_html__( 'Update', 'awebooking' ) ?>
 			</button>
 		</div>
@@ -30,9 +40,8 @@ global $room_type;
 				<span>{{ index + 1 }}</span>
 
 				<input type="hidden" :name="'abkng_rooms[' + index + '][id]'" :value="room.id">
-				<input type="text" :name="'abkng_rooms[' + index + '][name]'" :value="room.name" v-model="room.name">
-
-				<button type="button" @click.prevent="deleteRoomByIndex(index)">&times;</button>
+				<input type="text" :name="'abkng_rooms[' + index + '][name]'" :value="room.name" v-model="room.name" <?php echo $is_disabled ? 'disabled=""' : '' ?>>
+				<button type="button" @click.prevent="deleteRoomByIndex(index)" <?php echo $is_disabled ? 'disabled=""' : '' ?>>&times;</button>
 			</li>
 		</ul>
 

@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\AweBooking;
-use AweBooking\Support\Period;
 use Skeleton\Container\Service_Hooks;
 
 class Logic_Hooks extends Service_Hooks {

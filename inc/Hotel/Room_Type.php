@@ -113,6 +113,9 @@ class Room_Type extends WP_Object {
 		// Current list room of room-type.
 		$db_rooms_ids = array_map( 'absint', $this->list_the_rooms( 'id' ) );
 
+		// Multilanguage need this.
+		$room_type_id = apply_filters( $this->prefix( 'get_id_for_rooms' ), $this->get_id() );
+
 		$touch_ids = [];
 		foreach ( $request_rooms as $raw_room ) {
 			// Ignore in-valid rooms from request.
@@ -130,7 +133,7 @@ class Room_Type extends WP_Object {
 			} else {
 				$room_unit = new Room;
 				$room_unit['name'] = $room_args['name'];
-				$room_unit['room_type_id'] = $this->get_id();
+				$room_unit['room_type_id'] = $room_type_id;
 				$room_unit->save();
 			}
 
@@ -479,14 +482,17 @@ class Room_Type extends WP_Object {
 	public function list_the_rooms( $pluck = null ) {
 		global $wpdb;
 
+		// Multilanguage need this.
+		$room_type_id = apply_filters( $this->prefix( 'get_id_for_rooms' ), $this->get_id() );
+
 		// First, try get the rooms in cache.
-		$the_rooms = wp_cache_get( $this->get_id(), 'awebooking/rooms_in_room_types' );
+		$the_rooms = wp_cache_get( $room_type_id, 'awebooking/rooms_in_room_types' );
 
 		// If not found we will fetch from database.
 		if ( false === $the_rooms ) {
 			// Get rooms in a room type from database, limit 100 results for performance.
 			$the_rooms = $wpdb->get_results(
-				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d' ORDER BY LENGTH(`name`) ASC, `name` ASC LIMIT 1000", $this->get_id() ),
+				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d' ORDER BY LENGTH(`name`) ASC, `name` ASC LIMIT 1000", $room_type_id ),
 				ARRAY_A
 			);
 
@@ -504,7 +510,7 @@ class Room_Type extends WP_Object {
 			}
 
 			// Add this results to cache.
-			wp_cache_add( $this->get_id(), $the_rooms, 'awebooking/rooms_in_room_types' );
+			wp_cache_add( $room_type_id, $the_rooms, 'awebooking/rooms_in_room_types' );
 		}
 
 		return $pluck ? wp_list_pluck( $the_rooms, $pluck ) : $the_rooms;
