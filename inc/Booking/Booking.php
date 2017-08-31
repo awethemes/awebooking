@@ -224,6 +224,56 @@ class Booking extends WP_Object {
 	}
 
 	/**
+	 * Returns nights stayed of this booking.
+	 *
+	 * @return int
+	 */
+	public function calculate_nights_stayed() {
+		$nights = 0;
+		foreach ( $this->get_line_items() as $key => $item ) {
+			$nights += $item->get_nights_stayed();
+		}
+
+		return $nights;
+	}
+
+	/**
+	 * Gets formatted guest number HTML.
+	 *
+	 * @param  boolean $echo Echo or return output.
+	 * @return string|void
+	 */
+	public function get_fomatted_guest_number( $echo = true ) {
+		$adults = $children = 0;
+		foreach ( $this->get_line_items() as $key => $item ) {
+			$adults += $item->get_adults();
+			$children += $item->get_children();
+		}
+
+		$html = '';
+
+		$html .= sprintf(
+			'<span class="">%1$d %2$s</span>',
+			$adults,
+			_n( 'adult', 'adults', $adults, 'awebooking' )
+		);
+
+		if ( $children ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$children,
+				_n( 'child', 'children', $children, 'awebooking' )
+			);
+		}
+
+		if ( $echo ) {
+			print $html; // WPCS: XSS OK.
+		} else {
+			return $html;
+		}
+	}
+
+	/**
 	 * Determines periods of booking items is continuous.
 	 *
 	 * @return boolean
