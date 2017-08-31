@@ -80,7 +80,7 @@ class Multilingual {
 	 * @return bool
 	 */
 	public function is_polylang() {
-		return class_exists( 'Polylang' );
+		return class_exists( 'Polylang' ) && function_exists( 'pll_current_language' );
 	}
 
 	/**
