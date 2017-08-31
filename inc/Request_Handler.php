@@ -146,7 +146,7 @@ class Request_Handler extends Service_Hooks {
 				'check_out' => $request->get_check_out()->toDateString(),
 				'adults'    => $request->get_adults(),
 				'children'  => $request->get_children(),
-				'total'     => $availability->get_price()->get_amount(),
+				'total'     => $availability->get_total_price()->get_amount(),
 			]);
 
 			$booking->add_item( $room_item );
@@ -166,7 +166,6 @@ class Request_Handler extends Service_Hooks {
 				$service_item = (new Service_Item)->fill([
 					'name'       => $service->get_name(),
 					'service_id' => $service->get_id(),
-					'price'      => $service->get_price()->get_amount(),
 					'parent_id'  => $room_item->get_id(),
 				]);
 
