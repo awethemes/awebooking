@@ -1,7 +1,6 @@
 <?php
 
 use AweBooking\Admin\Forms\Booking_General_From;
-use AweBooking\Support\Formatting;
 
 ?><div class="postbox">
 	<div class="awebooking-heading clear">
