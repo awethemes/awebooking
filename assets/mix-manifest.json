@@ -1,11 +1,11 @@
 {
-    "/js/admin/awebooking.js": "/js/admin/awebooking.js",
-    "/css/admin.css": "/css/admin.css",
-    "/js/admin/vendor.js": "/js/admin/vendor.js",
-    "/js/admin/edit-booking.js": "/js/admin/edit-booking.js",
-    "/js/admin/manager-pricing.js": "/js/admin/manager-pricing.js",
-    "/js/admin/manager-availability.js": "/js/admin/manager-availability.js",
-    "/js/admin/edit-service.js": "/js/admin/edit-service.js",
-    "/js/admin/edit-room-type.js": "/js/admin/edit-room-type.js",
-    "/js/admin/manifest.js": "/js/admin/manifest.js"
+    "/js/admin/awebooking.js": "/js/admin/awebooking.js?id=4edbc2e293cdde4cdfe4",
+    "/css/admin.css": "/css/admin.css?id=1a707673a55544fc96ee",
+    "/js/admin/vendor.js": "/js/admin/vendor.js?id=d1c53d0fb44efb0e97de",
+    "/js/admin/edit-booking.js": "/js/admin/edit-booking.js?id=04a89242e61a494786bb",
+    "/js/admin/manager-pricing.js": "/js/admin/manager-pricing.js?id=5bc383d60927ed5bb170",
+    "/js/admin/manager-availability.js": "/js/admin/manager-availability.js?id=cb2bea8239634ac8de14",
+    "/js/admin/edit-service.js": "/js/admin/edit-service.js?id=07f0c84f1b168c758ba2",
+    "/js/admin/edit-room-type.js": "/js/admin/edit-room-type.js?id=2bb124245d01dffa641e",
+    "/js/admin/manifest.js": "/js/admin/manifest.js?id=b42d5e89920b6ef49bec"
 }
