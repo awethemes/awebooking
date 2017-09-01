@@ -25,9 +25,6 @@ use AweBooking\Admin\Forms\Booking_General_From;
 	</div><!-- /.awebooking-booking-heading -->
 
 	<?php
-	// $the_booking['transaction_id'] = '113333';
-	// $the_booking['payment_method_title'] = 'PayPal';
-
 	if ( $the_booking['transaction_id'] ) {
 		echo '<br>';
 
@@ -53,28 +50,34 @@ use AweBooking\Admin\Forms\Booking_General_From;
 
 				<?php if ( ! $the_booking->is_multiple_rooms() ) : ?>
 					<p>
-						<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
-						<?php echo esc_html( $the_booking->get_arrival_date() ); ?>
+						<?php if ( $the_booking->get_arrival_date() ) : ?>
+							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $the_booking->get_arrival_date()->to_wp_date_string() ); ?>
+						<?php endif; ?>
+					</p>
 
-						<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
-						<?php echo esc_html( $the_booking->get_departure_date() ); ?>
+					<p>
+						<?php if ( $the_booking->get_departure_date() ) : ?>
+							<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $the_booking->get_departure_date()->to_wp_date_string() ); ?>
+						<?php endif; ?>
 					</p>
 				<?php else : ?>
-					<p>
-						<strong><?php esc_html_e( 'Arrival:', 'awebooking' ); ?></strong>
-						<?php echo esc_html( $the_booking->get_arrival_date() ); ?>
-					</p>
+					<?php if ( $the_booking->get_arrival_date() ) : ?>
+						<p>
+							<strong><?php esc_html_e( 'Arrival:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $the_booking->get_arrival_date()->to_wp_date_string() ); ?>
+						</p>
+					<?php endif; ?>
 
-					<p>
-						<strong><?php esc_html_e( 'Departure:', 'awebooking' ); ?></strong>
-						<?php echo esc_html( $the_booking->get_departure_date() ); ?>
-					</p>
-
-					<?php if ( ! $the_booking->is_continuous_periods() ) : ?>
-						<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation. Please check the booking detail below.', 'awebooking' ); ?></p>
-					<?php endif ?>
+					<?php if ( $the_booking->get_departure_date() ) : ?>
+						<p>
+							<strong><?php esc_html_e( 'Departure:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $the_booking->get_departure_date()->to_wp_date_string() ); ?>
+						</p>
+					<?php endif; ?>
 				<?php endif ?>
-				
+
 				<p>
 					<strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong>
 					<?php echo esc_html( $the_booking->calculate_nights_stayed() ); ?>
@@ -84,15 +87,18 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
 					<?php $the_booking->get_fomatted_guest_number(); ?>
 				</p>
+
+				<?php if ( ! $the_booking->is_continuous_periods() ) : ?>
+					<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation, please check the booking details table', 'awebooking' ); ?></p>
+				<?php endif ?>
 			</div>
-			
+
 			<?php if ( $the_booking->get_customer_note() ) : ?>
 				<div class="booking-column note-column">
 					<strong><?php esc_html_e( 'Note:', 'awebooking' ); ?>&nbsp;</strong>
+
 					<div class="note_content">
-						<p>
-							<?php echo esc_html( $the_booking->get_customer_note() ); ?>
-						</p>
+						<?php echo wp_kses_post( wpautop( $the_booking->get_customer_note() ) ); ?>
 					</div>
 				</div>
 			<?php endif; ?>
@@ -102,92 +108,95 @@ use AweBooking\Admin\Forms\Booking_General_From;
 	<div class="clear"></div>
 </div><!-- /.postbox -->
 
-<div class="table-responsive">
-	<?php foreach ( $the_booking->get_line_items() as $room_item ) :
-		$room_unit = $room_item->get_room_unit();
-		$service_items = $the_booking->get_service_items()->where( 'parent_id', $room_item->get_id() );
-		?>
+<div class="postbox" style="padding: 10px;">
+	<table class="awebooking-table widefat fixed" style="margin-bottom: 5px; width: 100%;">
+		<thead>
+			<tr>
+				<th width="20%"><?php echo esc_html__( 'Room Unit', 'awebooking' ) ?></th>
+				<th width="60%"><?php echo esc_html__( 'Details', 'awebooking' ) ?></th>
+				<th width="10%" style="text-align: right;">#</th>
+				<th width="10%" style="text-align: right;"><?php echo esc_html__( 'Cost', 'awebooking' ) ?></th>
+			</tr>
+		</thead>
 
-		<table class="awebooking-table widefat fixed" style="margin-bottom: 5px;">
-			<thead>
-				<tr>
-					<td>
-						<strong><?php echo esc_html( $room_item->get_name() ); ?></strong>
+		<tbody>
+		<?php foreach ( $the_booking->get_line_items() as $room_item ) :
+			$room_unit = $room_item->get_room_unit();
+			$service_items = $the_booking->get_service_items()->where( 'parent_id', $room_item->get_id() );
+			?>
 
-						<?php if ( $room_unit && $room_unit->exists() ) : ?>
-							(<?php echo esc_html( $room_unit->get_name() ); ?>)
-						<?php endif ?>
-					</td>
+			<tr>
+				<td>
+					<strong><?php echo esc_html( $room_item->get_name() ); ?></strong>
 
-					<td>
-						<?php
-						try {
-							$date_period = $room_item->get_period();
-							printf( '<strong>%s</strong> (<span>%s - %s</span>)',
-								$room_item->get_formatted_nights_stayed( false ),
-								$date_period->get_start_date(),
-								$date_period->get_end_date()
-							);
-						} catch ( \Exception $e ) {
-							echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
-						}
-						?>
-					</td>
+					<?php if ( $room_unit && $room_unit->exists() ) : ?>
+						(<?php echo esc_html( $room_unit->get_name() ); ?>)
+					<?php endif ?>
+				</td>
 
-					<td><?php $room_item->get_fomatted_guest_number(); ?></td>
+				<td>
+					<?php
+					try {
+						$date_period = $room_item->get_period();
+						printf( '<strong>%s</strong> (<span>%s - %s</span>)',
+							$room_item->get_formatted_nights_stayed( false ),
+							$date_period->get_start_date()->to_wp_date_string(),
+							$date_period->get_end_date()->to_wp_date_string()
+						);
+					} catch ( \Exception $e ) {
+						echo '<span class="awebooking-invalid">' . esc_html__( 'Period date is invalid', 'awebooking' ) . '</span>';
+					}
+					?>
 
-					<td>
-						<?php echo esc_html( $room_item->get_total() ); ?>
-					</td>
+					<br>
+					<strong>- <?php echo esc_html__( 'Guest:', 'awebooking' ); ?></strong>
+					<?php $room_item->get_fomatted_guest_number(); ?>
 
-					<td style="text-align: right;">
-						<div style="position: relative;">
-							<a href="#" class="button awebooking-button-dashicons" data-init="awebooking-toggle">
-								<span class="dashicons dashicons-arrow-down-alt2"></span>
-							</a>
+					<?php if ( count( $service_items ) > 0 ) : ?>
+						<br>
+						<strong>- <?php echo esc_html__( 'Services:', 'awebooking' ) ?></strong>
+						<?php echo $service_items->pluck( 'name' )->implode( ', ' ); ?>
+					<?php endif ?>
+				</td>
 
-							<ul class="split-button-body awebooking-main-toggle">
-								<li>
-									<a href="#" class="js-edit-line-item" data-line-item="<?php echo esc_attr( $room_item->get_id() ); ?>">
-										<span><?php esc_html_e( 'Edit Room', 'awebooking' ); ?></span>
-										<span class="dashicons dashicons-edit"></span>
-									</a>
-								</li>
+				<td style="text-align: right;">
+				<?php if ( $the_booking->is_editable() ) : ?>
+					<a href="#" class="js-edit-line-item" data-line-item="<?php echo esc_attr( $room_item->get_id() ); ?>">
+						<span class="screen-reader-text"><?php esc_html_e( 'Edit Room', 'awebooking' ); ?></span>
+						<span class="dashicons dashicons-edit"></span>
+					</a>
 
-								<li>
-									<a href="<?php echo esc_url( $room_item->get_delete_url() ); ?>" class="js-delete-booking-item">
-										<span><?php esc_html_e( 'Delete Room', 'awebooking' ); ?></span>
-										<span class="dashicons dashicons-trash"></span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</td>
+					<a href="<?php echo esc_url( $room_item->get_delete_url() ); ?>" class="js-delete-booking-item">
+						<span class="screen-reader-text"><?php esc_html_e( 'Delete Room', 'awebooking' ); ?></span>
+						<span class="dashicons dashicons-trash"></span>
+					</a>
+				<?php endif; ?>
+				</td>
 
-				</tr>
-			</thead>
+				<td style="text-align: right;">
+					<?php echo $the_booking->get_price( $room_item->get_total() ); ?>
+				</td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
 
-			<tbody>
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					<?php if ( $the_booking->is_editable() ) : ?>
+						<a href="#awebooking-add-line-item-popup" class="button" data-toggle="awebooking-popup">
+							<?php esc_html_e( 'Add Room Unit', 'awebooking' ); ?>
+						</a>
+					<?php else : ?>
+						<span class="awebooking-label awebooking-label--square awebooking-label--warning"><?php echo esc_html__( 'This booking is no longer editable', 'awebooking' ) ?></span>
+					<?php endif ?>
 
-				<?php foreach ( $service_items as $service_item ) : ?>
+					<strong style="float: right;">
+						<?php printf( esc_html__( 'Total: %s' ), $the_booking->get_price( $the_booking->get_subtotal() ) ); ?>
+					</strong>
+				</td>
+			</tr>
+		</tfoot>
 
-					<tr>
-						<td>
-							<?php echo $service_item->get_name(); ?>
-						</td>
-					</tr>
-
-				<?php endforeach ?>
-
-			</tbody>
-		</table>
-	<?php endforeach ?>
-</div>
-
-<div>
-	<a href="#awebooking-add-line-item-popup" class="button" data-toggle="awebooking-popup">
-		<?php esc_html_e( 'Add Room Unit', 'awebooking' ); ?>
-	</a>
-
-	<strong><?php printf( esc_html__( 'Subtotal: %s' ), $the_booking->get_subtotal() ); ?></strong>
+	</table>
 </div>

@@ -2,9 +2,10 @@
 namespace AweBooking\Booking;
 
 use AweBooking\AweBooking;
-use AweBooking\Support\Period;
-use AweBooking\Support\Period_Collection;
+use AweBooking\Pricing\Price;
 use AweBooking\Model\WP_Object;
+use AweBooking\Support\Period_Collection;
+use AweBooking\Support\Period;
 
 class Booking extends WP_Object {
 	use Traits\Booking_Items_Trait,
@@ -235,6 +236,10 @@ class Booking extends WP_Object {
 		}
 
 		return $nights;
+	}
+
+	public function get_price( $price ) {
+		return new Price( $price, $this->get_currency() );
 	}
 
 	/**

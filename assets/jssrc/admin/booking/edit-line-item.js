@@ -31,9 +31,8 @@ class EditLineItem {
     awebooking.ajaxSubmit(this, 'edit_awebooking_line_item')
       .done(function(response) {
 
-        // TODO: Improve this!
         setTimeout(function() {
-          window.location.reload();
+          $('form#post').submit();
         }, 250);
 
       })

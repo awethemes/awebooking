@@ -20,9 +20,8 @@ class AddLineItem {
     awebooking.ajaxSubmit(this.form, 'add_awebooking_line_item')
       .done(function(response) {
 
-        // TODO: Improve this!
         setTimeout(function() {
-          window.location.reload();
+          $('form#post').submit();
         }, 250);
 
       })

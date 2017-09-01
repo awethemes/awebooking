@@ -125,16 +125,17 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			->diff( $edit_services )
 			->toArray();
 
-		foreach ( $delete_ids as $delete_id ) {
-			$service_item_id = $line_item_services
-				->where( 'service_id', $delete_id )
-				->pluck( 'id' )
-				->first();
+		$add_ids = array_diff( $edit_services, $delete_ids );
 
-			$the_booking->remove_item( $service_item_id );
+		foreach ( $delete_ids as $delete_id ) {
+			$delete_service = $line_item_services
+				->first( function( $item ) use ( $delete_id ) {
+					return $item['service_id'] === (int) $delete_id;
+				});
+
+			$the_booking->remove_item( $delete_service );
 		}
 
-		$add_ids = array_diff( $edit_services, $delete_ids );
 		foreach ( $add_ids as $add_item_id ) {
 			$service = new Service( $add_item_id );
 			if ( ! $service->exists() ) {

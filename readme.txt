@@ -52,6 +52,12 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 
 == Upgrade Notice ==
 
+The newly-updated AweBooking v3.0-beta4 is **major update**, in which we refactor code API.
+It requires PHP 5.6 or higher, changes the way booking item do, etc...
+
+If you use previous version with our premium please do not update to **v3.0-beta4**.
+We'll release new premiums shortly and guide how to upgrade in to this.
+
 If you have 2.x version, please do not upgrade to this version.
 
 ## Video
@@ -59,6 +65,17 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta4] - 2017-09-01
+#### Changes
+- Refactor code API, a huge classes has changed
+- A room when book will be stored as **booking-item**, prepare for multi booking rooms feature.
+- Improve stability.
+
+#### Fixed
+- Fixed the session cannot stored sometimes.
+- Fixed room-units with multilang.
+- Minor bugs fixed
+
 ### [3.0.0-beta3] - 2017-08-10
 #### Changes
 - Improve calendar locale
