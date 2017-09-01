@@ -103,7 +103,7 @@ class WP_Core_Hooks extends Service_Hooks {
 		// Register 'hotel_location' taxonomy.
 		if ( $awebooking->is_multi_location() ) {
 			Taxonomy::make(
-				'hotel_location',
+				AweBooking::HOTEL_LOCATION,
 				apply_filters( 'awebooking/taxonomy_objects/hotel_location', AweBooking::ROOM_TYPE ),
 				esc_html__( 'Location', 'awebooking' ),
 				esc_html__( 'Locations', 'awebooking' )

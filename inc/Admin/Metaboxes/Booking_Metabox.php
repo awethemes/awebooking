@@ -261,11 +261,11 @@ class Booking_Metabox extends Post_Type_Metabox {
 			'title' => esc_html__( 'Payment', 'awebooking' ),
 		]);
 
-		$payment->add_field( array(
+		/*$payment->add_field( array(
 			'type'            => 'select',
 			'id'              => '_payment_method',
 			'name'            => esc_html__( 'Payment method', 'awebooking' ),
-		));
+		));*/
 
 		$payment->add_field( array(
 			'type' => 'text',
