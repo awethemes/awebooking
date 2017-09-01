@@ -6,6 +6,10 @@ use AweBooking\AweBooking;
 use AweBooking\Booking\Booking;
 use AweBooking\Admin\Forms\Booking_General_From;
 use AweBooking\Support\Carbonate;
+use AweBooking\Support\Mailer;
+use AweBooking\Notification\Booking_Cancelled;
+use AweBooking\Notification\Booking_Processing;
+use AweBooking\Notification\Booking_Completed;
 
 class Booking_Metabox extends Post_Type_Metabox {
 	/**
@@ -69,6 +73,46 @@ class Booking_Metabox extends Post_Type_Metabox {
 
 		// Save the booking.
 		$booking->save();
+
+		$this->proccess_booking_actions( $booking );
+	}
+
+	/**
+	 * Handler booking actions.
+	 *
+	 * @param  Booking $booking //.
+	 * @return void
+	 */
+	protected function proccess_booking_actions( Booking $booking ) {
+		// Handle button actions.
+		if ( empty( $_POST['awebooking_action'] ) ) {
+			return;
+		}
+
+		$action = $_POST['awebooking_action'];
+
+		if ( strstr( $action, 'send_email_' ) ) {
+			// Load mailer.
+			$email_to_send = str_replace( 'send_email_', '', $action );
+
+			try {
+				switch ( $email_to_send ) {
+					case 'cancelled_order':
+						Mailer::to( $booking->get_customer_email() )->send( new Booking_Cancelled( $booking ) );
+						break;
+
+					case 'customer_processing_order':
+						Mailer::to( $booking->get_customer_email() )->send( new Booking_Processing( $booking ) );
+						break;
+
+					case 'customer_completed_order':
+						Mailer::to( $booking->get_customer_email() )->send( new Booking_Completed( $booking ) );
+						break;
+				}
+			} catch ( \Exception $e ) {
+				// ...
+			}
+		}
 	}
 
 	/**
