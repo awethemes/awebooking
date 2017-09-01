@@ -1,6 +1,10 @@
 <?php
 namespace AweBooking;
 
+use AweBooking\Booking\Booking;
+use AweBooking\Booking\Items\Line_Item;
+use AweBooking\Booking\Items\Service_Item;
+
 class Installer {
 	/**
 	 * Install the AweBooking.
@@ -28,6 +32,119 @@ class Installer {
 		add_option( 'awebooking_version', AweBooking::VERSION );
 
 		@flush_rewrite_rules();
+	}
+
+	public static function update() {
+		$awebooking = awebooking();
+		$db_version = get_option( 'awebooking_version' );
+
+		if ( version_compare( $db_version, '3.0.0-beta4', '<' ) ) {
+			global $wpdb;
+
+			$services = $wpdb->get_results( "
+				SELECT term.* FROM `{$wpdb->terms}` AS term
+				LEFT JOIN `{$wpdb->term_taxonomy}` AS tt ON `term`.`term_id` = `tt`.`term_id`
+				WHERE tt.taxonomy = 'hotel_extra_service'
+			" );
+
+			foreach ( $services as $service ) {
+				update_term_meta( $service->term_id, '_service_operation', get_term_meta( $service->term_id, 'operation', true ) );
+				delete_term_meta( $service->term_id, 'operation' );
+
+				update_term_meta( $service->term_id, '_service_value', get_term_meta( $service->term_id, 'price', true ) );
+				delete_term_meta( $service->term_id, 'price' );
+
+				update_term_meta( $service->term_id, '_service_type', get_term_meta( $service->term_id, 'type', true ) );
+				delete_term_meta( $service->term_id, 'type' );
+			}
+
+			// --------------------------
+			$transform_booking_metadata = [
+				'customer_id'         => '_customer_id',
+				'customer_note'       => '_customer_note',
+				'customer_first_name' => '_customer_first_name',
+				'customer_last_name'  => '_customer_last_name',
+				'customer_email'      => '_customer_email',
+				'customer_phone'      => '_customer_phone',
+				'customer_company'    => '_customer_company',
+				'customer_phone'      => '_customer_phone',
+				'currency'            => '_currency',
+				'total_price'         => '_total',
+			];
+
+			$old_metadata = [
+				'booking_adults',
+				'booking_children',
+				'booking_check_in',
+				'booking_check_out',
+				'room_total',
+				'services_total',
+				'booking_request_services',
+				'booking_room_id',
+				'booking_room_name',
+				'booking_room_type_id',
+				'booking_room_type_title',
+				'booking_hotel_location',
+			];
+
+			$bookings = $wpdb->get_results( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'awebooking' AND post_status != 'auto-draft';" );
+
+			foreach ( $bookings as $booking ) {
+				$booking = new Booking( $booking->ID );
+
+				$booking_item = new Line_Item;
+				$booking_item['name']      = get_post_meta( $booking->ID, 'booking_room_type_title', true );
+				$booking_item['room_id']   = get_post_meta( $booking->ID, 'booking_room_id', true );
+				$booking_item['check_in']  = get_post_meta( $booking->ID, 'booking_check_in', true );
+				$booking_item['check_out'] = get_post_meta( $booking->ID, 'booking_check_out', true );
+				$booking_item['adults']    = get_post_meta( $booking->ID, 'booking_adults', true );
+				$booking_item['children']  = get_post_meta( $booking->ID, 'booking_children', true );
+				$booking_item['total']     = floatval( get_post_meta( $booking->ID, 'room_total', true ) ) + floatval( get_post_meta( $booking->ID, 'services_total', true ) );
+
+				try {
+					$booking->add_item( $booking_item );
+					$booking->save();
+				} catch ( \Exception $e ) {
+					continue;
+				}
+
+				if ( ! $booking_item->exists() ) {
+					continue;
+				}
+
+				$booking_services = get_post_meta( $booking->ID, 'booking_request_services', true );
+				if ( ! empty( $booking_services ) && is_array( $booking_services ) ) {
+					foreach ( $booking_services as $service_id => $quantity ) {
+						$service = new Service( $service_id );
+						if ( ! $service->exists() ) {
+							continue;
+						}
+
+						$service_item = new Service_Item( $booking->ID );
+						$service_item['name']       = $service->get_name();
+						$service_item['service_id'] = $service->get_id();
+						$service_item['parent_id']  = $booking_item->get_id();
+
+						$service_item->save();
+					}
+				}
+
+				foreach ( $transform_booking_metadata as $from_metaname => $to_metaname ) {
+					update_post_meta( $booking->ID, $to_metaname,
+						get_post_meta( $booking->ID, $from_metaname, true )
+					);
+
+					delete_post_meta( $booking->ID, $from_metaname );
+				}
+
+				foreach ( $old_metadata as $delete_metadata ) {
+					delete_post_meta( $booking->ID, $delete_metadata );
+				}
+			} // End foreach().
+		} // End if().
+
+		delete_option( 'awebooking_version' );
+		add_option( 'awebooking_version', AweBooking::VERSION );
 	}
 
 	/**

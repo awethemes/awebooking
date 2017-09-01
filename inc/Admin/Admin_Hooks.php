@@ -2,6 +2,7 @@
 namespace AweBooking\Admin;
 
 use Skeleton\Menu_Page;
+use AweBooking\Installer;
 use AweBooking\AweBooking;
 use Skeleton\Container\Service_Hooks;
 
@@ -105,10 +106,9 @@ class Admin_Hooks extends Service_Hooks {
 		add_filter( 'custom_menu_order', '__return_true' );
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
-
 		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
 
-		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_notices', [ $awebooking['admin_notices'], 'display' ] );
 	}
 
@@ -117,7 +117,7 @@ class Admin_Hooks extends Service_Hooks {
 	 *
 	 * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
 	 */
-	public function admin_redirects() {
+	public function admin_init() {
 		// Setup wizard redirect.
 		if ( get_transient( '_awebooking_activation_redirect' ) ) {
 			delete_transient( '_awebooking_activation_redirect' );
@@ -130,6 +130,12 @@ class Admin_Hooks extends Service_Hooks {
 			// If the user needs to install, send them to the setup wizard.
 			wp_safe_redirect( admin_url( 'index.php?page=awebooking-setup' ) );
 			exit;
+		}
+
+		// Run background update.
+		$db_version = add_option( 'awebooking_version' );
+		if ( ! $db_version || AweBooking::VERSION !== $db_version ) {
+			Installer::update();
 		}
 	}
 
