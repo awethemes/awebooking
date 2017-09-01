@@ -182,18 +182,7 @@ use AweBooking\Support\Formatting;
 
 					<tr>
 						<td>
-						</td>
-
-						<td>
-							<?php echo esc_html( $service_item->get_name() ); ?>
-						</td>
-
-						<td>
-							<?php echo esc_html( $service_item->get_service()->get_describe() ); ?>
-						</td>
-
-						<td>
-							<?php echo $service_item->get_price(); ?>
+							<?php echo $service_item->get_name(); ?>
 						</td>
 					</tr>
 

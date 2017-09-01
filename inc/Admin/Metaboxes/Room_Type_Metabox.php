@@ -239,7 +239,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 		));
 
 		// Register Metabox Sections.
-		$constraints = $metabox->add_section( 'constraints', array(
+		/*$constraints = $metabox->add_section( 'constraints', array(
 			'title' => esc_html__( 'Constraints', 'awebooking' ),
 		));
 
@@ -258,7 +258,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 				'type'       => 'text_small',
 				'name'       => esc_html__( 'Extra Services', 'awebooking' ),
 			));
-		});
+		});*/
 
 		do_action( 'awebooking/register_metabox/room_type', $metabox );
 	}
