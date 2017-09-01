@@ -41,6 +41,33 @@ class Installer {
 		if ( version_compare( $db_version, '3.0.0-beta4', '<' ) ) {
 			global $wpdb;
 
+			$wpdb->hide_errors();
+
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			dbDelta( "
+				CREATE TABLE IF NOT EXISTS {$wpdb->prefix}awebooking_booking_items (
+				  booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
+				  booking_item_name TEXT NOT NULL,
+				  booking_item_type varchar(200) NOT NULL DEFAULT '',
+				  booking_item_parent BIGINT UNSIGNED NOT NULL,
+				  booking_id BIGINT UNSIGNED NOT NULL,
+				  PRIMARY KEY  (booking_item_id),
+				  KEY booking_id (booking_id),
+				  KEY booking_item_parent (booking_item_parent)
+				);
+
+				CREATE TABLE IF NOT EXISTS {$wpdb->prefix}awebooking_booking_itemmeta (
+				  meta_id BIGINT UNSIGNED NOT NULL auto_increment,
+				  booking_item_id BIGINT UNSIGNED NOT NULL,
+				  meta_key varchar(255) default NULL,
+				  meta_value longtext NULL,
+				  PRIMARY KEY  (meta_id),
+				  KEY booking_item_id (booking_item_id),
+				  KEY meta_key (meta_key(32))
+				);
+			" );
+
+			// --------------------------
 			$services = $wpdb->get_results( "
 				SELECT term.* FROM `{$wpdb->terms}` AS term
 				LEFT JOIN `{$wpdb->term_taxonomy}` AS tt ON `term`.`term_id` = `tt`.`term_id`
@@ -93,16 +120,17 @@ class Installer {
 				$booking = new Booking( $booking->ID );
 
 				$booking_item = new Line_Item;
-				$booking_item['name']      = get_post_meta( $booking->ID, 'booking_room_type_title', true );
-				$booking_item['room_id']   = get_post_meta( $booking->ID, 'booking_room_id', true );
-				$booking_item['check_in']  = get_post_meta( $booking->ID, 'booking_check_in', true );
-				$booking_item['check_out'] = get_post_meta( $booking->ID, 'booking_check_out', true );
-				$booking_item['adults']    = get_post_meta( $booking->ID, 'booking_adults', true );
-				$booking_item['children']  = get_post_meta( $booking->ID, 'booking_children', true );
-				$booking_item['total']     = floatval( get_post_meta( $booking->ID, 'room_total', true ) ) + floatval( get_post_meta( $booking->ID, 'services_total', true ) );
+				$booking_item['name']      = $booking->get_meta( 'booking_room_type_title' );
+				$booking_item['room_id']   = $booking->get_meta( 'booking_room_id' );
+				$booking_item['check_in']  = $booking->get_meta( 'booking_check_in' );
+				$booking_item['check_out'] = $booking->get_meta( 'booking_check_out' );
+				$booking_item['adults']    = $booking->get_meta( 'booking_adults' );
+				$booking_item['children']  = $booking->get_meta( 'booking_children' );
+				$booking_item['total']     = floatval( $booking->get_meta( 'room_total' ) ) + floatval( $booking->get_meta( 'services_total' ) );
+
+				$booking->add_item( $booking_item );
 
 				try {
-					$booking->add_item( $booking_item );
 					$booking->save();
 				} catch ( \Exception $e ) {
 					continue;
@@ -130,15 +158,9 @@ class Installer {
 				}
 
 				foreach ( $transform_booking_metadata as $from_metaname => $to_metaname ) {
-					update_post_meta( $booking->ID, $to_metaname,
-						get_post_meta( $booking->ID, $from_metaname, true )
+					update_metadata( 'awebooking', $booking->ID, $to_metaname,
+						$booking->get_meta( $from_metaname )
 					);
-
-					delete_post_meta( $booking->ID, $from_metaname );
-				}
-
-				foreach ( $old_metadata as $delete_metadata ) {
-					delete_post_meta( $booking->ID, $delete_metadata );
 				}
 			} // End foreach().
 		} // End if().
