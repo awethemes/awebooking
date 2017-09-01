@@ -10,7 +10,7 @@ use Skeleton\Container\Container as Skeleton_Container;
 
 class AweBooking extends Skeleton_Container {
 	/* Constants */
-	const VERSION        = '3.0.0-beta3';
+	const VERSION        = '3.0.0-beta4';
 	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';
