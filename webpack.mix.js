@@ -1,7 +1,16 @@
 let mix = require('laravel-mix').mix;
 
+// Setup project.
+mix.setPublicPath('assets');
+mix.disableSuccessNotifications();
+
+mix.options({
+  processCssUrls: false
+});
+
 // Complide scss and js
-mix.js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
+mix.sass('assets/sass/admin.scss', 'assets/css')
+   .js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/edit-booking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/edit-service.js', 'assets/js/admin')
    .js('assets/jssrc/admin/edit-room-type.js', 'assets/js/admin')
@@ -9,20 +18,11 @@ mix.js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/manager-availability.js', 'assets/js/admin')
    .extract(['vue', 'form-serialize']);
 
-mix.sass('assets/sass/admin.scss', 'assets/css');
-
 if (mix.inProduction()) {
   mix.version();
+} else {
+  mix.sourceMaps()
 }
-
-// Setup project.
-mix.sourceMaps();
-mix.setPublicPath('assets');
-mix.disableSuccessNotifications();
-
-mix.options({
-  processCssUrls: false
-});
 
 mix.browserSync({
   proxy: 'awebooking.dev',
