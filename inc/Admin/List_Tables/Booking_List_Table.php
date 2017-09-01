@@ -42,9 +42,9 @@ class Booking_List_Table extends Post_Type_Abstract {
 			'cb'                => '<input type="checkbox" />',
 			'booking_status'    => esc_html__( 'Status', 'awebooking' ),
 			'booking_title'     => esc_html__( 'Booking', 'awebooking' ),
-			'booking_room'      => esc_html__( 'Room', 'awebooking' ),
-			'check_in_out_date' => esc_html__( 'Check-in / Check-out', 'awebooking' ),
-			'booking_guests'    => esc_html__( 'Guests', 'awebooking' ),
+			// 'booking_room'      => esc_html__( 'Room', 'awebooking' ),
+			// 'check_in_out_date' => esc_html__( 'Check-in / Check-out', 'awebooking' ),
+			// 'booking_guests'    => esc_html__( 'Guests', 'awebooking' ),
 			'booking_total'     => esc_html__( 'Total', 'awebooking' ),
 			'booking_date'      => esc_html__( 'Date', 'awebooking' ),
 		];
