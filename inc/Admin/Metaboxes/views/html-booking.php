@@ -152,10 +152,10 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<strong>- <?php echo esc_html__( 'Guest:', 'awebooking' ); ?></strong>
 					<?php $room_item->get_fomatted_guest_number(); ?>
 
-					<?php if ( count( $the_booking->get_service_items() ) > 0 ) : ?>
+					<?php if ( count( $service_items ) > 0 ) : ?>
 						<br>
 						<strong>- <?php echo esc_html__( 'Services:', 'awebooking' ) ?></strong>
-						<?php echo $the_booking->get_service_items()->pluck( 'name' )->implode( ', ' ); ?>
+						<?php echo $service_items->pluck( 'name' )->implode( ', ' ); ?>
 					<?php endif ?>
 				</td>
 
