@@ -5,6 +5,33 @@ use Carbon\Carbon;
 
 class Carbonate extends Carbon {
 	/**
+	 * Format the instance as a readable wp date.
+	 *
+	 * @return string
+	 */
+	public function to_wp_date_string() {
+		return $this->date_i18n( awebooking( 'setting' )->get_date_format() );
+	}
+
+	/**
+	 * Format the instance as a readable wp time.
+	 *
+	 * @return string
+	 */
+	public function to_wp_time_string() {
+		return $this->date_i18n( awebooking( 'setting' )->get_time_format() );
+	}
+
+	/**
+	 * Format the instance as a readable wp date and time.
+	 *
+	 * @return string
+	 */
+	public function to_wp_datetime_string() {
+		return $this->to_wp_date_string() . ' ' . $this->to_wp_time_string();
+	}
+
+	/**
 	 * Format datetime use `date_i18n`.
 	 *
 	 * @param  string $fomrat A valid date format string.
