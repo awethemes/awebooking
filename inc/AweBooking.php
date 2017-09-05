@@ -132,6 +132,8 @@ class AweBooking extends Skeleton_Container {
 		$this->bind( 'store.pricing', function() {
 			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
 		});
+
+		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
 	}
 
 	/**
@@ -202,6 +204,25 @@ class AweBooking extends Skeleton_Container {
 	 */
 	public function template_path() {
 		return apply_filters( 'awebooking/template_path', 'awebooking/' );
+	}
+
+	/**
+	 * Load localisation files.
+	 *
+	 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+	 *
+	 * Locales found in:
+	 *      - WP_LANG_DIR/awebooking/awebooking-LOCALE.mo
+	 *      - WP_LANG_DIR/plugins/awebooking-LOCALE.mo
+	 */
+	public function _load_textdomain() {
+		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$locale = apply_filters( 'plugin_locale', $locale, 'awebooking' );
+
+		unload_textdomain( 'awebooking' );
+
+		load_textdomain( 'awebooking', WP_LANG_DIR . '/awebooking/awebooking-' . $locale . '.mo' );
+		load_plugin_textdomain( 'awebooking', false, $this->plugin_basename() . '/languages' );
 	}
 
 	/**
