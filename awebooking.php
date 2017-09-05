@@ -25,10 +25,10 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6', '<' ) ) {
 	function awebooking_wordpress_upgrade_notice() {
 		$message = sprintf( esc_html__( 'AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!', 'awebooking' ), $GLOBALS['wp_version'] );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
+
+		deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	}
 	add_action( 'admin_notices', 'awebooking_wordpress_upgrade_notice' );
-
-	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	return;
 }
 
@@ -42,10 +42,10 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 	function awebooking_php_upgrade_notice() {
 		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.6.4 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
+
+		deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	}
 	add_action( 'admin_notices', 'awebooking_php_upgrade_notice' );
-
-	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
 	return;
 }
 
