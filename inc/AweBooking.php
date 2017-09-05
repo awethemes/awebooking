@@ -2,8 +2,6 @@
 namespace AweBooking;
 
 use WP_Session;
-use AweBooking\Hotel\Service;
-use AweBooking\Booking\Booking;
 use AweBooking\Booking\Concierge;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as Skeleton_Container;
@@ -17,6 +15,7 @@ class AweBooking extends Skeleton_Container {
 	const JS_DATE_FORMAT = 'yy-mm-dd';
 
 	const BOOKING        = 'awebooking';
+
 	const ROOM_TYPE      = 'room_type';
 	const HOTEL_LOCATION = 'hotel_location';
 	const HOTEL_AMENITY  = 'hotel_amenity';
