@@ -65,7 +65,6 @@ require trailingslashit( __DIR__ ) . 'bootstrap.php';
 $awebooking = new AweBooking;
 
 add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
-
 register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'install' ) );
 
 $GLOBALS['awebooking'] = $awebooking;
