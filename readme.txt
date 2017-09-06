@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.8.1
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta4
+Stable tag:        3.0.0-beta5
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,12 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta5] - 2017-09-06
+#### Fixed
+- Hotfix: Fixed wrong place `deactivate_plugins` is called
+- Hotfix: Fixed crash on admin wizard [@see](https://wordpress.org/support/topic/error-after-activation-15/)
+- Fixed missing the localisation files
+
 ### [3.0.0-beta4] - 2017-09-01
 #### Changes
 - Refactor code API, a huge classes has changed
