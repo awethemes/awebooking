@@ -133,7 +133,7 @@ class Admin_Hooks extends Service_Hooks {
 		}
 
 		// Run background update.
-		$db_version = add_option( 'awebooking_version' );
+		$db_version = get_option( 'awebooking_version' );
 		if ( ! $db_version || AweBooking::VERSION !== $db_version ) {
 			Installer::update();
 		}
