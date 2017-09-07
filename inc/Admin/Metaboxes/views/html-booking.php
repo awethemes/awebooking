@@ -42,7 +42,13 @@ use AweBooking\Admin\Forms\Booking_General_From;
 
 			<div class="booking-column">
 				<div class="awebooking-block-form">
-					<?php (new Booking_General_From( $the_booking ))->output(); ?>
+					<?php
+					do_action( 'awebooking/booking/html_before_general_form', $the_booking );
+
+					(new Booking_General_From( $the_booking ))->output();
+
+					do_action( 'awebooking/booking/html_after_general_form', $the_booking );
+					?>
 				</div>
 			</div>
 

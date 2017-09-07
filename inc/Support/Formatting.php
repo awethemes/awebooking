@@ -30,7 +30,7 @@ class Formatting {
 			$formatted = preg_replace( '/' . preg_quote( $config->get( 'price_decimal_separator' ), '/' ) . '0++$/', '', $formatted );
 		}
 
-		return apply_filters( 'awebooking/number_format', $formatted, $args );
+		return apply_filters( 'awebooking/number_format', $formatted, $number, $args );
 	}
 
 	/**
