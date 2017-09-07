@@ -50,17 +50,12 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 }
 
 /**
- * First, we need autoload via Composer to make everything works.
- */
-require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
-
-/**
- * Next, load the bootstrap file.
+ * Load the bootstrap file.
  */
 require trailingslashit( __DIR__ ) . 'bootstrap.php';
 
 /**
- * Yeah, now everything okay, we'll create the AweBooking.
+ * Let create the AweBooking.
  */
 $awebooking = new AweBooking;
 

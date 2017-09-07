@@ -16,6 +16,11 @@ if ( ! defined( 'AWETHEMES_SKELETON_LOADED' ) ) {
 	}
 }
 
+/**
+ * We need autoload via Composer to make everything works.
+ */
+require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
+
 require_once trailingslashit( __DIR__ ) . 'vendor/ericmann/wp-session-manager/wp-session-manager.php';
 require_once trailingslashit( __DIR__ ) . 'vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php';
 
