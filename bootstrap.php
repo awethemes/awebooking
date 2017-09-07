@@ -27,6 +27,8 @@ require_once trailingslashit( __DIR__ ) . 'vendor/webdevstudios/taxonomy_single_
 require_once trailingslashit( __DIR__ ) . 'inc/functions.php';
 require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';
 
+WP_Session::get_instance();
+
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
 
