@@ -216,4 +216,13 @@ class Request {
 	public function constraints() {
 		return [];
 	}
+
+	public function to_array() {
+		$request = $this->get_requests();
+
+		$request['check_in']  = $this->get_check_in()->toDateString();
+		$request['check_out'] = $this->get_check_out()->toDateString();
+
+		return $request;
+	}
 }
