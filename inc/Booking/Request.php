@@ -2,6 +2,7 @@
 namespace AweBooking\Booking;
 
 use Carbon\Carbon;
+use AweBooking\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Support\Period;
 
@@ -150,7 +151,7 @@ class Request {
 	 * @return bool
 	 */
 	public function has_request( $request ) {
-		return isset( $this->requests[ $request ] );
+		return ! is_null( $this->get_request( $request ) );
 	}
 
 	/**
@@ -173,6 +174,31 @@ class Request {
 	 * @return mixed
 	 */
 	public function get_request( $request ) {
+		// TODO: Improve this!
+		if ( 'extra_services' === $request ) {
+			if ( empty( $this->requests['room-type'] ) || empty( $this->requests['extra_services'] ) ) {
+				return [];
+			}
+
+			$room_type = Factory::get_room_type( $this->requests['room-type'] );
+			$allowed_services = [];
+
+			if ( ! $room_type || ! $room_type->exists() ) {
+				return [];
+			}
+
+			// Validate services.
+			foreach ( $this->requests['extra_services'] as $service_id ) {
+				if ( ! in_array( $service_id, $room_type['service_ids'] ) ) {
+					continue;
+				}
+
+				$allowed_services[] = $service_id;
+			}
+
+			return $allowed_services;
+		}
+
 		return isset( $this->requests[ $request ] ) ?
 			$this->requests[ $request ] :
 			null;
