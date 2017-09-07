@@ -4,6 +4,7 @@ namespace AweBooking\Admin;
 use Skeleton\Menu_Page;
 use Skeleton\Admin_Page;
 use AweBooking\AweBooking;
+use AweBooking\Admin\Fields\Field_Proxy;
 
 class Admin_Settings extends Admin_Page {
 	/**
@@ -37,6 +38,19 @@ class Admin_Settings extends Admin_Page {
 		$this->register_backups();
 
 		do_action( 'awebooking/admin_settings/register', $this );
+	}
+
+	/**
+	 * Get a field object.
+	 *
+	 * @param  mixed           $field The field id or field config array or CMB2_Field object.
+	 * @param  CMB2_Field|null $group Optional, CMB2_Field object (group parent).
+	 * @return Field_Proxy|null
+	 */
+	public function get_field( $field, $group = null ) {
+		$field = parent::get_field( $field, $group );
+
+		return $field ? new Field_Proxy( $this, $field ) : null;
 	}
 
 	/**
@@ -109,7 +123,9 @@ class Admin_Settings extends Admin_Page {
 			'type'     => 'select',
 			'name'     => esc_html__( 'Currency', 'awebooking' ),
 			'default' => $this->config->get_default( 'currency' ),
-			'options'  => awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' ),
+			'options_cb'  => function() {
+				return awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
+			},
 			'priority' => 25,
 		) );
 
