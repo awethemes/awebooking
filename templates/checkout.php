@@ -22,40 +22,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php
 	/**
-	 * awebooking/checkout/detail_tables hook.
+	 * Hook: "awebooking/checkout/detail_tables"
 	 *
 	 * @hooked awebooking_template_checkout_general_informations - 10
 	 */
-	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type ); ?>
+	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type );
 
-	<table>
-		<tbody>
-			<tr>
-				<td colspan="2" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-				<td><b><?php print $availability->get_total_price(); // WPCS: xss ok.?></b></td>
-			</tr>
-		</tbody>
-	</table>
+	/**
+	 * Hook: "awebooking/checkout/customer_form
+	 *
+	 * @hooked awebooking_template_checkout_customer_form - 10
+	 */
+	do_action( 'awebooking/checkout/customer_form', $availability ); ?>
 
-	<form id="awebooking-checkout-form" class="awebooking-checkout-form" method="POST">
-		<?php wp_nonce_field( 'awebooking-checkout-nonce' ); ?>
-		<input type="hidden" name="awebooking-action" value="checkout">
-
-		<?php
-		/**
-		 * Hook: 'awebooking/checkout/customer_form'.
-		 *
-		 * @hooked awebooking_template_checkout_customer_form - 10
-		 */
-		do_action( 'awebooking/checkout/customer_form', $availability ); ?>
-
-		<?php
-		/**
-		 * Hook before display submit form.
-		 */
-		do_action( 'awebooking/checkout/before_submit_form', $availability ); ?>
-
-		<button type="submit" class="button" data-type="awebooking"><?php esc_html_e( 'Submit', 'awebooking' ); ?></button>
-	</form>
-
-<?php endif ?>
+<?php endif;
