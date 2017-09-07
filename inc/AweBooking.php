@@ -15,7 +15,6 @@ class AweBooking extends Skeleton_Container {
 	const JS_DATE_FORMAT = 'yy-mm-dd';
 
 	const BOOKING        = 'awebooking';
-
 	const ROOM_TYPE      = 'room_type';
 	const HOTEL_LOCATION = 'hotel_location';
 	const HOTEL_AMENITY  = 'hotel_amenity';
@@ -56,26 +55,49 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * So, let we create great booking plugin for you!
+	 * AweBooking constructor.
 	 */
 	public function __construct() {
 		parent::__construct();
 
+		/**
+		 * Binding static $instance
+		 *
+		 * @var $this
+		 */
 		static::$instance = $this;
 
 		$this->setup();
+		$this->setup_plugin();
+
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
 		$this->trigger( new Multilingual_Hooks );
-
 		$this->trigger( new Admin\Admin_Hooks );
 		$this->trigger( new Template_Hooks );
 		$this->trigger( new Request_Handler );
 		$this->trigger( new Ajax_Hooks );
 		$this->trigger( new Widgets\Widget_Hooks );
 
+		/**
+		 * Fire booting action after setup completed.
+		 */
 		do_action( 'awebooking/booting', $this );
+	}
+
+	/**
+	 * Fire registerd service hooks.
+	 */
+	public function boot() {
+		do_action( 'awebooking/init', $this );
+
+		Shortcodes\Shortcodes::init();
+		$this['flash_message']->setup_message();
+
+		parent::boot();
+
+		do_action( 'awebooking/booted', $this );
 	}
 
 	/**
@@ -104,10 +126,6 @@ class AweBooking extends Skeleton_Container {
 			return $awebooking['setting'];
 		};
 
-		$this['factory'] = function ( $awebooking ) {
-			return new Factory( $awebooking );
-		};
-
 		$this['currency_manager'] = function ( $awebooking ) {
 			return new Currency\Currency_Manager( $awebooking['config'] );
 		};
@@ -132,24 +150,16 @@ class AweBooking extends Skeleton_Container {
 		$this->bind( 'store.pricing', function() {
 			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
 		});
-
-		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
 	}
 
 	/**
-	 * Fire registerd service hooks.
+	 * Setup plugin in to WordPress.
+	 *
+	 * @return void
 	 */
-	public function boot() {
-		do_action( 'awebooking/init', $this );
-
-		parent::boot();
-
-		Shortcodes\Shortcodes::init();
-		$this['flash_message']->setup_message();
-
+	protected function setup_plugin() {
+		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
 		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
-
-		do_action( 'awebooking/booted', $this );
 	}
 
 	/**
@@ -171,34 +181,36 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * Get the plugin url.
+	 * Returns the plugin url.
 	 *
+	 * @param  string $path Optional, extra url path.
 	 * @return string
 	 */
-	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', __DIR__ ) );
+	public function plugin_url( $path = null ) {
+		return trailingslashit( plugin_dir_url( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
 	}
 
 	/**
-	 * Get the plugin path.
+	 * Returns the plugin path.
 	 *
+	 * @param  string $path Optional, extra directory/file path.
 	 * @return string
 	 */
-	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( __DIR__ ) );
+	public function plugin_path( $path = null ) {
+		return trailingslashit( plugin_dir_path( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
 	}
 
 	/**
-	 * Get the plugin slug.
+	 * Returns the plugin slug.
 	 *
 	 * @return string
 	 */
 	public function plugin_basename() {
-		return plugin_basename( $this->plugin_path() );
+		return plugin_basename( AWEBOOKING_PLUGIN_FILE_PATH );
 	}
 
 	/**
-	 * Get the template path.
+	 * Returns the relative template path.
 	 *
 	 * @return string
 	 */

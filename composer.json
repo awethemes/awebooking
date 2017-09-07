@@ -30,8 +30,18 @@
         "webdevstudios/taxonomy_single_term": "dev-master"
     },
     "autoload": {
-        "psr-4": { "AweBooking\\": "inc/" },
-        "classmap": [ "bin/composer-cleaner.php" ]
+        "psr-4": {
+            "AweBooking\\": "inc/"
+        },
+        "classmap": [
+            "bin/composer-cleaner.php"
+        ],
+        "files": [
+            "vendor/ericmann/wp-session-manager/wp-session-manager.php",
+            "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php",
+            "inc/functions.php",
+            "inc/template-functions.php"
+        ]
     },
     "scripts": {
         "post-install-cmd": [
