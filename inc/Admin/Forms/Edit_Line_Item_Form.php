@@ -68,7 +68,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		]);
 
 		$this->add_field([
-			'id'              => 'edit_price',
+			'id'              => 'edit_total',
 			'type'            => 'text_small',
 			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'validate'        => 'required|price',
@@ -97,7 +97,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		}
 
 		$line_item = $this->line_item;
-		foreach ( [ 'edit_adults', 'edit_children', 'edit_price' ] as $key ) {
+		foreach ( [ 'edit_adults', 'edit_children', 'edit_total' ] as $key ) {
 			if ( isset( $sanitized[ $key ] ) ) {
 				$item_key = str_replace( 'edit_', '', $key );
 				$line_item[ $item_key ] = $sanitized[ $key ];
@@ -146,12 +146,13 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			$service_item['name']       = $service->get_name();
 			$service_item['parent_id']  = $line_item->get_id();
 			$service_item['service_id'] = $service->get_id();
-			$service_item['price']      = $service->get_price()->get_amount();
 
 			$the_booking->add_item( $service_item );
 		}
+		// End TODO.
 
 		$the_booking->save();
+		$the_booking->calculate_totals();
 
 		return true;
 	}
@@ -162,8 +163,8 @@ class Edit_Line_Item_Form extends Form_Abstract {
 	 * @return void
 	 */
 	public function setup_fields() {
-		$this['edit_price']->set_value(
-			$this->line_item->get_subtotal()
+		$this['edit_total']->set_value(
+			$this->line_item->get_total()
 		);
 
 		$this['edit_check_in_out']->set_value([

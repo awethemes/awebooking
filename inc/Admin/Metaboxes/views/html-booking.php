@@ -198,7 +198,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<?php endif ?>
 
 					<strong style="float: right;">
-						<?php printf( esc_html__( 'Total: %s' ), $the_booking->get_price( $the_booking->get_subtotal() ) ); ?>
+						<?php printf( esc_html__( 'Total: %s' ), $the_booking->get_total() ); ?>
 					</strong>
 				</td>
 			</tr>

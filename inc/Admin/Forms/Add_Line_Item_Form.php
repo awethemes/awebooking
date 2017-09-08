@@ -154,7 +154,6 @@ class Add_Line_Item_Form extends Form_Abstract {
 					$service_item['name']       = $service->get_name();
 					$service_item['parent_id']  = $the_item->get_id();
 					$service_item['service_id'] = $service->get_id();
-					$service_item['price']      = $service->get_price()->get_amount();
 
 					$this->booking->add_item( $service_item );
 				}
@@ -162,6 +161,8 @@ class Add_Line_Item_Form extends Form_Abstract {
 				// Re-save the booking.
 				$this->booking->save();
 			}
+
+			$this->booking->calculate_totals();
 
 			return $the_item;
 		} // End if().
