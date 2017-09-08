@@ -49,7 +49,7 @@ class Form_Abstract_Test extends WP_UnitTestCase {
 	public function testProxyField() {
 		$field1 = $this->form['id_1'];
 
-		$this->assertInstanceOf('AweBooking\\Admin\\Forms\\Field_Proxy', $field1);
+		$this->assertInstanceOf('AweBooking\\Admin\\Fields\\Field_Proxy', $field1);
 		$this->assertEquals($field1, $this->form->get_field('id_1'));
 		$this->assertEquals($field1->value(), null);
 		$this->assertEquals($field1->get_value(), 1);
