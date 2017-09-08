@@ -95,7 +95,7 @@ abstract class Addon {
 	 * @return string
 	 */
 	public function get_id() {
-		return sanitize_key( $this->namespace . '.' . $this->name );
+		return $this->namespace . '.' . sanitize_key( $this->name );
 	}
 
 	/**
