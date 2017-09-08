@@ -78,7 +78,7 @@ class Formatting {
 			$price    = $price->get_amount();
 		} else {
 			// Otherwise, use default currency.
-			$currency = awebooking()->make( 'currency' );
+			$currency = awebooking( 'currency' );
 		}
 
 		// Do we have a negative price?
