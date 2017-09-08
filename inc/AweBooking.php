@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use WP_Session;
-use AweBooking\Support\Collection;
+use AweBooking\Support\Addon;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as Skeleton_Container;
 
@@ -28,9 +28,9 @@ class AweBooking extends Skeleton_Container {
 	/**
 	 * A list add-ons was attached in to AweBooking.
 	 *
-	 * @var Collection
+	 * @var array
 	 */
-	protected $addons;
+	protected $addons = [];
 
 	/**
 	 * The current globally available container (if any).
@@ -60,7 +60,6 @@ class AweBooking extends Skeleton_Container {
 
 		// Binding $this in to static $instance.
 		static::$instance = $this;
-		$this->addons = new Collection;
 
 		$this->setup();
 		$this->setup_plugin();
@@ -102,7 +101,12 @@ class AweBooking extends Skeleton_Container {
 		Shortcodes\Shortcodes::init();
 		$this['flash_message']->setup_message();
 
-		// Boot the service hooks.
+		// Init the addons.
+		array_walk( $this->addons, function( $addon ) {
+			$this->init_addon( $addon );
+		});
+
+		// Init the service hooks.
 		parent::boot();
 
 		do_action( 'awebooking/booted', $this );
@@ -168,6 +172,83 @@ class AweBooking extends Skeleton_Container {
 	protected function setup_plugin() {
 		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
 		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
+	}
+
+	/**
+	 * Register addon for AweBooking.
+	 *
+	 * @param  Addon $addon The addon object instance.
+	 * @return $this
+	 */
+	public function register_addon( Addon $addon ) {
+		// Unique addon ID, normally same as plugin name.
+		$addon_id = $addon->get_id();
+
+		// If already registerd addon, just leave.
+		if ( isset( $this->addons[ $addon_id ] ) ) {
+			return $this;
+		}
+
+		// Binding this container into the addon.
+		if ( is_null( $addon->awebooking ) ) {
+			$addon->awebooking = $this;
+		}
+
+		$addon->register();
+
+		if ( $this->booted ) {
+			$this->init_addon( $addon );
+		}
+
+		$this->addons[ $addon_id ] = $addon;
+
+		return $this;
+	}
+
+	/**
+	 * Gets addons instance by registed ID.
+	 *
+	 * @param  string $addon_id Register addon ID.
+	 * @return Addon
+	 */
+	public function get_addon( $addon_id ) {
+		return isset( $this->addons[ $addon_id ] ) ? $this->addons[ $addon_id ] : null;
+	}
+
+	/**
+	 * Init the addon.
+	 *
+	 * @param  Addon $addon Addon object.
+	 * @return void
+	 */
+	protected function init_addon( Addon $addon ) {
+		$require_version = $addon->requires();
+		$require_version = ( ! $require_version || 'latest' === $require_version ) ? static::VERSION : $require_version;
+
+		if ( ! version_compare( static::VERSION, $require_version, '>=' ) ) {
+			$addon->log_error( sprintf(
+				esc_html__( 'This addon requires at least AweBooking version %1$s, you have running on AweBooking %2$s', 'awebooking' ),
+				esc_html( $require_version ),
+				esc_html( static::VERSION )
+			));
+
+			return;
+		}
+
+		// Init the addon.
+		$addon->init();
+
+		if ( $addon->is_notify_update() ) {
+			$addon->setup_addon_updater();
+		}
+
+		/**
+		 * Fire event after init addon.
+		 *
+		 * @param mixed      $addon      The addon instance object.
+		 * @param AweBooking $awebooking AweBooking instance object.
+		 */
+		do_action( 'awebooking/addons/init_' . $addon->get_id(), $addon, $this );
 	}
 
 	/**
@@ -253,7 +334,7 @@ class AweBooking extends Skeleton_Container {
 	 * @return	array
 	 */
 	public function _plugin_row_meta( $links, $file ) {
-		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
+		if ( $this->plugin_basename() == $file ) {
 			$row_meta = array(
 				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
 				'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',
