@@ -58,11 +58,7 @@ class AweBooking extends Skeleton_Container {
 	public function __construct() {
 		parent::__construct();
 
-		/**
-		 * Binding static $instance
-		 *
-		 * @var $this
-		 */
+		// Binding $this in to static $instance.
 		static::$instance = $this;
 		$this->addons = new Collection;
 
@@ -78,18 +74,21 @@ class AweBooking extends Skeleton_Container {
 	public function booting() {
 		// WP_Session::get_instance();
 
+		// Skeleton Support.
+		skeleton()->trigger( new Skeleton_Hooks );
+
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
-		$this->trigger( new Multilingual_Hooks );
-		$this->trigger( new Admin\Admin_Hooks );
-		$this->trigger( new Template_Hooks );
-		$this->trigger( new Request_Handler );
-		$this->trigger( new Ajax_Hooks );
-		$this->trigger( new Widgets\Widget_Hooks );
 
-		// Skeleton Support.
-		skeleton()->trigger( new Skeleton_Hooks );
+		$this->trigger( new Ajax_Hooks );
+		$this->trigger( new Request_Handler );
+		$this->trigger( new Template_Hooks );
+
+		$this->trigger( new Widgets\Widget_Hooks );
+		$this->trigger( new Multilingual_Hooks );
+
+		$this->trigger( new Admin\Admin_Hooks );
 
 		do_action( 'awebooking/booting', $this );
 	}
@@ -135,17 +134,17 @@ class AweBooking extends Skeleton_Container {
 			return $awebooking['setting'];
 		};
 
-		$this['currency_manager'] = function ( $awebooking ) {
+		$this->bind( 'currency_manager', function ( $awebooking ) {
 			return new Currency\Currency_Manager;
-		};
+		});
 
-		$this['currency'] = function ( $a ) {
+		$this->bind( 'currency', function ( $a ) {
 			return new Currency\Currency( $a['setting']->get( 'currency' ) );
-		};
+		});
 
-		$this['flash_message'] = function () {
+		$this->bind( 'flash_message', function () {
 			return new Support\Flash_Message;
-		};
+		});
 
 		// Binding stores.
 		$this->bind( 'store.booking', function() {
