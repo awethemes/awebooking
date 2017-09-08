@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use WP_Session;
-use AweBooking\Booking\Concierge;
+use AweBooking\Support\Collection;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as Skeleton_Container;
 
@@ -25,14 +25,12 @@ class AweBooking extends Skeleton_Container {
 	const STATE_PENDING     = 2;
 	const STATE_BOOKED      = 3;
 
-	// Weekday.
-	const SUNDAY    = 0;
-	const MONDAY    = 1;
-	const TUESDAY   = 2;
-	const WEDNESDAY = 3;
-	const THURSDAY  = 4;
-	const FRIDAY    = 5;
-	const SATURDAY  = 6;
+	/**
+	 * A list add-ons was attached in to AweBooking.
+	 *
+	 * @var Collection
+	 */
+	protected $addons;
 
 	/**
 	 * The current globally available container (if any).
@@ -66,9 +64,19 @@ class AweBooking extends Skeleton_Container {
 		 * @var $this
 		 */
 		static::$instance = $this;
+		$this->addons = new Collection;
 
 		$this->setup();
 		$this->setup_plugin();
+	}
+
+	/**
+	 * Trigger booting when `plugins_loaded`.
+	 *
+	 * @return void
+	 */
+	public function booting() {
+		// WP_Session::get_instance();
 
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
@@ -80,9 +88,9 @@ class AweBooking extends Skeleton_Container {
 		$this->trigger( new Ajax_Hooks );
 		$this->trigger( new Widgets\Widget_Hooks );
 
-		/**
-		 * Fire booting action after setup completed.
-		 */
+		// Skeleton Support.
+		skeleton()->trigger( new Skeleton_Hooks );
+
 		do_action( 'awebooking/booting', $this );
 	}
 
@@ -95,6 +103,7 @@ class AweBooking extends Skeleton_Container {
 		Shortcodes\Shortcodes::init();
 		$this['flash_message']->setup_message();
 
+		// Boot the service hooks.
 		parent::boot();
 
 		do_action( 'awebooking/booted', $this );
@@ -127,7 +136,7 @@ class AweBooking extends Skeleton_Container {
 		};
 
 		$this['currency_manager'] = function ( $awebooking ) {
-			return new Currency\Currency_Manager( $awebooking['config'] );
+			return new Currency\Currency_Manager;
 		};
 
 		$this['currency'] = function ( $a ) {

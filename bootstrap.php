@@ -21,11 +21,6 @@ if ( ! defined( 'AWETHEMES_SKELETON_LOADED' ) ) {
 	}
 }
 
-WP_Session::get_instance();
-
-// Skeleton Support.
-skeleton()->trigger( new AweBooking\Skeleton_Hooks );
-
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
 

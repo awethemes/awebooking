@@ -39,15 +39,17 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 require trailingslashit( __DIR__ ) . 'bootstrap.php';
 
 /* Constants */
-define( 'AWEBOOKING_VERSION', AweBooking::VERSION );
 define( 'AWEBOOKING_PLUGIN_FILE_PATH', __FILE__ );
+define( 'AWEBOOKING_VERSION', AweBooking::VERSION );
 
 /**
  * Let create the AweBooking.
  */
 $awebooking = new AweBooking;
 
-add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
-register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'install' ) );
+add_action( 'plugins_loaded', [ $awebooking, 'booting' ] );
+add_action( 'skeleton/init', [ $awebooking, 'boot' ] );
+
+register_activation_hook( AWEBOOKING_PLUGIN_FILE_PATH, [ AweBooking\Installer::class, 'install' ] );
 
 $GLOBALS['awebooking'] = $awebooking;
