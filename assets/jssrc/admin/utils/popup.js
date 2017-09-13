@@ -48,20 +48,20 @@ class Popup {
       width: 'auto',
       height: 'auto',
       autoOpen: false,
-      draggable: false,
+      draggable: true,
       resizable: false,
       closeOnEscape: true,
       dialogClass: 'wp-dialog awebooking-dialog',
       position: { my: 'center', at: 'center top+25%', of: window },
       open: function () {
-        $('body').css({ overflow: 'hidden' });
+        // $('body').css({ overflow: 'hidden' });
       },
       beforeClose: function(event, ui) {
-        $('body').css({ overflow: 'inherit' });
+        // $('body').css({ overflow: 'inherit' });
      }
     });
 
-    $(window).on('resize', _.debounce(_triggerResize, 250));
+    // $(window).on('resize', _.debounce(_triggerResize, 250));
 
     return dialog;
   }
