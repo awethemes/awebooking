@@ -68,17 +68,18 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		]);
 
 		$this->add_field([
+			'id'              => 'edit_services',
+			'type'            => 'awebooking_services',
+			'name'            => esc_html__( 'Services', 'awebooking' ),
+			'room_type'       => 0,
+		]);
+
+		$this->add_field([
 			'id'              => 'edit_total',
 			'type'            => 'text_small',
 			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'validate'        => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
-		]);
-
-		$this->add_field([
-			'id'              => 'edit_services',
-			'type'            => 'multicheck',
-			'name'            => esc_html__( 'Services', 'awebooking' ),
 		]);
 	}
 
@@ -97,6 +98,8 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		}
 
 		$line_item = $this->line_item;
+		$room_type = $this->line_item->get_room_unit()->get_room_type();
+
 		foreach ( [ 'edit_adults', 'edit_children', 'edit_total' ] as $key ) {
 			if ( isset( $sanitized[ $key ] ) ) {
 				$item_key = str_replace( 'edit_', '', $key );
@@ -120,12 +123,20 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			->get_service_items()
 			->where( 'parent_id', $this->line_item->get_id() );
 
+		// If some services were deleted or removed from
+		// room-type, we'll delete that service item too.
+		foreach ( $line_item_services as $item_service ) {
+			$service = new Service( $item_service['service_id'] );
+
+			if ( ! $service->exists() || ! in_array( $service->get_id(), $room_type['service_ids'] ) ) {
+				$the_booking->remove_item( $item_service );
+			}
+		}
+
 		$delete_ids = $line_item_services
 			->pluck( 'service_id' )
 			->diff( $edit_services )
 			->toArray();
-
-		$add_ids = array_diff( $edit_services, $delete_ids );
 
 		foreach ( $delete_ids as $delete_id ) {
 			$delete_service = $line_item_services
@@ -136,9 +147,16 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			$the_booking->remove_item( $delete_service );
 		}
 
+		$add_ids = array_diff( $edit_services, $delete_ids );
+
 		foreach ( $add_ids as $add_item_id ) {
 			$service = new Service( $add_item_id );
 			if ( ! $service->exists() ) {
+				continue;
+			}
+
+			// Don't add an exists service item.
+			if ( $line_item_services->contains( 'service_id', '=', $service->get_id() ) ) {
 				continue;
 			}
 
@@ -184,7 +202,6 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			->set_value( $this->line_item->get_children() )
 			->set_prop( 'options', array_combine( $b, $b ) );
 
-		$services = collect( $room_type->get_services() );
 		$current_services = $this->line_item->get_booking()
 			->get_service_items()
 			->where( 'parent_id', $this->line_item->get_id() )
@@ -192,7 +209,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			->toArray();
 
 		$this['edit_services']->set_prop( 'default', $current_services );
-		$this['edit_services']->set_prop( 'options', $services->pluck( 'name', 'id' )->toArray() );
+		$this['edit_services']->set_prop( 'room_type', $room_type->get_id() );
 
 		printf( '<input type="hidden" name="line_item_id" value="%d" />', esc_attr( $this->line_item->get_id() ) );
 	}

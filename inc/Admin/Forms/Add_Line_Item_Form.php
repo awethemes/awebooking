@@ -79,19 +79,20 @@ class Add_Line_Item_Form extends Form_Abstract {
 			'sanitization_cb' => 'absint',
 		]);
 
+		// TODO: ...
+		$this->add_field([
+			'id'              => 'add_services',
+			'type'            => 'awebooking_services',
+			'name'            => esc_html__( 'Services', 'awebooking' ),
+			'room_type'       => 0,
+		]);
+
 		$this->add_field([
 			'id'              => 'add_price',
 			'type'            => 'text_small',
 			'name'            => esc_html__( 'Total price', 'awebooking' ),
 			'validate'        => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
-		]);
-
-		// TODO: ...
-		$this->add_field([
-			'id'              => 'add_services',
-			'type'            => 'multicheck',
-			'name'            => esc_html__( 'Services', 'awebooking' ),
 		]);
 	}
 
@@ -213,6 +214,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 
 		if ( isset( $_REQUEST['add_room'] ) && array_key_exists( (int) $_REQUEST['add_room'], $rooms_options ) ) {
 			$the_room = Factory::get_room_unit( (int) $_REQUEST['add_room'] );
+
 			if ( ! $the_room->exists() ) {
 				return;
 			}
@@ -227,23 +229,20 @@ class Add_Line_Item_Form extends Form_Abstract {
 				->set_value( (int) $_REQUEST['add_room'] );
 
 			$this['add_price']
-				->show()
-				->set_value( $price->get_amount() );
+				->set_value( $price->get_amount() )
+				->show();
 
 			$this['add_adults']
-				->show()
-				->set_prop( 'options', array_combine( $a, $a ) );
+				->set_prop( 'options', array_combine( $a, $a ) )
+				->show();
 
 			$this['add_children']
-				->show()
-				->set_prop( 'options', array_combine( $b, $b ) );
-
-			// TODO: ...
-			$services = collect( $room_type->get_services() );
+				->set_prop( 'options', array_combine( $b, $b ) )
+				->show();
 
 			$this['add_services']
-				->show()
-				->set_prop( 'options', $services->pluck( 'name', 'id' )->toArray() );
+				->set_prop( 'room_type', $room_type->get_id() )
+				->show();
 		} // End if().
 	}
 

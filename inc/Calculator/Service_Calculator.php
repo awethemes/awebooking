@@ -3,7 +3,7 @@ namespace AweBooking\Calculator;
 
 use AweBooking\Hotel\Service;
 use AweBooking\Pricing\Price;
-use AweBooking\Booking\Availability;
+use AweBooking\Booking\Request;
 use AweBooking\Pricing\Calculator_Handle;
 
 class Service_Calculator implements Calculator_Handle {
@@ -15,21 +15,30 @@ class Service_Calculator implements Calculator_Handle {
 	protected $service;
 
 	/**
-	 * Booking availability instance.
+	 * Booking request instance.
 	 *
-	 * @var Availability
+	 * @var Request
 	 */
-	protected $availability;
+	protected $request;
+
+	/**
+	 * Base price, use for increase and decrease by percent.
+	 *
+	 * @var Price
+	 */
+	protected $base_price;
 
 	/**
 	 * Service_Calculator constructor.
 	 *
-	 * @param Service      $service      Extra-service instance.
-	 * @param Availability $availability Booking availability instance.
+	 * @param Service $service    Extra-service instance.
+	 * @param Request $request    Booking request instance.
+	 * @param Price   $base_price Base price.
 	 */
-	public function __construct( Service $service, Availability $availability ) {
-		$this->service = $service;
-		$this->availability = $availability;
+	public function __construct( Service $service, Request $request, Price $base_price ) {
+		$this->service    = $service;
+		$this->request    = $request;
+		$this->base_price = $base_price;
 	}
 
 	/**
@@ -47,18 +56,18 @@ class Service_Calculator implements Calculator_Handle {
 				break;
 
 			case Service::OP_ADD_DAILY:
-				$nights = $this->availability->get_nights();
+				$nights = $this->request->get_nights();
 				$price  = $price->add( $service_price->multiply( $nights ) );
 				break;
 
 			case Service::OP_ADD_PERSON:
-				$persons = $this->availability->get_people();
+				$persons = $this->request->get_people();
 				$price   = $price->add( $service_price->multiply( $persons ) );
 				break;
 
 			case Service::OP_ADD_PERSON_DAILY:
-				$nights  = $this->availability->get_nights();
-				$persons = $this->availability->get_people();
+				$nights  = $this->request->get_nights();
+				$persons = $this->request->get_people();
 
 				$price = $price->add(
 					$service_price->multiply( $persons )->multiply( $nights )
@@ -70,17 +79,17 @@ class Service_Calculator implements Calculator_Handle {
 				break;
 
 			case Service::OP_SUB_DAILY:
-				$nights = $this->availability->get_nights();
+				$nights = $this->request->get_nights();
 				$price  = $price->subtract( $service_price->multiply( $nights ) );
 				break;
 
 			case Service::OP_INCREASE:
-				$percent_price = $this->availability->get_price()->multiply( $this->service->get_value() / 100 );
+				$percent_price = $this->base_price->multiply( $this->service->get_value() / 100 );
 				$price = $price->add( $percent_price );
 				break;
 
 			case Service::OP_DECREASE:
-				$percent_price = $this->availability->get_price()->multiply( $this->service->get_value() / 100 );
+				$percent_price = $this->base_price->multiply( $this->service->get_value() / 100 );
 				$price = $price->subtract( $percent_price );
 				break;
 		} // End switch().

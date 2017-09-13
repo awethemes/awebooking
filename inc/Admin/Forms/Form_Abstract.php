@@ -51,6 +51,20 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	 * @throws ValidationException
 	 */
 	public function handle( array $data = null, $check_nonce = true ) {
+		return $this->get_sanitized( $data, $check_nonce );
+	}
+
+	/**
+	 * Get sanitized values of the form.
+	 *
+	 * @param  array|null $data        An array input data, if null $_POST will be use.
+	 * @param  boolean    $check_nonce Run verity nonce from request.
+	 * @return array|mixed
+	 *
+	 * @throws NonceMismatchException
+	 * @throws ValidationException
+	 */
+	public function get_sanitized( array $data = null, $check_nonce = true ) {
 		$data  = is_null( $data ) ? $_POST : $data;
 		$nonce = $this->nonce();
 

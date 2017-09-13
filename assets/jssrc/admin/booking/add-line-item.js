@@ -6,9 +6,11 @@ class AddLineItem {
     this.form  = (form instanceof jQuery) ? form[0] : form;
     this.$form = $(this.form);
 
-    this.$form.on('change', '#add_room', $.proxy(this.handleAddRoomChanges, this));
-    this.$form.on('change', '#add_check_in_out_0', $.proxy(this.handleDateChanges, this));
-    this.$form.on('change', '#add_check_in_out_1', $.proxy(this.handleDateChanges, this));
+    this.$form.on('change', '#add_room', this.handleAddRoomChanges.bind(this));
+    this.$form.on('change', '#add_check_in_out_0', this.handleDateChanges.bind(this));
+    this.$form.on('change', '#add_check_in_out_1', this.handleDateChanges.bind(this));
+
+    this.$form.on('change', '#add_adults, #add_children, [name="add_services\[\]"]', this.handleCalculateTotal.bind(this));
 
     $('button[type="submit"]', this.$form).prop('disabled', true);
     this.$form.on('submit', $.proxy(this.onSubmit, this));
@@ -28,6 +30,17 @@ class AddLineItem {
       .fail(function(response) {
         if (response.error) {
           alert(response.error);
+        }
+      });
+  }
+
+  handleCalculateTotal() {
+    const self = this;
+
+    awebooking.ajaxSubmit(this.form, 'awebooking_calculate_line_item_total')
+      .done(function(response) {
+        if (response.total) {
+          self.$form.find('#add_price').val(response.total);
         }
       });
   }

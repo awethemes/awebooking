@@ -102,3 +102,15 @@
   padding-right: 15px;
   padding-left: 15px;
 }
+
+
+.awebooking-static-spinner {
+  padding: 1em;
+  text-align: center;
+
+  > .spinner {
+    float: none;
+    display: inline-block;
+    visibility: visible;
+  }
+}
