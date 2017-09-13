@@ -29,10 +29,10 @@ class AweBooking_Test extends WP_UnitTestCase {
 	}
 
 	public function test_addon() {
-		$this->assertNull($this->awebooking->get_addon('test_addon'));
+		$this->assertNull($this->awebooking->get_addon('awethemes.test_addon'));
 		$this->awebooking->register_addon( new Test_Addon('test_addon', __FILE__) );
-		$this->assertFalse($this->awebooking->get_addon('test_addon')->has_errors());
-		$this->assertInstanceOf('Test_Addon', $this->awebooking->get_addon('test_addon'));
+		$this->assertFalse($this->awebooking->get_addon('awethemes.test_addon')->has_errors());
+		$this->assertInstanceOf('Test_Addon', $this->awebooking->get_addon('awethemes.test_addon'));
 
 		$this->assertEquals($this->awebooking['aaa'], 10001);
 		$this->assertEquals($this->awebooking['bbbb'], 1000);
@@ -40,7 +40,7 @@ class AweBooking_Test extends WP_UnitTestCase {
 
 	public function testFailedAddon() {
 		$this->awebooking->register_addon( new Test_Require_Addon('addon', __FILE__) );
-		$this->assertTrue($this->awebooking->get_addon('addon')->has_errors());
+		$this->assertTrue($this->awebooking->get_addon('awethemes.addon')->has_errors());
 		// var_dump($this->awebooking->get_addon('addon')->get_errors());
 	}
 
