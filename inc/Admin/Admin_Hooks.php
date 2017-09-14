@@ -22,8 +22,6 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		$container->trigger( new Admin_Scripts_Hooks );
-
 		$container->bind( 'admin_notices', function() {
 			return new Admin_Notices;
 		});
@@ -45,6 +43,7 @@ class Admin_Hooks extends Service_Hooks {
 
 		new Admin_Ajax;
 		new Action_Handler;
+		new Admin_Scripts;
 
 		new Pages\Permalink_Settings;
 		new Pages\Admin_Email_Preview;
