@@ -26,7 +26,7 @@
         "nesbot/carbon": "^1.22",
         "pelago/emogrifier": "^1.2",
         "roomify/bat": "dev-master",
-        "tightenco/collect": "^5.4",
+        "tightenco/collect": "5.4.*",
         "webdevstudios/taxonomy_single_term": "dev-master"
     },
     "autoload": {
