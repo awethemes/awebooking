@@ -47,7 +47,9 @@ class Action_Handler {
 		}
 
 		// Delete the booking item.
-		$booking_item->delete();
+		$the_booking->remove_item( $booking_item );
+		$the_booking->save();
+
 		$the_booking->calculate_totals();
 
 		awebooking( 'admin_notices' )->info(
