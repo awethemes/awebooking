@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin;
+namespace AweBooking\Admin\Pages;
 
 use AweBooking\AweBooking;
 use AweBooking\Admin\Admin_Utils;

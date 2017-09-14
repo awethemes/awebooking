@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin;
+namespace AweBooking\Admin\Pages;
 
 use Skeleton\Menu_Page;
 use Skeleton\Admin_Page;

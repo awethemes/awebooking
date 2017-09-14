@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin;
+namespace AweBooking\Admin\Pages;
 
 use WP_List_Table;
 use AweBooking\Concierge;

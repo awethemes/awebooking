@@ -29,17 +29,8 @@ class Admin_Hooks extends Service_Hooks {
 		});
 
 		$container->bind( 'admin_welcome', function() {
-			return new Admin_Welcome;
+			return new Pages\Admin_Welcome;
 		});
-
-		$container['admin_welcome']->add_tab( array(
-			'id'       => 'welcome',
-			'title'    => esc_html__( 'Welcome', 'awebooking' ),
-			'nowrap'   => true,
-			'callback' => function() {
-				include_once __DIR__ . '/views/welcome-tabs/admin_welcome.php';
-			},
-		));
 
 		$container['admin_menu'] = new Menu_Page( 'awebooking', array(
 			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
@@ -56,7 +47,7 @@ class Admin_Hooks extends Service_Hooks {
 			'menu_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
 			'noheader'    => true,
 			'function' => function() {
-				(new Availability_Management)->output();
+				(new Pages\Availability_Management)->output();
 			},
 		));
 
@@ -65,7 +56,7 @@ class Admin_Hooks extends Service_Hooks {
 			'menu_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
 			'noheader'    => true,
 			'function' => function() {
-				(new Pricing_Management)->output();
+				(new Pages\Pricing_Management)->output();
 			},
 		));
 
@@ -87,19 +78,19 @@ class Admin_Hooks extends Service_Hooks {
 
 		new Admin_Ajax;
 		new Action_Handler;
-		new Permalink_Settings;
-		new Admin_Setup_Wizard;
-		new Admin_Email_Preview;
 
-		new Admin_Settings( $awebooking['admin_menu'] );
+		new Pages\Permalink_Settings;
+		new Pages\Admin_Email_Preview;
+		new Pages\Admin_Settings;
+		new Pages\Admin_Setup_Wizard;
 
 		new List_Tables\Booking_List_Table;
 		new List_Tables\Room_Type_List_Table;
 		new List_Tables\Service_List_Table;
 
-		new Metaboxes\Room_Type_Metabox;
 		new Metaboxes\Booking_Metabox;
 		new Metaboxes\Service_Metabox;
+		new Metaboxes\Room_Type_Metabox;
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_filter( 'menu_order', array( $this, 'menu_order' ) );
