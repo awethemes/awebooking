@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.8.1
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta5
+Stable tag:        3.0.0-beta6
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,20 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta6] - 2017-09-14
+#### Added
+- Added SSP currency.
+- Change price after update item in booking.
+- API: Added `AWEBOOKING_PLUGIN_FILE_PATH` and `AWEBOOKING_VERSION` constants.
+
+#### Changes
+- Refactor code API in admin
+- Bootstrap file changes
+
+#### Fixed
+- Fixed booking cost not updated after add/change or remove a booking item
+- Minor bugs fixed
+
 ### [3.0.0-beta5] - 2017-09-06
 #### Fixed
 - Hotfix: Fixed wrong place `deactivate_plugins` is called
