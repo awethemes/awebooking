@@ -45,9 +45,9 @@ class Admin_Hooks extends Service_Hooks {
 		new Action_Handler;
 		new Admin_Scripts;
 
+		new Admin_Settings;
 		new Pages\Permalink_Settings;
 		new Pages\Admin_Email_Preview;
-		new Pages\Admin_Settings;
 		new Pages\Admin_Setup_Wizard;
 
 		new List_Tables\Booking_List_Table;
