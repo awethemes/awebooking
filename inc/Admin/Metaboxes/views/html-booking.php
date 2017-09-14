@@ -94,7 +94,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<?php $the_booking->get_fomatted_guest_number(); ?>
 				</p>
 
-				<?php if ( ! $the_booking->is_continuous_periods() ) : ?>
+				<?php if ( $the_booking->get_line_items()->count() && ! $the_booking->is_continuous_periods() ) : ?>
 					<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation, please check the booking details table', 'awebooking' ); ?></p>
 				<?php endif ?>
 			</div>
