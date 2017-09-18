@@ -70,9 +70,6 @@ define( 'AWEBOOKING_VERSION', AweBooking::VERSION );
  */
 $awebooking = new AweBooking;
 
-add_action( 'plugins_loaded', [ $awebooking, 'booting' ] );
-add_action( 'skeleton/init', [ $awebooking, 'boot' ] );
-
 register_activation_hook( AWEBOOKING_PLUGIN_FILE_PATH, [ AweBooking\Installer::class, 'install' ] );
 
 $GLOBALS['awebooking'] = $awebooking;

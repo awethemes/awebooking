@@ -12,7 +12,7 @@ use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Admin_Booking_Created;
 use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Request_Handler extends Service_Hooks {
 	/**
@@ -91,7 +91,7 @@ class Request_Handler extends Service_Hooks {
 
 		$validator->labels( apply_filters( 'awebooking/checkout/validator_labels', [
 			'customer_first_name' => esc_html__( 'First name', 'awebooking' ),
-			'customer_first_name' => esc_html__( 'Last name', 'awebooking' ),
+			'customer_last_name'  => esc_html__( 'Last name', 'awebooking' ),
 			'customer_email'      => esc_html__( 'Email address', 'awebooking' ),
 			'customer_phone'      => esc_html__( 'Phone number', 'awebooking' ),
 		]));
@@ -173,6 +173,7 @@ class Request_Handler extends Service_Hooks {
 			}
 
 			$booking->calculate_totals();
+			do_action( 'awebooking/booking_created', $booking );
 
 			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {

@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use Valitron\Validator;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 use AweBooking\Admin\Fields\Date_Range_Field;
 use AweBooking\Admin\Fields\Service_List_Field;
 

@@ -4,7 +4,7 @@ namespace AweBooking\Admin;
 use Skeleton\Menu_Page;
 use AweBooking\Installer;
 use AweBooking\AweBooking;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Admin_Hooks extends Service_Hooks {
 	/**

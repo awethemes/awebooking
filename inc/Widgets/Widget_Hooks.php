@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Widgets;
 
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 use AweBooking\Widgets\Check_Availability_Widget;
 
 class Widget_Hooks extends Service_Hooks {

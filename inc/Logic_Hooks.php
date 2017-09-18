@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking;
 
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Logic_Hooks extends Service_Hooks {
 	/**

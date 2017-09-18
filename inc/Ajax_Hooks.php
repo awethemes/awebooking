@@ -3,7 +3,7 @@ namespace AweBooking;
 
 use AweBooking\Booking\Request;
 use AweBooking\Support\Formatting;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 use AweBooking\Pricing\Price_Calculator;
 
 class Ajax_Hooks extends Service_Hooks {

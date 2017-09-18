@@ -4,9 +4,11 @@ namespace AweBooking;
 use WP_Session;
 use AweBooking\Support\Addon;
 use AweBooking\Booking\Store as Booking_Store;
-use Skeleton\Container\Container as Skeleton_Container;
 
-class AweBooking extends Skeleton_Container {
+use Illuminate\Support\Arr;
+use Illuminate\Container\Container;
+
+final class AweBooking extends Container {
 	/* Constants */
 	const VERSION        = '3.0.0-beta6';
 	const SETTING_KEY    = 'awebooking_settings';
@@ -26,6 +28,34 @@ class AweBooking extends Skeleton_Container {
 	const STATE_BOOKED      = 3;
 
 	/**
+	 * Indicates if the application has "booted".
+	 *
+	 * @var bool
+	 */
+	protected $booted = false;
+
+	/**
+	 * All of the registered service providers.
+	 *
+	 * @var array
+	 */
+	protected $service_providers = [];
+
+	/**
+	 * The names of the loaded service providers.
+	 *
+	 * @var array
+	 */
+	protected $loadedProviders = [];
+
+	/**
+	 * The deferred services and their providers.
+	 *
+	 * @var array
+	 */
+	protected $deferredServices = [];
+
+	/**
 	 * A list add-ons was attached in to AweBooking.
 	 *
 	 * @var array
@@ -33,36 +63,107 @@ class AweBooking extends Skeleton_Container {
 	protected $addons = [];
 
 	/**
-	 * The current globally available container (if any).
-	 *
-	 * @var static
-	 */
-	public static $instance;
-
-	/**
 	 * Set the globally available instance of the container.
 	 *
 	 * @return static
 	 */
 	public static function get_instance() {
-		if ( is_null( static::$instance ) ) {
-			static::$instance = new static;
-		}
-
-		return static::$instance;
+		return static::getInstance();
 	}
 
 	/**
 	 * AweBooking constructor.
 	 */
 	public function __construct() {
-		parent::__construct();
+		// Register base bindings.
+		$this->register_base_bindings();
 
-		// Binding $this in to static $instance.
-		static::$instance = $this;
+		/**
+		 * When `plugins_loaded`, initialize the core.
+		 */
+		add_action( 'plugins_loaded', [ $this, 'initialize' ] );
 
-		$this->setup();
-		$this->setup_plugin();
+		/**
+		 * Boottrap core after the `skeleton/init` fired.
+		 */
+		add_action( 'skeleton/init', [ $this, 'terminate' ] );
+	}
+
+	/**
+	 * Get the version number of the AweBooking.
+	 *
+	 * @return string
+	 */
+	public function version() {
+		return static::VERSION;
+	}
+
+	/**
+	 * Register the basic bindings into the container.
+	 *
+	 * @return void
+	 */
+	protected function register_base_bindings() {
+		static::setInstance( $this );
+
+		$this->instance( 'awebooking', $this );
+
+		$this->instance( AweBooking::class, $this );
+
+
+		$this['url'] = $this->plugin_url();
+		$this['path'] = $this->plugin_path();
+
+		$this->singleton( 'session', function () {
+			return WP_Session::get_instance();
+		});
+
+		$this->singleton( 'option_key', function( $a ) {
+			return AweBooking::SETTING_KEY;
+		});
+
+		$this->singleton( 'setting', function ( $a ) {
+			return new Setting( $a['option_key'] );
+		});
+
+		// TODO: Remove this!!!
+		$this['config'] = function ( $awebooking ) {
+			return $awebooking['setting'];
+		};
+
+		$this->singleton( 'currency_manager', function ( $awebooking ) {
+			return new Currency\Currency_Manager;
+		});
+
+		$this->singleton( 'currency', function ( $a ) {
+			return new Currency\Currency( $a['setting']->get( 'currency' ) );
+		});
+
+		$this->singleton( 'flash_message', function () {
+			return new Support\Flash_Message;
+		});
+
+		// Binding stores.
+		$this->singleton( 'store.booking', function() {
+			return new Booking_Store( 'awebooking_booking', 'room_id' );
+		});
+
+		$this->singleton( 'store.availability', function() {
+			return new Booking_Store( 'awebooking_availability', 'room_id' );
+		});
+
+		$this->singleton( 'store.pricing', function() {
+			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
+		});
+	}
+
+	/**
+	 * Register all of the base service providers.
+	 *
+	 * @return void
+	 */
+	protected function register_base_service_providers() {
+		// ...
 	}
 
 	/**
@@ -70,12 +171,13 @@ class AweBooking extends Skeleton_Container {
 	 *
 	 * @return void
 	 */
-	public function booting() {
-		// WP_Session::get_instance();
+	public function initialize() {
+		$this->load_textdomain();
 
 		// Skeleton Support.
-		skeleton()->trigger( new Skeleton_Hooks );
+		// skeleton()->trigger( new Skeleton_Hooks );
 
+		// Register core service providers.
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
@@ -89,90 +191,256 @@ class AweBooking extends Skeleton_Container {
 
 		$this->trigger( new Admin\Admin_Hooks );
 
-		do_action( 'awebooking/booting', $this );
+		do_action( 'awebooking/init', $this );
+	}
+
+	public function terminate() {
+		$this->boottrap();
+
+		Shortcodes\Shortcodes::init();
+		$this['flash_message']->setup_message();
 	}
 
 	/**
 	 * Fire registerd service hooks.
 	 */
-	public function boot() {
-		do_action( 'awebooking/init', $this );
+	public function boottrap() {
+		if ( $this->booted ) {
+			return;
+		}
 
-		Shortcodes\Shortcodes::init();
-		$this['flash_message']->setup_message();
+		do_action( 'awebooking/booting', $this );
 
-		// Init the addons.
-		array_walk( $this->addons, function( $addon ) {
-			$this->init_addon( $addon );
+		array_walk( $this->service_providers, function ( $p ) {
+			$this->boot_provider( $p );
 		});
 
-		// Init the service hooks.
-		parent::boot();
+		$this->booted = true;
 
 		do_action( 'awebooking/booted', $this );
 	}
 
 	/**
-	 * Setup the core AweBooking.
+	 * Is the system running with multi location?
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function setup() {
-		$this['url'] = $this->plugin_url();
-		$this['path'] = $this->plugin_path();
-
-		$this->bind( 'session', function () {
-			return WP_Session::get_instance();
-		});
-
-		$this->bind( 'option_key', function( $a ) {
-			return AweBooking::SETTING_KEY;
-		});
-
-		$this->bind( 'setting', function ( $a ) {
-			return new Setting( $a['option_key'] );
-		});
-
-		// TODO: Remove this!!!
-		$this['config'] = function ( $awebooking ) {
-			return $awebooking['setting'];
-		};
-
-		$this->bind( 'currency_manager', function ( $awebooking ) {
-			return new Currency\Currency_Manager;
-		});
-
-		$this->bind( 'currency', function ( $a ) {
-			return new Currency\Currency( $a['setting']->get( 'currency' ) );
-		});
-
-		$this->bind( 'flash_message', function () {
-			return new Support\Flash_Message;
-		});
-
-		// Binding stores.
-		$this->bind( 'store.booking', function() {
-			return new Booking_Store( 'awebooking_booking', 'room_id' );
-		});
-
-		$this->bind( 'store.availability', function() {
-			return new Booking_Store( 'awebooking_availability', 'room_id' );
-		});
-
-		$this->bind( 'store.pricing', function() {
-			return new Booking_Store( 'awebooking_pricing', 'rate_id' );
-		});
+	public function is_multi_location() {
+		return (bool) $this['config']->get( 'enable_location' );
 	}
 
 	/**
-	 * Setup plugin in to WordPress.
+	 * Is running in multi language system?
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function setup_plugin() {
-		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
-		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
+	public function is_multi_language() {
+		return $this['multilingual']->is_polylang() || $this['multilingual']->is_wpml();
 	}
+
+	/**
+	 * Returns the plugin url.
+	 *
+	 * @param  string $path Optional, extra url path.
+	 * @return string
+	 */
+	public function plugin_url( $path = null ) {
+		return trailingslashit( plugin_dir_url( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
+	}
+
+	/**
+	 * Returns the plugin path.
+	 *
+	 * @param  string $path Optional, extra directory/file path.
+	 * @return string
+	 */
+	public function plugin_path( $path = null ) {
+		return trailingslashit( plugin_dir_path( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
+	}
+
+	/**
+	 * Returns the plugin slug.
+	 *
+	 * @return string
+	 */
+	public function plugin_basename() {
+		return plugin_basename( AWEBOOKING_PLUGIN_FILE_PATH );
+	}
+
+	/**
+	 * Returns the relative template path.
+	 *
+	 * @return string
+	 */
+	public function template_path() {
+		return apply_filters( 'awebooking/template_path', 'awebooking/' );
+	}
+
+	/**
+	 * Alias of register method.
+	 *
+	 * @param  [type]  $provider [description]
+	 * @param  boolean $force    [description]
+	 * @return [type]            [description]
+	 */
+	public function trigger( $provider, $force = false ) {
+		return $this->register( $provider, $force );
+	}
+
+    /**
+     * Register a service provider with the application.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  array  $options
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register($provider, $force = false)
+    {
+        if (($registered = $this->getProvider($provider)) && ! $force) {
+            return $registered;
+        }
+
+        // If the given "provider" is a string, we will resolve it, passing in the
+        // application instance automatically for the developer. This is simply
+        // a more convenient way of specifying your service provider classes.
+        if (is_string($provider)) {
+            $provider = $this->resolveProvider($provider);
+        }
+
+        if (method_exists($provider, 'register')) {
+            $provider->register( $this );
+        }
+
+        $this->markAsRegistered($provider);
+
+        // If the application has already booted, we will call this boot method on
+        // the provider class so it has an opportunity to do its boot logic and
+        // will be ready for any usage by this developer's application logic.
+        if ($this->booted) {
+            $this->boot_provider($provider);
+        }
+
+        return $provider;
+    }
+
+    /**
+     * Get the registered service provider instance if it exists.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @return \Illuminate\Support\ServiceProvider|null
+     */
+    public function getProvider($provider)
+    {
+        $name = is_string($provider) ? $provider : get_class($provider);
+
+        return Arr::first($this->service_providers, function ($value) use ($name) {
+            return $value instanceof $name;
+        });
+    }
+
+    /**
+     * Resolve a service provider instance from the class name.
+     *
+     * @param  string  $provider
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function resolveProvider($provider)
+    {
+        return new $provider($this);
+    }
+
+    /**
+     * Mark the given provider as registered.
+     *
+     * @param  \Illuminate\Support\ServiceProvider  $provider
+     * @return void
+     */
+    protected function markAsRegistered($provider)
+    {
+        $this->service_providers[] = $provider;
+
+        $this->loadedProviders[get_class($provider)] = true;
+    }
+
+    /**
+     * Boot the given service provider.
+     *
+     * @param  \Illuminate\Support\ServiceProvider  $provider
+     * @return mixed
+     */
+    protected function boot_provider( $provider)
+    {
+    	$provider->init( $this );
+
+        if (method_exists($provider, 'boot')) {
+            return $this->call([$provider, 'boot']);
+        }
+    }
+
+    /**
+     * Load and boot all of the remaining deferred providers.
+     *
+     * @return void
+     */
+    public function loadDeferredProviders()
+    {
+        // We will simply spin through each of the deferred providers and register each
+        // one and boot them if the application has booted. This should make each of
+        // the remaining services available to this application for immediate use.
+        foreach ($this->deferredServices as $service => $provider) {
+            $this->loadDeferredProvider($service);
+        }
+
+        $this->deferredServices = [];
+    }
+
+    /**
+     * Load the provider for a deferred service.
+     *
+     * @param  string  $service
+     * @return void
+     */
+    public function loadDeferredProvider($service)
+    {
+        if (! isset($this->deferredServices[$service])) {
+            return;
+        }
+
+        $provider = $this->deferredServices[$service];
+
+        // If the service provider has not already been loaded and registered we can
+        // register it with the application and remove the service from this list
+        // of deferred services, since it will already be loaded on subsequent.
+        if (! isset($this->loadedProviders[$provider])) {
+            $this->registerDeferredProvider($provider, $service);
+        }
+    }
+
+    /**
+     * Register a deferred provider and service.
+     *
+     * @param  string  $provider
+     * @param  string|null  $service
+     * @return void
+     */
+    public function registerDeferredProvider($provider, $service = null)
+    {
+        // Once the provider that provides the deferred service has been registered we
+        // will remove it from our local list of the deferred services with related
+        // providers so that this container does not try to resolve it out again.
+        if ($service) {
+            unset($this->deferredServices[$service]);
+        }
+
+        $this->register($instance = new $provider($this));
+
+        if (! $this->booted) {
+            $this->booting(function () use ($instance) {
+                $this->boot_provider($instance);
+            });
+        }
+    }
 
 	/**
 	 * Register addon for AweBooking.
@@ -252,59 +520,23 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * Is running in multi language system?
+	 * Register a new boot listener.
 	 *
-	 * @return bool
+	 * @param  mixed  $callback
+	 * @return void
 	 */
-	public function is_multi_language() {
-		return $this['multilingual']->is_polylang() || $this['multilingual']->is_wpml();
+	public function booting( $callback ) {
+		add_action( 'awebooking/booting', $callbacks, 0 );
 	}
 
 	/**
-	 * Is the system running with multi location?
+	 * Register a new "booted" listener.
 	 *
-	 * @return bool
+	 * @param  mixed  $callback
+	 * @return void
 	 */
-	public function is_multi_location() {
-		return (bool) $this['config']->get( 'enable_location' );
-	}
-
-	/**
-	 * Returns the plugin url.
-	 *
-	 * @param  string $path Optional, extra url path.
-	 * @return string
-	 */
-	public function plugin_url( $path = null ) {
-		return trailingslashit( plugin_dir_url( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
-	}
-
-	/**
-	 * Returns the plugin path.
-	 *
-	 * @param  string $path Optional, extra directory/file path.
-	 * @return string
-	 */
-	public function plugin_path( $path = null ) {
-		return trailingslashit( plugin_dir_path( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
-	}
-
-	/**
-	 * Returns the plugin slug.
-	 *
-	 * @return string
-	 */
-	public function plugin_basename() {
-		return plugin_basename( AWEBOOKING_PLUGIN_FILE_PATH );
-	}
-
-	/**
-	 * Returns the relative template path.
-	 *
-	 * @return string
-	 */
-	public function template_path() {
-		return apply_filters( 'awebooking/template_path', 'awebooking/' );
+	public function booted( $callback ) {
+		add_action( 'awebooking/booted', $callbacks, 0 );
 	}
 
 	/**
@@ -316,7 +548,7 @@ class AweBooking extends Skeleton_Container {
 	 *      - WP_LANG_DIR/awebooking/awebooking-LOCALE.mo
 	 *      - WP_LANG_DIR/plugins/awebooking-LOCALE.mo
 	 */
-	public function _load_textdomain() {
+	protected function load_textdomain() {
 		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		$locale = apply_filters( 'plugin_locale', $locale, 'awebooking' );
 
@@ -329,9 +561,9 @@ class AweBooking extends Skeleton_Container {
 	/**
 	 * Show row meta on the plugin screen.
 	 *
-	 * @param	mixed $links Plugin row meta.
-	 * @param	mixed $file  Plugin base file.
-	 * @return	array
+	 * @param  mixed $links Plugin row meta.
+	 * @param  mixed $file  Plugin base file.
+	 * @return array
 	 */
 	public function _plugin_row_meta( $links, $file ) {
 		if ( $this->plugin_basename() == $file ) {
