@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin;
+namespace AweBooking\Admin\Pages;
 
 use Skeleton\Support\Priority_List;
 
@@ -16,6 +16,15 @@ class Admin_Welcome {
 	 */
 	public function __construct() {
 		$this->tabs = new Priority_List;
+
+		$this->add_tab( array(
+			'id'       => 'welcome',
+			'title'    => esc_html__( 'Welcome', 'awebooking' ),
+			'nowrap'   => true,
+			'callback' => function() {
+				include_once trailingslashit( __DIR__ ) . 'views/html-admin-welcome.php';
+			},
+		));
 	}
 
 	/**

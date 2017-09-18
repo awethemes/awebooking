@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Admin;
+namespace AweBooking\Admin\Pages;
 
 use AweBooking\AweBooking;
 use AweBooking\Admin\Admin_Utils;
@@ -297,8 +297,8 @@ class Admin_Setup_Wizard {
 	 * Locale settings.
 	 */
 	public function setup_locale() {
-		$currencies       = awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
-		$currency_pos   = awebooking( 'currency_manager' )->get_positions();
+		$currencies   = awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
+		$currency_pos = awebooking( 'setting' )->get_currency_positions();
 
 		// Defaults
 		$currency_default = awebooking_option( 'currency' ) ? awebooking_option( 'currency' ) : awebooking_option()->get_default( 'currency' );

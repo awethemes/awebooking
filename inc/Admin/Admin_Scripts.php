@@ -2,24 +2,12 @@
 namespace AweBooking\Admin;
 
 use AweBooking\AweBooking;
-use Skeleton\Container\Service_Hooks;
 
-class Admin_Scripts_Hooks extends Service_Hooks {
+class Admin_Scripts {
 	/**
-	 * Determine run init action only in admin.
-	 *
-	 * @var boolean
+	 * Constructor.
 	 */
-	public $in_admin = true;
-
-	/**
-	 * Init service provider.
-	 *
-	 * This method will be run after container booted.
-	 *
-	 * @param Skeleton $awebooking AweBooking Container instance.
-	 */
-	public function init( $awebooking ) {
+	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 	}
 

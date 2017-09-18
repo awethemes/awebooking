@@ -42,7 +42,13 @@ use AweBooking\Admin\Forms\Booking_General_From;
 
 			<div class="booking-column">
 				<div class="awebooking-block-form">
-					<?php (new Booking_General_From( $the_booking ))->output(); ?>
+					<?php
+					do_action( 'awebooking/booking/html_before_general_form', $the_booking );
+
+					(new Booking_General_From( $the_booking ))->output();
+
+					do_action( 'awebooking/booking/html_after_general_form', $the_booking );
+					?>
 				</div>
 			</div>
 
@@ -88,7 +94,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<?php $the_booking->get_fomatted_guest_number(); ?>
 				</p>
 
-				<?php if ( ! $the_booking->is_continuous_periods() ) : ?>
+				<?php if ( $the_booking->get_line_items()->count() && ! $the_booking->is_continuous_periods() ) : ?>
 					<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation, please check the booking details table', 'awebooking' ); ?></p>
 				<?php endif ?>
 			</div>
@@ -192,7 +198,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<?php endif ?>
 
 					<strong style="float: right;">
-						<?php printf( esc_html__( 'Total: %s' ), $the_booking->get_price( $the_booking->get_subtotal() ) ); ?>
+						<?php printf( esc_html__( 'Total: %s' ), $the_booking->get_total() ); ?>
 					</strong>
 				</td>
 			</tr>

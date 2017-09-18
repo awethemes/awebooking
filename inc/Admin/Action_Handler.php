@@ -47,7 +47,10 @@ class Action_Handler {
 		}
 
 		// Delete the booking item.
-		$booking_item->delete();
+		$the_booking->remove_item( $booking_item );
+		$the_booking->save();
+
+		$the_booking->calculate_totals();
 
 		awebooking( 'admin_notices' )->info(
 			sprintf( esc_html__( 'The booking item #%s has been deleted.', 'awebooking' ), esc_html( $post_id ) )

@@ -22,57 +22,13 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		$container->trigger( new Admin_Scripts_Hooks );
-
 		$container->bind( 'admin_notices', function() {
 			return new Admin_Notices;
 		});
 
-		$container->bind( 'admin_welcome', function() {
-			return new Admin_Welcome;
+		$container->bind( 'admin_menu', function() {
+			return new Admin_Menu;
 		});
-
-		$container['admin_welcome']->add_tab( array(
-			'id'       => 'welcome',
-			'title'    => esc_html__( 'Welcome', 'awebooking' ),
-			'nowrap'   => true,
-			'callback' => function() {
-				include_once __DIR__ . '/views/welcome-tabs/admin_welcome.php';
-			},
-		));
-
-		$container['admin_menu'] = new Menu_Page( 'awebooking', array(
-			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
-			'menu_title' => esc_html__( 'AweBooking', 'awebooking' ),
-			'icon_url'   => 'dashicons-calendar',
-			'position'   => 52,
-			'function' => function() {
-				awebooking( 'admin_welcome' )->output();
-			},
-		));
-
-		$container['admin_menu']->add_submenu( 'manager-awebooking', array(
-			'page_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
-			'noheader'    => true,
-			'function' => function() {
-				(new Availability_Management)->output();
-			},
-		));
-
-		$container['admin_menu']->add_submenu( 'manager-pricing', array(
-			'page_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
-			'noheader'    => true,
-			'function' => function() {
-				(new Pricing_Management)->output();
-			},
-		));
-
-		$container['admin_menu']->add_submenu( 'edit.php?post_type=awebooking', array(
-			'page_title'  => esc_html__( 'Booking', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Booking', 'awebooking' ),
-		));
 	}
 
 	/**
@@ -83,33 +39,28 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Skeleton $awebooking AweBooking Container instance.
 	 */
 	public function init( $awebooking ) {
-		$awebooking->make( 'admin_menu' )->init();
+		$awebooking['admin_menu']->init();
 
 		new Admin_Ajax;
 		new Action_Handler;
-		new Permalink_Settings;
-		new Admin_Setup_Wizard;
-		new Admin_Email_Preview;
+		new Admin_Scripts;
 
-		new Admin_Settings( $awebooking['admin_menu'] );
+		new Admin_Settings;
+		new Pages\Permalink_Settings;
+		new Pages\Admin_Email_Preview;
+		new Pages\Admin_Setup_Wizard;
 
 		new List_Tables\Booking_List_Table;
 		new List_Tables\Room_Type_List_Table;
 		new List_Tables\Service_List_Table;
 
-		new Metaboxes\Room_Type_Metabox;
 		new Metaboxes\Booking_Metabox;
 		new Metaboxes\Service_Metabox;
-
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_filter( 'menu_order', array( $this, 'menu_order' ) );
-		add_filter( 'custom_menu_order', '__return_true' );
-
-		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
-		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
+		new Metaboxes\Room_Type_Metabox;
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_notices', [ $awebooking['admin_notices'], 'display' ] );
+		add_filter( 'display_post_states', array( $this, 'page_state' ), 10, 2 );
 	}
 
 	/**
@@ -133,7 +84,7 @@ class Admin_Hooks extends Service_Hooks {
 		}
 
 		// Run background update.
-		$db_version = add_option( 'awebooking_version' );
+		$db_version = get_option( 'awebooking_version' );
 		if ( ! $db_version || AweBooking::VERSION !== $db_version ) {
 			Installer::update();
 		}
@@ -149,59 +100,17 @@ class Admin_Hooks extends Service_Hooks {
 	 */
 	public function page_state( $post_states, $post ) {
 		if ( intval( awebooking_option( 'page_check_availability' ) ) === $post->ID ) {
-			$post_states['page_check_availability'] = __( 'Check Availability Page' );
+			$post_states['page_check_availability'] = esc_html__( 'Check Availability Page', 'awebooking' );
 		}
 
 		if ( intval( awebooking_option( 'page_booking' ) ) === $post->ID ) {
-			$post_states['page_booking'] = __( 'Booking Informations Page' );
+			$post_states['page_booking'] = esc_html__( 'Booking Informations Page', 'awebooking' );
 		}
 
 		if ( intval( awebooking_option( 'page_checkout' ) ) === $post->ID ) {
-			$post_states['page_checkout'] = __( 'Checkout Page' );
+			$post_states['page_checkout'] = esc_html__( 'Checkout Page', 'awebooking' );
 		}
 
 		return $post_states;
-	}
-
-	public function admin_menu() {
-		global $menu;
-		$menu[] = array( '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' );
-	}
-
-	public function menu_order( $menu_order ) {
-		$awebooking_menu_order = array();
-
-		$awebooking_separator = array_search( 'separator-awebooking', $menu_order );
-
-		foreach ( $menu_order as $index => $item ) {
-			if ( ( ( 'edit.php?post_type=room_type' ) == $item ) ) {
-				$awebooking_menu_order[] = 'separator-awebooking';
-				$awebooking_menu_order[] = $item;
-				unset( $menu_order[ $awebooking_separator ] );
-			} elseif ( ! in_array( $item, array( 'separator-awebooking' ) ) ) {
-				$awebooking_menu_order[] = $item;
-			}
-		}
-
-		return $awebooking_menu_order;
-	}
-
-	/**
-	 * Highlights the correct top level admin menu item for post type add screens.
-	 */
-	public function menu_highlight() {
-		global $parent_file, $submenu_file;
-		$current_screen = get_current_screen();
-
-		if ( ! $current_screen ) {
-			return;
-		}
-
-		switch ( $current_screen->id ) {
-			case 'awebooking':
-				$parent_file  = 'awebooking';
-				$submenu_file = 'edit.php?post_type=awebooking';
-			break;
-		}
 	}
 }

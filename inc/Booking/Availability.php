@@ -190,35 +190,6 @@ class Availability {
 	/**
 	 * //
 	 *
-	 * @return array
-	 */
-	public function to_array() {
-		return [
-			'check_in'        => $this->get_request()->get_check_in()->toDateString(),
-			'check_out'       => $this->get_request()->get_check_out()->toDateString(),
-			'nights'          => $this->get_request()->get_nights(),
-			'price'           => (string) $this->get_price(),
-			'total_price'     => (string) $this->get_total_price(),
-			'available_rooms' => $this->get_available_rooms(),
-			'room_type'       => $this->get_room_type()->to_array(),
-			'rooms'           => array_values( (array) $this->get_rooms() ),
-		];
-	}
-
-	/**
-	 * Allow dynamic call method from request object.
-	 *
-	 * @param  string $method Method name.
-	 * @param  array  $args   Method arguments.
-	 * @return mixed
-	 */
-	public function __call( $method, $args ) {
-		return call_user_func_array( [ $this->get_request(), $method ], $args );
-	}
-
-	/**
-	 * //
-	 *
 	 * @param  array $pipes //.
 	 * @return void
 	 */
@@ -234,7 +205,7 @@ class Availability {
 			}
 
 			$extra_service = new Service( $term_instance->term_id, $term_instance );
-			$pipes[] = new Service_Calculator( $extra_service, $this );
+			$pipes[] = new Service_Calculator( $extra_service, $this->get_request(), $this->get_price() );
 		}
 	}
 
@@ -250,5 +221,31 @@ class Availability {
 		}
 
 		$this->request->set_request( 'extra_services', $request_services );
+	}
+
+	/**
+	 * //
+	 *
+	 * @return array
+	 */
+	public function to_array() {
+		return [
+			'check_in'  => $this->get_request()->get_check_in()->toDateString(),
+			'check_out' => $this->get_request()->get_check_out()->toDateString(),
+			'nights'    => $this->get_request()->get_nights(),
+			'price'     => $this->get_price()->get_amount(),
+			'total'     => $this->get_total_price()->get_amount(),
+		];
+	}
+
+	/**
+	 * Allow dynamic call method from request object.
+	 *
+	 * @param  string $method Method name.
+	 * @param  array  $args   Method arguments.
+	 * @return mixed
+	 */
+	public function __call( $method, $args ) {
+		return call_user_func_array( [ $this->get_request(), $method ], $args );
 	}
 }

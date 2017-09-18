@@ -95,3 +95,24 @@ select[name="booking_status"],
 select[name="booking_customer"] {
   min-width: 320px;
 }
+
+.awebooking-nav-tab-wrapper + .subsubsub {
+  float: none;
+  display: block;
+  padding-top: 15px;
+
+  li {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  li + li:before {
+    content: "|";
+    color: #d1d1d1;
+
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}

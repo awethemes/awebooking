@@ -7,10 +7,15 @@
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /languages
- * Version:         3.0.0-beta3
+ * Version:         3.0.0-beta6
  *
  * @package         AweBooking
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 /**
  * AweBooking only works in WordPress 4.6 or later.
@@ -25,10 +30,11 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6', '<' ) ) {
 	function awebooking_wordpress_upgrade_notice() {
 		$message = sprintf( esc_html__( 'AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!', 'awebooking' ), $GLOBALS['wp_version'] );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
-	}
-	add_action( 'admin_notices', 'awebooking_wordpress_upgrade_notice' );
 
-	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
+		deactivate_plugins( array( 'awebooking/awebooking.php' ) );
+	}
+
+	add_action( 'admin_notices', 'awebooking_wordpress_upgrade_notice' );
 	return;
 }
 
@@ -42,30 +48,31 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 	function awebooking_php_upgrade_notice() {
 		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.6.4 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
 		printf( '<div class="error"><p>%s</p></div>', $message ); // WPCS: XSS OK.
-	}
-	add_action( 'admin_notices', 'awebooking_php_upgrade_notice' );
 
-	deactivate_plugins( array( 'awebooking/awebooking.php' ) );
+		deactivate_plugins( array( 'awebooking/awebooking.php' ) );
+	}
+
+	add_action( 'admin_notices', 'awebooking_php_upgrade_notice' );
 	return;
 }
 
 /**
- * First, we need autoload via Composer to make everything works.
- */
-require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
-
-/**
- * Next, load the bootstrap file.
+ * Load the bootstrap file.
  */
 require trailingslashit( __DIR__ ) . 'bootstrap.php';
 
+/* Constants */
+define( 'AWEBOOKING_PLUGIN_FILE_PATH', __FILE__ );
+define( 'AWEBOOKING_VERSION', AweBooking::VERSION );
+
 /**
- * Yeah, now everything okay, we'll create the AweBooking.
+ * Let create the AweBooking.
  */
 $awebooking = new AweBooking;
 
-add_action( 'skeleton/init', array( $awebooking, 'boot' ) );
+add_action( 'plugins_loaded', [ $awebooking, 'booting' ] );
+add_action( 'skeleton/init', [ $awebooking, 'boot' ] );
 
-register_activation_hook( __FILE__, array( 'AweBooking\\Installer', 'install' ) );
+register_activation_hook( AWEBOOKING_PLUGIN_FILE_PATH, [ AweBooking\Installer::class, 'install' ] );
 
 $GLOBALS['awebooking'] = $awebooking;

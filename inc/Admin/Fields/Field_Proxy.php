@@ -1,13 +1,14 @@
 <?php
-namespace AweBooking\Admin\Forms;
+namespace AweBooking\Admin\Fields;
 
+use CMB2;
 use CMB2_Field;
 
 class Field_Proxy {
 	/**
-	 * The form instance.
+	 * CMB2 form instance.
 	 *
-	 * @var Form_Abstract
+	 * @var CMB2
 	 */
 	protected $form;
 
@@ -28,10 +29,10 @@ class Field_Proxy {
 	/**
 	 * Create a new proxy instance.
 	 *
-	 * @param Form_Abstract $form  The Form instance.
-	 * @param CMB2_Field    $field CMB2 Field instance.
+	 * @param CMB2       $form  CMB2 Form instance.
+	 * @param CMB2_Field $field CMB2 Field instance.
 	 */
-	public function __construct( Form_Abstract $form, CMB2_Field $field ) {
+	public function __construct( CMB2 $form, CMB2_Field $field ) {
 		$this->form = $form;
 		$this->field = $field;
 	}
@@ -65,6 +66,36 @@ class Field_Proxy {
 	 */
 	public function set_value( $value ) {
 		$this->field->value = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Set field property.
+	 *
+	 * @param  string $property Field property.
+	 * @param  mixed  $value    Value to set.
+	 * @return $this
+	 */
+	public function set_prop( $property, $value ) {
+		$this->field->set_prop( $property, $value );
+
+		return $this;
+	}
+
+	/**
+	 * Set field attribute property.
+	 *
+	 * @param string $attribute Attribute key name.
+	 * @param string $value     Attribute value.
+	 */
+	public function set_attribute( $attribute, $value = '' ) {
+		$attribute  = is_array( $attribute ) ? $attribute : [ $attribute => $value ];
+		$attributes = $this->prop( 'attributes' ) ?: [];
+
+		$this->set_prop( 'attributes',
+			array_merge( $attributes, $attribute )
+		);
 
 		return $this;
 	}
@@ -138,7 +169,7 @@ class Field_Proxy {
 	 */
 	public function __call( $method, $parameters ) {
 		if ( ! method_exists( $this->field, $method ) ) {
-			throw new \BadMethodCallException;
+			throw new \BadMethodCallException( "Method [{$method}] does not exists" );
 		}
 
 		return call_user_func_array( [ $this->field, $method ], $parameters );

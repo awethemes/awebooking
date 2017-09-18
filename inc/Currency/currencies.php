@@ -768,6 +768,12 @@ return [
 		'format' => '$1,0.00',
 		'exchange_rate' => 0.00,
 	],
+	'SSP' => [
+		'name' => 'South Sudanese pound',
+		'symbol' => '£',
+		'format' => '£1,0.00',
+		'exchange_rate' => 0.00,
+	],
 	'STD' => [
 		'name' => 'Sao Tome and Principe, Dobra',
 		'symbol' => 'Db',

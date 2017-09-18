@@ -2,15 +2,13 @@
 namespace AweBooking;
 
 use WP_Session;
-use AweBooking\Hotel\Service;
-use AweBooking\Booking\Booking;
-use AweBooking\Booking\Concierge;
+use AweBooking\Support\Addon;
 use AweBooking\Booking\Store as Booking_Store;
 use Skeleton\Container\Container as Skeleton_Container;
 
 class AweBooking extends Skeleton_Container {
 	/* Constants */
-	const VERSION        = '3.0.0-beta4';
+	const VERSION        = '3.0.0-beta6';
 	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';
@@ -27,14 +25,12 @@ class AweBooking extends Skeleton_Container {
 	const STATE_PENDING     = 2;
 	const STATE_BOOKED      = 3;
 
-	// Weekday.
-	const SUNDAY    = 0;
-	const MONDAY    = 1;
-	const TUESDAY   = 2;
-	const WEDNESDAY = 3;
-	const THURSDAY  = 4;
-	const FRIDAY    = 5;
-	const SATURDAY  = 6;
+	/**
+	 * A list add-ons was attached in to AweBooking.
+	 *
+	 * @var array
+	 */
+	protected $addons = [];
 
 	/**
 	 * The current globally available container (if any).
@@ -57,26 +53,63 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * So, let we create great booking plugin for you!
+	 * AweBooking constructor.
 	 */
 	public function __construct() {
 		parent::__construct();
 
+		// Binding $this in to static $instance.
 		static::$instance = $this;
 
 		$this->setup();
+		$this->setup_plugin();
+	}
+
+	/**
+	 * Trigger booting when `plugins_loaded`.
+	 *
+	 * @return void
+	 */
+	public function booting() {
+		// WP_Session::get_instance();
+
+		// Skeleton Support.
+		skeleton()->trigger( new Skeleton_Hooks );
+
 		$this->trigger( new WP_Core_Hooks );
 		$this->trigger( new WP_Query_Hooks );
 		$this->trigger( new Logic_Hooks );
+
+		$this->trigger( new Ajax_Hooks );
+		$this->trigger( new Request_Handler );
+		$this->trigger( new Template_Hooks );
+
+		$this->trigger( new Widgets\Widget_Hooks );
 		$this->trigger( new Multilingual_Hooks );
 
 		$this->trigger( new Admin\Admin_Hooks );
-		$this->trigger( new Template_Hooks );
-		$this->trigger( new Request_Handler );
-		$this->trigger( new Ajax_Hooks );
-		$this->trigger( new Widgets\Widget_Hooks );
 
 		do_action( 'awebooking/booting', $this );
+	}
+
+	/**
+	 * Fire registerd service hooks.
+	 */
+	public function boot() {
+		do_action( 'awebooking/init', $this );
+
+		Shortcodes\Shortcodes::init();
+		$this['flash_message']->setup_message();
+
+		// Init the addons.
+		array_walk( $this->addons, function( $addon ) {
+			$this->init_addon( $addon );
+		});
+
+		// Init the service hooks.
+		parent::boot();
+
+		do_action( 'awebooking/booted', $this );
 	}
 
 	/**
@@ -105,21 +138,17 @@ class AweBooking extends Skeleton_Container {
 			return $awebooking['setting'];
 		};
 
-		$this['factory'] = function ( $awebooking ) {
-			return new Factory( $awebooking );
-		};
+		$this->bind( 'currency_manager', function ( $awebooking ) {
+			return new Currency\Currency_Manager;
+		});
 
-		$this['currency_manager'] = function ( $awebooking ) {
-			return new Currency\Currency_Manager( $awebooking['config'] );
-		};
-
-		$this['currency'] = function ( $a ) {
+		$this->bind( 'currency', function ( $a ) {
 			return new Currency\Currency( $a['setting']->get( 'currency' ) );
-		};
+		});
 
-		$this['flash_message'] = function () {
+		$this->bind( 'flash_message', function () {
 			return new Support\Flash_Message;
-		};
+		});
 
 		// Binding stores.
 		$this->bind( 'store.booking', function() {
@@ -136,19 +165,90 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * Fire registerd service hooks.
+	 * Setup plugin in to WordPress.
+	 *
+	 * @return void
 	 */
-	public function boot() {
-		do_action( 'awebooking/init', $this );
-
-		parent::boot();
-
-		Shortcodes\Shortcodes::init();
-		$this['flash_message']->setup_message();
-
+	protected function setup_plugin() {
+		add_action( 'plugins_loaded', [ $this, '_load_textdomain' ] );
 		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
+	}
 
-		do_action( 'awebooking/booted', $this );
+	/**
+	 * Register addon for AweBooking.
+	 *
+	 * @param  Addon $addon The addon object instance.
+	 * @return $this
+	 */
+	public function register_addon( Addon $addon ) {
+		// Unique addon ID, normally same as plugin name.
+		$addon_id = $addon->get_id();
+
+		// If already registerd addon, just leave.
+		if ( isset( $this->addons[ $addon_id ] ) ) {
+			return $this;
+		}
+
+		// Binding this container into the addon.
+		if ( is_null( $addon->awebooking ) ) {
+			$addon->awebooking = $this;
+		}
+
+		$addon->register();
+
+		if ( $this->booted ) {
+			$this->init_addon( $addon );
+		}
+
+		$this->addons[ $addon_id ] = $addon;
+
+		return $this;
+	}
+
+	/**
+	 * Gets addons instance by registed ID.
+	 *
+	 * @param  string $addon_id Register addon ID.
+	 * @return Addon
+	 */
+	public function get_addon( $addon_id ) {
+		return isset( $this->addons[ $addon_id ] ) ? $this->addons[ $addon_id ] : null;
+	}
+
+	/**
+	 * Init the addon.
+	 *
+	 * @param  Addon $addon Addon object.
+	 * @return void
+	 */
+	protected function init_addon( Addon $addon ) {
+		$require_version = $addon->requires();
+		$require_version = ( ! $require_version || 'latest' === $require_version ) ? static::VERSION : $require_version;
+
+		if ( ! version_compare( static::VERSION, $require_version, '>=' ) ) {
+			$addon->log_error( sprintf(
+				esc_html__( 'This addon requires at least AweBooking version %1$s, you have running on AweBooking %2$s', 'awebooking' ),
+				esc_html( $require_version ),
+				esc_html( static::VERSION )
+			));
+
+			return;
+		}
+
+		// Init the addon.
+		$addon->init();
+
+		if ( $addon->is_notify_update() ) {
+			$addon->setup_addon_updater();
+		}
+
+		/**
+		 * Fire event after init addon.
+		 *
+		 * @param mixed      $addon      The addon instance object.
+		 * @param AweBooking $awebooking AweBooking instance object.
+		 */
+		do_action( 'awebooking/addons/init_' . $addon->get_id(), $addon, $this );
 	}
 
 	/**
@@ -170,39 +270,60 @@ class AweBooking extends Skeleton_Container {
 	}
 
 	/**
-	 * Get the plugin url.
+	 * Returns the plugin url.
 	 *
+	 * @param  string $path Optional, extra url path.
 	 * @return string
 	 */
-	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', __DIR__ ) );
+	public function plugin_url( $path = null ) {
+		return trailingslashit( plugin_dir_url( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
 	}
 
 	/**
-	 * Get the plugin path.
+	 * Returns the plugin path.
 	 *
+	 * @param  string $path Optional, extra directory/file path.
 	 * @return string
 	 */
-	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( __DIR__ ) );
+	public function plugin_path( $path = null ) {
+		return trailingslashit( plugin_dir_path( AWEBOOKING_PLUGIN_FILE_PATH ) ) . $path;
 	}
 
 	/**
-	 * Get the plugin slug.
+	 * Returns the plugin slug.
 	 *
 	 * @return string
 	 */
 	public function plugin_basename() {
-		return plugin_basename( $this->plugin_path() );
+		return plugin_basename( AWEBOOKING_PLUGIN_FILE_PATH );
 	}
 
 	/**
-	 * Get the template path.
+	 * Returns the relative template path.
 	 *
 	 * @return string
 	 */
 	public function template_path() {
 		return apply_filters( 'awebooking/template_path', 'awebooking/' );
+	}
+
+	/**
+	 * Load localisation files.
+	 *
+	 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+	 *
+	 * Locales found in:
+	 *      - WP_LANG_DIR/awebooking/awebooking-LOCALE.mo
+	 *      - WP_LANG_DIR/plugins/awebooking-LOCALE.mo
+	 */
+	public function _load_textdomain() {
+		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$locale = apply_filters( 'plugin_locale', $locale, 'awebooking' );
+
+		unload_textdomain( 'awebooking' );
+
+		load_textdomain( 'awebooking', WP_LANG_DIR . '/awebooking/awebooking-' . $locale . '.mo' );
+		load_plugin_textdomain( 'awebooking', false, $this->plugin_basename() . '/languages' );
 	}
 
 	/**
@@ -213,7 +334,7 @@ class AweBooking extends Skeleton_Container {
 	 * @return	array
 	 */
 	public function _plugin_row_meta( $links, $file ) {
-		if ( awebooking()->plugin_basename() . '/awebooking.php' == $file ) {
+		if ( $this->plugin_basename() == $file ) {
 			$row_meta = array(
 				'docs' => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View AweBooking documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
 				'demo' => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'View Demo', 'awebooking' ) . '</a>',

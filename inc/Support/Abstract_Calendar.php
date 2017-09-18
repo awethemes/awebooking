@@ -1,13 +1,11 @@
 <?php
 namespace AweBooking\Support;
 
-use Carbon\Carbon;
-
 abstract class Abstract_Calendar {
 	/**
-	 * Carbon instance of today.
+	 * Carbonate instance of today.
 	 *
-	 * @var Carbon
+	 * @var Carbonate
 	 */
 	protected $today;
 
@@ -53,7 +51,7 @@ abstract class Abstract_Calendar {
 	 * @param array $options The calendar options.
 	 */
 	public function __construct( array $options = [] ) {
-		$this->today = Carbon::today();
+		$this->today = Carbonate::today();
 
 		$this->setup_options( $options );
 
@@ -79,11 +77,11 @@ abstract class Abstract_Calendar {
 	/**
 	 * Setup date data before prints.
 	 *
-	 * @param  Carbon $date   Date instance.
-	 * @param  string $context Context from Calendar.
+	 * @param  Carbonate $date    Date instance.
+	 * @param  string    $context Context from Calendar.
 	 * @return void
 	 */
-	abstract protected function setup_date( Carbon $date, $context );
+	abstract protected function setup_date( Carbonate $date, $context );
 
 	/**
 	 * Generate HTML Calendar in a year.
@@ -92,7 +90,7 @@ abstract class Abstract_Calendar {
 	 * @return string
 	 */
 	protected function generate_year_calendar( $year ) {
-		$year = ( $year instanceof Carbon ) ? $year->year : $year;
+		$year = ( $year instanceof Carbonate ) ? $year->year : $year;
 		$this->data = $this->prepare_data( $year, 'year' );
 
 		$output  = '<table class="' . esc_attr( $this->get_html_class( '&__table &__table--year' ) ) . '">';
@@ -115,7 +113,7 @@ abstract class Abstract_Calendar {
 		$output .= "\n<tbody>";
 
 		for ( $m = 1; $m <= 12; $m++ ) {
-			$month = Carbon::createFromDate( $year, $m, 1 );
+			$month = Carbonate::createFromDate( $year, $m, 1 );
 
 			// Don't show previous months if necessary.
 			if ( $this->get_option( 'hide_prev_months' ) &&
@@ -150,10 +148,10 @@ abstract class Abstract_Calendar {
 	/**
 	 * Generate HTML Calendar in a month.
 	 *
-	 * @param  Carbon $month Month to generate.
+	 * @param  Carbonate $month Month to generate.
 	 * @return string
 	 */
-	protected function generate_month_calendar( Carbon $month ) {
+	protected function generate_month_calendar( Carbonate $month ) {
 		$month = $month->startOfMonth();
 		$this->data = $this->prepare_data( $month, 'month' );
 
@@ -162,7 +160,7 @@ abstract class Abstract_Calendar {
 
 		for ( $i = 0; $i <= 6; $i++ ) {
 			$wd = (int) ( $i + $this->week_begins ) % 7;
-			$wd_class = ( Carbon::SUNDAY == $wd || Carbon::SATURDAY == $wd ) ? '&__day-heading--weekend' : '&__day-heading--weekday';
+			$wd_class = ( Carbonate::SUNDAY == $wd || Carbonate::SATURDAY == $wd ) ? '&__day-heading--weekend' : '&__day-heading--weekday';
 
 			$output .= "\n\t\t" . sprintf( '<th class="%1$s"><span title="%3$s">%2$s</span></th>',
 				esc_attr( $this->get_html_class( '&__day-heading ' . $wd_class ) ),
@@ -213,11 +211,11 @@ abstract class Abstract_Calendar {
 	/**
 	 * Generate HTML cell of a day.
 	 *
-	 * @param  Carbon $date    Current day instance.
-	 * @param  string $context Context from Calendar.
+	 * @param  Carbonate $date    Current day instance.
+	 * @param  string    $context Context from Calendar.
 	 * @return string
 	 */
-	protected function generate_cell_date( Carbon $date, $context ) {
+	protected function generate_cell_date( Carbonate $date, $context ) {
 		return sprintf( '<td class="%6$s" data-day="%1$s" data-month="%2$s" data-year="%3$s" data-date="%4$s" title="%5$s">' . $this->get_date_contents( $date, $context ) . '</td>',
 			esc_attr( $date->day ),
 			esc_attr( $date->month ),
@@ -248,21 +246,21 @@ abstract class Abstract_Calendar {
 	 *
 	 * Override this method if want custom contents.
 	 *
-	 * @param  Carbon $date    Current day instance.
-	 * @param  string $context Context from Calendar.
+	 * @param  Carbonate $date    Current day instance.
+	 * @param  string    $context Context from Calendar.
 	 * @return array
 	 */
-	protected function get_date_contents( Carbon $date, $context ) {
+	protected function get_date_contents( Carbonate $date, $context ) {
 		return '<span class="' . esc_attr( $this->get_html_class( '&__state' ) ) . '">' . ( 'month' === $context ? '%1$s' : '&nbsp;' ) . '</span>';
 	}
 
 	/**
 	 * Get classess for date.
 	 *
-	 * @param  Carbon $date Date instance.
+	 * @param  Carbonate $date Date instance.
 	 * @return array
 	 */
-	protected function get_date_classes( Carbon $date ) {
+	protected function get_date_classes( Carbonate $date ) {
 		$classes[] = $this->get_html_class( '&__day' );
 
 		// Is current day is today, future or past.

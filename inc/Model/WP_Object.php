@@ -490,6 +490,8 @@ abstract class WP_Object implements ArrayAccess, Arrayable, Jsonable, JsonSerial
 	 * @return bool|null
 	 */
 	protected function update_the_post( array $post_data ) {
+		global $wpdb;
+
 		if ( ! $this->exists() || empty( $post_data ) ) {
 			return;
 		}

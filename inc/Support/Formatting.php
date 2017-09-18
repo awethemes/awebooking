@@ -30,7 +30,7 @@ class Formatting {
 			$formatted = preg_replace( '/' . preg_quote( $config->get( 'price_decimal_separator' ), '/' ) . '0++$/', '', $formatted );
 		}
 
-		return apply_filters( 'awebooking/number_format', $formatted, $args );
+		return apply_filters( 'awebooking/number_format', $formatted, $number, $args );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Formatting {
 			$price    = $price->get_amount();
 		} else {
 			// Otherwise, use default currency.
-			$currency = awebooking()->make( 'currency' );
+			$currency = awebooking( 'currency' );
 		}
 
 		// Do we have a negative price?

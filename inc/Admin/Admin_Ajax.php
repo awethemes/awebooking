@@ -9,11 +9,15 @@ use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Hotel\Service;
 use AweBooking\Support\Period;
+use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Admin\Forms\Add_Line_Item_Form;
 use AweBooking\Admin\Forms\Edit_Line_Item_Form;
 use AweBooking\Admin\Calendar\Yearly_Calendar;
 use Skeleton\Support\Validator;
+use AweBooking\Pricing\Price;
+use AweBooking\Pricing\Price_Calculator;
+use AweBooking\Calculator\Service_Calculator;
 
 class Admin_Ajax {
 	/**
@@ -32,12 +36,112 @@ class Admin_Ajax {
 		add_action( 'wp_ajax_edit_awebooking_line_item', [ $this, 'edit_booking_line_item' ] );
 		add_action( 'wp_ajax_get_awebooking_add_item_form', [ $this, 'get_booking_add_item_form' ] );
 		add_action( 'wp_ajax_get_awebooking_edit_line_item_form', [ $this, 'get_edit_line_item_form' ] );
+		add_action( 'wp_ajax_awebooking_calculate_line_item_total', [ $this, 'calculate_add_line_item_total' ] );
+		add_action( 'wp_ajax_awebooking_calculate_update_line_item_total', [ $this, 'calculate_update_line_item_total' ] );
 
 		add_action( 'wp_ajax_add_awebooking_note', array( $this, 'add_booking_note' ) );
 		add_action( 'wp_ajax_delete_awebooking_note', array( $this, 'delete_booking_note' ) );
 
 		// Miscs.
 		add_action( 'wp_ajax_awebooking_json_search_customers', [ $this, 'json_search_customers' ] );
+	}
+
+	/**
+	 * Calculate line item total cost.
+	 *
+	 * @return void
+	 */
+	public function calculate_add_line_item_total() {
+		if ( empty( $_REQUEST['booking_id'] ) ) {
+			wp_send_json_error();
+		}
+
+		$the_booking = Factory::get_booking( absint( $_REQUEST['booking_id'] ) );
+		if ( ! $the_booking || ! $the_booking->exists() ) {
+			wp_send_json_error();
+		}
+
+		try {
+			$form = new Add_Line_Item_Form( $the_booking );
+			$sanitized = $form->get_sanitized( $_POST, true );
+
+			$room = Factory::get_room_unit( $sanitized['add_room'] );
+			$room_type = $room->get_room_type();
+
+			$period = new Period(
+				$sanitized['add_check_in_out'][0],
+				$sanitized['add_check_in_out'][1]
+			);
+
+			$request = new Request( $period, [
+				'room-type'  => $room_type->get_id(), // TODO: ...
+				'adults'     => $sanitized['add_adults'],
+				'children'   => $sanitized['add_children'],
+				'extra_services' => isset( $sanitized['add_services'] ) ? $sanitized['add_services'] : [],
+			]);
+
+			// Next, call to Concierge and check availability our hotel.
+			$availability = Concierge::check_room_type_availability( $room_type, $request );
+
+			if ( $availability->unavailable() ) {
+				wp_send_json_error();
+			}
+
+			wp_send_json_success( $availability->to_array() );
+
+		} catch ( \Exception $e ) {
+			wp_send_json_error( [ 'error' => $e->getMessage() ] );
+		}
+	}
+
+	public function calculate_update_line_item_total() {
+		if ( empty( $_REQUEST['line_item_id'] ) ) {
+			wp_send_json_error();
+		}
+
+		$line_item = new Line_Item( absint( $_REQUEST['line_item_id'] ) );
+		if ( ! $line_item || ! $line_item->exists() ) {
+			wp_send_json_error();
+		}
+
+		$booking = $line_item->get_booking();
+		$room_type = $line_item->get_room_unit()->get_room_type();
+
+		$sanitized = (new Edit_Line_Item_Form( $line_item ))->get_sanitized();
+		$current_price = $line_item->get_total();
+
+		if ( ! empty( $sanitized['edit_check_in_out'] ) ) {
+			$period = new Period(
+				$sanitized['edit_check_in_out'][0],
+				$sanitized['edit_check_in_out'][1]
+			);
+		} else {
+			$period = $line_item->get_period();
+		}
+
+		$request = new Request( $period, [
+			'adults' => $sanitized['edit_adults'],
+			'children' => $sanitized['edit_children'],
+		]);
+
+		// ----------
+		$base_price = Concierge::get_price( $room_type, $period );
+
+		$pipes = [];
+		foreach ( $sanitized['edit_services'] as $service ) {
+			$extra_service = new Service( $service );
+			if ( ! $extra_service->exists() ) {
+				continue;
+			}
+
+			$pipes[] = new Service_Calculator( $extra_service, $request, $booking->get_price( $current_price ) );
+		}
+
+		$price = (new Price_Calculator( $base_price ))
+			->through( $pipes )
+			->process();
+
+		wp_send_json_success( [ 'total' => $price->get_amount(), 'total_display' => (string) $price ] );
 	}
 
 	/**
