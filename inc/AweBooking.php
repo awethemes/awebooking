@@ -77,6 +77,7 @@ final class AweBooking extends Container {
 	public function __construct() {
 		// Register base bindings.
 		$this->register_base_bindings();
+		$this->register_base_service_providers();
 
 		/**
 		 * When `plugins_loaded`, initialize the core.
@@ -109,7 +110,6 @@ final class AweBooking extends Container {
 		$this->instance( 'awebooking', $this );
 
 		$this->instance( AweBooking::class, $this );
-
 
 		$this['url'] = $this->plugin_url();
 		$this['path'] = $this->plugin_path();
@@ -163,7 +163,7 @@ final class AweBooking extends Container {
 	 * @return void
 	 */
 	protected function register_base_service_providers() {
-		// ...
+		$this->register( new Session\Session_Service_Provider );
 	}
 
 	/**
@@ -198,6 +198,7 @@ final class AweBooking extends Container {
 		$this->boottrap();
 
 		Shortcodes\Shortcodes::init();
+
 		$this['flash_message']->setup_message();
 	}
 
