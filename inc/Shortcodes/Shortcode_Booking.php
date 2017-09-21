@@ -5,6 +5,7 @@ use AweBooking\Concierge;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Request;
 use AweBooking\Support\Template;
+use AweBooking\Factory;
 
 class Shortcode_Booking {
 
@@ -25,14 +26,20 @@ class Shortcode_Booking {
 	 */
 	public static function output( $atts ) {
 		$atts = shortcode_atts( array(), $atts, 'awebooking_booking' );
+		if ( empty( $_REQUEST['room-type'] ) ) {
+			return;
+		}
 
 		try {
-			$booking_request = Request::instance();
-			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
-
+			$room_type = new Room_Type( intval( $_REQUEST['room-type'] ) );
+			$booking_request = Factory::create_booking_request();
+			$booking_request->set_request( 'room-type', $room_type->get_id() );
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
-			Template::get_template( 'booking.php', array( 'availability' => $availability, 'room_type' => $room_type ) );
+			Template::get_template( 'booking.php', [
+				'availability' => $availability,
+				'room_type' => $room_type,
+			] );
 
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();

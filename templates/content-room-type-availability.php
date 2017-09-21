@@ -69,13 +69,12 @@ $room_type_id = $result->get_room_type()->get_id();
 
 		<?php
 			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type_id ) );
-			$link = add_query_arg( $default_args, get_the_permalink( $room_type_id ) );
+			$link         = add_query_arg( $default_args, get_the_permalink( $room_type_id ) );
 		?>
 		<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
 
 		<?php
-			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type_id ) );
-			$link = add_query_arg( array_merge( array( 'add-booking' => 1 ), (array) $default_args ), get_the_permalink() );
+			$link         = add_query_arg( $default_args, awebooking_get_page_permalink( 'booking' ) );
 		?>
 		<a class="awebooking-loop-room-type__button-booking" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'Book Room', 'awebooking' ); ?></a>
 
