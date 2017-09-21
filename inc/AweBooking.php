@@ -323,15 +323,15 @@ class AweBooking extends Skeleton_Container {
 		unload_textdomain( 'awebooking' );
 
 		load_textdomain( 'awebooking', WP_LANG_DIR . '/awebooking/awebooking-' . $locale . '.mo' );
-		load_plugin_textdomain( 'awebooking', false, $this->plugin_basename() . '/languages' );
+		load_plugin_textdomain( 'awebooking', false, dirname( $this->plugin_basename() ) . '/languages' );
 	}
 
 	/**
 	 * Show row meta on the plugin screen.
 	 *
-	 * @param	mixed $links Plugin row meta.
-	 * @param	mixed $file  Plugin base file.
-	 * @return	array
+	 * @param  mixed $links Plugin row meta.
+	 * @param  mixed $file  Plugin base file.
+	 * @return array
 	 */
 	public function _plugin_row_meta( $links, $file ) {
 		if ( $this->plugin_basename() == $file ) {
