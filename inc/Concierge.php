@@ -240,8 +240,8 @@ class Concierge {
 			'hotel_location'   => $request->get_request( 'location' ),
 		]);
 
-		$room_ids = wp_list_pluck( $query->posts, 'ID' );
-		$rooms = Room::get_by_room_type( $room_ids );
+		$room_type_ids = wp_list_pluck( $query->posts, 'ID' );
+		$rooms = Room::get_by_room_type( $room_type_ids );
 
 		if ( empty( $rooms ) ) {
 			return [];
