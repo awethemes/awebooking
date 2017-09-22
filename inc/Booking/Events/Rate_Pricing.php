@@ -25,7 +25,7 @@ class Rate_Pricing extends Event {
 		$this->end_date = Carbonate::instance( $end_date );
 		$this->start_date = Carbonate::instance( $start_date );
 
-		$this->value = $price->to_amount();
+		$this->value = $price->to_integer();
 	}
 
 	/**

@@ -64,20 +64,13 @@ class Currency {
 	}
 
 	/**
-	 * Parse currency args.
+	 * Checks whether this currency is the same as an other.
 	 *
-	 * @param  array|null $args Optional, currency args.
-	 * @return array|null
+	 * @param Currency $other Other currency.
+	 * @return bool
 	 */
-	protected function parse_currency_args( $args ) {
-		if ( empty( $args ) ) {
-			return awebooking( 'currency_manager' )->get_currency( $this->code );
-		}
-
-		return wp_parse_args( $args, [
-			'name'   => '',
-			'symbol' => '',
-		]);
+	public function equals( Currency $other ) {
+		return $this->code === $other->code;
 	}
 
 	/**
@@ -100,5 +93,22 @@ class Currency {
 	 */
 	public function __toString() {
 		return $this->get_code();
+	}
+
+	/**
+	 * Parse currency args.
+	 *
+	 * @param  array|null $args Optional, currency args.
+	 * @return array|null
+	 */
+	protected function parse_currency_args( $args ) {
+		if ( empty( $args ) ) {
+			return awebooking( 'currency_manager' )->get_currency( $this->code );
+		}
+
+		return wp_parse_args( $args, [
+			'name'   => '',
+			'symbol' => '',
+		]);
 	}
 }

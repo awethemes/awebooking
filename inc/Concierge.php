@@ -192,7 +192,7 @@ class Concierge {
 			new \DateInterval( 'P1D' )
 		);
 
-		return Price::from_amount(
+		return Price::from_integer(
 			$valuator->determineValue()
 		);
 	}
