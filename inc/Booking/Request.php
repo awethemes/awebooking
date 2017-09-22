@@ -28,7 +28,7 @@ class Request {
 			throw new \RuntimeException( 'Missing booking data' );
 		}
 
-		$requests = $wp_session['awebooking_request']->toArray();
+		$requests = $wp_session['awebooking_request'];
 		$period = new Period( $requests['check_in'], $requests['check_out'], true );
 
 		return new static( $period, $requests );
@@ -53,7 +53,6 @@ class Request {
 		$store_request['check_out'] = $this->get_check_out()->toDateString();
 
 		$wp_session['awebooking_request'] = $store_request;
-		wp_session_commit();
 	}
 
 	/**

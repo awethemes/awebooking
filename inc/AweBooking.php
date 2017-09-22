@@ -114,10 +114,6 @@ final class AweBooking extends Container {
 		$this['url'] = $this->plugin_url();
 		$this['path'] = $this->plugin_path();
 
-		$this->singleton( 'session', function () {
-			return WP_Session::get_instance();
-		});
-
 		$this->singleton( 'option_key', function( $a ) {
 			return AweBooking::SETTING_KEY;
 		});

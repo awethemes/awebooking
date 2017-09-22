@@ -27,15 +27,16 @@ class Session_Service_Provider extends Service_Hooks {
 	 */
 	protected function binding_session( $awebooking ) {
 		// The number of minutes that you wish the session life.
-		$awebooking['session_name'] = 'awebooking_session';
-		$awebooking['session_lifetime'] = 60 * 48; // 2 days.
+		$awebooking['session_name']            = 'awebooking_session';
+		$awebooking['session_lifetime']        = 60 * 48; // 2 days.
 		$awebooking['session_expire_on_close'] = false;
 
-		$awebooking->singleton( 'wp_session', function( $a ) {
+		$awebooking->singleton( 'session', function( $a ) {
 			return new Store( $a['session_name'], new WP_Session_Handler( $a['session_lifetime'] ) );
 		});
 
-		$awebooking->alias( 'wp_session', Session::class );
+		$awebooking->alias( 'session', Store::class );
+		$awebooking->alias( 'session', Session::class );
 	}
 
 	/**
@@ -52,7 +53,9 @@ class Session_Service_Provider extends Service_Hooks {
 		$session->start();
 
 		// Add the session identifier to cookie, so we can re-use that in lifetime.
-		awebooking_setcookie( $session->get_name(), $session->get_id(), $this->get_cookie_expiration_date() );
+		awebooking_setcookie(
+			$session->get_name(), $session->get_id(), $this->get_cookie_expiration_date()
+		);
 	}
 
 	/**

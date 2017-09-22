@@ -191,8 +191,6 @@ class Request_Handler extends Service_Hooks {
 			unset( $session['awebooking_request'] );
 			awebooking_setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
 
-			wp_session_commit();
-
 			wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
 			exit;
 		} catch ( \Exception $e ) {
