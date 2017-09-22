@@ -65,6 +65,16 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta7] - 2017-09-21
+#### Changes
+- Improve multilanguage support
+
+#### Fixed
+- Fixed check availability bugs with multilanguage
+- Fixed some issues about email templates
+- Fixed loading wrong textdomain directory
+- Minor bugs fixed
+
 ### [3.0.0-beta6] - 2017-09-14
 #### Added
 - Added SSP currency.
