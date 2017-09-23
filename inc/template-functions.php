@@ -11,6 +11,7 @@ require_once trailingslashit( __DIR__ ) . 'template-hooks.php';
 function awebooking_template_scripts() {
 	wp_enqueue_style( 'awebooking-template', AweBooking()->plugin_url() . '/assets/css/awebooking.css', array(), AweBooking::VERSION );
 
+	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'awebooking', AweBooking()->plugin_url() . '/assets/js/front-end/awebooking.js', array( 'jquery' ), AweBooking::VERSION, true );
 

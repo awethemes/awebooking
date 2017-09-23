@@ -116,13 +116,16 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 
 				<div class="text-right">
 					<?php
-						$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
+						$default_args     = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
 						$add_booking_link = add_query_arg( array_merge( array( 'add-booking' => 1 ), (array) $default_args ), get_the_permalink() );
+						$checkout_link    = get_permalink( absint( awebooking_option( 'page_checkout' ) ) );
 					?>
-					<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
-					<a class="btn button awebooking-button" href="<?php echo esc_url( $add_booking_link ); ?>"><?php esc_html_e( 'Add to Booking', 'awebooking' ); ?></a>
-					<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
-					
+					<a class="btn button awebooking-button" href="<?php echo esc_url( $add_booking_link ); ?>">
+						<?php esc_html_e( 'Add to Booking', 'awebooking' ); ?>
+					</a>
+					<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>">
+						<?php esc_html_e( 'Checkout', 'awebooking' ); ?>
+					</a>
 				</div>
 			</div>
 		</div>
