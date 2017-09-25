@@ -111,6 +111,8 @@ final class AweBooking extends Container {
 
 		$this->instance( AweBooking::class, $this );
 
+		$this->singleton( 'cart', Cart\Cart::class );
+
 		$this['url'] = $this->plugin_url();
 		$this['path'] = $this->plugin_path();
 
@@ -184,7 +186,6 @@ final class AweBooking extends Container {
 
 		$this->trigger( new Widgets\Widget_Hooks );
 		$this->trigger( new Multilingual_Hooks );
-
 		$this->trigger( new Admin\Admin_Hooks );
 
 		do_action( 'awebooking/init', $this );
@@ -284,160 +285,160 @@ final class AweBooking extends Container {
 		return $this->register( $provider, $force );
 	}
 
-    /**
-     * Register a service provider with the application.
-     *
-     * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
-     * @param  bool   $force
-     * @return \Illuminate\Support\ServiceProvider
-     */
-    public function register($provider, $force = false)
-    {
-        if (($registered = $this->getProvider($provider)) && ! $force) {
-            return $registered;
-        }
+	/**
+	 * Register a service provider with the application.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
+	 * @param  array  $options
+	 * @param  bool   $force
+	 * @return \Illuminate\Support\ServiceProvider
+	 */
+	public function register($provider, $force = false)
+	{
+		if (($registered = $this->getProvider($provider)) && ! $force) {
+			return $registered;
+		}
 
-        // If the given "provider" is a string, we will resolve it, passing in the
-        // application instance automatically for the developer. This is simply
-        // a more convenient way of specifying your service provider classes.
-        if (is_string($provider)) {
-            $provider = $this->resolveProvider($provider);
-        }
+		// If the given "provider" is a string, we will resolve it, passing in the
+		// application instance automatically for the developer. This is simply
+		// a more convenient way of specifying your service provider classes.
+		if (is_string($provider)) {
+			$provider = $this->resolveProvider($provider);
+		}
 
-        if (method_exists($provider, 'register')) {
-            $provider->register( $this );
-        }
+		if (method_exists($provider, 'register')) {
+			$provider->register( $this );
+		}
 
-        $this->markAsRegistered($provider);
+		$this->markAsRegistered($provider);
 
-        // If the application has already booted, we will call this boot method on
-        // the provider class so it has an opportunity to do its boot logic and
-        // will be ready for any usage by this developer's application logic.
-        if ($this->booted) {
-            $this->boot_provider($provider);
-        }
+		// If the application has already booted, we will call this boot method on
+		// the provider class so it has an opportunity to do its boot logic and
+		// will be ready for any usage by this developer's application logic.
+		if ($this->booted) {
+			$this->boot_provider($provider);
+		}
 
-        return $provider;
-    }
+		return $provider;
+	}
 
-    /**
-     * Get the registered service provider instance if it exists.
-     *
-     * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @return \Illuminate\Support\ServiceProvider|null
-     */
-    public function getProvider($provider)
-    {
-        $name = is_string($provider) ? $provider : get_class($provider);
+	/**
+	 * Get the registered service provider instance if it exists.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
+	 * @return \Illuminate\Support\ServiceProvider|null
+	 */
+	public function getProvider($provider)
+	{
+		$name = is_string($provider) ? $provider : get_class($provider);
 
-        return Arr::first($this->service_providers, function ($value) use ($name) {
-            return $value instanceof $name;
-        });
-    }
+		return Arr::first($this->service_providers, function ($value) use ($name) {
+			return $value instanceof $name;
+		});
+	}
 
-    /**
-     * Resolve a service provider instance from the class name.
-     *
-     * @param  string  $provider
-     * @return \Illuminate\Support\ServiceProvider
-     */
-    public function resolveProvider($provider)
-    {
-        return new $provider($this);
-    }
+	/**
+	 * Resolve a service provider instance from the class name.
+	 *
+	 * @param  string  $provider
+	 * @return \Illuminate\Support\ServiceProvider
+	 */
+	public function resolveProvider($provider)
+	{
+		return new $provider($this);
+	}
 
-    /**
-     * Mark the given provider as registered.
-     *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
-     * @return void
-     */
-    protected function markAsRegistered($provider)
-    {
-        $this->service_providers[] = $provider;
+	/**
+	 * Mark the given provider as registered.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider  $provider
+	 * @return void
+	 */
+	protected function markAsRegistered($provider)
+	{
+		$this->service_providers[] = $provider;
 
-        $this->loadedProviders[get_class($provider)] = true;
-    }
+		$this->loadedProviders[get_class($provider)] = true;
+	}
 
-    /**
-     * Boot the given service provider.
-     *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
-     * @return mixed
-     */
-    protected function boot_provider( $provider)
-    {
-    	$provider->init( $this );
+	/**
+	 * Boot the given service provider.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider  $provider
+	 * @return mixed
+	 */
+	protected function boot_provider( $provider)
+	{
+		$provider->init( $this );
 
-        if (method_exists($provider, 'boot')) {
-            return $this->call([$provider, 'boot']);
-        }
-    }
+		if (method_exists($provider, 'boot')) {
+			return $this->call([$provider, 'boot']);
+		}
+	}
 
-    /**
-     * Load and boot all of the remaining deferred providers.
-     *
-     * @return void
-     */
-    public function loadDeferredProviders()
-    {
-        // We will simply spin through each of the deferred providers and register each
-        // one and boot them if the application has booted. This should make each of
-        // the remaining services available to this application for immediate use.
-        foreach ($this->deferredServices as $service => $provider) {
-            $this->loadDeferredProvider($service);
-        }
+	/**
+	 * Load and boot all of the remaining deferred providers.
+	 *
+	 * @return void
+	 */
+	public function loadDeferredProviders()
+	{
+		// We will simply spin through each of the deferred providers and register each
+		// one and boot them if the application has booted. This should make each of
+		// the remaining services available to this application for immediate use.
+		foreach ($this->deferredServices as $service => $provider) {
+			$this->loadDeferredProvider($service);
+		}
 
-        $this->deferredServices = [];
-    }
+		$this->deferredServices = [];
+	}
 
-    /**
-     * Load the provider for a deferred service.
-     *
-     * @param  string  $service
-     * @return void
-     */
-    public function loadDeferredProvider($service)
-    {
-        if (! isset($this->deferredServices[$service])) {
-            return;
-        }
+	/**
+	 * Load the provider for a deferred service.
+	 *
+	 * @param  string  $service
+	 * @return void
+	 */
+	public function loadDeferredProvider($service)
+	{
+		if (! isset($this->deferredServices[$service])) {
+			return;
+		}
 
-        $provider = $this->deferredServices[$service];
+		$provider = $this->deferredServices[$service];
 
-        // If the service provider has not already been loaded and registered we can
-        // register it with the application and remove the service from this list
-        // of deferred services, since it will already be loaded on subsequent.
-        if (! isset($this->loadedProviders[$provider])) {
-            $this->registerDeferredProvider($provider, $service);
-        }
-    }
+		// If the service provider has not already been loaded and registered we can
+		// register it with the application and remove the service from this list
+		// of deferred services, since it will already be loaded on subsequent.
+		if (! isset($this->loadedProviders[$provider])) {
+			$this->registerDeferredProvider($provider, $service);
+		}
+	}
 
-    /**
-     * Register a deferred provider and service.
-     *
-     * @param  string  $provider
-     * @param  string|null  $service
-     * @return void
-     */
-    public function registerDeferredProvider($provider, $service = null)
-    {
-        // Once the provider that provides the deferred service has been registered we
-        // will remove it from our local list of the deferred services with related
-        // providers so that this container does not try to resolve it out again.
-        if ($service) {
-            unset($this->deferredServices[$service]);
-        }
+	/**
+	 * Register a deferred provider and service.
+	 *
+	 * @param  string  $provider
+	 * @param  string|null  $service
+	 * @return void
+	 */
+	public function registerDeferredProvider($provider, $service = null)
+	{
+		// Once the provider that provides the deferred service has been registered we
+		// will remove it from our local list of the deferred services with related
+		// providers so that this container does not try to resolve it out again.
+		if ($service) {
+			unset($this->deferredServices[$service]);
+		}
 
-        $this->register($instance = new $provider($this));
+		$this->register($instance = new $provider($this));
 
-        if (! $this->booted) {
-            $this->booting(function () use ($instance) {
-                $this->boot_provider($instance);
-            });
-        }
-    }
+		if (! $this->booted) {
+			$this->booting(function () use ($instance) {
+				$this->boot_provider($instance);
+			});
+		}
+	}
 
 	/**
 	 * Register addon for AweBooking.
