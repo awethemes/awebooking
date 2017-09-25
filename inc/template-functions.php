@@ -568,10 +568,11 @@ if ( ! function_exists( 'awebooking_template_checkout_customer_form' ) ) :
 	/**
 	 * AweBooking checkout customer form template.
 	 *
+	 * @param  object $availability availability.
 	 * @return void
 	 */
-	function awebooking_template_checkout_customer_form() {
-		awebooking_get_template( 'checkout/customer-form.php' );
+	function awebooking_template_checkout_customer_form( $availability ) {
+		awebooking_get_template( 'checkout/customer-form.php', compact( 'availability' ) );
 	}
 endif;
 

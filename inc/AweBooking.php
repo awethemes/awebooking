@@ -10,7 +10,7 @@ use Illuminate\Container\Container;
 
 final class AweBooking extends Container {
 	/* Constants */
-	const VERSION        = '3.0.0-beta6';
+	const VERSION        = '3.0.0-beta7-dev';
 	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';
@@ -553,7 +553,7 @@ final class AweBooking extends Container {
 		unload_textdomain( 'awebooking' );
 
 		load_textdomain( 'awebooking', WP_LANG_DIR . '/awebooking/awebooking-' . $locale . '.mo' );
-		load_plugin_textdomain( 'awebooking', false, $this->plugin_basename() . '/languages' );
+		load_plugin_textdomain( 'awebooking', false, dirname( $this->plugin_basename() ) . '/languages' );
 	}
 
 	/**

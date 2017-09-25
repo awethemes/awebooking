@@ -36,11 +36,24 @@ class Multilingual_Hooks extends Service_Hooks {
 	 */
 	public function init( $awebooking ) {
 		add_filter( 'awebooking/room_type/get_id_for_rooms', [ $this, 'room_type_id' ] );
+		add_filter( 'awebooking/rooms/get_by_room_type', [ $this, 'get_by_room_type' ] );
 
 		// Make sure the options are copied if needed.
 		if ( $awebooking->is_multi_language() ) {
 			$this->run_copy_settings();
 		}
+	}
+
+	public function get_by_room_type( $ids ) {
+		if ( ! awebooking()->is_multi_language() ) {
+			return $ids;
+		}
+
+		foreach ( $ids as &$room_id ) {
+			$room_id = awebooking( 'multilingual' )->get_original_object_id( $room_id );
+		}
+
+		return $ids;
 	}
 
 	public function room_type_id( $room_id ) {
