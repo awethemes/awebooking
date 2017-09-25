@@ -81,11 +81,12 @@ interface Session {
 	public function regenerate( $destroy = false );
 
 	/**
-	 * Get the name of the session.
+	 * Set the session ID.
 	 *
-	 * @return string
+	 * @param  string $id
+	 * @return void
 	 */
-	public function get_name();
+	public function set_id( $id );
 
 	/**
 	 * Get the current session ID.
@@ -95,12 +96,11 @@ interface Session {
 	public function get_id();
 
 	/**
-	 * Set the session ID.
+	 * Get the name of the session.
 	 *
-	 * @param  string $id
-	 * @return void
+	 * @return string
 	 */
-	public function set_id( $id );
+	public function get_name();
 
 	/**
 	 * Determine if the session has been started.
