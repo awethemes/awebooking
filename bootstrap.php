@@ -23,3 +23,4 @@ if ( ! defined( 'AWETHEMES_SKELETON_LOADED' ) ) {
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
+class_alias( 'Awethemes\WP_Object\WP_Object', 'AweBooking\Model\WP_Object' );
