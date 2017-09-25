@@ -228,6 +228,8 @@ class Request_Handler extends Service_Hooks {
 				$booking_request->set_request( 'room-type', $room_type->get_id() );
 				$booking_request->store();
 
+				do_action( 'awebooking/add_booking', $availability );
+
 				wp_redirect( $availability->get_booking_url(), 302 );
 				exit;
 			}
