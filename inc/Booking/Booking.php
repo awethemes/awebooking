@@ -3,7 +3,7 @@ namespace AweBooking\Booking;
 
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
 use AweBooking\Support\Period_Collection;
 use AweBooking\Support\Period;
 

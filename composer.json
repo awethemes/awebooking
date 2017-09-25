@@ -17,8 +17,9 @@
     "require": {
         "php": ">=5.6.4",
         "a5hleyrich/wp-background-processing": "^1.0",
-        "anhskohbo/container": "5.4.*",
+        "awethemes/container": "5.4.*",
         "awethemes/skeleton": "dev-master",
+        "awethemes/wp-object": "dev-master",
         "erusev/parsedown": "^1.6",
         "league/period": "^3.3",
         "nesbot/carbon": "^1.22",
