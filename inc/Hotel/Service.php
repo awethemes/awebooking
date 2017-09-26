@@ -336,6 +336,6 @@ class Service extends WP_Object implements Buyable {
 	 * @return float
 	 */
 	public function get_buyable_price( $options ) {
-		return $this->get_price();
+		return new Price(100);
 	}
 }

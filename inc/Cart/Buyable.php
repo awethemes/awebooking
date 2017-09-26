@@ -17,13 +17,6 @@ interface Buyable {
 	public function get_buyable_identifier( $options );
 
 	/**
-	 * Get the description or title of the Buyable item.
-	 *
-	 * @return string
-	 */
-	public function get_buyable_description( $options );
-
-	/**
 	 * Get the price of the Buyable item.
 	 *
 	 * @return float

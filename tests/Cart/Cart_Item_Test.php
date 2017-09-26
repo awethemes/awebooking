@@ -71,7 +71,7 @@ class Cart_Item_Test extends WP_UnitTestCase {
 		$this->assertEquals(null, $item->model()->get_id());
 	}
 
-	public function test_it_can_be_cast_to_an_array() {
+/*	public function test_it_can_be_cast_to_an_array() {
 		$cartItem = new Cart_Item(
 			1, 'Some item', new Price(10.00), [
 				'size' => 'XL',
@@ -96,5 +96,5 @@ class Cart_Item_Test extends WP_UnitTestCase {
 				'subtotal' => 20.00,
 			], $cartItem->toArray()
 		);
-	}
+	}*/
 }
