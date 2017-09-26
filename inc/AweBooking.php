@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking;
 
-use WP_Session;
 use AweBooking\Support\Addon;
 use AweBooking\Booking\Store as Booking_Store;
+use Awethemes\WP_Session\WP_Session;
 
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
@@ -111,6 +111,12 @@ final class AweBooking extends Container {
 
 		$this->instance( AweBooking::class, $this );
 
+		$this->singleton( 'session', function() {
+			return new WP_Session( 'awebooking_session' );
+		});
+
+		$this['session']->hooks();
+
 		$this->singleton( 'cart', Cart\Cart::class );
 
 		$this['url'] = $this->plugin_url();
@@ -161,7 +167,6 @@ final class AweBooking extends Container {
 	 * @return void
 	 */
 	protected function register_base_service_providers() {
-		$this->register( new Session\Session_Service_Provider );
 	}
 
 	/**

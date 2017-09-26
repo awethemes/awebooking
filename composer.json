@@ -20,6 +20,7 @@
         "awethemes/container": "5.4.*",
         "awethemes/skeleton": "dev-master",
         "awethemes/wp-object": "dev-master",
+        "awethemes/wp-session": "dev-master",
         "erusev/parsedown": "^1.6",
         "league/period": "^3.3",
         "nesbot/carbon": "^1.22",
