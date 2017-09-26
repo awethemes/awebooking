@@ -179,11 +179,6 @@ final class AweBooking extends Container {
 	public function initialize() {
 		$this->load_textdomain();
 
-		$this['cart']->add( new \AweBooking\Hotel\Service(16));
-
-		var_dump($this['cart']->get_contents());
-		dd($this['cart']);
-
 		// Skeleton Support.
 		// skeleton()->trigger( new Skeleton_Hooks );
 
