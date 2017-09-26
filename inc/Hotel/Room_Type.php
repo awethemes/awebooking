@@ -5,7 +5,7 @@ use WP_Query;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
 
 class Room_Type extends WP_Object {
 	/**
@@ -409,7 +409,7 @@ class Room_Type extends WP_Object {
 	 * @return Rate
 	 */
 	public function get_standard_rate() {
-		return new Rate( $this->get_id(), $this->get_base_price()->to_amount() );
+		return new Rate( $this->get_id(), $this->get_base_price()->to_integer() );
 	}
 
 	/**

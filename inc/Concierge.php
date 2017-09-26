@@ -192,7 +192,7 @@ class Concierge {
 			new \DateInterval( 'P1D' )
 		);
 
-		return Price::from_amount(
+		return Price::from_integer(
 			$valuator->determineValue()
 		);
 	}
@@ -240,8 +240,8 @@ class Concierge {
 			'hotel_location'   => $request->get_request( 'location' ),
 		]);
 
-		$room_ids = wp_list_pluck( $query->posts, 'ID' );
-		$rooms = Room::get_by_room_type( $room_ids );
+		$room_type_ids = wp_list_pluck( $query->posts, 'ID' );
+		$rooms = Room::get_by_room_type( $room_type_ids );
 
 		if ( empty( $rooms ) ) {
 			return [];
@@ -321,6 +321,14 @@ class Concierge {
 
 		foreach ( $response->getIncluded() as $room_id => $accept ) {
 			$room_type_id = (int) $accept['unit']->get_room_type()->get_id();
+
+			if ( awebooking()->is_multi_language() ) {
+				$room_type_id = icl_object_id( $room_type_id, 'post', false, awebooking( 'multilingual' )->get_active_language() );
+
+				if ( empty( $room_type_id ) ) {
+					continue;
+				}
+			}
 
 			if ( ! array_key_exists( $room_type_id, $room_type ) ) {
 				$room_type[ $room_type_id ] = new Availability( new Room_type( $room_type_id ), $request );

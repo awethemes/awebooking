@@ -110,7 +110,7 @@ class Pricing_Calendar {
 	public function show_price_of_night( Carbon $night, Carbon $month ) {
 		if ( isset( $this->res[ $this->year ][ $month->month ][ 'd' . $night->day ] ) ) {
 			$raw_price = $this->res[ $this->year ][ $month->month ][ 'd' . $night->day ];
-			$price = Price::from_amount( $raw_price );
+			$price = Price::from_integer( $raw_price );
 
 			$aprice = $this->room_type->get_base_price();
 			if ( ! $price->equals( $aprice ) ) {

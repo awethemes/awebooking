@@ -12,7 +12,7 @@ use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Admin_Booking_Created;
 use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Request_Handler extends Service_Hooks {
 	/**
@@ -35,6 +35,68 @@ class Request_Handler extends Service_Hooks {
 	 */
 	public function handle_add_booking() {
 		if ( empty( $_REQUEST['add-booking'] ) ) {
+			return;
+		}
+
+		try {
+			$room_type = Factory::create_room_from_request();
+
+			$booking_request = Factory::create_booking_request();
+			$booking_request->set_request( 'room-type', $room_type->get_id() );
+
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
+
+			if ( $availability->available() ) {
+				$booking_request->store();
+
+				do_action( 'awebooking/add_booking', $availability );
+
+				wp_safe_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
+				exit;
+			}
+		} catch ( \Exception $e ) {
+			// ...
+		}
+	}
+
+	/**
+	 * //
+	 *
+	 * @return void
+	 */
+	public function handle_edit_booking() {
+		if ( empty( $_REQUEST['edit-booking'] ) ) {
+			return;
+		}
+
+		try {
+			$room_type = Factory::create_room_from_request();
+
+			$booking_request = Factory::create_booking_request();
+			$booking_request->set_request( 'room-type', $room_type->get_id() );
+
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
+
+			if ( $availability->available() ) {
+				$booking_request->store();
+
+				do_action( 'awebooking/add_booking', $availability );
+
+				wp_safe_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
+				exit;
+			}
+		} catch ( \Exception $e ) {
+			// ...
+		}
+	}
+
+	/**
+	 * //
+	 *
+	 * @return void
+	 */
+	public function handle_remove_booking() {
+		if ( empty( $_REQUEST['remove-booking'] ) ) {
 			return;
 		}
 
@@ -91,7 +153,7 @@ class Request_Handler extends Service_Hooks {
 
 		$validator->labels( apply_filters( 'awebooking/checkout/validator_labels', [
 			'customer_first_name' => esc_html__( 'First name', 'awebooking' ),
-			'customer_first_name' => esc_html__( 'Last name', 'awebooking' ),
+			'customer_last_name'  => esc_html__( 'Last name', 'awebooking' ),
 			'customer_email'      => esc_html__( 'Email address', 'awebooking' ),
 			'customer_phone'      => esc_html__( 'Phone number', 'awebooking' ),
 		]));
@@ -173,6 +235,7 @@ class Request_Handler extends Service_Hooks {
 			}
 
 			$booking->calculate_totals();
+			do_action( 'awebooking/booking_created', $booking );
 
 			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {
@@ -189,8 +252,6 @@ class Request_Handler extends Service_Hooks {
 			// Clear booking request and set booking ID.
 			unset( $session['awebooking_request'] );
 			awebooking_setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
-
-			wp_session_commit();
 
 			wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
 			exit;

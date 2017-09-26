@@ -6,7 +6,7 @@
  *
  * @author  Awethemes
  * @package AweBooking/Templates
- * @version 1.0.0
+ * @version 3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -74,7 +74,7 @@ $room_type_id = $result->get_room_type()->get_id();
 		<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
 
 		<?php
-			$link         = add_query_arg( $default_args, awebooking_get_page_permalink( 'booking' ) );
+			$link         = add_query_arg( array_merge( array( 'view-booking' => 1 ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
 		?>
 		<a class="awebooking-loop-room-type__button-booking" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'Book Room', 'awebooking' ); ?></a>
 

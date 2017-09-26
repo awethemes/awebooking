@@ -9,93 +9,113 @@
  * @version     3.0.0
  */
 
+use AweBooking\Support\Period;
+use AweBooking\Booking\Request;
+use AweBooking\Hotel\Service;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+$std = 1;
 ?>
-
 <div class="awebooking-cart">
 	<div class="awebooking-cart-items awebooking-accordion">
-		<h5 class="awebooking-accordion__header">Booking Room 1</h5>
-		<div class="awebooking-accordion__content">
+		<?php foreach ( $cart_collection as $hash => $cart_item ) : ?>
 
-			<div class="awebooking-cart-item">
-				<div class="awebooking-cart-item__content">
-					<div class="awebooking-cart-item__media">
-						<a href="#">
-							<img width="600" height="338" src="http://awebooking.dev/wp-content/uploads/2017/08/bg-fs-panel.png" class="attachment-awebooking_catalog size-awebooking_catalog wp-post-image" alt="" srcset="http://awebooking.dev/wp-content/uploads/2017/08/bg-fs-panel.png 1920w, http://awebooking.dev/wp-content/uploads/2017/08/bg-fs-panel-300x169.png 300w, http://awebooking.dev/wp-content/uploads/2017/08/bg-fs-panel-768x432.png 768w, http://awebooking.dev/wp-content/uploads/2017/08/bg-fs-panel-1024x576.png 1024w" sizes="(max-width: 600px) 85vw, 600px">
+			<h5 class="awebooking-accordion__header">
+				<?php
+					/* translators: %s: booking room */
+					printf( esc_html__( 'Booking Room %s' ), intval( $std ) );
+				?>
+			</h5>
+			<div class="awebooking-accordion__content">
+
+				<div class="awebooking-cart-item">
+					<div class="awebooking-cart-item__content">
+						<div class="awebooking-cart-item__media">
+							<a href="<?php echo esc_url( get_permalink( $cart_item->model()->get_id() ) ); ?>" title="<?php echo esc_attr( $cart_item->model()->get_title() ); ?>">
+								<?php echo awebooking_get_room_type_thumbnail( 'awebooking_catalog', intval( $cart_item->model()->get_id() ) ); // WPCS: xss ok. ?>
+							</a>
+						</div>
+
+						<div class="awebooking-cart-item__info">
+							<h2 class="awebooking-cart-item__title">
+								<a href="<?php echo esc_url( get_permalink( $cart_item->model()->get_id() ) ); ?>" rel="bookmark">
+									<?php echo esc_html( $cart_item->model()->get_title() ); ?>
+								</a>
+							</h2>
+
+							<p class="awebooking-cart-item__price">
+								<strong><?php esc_html_e( 'Total:', 'awebooking' ); ?></strong><?php echo esc_html( $cart_item->get_total() ); ?>
+							</p>
+						</div>
+					</div>
+					<div class="awebooking-cart-item__reservation">
+						<?php
+							$period  = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], true );
+							$request = new Request( $period, $cart_item->options->to_array() );
+
+							$services = collect(awebooking_map_instance(
+								array_keys( $request->get_services() ),
+								Service::class
+							));
+						?>
+						<h6 class="awebooking-cart-item__reservation-title"><?php esc_html_e( 'Reservation', 'awebooking' ); ?></h6>
+						<p>
+							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $request->get_check_in() ); ?>
+						</p>
+						<p>
+							<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $request->get_check_out() ); ?>
+						</p>
+						<p>
+							<strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $request->get_nights() ); ?>
+						</p>
+						<p>
+							<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
+							<?php echo esc_html( $request->get_fomatted_guest_number() ); ?>
+						</p>
+						<?php if ( $services->implode( 'name', ', ' ) ) : ?>
+							<p>
+								<strong><?php esc_html_e( 'Extra service(s):', 'awebooking' ); ?></strong>
+								<?php echo esc_html( $services->implode( 'name', ', ' ) ); ?>
+							</p>
+						<?php endif; ?>
+					</div>
+					<?php
+						$default_args = awebooking_get_booking_request_query( array( 'room-type' => $cart_item->model()->get_id() ) );
+						$edit_link         = add_query_arg( array_merge( array( 'edit-booking' => 1, 'cart-item' => $hash ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
+						$remove_link       = add_query_arg( array_merge( array( 'remove-booking' => 1, 'cart-item' => $hash ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
+					?>
+					<div class="awebooking-cart-item__buttons">
+						<a class="awebooking-cart-item__edit" href="<?php echo esc_url( $edit_link ); ?>">
+							<?php esc_html_e( 'Edit', 'awebooking' ); ?>
+						</a>
+						<a class="awebooking-cart-item__remove" href="<?php echo esc_url( $remove_link ); ?>">
+							<?php esc_html_e( 'Remove', 'awebooking' ); ?>
 						</a>
 					</div>
-
-					<div class="awebooking-cart-item__info">
-						<h2 class="awebooking-cart-item__title">
-							<a href="#" rel="bookmark">
-								Luxury Room
-							</a>
-						</h2>
-
-						<p class="awebooking-cart-item__price">
-							<strong><?php esc_html_e( 'Total:', 'awebooking' ); ?></strong>100$
-						</p>
-					</div>
-				</div>
-				<div class="awebooking-cart-item__reservation">
-					<h6 class="awebooking-cart-item__reservation-title"><?php esc_html_e( 'Reservation', 'awebooking' ); ?></h6>
-					<span><strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong> September 22, 2017</span>
-					<span><strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong> September 23, 2017</span>
-					<span><strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong> 1</span>
-					<span><strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong> 2 adults & 1 child</span>
-					<span><strong><?php esc_html_e( 'Extra service(s):', 'awebooking' ); ?></strong> Breakfast, Dinner, Taxi</span>
-				</div>
-
-				<div class="awebooking-cart-item__buttons">
-					<a class="awebooking-cart-item__edit" href="#"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a>
-					<a class="awebooking-cart-item__remove" href="#"><?php esc_html_e( 'Remove', 'awebooking' ); ?></a>
 				</div>
 			</div>
-		</div>
-
-		<h5 class="awebooking-accordion__header">Booking Room 2</h5>
-		<div class="awebooking-accordion__content">
-			<p>
-			Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-			ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-			amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-			odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-			</p>
-		</div>
-
-		<h5 class="awebooking-accordion__header">Booking Room 3</h5>
-		<div class="awebooking-accordion__content">
-			<p>
-			Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-			ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-			amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-			odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-			</p>
-		</div>
-
-		<h5 class="awebooking-accordion__header">Booking Room 4</h5>
-		<div class="awebooking-accordion__content">
-			<p>
-			Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-			ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-			amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-			odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-			</p>
-		</div>
-
+			<?php $std++; ?>
+		<?php endforeach; ?>
 	</div>
+
+	<?php do_action( 'awebooking/cart_contents' ); ?>
+
 	<table class="awebooking-cart__total">
 		<tbody>
 			<tr>
 				<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-				<td><b>500$</b></td>
+				<td><b><?php echo esc_html( $cart_item->get_total() ); ?></b></td>
 			</tr>
 		</tbody>
 	</table>
 
+	<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
 	<div class="awebooking-cart__buttons">
-		<a class="btn button awebooking-button" href="#"><?php esc_html_e( 'Proceed to Checkout', 'awebooking' ); ?></a>
+		<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Proceed to Checkout', 'awebooking' ); ?></a>
 	</div>
 </div>

@@ -3,7 +3,7 @@ namespace AweBooking\Hotel;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
 use AweBooking\Support\Period;
 use AweBooking\Booking\BAT\Unit_Trait;
 use Roomify\Bat\Unit\UnitInterface as Unit_Interface;
@@ -75,11 +75,12 @@ class Room extends WP_Object implements Unit_Interface {
 	public static function get_by_room_type( $ids ) {
 		global $wpdb;
 
+		$ids = is_int( $ids ) ? [ $ids ] : $ids;
+		$ids = apply_filters( 'awebooking/rooms/get_by_room_type', $ids );
+
 		if ( is_array( $ids ) ) {
 			$ids = implode( "', '", array_map( 'esc_sql', $ids ) );
 			$query = "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN ('{$ids}')";
-		} else {
-			$query = $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = '%d'", $ids );
 		}
 
 		// @codingStandardsIgnoreLine

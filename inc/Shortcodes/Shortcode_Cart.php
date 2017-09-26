@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Shortcodes;
 
+use AweBooking\AweBooking;
 use AweBooking\Concierge;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Request;
@@ -26,7 +27,8 @@ class Shortcode_Cart {
 	 */
 	public static function output( $atts ) {
 		$atts = shortcode_atts( array(), $atts, 'awebooking_cart' );
+		$cart_collection = awebooking( '_cart_collection' );
 
-		Template::get_template( 'cart.php' );
+		Template::get_template( 'cart.php', compact( 'cart_collection' ) );
 	}
 }

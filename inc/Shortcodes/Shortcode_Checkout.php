@@ -26,6 +26,7 @@ class Shortcode_Checkout {
 	 */
 	public static function output( $atts ) {
 		$atts = shortcode_atts( array(), $atts, 'awebooking_checkout' );
+		// TODO:
 
 		if ( isset( $_GET['step'] ) && $_GET['step'] === 'cancelled' ) {
 			Template::get_template( 'cancelled.php' );

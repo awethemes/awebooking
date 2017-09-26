@@ -28,7 +28,7 @@ class Request {
 			throw new \RuntimeException( 'Missing booking data' );
 		}
 
-		$requests = $wp_session['awebooking_request']->toArray();
+		$requests = $wp_session['awebooking_request'];
 		$period = new Period( $requests['check_in'], $requests['check_out'], true );
 
 		return new static( $period, $requests );
@@ -53,7 +53,6 @@ class Request {
 		$store_request['check_out'] = $this->get_check_out()->toDateString();
 
 		$wp_session['awebooking_request'] = $store_request;
-		wp_session_commit();
 	}
 
 	/**
@@ -250,5 +249,35 @@ class Request {
 		$request['check_out'] = $this->get_check_out()->toDateString();
 
 		return $request;
+	}
+
+	/**
+	 * Gets formatted guest number HTML.
+	 *
+	 * @param  boolean $echo Echo or return output.
+	 * @return string|void
+	 */
+	public function get_fomatted_guest_number( $echo = true ) {
+		$html = '';
+
+		$html .= sprintf(
+			'<span class="">%1$d %2$s</span>',
+			$this->get_adults(),
+			_n( 'adult', 'adults', $this->get_adults(), 'awebooking' )
+		);
+
+		if ( $this->get_children() ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$this->get_children(),
+				_n( 'child', 'children', $this->get_children(), 'awebooking' )
+			);
+		}
+
+		if ( $echo ) {
+			print $html; // WPCS: XSS OK.
+		} else {
+			return $html;
+		}
 	}
 }

@@ -4,10 +4,13 @@ global $room_type;
 
 $is_disabled = false;
 if ( awebooking()->is_multi_language() ) {
+	$multilingual = awebooking( 'multilingual' );
+
 	$rtype_id = $room_type->get_id();
 	$original_id = awebooking( 'multilingual' )->get_original_object_id( $rtype_id );
 
-	if ( $original_id !== $rtype_id ) {
+	if ( $original_id !== $rtype_id ||
+		$multilingual->get_default_language() !== $multilingual->get_active_language() ) {
 		$is_disabled = true;
 	}
 }

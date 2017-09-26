@@ -165,12 +165,16 @@ if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
 	 * @param string $size (default: 'shop_catalog').
 	 * @return string
 	 */
-	function awebooking_get_room_type_thumbnail( $size = 'awebooking_catalog' ) {
+	function awebooking_get_room_type_thumbnail( $size = 'awebooking_catalog', $post_id = null ) {
 		global $post;
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
 		$image_size = apply_filters( 'single_room_type_archive_thumbnail_size', $size );
 
-		if ( has_post_thumbnail() ) {
-			return get_the_post_thumbnail( $post->ID, $image_size );
+		if ( has_post_thumbnail( $post_id ) ) {
+			return get_the_post_thumbnail( $post_id, $image_size );
 		} elseif ( awebooking_placeholder_img_src() ) {
 			return awebooking_placeholder_img( $image_size );
 		}
@@ -569,10 +573,11 @@ if ( ! function_exists( 'awebooking_template_checkout_customer_form' ) ) :
 	/**
 	 * AweBooking checkout customer form template.
 	 *
+	 * @param  object $availability availability.
 	 * @return void
 	 */
-	function awebooking_template_checkout_customer_form() {
-		awebooking_get_template( 'checkout/customer-form.php' );
+	function awebooking_template_checkout_customer_form( $availability ) {
+		awebooking_get_template( 'checkout/customer-form.php', compact( 'availability' ) );
 	}
 endif;
 

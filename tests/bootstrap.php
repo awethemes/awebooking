@@ -28,10 +28,6 @@ tests_add_filter( 'muplugins_loaded', function () {
 	require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 	require dirname( __DIR__ ) . '/awebooking.php';
-
-	// We have problem with session, so remove that actions.
-	remove_action( 'shutdown', 'wp_session_write_close' );
-	remove_action( 'plugins_loaded', 'wp_session_start' );
 });
 
 /**

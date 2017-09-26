@@ -18,4 +18,11 @@ class Functions_Test extends WP_UnitTestCase {
 		$this->assertEquals(awebooking_get_page_id('booking'), $this->page_booking);
 		$this->assertEquals(awebooking_get_page_id('checkout'), $this->page_checkout);
 	}
+
+	public function test_random_string() {
+		$this->assertEquals(strlen(awebooking_random_string()), 16);
+		$this->assertEquals(strlen(awebooking_random_string(32)), 32);
+		$this->assertEquals(strlen(awebooking_random_string(1994)), 1994);
+		$this->assertNotEquals(awebooking_random_string(), awebooking_random_string());
+	}
 }

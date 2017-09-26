@@ -1,12 +1,12 @@
 <?php
 namespace AweBooking\Admin;
 
-use Skeleton\Menu_Page;
+use Skeleton\Admin_Menu as Base_Admin_Menu;
 use AweBooking\Admin\Pages\Admin_Welcome;
 use AweBooking\Admin\Pages\Pricing_Management;
 use AweBooking\Admin\Pages\Availability_Management;
 
-class Admin_Menu extends Menu_Page {
+class Admin_Menu extends Base_Admin_Menu {
 	/**
 	 * Constructor admin menu.
 	 */
