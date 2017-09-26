@@ -22,11 +22,11 @@ class Cart_Item implements Arrayable, Jsonable {
 	protected $id;
 
 	/**
-	 * The name of the cart item.
+	 * The price without TAX of the cart item.
 	 *
-	 * @var string
+	 * @var Price
 	 */
-	protected $name;
+	protected $price;
 
 	/**
 	 * The options for this cart item.
@@ -36,18 +36,11 @@ class Cart_Item implements Arrayable, Jsonable {
 	protected $options;
 
 	/**
-	 * The price without TAX of the cart item.
-	 *
-	 * @var Price
-	 */
-	public $price;
-
-	/**
 	 * The quantity for this cart item.
 	 *
 	 * @var int
 	 */
-	protected $qty = 1;
+	protected $quantity = 1;
 
 	/**
 	 * The tax rate for the cart item.
@@ -67,45 +60,60 @@ class Cart_Item implements Arrayable, Jsonable {
 	 * Create a new instance from a Buyable.
 	 *
 	 * @param Buyable $item    Buyable item implements.
-	 * @param array   $options
+	 * @param array   $options //.
 	 * @return static
 	 */
 	public static function from_buyable( Buyable $item, array $options = [] ) {
-		return new static(
+		$options = Cart_Item_Options::make( $options );
+
+		$cart_item = new static(
 			$item->get_buyable_identifier( $options ),
-			$item->get_buyable_description( $options ),
 			$item->get_buyable_price( $options ),
 			$options
 		);
+
+		$cart_item->associate( $item );
+
+		return $cart_item;
 	}
 
 	/**
 	 * Create a new instance from the given array.
 	 *
-	 * @param array $attributes
+	 * @param array $attributes An array attributes of a valid cart item.
 	 * @return static
 	 */
 	public static function from_array( array $attributes ) {
-		$options = array_get( $attributes, 'options', [] );
+		$options = isset( $attributes['options'] ) ? $attributes['options'] : [];
+		$row_id  = isset( $attributes['row_id'] ) ? $attributes['row_id'] : null;
 
-		return new static($attributes['id'], $attributes['name'], $attributes['price'], $options);
+		$cart_item = new static(
+			$attributes['id'], new Price( $attributes['price'] ), $options, $row_id
+		);
+
+		if ( isset( $attributes['quantity'] ) && $attributes['quantity'] > 0 ) {
+			$cart_item->set_quantity( $attributes['quantity'] );
+		}
+
+		if ( isset( $attributes['associate'] ) ) {
+			$cart_item->associate( $attributes['associate'] );
+		}
+
+		return $cart_item;
 	}
 
 	/**
 	 * Cart item constructor.
 	 *
 	 * @param int|string $id      The ID of item.
-	 * @param string     $name    The name of item.
 	 * @param Price      $price   The Price of item.
 	 * @param array      $options The cart item options.
 	 */
-	public function __construct( $id, $name, Price $price, array $options = [] ) {
+	public function __construct( $id, Price $price, $options = [], $row_id = null ) {
 		$this->id      = $id;
-		$this->name    = $name;
 		$this->price   = $price;
-
-		$this->options = new Cart_Item_Options( $options );
-		$this->row_id  = $this->generate_row_id( $id, $options );
+		$this->options = Cart_Item_Options::make( $options );
+		$this->row_id  = $row_id ?: $this->generate_row_id( $id, $this->options->to_array() );
 	}
 
 	/**
@@ -127,12 +135,12 @@ class Cart_Item implements Arrayable, Jsonable {
 	}
 
 	/**
-	 * Returns the name of the cart item.
+	 * Returns the price without TAX.
 	 *
-	 * @return int
+	 * @return Price
 	 */
-	public function get_name() {
-		return $this->name;
+	public function get_price() {
+		return $this->price;
 	}
 
 	/**
@@ -150,17 +158,17 @@ class Cart_Item implements Arrayable, Jsonable {
 	 * @return int
 	 */
 	public function get_quantity() {
-		return $this->qty;
+		return $this->quantity;
 	}
 
 	/**
 	 * Set the quantity for this cart item.
 	 *
-	 * @param  int $qty The quantity number, required minimum 1.
+	 * @param  int $quantity The quantity number, required minimum 1.
 	 * @return $this
 	 */
-	public function set_quantity( $qty ) {
-		$this->qty = max( 1,  (int) $qty );
+	public function set_quantity( $quantity ) {
+		$this->quantity = max( 1,  (int) $quantity );
 
 		return $this;
 	}
@@ -184,15 +192,6 @@ class Cart_Item implements Arrayable, Jsonable {
 		$this->tax_rate = max( 0, floatval( $tax_rate ) );
 
 		return $this;
-	}
-
-	/**
-	 * Returns the price without TAX.
-	 *
-	 * @return Price
-	 */
-	public function get_price() {
-		return $this->price;
 	}
 
 	/**
@@ -321,20 +320,20 @@ class Cart_Item implements Arrayable, Jsonable {
 	/**
 	 * Get the instance as an array.
 	 *
-	 * TODO: ...
-	 *
 	 * @return array
 	 */
 	public function toArray() {
 		return [
-			'row_id'   => $this->row_id,
-			'id'       => $this->id,
-			'name'     => $this->name,
-			'qty'      => $this->qty,
-			'price'    => $this->price->get_amount(),
-			'options'  => $this->options->toArray(),
-			'tax'      => $this->tax->get_amount(),
-			'subtotal' => $this->subtotal->get_amount(),
+			'row_id'    => $this->row_id,
+			'id'        => $this->id,
+			'price'     => $this->price->get_amount(),
+			'quantity'  => $this->quantity,
+			'options'   => $this->options->toArray(),
+			'tax'       => $this->tax->get_amount(),
+			'tax_total' => $this->tax_total->get_amount(),
+			'subtotal'  => $this->subtotal->get_amount(),
+			'total'     => $this->total->get_amount(),
+			'associate' => $this->associated_model,
 		];
 	}
 }

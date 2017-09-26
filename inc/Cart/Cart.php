@@ -2,21 +2,20 @@
 namespace AweBooking\Cart;
 
 use Closure;
-use AweBooking\Session\Session;
-use Illuminate\Support\Collection;
-
-use Gloudemans\Shoppingcart\Exceptions\UnknownModelException;
-use Gloudemans\Shoppingcart\Exceptions\InvalidRowIDException;
-use Gloudemans\Shoppingcart\Exceptions\CartAlreadyStoredException;
+use AweBooking\Support\Collection;
+use Awethemes\WP_Session\WP_Session;
+use AweBooking\Cart\Exceptions\Unknown_Model_Exception;
+use AweBooking\Cart\Exceptions\Invalid_RowID_Exception;
+use AweBooking\Cart\Exceptions\Cart_Already_Stored_Exception;
 
 class Cart {
 	/* Constants */
-	const SESSION_NAME = 'cart';
+	const CART_CONTENTS = 'cart_contents';
 
 	/**
 	 * Instance of the Session.
 	 *
-	 * @var Session
+	 * @var WP_Session
 	 */
 	protected $session;
 
@@ -26,6 +25,24 @@ class Cart {
 	 * @var Collection
 	 */
 	protected $contents;
+
+	/**
+	 * Discount codes.
+	 *
+	 * TODO: ...
+	 *
+	 * @var array
+	 */
+	public $discounts = [];
+
+	/**
+	 * An array of fees.
+	 *
+	 * TODO: ...
+	 *
+	 * @var array
+	 */
+	public $fees = [];
 
 	/**
 	 * Subtotal
@@ -49,54 +66,90 @@ class Cart {
 	public $tax_total = 0.00;
 
 	/**
-	 * Discount codes.
-	 *
-	 * TODO: ...
-	 *
-	 * @var array
-	 */
-	public $discounts = [];
-
-	/**
-	 * An array of fees.
-	 *
-	 * TODO: ...
-	 *
-	 * @var array
-	 */
-	public $fees = [];
-
-	/**
 	 * Cart constructor.
 	 *
-	 * @param Session $session Session Store implements.
+	 * @param WP_Session $session WP_Session implementation.
 	 */
-	public function __construct( Session $session ) {
-		$this->session  = $session;
+	public function __construct( WP_Session $session ) {
+		$this->session = $session;
 	}
 
 	/**
 	 * Add an item to the cart.
 	 *
-	 * @param mixed     $id
-	 * @param int|float $qty
+	 * @param Buyable   $item
+	 * @param int       $qty
 	 * @param array     $options
 	 * @return Cart_Item
 	 */
-	public function add( Buyable $id, $qty = null, array $options = [] ) {
-		$cart_item = $this->create_cart_item( $id, $qty, $options );
+	public function add( Buyable $item, $qty = null, array $options = [] ) {
+		$cart_item = Cart_Item::from_buyable( $item, $options );
 
 		$contents = $this->get_contents();
 
 		if ( $contents->has( $cart_item->row_id ) ) {
-			$cart_item->qty += $contents->get( $cart_item->row_id )->qty;
+			$cart_item->set_quantity(
+				$contents->get( $cart_item->row_id )->quantity + 1
+			);
+		} else {
+			$cart_item->set_quantity( $qty );
 		}
 
 		$contents->put( $cart_item->row_id, $cart_item );
 
-		$this->session->put( static::SESSION_NAME, $contents );
+		$this->session->put( static::CART_CONTENTS, $contents->to_array() );
 
 		return $cart_item;
+	}
+
+	/**
+	 * Remove the cart item with the given row_id from the cart.
+	 *
+	 * @param string $row_id
+	 * @return void
+	 */
+	public function remove( $row_id ) {
+		$cart_item = $this->get( $row_id );
+
+		$contents = $this->get_contents();
+		$contents->pull( $cart_item->row_id );
+
+		$this->session->put( static::CART_CONTENTS, $contents->to_array() );
+	}
+
+	/**
+	 * Get a cart item from the cart by its row_id.
+	 *
+	 * @param string $row_id
+	 * @return Cart_Item
+	 */
+	public function get( $row_id ) {
+		$content = $this->get_contents();
+
+		if ( ! $content->has( $row_id ) ) {
+			throw new Invalid_RowID_Exception;
+		}
+
+		return $content->get( $row_id );
+	}
+
+	/**
+	 * Search the cart content for a cart item matching the given search closure.
+	 *
+	 * @param \Closure $search
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function search( Closure $search ) {
+		return $this->get_contents()->filter( $search );
+	}
+
+	/**
+	 * Get the number of items in the cart.
+	 *
+	 * @return int|float
+	 */
+	public function count() {
+		return $this->get_contents()->sum( 'qty' );
 	}
 
 	/**
@@ -119,34 +172,33 @@ class Cart {
 	 * @return void
 	 */
 	public function get_contents_from_session() {
-		$contents = new Collection( $this->session->get( static::SESSION_NAME, [] ) );
+		$session_contents = (array) $this->session->get( static::CART_CONTENTS, [] );
 
-		// TOOD: Validate the contents from session.
-		$this->contents = $contents;
-	}
+		$contents = [];
+		foreach ( $session_contents as $row_id => $cart_item_array ) {
+			if ( ! is_array( $cart_item_array ) || ! isset( $cart_item_array['row_id'] ) ) {
+				continue;
+			}
 
-	/**
-	 * Create a new Cart_Item from the supplied attributes.
-	 *
-	 * @param mixed     $id
-	 * @param mixed     $name
-	 * @param int|float $qty
-	 * @param float     $price
-	 * @param array     $options
-	 * @return Cart_Item
-	 */
-	protected function create_cart_item( $id, $qty, $options ) {
-		if ( $id instanceof Buyable ) {
-			$cart_item = Cart_Item::from_buyable( $id, $options );
-			$cart_item->set_quantity( $qty ?: 1 );
-			$cart_item->associate( $id );
-		} elseif ( is_array( $id ) ) {
-			$cart_item = Cart_Item::from_array( $id );
-			$cart_item->set_quantity( $id['qty'] );
+			$cart_item = Cart_Item::from_array( $cart_item_array );
+			$buyable_item = $cart_item->model();
+
+			if ( ! $cart_item->get_id() || ! $buyable_item instanceof Buyable ) {
+				continue;
+			}
+
+			// TODO: Add notice about remove item cant be purchase anymore.
+			if ( ! $buyable_item->is_purchasable() ) {
+				continue;
+			}
+
+			$contents[ $row_id ] = $cart_item;
 		}
 
-		// $cart_item->set_tax_rate( 0 );
+		$this->contents = apply_filters( 'awebooking/cart_contents', new Collection( $contents ) );
 
-		return $cart_item;
+		$this->session->put( static::CART_CONTENTS, $this->contents->to_array() );
+
+		do_action( 'awebooking/get_contents_from_session', $this );
 	}
 }

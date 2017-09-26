@@ -115,6 +115,8 @@ final class AweBooking extends Container {
 			return new WP_Session( 'awebooking_session' );
 		});
 
+		$this->alias( 'session', WP_Session::class );
+
 		$this['session']->hooks();
 
 		$this->singleton( 'cart', Cart\Cart::class );
@@ -176,6 +178,11 @@ final class AweBooking extends Container {
 	 */
 	public function initialize() {
 		$this->load_textdomain();
+
+		$this['cart']->add( new \AweBooking\Hotel\Service(16));
+
+		var_dump($this['cart']->get_contents());
+		dd($this['cart']);
 
 		// Skeleton Support.
 		// skeleton()->trigger( new Skeleton_Hooks );
