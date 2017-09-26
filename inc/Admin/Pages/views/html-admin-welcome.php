@@ -6,27 +6,32 @@ $awebooking_available_addons = new Collection([
 	[
 		'id'          => 'awethemes.awebooking-extra',
 		'label'       => 'AweBooking Extra',
-		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis tellus quis est posuere ornare. Curabitur a erat lorem.',
+		'description' => 'Show off Room Available Calendar, detail Price Breakdown, plus Room Image Slideshow - all additional awesomeness is included in just one',
 	],
 	[
 		'id'          => 'awethemes.awebooking-woocommerce',
 		'label'       => 'Woocommerce Integration',
-		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis tellus quis est posuere ornare. Curabitur a erat lorem.',
+		'description' => 'Seamlessly connects with Woocommerce to benefit from all variety of Woocommerce extensions and payment gateways',
 	],
 	[
 		'id'          => 'awethemes.awebooking-payment',
 		'label'       => 'Payment',
-		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis tellus quis est posuere ornare. Curabitur a erat lorem.',
+		'description' => 'Awebooking allows you to enable payments online via PayPal Express with guest checkout.',
+	],
+	[
+		'id'          => 'awethemes.awebooking-form-builder',
+		'label'       => 'Booking form builder',
+		'description' => 'Build and add your own custom fields in the booking check-out form to collect any information you need for each reservation',
 	],
 	[
 		'id'          => 'awethemes.awebooking-user-profile',
 		'label'       => 'User Profile',
-		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis tellus quis est posuere ornare. Curabitur a erat lorem.',
+		'description' => 'Customers can manage log-in credentials, personal information and more in their own profile page. Even more, they can check and manage their bookings quickly and easily',
 	],
 	[
 		'id'          => 'awethemes.awebooking-simple-reservation',
 		'label'       => 'Simple Reservation',
-		'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis tellus quis est posuere ornare. Curabitur a erat lorem.',
+		'description' => 'Customers just simply send contact and booking request email to admin to get support without any hassle of multiple booking steps',
 	],
 ]);
 
