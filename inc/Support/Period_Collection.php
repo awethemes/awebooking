@@ -72,6 +72,16 @@ class Period_Collection {
 	}
 
 	/**
+	 * Alias of `is_continuous` method.
+	 *
+	 * @param  boolean $sort Sort periods list before check.
+	 * @return boolean
+	 */
+	public function adjacents( $sort = true ) {
+		return $this->is_continuous( $sort );
+	}
+
+	/**
 	 * Tells whether periods is continuous.
 	 *
 	 * @param  bool $sort Sort periods list before check.
