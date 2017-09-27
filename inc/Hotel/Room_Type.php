@@ -6,8 +6,9 @@ use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
+use AweBooking\Cart\Buyable;
 
-class Room_Type extends WP_Object {
+class Room_Type extends WP_Object implements Buyable {
 	/**
 	 * This is the name of this object type.
 	 *
@@ -514,5 +515,32 @@ class Room_Type extends WP_Object {
 		}
 
 		return $pluck ? wp_list_pluck( $the_rooms, $pluck ) : $the_rooms;
+	}
+
+	/**
+	 * Determines the Buyable item is purchasable.
+	 *
+	 * @return boolean
+	 */
+	public function is_purchasable() {
+		return true;
+	}
+
+	/**
+	 * Get the identifier of the Buyable item.
+	 *
+	 * @return int|string
+	 */
+	public function get_buyable_identifier( $options ) {
+		return $this->get_id();
+	}
+
+	/**
+	 * Get the price of the Buyable item.
+	 *
+	 * @return float
+	 */
+	public function get_buyable_price( $options ) {
+		return new Price( 100 );
 	}
 }

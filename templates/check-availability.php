@@ -12,6 +12,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+do_action( 'awebooking/template_notices' );
 ?>
 <div class="">
 

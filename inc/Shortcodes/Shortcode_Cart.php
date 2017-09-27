@@ -27,8 +27,7 @@ class Shortcode_Cart {
 	 */
 	public static function output( $atts ) {
 		$atts = shortcode_atts( array(), $atts, 'awebooking_cart' );
-		$cart_collection = awebooking( '_cart_collection' );
 
-		Template::get_template( 'cart.php', compact( 'cart_collection' ) );
+		Template::get_template( 'cart.php' );
 	}
 }

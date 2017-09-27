@@ -195,43 +195,6 @@ final class AweBooking extends Container {
 		$this->trigger( new Multilingual_Hooks );
 		$this->trigger( new Admin\Admin_Hooks );
 
-		// Temp code.
-		$item_1 = new Cart\Cart_Item( 7, 'Luxury', new Pricing\Price( 100 ), [
-			'check_in' => '2017-09-30',
-			'check_out' => '2017-10-05',
-			'adults'   => 2,
-			'children' => 1,
-			'room-type' => 7,
-			'extra_services' => [
-				2,3,
-			],
-		]);
-
-		$item_2 = new Cart\Cart_Item( 38, 'Deluxe', new Pricing\Price( 100 ), [
-			'check_in' => '2017-09-30',
-			'check_out' => '2017-10-05',
-			'adults'   => 2,
-			'children' => 1,
-			'room-type' => 38,
-			'extra_services' => [
-				2,3,
-			],
-		]);
-
-		$item_1->associate( Hotel\Room_Type::class );
-		$item_2->associate( Hotel\Room_Type::class );
-
-		$this['_cart_collection'] = new Support\Collection([
-			'hash1' => $item_1,
-			'hash2' => $item_2,
-		]);
-
-		// foreach ( $this['_cart_collection'] as $key => $cart_item ) {
-		// 	var_dump($cart_item->model()->get_base_price());
-		// }
-
-		// dd($this['_cart_collection']);
-
 		do_action( 'awebooking/init', $this );
 	}
 

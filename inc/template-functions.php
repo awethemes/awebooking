@@ -9,13 +9,13 @@ require_once trailingslashit( __DIR__ ) . 'template-hooks.php';
  * Enqueue Scripts
  */
 function awebooking_template_scripts() {
-	wp_enqueue_style( 'awebooking-template', AweBooking()->plugin_url() . '/assets/css/awebooking.css', array(), AweBooking::VERSION );
+	wp_enqueue_style( 'awebooking-template', awebooking()->plugin_url() . '/assets/css/awebooking.css', array(), AweBooking::VERSION );
 
 	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'awebooking', AweBooking()->plugin_url() . '/assets/js/front-end/awebooking.js', array( 'jquery' ), AweBooking::VERSION, true );
+	wp_enqueue_script( 'awebooking', awebooking()->plugin_url() . '/assets/js/front-end/awebooking.js', array( 'jquery' ), AweBooking::VERSION, true );
 
-	wp_enqueue_script( 'booking-ajax', AweBooking()->plugin_url() . '/assets/js/front-end/booking-handler.js', array( 'jquery' ), AweBooking::VERSION, true );
+	wp_enqueue_script( 'booking-ajax', awebooking()->plugin_url() . '/assets/js/front-end/booking-handler.js', array( 'jquery' ), AweBooking::VERSION, true );
 	wp_localize_script( 'booking-ajax', 'booking_ajax', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 	));

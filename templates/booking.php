@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+do_action( 'awebooking/template_notices' );
+
 if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 
 	<p><?php //echo isset( $message_error ) ? $message_error : ''; ?></p>
@@ -57,77 +59,74 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 		</div>
 
 		<div class="awebooking-informations__wrapper">
+			<?php $checkout_link    = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
+			<form action="" id="awebooking-booking-form" class="awebooking-service__wrapper" method="POST">
+				<div class="awebooking-informations__content">
+					<?php if ( $room_type['service_ids'] ) : ?>
+					<table class="awebooking-informations__table">
+						<thead>
+							<tr>
+								<th colspan="2" class="text-left"><?php esc_html_e( 'Extra Services', 'awebooking' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2">
+									<div class="awebooking-service" id="awebooking-service">
+										
+											<?php foreach ( $room_type->get_services() as $service ) : ?>
+												<?php $mandatory = ( 'mandatory' === $service->get_type()  ) ? 'checked="checked" disabled="disabled"' : ''; ?>
+												<div class="awebooking-service__item">
+													<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>">
 
-			<div class="awebooking-informations__content">
-				<?php if ( $room_type['service_ids'] ) : ?>
-				<table class="awebooking-informations__table">
-					<thead>
-						<tr>
-							<th colspan="2" class="text-left"><?php esc_html_e( 'Extra Services', 'awebooking' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="2">
-								<div class="awebooking-service" id="awebooking-service">
-									<form action="" id="awebooking-booking-form" class="awebooking-service__wrapper">
-										<?php foreach ( $room_type->get_services() as $service ) : ?>
-											<?php $mandatory = ( 'mandatory' === $service->get_type()  ) ? 'checked="checked" disabled="disabled"' : ''; ?>
-											<div class="awebooking-service__item">
-												<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>">
+													<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ); ?></label>
+													<span><?php echo $service->get_describe(); ?></span>
 
-												<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ) ?></label>
-												<span><?php echo $service->get_describe(); ?></span>
-
-												<div class="awebooking-service__content">
-													<?php if ( $service->get_description() ) : ?>
-														<p><?php echo esc_html( $service->get_description() ) ?></p>
-													<?php endif; ?>
+													<div class="awebooking-service__content">
+														<?php if ( $service->get_description() ) : ?>
+															<p><?php echo esc_html( $service->get_description() ) ?></p>
+														<?php endif; ?>
+													</div>
 												</div>
-											</div>
-										<?php endforeach; ?>
-										<input type="hidden" name="room-type" value="<?php echo esc_attr( $room_type->get_id() ); ?>">
-										<input type="hidden" name="start-date" value="<?php echo esc_attr( $availability->get_check_in()->format( 'Y-m-d' ) ); ?>">
-										<input type="hidden" name="end-date" value="<?php echo esc_attr( $availability->get_check_out()->format( 'Y-m-d' ) ); ?>">
-										<input type="hidden" name="children" value="<?php echo esc_attr( $availability->get_request()->get_children() ); ?>">
-										<input type="hidden" name="adults" value="<?php echo esc_attr( $availability->get_request()->get_adults() ); ?>">
-										<!-- <input type="submit" value="Submit"> -->
-									</form>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<?php endif; ?>
-				<?php do_action( 'awebooking/booking/before_total_cost', $availability, $room_type ); ?>
-				<table class="awebooking-informations__table">
-					<thead>
-						<tr>
-							<th colspan="2"><?php echo esc_html( awebooking( 'currency' )->get_code() ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><?php esc_html_e( 'TOTAL COST', 'awebooking' ); ?></td>
-							<td id="awebooking-total-cost"><?php print $availability->get_total_price(); ?></td>
-						</tr>
-					</tbody>
-				</table>
+											<?php endforeach; ?>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<?php endif; ?>
 
-				<div class="text-right">
-					<?php
-						$default_args     = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
-						$add_booking_link = add_query_arg( array_merge( array( 'add-booking' => 1 ), (array) $default_args ), get_the_permalink() );
-						$checkout_link    = get_permalink( absint( awebooking_option( 'page_checkout' ) ) );
-					?>
-					<a class="btn button awebooking-button" href="<?php echo esc_url( $add_booking_link ); ?>">
-						<?php esc_html_e( 'Add to Booking', 'awebooking' ); ?>
-					</a>
-					<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>">
-						<?php esc_html_e( 'Checkout', 'awebooking' ); ?>
-					</a>
+					<?php do_action( 'awebooking/booking/before_total_cost', $availability, $room_type ); ?>
+
+					<table class="awebooking-informations__table">
+						<thead>
+							<tr>
+								<th colspan="2"><?php echo esc_html( awebooking( 'currency' )->get_code() ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><?php esc_html_e( 'TOTAL COST', 'awebooking' ); ?></td>
+								<td id="awebooking-total-cost"><?php print $availability->get_total_price(); ?></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="text-right">
+						<button type="submit" class="btn button awebooking-button">
+							<?php esc_html_e( 'Book another room','awebooking' ); ?>
+						</button>
+						<input type="submit" name="go-to-checkout" class="btn button awebooking-button" value="<?php esc_attr_e( 'Checkout','awebooking' ); ?>">
+					</div>
 				</div>
-			</div>
+				<input type="hidden" name="booking-action" value="add">
+				<input type="hidden" name="room-type" value="<?php echo esc_attr( $room_type->get_id() ); ?>">
+				<input type="hidden" name="start-date" value="<?php echo esc_attr( $availability->get_check_in()->format( 'Y-m-d' ) ); ?>">
+				<input type="hidden" name="end-date" value="<?php echo esc_attr( $availability->get_check_out()->format( 'Y-m-d' ) ); ?>">
+				<input type="hidden" name="children" value="<?php echo esc_attr( $availability->get_request()->get_children() ); ?>">
+				<input type="hidden" name="adults" value="<?php echo esc_attr( $availability->get_request()->get_adults() ); ?>">	
+				<?php wp_nonce_field( 'awebooking-add-booking-nonce' ); ?>
+			</form>
 		</div>
 	</div>
 

@@ -17,10 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 $std = 1;
+$cart = awebooking( 'cart' );
+$cart_collection = $cart->get_contents();
 ?>
 <div class="awebooking-cart">
 	<div class="awebooking-cart-items awebooking-accordion">
-		<?php foreach ( $cart_collection as $hash => $cart_item ) : ?>
+		<?php foreach ( $cart_collection as $row_id => $cart_item ) : ?>
 
 			<h5 class="awebooking-accordion__header">
 				<?php
@@ -56,7 +58,7 @@ $std = 1;
 							$request = new Request( $period, $cart_item->options->to_array() );
 
 							$services = collect(awebooking_map_instance(
-								array_keys( $request->get_services() ),
+								$request->get_services(),
 								Service::class
 							));
 						?>
@@ -85,9 +87,15 @@ $std = 1;
 						<?php endif; ?>
 					</div>
 					<?php
-						$default_args = awebooking_get_booking_request_query( array( 'room-type' => $cart_item->model()->get_id() ) );
-						$edit_link         = add_query_arg( array_merge( array( 'edit-booking' => 1, 'cart-item' => $hash ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
-						$remove_link       = add_query_arg( array_merge( array( 'remove-booking' => 1, 'cart-item' => $hash ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
+						$edit_link   = add_query_arg( [
+							'booking-action' => 'edit',
+							'rid'            => $row_id,
+						], awebooking_get_page_permalink( 'booking' ) );
+
+						$remove_link = add_query_arg( [
+							'booking-action' => 'remove',
+							'rid'            => $row_id,
+						], get_permalink() );
 					?>
 					<div class="awebooking-cart-item__buttons">
 						<a class="awebooking-cart-item__edit" href="<?php echo esc_url( $edit_link ); ?>">
@@ -104,15 +112,17 @@ $std = 1;
 	</div>
 
 	<?php do_action( 'awebooking/cart_contents' ); ?>
-
-	<table class="awebooking-cart__total">
-		<tbody>
-			<tr>
-				<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-				<td><b><?php echo esc_html( $cart_item->get_total() ); ?></b></td>
-			</tr>
-		</tbody>
-	</table>
+	
+	<?php if ( $cart->total ) : ?>
+		<table class="awebooking-cart__total">
+			<tbody>
+				<tr>
+					<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
+					<td><b><?php echo esc_html( $cart->total ); //TODO: ...?></b></td>
+				</tr>
+			</tbody>
+		</table>
+	<?php endif; ?>
 
 	<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
 	<div class="awebooking-cart__buttons">
