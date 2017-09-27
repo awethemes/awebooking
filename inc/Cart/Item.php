@@ -6,7 +6,7 @@ use AweBooking\Support\Optional;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Cart_Item implements Arrayable, Jsonable {
+class Item implements Arrayable, Jsonable {
 	/**
 	 * The row ID of the cart item.
 	 *
@@ -31,7 +31,7 @@ class Cart_Item implements Arrayable, Jsonable {
 	/**
 	 * The options for this cart item.
 	 *
-	 * @var Cart_Item_Options
+	 * @var Options
 	 */
 	protected $options;
 
@@ -64,7 +64,7 @@ class Cart_Item implements Arrayable, Jsonable {
 	 * @return static
 	 */
 	public static function from_buyable( Buyable $item, array $options = [] ) {
-		$options = Cart_Item_Options::make( $options );
+		$options = Options::make( $options );
 
 		$cart_item = new static(
 			$item->get_buyable_identifier( $options ),
@@ -112,7 +112,7 @@ class Cart_Item implements Arrayable, Jsonable {
 	public function __construct( $id, Price $price, $options = [], $row_id = null ) {
 		$this->id      = $id;
 		$this->price   = $price;
-		$this->options = Cart_Item_Options::make( $options );
+		$this->options = Options::make( $options );
 		$this->row_id  = $row_id ?: $this->generate_row_id( $id, $this->options->to_array() );
 	}
 
@@ -230,7 +230,7 @@ class Cart_Item implements Arrayable, Jsonable {
 	/**
 	 * Returns the subtotal.
 	 *
-	 * Subtotal is price for whole Cart_Item without TAX.
+	 * Subtotal is price for whole Item without TAX.
 	 *
 	 * @return string
 	 */
@@ -243,7 +243,7 @@ class Cart_Item implements Arrayable, Jsonable {
 	/**
 	 * Returns the total costs.
 	 *
-	 * Total is price for whole Cart_Item with TAX.
+	 * Total is price for whole Item with TAX.
 	 *
 	 * @return string
 	 */
@@ -329,10 +329,6 @@ class Cart_Item implements Arrayable, Jsonable {
 			'price'     => $this->price->get_amount(),
 			'quantity'  => $this->quantity,
 			'options'   => $this->options->toArray(),
-			'tax'       => $this->tax->get_amount(),
-			'tax_total' => $this->tax_total->get_amount(),
-			'subtotal'  => $this->subtotal->get_amount(),
-			'total'     => $this->total->get_amount(),
 			'associate' => $this->associated_model,
 		];
 	}
