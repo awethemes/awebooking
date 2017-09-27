@@ -6,11 +6,10 @@ use AweBooking\Cart\Cart_Item;
 class Cart_Item_Test extends WP_UnitTestCase {
 	public function testBasic() {
 		$opts = ['a' => 1, 'b' => 2];
-		$item = new Cart_Item(100, 'Some Product', new Price(99.99), $opts);
+		$item = new Cart_Item(100, new Price(99.99), $opts);
 		$item->set_quantity(4);
 
 		$this->assertEquals(100, $item->get_id());
-		$this->assertEquals('Some Product', $item->get_name());
 		$this->assertEquals(4, $item->get_quantity());
 		$this->assertEquals(md5( 100 . serialize( $opts ) ), $item->get_row_id());
 
@@ -24,14 +23,14 @@ class Cart_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testCantSetQuantity() {
-		$item = new Cart_Item(100, 'Some Product', new Price(99.99));
+		$item = new Cart_Item(100, new Price(99.99));
 
 		$item->set_quantity(-4);
 		$this->assertEquals(1, $item->get_quantity());
 	}
 
 	public function testWithTax() {
-		$item = new Cart_Item(100, 'Some Product', new Price(99));
+		$item = new Cart_Item(100, new Price(99));
 		$item->set_quantity(3);
 		$item->set_tax_rate(10);
 
@@ -45,7 +44,7 @@ class Cart_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testCantSetTaxRate() {
-		$item = new Cart_Item(100, 'Some Product', new Price(99));
+		$item = new Cart_Item(100, new Price(99));
 
 		$item->set_tax_rate(10);
 		$this->assertEquals(10, $item->get_tax_rate());
@@ -55,7 +54,7 @@ class Cart_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testWithAssociate() {
-		$item = new Cart_Item(100, 'Some Product', new Price(99));
+		$item = new Cart_Item(100, new Price(99));
 		$item->associate(AweBooking\Hotel\Service::class);
 
 		$this->assertInstanceOf(AweBooking\Hotel\Service::class, $item->model());
@@ -63,7 +62,7 @@ class Cart_Item_Test extends WP_UnitTestCase {
 	}
 
 	public function testAssociateWrongClass() {
-		$item = new Cart_Item(100, 'Some Product', new Price(99));
+		$item = new Cart_Item(100, new Price(99));
 		$item->associate('class-not-found');
 
 		$this->assertInstanceOf(AweBooking\Support\Optional::class, $item->model());
