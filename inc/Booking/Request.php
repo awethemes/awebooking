@@ -21,17 +21,10 @@ class Request {
 	 */
 	protected $requests;
 
-	public static function instance() {
-		$wp_session = awebooking()->make( 'session' );
+	public static function from_array( array $request ) {
+		$period = new Period( $request['check_in'], $request['check_out'], true );
 
-		if ( empty( $wp_session['awebooking_request'] ) ) {
-			throw new \RuntimeException( 'Missing booking data' );
-		}
-
-		$requests = $wp_session['awebooking_request'];
-		$period = new Period( $requests['check_in'], $requests['check_out'], true );
-
-		return new static( $period, $requests );
+		return new static( $period, $request );
 	}
 
 	/**
@@ -43,16 +36,6 @@ class Request {
 	public function __construct( Period $period, array $requests = [] ) {
 		$this->period = $period;
 		$this->requests = $requests;
-	}
-
-	public function store() {
-		$wp_session = awebooking()->make( 'session' );
-
-		$store_request              = $this->get_requests();
-		$store_request['check_in']  = $this->get_check_in()->toDateString();
-		$store_request['check_out'] = $this->get_check_out()->toDateString();
-
-		$wp_session['awebooking_request'] = $store_request;
 	}
 
 	/**
