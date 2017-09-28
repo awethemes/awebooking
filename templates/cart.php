@@ -20,6 +20,7 @@ $std = 1;
 $cart = awebooking( 'cart' );
 $cart_collection = $cart->get_contents();
 ?>
+<?php if ( count( $cart_collection ) > 0 ) : ?>
 <div class="awebooking-cart">
 	<div class="awebooking-cart-items awebooking-accordion">
 		<?php foreach ( $cart_collection as $row_id => $cart_item ) : ?>
@@ -55,12 +56,17 @@ $cart_collection = $cart->get_contents();
 					<div class="awebooking-cart-item__reservation">
 						<?php
 							$period  = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], true );
-							$request = new Request( $period, $cart_item->options->to_array() );
+							$request = new Request( $period, [
+								'room-type' => $cart_item->model()->get_id(),
+								'adults'    => $cart_item->options['adults'],
+								'children'  => $cart_item->options['children'],
+								'extra_services' => $cart_item->options['extra_services'],
+							] );
 
-							$services = collect(awebooking_map_instance(
-								$request->get_services(),
+							$services = collect( awebooking_map_instance(
+								array_keys( $request->get_services() ),
 								Service::class
-							));
+							) );
 						?>
 						<h6 class="awebooking-cart-item__reservation-title"><?php esc_html_e( 'Reservation', 'awebooking' ); ?></h6>
 						<p>
@@ -113,19 +119,20 @@ $cart_collection = $cart->get_contents();
 
 	<?php do_action( 'awebooking/cart_contents' ); ?>
 	
-	<?php if ( $cart->total ) : ?>
-		<table class="awebooking-cart__total">
-			<tbody>
-				<tr>
-					<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-					<td><b><?php echo esc_html( $cart->total ); //TODO: ...?></b></td>
-				</tr>
-			</tbody>
-		</table>
-	<?php endif; ?>
+	<table class="awebooking-cart__total">
+		<tbody>
+			<tr>
+				<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
+				<td><b><?php echo esc_html( $cart->total() ); //TODO: ...?></b></td>
+			</tr>
+		</tbody>
+	</table>
 
 	<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
 	<div class="awebooking-cart__buttons">
 		<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Proceed to Checkout', 'awebooking' ); ?></a>
 	</div>
 </div>
+<?php else : ?>
+	<p class="awebooking-empty-cart"><?php esc_html_e( 'No rooms in the cart.', 'awebooking' ); ?></p>
+<?php endif; ?>
