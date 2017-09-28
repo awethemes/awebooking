@@ -32,15 +32,6 @@ class Availability_Management extends WP_List_Table {
 		$this->_year = $_year;
 	}
 
-	/**
-	 * Get a list of CSS classes for the WP_List_Table table tag.
-	 *
-	 * @return array
-	 */
-	protected function get_table_classes() {
-		return array( 'widefat', 'fixed', $this->_args['plural'] );
-	}
-
 	public function output() {
 		$this->prepare_items();
 
@@ -105,22 +96,22 @@ class Availability_Management extends WP_List_Table {
 				<ul class="awebooking-list-item">
 					<li>
 						<span class="awebooking-availability available"></span>
-						<span><?php echo esc_html__( 'Available', 'awebooking' ) ?></span>
+						<span><?php echo esc_html__( 'Available', 'awebooking' ); ?></span>
 					</li>
 
 					<li>
 						<span class="awebooking-availability unavailable"></span>
-						<span><?php echo esc_html__( 'Unavailable', 'awebooking' ) ?></span>
+						<span><?php echo esc_html__( 'Unavailable', 'awebooking' ); ?></span>
 					</li>
 
 					<li>
 						<span class="awebooking-availability pending"></span>
-						<span><?php echo esc_html__( 'Pending', 'awebooking' ) ?></span>
+						<span><?php echo esc_html__( 'Pending', 'awebooking' ); ?></span>
 					</li>
 
 					<li>
 						<span class="awebooking-availability booked"></span>
-						<span><?php echo esc_html__( 'Booked', 'awebooking' ) ?></span>
+						<span><?php echo esc_html__( 'Booked', 'awebooking' ); ?></span>
 					</li>
 				</ul>
 			</div><?php
@@ -134,19 +125,12 @@ class Availability_Management extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return [
-			'cb'   => '<input type="checkbox">',
-			// 'room' => esc_html__( 'Room', 'awebooking' ),
 			'calendar' => esc_html__( 'Calendar', 'awebooking' ),
 		];
 	}
 
-	/**
-	 * Handles the default column output.
-	 *
-	 * @param \AweBooking\Hotel\Room $room        The Room object.
-	 * @param string           $column_name Column name.
-	 */
-	protected function column_default( $room, $column_name ) {
+	public function get_primary_column() {
+		return 'calendar';
 	}
 
 	/**
