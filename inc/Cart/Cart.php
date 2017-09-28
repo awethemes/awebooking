@@ -231,7 +231,7 @@ class Cart {
 	 *
 	 * @return void
 	 */
-	protected function store_cart_contents() {
+	public function store_cart_contents() {
 		$this->session->put( static::CART_CONTENTS, $this->contents->to_array() );
 	}
 }

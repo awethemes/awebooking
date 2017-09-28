@@ -144,6 +144,18 @@ class Item implements Arrayable, Jsonable {
 	}
 
 	/**
+	 * Set the price for this cart item.
+	 *
+	 * @param  int $price The price amount.
+	 * @return $this
+	 */
+	public function set_price( Price $price ) {
+		$this->price = $price;
+
+		return $this;
+	}
+
+	/**
 	 * Returns the options for this cart item.
 	 *
 	 * @return int

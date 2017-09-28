@@ -322,15 +322,6 @@ class Service extends WP_Object implements Buyable {
 	}
 
 	/**
-	 * Get the description or title of the Buyable item.
-	 *
-	 * @return string
-	 */
-	public function get_buyable_description( $options ) {
-		return '';
-	}
-
-	/**
 	 * Get the price of the Buyable item.
 	 *
 	 * @return float

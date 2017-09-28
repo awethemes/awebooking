@@ -1,0 +1,123 @@
+.awebooking-accordion {
+  border: 1px solid #bfbfbf;
+}
+
+.awebooking-accordion__content {
+  padding: .5em .5em .5em .7em;
+  border-top: 0;
+}
+
+.awebooking-cart-item__content {
+  margin-bottom: 15px;
+
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+.awebooking-accordion__header {
+  position: relative;
+  display: block;
+  font-style: italic;
+  color: #2b2b2b;
+  cursor: pointer;
+  margin: 2px 0 0 0;
+  padding: .5em .5em .5em .7em;
+  background: #f7f7f7;
+  border-top: 1px solid #cccccc;
+  margin: 0 !important;
+
+  &:first-child {
+    border-top: 0;
+  }
+}
+
+.awebooking-cart-item__media {
+  float: left;
+  width: 100%;
+
+  @include media('>=xs') {
+    width: 45%;
+  }
+}
+
+.awebooking-cart-item__info {
+  float: left;
+  width: 100%;
+  padding-left: 15px;
+
+  @include media('>=xs') {
+    width: 55%;
+  }
+}
+
+.awebooking-cart-item__title {
+  margin-bottom: 0.5em !important;
+  margin-top: 0.25em;
+}
+
+.awebooking-cart-item__reservation {
+  margin-bottom: 15px;
+  font-size: 0.75rem;
+  
+  p {
+    margin-bottom: 0.5em;
+  }
+}
+
+.awebooking-cart-item__reservation-title {
+  font-style: italic;
+  text-decoration: underline;
+  margin-bottom: 0.5em !important;
+  display: none;
+
+  @include media('>=sm') {
+    display: block;
+  }
+}
+
+.awebooking-cart-item__price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: 0 !important;
+
+  strong {
+    font-size: 16px;
+    font-style: normal;
+  }
+}
+
+.awebooking-cart-item__buttons {
+  font-size: 0.7rem;
+
+  a {
+    display: inline-block;
+  }
+
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+.awebooking-cart-item__edit {
+  float: left;
+}
+
+.awebooking-cart-item__remove {
+  float: right;
+  color: #a00;
+
+  &:hover {
+    color: #f00;
+  }
+}
+
+.awebooking-cart__total {
+  border: 1px solid #cccccc;
+  border-top: 0;
+}

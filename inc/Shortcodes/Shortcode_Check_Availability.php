@@ -43,7 +43,7 @@ class Shortcode_Check_Availability {
 			} catch ( \InvalidArgumentException $e ) {
 				$errors = esc_html__( 'Missing data, please enter the required data.', 'awebooking' );
 			} catch ( \LogicException $e ) {
-				$errors = esc_html__( 'Period dates is invalid.', 'awebooking' );
+				$errors = esc_html__( 'Period dates are invalid.', 'awebooking' );
 			} catch ( \Exception $e ) {
 				$errors = esc_html__( 'An error occurred while processing your request.', 'awebooking' );
 			}

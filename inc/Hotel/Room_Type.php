@@ -6,8 +6,15 @@ use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
+use AweBooking\Cart\Buyable;
+use AweBooking\Concierge;
+use AweBooking\Support\Period;
+use AweBooking\Booking\Request;
+use AweBooking\Pricing\Price_Calculator;
+use AweBooking\Hotel\Service;
+use AweBooking\Calculator\Service_Calculator;
 
-class Room_Type extends WP_Object {
+class Room_Type extends WP_Object implements Buyable {
 	/**
 	 * This is the name of this object type.
 	 *
@@ -514,5 +521,107 @@ class Room_Type extends WP_Object {
 		}
 
 		return $pluck ? wp_list_pluck( $the_rooms, $pluck ) : $the_rooms;
+	}
+
+	/**
+	 * Determines the Buyable item is purchasable.
+	 *
+	 * @return boolean
+	 */
+	public function is_purchasable() {
+		return true;
+	}
+
+	/**
+	 * Get the identifier of the Buyable item.
+	 *
+	 * @return int|string
+	 */
+	public function get_buyable_identifier( $options ) {
+		return $this->get_id();
+	}
+
+	/**
+	 * Get the price of the Buyable item.
+	 *
+	 * @return float
+	 */
+	public function get_buyable_price( $options ) {
+		$period  = new Period( $options['check_in'], $options['check_out'], true );
+		$request = new Request( $period, [
+			'room-type' => $this->get_id(),
+			'adults'    => $options['adults'],
+			'children'  => $options['children'],
+			'extra_services' => $options['extra_services'],
+		] );
+
+		$price = $this->get_price( $options );
+
+		if ( $request->has_request( 'extra_services' ) ) {
+			$price = $price->add( $this->get_extra_services_price( $options ) );
+		}
+
+		$pipes = apply_filters( 'awebooking/availability/total_price_pipes', [], $request );
+
+		return (new Price_Calculator( $price ))
+			->through( $pipes )
+			->process();
+	}
+
+	/**
+	 * Get price.
+	 *
+	 * @return Price
+	 */
+	public function get_price( $options ) {
+		$period  = new Period( $options['check_in'], $options['check_out'], true );
+		$request = new Request( $period, [
+			'room-type' => $this->get_id(),
+			'adults'    => $options['adults'],
+			'children'  => $options['children'],
+			'extra_services' => $options['extra_services'],
+		] );
+
+		$price = Concierge::get_room_price( $this, $request->get_period() );
+
+		$pipes = apply_filters( 'awebooking/availability/room_price_pipes', [], $request );
+
+		return (new Price_Calculator( $price ))
+			->through( $pipes )
+			->process();
+	}
+
+	public function get_extra_services_price( $options ) {
+		$pipes = [];
+		$this->through_services( $pipes, $options );
+
+		return (new Price_Calculator( new Price( 0 ) ))
+			->through( $pipes )
+			->process();
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  array $pipes //.
+	 * @return void
+	 */
+	protected function through_services( array &$pipes, $options ) {
+		if ( ! $options['extra_services'] ) {
+			return;
+		}
+
+		$period  = new Period( $options['check_in'], $options['check_out'], true );
+		$request = new Request( $period, [
+			'room-type' => $this->get_id(),
+			'adults'    => $options['adults'],
+			'children'  => $options['children'],
+			'extra_services' => $options['extra_services'],
+		] );
+
+		foreach ( $options['extra_services'] as $service ) {
+			$extra_service = new Service( $service );
+			$pipes[] = new Service_Calculator( $extra_service, $request, $this->get_price( $options ) );
+		}
 	}
 }

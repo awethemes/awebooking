@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <table class="">
+	<?php // TODO: ?>
 	<tbody>
 		<tr>
 			<th><b><?php esc_html_e( 'Reservation', 'awebooking' ); ?></b></th>

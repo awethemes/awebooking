@@ -91,11 +91,20 @@
       });
     },
 
+    accordion: function() {
+      $('.awebooking-accordion').each(function () {
+        $(this).accordion({
+          heightStyle: "content"
+        });
+      });
+    },
+
     load: function() {
       this.datePicker();
       this.calendar();
       this.datePickerCallBack();
       this.tabsAweBooking();
+      this.accordion();
     }
 
   };

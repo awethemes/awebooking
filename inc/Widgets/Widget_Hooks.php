@@ -19,5 +19,6 @@ class Widget_Hooks extends Service_Hooks {
 	 */
 	public function register_widgets() {
 		register_widget( Check_Availability_Widget::class );
+		register_widget( Booking_Cart_Widget::class );
 	}
 }

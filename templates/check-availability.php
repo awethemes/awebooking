@@ -6,14 +6,14 @@
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
-
-use AweBooking\Room_Type;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+do_action( 'awebooking/template_notices' );
 ?>
 <div class="">
 

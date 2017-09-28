@@ -10,6 +10,7 @@ class Shortcodes {
 		$shortcodes = array(
 			'awebooking_check_availability'  => __CLASS__ . '::check_availability',
 			'awebooking_booking'             => __CLASS__ . '::booking',
+			'awebooking_cart'                => __CLASS__ . '::cart',
 			'awebooking_checkout'            => __CLASS__ . '::checkout',
 			'awebooking_check_form'          => __CLASS__ . '::check_form',
 		);
@@ -62,6 +63,16 @@ class Shortcodes {
 	 */
 	public static function booking( $atts ) {
 		return self::shortcode_wrapper( array( 'AweBooking\\Shortcodes\\Shortcode_Booking', 'output' ), $atts );
+	}
+
+	/**
+	 * Cart shortcode.
+	 *
+	 * @param mixed $atts
+	 * @return string
+	 */
+	public static function cart( $atts ) {
+		return self::shortcode_wrapper( array( 'AweBooking\\Shortcodes\\Shortcode_Cart', 'output' ), $atts );
 	}
 
 	/**
