@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	
-	<?php do_action( 'awebooking/checkout/before_submit_form', $availability ); ?>
+	<?php do_action( 'awebooking/checkout/before_submit_form' ); ?>
 
 	<button type="submit" class="button" data-type="awebooking"><?php esc_html_e( 'Submit', 'awebooking' ); ?></button>
 </form>
