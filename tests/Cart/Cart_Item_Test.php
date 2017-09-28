@@ -1,7 +1,7 @@
 <?php
 
 use AweBooking\Pricing\Price;
-use AweBooking\Cart\Cart_Item;
+use AweBooking\Cart\Item as Cart_Item;
 
 class Cart_Item_Test extends WP_UnitTestCase {
 	public function testBasic() {
