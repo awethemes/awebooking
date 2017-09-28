@@ -4,9 +4,8 @@ namespace AweBooking\Hotel;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
-use AweBooking\Cart\Buyable;
 
-class Service extends WP_Object implements Buyable {
+class Service extends WP_Object {
 	/* Constants */
 	const OPTIONAL = 'optional';
 	const MANDATORY = 'mandatory';
@@ -301,32 +300,5 @@ class Service extends WP_Object implements Buyable {
 		]);
 
 		return ! is_wp_error( $updated );
-	}
-
-	/**
-	 * Determines the Buyable item is purchasable.
-	 *
-	 * @return boolean
-	 */
-	public function is_purchasable() {
-		return true;
-	}
-
-	/**
-	 * Get the identifier of the Buyable item.
-	 *
-	 * @return int|string
-	 */
-	public function get_buyable_identifier( $options ) {
-		return $this->get_id();
-	}
-
-	/**
-	 * Get the price of the Buyable item.
-	 *
-	 * @return float
-	 */
-	public function get_buyable_price( $options ) {
-		return new Price(100);
 	}
 }
