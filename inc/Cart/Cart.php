@@ -213,7 +213,7 @@ class Cart {
 			}
 
 			// TODO: Add notice about remove item cant be purchase anymore.
-			if ( ! $buyable_item->is_purchasable() ) {
+			if ( ! $buyable_item->is_purchasable( $cart_item->options ) ) {
 				continue;
 			}
 

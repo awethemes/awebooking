@@ -7,7 +7,7 @@ interface Buyable {
 	 *
 	 * @return boolean
 	 */
-	public function is_purchasable();
+	public function is_purchasable( $options );
 
 	/**
 	 * Get the identifier of the Buyable item.
