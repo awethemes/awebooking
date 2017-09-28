@@ -46,10 +46,7 @@ class Shortcode_Booking {
 			$booking_request->set_request( 'room-type', $room_type->get_id() );
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
-			Template::get_template( 'booking.php', [
-				'availability' => $availability,
-				'room_type' => $room_type,
-			] );
+			Template::get_template( 'booking.php', compact( 'availability', 'room_type' ) );
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();
 		}
