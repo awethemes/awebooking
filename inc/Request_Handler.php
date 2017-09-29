@@ -111,7 +111,7 @@ class Request_Handler extends Service_Hooks {
 	}
 
 	/**
-	 * //
+	 * Handle Edit Booking.
 	 *
 	 * @return void
 	 */
@@ -119,7 +119,6 @@ class Request_Handler extends Service_Hooks {
 		if ( empty( $_REQUEST['booking-action'] ) || ( 'edit' !== $_REQUEST['booking-action'] ) || empty( $_REQUEST['rid'] ) ) {
 			return;
 		}
-
 
 		// Alway checking the nonce before process.
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'awebooking-edit-booking-nonce' ) ) {
@@ -194,7 +193,7 @@ class Request_Handler extends Service_Hooks {
 	}
 
 	/**
-	 * //
+	 * Handler Remove Booking
 	 *
 	 * @return void
 	 */
@@ -383,7 +382,7 @@ class Request_Handler extends Service_Hooks {
 	}
 
 	/**
-	 * //
+	 * Check availability in single room type.
 	 *
 	 * @return void
 	 */
@@ -398,25 +397,40 @@ class Request_Handler extends Service_Hooks {
 
 		$flash_message = awebooking( 'flash_message' );
 
+		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', [
+			'start-date'     => 'required|date',
+			'end-date'       => 'required|date',
+			'adults'         => 'required|integer|min:1',
+			'children'       => 'integer|min:0',
+		]));
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			// Loop through errors and set first error found.
+			foreach ( $validator->errors() as $errors ) {
+				$flash_message->error( $errors[0] );
+			}
+			return;
+		}
+
 		try {
 			$room_type = Factory::create_room_from_request( $_POST );
 			$booking_request = Factory::create_booking_request( $_POST );
-
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
-
 				$booking_request->set_request( 'room-type', $room_type->get_id() );
-				$booking_request->store();
-
 				do_action( 'awebooking/add_booking', $availability );
-
-				wp_redirect( $availability->get_booking_url(), 302 );
+				$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
+				$booking_url = add_query_arg( array_merge( array( 'booking-action' => 'view' ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
+				wp_safe_redirect( $booking_url, 302 );
 				exit;
 			}
 
 			$flash_message->error( esc_html__( 'No room available', 'awebooking' ) );
-			return wp_redirect( get_the_permalink( $room_type->get_id() ), 302 );
+
+			wp_safe_redirect( get_the_permalink( $room_type->get_id() ), 302 );
+			exit;
 		} catch ( \Exception $e ) {
 			$flash_message->error( $e->getMessage() );
 
@@ -424,7 +438,7 @@ class Request_Handler extends Service_Hooks {
 			unset( $request_args['end-date'] );
 
 			$link = get_the_permalink( $room_type->get_id() );
-			wp_redirect( add_query_arg( $request_args, $link ), 302 );
+			wp_safe_redirect( add_query_arg( $request_args, $link ), 302 );
 			exit;
 		}
 	}

@@ -31,7 +31,7 @@ class Shortcodes {
 		$function,
 		$atts    = array(),
 		$wrapper = array(
-			'class'  => 'awebooking',
+			'class'  => 'awebooking-shortcode',
 			'before' => null,
 			'after'  => null,
 		)

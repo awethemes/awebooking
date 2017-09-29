@@ -16,19 +16,18 @@ use AweBooking\Hotel\Service;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-$std = 1;
+$index = 1;
 $cart = awebooking( 'cart' );
 $cart_collection = $cart->get_contents();
 ?>
 <?php if ( count( $cart_collection ) > 0 ) : ?>
 <div class="awebooking-cart">
 	<div class="awebooking-cart-items awebooking-accordion">
-		<?php foreach ( $cart_collection as $row_id => $cart_item ) : ?>
-
+		<?php foreach ( $cart_collection as $row_id => $cart_item ) : $room_type = $cart_item->model(); ?>
 			<h5 class="awebooking-accordion__header">
 				<?php
 					/* translators: %s: booking room */
-					printf( esc_html__( 'Booking Room %s' ), intval( $std ) );
+					printf( esc_html__( 'Room %1$s: %2$s' ), intval( $index ), esc_html( $room_type->get_title() ) );
 				?>
 			</h5>
 			<div class="awebooking-accordion__content">
@@ -36,15 +35,15 @@ $cart_collection = $cart->get_contents();
 				<div class="awebooking-cart-item">
 					<div class="awebooking-cart-item__content">
 						<div class="awebooking-cart-item__media">
-							<a href="<?php echo esc_url( get_permalink( $cart_item->model()->get_id() ) ); ?>" title="<?php echo esc_attr( $cart_item->model()->get_title() ); ?>">
-								<?php echo awebooking_get_room_type_thumbnail( 'awebooking_catalog', intval( $cart_item->model()->get_id() ) ); // WPCS: xss ok. ?>
+							<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" title="<?php echo esc_attr( $room_type->get_title() ); ?>">
+								<?php echo awebooking_get_room_type_thumbnail( 'awebooking_catalog', intval( $room_type->get_id() ) ); // WPCS: xss ok. ?>
 							</a>
 						</div>
 
 						<div class="awebooking-cart-item__info">
 							<h2 class="awebooking-cart-item__title">
-								<a href="<?php echo esc_url( get_permalink( $cart_item->model()->get_id() ) ); ?>" rel="bookmark">
-									<?php echo esc_html( $cart_item->model()->get_title() ); ?>
+								<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark">
+									<?php echo esc_html( $room_type->get_title() ); ?>
 								</a>
 							</h2>
 
@@ -57,7 +56,7 @@ $cart_collection = $cart->get_contents();
 						<?php
 							$period  = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], true );
 							$request = new Request( $period, [
-								'room-type' => $cart_item->model()->get_id(),
+								'room-type' => $room_type->get_id(),
 								'adults'    => $cart_item->options['adults'],
 								'children'  => $cart_item->options['children'],
 								'extra_services' => $cart_item->options['extra_services'],
@@ -113,7 +112,7 @@ $cart_collection = $cart->get_contents();
 					</div>
 				</div>
 			</div>
-			<?php $std++; ?>
+			<?php $index++; ?>
 		<?php endforeach; ?>
 	</div>
 

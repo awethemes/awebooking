@@ -20,7 +20,7 @@ $room_type = $cart_item->model();
 ?>
 <div class="awebooking-informations">
 
-	<h1 class="awebooking-informations__title"><?php printf( esc_html__( 'Booking for %s', 'awebooking' ),  esc_html( $room_type->get_title() ) ); // WPCS: xss ok. ?></h1>
+	<h1 class="awebooking-informations__title"><?php printf( esc_html__( 'Edit booking for %s', 'awebooking' ),  esc_html( $room_type->get_title() ) ); // WPCS: xss ok. ?></h1>
 
 	<div class="table-responsive">
 		<table class="awebooking-informations__table">

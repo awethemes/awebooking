@@ -302,7 +302,7 @@ class Item implements Arrayable, Jsonable {
 	protected function generate_row_id( $id, array $options ) {
 		ksort( $options );
 
-		return md5( $id . serialize( $options ) );
+		return md5( $id . serialize( $options ) . time() );
 	}
 
 	/**
