@@ -39,7 +39,7 @@ use AweBooking\Admin\Admin_Utils;
 				<input type="number" step="any" name="bulk-price" style="width: 100px;">
 
 				<input type="hidden" name="action" value="bulk-update">
-				<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ) ?></button>
+				<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ); ?></button>
 			</div>
 
 			<div class="" style="position: relative; float: right;">

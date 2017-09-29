@@ -42,9 +42,9 @@ class Admin_Settings extends Admin_Page {
 	 * @return void
 	 */
 	protected function core_settings() {
-		// new General_Setting( $this );
+		new General_Setting( $this );
 		new Display_Setting( $this );
-		// new Email_Setting( $this );
+		new Email_Setting( $this );
 
 		$this->add_section( 'backup', [
 			'title'    => esc_html__( 'Backups', 'awebooking' ),
