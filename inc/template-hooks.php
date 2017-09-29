@@ -105,5 +105,5 @@ add_action( 'awebooking/after_archive_loop', 'awebooking_pagination', 10 );
  * @see awebooking_template_checkout_general_informations()
  * @see awebooking_template_checkout_customer_form()
  */
-add_action( 'awebooking/checkout/detail_tables', 'awebooking_template_checkout_general_informations', 10, 2 );
+add_action( 'awebooking/checkout/detail_tables', 'awebooking_template_checkout_general_informations', 10 );
 add_action( 'awebooking/checkout/customer_form', 'awebooking_template_checkout_customer_form', 10 );

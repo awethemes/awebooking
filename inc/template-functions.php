@@ -576,8 +576,8 @@ if ( ! function_exists( 'awebooking_template_checkout_customer_form' ) ) :
 	 * @param  object $availability availability.
 	 * @return void
 	 */
-	function awebooking_template_checkout_customer_form( $availability ) {
-		awebooking_get_template( 'checkout/customer-form.php', compact( 'availability' ) );
+	function awebooking_template_checkout_customer_form() {
+		awebooking_get_template( 'checkout/customer-form.php' );
 	}
 endif;
 
@@ -587,19 +587,7 @@ if ( ! function_exists( 'awebooking_template_checkout_extra_service_details' ) )
 	 *
 	 * @return void
 	 */
-	function awebooking_template_checkout_general_informations( $availability, $room_type ) {
-		$extra_services = $availability->get_request()->get_request( 'extra_services' );
-		$extra_services_name = [];
-
-		foreach ( $extra_services as $key => $id ) {
-			$term = get_term( $id, AweBooking::HOTEL_SERVICE );
-			$extra_services_name[] = $term->name;
-		}
-
-		awebooking_get_template( 'checkout/general-informations.php', array(
-			'extra_services_name' => $extra_services_name,
-			'availability'        => $availability,
-			'room_type'           => $room_type,
-		));
+	function awebooking_template_checkout_general_informations() {
+		awebooking_get_template( 'checkout/general-informations.php' );
 	}
 endif;

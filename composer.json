@@ -14,6 +14,9 @@
             "email": "anhskohbo@gmail.com"
         }
     ],
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git" }
+    ],
     "require": {
         "php": ">=5.6.4",
         "a5hleyrich/wp-background-processing": "^1.0",

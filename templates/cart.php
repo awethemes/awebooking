@@ -71,11 +71,11 @@ $cart_collection = $cart->get_contents();
 						<h6 class="awebooking-cart-item__reservation-title"><?php esc_html_e( 'Reservation', 'awebooking' ); ?></h6>
 						<p>
 							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $request->get_check_in() ); ?>
+							<?php echo esc_html( $request->get_check_in()->toDateString() ); ?>
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $request->get_check_out() ); ?>
+							<?php echo esc_html( $request->get_check_out()->toDateString() ); ?>
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong>
