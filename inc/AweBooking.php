@@ -220,6 +220,8 @@ final class AweBooking extends Container {
 		$this->boottrap();
 
 		Shortcodes\Shortcodes::init();
+
+		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
 	}
 
 	/**
