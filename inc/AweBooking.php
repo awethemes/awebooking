@@ -220,8 +220,6 @@ final class AweBooking extends Container {
 		$this->boottrap();
 
 		Shortcodes\Shortcodes::init();
-
-		$this['flash_message']->setup_message();
 	}
 
 	/**

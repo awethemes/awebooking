@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+awebooking( 'flash_message' )->setup_message();
+
 if ( ! awebooking( 'flash_message' )->has() ) {
 	return;
 }
