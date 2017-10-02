@@ -48,7 +48,7 @@ $cart_collection = $cart->get_contents();
 							</h2>
 
 							<p class="awebooking-cart-item__price">
-								<strong><?php esc_html_e( 'Total:', 'awebooking' ); ?></strong><?php echo esc_html( $cart_item->get_total() ); ?>
+								<strong><?php esc_html_e( 'Total:', 'awebooking' ); ?></strong><?php echo $cart_item->get_total(); ?>
 							</p>
 						</div>
 					</div>
@@ -117,12 +117,12 @@ $cart_collection = $cart->get_contents();
 	</div>
 
 	<?php do_action( 'awebooking/cart_contents' ); ?>
-	
+
 	<table class="awebooking-cart__total">
 		<tbody>
 			<tr>
 				<td class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-				<td><b><?php echo esc_html( $cart->total() ); //TODO: ...?></b></td>
+				<td><b><?php echo $cart->total(); ?></b></td>
 			</tr>
 		</tbody>
 	</table>
@@ -133,5 +133,5 @@ $cart_collection = $cart->get_contents();
 	</div>
 </div>
 <?php else : ?>
-	<p class="awebooking-empty-cart"><?php esc_html_e( 'No rooms in the cart.', 'awebooking' ); ?></p>
+	<p class="awebooking-empty-cart"><?php esc_html_e( 'No rooms in your booking.', 'awebooking' ); ?></p>
 <?php endif; ?>
