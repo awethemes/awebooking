@@ -33,16 +33,13 @@
         "webdevstudios/taxonomy_single_term": "dev-master"
     },
     "require-dev": {
-        "10up/wp_mock": "^0.2.0",
-        "mockery/mockery": "^0.9.9"
+        "10up/wp_mock": "^0.2.0"
     },
     "autoload": {
         "psr-4": {
             "AweBooking\\": "inc/"
         },
         "files": [
-            "inc/functions.php",
-            "inc/template-functions.php",
             "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php"
         ],
         "classmap": [
