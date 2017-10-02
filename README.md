@@ -1,4 +1,4 @@
-# AweBooking
+# AweBooking [![Build Status](https://travis-ci.org/awethemes/awebooking.svg?branch=master)](https://travis-ci.org/awethemes/awebooking)
 
 A hotel management tool for WordPress
 
