@@ -32,20 +32,23 @@ class Ajax_Hooks extends Service_Hooks {
 				return wp_send_json_error( [ 'message' => esc_html__( 'Unavailable room type.', 'awebooking' ) ], 400 );
 			}
 
-			$extra_services = array_map( 'absint', $_REQUEST['extra-services'] );
-			$allowed_services = [];
+			$booking_request->set_request( 'room-type', $room_type->get_id() );
 
-			// Validate services.
-			foreach ( $extra_services as $service_id ) {
-				if ( ! in_array( $service_id, $room_type['service_ids'] ) ) {
-					continue;
+			if ( ! empty( $_REQUEST['extra-services'] ) ) {
+				$extra_services = array_map( 'absint', $_REQUEST['extra-services'] );
+				$allowed_services = [];
+
+				// Validate services.
+				foreach ( $extra_services as $service_id ) {
+					if ( ! in_array( $service_id, $room_type['service_ids'] ) ) {
+						continue;
+					}
+
+					$allowed_services[] = $service_id;
 				}
 
-				$allowed_services[] = $service_id;
+				$booking_request->set_request( 'extra_services', $allowed_services );
 			}
-
-			$booking_request->set_request( 'extra_services', $allowed_services );
-			$booking_request->set_request( 'room-type', $room_type->get_id() );
 
 			return wp_send_json_success( [ 'total_price' => (string) $room_type->get_buyable_price( Collection::make( $booking_request->to_array() ) ) ], 200 );
 		} catch ( \Exception $e ) {
