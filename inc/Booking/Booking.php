@@ -3,7 +3,7 @@ namespace AweBooking\Booking;
 
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
 use AweBooking\Support\Period_Collection;
 use AweBooking\Support\Period;
 
@@ -57,6 +57,9 @@ class Booking extends WP_Object {
 		'customer_company'        => '',
 		'customer_phone'          => '',
 		'customer_email'          => '',
+		'customer_note'           => '',
+		'customer_ip_address'     => '',
+		'customer_user_agent'     => '',
 
 		// Payments attributes.
 		'payment_method'          => '',
@@ -64,9 +67,6 @@ class Booking extends WP_Object {
 		'transaction_id'          => '',
 		'created_via'             => '',
 		'date_paid'               => null,
-		'customer_note'           => '',
-		'customer_ip_address'     => '',
-		'customer_user_agent'     => '',
 	];
 
 	/**
@@ -390,7 +390,7 @@ class Booking extends WP_Object {
 			'post_status'   => $this->get_status(),
 			'post_title'    => $this->get_booking_title(),
 			'post_excerpt'  => $this->get_customer_note(),
-			'post_password' => uniqid( 'booking_' ),
+			'post_password' => awebooking_random_string(),
 			'ping_status'   => 'closed',
 			'post_author'   => 1,
 			'post_parent'   => 0,

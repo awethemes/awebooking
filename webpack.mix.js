@@ -10,6 +10,8 @@ mix.options({
 
 // Complide scss and js
 mix.sass('assets/sass/admin.scss', 'assets/css')
+    .sass('assets/sass/theme.scss', 'assets/css')
+    .sass('assets/sass/awebooking.scss', 'assets/css')
    .js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/edit-booking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/edit-service.js', 'assets/js/admin')
@@ -29,7 +31,7 @@ mix.browserSync({
   files: [
     'inc/**/*.php',
     'templates/**/*.php',
-    'assets/css/*.css',
-    'assets/js/**/*.js',
+    // 'assets/css/*.css',
+    // 'assets/js/**/*.js',
   ]
 });

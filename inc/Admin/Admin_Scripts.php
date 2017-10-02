@@ -68,6 +68,18 @@ class Admin_Scripts {
 	public function enqueue_scripts() {
 		$screen = get_current_screen();
 
+		/**
+		 * Hack for checking submenu-page ID correcly.
+		 *
+		 * WP core use menu_title to construct subpage load-hooks, so when "AweBooking"
+		 * (which we use in Menu) is translated to something else, $screen->id will change.
+		 *
+		 * @see https://www.skyverge.com/blog/screen-id-checks-wordpress-submenu-pages/
+		 *
+		 * @var string
+		 */
+		$awebooking_screen_id = sanitize_title( esc_html__( 'AweBooking', 'awebooking' ) );
+
 		wp_enqueue_style( 'cmb2-styles' );
 		wp_enqueue_style( 'awebooking-admin' );
 		wp_enqueue_script( 'awebooking-admin' );
@@ -84,11 +96,11 @@ class Admin_Scripts {
 			// wp_enqueue_script( 'awebooking-edit-service' );
 		}
 
-		if ( 'awebooking_page_manager-pricing' === $screen->id ) {
+		if ( $awebooking_screen_id . '_page_manager-pricing' === $screen->id ) {
 			wp_enqueue_script( 'awebooking-manager-pricing' );
 		}
 
-		if ( 'awebooking_page_manager-awebooking' === $screen->id ) {
+		if ( $awebooking_screen_id . '_page_manager-awebooking' === $screen->id ) {
 			wp_enqueue_script( 'awebooking-manager-availability' );
 		}
 	}

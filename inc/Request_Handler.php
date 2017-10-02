@@ -12,7 +12,10 @@ use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Admin_Booking_Created;
 use AweBooking\Support\Mailer;
 use Skeleton\Support\Validator;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
+use AweBooking\Cart\Cart;
+use AweBooking\Pricing\Price;
+use AweBooking\Support\Period;
 
 class Request_Handler extends Service_Hooks {
 	/**
@@ -24,6 +27,8 @@ class Request_Handler extends Service_Hooks {
 	 */
 	public function init( $awebooking ) {
 		add_action( 'template_redirect', array( $this, 'handle_add_booking' ) );
+		add_action( 'template_redirect', array( $this, 'handle_edit_booking' ) );
+		add_action( 'template_redirect', array( $this, 'handle_remove_booking' ) );
 		add_action( 'template_redirect', array( $this, 'checkout_handler' ) );
 		add_action( 'template_redirect', array( $this, 'single_check_availability_handler' ) );
 	}
@@ -34,26 +39,185 @@ class Request_Handler extends Service_Hooks {
 	 * @return void
 	 */
 	public function handle_add_booking() {
-		if ( empty( $_REQUEST['add-booking'] ) ) {
+		if ( empty( $_POST['booking-action'] ) || ( 'add' !== $_POST['booking-action'] ) ) {
+			return;
+		}
+
+		// Alway checking the nonce before process.
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'awebooking-add-booking-nonce' ) ) {
+			return;
+		}
+
+		// Setup somethings.
+		$flash_message = awebooking()->make( 'flash_message' );
+
+		// Do validator the input before doing checkout.
+		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', [
+			'start-date'     => 'required|date',
+			'end-date'       => 'required|date',
+			'adults'         => 'required|integer|min:1',
+			'children'       => 'integer|min:0',
+			'extra_services' => 'array',
+		]));
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			// Loop through errors and set first error found.
+			foreach ( $validator->errors() as $errors ) {
+				$flash_message->error( $errors[0] );
+			}
 			return;
 		}
 
 		try {
 			$room_type = Factory::create_room_from_request();
-
 			$booking_request = Factory::create_booking_request();
 			$booking_request->set_request( 'room-type', $room_type->get_id() );
-
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
-				$booking_request->store();
+				// TODO: validate extra services.
+				$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
+				$cart = awebooking( 'cart' );
+				$cart_item = $cart->add( new Room_Type( intval( $_POST['room-type'] ) ), 1, [
+					'check_in'       => sanitize_text_field( $_POST['start-date'] ),
+					'check_out'      => sanitize_text_field( $_POST['end-date'] ),
+					'adults'         => absint( $_POST['adults'] ),
+					'children'       => absint( $_POST['children'] ),
+					'extra_services' => $extra_services,
+				] );
 
 				do_action( 'awebooking/add_booking', $availability );
+				if ( isset( $_POST['go-to-checkout'] ) ) {
+					wp_safe_redirect( get_permalink( absint( awebooking_option( 'page_checkout' ) ) ), 302 );
+				} else {
+					$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
+					$check_availability_link = add_query_arg( [
+						'start-date' => sanitize_text_field( $_POST['start-date'] ),
+						'end-date'   => sanitize_text_field( $_POST['end-date'] ),
+						'adults'     => absint( $_POST['adults'] ),
+						'children'   => absint( $_POST['children'] ),
+					], $check_availability_link );
 
-				wp_safe_redirect( awebooking_get_page_permalink( 'booking' ), 302 );
+					$message = sprintf( esc_html__( '%s has been added to your booking.' ), esc_html( $room_type->get_title() ) );
+					$flash_message->success( $message );
+					wp_safe_redirect( $check_availability_link , 302 );
+				}
 				exit;
 			}
+		} catch ( \Exception $e ) {
+			// ...
+		}
+	}
+
+	/**
+	 * Handle Edit Booking.
+	 *
+	 * @return void
+	 */
+	public function handle_edit_booking() {
+		if ( empty( $_REQUEST['booking-action'] ) || ( 'edit' !== $_REQUEST['booking-action'] ) || empty( $_REQUEST['rid'] ) ) {
+			return;
+		}
+
+		// Alway checking the nonce before process.
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'awebooking-edit-booking-nonce' ) ) {
+			return;
+		}
+
+		try {
+			$row_id  = sanitize_text_field( $_REQUEST['rid'] );
+			$cart    = awebooking( 'cart' );
+			$cart_item = $cart->get( $row_id );
+			$room_type = $cart_item->model();
+
+			$period = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], false );
+			$booking_request = new Request( $period, [
+				'room-type' => $room_type->get_id(),
+				'adults'    => $cart_item->options['adults'],
+				'children'  => $cart_item->options['children'],
+				'extra_services' => $cart_item->options['extra_services'],
+			] );
+
+			$booking_request->set_request( 'extra_services', $cart_item->options['extra_services'] );
+			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
+
+			// Re-check availability.
+			if ( $availability->unavailable() ) { // Redirect if unavailable.
+				$cart->remove( $row_id );
+				$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
+				$check_availability_link = add_query_arg( [
+					'start-date' => sanitize_text_field( $cart_item->options['start-date'] ),
+					'end-date'   => sanitize_text_field( $cart_item->options['end-date'] ),
+					'adults'     => absint( $cart_item->options['adults'] ),
+					'children'   => absint( $cart_item->options['children'] ),
+				], $check_availability_link );
+
+				$message = sprintf( esc_html__( '%s has been removed from your booking. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
+				$flash_message->success( $message );
+				wp_safe_redirect( $check_availability_link , 302 );
+				exit;
+			}
+
+			// Is availability.
+			// Setup somethings.
+			$flash_message = awebooking()->make( 'flash_message' );
+			// Do validator the input before doing checkout.
+			$validator = new Validator( $_POST, apply_filters( 'awebooking/edit_booking/validator_rules', [
+				'room-type'      => 'required|integer|min:1',
+				'start-date'     => 'required|date',
+				'end-date'       => 'required|date',
+				'adults'         => 'required|integer|min:1',
+				'children'       => 'integer|min:0',
+				'extra_services' => 'array',
+			]));
+
+			// If have any errors.
+			if ( $validator->fails() ) {
+				// Loop through errors and set first error found.
+				foreach ( $validator->errors() as $errors ) {
+					$flash_message->error( $errors[0] );
+				}
+				return;
+			}
+
+			$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
+			$cart_item->options['extra_services'] = $extra_services;
+			$cart_item->set_price( $room_type->get_buyable_price( $cart_item->options ) );
+			$cart->store_cart_contents();
+			$message = sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) );
+			$flash_message->success( $message );
+		} catch ( \Exception $e ) {
+			echo $e->getMessage();
+		}
+	}
+
+	/**
+	 * Handler Remove Booking
+	 *
+	 * @return void
+	 */
+	public function handle_remove_booking() {
+		global $wp;
+		if ( empty( $_REQUEST['booking-action'] ) || ( 'remove' !== $_REQUEST['booking-action'] ) || empty( $_REQUEST['rid'] ) ) {
+			return;
+		}
+
+		$row_id = sanitize_text_field( $_REQUEST['rid'] );
+		try {
+			$cart    = awebooking( 'cart' );
+			$cart_item = $cart->get( $row_id );
+			$cart->remove( $row_id );
+
+			// Setup somethings.
+			$flash_message = awebooking()->make( 'flash_message' );
+			$message = sprintf( esc_html__( '%s removed.' ), esc_html( $cart_item->model()->get_title() ) );
+			$flash_message->info( $message );
+
+			$referer  = wp_get_referer() ? remove_query_arg( array( 'remove_item' ), add_query_arg( 'removed_booking', '1', wp_get_referer() ) ) : home_url( $wp->request );
+			wp_safe_redirect( $referer );
+			exit;
+
 		} catch ( \Exception $e ) {
 			// ...
 		}
@@ -91,7 +255,7 @@ class Request_Handler extends Service_Hooks {
 
 		$validator->labels( apply_filters( 'awebooking/checkout/validator_labels', [
 			'customer_first_name' => esc_html__( 'First name', 'awebooking' ),
-			'customer_first_name' => esc_html__( 'Last name', 'awebooking' ),
+			'customer_last_name'  => esc_html__( 'Last name', 'awebooking' ),
 			'customer_email'      => esc_html__( 'Email address', 'awebooking' ),
 			'customer_phone'      => esc_html__( 'Phone number', 'awebooking' ),
 		]));
@@ -109,26 +273,24 @@ class Request_Handler extends Service_Hooks {
 			exit;
 		}
 
+		$cart = awebooking( 'cart' );
+		$cart_collection = $cart->get_contents();
+
+		// Return if emty cart.
+		if ( $cart_collection->isEmpty() ) {
+			return;
+		}
+
+		// Set price.
+		foreach ( $cart_collection as $row_id => $cart_item ) {
+			$room_type = $cart_item->model();
+			$cart_item->options['room-type'] = $room_type->get_id();
+			$cart_item->set_price( $room_type->get_buyable_price( $cart_item->options ) );
+		}
+
 		try {
-			$request = Request::instance();
-
-			$availability = Concierge::check_room_type_availability(
-				new Room_Type( $request->get_request( 'room-type' ) ),
-				$request
-			);
-
-			if ( $availability->unavailable() ) {
-				$flash_message->error( esc_html__( 'Unavailable', 'awebooking' ) );
-				wp_redirect( $checkout_url );
-				exit;
-			}
-
-			// Take last room in list rooms available.
-			$rooms = $availability->get_rooms();
-			$the_room = end( $rooms );
-
 			// Create new booking.
-			$booking = (new Booking)->fill(apply_filters( 'awebooking/store_booking_args', [
+			$booking = (new Booking)->fill( apply_filters( 'awebooking/store_booking_args', [
 				'status'              => Booking::PENDING,
 				'customer_id'         => 0,
 				'customer_first_name' => sanitize_text_field( $_POST['customer_first_name'] ),
@@ -137,43 +299,63 @@ class Request_Handler extends Service_Hooks {
 				'customer_phone'      => sanitize_text_field( $_POST['customer_phone'] ),
 				'customer_company'    => isset( $_POST['customer_company'] ) ? sanitize_text_field( $_POST['customer_company'] ) : '',
 				'customer_note'       => isset( $_POST['customer_note'] ) ? sanitize_text_field( $_POST['customer_note'] ) : '',
-			]));
+			] ) );
 
-			$room_item = (new Line_Item)->fill([
-				'name'      => $availability->get_room_type()->get_title(),
-				'room_id'   => $the_room->get_id(),
-				'check_in'  => $request->get_check_in()->toDateString(),
-				'check_out' => $request->get_check_out()->toDateString(),
-				'adults'    => $request->get_adults(),
-				'children'  => $request->get_children(),
-				'total'     => $availability->get_total_price()->get_amount(),
-			]);
+			// Re-check and set price.
+			foreach ( $cart_collection as $row_id => $cart_item ) {
+				$room_type = $cart_item->model();
+				$period = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], false );
+				$request = new Request( $period, [
+					'room-type' => $room_type->get_id(),
+					'adults'    => $cart_item->options['adults'],
+					'children'  => $cart_item->options['children'],
+					'extra_services' => $cart_item->options['extra_services'],
+				] );
 
-			$booking->add_item( $room_item );
-			$booking->save();
+				$availability = Concierge::check_room_type_availability( $room_type, $request );
+				// Take last room in list rooms available.
+				$rooms = $availability->get_rooms();
+				$the_room = end( $rooms );
 
-			if ( ! $booking->exists() ) {
-				wp_die( esc_html__( 'Something went wrong', 'awebooking' ) );
-				return; // Something went wrong.
-			}
+				$room_item = (new Line_Item)->fill( [
+					'name'      => $availability->get_room_type()->get_title(),
+					'room_id'   => $the_room->get_id(),
+					'check_in'  => $request->get_check_in()->toDateString(),
+					'check_out' => $request->get_check_out()->toDateString(),
+					'adults'    => $request->get_adults(),
+					'children'  => $request->get_children(),
+					'total'     => $cart_item->get_total(),
+				] );
 
-			foreach ( $request->get_services() as $service_id => $quantity ) {
-				$service = new Service( $service_id );
-				if ( ! $service->exists() ) {
-					continue;
+				$booking->add_item( $room_item );
+				$booking->save();
+
+				if ( ! $booking->exists() ) {
+					wp_die( esc_html__( 'Something went wrong', 'awebooking' ) );
+					return; // Something went wrong.
 				}
 
-				$service_item = (new Service_Item)->fill([
-					'name'       => $service->get_name(),
-					'service_id' => $service->get_id(),
-					'parent_id'  => $room_item->get_id(),
-				]);
+				foreach ( $request->get_services() as $service_id => $quantity ) {
+					$service = new Service( $service_id );
+					if ( ! $service->exists() ) {
+						continue;
+					}
 
-				$booking->add_item( $service_item );
+					$service_item = ( new Service_Item )->fill( [
+						'name'       => $service->get_name(),
+						'service_id' => $service->get_id(),
+						'parent_id'  => $room_item->get_id(),
+					] );
+
+					$booking->add_item( $service_item );
+				}
+
+				$booking->calculate_totals();
 			}
 
-			$booking->calculate_totals();
+			do_action( 'awebooking/booking_created', $booking );
 
+			// Send mail.
 			if ( awebooking_option( 'email_new_enable' ) ) {
 				try {
 					Mailer::to( $booking->get_customer_email() )->send( new Booking_Created( $booking ) );
@@ -185,12 +367,9 @@ class Request_Handler extends Service_Hooks {
 
 			do_action( 'awebooking/checkout_completed', $booking, $availability );
 
-			$session = awebooking( 'session' );
 			// Clear booking request and set booking ID.
-			unset( $session['awebooking_request'] );
 			awebooking_setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
-
-			wp_session_commit();
+			$cart->destroy();
 
 			wp_redirect( add_query_arg( [ 'step' => 'complete' ], $checkout_url ) );
 			exit;
@@ -203,7 +382,7 @@ class Request_Handler extends Service_Hooks {
 	}
 
 	/**
-	 * //
+	 * Check availability in single room type.
 	 *
 	 * @return void
 	 */
@@ -218,23 +397,40 @@ class Request_Handler extends Service_Hooks {
 
 		$flash_message = awebooking( 'flash_message' );
 
+		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', [
+			'start-date'     => 'required|date',
+			'end-date'       => 'required|date',
+			'adults'         => 'required|integer|min:1',
+			'children'       => 'integer|min:0',
+		]));
+
+		// If have any errors.
+		if ( $validator->fails() ) {
+			// Loop through errors and set first error found.
+			foreach ( $validator->errors() as $errors ) {
+				$flash_message->error( $errors[0] );
+			}
+			return;
+		}
+
 		try {
 			$room_type = Factory::create_room_from_request( $_POST );
 			$booking_request = Factory::create_booking_request( $_POST );
-
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
-
 				$booking_request->set_request( 'room-type', $room_type->get_id() );
-				$booking_request->store();
-
-				wp_redirect( $availability->get_booking_url(), 302 );
+				do_action( 'awebooking/add_booking', $availability );
+				$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
+				$booking_url = add_query_arg( array_merge( array( 'booking-action' => 'view' ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
+				wp_safe_redirect( $booking_url, 302 );
 				exit;
 			}
 
 			$flash_message->error( esc_html__( 'No room available', 'awebooking' ) );
-			return wp_redirect( get_the_permalink( $room_type->get_id() ), 302 );
+
+			wp_safe_redirect( get_the_permalink( $room_type->get_id() ), 302 );
+			exit;
 		} catch ( \Exception $e ) {
 			$flash_message->error( $e->getMessage() );
 
@@ -242,7 +438,7 @@ class Request_Handler extends Service_Hooks {
 			unset( $request_args['end-date'] );
 
 			$link = get_the_permalink( $room_type->get_id() );
-			wp_redirect( add_query_arg( $request_args, $link ), 302 );
+			wp_safe_redirect( add_query_arg( $request_args, $link ), 302 );
 			exit;
 		}
 	}

@@ -14,7 +14,7 @@ class Test_Addon extends Addon {
 
 class Test_Require_Addon extends Addon {
 	public function requires() {
-		return '3.0.0-beta6';
+		return '5.0.0';
 	}
 }
 

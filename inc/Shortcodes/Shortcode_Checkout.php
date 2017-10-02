@@ -26,6 +26,7 @@ class Shortcode_Checkout {
 	 */
 	public static function output( $atts ) {
 		$atts = shortcode_atts( array(), $atts, 'awebooking_checkout' );
+		// TODO:
 
 		if ( isset( $_GET['step'] ) && $_GET['step'] === 'cancelled' ) {
 			Template::get_template( 'cancelled.php' );
@@ -37,22 +38,13 @@ class Shortcode_Checkout {
 			return;
 		}
 
-		try {
-			$booking_request = Request::instance();
+		$cart = awebooking( 'cart' );
+		$cart_collection = $cart->get_contents();
 
-			$room_type = new Room_Type( $booking_request->get_request( 'room-type' ) );
-			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
-
-			if ( $availability->unavailable() ) {
-				return;
-			}
-
-			Template::get_template( 'checkout.php', array(
-				'availability' => $availability,
-				'room_type' => $room_type,
-			));
-		} catch ( \Exception $e ) {
-			echo $e->getMessage();
+		if ( 0 === count( $cart_collection ) ) {
+			return;
 		}
+
+		Template::get_template( 'checkout.php' );
 	}
 }

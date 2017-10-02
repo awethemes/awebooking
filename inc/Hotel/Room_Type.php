@@ -5,9 +5,15 @@ use WP_Query;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
+use AweBooking\Cart\Buyable;
+use AweBooking\Concierge;
+use AweBooking\Booking\Request;
+use AweBooking\Pricing\Price_Calculator;
+use AweBooking\Hotel\Service;
+use AweBooking\Calculator\Service_Calculator;
 
-class Room_Type extends WP_Object {
+class Room_Type extends WP_Object implements Buyable {
 	/**
 	 * This is the name of this object type.
 	 *
@@ -409,7 +415,7 @@ class Room_Type extends WP_Object {
 	 * @return Rate
 	 */
 	public function get_standard_rate() {
-		return new Rate( $this->get_id(), $this->get_base_price()->to_amount() );
+		return new Rate( $this->get_id(), $this->get_base_price()->to_integer() );
 	}
 
 	/**
@@ -514,5 +520,54 @@ class Room_Type extends WP_Object {
 		}
 
 		return $pluck ? wp_list_pluck( $the_rooms, $pluck ) : $the_rooms;
+	}
+
+	/**
+	 * Get the identifier of the Buyable item.
+	 *
+	 * @return int|string
+	 */
+	public function get_buyable_identifier( $options ) {
+		return $this->get_id();
+	}
+
+	/**
+	 * Get the price of the Buyable item.
+	 *
+	 * @return float
+	 */
+	public function get_buyable_price( $options ) {
+		$options['room-type'] = $this->get_id();
+		$request = Request::from_array( $options->to_array() );
+
+		// Price by nights.
+		$price = Concierge::get_room_price( $this, $request->get_period() );
+		$pipes = apply_filters( $this->prefix( 'get_buyable_price' ), [], $this, $request );
+
+		if ( $request->has_request( 'extra_services' ) ) {
+			foreach ( $request->get_services() as $service_id => $quantity ) {
+				$pipes[] = new Service_Calculator( new Service( $service_id ), $request, $price );
+			}
+		}
+
+		return (new Price_Calculator( $price ))
+			->through( $pipes )
+			->process();
+	}
+
+	/**
+	 * Determines the Buyable item is purchasable.
+	 *
+	 * @return boolean
+	 */
+	public function is_purchasable( $options ) {
+		if ( $this->get_base_price()->is_zero() ) {
+			return false;
+		}
+
+		$request = Request::from_array( $options->to_array() );
+		$availability = Concierge::check_room_type_availability( $this, $request );
+
+		return $availability->available();
 	}
 }

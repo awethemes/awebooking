@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking;
 
+use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Booking;
@@ -192,7 +193,7 @@ class Concierge {
 			new \DateInterval( 'P1D' )
 		);
 
-		return Price::from_amount(
+		return Price::from_integer(
 			$valuator->determineValue()
 		);
 	}
@@ -302,8 +303,8 @@ class Concierge {
 		$response = $calendar->getMatchingUnits(
 			$request->get_check_in(),
 			$request->get_check_out()->subMinute(),
-			$request->valid_states(),
-			$request->constraints()
+			[ AweBooking::STATE_AVAILABLE ],
+			[]
 		);
 
 		return static::mapto_room_types( $response, $request );

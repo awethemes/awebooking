@@ -6,33 +6,25 @@
  *
  * @author 		Awethemes
  * @package 	Awethemes/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
-
-use AweBooking\Support\Formatting;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-?>
 
-<?php do_action( 'awebooking/template_notices' ); ?>
+do_action( 'awebooking/template_notices' ); 
 
-<?php if ( isset( $availability ) && $availability->available() ) : ?>
+/**
+ * Hook: "awebooking/checkout/detail_tables"
+ *
+ * @hooked awebooking_template_checkout_general_informations - 10
+ */
+do_action( 'awebooking/checkout/detail_tables' );
 
-	<?php
-	/**
-	 * Hook: "awebooking/checkout/detail_tables"
-	 *
-	 * @hooked awebooking_template_checkout_general_informations - 10
-	 */
-	do_action( 'awebooking/checkout/detail_tables', $availability, $room_type );
-
-	/**
-	 * Hook: "awebooking/checkout/customer_form
-	 *
-	 * @hooked awebooking_template_checkout_customer_form - 10
-	 */
-	do_action( 'awebooking/checkout/customer_form', $availability ); ?>
-
-<?php endif;
+/**
+ * Hook: "awebooking/checkout/customer_form
+ *
+ * @hooked awebooking_template_checkout_customer_form - 10
+ */
+do_action( 'awebooking/checkout/customer_form' ); ?>

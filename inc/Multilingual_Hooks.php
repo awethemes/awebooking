@@ -2,7 +2,7 @@
 namespace AweBooking;
 
 use AweBooking\Support\Multilingual;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Multilingual_Hooks extends Service_Hooks {
 	/**

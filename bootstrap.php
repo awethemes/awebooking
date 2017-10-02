@@ -21,5 +21,9 @@ if ( ! defined( 'AWETHEMES_SKELETON_LOADED' ) ) {
 	}
 }
 
+require_once trailingslashit( __DIR__ ) . 'inc/functions.php';
+require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';
+
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
+class_alias( 'Awethemes\WP_Object\WP_Object', 'AweBooking\Model\WP_Object' );

@@ -90,6 +90,20 @@ function awebooking_sanitize_period( $value, $strict = false ) {
  */
 
 /**
+ * Generate a random string.
+ *
+ * @param  integer $length Random string length.
+ * @return string
+ */
+function awebooking_random_string( $length = 16 ) {
+	require_once ABSPATH . 'wp-includes/class-phpass.php';
+
+	$bytes = (new PasswordHash( 8, false ))->get_random_bytes( $length * 2 );
+
+	return substr( str_replace( [ '/', '+', '=' ], '', base64_encode( $bytes ) ), 0, $length );
+}
+
+/**
  * Create an array instance.
  *
  * @param  array           $ids   An array IDs.
@@ -157,15 +171,15 @@ function awebooking_wpdb_transaction( $type = 'start' ) {
 
 	if ( AWEBOOKING_USE_TRANSACTIONS ) {
 		switch ( $type ) {
-			case 'commit' :
+			case 'commit':
 				$wpdb->query( 'COMMIT' );
 				break;
-			case 'rollback' :
+			case 'rollback':
 				$wpdb->query( 'ROLLBACK' );
 				break;
-			default :
+			default:
 				$wpdb->query( 'START TRANSACTION' );
-			break;
+				break;
 		}
 	}
 }

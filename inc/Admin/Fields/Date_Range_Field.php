@@ -2,9 +2,9 @@
 namespace AweBooking\Admin\Fields;
 
 use AweBooking\AweBooking;
-use Skeleton\CMB2\Fields\Field_Abstract;
+use Skeleton\Fields\CMB2_Field;
 
-class Date_Range_Field extends Field_Abstract {
+class Date_Range_Field extends CMB2_Field {
 	/**
 	 * Adding this field to the blacklist of repeatable field-types.
 	 *

@@ -194,7 +194,7 @@ class Flash_Message {
 	 * @return void
 	 */
 	protected function store_messages( $messages ) {
-		awebooking_setcookie( 'awebooking-messages', maybe_serialize( $messages ), time() + 60 * 60 * 24 );
+		awebooking( 'session' )->flash( 'flash_messages', maybe_serialize( $messages ) );
 	}
 
 	/**
@@ -203,7 +203,7 @@ class Flash_Message {
 	 * @return void
 	 */
 	protected function flush_messages() {
-		awebooking_setcookie( 'awebooking-messages', null, time() - 1000 );
+		awebooking( 'session' )->remove( 'flash_messages' );
 	}
 
 	/**
@@ -212,7 +212,8 @@ class Flash_Message {
 	 * @return array|null
 	 */
 	protected function get_messages() {
-		return isset( $_COOKIE['awebooking-messages'] ) ?
-			maybe_unserialize( wp_unslash( $_COOKIE['awebooking-messages'] ) ) : null;
+		return maybe_unserialize(
+			awebooking( 'session' )->pull( 'flash_messages', [] )
+		);
 	}
 }

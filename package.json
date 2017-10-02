@@ -10,11 +10,11 @@
   "devDependencies": {
     "browser-sync": "^2.18.13",
     "browser-sync-webpack-plugin": "^1.2.0",
-    "laravel-mix": "^1.4.3",
+    "laravel-mix": "^1.4.5",
     "node-wp-i18n": "^1.0.2"
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
-    "vue": "^2.4.3"
+    "vue": "^2.4.4"
   }
 }

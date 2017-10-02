@@ -4,7 +4,7 @@ namespace AweBooking;
 use Skeleton\Taxonomy;
 use Skeleton\Post_Type;
 use Taxonomy_Single_Term;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class WP_Core_Hooks extends Service_Hooks {
 	/**
@@ -62,9 +62,6 @@ class WP_Core_Hooks extends Service_Hooks {
 			return;
 		}
 
-		// Mapping awebooking from container object.
-		$awebooking = $this->container;
-
 		/**
 		 * Fire action before register.
 		 *
@@ -84,7 +81,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
-		]));
+		]))
+		->register();
 
 		// Register 'hotel_service' taxonomy.
 		Taxonomy::make(
@@ -98,10 +96,11 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
-		]));
+		]))
+		->register();
 
 		// Register 'hotel_location' taxonomy.
-		if ( $awebooking->is_multi_location() ) {
+		if ( awebooking()->is_multi_location() ) {
 			Taxonomy::make(
 				AweBooking::HOTEL_LOCATION,
 				apply_filters( 'awebooking/taxonomy_objects/hotel_location', AweBooking::ROOM_TYPE ),
@@ -113,7 +112,8 @@ class WP_Core_Hooks extends Service_Hooks {
 				'hierarchical'       => false,
 				'show_admin_column'  => false,
 				'show_in_quick_edit' => false,
-			]));
+			]))
+			->register();
 		}
 
 		/**
@@ -164,7 +164,8 @@ class WP_Core_Hooks extends Service_Hooks {
 				'use_featured_image'    => esc_html__( 'Use as room type image', 'awebooking' ),
 				'remove_featured_image' => esc_html__( 'Remove room type image', 'awebooking' ),
 			],
-		]));
+		]))
+		->register();
 
 		// Register 'awebooking' post type.
 		Post_Type::make(
@@ -187,7 +188,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'labels'              => array(
 				'all_items' => esc_html__( 'Bookings', 'awebooking' ),
 			),
-		]));
+		]))
+		->register();
 
 		/**
 		 * Fire action after register.

@@ -1,11 +1,7 @@
 <?php
-namespace AweBooking\Bin;
+require_once __DIR__ . '/../vendor/awethemes/skeleton/composer-cleaner.php';
 
-use Skeleton\Support\Composer_Scripts;
-
-require_once __DIR__ . '/../vendor/awethemes/skeleton/inc/Support/Composer_Scripts.php';
-
-class Composer_Cleaner extends Composer_Scripts {
+class AweBooking_Composer_Cleaner extends Composer_Cleaner {
 	/**
 	 * Rule patterns for packages.
 	 *

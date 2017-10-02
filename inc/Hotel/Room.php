@@ -3,7 +3,7 @@ namespace AweBooking\Hotel;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Model\WP_Object;
+use AweBooking\Support\WP_Object;
 use AweBooking\Support\Period;
 use AweBooking\Booking\BAT\Unit_Trait;
 use Roomify\Bat\Unit\UnitInterface as Unit_Interface;

@@ -279,6 +279,8 @@ class Booking_Metabox extends Post_Type_Metabox {
 			'name'            => esc_html__( 'Customer provided note:', 'awebooking' ),
 			'sanitization_cb' => 'sanitize_textarea_field',
 		));
+
+		do_action( 'awebooking/booking/register_metabox_fields', $metabox, $this );
 	}
 
 	/**

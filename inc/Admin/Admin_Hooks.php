@@ -4,7 +4,7 @@ namespace AweBooking\Admin;
 use Skeleton\Menu_Page;
 use AweBooking\Installer;
 use AweBooking\AweBooking;
-use Skeleton\Container\Service_Hooks;
+use AweBooking\Support\Service_Hooks;
 
 class Admin_Hooks extends Service_Hooks {
 	/**
@@ -22,11 +22,11 @@ class Admin_Hooks extends Service_Hooks {
 	 * @param Container $container Container instance.
 	 */
 	public function register( $container ) {
-		$container->bind( 'admin_notices', function() {
+		$container->singleton( 'admin_notices', function() {
 			return new Admin_Notices;
 		});
 
-		$container->bind( 'admin_menu', function() {
+		$container->singleton( 'admin_menu', function() {
 			return new Admin_Menu;
 		});
 	}
