@@ -234,11 +234,13 @@ final class AweBooking extends Container {
 
 		do_action( 'awebooking/booting', $this );
 
-		array_walk(
-			$this->service_providers, function ( $p ) {
-				$this->boot_provider( $p );
-			}
-		);
+		array_walk( $this->addons, function ( $a ) {
+			$this->init_addon( $a );
+		});
+
+		array_walk( $this->service_providers, function ( $p ) {
+			$this->boot_provider( $p );
+		});
 
 		$this->booted = true;
 
