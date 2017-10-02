@@ -165,7 +165,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'validate'   => 'required|price',
 			'sanitization_cb' => 'awebooking_sanitize_price',
 			'before'     => '<div class="skeleton-input-group">',
-			'after'      => '<span class="skeleton-input-group__addon">per night</span></div>',
+			'after'      => '<span class="skeleton-input-group__addon">' . esc_html__( 'per night', 'awebooking' ) . '</span></div>',
 		));
 
 		$general->add_field( array(
@@ -216,7 +216,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'sanitization_cb' => 'absint',
 			'validate'   => 'required|numeric|min:1',
 			'before'     => '<div class="skeleton-input-group">',
-			'after'      => '<span class="skeleton-input-group__addon">night(s)</span></div>',
+			'after'      => '<span class="skeleton-input-group__addon">' . esc_html__( 'night(s)', 'awebooking' ) . '</span></div>',
 		));
 
 		$general->add_field( array(
