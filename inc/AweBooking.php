@@ -213,6 +213,8 @@ final class AweBooking extends Container {
 		$this->trigger( new Multilingual_Hooks() );
 		$this->trigger( new Admin\Admin_Hooks() );
 
+		add_action( 'init', [ Installer::class, 'check_version' ] );
+
 		do_action( 'awebooking/init', $this );
 	}
 
