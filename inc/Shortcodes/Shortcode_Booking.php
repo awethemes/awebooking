@@ -80,7 +80,7 @@ class Shortcode_Booking {
 					'children'   => absint( $cart_item->options['children'] ),
 				], $check_availability_link );
 
-				$message = sprintf( esc_html__( '%s has been removed from your cart. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
+				$message = sprintf( esc_html__( '%s has been removed from your booking. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
 				$flash_message->success( $message );
 				wp_safe_redirect( $check_availability_link , 302 );
 				exit;

@@ -99,7 +99,7 @@ class Request_Handler extends Service_Hooks {
 						'children'   => absint( $_POST['children'] ),
 					], $check_availability_link );
 
-					$message = sprintf( esc_html__( '%s has been added to your cart.' ), esc_html( $room_type->get_title() ) );
+					$message = sprintf( esc_html__( '%s has been added to your booking.' ), esc_html( $room_type->get_title() ) );
 					$flash_message->success( $message );
 					wp_safe_redirect( $check_availability_link , 302 );
 				}
@@ -153,7 +153,7 @@ class Request_Handler extends Service_Hooks {
 					'children'   => absint( $cart_item->options['children'] ),
 				], $check_availability_link );
 
-				$message = sprintf( esc_html__( '%s has been removed from your cart. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
+				$message = sprintf( esc_html__( '%s has been removed from your booking. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
 				$flash_message->success( $message );
 				wp_safe_redirect( $check_availability_link , 302 );
 				exit;
@@ -185,7 +185,7 @@ class Request_Handler extends Service_Hooks {
 			$cart_item->options['extra_services'] = $extra_services;
 			$cart_item->set_price( $room_type->get_buyable_price( $cart_item->options ) );
 			$cart->store_cart_contents();
-			$message = sprintf( esc_html__( '%s has been edited from your cart.' ), esc_html( $room_type->get_title() ) );
+			$message = sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) );
 			$flash_message->success( $message );
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();
