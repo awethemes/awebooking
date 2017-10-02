@@ -47,7 +47,7 @@ class Buyable_Product implements Buyable {
 		return $this->price;
 	}
 
-	public function is_purchasable() {
+	public function is_purchasable( $options ) {
 		return true;
 	}
 }
