@@ -54,6 +54,10 @@ class Admin_Settings extends Admin_Page {
 			'id'   => 'backups',
 			'type' => 'backups',
 		]);
+
+		// Deprecated hooks.
+		// TODO: Remove this in final version.
+		do_action( 'awebooking/admin_settings/register', $this );
 	}
 
 	/**
