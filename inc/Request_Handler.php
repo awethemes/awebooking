@@ -78,8 +78,8 @@ class Request_Handler extends Service_Hooks {
 			if ( $availability->available() ) {
 				// TODO: validate extra services.
 				$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
-				$cart = awebooking( 'cart' );
-				$cart_item = $cart->add( new Room_Type( intval( $_POST['room-type'] ) ), 1, [
+
+				$cart_item = awebooking( 'cart' )->add( new Room_Type( intval( $_POST['room-type'] ) ), 1, [
 					'check_in'       => sanitize_text_field( $_POST['start-date'] ),
 					'check_out'      => sanitize_text_field( $_POST['end-date'] ),
 					'adults'         => absint( $_POST['adults'] ),
@@ -88,6 +88,7 @@ class Request_Handler extends Service_Hooks {
 				] );
 
 				do_action( 'awebooking/add_booking', $availability );
+
 				if ( isset( $_POST['go-to-checkout'] ) ) {
 					wp_safe_redirect( get_permalink( absint( awebooking_option( 'page_checkout' ) ) ), 302 );
 				} else {
@@ -101,9 +102,10 @@ class Request_Handler extends Service_Hooks {
 
 					$message = sprintf( esc_html__( '%s has been added to your booking.' ), esc_html( $room_type->get_title() ) );
 					$flash_message->success( $message );
+
 					wp_safe_redirect( $check_availability_link , 302 );
+					exit;
 				}
-				exit;
 			}
 		} catch ( \Exception $e ) {
 			// ...
