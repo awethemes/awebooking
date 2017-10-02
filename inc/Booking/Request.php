@@ -33,7 +33,7 @@ class Request extends Collection {
 	public static function from_array( array $request ) {
 		$period = new Period( $request['check_in'], $request['check_out'], true );
 
-		return new static( $period, $defaults );
+		return new static( $period, $request );
 	}
 
 	/**
