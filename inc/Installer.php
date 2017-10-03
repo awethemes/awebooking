@@ -7,7 +7,7 @@ use AweBooking\Booking\Items\Service_Item;
 
 class Installer {
 	/**
-	 * Check WooCommerce version and run the updater is required.
+	 * Check AweBooking version and run the updater is required.
 	 *
 	 * This check is done on all requests and runs if the versions do not match.
 	 */

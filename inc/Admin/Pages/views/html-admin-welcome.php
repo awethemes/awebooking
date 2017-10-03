@@ -20,7 +20,7 @@ $awebooking_available_addons = new Collection([
 	],
 	[
 		'id'          => 'awethemes.awebooking-form-builder',
-		'label'       => 'Booking form builder',
+		'label'       => 'Booking Form Builder',
 		'description' => 'Build and add your own custom fields in the booking check-out form to collect any information you need for each reservation',
 	],
 	[
