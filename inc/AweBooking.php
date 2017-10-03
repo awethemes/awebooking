@@ -319,10 +319,10 @@ final class AweBooking extends Container {
 	/**
 	 * Register a service provider with the application.
 	 *
-	 * @param  \Illuminate\Support\ServiceProvider|string $provider
+	 * @param  Service_Provider|string $provider
 	 * @param  array                                      $options
 	 * @param  bool                                       $force
-	 * @return \Illuminate\Support\ServiceProvider
+	 * @return Service_Provider
 	 */
 	public function register( $provider, $force = false ) {
 		if ( ($registered = $this->get_provider( $provider )) && ! $force ) {
@@ -355,8 +355,8 @@ final class AweBooking extends Container {
 	/**
 	 * Get the registered service provider instance if it exists.
 	 *
-	 * @param  \Illuminate\Support\ServiceProvider|string $provider
-	 * @return \Illuminate\Support\ServiceProvider|null
+	 * @param  Service_Provider|string $provider
+	 * @return Service_Provider|null
 	 */
 	public function get_provider( $provider ) {
 		$name = is_string( $provider ) ? $provider : get_class( $provider );
@@ -372,7 +372,7 @@ final class AweBooking extends Container {
 	 * Resolve a service provider instance from the class name.
 	 *
 	 * @param  string $provider
-	 * @return \Illuminate\Support\ServiceProvider
+	 * @return Service_Provider
 	 */
 	public function resolveProvider( $provider ) {
 		return new $provider($this);
@@ -381,7 +381,7 @@ final class AweBooking extends Container {
 	/**
 	 * Mark the given provider as registered.
 	 *
-	 * @param  \Illuminate\Support\ServiceProvider $provider
+	 * @param  Service_Provider $provider
 	 * @return void
 	 */
 	protected function mark_as_registered( $provider ) {
@@ -393,7 +393,7 @@ final class AweBooking extends Container {
 	/**
 	 * Boot the given service provider.
 	 *
-	 * @param  \Illuminate\Support\ServiceProvider $provider
+	 * @param  Service_Provider $provider
 	 * @return mixed
 	 */
 	protected function boot_provider( $provider ) {
