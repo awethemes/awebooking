@@ -73,7 +73,7 @@ $room_type = $cart_item->model();
 											<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php if ( in_array( $service->get_id(), $cart_item->options['extra_services'] ) ) echo 'checked="checked"'; ?>>
 
 											<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ); ?></label>
-											<span><?php echo esc_html( $service->get_describe() ); ?></span>
+											<span><?php echo $service->get_describe(); ?></span>
 
 											<div class="awebooking-service__content">
 												<?php if ( $service->get_description() ) : ?>
@@ -115,7 +115,7 @@ $room_type = $cart_item->model();
 					</a>
 				</div>
 			</div>
-			
+
 			<input type="hidden" name="booking-action" value="edit">
 			<input type="hidden" name="room-type" value="<?php echo esc_attr( $room_type->get_id() ); ?>">
 			<input type="hidden" name="start-date" value="<?php echo esc_attr( $booking_request->get_check_in()->format( 'Y-m-d' ) ); ?>">
