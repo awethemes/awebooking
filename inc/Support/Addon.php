@@ -47,6 +47,13 @@ abstract class Addon {
 	protected $notify_update = true;
 
 	/**
+	 * //
+	 *
+	 * @var boolean
+	 */
+	protected $updater = false;
+
+	/**
 	 * Constructor addon.
 	 *
 	 * @param string $addon_name Addon unique name.
@@ -234,5 +241,7 @@ abstract class Addon {
 		(new Plugin_Updater(
 			$this->get_name(), $this->get_basename(), $this->get_version()
 		))->hooks();
+
+		$this->updater = true;
 	}
 }
