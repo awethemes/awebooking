@@ -71,15 +71,17 @@ class Request_Handler extends Service_Hooks {
 
 		try {
 			$room_type = Factory::create_room_from_request();
+
 			$booking_request = Factory::create_booking_request();
 			$booking_request->set_request( 'room-type', $room_type->get_id() );
+
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
 				// TODO: validate extra services.
 				$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
 
-				$cart_item = awebooking( 'cart' )->add( new Room_Type( intval( $_POST['room-type'] ) ), 1, [
+				$cart_item = awebooking( 'cart' )->add( $room_type, 1, [
 					'check_in'       => sanitize_text_field( $_POST['start-date'] ),
 					'check_out'      => sanitize_text_field( $_POST['end-date'] ),
 					'adults'         => absint( $_POST['adults'] ),
@@ -87,10 +89,11 @@ class Request_Handler extends Service_Hooks {
 					'extra_services' => $extra_services,
 				] );
 
-				do_action( 'awebooking/add_booking', $availability );
+				do_action( 'awebooking/add_booking', $cart_item );
 
 				if ( isset( $_POST['go-to-checkout'] ) ) {
 					wp_safe_redirect( get_permalink( absint( awebooking_option( 'page_checkout' ) ) ), 302 );
+					exit;
 				} else {
 					$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
 					$check_availability_link = add_query_arg( [
@@ -205,10 +208,13 @@ class Request_Handler extends Service_Hooks {
 			return;
 		}
 
-		$row_id = sanitize_text_field( $_REQUEST['rid'] );
 		try {
+			$row_id = sanitize_text_field( $_REQUEST['rid'] );
+
 			$cart    = awebooking( 'cart' );
 			$cart_item = $cart->get( $row_id );
+
+			do_action( 'awebooking/cart/remove_item', $cart_item, $cart );
 			$cart->remove( $row_id );
 
 			// Setup somethings.
@@ -421,8 +427,6 @@ class Request_Handler extends Service_Hooks {
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
-				$booking_request->set_request( 'room-type', $room_type->get_id() );
-				do_action( 'awebooking/add_booking', $availability );
 				$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type->get_id() ) );
 				$booking_url = add_query_arg( array_merge( array( 'booking-action' => 'view' ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
 				wp_safe_redirect( $booking_url, 302 );
