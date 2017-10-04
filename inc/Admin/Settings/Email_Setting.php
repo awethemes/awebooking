@@ -36,9 +36,9 @@ class Email_Setting extends Setting_Abstract {
 		])->as_child_of( $email );
 
 		$this->register_general_settings( $email_general );
-		$this->register_new_booking_settings( $new_booking );
-		$this->register_cancelled_booking_settings( $cancelled_booking );
-		$this->register_completed_booking_settings( $completed_booking );
+		$this->register_new_booking_settings( $email_general );
+		$this->register_cancelled_booking_settings( $email_general );
+		$this->register_completed_booking_settings( $email_general );
 	}
 
 	/**
