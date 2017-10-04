@@ -367,7 +367,7 @@ class Request_Handler extends Service_Hooks {
 				}
 			}
 
-			do_action( 'awebooking/checkout_completed', $booking, $availability );
+			do_action( 'awebooking/checkout_completed', $booking );
 
 			// Clear booking request and set booking ID.
 			awebooking_setcookie( 'awebooking-booking-id', $booking->get_id(), time() + 60 * 60 * 24 );
