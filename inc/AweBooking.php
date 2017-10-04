@@ -531,6 +531,11 @@ final class AweBooking extends Container {
 			return;
 		}
 
+		// Prevent booting addon if got any errors.
+		if ( $addon->has_errors() ) {
+			return;
+		}
+
 		// Init the addon.
 		$addon->init();
 
@@ -638,8 +643,8 @@ final class AweBooking extends Container {
 
 		printf(
 			'<tr class="awebooking-addon-notice-tr plugin-update-tr active"><td colspan="3" class="awebooking-addon-notice plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><strong>%1$s</strong><ul>%2$s</ul></div></td></tr>',
-			esc_html__( 'This plugin has been activated but cannot be loaded by AweBooking by reasons:', 'awebooking' ),
-			'<li>' . implode( '</li></li>', $addon->get_errors() ) . '</li>'
+			esc_html__( 'This plugin has been activated but cannot be loaded by AweBooking by reason(s):', 'awebooking' ),
+			'<li>' . implode( '</li><li>', $addon->get_errors() ) . '</li>'
 		);
 	}
 }
