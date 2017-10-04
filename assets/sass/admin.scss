@@ -510,3 +510,31 @@ table.wp-list-table .column-booking_total {
 .cmb-type-post-search-text .cmb-td .dashicons {
   right: auto !important;
 }
+
+
+.awebooking-addon-notice-tr:before {
+  top: -1px;
+  position: relative;
+
+  background-color: #f7fcfe;
+  border-left: 4px solid #00a0d2;
+}
+
+.awebooking-addon-notice {
+  top: -1px;
+  position: relative;
+
+  .notice {
+    padding-top: 15px;
+    margin: 5px 20px 15px 40px;
+
+    ul {
+      list-style: square;
+      padding-left: 20px;
+    }
+
+    @media screen and (max-width: 782px) {
+      margin-left: 0 !important;
+    }
+  }
+}

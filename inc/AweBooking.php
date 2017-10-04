@@ -224,6 +224,7 @@ final class AweBooking extends Container {
 		Shortcodes\Shortcodes::init();
 
 		add_filter( 'plugin_row_meta', [ $this, '_plugin_row_meta' ], 10, 2 );
+		add_action( 'after_plugin_row', [ $this, '_plugin_addon_notices' ], 10, 3 );
 	}
 
 	/**
@@ -521,7 +522,7 @@ final class AweBooking extends Container {
 		if ( ! version_compare( static::VERSION, $require_version, '>=' ) ) {
 			$addon->log_error(
 				sprintf(
-					esc_html__( 'This addon requires at least AweBooking version %1$s, you have running on AweBooking %2$s', 'awebooking' ),
+					esc_html__( 'Addon requires at least AweBooking version %1$s to work, you have running on AweBooking %2$s', 'awebooking' ),
 					esc_html( $require_version ),
 					esc_html( static::VERSION )
 				)
@@ -603,5 +604,42 @@ final class AweBooking extends Container {
 		}
 
 		return (array) $links;
+	}
+
+	/**
+	 * Display error messages of add-ons.
+	 *
+	 * @param  string $plugin_file Path to the plugin file, relative to the plugins directory.
+	 * @param  array  $plugin_data An array of plugin data.
+	 * @param  string $status      Status of the plugin.
+	 * @return void
+	 */
+	public function _plugin_addon_notices( $plugin_file, $plugin_data, $status ) {
+		static $plugin_addons;
+
+		// Cache this list addons for use less memory.
+		if ( is_null( $plugin_addons ) ) {
+			$plugin_addons = array_filter(
+				array_map( function( $addon ) {
+					return $addon->is_wp_plugin() ? $addon->get_basename() : null;
+				}, $this->addons )
+			);
+		}
+
+		// Ignore outside scope of AweBooking addons.
+		if ( ! in_array( $plugin_file, array_values( $plugin_addons ) ) ) {
+			return;
+		}
+
+		$addon = $this->get_addon( Arr::get( array_flip( $plugin_addons ), $plugin_file ) );
+		if ( ! $addon->has_errors() ) {
+			return;
+		}
+
+		printf(
+			'<tr class="awebooking-addon-notice-tr plugin-update-tr active"><td colspan="3" class="awebooking-addon-notice plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><strong>%1$s</strong><ul>%2$s</ul></div></td></tr>',
+			esc_html__( 'This plugin has been activated but cannot be loaded by AweBooking by reasons:', 'awebooking' ),
+			'<li>' . implode( '</li></li>', $addon->get_errors() ) . '</li>'
+		);
 	}
 }
