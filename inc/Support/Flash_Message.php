@@ -178,7 +178,7 @@ class Flash_Message {
 
 			$messages[] = [
 				'type'    => stripslashes( $message['type'] ),
-				'message' => sanitize_text_field( wp_unslash( $message['message'] ) ),
+				'message' => wp_kses_post( wp_unslash( $message['message'] ) ),
 			];
 		}
 

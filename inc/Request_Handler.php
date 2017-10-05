@@ -299,6 +299,8 @@ class Request_Handler extends Service_Hooks {
 			$cart_item->set_price( $room_type->get_buyable_price( $cart_item->options ) );
 		}
 
+		do_action( 'awebooking/checkout/before_create_booking', $flash_message );
+
 		try {
 			// Create new booking.
 			$booking = (new Booking)->fill( apply_filters( 'awebooking/store_booking_args', [
