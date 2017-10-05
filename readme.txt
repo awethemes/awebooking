@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.8.1
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta7
+Stable tag:        3.0.0-beta8
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,24 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta8] - 2017-10-05
+#### Added
+- Initial "cart", allow booking multi-rooms in session time.
+- API: Added `Period_Collection::adjacents()` alias of `Period_Collection::is_continuous` method.
+
+#### Changes
+- Bump Skeleton to version 1.0.0
+- API: Main `AweBooking` now extends `Illuminate\Container\Container`, the `Skeleton\Container\Container` has been removed by Skeleton 1.0.0.
+- API: Split WP_Object to standalone package "awethemes/wp-object".
+- API: Moving `AweBooking\Model\WP_Object` to `AweBooking\Support\WP_Object`, a old class name still available until next version for compatibility.
+- API: Use "awethemes/session" package instead "ericmann/wp-session-manager", `awebooking( 'session' )` now implements of `Awethemes\WP_Session\WP_Session` instead old `WP_Session`.
+- API: Code refactoring the Price, rename `to_amount()` to `to_integer()` and `from_amount()` to `from_integer` method, use "bcmath" for calculator if available, unit-tests...
+- Templates changes.
+
+#### Fixed
+- Fixed "parser error" with :class in old PHP version.
+- Minor bugs fixed
+
 ### [3.0.0-beta7] - 2017-09-22
 #### Changes
 - Improve multilanguage support
