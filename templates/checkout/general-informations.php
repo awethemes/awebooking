@@ -63,7 +63,7 @@ $cart_collection = $cart->get_contents();
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $request->get_fomatted_guest_number() ); ?>
+							<?php echo $request->get_fomatted_guest_number(); ?>
 						</p>
 						<?php if ( $services->implode( 'name', ', ' ) ) : ?>
 							<p>
@@ -72,18 +72,19 @@ $cart_collection = $cart->get_contents();
 							</p>
 						<?php endif; ?>
 					</td>
-					<td><?php echo esc_html( $room_type->get_buyable_price( $cart_item->options ) ); ?></td>
+					<td><?php echo $room_type->get_buyable_price( $cart_item->options ); ?></td>
 				</tr>
 			</tbody>
 		</table>
 		<?php $index++; ?>
 	<?php endforeach; ?>
 </div>
+
 <table>
 	<tbody>
 		<tr>
 			<td colspan="3" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-			<td><b><?php echo esc_html( $cart->total() ); ?></b></td>
+			<td><b><?php echo $cart->total(); ?></b></td>
 		</tr>
 	</tbody>
 </table>
