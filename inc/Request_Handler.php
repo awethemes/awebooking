@@ -187,11 +187,14 @@ class Request_Handler extends Service_Hooks {
 			}
 
 			$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
+
 			$cart_item->options['extra_services'] = $extra_services;
 			$cart_item->set_price( $room_type->get_buyable_price( $cart_item->options ) );
+
+			do_action( 'awebooking/cart/update_item', $cart_item );
 			$cart->store_cart_contents();
-			$message = sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) );
-			$flash_message->success( $message );
+
+			$flash_message->success( sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) ) );
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();
 		}
