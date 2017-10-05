@@ -22,7 +22,7 @@ if ( ! awebooking( 'flash_message' )->has() ) {
 foreach ( awebooking( 'flash_message' )->all() as $message ) : ?>
 
 	<div class="awebooking-notice awebooking-notice--<?php echo esc_attr( $message['type'] ); ?>">
-		<?php echo esc_html( $message['message'] ); ?>
+		<?php echo wp_kses_post( $message['message'] ); ?>
 	</div>
 
 <?php endforeach;
