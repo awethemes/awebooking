@@ -115,7 +115,7 @@ final class AweBooking extends Container {
 
 		$this->singleton(
 			'session', function() {
-				return new WP_Session( 'awebooking_session' );
+				return new WP_Session( 'awebooking_session', [ 'lifetime' => 120 ] );
 			}
 		);
 
