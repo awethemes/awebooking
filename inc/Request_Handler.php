@@ -78,9 +78,15 @@ class Request_Handler extends Service_Hooks {
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
 
 			if ( $availability->available() ) {
+				$services = $room_type->get_services();
+				$mandatory_services = collect( $services )->where( 'type', Service::MANDATORY );
+				$mandatory_services_ids = $mandatory_services->pluck( 'id' )->toArray();
+
 				// TODO: validate extra services.
 				$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
+				$extra_services = array_unique( array_merge( $extra_services, $mandatory_services_ids ) );
 
+				// Add to cart.
 				$cart_item = awebooking( 'cart' )->add( $room_type, 1, [
 					'check_in'       => sanitize_text_field( $_POST['start-date'] ),
 					'check_out'      => sanitize_text_field( $_POST['end-date'] ),
