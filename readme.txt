@@ -65,6 +65,11 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta9] - [xxxx-xx-xx]
+#### Changes
+- Rename "awebooking/after_register_post_type" to "awebooking/register_post_type"
+
+
 ### [3.0.0-beta8] - 2017-10-05
 #### Added
 - Initial "cart", allow booking multi-rooms in session time.
