@@ -565,9 +565,13 @@ class Room_Type extends WP_Object implements Buyable {
 			return false;
 		}
 
-		$request = Request::from_array( $options->to_array() );
-		$availability = Concierge::check_room_type_availability( $this, $request );
+		try {
+			$request = Request::from_array( $options->to_array() );
+			$availability = Concierge::check_room_type_availability( $this, $request );
 
-		return $availability->available();
+			return $availability->available();
+		} catch ( \Exception $e ) {
+			//
+		}
 	}
 }
