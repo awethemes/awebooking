@@ -194,9 +194,9 @@ class WP_Core_Hooks extends Service_Hooks {
 		/**
 		 * Fire action after register.
 		 *
-		 * @hook awebooking/after_register_post_type
+		 * @hook awebooking/register_post_type
 		 */
-		do_action( 'awebooking/after_register_post_type' );
+		do_action( 'awebooking/register_post_type' );
 	}
 
 	/**

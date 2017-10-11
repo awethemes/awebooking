@@ -23,11 +23,11 @@ $awebooking_available_addons = new Collection([
 		'label'       => 'Booking Form Builder',
 		'description' => 'Build and add your own custom fields in the booking check-out form to collect any information you need for each reservation',
 	],
-	[
-		'id'          => 'awethemes.awebooking-user-profile',
-		'label'       => 'User Profile',
-		'description' => 'Customers can manage log-in credentials, personal information and more in their own profile page. Even more, they can check and manage their bookings quickly and easily',
-	],
+	// [
+	// 	'id'          => 'awethemes.awebooking-user-profile',
+	// 	'label'       => 'User Profile',
+	// 	'description' => 'Customers can manage log-in credentials, personal information and more in their own profile page. Even more, they can check and manage their bookings quickly and easily',
+	// ],
 	[
 		'id'          => 'awethemes.awebooking-simple-reservation',
 		'label'       => 'Simple Reservation',
