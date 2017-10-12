@@ -251,6 +251,16 @@
 .abkngcal-container--fullwidth .abkngcal__day-heading > span {
   font-weight: 600;
 }
+.abkngcal-container--fullwidth .abkngcal__month-heading > span {
+  width: 125px;
+  font-size: 11px;
+  text-align: left;
+  padding: 0 5px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .range-start > .abkngcal__night-selection,
 .range-end > .abkngcal__night-selection,

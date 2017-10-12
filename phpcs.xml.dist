@@ -9,6 +9,7 @@
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
 	</rule>
 
@@ -18,6 +19,7 @@
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
 	</rule>
 
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>
 </ruleset>

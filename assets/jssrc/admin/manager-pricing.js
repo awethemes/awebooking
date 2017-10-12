@@ -6,11 +6,6 @@ $(function() {
 
   const $dialog = awebooking.Popup.setup('#awebooking-set-price-popup');
 
-  const rangepicker = new awebooking.RangeDatepicker(
-    'input[name="datepicker-start"]',
-    'input[name="datepicker-end"]'
-  );
-
   const showComments = function(calendar) {
     var nights = calendar.getNights();
 
@@ -27,50 +22,30 @@ $(function() {
   };
 
   const onApplyCalendar = function() {
-    const calendar = this;
+    let calendar = this;
+
     calendar.room_type = this.$el.closest('.abkngcal-container').find('h2').text();
+    calendar.unit_name = this.$el.find('.abkngcal__month-heading').text();
     calendar.data_id   = this.$el.closest('[data-unit]').data('unit');
     calendar.comments  = showComments(calendar);
 
     const formTemplate = wp.template('pricing-calendar-form');
     $dialog.find('.awebooking-dialog-contents').html(formTemplate(calendar));
 
+    calendar.keepRange = true;
     $dialog.dialog('open');
   };
 
-  $('.abkngcal--pricing-calendar', document).each(function(index, el) {
+  $('.abkngcal--pricing-calendar > tbody > tr', document).each(function(index, el) {
     let calendar = new PricingCalendar(el);
-    $(el).data('pricing-calendar', calendar);
 
     calendar.on('apply', onApplyCalendar);
-  });
 
-  rangepicker.init();
-
-  // ...
-  var $body = $('.awebooking_page_manager-pricing');
-  var $table = $body.find('table.pricing_management');
-
-  $body.on( 'click', '.check-column :checkbox', function( event ) {
-    // Toggle the "Select all" checkboxes depending if the other ones are all checked or not.
-    var unchecked = $(this).closest('tbody').find(':checkbox').filter(':visible:enabled').not(':checked');
-
-    $body.find('.wp-toggle-checkboxes').prop('checked', function() {
-      return ( 0 === unchecked.length );
+    $dialog.on('dialogclose', function() {
+      calendar.keepRange = false;
     });
-
-    return true;
   });
 
-  $body.on( 'click', '.wp-toggle-checkboxes', function(e) {
-    $table.children( 'tbody' ).filter(':visible')
-      .find('.check-column').find(':checkbox')
-      .prop('checked', function() {
-        if ( $(this).is(':hidden,:disabled') ) {
-          return false;
-        }
-        return ! $(this).prop( 'checked' );
-      });
-  });
-
+  const rangepicker = new awebooking.RangeDatepicker('input[name="datepicker-start"]',  'input[name="datepicker-end"]');
+  rangepicker.init();
 });
