@@ -157,7 +157,7 @@ class Pricing_Management extends WP_List_Table {
 	public function process_action() {
 		// TODO: ...
 		if ( isset( $_POST['action'] ) && 'set_pricing' === $_POST['action'] ) {
-			if ( empty( $_REQUEST['room_type'] ) ) {
+			if ( empty( $_REQUEST['unit_id'] ) ) {
 				return;
 			}
 
@@ -175,13 +175,13 @@ class Pricing_Management extends WP_List_Table {
 					false
 				);
 
-				$rate = new Rate( absint( $_REQUEST['room_type'] ) );
+				$rate = new Rate( absint( $_REQUEST['unit_id'] ) );
 
 				Concierge::set_room_price( $rate, $period, $price, [
 					'only_days' => $only_days,
 				]);
 
-			} catch ( \Exception $e ) {
+			} catch ( \sException $e ) {
 				// ...
 			}
 		}

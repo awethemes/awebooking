@@ -47,7 +47,7 @@ class Factory {
 	 * @return Calendar
 	 */
 	public static function create_pricing_calendar( array $rates, $default_price = 0 ) {
-		return new Calendar( $rooms, awebooking( 'store.pricing' ), $default_price );
+		return new Calendar( $rates, awebooking( 'store.pricing' ), $default_price );
 	}
 
 	/**

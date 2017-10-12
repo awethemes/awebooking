@@ -203,6 +203,18 @@ class Concierge {
 		return static::get_price( $room_type, $period );
 	}
 
+	public static function get_price_by_rate( Rate $rate, Period $period ) {
+		$valuator = new IntervalValuator(
+			$period->get_start_date(),
+			$period->get_end_date()->subMinute(),
+			$rate,
+			awebooking( 'store.pricing' ),
+			new \DateInterval( 'P1D' )
+		);
+
+		return Price::from_integer( $valuator->determineValue() );
+	}
+
 	/**
 	 * Set price for room (by rate).
 	 *

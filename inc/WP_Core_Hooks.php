@@ -149,9 +149,9 @@ class WP_Core_Hooks extends Service_Hooks {
 			esc_html__( 'Room Types', 'awebooking' )
 		)
 		->set( apply_filters( 'awebooking/post_type_args/room_type', [
-			'menu_icon' => 'dashicons-calendar',
+			'menu_icon'       => 'dashicons-calendar',
+			'supports'        => array( 'title', 'editor', 'thumbnail' ),
 			'menu_position'   => 52,
-			'supports'  => array( 'title', 'editor', 'thumbnail' ),
 			'rewrite'   => [
 				'slug'       => get_option( 'awebooking_room_type_permalink', 'room_type' ),
 				'feeds'      => true,
@@ -191,6 +191,27 @@ class WP_Core_Hooks extends Service_Hooks {
 		]))
 		->register();
 
+		// Pricing rates.
+		Post_Type::make(
+			AweBooking::PRICING_RATE,
+			esc_html__( 'Rate', 'awebooking' ),
+			esc_html__( 'Rates', 'awebooking' )
+		)
+		->set([
+			'public'              => false,
+			'rewrite'             => false,
+			'query_var'           => false,
+			'has_archive'         => false,
+			'publicly_queryable'  => false,
+			'show_in_nav_menus'   => true,
+			'show_in_admin_bar'   => false,
+			'exclude_from_search' => true,
+			'hierarchical'        => true,
+			'show_ui'             => true,
+			'supports'            => array( 'title', 'page-attributes' ),
+		])
+		->register();
+
 		/**
 		 * Fire action after register.
 		 *
@@ -204,7 +225,7 @@ class WP_Core_Hooks extends Service_Hooks {
 	 *
 	 * @return void
 	 */
-	public static function register_post_status() {
+	public function register_post_status() {
 
 		$booking_statuses = apply_filters( 'awebooking/register_booking_statuses',
 			array(

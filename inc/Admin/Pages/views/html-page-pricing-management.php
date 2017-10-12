@@ -89,27 +89,24 @@ use AweBooking\Admin\Admin_Utils;
 
 <script type="text/template" id="tmpl-pricing-calendar-form">
 	<input type="hidden" name="action" value="set_pricing">
-	<input type="hidden" name="room_type" value="{{ data.data_id }}">
+	<input type="hidden" name="unit_id" value="{{ data.data_id }}">
 	<input type="hidden" name="start_date" value="{{ data.startDay.format('YYYY-MM-DD') }}">
 	<input type="hidden" name="end_date" value="{{ data.endDay.format('YYYY-MM-DD') }}">
 
-	<h3>{{{ data.room_type }}}</h3>
+	<h3>{{{ data.room_type }}} <small>{{ data.unit_name }}</small></h3>
 	<p>{{{ data.comments }}}</p>
 
 	<p>
-		<label><?php echo esc_html__( 'Price', 'awebooking' ) ?></label>
-
-		<input type="number" step="any" name="price" style="width: 100px;">
-		<span><?php echo esc_html( awebooking( 'currency' )->get_symbol() ); ?></span>
+		<label class="skeleton-input-group">
+			<input type="number" class="cmb2-text-small" step="any" name="price" style="width: 100px; height: 31px;">
+			<span class="skeleton-input-group__addon"><?php echo sprintf( esc_html__( '%s / night', 'awebooking' ), esc_html( awebooking( 'currency' )->get_symbol() ) ); ?></span>
+		</label>
 	</p>
 
 	<# if ( data.getNights() > 4 ) { #>
 		<p>
 			<span><?php echo esc_html__( 'Apply only for', 'awebooking' ) ?></span>
-
-			<span class="inline-weekday-checkbox">
-				<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'only_day_options' ] ); ?>
-			</span>
+			<span class="inline-weekday-checkbox"><?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'only_day_options' ] ); ?></span>
 		</p>
 	<# } #>
 </script>
