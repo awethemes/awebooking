@@ -18,6 +18,7 @@ final class AweBooking extends Container {
 
 	const BOOKING        = 'awebooking';
 	const ROOM_TYPE      = 'room_type';
+	const PRICING_RATE   = 'pricing_rate';
 	const HOTEL_LOCATION = 'hotel_location';
 	const HOTEL_AMENITY  = 'hotel_amenity';
 	const HOTEL_SERVICE  = 'hotel_extra_service';

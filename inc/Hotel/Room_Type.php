@@ -1,17 +1,17 @@
 <?php
 namespace AweBooking\Hotel;
 
-use WP_Query;
+use AweBooking\Concierge;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\WP_Object;
 use AweBooking\Cart\Buyable;
-use AweBooking\Concierge;
+use AweBooking\Hotel\Service;
 use AweBooking\Booking\Request;
 use AweBooking\Pricing\Price_Calculator;
-use AweBooking\Hotel\Service;
 use AweBooking\Calculator\Service_Calculator;
+use AweBooking\Support\WP_Object;
+use AweBooking\Support\Collection;
 
 class Room_Type extends WP_Object implements Buyable {
 	/**
@@ -103,7 +103,7 @@ class Room_Type extends WP_Object implements Buyable {
 			'posts_per_page'   => -1,
 		]);
 
-		return new WP_Query( $query );
+		return new \WP_Query( $query );
 	}
 
 	/**
@@ -396,17 +396,21 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
-	 * //
+	 * Get collection of rates.
 	 *
-	 * @return array
+	 * @return Collection
 	 */
 	public function get_rates() {
-		return get_children( [
+		return Collection::make( get_children([
 			'post_parent' => $this->get_id(),
-			'post_type'   => 'awebooking_rate',
-			'numberposts' => -1,
-			'post_status' => 'publish',
-		], ARRAY_A );
+			'post_type'   => AweBooking::PRICING_RATE,
+			'orderby'     => 'menu_order',
+			'order'       => 'ASC',
+		]))->map(function( $post ) {
+			return new Rate( $post->ID, $this );
+		})->prepend(
+			$this->get_standard_rate()
+		);
 	}
 
 	/**
@@ -415,7 +419,7 @@ class Room_Type extends WP_Object implements Buyable {
 	 * @return Rate
 	 */
 	public function get_standard_rate() {
-		return new Rate( $this->get_id(), $this->get_base_price()->to_integer() );
+		return new Rate( $this->get_id(), $this );
 	}
 
 	/**
