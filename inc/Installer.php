@@ -193,6 +193,9 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( static::get_schema() );
+
+		// utf8mb4 conversion.
+		maybe_convert_table_to_utf8mb4( $wpdb->dmtable );
 	}
 
 	private static function create_default_location() {
@@ -220,34 +223,34 @@ class Installer {
 
 		$tables = "
 CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `room_type` bigint UNSIGNED NOT NULL,
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) DEFAULT NULL,
+  `room_type` BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`),
   KEY `room_type` (`room_type`)
 ) $collate;
 
 CREATE TABLE `{$wpdb->prefix}awebooking_booking` (
-  `room_id` bigint UNSIGNED NOT NULL DEFAULT 0,
-  `year` integer NOT NULL DEFAULT 0,
-  `month` integer NOT NULL DEFAULT 0,
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   " . static::generate_days_schema() . "
   PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
 
 CREATE TABLE `{$wpdb->prefix}awebooking_availability` (
-  `room_id` bigint UNSIGNED NOT NULL DEFAULT 0,
-  `year` integer NOT NULL DEFAULT 0,
-  `month` integer NOT NULL DEFAULT 0,
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   " . static::generate_days_schema() . "
   PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
 
 CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
-  `rate_id` bigint UNSIGNED NOT NULL DEFAULT 0,
-  `year` integer NOT NULL DEFAULT 0,
-  `month` integer NOT NULL DEFAULT 0,
+  `rate_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   " . static::generate_days_schema() . "
   PRIMARY KEY (`rate_id`, `year`, `month`)
 ) $collate;
@@ -255,10 +258,10 @@ CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
 CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
   booking_item_name TEXT NOT NULL,
-  booking_item_type varchar(200) NOT NULL DEFAULT '',
+  booking_item_type varchar(191) NOT NULL DEFAULT '',
   booking_item_parent BIGINT UNSIGNED NOT NULL,
   booking_id BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY  (booking_item_id),
+  PRIMARY KEY (booking_item_id),
   KEY booking_id (booking_id),
   KEY booking_item_parent (booking_item_parent)
 ) $collate;
@@ -266,9 +269,9 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
 CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
   meta_id BIGINT UNSIGNED NOT NULL auto_increment,
   booking_item_id BIGINT UNSIGNED NOT NULL,
-  meta_key varchar(255) default NULL,
+  meta_key varchar(191) default NULL,
   meta_value longtext NULL,
-  PRIMARY KEY  (meta_id),
+  PRIMARY KEY (meta_id),
   KEY booking_item_id (booking_item_id),
   KEY meta_key (meta_key(32))
 ) $collate;
@@ -286,7 +289,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		$command = '';
 
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$command .= '`d' . $i . '` integer NOT NULL DEFAULT 0, ';
+			$command .= '`d' . $i . '` TINYINT UNSIGNED NOT NULL DEFAULT 0, ';
 		}
 
 		return $command;
