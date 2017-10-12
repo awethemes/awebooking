@@ -195,7 +195,7 @@ class Installer {
 		dbDelta( static::get_schema() );
 
 		// utf8mb4 conversion.
-		maybe_convert_table_to_utf8mb4( $wpdb->dmtable );
+		// maybe_convert_table_to_utf8mb4( $wpdb->dmtable );
 	}
 
 	private static function create_default_location() {
