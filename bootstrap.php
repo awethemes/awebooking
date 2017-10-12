@@ -26,7 +26,3 @@ require_once trailingslashit( __DIR__ ) . 'inc/template-functions.php';
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
-
-// TODO: Remove this in next version.
-class_alias( 'AweBooking\Support\WP_Object', 'AweBooking\Model\WP_Object' );
-class_alias( 'AweBooking\Support\Service_Hooks', 'Skeleton\Container\Service_Hooks' );
