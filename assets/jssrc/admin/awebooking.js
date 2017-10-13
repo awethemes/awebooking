@@ -1,8 +1,14 @@
 const $ = window.jQuery;
 const settings = window._awebookingSettings || {};
 
+import Popper from 'popper.js';
+import Tooltip from 'tooltip.js';
+
 const AweBooking = _.extend(settings, {
   Vue: require('vue'),
+  Popper: Popper,
+  Tooltip: Tooltip,
+
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
   RangeDatepicker: require('./utils/range-datepicker.js'),
@@ -20,6 +26,14 @@ const AweBooking = _.extend(settings, {
 
     $('[data-init="awebooking-toggle"]').each(function() {
       $(this).data('awebooking-toggle', new self.ToggleClass(this));
+    });
+
+    $('[data-init="awebooking-tooltip"]').each(function() {
+      const options = {
+        template: '<div class="awebooking-tooltip tooltip" role="tooltip"><div class="tooltip__arrow"></div><div class="tooltip__inner"></div></div>',
+      };
+
+      $(this).data('awebooking-tooltip', new self.Tooltip(this, options));
     });
 
     require('./utils/init-select2.js');
