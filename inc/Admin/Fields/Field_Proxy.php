@@ -49,6 +49,15 @@ class Field_Proxy {
 	}
 
 	/**
+	 * Render the field.
+	 *
+	 * @return void
+	 */
+	public function render() {
+		skeleton_render_field( $this->field );
+	}
+
+	/**
 	 * Returns field value.
 	 *
 	 * @return mixed
