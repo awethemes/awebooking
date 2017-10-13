@@ -42,25 +42,25 @@
   display: block;
 }
 
-.abkngcal {
+.abkngcal,
+.abkngcal__table {
   border-spacing: 1px;
   border-collapse: separate;
   font-family: Arial, Helvetica, sans-serif;
-}
 
-.abkngcal th,
-.abkngcal td {
-  margin: 0 !important;
-  padding: 0 !important;
-  user-select: none;
-}
+  th,
+  td {
+    margin: 0 !important;
+    padding: 0 !important;
+    user-select: none;
+  }
 
-.abkngcal select {
-  width: 65px;
-  height: 24px;
-  line-height: 24px;
+  select {
+    width: 65px;
+    height: 24px;
+    line-height: 24px;
+  }
 }
-
 
 /* Layouts */
 .abkngcal__day > span,

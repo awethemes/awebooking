@@ -25,7 +25,8 @@ $(function() {
     let calendar = this;
 
     calendar.room_type = this.$el.closest('.abkngcal-container').find('h2').text();
-    calendar.unit_name = this.$el.find('.abkngcal__month-heading').text();
+    // calendar.unit_name = this.$el.find('.abkngcal__month-heading').text();
+    calendar.unit_name = '';
     calendar.data_id   = this.$el.closest('[data-unit]').data('unit');
     calendar.comments  = showComments(calendar);
 
@@ -36,7 +37,7 @@ $(function() {
     $dialog.dialog('open');
   };
 
-  $('.abkngcal--pricing-calendar > tbody > tr', document).each(function(index, el) {
+  $('.abkngcal--pricing-calendar .abkngcal__table').each(function(index, el) {
     let calendar = new PricingCalendar(el);
 
     calendar.on('apply', onApplyCalendar);

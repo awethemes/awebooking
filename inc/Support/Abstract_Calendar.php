@@ -75,15 +75,6 @@ abstract class Abstract_Calendar {
 	abstract protected function prepare_data( $input, $context );
 
 	/**
-	 * Setup date data before prints.
-	 *
-	 * @param  Carbonate $date    Date instance.
-	 * @param  string    $context Context from Calendar.
-	 * @return void
-	 */
-	abstract protected function setup_date( Carbonate $date, $context );
-
-	/**
 	 * Generate HTML Calendar in a year.
 	 *
 	 * @param  int $year Year to generate.
@@ -122,7 +113,7 @@ abstract class Abstract_Calendar {
 			}
 
 			$output .= "\n\t<tr>";
-			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $m ) . '">' . esc_html( $this->get_month_name( $m ) ) . '</th>';
+			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $m ) . '"><span>' . esc_html( $this->get_month_name( $m ) ) . '</span></th>';
 
 			for ( $d = 1; $d <= 31; $d++ ) {
 				// @codingStandardsIgnoreLine
@@ -135,6 +126,64 @@ abstract class Abstract_Calendar {
 				$this->setup_date( $day, 'year' );
 
 				$output .= "\n\t\t" . $this->generate_cell_date( $day, 'year' );
+			}
+
+			$output .= "\n\t</tr>\n";
+		} // End for().
+
+		$output .= "\n</tbody>\n</table>";
+
+		return $output;
+	}
+
+	/**
+	 * Generate scheduler calendar.
+	 *
+	 * @param  Carbonate $month     The month to start calendar.
+	 * @param  array     $units An array units.
+	 * @return string
+	 */
+	protected function generate_scheduler_calendar( Carbonate $month, $units ) {
+		$units = Collection::make( $units )->filter(function( $unit ) {
+			return isset( $unit['id'] ) && $unit['id'] > 0 && isset( $unit['name'] );
+		});
+
+		$output  = '<table class="' . esc_attr( $this->get_html_class( '&__table &__table--scheduler' ) ) . '">';
+		$output .= "\n<thead>\n\t<tr>";
+
+		$scheduler_heading = "<span>{$month->year}</span>";
+		if ( method_exists( $this, 'custom_scheduler_heading' ) ) {
+			$scheduler_heading = $this->custom_scheduler_heading( $month );
+		}
+
+		$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__scheduler-heading' ) ) . '">' . $scheduler_heading . '</th>';
+		for ( $i = 1; $i <= 31; $i++ ) {
+			$output .= "\n\t\t" . sprintf( '<th class="%1$s" data-day="%2$s"><span>%2$s</span></th>',
+				esc_attr( $this->get_html_class( '&__day-heading' ) ),
+				esc_html( $i )
+			);
+		}
+
+		$output .= "\n\t</tr>\n</thead>";
+		$output .= "\n<tbody>";
+
+		foreach ( $units as $unit ) {
+			$this->data = $this->prepare_data( $unit, 'scheduler' );
+
+			$output .= "\n\t<tr data-unit='" . esc_attr( $unit['id'] ) . "''>";
+			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $month->month ) . '"><span>' . esc_html( $unit['name'] ) . '</span></th>';
+
+			for ( $d = 1; $d <= 31; $d++ ) {
+				// @codingStandardsIgnoreLine
+				if ( $d > $month->daysInMonth ) {
+					$output .= "\n\t\t" . $this->generate_cell_pad( 1, false );
+					continue;
+				}
+
+				$day = $month->copy()->day( $d );
+				$this->setup_date( $day, 'scheduler' );
+
+				$output .= "\n\t\t" . $this->generate_cell_date( $day, 'scheduler' );
 			}
 
 			$output .= "\n\t</tr>\n";
@@ -209,6 +258,15 @@ abstract class Abstract_Calendar {
 	}
 
 	/**
+	 * Setup date data before prints.
+	 *
+	 * @param  Carbonate $date    Date instance.
+	 * @param  string    $context Context from Calendar.
+	 * @return void
+	 */
+	protected function setup_date( Carbonate $date, $context ) {}
+
+	/**
 	 * Generate HTML cell of a day.
 	 *
 	 * @param  Carbonate $date    Current day instance.
@@ -216,7 +274,7 @@ abstract class Abstract_Calendar {
 	 * @return string
 	 */
 	protected function generate_cell_date( Carbonate $date, $context ) {
-		return sprintf( '<td class="%6$s" data-day="%1$s" data-month="%2$s" data-year="%3$s" data-date="%4$s" title="%5$s">' . $this->get_date_contents( $date, $context ) . '</td>',
+		return sprintf( '<td class="%6$s" data-day="%1$d" data-month="%2$d" data-year="%3$d" data-date="%4$s" title="%5$s">' . $this->get_date_contents( $date, $context ) . '</td>',
 			esc_attr( $date->day ),
 			esc_attr( $date->month ),
 			esc_attr( $date->year ),
