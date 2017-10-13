@@ -66,6 +66,9 @@ If you have 2.x version, please do not upgrade to this version.
 
 == Changelog ==
 ### [3.0.0-beta9] - [xxxx-xx-xx]
+#### Added
+- Added Spanish (Argentina) language, thanks @bicho44.
+
 #### Changes
 - Rename "awebooking/after_register_post_type" to "awebooking/register_post_type"
 
