@@ -12,6 +12,7 @@ const AweBooking = _.extend(settings, {
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
   RangeDatepicker: require('./utils/range-datepicker.js'),
+  ToggleCheckboxes: require('./utils/toggle-checkboxes.js'),
 
   /**
    * Init the AweBooking

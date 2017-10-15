@@ -37,7 +37,7 @@ $(function() {
     $dialog.dialog('open');
   };
 
-  $('.abkngcal--pricing-calendar .abkngcal__table').each(function(index, el) {
+  const createCalendar = function(el) {
     let calendar = new PricingCalendar(el);
 
     calendar.on('apply', onApplyCalendar);
@@ -45,8 +45,23 @@ $(function() {
     $dialog.on('dialogclose', function() {
       calendar.keepRange = false;
     });
+  }
+
+  $('.abkngcal--pricing-calendar .abkngcal__table').each(function(index, el) {
+    if ($(el).hasClass('abkngcal__table--scheduler')) {
+      $(el).find('tbody > tr').each(function(i, subel) {
+        createCalendar(subel);
+      });
+    } else {
+      createCalendar(el);
+    }
   });
 
-  const rangepicker = new awebooking.RangeDatepicker('input[name="datepicker-start"]',  'input[name="datepicker-end"]');
-  rangepicker.init();
+  (new awebooking.RangeDatepicker(
+    'input[name="datepicker-start"]',  'input[name="datepicker-end"]'
+  )).init();
+
+  (new awebooking.ToggleCheckboxes(
+    'table.pricing_management'
+  ));
 });
