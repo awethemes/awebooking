@@ -17,6 +17,6 @@
     "form-serialize": "^0.7.2",
     "popper.js": "^1.12.5",
     "tooltip.js": "^1.1.5",
-    "vue": "^2.5.0"
+    "vue": "^2.5.2"
   }
 }
