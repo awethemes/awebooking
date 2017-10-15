@@ -26,6 +26,7 @@ class Pricing_Calendar extends Abstract_Calendar {
 	 * @var Collection
 	 */
 	protected $rates;
+	protected $rate;
 
 	/**
 	 * The year we will working on.
@@ -83,13 +84,20 @@ class Pricing_Calendar extends Abstract_Calendar {
 	/**
 	 * Prepare setup the data.
 	 *
-	 * @param  mixed  $input   Mixed input data.
+	 * @param  mixed  $data    Mixed input data.
 	 * @param  string $context Context from Calendar.
 	 * @return mixed
 	 */
-	protected function prepare_data( $input, $context ) {
-		$start_date = Carbonate::createFromDate( $input, 1, 1 );
-		$end_date   = $start_date->copy()->addYear();
+	protected function prepare_data( $data, $context ) {
+		if ( 'year' === $context && is_int( $data ) ) {
+			$start_date = Carbonate::createFromDate( $data, 1, 1 );
+			$end_date   = $start_date->copy()->endOfYear();
+		} elseif ( $data instanceof Carbonate ) {
+			$start_date = Carbonate::create_date( $data )->startOfMonth();
+			$end_date   = $start_date->copy()->endOfMonth();
+		} else {
+			return;
+		}
 
 		$response = Factory::create_pricing_calendar( $this->rates->all() )
 			->getEventsItemized( $start_date, $end_date, Calendar::BAT_DAILY );
@@ -99,6 +107,17 @@ class Pricing_Calendar extends Abstract_Calendar {
 		}, $response );
 
 		return $resources;
+	}
+
+	/**
+	 * Setup date data before prints.
+	 *
+	 * @param  Carbonate $date    Date instance.
+	 * @param  string    $context Context from Calendar.
+	 * @return void
+	 */
+	protected function setup_date( Carbonate $date, $context ) {
+		$this->rate = $this->room_type->get_standard_rate();
 	}
 
 	/**
@@ -113,12 +132,11 @@ class Pricing_Calendar extends Abstract_Calendar {
 	protected function get_date_contents( Carbonate $date, $context ) {
 		$contents = '<span class="' . esc_attr( $this->get_html_class( '&__night-selection' ) ) . '"></span>';
 
-		$rate = $this->room_type->get_standard_rate();
-		$getdata = $rate->get_id() . '.' . $date->format( 'Y.n.\dj' );
+		$getdata = $this->rate->get_id() . '.' . $date->format( 'Y.n.\dj' );
 
 		if ( Arr::has( $this->data, $getdata ) ) {
 			$price = Price::from_integer( Arr::get( $this->data, $getdata ) );
-			$rate_price = $rate->get_base_price();
+			$rate_price = $this->rate->get_base_price();
 
 			if ( ! $price->equals( $rate_price ) ) {
 				$contents .= '<span class="abkngcal__price-change">' . $price->get_amount() . '</span>';

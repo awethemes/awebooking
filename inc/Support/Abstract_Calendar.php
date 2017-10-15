@@ -144,6 +144,8 @@ abstract class Abstract_Calendar {
 	 * @return string
 	 */
 	protected function generate_scheduler_calendar( Carbonate $month, $units ) {
+		$this->data = $this->prepare_data( $month, 'scheduler' );
+
 		$units = Collection::make( $units )->filter(function( $unit ) {
 			return isset( $unit['id'] ) && $unit['id'] > 0 && isset( $unit['name'] );
 		});
@@ -168,9 +170,7 @@ abstract class Abstract_Calendar {
 		$output .= "\n<tbody>";
 
 		foreach ( $units as $unit ) {
-			$this->data = $this->prepare_data( $unit, 'scheduler' );
-
-			$output .= "\n\t<tr data-unit='" . esc_attr( $unit['id'] ) . "''>";
+			$output .= "\n\t<tr data-unit='" . esc_attr( $unit['id'] ) . "'>";
 			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $month->month ) . '"><span>' . esc_html( $unit['name'] ) . '</span></th>';
 
 			for ( $d = 1; $d <= 31; $d++ ) {
@@ -181,8 +181,8 @@ abstract class Abstract_Calendar {
 				}
 
 				$day = $month->copy()->day( $d );
-				$this->setup_date( $day, 'scheduler' );
 
+				$this->setup_date( $day, $unit );
 				$output .= "\n\t\t" . $this->generate_cell_date( $day, 'scheduler' );
 			}
 
