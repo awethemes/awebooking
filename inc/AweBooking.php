@@ -114,6 +114,8 @@ final class AweBooking extends Container {
 
 		$this->instance( AweBooking::class, $this );
 
+		$this->register( Providers\Monolog_Service_Provider::class );
+
 		$this->singleton(
 			'session', function() {
 				return new WP_Session( 'awebooking_session', [ 'lifetime' => 120 ] );

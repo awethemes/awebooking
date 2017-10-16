@@ -26,6 +26,7 @@
         "awethemes/wp-session": "dev-master",
         "erusev/parsedown": "^1.6",
         "league/period": "^3.3",
+        "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.22",
         "pelago/emogrifier": "^1.2",
         "roomify/bat": "dev-master",
