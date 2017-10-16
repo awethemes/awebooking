@@ -207,7 +207,8 @@ class Add_Line_Item_Form extends Form_Abstract {
 		}
 
 		// Next, call to Concierge and check availability our hotel.
-		$results = Concierge::check_availability( new Request( $period ) );
+		$request = new Request( $period );
+		$results = Concierge::check_availability( $request );
 
 		$rooms_options = $this->generate_select_rooms( $results );
 		$this['add_room']->set_prop( 'options', $rooms_options );
@@ -223,7 +224,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$a = range( 1, $room_type->get_allowed_adults() );
 			$b = range( 0, $room_type->get_allowed_children() );
 
-			$price = Concierge::get_price( $room_type, $period );
+			$price = Concierge::get_room_price( $room_type, $request );
 
 			$this['add_room']
 				->set_value( (int) $_REQUEST['add_room'] );

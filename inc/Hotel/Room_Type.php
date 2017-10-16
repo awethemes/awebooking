@@ -545,7 +545,7 @@ class Room_Type extends WP_Object implements Buyable {
 		$request = Request::from_array( $options->to_array() );
 
 		// Price by nights.
-		$price = Concierge::get_room_price( $this, $request->get_period() );
+		$price = Concierge::get_room_price( $this, $request );
 		$pipes = apply_filters( $this->prefix( 'get_buyable_price' ), [], $this, $request );
 
 		if ( $request->has_request( 'extra_services' ) ) {

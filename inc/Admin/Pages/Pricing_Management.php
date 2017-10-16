@@ -177,7 +177,7 @@ class Pricing_Management extends WP_List_Table {
 
 				$rate = new Rate( absint( $_REQUEST['unit_id'] ) );
 
-				Concierge::set_room_price( $rate, $period, $price, [
+				Concierge::set_price( $rate, $period, $price, [
 					'only_days' => $only_days,
 				]);
 
@@ -206,7 +206,7 @@ class Pricing_Management extends WP_List_Table {
 				foreach ( $ids as $id ) {
 					$rate = new Rate( (int) $id );
 
-					Concierge::set_room_price( $rate, $period, $price, [
+					Concierge::set_price( $rate, $period, $price, [
 						'only_days' => $only_days,
 					]);
 				}

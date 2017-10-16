@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\AweBooking;
 use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
 use AweBooking\Booking\Booking;
@@ -11,6 +10,7 @@ use AweBooking\Booking\Events\Room_State;
 use AweBooking\Booking\Events\Rate_Pricing;
 use AweBooking\Booking\Events\Room_Booking;
 use Roomify\Bat\Valuator\IntervalValuator;
+
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Period;
@@ -176,40 +176,29 @@ class Concierge {
 	}
 
 	/**
-	 * Gets room price in a time prioed.
-	 *
-	 * TODO: ...
+	 * Gets room-type price.
 	 *
 	 * @param  Room_Type $room_type The room type instance.
-	 * @param  Period    $period    A time period.
+	 * @param  Request   $request   Booking request instance.
 	 * @return Price
 	 */
-	public static function get_price( Room_Type $room_type, Period $period ) {
-		$valuator = new IntervalValuator(
-			$period->get_start_date(),
-			$period->get_end_date()->subMinute(),
-			$room_type->get_standard_rate(),
-			awebooking()->make( 'store.pricing' ),
-			new \DateInterval( 'P1D' )
-		);
+	public static function get_room_price( Room_Type $room_type, Request $request ) {
+		$rate = apply_filters( 'awebooking/concierge/apply_pricing_rate', $room_type->get_standard_rate(), $room_type, $request );
 
-		return Price::from_integer(
-			$valuator->determineValue()
-		);
+		return static::get_price( $rate, $request->get_period() );
 	}
 
-	// TODO: Remove this
-	public static function get_room_price( Room_Type $room_type, Period $period ) {
-		return static::get_price( $room_type, $period );
-	}
-
-	public static function get_price_by_rate( Rate $rate, Period $period ) {
+	/**
+	 * Gets price of rate in a period.
+	 *
+	 * @param  Rate   $rate   The rate.
+	 * @param  Period $period The period.
+	 * @return Price
+	 */
+	public static function get_price( Rate $rate, Period $period ) {
 		$valuator = new IntervalValuator(
-			$period->get_start_date(),
-			$period->get_end_date()->subMinute(),
-			$rate,
-			awebooking( 'store.pricing' ),
-			new \DateInterval( 'P1D' )
+			$period->get_start_date(), $period->get_end_date()->subMinute(),
+			$rate, awebooking( 'store.pricing' ), new \DateInterval( 'P1D' )
 		);
 
 		return Price::from_integer( $valuator->determineValue() );
@@ -232,11 +221,6 @@ class Concierge {
 		}
 
 		return $rate->save();
-	}
-
-	// TODO: Remove this
-	public static function set_room_price( Rate $rate, Period $period, Price $amount, array $options = [] ) {
-		return static::set_price( $rate, $period, $amount, $options );
 	}
 
 	/**

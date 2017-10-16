@@ -125,7 +125,7 @@ class Admin_Ajax {
 		]);
 
 		// ----------
-		$base_price = Concierge::get_price( $room_type, $period );
+		$base_price = Concierge::get_room_price( $room_type, $request );
 
 		$pipes = [];
 		foreach ( $sanitized['edit_services'] as $service ) {

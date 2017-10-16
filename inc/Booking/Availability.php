@@ -126,7 +126,7 @@ class Availability {
 	 * @return Price
 	 */
 	public function get_price() {
-		$price = Concierge::get_room_price( $this->room_type, $this->request->get_period() );
+		$price = Concierge::get_room_price( $this->room_type, $this->request );
 
 		$pipes = apply_filters( 'awebooking/availability/room_price_pipes', [], $this->request, $this );
 
