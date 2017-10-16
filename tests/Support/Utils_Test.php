@@ -6,16 +6,7 @@ class Utils_Test extends WP_UnitTestCase {
 
 	public function testOptional() {
 		$this->assertNull( U::optional( null )->something() );
-		$this->assertEquals(
-			10,
-			U::optional(
-				new class() {
-					public function something() {
-						return 10;
-					}
-				}
-			)->something()
-		);
+		$this->assertEquals( 10, U::optional(new _test_class_optional)->something() );
 	}
 
 	public function testValue() {
@@ -55,5 +46,11 @@ class Utils_Test extends WP_UnitTestCase {
 				}, 'rescued!'
 			), 'no need to rescue'
 		);
+	}
+}
+
+class _test_class_optional {
+	public function something() {
+		return 10;
 	}
 }
