@@ -79,6 +79,8 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			$term_taxonomy_ids = wp_set_object_terms(
 				$post_id, $services, AweBooking::HOTEL_SERVICE, false
 			);
+		} else {
+			wp_delete_object_term_relationships( $post_id, AweBooking::HOTEL_SERVICE );
 		}
 	}
 
