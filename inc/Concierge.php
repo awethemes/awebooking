@@ -300,7 +300,7 @@ class Concierge {
 			$request->get_check_in(),
 			$request->get_check_out()->subMinute(),
 			[ AweBooking::STATE_AVAILABLE ],
-			[]
+			apply_filters( 'awebooking/concierge/constraint', [], $rooms, $request )
 		);
 
 		return static::mapto_room_types( $response, $request );
