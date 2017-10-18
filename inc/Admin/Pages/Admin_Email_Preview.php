@@ -5,6 +5,7 @@ use AweBooking\AweBooking;
 use AweBooking\Support\Mailer;
 use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Booking_Cancelled;
+use AweBooking\Notification\Booking_Processing;
 use AweBooking\Notification\Booking_Completed;
 use AweBooking\Booking\Booking;
 
@@ -47,6 +48,10 @@ class Admin_Email_Preview {
 			'cancelled' => array(
 				'name'    => __( 'Cancelled Booking', 'awebooking' ),
 				'view'    => [ $this, 'get_cancelled_email_preview_template' ],
+			),
+			'processing' => array(
+				'name'    => __( 'Processing Booking', 'awebooking' ),
+				'view'    => [ $this, 'get_processing_email_preview_template' ],
 			),
 			'completed' => array(
 				'name'    => __( 'Completed Booking', 'awebooking' ),
@@ -93,6 +98,21 @@ class Admin_Email_Preview {
 		$booking['date_created'] = '2017-08-21 07:20:09';
 		try {
 			$booking_created = new Booking_Cancelled( $booking );
+			$booking_created->set_dummy( true );
+			print $booking_created->message(); // WPCS: xss ok.
+		} catch ( \Exception $e ) {
+			// ...
+		}
+	}
+
+	/**
+	 * Get cancelled email template.
+	 */
+	public function get_processing_email_preview_template() {
+		$booking = new Booking( 0 );
+		$booking['date_created'] = '2017-08-21 07:20:09';
+		try {
+			$booking_created = new Booking_Processing( $booking );
 			$booking_created->set_dummy( true );
 			print $booking_created->message(); // WPCS: xss ok.
 		} catch ( \Exception $e ) {

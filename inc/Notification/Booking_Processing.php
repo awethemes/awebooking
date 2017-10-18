@@ -79,7 +79,7 @@ class Booking_Processing extends Mailable {
 	 * @return void
 	 */
 	public function get_subject() {
-		$subject = '[{site_title}] Processing your booking #{order_number} - {order_date}';
+		$subject = awebooking_option( 'email_processing_subject' );
 		return $this->format_string( $subject );
 	}
 
