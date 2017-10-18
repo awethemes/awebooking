@@ -228,7 +228,7 @@ class Email_Setting extends Setting_Abstract {
 			'id'      => 'email_processing_enable',
 			'type'    => 'toggle',
 			'desc'    => esc_html__( 'Check to turn on email notification for processing booking', 'awebooking' ),
-			'default' => awebooking( 'setting' )->get_default( 'email_complete_enable' ),
+			'default' => awebooking( 'setting' )->get_default( 'email_processing_enable' ),
 		) );
 
 		$processing_booking->add_field( array(

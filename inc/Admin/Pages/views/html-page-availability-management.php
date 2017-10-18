@@ -23,10 +23,10 @@ use AweBooking\Admin\Admin_Utils;
 				<input class="wp-toggle-checkboxes" type="checkbox">
 				<span class="awebooking-sperator"> | </span>
 
-				<label>From</label>
+				<label><?php esc_html_e( 'From', 'awebooking' ); ?></label>
 				<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
 
-				<label>To</label>
+				<label><?php esc_html_e( 'To', 'awebooking' ); ?></label>
 				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
 				<div id="edit-day-options" class="inline-weekday-checkbox">
@@ -34,8 +34,8 @@ use AweBooking\Admin\Admin_Utils;
 				</div>
 
 				<select name="state">
-					<option value="0">Available</option>
-					<option value="1">Unavailable</option>
+					<option value="0"><?php esc_html_e( 'Available', 'awebooking' ); ?></option>
+					<option value="1"><?php esc_html_e( 'Unavailable', 'awebooking' ); ?></option>
 				</select>
 
 				<input type="hidden" name="action" value="bulk-update">
@@ -54,7 +54,7 @@ use AweBooking\Admin\Admin_Utils;
 			if ( isset( $_REQUEST['room-type'] ) && isset( $room_type[ $_REQUEST['room-type'] ] ) ) {
 				$current_room_type = $room_type[ $_REQUEST['room-type'] ];
 			} else {
-				$current_room_type = 'All Room Types';
+				$current_room_type = esc_html__( 'All Room Types', 'awebooking' );
 			}
 			?>
 			<div class="" style="position: relative; float: right;">
