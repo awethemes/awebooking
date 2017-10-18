@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Factory;

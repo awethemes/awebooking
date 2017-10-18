@@ -153,13 +153,13 @@ abstract class Abstract_Calendar {
 		$output  = '<table class="' . esc_attr( $this->get_html_class( '&__table &__table--scheduler' ) ) . '">';
 		$output .= "\n<thead>\n\t<tr>";
 
-		$scheduler_heading = "<span>{$month->year}</span>";
+		$scheduler_heading = "<span>{$this->get_month_name( $month->month )}, {$month->year}</span>";
 		if ( method_exists( $this, 'custom_scheduler_heading' ) ) {
 			$scheduler_heading = $this->custom_scheduler_heading( $month );
 		}
 
 		$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__scheduler-heading' ) ) . '">' . $scheduler_heading . '</th>';
-		for ( $i = 1; $i <= 31; $i++ ) {
+		for ( $i = 1; $i <= $month->daysInMonth; $i++ ) {
 			$output .= "\n\t\t" . sprintf( '<th class="%1$s" data-day="%2$s"><span>%2$s</span></th>',
 				esc_attr( $this->get_html_class( '&__day-heading' ) ),
 				esc_html( $i )
@@ -171,18 +171,14 @@ abstract class Abstract_Calendar {
 
 		foreach ( $units as $unit ) {
 			$output .= "\n\t<tr data-unit='" . esc_attr( $unit['id'] ) . "'>";
-			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $month->month ) . '"><span>' . esc_html( $unit['name'] ) . '</span></th>';
+			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $month->month ) . '">' . $this->get_scheduler_row_heading( $month, $unit ) . '</th>';
 
-			for ( $d = 1; $d <= 31; $d++ ) {
-				// @codingStandardsIgnoreLine
-				if ( $d > $month->daysInMonth ) {
-					$output .= "\n\t\t" . $this->generate_cell_pad( 1, false );
-					continue;
-				}
-
+			// @codingStandardsIgnoreLine
+			for ( $d = 1; $d <= $month->daysInMonth; $d++ ) {
 				$day = $month->copy()->day( $d );
 
 				$this->setup_date( $day, $unit );
+
 				$output .= "\n\t\t" . $this->generate_cell_date( $day, 'scheduler' );
 			}
 
@@ -310,6 +306,17 @@ abstract class Abstract_Calendar {
 	 */
 	protected function get_date_contents( Carbonate $date, $context ) {
 		return '<span class="' . esc_attr( $this->get_html_class( '&__state' ) ) . '">' . ( 'month' === $context ? '%1$s' : '&nbsp;' ) . '</span>';
+	}
+
+	/**
+	 * Return row heading content for scheduler.
+	 *
+	 * @param  Carbonate $month Current month.
+	 * @param  array     $unit  Array of current unit in loop.
+	 * @return string
+	 */
+	protected function get_scheduler_row_heading( $month, $unit ) {
+		return '<span> ' . esc_html( $unit['name'] ) . '</span>';
 	}
 
 	/**
