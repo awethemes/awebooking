@@ -38,6 +38,7 @@ class Email_Setting extends Setting_Abstract {
 		$this->register_general_settings( $email_general );
 		$this->register_new_booking_settings( $email_general );
 		$this->register_cancelled_booking_settings( $email_general );
+		$this->register_processing_booking_settings( $email_general );
 		$this->register_completed_booking_settings( $email_general );
 	}
 
@@ -209,6 +210,46 @@ class Email_Setting extends Setting_Abstract {
 	}
 
 	/**
+	 * Regsuetr email processing booking settings.
+	 *
+	 * @param  Skeleton\CMB2\Section $processing_booking Section instance.
+	 * @return void
+	 */
+	protected function register_processing_booking_settings( $processing_booking ) {
+		$processing_booking->add_field( array(
+			'id'   => '__email_processing_booking__',
+			'type' => 'title',
+			'name' => esc_html__( 'Processing booking','awebooking' ),
+			'desc' => sprintf( esc_html__( 'Email settings for processing booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=processing' ) ) . '" target="_blank">here</a>' ),
+		) );
+
+		$processing_booking->add_field( array(
+			'name'    => esc_html__( 'Enable', 'awebooking' ),
+			'id'      => 'email_processing_enable',
+			'type'    => 'toggle',
+			'desc'    => esc_html__( 'Check to turn on email notification for processing booking', 'awebooking' ),
+			'default' => awebooking( 'setting' )->get_default( 'email_processing_enable' ),
+		) );
+
+		$processing_booking->add_field( array(
+			'name'    => esc_html__( 'Email subject', 'awebooking' ),
+			'id'      => 'email_processing_subject',
+			'type'    => 'textarea_small',
+			'default' => __( '[{site_title}] Processing your booking #{order_number} - {order_date}', 'awebooking' ),
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is being processed.',
+			'attributes' => array( 'style' => 'height:50px;' ),
+		) );
+
+		$processing_booking->add_field( array(
+			'name'    => esc_html__( 'Email header', 'awebooking' ),
+			'id'      => 'email_processing_header',
+			'type'    => 'text',
+			'default' => esc_html__( 'Your booking is being processed', 'awebooking' ),
+			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is being processed.', 'awebooking' ),
+		) );
+	}
+
+	/**
 	 * Regsuetr email completed booking settings.
 	 *
 	 * @param  Skeleton\CMB2\Section $completed_booking Section instance.
@@ -226,7 +267,7 @@ class Email_Setting extends Setting_Abstract {
 			'name'    => esc_html__( 'Enable', 'awebooking' ),
 			'id'      => 'email_complete_enable',
 			'type'    => 'toggle',
-			'desc'    => esc_html__( 'Check to turn on email notification for complete booking', 'awebooking' ),
+			'desc'    => esc_html__( 'Check to turn on email notification for completed booking', 'awebooking' ),
 			'default' => awebooking( 'setting' )->get_default( 'email_complete_enable' ),
 		) );
 
@@ -234,8 +275,8 @@ class Email_Setting extends Setting_Abstract {
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_complete_subject',
 			'type'    => 'textarea_small',
-			'default' => 'Your {site_title} booking from {order_date} is complete',
-			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is complete',
+			'default' => 'Your {site_title} booking from {order_date} is completed',
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is completed.',
 			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
 

@@ -26,10 +26,10 @@ use AweBooking\Admin\Admin_Utils;
 				<input class="wp-toggle-checkboxes" type="checkbox">
 				<span class="awebooking-sperator"> | </span>
 
-				<label>From</label>
+				<label><?php esc_html_e( 'From', 'awebooking' ); ?></label>
 				<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
 
-				<label>To</label>
+				<label><?php esc_html_e( 'To', 'awebooking' ); ?></label>
 				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
 				<div id="edit-day-options" class="inline-weekday-checkbox">
