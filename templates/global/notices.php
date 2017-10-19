@@ -1,12 +1,12 @@
 <?php
 /**
- * AweBooking message template.
+ * AweBooking notices template.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/global/message.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/global/notices.php.
  *
  * @author 		Awethemes
  * @package 	Awethemes/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

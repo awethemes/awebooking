@@ -6,7 +6,7 @@
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 ?>
 <p><?php printf( __( 'You have received a booking from %s. The order is as follows:', 'awebooking' ), $customer_first_name ); ?></p>

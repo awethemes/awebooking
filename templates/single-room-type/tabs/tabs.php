@@ -6,11 +6,11 @@
  *
  * @author  Awethemes
  * @package Awethemes/Templates
- * @version 1.0.0
+ * @version 3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // Exit if accessed directly.
 }
 /**
  * Filter tabs and allow third parties to add their own.

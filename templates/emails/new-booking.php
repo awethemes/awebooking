@@ -6,7 +6,7 @@
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 
 esc_html_e( 'Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:', 'awebooking' ) . "\n\n";

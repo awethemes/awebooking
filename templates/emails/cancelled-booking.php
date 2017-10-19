@@ -6,7 +6,7 @@
  *
  * @author 		Awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 
 printf( __( 'Your booking #%1$d from %2$s has been cancelled.', 'awebooking' ), $booking_id, $customer_first_name );
