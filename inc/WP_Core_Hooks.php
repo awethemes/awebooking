@@ -203,11 +203,11 @@ class WP_Core_Hooks extends Service_Hooks {
 			'query_var'           => false,
 			'has_archive'         => false,
 			'publicly_queryable'  => false,
-			'show_in_nav_menus'   => true,
+			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => false,
 			'exclude_from_search' => true,
 			'hierarchical'        => true,
-			'show_ui'             => true,
+			'show_ui'             => false,
 			'supports'            => array( 'title', 'page-attributes' ),
 		])
 		->register();
