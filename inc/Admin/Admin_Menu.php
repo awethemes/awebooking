@@ -15,7 +15,7 @@ class Admin_Menu extends Base_Admin_Menu {
 			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
 			'menu_title' => esc_html__( 'AweBooking', 'awebooking' ),
 			'icon_url'   => 'dashicons-calendar',
-			'position'   => 52,
+			'position'   => 53,
 			'function' => function() {
 				(new Admin_Welcome)->output();
 			},
