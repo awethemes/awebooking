@@ -4,8 +4,10 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Booking\Booking;
-use AweBooking\Admin\Forms\Booking_General_From;
 use AweBooking\Support\Carbonate;
+use AweBooking\Admin\Calendar\Booking_Calendar;
+use AweBooking\Admin\Forms\Booking_General_From;
+
 use AweBooking\Support\Mailer;
 use AweBooking\Notification\Booking_Cancelled;
 use AweBooking\Notification\Booking_Processing;
@@ -124,7 +126,8 @@ class Booking_Metabox extends Post_Type_Metabox {
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
-		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'default' );
+		add_meta_box( 'awebooking-booking-calendar', esc_html__( 'Calendar', 'awebooking' ), [ $this, 'output_calendar_metabox' ], AweBooking::BOOKING, 'side', 'default' );
+		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'low' );
 	}
 
 	public function booking_templates() {
@@ -314,5 +317,18 @@ class Booking_Metabox extends Post_Type_Metabox {
 		$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
 
 		return $clauses;
+	}
+
+	/**
+	 * Prints mini-calendar in booking.
+	 *
+	 * @return void
+	 */
+	public function output_calendar_metabox() {
+		global $post;
+
+		$the_booking = Factory::get_booking( $post->ID );
+
+		(new Booking_Calendar( $the_booking ))->display();
 	}
 }
