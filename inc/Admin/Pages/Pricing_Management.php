@@ -181,7 +181,7 @@ class Pricing_Management extends WP_List_Table {
 					'only_days' => $only_days,
 				]);
 
-			} catch ( \sException $e ) {
+			} catch ( \Exception $e ) {
 				// ...
 			}
 		}
