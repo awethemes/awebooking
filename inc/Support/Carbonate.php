@@ -77,7 +77,7 @@ class Carbonate extends Carbon {
 			return static::instance( $datetime );
 		}
 
-		if ( $datetime instanceof \DateTimeImmutable ) {
+		if ( $datetime instanceof \DateTimeInterface ) {
 			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
 		}
 

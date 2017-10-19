@@ -151,7 +151,7 @@ class WP_Core_Hooks extends Service_Hooks {
 		->set( apply_filters( 'awebooking/post_type_args/room_type', [
 			'menu_icon'       => 'dashicons-calendar',
 			'supports'        => array( 'title', 'editor', 'thumbnail' ),
-			'menu_position'   => 52,
+			'menu_position'   => 53,
 			'rewrite'   => [
 				'slug'       => get_option( 'awebooking_room_type_permalink', 'room_type' ),
 				'feeds'      => true,

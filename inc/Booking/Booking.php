@@ -208,7 +208,7 @@ class Booking extends WP_Object {
 	 * @return Carbonate|null
 	 */
 	public function get_arrival_date() {
-		$period = $this->get_period_collection()->merge();
+		$period = $this->get_period_collection()->collapse();
 
 		return ! is_null( $period ) ? $period->get_start_date() : null;
 	}
@@ -219,7 +219,7 @@ class Booking extends WP_Object {
 	 * @return Carbonate|null
 	 */
 	public function get_departure_date() {
-		$period = $this->get_period_collection()->merge();
+		$period = $this->get_period_collection()->collapse();
 
 		return ! is_null( $period ) ? $period->get_end_date() : null;
 	}
@@ -292,7 +292,7 @@ class Booking extends WP_Object {
 	 *
 	 * @return Period_Collection
 	 */
-	protected function get_period_collection() {
+	public function get_period_collection() {
 		$periods = $this->get_line_items()->map(function( $item ) {
 			return $item->get_period();
 		})->values();

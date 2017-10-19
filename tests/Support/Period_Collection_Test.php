@@ -17,7 +17,7 @@ class Period_Collection_Test extends WP_UnitTestCase {
 		$collection = new Period_Collection($this->periods);
 		$sorted = $collection->sort();
 
-		$this->assertInternalType('array', $sorted);
+		$this->assertInstanceOf('AweBooking\Support\Collection', $sorted);
 		$this->assertCount(3, $sorted);
 
 		$this->assertEquals($this->periods[1], $sorted[0]);
@@ -32,7 +32,7 @@ class Period_Collection_Test extends WP_UnitTestCase {
 
 	public function testMerge() {
 		$collection = new Period_Collection($this->periods);
-		$p = $collection->merge();
+		$p = $collection->collapse();
 
 		$this->assertInstanceOf(Period::class, $p);
 		$this->assertEquals($this->periods[1]->get_start_date()->toDateString(), $p->get_start_date()->toDateString());
@@ -41,14 +41,14 @@ class Period_Collection_Test extends WP_UnitTestCase {
 
 	public function testMergeWithEmptyArray() {
 		$collection = new Period_Collection([]);
-		$this->assertNull($collection->merge());
+		$this->assertNull($collection->collapse());
 	}
 
 	public function testMergeWithOnePeriod() {
 		$a = new Period( '2017-08-24', '2017-08-25' );
 		$collection = new Period_Collection([ $a ]);
 
-		$p = $collection->merge();
+		$p = $collection->collapse();
 		$this->assertInstanceOf(Period::class, $p);
 		$this->assertEquals($a->get_start_date()->toDateString(), $p->get_start_date()->toDateString());
 		$this->assertEquals($a->get_end_date()->toDateString(), $p->get_end_date()->toDateString());

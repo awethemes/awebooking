@@ -1,14 +1,7 @@
 <?php
 namespace AweBooking\Support;
 
-class Period_Collection {
-	/**
-	 * An array collection of periods.
-	 *
-	 * @var array
-	 */
-	protected $periods = [];
-
+class Period_Collection extends Collection {
 	/**
 	 * Create period collection.
 	 *
@@ -16,22 +9,22 @@ class Period_Collection {
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct( array $periods ) {
-		foreach ( $periods as $period ) {
+		parent::__construct( $periods );
+
+		foreach ( $this->items as $period ) {
 			if ( ! $period instanceof Period ) {
 				throw new \InvalidArgumentException( 'Must receive a Period object. Received: ' . get_class( $period ) );
 			}
 		}
-
-		$this->periods = $periods;
 	}
 
 	/**
-	 * Merge periods in to single period.
+	 * Collapse the collection of periods into a single period.
 	 *
 	 * @return Period|null
 	 */
-	public function merge() {
-		$periods = $this->periods;
+	public function collapse() {
+		$periods = $this->items;
 
 		// Returns null if empty periods.
 		if ( 0 === count( $periods ) ) {
@@ -45,37 +38,41 @@ class Period_Collection {
 		}
 
 		$period = array_shift( $periods );
-		return call_user_func_array( [ $period, 'merge' ], $periods );
+
+		return $period->merge( ...$periods );
 	}
 
 	/**
 	 * Sort periods from earliest to latest.
 	 *
-	 * @return array
+	 * @param  callable|null $callback Optional, callback user-defined comparison function.
+	 * @return static
 	 */
-	public function sort() {
-		$sort_periods = $this->periods;
+	public function sort( callable $callback = null ) {
+		$sort_periods = $this->items;
 
-		usort($sort_periods, function ( Period $period1, Period $period2 ) {
-			if ( $period1->isBefore( $period2 ) ) {
-				return -1;
-			}
+		$callback
+			? usort( $sort_periods, $callback )
+			: usort( $sort_periods, function ( Period $period1, Period $period2 ) {
+				if ( $period1->isBefore( $period2 ) ) {
+					return -1;
+				}
 
-			if ( $period1->isAfter( $period2 ) ) {
-				return 1;
-			}
+				if ( $period1->isAfter( $period2 ) ) {
+					return 1;
+				}
 
-			return 0;
-		});
+				return 0;
+			});
 
-		return $sort_periods;
+		return new static( $sort_periods );
 	}
 
 	/**
 	 * Alias of `is_continuous` method.
 	 *
-	 * @param  boolean $sort Sort periods list before check.
-	 * @return boolean
+	 * @param  bool $sort Sort periods list before check.
+	 * @return bool
 	 */
 	public function adjacents( $sort = true ) {
 		return $this->is_continuous( $sort );
@@ -89,7 +86,7 @@ class Period_Collection {
 	 */
 	public function is_continuous( $sort = true ) {
 		$abuts = true;
-		$periods = $sort ? $this->sort() : $this->periods;
+		$periods = $sort ? $this->sort() : $this->items;
 
 		// Empty periods found, leave and return false.
 		if ( 0 === count( $periods ) ) {

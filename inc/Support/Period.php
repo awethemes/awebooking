@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Support;
 
-use DateTimeImmutable;
+use DatePeriod;
 use League\Period\Period as League_Period;
 
 class Period extends League_Period {
@@ -16,22 +16,11 @@ class Period extends League_Period {
 	 * @param bool             $strict     Optional, use strict mode.
 	 */
 	public function __construct( $start_date, $end_date, $strict = false ) {
-		// Back-compat with League.Period when create static class in some methods.
-		// The League.Period using `DateTimeImmutable`, so we don't parse it if have.
-		if ( ! $start_date instanceof DateTimeImmutable ) {
-			$start_date = Carbonate::create_date( $start_date );
-		}
+		parent::__construct(
+			Carbonate::create_datetime( $start_date ),
+			Carbonate::create_datetime( $end_date )
+		);
 
-		if ( ! $end_date instanceof DateTimeImmutable ) {
-			$end_date = Carbonate::create_date( $end_date );
-		}
-
-		// Call parent constructor,
-		// then call validate the date period.
-		parent::__construct( $start_date, $end_date );
-
-		// We need a period required minimum one night or
-		// not be the past days if "strict" passed as true.
 		$this->validate_period( $strict );
 	}
 
@@ -69,11 +58,12 @@ class Period extends League_Period {
 	/**
 	 * Get DatePeriod object instance.
 	 *
-	 * @param  int $option See DatePeriod::EXCLUDE_START_DATE.
+	 * @param  DateInterval|int|string $interval The interval.
+	 * @param  int                     $option   See DatePeriod::EXCLUDE_START_DATE.
 	 * @return DatePeriod
 	 */
-	public function get_period( $option = 0 ) {
-		return $this->getDatePeriod( '1 day', $option );
+	public function get_period( $interval = '1 DAY', $option = 0 ) {
+		return new DatePeriod( $this->get_start_date(), static::filterDateInterval( $interval ), $this->get_end_date(), $option );
 	}
 
 	/**
@@ -86,7 +76,7 @@ class Period extends League_Period {
 	 */
 	public function required_minimum_nights( $nights = 1 ) {
 		if ( $this->nights() < $nights ) {
-			throw new \LogicException( sprintf( esc_html__( 'The date period must be have minimum %s night(s).', 'awebooking' ), $nights ) );
+			throw new \LogicException( sprintf( esc_html__( 'The date period must be have minimum %d night(s).', 'awebooking' ), esc_html( $nights ) ) );
 		}
 	}
 
