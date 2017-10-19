@@ -11,7 +11,7 @@
 
 esc_html_e( 'Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:', 'awebooking' ) . "\n\n";
 ?>
-<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Order #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
+<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
 
 <div class="table">
 	<table>

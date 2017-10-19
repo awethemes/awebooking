@@ -12,7 +12,7 @@
 <p><?php printf( __( 'The booking #%1$d from %2$s has been cancelled. The order was as follows:', 'awebooking' ), $booking_id, $customer_first_name ); ?></p>
 <h2>
 	<a class="link" href="<?php echo esc_url( get_edit_post_link( $booking_id ) ); ?>">
-		<?php printf( __( 'Order #%s', 'awebooking' ), $booking_id ); ?>
+		<?php printf( __( 'Booking #%s', 'awebooking' ), $booking_id ); ?>
 	</a>
 </h2>
 

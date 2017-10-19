@@ -11,7 +11,7 @@
 
 printf( __( 'Your booking #%1$d from %2$s has been cancelled.', 'awebooking' ), $booking_id, $customer_first_name );
 ?>
-<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Order #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
+<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), esc_html( $booking_id ) ); ?></h2>
 
 <div class="table">
 	<table>
