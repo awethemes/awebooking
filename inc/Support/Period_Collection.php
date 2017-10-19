@@ -3,13 +3,6 @@ namespace AweBooking\Support;
 
 class Period_Collection extends Collection {
 	/**
-	 * An array collection of periods.
-	 *
-	 * @var array
-	 */
-	protected $periods = [];
-
-	/**
 	 * Create period collection.
 	 *
 	 * @param array $periods An array of periods.
