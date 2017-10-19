@@ -197,19 +197,19 @@ class WP_Core_Hooks extends Service_Hooks {
 			esc_html__( 'Rate', 'awebooking' ),
 			esc_html__( 'Rates', 'awebooking' )
 		)
-		->set([
+		->set( apply_filters( 'awebooking/post_type_args/pricing_rate', [
 			'public'              => false,
 			'rewrite'             => false,
 			'query_var'           => false,
 			'has_archive'         => false,
 			'publicly_queryable'  => false,
-			'show_in_nav_menus'   => true,
+			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => false,
 			'exclude_from_search' => true,
 			'hierarchical'        => true,
-			'show_ui'             => true,
+			'show_ui'             => false,
 			'supports'            => array( 'title', 'page-attributes' ),
-		])
+		]))
 		->register();
 
 		/**
