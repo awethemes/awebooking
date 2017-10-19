@@ -14,12 +14,19 @@
   text-align: center;
 }
 
+[class^="awebooking-"],
+[class^="awebooking-"]:after,
+[class^="awebooking-"]:before {
+  box-sizing: border-box;
+}
+
 @import "admin/tooltip";
 @import "admin/abkngcal";
 @import "admin/booking-notes";
 @import "admin/cmb2";
 @import "admin/dialog";
 @import "admin/edit-booking";
+@import "admin/helpers";
 
 .ui-datepicker {
   display: none;

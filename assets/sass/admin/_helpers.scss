@@ -1,0 +1,27 @@
+.awebooking-row {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-right: -15px;
+  margin-left: -15px;
+
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+    width: 100%;
+  }
+}
+
+.awebooking-col {
+  width: 100%;
+  min-height: 1px;
+  position: relative;
+
+  padding-right: 15px;
+  padding-left: 15px;
+
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
