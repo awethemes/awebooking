@@ -67,6 +67,37 @@ class Period extends League_Period {
 	}
 
 	/**
+	 * Split period segments by interval at end-of-week.
+	 *
+	 * @param  integer $week_begins Week begins, 0 (for Sunday) through 6 (for Saturday)
+	 *                              Default is 1 (Monday).
+	 * @return Generator
+	 */
+	public function segments( $week_begins = 1 ) {
+		$enddate = $this->get_end_date();
+		$startdate = $this->get_start_date();
+
+		$new_segment = false;
+		foreach ( $this->moveEndDate( '+1 DAY' )->get_period() as $day ) {
+			// @codingStandardsIgnoreLine
+			$dayofweek = calendar_week_mod( $day->dayOfWeek - $week_begins );
+
+			// Create new segment point at end-of-week or end of event-period.
+			if ( 0 == $dayofweek || $day->isSameDay( $this->get_end_date() ) ) {
+				$enddate = $day;
+				$new_segment = true;
+			}
+
+			if ( $new_segment ) {
+				yield new Period( $startdate, $enddate );
+				$startdate = $day;
+			}
+
+			$new_segment = false;
+		}
+	}
+
+	/**
 	 * Validate period for require minimum night(s).
 	 *
 	 * @param  integer $nights Minimum night(s) to required, default 1.

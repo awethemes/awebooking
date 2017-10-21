@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use AweBooking\Support\Period;
+use AweBooking\Support\Period_Collection;
 
 class Period_Test extends WP_UnitTestCase {
 	/**
@@ -25,6 +26,28 @@ class Period_Test extends WP_UnitTestCase {
 
 		$this->assertEquals('10/05/2017', $period->get_start_date()->format('d/m/Y'));
 		$this->assertEquals('20/05/2017', $period->get_end_date()->format('d/m/Y'));
+	}
+
+	public function test_segments1() {
+		$period = new Period( '2017-10-20', '2017-11-01' );
+		$segments = iterator_to_array($period->segments( 1 )); // With start of week is Monday.
+
+		$this->assertCount(3, $segments);
+		$this->assertEquals(new Period('2017-10-20', '2017-10-23'), $segments[0]);
+		$this->assertEquals(new Period('2017-10-23', '2017-10-30'), $segments[1]);
+		$this->assertEquals(new Period('2017-10-30', '2017-11-01'), $segments[2]);
+
+		$this->assertTrue((new Period_Collection($segments))->adjacents());
+	}
+
+	public function test_segments2() {
+		$period = new Period( '2017-10-21', '2017-10-31' );
+		$segments = iterator_to_array($period->segments( 0 )); // With start of week is Monday.
+
+		$this->assertCount(3, $segments);
+		$this->assertEquals(new Period('2017-10-21', '2017-10-22'), $segments[0]);
+		$this->assertEquals(new Period('2017-10-22', '2017-10-29'), $segments[1]);
+		$this->assertEquals(new Period('2017-10-29', '2017-10-31'), $segments[2]);
 	}
 
 	/**
