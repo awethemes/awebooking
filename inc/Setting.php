@@ -42,6 +42,24 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Get children bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_children_bookable() {
+		return $this->get( 'bookable.children.enable', true );
+	}
+
+	/**
+	 * Get infant bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_infant_bookable() {
+		return $this->get( 'bookable.infant.enable', false );
+	}
+
+	/**
 	 * Get default setting by key ID.
 	 *
 	 * @param  string $key Default setting key.
@@ -189,6 +207,7 @@ class Setting extends WP_Option {
 			'page_checkout'            => 0,
 			'check_availability_max_adults'   => 7,
 			'check_availability_max_children' => 6,
+			'check_availability_max_infant'   => 6,
 
 			'email_from_name'           => '@' . get_option( 'blogname' ),
 			'email_from_address'        => get_option( 'admin_email' ),

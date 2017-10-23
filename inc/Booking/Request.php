@@ -22,6 +22,7 @@ class Request extends Collection {
 	protected $defaults = [
 		'adults'   => 1,
 		'children' => 0,
+		'infant'   => 0,
 	];
 
 	/**
@@ -114,12 +115,33 @@ class Request extends Collection {
 	}
 
 	/**
+	 * Gets the number of infant for the booking.
+	 *
+	 * @return int
+	 */
+	public function get_infant() {
+		return $this->get( 'infant' );
+	}
+
+	/**
+	 * Set the request infant for the booking.
+	 *
+	 * @param  int $infant Number infant for the booking.
+	 * @return $this
+	 */
+	public function set_infant( $infant ) {
+		$this['infant'] = absint( $infant );
+
+		return $this;
+	}
+
+	/**
 	 * Get number of people (adults + children).
 	 *
 	 * @return int
 	 */
 	public function get_people() {
-		return $this->get_adults() + $this->get_children();
+		return $this->get_adults() + $this->get_children() + $this->get_infant();
 	}
 
 	/**
@@ -265,6 +287,14 @@ class Request extends Collection {
 				' &amp; <span class="">%1$d %2$s</span>',
 				$this->get_children(),
 				_n( 'child', 'children', $this->get_children(), 'awebooking' )
+			);
+		}
+
+		if ( $this->get_infant() ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$this->get_infant(),
+				_n( 'infant', 'infants', $this->get_infant(), 'awebooking' )
 			);
 		}
 

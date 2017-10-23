@@ -58,6 +58,15 @@ class Field_Proxy {
 	}
 
 	/**
+	 * Display the field errors.
+	 *
+	 * @return void
+	 */
+	public function errors() {
+		skeleton_display_field_errors( $this->field );
+	}
+
+	/**
 	 * Returns field value.
 	 *
 	 * @return mixed
@@ -144,6 +153,15 @@ class Field_Proxy {
 		);
 
 		return $this;
+	}
+
+	/**
+	 * Get the field.
+	 *
+	 * @return \CMB2_Field
+	 */
+	public function get_field() {
+		return $this->field;
 	}
 
 	/**

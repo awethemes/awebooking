@@ -42,6 +42,7 @@ class Room_Type extends WP_Object implements Buyable {
 		'number_children'   => 0,
 		'max_adults'        => 0,
 		'max_children'      => 0,
+		'max_infant'        => 0,
 		'minimum_night'     => 0,
 
 		'rooms'             => [],
@@ -69,6 +70,7 @@ class Room_Type extends WP_Object implements Buyable {
 		'number_children'   => 'integer',
 		'max_adults'        => 'integer',
 		'max_children'      => 'integer',
+		'max_infant'        => 'integer',
 		'minimum_night'     => 'integer',
 	];
 
@@ -83,6 +85,7 @@ class Room_Type extends WP_Object implements Buyable {
 		'number_children',
 		'max_adults',
 		'max_children',
+		'max_infant',
 		'minimum_night',
 		'gallery_ids'  => 'gallery',
 		'thumbnail_id' => '_thumbnail_id',
@@ -99,6 +102,7 @@ class Room_Type extends WP_Object implements Buyable {
 			'post_type'        => AweBooking::ROOM_TYPE,
 			'booking_adults'   => -1,
 			'booking_children' => -1,
+			'booking_infant'   => -1,
 			'booking_nights'   => -1,
 			'posts_per_page'   => -1,
 		]);
@@ -335,6 +339,15 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
+	 * Get number children available for this room-type.
+	 *
+	 * @return int
+	 */
+	public function get_number_infant() {
+		return apply_filters( $this->prefix( 'get_number_infant' ), $this['number_infant'], $this );
+	}
+
+	/**
 	 * Get max overflow children.
 	 *
 	 * @return int
@@ -344,12 +357,30 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
+	 * Get max overflow infant.
+	 *
+	 * @return int
+	 */
+	public function get_max_infant() {
+		return apply_filters( $this->prefix( 'get_max_infant' ), $this['max_infant'], $this );
+	}
+
+	/**
 	 * Returns allowed number children for this room-type.
 	 *
 	 * @return int
 	 */
 	public function get_allowed_children() {
 		return $this->get_number_children() + $this->get_max_children();
+	}
+
+	/**
+	 * Returns allowed number infant for this room-type.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_infant() {
+		return $this->get_number_infant() + $this->get_max_infant();
 	}
 
 	/**

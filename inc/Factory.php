@@ -171,7 +171,7 @@ class Factory {
 
 		// Take accept requests.
 		$booking_requests = [];
-		$accept_requests  = [ 'adults', 'children', 'location', 'room-type' ];
+		$accept_requests  = [ 'adults', 'children', 'infant', 'location', 'room-type' ];
 
 		// Loop through the accept_requests and build booking_requests.
 		foreach ( $accept_requests as $id ) {
@@ -185,6 +185,10 @@ class Factory {
 
 		if ( ! is_null( $booking_requests['children'] ) ) {
 			$booking_requests['children'] = absint( $booking_requests['children'] );
+		}
+
+		if ( ! is_null( $booking_requests['infant'] ) ) {
+			$booking_requests['infant'] = absint( $booking_requests['infant'] );
 		}
 
 		return new Request( $period, $booking_requests );

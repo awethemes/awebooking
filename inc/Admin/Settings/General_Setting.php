@@ -45,6 +45,48 @@ class General_Setting extends Setting_Abstract {
 		) );
 
 		$section->add_field( array(
+			'id'       => 'bookable[children][enable]',
+			'type'     => 'checkbox',
+			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
+			'default'  => true,
+			'priority' => 20,
+			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
+		) );
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'bookable[children][desc]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'priority' => 21,
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'deps'     => array( 'bookable[children][enable]', '==', true ),
+			'show_on_cb' => '__return_false',
+		) );
+
+		$section->add_field( array(
+			'id'       => 'bookable[infant][enable]',
+			'type'     => 'checkbox',
+			'name'     => esc_html__( 'Infant bookable?', 'awebooking' ),
+			'default'  => false,
+			'priority' => 22,
+			'render_field_cb'   => array( $this, '_infant_able_field_callback' ),
+		) );
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'bookable[infant][desc]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'priority' => 23,
+			'deps'     => array( 'bookable[infant][enable]', '==', true ),
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'show_on_cb' => '__return_false',
+		) );
+
+		$section->add_field( array(
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
@@ -105,5 +147,47 @@ class General_Setting extends Setting_Abstract {
 			),
 			'priority' => 45,
 		) );
+	}
+
+	/**
+	 * Children bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _children_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$children_desc = $cmb2->get_field( 'bookable[children][desc]' );
+
+		echo '<div class="skeleton-input-group">';
+		skeleton_render_field( $field );
+		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+		echo '</div>';
+
+		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[children][enable]" data-deps-condition="==" data-deps-value="1">';
+		$children_desc->render();
+		echo '</div>';
+
+		$children_desc->errors();
+	}
+
+	/**
+	 * Infant bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _infant_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$infant_desc = $cmb2->get_field( 'bookable[infant][desc]' );
+
+		echo '<div class="skeleton-input-group">';
+		skeleton_render_field( $field );
+		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+		echo '</div>';
+
+		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[infant][enable]" data-deps-condition="==" data-deps-value="1">';
+		$infant_desc->render();
+		echo '</div>';
+
+		$infant_desc->errors();
 	}
 }

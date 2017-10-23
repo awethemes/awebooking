@@ -53,10 +53,16 @@ class WP_Query_Hooks extends Service_Hooks {
 			$pieces['where'] .= " AND (CAST(adults.meta_value AS SIGNED) + CAST(max_adults.meta_value AS SIGNED)) >= '" . absint( $qv['booking_adults'] ) . "' ";
 		}
 
-		if ( ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
+		if ( awebooking( 'setting' )->get_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
 			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS children ON ({$wpdb->posts}.ID = children.post_id AND children.meta_key = 'number_children') ";
 			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_children ON ({$wpdb->posts}.ID = max_children.post_id AND max_children.meta_key = 'max_children') ";
 			$pieces['where'] .= " AND (CAST(children.meta_value AS SIGNED) + CAST(max_children.meta_value AS SIGNED)) >= '" . absint( $qv['booking_children'] ) . "' ";
+		}
+
+		if ( awebooking( 'setting' )->get_infant_bookable() && ! empty( $qv['booking_infant'] ) && $qv['booking_infant'] > 0 ) {
+			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS infant ON ({$wpdb->posts}.ID = infant.post_id AND infant.meta_key = 'number_infant') ";
+			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_infant ON ({$wpdb->posts}.ID = max_infant.post_id AND max_infant.meta_key = 'max_infant') ";
+			$pieces['where'] .= " AND (CAST(infant.meta_value AS SIGNED) + CAST(max_infant.meta_value AS SIGNED)) >= '" . absint( $qv['booking_infant'] ) . "' ";
 		}
 
 		// Custom order by "booking_rooms".
