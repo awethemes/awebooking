@@ -60,12 +60,22 @@ class Shortcode_Booking {
 			$room_type = $cart_item->model();
 
 			$period = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], false );
-			$booking_request = new Request( $period, [
+
+			$booking_request_options = [
 				'room-type' => $cart_item->model()->get_id(),
 				'adults'    => $cart_item->options['adults'],
-				'children'  => $cart_item->options['children'],
 				'extra_services' => $cart_item->options['extra_services'],
-			] );
+			];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$booking_request_options['children'] = absint( $cart_item->options['children'] );
+			}
+
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$booking_request_options['infants'] = absint( $cart_item->options['infants'] );
+			}
+
+			$booking_request = new Request( $period, $booking_request_options );
 
 			$booking_request->set_request( 'extra_services', $cart_item->options['extra_services'] );
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
@@ -73,12 +83,22 @@ class Shortcode_Booking {
 			if ( $availability->unavailable() ) {
 				$cart->remove( $row_id );
 				$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
-				$check_availability_link = add_query_arg( [
+
+				$query_args = [
 					'start-date' => sanitize_text_field( $cart_item->options['start-date'] ),
 					'end-date'   => sanitize_text_field( $cart_item->options['end-date'] ),
 					'adults'     => absint( $cart_item->options['adults'] ),
-					'children'   => absint( $cart_item->options['children'] ),
-				], $check_availability_link );
+				];
+
+				if ( awebooking( 'setting' )->get_children_bookable() ) {
+					$query_args['children'] = absint( $cart_item->options['children'] );
+				}
+
+				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					$query_args['infants'] = absint( $cart_item->options['infants'] );
+				}
+
+				$check_availability_link = add_query_arg( $query_args, $check_availability_link );
 
 				$message = sprintf( esc_html__( '%s has been removed from your booking. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
 				$flash_message->success( $message );
