@@ -22,7 +22,7 @@ class Request extends Collection {
 	protected $defaults = [
 		'adults'   => 1,
 		'children' => 0,
-		'infant'   => 0,
+		'infants'  => 0,
 	];
 
 	/**
@@ -115,22 +115,22 @@ class Request extends Collection {
 	}
 
 	/**
-	 * Gets the number of infant for the booking.
+	 * Gets the number of infants for the booking.
 	 *
 	 * @return int
 	 */
-	public function get_infant() {
-		return $this->get( 'infant' );
+	public function get_infants() {
+		return $this->get( 'infants' );
 	}
 
 	/**
-	 * Set the request infant for the booking.
+	 * Set the request infants for the booking.
 	 *
-	 * @param  int $infant Number infant for the booking.
+	 * @param  int $infants Number infants for the booking.
 	 * @return $this
 	 */
-	public function set_infant( $infant ) {
-		$this['infant'] = absint( $infant );
+	public function set_infants( $infants ) {
+		$this['infants'] = absint( $infants );
 
 		return $this;
 	}
@@ -141,7 +141,7 @@ class Request extends Collection {
 	 * @return int
 	 */
 	public function get_people() {
-		return $this->get_adults() + $this->get_children() + $this->get_infant();
+		return $this->get_adults() + $this->get_children() + $this->get_infants();
 	}
 
 	/**
@@ -290,11 +290,11 @@ class Request extends Collection {
 			);
 		}
 
-		if ( $this->get_infant() ) {
+		if ( $this->get_infants() ) {
 			$html .= sprintf(
 				' &amp; <span class="">%1$d %2$s</span>',
-				$this->get_infant(),
-				_n( 'infant', 'infants', $this->get_infant(), 'awebooking' )
+				$this->get_infants(),
+				_n( 'infant', 'infants', $this->get_infants(), 'awebooking' )
 			);
 		}
 

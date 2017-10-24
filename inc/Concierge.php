@@ -233,7 +233,7 @@ class Concierge {
 		$query = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
-			'booking_infant'   => $request->get_infant(),
+			'booking_infants'  => $request->get_infants(),
 			'booking_nights'   => $request->get_nights(),
 			'hotel_location'   => $request->get_request( 'location' ),
 		]);
@@ -265,7 +265,7 @@ class Concierge {
 		$found = Room_Type::query([
 			'booking_adults'   => $request->get_adults(),
 			'booking_children' => $request->get_children(),
-			'booking_infant'   => $request->get_infant(),
+			'booking_infants'  => $request->get_infants(),
 			'booking_nights'   => $request->get_nights(),
 			'post__in'         => [ $room_type->get_id() ],
 		]);

@@ -43,14 +43,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<?php endif; ?>
 
-	<?php if ( awebooking( 'setting' )->get_infant_bookable() && $max_infant ) : ?>
-	<div class="awebooking-field awebooking-infant-field">
-		<label for="awebooking-infant"><?php esc_html_e( 'Infant', 'awebooking' ); ?></label>
+	<?php if ( awebooking( 'setting' )->get_infants_bookable() && $max_infants ) : ?>
+	<div class="awebooking-field awebooking-infants-field">
+		<label for="awebooking-infants"><?php esc_html_e( 'Infants', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">
 			<i class="awebookingf awebookingf-select"></i>
-			<select name="infant" class="awebooking-select" id="awebooking-infant">
-				<?php for ( $i = 0; $i <= $max_infant; $i++ ) : ?>
-				<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['infant'] ) ? selected( $_GET['infant'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
+			<select name="infants" class="awebooking-select" id="awebooking-infants">
+				<?php for ( $i = 0; $i <= $max_infants; $i++ ) : ?>
+				<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['infants'] ) ? selected( $_GET['infants'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
 				<?php endfor; ?>
 			</select>
 		</div>

@@ -192,11 +192,11 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			));
 		}
 
-		if ( awebooking( 'setting' )->get_infant_bookable() ) {
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
 			$general->add_field( array(
-				'id'         => 'number_infant',
+				'id'         => 'number_infants',
 				'type'       => 'text_small',
-				'name'       => esc_html__( 'Number infant', 'awebooking' ),
+				'name'       => esc_html__( 'Number infants', 'awebooking' ),
 				'default'    => 2,
 				'sanitization_cb' => 'absint',
 				'validate'   => 'required|numeric|min:0',
@@ -226,11 +226,11 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			));
 		}
 
-		if ( awebooking( 'setting' )->get_infant_bookable() ) {
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
 			$general->add_field( array(
-				'id'         => 'max_infant',
+				'id'         => 'max_infants',
 				'type'       => 'text_small',
-				'name'       => esc_html__( 'Number infant', 'awebooking' ),
+				'name'       => esc_html__( 'Number infants', 'awebooking' ),
 				'default'    => 0,
 				'validate'   => 'required|numeric|min:0',
 				'sanitization_cb' => 'absint',
@@ -313,15 +313,15 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			skeleton_display_field_errors( $number_children_field );
 		}
 
-		if ( awebooking( 'setting' )->get_infant_bookable() ) {
-			$number_infant_field   = $cmb2->get_field( 'number_infant' );
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$number_infants_field   = $cmb2->get_field( 'number_infants' );
 
 			echo '<div class="skeleton-input-group">';
-			skeleton_render_field( $number_infant_field );
-			echo '<span class="skeleton-input-group__addon">' . esc_html__( 'infant', 'awebooking' ) . '</span>';
+			skeleton_render_field( $number_infants_field );
+			echo '<span class="skeleton-input-group__addon">' . esc_html__( 'infants', 'awebooking' ) . '</span>';
 			echo '</div>';
 
-			skeleton_display_field_errors( $number_infant_field );
+			skeleton_display_field_errors( $number_infants_field );
 		}
 	}
 
@@ -349,15 +349,15 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			skeleton_display_field_errors( $max_children_field );
 		}
 
-		if ( awebooking( 'setting' )->get_infant_bookable() ) {
-			$max_infant_field   = $cmb2->get_field( 'max_infant' );
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$max_infants_field   = $cmb2->get_field( 'max_infants' );
 
 			echo '<div class="skeleton-input-group">';
-			skeleton_render_field( $max_infant_field );
-			echo '<span class="skeleton-input-group__addon">' . esc_html__( 'infant', 'awebooking' ) . '</span>';
+			skeleton_render_field( $max_infants_field );
+			echo '<span class="skeleton-input-group__addon">' . esc_html__( 'infants', 'awebooking' ) . '</span>';
 			echo '</div>';
 
-			skeleton_display_field_errors( $max_infant_field );
+			skeleton_display_field_errors( $max_infants_field );
 		}
 	}
 }

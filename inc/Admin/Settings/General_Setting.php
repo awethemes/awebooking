@@ -66,20 +66,20 @@ class General_Setting extends Setting_Abstract {
 		) );
 
 		$section->add_field( array(
-			'id'       => 'bookable[infant][enable]',
+			'id'       => 'bookable[infants][enable]',
 			'type'     => 'checkbox',
-			'name'     => esc_html__( 'Infant bookable?', 'awebooking' ),
+			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
 			'default'  => false,
 			'priority' => 22,
-			'render_field_cb'   => array( $this, '_infant_able_field_callback' ),
+			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
 		) );
 
 		$section->add_field( array(
 			'type'     => 'text',
-			'id'       => 'bookable[infant][desc]',
+			'id'       => 'bookable[infants][desc]',
 			'name'     => esc_html__( 'Description', 'awebooking' ),
 			'priority' => 23,
-			'deps'     => array( 'bookable[infant][enable]', '==', true ),
+			'deps'     => array( 'bookable[infants][enable]', '==', true ),
 			'attributes' => [
 				'placeholder' => esc_html__( 'Description', 'awebooking' ),
 			],
@@ -171,23 +171,23 @@ class General_Setting extends Setting_Abstract {
 	}
 
 	/**
-	 * Infant bookable callback.
+	 * Infants bookable callback.
 	 *
 	 * @return void
 	 */
-	public function _infant_able_field_callback( $field_args, $field ) {
+	public function _infants_able_field_callback( $field_args, $field ) {
 		$cmb2 = $field->get_cmb();
-		$infant_desc = $cmb2->get_field( 'bookable[infant][desc]' );
+		$infants_desc = $cmb2->get_field( 'bookable[infants][desc]' );
 
 		echo '<div class="skeleton-input-group">';
 		skeleton_render_field( $field );
 		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
 		echo '</div>';
 
-		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[infant][enable]" data-deps-condition="==" data-deps-value="1">';
-		$infant_desc->render();
+		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[infants][enable]" data-deps-condition="==" data-deps-value="1">';
+		$infants_desc->render();
 		echo '</div>';
 
-		$infant_desc->errors();
+		$infants_desc->errors();
 	}
 }

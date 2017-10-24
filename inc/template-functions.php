@@ -389,11 +389,11 @@ if ( ! function_exists( 'awebooking_template_single_form' ) ) {
 
 		$max_adults   = awebooking_option( 'check_availability_max_adults' );
 		$max_children = awebooking_option( 'check_availability_max_children' );
-		$max_infant   = awebooking_option( 'check_availability_max_infant' );
+		$max_infants  = awebooking_option( 'check_availability_max_infants' );
 
 		$min_night = is_room_type() ? $room_type->get_minimum_night() : 1;
 
-		awebooking_get_template( 'single-room-type/form.php', compact( 'date_format', 'max_adults', 'max_children', 'max_infant','min_night' ) );
+		awebooking_get_template( 'single-room-type/form.php', compact( 'date_format', 'max_adults', 'max_children', 'max_infants','min_night' ) );
 	}
 }
 
@@ -547,9 +547,9 @@ function awebooking_template_check_form_input_location() {
 function awebooking_template_check_form_input_capacity() {
 	$max_adults   = awebooking_option( 'check_availability_max_adults' );
 	$max_children = awebooking_option( 'check_availability_max_children' );
-	$max_infant   = awebooking_option( 'check_availability_max_infant' );
+	$max_infants  = awebooking_option( 'check_availability_max_infants' );
 
-	awebooking_get_template( 'check-form/input-capacity.php', compact( 'max_adults', 'max_children', 'max_infant' ) );
+	awebooking_get_template( 'check-form/input-capacity.php', compact( 'max_adults', 'max_children', 'max_infants' ) );
 }
 
 if ( ! function_exists( 'awebooking_template_notices' ) ) :

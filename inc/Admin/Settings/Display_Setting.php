@@ -90,13 +90,13 @@ class Display_Setting extends Setting_Abstract {
 			) );
 		}
 
-		if ( awebooking( 'setting' )->get_infant_bookable() ) {
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
 			$display->add_field( array(
-				'id'         => 'check_availability_max_infant',
+				'id'         => 'check_availability_max_infants',
 				'type'       => 'text_small',
 				'attributes' => array( 'type' => 'number' ),
-				'name'       => esc_html__( 'Max infant', 'awebooking' ),
-				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_infant' ),
+				'name'       => esc_html__( 'Max infants', 'awebooking' ),
+				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_infants' ),
 				'validate'   => 'integer|min:0',
 				'priority'   => 36,
 				'sanitization_cb' => 'absint',

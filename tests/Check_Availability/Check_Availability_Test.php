@@ -12,7 +12,7 @@ class Check_Availability_Test extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		awebooking( 'setting' )->set( 'bookable.infant.enable', true );
+		awebooking( 'setting' )->set( 'bookable.infants.enable', true );
 
 		$luxury = new Room_Type;
 		$luxury['title'] = 'Luxury';
@@ -25,8 +25,8 @@ class Check_Availability_Test extends WP_UnitTestCase {
 		$luxury['number_children'] = 2;
 		$luxury['max_children'] = 1;
 
-		$luxury['max_infant'] = 3;
-		$luxury['number_infant'] = 2;
+		$luxury['max_infants'] = 3;
+		$luxury['number_infants'] = 2;
 
 		$luxury['minimum_night'] = 2;
 		$luxury->save();
@@ -43,8 +43,8 @@ class Check_Availability_Test extends WP_UnitTestCase {
 		$deluxe['number_children'] = 3;
 		$deluxe['max_children'] = 2;
 
-		$deluxe['number_infant'] = 2;
-		$deluxe['max_infant'] = 1;
+		$deluxe['number_infants'] = 2;
+		$deluxe['max_infants'] = 1;
 
 		$deluxe['minimum_night'] = 3;
 		$deluxe->save();
@@ -61,8 +61,8 @@ class Check_Availability_Test extends WP_UnitTestCase {
 		$vip['max_children'] = 1;
 		$vip['number_children'] = 1;
 
-		$vip['number_infant'] = 2;
-		$vip['max_infant'] = 2;
+		$vip['number_infants'] = 2;
+		$vip['max_infants'] = 2;
 
 		$vip['minimum_night'] = 4;
 		$vip->save();
@@ -124,15 +124,15 @@ class Check_Availability_Test extends WP_UnitTestCase {
 			[ [	'booking_children' => 7 ], 0 ],
 			[ [	'booking_children' => 8 ], 0 ],
 
-			// Test infant.
-			[ [	'booking_infant'   => 1 ], 3 ],
-			[ [	'booking_infant'   => 2 ], 3 ],
-			[ [	'booking_infant'   => 3 ], 3 ],
-			[ [	'booking_infant'   => 4 ], 2 ],
-			[ [	'booking_infant'   => 5 ], 1 ],
-			[ [	'booking_infant'   => 6 ], 0 ],
-			[ [	'booking_infant'   => 7 ], 0 ],
-			[ [	'booking_infant'   => 8 ], 0 ],
+			// Test infants.
+			[ [	'booking_infants'   => 1 ], 3 ],
+			[ [	'booking_infants'   => 2 ], 3 ],
+			[ [	'booking_infants'   => 3 ], 3 ],
+			[ [	'booking_infants'   => 4 ], 2 ],
+			[ [	'booking_infants'   => 5 ], 1 ],
+			[ [	'booking_infants'   => 6 ], 0 ],
+			[ [	'booking_infants'   => 7 ], 0 ],
+			[ [	'booking_infants'   => 8 ], 0 ],
 
 			// Test min nights
 			[ [	'booking_nights'   => 1 ], 0 ],
@@ -163,104 +163,104 @@ class Check_Availability_Test extends WP_UnitTestCase {
 				'booking_children' => 5,
 			], 0 ],
 
-			// Test adults + infant.
+			// Test adults + infants.
 			[ [
 				'booking_adults'   => 1,
-				'booking_infant'   => 1,
+				'booking_infants'   => 1,
 			], 3 ],
 
 			[ [
 				'booking_adults'   => 1,
-				'booking_infant'   => 4,
+				'booking_infants'   => 4,
 			], 2 ],
 
 			[ [
 				'booking_adults'   => 5,
-				'booking_infant'   => 1,
+				'booking_infants'   => 1,
 			], 2 ],
 
 			[ [
 				'booking_adults'   => 5,
-				'booking_infant'   => 1,
+				'booking_infants'   => 1,
 			], 2 ],
 
 			[ [
 				'booking_adults'   => 6,
-				'booking_infant'   => 6,
+				'booking_infants'   => 6,
 			], 0 ],
 
-			// Test children + infant.
+			// Test children + infants.
 			[ [
 				'booking_children' => 1,
-				'booking_infant'   => 1,
+				'booking_infants'   => 1,
 			], 3 ],
 
 			[ [
 				'booking_children' => 1,
-				'booking_infant'   => 5,
+				'booking_infants'   => 5,
 			], 1 ],
 
 			[ [
 				'booking_children' => 3,
-				'booking_infant'   => 5,
+				'booking_infants'   => 5,
 			], 1 ],
 
 			[ [
 				'booking_children' => 5,
-				'booking_infant'   => 6,
+				'booking_infants'   => 6,
 			], 0 ],
 
-			// Test adults + children + infant.
+			// Test adults + children + infants.
 			[ [
 				'booking_adults'   => 1,
 				'booking_children' => 1,
-				'booking_infant'   => 1,
+				'booking_infants'   => 1,
 			], 3 ],
 
 			[ [
 				'booking_adults'   => 3,
 				'booking_children' => 4,
-				'booking_infant'   => 2,
+				'booking_infants'   => 2,
 			], 1 ],
 
 			[ [
 				'booking_adults'   => 5,
 				'booking_children' => 2,
-				'booking_infant'   => 3,
+				'booking_infants'   => 3,
 			], 2 ],
 
 			[ [
 				'booking_adults'   => 5,
 				'booking_children' => 5,
-				'booking_infant'   => 5,
+				'booking_infants'   => 5,
 			], 0 ],
 
-			// Test adults + childrent + infant + min nights.
+			// Test adults + childrent + infants + min nights.
 			[ [
 				'booking_adults'   => 5,
 				'booking_children' => 2,
-				'booking_infant'   => 3,
+				'booking_infants'   => 3,
 				'booking_nights'   => 3,
 			], 1 ],
 
 			[ [
 				'booking_adults'   => 1,
 				'booking_children' => 2,
-				'booking_infant'   => 4,
+				'booking_infants'   => 4,
 				'booking_nights'   => 2,
 			], 1 ],
 
 			[ [
 				'booking_adults'   => 3,
 				'booking_children' => 3,
-				'booking_infant'   => 3,
+				'booking_infants'   => 3,
 				'booking_nights'   => 3,
 			], 2 ],
 
 			[ [
 				'booking_adults'   => 4,
 				'booking_children' => 4,
-				'booking_infant'   => 4,
+				'booking_infants'   => 4,
 				'booking_nights'   => 4,
 			], 0 ],
 		];

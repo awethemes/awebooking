@@ -51,12 +51,12 @@ class Setting extends WP_Option {
 	}
 
 	/**
-	 * Get infant bookable
+	 * Get infants bookable
 	 *
 	 * @return boolean
 	 */
-	public function get_infant_bookable() {
-		return $this->get( 'bookable.infant.enable', false );
+	public function get_infants_bookable() {
+		return $this->get( 'bookable.infants.enable', false );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class Setting extends WP_Option {
 			'page_checkout'            => 0,
 			'check_availability_max_adults'   => 7,
 			'check_availability_max_children' => 6,
-			'check_availability_max_infant'   => 6,
+			'check_availability_max_infants'   => 6,
 
 			'email_from_name'           => '@' . get_option( 'blogname' ),
 			'email_from_address'        => get_option( 'admin_email' ),

@@ -171,7 +171,15 @@ class Factory {
 
 		// Take accept requests.
 		$booking_requests = [];
-		$accept_requests  = [ 'adults', 'children', 'infant', 'location', 'room-type' ];
+		$accept_requests  = [ 'adults', 'location', 'room-type' ];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$accept_requests[] = 'children';
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$accept_requests[] = 'infants';
+		}
 
 		// Loop through the accept_requests and build booking_requests.
 		foreach ( $accept_requests as $id ) {
@@ -187,8 +195,8 @@ class Factory {
 			$booking_requests['children'] = absint( $booking_requests['children'] );
 		}
 
-		if ( ! is_null( $booking_requests['infant'] ) ) {
-			$booking_requests['infant'] = absint( $booking_requests['infant'] );
+		if ( ! is_null( $booking_requests['infants'] ) ) {
+			$booking_requests['infants'] = absint( $booking_requests['infants'] );
 		}
 
 		return new Request( $period, $booking_requests );
