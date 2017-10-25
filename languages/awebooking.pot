@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the AweBooking package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AweBooking 3.0.0-beta8-dev\n"
+"Project-Id-Version: AweBooking 3.0.0-beta9-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/awebooking\n"
-"POT-Creation-Date: 2017-10-02 07:01:56+00:00\n"
+"POT-Creation-Date: 2017-10-19 07:43:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -221,7 +221,7 @@ msgid "Status"
 msgstr ""
 
 #: inc/Admin/List_Tables/Booking_List_Table.php:48 templates/cart.php:124
-#: templates/checkout/general-informations.php:85
+#: templates/checkout/general-informations.php:86
 #: templates/emails/cancelled-booking.php:60
 #: templates/emails/completed-booking.php:59
 #: templates/emails/new-booking.php:60
@@ -316,7 +316,6 @@ msgid "Name"
 msgstr ""
 
 #: inc/Admin/List_Tables/Service_List_Table.php:28
-#: inc/Admin/Pages/views/html-page-pricing-management.php:100
 msgid "Price"
 msgstr ""
 
@@ -355,11 +354,11 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:192 inc/Request_Handler.php:257
+#: inc/Admin/Metaboxes/Booking_Metabox.php:192 inc/Request_Handler.php:274
 msgid "First name"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:199 inc/Request_Handler.php:258
+#: inc/Admin/Metaboxes/Booking_Metabox.php:199 inc/Request_Handler.php:275
 msgid "Last name"
 msgstr ""
 
@@ -387,11 +386,11 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:242 inc/Request_Handler.php:260
+#: inc/Admin/Metaboxes/Booking_Metabox.php:242 inc/Request_Handler.php:277
 msgid "Phone number"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:249 inc/Request_Handler.php:259
+#: inc/Admin/Metaboxes/Booking_Metabox.php:249 inc/Request_Handler.php:276
 msgid "Email address"
 msgstr ""
 
@@ -418,74 +417,74 @@ msgstr ""
 msgid "Customer provided note:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:94
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:96
 msgid "Room Type Gallery"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:104
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:106
 msgid "Set room type gallery"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:118
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:120
 msgid "Short Description"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:148
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:150
 msgid "Room Type Data"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:158
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:160
 #: inc/Admin/Settings/General_Setting.php:14
 msgid "General"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:164
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:166
 msgid "Starting price (%s)"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:168
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:170
 msgid "per night"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:174
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:176
 msgid "And capacity for"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:184
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:204
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:186
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:206
 msgid "Number children"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:194
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:196
 msgid "Allow extra capacity for"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:214
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:216
 msgid "Minimum night(s) required"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:219
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:221
 msgid "night(s)"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:225
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:227
 msgid "Number of rooms"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:231
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:237 inc/template-functions.php:484
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:233
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:239 inc/template-functions.php:484
 #: templates/booking-edit.php:63 templates/booking.php:68
 #: templates/single-room-type/tabs/extra_services.php:20
 msgid "Extra Services"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:273
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:295
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:275
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:297
 msgid "adults"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:278
-#: inc/Admin/Metaboxes/Room_Type_Metabox.php:300
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:280
+#: inc/Admin/Metaboxes/Room_Type_Metabox.php:302
 msgid "children"
 msgstr ""
 
@@ -573,7 +572,7 @@ msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-templates.php:34
 #: inc/Admin/Pages/views/html-page-availability-management.php:117
-#: inc/Admin/Pages/views/html-page-pricing-management.php:85
+#: inc/Admin/Pages/views/template-pricing-management.php:13
 msgid "Save changes"
 msgstr ""
 
@@ -678,17 +677,21 @@ msgstr ""
 msgid "Add New Extra Service"
 msgstr ""
 
-#: inc/Admin/Pages/Admin_Email_Preview.php:44
+#: inc/Admin/Pages/Admin_Email_Preview.php:45
 #: inc/Admin/Settings/Email_Setting.php:24
 msgid "New Booking"
 msgstr ""
 
-#: inc/Admin/Pages/Admin_Email_Preview.php:48
+#: inc/Admin/Pages/Admin_Email_Preview.php:49
 #: inc/Admin/Settings/Email_Setting.php:29
 msgid "Cancelled Booking"
 msgstr ""
 
-#: inc/Admin/Pages/Admin_Email_Preview.php:52
+#: inc/Admin/Pages/Admin_Email_Preview.php:53
+msgid "Processing Booking"
+msgstr ""
+
+#: inc/Admin/Pages/Admin_Email_Preview.php:57
 #: inc/Admin/Settings/Email_Setting.php:34
 msgid "Completed Booking"
 msgstr ""
@@ -847,12 +850,14 @@ msgid "Welcome"
 msgstr ""
 
 #: inc/Admin/Pages/Availability_Management.php:99
+#: inc/Admin/Pages/views/html-page-availability-management.php:37
 #: inc/Admin/Pages/views/html-page-availability-management.php:133
 #: inc/Setting.php:115
 msgid "Available"
 msgstr ""
 
 #: inc/Admin/Pages/Availability_Management.php:104
+#: inc/Admin/Pages/views/html-page-availability-management.php:38
 #: inc/Admin/Pages/views/html-page-availability-management.php:138
 #: inc/Setting.php:116
 msgid "Unavailable"
@@ -942,11 +947,22 @@ msgstr ""
 msgid "Availability Management"
 msgstr ""
 
+#: inc/Admin/Pages/views/html-page-availability-management.php:26
+#: inc/Admin/Pages/views/html-page-pricing-management.php:29
+msgid "From"
+msgstr ""
+
+#: inc/Admin/Pages/views/html-page-availability-management.php:29
+#: inc/Admin/Pages/views/html-page-pricing-management.php:32
+msgid "To"
+msgstr ""
+
 #: inc/Admin/Pages/views/html-page-availability-management.php:42
 #: inc/Admin/Pages/views/html-page-pricing-management.php:42
 msgid "Bulk Update"
 msgstr ""
 
+#: inc/Admin/Pages/views/html-page-availability-management.php:57
 #: inc/Admin/Pages/views/html-page-availability-management.php:65
 msgid "All Room Types"
 msgstr ""
@@ -956,7 +972,7 @@ msgid "Set availability"
 msgstr ""
 
 #: inc/Admin/Pages/views/html-page-availability-management.php:144
-#: inc/Admin/Pages/views/html-page-pricing-management.php:108
+#: inc/Admin/Pages/views/template-pricing-management.php:36
 msgid "Apply only for"
 msgstr ""
 
@@ -964,8 +980,12 @@ msgstr ""
 msgid "Bulk Pricing Manager"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-page-pricing-management.php:78
+#: inc/Admin/Pages/views/template-pricing-management.php:6
 msgid "Set Price"
+msgstr ""
+
+#: inc/Admin/Pages/views/template-pricing-management.php:30
+msgid "%s / night"
 msgstr ""
 
 #: inc/Admin/Settings/Display_Setting.php:14
@@ -1041,146 +1061,176 @@ msgstr ""
 msgid "Email Sender"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:54
+#: inc/Admin/Settings/Email_Setting.php:55
 msgid "Email sender"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:60
+#: inc/Admin/Settings/Email_Setting.php:61
 msgid "\"From\" name"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:67
+#: inc/Admin/Settings/Email_Setting.php:68
 msgid "\"From\" address"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:76
+#: inc/Admin/Settings/Email_Setting.php:77
 msgid "Email Settings"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:80
+#: inc/Admin/Settings/Email_Setting.php:81
 msgid "Base Color"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:87
+#: inc/Admin/Settings/Email_Setting.php:88
 msgid "Body Background Color"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:94
+#: inc/Admin/Settings/Email_Setting.php:95
 msgid "Email Background Color"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:101
+#: inc/Admin/Settings/Email_Setting.php:102
 msgid "Email Body Text Color"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:108
+#: inc/Admin/Settings/Email_Setting.php:109
 msgid "Email Copyright"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:115
+#: inc/Admin/Settings/Email_Setting.php:116
 msgid "Admin notify"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:118
+#: inc/Admin/Settings/Email_Setting.php:119
 msgid "Send to email address from General Settings"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:123
+#: inc/Admin/Settings/Email_Setting.php:124
 msgid "Notify another email address"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:126
+#: inc/Admin/Settings/Email_Setting.php:127
 msgid "Enter some emails by \",\" separating values."
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:139
+#: inc/Admin/Settings/Email_Setting.php:140
 msgid "Email settings for new booking. Click %s to preview."
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:141
+#: inc/Admin/Settings/Email_Setting.php:142
 msgid "New booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:145
-#: inc/Admin/Settings/Email_Setting.php:185
+#: inc/Admin/Settings/Email_Setting.php:146
+#: inc/Admin/Settings/Email_Setting.php:186
 msgid "Enable?"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:148
+#: inc/Admin/Settings/Email_Setting.php:149
 msgid "Check to turn on email notification for new booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:153
-#: inc/Admin/Settings/Email_Setting.php:193
-#: inc/Admin/Settings/Email_Setting.php:234
+#: inc/Admin/Settings/Email_Setting.php:154
+#: inc/Admin/Settings/Email_Setting.php:194
+#: inc/Admin/Settings/Email_Setting.php:235
+#: inc/Admin/Settings/Email_Setting.php:275
 msgid "Email subject"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:157
-#: inc/Admin/Settings/Email_Setting.php:197
-#: inc/Admin/Settings/Email_Setting.php:238
+#: inc/Admin/Settings/Email_Setting.php:158
+#: inc/Admin/Settings/Email_Setting.php:198
+#: inc/Admin/Settings/Email_Setting.php:239
+#: inc/Admin/Settings/Email_Setting.php:279
 msgid "This controls the email subject line. Leave blank to use the default subject"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:162
-#: inc/Admin/Settings/Email_Setting.php:203
-#: inc/Admin/Settings/Email_Setting.php:243
+#: inc/Admin/Settings/Email_Setting.php:163
+#: inc/Admin/Settings/Email_Setting.php:204
+#: inc/Admin/Settings/Email_Setting.php:244
+#: inc/Admin/Settings/Email_Setting.php:284
 msgid "Email header"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:165
+#: inc/Admin/Settings/Email_Setting.php:166
 msgid "New customer booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:166
+#: inc/Admin/Settings/Email_Setting.php:167
 msgid ""
 "This controls the main heading contained within the email notification. "
 "Leave blank to use the default heading: Your booking is completed"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:180
+#: inc/Admin/Settings/Email_Setting.php:181
 msgid "Email settings for cancelled booking. Click %s to preview."
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:181
+#: inc/Admin/Settings/Email_Setting.php:182
 msgid "Cancelled booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:188
+#: inc/Admin/Settings/Email_Setting.php:189
 msgid "Check to turn on email notification for cancelled booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:206
+#: inc/Admin/Settings/Email_Setting.php:207
 msgid "Your booking is cancelled"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:207
+#: inc/Admin/Settings/Email_Setting.php:208
 msgid ""
 "This controls the main heading contained within the email notification. "
 "Leave blank to use the default heading: Thank you for your booking."
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:221
-msgid "Completed booking"
-msgstr ""
-
 #: inc/Admin/Settings/Email_Setting.php:222
-msgid "Email settings for completed booking. Click %s to preview."
+msgid "Processing booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:226
+#: inc/Admin/Settings/Email_Setting.php:223
+msgid "Email settings for processing booking. Click %s to preview."
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:227
+#: inc/Admin/Settings/Email_Setting.php:267
 msgid "Enable"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:229
-msgid "Check to turn on email notification for complete booking"
+#: inc/Admin/Settings/Email_Setting.php:230
+msgid "Check to turn on email notification for processing booking"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:246
-msgid "Your booking is completed"
+#: inc/Admin/Settings/Email_Setting.php:238
+msgid "[{site_title}] Processing your booking #{order_number} - {order_date}"
 msgstr ""
 
 #: inc/Admin/Settings/Email_Setting.php:247
+msgid "Your booking is being processed"
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:248
+msgid ""
+"This controls the main heading contained within the email notification. "
+"Leave blank to use the default heading: Your booking is being processed."
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:262
+msgid "Completed booking"
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:263
+msgid "Email settings for completed booking. Click %s to preview."
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:270
+msgid "Check to turn on email notification for completed booking"
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:287
+msgid "Your booking is completed"
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:288
 msgid ""
 "This controls the main heading contained within the email notification. "
 "Leave blank to use the default heading: Your booking is completed."
@@ -1214,26 +1264,32 @@ msgstr ""
 msgid "Unavailable room type."
 msgstr ""
 
-#: inc/AweBooking.php:518
+#: inc/AweBooking.php:528
 msgid ""
-"This addon requires at least AweBooking version %1$s, you have running on "
-"AweBooking %2$s"
+"Addon requires at least AweBooking version %1$s to work, you have running "
+"on AweBooking %2$s"
 msgstr ""
 
-#: inc/AweBooking.php:592
+#: inc/AweBooking.php:607
 msgid "View AweBooking documentation"
 msgstr ""
 
-#: inc/AweBooking.php:592
+#: inc/AweBooking.php:607
 msgid "Docs"
 msgstr ""
 
-#: inc/AweBooking.php:593
+#: inc/AweBooking.php:608
 msgid "Visit demo"
 msgstr ""
 
-#: inc/AweBooking.php:593
+#: inc/AweBooking.php:608
 msgid "View Demo"
+msgstr ""
+
+#: inc/AweBooking.php:649
+msgid ""
+"This plugin has been activated but cannot be loaded by AweBooking by "
+"reason(s):"
 msgstr ""
 
 #: inc/Booking/Booking.php:435
@@ -1309,33 +1365,37 @@ msgstr ""
 msgid "%2$s - %1$s x %4$s night(s) %3$s from price"
 msgstr ""
 
-#: inc/Installer.php:187
+#: inc/Installer.php:203
 msgid "Hotel Location"
 msgstr ""
 
-#: inc/Request_Handler.php:102
+#: inc/Pricing/Rate.php:82
+msgid "Standard"
+msgstr ""
+
+#: inc/Request_Handler.php:112
 msgid "%s has been added to your booking."
 msgstr ""
 
-#: inc/Request_Handler.php:156 inc/Shortcodes/Shortcode_Booking.php:83
+#: inc/Request_Handler.php:167 inc/Shortcodes/Shortcode_Booking.php:83
 msgid ""
 "%s has been removed from your booking. Period dates are invalid for the "
 "room type."
 msgstr ""
 
-#: inc/Request_Handler.php:188
+#: inc/Request_Handler.php:203
 msgid "%s has been edited."
 msgstr ""
 
-#: inc/Request_Handler.php:214
+#: inc/Request_Handler.php:231
 msgid "%s removed."
 msgstr ""
 
-#: inc/Request_Handler.php:334
+#: inc/Request_Handler.php:353
 msgid "Something went wrong"
 msgstr ""
 
-#: inc/Request_Handler.php:430
+#: inc/Request_Handler.php:447
 msgid "No room available"
 msgstr ""
 
@@ -1403,11 +1463,11 @@ msgstr ""
 msgid "An error occurred while processing your request."
 msgstr ""
 
-#: inc/Support/Period.php:89
-msgid "The date period must be have minimum %s night(s)."
+#: inc/Support/Period.php:79
+msgid "The date period must be have minimum %d night(s)."
 msgstr ""
 
-#: inc/Support/Period.php:103
+#: inc/Support/Period.php:93
 msgid "The date period must be greater or equal to the today."
 msgstr ""
 
@@ -1460,25 +1520,33 @@ msgstr ""
 msgid "Bookings"
 msgstr ""
 
-#: inc/WP_Core_Hooks.php:217
+#: inc/WP_Core_Hooks.php:197
+msgid "Rate"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:198
+msgid "Rates"
+msgstr ""
+
+#: inc/WP_Core_Hooks.php:238
 msgid "Pending <span class=\"count\">(%s)</span>"
 msgid_plural "Pending <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/WP_Core_Hooks.php:225
+#: inc/WP_Core_Hooks.php:246
 msgid "Processing <span class=\"count\">(%s)</span>"
 msgid_plural "Processing <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/WP_Core_Hooks.php:233
+#: inc/WP_Core_Hooks.php:254
 msgid "Completed <span class=\"count\">(%s)</span>"
 msgid_plural "Completed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/WP_Core_Hooks.php:241
+#: inc/WP_Core_Hooks.php:262
 msgid "Cancelled <span class=\"count\">(%s)</span>"
 msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
 msgstr[0] ""
@@ -1610,7 +1678,7 @@ msgid "Proceed to Checkout"
 msgstr ""
 
 #: templates/cart.php:136
-msgid "No rooms in the cart."
+msgid "No rooms in your booking."
 msgstr ""
 
 #: templates/check-availability-form.php:28
@@ -1899,28 +1967,28 @@ msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: inc/Installer.php:190
+#: inc/Installer.php:206
 #. translators: Default hotel location slug
 msgctxt "Default hotel location slug"
 msgid "Hotel Location"
 msgstr ""
 
-#: inc/Setting.php:129 inc/WP_Core_Hooks.php:212
+#: inc/Setting.php:129 inc/WP_Core_Hooks.php:233
 msgctxt "Booking status"
 msgid "Pending"
 msgstr ""
 
-#: inc/Setting.php:130 inc/WP_Core_Hooks.php:220
+#: inc/Setting.php:130 inc/WP_Core_Hooks.php:241
 msgctxt "Booking status"
 msgid "Processing"
 msgstr ""
 
-#: inc/Setting.php:131 inc/WP_Core_Hooks.php:228
+#: inc/Setting.php:131 inc/WP_Core_Hooks.php:249
 msgctxt "Booking status"
 msgid "Completed"
 msgstr ""
 
-#: inc/Setting.php:132 inc/WP_Core_Hooks.php:236
+#: inc/Setting.php:132 inc/WP_Core_Hooks.php:257
 msgctxt "Booking status"
 msgid "Cancelled"
 msgstr ""

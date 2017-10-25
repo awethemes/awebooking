@@ -5,13 +5,15 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.8.1
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta9-dev
+Stable tag:        3.0.0-beta9
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Awebooking helps you to setup hotel booking system quickly, pleasantly and easily.
 
 == Description ==
+
+> Get all Awebooking's [premium add-ons](https://awethemes.com/plugins/awebooking#premiumaddons) and a lot of [extras](https://awethemes.com/themes) by joining [our new Membership program](https://awethemes.com/join).
 
 Awebooking is a well-coded plugin with an excellent user interface, perfect for any hotel, hostel, motel, BnB or any kind of accommodation website. Awebooking brings you easiest way to setup any reservations quickly, pleasantly and easily, rent accommodations with detail services, receive online reservations.
 
@@ -65,13 +67,22 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
-### [3.0.0-beta9] - [xxxx-xx-xx]
+### [3.0.0-beta9] - [2017-19-10]
 #### Added
 - Added Spanish (Argentina) language, thanks @bicho44.
+- Added missing "processing" email template, fixed [#43](https://github.com/awethemes/awebooking/issues/43)
+- API: Added logger API.
+- API: Added `AweBooking\Support\Utils` class.
 
 #### Changes
 - Rename "awebooking/after_register_post_type" to "awebooking/register_post_type"
+- API: Class `Period_Collection` now extends the `Collection`, rename `Period_Collection::merge()` to `Period_Collection::collapse()`.
+- API: Improve `AweBooking\Support\Abstract_Calendar` API.
 
+#### Fixed
+- Fixed issues when create new tables in some server.
+- Fixed some strings missing to translate.
+- Minor bugs fixed
 
 ### [3.0.0-beta8] - 2017-10-05
 #### Added
