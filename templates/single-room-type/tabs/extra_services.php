@@ -6,10 +6,8 @@
  *
  * @author        Awethemes
  * @package       AweBooking/Templates
- * @version       1.0.0
+ * @version       3.0.0
  */
-
-use AweBooking\Support\Formatting;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

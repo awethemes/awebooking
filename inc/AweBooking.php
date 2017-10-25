@@ -10,7 +10,7 @@ use Illuminate\Container\Container;
 
 final class AweBooking extends Container {
 	/* Constants */
-	const VERSION        = '3.0.0-beta9';
+	const VERSION        = '3.0.0-beta10-dev';
 	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';

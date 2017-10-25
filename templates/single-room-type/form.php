@@ -4,9 +4,9 @@
  *
  * This template can be overridden by copying it to yourtheme/awebooking/single-room-type form.php.
  *
- * @author 		awethemes
+ * @author 		Awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

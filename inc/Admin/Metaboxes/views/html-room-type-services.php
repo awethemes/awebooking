@@ -47,7 +47,7 @@ $all_services = awebooking_map_instance(
 				<h3 class="cmb-group-title cmbhandle-title">
 					<span v-text="buildTitle(service)"></span>
 				</h3>
-				<button type="button" class="dashicons-before dashicons-no-alt cmb-remove-group-row" :title="service.name" @click.prevent="deleteService(index)"></button>
+				<button type="button" class="dashicons-before dashicons-no-alt awebooking-remove-service" :title="service.name" @click.prevent="deleteService(index)"></button>
 			</div>
 		</div>
 

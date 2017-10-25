@@ -4,11 +4,12 @@ namespace AweBooking\Booking;
 use DateTime;
 use Roomify\Bat\Unit\Unit;
 use Roomify\Bat\Event\Event;
+use Roomify\Bat\Event\EventInterface;
 use Roomify\Bat\Event\EventItemizer;
-use Roomify\Bat\Store\Store as Base_Store;
+use Roomify\Bat\Store\Store as BAT_Store;
 use AweBooking\Support\Carbonate;
 
-class Store extends Base_Store {
+class Store extends BAT_Store {
 	/**
 	 * The table that holds day data.
 	 *
@@ -68,11 +69,11 @@ class Store extends Base_Store {
 	/**
 	 * //
 	 *
-	 * @param Event  $event      Event instance.
-	 * @param string $deprecated Not used, deprecated argument.
+	 * @param EventInterface $event      Event instance.
+	 * @param string         $deprecated Not used, deprecated argument.
 	 * @return bool
 	 */
-	public function storeEvent( Event $event, $deprecated = null ) {
+	public function storeEvent( EventInterface $event, $deprecated = null ) {
 		global $wpdb;
 
 		$stored = true;

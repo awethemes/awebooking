@@ -49,9 +49,6 @@ if ( post_password_required() ) {
 				 * @hooked awebooking_template_single_title - 5
 				 * @hooked awebooking_template_single_price - 10
 				 * @hooked awebooking_template_single_form - 15
-				 * @hooked awebooking_template_single_excerpt - 20 TODO
-				 * @hooked awebooking_template_single_meta - 40 TODO
-				 * @hooked awebooking_template_single_sharing - 50 TODO
 				 */
 				do_action( 'awebooking/single_room_type_summary' );
 			?>
