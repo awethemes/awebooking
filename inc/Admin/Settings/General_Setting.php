@@ -48,7 +48,7 @@ class General_Setting extends Setting_Abstract {
 			'id'       => 'bookable[children][enable]',
 			'type'     => 'checkbox',
 			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
-			'default'  => true,
+			'default'  => awebooking( 'setting' )->get_default( 'bookable[children][enable]' ),
 			'priority' => 20,
 			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
 		) );
@@ -69,7 +69,7 @@ class General_Setting extends Setting_Abstract {
 			'id'       => 'bookable[infants][enable]',
 			'type'     => 'checkbox',
 			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
-			'default'  => false,
+			'default'  => awebooking( 'setting' )->get_default( 'bookable[infants][enable]' ),
 			'priority' => 22,
 			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
 		) );
