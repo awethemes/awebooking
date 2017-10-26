@@ -258,6 +258,14 @@ class Request_Handler extends Service_Hooks {
 			$cart->store_cart_contents();
 
 			$flash_message->success( sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) ) );
+
+			$edit_link   = add_query_arg( [
+				'booking-action' => 'edit',
+				'rid'            => $row_id,
+			], awebooking_get_page_permalink( 'booking' ) );
+
+			wp_safe_redirect( $edit_link );
+			exit;
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();
 		}
