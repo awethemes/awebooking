@@ -126,6 +126,7 @@ $room_type = $cart_item->model();
 			<input type="hidden" name="end-date" value="<?php echo esc_attr( $booking_request->get_check_out()->format( 'Y-m-d' ) ); ?>">
 			<input type="hidden" name="children" value="<?php echo esc_attr( $booking_request->get_children() ); ?>">
 			<input type="hidden" name="adults" value="<?php echo esc_attr( $booking_request->get_adults() ); ?>">
+			<input type="hidden" name="infants" value="<?php echo esc_attr( $booking_request->get_infants() ); ?>">
 
 			<?php wp_nonce_field( 'awebooking-edit-booking-nonce' ); ?>
 		</form>
