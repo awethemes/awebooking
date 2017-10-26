@@ -136,7 +136,7 @@ class Request extends Collection {
 	}
 
 	/**
-	 * Get number of people (adults + children).
+	 * Get number of people (adults + children + infants).
 	 *
 	 * @return int
 	 */
