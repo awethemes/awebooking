@@ -291,19 +291,33 @@ ul.list-rooms > li.abkng-inline-room {
 	float: left;
 }
 
-.awebooking-service-item .cmb-remove-group-row {
-	left: auto !important;
-	right: 0;
-	visibility: hidden;
-	opacity: 0;
+.awebooking-service-item .awebooking-remove-service {
+    left: auto !important;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+    color: #a00;
+    cursor: pointer;
 }
 
-.awebooking-service-item:hover .cmb-remove-group-row{
-	visibility: visible;
-	opacity: 1.0;
+.awebooking-service-item:hover .awebooking-remove-service {
+    visibility: visible;
+    opacity: 1.0;
+    color: #f00;
 }
 
-
+.awebooking-remove-service {
+    -webkit-appearance: none !important;
+    background: none !important;
+    border: none !important;
+    position: absolute;
+    left: 0;
+    top: .5em;
+    line-height: 1em;
+    padding: 2px 6px 3px;
+    opacity: .5;
+}
+ 
 
 
 #awebooking_booking_action .inside {

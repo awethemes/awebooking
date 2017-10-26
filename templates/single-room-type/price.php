@@ -6,6 +6,7 @@
  *
  * @author  Awethemes
  * @package AweBooking/Templates
+ * @version 3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

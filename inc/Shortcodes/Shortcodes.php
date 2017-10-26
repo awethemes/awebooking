@@ -13,6 +13,7 @@ class Shortcodes {
 			'awebooking_cart'                => __CLASS__ . '::cart',
 			'awebooking_checkout'            => __CLASS__ . '::checkout',
 			'awebooking_check_form'          => __CLASS__ . '::check_form',
+			'awebooking_room_types'          => __CLASS__ . '::room_types',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -102,5 +103,46 @@ class Shortcodes {
 		$template = apply_filters( 'awebooking/check_availability/layout', $template, $atts );
 
 		awebooking_get_template( $template, array( 'atts' => $atts ) );
+	}
+
+	/**
+	 * Room types shortcode.
+	 *
+	 * @param  mixed $atts
+	 * @return string
+	 */
+	public static function room_types( $atts ) {
+		$atts = shortcode_atts( array(
+			'orderby'             => 'date',
+			'order'               => 'DESC',
+			'posts_per_page'      => -1,
+			'layout'              => '',
+		), $atts, 'awebooking_room_types' );
+
+		$query_args = apply_filters( 'awebooking/room_types_shortcode_args', [
+			'post_type'           => 'room_type',
+			'post_status'         => 'publish',
+			'ignore_sticky_posts' => 1,
+			'orderby'             => $atts['orderby'],
+			'order'               => $atts['order'],
+			'posts_per_page'      => $atts['posts_per_page'],
+		] );
+
+		$room_types = new \WP_Query( $query_args );
+
+		do_action( 'awebooking/before_room_types_shortcode', $atts );
+
+		if ( $room_types->have_posts() ) : ?>
+			<ul class="room_types">
+				<?php while ( $room_types->have_posts() ) : $room_types->the_post();
+
+					awebooking_get_template_part( 'content', apply_filters( 'awebooking/room_types_shortcode_content', 'room-type', $atts ) );
+
+				endwhile; ?>
+			</ul>
+		<?php endif;
+
+		do_action( 'awebooking/after_room_types_shortcode', $atts );
+		wp_reset_postdata();
 	}
 }

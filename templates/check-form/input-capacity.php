@@ -6,7 +6,7 @@
  *
  * @author 		awethemes
  * @package 	AweBooking/Templates
- * @version     1.0.0
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="awebooking-sidebar-group">
+<div class="awebooking-sidebar-group awebooking-guest-fields">
 	<?php if ( $max_adults ) : ?>
 	<div class="awebooking-field awebooking-adults-field">
 		<label for="awebooking-adults"><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
