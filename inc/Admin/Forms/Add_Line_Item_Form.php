@@ -70,14 +70,27 @@ class Add_Line_Item_Form extends Form_Abstract {
 			'sanitization_cb'  => 'absint',
 		]);
 
-		$this->add_field([
-			'id'              => 'add_children',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Number of children', 'awebooking' ),
-			'default'         => 0,
-			'validate'        => 'required|numeric|min:0',
-			'sanitization_cb' => 'absint',
-		]);
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$this->add_field([
+				'id'              => 'add_children',
+				'type'            => 'select',
+				'name'            => esc_html__( 'Number of children', 'awebooking' ),
+				'default'         => 0,
+				'validate'        => 'required|numeric|min:0',
+				'sanitization_cb' => 'absint',
+			]);
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$this->add_field([
+				'id'              => 'add_infants',
+				'type'            => 'select',
+				'name'            => esc_html__( 'Number of infants', 'awebooking' ),
+				'default'         => 0,
+				'validate'        => 'required|numeric|min:0',
+				'sanitization_cb' => 'absint',
+			]);
+		}
 
 		// TODO: ...
 		$this->add_field([
@@ -134,8 +147,15 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$the_item['check_in']  = $period->get_start_date()->toDateString();
 			$the_item['check_out'] = $period->get_end_date()->toDateString();
 			$the_item['adults']    = isset( $sanitized['add_adults'] ) ? absint( $sanitized['add_adults'] ) : 0;
-			$the_item['children']  = isset( $sanitized['add_children'] ) ? absint( $sanitized['add_children'] ) : 0;
 			$the_item['total']     = $sanitized['add_price'];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$the_item['children']  = isset( $sanitized['add_children'] ) ? absint( $sanitized['add_children'] ) : 0;
+			}
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$the_item['infants']  = isset( $sanitized['add_infants'] ) ? absint( $sanitized['add_infants'] ) : 0;
+			}
 
 			// Add booking item then save.
 			$this->booking->add_item( $the_item );
@@ -179,8 +199,15 @@ class Add_Line_Item_Form extends Form_Abstract {
 	public function setup_fields() {
 		$this['add_price']->hide();
 		$this['add_adults']->hide();
-		$this['add_children']->hide();
 		$this['add_services']->hide();
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$this['add_children']->hide();
+		}
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$this['add_infants']->hide();
+		}
 
 		// Required check_in and check_out from request to continue.
 		if ( empty( $_REQUEST['add_check_in_out'][0] ) || empty( $_REQUEST['add_check_in_out'][1] ) ) {
@@ -222,7 +249,6 @@ class Add_Line_Item_Form extends Form_Abstract {
 
 			$room_type = $the_room->get_room_type();
 			$a = range( 1, $room_type->get_allowed_adults() );
-			$b = range( 0, $room_type->get_allowed_children() );
 
 			$price = Concierge::get_room_price( $room_type, $request );
 
@@ -236,10 +262,19 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$this['add_adults']
 				->set_prop( 'options', array_combine( $a, $a ) )
 				->show();
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$b = range( 0, $room_type->get_allowed_children() );
+				$this['add_children']
+					->set_prop( 'options', array_combine( $b, $b ) )
+					->show();
+			}
 
-			$this['add_children']
-				->set_prop( 'options', array_combine( $b, $b ) )
-				->show();
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$c = range( 0, $room_type->get_allowed_infants() );
+				$this['add_infants']
+					->set_prop( 'options', array_combine( $c, $c ) )
+					->show();
+			}
 
 			$this['add_services']
 				->set_prop( 'room_type', $room_type->get_id() )
