@@ -15,8 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $page_id = get_the_ID();
 
+$form_classes = apply_filters( 'awebooking/check_availability_form_classes', array(
+	'awebooking-check-form',
+	'awebooking-check-form--vertical',
+	awebooking( 'setting' )->get_children_bookable() ? 'has-children' : '',
+	awebooking( 'setting' )->get_infants_bookable() ? 'has-infants' : '',
+) );
 ?>
-<form action="<?php echo esc_url( get_the_permalink() ); ?>" class="awebooking-check-form" method="POST">
+<form action="<?php echo esc_url( get_the_permalink() ); ?>" class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $form_classes ) ) ); ?>" method="POST">
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( $page_id ) ?>">
 	<?php endif ?>
