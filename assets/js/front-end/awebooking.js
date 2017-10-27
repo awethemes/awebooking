@@ -22,13 +22,18 @@
 
         if ( el.hasClass('awebooking-start-date') ) {
           var valid_date = function () {
-            var minNights = el.data('minNights');
-            var el_endDate = $('.awebooking-end-date');
-            var startDate = $(this).datepicker('getDate');
-            var minDate = $(this).datepicker('getDate');
-            minDate.setDate(minDate.getDate() + minNights);
-            el_endDate.datepicker('setDate', minDate);
+            var minNights  = el.data('minNights'),
+                el_endDate = el.parents('form').find('.awebooking-end-date'),
+                endDate    = el_endDate.datepicker('getDate'),
+                startDate  = $(this).datepicker('getDate'),
+                minDate    = startDate;
+
             el_endDate.datepicker('option', 'minDate', minDate);
+            minDate.setDate(minDate.getDate() + minNights);
+
+            if (endDate <= minDate) {
+              el_endDate.datepicker('setDate', minDate);
+            }
           };
 
           datePickerDefault.onSelect = valid_date;
