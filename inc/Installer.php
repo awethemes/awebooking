@@ -62,8 +62,21 @@ class Installer {
 		$awebooking = awebooking();
 		$db_version = get_option( 'awebooking_version' );
 
-		self::init_background_updater();
-		self::update();
+		$update_queued = false;
+		$background_updater = awebooking()->make( Background_Updater::class );
+
+		foreach ( static::$db_updates as $version => $update_callbacks ) {
+			if ( version_compare( $db_version, $version, '<' ) ) {
+				foreach ( $update_callbacks as $update_callback ) {
+					$background_updater->push_to_queue( $update_callback );
+					$update_queued = true;
+				}
+			}
+		}
+
+		if ( $update_queued ) {
+			$background_updater->save()->dispatch();
+		}
 
 		delete_option( 'awebooking_version' );
 		add_option( 'awebooking_version', AweBooking::VERSION );
