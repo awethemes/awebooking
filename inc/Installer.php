@@ -176,7 +176,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		$command = '';
 
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$command .= '`d' . $i . '` TINYINT UNSIGNED NOT NULL DEFAULT 0, ';
+			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0, ';
 		}
 
 		return $command;
