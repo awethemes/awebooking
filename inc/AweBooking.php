@@ -10,7 +10,7 @@ use Illuminate\Container\Container;
 
 final class AweBooking extends Container {
 	/* Constants */
-	const VERSION        = '3.0.0-beta10-dev';
+	const VERSION        = '3.0.0-beta9';
 	const SETTING_KEY    = 'awebooking_settings';
 
 	const DATE_FORMAT    = 'Y-m-d';
@@ -109,12 +109,12 @@ final class AweBooking extends Container {
 	 */
 	protected function register_base_bindings() {
 		static::setInstance( $this );
-
 		$this->instance( 'awebooking', $this );
-
 		$this->instance( AweBooking::class, $this );
 
 		$this->register( Providers\Monolog_Service_Provider::class );
+
+		$this->singleton( Background_Updater::class );
 
 		$this->singleton(
 			'session', function() {
@@ -216,6 +216,7 @@ final class AweBooking extends Container {
 		$this->trigger( new Multilingual_Hooks() );
 		$this->trigger( new Admin\Admin_Hooks() );
 
+		$this->make( Background_Updater::class );
 		add_action( 'init', [ Installer::class, 'check_version' ] );
 
 		do_action( 'awebooking/init', $this );
