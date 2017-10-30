@@ -128,10 +128,19 @@ class Admin_Ajax {
 			$period = $line_item->get_period();
 		}
 
-		$request = new Request( $period, [
+		$request_options = [
 			'adults' => $sanitized['edit_adults'],
-			'children' => $sanitized['edit_children'],
-		]);
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$request_options['children'] = $sanitized['edit_children'];
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$request_options['infants'] = absint( $_POST['edit_infants'] );
+		}
+
+		$request = new Request( $period, $request_options );
 
 		// ----------
 		$base_price = Concierge::get_room_price( $room_type, $request );
