@@ -68,14 +68,14 @@ class Installer {
 		foreach ( static::$db_updates as $version => $update_callbacks ) {
 			if ( version_compare( $db_version, $version, '<' ) ) {
 				foreach ( $update_callbacks as $update_callback ) {
-					$background_updater->push_to_queue( $update_callback );
-					$update_queued = true;
+					// $background_updater->push_to_queue( $update_callback );
+					// $update_queued = true;
 				}
 			}
 		}
 
 		if ( $update_queued ) {
-			$background_updater->save()->dispatch();
+			// $background_updater->save()->dispatch();
 		}
 
 		delete_option( 'awebooking_version' );
@@ -109,7 +109,7 @@ class Installer {
 	}
 
 	/**
-	 * Get Table schema.
+	 * Get tables schema to create.
 	 *
 	 * @return string
 	 */
@@ -189,9 +189,9 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		$command = '';
 
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0, ';
+			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
 		}
 
-		return $command;
+		return trim( $command );
 	}
 }
