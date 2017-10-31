@@ -68,14 +68,14 @@ class Installer {
 		foreach ( static::$db_updates as $version => $update_callbacks ) {
 			if ( version_compare( $db_version, $version, '<' ) ) {
 				foreach ( $update_callbacks as $update_callback ) {
-					// $background_updater->push_to_queue( $update_callback );
-					// $update_queued = true;
+					$background_updater->push_to_queue( $update_callback );
+					$update_queued = true;
 				}
 			}
 		}
 
 		if ( $update_queued ) {
-			// $background_updater->save()->dispatch();
+			$background_updater->save()->dispatch();
 		}
 
 		delete_option( 'awebooking_version' );
@@ -93,9 +93,6 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( static::get_schema() );
-
-		// utf8mb4 conversion.
-		// maybe_convert_table_to_utf8mb4( $wpdb->dmtable );
 	}
 
 	private static function create_default_location() {
