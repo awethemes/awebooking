@@ -4,9 +4,9 @@
  *
  * This template can be overridden by copying it to yourtheme/awebooking/single-room-type/tabs/description.php.
  *
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     1.0.0
+ * @author 		Awethemes
+ * @package 	AweBooking/Templates
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

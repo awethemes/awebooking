@@ -7,6 +7,17 @@ use AweBooking\Booking\Items\Service_Item;
 
 class Installer {
 	/**
+	 * DB updates and callbacks that need to be run per version.
+	 *
+	 * @var array
+	 */
+	private static $db_updates = [
+		'3.0.0-beta10' => array(
+			'awebooking_update_300_beta10_fix_db_types',
+		),
+	];
+
+	/**
 	 * Check AweBooking version and run the updater is required.
 	 *
 	 * This check is done on all requests and runs if the versions do not match.
@@ -51,132 +62,21 @@ class Installer {
 		$awebooking = awebooking();
 		$db_version = get_option( 'awebooking_version' );
 
-		if ( version_compare( $db_version, '3.0.0-beta4', '<' ) ) {
-			global $wpdb;
+		$update_queued = false;
+		$background_updater = awebooking()->make( Background_Updater::class );
 
-			$wpdb->hide_errors();
-
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			dbDelta( "
-				CREATE TABLE IF NOT EXISTS {$wpdb->prefix}awebooking_booking_items (
-				  booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
-				  booking_item_name TEXT NOT NULL,
-				  booking_item_type varchar(200) NOT NULL DEFAULT '',
-				  booking_item_parent BIGINT UNSIGNED NOT NULL,
-				  booking_id BIGINT UNSIGNED NOT NULL,
-				  PRIMARY KEY  (booking_item_id),
-				  KEY booking_id (booking_id),
-				  KEY booking_item_parent (booking_item_parent)
-				);
-
-				CREATE TABLE IF NOT EXISTS {$wpdb->prefix}awebooking_booking_itemmeta (
-				  meta_id BIGINT UNSIGNED NOT NULL auto_increment,
-				  booking_item_id BIGINT UNSIGNED NOT NULL,
-				  meta_key varchar(255) default NULL,
-				  meta_value longtext NULL,
-				  PRIMARY KEY  (meta_id),
-				  KEY booking_item_id (booking_item_id),
-				  KEY meta_key (meta_key(32))
-				);
-			" );
-
-			// --------------------------
-			$services = $wpdb->get_results( "
-				SELECT term.* FROM `{$wpdb->terms}` AS term
-				LEFT JOIN `{$wpdb->term_taxonomy}` AS tt ON `term`.`term_id` = `tt`.`term_id`
-				WHERE tt.taxonomy = 'hotel_extra_service'
-			" );
-
-			foreach ( $services as $service ) {
-				update_term_meta( $service->term_id, '_service_operation', get_term_meta( $service->term_id, 'operation', true ) );
-				delete_term_meta( $service->term_id, 'operation' );
-
-				update_term_meta( $service->term_id, '_service_value', get_term_meta( $service->term_id, 'price', true ) );
-				delete_term_meta( $service->term_id, 'price' );
-
-				update_term_meta( $service->term_id, '_service_type', get_term_meta( $service->term_id, 'type', true ) );
-				delete_term_meta( $service->term_id, 'type' );
+		foreach ( static::$db_updates as $version => $update_callbacks ) {
+			if ( version_compare( $db_version, $version, '<' ) ) {
+				foreach ( $update_callbacks as $update_callback ) {
+					$background_updater->push_to_queue( $update_callback );
+					$update_queued = true;
+				}
 			}
+		}
 
-			// --------------------------
-			$transform_booking_metadata = [
-				'customer_id'         => '_customer_id',
-				'customer_note'       => '_customer_note',
-				'customer_first_name' => '_customer_first_name',
-				'customer_last_name'  => '_customer_last_name',
-				'customer_email'      => '_customer_email',
-				'customer_phone'      => '_customer_phone',
-				'customer_company'    => '_customer_company',
-				'customer_phone'      => '_customer_phone',
-				'currency'            => '_currency',
-				'total_price'         => '_total',
-			];
-
-			$old_metadata = [
-				'booking_adults',
-				'booking_children',
-				'booking_check_in',
-				'booking_check_out',
-				'room_total',
-				'services_total',
-				'booking_request_services',
-				'booking_room_id',
-				'booking_room_name',
-				'booking_room_type_id',
-				'booking_room_type_title',
-				'booking_hotel_location',
-			];
-
-			$bookings = $wpdb->get_results( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'awebooking' AND post_status != 'auto-draft';" );
-
-			foreach ( $bookings as $booking ) {
-				$booking = new Booking( $booking->ID );
-
-				$booking_item = new Line_Item;
-				$booking_item['name']      = $booking->get_meta( 'booking_room_type_title' );
-				$booking_item['room_id']   = $booking->get_meta( 'booking_room_id' );
-				$booking_item['check_in']  = $booking->get_meta( 'booking_check_in' );
-				$booking_item['check_out'] = $booking->get_meta( 'booking_check_out' );
-				$booking_item['adults']    = $booking->get_meta( 'booking_adults' );
-				$booking_item['children']  = $booking->get_meta( 'booking_children' );
-				$booking_item['total']     = floatval( $booking->get_meta( 'room_total' ) ) + floatval( $booking->get_meta( 'services_total' ) );
-
-				$booking->add_item( $booking_item );
-
-				try {
-					$booking->save();
-				} catch ( \Exception $e ) {
-					continue;
-				}
-
-				if ( ! $booking_item->exists() ) {
-					continue;
-				}
-
-				$booking_services = get_post_meta( $booking->ID, 'booking_request_services', true );
-				if ( ! empty( $booking_services ) && is_array( $booking_services ) ) {
-					foreach ( $booking_services as $service_id => $quantity ) {
-						$service = new Service( $service_id );
-						if ( ! $service->exists() ) {
-							continue;
-						}
-
-						$service_item = new Service_Item( $booking->ID );
-						$service_item['name']       = $service->get_name();
-						$service_item['service_id'] = $service->get_id();
-						$service_item['parent_id']  = $booking_item->get_id();
-
-						$service_item->save();
-					}
-				}
-
-				foreach ( $transform_booking_metadata as $from_metaname => $to_metaname ) {
-					update_metadata( 'awebooking', $booking->ID, $to_metaname,
-						$booking->get_meta( $from_metaname )
-					);
-				}
-			} // End foreach().
-		} // End if().
+		if ( $update_queued ) {
+			$background_updater->save()->dispatch();
+		}
 
 		delete_option( 'awebooking_version' );
 		add_option( 'awebooking_version', AweBooking::VERSION );
@@ -193,9 +93,6 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( static::get_schema() );
-
-		// utf8mb4 conversion.
-		// maybe_convert_table_to_utf8mb4( $wpdb->dmtable );
 	}
 
 	private static function create_default_location() {
@@ -209,7 +106,7 @@ class Installer {
 	}
 
 	/**
-	 * Get Table schema.
+	 * Get tables schema to create.
 	 *
 	 * @return string
 	 */
@@ -289,9 +186,9 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		$command = '';
 
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0, ';
+			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
 		}
 
-		return $command;
+		return trim( $command );
 	}
 }
