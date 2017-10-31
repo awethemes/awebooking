@@ -13,6 +13,7 @@ class Display_Setting extends Setting_Abstract {
 		$display = $this->settings->add_section( 'display', [
 			'title' => esc_html__( 'Display', 'awebooking' ),
 			'priority' => 20,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$display->add_field( array(

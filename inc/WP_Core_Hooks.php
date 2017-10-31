@@ -164,6 +164,8 @@ class WP_Core_Hooks extends Service_Hooks {
 				'use_featured_image'    => esc_html__( 'Use as room type image', 'awebooking' ),
 				'remove_featured_image' => esc_html__( 'Remove room type image', 'awebooking' ),
 			],
+			'capability_type' => 'room_type',
+			'map_meta_cap'    => true,
 		]))
 		->register();
 
@@ -188,6 +190,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'labels'              => array(
 				'all_items' => esc_html__( 'Bookings', 'awebooking' ),
 			),
+			'capability_type' => 'awebooking',
+			'map_meta_cap'    => true,
 		]))
 		->register();
 
@@ -209,6 +213,8 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'        => true,
 			'show_ui'             => false,
 			'supports'            => array( 'title', 'page-attributes' ),
+			'capability_type' => AweBooking::PRICING_RATE,
+			'map_meta_cap'    => true,
 		]))
 		->register();
 

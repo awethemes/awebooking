@@ -13,6 +13,7 @@ class General_Setting extends Setting_Abstract {
 		$section = $this->settings->add_section( 'general', [
 			'title' => esc_html__( 'General', 'awebooking' ),
 			'priority' => 10,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$section->add_field( array(
