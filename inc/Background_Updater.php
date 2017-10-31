@@ -75,8 +75,6 @@ class Background_Updater extends WP_Background_Process {
 	protected function complete() {
 		parent::complete();
 
-		WC_Install::update_db_version();
-
 		$this->logger->info( 'Data update complete', array( 'source' => 'db_updates' ) );
 	}
 
