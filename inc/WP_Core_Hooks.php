@@ -81,6 +81,12 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
+			'capabilities'          => [
+				'manage_terms' => 'manage_room_type_terms',
+				'edit_terms'   => 'edit_room_type_terms',
+				'delete_terms' => 'delete_room_type_terms',
+				'assign_terms' => 'assign_room_type_terms',
+			],
 		]))
 		->register();
 
@@ -96,6 +102,12 @@ class WP_Core_Hooks extends Service_Hooks {
 			'hierarchical'       => true,
 			'show_admin_column'  => false,
 			'show_in_quick_edit' => false,
+			'capabilities'          => [
+				'manage_terms' => 'manage_room_type_terms',
+				'edit_terms'   => 'edit_room_type_terms',
+				'delete_terms' => 'delete_room_type_terms',
+				'assign_terms' => 'assign_room_type_terms',
+			],
 		]))
 		->register();
 
@@ -112,6 +124,12 @@ class WP_Core_Hooks extends Service_Hooks {
 				'hierarchical'       => false,
 				'show_admin_column'  => false,
 				'show_in_quick_edit' => false,
+				'capabilities'          => [
+					'manage_terms' => 'manage_room_type_terms',
+					'edit_terms'   => 'edit_room_type_terms',
+					'delete_terms' => 'delete_room_type_terms',
+					'assign_terms' => 'assign_room_type_terms',
+				],
 			]))
 			->register();
 		}

@@ -311,11 +311,12 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			$wp_roles = new WP_Roles();
 		}
 
-		// Customer role
+		// Hotel customer role: somebody who can only manage their profile, view and request some actions their booking.
 		add_role( 'awebooking_customer', __( 'Hotel customer', 'awebooking' ), [
 			'read' 					 => true,
 		] );
 
+		// Hotel receptionist: somebody who can view room types, services, amenities, manage to price, manage availability, assists guests making hotel reservations.
 		add_role( 'awebooking_receptionist', __( 'Hotel receptionist', 'awebooking' ), [
 			'level_9'                => true,
 			'level_8'                => true,
@@ -332,28 +333,13 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			'read_private_posts'     => true,
 			'edit_posts'             => true,
 			'edit_pages'             => true,
-			// 'edit_published_posts'   => true,
-			// 'edit_published_pages'   => true,
-			// 'edit_private_pages'     => true,
-			// 'edit_private_posts'     => true,
-			// 'edit_others_posts'      => true,
-			// 'edit_others_pages'      => true,
 			'publish_posts'          => true,
 			'publish_pages'          => true,
-			// 'delete_posts'           => true,
-			// 'delete_pages'           => true,
-			// 'delete_private_pages'   => true,
-			// 'delete_private_posts'   => true,
-			// 'delete_published_pages' => true,
-			// 'delete_published_posts' => true,
-			// 'delete_others_posts'    => true,
-			// 'delete_others_pages'    => true,
-			'manage_categories'      => true,
 			'manage_links'           => true,
 			'moderate_comments'      => true,
 		] );
 
-		$receptionist_capabilities = self::get_core_receptionist_capabilities();
+		$receptionist_capabilities = static::get_core_receptionist_capabilities();
 
 		foreach ( $receptionist_capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
@@ -361,7 +347,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			}
 		}
 
-		// Shop manager role
+		// Hotel manager role: somebody who has access to all the AweBooking's features.
 		add_role( 'awebooking_manager', __( 'Hotel manager', 'awebooking' ), [
 			'level_9'                => true,
 			'level_8'                => true,
@@ -404,7 +390,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			'list_users'             => true,
 		] );
 
-		$manager_capabilities = self::get_core_manager_capabilities();
+		$manager_capabilities = static::get_core_manager_capabilities();
 
 		foreach ( $manager_capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
@@ -428,7 +414,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			$wp_roles = new WP_Roles();
 		}
 
-		$receptionist_capabilities = self::get_core_receptionist_capabilities();
+		$receptionist_capabilities = static::get_core_receptionist_capabilities();
 
 		foreach ( $receptionist_capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
@@ -436,7 +422,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			}
 		}
 
-		$manager_capabilities = self::get_core_manager_capabilities();
+		$manager_capabilities = static::get_core_manager_capabilities();
 
 		foreach ( $manager_capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
@@ -456,7 +442,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	 * @return array
 	 */
 	 private static function get_core_manager_capabilities() {
-		$capabilities = array();
+		$capabilities = [];
 
 		$capabilities['core'] = [
 			'manage_awebooking',
@@ -468,7 +454,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		foreach ( $capability_types as $capability_type ) {
 
 			$capabilities[ $capability_type ] = [
-				// Post type
+				// Post type.
 				"edit_{$capability_type}",
 				"read_{$capability_type}",
 				"delete_{$capability_type}",
@@ -483,7 +469,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
 
-				// Terms
+				// Terms.
 				"manage_{$capability_type}_terms",
 				"edit_{$capability_type}_terms",
 				"delete_{$capability_type}_terms",
@@ -495,29 +481,32 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	}
 
 	/**
-	 * Get manager capabilities for awebooking.
+	 * Get receptionist capabilities for awebooking.
 	 *
 	 * @return array
 	 */
 	 private static function get_core_receptionist_capabilities() {
-		$capabilities = array();
+		$capabilities = [];
 
 		$capabilities['core'] = [
 			'manage_awebooking',
 		];
 
+		// Room type.
 		$room_type = AweBooking::ROOM_TYPE;
-
 
 		$capabilities[ $room_type ] = [
 			"read_{$room_type}",
 			"edit_{$room_type}s",
 			"edit_others_{$room_type}s",
 			"read_private_{$room_type}s",
+
+			"manage_{$room_type}_terms",
+			// "assign_{$room_type}_terms",
 		];
 
+		// Pricing rate.
 		$pricing_rate = AweBooking::PRICING_RATE;
-
 
 		$capabilities[ $pricing_rate ] = [
 			"read_{$pricing_rate}",
@@ -526,10 +515,11 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			"read_private_{$pricing_rate}s",
 		];
 
+		// Booking.
 		$booking = AweBooking::BOOKING;
 
-
 		$capabilities[ $booking ] = [
+			// Post type.
 			"edit_{$booking}",
 			"read_{$booking}",
 			"delete_{$booking}",
@@ -544,7 +534,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			"edit_private_{$booking}s",
 			"edit_published_{$booking}s",
 
-			// Terms
+			// Terms.
 			"manage_{$booking}_terms",
 			"edit_{$booking}_terms",
 			"delete_{$booking}_terms",
