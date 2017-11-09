@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.8.1
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta10
+Stable tag:        3.0.0-beta11-dev
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
