@@ -50,6 +50,10 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 						if ( $availability->get_children() ) {
 							printf( _nx( ' & %s child', ' & %s children', (int) $availability->get_children(), 'child(ren) information', 'awebooking' ), number_format_i18n( (int) $availability->get_children() ) ); // WPCS: xss ok.
 						}
+
+						if ( $availability->get_infants() ) {
+							printf( _nx( ' & %s infant', ' & %s infants', (int) $availability->get_infants(), 'infant(s) information', 'awebooking' ), number_format_i18n( (int) $availability->get_infants() ) ); // WPCS: xss ok.
+						}
 					?>
 					</td>
 					<td><?php print $availability->get_price(); // WPCS: xss ok. ?></td>
@@ -122,7 +126,8 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 			<input type="hidden" name="start-date" value="<?php echo esc_attr( $availability->get_check_in()->format( 'Y-m-d' ) ); ?>">
 			<input type="hidden" name="end-date" value="<?php echo esc_attr( $availability->get_check_out()->format( 'Y-m-d' ) ); ?>">
 			<input type="hidden" name="children" value="<?php echo esc_attr( $availability->get_request()->get_children() ); ?>">
-			<input type="hidden" name="adults" value="<?php echo esc_attr( $availability->get_request()->get_adults() ); ?>">	
+			<input type="hidden" name="adults" value="<?php echo esc_attr( $availability->get_request()->get_adults() ); ?>">
+			<input type="hidden" name="infants" value="<?php echo esc_attr( $availability->get_request()->get_infants() ); ?>">
 			<?php wp_nonce_field( 'awebooking-add-booking-nonce' ); ?>
 		</form>
 	</div>

@@ -51,14 +51,23 @@ class Request_Handler extends Service_Hooks {
 		// Setup somethings.
 		$flash_message = awebooking()->make( 'flash_message' );
 
-		// Do validator the input before doing checkout.
-		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', [
+		$validator_rules = [
 			'start-date'     => 'required|date',
 			'end-date'       => 'required|date',
 			'adults'         => 'required|integer|min:1',
-			'children'       => 'integer|min:0',
 			'extra_services' => 'array',
-		]));
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$validator_rules['children'] = 'integer|min:0';
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$validator_rules['infants'] = 'integer|min:0';
+		}
+
+		// Do validator the input before doing checkout.
+		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', $validator_rules ) );
 
 		// If have any errors.
 		if ( $validator->fails() ) {
@@ -86,14 +95,23 @@ class Request_Handler extends Service_Hooks {
 				$extra_services = isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ? $_POST['awebooking_services'] : [];
 				$extra_services = array_unique( array_merge( $extra_services, $mandatory_services_ids ) );
 
-				// Add to cart.
-				$cart_item = awebooking( 'cart' )->add( $room_type, 1, [
+				$cart_options = [
 					'check_in'       => sanitize_text_field( $_POST['start-date'] ),
 					'check_out'      => sanitize_text_field( $_POST['end-date'] ),
 					'adults'         => absint( $_POST['adults'] ),
-					'children'       => absint( $_POST['children'] ),
 					'extra_services' => $extra_services,
-				] );
+				];
+
+				if ( awebooking( 'setting' )->get_children_bookable() ) {
+					$cart_options['children'] = absint( $_POST['children'] );
+				}
+
+				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					$cart_options['infants'] = absint( $_POST['infants'] );
+				}
+
+				// Add to cart.
+				$cart_item = awebooking( 'cart' )->add( $room_type, 1, $cart_options );
 
 				do_action( 'awebooking/add_booking', $cart_item );
 
@@ -102,12 +120,21 @@ class Request_Handler extends Service_Hooks {
 					exit;
 				} else {
 					$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
-					$check_availability_link = add_query_arg( [
+					$query_args = [
 						'start-date' => sanitize_text_field( $_POST['start-date'] ),
 						'end-date'   => sanitize_text_field( $_POST['end-date'] ),
 						'adults'     => absint( $_POST['adults'] ),
-						'children'   => absint( $_POST['children'] ),
-					], $check_availability_link );
+					];
+
+					if ( awebooking( 'setting' )->get_children_bookable() ) {
+						$query_args['children'] = absint( $_POST['children'] );
+					}
+
+					if ( awebooking( 'setting' )->get_infants_bookable() ) {
+						$query_args['infants'] = absint( $_POST['infants'] );
+					}
+
+					$check_availability_link = add_query_arg( $query_args, $check_availability_link );
 
 					$message = sprintf( esc_html__( '%s has been added to your booking.' ), esc_html( $room_type->get_title() ) );
 					$flash_message->success( $message );
@@ -143,12 +170,22 @@ class Request_Handler extends Service_Hooks {
 			$room_type = $cart_item->model();
 
 			$period = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], false );
-			$booking_request = new Request( $period, [
+
+			$booking_request_options = [
 				'room-type' => $room_type->get_id(),
 				'adults'    => $cart_item->options['adults'],
-				'children'  => $cart_item->options['children'],
 				'extra_services' => $cart_item->options['extra_services'],
-			] );
+			];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$request_options['children'] = $cart_item->options['children'];
+			}
+
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$request_options['infants'] = $cart_item->options['infants'];
+			}
+
+			$booking_request = new Request( $period, $booking_request_options );
 
 			$booking_request->set_request( 'extra_services', $cart_item->options['extra_services'] );
 			$availability = Concierge::check_room_type_availability( $room_type, $booking_request );
@@ -157,12 +194,22 @@ class Request_Handler extends Service_Hooks {
 			if ( $availability->unavailable() ) { // Redirect if unavailable.
 				$cart->remove( $row_id );
 				$check_availability_link = get_permalink( absint( awebooking_option( 'page_check_availability' ) ) );
-				$check_availability_link = add_query_arg( [
+
+				$query_args = [
 					'start-date' => sanitize_text_field( $cart_item->options['start-date'] ),
 					'end-date'   => sanitize_text_field( $cart_item->options['end-date'] ),
 					'adults'     => absint( $cart_item->options['adults'] ),
-					'children'   => absint( $cart_item->options['children'] ),
-				], $check_availability_link );
+				];
+
+				if ( awebooking( 'setting' )->get_children_bookable() ) {
+					$request_options['children'] = absint( $cart_item->options['children'] );
+				}
+
+				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					$request_options['infants'] = absint( $cart_item->options['infants'] );
+				}
+
+				$check_availability_link = add_query_arg( $query_args, $check_availability_link );
 
 				$message = sprintf( esc_html__( '%s has been removed from your booking. Period dates are invalid for the room type.' ), esc_html( $room_type->get_title() ) );
 				$flash_message->success( $message );
@@ -173,15 +220,25 @@ class Request_Handler extends Service_Hooks {
 			// Is availability.
 			// Setup somethings.
 			$flash_message = awebooking()->make( 'flash_message' );
-			// Do validator the input before doing checkout.
-			$validator = new Validator( $_POST, apply_filters( 'awebooking/edit_booking/validator_rules', [
+
+			$validator_rules = [
 				'room-type'      => 'required|integer|min:1',
 				'start-date'     => 'required|date',
 				'end-date'       => 'required|date',
 				'adults'         => 'required|integer|min:1',
-				'children'       => 'integer|min:0',
 				'extra_services' => 'array',
-			]));
+			];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$request_options['children'] = 'integer|min:0';
+			}
+
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$request_options['infants'] = 'integer|min:0';
+			}
+
+			// Do validator the input before doing checkout.
+			$validator = new Validator( $_POST, apply_filters( 'awebooking/edit_booking/validator_rules', $validator_rules ) );
 
 			// If have any errors.
 			if ( $validator->fails() ) {
@@ -201,6 +258,14 @@ class Request_Handler extends Service_Hooks {
 			$cart->store_cart_contents();
 
 			$flash_message->success( sprintf( esc_html__( '%s has been edited.' ), esc_html( $room_type->get_title() ) ) );
+
+			$edit_link   = add_query_arg( [
+				'booking-action' => 'edit',
+				'rid'            => $row_id,
+			], awebooking_get_page_permalink( 'booking' ) );
+
+			wp_safe_redirect( $edit_link );
+			exit;
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();
 		}
@@ -324,27 +389,46 @@ class Request_Handler extends Service_Hooks {
 			foreach ( $cart_collection as $row_id => $cart_item ) {
 				$room_type = $cart_item->model();
 				$period = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], false );
-				$request = new Request( $period, [
+
+				$request_options = [
 					'room-type' => $room_type->get_id(),
 					'adults'    => $cart_item->options['adults'],
-					'children'  => $cart_item->options['children'],
 					'extra_services' => $cart_item->options['extra_services'],
-				] );
+				];
+
+				if ( awebooking( 'setting' )->get_children_bookable() ) {
+					$request_options['children'] = $cart_item->options['children'];
+				}
+
+				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					$request_options['infants'] = $cart_item->options['infants'];
+				}
+
+				$request = new Request( $period, $request_options );
 
 				$availability = Concierge::check_room_type_availability( $room_type, $request );
 				// Take last room in list rooms available.
 				$rooms = $availability->get_rooms();
 				$the_room = end( $rooms );
 
-				$room_item = (new Line_Item)->fill( [
+				$room_item_options = [
 					'name'      => $availability->get_room_type()->get_title(),
 					'room_id'   => $the_room->get_id(),
 					'check_in'  => $request->get_check_in()->toDateString(),
 					'check_out' => $request->get_check_out()->toDateString(),
 					'adults'    => $request->get_adults(),
-					'children'  => $request->get_children(),
 					'total'     => $cart_item->get_total(),
-				] );
+				];
+
+				if ( awebooking( 'setting' )->get_children_bookable() ) {
+					$room_item_options['children'] = $request->get_children();
+				}
+
+				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					$room_item_options['infants'] = $request->get_infants();
+				}
+
+				$room_item = (new Line_Item)->fill( $room_item_options );
 
 				$booking->add_item( $room_item );
 				$booking->save();
@@ -416,12 +500,21 @@ class Request_Handler extends Service_Hooks {
 
 		$flash_message = awebooking( 'flash_message' );
 
-		$validator = new Validator( $_POST, apply_filters( 'awebooking/add_booking/validator_rules', [
+		$validator_rules = [
 			'start-date'     => 'required|date',
 			'end-date'       => 'required|date',
 			'adults'         => 'required|integer|min:1',
-			'children'       => 'integer|min:0',
-		]));
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$validator_rules['children'] = 'integer|min:0';
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$validator_rules['infants'] = 'integer|min:0';
+		}
+
+		$validator = new Validator( $_POST, apply_filters( 'awebooking/single_check_availability/validator_rules', $validator_rules ) );
 
 		// If have any errors.
 		if ( $validator->fails() ) {

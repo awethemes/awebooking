@@ -42,6 +42,24 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Get children bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_children_bookable() {
+		return $this->get( 'bookable.children.enable', true );
+	}
+
+	/**
+	 * Get infants bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_infants_bookable() {
+		return $this->get( 'bookable.infants.enable', false );
+	}
+
+	/**
 	 * Get default setting by key ID.
 	 *
 	 * @param  string $key Default setting key.
@@ -175,6 +193,8 @@ class Setting extends WP_Option {
 	protected function prepare_default_settings() {
 		$this->defaults = apply_filters( 'awebooking/default_settings', array(
 			'enable_location'          => false,
+			'bookable[children][enable]' => true,
+			'bookable[infants][enable]'  => false,
 
 			// Currency and price format.
 			'currency'                 => 'USD',
@@ -189,6 +209,7 @@ class Setting extends WP_Option {
 			'page_checkout'            => 0,
 			'check_availability_max_adults'   => 7,
 			'check_availability_max_children' => 6,
+			'check_availability_max_infants'  => 6,
 
 			'email_from_name'           => '@' . get_option( 'blogname' ),
 			'email_from_address'        => get_option( 'admin_email' ),

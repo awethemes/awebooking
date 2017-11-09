@@ -73,12 +73,21 @@ class Admin_Ajax {
 				$sanitized['add_check_in_out'][1]
 			);
 
-			$request = new Request( $period, [
+			$request_options = [
 				'room-type'  => $room_type->get_id(), // TODO: ...
 				'adults'     => $sanitized['add_adults'],
-				'children'   => $sanitized['add_children'],
 				'extra_services' => isset( $sanitized['add_services'] ) ? $sanitized['add_services'] : [],
-			]);
+			];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$request_options['children'] = $sanitized['add_children'];
+			}
+
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$request_options['infants'] = absint( $_POST['add_infants'] );
+			}
+
+			$request = new Request( $period, $request_options );
 
 			// Next, call to Concierge and check availability our hotel.
 			$availability = Concierge::check_room_type_availability( $room_type, $request );
@@ -119,10 +128,19 @@ class Admin_Ajax {
 			$period = $line_item->get_period();
 		}
 
-		$request = new Request( $period, [
+		$request_options = [
 			'adults' => $sanitized['edit_adults'],
-			'children' => $sanitized['edit_children'],
-		]);
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$request_options['children'] = $sanitized['edit_children'];
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$request_options['infants'] = absint( $_POST['edit_infants'] );
+		}
+
+		$request = new Request( $period, $request_options );
 
 		// ----------
 		$base_price = Concierge::get_room_price( $room_type, $request );

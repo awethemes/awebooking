@@ -249,10 +249,11 @@ class Booking extends WP_Object {
 	 * @return string|void
 	 */
 	public function get_fomatted_guest_number( $echo = true ) {
-		$adults = $children = 0;
+		$adults = $children = $infants = 0;
 		foreach ( $this->get_line_items() as $key => $item ) {
 			$adults += $item->get_adults();
 			$children += $item->get_children();
+			$infants += $item->get_infants();
 		}
 
 		$html = '';
@@ -268,6 +269,14 @@ class Booking extends WP_Object {
 				' &amp; <span class="">%1$d %2$s</span>',
 				$children,
 				_n( 'child', 'children', $children, 'awebooking' )
+			);
+		}
+
+		if ( $infants ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$infants,
+				_n( 'infant', 'infants', $infants, 'awebooking' )
 			);
 		}
 

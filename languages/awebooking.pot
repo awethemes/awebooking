@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the AweBooking package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AweBooking 3.0.0-beta9-dev\n"
+"Project-Id-Version: AweBooking 3.0.0-beta10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/awebooking\n"
-"POT-Creation-Date: 2017-10-19 07:43:19+00:00\n"
+"POT-Creation-Date: 2017-10-31 07:14:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -169,7 +169,7 @@ msgstr ""
 
 #: inc/Admin/Forms/Add_Line_Item_Form.php:69
 #: inc/Admin/Forms/Edit_Line_Item_Form.php:57
-#: templates/check-form/input-capacity.php:22
+#: templates/check-form/input-capacity.php:21
 #: templates/single-room-type/form.php:54
 msgid "Adults"
 msgstr ""
@@ -474,7 +474,7 @@ msgstr ""
 #: inc/Admin/Metaboxes/Room_Type_Metabox.php:233
 #: inc/Admin/Metaboxes/Room_Type_Metabox.php:239 inc/template-functions.php:484
 #: templates/booking-edit.php:63 templates/booking.php:68
-#: templates/single-room-type/tabs/extra_services.php:20
+#: templates/single-room-type/tabs/extra_services.php:18
 msgid "Extra Services"
 msgstr ""
 
@@ -880,7 +880,7 @@ msgstr ""
 msgid "Room type base"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:39
+#: inc/Admin/Pages/views/html-admin-welcome.php:78
 msgid "Welcome to AweBooking"
 msgstr ""
 
@@ -891,55 +891,55 @@ msgid ""
 "pleasantly and easily."
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:42
+#: inc/Admin/Pages/views/html-admin-welcome.php:81
 msgid "Version %s"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:48
+#: inc/Admin/Pages/views/html-admin-welcome.php:87
 msgid "What' news"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:49
+#: inc/Admin/Pages/views/html-admin-welcome.php:88
 msgid ""
 "Always stay up-to-date with the latest version of AweBooking by checking "
 "our <a href=\"%s\">change log</a> regularly."
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:52
+#: inc/Admin/Pages/views/html-admin-welcome.php:90
 msgid "How to use"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:53
+#: inc/Admin/Pages/views/html-admin-welcome.php:91
 msgid ""
 "Check out <a href=\"%s\">the plugin's documentation</a> if you need more "
 "information on how to use AweBooking."
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:57
+#: inc/Admin/Pages/views/html-admin-welcome.php:95
 msgid "Get Support and Pro Features?"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:58
+#: inc/Admin/Pages/views/html-admin-welcome.php:96
 msgid ""
 "Find help in our forum and get free updates when purchasing the PRO version "
 "which boats a lot more advanced features"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:65
+#: inc/Admin/Pages/views/html-admin-welcome.php:103
 msgid "Premium features"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:66
+#: inc/Admin/Pages/views/html-admin-welcome.php:104
 msgid ""
 "The PRO version will never fail to impress you. With a bunch of premium "
 "features added, your online booking system will be pushed to the next level"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:77
+#: inc/Admin/Pages/views/html-admin-welcome.php:118
 msgid "Installed"
 msgstr ""
 
-#: inc/Admin/Pages/views/html-admin-welcome.php:89
+#: inc/Admin/Pages/views/html-admin-welcome.php:131
 msgid "Go to Settings &rarr;"
 msgstr ""
 
@@ -1264,29 +1264,29 @@ msgstr ""
 msgid "Unavailable room type."
 msgstr ""
 
-#: inc/AweBooking.php:528
+#: inc/AweBooking.php:529
 msgid ""
 "Addon requires at least AweBooking version %1$s to work, you have running "
 "on AweBooking %2$s"
 msgstr ""
 
-#: inc/AweBooking.php:607
+#: inc/AweBooking.php:608
 msgid "View AweBooking documentation"
 msgstr ""
 
-#: inc/AweBooking.php:607
+#: inc/AweBooking.php:608
 msgid "Docs"
 msgstr ""
 
-#: inc/AweBooking.php:608
+#: inc/AweBooking.php:609
 msgid "Visit demo"
 msgstr ""
 
-#: inc/AweBooking.php:608
+#: inc/AweBooking.php:609
 msgid "View Demo"
 msgstr ""
 
-#: inc/AweBooking.php:649
+#: inc/AweBooking.php:650
 msgid ""
 "This plugin has been activated but cannot be loaded by AweBooking by "
 "reason(s):"
@@ -1365,7 +1365,7 @@ msgstr ""
 msgid "%2$s - %1$s x %4$s night(s) %3$s from price"
 msgstr ""
 
-#: inc/Installer.php:203
+#: inc/Installer.php:100
 msgid "Hotel Location"
 msgstr ""
 
@@ -1681,17 +1681,17 @@ msgstr ""
 msgid "No rooms in your booking."
 msgstr ""
 
-#: templates/check-availability-form.php:28
+#: templates/check-availability-form.php:33
 #: templates/single-room-type/form.php:29
 msgid "Your Reservation"
 msgstr ""
 
-#: templates/check-availability-form.php:43
+#: templates/check-availability-form.php:48
 #: templates/single-room-type/form.php:86
 msgid "CHECK AVAILABILITY"
 msgstr ""
 
-#: templates/check-form/input-capacity.php:36
+#: templates/check-form/input-capacity.php:35
 #: templates/single-room-type/form.php:68
 msgid "Children"
 msgstr ""
@@ -1811,7 +1811,7 @@ msgstr ""
 #: templates/emails/completed-booking.php:13
 #: templates/emails/new-booking.php:14
 #: templates/emails/processing-booking.php:13
-msgid "Order #%s"
+msgid "Booking #%s"
 msgstr ""
 
 #: templates/emails/admin-cancelled-booking.php:19
@@ -1879,12 +1879,6 @@ msgid ""
 "details are shown below for your reference:"
 msgstr ""
 
-#: templates/emails/sample.php:4
-msgid ""
-"Your order is on-hold until we confirm payment has been received. Your "
-"order details are shown below for your reference:"
-msgstr ""
-
 #: templates/loop/no-room-types-found.php:17
 msgid "No Room types were found matching your selection."
 msgstr ""
@@ -1905,7 +1899,7 @@ msgstr ""
 msgid "Start from %s / Night"
 msgstr ""
 
-#: templates/single-room-type/price.php:18
+#: templates/single-room-type/price.php:19
 msgid "Start from %s/night"
 msgstr ""
 
@@ -1913,7 +1907,7 @@ msgstr ""
 msgid "Awaiting room type image"
 msgstr ""
 
-#: templates/single-room-type/tabs/extra_services.php:33
+#: templates/single-room-type/tabs/extra_services.php:31
 msgid "mandatory"
 msgstr ""
 
@@ -1967,7 +1961,7 @@ msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: inc/Installer.php:206
+#: inc/Installer.php:103
 #. translators: Default hotel location slug
 msgctxt "Default hotel location slug"
 msgid "Hotel Location"

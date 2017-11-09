@@ -144,6 +144,10 @@
   }
 }
 
+.awebooking-check-form--vertical .awebooking-heading {
+  margin-bottom: 0;
+}
+
 // Fix woocommerce.
 @media (min-width: 480px) and (max-width: 768px) {
   .awebooking .twentysixteen .site-main {
@@ -169,7 +173,7 @@
       .awebooking-check-field {
         width: 18%;
         margin-top: 15px;
-        
+
         .awebooking-btn {
           font-size: 12px;
         }

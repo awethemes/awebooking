@@ -40,8 +40,10 @@ class Room_Type extends WP_Object implements Buyable {
 		'base_price'        => 0.00,
 		'number_adults'     => 0,
 		'number_children'   => 0,
+		'number_infants'    => 0,
 		'max_adults'        => 0,
 		'max_children'      => 0,
+		'max_infants'       => 0,
 		'minimum_night'     => 0,
 
 		'rooms'             => [],
@@ -67,8 +69,10 @@ class Room_Type extends WP_Object implements Buyable {
 		'base_price'        => 'float',
 		'number_adults'     => 'integer',
 		'number_children'   => 'integer',
+		'number_infants'    => 'integer',
 		'max_adults'        => 'integer',
 		'max_children'      => 'integer',
+		'max_infants'       => 'integer',
 		'minimum_night'     => 'integer',
 	];
 
@@ -81,8 +85,10 @@ class Room_Type extends WP_Object implements Buyable {
 		'base_price',
 		'number_adults',
 		'number_children',
+		'number_infants',
 		'max_adults',
 		'max_children',
+		'max_infants',
 		'minimum_night',
 		'gallery_ids'  => 'gallery',
 		'thumbnail_id' => '_thumbnail_id',
@@ -99,6 +105,7 @@ class Room_Type extends WP_Object implements Buyable {
 			'post_type'        => AweBooking::ROOM_TYPE,
 			'booking_adults'   => -1,
 			'booking_children' => -1,
+			'booking_infants'  => -1,
 			'booking_nights'   => -1,
 			'posts_per_page'   => -1,
 		]);
@@ -335,6 +342,15 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
+	 * Get number children available for this room-type.
+	 *
+	 * @return int
+	 */
+	public function get_number_infants() {
+		return apply_filters( $this->prefix( 'get_number_infants' ), $this['number_infants'], $this );
+	}
+
+	/**
 	 * Get max overflow children.
 	 *
 	 * @return int
@@ -344,12 +360,30 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
+	 * Get max overflow infants.
+	 *
+	 * @return int
+	 */
+	public function get_max_infants() {
+		return apply_filters( $this->prefix( 'get_max_infants' ), $this['max_infants'], $this );
+	}
+
+	/**
 	 * Returns allowed number children for this room-type.
 	 *
 	 * @return int
 	 */
 	public function get_allowed_children() {
 		return $this->get_number_children() + $this->get_max_children();
+	}
+
+	/**
+	 * Returns allowed number infants for this room-type.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_infants() {
+		return $this->get_number_infants() + $this->get_max_infants();
 	}
 
 	/**

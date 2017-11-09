@@ -131,6 +131,13 @@ class Booking_List_Table extends Post_Type_Abstract {
 						_n( 'child', 'children', $the_booking->get_children(), 'awebooking' )
 					);
 				}
+
+				if ( $the_booking['infants'] ) {
+					printf( ' &amp; <span class="">%1$d %2$s</span>',
+						$the_booking->get_infants(),
+						_n( 'infant', 'infants', $the_booking->get_infants(), 'awebooking' )
+					);
+				}
 				break;
 
 			case 'check_in_out_date':

@@ -25,12 +25,23 @@ $cart_collection = $cart->get_contents();
 	<?php foreach ( $cart_collection as $row_id => $cart_item ) :  $room_type = $cart_item->model(); ?>
 		<?php
 			$period  = new Period( $cart_item->options['check_in'], $cart_item->options['check_out'], true );
-			$request = new Request( $period, [
+
+			$request_options = [
 				'room-type' => $room_type->get_id(),
 				'adults'    => $cart_item->options['adults'],
-				'children'  => $cart_item->options['children'],
 				'extra_services' => $cart_item->options['extra_services'],
-			] );
+			];
+
+			if ( awebooking( 'setting' )->get_children_bookable() ) {
+				$request_options['children'] = $cart_item->options['children'];
+			}
+
+			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				$request_options['infants'] = $cart_item->options['infants'];
+			}
+
+			$request = new Request( $period, $request_options );
+
 			$services = collect( awebooking_map_instance(
 				array_keys( $request->get_services() ),
 				Service::class

@@ -13,6 +13,7 @@ class General_Setting extends Setting_Abstract {
 		$section = $this->settings->add_section( 'general', [
 			'title' => esc_html__( 'General', 'awebooking' ),
 			'priority' => 10,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$section->add_field( array(
@@ -42,6 +43,48 @@ class General_Setting extends Setting_Abstract {
 			'validate' => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
 			'priority' => 15,
+		) );
+
+		$section->add_field( array(
+			'id'       => 'bookable[children][enable]',
+			'type'     => 'checkbox',
+			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'bookable[children][enable]' ),
+			'priority' => 20,
+			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
+		) );
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'bookable[children][desc]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'priority' => 21,
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'deps'     => array( 'bookable[children][enable]', '==', true ),
+			'show_on_cb' => '__return_false',
+		) );
+
+		$section->add_field( array(
+			'id'       => 'bookable[infants][enable]',
+			'type'     => 'checkbox',
+			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'bookable[infants][enable]' ),
+			'priority' => 22,
+			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
+		) );
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'bookable[infants][desc]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'priority' => 23,
+			'deps'     => array( 'bookable[infants][enable]', '==', true ),
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'show_on_cb' => '__return_false',
 		) );
 
 		$section->add_field( array(
@@ -105,5 +148,47 @@ class General_Setting extends Setting_Abstract {
 			),
 			'priority' => 45,
 		) );
+	}
+
+	/**
+	 * Children bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _children_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$children_desc = $cmb2->get_field( 'bookable[children][desc]' );
+
+		echo '<div class="skeleton-input-group">';
+		skeleton_render_field( $field );
+		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+		echo '</div>';
+
+		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[children][enable]" data-deps-condition="==" data-deps-value="1">';
+		$children_desc->render();
+		echo '</div>';
+
+		$children_desc->errors();
+	}
+
+	/**
+	 * Infants bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _infants_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$infants_desc = $cmb2->get_field( 'bookable[infants][desc]' );
+
+		echo '<div class="skeleton-input-group">';
+		skeleton_render_field( $field );
+		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+		echo '</div>';
+
+		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[infants][enable]" data-deps-condition="==" data-deps-value="1">';
+		$infants_desc->render();
+		echo '</div>';
+
+		$infants_desc->errors();
 	}
 }
