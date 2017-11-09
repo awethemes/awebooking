@@ -67,6 +67,10 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta11] - [2017-xx-xx]
+#### Fixed
+- Fixed "Availability Bulk Update" not work from beta9.
+
 ### [3.0.0-beta10] - [2017-31-10]
 #### Fixed
 - Minor bugs fixed
