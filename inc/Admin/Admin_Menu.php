@@ -15,6 +15,7 @@ class Admin_Menu extends Base_Admin_Menu {
 			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
 			'menu_title' => esc_html__( 'AweBooking', 'awebooking' ),
 			'icon_url'   => 'dashicons-calendar',
+			'capability'  => 'manage_awebooking',
 			'position'   => 53,
 			'function' => function() {
 				(new Admin_Welcome)->output();
@@ -24,6 +25,7 @@ class Admin_Menu extends Base_Admin_Menu {
 		$this->add_submenu( 'manager-awebooking', array(
 			'page_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
 			'menu_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
+			'capability'  => 'manage_awebooking',
 			'noheader'    => true,
 			'function' => function() {
 				(new Availability_Management)->output();
@@ -33,6 +35,7 @@ class Admin_Menu extends Base_Admin_Menu {
 		$this->add_submenu( 'manager-pricing', array(
 			'page_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
 			'menu_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
+			'capability'  => 'manage_awebooking',
 			'noheader'    => true,
 			'function' => function() {
 				(new Pricing_Management)->output();
@@ -42,6 +45,7 @@ class Admin_Menu extends Base_Admin_Menu {
 		$this->add_submenu( 'edit.php?post_type=awebooking', array(
 			'page_title'  => esc_html__( 'Booking', 'awebooking' ),
 			'menu_title'  => esc_html__( 'Booking', 'awebooking' ),
+			'capability'  => 'manage_awebooking',
 		));
 	}
 

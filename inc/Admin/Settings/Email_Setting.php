@@ -13,11 +13,14 @@ class Email_Setting extends Setting_Abstract {
 		$email = $this->settings->add_panel( 'email', [
 			'title'    => esc_html__( 'Email', 'awebooking' ),
 			'priority' => 30,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$email_general = $this->settings->add_section( 'email-general', [
 			'title'    => esc_html__( 'Email Sender', 'awebooking' ),
 			'priority' => 10,
+			'capability' => 'manage_awebooking',
+
 		])->as_child_of( $email );
 
 		$new_booking = $this->settings->add_section( 'email-new-booking', [
