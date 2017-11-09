@@ -200,21 +200,17 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	public static function create_roles() {
 		global $wp_roles;
 
-		if ( ! class_exists( 'WP_Roles' ) ) {
+		if ( ! class_exists( 'WP_Roles' ) || is_null( $wp_roles ) ) {
 			return;
 		}
 
-		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles();
-		}
-
 		// Hotel customer role: somebody who can only manage their profile, view and request some actions their booking.
-		add_role( 'awebooking_customer', __( 'Hotel customer', 'awebooking' ), [
-			'read' 					 => true,
+		add_role( 'awebooking_customer', esc_html__( 'Hotel Customer', 'awebooking' ), [
+			'read' => true,
 		] );
 
 		// Hotel receptionist: somebody who can view room types, services, amenities, manage to price, manage availability, assists guests making hotel reservations.
-		add_role( 'awebooking_receptionist', __( 'Hotel receptionist', 'awebooking' ), [
+		add_role( 'awebooking_receptionist', esc_html__( 'Hotel Receptionist', 'awebooking' ), [
 			'level_9'                => true,
 			'level_8'                => true,
 			'level_7'                => true,
@@ -245,7 +241,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 		}
 
 		// Hotel manager role: somebody who has access to all the AweBooking's features.
-		add_role( 'awebooking_manager', __( 'Hotel manager', 'awebooking' ), [
+		add_role( 'awebooking_manager', esc_html__( 'Hotel Manager', 'awebooking' ), [
 			'level_9'                => true,
 			'level_8'                => true,
 			'level_7'                => true,
@@ -303,12 +299,8 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	public static function remove_roles() {
 		global $wp_roles;
 
-		if ( ! class_exists( 'WP_Roles' ) ) {
+		if ( ! class_exists( 'WP_Roles' ) || is_null( $wp_roles ) ) {
 			return;
-		}
-
-		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles();
 		}
 
 		$receptionist_capabilities = static::get_core_receptionist_capabilities();
