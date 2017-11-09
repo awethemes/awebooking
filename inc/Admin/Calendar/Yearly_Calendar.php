@@ -166,7 +166,7 @@ class Yearly_Calendar {
 		?><div class="abkngcal-container" data-room="<?php echo esc_attr( $this->room->get_id() ) ?>">
 			<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>
 
-		<h2><span class="check-column"><input type="checkbox" name="bulk-update[]" value="%s" /></span> <?php echo $this->room->get_name(); ?> ( <?php echo esc_html( $room_type->get_title() ) ?> )</h2>
+		<h2><span class="check-column"><input type="checkbox" name="bulk-update[]" value="<?php echo esc_attr( $this->room->get_id() ) ?>" /></span> <?php echo $this->room->get_name(); ?> ( <?php echo esc_html( $room_type->get_title() ) ?> )</h2>
 
 		<table class="abkngcal abkngcal--yearly">
 

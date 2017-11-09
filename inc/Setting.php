@@ -143,7 +143,7 @@ class Setting extends WP_Option {
 	 * @return array
 	 */
 	public function get_booking_statuses() {
-		return apply_filters( 'awebooking/order_statuses', [
+		return apply_filters( 'awebooking/get_booking_statuses', [
 			Booking::PENDING    => _x( 'Pending',    'Booking status', 'awebooking' ),
 			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
 			Booking::COMPLETED  => _x( 'Completed',  'Booking status', 'awebooking' ),
