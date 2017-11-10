@@ -88,6 +88,25 @@ class Admin_Settings extends Admin_Page {
 	}
 
 	/**
+	 * Register settings notices for display.
+	 *
+	 * @param  int   $object_id Option key.
+	 * @param  array $updated   Array of updated fields.
+	 * @param  CMB2  $cmb2      CMB2 instance.
+	 *
+	 * @access private
+	 */
+	public function settings_notices( $object_id, $updated, $cmb2 ) {
+		parent::settings_notices( $object_id, $updated, $cmb2 );
+
+		// TODO: ...
+		$this->fields = [];
+		awebooking( 'setting' )->refresh();
+
+		$this->core_settings();
+	}
+
+	/**
 	 * Get a field object.
 	 *
 	 * @param  mixed           $field The field id or field config array or CMB2_Field object.
