@@ -10,7 +10,7 @@ class AddLineItem {
     this.$form.on('change', '#add_check_in_out_0', this.handleDateChanges.bind(this));
     this.$form.on('change', '#add_check_in_out_1', this.handleDateChanges.bind(this));
 
-    this.$form.on('change', '#add_adults, #add_children, [name="add_services\[\]"]', this.handleCalculateTotal.bind(this));
+    this.$form.on('change', '#add_adults, #add_children, #add_infants, [name="add_services\[\]"]', this.handleCalculateTotal.bind(this));
 
     $('button[type="submit"]', this.$form).prop('disabled', true);
     this.$form.on('submit', $.proxy(this.onSubmit, this));

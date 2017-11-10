@@ -57,7 +57,7 @@ class Setting extends WP_Option {
 	 * @return boolean
 	 */
 	public function get_children_bookable() {
-		return $this->get( 'children_bookable.enable', true );
+		return $this->get( 'children_bookable.enable' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Setting extends WP_Option {
 	 * @return boolean
 	 */
 	public function get_infants_bookable() {
-		return $this->get( 'infants_bookable.enable', false );
+		return $this->get( 'infants_bookable.enable' );
 	}
 
 	/**
