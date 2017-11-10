@@ -54,6 +54,7 @@ class Service extends WP_Object {
 		'operation'   => 'add',
 		'value'       => 0,
 		'type'        => 'optional',
+		'icon'        => '',
 	];
 
 	/**
@@ -65,6 +66,7 @@ class Service extends WP_Object {
 		'operation' => '_service_operation',
 		'value'     => '_service_value',
 		'type'      => '_service_type',
+		'icon'      => '_icon',
 	];
 
 	/**
@@ -142,6 +144,15 @@ class Service extends WP_Object {
 	 */
 	public function get_type() {
 		return apply_filters( $this->prefix( 'get_type' ), $this['type'], $this );
+	}
+
+	/**
+	 * Returns iconfont.
+	 *
+	 * @return array
+	 */
+	public function get_icon() {
+		return apply_filters( $this->prefix( 'get_icon' ), $this['icon'], $this );
 	}
 
 	/**
