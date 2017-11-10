@@ -5,6 +5,7 @@ use Skeleton\WP_Option;
 use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
 use AweBooking\Currency\Currency;
+use Illuminate\Support\Arr;
 
 class Setting extends WP_Option {
 	/**
@@ -42,12 +43,21 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Refresh the options.
+	 *
+	 * @return void
+	 */
+	public function refresh() {
+		$this->options = (array) get_option( $this->key, [] );
+	}
+
+	/**
 	 * Get children bookable
 	 *
 	 * @return boolean
 	 */
 	public function get_children_bookable() {
-		return $this->get( 'bookable.children.enable', true );
+		return $this->get( 'children_bookable.enable', true );
 	}
 
 	/**
@@ -56,7 +66,7 @@ class Setting extends WP_Option {
 	 * @return boolean
 	 */
 	public function get_infants_bookable() {
-		return $this->get( 'bookable.infants.enable', false );
+		return $this->get( 'infants_bookable.enable', false );
 	}
 
 	/**
@@ -66,7 +76,7 @@ class Setting extends WP_Option {
 	 * @return mixed|null
 	 */
 	public function get_default( $key ) {
-		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
+		return Arr::get( $this->defaults, $key );
 	}
 
 	public function get_date_format() {
@@ -192,9 +202,17 @@ class Setting extends WP_Option {
 	 */
 	protected function prepare_default_settings() {
 		$this->defaults = apply_filters( 'awebooking/default_settings', array(
-			'enable_location'          => false,
-			'bookable[children][enable]' => true,
-			'bookable[infants][enable]'  => false,
+			'enable_location'           => false,
+
+			'children_bookable'         => [
+				'enable'      => true,
+				'description' => esc_html__( 'Ages 2 - 12', 'awebooking' ),
+			],
+
+			'infants_bookable'          => [
+				'enable'      => false,
+				'description' => esc_html__( 'Under 2', 'awebooking' ),
+			],
 
 			// Currency and price format.
 			'currency'                 => 'USD',
@@ -228,7 +246,7 @@ class Setting extends WP_Option {
 			'email_complete_enable'       => true,
 
 			// Showing price.
-			'showing_price'			  => 'start_prices',
+			'showing_price'               => 'start_prices',
 		) );
 	}
 }

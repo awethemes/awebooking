@@ -46,41 +46,43 @@ class General_Setting extends Setting_Abstract {
 		) );
 
 		$section->add_field( array(
-			'id'       => 'bookable[children][enable]',
-			'type'     => 'checkbox',
+			'id'       => 'children_bookable[enable]',
+			'type'     => 'toggle',
 			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'bookable[children][enable]' ),
+			'default'  => awebooking( 'setting' )->get_default( 'children_bookable.enable' ),
 			'priority' => 20,
 			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
-		) );
+		));
 
 		$section->add_field( array(
 			'type'     => 'text',
-			'id'       => 'bookable[children][desc]',
+			'id'       => 'children_bookable[description]',
 			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'children_bookable.description' ),
 			'priority' => 21,
 			'attributes' => [
 				'placeholder' => esc_html__( 'Description', 'awebooking' ),
 			],
-			'deps'     => array( 'bookable[children][enable]', '==', true ),
+			'deps'     => array( 'children_bookable[enable]', '==', true ),
 			'show_on_cb' => '__return_false',
 		) );
 
 		$section->add_field( array(
-			'id'       => 'bookable[infants][enable]',
-			'type'     => 'checkbox',
+			'id'       => 'infants_bookable[enable]',
+			'type'     => 'toggle',
 			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'bookable[infants][enable]' ),
+			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable.enable' ),
 			'priority' => 22,
 			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
 		) );
 
 		$section->add_field( array(
 			'type'     => 'text',
-			'id'       => 'bookable[infants][desc]',
+			'id'       => 'infants_bookable[description]',
 			'name'     => esc_html__( 'Description', 'awebooking' ),
 			'priority' => 23,
-			'deps'     => array( 'bookable[infants][enable]', '==', true ),
+			'deps'     => array( 'infants_bookable[enable]', '==', true ),
+			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable.description' ),
 			'attributes' => [
 				'placeholder' => esc_html__( 'Description', 'awebooking' ),
 			],
@@ -157,18 +159,16 @@ class General_Setting extends Setting_Abstract {
 	 */
 	public function _children_able_field_callback( $field_args, $field ) {
 		$cmb2 = $field->get_cmb();
-		$children_desc = $cmb2->get_field( 'bookable[children][desc]' );
+		$children_description = $cmb2->get_field( 'children_bookable[description]' );
 
-		echo '<div class="skeleton-input-group">';
 		skeleton_render_field( $field );
-		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+
+		echo '<div data-fieldtype="input" data-deps="children_bookable[enable]" data-deps-condition="==" data-deps-value="1" style="display: none">';
+		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Ages 2 - 12.', 'awebooking' ), '</p>';
+		$children_description->render();
 		echo '</div>';
 
-		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[children][enable]" data-deps-condition="==" data-deps-value="1">';
-		$children_desc->render();
-		echo '</div>';
-
-		$children_desc->errors();
+		$children_description->errors();
 	}
 
 	/**
@@ -178,17 +178,15 @@ class General_Setting extends Setting_Abstract {
 	 */
 	public function _infants_able_field_callback( $field_args, $field ) {
 		$cmb2 = $field->get_cmb();
-		$infants_desc = $cmb2->get_field( 'bookable[infants][desc]' );
+		$infants_description = $cmb2->get_field( 'infants_bookable[description]' );
 
-		echo '<div class="skeleton-input-group">';
 		skeleton_render_field( $field );
-		echo '<span>' . esc_html__( 'Enable?', 'awebooking' ) . '</span>';
+
+		echo '<div data-fieldtype="input" data-deps="infants_bookable[enable]" data-deps-condition="==" data-deps-value="1" style="display: none">';
+		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Under 2.', 'awebooking' ), '</p>';
+		$infants_description->render();
 		echo '</div>';
 
-		echo '<div style="margin-top:15px;" data-fieldtype="input" data-deps="bookable[infants][enable]" data-deps-condition="==" data-deps-value="1">';
-		$infants_desc->render();
-		echo '</div>';
-
-		$infants_desc->errors();
+		$infants_description->errors();
 	}
 }

@@ -12,7 +12,7 @@ class Check_Availability_Test extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		awebooking( 'setting' )->set( 'bookable.infants.enable', true );
+		awebooking( 'setting' )->set( 'infants_bookable.enable', true );
 
 		$luxury = new Room_Type;
 		$luxury['title'] = 'Luxury';
