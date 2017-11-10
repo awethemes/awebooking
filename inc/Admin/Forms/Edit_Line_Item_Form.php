@@ -58,14 +58,27 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			'sanitization_cb'  => 'absint',
 		]);
 
-		$this->add_field([
-			'id'              => 'edit_children',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Number of children', 'awebooking' ),
-			'default'         => 0,
-			'validate'        => 'required|numeric|min:0',
-			'sanitization_cb' => 'absint',
-		]);
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$this->add_field([
+				'id'              => 'edit_children',
+				'type'            => 'select',
+				'name'            => esc_html__( 'Number of children', 'awebooking' ),
+				'default'         => 0,
+				'validate'        => 'required|numeric|min:0',
+				'sanitization_cb' => 'absint',
+			]);
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$this->add_field([
+				'id'              => 'edit_infants',
+				'type'            => 'select',
+				'name'            => esc_html__( 'Number of infants', 'awebooking' ),
+				'default'         => 0,
+				'validate'        => 'required|numeric|min:0',
+				'sanitization_cb' => 'absint',
+			]);
+		}
 
 		$this->add_field([
 			'id'              => 'edit_services',
@@ -100,7 +113,17 @@ class Edit_Line_Item_Form extends Form_Abstract {
 		$line_item = $this->line_item;
 		$room_type = $this->line_item->get_room_unit()->get_room_type();
 
-		foreach ( [ 'edit_adults', 'edit_children', 'edit_total' ] as $key ) {
+		$item_keys = [ 'edit_adults', 'edit_total' ];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$item_keys[] = 'edit_children';
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$item_keys[] = 'edit_infants';
+		}
+
+		foreach ( $item_keys as $key ) {
 			if ( isset( $sanitized[ $key ] ) ) {
 				$item_key = str_replace( 'edit_', '', $key );
 				$line_item[ $item_key ] = $sanitized[ $key ];
@@ -192,15 +215,26 @@ class Edit_Line_Item_Form extends Form_Abstract {
 
 		$room_type = $this->line_item->get_room_unit()->get_room_type();
 		$a = range( 1, $room_type->get_allowed_adults() );
-		$b = range( 0, $room_type->get_allowed_children() );
 
 		$this['edit_adults']
 			->set_value( $this->line_item->get_adults() )
 			->set_prop( 'options', array_combine( $a, $a ) );
 
-		$this['edit_children']
-			->set_value( $this->line_item->get_children() )
-			->set_prop( 'options', array_combine( $b, $b ) );
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$b = range( 0, $room_type->get_allowed_children() );
+
+			$this['edit_children']
+				->set_value( $this->line_item->get_children() )
+				->set_prop( 'options', array_combine( $b, $b ) );
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$c = range( 0, $room_type->get_allowed_infants() );
+
+			$this['edit_infants']
+				->set_value( $this->line_item->get_infants() )
+				->set_prop( 'options', array_combine( $c, $c ) );
+		}
 
 		$current_services = $this->line_item->get_booking()
 			->get_service_items()

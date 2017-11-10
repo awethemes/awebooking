@@ -230,12 +230,21 @@ class Concierge {
 	 * @return array
 	 */
 	public static function check_availability( Request $request ) {
-		$query = Room_Type::query([
+		$query_args = [
 			'booking_adults'   => $request->get_adults(),
-			'booking_children' => $request->get_children(),
 			'booking_nights'   => $request->get_nights(),
 			'hotel_location'   => $request->get_request( 'location' ),
-		]);
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$query_args['booking_children'] = $request->get_children();
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$query_args['booking_infants'] = $request->get_infants();
+		}
+
+		$query = Room_Type::query( $query_args );
 
 		$room_type_ids = wp_list_pluck( $query->posts, 'ID' );
 		$rooms = Room::get_by_room_type( $room_type_ids );
@@ -261,12 +270,21 @@ class Concierge {
 	 * @return Availability
 	 */
 	public static function check_room_type_availability( Room_Type $room_type, Request $request ) {
-		$found = Room_Type::query([
+		$query_args = [
 			'booking_adults'   => $request->get_adults(),
-			'booking_children' => $request->get_children(),
 			'booking_nights'   => $request->get_nights(),
 			'post__in'         => [ $room_type->get_id() ],
-		]);
+		];
+
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$query_args['booking_children'] = $request->get_children();
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$query_args['booking_infants'] = $request->get_infants();
+		}
+
+		$found = Room_Type::query( $query_args );
 
 		$room_type_array = isset( $found->posts[0] ) ? $found->posts[0] : null;
 		if ( empty( $room_type_array ) ) {

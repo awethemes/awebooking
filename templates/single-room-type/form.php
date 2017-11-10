@@ -15,8 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $page_id = get_the_ID();
 
+$form_classes = apply_filters( 'awebooking/check_availability_form_classes', array(
+	'awebooking-check-form',
+	'awebooking-check-form--vertical',
+	awebooking( 'setting' )->get_children_bookable() ? 'has-children' : '',
+	awebooking( 'setting' )->get_infants_bookable() ? 'has-infants' : '',
+) );
 ?>
-<form action="<?php echo esc_url( get_the_permalink() ); ?>" class="awebooking-check-form" method="POST">
+<form action="<?php echo esc_url( get_the_permalink() ); ?>" class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $form_classes ) ) ); ?>" method="POST">
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( $page_id ) ?>">
 	<?php endif ?>
@@ -46,39 +52,50 @@ $page_id = get_the_ID();
 				</div>
 			</div>
 
-			<?php if ( $max_adults || $max_children ) : ?>
-			<div class="list-room">
-				<div class="awebooking-sidebar-group">
-					<?php if ( $max_adults ) : ?>
-					<div class="awebooking-field awebooking-adults-field">
-						<label for=""><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
-						<div class="awebooking-field-group">
-							<i class="awebookingf awebookingf-select"></i>
-							<select name="adults" class="awebooking-select">
-								<?php for ( $i = 1; $i <= $max_adults; $i++ ) : ?>
-								<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['adults'] ) ? selected( $_GET['adults'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
-								<?php endfor; ?>
-							</select>
-						</div>
+			<div class="awebooking-sidebar-group">
+				<?php if ( $max_adults ) : ?>
+				<div class="awebooking-field awebooking-adults-field">
+					<label for=""><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
+					<div class="awebooking-field-group">
+						<i class="awebookingf awebookingf-select"></i>
+						<select name="adults" class="awebooking-select">
+							<?php for ( $i = 1; $i <= $max_adults; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['adults'] ) ? selected( $_GET['adults'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
 					</div>
-					<?php endif; ?>
-
-					<?php if ( $max_children ) : ?>
-					<div class="awebooking-field awebooking-children-field">
-						<label for=""><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
-						<div class="awebooking-field-group">
-							<i class="awebookingf awebookingf-select"></i>
-							<select name="children" class="awebooking-select">
-								<?php for ( $i = 0; $i <= $max_children; $i++ ) : ?>
-								<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['children'] ) ? selected( $_GET['children'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
-								<?php endfor; ?>
-							</select>
-						</div>
-					</div>
-					<?php endif; ?>
 				</div>
+				<?php endif; ?>
+
+				<?php if ( awebooking( 'setting' )->get_children_bookable() && $max_children ) : ?>
+				<div class="awebooking-field awebooking-children-field">
+					<label for=""><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
+					<div class="awebooking-field-group">
+						<i class="awebookingf awebookingf-select"></i>
+						<select name="children" class="awebooking-select">
+							<?php for ( $i = 0; $i <= $max_children; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['children'] ) ? selected( $_GET['children'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+					</div>
+				</div>
+				<?php endif; ?>
+
+				<?php if ( awebooking( 'setting' )->get_infants_bookable() && $max_infants ) : ?>
+				<div class="awebooking-field awebooking-infants-field">
+					<label for=""><?php esc_html_e( 'Infants', 'awebooking' ); ?></label>
+					<div class="awebooking-field-group">
+						<i class="awebookingf awebookingf-select"></i>
+						<select name="infants" class="awebooking-select">
+							<?php for ( $i = 0; $i <= $max_infants; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>" <?php echo isset( $_GET['infants'] ) ? selected( $_GET['infants'], $i, false ) : ''; ?>><?php echo esc_attr( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+					</div>
+				</div>
+				<?php endif; ?>
 			</div>
-			<?php endif; ?>
+
 			<input type="hidden" name="room-type" value="<?php echo get_the_ID() ?>">
 
 			<div class="awebooking-field mb-0">

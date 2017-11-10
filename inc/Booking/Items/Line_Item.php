@@ -25,6 +25,7 @@ class Line_Item extends Booking_Item {
 		'check_out'    => '',
 		'adults'       => 0,
 		'children'     => 0,
+		'infants'      => 0,
 		'subtotal'     => 0, // Pre-discount.
 		'total'        => 0,
 	];
@@ -38,6 +39,7 @@ class Line_Item extends Booking_Item {
 		'room_id'  => 'int',
 		'adults'   => 'int',
 		'children' => 'int',
+		'infants'  => 'int',
 		'subtotal' => 'float',
 		'total'    => 'float',
 	];
@@ -51,6 +53,7 @@ class Line_Item extends Booking_Item {
 		'room_id'   => '_room_id',
 		'adults'    => '_adults',
 		'children'  => '_children',
+		'infants'   => '_infants',
 		'check_in'  => '_check_in',
 		'check_out' => '_check_out',
 		'subtotal'  => '_line_subtotal',
@@ -161,6 +164,15 @@ class Line_Item extends Booking_Item {
 	}
 
 	/**
+	 * Returns number infants of line item.
+	 *
+	 * @return int
+	 */
+	public function get_infants() {
+		return apply_filters( $this->prefix( 'get_infants' ), $this['infants'], $this );
+	}
+
+	/**
 	 * Gets subtotal.
 	 *
 	 * @return float
@@ -238,6 +250,14 @@ class Line_Item extends Booking_Item {
 				' &amp; <span class="">%1$d %2$s</span>',
 				$this->get_children(),
 				_n( 'child', 'children', $this->get_children(), 'awebooking' )
+			);
+		}
+
+		if ( $this['infants'] ) {
+			$html .= sprintf(
+				' &amp; <span class="">%1$d %2$s</span>',
+				$this->get_infants(),
+				_n( 'infant', 'infants', $this->get_infants(), 'awebooking' )
 			);
 		}
 

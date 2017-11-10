@@ -32,6 +32,12 @@
       display: none;
     }
 
+    .awebooking-service__icon {
+      display: inline-block;
+      width: 50px;
+      vertical-align: middle;
+    }
+
     .awebooking-service__content {
       font-size: 14px;
       padding-left: 0;
@@ -55,4 +61,19 @@
   .awebooking-room-type__price {
     display: none;
   }
+}
+
+.awebooking-amenities__title {
+  display: inline-block;
+}
+
+.entry-content .awebooking-amenities__title {
+  margin-top: 0;
+}
+
+.awebooking-amenities__icon {
+  vertical-align: middle;
+  display: inline-block;
+  width: 25px;
+  margin-right: 5px;
 }

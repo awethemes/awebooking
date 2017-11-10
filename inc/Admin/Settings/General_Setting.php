@@ -13,6 +13,7 @@ class General_Setting extends Setting_Abstract {
 		$section = $this->settings->add_section( 'general', [
 			'title' => esc_html__( 'General', 'awebooking' ),
 			'priority' => 10,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$section->add_field( array(
@@ -42,6 +43,50 @@ class General_Setting extends Setting_Abstract {
 			'validate' => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
 			'priority' => 15,
+		) );
+
+		$section->add_field( array(
+			'id'       => 'children_bookable[enable]',
+			'type'     => 'toggle',
+			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'children_bookable.enable' ),
+			'priority' => 20,
+			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
+		));
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'children_bookable[description]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'children_bookable.description' ),
+			'priority' => 21,
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'deps'     => array( 'children_bookable[enable]', '==', true ),
+			'show_on_cb' => '__return_false',
+		) );
+
+		$section->add_field( array(
+			'id'       => 'infants_bookable[enable]',
+			'type'     => 'toggle',
+			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
+			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable.enable' ),
+			'priority' => 22,
+			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
+		) );
+
+		$section->add_field( array(
+			'type'     => 'text',
+			'id'       => 'infants_bookable[description]',
+			'name'     => esc_html__( 'Description', 'awebooking' ),
+			'priority' => 23,
+			'deps'     => array( 'infants_bookable[enable]', '==', true ),
+			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable.description' ),
+			'attributes' => [
+				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+			],
+			'show_on_cb' => '__return_false',
 		) );
 
 		$section->add_field( array(
@@ -105,5 +150,43 @@ class General_Setting extends Setting_Abstract {
 			),
 			'priority' => 45,
 		) );
+	}
+
+	/**
+	 * Children bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _children_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$children_description = $cmb2->get_field( 'children_bookable[description]' );
+
+		skeleton_render_field( $field );
+
+		echo '<div data-fieldtype="input" data-deps="children_bookable[enable]" data-deps-condition="==" data-deps-value="1" style="display: none">';
+		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Ages 2 - 12.', 'awebooking' ), '</p>';
+		$children_description->render();
+		echo '</div>';
+
+		$children_description->errors();
+	}
+
+	/**
+	 * Infants bookable callback.
+	 *
+	 * @return void
+	 */
+	public function _infants_able_field_callback( $field_args, $field ) {
+		$cmb2 = $field->get_cmb();
+		$infants_description = $cmb2->get_field( 'infants_bookable[description]' );
+
+		skeleton_render_field( $field );
+
+		echo '<div data-fieldtype="input" data-deps="infants_bookable[enable]" data-deps-condition="==" data-deps-value="1" style="display: none">';
+		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Under 2.', 'awebooking' ), '</p>';
+		$infants_description->render();
+		echo '</div>';
+
+		$infants_description->errors();
 	}
 }

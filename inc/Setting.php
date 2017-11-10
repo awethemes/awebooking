@@ -5,6 +5,7 @@ use Skeleton\WP_Option;
 use AweBooking\Hotel\Service;
 use AweBooking\Booking\Booking;
 use AweBooking\Currency\Currency;
+use Illuminate\Support\Arr;
 
 class Setting extends WP_Option {
 	/**
@@ -42,13 +43,40 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Refresh the options.
+	 *
+	 * @return void
+	 */
+	public function refresh() {
+		$this->options = (array) get_option( $this->key, [] );
+	}
+
+	/**
+	 * Get children bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_children_bookable() {
+		return $this->get( 'children_bookable.enable' );
+	}
+
+	/**
+	 * Get infants bookable
+	 *
+	 * @return boolean
+	 */
+	public function get_infants_bookable() {
+		return $this->get( 'infants_bookable.enable' );
+	}
+
+	/**
 	 * Get default setting by key ID.
 	 *
 	 * @param  string $key Default setting key.
 	 * @return mixed|null
 	 */
 	public function get_default( $key ) {
-		return isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null;
+		return Arr::get( $this->defaults, $key );
 	}
 
 	public function get_date_format() {
@@ -174,7 +202,17 @@ class Setting extends WP_Option {
 	 */
 	protected function prepare_default_settings() {
 		$this->defaults = apply_filters( 'awebooking/default_settings', array(
-			'enable_location'          => false,
+			'enable_location'           => false,
+
+			'children_bookable'         => [
+				'enable'      => true,
+				'description' => esc_html__( 'Ages 2 - 12', 'awebooking' ),
+			],
+
+			'infants_bookable'          => [
+				'enable'      => false,
+				'description' => esc_html__( 'Under 2', 'awebooking' ),
+			],
 
 			// Currency and price format.
 			'currency'                 => 'USD',
@@ -189,6 +227,7 @@ class Setting extends WP_Option {
 			'page_checkout'            => 0,
 			'check_availability_max_adults'   => 7,
 			'check_availability_max_children' => 6,
+			'check_availability_max_infants'  => 6,
 
 			'email_from_name'           => '@' . get_option( 'blogname' ),
 			'email_from_address'        => get_option( 'admin_email' ),
@@ -207,7 +246,7 @@ class Setting extends WP_Option {
 			'email_complete_enable'       => true,
 
 			// Showing price.
-			'showing_price'			  => 'start_prices',
+			'showing_price'               => 'start_prices',
 		) );
 	}
 }

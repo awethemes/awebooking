@@ -45,6 +45,10 @@ $room_type = $cart_item->model();
 						if ( $booking_request->get_children() ) {
 							printf( _nx( ' & %s child', ' & %s children', (int) $booking_request->get_children(), 'child(ren) information', 'awebooking' ), number_format_i18n( (int) $booking_request->get_children() ) ); // WPCS: xss ok.
 						}
+
+						if ( $booking_request->get_infants() ) {
+							printf( _nx( ' & %s infant', ' & %s infants', (int) $booking_request->get_infants(), 'infant(s) information', 'awebooking' ), number_format_i18n( (int) $booking_request->get_infants() ) ); // WPCS: xss ok.
+						}
 					?>
 					</td>
 					<td><?php print $room_type->get_buyable_price( $cart_item->options ); // WPCS: xss ok. ?></td>
@@ -122,6 +126,7 @@ $room_type = $cart_item->model();
 			<input type="hidden" name="end-date" value="<?php echo esc_attr( $booking_request->get_check_out()->format( 'Y-m-d' ) ); ?>">
 			<input type="hidden" name="children" value="<?php echo esc_attr( $booking_request->get_children() ); ?>">
 			<input type="hidden" name="adults" value="<?php echo esc_attr( $booking_request->get_adults() ); ?>">
+			<input type="hidden" name="infants" value="<?php echo esc_attr( $booking_request->get_infants() ); ?>">
 
 			<?php wp_nonce_field( 'awebooking-edit-booking-nonce' ); ?>
 		</form>

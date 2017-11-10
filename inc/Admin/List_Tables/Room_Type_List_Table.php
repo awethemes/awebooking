@@ -107,6 +107,13 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 						_n( 'child', 'children', $room_type->get_number_children(), 'awebooking' )
 					);
 				}
+
+				if ( $room_type['number_infants'] ) {
+					printf( ' &amp; <span class="">%1$d %2$s</span>',
+						$room_type->get_number_infants(),
+						_n( 'infant', 'infants', $room_type->get_number_infants(), 'awebooking' )
+					);
+				}
 				break;
 
 			case 'location':

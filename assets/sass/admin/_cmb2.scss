@@ -116,3 +116,9 @@ select[name="booking_customer"] {
     margin-right: 5px;
   }
 }
+
+.cmb-row[data-fieldtype="checkbox"] label > span.cmb2-metabox-description {
+  color: inherit;
+  font-style: normal;
+  display: inline-block !important;
+}

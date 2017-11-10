@@ -10,6 +10,14 @@ use AweBooking\Admin\Settings\General_Setting;
 use AweBooking\Admin\Settings\Display_Setting;
 
 class Admin_Settings extends Admin_Page {
+
+	/**
+	 * Capability needed to view the page menu item.
+	 *
+	 * @var string
+	 */
+	public $capability = 'manage_awebooking_settings';
+
 	/**
 	 * Make a new page settings.
 	 */
@@ -72,10 +80,30 @@ class Admin_Settings extends Admin_Page {
 			'page_title'  => $this->page_title,
 			'menu_title'  => $this->menu_title,
 			'function'    => $this->render_callback,
+			'capability'  => $this->capability,
 		));
 
 		// Hook in our save notices.
 		add_action( "cmb2_save_options-page_fields_{$this->prop( 'id' )}", array( $this, 'settings_notices' ), 10, 3 );
+	}
+
+	/**
+	 * Register settings notices for display.
+	 *
+	 * @param  int   $object_id Option key.
+	 * @param  array $updated   Array of updated fields.
+	 * @param  CMB2  $cmb2      CMB2 instance.
+	 *
+	 * @access private
+	 */
+	public function settings_notices( $object_id, $updated, $cmb2 ) {
+		parent::settings_notices( $object_id, $updated, $cmb2 );
+
+		// TODO: ...
+		$this->fields = [];
+		awebooking( 'setting' )->refresh();
+
+		$this->core_settings();
 	}
 
 	/**

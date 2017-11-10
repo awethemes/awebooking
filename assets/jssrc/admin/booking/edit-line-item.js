@@ -13,7 +13,7 @@ class EditLineItem {
     $('.js-edit-line-item').on('click', this.openPopup.bind(this));
 
     this.$popup.on(
-      'change', '#edit_adults, #edit_children, #edit_check_in_out_0, #edit_check_in_out_1, [name="edit_services\[\]"]',
+      'change', '#edit_adults, #edit_children, #edit_infants, #edit_check_in_out_0, #edit_check_in_out_1, [name="edit_services\[\]"]',
       _.debounce(this.handleCalculateTotal.bind(this), 250)
     );
   }

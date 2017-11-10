@@ -27,6 +27,16 @@ $heading = esc_html( apply_filters( 'awebooking/room_type_extra_services_heading
 	<div class="awebooking-service__item">
 		<input type="checkbox" id="extra_id_<?php echo esc_attr( $service->get_id() ); ?>" <?php echo esc_attr( $mandatory ); ?> name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>">
 
+		<?php if ( $icon = $service->get_icon() ) : ?>
+			<span class="awebooking-service__icon">
+				<?php if ( 'svg' === $icon['type'] || 'image' === $icon['type'] ) : ?>
+					<?php echo wp_get_attachment_image( $icon['icon'] ); ?>
+				<?php else : ?>
+					<i class="<?php echo esc_attr( $icon['type'] . ' ' . $icon['icon'] ); ?>"></i>
+				<?php endif; ?>
+			</span>
+		<?php endif; ?>
+
 		<label for="extra_id_<?php echo esc_attr( $service->get_id() ); ?>"><?php echo esc_html( $service->get_name() ) ?></label>
 		<span><?php print $service->get_describe(); // WPCS: xss ok.?> <?php echo ( 'mandatory' === $service->get_type() ) ? '(*' . esc_html__( 'mandatory', 'awebooking' ) . ')' : '';?></span>
 

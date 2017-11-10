@@ -13,6 +13,7 @@ class Display_Setting extends Setting_Abstract {
 		$display = $this->settings->add_section( 'display', [
 			'title' => esc_html__( 'Display', 'awebooking' ),
 			'priority' => 20,
+			'capability' => 'manage_awebooking',
 		]);
 
 		$display->add_field( array(
@@ -77,16 +78,31 @@ class Display_Setting extends Setting_Abstract {
 			'sanitization_cb' => 'absint',
 		) );
 
-		$display->add_field( array(
-			'id'         => 'check_availability_max_children',
-			'type'       => 'text_small',
-			'attributes' => array( 'type' => 'number' ),
-			'name'       => esc_html__( 'Max children', 'awebooking' ),
-			'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_children' ),
-			'validate'   => 'integer|min:0',
-			'priority'   => 35,
-			'sanitization_cb' => 'absint',
-		) );
+		if ( awebooking( 'setting' )->get_children_bookable() ) {
+			$display->add_field( array(
+				'id'         => 'check_availability_max_children',
+				'type'       => 'text_small',
+				'attributes' => array( 'type' => 'number' ),
+				'name'       => esc_html__( 'Max children', 'awebooking' ),
+				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_children' ),
+				'validate'   => 'integer|min:0',
+				'priority'   => 35,
+				'sanitization_cb' => 'absint',
+			) );
+		}
+
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			$display->add_field( array(
+				'id'         => 'check_availability_max_infants',
+				'type'       => 'text_small',
+				'attributes' => array( 'type' => 'number' ),
+				'name'       => esc_html__( 'Max infants', 'awebooking' ),
+				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_infants' ),
+				'validate'   => 'integer|min:0',
+				'priority'   => 36,
+				'sanitization_cb' => 'absint',
+			) );
+		}
 
 		$display->add_field( array(
 			'id'   => 'page_for_check_availability',
