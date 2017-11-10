@@ -18,6 +18,15 @@ class Service_Metabox extends Taxonomy_Metabox {
 	 * @return void
 	 */
 	public function register() {
+
+		if ( function_exists( 'wp_simple_iconfonts' ) ) {
+			$this->add_field([
+				'name'      => esc_html__( 'Icon', 'awebooking' ),
+				'id'        => '_icon',
+				'type'      => 'simple_iconfonts',
+			]);
+		}
+
 		$this->add_field([
 			'name'            => esc_html__( 'Operation', 'awebooking' ),
 			'id'              => '_service_operation',

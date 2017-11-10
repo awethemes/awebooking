@@ -57,6 +57,7 @@ class Admin_Hooks extends Service_Hooks {
 		new Metaboxes\Booking_Metabox;
 		new Metaboxes\Service_Metabox;
 		new Metaboxes\Room_Type_Metabox;
+		new Metaboxes\Amenity_Metabox;
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_notices', [ $awebooking['admin_notices'], 'display' ] );
