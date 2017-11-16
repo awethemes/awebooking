@@ -15,6 +15,9 @@ class Installer {
 		'3.0.0-beta10' => array(
 			'awebooking_update_300_beta10_fix_db_types',
 		),
+		'3.0.0-beta12' => array(
+			'awebooking_update_300_beta12_change_settings',
+		),
 	];
 
 	/**

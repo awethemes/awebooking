@@ -57,7 +57,7 @@ class Setting extends WP_Option {
 	 * @return boolean
 	 */
 	public function get_children_bookable() {
-		return $this->get( 'children_bookable.enable' );
+		return $this->get( 'children_bookable' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Setting extends WP_Option {
 	 * @return boolean
 	 */
 	public function get_infants_bookable() {
-		return $this->get( 'infants_bookable.enable' );
+		return $this->get( 'infants_bookable' );
 	}
 
 	/**
@@ -204,15 +204,10 @@ class Setting extends WP_Option {
 		$this->defaults = apply_filters( 'awebooking/default_settings', array(
 			'enable_location'           => false,
 
-			'children_bookable'         => [
-				'enable'      => true,
-				'description' => esc_html__( 'Ages 2 - 12', 'awebooking' ),
-			],
-
-			'infants_bookable'          => [
-				'enable'      => false,
-				'description' => esc_html__( 'Under 2', 'awebooking' ),
-			],
+			'children_bookable'             => true,
+			'children_bookable_description' => esc_html__( 'Ages 2 - 12', 'awebooking' ),
+			'infants_bookable'              => false,
+			'infants_bookable_description'  => esc_html__( 'Under 2', 'awebooking' ),
 
 			// Currency and price format.
 			'currency'                 => 'USD',
