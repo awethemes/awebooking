@@ -191,11 +191,11 @@ class Factory {
 			$booking_requests['adults'] = absint( $booking_requests['adults'] );
 		}
 
-		if ( ! is_null( $booking_requests['children'] ) ) {
+		if ( ! empty( $booking_requests['children'] ) ) {
 			$booking_requests['children'] = absint( $booking_requests['children'] );
 		}
 
-		if ( ! is_null( $booking_requests['infants'] ) ) {
+		if ( ! empty( $booking_requests['infants'] ) ) {
 			$booking_requests['infants'] = absint( $booking_requests['infants'] );
 		}
 
