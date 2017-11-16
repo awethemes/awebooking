@@ -3,9 +3,9 @@ Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
-Tested up to:      4.8.1
+Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta11
+Stable tag:        3.0.0-beta12
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,13 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.0-beta12] - [2017-10-16]
+#### Changes
+- Compatibility WordPress 4.9
+
+#### Fixed
+- Minor bugs fixed
+
 ### [3.0.0-beta11] - [2017-10-11]
 #### Added
 - Added "Infants" in guest booking.
