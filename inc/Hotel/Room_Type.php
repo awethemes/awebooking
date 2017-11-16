@@ -175,7 +175,7 @@ class Room_Type extends WP_Object implements Buyable {
 	 */
 	protected function setup() {
 		$this['title']             = $this->instance->post_title;
-		$this['slug']              = $this->instance->post_title;
+		$this['slug']              = $this->instance->post_name;
 		$this['status']            = $this->instance->post_status;
 		$this['description']       = $this->instance->post_content;
 		$this['short_description'] = $this->instance->post_excerpt;
