@@ -205,7 +205,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$this['add_children']->hide();
 		}
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->get_infants_bookable() ) {
 			$this['add_infants']->hide();
 		}
 
