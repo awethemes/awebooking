@@ -113,8 +113,8 @@ class Admin_Settings extends Admin_Page {
 	 * @param  CMB2_Field|null $group Optional, CMB2_Field object (group parent).
 	 * @return Field_Proxy|null
 	 */
-	public function get_field( $field, $group = null ) {
-		$field = parent::get_field( $field, $group );
+	public function get_field( $field, $group = null, $reset_cached = false ) {
+		$field = parent::get_field( $field, $group, $reset_cached );
 
 		return $field ? new Field_Proxy( $this, $field ) : null;
 	}
