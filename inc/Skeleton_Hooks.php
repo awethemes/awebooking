@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking;
 
+use Skeleton\Skeleton;
 use Valitron\Validator;
 use AweBooking\Support\Service_Hooks;
 use AweBooking\Admin\Fields\Date_Range_Field;
@@ -22,8 +23,9 @@ class Skeleton_Hooks extends Service_Hooks {
 	public function register( $container ) {
 		$this->register_validator_rules();
 
-		skeleton()->get_fields()->register_field( 'date_range', Date_Range_Field::class );
-		skeleton()->get_fields()->register_field( 'awebooking_services', Service_List_Field::class );
+		$fields = Skeleton::get_instance()->get_fields();
+		$fields->register_field( 'date_range', Date_Range_Field::class );
+		$fields->register_field( 'awebooking_services', Service_List_Field::class );
 	}
 
 	/**
