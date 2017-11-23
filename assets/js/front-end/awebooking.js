@@ -55,19 +55,21 @@
     },
 
     datePickerCallBack: function() {
-        var start_date = $("#start-date");
-        var start_date_val = start_date.val();
-        var end_date = $("#end-date");
-        var end_date_val = end_date.val();
-        if ( start_date_val ) {
-          var valid_start_date = new Date(start_date_val);
+      $('[data-init="datepicker"]').each(function () {
+        var el = $(this);
+        var start_date = el.parents('form').find('input[name="start-date"]').val(),
+            end_date = el.parents('form').find('input[name="end-date"]').val();
+
+        if ( start_date ) {
+          var valid_start_date = new Date(start_date);
           $(".awebooking-start-date").datepicker('setDate', valid_start_date)
         }
 
-        if ( end_date_val ) {
-          var valid_end_date = new Date(end_date_val);
+        if ( end_date ) {
+          var valid_end_date = new Date(end_date);
           $(".awebooking-end-date").datepicker('setDate', valid_end_date)
         }
+      });
     },
 
     tabsAweBooking: function() {
