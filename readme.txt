@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.0.0-beta12
+Stable tag:        3.0.0-beta13
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,14 +67,21 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
-### [3.0.0-beta12] - [2017-10-16]
+### [3.0.0-beta13] - [2017-11-23]
+#### Changes
+- Update Skeleton v1.1
+
+#### Fixed
+- Fixed datepicker not work in some case.
+
+### [3.0.0-beta12] - [2017-11-16]
 #### Changes
 - Compatibility WordPress 4.9
 
 #### Fixed
 - Minor bugs fixed
 
-### [3.0.0-beta11] - [2017-10-11]
+### [3.0.0-beta11] - [2017-11-11]
 #### Added
 - Added "Infants" in guest booking.
 - Added Roles: "Hotel Customer", "Hotel Receptionist", "Hotel Manager".
@@ -88,11 +95,11 @@ If you have 2.x version, please do not upgrade to this version.
 - Fixed setting not updated when hit save button.
 - Minor bugs fixed
 
-### [3.0.0-beta10] - [2017-31-10]
+### [3.0.0-beta10] - [2017-10-31]
 #### Fixed
 - Minor bugs fixed
 
-### [3.0.0-beta9] - [2017-19-10]
+### [3.0.0-beta9] - [2017-10-19]
 #### Added
 - Added Spanish (Argentina) language, thanks @bicho44.
 - Added missing "processing" email template, fixed [#43](https://github.com/awethemes/awebooking/issues/43)
