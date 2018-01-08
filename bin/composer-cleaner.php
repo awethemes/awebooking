@@ -20,6 +20,9 @@ class AweBooking_Composer_Cleaner extends Composer_Cleaner {
 		$rules['pelago/emogrifier'] = [ $docs, $tests, 'Configuration', 'CODE_OF_CONDUCT.md' ];
 		$rules['tightenco/collect'] = [ $docs, $tests, 'collect-logo.png', 'composer.lock' ];
 		$rules['ericmann/wp-session-manager'] = [ $docs, $tests ];
+		$rules['nikic/fast-route'] = [ $docs, $tests, 'FastRoute.hhi', '.hhconfig' ];
+		$rules['symfony/http-foundation'] = [ $docs, $tests ];
+		$rules['symfony/translation'] = [ $docs, $tests ];
 
 		return $rules;
 	}
