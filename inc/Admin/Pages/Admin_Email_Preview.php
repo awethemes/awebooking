@@ -70,9 +70,7 @@ class Admin_Email_Preview {
 	 * Output the content for the current status.
 	 */
 	public function get_content_email_template() {
-		echo '<div class="awebooking-email-preview">';
 		call_user_func( $this->statuses[ $this->status ]['view'], $this );
-		echo '</div>';
 	}
 
 	/**

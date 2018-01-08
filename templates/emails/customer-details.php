@@ -15,6 +15,7 @@ $customer_email       = $booking->get_customer_email();
 $customer_phone       = $booking['customer_phone'];
 $customer_company     = $booking->get_customer_company();
 $customer_note        = $booking['customer_note'];
+
 ?>
 <h2><?php esc_html_e( 'Customer details', 'awebooking' ); ?></h2>
 

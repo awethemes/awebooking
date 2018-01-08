@@ -10,8 +10,6 @@
  */
 
 $booking_id           = $booking->get_id();
-$booking              = $booking;
-$booking_room_units   = $booking->get_line_items();
 $total_price          = (string) $booking->get_total();
 ?>
 <div class="table">
@@ -22,12 +20,11 @@ $total_price          = (string) $booking->get_total();
 				<th style="text-align: left;"><?php esc_html_e( 'Nights', 'awebooking' ); ?></th>
 				<th style="text-align: right;"><?php esc_html_e( 'Guest', 'awebooking' ); ?></th>
 			</tr>
-
 		</thead>
 	</table>
 </div>
 
-<?php foreach ( $booking_room_units as $key => $room_item ) : ?>
+<?php foreach ( $booking->get_line_items() as $key => $room_item ) : ?>
 <div class="table">
 	<table>
 		<tbody>
