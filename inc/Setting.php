@@ -250,8 +250,16 @@ class Setting extends WP_Option {
 
 			'email_new_enable'            => true,
 			'email_new_subject'           => '[{site_title}] New customer booking #{order_number} - {order_date}',
+			'email_new_content'           => "Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:\n\nBooking #{booking_id}\n\n{contents}\n\n{customer_details}",
+
+			'email_processing_enable'     => true,
+			'email_processing_content'    => "Your recent booking on {site_title} is being processed. Your booking details are shown below for your reference:\n\nBooking #{booking_id}\n\n{contents}",
+
 			'email_cancelled_enable'      => true,
+			'email_cancelled_content'     => 'Your booking #{booking_id} from {site_title} has been cancelled',
+
 			'email_complete_enable'       => true,
+			'email_complete_content'      => "Your recent booking on {site_title} has been completed. Your booking details are shown below for your reference:\n\nBooking #{booking_id}\n\n{contents}",
 
 			// Showing price.
 			'showing_price'               => 'start_prices',

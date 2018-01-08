@@ -1,156 +1,23 @@
 <?php
 namespace AweBooking\Notification;
 
-use AweBooking\AweBooking;
-use AweBooking\Booking\Booking;
-use AweBooking\Hotel\Room_Type;
-use AweBooking\Support\Mailable;
-use AweBooking\Support\Formatting;
-use AweBooking\Support\Carbonate;
-use AweBooking\Booking\Items\Line_Item;
-use AweBooking\Booking\Items\Service_Item;
-use AweBooking\Support\Markdown;
-
-class Booking_Created extends Mailable {
-	protected $booking;
-
-	public function __construct( Booking $booking ) {
-		$this->booking = $booking;
-	}
-
+class Booking_Created extends Booking_Notification {
 	/**
-	 * Get dumy data for email preview.
+	 * {@inheritdoc}
 	 */
-	public function dummy() {
-		$line_item = new Line_Item;
-		$line_item['name'] = 'Dummy Room';
-		$line_item['price'] = 80;
-		$line_item['adults'] = 2;
-		$line_item['children'] = 1;
-		$line_item['check_in'] = '2017-08-30';
-		$line_item['check_out'] = '2017-09-01';
-
-		$service_item = new Service_Item;
-		$service_item['name'] = 'Breakfast';
-		$service_item['price'] = 10;
-
-		$this->booking->add_item( $line_item );
-		$this->booking->add_item( $service_item );
-
-		$this->booking['customer_first_name']  = 'John';
-		$this->booking['customer_last_name']   = 'Cena';
-		$this->booking['customer_email']       = 'customer@email.com';
-		$this->booking['customer_phone']       = '+84xxxxxxxx';
-		$this->booking['customer_company']     = 'AweThemes';
-		$this->booking['customer_note']        = 'Demo customer note';
-
-		$this->find_and_replace();
-
-		return $this->get_content();
+	public function get_markdown_contents() {
+		return awebooking_option( 'email_new_content' );
 	}
 
 	/**
-	 * Build the message.
-	 *
-	 * @return mixed
-	 */
-	public function build() {
-		$this->find_and_replace();
-
-		if ( $this->get_template( 'new-booking' ) ) {
-			$content = $this->get_template( 'completed-booking', [
-				'booking_id'           => $this->booking->get_id(),
-				'booking'              => $this->booking,
-				'booking_room_units'   => $this->booking->get_line_items(),
-				'total_price'          => (string) $this->booking->get_total(),
-				'customer_first_name'  => $this->booking['customer_first_name'],
-				'customer_last_name'   => $this->booking['customer_last_name'],
-				'customer_email'       => $this->booking->get_customer_email(),
-				'customer_phone'       => $this->booking['customer_phone'],
-				'customer_company'     => $this->booking->get_customer_company(),
-				'customer_note'        => $this->booking['customer_note'],
-			] );
-		} else {
-			$content = $this->get_content();
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Get email subject.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
 	public function get_subject() {
-		$subject = awebooking_option( 'email_new_subject' );
-
-		return $this->format_string( $subject );
+		return $this->format_string( awebooking_option( 'email_new_subject' ) );
 	}
 
 	/**
-	 * Get email content.
-	 *
-	 * @return void
-	 */
-	public function get_content() {
-		$contents = Markdown::parse( awebooking_option( 'email_new_content' ) );
-
-		$contents = apply_filters( 'the_content', $contents );
-		$contents = str_replace( ']]>', ']]&gt;', $contents );
-
-		return $this->format_string( $contents );
-	}
-
-	/**
-	 * Get email heading.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
 	public function get_heading() {}
-
-	/**
-	 * Find and replace.
-	 */
-	public function find_and_replace() {
-		// Find/replace.
-		$this->find['order_number']    = '{order_number}';
-		$this->replace['order_number'] = $this->booking->get_id();
-
-		$this->find['order_date']      = '{order_date}';
-		$this->replace['order_date']   = Formatting::date_format( $this->booking->get_booking_date() );
-
-		// $this->find['dates']      = '{dates}';
-		// $this->replace['dates']   = ;
-
-		$this->find['booking_id']    = '{booking_id}';
-		$this->replace['booking_id'] = $this->booking->get_id();
-
-		$this->find['total_price']      = '{total_price}';
-		$this->replace['total_price']   = (string) $this->booking->get_total();
-
-		$this->find['customer_first_name']      = '{customer_first_name}';
-		$this->replace['customer_first_name']   = $this->booking['customer_first_name'];
-
-		$this->find['customer_last_name']      = '{customer_last_name}';
-		$this->replace['customer_last_name']   = $this->booking['customer_last_name'];
-
-		$this->find['customer_email']      = '{customer_email}';
-		$this->replace['customer_email']   = $this->booking->get_customer_email();
-
-		$this->find['customer_phone']      = '{customer_phone}';
-		$this->replace['customer_phone']   = $this->booking['customer_phone'];
-
-		$this->find['customer_company']      = '{customer_company}';
-		$this->replace['customer_company']   = $this->booking->get_customer_company();
-
-		$this->find['customer_note']      = '{customer_note}';
-		$this->replace['customer_note']   = $this->booking['customer_note'];
-
-		$this->find['customer_details']      = '{customer_details}';
-		$this->replace['customer_details']   = $this->get_template( 'customer-details', [ 'booking' => $this->booking ] );
-
-		$this->find['breakdown']      = '{breakdown}';
-		$this->replace['breakdown']   = $this->get_template( 'breakdown', [ 'booking' => $this->booking ] );
-	}
 }

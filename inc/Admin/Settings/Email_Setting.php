@@ -143,8 +143,7 @@ class Email_Setting extends Abstract_Setting {
 			'id'   => '__email_new_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for new booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=new' ) ) . '" target="_blank">here</a>' ),
-
-			'name' => esc_html__( 'New booking','awebooking' ),
+			'name' => esc_html__( 'New booking', 'awebooking' ),
 		) );
 
 		$new_booking->add_field( array(
@@ -160,7 +159,7 @@ class Email_Setting extends Abstract_Setting {
 			'id'      => 'email_new_subject',
 			'type'    => 'textarea_small',
 			'default' => '[{site_title}] New customer booking #{order_number} - {order_date}',
-			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ). ': [{site_title}] New customer booking ({order_number}) - {order_date}',
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': [{site_title}] New customer booking ({order_number}) - {order_date}',
 			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
 
@@ -172,49 +171,15 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed', 'awebooking' ),
 		) );
 
-		ob_start();
-		esc_html_e( 'Your booking is on-hold until we confirm payment has been received. Your booking details are shown below for your reference:', 'awebooking' ) . "\n\n";
-		?>
-		<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), '{booking_id}' ); ?></h2>
-{breakdown}
-{customer_details}
-		<?php $content_default = ob_get_clean();
-
 		$new_booking->add_field( array(
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_new_content',
 			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_new_content' ),
 			'options' => array(
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-			'default' => wp_kses_post( $content_default ),
-		) );
-
-		ob_start(); ?>
-
-		<div style="">
-			<ul>
-				<li><code>{booking_id}</code> - Booking ID</li>
-				<li><code>{total_price}</code> - Total price</li>
-				<li><code>{customer_first_name}</code> - Customer first name</li>
-				<li><code>{customer_last_name}</code> - Customer last name</li>
-				<li><code>{customer_email}</code> - Customer email</li>
-				<li><code>{customer_phone}</code> - Customer phone</li>
-				<li><code>{customer_company}</code> - Customer company</li>
-				<li><code>{customer_note}</code> - Customer note</li>
-				<li><code>{breakdown}</code> - Breakdown table</li>
-				<li><code>{customer_details}</code> - Customer details</li>
-			</ul>
-		</div>
-
-		<?php $note = ob_get_clean();
-
-		$new_booking->add_field( array(
-			'name'    => esc_html__( 'Note', 'awebooking' ),
-			'id'      => 'email_new_note',
-			'type'    => 'note',
-			'desc'    => $note,
 		) );
 	}
 
@@ -229,7 +194,7 @@ class Email_Setting extends Abstract_Setting {
 			'id'   => '__email_cancelled_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for cancelled booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=cancelled' ) ) . '" target="_blank">here</a>' ),
-			'name' => esc_html__( 'Cancelled booking','awebooking' ),
+			'name' => esc_html__( 'Cancelled booking', 'awebooking' ),
 		) );
 
 		$cancelled_booking->add_field( array(
@@ -245,10 +210,9 @@ class Email_Setting extends Abstract_Setting {
 			'id'      => 'email_cancelled_subject',
 			'type'    => 'textarea_small',
 			'default' => 'Your {site_title} booking receipt from {order_date}',
-			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ). ': Your {site_title} booking receipt from {order_date}',
-			'attributes' => array('style' => 'height:50px;' ),
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking receipt from {order_date}',
+			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
-
 
 		$cancelled_booking->add_field( array(
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
@@ -258,49 +222,16 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Thank you for your booking.', 'awebooking' ),
 		) );
 
-		ob_start();
-		esc_html_e( 'Your booking #{booking_id} from {customer_first_name} has been cancelled', 'awebooking' ) . "\n\n";
-		?>
-		<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), '{booking_id}' ); ?></h2>
-{breakdown}
-{customer_details}
-		<?php $content_default = ob_get_clean();
-
 		$cancelled_booking->add_field( array(
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_cancelled_content',
 			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_cancelled_content' ),
+			'after'   => $this->get_shortcodes_notes(),
 			'options' => array(
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-			'default' => wp_kses_post( $content_default ),
-		) );
-
-		ob_start(); ?>
-
-		<div style="">
-			<ul>
-				<li><code>{booking_id}</code> - Booking ID</li>
-				<li><code>{total_price}</code> - Total price</li>
-				<li><code>{customer_first_name}</code> - Customer first name</li>
-				<li><code>{customer_last_name}</code> - Customer last name</li>
-				<li><code>{customer_email}</code> - Customer email</li>
-				<li><code>{customer_phone}</code> - Customer phone</li>
-				<li><code>{customer_company}</code> - Customer company</li>
-				<li><code>{customer_note}</code> - Customer note</li>
-				<li><code>{breakdown}</code> - Breakdown table</li>
-				<li><code>{customer_details}</code> - Customer details</li>
-			</ul>
-		</div>
-
-		<?php $note = ob_get_clean();
-
-		$cancelled_booking->add_field( array(
-			'name'    => esc_html__( 'Note', 'awebooking' ),
-			'id'      => 'email_cancelled_note',
-			'type'    => 'note',
-			'desc'    => $note,
 		) );
 	}
 
@@ -314,7 +245,7 @@ class Email_Setting extends Abstract_Setting {
 		$processing_booking->add_field( array(
 			'id'   => '__email_processing_booking__',
 			'type' => 'title',
-			'name' => esc_html__( 'Processing booking','awebooking' ),
+			'name' => esc_html__( 'Processing booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for processing booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=processing' ) ) . '" target="_blank">here</a>' ),
 		) );
 
@@ -343,50 +274,18 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is being processed.', 'awebooking' ),
 		) );
 
-		ob_start();
-		printf( __( "Hi there. Your recent booking on %s is being processed. Your booking details are shown below for your reference:", 'awebooking' ), get_option( 'blogname' ) );
-		?>
-		<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), '{booking_id}' ); ?></h2>
-{breakdown}
-{customer_details}
-		<?php $content_default = ob_get_clean();
-
 		$processing_booking->add_field( array(
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_processing_content',
 			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_processing_content' ),
+			'after'   => $this->get_shortcodes_notes(),
 			'options' => array(
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-			'default' => wp_kses_post( $content_default ),
 		) );
 
-		ob_start(); ?>
-
-		<div style="">
-			<ul>
-				<li><code>{booking_id}</code> - Booking ID</li>
-				<li><code>{total_price}</code> - Total price</li>
-				<li><code>{customer_first_name}</code> - Customer first name</li>
-				<li><code>{customer_last_name}</code> - Customer last name</li>
-				<li><code>{customer_email}</code> - Customer email</li>
-				<li><code>{customer_phone}</code> - Customer phone</li>
-				<li><code>{customer_company}</code> - Customer company</li>
-				<li><code>{customer_note}</code> - Customer note</li>
-				<li><code>{breakdown}</code> - Breakdown table</li>
-				<li><code>{customer_details}</code> - Customer details</li>
-			</ul>
-		</div>
-
-		<?php $note = ob_get_clean();
-
-		$processing_booking->add_field( array(
-			'name'    => esc_html__( 'Note', 'awebooking' ),
-			'id'      => 'email_processing_note',
-			'type'    => 'note',
-			'desc'    => $note,
-		) );
 	}
 
 	/**
@@ -399,7 +298,7 @@ class Email_Setting extends Abstract_Setting {
 		$completed_booking->add_field( array(
 			'id'   => '__email_completed_booking__',
 			'type' => 'title',
-			'name' => esc_html__( 'Completed booking','awebooking' ),
+			'name' => esc_html__( 'Completed booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for completed booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=completed' ) ) . '" target="_blank">here</a>' ),
 		) );
 
@@ -428,50 +327,46 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed.', 'awebooking' ),
 		) );
 
-		ob_start();
-		printf( __( "Hi there. Your recent booking on %s has been completed. Your booking details are shown below for your reference:", 'awebooking' ), get_option( 'blogname' ) );
-		?>
-		<h2 style="margin-top: 50px;"><?php printf( esc_html__( 'Booking #%s', 'awebooking' ), '{booking_id}' ); ?></h2>
-{breakdown}
-{customer_details}
-		<?php $content_default = ob_get_clean();
-
 		$completed_booking->add_field( array(
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_complete_content',
 			'type'    => 'wysiwyg',
 			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_complete_content' ),
+			'after'   => $this->get_shortcodes_notes(),
 			'options' => array(
+				'tinymce'       => false,
 				'media_buttons' => false,
-				'tinymce' => false,
 			),
-			'default' => wp_kses_post( $content_default ),
 		) );
+	}
 
-		ob_start(); ?>
+	/**
+	 * Get the shortcodes notes.
+	 *
+	 * @return string
+	 */
+	protected function get_shortcodes_notes() {
+		$shortcodes = [
+			'booking_id'       => esc_html__( 'The booking ID', 'awebooking' ),
+			'created_date'     => esc_html__( 'The created date', 'awebooking' ),
+			'contents'         => esc_html__( 'The booking contents', 'awebooking' ),
+			'total'            => esc_html__( 'The total amount', 'awebooking' ),
+			'customer_name'    => esc_html__( 'The customer name', 'awebooking' ),
+			'customer_details' => esc_html__( 'The customer details', 'awebooking' ),
+		];
 
-		<div style="">
-			<ul>
-				<li><code>{booking_id}</code> - Booking ID</li>
-				<li><code>{total_price}</code> - Total price</li>
-				<li><code>{customer_first_name}</code> - Customer first name</li>
-				<li><code>{customer_last_name}</code> - Customer last name</li>
-				<li><code>{customer_email}</code> - Customer email</li>
-				<li><code>{customer_phone}</code> - Customer phone</li>
-				<li><code>{customer_company}</code> - Customer company</li>
-				<li><code>{customer_note}</code> - Customer note</li>
-				<li><code>{breakdown}</code> - Breakdown table</li>
-				<li><code>{customer_details}</code> - Customer details</li>
-			</ul>
-		</div>
+		$contents = '<div class="awebooking-sweet-alert" style="margin-top: 1em; max-width: 100%;">';
+		$contents .= '<h4>' . esc_html__( 'You can use following shortcodes in content of this template', 'awebooking' ) . '</h4>';
 
-		<?php $note = ob_get_clean();
+		$contents .= '<table class="awebooking-minimal-table"><tbody>';
+		foreach ( $shortcodes as $key => $value ) {
+			$contents .= '<tr><td><code>' . esc_html( $key ) . '</code></td><td>' . esc_html( $value ) . '</td></tr>';
+		}
 
-		$completed_booking->add_field( array(
-			'name'    => esc_html__( 'Note', 'awebooking' ),
-			'id'      => 'email_complete_note',
-			'type'    => 'note',
-			'desc'    => $note,
-		) );
+		$contents .= '</tbody></table>';
+		$contents .= '</div>';
+
+		return $contents;
 	}
 }

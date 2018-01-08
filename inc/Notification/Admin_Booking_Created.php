@@ -17,6 +17,7 @@ class Admin_Booking_Created extends Mailable {
 		// Find/replace.
 		$this->find['order_number']    = '{order_number}';
 		$this->find['order_date']      = '{order_date}';
+
 		$this->replace['order_number'] = $this->booking->get_id();
 		$this->replace['order_date']   = Formatting::date_format( $this->booking->get_booking_date() );
 	}
@@ -24,34 +25,7 @@ class Admin_Booking_Created extends Mailable {
 	/**
 	 * Get dumy data for email preview.
 	 */
-	public function dummy() {
-		$line_item = new Line_Item;
-		$line_item['name'] = 'Dummy Room';
-		$line_item['price'] = 80;
-		$line_item['adults'] = 2;
-		$line_item['children'] = 1;
-		$line_item['check_in'] = '2017-08-30';
-		$line_item['check_out'] = '2017-09-01';
-		$service_item = new Service_Item;
-		$service_item['name'] = 'Breakfast';
-		$service_item['price'] = 10;
-		$this->booking->add_item( $line_item );
-		$this->booking->add_item( $service_item );
-		$booking_room_units = $this->booking->get_line_items();
-
-		return $this->get_template( 'admin-new-booking', apply_filters( 'awebooking/new_email_dummy_data', [
-			'booking_id'           => 1,
-			'booking'              => $this->booking,
-			'booking_room_units'   => $booking_room_units,
-			'total_price'          => (string) $this->booking->get_total(),
-			'customer_first_name'  => 'John',
-			'customer_last_name'   => 'Cena',
-			'customer_email'       => 'customer@email.com',
-			'customer_phone'       => '+84xxxxxxxx',
-			'customer_company'     => 'AweThemes',
-			'customer_note'        => 'The email preview',
-		] ) );
-	}
+	public function dummy() {}
 
 	/**
 	 * Build the message.
@@ -80,6 +54,7 @@ class Admin_Booking_Created extends Mailable {
 	 */
 	public function get_subject() {
 		$subject = awebooking_option( 'email_new_subject' );
+
 		return $this->format_string( $subject );
 	}
 
