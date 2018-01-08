@@ -9,14 +9,13 @@ use AweBooking\Support\Formatting;
 use AweBooking\Support\Carbonate;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
+use AweBooking\Support\Markdown;
 
 class Booking_Created extends Mailable {
 	protected $booking;
 
 	public function __construct( Booking $booking ) {
 		$this->booking = $booking;
-
-		$this->find_and_replace();
 	}
 
 	/**
@@ -30,31 +29,24 @@ class Booking_Created extends Mailable {
 		$line_item['children'] = 1;
 		$line_item['check_in'] = '2017-08-30';
 		$line_item['check_out'] = '2017-09-01';
+
 		$service_item = new Service_Item;
 		$service_item['name'] = 'Breakfast';
 		$service_item['price'] = 10;
+
 		$this->booking->add_item( $line_item );
 		$this->booking->add_item( $service_item );
-		$booking_room_units = $this->booking->get_line_items();
 
-		// if ( $this->get_template( 'new-booking' ) ) {
-			$content = $this->get_template( 'new-booking', apply_filters( 'awebooking/new_email_dummy_data', [
-				'booking_id'           => 1,
-				'booking'              => $this->booking,
-				'booking_room_units'   => $booking_room_units,
-				'total_price'          => (string) $this->booking->get_total(),
-				'customer_first_name'  => 'John',
-				'customer_last_name'   => 'Cena',
-				'customer_email'       => 'customer@email.com',
-				'customer_phone'       => '+84xxxxxxxx',
-				'customer_company'     => 'AweThemes',
-				'customer_note'        => 'The email preview',
-			] ) );
-		// } else {
-		// 	$content = $this->get_content();
-		// }
+		$this->booking['customer_first_name']  = 'John';
+		$this->booking['customer_last_name']   = 'Cena';
+		$this->booking['customer_email']       = 'customer@email.com';
+		$this->booking['customer_phone']       = '+84xxxxxxxx';
+		$this->booking['customer_company']     = 'AweThemes';
+		$this->booking['customer_note']        = 'Demo customer note';
 
-		return $content;
+		$this->find_and_replace();
+
+		return $this->get_content();
 	}
 
 	/**
@@ -63,6 +55,8 @@ class Booking_Created extends Mailable {
 	 * @return mixed
 	 */
 	public function build() {
+		$this->find_and_replace();
+
 		if ( $this->get_template( 'new-booking' ) ) {
 			$content = $this->get_template( 'completed-booking', [
 				'booking_id'           => $this->booking->get_id(),
@@ -90,6 +84,7 @@ class Booking_Created extends Mailable {
 	 */
 	public function get_subject() {
 		$subject = awebooking_option( 'email_new_subject' );
+
 		return $this->format_string( $subject );
 	}
 
@@ -99,8 +94,12 @@ class Booking_Created extends Mailable {
 	 * @return void
 	 */
 	public function get_content() {
-		$content = awebooking_option( 'email_new_content' );
-		return $this->format_string( $content );
+		$contents = Markdown::parse( awebooking_option( 'email_new_content' ) );
+
+		$contents = apply_filters( 'the_content', $contents );
+		$contents = str_replace( ']]>', ']]&gt;', $contents );
+
+		return $this->format_string( $contents );
 	}
 
 	/**
@@ -120,6 +119,9 @@ class Booking_Created extends Mailable {
 
 		$this->find['order_date']      = '{order_date}';
 		$this->replace['order_date']   = Formatting::date_format( $this->booking->get_booking_date() );
+
+		// $this->find['dates']      = '{dates}';
+		// $this->replace['dates']   = ;
 
 		$this->find['booking_id']    = '{booking_id}';
 		$this->replace['booking_id'] = $this->booking->get_id();

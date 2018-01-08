@@ -48,7 +48,7 @@ class Booking_Processing extends Mailable {
 				'customer_phone'       => '+84xxxxxxxx',
 				'customer_company'     => 'AweThemes',
 				'customer_note'        => 'The email preview',
-			] ) );
+			] ) );+
 		// } else {
 		// 	$content = $this->get_content();
 		// }
