@@ -62,12 +62,12 @@ use AweBooking\Admin\Admin_Utils;
 
 				<ul class="split-button-body awebooking-main-toggle">
 					<li>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-awebooking&amp;=' . $screen->parent_base ) ); ?>"><?php echo esc_html__( 'All Room Types', 'awebooking' ); ?></a>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability') ); ?>"><?php echo esc_html__( 'All Room Types', 'awebooking' ); ?></a>
 					</li>
 
 					<?php foreach ( $room_type as $id => $name ) : ?>
 						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-awebooking&amp;=' . $screen->parent_base . '&amp;room-type=' . $id ) ); ?>"><?php echo esc_html( $name ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability&amp;room-type=' . $id ) ); ?>"><?php echo esc_html( $name ); ?></a>
 						</li>
 					<?php endforeach ?>
 				</ul>
@@ -83,7 +83,7 @@ use AweBooking\Admin\Admin_Utils;
 				<ul class="split-button-body awebooking-main-toggle">
 					<?php foreach ( $years as $year ) : ?>
 						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-awebooking&amp;=' . $screen->parent_base . '&room-type=' . $this->room_type . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability&amp;room-type=' . $this->room_type . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
 						</li>
 					<?php endforeach ?>
 				</ul>

@@ -1,0 +1,40 @@
+#cmb2-metabox-room_type {
+  .cmb2-tab-pane {
+    min-height: 350px;
+  }
+
+  .cmb-th,
+  .cmb-td {
+    float: none;
+    width: 100%;
+    padding: 0;
+  }
+
+  .cmb-th > label {
+    padding: 0 0 5px;
+    display: inline-block;
+  }
+
+  .cmb2-metabox-description {
+    color: #898989;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  // Fixed category select-box.
+  #taxonomy-hotel_amenity {
+    max-width: 650px;
+  }
+  #hotel_amenity-tabs {
+    margin: 8px 0 5px !important;
+  }
+  #hotel_amenitychecklist,
+  #hotel_amenitychecklist-pop {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  #newhotel_amenity_parent {
+    display: none;
+  }
+}

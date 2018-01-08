@@ -90,6 +90,6 @@ $(function() {
   )).init();
 
   (new AweBooking.ToggleCheckboxes(
-    'table.awebooking_page_manager-awebooking'
+    'table.awebooking_page_awebooking-availability'
   ));
 });

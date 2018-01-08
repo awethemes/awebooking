@@ -1,17 +1,33 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Booking\Booking;
-use AweBooking\Booking\Items\Line_Item;
-use AweBooking\Booking\Items\Service_Item;
+use WP_Roles;
+use Psr\Log\LoggerInterface;
+use AweBooking\Support\Collection;
+use AweBooking\Bootstrap\Setup_Environment;
+use AweBooking\Http\Async\Background_Updater;
 
 class Installer {
+	/**
+	 * The AweBooing class instance.
+	 *
+	 * @var \AweBooking\AweBooking
+	 */
+	protected $awebooking;
+
+	/**
+	 * The background updater.
+	 *
+	 * @var \AweBooking\Controllers\Background_Updater
+	 */
+	protected $background_updater;
+
 	/**
 	 * DB updates and callbacks that need to be run per version.
 	 *
 	 * @var array
 	 */
-	private static $db_updates = [
+	protected $db_updates = [
 		'3.0.0-beta10' => array(
 			'awebooking_update_300_beta10_fix_db_types',
 		),
@@ -21,93 +37,378 @@ class Installer {
 	];
 
 	/**
-	 * Check AweBooking version and run the updater is required.
+	 * Create the AweBooking installer.
 	 *
-	 * This check is done on all requests and runs if the versions do not match.
+	 * @param AweBooking $awebooking The AweBooing class instance.
 	 */
-	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && get_option( 'awebooking_version' ) !== AweBooking::VERSION ) {
-			static::install();
-
-			do_action( 'awebooking_updated' );
-		}
+	public function __construct( AweBooking $awebooking ) {
+		$this->awebooking = $awebooking;
+		$this->background_updater = $awebooking->make( Background_Updater::class );
 	}
 
+
 	/**
-	 * Install the AweBooking.
+	 * Hooks in the WordPress.
 	 *
 	 * @return void
 	 */
-	public static function install() {
-		$awebooking = awebooking();
+	public function init() {
+		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
+		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
+		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
 
-		$core_hooks = new WP_Core_Hooks( $awebooking );
-		$core_hooks->init( $awebooking );
-
-		static::create_tables();
-		static::create_default_location();
-		static::remove_roles();
-		static::create_roles();
-
-		$current_version = get_option( 'awebooking_version', null );
-		$current_db_version = get_option( 'awebooking_db_version', null );
-
-		// No versions? This is a new install :).
-		if ( is_null( $current_version ) && is_null( $current_db_version ) && apply_filters( 'awebooking/enable_setup_wizard', true ) ) {
-			set_transient( '_awebooking_activation_redirect', 1, 30 );
-		}
-
-		delete_option( 'awebooking_version' );
-		add_option( 'awebooking_version', AweBooking::VERSION );
-
-		@flush_rewrite_rules();
-	}
-
-	public static function update() {
-		$awebooking = awebooking();
-		$db_version = get_option( 'awebooking_version' );
-
-		$update_queued = false;
-		$background_updater = awebooking()->make( Background_Updater::class );
-
-		foreach ( static::$db_updates as $version => $update_callbacks ) {
-			if ( version_compare( $db_version, $version, '<' ) ) {
-				foreach ( $update_callbacks as $update_callback ) {
-					$background_updater->push_to_queue( $update_callback );
-					$update_queued = true;
-				}
-			}
-		}
-
-		if ( $update_queued ) {
-			$background_updater->save()->dispatch();
-		}
-
-		delete_option( 'awebooking_version' );
-		add_option( 'awebooking_version', AweBooking::VERSION );
+		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
+		add_filter( "plugin_action_links_{$this->awebooking->plugin_basename()}", [ $this, 'plugin_action_links' ] );
+		add_action( 'after_plugin_row', [ $this, 'plugin_addon_notices' ], 10, 3 );
 	}
 
 	/**
-	 * Set up the database tables which the plugin needs to function.
+	 * Doing action on the activation the awebooking.
+	 *
+	 * @return void
+	 */
+	public function activation() {
+		if ( apply_filters( 'awebooking/enable_setup_wizard', $this->is_new_install() ) ) {
+			set_transient( '_awebooking_activation_redirect', 1, 30 );
+		}
+
+		// Call the install action.
+		$this->install();
+	}
+
+	/**
+	 * Doing action on the deactivation the awebooking.
+	 *
+	 * @return void
+	 */
+	public function deactivation() {
+		// Nothing todo for now.
+	}
+
+	/**
+	 * Doing the install.
+	 *
+	 * @return void
+	 */
+	protected function install() {
+		if ( ! is_blog_installed() ) {
+			return;
+		}
+
+		// Check if we are not already running this routine.
+		if ( 'yes' === get_transient( 'awebooking_installing' ) ) {
+			return;
+		}
+
+		// If we made it till here nothing is running yet, let's set the transient now.
+		set_transient( 'awebooking_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
+		// Begin the installing...
+		if ( ! defined( 'AWEBOOKING_INSTALLING' ) ) {
+			define( 'AWEBOOKING_INSTALLING', true );
+		}
+
+		$this->setup_environment();
+		$this->create_tables();
+		$this->create_options();
+		$this->create_roles();
+		$this->create_cron_jobs();
+		$this->update_version();
+
+		// CHeck for the update DB.
+		if ( $this->needs_db_update() ) {
+			$this->update();
+		} else {
+			$this->update_db_version();
+		}
+
+		// Everything seem done, delete the transient.
+		delete_transient( 'awebooking_installing' );
+
+		// Fire installed action.
+		do_action( 'awebooking/installed' );
+
+		// Remove rewrite rules and then recreate rewrite rules.
+		@flush_rewrite_rules();
+	}
+
+	/**
+	 * Push all needed DB updates to the queue for processing.
+	 *
+	 * @return void
+	 */
+	protected function update() {
+		$logger = $this->awebooking->make( LoggerInterface::class );
+
+		$current_db_version = $this->get_current_db_version();
+		$update_queued = false;
+
+		foreach ( $this->db_updates as $version => $update_callbacks ) {
+			// Ignore versions that older than current db version,
+			// they may has been runned.
+			if ( version_compare( $version, $current_db_version, '<' ) ) {
+				continue;
+			}
+
+			// Loop through callbacks and add to queue.
+			foreach ( $update_callbacks as $update_callback ) {
+				$logger->info( sprintf( 'Queuing %1$s - %2$s', $version, $update_callback ), [ 'source' => 'db_updates' ] );
+
+				$this->background_updater->push_to_queue( $update_callback );
+
+				$update_queued = true;
+			}
+		}
+
+		// Only dispatch when update_queued marked true.
+		if ( $update_queued ) {
+			$this->background_updater->save()->dispatch();
+		}
+	}
+
+	/**
+	 * Check AweBooking version and run the reinstall is required.
+	 *
+	 * This check is done on all requests and runs if the versions do not match.
+	 *
+	 * @access private
+	 */
+	public function maybe_reinstall() {
+		if ( defined( 'IFRAME_REQUEST' ) || $this->get_current_version() === $this->awebooking->version() ) {
+			return;
+		}
+
+		if ( ! defined( 'AWEBOOKING_REINSTALLING' ) ) {
+			define( 'AWEBOOKING_REINSTALLING', true );
+		}
+
+		$this->install();
+
+		do_action( 'awebooking/updated' );
+	}
+
+	/**
+	 * Support awebooking tables and item-metadata.
+	 */
+	public function register_metadata_table() {
+		global $wpdb;
+
+		$wpdb->tables[] = 'awebooking_booking_itemmeta';
+		$wpdb->booking_itemmeta = $wpdb->prefix . 'awebooking_booking_itemmeta';
+	}
+
+	/**
+	 * Uninstall tables when MU blog is deleted.
+	 *
+	 * @access private
+	 *
+	 * @param  array $tables List the tables to be deleted.
+	 * @return array
+	 */
+	public function wpmu_drop_tables( $tables ) {
+		global $wpdb;
+
+		$tables[] = $wpdb->prefix . 'awebooking_rooms';
+		$tables[] = $wpdb->prefix . 'awebooking_booking';
+		$tables[] = $wpdb->prefix . 'awebooking_pricing';
+		$tables[] = $wpdb->prefix . 'awebooking_availability';
+		$tables[] = $wpdb->prefix . 'awebooking_booking_items';
+		$tables[] = $wpdb->prefix . 'awebooking_booking_itemmeta';
+
+		return $tables;
+	}
+
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @access private
+	 *
+	 * @param  mixed $links Plugin action links.
+	 * @return array
+	 */
+	public function plugin_action_links( $links ) {
+		$action_links = [
+			'settings' => '<a href="' . admin_url( 'admin.php?page=awebooking-settings' ) . '" aria-label="' . esc_attr__( 'View AweBooking Settings', 'awebooking' ) . '">' . esc_html__( 'Settings', 'awebooking' ) . '</a>',
+		];
+
+		return array_merge( $action_links, $links );
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @access private
+	 *
+	 * @param  mixed $links Plugin row meta.
+	 * @param  mixed $file  Plugin base file.
+	 * @return array
+	 */
+	public function plugin_row_meta( $links, $file ) {
+		if ( $this->awebooking->plugin_basename() !== $file ) {
+			return (array) $links;
+		}
+
+		$row_meta = array(
+			'docs'       => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
+			'demo'       => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'Demo', 'awebooking' ) . '</a>',
+			'contribute' => '<a href="' . esc_url( 'https://github.com/awethemes/awebooking' ) . '" aria-label="' . esc_attr__( 'Contribute', 'awebooking' ) . '">' . esc_html__( 'Contribute', 'awebooking' ) . '</a>',
+		);
+
+		return array_merge( (array) $links, $row_meta );
+	}
+
+	/**
+	 * Display error messages of add-ons.
+	 *
+	 * @access private
+	 *
+	 * @param  string $plugin_file Path to the plugin file, relative to the plugins directory.
+	 * @param  array  $plugin_data An array of plugin data.
+	 * @param  string $status      Status of the plugin.
+	 */
+	public function plugin_addon_notices( $plugin_file, $plugin_data, $status ) {
+		static $failed_addons;
+
+		// Cache this list addons for use less memory.
+		if ( is_null( $failed_addons ) ) {
+			$failed_addons = Collection::make( $this->awebooking->get_failed_addons() )
+				->reject(function( $addon ) {
+					return ! $addon->is_wp_plugin();
+				})
+				->keyBy(function( $addon ) {
+					return $addon->get_basename();
+				});
+		}
+
+		// Ignore outside scope of AweBooking addons.
+		if ( ! $failed_addons->has( $plugin_file ) ) {
+			return;
+		}
+
+		$addon = $failed_addons->get( $plugin_file );
+		if ( ! $addon->has_errors() ) {
+			return;
+		}
+
+		printf(
+			'<tr class="awebooking-addon-notice-tr plugin-update-tr active"><td colspan="3" class="awebooking-addon-notice plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><strong>%1$s</strong><ul>%2$s</ul></div></td></tr>',
+			esc_html__( 'This plugin has been activated but cannot be loaded by AweBooking by reason(s):', 'awebooking' ),
+			'<li>' . wp_kses_post( implode( '</li><li>', $addon->get_errors() ) ) . '</li>'
+		);
+	}
+
+	/**
+	 * Update version to current.
+	 */
+	public function update_version() {
+		delete_option( 'awebooking_version' );
+
+		add_option( 'awebooking_version', $this->awebooking->version() );
+	}
+
+	/**
+	 * Update DB version to current or special version.
+	 *
+	 * @param  string $version Optional, special version to set.
+	 * @return boolean
+	 */
+	public function update_db_version( $version = null ) {
+		delete_option( 'awebooking_db_version' );
+
+		return add_option( 'awebooking_db_version', is_null( $version ) ? $this->awebooking->version() : $version );
+	}
+
+	/**
+	 * Get current version store in wp-options.
+	 *
+	 * @return string|null
+	 */
+	public function get_current_version() {
+		$version = get_option( 'awebooking_version', null );
+
+		return $version ?: null;
+	}
+
+	/**
+	 * Get current DB version store in wp-options.
+	 *
+	 * @return string|null
+	 */
+	public function get_current_db_version() {
+		$version = get_option( 'awebooking_db_version', null );
+
+		return $version ?: null;
+	}
+
+	/**
+	 * Is this a brand new AweBooking install?
+	 *
+	 * @return boolean
+	 */
+	public function is_new_install() {
+		return is_null( $this->get_current_version() ) && is_null( $this->get_current_db_version() );
+	}
+
+	/**
+	 * Is database update needed?
+	 *
+	 * @return boolean
+	 */
+	public function needs_db_update() {
+		$current_db_version = $this->get_current_db_version();
+
+		// If no db_version found, there's nothing to update.
+		if ( is_null( $current_db_version ) ) {
+			return false;
+		}
+
+		return version_compare( $current_db_version, max( array_keys( $this->db_updates ) ), '<' );
+	}
+
+	/**
+	 * Setup AweBooking environment - post-types, taxonomies, endpoints.
+	 */
+	protected function setup_environment() {
+		if ( ! class_exists( 'Skeleton\Post_Type' ) ) {
+			skeleton_psr4_autoloader( 'Skeleton\\', dirname( __DIR__ ) . '/vendor/awethemes/skeleton/inc/' );
+		}
+
+		$environment = new Setup_Environment;
+
+		$environment->register_taxonomies();
+		$environment->register_post_types();
+		$environment->register_endpoints();
+	}
+
+	/**
+	 * Create cron jobs.
+	 */
+	protected function create_cron_jobs() {
+		// TODO: ...
+	}
+
+	/**
+	 * Default options.
+	 *
+	 * Sets up the default options used on the settings page.
+	 */
+	protected function create_options() {
+		// TODO: ...
+	}
+
+	/**
+	 * Set up the database tables.
 	 *
 	 * @see https://codex.wordpress.org/Creating_Tables_with_Plugins
 	 */
-	public static function create_tables() {
+	protected function create_tables() {
 		global $wpdb;
+
 		$wpdb->hide_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( static::get_schema() );
-	}
 
-	private static function create_default_location() {
-		// Hotel location.
-		$cat_name = esc_html__( 'Hotel Location', 'awebooking' );
-
-		/* translators: Default hotel location slug */
-		$cat_slug = sanitize_title( esc_html_x( 'Hotel Location', 'Default hotel location slug', 'awebooking' ) );
-
-		// TODO: ...
+		dbDelta( $this->get_db_schema() );
 	}
 
 	/**
@@ -115,13 +416,20 @@ class Installer {
 	 *
 	 * @return string
 	 */
-	private static function get_schema() {
+	protected function get_db_schema() {
 		global $wpdb;
 
 		$collate = '';
 		if ( $wpdb->has_cap( 'collation' ) ) {
 			$collate = $wpdb->get_charset_collate();
 		}
+
+		$days_schema = '';
+		for ( $i = 1; $i <= 31; $i++ ) {
+			$days_schema .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
+		}
+
+		$days_schema = trim( $days_schema );
 
 		$tables = "
 CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
@@ -132,31 +440,27 @@ CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
   KEY `name` (`name`),
   KEY `room_type` (`room_type`)
 ) $collate;
-
 CREATE TABLE `{$wpdb->prefix}awebooking_booking` (
   `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
   `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  " . static::generate_days_schema() . "
+  {$days_schema}
   PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-
 CREATE TABLE `{$wpdb->prefix}awebooking_availability` (
   `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
   `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  " . static::generate_days_schema() . "
+  {$days_schema}
   PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-
 CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
   `rate_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
   `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  " . static::generate_days_schema() . "
+  {$days_schema}
   PRIMARY KEY (`rate_id`, `year`, `month`)
 ) $collate;
-
 CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
   booking_item_name TEXT NOT NULL,
@@ -167,7 +471,6 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   KEY booking_id (booking_id),
   KEY booking_item_parent (booking_item_parent)
 ) $collate;
-
 CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
   meta_id BIGINT UNSIGNED NOT NULL auto_increment,
   booking_item_id BIGINT UNSIGNED NOT NULL,
@@ -183,24 +486,11 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	}
 
 	/**
-	 * Generate days schema.
-	 *
-	 * @return string
-	 */
-	private static function generate_days_schema() {
-		$command = '';
-
-		for ( $i = 1; $i <= 31; $i++ ) {
-			$command .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
-		}
-
-		return trim( $command );
-	}
-
-	/**
 	 * Create roles and capabilities.
+	 *
+	 * @access private
 	 */
-	public static function create_roles() {
+	public function create_roles() {
 		global $wp_roles;
 
 		if ( ! class_exists( 'WP_Roles' ) || is_null( $wp_roles ) ) {
@@ -235,9 +525,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			'moderate_comments'      => true,
 		] );
 
-		$receptionist_capabilities = static::get_core_receptionist_capabilities();
-
-		foreach ( $receptionist_capabilities as $cap_group ) {
+		foreach ( $this->get_core_receptionist_capabilities() as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->add_cap( 'awebooking_receptionist', $cap );
 			}
@@ -286,9 +574,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			'list_users'             => true,
 		] );
 
-		$manager_capabilities = static::get_core_manager_capabilities();
-
-		foreach ( $manager_capabilities as $cap_group ) {
+		foreach ( $this->get_core_manager_capabilities() as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->add_cap( 'awebooking_manager', $cap );
 				$wp_roles->add_cap( 'administrator', $cap );
@@ -298,25 +584,23 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 
 	/**
 	 * Remove roles
+	 *
+	 * @access private
 	 */
-	public static function remove_roles() {
+	public function remove_roles() {
 		global $wp_roles;
 
 		if ( ! class_exists( 'WP_Roles' ) || is_null( $wp_roles ) ) {
 			return;
 		}
 
-		$receptionist_capabilities = static::get_core_receptionist_capabilities();
-
-		foreach ( $receptionist_capabilities as $cap_group ) {
+		foreach ( $this->get_core_receptionist_capabilities() as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->remove_cap( 'awebooking_receptionist', $cap );
 			}
 		}
 
-		$manager_capabilities = static::get_core_manager_capabilities();
-
-		foreach ( $manager_capabilities as $cap_group ) {
+		foreach ( $this->get_core_manager_capabilities() as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->remove_cap( 'awebooking_manager', $cap );
 				$wp_roles->remove_cap( 'administrator', $cap );
@@ -333,7 +617,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	 *
 	 * @return array
 	 */
-	 private static function get_core_manager_capabilities() {
+	protected function get_core_manager_capabilities() {
 		$capabilities = [];
 
 		$capabilities['core'] = [
@@ -341,7 +625,11 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 			'manage_awebooking_settings',
 		];
 
-		$capability_types = [ AweBooking::ROOM_TYPE, AweBooking::BOOKING, AweBooking::PRICING_RATE ];
+		$capability_types = [
+			Constants::BOOKING,
+			Constants::ROOM_TYPE,
+			Constants::PRICING_RATE,
+		];
 
 		foreach ( $capability_types as $capability_type ) {
 
@@ -377,7 +665,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
 	 *
 	 * @return array
 	 */
-	 private static function get_core_receptionist_capabilities() {
+	protected function get_core_receptionist_capabilities() {
 		$capabilities = [];
 
 		$capabilities['core'] = [

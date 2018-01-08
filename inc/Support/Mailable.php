@@ -87,13 +87,23 @@ abstract class Mailable {
 	 */
 	public function format_string( $string ) {
 		// Find/replace.
-		$this->find['blogname']      = '{blogname}';
-		$this->find['site-title']    = '{site_title}';
+		$this->find['blogname']     = '{blogname}';
+		$this->find['sitetitle']    = '{site_title}';
+
 		$this->replace['blogname']   = $this->get_blogname();
 		$this->replace['site-title'] = $this->get_blogname();
 
+		$this->set_replacements();
+
 		return str_replace( apply_filters( 'awebooking/email_format_string_find', $this->find, $this ), apply_filters( 'awebooking/email_format_string_replace', $this->replace, $this ), $string );
 	}
+
+	/**
+	 * Set the replacements.
+	 *
+	 * @return void
+	 */
+	protected function set_replacements() {}
 
 	/**
 	 * Load a partial template.

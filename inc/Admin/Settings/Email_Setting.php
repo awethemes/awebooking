@@ -1,48 +1,50 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\AweBooking;
+use AweBooking\Admin\Admin_Settings;
 
-class Email_Setting extends Setting_Abstract {
+class Email_Setting extends Abstract_Setting {
 	/**
-	 * Register settings.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
-	public function register() {
-		$email = $this->settings->add_panel( 'email', [
+	public function registers( Admin_Settings $settings ) {
+		$email = $settings->add_panel( 'email', [
 			'title'    => esc_html__( 'Email', 'awebooking' ),
 			'priority' => 30,
 			'capability' => 'manage_awebooking',
 		]);
 
-		$email_general = $this->settings->add_section( 'email-general', [
+		$email_general = $settings->add_section( 'email-general', [
 			'title'    => esc_html__( 'Email Sender', 'awebooking' ),
 			'priority' => 10,
 			'capability' => 'manage_awebooking',
-
 		])->as_child_of( $email );
 
-		$new_booking = $this->settings->add_section( 'email-new-booking', [
+		$new_booking = $settings->add_section( 'email-new-booking', [
 			'title'    => esc_html__( 'New Booking', 'awebooking' ),
 			'priority' => 20,
 		])->as_child_of( $email );
 
-		$cancelled_booking = $this->settings->add_section( 'email-cancelled-booking', [
+		$cancelled_booking = $settings->add_section( 'email-cancelled-booking', [
 			'title'    => esc_html__( 'Cancelled Booking', 'awebooking' ),
 			'priority' => 30,
 		])->as_child_of( $email );
 
-		$completed_booking = $this->settings->add_section( 'email-completed-booking', [
-			'title'    => esc_html__( 'Completed Booking', 'awebooking' ),
+		$processing_booking = $settings->add_section( 'email-processing-booking', [
+			'title'    => esc_html__( 'Processing Booking', 'awebooking' ),
 			'priority' => 40,
 		])->as_child_of( $email );
 
+		$completed_booking = $settings->add_section( 'email-completed-booking', [
+			'title'    => esc_html__( 'Completed Booking', 'awebooking' ),
+			'priority' => 50,
+		])->as_child_of( $email );
+
 		$this->register_general_settings( $email_general );
-		$this->register_new_booking_settings( $email_general );
-		$this->register_cancelled_booking_settings( $email_general );
-		$this->register_processing_booking_settings( $email_general );
-		$this->register_completed_booking_settings( $email_general );
+		$this->register_new_booking_settings( $new_booking );
+		$this->register_cancelled_booking_settings( $cancelled_booking );
+		$this->register_processing_booking_settings( $processing_booking );
+		$this->register_completed_booking_settings( $completed_booking );
 	}
 
 	/**
@@ -141,8 +143,7 @@ class Email_Setting extends Setting_Abstract {
 			'id'   => '__email_new_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for new booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=new' ) ) . '" target="_blank">here</a>' ),
-
-			'name' => esc_html__( 'New booking','awebooking' ),
+			'name' => esc_html__( 'New booking', 'awebooking' ),
 		) );
 
 		$new_booking->add_field( array(
@@ -158,7 +159,7 @@ class Email_Setting extends Setting_Abstract {
 			'id'      => 'email_new_subject',
 			'type'    => 'textarea_small',
 			'default' => '[{site_title}] New customer booking #{order_number} - {order_date}',
-			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ). ': [{site_title}] New customer booking ({order_number}) - {order_date}',
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': [{site_title}] New customer booking ({order_number}) - {order_date}',
 			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
 
@@ -168,6 +169,17 @@ class Email_Setting extends Setting_Abstract {
 			'type'    => 'text',
 			'default' => esc_html__( 'New customer booking', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed', 'awebooking' ),
+		) );
+
+		$new_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_new_content',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_new_content' ),
+			'options' => array(
+				'media_buttons' => false,
+				'tinymce' => false,
+			),
 		) );
 	}
 
@@ -182,7 +194,7 @@ class Email_Setting extends Setting_Abstract {
 			'id'   => '__email_cancelled_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for cancelled booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=cancelled' ) ) . '" target="_blank">here</a>' ),
-			'name' => esc_html__( 'Cancelled booking','awebooking' ),
+			'name' => esc_html__( 'Cancelled booking', 'awebooking' ),
 		) );
 
 		$cancelled_booking->add_field( array(
@@ -198,10 +210,9 @@ class Email_Setting extends Setting_Abstract {
 			'id'      => 'email_cancelled_subject',
 			'type'    => 'textarea_small',
 			'default' => 'Your {site_title} booking receipt from {order_date}',
-			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ). ': Your {site_title} booking receipt from {order_date}',
-			'attributes' => array('style' => 'height:50px;' ),
+			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking receipt from {order_date}',
+			'attributes' => array( 'style' => 'height:50px;' ),
 		) );
-
 
 		$cancelled_booking->add_field( array(
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
@@ -209,6 +220,18 @@ class Email_Setting extends Setting_Abstract {
 			'type'    => 'text',
 			'default' => esc_html__( 'Your booking is cancelled', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Thank you for your booking.', 'awebooking' ),
+		) );
+
+		$cancelled_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_cancelled_content',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_cancelled_content' ),
+			'after'   => $this->get_shortcodes_notes(),
+			'options' => array(
+				'media_buttons' => false,
+				'tinymce' => false,
+			),
 		) );
 	}
 
@@ -222,7 +245,7 @@ class Email_Setting extends Setting_Abstract {
 		$processing_booking->add_field( array(
 			'id'   => '__email_processing_booking__',
 			'type' => 'title',
-			'name' => esc_html__( 'Processing booking','awebooking' ),
+			'name' => esc_html__( 'Processing booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for processing booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=processing' ) ) . '" target="_blank">here</a>' ),
 		) );
 
@@ -250,6 +273,19 @@ class Email_Setting extends Setting_Abstract {
 			'default' => esc_html__( 'Your booking is being processed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is being processed.', 'awebooking' ),
 		) );
+
+		$processing_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_processing_content',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_processing_content' ),
+			'after'   => $this->get_shortcodes_notes(),
+			'options' => array(
+				'media_buttons' => false,
+				'tinymce' => false,
+			),
+		) );
+
 	}
 
 	/**
@@ -262,7 +298,7 @@ class Email_Setting extends Setting_Abstract {
 		$completed_booking->add_field( array(
 			'id'   => '__email_completed_booking__',
 			'type' => 'title',
-			'name' => esc_html__( 'Completed booking','awebooking' ),
+			'name' => esc_html__( 'Completed booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for completed booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=completed' ) ) . '" target="_blank">here</a>' ),
 		) );
 
@@ -290,5 +326,47 @@ class Email_Setting extends Setting_Abstract {
 			'default' => esc_html__( 'Your booking is completed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed.', 'awebooking' ),
 		) );
+
+		$completed_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_complete_content',
+			'type'    => 'wysiwyg',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_complete_content' ),
+			'after'   => $this->get_shortcodes_notes(),
+			'options' => array(
+				'tinymce'       => false,
+				'media_buttons' => false,
+			),
+		) );
+	}
+
+	/**
+	 * Get the shortcodes notes.
+	 *
+	 * @return string
+	 */
+	protected function get_shortcodes_notes() {
+		$shortcodes = [
+			'booking_id'       => esc_html__( 'The booking ID', 'awebooking' ),
+			'created_date'     => esc_html__( 'The created date', 'awebooking' ),
+			'contents'         => esc_html__( 'The booking contents', 'awebooking' ),
+			'total'            => esc_html__( 'The total amount', 'awebooking' ),
+			'customer_name'    => esc_html__( 'The customer name', 'awebooking' ),
+			'customer_details' => esc_html__( 'The customer details', 'awebooking' ),
+		];
+
+		$contents = '<div class="awebooking-sweet-alert" style="margin-top: 1em; max-width: 100%;">';
+		$contents .= '<h4>' . esc_html__( 'You can use following shortcodes in content of this template', 'awebooking' ) . '</h4>';
+
+		$contents .= '<table class="awebooking-minimal-table"><tbody>';
+		foreach ( $shortcodes as $key => $value ) {
+			$contents .= '<tr><td><code>' . esc_html( $key ) . '</code></td><td>' . esc_html( $value ) . '</td></tr>';
+		}
+
+		$contents .= '</tbody></table>';
+		$contents .= '</div>';
+
+		return $contents;
 	}
 }

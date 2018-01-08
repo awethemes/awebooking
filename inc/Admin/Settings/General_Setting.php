@@ -1,18 +1,16 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\AweBooking;
+use AweBooking\Constants;
+use AweBooking\Admin\Admin_Settings;
 
-class General_Setting extends Setting_Abstract {
+class General_Setting extends Abstract_Setting {
 	/**
-	 * Register settings.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
-	public function register() {
-		$section = $this->settings->add_section( 'general', [
-			'title' => esc_html__( 'General', 'awebooking' ),
-			'priority' => 10,
+	public function registers( Admin_Settings $settings ) {
+		$section = $settings->add_section( 'general', [
+			'title'      => esc_html__( 'General', 'awebooking' ),
 			'capability' => 'manage_awebooking',
 		]);
 
@@ -20,7 +18,6 @@ class General_Setting extends Setting_Abstract {
 			'id'   => '__general_system__',
 			'type' => 'title',
 			'name' => esc_html__( 'AweBooking General', 'awebooking' ),
-			'priority' => 10,
 		) );
 
 		$section->add_field( array(
@@ -28,7 +25,6 @@ class General_Setting extends Setting_Abstract {
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Multi hotel location?', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'enable_location' ),
-			'priority' => 10,
 		) );
 
 		$section->add_field( array(
@@ -36,13 +32,12 @@ class General_Setting extends Setting_Abstract {
 			'type'     => 'select',
 			'name'     => esc_html__( 'Default location', 'awebooking' ),
 			'description' => esc_html__( 'Select a default location.', 'awebooking' ),
-			'options_cb'  => wp_data_callback( 'terms',  array(
-				'taxonomy'   => AweBooking::HOTEL_LOCATION,
+			'options_cb'  => wp_data_callback( 'terms', array(
+				'taxonomy'   => Constants::HOTEL_LOCATION,
 				'hide_empty' => false,
 			)),
 			'validate' => 'integer',
 			'deps'     => array( 'enable_location', '==', true ),
-			'priority' => 15,
 		) );
 
 		$section->add_field( array(
@@ -50,7 +45,6 @@ class General_Setting extends Setting_Abstract {
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'children_bookable' ),
-			'priority' => 20,
 			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
 		));
 
@@ -59,7 +53,6 @@ class General_Setting extends Setting_Abstract {
 			'id'       => 'children_bookable_description',
 			'name'     => esc_html__( 'Description', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'children_bookable_description' ),
-			'priority' => 21,
 			'attributes' => [
 				'placeholder' => esc_html__( 'Description', 'awebooking' ),
 			],
@@ -72,7 +65,6 @@ class General_Setting extends Setting_Abstract {
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable' ),
-			'priority' => 22,
 			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
 		) );
 
@@ -80,7 +72,6 @@ class General_Setting extends Setting_Abstract {
 			'type'     => 'text',
 			'id'       => 'infants_bookable_description',
 			'name'     => esc_html__( 'Description', 'awebooking' ),
-			'priority' => 23,
 			'deps'     => array( 'infants_bookable', '==', true ),
 			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable_description' ),
 			'attributes' => [
@@ -93,7 +84,6 @@ class General_Setting extends Setting_Abstract {
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
-			'priority' => 25,
 		) );
 
 		$section->add_field( array(
@@ -104,7 +94,6 @@ class General_Setting extends Setting_Abstract {
 			'options_cb'  => function() {
 				return awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
 			},
-			'priority' => 25,
 		) );
 
 		$section->add_field( array(
@@ -115,7 +104,6 @@ class General_Setting extends Setting_Abstract {
 			'default'  => awebooking( 'setting' )->get_default( 'currency_position' ),
 			'validate' => 'required',
 			'options'  => awebooking( 'setting' )->get_currency_positions(),
-			'priority' => 30,
 		) );
 
 		$section->add_field( array(
@@ -125,7 +113,6 @@ class General_Setting extends Setting_Abstract {
 			// 'desc'     => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'price_thousand_separator' ),
 			'validate' => 'required',
-			'priority' => 35,
 		) );
 
 		$section->add_field( array(
@@ -135,7 +122,6 @@ class General_Setting extends Setting_Abstract {
 			// 'desc'     => esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'price_decimal_separator' ),
 			'validate' => 'required',
-			'priority' => 40,
 		) );
 
 		$section->add_field( array(
@@ -148,7 +134,6 @@ class General_Setting extends Setting_Abstract {
 				'min'  => 0,
 				'type' => 'number',
 			),
-			'priority' => 45,
 		) );
 	}
 

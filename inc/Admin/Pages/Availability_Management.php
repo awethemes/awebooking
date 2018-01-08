@@ -86,6 +86,17 @@ class Availability_Management extends WP_List_Table {
 	}
 
 	/**
+	 * Get a list of columns.
+	 *
+	 * @return array
+	 */
+	public function get_columns() {
+		return [
+			'calendar' => esc_html__( 'Calendar', 'awebooking' ),
+		];
+	}
+
+	/**
 	 * //
 	 *
 	 * @param string $which
@@ -116,17 +127,6 @@ class Availability_Management extends WP_List_Table {
 				</ul>
 			</div><?php
 		}
-	}
-
-	/**
-	 * Get a list of columns.
-	 *
-	 * @return array
-	 */
-	public function get_columns() {
-		return [
-			'calendar' => esc_html__( 'Calendar', 'awebooking' ),
-		];
 	}
 
 	public function get_primary_column() {
@@ -170,6 +170,7 @@ class Availability_Management extends WP_List_Table {
 	 */
 	public function column_calendar( $item ) {
 		$calendar = new Yearly_Calendar( $item, $this->_year );
+
 		return $calendar->display();
 	}
 

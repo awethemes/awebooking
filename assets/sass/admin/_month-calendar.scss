@@ -1,0 +1,22 @@
+/* Basic month calendar layout */
+.awebooking-month-calendar {
+  background-color: #fff;
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.awebooking-month-calendar__week {
+  display: flex;
+  margin: 0;
+}
+
+.awebooking-month-calendar__pad,
+.awebooking-month-calendar__day {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  margin: 0;
+}

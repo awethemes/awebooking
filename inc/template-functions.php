@@ -193,89 +193,6 @@ if ( ! function_exists( 'awebooking_template_loop_room_type_thumbnail' ) ) {
 	}
 }
 
-/**
- * Get an image size.
- *
- * Variable is filtered by awebooking/get_image_size_{image_size}.
- *
- * @param mixed $image_size image size.
- * @return array
- */
-function awebooking_get_image_size( $image_size ) {
-	if ( is_array( $image_size ) ) {
-		$width  = isset( $image_size[0] ) ? $image_size[0] : '300';
-		$height = isset( $image_size[1] ) ? $image_size[1] : '300';
-		$crop   = isset( $image_size[2] ) ? $image_size[2] : 1;
-
-		$size = array(
-			'width'  => $width,
-			'height' => $height,
-			'crop'   => $crop,
-		);
-
-		$image_size = $width . '_' . $height;
-
-	} elseif ( in_array( $image_size, array( 'awebooking_thumbnail', 'awebooking_catalog', 'awebooking_single' ) ) ) {
-		$default_size = [];
-
-		$default_size['awebooking_thumbnail'] = array(
-			'width'  => '300',
-			'height' => '300',
-			'crop'   => 1,
-		);
-
-		$default_size['awebooking_catalog'] = array(
-			'width'  => '600',
-			'height' => '400',
-			'crop'   => 1,
-		);
-
-		$default_size['awebooking_single'] = array(
-			'width'  => '640',
-			'height' => '640',
-			'crop'   => 1,
-		);
-
-		$size           = $default_size[ $image_size ];
-
-		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
-		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
-		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
-
-	} else {
-		$size = array(
-			'width'  => '300',
-			'height' => '300',
-			'crop'   => 1,
-		);
-	}
-
-	return apply_filters( 'awebooking/get_image_size_' . $image_size, $size );
-}
-
-/**
- * Get the placeholder image URL for room types etc.
- *
- * @access public
- * @return string
- */
-function awebooking_placeholder_img_src() {
-	return apply_filters( 'awebooking/placeholder_img_src', awebooking()->plugin_url() . '/assets/img/placeholder.png' );
-}
-
-/**
- * Get the placeholder image.
- *
- * @param string $size size.
- * @access public
- * @return string
- */
-function awebooking_placeholder_img( $size = 'awebooking_thumbnail' ) {
-	$dimensions = awebooking_get_image_size( $size );
-
-	return apply_filters( 'awebooking/placeholder_img', '<img src="' . awebooking_placeholder_img_src() . '" alt="' . esc_attr__( 'Placeholder', 'awebooking' ) . '" width="' . esc_attr( $dimensions['width'] ) . '" class="awebooking-placeholder" height="' . esc_attr( $dimensions['height'] ) . '" />', $size, $dimensions );
-}
-
 if ( ! function_exists( 'awebooking_template_loop_room_type_title' ) ) {
 
 	/**
@@ -575,7 +492,7 @@ if ( ! function_exists( 'awebooking_template_checkout_customer_form' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'awebooking_template_checkout_extra_service_details' ) ) :
+if ( ! function_exists( 'awebooking_template_checkout_general_informations' ) ) :
 	/**
 	 * AweBooking checkout extra service details template.
 	 *

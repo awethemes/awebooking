@@ -1,0 +1,60 @@
+#awebooking-booking-calendar {
+  &.postbox .inside {
+    padding: 0;
+    margin-top: 0;
+  }
+}
+
+table.aweminical__table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  th, td {
+    border: none;
+    padding: 5px 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  thead > tr {
+    color: #5e7179;
+    background: #f5f8fb;
+  }
+}
+
+.aweminical {
+  &__heading {
+    padding: 5px 35px;
+    text-align: center;
+    text-transform: uppercase;
+
+    color: #5e7179;
+    background: #f5f8fb;
+  }
+
+  &__day-heading {
+    font-weight: 400;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  &__day--today {
+    color: red;
+  }
+
+  &__day > span {
+    display: block;
+    position: relative;
+    padding: 4px 5px;
+  }
+  &__day > span > i {
+    position: absolute;
+    height: 4px;
+    border-radius: 2px;
+    left: 0;
+    bottom: 10px;
+    background: red;
+    min-width: 100%;
+  }
+}
