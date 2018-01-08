@@ -14,43 +14,6 @@ class Carbonate extends Carbon {
 	const SATURDAY  = 6;
 
 	/**
-	 * Format the instance as a readable wp date.
-	 *
-	 * @return string
-	 */
-	public function to_wp_date_string() {
-		return $this->date_i18n( awebooking( 'setting' )->get_date_format() );
-	}
-
-	/**
-	 * Format the instance as a readable wp time.
-	 *
-	 * @return string
-	 */
-	public function to_wp_time_string() {
-		return $this->date_i18n( awebooking( 'setting' )->get_time_format() );
-	}
-
-	/**
-	 * Format the instance as a readable wp date and time.
-	 *
-	 * @return string
-	 */
-	public function to_wp_datetime_string() {
-		return $this->to_wp_date_string() . ' ' . $this->to_wp_time_string();
-	}
-
-	/**
-	 * Format datetime use `date_i18n`.
-	 *
-	 * @param  string $fomrat A valid date format string.
-	 * @return string
-	 */
-	public function date_i18n( $fomrat ) {
-		return date_i18n( $fomrat, $this->getTimestamp() );
-	}
-
-	/**
 	 * Return a datetime as Carbon object with time set to 00:00:00.
 	 *
 	 * @param  mixed $date The date format or UNIX timestamp.
@@ -75,9 +38,7 @@ class Carbonate extends Carbon {
 		// Same as DateTime object, but we'll convert to Carbon object.
 		if ( $datetime instanceof \DateTime ) {
 			return static::instance( $datetime );
-		}
-
-		if ( $datetime instanceof \DateTimeInterface ) {
+		} elseif ( $datetime instanceof \DateTimeImmutable ) {
 			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
 		}
 
@@ -140,5 +101,42 @@ class Carbonate extends Carbon {
 	 */
 	public static function is_standard_date_format( $date ) {
 		return (bool) preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $date );
+	}
+
+	/**
+	 * Format the instance as a readable wp date.
+	 *
+	 * @return string
+	 */
+	public function to_wp_date_string() {
+		return $this->date_i18n( awebooking( 'setting' )->get_date_format() );
+	}
+
+	/**
+	 * Format the instance as a readable wp time.
+	 *
+	 * @return string
+	 */
+	public function to_wp_time_string() {
+		return $this->date_i18n( awebooking( 'setting' )->get_time_format() );
+	}
+
+	/**
+	 * Format the instance as a readable wp date and time.
+	 *
+	 * @return string
+	 */
+	public function to_wp_datetime_string() {
+		return $this->to_wp_date_string() . ' ' . $this->to_wp_time_string();
+	}
+
+	/**
+	 * Format datetime use `date_i18n`.
+	 *
+	 * @param  string $fomrat A valid date format string.
+	 * @return string
+	 */
+	public function date_i18n( $fomrat ) {
+		return date_i18n( $fomrat, $this->getTimestamp() );
 	}
 }

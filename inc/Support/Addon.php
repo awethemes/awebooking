@@ -3,14 +3,7 @@ namespace AweBooking\Support;
 
 use Awethemes\Support\Plugin_Updater;
 
-abstract class Addon {
-	/**
-	 * The container instance.
-	 *
-	 * @var Container
-	 */
-	public $awebooking;
-
+abstract class Addon extends Service_Provider {
 	/**
 	 * Addon namespace.
 	 *
@@ -212,12 +205,47 @@ abstract class Addon {
 	}
 
 	/**
+	 * Run validate addon before load.
+	 *
+	 * @return void
+	 */
+	public function validate() {
+		$require_version = $this->requires();
+		$require_version = ( ! $require_version || 'latest' === $require_version ) ? $this->awebooking->version() : $require_version;
+
+		if ( ! version_compare( $this->awebooking->version(), $require_version, '>=' ) ) {
+			$this->log_error(
+				sprintf(
+					esc_html__( 'Addon requires at least AweBooking version %1$s to work, you have running on AweBooking %2$s', 'awebooking' ),
+					esc_html( $require_version ),
+					esc_html( $this->awebooking->version() )
+				)
+			);
+		}
+	}
+
+	/**
 	 * If this addon allow notify update.
 	 *
 	 * @return boolean
 	 */
 	public function is_notify_update() {
 		return $this->notify_update;
+	}
+
+	/**
+	 * Init the addon.
+	 *
+	 * @access private
+	 */
+	public function boot() {
+		$this->init();
+
+		if ( $this->is_notify_update() ) {
+			$this->setup_addon_updater();
+		}
+
+		do_action( 'awebooking/addons/init_' . $this->get_id(), $this );
 	}
 
 	/**
