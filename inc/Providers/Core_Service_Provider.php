@@ -10,6 +10,16 @@ use AweBooking\Support\Service_Provider;
 
 class Core_Service_Provider extends Service_Provider {
 	/**
+	 * The AweBooking core widgets.
+	 *
+	 * @var array
+	 */
+	protected $widgets = [
+		\AweBooking\Widgets\Booking_Cart_Widget::class,
+		\AweBooking\Widgets\Check_Availability_Widget::class,
+	];
+
+	/**
 	 * Registers services on the AweBooking.
 	 */
 	public function register() {
@@ -39,5 +49,17 @@ class Core_Service_Provider extends Service_Provider {
 		$this->awebooking->singleton( 'store.pricing', function() {
 			return new Store( 'awebooking_pricing', 'rate_id' );
 		});
+
+		Shortcodes::init();
+		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+	}
+
+	/**
+	 * Register AweBooking widgets.
+	 */
+	public function register_widgets() {
+		foreach ( $this->widgets as $widget ) {
+			register_widget( $widget );
+		}
 	}
 }

@@ -108,8 +108,6 @@ final class AweBooking extends Container {
 		\AweBooking\Providers\Admin_Service_Provider::class,
 		\AweBooking\Providers\Frontend_Service_Provider::class,
 		\AweBooking\Providers\Route_Service_Provider::class,
-		// \AweBooking\Shortcodes\Shortcode_Service_Provider::class,
-		// \AweBooking\Widgets\Widget_Service_Provider::class,
 	];
 
 	/**
