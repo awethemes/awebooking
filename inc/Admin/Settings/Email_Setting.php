@@ -171,6 +171,14 @@ class Email_Setting extends Abstract_Setting {
 			'default' => esc_html__( 'New customer booking', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed', 'awebooking' ),
 		) );
+
+		$new_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_new_content',
+			'type'    => 'wysiwyg',
+			'default' => esc_html__( '{breakdown}', 'awebooking' ),
+			'desc'    => esc_html__( 'desc...', 'awebooking' ),
+		) );
 	}
 
 	/**
@@ -212,6 +220,14 @@ class Email_Setting extends Abstract_Setting {
 			'default' => esc_html__( 'Your booking is cancelled', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Thank you for your booking.', 'awebooking' ),
 		) );
+
+		$cancelled_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_cancelled_content',
+			'type'    => 'wysiwyg',
+			'default' => esc_html__( '{breakdown}', 'awebooking' ),
+			'desc'    => esc_html__( 'desc...', 'awebooking' ),
+		) );
 	}
 
 	/**
@@ -252,6 +268,14 @@ class Email_Setting extends Abstract_Setting {
 			'default' => esc_html__( 'Your booking is being processed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is being processed.', 'awebooking' ),
 		) );
+
+		$processing_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_processing_content',
+			'type'    => 'wysiwyg',
+			'default' => esc_html__( '{breakdown}', 'awebooking' ),
+			'desc'    => esc_html__( 'desc...', 'awebooking' ),
+		) );
 	}
 
 	/**
@@ -291,6 +315,14 @@ class Email_Setting extends Abstract_Setting {
 			'type'    => 'text',
 			'default' => esc_html__( 'Your booking is completed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed.', 'awebooking' ),
+		) );
+
+		$completed_booking->add_field( array(
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_complete_content',
+			'type'    => 'wysiwyg',
+			'default' => esc_html__( '{breakdown}', 'awebooking' ),
+			'desc'    => esc_html__( 'desc...', 'awebooking' ),
 		) );
 	}
 }
