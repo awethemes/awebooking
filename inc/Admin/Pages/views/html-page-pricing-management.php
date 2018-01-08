@@ -53,7 +53,7 @@ use AweBooking\Admin\Admin_Utils;
 				<ul class="split-button-body awebooking-main-toggle">
 					<?php foreach ( $years as $year ) : ?>
 						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=manager-pricing&amp;=' . $screen->parent_base . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-pricing&amp;=' . $screen->parent_base . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
 						</li>
 					<?php endforeach ?>
 				</ul>

@@ -92,15 +92,11 @@ class Admin_Scripts {
 			wp_enqueue_script( 'awebooking-edit-booking' );
 		}
 
-		if ( 'edit-hotel_extra_service' === $screen->id ) {
-			// wp_enqueue_script( 'awebooking-edit-service' );
-		}
-
-		if ( $awebooking_screen_id . '_page_manager-pricing' === $screen->id ) {
+		if ( $awebooking_screen_id . '_page_awebooking-pricing' === $screen->id ) {
 			wp_enqueue_script( 'awebooking-manager-pricing' );
 		}
 
-		if ( $awebooking_screen_id . '_page_manager-awebooking' === $screen->id ) {
+		if ( $awebooking_screen_id . '_page_awebooking-availability' === $screen->id ) {
 			wp_enqueue_script( 'awebooking-manager-availability' );
 		}
 	}

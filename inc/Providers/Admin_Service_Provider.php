@@ -153,6 +153,9 @@ class Admin_Service_Provider extends Service_Provider {
 		global $parent_file, $submenu_file;
 
 		$current_screen = get_current_screen();
+		if ( ! $current_screen ) {
+			return;
+		}
 
 		if ( 'awebooking_admin' === $current_screen->base ) {
 			// @codingStandardsIgnoreStart

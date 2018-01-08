@@ -68,12 +68,12 @@ class Installer {
 	 * @return void
 	 */
 	public function activation() {
-		// Call the install action.
-		$this->install();
-
 		if ( apply_filters( 'awebooking/enable_setup_wizard', $this->is_new_install() ) ) {
 			set_transient( '_awebooking_activation_redirect', 1, 30 );
 		}
+
+		// Call the install action.
+		$this->install();
 	}
 
 	/**
@@ -369,6 +369,10 @@ class Installer {
 	 * Setup AweBooking environment - post-types, taxonomies, endpoints.
 	 */
 	protected function setup_environment() {
+		if ( ! class_exists( 'Skeleton\Post_Type' ) ) {
+			skeleton_psr4_autoloader( 'Skeleton\\', dirname( __DIR__ ) . '/vendor/awethemes/skeleton/inc/' );
+		}
+
 		$environment = new Setup_Environment;
 
 		$environment->register_taxonomies();
