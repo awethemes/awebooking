@@ -122,3 +122,40 @@ select[name="booking_customer"] {
   font-style: normal;
   display: inline-block !important;
 }
+
+table.awebooking-additional-occupancy {
+  width: auto;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    min-height: 30px;
+    line-height: 30px;
+
+    width: 100px;
+    vertical-align: middle;
+    border: solid 1px #e7e7e7;
+  }
+
+  tr > th,
+  tr > td {
+    background-color: #f9f9f9;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    margin: 0;
+    width: 100px;
+    border: none;
+    position: relative;
+    z-index: 10;
+
+    &:not(:focus) {
+      box-shadow: none;
+    }
+  }
+}
