@@ -3,9 +3,7 @@ Thumbs.db
 wp-cli.local.yml
 node_modules/
 vendor/
-skeleton/
-_skeleton/
-.skeleton/
+awethemes/
 *.zip
 *.tar.gz
 composer.lock
