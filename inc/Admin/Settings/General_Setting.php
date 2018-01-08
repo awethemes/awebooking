@@ -40,14 +40,13 @@ class General_Setting extends Abstract_Setting {
 			'deps'     => array( 'enable_location', '==', true ),
 		) );
 
-		/*$section->add_field( array(
+		$section->add_field( array(
 			'id'       => 'children_bookable',
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'children_bookable' ),
-			'priority' => 20,
 			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
-		));*/
+		));
 
 		$section->add_field( array(
 			'type'     => 'text',
@@ -61,14 +60,13 @@ class General_Setting extends Abstract_Setting {
 			'show_on_cb' => '__return_false',
 		) );
 
-		/*$section->add_field( array(
+		$section->add_field( array(
 			'id'       => 'infants_bookable',
 			'type'     => 'toggle',
 			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable' ),
-			'priority' => 22,
 			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
-		) );*/
+		) );
 
 		$section->add_field( array(
 			'type'     => 'text',
@@ -88,7 +86,7 @@ class General_Setting extends Abstract_Setting {
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
 		) );
 
-		/*$section->add_field( array(
+		$section->add_field( array(
 			'id'       => 'currency',
 			'type'     => 'select',
 			'name'     => esc_html__( 'Currency', 'awebooking' ),
@@ -96,8 +94,7 @@ class General_Setting extends Abstract_Setting {
 			'options_cb'  => function() {
 				return awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
 			},
-			'priority' => 25,
-		) );*/
+		) );
 
 		$section->add_field( array(
 			'id'       => 'currency_position',
