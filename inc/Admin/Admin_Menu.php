@@ -102,9 +102,7 @@ class Admin_Menu {
 			$submenu_hook = add_submenu_page( static::PARENT_SLUG, $submenu['page_title'], $submenu['menu_title'], $submenu['capability'], $submenu_id, $callback );
 
 			if ( $submenu['noheader'] && $submenu_hook ) {
-				add_action( 'load-' . $submenu_hook, function() {
-					$_GET['noheader'] = true;
-				});
+				$this->no_admin_header( $submenu_hook );
 			}
 		});
 	}
@@ -115,9 +113,11 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Availability', 'awebooking' ), esc_html__( 'Availability', 'awebooking' ), 'manage_awebooking', 'awebooking-availability', $this->create_page_callback( Availability_Management::class ) );
+		$availability_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Availability', 'awebooking' ), esc_html__( 'Availability', 'awebooking' ), 'manage_awebooking', 'awebooking-availability', $this->create_page_callback( Availability_Management::class ) );
+		$this->no_admin_header( $availability_page_hook );
 
-		add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Pricing', 'awebooking' ), esc_html__( 'Pricing', 'awebooking' ), 'manage_awebooking', 'awebooking-pricing', $this->create_page_callback( Pricing_Management::class ) );
+		$pricing_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Pricing', 'awebooking' ), esc_html__( 'Pricing', 'awebooking' ), 'manage_awebooking', 'awebooking-pricing', $this->create_page_callback( Pricing_Management::class ) );
+		$this->no_admin_header( $pricing_page_hook );
 	}
 
 	/**
@@ -181,6 +181,22 @@ class Admin_Menu {
 		}
 
 		remove_submenu_page( 'edit.php?post_type=room_type', 'post-new.php?post_type=room_type' );
+	}
+
+	/**
+	 * No admin header.
+	 *
+	 * ```
+	 * require_once ABSPATH . 'wp-admin/admin-header.php';
+	 * ```
+	 *
+	 * @param  string $page_hook Page hook name.
+	 * @return void
+	 */
+	protected function no_admin_header( $page_hook ) {
+		add_action( 'load-' . $page_hook, function() {
+			$_GET['noheader'] = true;
+		});
 	}
 
 	/**
