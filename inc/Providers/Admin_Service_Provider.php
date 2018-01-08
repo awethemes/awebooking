@@ -50,10 +50,6 @@ class Admin_Service_Provider extends Service_Provider {
 	 * Registers services on the AweBooking.
 	 */
 	public function register() {
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		$this->awebooking->singleton( 'admin_menu', function() {
 			return new Admin_Menu;
 		});

@@ -26,5 +26,6 @@ wp-cli.local.yml
 bin/
 tests/
 node_modules/
+awethemes/
 *.zip
 *.tar.gz

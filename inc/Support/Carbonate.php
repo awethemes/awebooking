@@ -67,7 +67,7 @@ class Carbonate extends Carbon {
 	 */
 	public static function days_in_month( $month, $year = 'this year' ) {
 		if ( ! is_int( $year ) ) {
-			$carbon = (new static( $year ))->month( $month );
+			$carbon = ( new static( $year ) )->month( $month );
 		} else {
 			$carbon = static::createFromDate( $year, $month, 1 );
 		}

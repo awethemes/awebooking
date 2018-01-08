@@ -148,6 +148,17 @@ trait Booking_Attributes_Trait {
 	}
 
 	/**
+	 * Get the customer full name.
+	 *
+	 * @return string
+	 */
+	public function get_customer_name() {
+		$customer_name = trim( $this['customer_first_name'] . ' ' . $this['customer_last_name'] );
+
+		return apply_filters( $this->prefix( 'get_customer_first_name' ), $customer_name, $this );
+	}
+
+	/**
 	 * Gets the customer first name.
 	 *
 	 * @return string

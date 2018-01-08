@@ -1,8 +1,9 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
-use AweBooking\Booking\Booking;
+use AweBooking\Constants;
 use AweBooking\AweBooking;
+use AweBooking\Booking\Booking;
 
 class Booking_List_Table extends Post_Type_Abstract {
 	/**
@@ -27,6 +28,27 @@ class Booking_List_Table extends Post_Type_Abstract {
 	public function init() {
 		add_filter( 'request', [ $this, 'request_query' ] );
 		add_filter( 'post_row_actions', [ $this, 'disable_quick_edit' ], 10, 2 );
+
+		add_filter( 'parse_query', [ $this, 'search_by_booking_id' ] );
+	}
+
+	public function search_by_booking_id( $wp ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] )
+			|| Constants::BOOKING !== $wp->query_vars['post_type'] ) {
+			return;
+		}
+
+		$search_id = sanitize_text_field( $wp->query_vars['s'] );
+
+		if ( ! empty( $search_id ) && is_numeric( $search_id ) ) {
+			// Remove "s" - we don't want to search order name.
+			unset( $wp->query_vars['s'] );
+
+			// Search by found posts.
+			$wp->query_vars['post__in'] = array_merge( (array) $search_id, [ 0 ] );
+		}
 	}
 
 	/**
@@ -198,6 +220,8 @@ class Booking_List_Table extends Post_Type_Abstract {
 		if ( $booking['customer_id'] ) {
 			$userdata = get_userdata( $booking['customer_id'] );
 			$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $booking['customer_id'] ), esc_html( $userdata->display_name ) ) : '';
+		} elseif ( $customber_name = $booking->get_customer_name() ) {
+			$username = $customber_name;
 		} elseif ( $booking['customer_company'] ) {
 			$username = trim( $booking->get_customer_company() );
 		} else {
