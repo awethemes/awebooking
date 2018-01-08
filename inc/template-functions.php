@@ -502,24 +502,3 @@ if ( ! function_exists( 'awebooking_template_checkout_general_informations' ) ) 
 		awebooking_get_template( 'checkout/general-informations.php' );
 	}
 endif;
-
-if ( ! function_exists( 'awebooking_get_content_email' ) ) :
-	/**
-	 * AweBooking get content email.
-	 *
-	 * @return void
-	 */
-	function awebooking_get_content_email( $type = 'new' ) {
-			$content = awebooking_option( "email_{$type}_content" );
-
-			$search = array(
-				'{breakdown}',
-			);
-
-			$replace = array(
-				awebooking_get_template( 'emails/breakdown.php' ),
-			);
-
-			print str_replace( $search, $replace, $content );
-	}
-endif;
