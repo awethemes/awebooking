@@ -2,6 +2,7 @@
 namespace AweBooking\Http\Controllers;
 
 use AweBooking\Factory;
+use AweBooking\Concierge;
 use AweBooking\AweBooking;
 use AweBooking\Hotel\Service;
 use AweBooking\Hotel\Room_Type;
