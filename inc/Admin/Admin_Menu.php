@@ -1,105 +1,197 @@
 <?php
 namespace AweBooking\Admin;
 
-use Skeleton\Admin_Menu as Base_Admin_Menu;
-use AweBooking\Admin\Pages\Admin_Welcome;
+use AweBooking\Constants;
+use AweBooking\Support\Collection;
+use AweBooking\Admin\Pages\About_Page;
+use AweBooking\Admin\Pages\Settings_Page;
 use AweBooking\Admin\Pages\Pricing_Management;
 use AweBooking\Admin\Pages\Availability_Management;
 
-class Admin_Menu extends Base_Admin_Menu {
+class Admin_Menu {
+	/* Constants */
+	const PARENT_SLUG = 'awebooking';
+
 	/**
-	 * Constructor admin menu.
+	 * An array submenu will be add to top-level menu.
+	 *
+	 * @var \AweBooking\Support\Collection
+	 */
+	protected $submenus;
+
+	/**
+	 * Constructor.
 	 */
 	public function __construct() {
-		parent::__construct( 'awebooking', array(
-			'page_title' => esc_html__( 'AweBooking', 'awebooking' ),
-			'menu_title' => esc_html__( 'AweBooking', 'awebooking' ),
-			'icon_url'   => 'dashicons-calendar',
-			'capability'  => 'manage_awebooking',
-			'position'   => 53,
-			'function' => function() {
-				(new Admin_Welcome)->output();
-			},
-		));
-
-		$this->add_submenu( 'manager-awebooking', array(
-			'page_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Manager Availability', 'awebooking' ),
-			'capability'  => 'manage_awebooking',
-			'noheader'    => true,
-			'function' => function() {
-				(new Availability_Management)->output();
-			},
-		));
-
-		$this->add_submenu( 'manager-pricing', array(
-			'page_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Manager Pricing', 'awebooking' ),
-			'capability'  => 'manage_awebooking',
-			'noheader'    => true,
-			'function' => function() {
-				(new Pricing_Management)->output();
-			},
-		));
-
-		$this->add_submenu( 'edit.php?post_type=awebooking', array(
-			'page_title'  => esc_html__( 'Booking', 'awebooking' ),
-			'menu_title'  => esc_html__( 'Booking', 'awebooking' ),
-			'capability'  => 'manage_awebooking',
-		));
+		$this->submenus = new Collection;
 	}
 
 	/**
-	 * Trigger admin_init hook.
+	 * Init the hooks.
+	 *
+	 * @return void
 	 */
 	public function init() {
-		parent::init();
+		add_action( 'admin_menu', [ $this, 'register_admin_menu' ], 9 );
+		add_action( 'admin_menu', [ $this, 'register_manager_submenu' ], 20 );
+		add_action( 'admin_menu', [ $this, 'register_custom_submenu' ], 40 );
+		add_action( 'admin_menu', [ $this, 'regsiter_setting_submenu' ], 60 );
+		add_action( 'admin_menu', [ $this, 'register_about_submenu' ], 80 );
 
 		add_filter( 'custom_menu_order', '__return_true' );
-		add_action( 'admin_menu', array( $this, '_add_menu_separator' ) );
-		add_filter( 'menu_order', array( $this, '_menu_order' ) );
-		add_action( 'admin_head', array( $this, '_menu_highlight' ) );
+		add_filter( 'menu_order', [ $this, 'menu_order' ] );
+		add_action( 'admin_head', [ $this, 'cleanup_submenu' ] );
 	}
 
-	public function _add_menu_separator() {
+	/**
+	 * Add a submenu to a top-level menu.
+	 *
+	 * @param  string $submenu_id   Submenu ID.
+	 * @param  array  $submenu_args Submenu array arguments.
+	 * @return void
+	 */
+	public function add_submenu( $submenu_id, array $submenu_args = [] ) {
+		$submenu_args = wp_parse_args( $submenu_args, [
+			'page_title' => '',
+			'menu_title' => '',
+			'function'   => null,
+			'capability' => 'manage_awebooking',
+			'priority'   => 10,
+			'noheader'   => false,
+		]);
+
+		$this->submenus->put(
+			$submenu_id, $submenu_args
+		);
+	}
+
+	/**
+	 * Get the submenus.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_submenus() {
+		return $this->submenus;
+	}
+
+	/**
+	 * Register the "awebooking" menu.
+	 *
+	 * @access private
+	 */
+	public function register_admin_menu() {
 		global $menu;
-		$menu[] = array( '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' );
+
+		// @codingStandardsIgnoreLine
+		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
+
+		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_options', static::PARENT_SLUG, null, 'dashicons-calendar', 53 );
 	}
 
-	public function _menu_order( $menu_order ) {
-		$awebooking_menu_order = array();
+	/**
+	 * Register custom submenu.
+	 *
+	 * @access private
+	 */
+	public function register_custom_submenu() {
+		$this->submenus->each( function( $submenu, $submenu_id ) {
+			$callback  = ( is_string( $submenu['function'] ) && class_exists( $submenu['function'] ) )
+				? $this->create_page_callback( $submenu['function'] )
+				: $submenu['function'];
 
-		$awebooking_separator = array_search( 'separator-awebooking', $menu_order );
+			$submenu_hook = add_submenu_page( static::PARENT_SLUG, $submenu['page_title'], $submenu['menu_title'], $submenu['capability'], $submenu_id, $callback );
 
+			if ( $submenu['noheader'] && $submenu_hook ) {
+				add_action( 'load-' . $submenu_hook, function() {
+					$_GET['noheader'] = true;
+				});
+			}
+		});
+	}
+
+	/**
+	 * Register the "management" submenu.
+	 *
+	 * @access private
+	 */
+	public function register_manager_submenu() {
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Availability', 'awebooking' ), esc_html__( 'Availability', 'awebooking' ), 'manage_awebooking', 'awebooking-availability', $this->create_page_callback( Availability_Management::class ) );
+
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Pricing', 'awebooking' ), esc_html__( 'Pricing', 'awebooking' ), 'manage_awebooking', 'awebooking-pricing', $this->create_page_callback( Pricing_Management::class ) );
+	}
+
+	/**
+	 * Register the "setting" submenu.
+	 *
+	 * @access private
+	 */
+	public function regsiter_setting_submenu() {
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'awebooking-settings', $this->create_page_callback( Settings_Page::class ) );
+	}
+
+	/**
+	 * Register the "about" menu item.
+	 *
+	 * @access private
+	 */
+	public function register_about_submenu() {
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'awebooking-about', $this->create_page_callback( About_Page::class ) );
+	}
+
+	/**
+	 * Reorder the WP menu items in admin.
+	 *
+	 * @param  array $menu_order The original menu_order.
+	 * @return array
+	 *
+	 * @access private
+	 */
+	public function menu_order( $menu_order ) {
+		$separator_index = array_search( 'separator-awebooking', $menu_order );
+		$hotel_index     = array_search( Constants::ADMIN_PAGE_HOTEL, $menu_order );
+
+		$new_menu = [];
 		foreach ( $menu_order as $index => $item ) {
-			if ( ( ( 'edit.php?post_type=room_type' ) == $item ) ) {
-				$awebooking_menu_order[] = 'separator-awebooking';
-				$awebooking_menu_order[] = $item;
-				unset( $menu_order[ $awebooking_separator ] );
+			if ( 'awebooking' == $item ) {
+				$new_menu[] = 'separator-awebooking';
+				$new_menu[] = $item;
+				$new_menu[] = Constants::ADMIN_PAGE_HOTEL;
+
+				unset( $menu_order[ $hotel_index ] );
+				unset( $menu_order[ $separator_index ] );
 			} elseif ( ! in_array( $item, array( 'separator-awebooking' ) ) ) {
-				$awebooking_menu_order[] = $item;
+				$new_menu[] = $item;
 			}
 		}
 
-		return $awebooking_menu_order;
+		return $new_menu;
 	}
 
 	/**
-	 * Highlights the correct top level admin menu item for post type add screens.
+	 * Clean-up the submenu.
+	 *
+	 * @access private
 	 */
-	public function _menu_highlight() {
-		global $parent_file, $submenu_file;
-		$current_screen = get_current_screen();
+	public function cleanup_submenu() {
+		global $submenu;
 
-		if ( ! $current_screen ) {
-			return;
+		// Remove 'AweBooking' sub menu item.
+		if ( isset( $submenu['awebooking'] ) ) {
+			unset( $submenu['awebooking'][0] );
 		}
 
-		switch ( $current_screen->id ) {
-			case 'awebooking':
-				$parent_file  = 'awebooking';
-				$submenu_file = 'edit.php?post_type=awebooking';
-			break;
-		}
+		remove_submenu_page( 'edit.php?post_type=room_type', 'post-new.php?post_type=room_type' );
+	}
+
+	/**
+	 * Create the page callback for "add_submenu_page" function.
+	 *
+	 * @param  string $page_class The page class to resolve.
+	 * @return Closure
+	 */
+	protected function create_page_callback( $page_class ) {
+		return function() use ( $page_class ) {
+			awebooking()->call( $page_class, [], 'output' );
+		};
 	}
 }

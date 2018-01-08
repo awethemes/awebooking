@@ -16,6 +16,7 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
+		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 	</rule>
 
 	<rule ref="WordPress-Docs">

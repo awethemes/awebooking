@@ -27,6 +27,15 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Get the setting key.
+	 *
+	 * @return string
+	 */
+	public function get_setting_key() {
+		return $this->key;
+	}
+
+	/**
 	 * Get a config by key.
 	 *
 	 * @param  string $key     A string configure key.
@@ -67,6 +76,10 @@ class Setting extends WP_Option {
 	 */
 	public function get_infants_bookable() {
 		return $this->get( 'infants_bookable' );
+	}
+
+	public function is_multi_location() {
+		return (bool) $this->get( 'enable_location' );
 	}
 
 	/**

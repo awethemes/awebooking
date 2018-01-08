@@ -1,48 +1,50 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\AweBooking;
+use AweBooking\Admin\Admin_Settings;
 
-class Email_Setting extends Setting_Abstract {
+class Email_Setting extends Abstract_Setting {
 	/**
-	 * Register settings.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
-	public function register() {
-		$email = $this->settings->add_panel( 'email', [
+	public function registers( Admin_Settings $settings ) {
+		$email = $settings->add_panel( 'email', [
 			'title'    => esc_html__( 'Email', 'awebooking' ),
 			'priority' => 30,
 			'capability' => 'manage_awebooking',
 		]);
 
-		$email_general = $this->settings->add_section( 'email-general', [
+		$email_general = $settings->add_section( 'email-general', [
 			'title'    => esc_html__( 'Email Sender', 'awebooking' ),
 			'priority' => 10,
 			'capability' => 'manage_awebooking',
-
 		])->as_child_of( $email );
 
-		$new_booking = $this->settings->add_section( 'email-new-booking', [
+		$new_booking = $settings->add_section( 'email-new-booking', [
 			'title'    => esc_html__( 'New Booking', 'awebooking' ),
 			'priority' => 20,
 		])->as_child_of( $email );
 
-		$cancelled_booking = $this->settings->add_section( 'email-cancelled-booking', [
+		$cancelled_booking = $settings->add_section( 'email-cancelled-booking', [
 			'title'    => esc_html__( 'Cancelled Booking', 'awebooking' ),
 			'priority' => 30,
 		])->as_child_of( $email );
 
-		$completed_booking = $this->settings->add_section( 'email-completed-booking', [
-			'title'    => esc_html__( 'Completed Booking', 'awebooking' ),
+		$processing_booking = $settings->add_section( 'email-processing-booking', [
+			'title'    => esc_html__( 'Processing Booking', 'awebooking' ),
 			'priority' => 40,
 		])->as_child_of( $email );
 
+		$completed_booking = $settings->add_section( 'email-completed-booking', [
+			'title'    => esc_html__( 'Completed Booking', 'awebooking' ),
+			'priority' => 50,
+		])->as_child_of( $email );
+
 		$this->register_general_settings( $email_general );
-		$this->register_new_booking_settings( $email_general );
-		$this->register_cancelled_booking_settings( $email_general );
-		$this->register_processing_booking_settings( $email_general );
-		$this->register_completed_booking_settings( $email_general );
+		$this->register_new_booking_settings( $new_booking );
+		$this->register_cancelled_booking_settings( $cancelled_booking );
+		$this->register_processing_booking_settings( $processing_booking );
+		$this->register_completed_booking_settings( $completed_booking );
 	}
 
 	/**

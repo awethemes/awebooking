@@ -1,18 +1,15 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\AweBooking;
+use AweBooking\Admin\Admin_Settings;
 
-class Display_Setting extends Setting_Abstract {
+class Display_Setting extends Abstract_Setting {
 	/**
-	 * Register settings.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
-	public function register() {
-		$display = $this->settings->add_section( 'display', [
+	public function registers( Admin_Settings $settings ) {
+		$display = $settings->add_section( 'display', [
 			'title' => esc_html__( 'Display', 'awebooking' ),
-			'priority' => 20,
 			'capability' => 'manage_awebooking',
 		]);
 
@@ -21,7 +18,6 @@ class Display_Setting extends Setting_Abstract {
 			'type' => 'title',
 			'name' => esc_html__( 'AweBooking Pages', 'awebooking' ),
 			'description' => esc_html__( 'These pages need to be set so that AweBooking knows where to send users to handle.', 'awebooking' ),
-			'priority' => 10,
 		) );
 
 		$display->add_field( array(
@@ -32,7 +28,6 @@ class Display_Setting extends Setting_Abstract {
 			'default'      => awebooking( 'setting' )->get_default( 'page_check_availability' ),
 			'options_cb'   => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'     => 'integer',
-			'priority'     => 10,
 			'show_option_none' => true,
 		) );
 
@@ -44,7 +39,6 @@ class Display_Setting extends Setting_Abstract {
 			'default'     => awebooking( 'setting' )->get_default( 'page_booking' ),
 			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'    => 'integer',
-			'priority'    => 15,
 			'show_option_none' => true,
 		) );
 
@@ -56,7 +50,6 @@ class Display_Setting extends Setting_Abstract {
 			'default'     => awebooking( 'setting' )->get_default( 'page_checkout' ),
 			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
 			'validate'    => 'integer',
-			'priority'    => 20,
 			'show_option_none' => true,
 		) );
 
@@ -64,7 +57,6 @@ class Display_Setting extends Setting_Abstract {
 			'id'       => '__display_check_availability__',
 			'type'     => 'title',
 			'name'     => esc_html__( 'Check availability', 'awebooking' ),
-			'priority' => 25,
 		) );
 
 		$display->add_field( array(
@@ -74,7 +66,6 @@ class Display_Setting extends Setting_Abstract {
 			'name'       => esc_html__( 'Max adults', 'awebooking' ),
 			'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_adults' ),
 			'validate'   => 'integer|min:1',
-			'priority'   => 30,
 			'sanitization_cb' => 'absint',
 		) );
 
@@ -86,7 +77,6 @@ class Display_Setting extends Setting_Abstract {
 				'name'       => esc_html__( 'Max children', 'awebooking' ),
 				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_children' ),
 				'validate'   => 'integer|min:0',
-				'priority'   => 35,
 				'sanitization_cb' => 'absint',
 			) );
 		}
@@ -99,7 +89,6 @@ class Display_Setting extends Setting_Abstract {
 				'name'       => esc_html__( 'Max infants', 'awebooking' ),
 				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_infants' ),
 				'validate'   => 'integer|min:0',
-				'priority'   => 36,
 				'sanitization_cb' => 'absint',
 			) );
 		}
@@ -108,7 +97,6 @@ class Display_Setting extends Setting_Abstract {
 			'id'   => 'page_for_check_availability',
 			'type' => 'title',
 			'name' => esc_html__( 'Page for check availability ', 'awebooking' ),
-			'priority' => 40,
 		) );
 
 		$display->add_field( array(
@@ -117,13 +105,12 @@ class Display_Setting extends Setting_Abstract {
 			'name'     => esc_html__( 'Showing price', 'awebooking' ),
 			'description' => esc_html__( 'Selected a type of price to showing in the checking availability page.', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'showing_price' ),
-			'options'	 => array(
-				'start_price'	 => esc_html__( 'Starting price', 'awebooking' ),
+			'options'  => array(
+				'start_price'    => esc_html__( 'Starting price', 'awebooking' ),
 				'average_price'  => esc_html__( 'Average price', 'awebooking' ),
-				'total_price' 	 => esc_html__( 'Total price', 'awebooking' ),
+				'total_price'    => esc_html__( 'Total price', 'awebooking' ),
 			),
 			'show_option_none' => false,
-			'priority' => 45,
 		) );
 	}
 }
