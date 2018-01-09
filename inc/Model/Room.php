@@ -1,14 +1,12 @@
 <?php
-namespace AweBooking\Hotel;
+namespace AweBooking\Model;
 
 use AweBooking\Factory;
-use AweBooking\AweBooking;
-use AweBooking\Support\WP_Object;
-use AweBooking\Support\Period;
+use AweBooking\Constants;
+use Roomify\Bat\Unit\UnitInterface;
 use AweBooking\Booking\BAT\Unit_Trait;
-use Roomify\Bat\Unit\UnitInterface as Unit_Interface;
 
-class Room extends WP_Object implements Unit_Interface {
+class Room extends WP_Object implements UnitInterface {
 	use Unit_Trait;
 
 	/**
@@ -40,12 +38,24 @@ class Room extends WP_Object implements Unit_Interface {
 	 * @var array
 	 */
 	protected $attributes = [
-		'name' => '',
-		'room_type_id' => 0,
+		'name'      => '',
+		'room_type' => 0,
+		'order'     => 0,
 	];
 
 	/**
-	 * Create new room object.
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'name'      => 'string',
+		'room_type' => 'integer',
+		'order'     => 'integer',
+	];
+
+	/**
+	 * Constructor.
 	 *
 	 * @param int $room_id The room ID.
 	 */
@@ -53,17 +63,7 @@ class Room extends WP_Object implements Unit_Interface {
 		parent::__construct( $room_id );
 
 		// By default, room state is alway available.
-		$this->setDefaultValue( AweBooking::STATE_AVAILABLE );
-	}
-
-	/**
-	 * Setup the object attributes.
-	 *
-	 * @return void
-	 */
-	protected function setup() {
-		$this['name'] = $this->instance['name'];
-		$this['room_type_id'] = absint( $this->instance['room_type'] );
+		$this->setDefaultValue( Constants::STATE_AVAILABLE );
 	}
 
 	/**
@@ -97,12 +97,43 @@ class Room extends WP_Object implements Unit_Interface {
 	}
 
 	/**
+	 * The the room order.
+	 *
+	 * @return string
+	 */
+	public function get_order() {
+		return apply_filters( $this->prefix( 'get_order' ), $this['order'], $this );
+	}
+
+	/**
 	 * Get room type instance.
 	 *
 	 * @return Room_Type
 	 */
 	public function get_room_type() {
-		return apply_filters( $this->prefix( 'get_room_type' ), new Room_Type( $this['room_type_id'] ), $this );
+		return Factory::get_room_type( $this['room_type'] );
+	}
+
+	/**
+	 * Set the room_type ID.
+	 *
+	 * @param int $room_type The room_type ID.
+	 */
+	public function set_room_type( $room_type ) {
+		$room_type = $room_type instanceof Room_Type ? $room_type->get_id() : $room_type;
+
+		$this->attributes['room_type'] = $room_type;
+	}
+
+	/**
+	 * Setup the object attributes.
+	 *
+	 * @return void
+	 */
+	protected function setup() {
+		$this['name']      = $this->instance['name'];
+		$this['order']     = isset( $this->instance['order'] ) ? absint( $this->instance['order'] ) : 0;
+		$this['room_type'] = absint( $this->instance['room_type'] );
 	}
 
 	/**
@@ -111,7 +142,8 @@ class Room extends WP_Object implements Unit_Interface {
 	 * @return void
 	 */
 	protected function clean_cache() {
-		wp_cache_delete( $this->get_id(), 'awebooking_cache_room' );
+		wp_cache_delete( $this->get_id(), Constants::CACHE_RAW_ROOM_UNIT );
+		wp_cache_delete( $this['room_type'], Constants::CACHE_ROOMS_IN_ROOM_TYPE );
 	}
 
 	/**
@@ -123,13 +155,13 @@ class Room extends WP_Object implements Unit_Interface {
 		global $wpdb;
 
 		// We need a room-type present.
-		if ( ! $this['room_type_id'] ) {
+		if ( empty( $this->attributes['room_type'] ) ) {
 			return;
 		}
 
 		$wpdb->insert( $wpdb->prefix . 'awebooking_rooms',
-			[ 'name' => $this['name'], 'room_type' => $this['room_type_id'] ],
-			[ '%s', '%d' ]
+			$this->only( 'name', 'room_type', 'order' ),
+			[ '%s', '%d', '%d' ]
 		);
 
 		return absint( $wpdb->insert_id );
@@ -145,12 +177,12 @@ class Room extends WP_Object implements Unit_Interface {
 		global $wpdb;
 
 		// We need a room-type present for the update.
-		if ( ! $this['room_type_id'] ) {
+		if ( empty( $this->attributes['room_type'] ) ) {
 			return;
 		}
 
 		$updated = $wpdb->update( $wpdb->prefix . 'awebooking_rooms',
-			[ 'name' => $this['name'], 'room_type' => $this['room_type_id'] ],
+			$this->only( 'name', 'room_type', 'order' ),
 			[ 'id' => $this->get_id() ]
 		);
 
@@ -172,6 +204,24 @@ class Room extends WP_Object implements Unit_Interface {
 	}
 
 	/**
+	 * Refresh the current instance with existing room data.
+	 *
+	 * @param  array $data The room database attributes data.
+	 * @return $this
+	 */
+	public function with_instance( array $data ) {
+		$this->id = absint( $data['id'] );
+		$this->exists = true;
+
+		$this->set_instance( $data );
+
+		$this->setup();
+		$this->sync_original();
+
+		return $this;
+	}
+
+	/**
 	 * Setup WP Core Object based on ID and object-type.
 	 *
 	 * @return void
@@ -180,12 +230,12 @@ class Room extends WP_Object implements Unit_Interface {
 		global $wpdb;
 
 		// Try get in the cache.
-		$the_room = wp_cache_get( $this->get_id(), 'awebooking_cache_room' );
+		$the_room = wp_cache_get( $this->get_id(), Constants::CACHE_RAW_ROOM_UNIT );
 
 		if ( false === $the_room ) {
 			// Get the room in database.
 			$the_room = $wpdb->get_row(
-				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` = '%d' LIMIT 1", $this->get_id() ),
+				$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` = %d LIMIT 1", $this->get_id() ),
 				ARRAY_A
 			);
 
@@ -194,11 +244,7 @@ class Room extends WP_Object implements Unit_Interface {
 				return;
 			}
 
-			// Santize before cache this room.
-			$the_room['id'] = (int) $the_room['id'];
-			$the_room['room_type'] = (int) $the_room['room_type'];
-
-			wp_cache_add( $the_room['id'], $the_room, 'awebooking_cache_room' );
+			wp_cache_add( $the_room['id'], $the_room, Constants::CACHE_RAW_ROOM_UNIT );
 		}
 
 		$this->set_instance( $the_room );
