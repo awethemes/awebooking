@@ -8,6 +8,8 @@ use AweBooking\Currency\Currency;
 use Illuminate\Support\Arr;
 
 class Setting extends WP_Option {
+	use Deprecated\Setting_Deprecated;
+
 	/**
 	 * Default all settings of AweBooking.
 	 *
@@ -61,21 +63,21 @@ class Setting extends WP_Option {
 	}
 
 	/**
-	 * Get children bookable
+	 * Is the children bookable?
 	 *
 	 * @return boolean
 	 */
-	public function get_children_bookable() {
-		return $this->get( 'children_bookable' );
+	public function is_children_bookable() {
+		return (bool) $this->get( 'children_bookable' );
 	}
 
 	/**
-	 * Get infants bookable
+	 * Is the infants bookable?
 	 *
 	 * @return boolean
 	 */
-	public function get_infants_bookable() {
-		return $this->get( 'infants_bookable' );
+	public function is_infants_bookable() {
+		return (bool) $this->get( 'infants_bookable' );
 	}
 
 	public function is_multi_location() {
