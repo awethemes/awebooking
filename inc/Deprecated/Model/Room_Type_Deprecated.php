@@ -4,6 +4,7 @@ namespace AweBooking\Deprecated\Model;
 use AweBooking\Concierge;
 use AweBooking\Booking\Request;
 use AweBooking\Pricing\Price_Calculator;
+use AweBooking\Model\Service;
 use AweBooking\Calculator\Service_Calculator;
 
 trait Room_Type_Deprecated {
