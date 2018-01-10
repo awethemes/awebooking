@@ -76,7 +76,7 @@ $room_type_id = $result->get_room_type()->get_id();
 		<?php
 			$booking_url = add_query_arg( array_merge( array( 'booking-action' => 'view' ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );
 		?>
-		<a class="awebooking-loop-room-type__button-booking" href="<?php echo esc_url( $booking_url ); ?>"><?php esc_html_e( 'Book Room', 'awebooking' ); ?></a>
+		<a class="awebooking-loop-room-type__button-booking awebooking-btn" href="<?php echo esc_url( $booking_url ); ?>"><?php esc_html_e( 'Book Room', 'awebooking' ); ?></a>
 
 	</div>
 </li>

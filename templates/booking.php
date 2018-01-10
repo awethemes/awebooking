@@ -115,10 +115,10 @@ if ( isset( $message_error ) || $availability->unavailable() ) : ?>
 				</table>
 
 				<div class="text-right">
-					<button type="submit" class="btn button awebooking-button">
+					<button type="submit" class="awebooking-btn">
 						<?php esc_html_e( 'Book another room','awebooking' ); ?>
 					</button>
-					<input type="submit" name="go-to-checkout" class="btn button awebooking-button" value="<?php esc_attr_e( 'Checkout','awebooking' ); ?>">
+					<input type="submit" name="go-to-checkout" class="awebooking-btn" value="<?php esc_attr_e( 'Checkout','awebooking' ); ?>">
 				</div>
 			</div>
 			<input type="hidden" name="booking-action" value="add">

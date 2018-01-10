@@ -139,7 +139,7 @@ $cart_collection = $cart->get_contents();
 
 	<?php $checkout_link = get_permalink( absint( awebooking_option( 'page_checkout' ) ) ); ?>
 	<div class="awebooking-cart__buttons">
-		<a class="btn button awebooking-button" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Proceed to Checkout', 'awebooking' ); ?></a>
+		<a class="btn button awebooking-btn" href="<?php echo esc_url( $checkout_link ); ?>"><?php esc_html_e( 'Proceed to Checkout', 'awebooking' ); ?></a>
 	</div>
 </div>
 <?php else : ?>
