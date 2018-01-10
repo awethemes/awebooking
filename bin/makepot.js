@@ -9,7 +9,7 @@ i18n.makepot({
   exclude: [
     'tests/.*',
     'vendor/.*',
-    'skeleton/.*'
+    'awethemes/.*'
   ],
   potHeaders: {
     poedit: true,
