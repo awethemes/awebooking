@@ -1,7 +1,32 @@
 <?php
 
+use AweBooking\Factory;
 use AweBooking\Admin\Admin_Utils;
+use AweBooking\Support\Carbonate;
+use AweBooking\Support\Period;
+use AweBooking\Admin\Calendar\Monthy_Calendar;
 
+global $room_type;
+
+if ( isset( $_GET['room_type'] ) && ! empty( $_GET['room_type'] ) ) {
+	$room_type = Factory::get_room_type( $_GET['room_type'] );
+
+	if ( ! $room_type->exists() ) {
+		return;
+	}
+
+	$month = ( isset( $_GET['month'] ) && $_GET['month'] >= 1 && $_GET['month'] <= 12 ) ? (int) $_GET['month'] : absint( date( 'n' ) );
+	$calendar = (new Monthy_Calendar( $room_type, $this->year, $month ));
+} else {
+	return;
+}
+
+$current_link = admin_url( 'admin.php?page=awebooking-availability&room_type=' . $room_type->get_id() );
+$current_link = add_query_arg( 'year', $this->year, $current_link );
+
+$select_period = Period::createFromMonth( $this->year, $month );
+$select_period = $select_period->moveStartDate( '- 1MONTH' );
+$select_period = $select_period->moveEndDate( '+ 5MONTH' );
 ?>
 <style type="text/css">
 	.drawer-toggle.toggle-year:before {
@@ -14,95 +39,53 @@ use AweBooking\Admin\Admin_Utils;
 	}
 </style>
 
-<div class="wrap">
-	<h1><?php esc_html_e( 'Availability Management', 'awebooking' ); ?></h1>
+<form method="post">
+	<div class="wp-filter awebooking-toolbar-container" style="z-index: 100;">
+		<div style="float: left;"">
+			<input class="wp-toggle-checkboxes" type="checkbox">
+			<span class="awebooking-sperator"> | </span>
 
-	<form method="post">
-		<div class="wp-filter awebooking-toolbar-container" style="z-index: 100;">
-			<div style="float: left;"">
-				<input class="wp-toggle-checkboxes" type="checkbox">
-				<span class="awebooking-sperator"> | </span>
+			<label><?php esc_html_e( 'From', 'awebooking' ); ?></label>
+			<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
 
-				<label><?php esc_html_e( 'From', 'awebooking' ); ?></label>
-				<input type="text" class="init-daterangepicker-start" name="datepicker-start" autocomplete="off" style="width: 100px;">
+			<label><?php esc_html_e( 'To', 'awebooking' ); ?></label>
+			<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
 
-				<label><?php esc_html_e( 'To', 'awebooking' ); ?></label>
-				<input type="text" class="init-daterangepicker-end" name="datepicker-end" autocomplete="off" style="width: 100px;">
-
-				<div id="edit-day-options" class="inline-weekday-checkbox">
-					<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'day_options' ] ); ?>
-				</div>
-
-				<select name="state">
-					<option value="0"><?php esc_html_e( 'Available', 'awebooking' ); ?></option>
-					<option value="1"><?php esc_html_e( 'Unavailable', 'awebooking' ); ?></option>
-				</select>
-
-				<input type="hidden" name="action" value="bulk-update">
-				<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ) ?></button>
+			<div id="edit-day-options" class="inline-weekday-checkbox">
+				<?php Admin_Utils::prints_weekday_checkbox( [ 'id' => 'day_options' ] ); ?>
 			</div>
 
-			<?php
-			$screen = get_current_screen();
+			<select name="state">
+				<option value="0"><?php esc_html_e( 'Available', 'awebooking' ); ?></option>
+				<option value="1"><?php esc_html_e( 'Unavailable', 'awebooking' ); ?></option>
+			</select>
 
-			$room_type = wp_data( 'posts', [
-				'post_type' => 'room_type',
-			]);
-
-			$current_room_type = '';
-
-			if ( isset( $_REQUEST['room-type'] ) && isset( $room_type[ $_REQUEST['room-type'] ] ) ) {
-				$current_room_type = $room_type[ $_REQUEST['room-type'] ];
-			} else {
-				$current_room_type = esc_html__( 'All Room Types', 'awebooking' );
-			}
-			?>
-			<div class="" style="position: relative; float: right;">
-				<button type="button" class="button drawer-toggle" data-init="awebooking-toggle" aria-expanded="false"><?php echo $current_room_type; ?></button>
-
-				<ul class="split-button-body awebooking-main-toggle">
-					<li>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability') ); ?>"><?php echo esc_html__( 'All Room Types', 'awebooking' ); ?></a>
-					</li>
-
-					<?php foreach ( $room_type as $id => $name ) : ?>
-						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability&amp;room-type=' . $id ) ); ?>"><?php echo esc_html( $name ); ?></a>
-						</li>
-					<?php endforeach ?>
-				</ul>
-			</div>
-
-			<div class="" style="position: relative; float: right;">
-				<?php
-				$_year = $this->_year;
-				$years = [ $_year - 1, $_year, $_year + 1 ];
-				?>
-				<button type="button" class="button drawer-toggle toggle-year" data-init="awebooking-toggle" aria-expanded="false"><?php echo $_year; ?></button>
-
-				<ul class="split-button-body awebooking-main-toggle">
-					<?php foreach ( $years as $year ) : ?>
-						<li>
-							<a href="<?php echo esc_url( admin_url( 'admin.php?page=awebooking-availability&amp;room-type=' . $this->room_type . '&year=' . $year ) ); ?>"><?php echo esc_html( $year ); ?></a>
-						</li>
-					<?php endforeach ?>
-				</ul>
-			</div>
+			<input type="hidden" name="action" value="bulk-update">
+			<button class="button" type="submit"><?php echo esc_html__( 'Bulk Update', 'awebooking' ) ?></button>
 		</div>
 
-		<?php
-		$this->display_tablenav( 'top' );
+		<div class="" style="position: relative; float: right;">
+			<button type="button" class="button drawer-toggle toggle-year" data-init="awebooking-toggle" aria-expanded="false">
+				<?php echo Carbonate::createFromDate( $this->year, $month, 1 )->format( 'F Y' ); ?>
+			</button>
 
-		$this->screen->render_screen_reader_content( 'heading_list' );
-		?><table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+			<ul class="split-button-body awebooking-main-toggle">
+				<?php foreach ( $select_period->getDatePeriod( '1 MONTH' ) as $month ) :
+					$month = Carbonate::create_date( $month ); ?>
+					<li>
+						<a href="<?php echo esc_url( add_query_arg( array( 'year' => $month->year, 'month' => $month->month ), $current_link ) ); ?>">
+							<?php echo esc_html( $month->format( 'F Y' ) ); ?>
+						</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+		</div>
+	</div>
 
-			<tbody id="the-list">
-				<?php $this->display_rows_or_placeholder(); ?>
-			</tbody>
-		</table>
-		<?php $this->display_tablenav( 'bottom' ); ?>
-	</form>
-</div>
+	<div style="padding-top: 10px;">
+		<?php $calendar->display(); ?>
+	</div>
+</form>
 
 
 <div id="awebooking-set-availability-popup" class="hidden" title="<?php echo esc_html__( 'Set availability', 'awebooking' ) ?>">
