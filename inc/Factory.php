@@ -1,15 +1,12 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_Type;
-use AweBooking\Booking\Booking;
-use AweBooking\Booking\Calendar;
-use AweBooking\Booking\Request;
-use AweBooking\Booking\Items\Line_Item;
-use AweBooking\Booking\Items\Service_Item;
-use AweBooking\Booking\Items\Booking_Item;
-use AweBooking\Support\Period;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
+use AweBooking\Model\Booking;
+use AweBooking\Model\Booking_Item;
+use AweBooking\Support\Utils as U;
+use AweBooking\Model\WP_Object;
 
 /**
  * Simple Factory Pattern
@@ -17,97 +14,46 @@ use AweBooking\Support\Period;
  * Create all things related to AweBooking.
  */
 class Factory {
-	/**
-	 * Create booking calendar.
-	 *
-	 * @param  array   $rooms      Array of rooms.
-	 * @param  integer $booking_id Booking ID.
-	 * @return Calendar
-	 */
-	public static function create_booking_calendar( array $rooms, $booking_id = 0 ) {
-		return new Calendar( $rooms, awebooking( 'store.booking' ), $booking_id );
-	}
+	use Deprecated\Factory_Deprecated;
 
 	/**
-	 * Create availability calendar.
-	 *
-	 * @param  array   $rooms         Array of rooms.
-	 * @param  integer $default_state Default availability state.
-	 * @return Calendar
-	 */
-	public static function create_availability_calendar( array $rooms, $default_state = AweBooking::STATE_AVAILABLE ) {
-		return new Calendar( $rooms, awebooking( 'store.availability' ), $default_state );
-	}
-
-	/**
-	 * Create pricing calendar.
-	 *
-	 * @param  array   $rates         Array of rates.
-	 * @param  integer $default_price Default rate price.
-	 * @return Calendar
-	 */
-	public static function create_pricing_calendar( array $rates, $default_price = 0 ) {
-		return new Calendar( $rates, awebooking( 'store.pricing' ), $default_price );
-	}
-
-	/**
-	 * Gets room unit by ID.
+	 * Get room unit by ID.
 	 *
 	 * @param  int $room_unit Room unit ID.
-	 * @return AweBooking\Hotel\Room
+	 * @return AweBooking\Model\Room
 	 */
 	public static function get_room_unit( $room_unit ) {
-		return new Room( $room_unit );
+		return static::get_object_from_cache( $room_unit, Room::class, Constants::CACHE_ROOM_UNIT );
 	}
 
 	/**
-	 * Gets room type by ID.
+	 * Get room type by ID.
 	 *
 	 * @param  int $room_type Room type ID or instance.
-	 * @return AweBooking\Hotel\Room_Type
+	 * @return AweBooking\Model\Room_Type
 	 */
 	public static function get_room_type( $room_type ) {
-		return new Room_Type( $room_type );
+		return static::get_object_from_cache( $room_type, Room_Type::class, Constants::CACHE_ROOM_TYPE );
 	}
 
 	/**
-	 * Gets booking by ID.
+	 * Get booking by ID.
 	 *
 	 * @param  int $booking_id Booking ID.
-	 * @return AweBooking\Booking\Booking
+	 * @return AweBooking\Model\Booking
 	 */
 	public static function get_booking( $booking_id ) {
-		return new Booking( $booking_id );
+		return static::get_object_from_cache( $booking_id, Booking::class, Constants::CACHE_BOOKING );
 	}
 
 	/**
-	 * Gets booking item instance by ID.
+	 * Get booking item instance by ID.
 	 *
 	 * @param  int $item_id Booking item ID.
 	 * @return mixed|false|null
 	 */
 	public static function get_booking_item( $item_id ) {
-		if ( is_numeric( $item_id ) ) {
-			global $wpdb;
-			$item_data = $wpdb->get_row( $wpdb->prepare( "SELECT `booking_item_type` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = %d LIMIT 1", $item_id ), ARRAY_A );
-
-			$id        = $item_id;
-			$item_type = isset( $item_data['booking_item_type'] ) ? $item_data['booking_item_type'] : false;
-		} elseif ( $item_id instanceof Booking_Item ) {
-			$id        = $item_id->get_id();
-			$item_type = $item_id->get_type();
-		} elseif ( is_array( $item_id ) && ! empty( $item_id['booking_item_type'] ) ) {
-			$id        = $item_id['booking_item_id'];
-			$item_type = $item_id['booking_item_type'];
-		} else {
-			$id        = false;
-			$item_type = false;
-		}
-
-		// Found invalid ID or type, just return.
-		if ( ! $id || ! $item_type ) {
-			return;
-		}
+		list( $item_id, $item_type ) = static::resolve_booking_item( $item_id );
 
 		// Resolve booking item class by type.
 		$classname = static::resolve_booking_item_class( $item_type );
@@ -115,11 +61,36 @@ class Factory {
 			return false;
 		}
 
-		try {
-			return new $classname( $id );
-		} catch ( \Exception $e ) {
-			return false;
+		return static::get_object_from_cache( $item_id, $classname, Constants::CACHE_BOOKING_ITEM );
+	}
+
+	/**
+	 * Resolve booking item ID, type by booking item ID.
+	 *
+	 * @param  int $item_id Booking item ID.
+	 * @return array
+	 */
+	protected static function resolve_booking_item( $item_id ) {
+		$id        = null;
+		$item_type = null;
+
+		if ( is_numeric( $item_id ) ) {
+			global $wpdb;
+			$item_data = $wpdb->get_row(
+				$wpdb->prepare( "SELECT `booking_item_type` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = %d LIMIT 1", $item_id ), ARRAY_A
+			);
+
+			$id        = $item_id;
+			$item_type = isset( $item_data['booking_item_type'] ) ? $item_data['booking_item_type'] : null;
+		} elseif ( is_array( $item_id ) && ! empty( $item_id['booking_item_type'] ) ) {
+			$id        = $item_id['booking_item_id'];
+			$item_type = $item_id['booking_item_type'];
+		} elseif ( $item_id instanceof Booking_Item ) {
+			$id        = $item_id->get_id();
+			$item_type = $item_id->get_type();
 		}
+
+		return [ $id, $item_type ];
 	}
 
 	/**
@@ -130,8 +101,8 @@ class Factory {
 	 */
 	protected static function resolve_booking_item_class( $type ) {
 		$maps = apply_filters( 'awebooking/booking_item_class_maps', [
-			'line_item'    => Line_Item::class,
-			'service_item' => Service_Item::class,
+			'line_item'    => \AweBooking\Model\Line_Item::class,
+			'service_item' => \AweBooking\Model\Service_Item::class,
 		]);
 
 		if ( array_key_exists( $type, $maps ) ) {
@@ -140,98 +111,51 @@ class Factory {
 	}
 
 	/**
-	 * Create booking request from request data,
-	 * If null given, using default $_REQUEST.
+	 * Create an object, cache it if exists.
 	 *
-	 * @param  array $request An array of request data.
-	 * @return Booking_Request
-	 *
-	 * @throws RuntimeException
+	 * @param  int    $object_id    The object ID.
+	 * @param  string $object_class The object class.
+	 * @param  string $cache_group  The cache group for the object.
+	 * @return mixed
 	 */
-	public static function create_booking_request( array $request = null ) {
-		if ( is_null( $request ) ) {
-			$request = $_REQUEST;
+	protected static function get_object_from_cache( $object_id, $object_class, $cache_group ) {
+		$object_id = static::resolve_object_id( $object_id );
+
+		// Try get the object in the cached first.
+		$the_object = wp_cache_get( $object_id, $cache_group );
+
+		if ( false === $the_object ) {
+			$the_object = U::rescue( function() use ( $object_class, $object_id ) {
+				return new $object_class( $object_id );
+			});
+
+			if ( ! $the_object || ! $the_object->exists() ) {
+				return $the_object;
+			}
+
+			wp_cache_add( $object_id, $the_object, $cache_group );
 		}
 
-		$start_date = isset( $request['start-date'] ) ? $request['start-date'] :
-			( isset( $request['start_date'] ) ? $request['start_date'] : null );
-
-		$end_date = isset( $request['end-date'] ) ? $request['end-date'] :
-			( isset( $request['end_date'] ) ? $request['end_date'] : null );
-
-		if ( empty( $start_date ) || empty( $start_date ) ) {
-			throw new \RuntimeException( esc_html__( 'Start date and end date must be shown.', 'awebooking' ) );
-		}
-
-		$period = new Period(
-			sanitize_text_field( wp_unslash( $start_date ) ),
-			sanitize_text_field( wp_unslash( $end_date ) ),
-			true
-		);
-
-		// Take accept requests.
-		$booking_requests = [];
-		$accept_requests  = [ 'adults', 'location', 'room-type' ];
-
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
-			$accept_requests[] = 'children';
-		}
-
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
-			$accept_requests[] = 'infants';
-		}
-
-		// Loop through the accept_requests and build booking_requests.
-		foreach ( $accept_requests as $id ) {
-			$booking_requests[ $id ] = isset( $request[ $id ] ) ? sanitize_text_field( wp_unslash( $request[ $id ] ) ) : null;
-		}
-
-		// Validate some request.
-		if ( ! is_null( $booking_requests['adults'] ) ) {
-			$booking_requests['adults'] = absint( $booking_requests['adults'] );
-		}
-
-		if ( ! empty( $booking_requests['children'] ) ) {
-			$booking_requests['children'] = absint( $booking_requests['children'] );
-		}
-
-		if ( ! empty( $booking_requests['infants'] ) ) {
-			$booking_requests['infants'] = absint( $booking_requests['infants'] );
-		}
-
-		return new Request( $period, $booking_requests );
+		return $the_object;
 	}
 
 	/**
-	 * Create availability from request data
-	 * If null given, using default $_REQUEST.
+	 * Resolve object_id from mixed data.
 	 *
-	 * @param  array $request An array of request data.
-	 * @return static
-	 *
-	 * @throws RuntimeException
+	 * @param  mixed $object_id The object data.
+	 * @return int
 	 */
-	public static function create_room_from_request( array $request = null ) {
-		if ( is_null( $request ) ) {
-			$request = $_REQUEST;
+	protected static function resolve_object_id( $object_id ) {
+		if ( is_numeric( $object_id ) && $object_id > 0 ) {
+			$object_id = (int) $object_id;
+		} elseif ( ! empty( $object_id->ID ) ) {
+			$object_id = (int) $object_id->ID;
+		} elseif ( ! empty( $object_id->term_id ) ) {
+			$object_id = (int) $object_id->term_id;
+		} elseif ( $object_id instanceof WP_Object ) {
+			$object_id = $object_id->get_id();
 		}
 
-		// Trying get room-type ID from request.
-		$room_type_id = isset( $request['room'] ) ? sanitize_text_field( wp_unslash( $request['room'] ) ) : 0;
-		if ( empty( $room_type_id ) && isset( $request['room-type'] ) ) {
-			$room_type_id = sanitize_text_field( wp_unslash( $request['room-type'] ) );
-		}
-
-		if ( empty( $room_type_id ) && isset( $request['room_type'] ) ) {
-			$room_type_id = sanitize_text_field( wp_unslash( $request['room_type'] ) );
-		}
-
-		// Validation room-id.
-		$room_type = get_post( $room_type_id );
-		if ( is_null( $room_type ) ) {
-			throw new \RuntimeException( esc_html__( 'Room type was not found.', 'awebooking' ) );
-		}
-
-		return new Room_Type( $room_type );
+		return $object_id;
 	}
 }
