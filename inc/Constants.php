@@ -26,10 +26,10 @@ class Constants {
 	const ADMIN_PAGE_BOOKING = 'admin.php?page=awebooking';
 
 	// The cache group.
-	const CACHE_ROOM_UNIT          = 'awebooking_cache_room';
-	const CACHE_ROOM_TYPE          = 'awebooking_cache_room_type';
-	const CACHE_BOOKING            = 'awebooking_cache_booking';
-	const CACHE_BOOKING_ITEM       = 'awebooking_cache_booking_item';
+	const CACHE_ROOM_UNIT          = 'awebooking_cache_room_object';
+	const CACHE_ROOM_TYPE          = 'awebooking_cache_room_type_object';
+	const CACHE_BOOKING            = 'awebooking_cache_booking_object';
+	const CACHE_BOOKING_ITEM       = 'awebooking_cache_booking_item_object';
 
 	const CACHE_RAW_ROOM_UNIT      = 'awebooking_cache_raw_room';
 	const CACHE_ROOMS_IN_ROOM_TYPE = 'awebooking_cache_rooms_in_room_type';
