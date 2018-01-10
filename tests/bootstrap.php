@@ -36,6 +36,8 @@ tests_add_filter( 'muplugins_loaded', function () {
  * Install AweBooking.
  */
 tests_add_filter( 'setup_theme', function () {
+	AweBooking\Support\Decimal::set_default_scale( 4 );
+
 	// Clean existing install first.
 	define( 'WP_UNINSTALL_PLUGIN', true );
 	define( 'AWEBOOKING_REMOVE_ALL_DATA', true );

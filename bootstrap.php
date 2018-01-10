@@ -23,3 +23,10 @@ require_once trailingslashit( __DIR__ ) . 'inc/functions.php';
 
 // Make AweBooking\AweBooking as AweBooking alias.
 class_alias( 'AweBooking\\AweBooking', 'AweBooking' );
+
+// Back-compatibility.
+class_alias( 'AweBooking\\Model\\WP_Object', 'AweBooking\\Support\\WP_Object' );
+class_alias( 'AweBooking\\Model\\Amenity', 'AweBooking\\Hotel\\Amenity' );
+class_alias( 'AweBooking\\Model\\Service', 'AweBooking\\Hotel\\Service' );
+class_alias( 'AweBooking\\Model\\Room_Type', 'AweBooking\\Hotel\\Room_Type' );
+class_alias( 'AweBooking\\Model\\Room', 'AweBooking\\Hotel\\Room' );
