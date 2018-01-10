@@ -11,6 +11,12 @@
   var YearlyCalendar = function(element, options) {
     this.$el = $(element);
 
+    if (this.$el.prop('tagName') == 'TR') {
+      this.$table = this.$el.closest('table');
+    } else {
+      this.$table = this.$el;
+    }
+
     this.options = $.extend(options, {
       debug: false,
     });
@@ -21,6 +27,7 @@
 
     this.endDay = null;
     this.startDay = null;
+    this.keepRange = false;
 
     // Initialize the calendar.
     this.initialize();
@@ -173,7 +180,7 @@
     },
 
     _documentClick: function(e) {
-      if (! $.contains(this.$el[0], e.target)) {
+      if (! $.contains(this.$el[0], e.target) && ! this.keepRange) {
         this.clearStartDay();
       }
     },
@@ -206,15 +213,14 @@
 
       hoverHeadingOver: function(e) {
         var $target  = $(e.currentTarget);
-        var selector = '.abkngcal__day-heading[data-day="' + $target.data('day') + '"],' +
-          '.abkngcal__month-heading[data-month="' +  $target.data('month') + '"]';
 
-        this.$el.find(selector).addClass('hover');
+        this.$table.find('.abkngcal__day-heading[data-day="' + $target.data('day') + '"]').addClass('hover');
+        $target.closest('tr').find('.abkngcal__month-heading[data-month="' +  $target.data('month') + '"]').addClass('hover');
       },
 
       hoverHeadingLeave: function(e) {
         var selector = '.abkngcal__day-heading.hover, .abkngcal__month-heading.hover';
-        this.$el.find(selector).removeClass('hover');
+        this.$table.find(selector).removeClass('hover');
       },
 
       buildRangeDays: function(targetDay, $currentTarget) {

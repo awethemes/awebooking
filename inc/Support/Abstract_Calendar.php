@@ -173,6 +173,8 @@ abstract class Abstract_Calendar {
 			$output .= "\n\t<tr data-unit='" . esc_attr( $unit['id'] ) . "'>";
 			$output .= "\n\t\t" . '<th class="' . esc_attr( $this->get_html_class( '&__month-heading' ) ) . '" data-month="' . esc_attr( $month->month ) . '">' . $this->get_scheduler_row_heading( $month, $unit ) . '</th>';
 
+			$this->setup_unit_data( $unit, $month );
+
 			// @codingStandardsIgnoreLine
 			for ( $d = 1; $d <= $month->daysInMonth; $d++ ) {
 				$day = $month->copy()->day( $d );
@@ -261,6 +263,8 @@ abstract class Abstract_Calendar {
 	 * @return void
 	 */
 	protected function setup_date( Carbonate $date, $context ) {}
+
+	protected function setup_unit_data( $unit, $month ) {}
 
 	/**
 	 * Generate HTML cell of a day.

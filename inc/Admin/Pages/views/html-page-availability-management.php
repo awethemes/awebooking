@@ -4,7 +4,7 @@ use AweBooking\Factory;
 use AweBooking\Admin\Admin_Utils;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Period;
-use AweBooking\Admin\Calendar\Monthy_Calendar;
+use AweBooking\Admin\Calendar\Availability_Calendar;
 
 global $room_type;
 
@@ -16,7 +16,7 @@ if ( isset( $_GET['room_type'] ) && ! empty( $_GET['room_type'] ) ) {
 	}
 
 	$month = ( isset( $_GET['month'] ) && $_GET['month'] >= 1 && $_GET['month'] <= 12 ) ? (int) $_GET['month'] : absint( date( 'n' ) );
-	$calendar = (new Monthy_Calendar( $room_type, $this->year, $month ));
+	$calendar = (new Availability_Calendar( $room_type, $this->year, $month ));
 } else {
 	return;
 }
@@ -103,6 +103,7 @@ $select_period = $select_period->moveEndDate( '+ 5MONTH' );
 </div>
 
 <script type="text/template" id="tmpl-availability-calendar-form">
+	<input type="hidden" name="action" value="set_availability">
 	<input type="hidden" name="room_id" value="{{ data.data_id }}">
 	<input type="hidden" name="end_date" value="{{ data.endDay.format('YYYY-MM-DD') }}">
 	<input type="hidden" name="start_date" value="{{ data.startDay.format('YYYY-MM-DD') }}">

@@ -3,9 +3,13 @@ namespace AweBooking\Admin\Pages;
 
 use WP_Query;
 use WP_List_Table;
+use AweBooking\Concierge;
 use AweBooking\AweBooking;
-use AweBooking\Support\Carbonate;
+use AweBooking\Hotel\Room;
 use AweBooking\Hotel\Room_Type;
+use AweBooking\Support\Carbonate;
+use AweBooking\Support\Period;
+use Skeleton\Support\Validator;
 
 class Availability_Management extends WP_List_Table {
 	/**
@@ -163,5 +167,70 @@ class Availability_Management extends WP_List_Table {
 		<?php endwhile;
 
 		wp_reset_postdata();
+	}
+
+	public function process_action() {
+		if ( isset( $_POST['action'] ) && 'set_availability' === $_POST['action'] ) {
+			$validator = new Validator( $_POST, [
+				'start_date' => 'required|date',
+				'end_date'   => 'required|date',
+				'room_id'    => 'required|int',
+				'state'      => 'required|int',
+				'only_day_options' => 'array',
+			]);
+
+			// If have any errors.
+			if ( $validator->fails() ) {
+				return;
+			}
+
+			$only_days = [];
+			if ( isset( $_POST['only_day_options'] ) && is_array( $_POST['only_day_options'] ) ) {
+				$only_days = array_map( 'absint', $_POST['only_day_options'] );
+			}
+
+			try {
+				$room = new Room( absint( $_POST['room_id'] ) );
+
+				$period = new Period(
+					sanitize_text_field( wp_unslash( $_POST['start_date'] ) ),
+					sanitize_text_field( wp_unslash( $_POST['end_date'] ) )
+				);
+
+				if ( $room->exists() ) {
+					Concierge::set_availability( $room, $period, absint( $_POST['state'] ), [
+						'only_days' => $only_days,
+					]);
+				}
+			} catch ( \Exception $e ) {}
+		}
+	}
+
+	public function process_bulk_action() {
+		if ( ! empty( $_POST ) && ! empty( $_POST['bulk-update'] ) && 'bulk-update' === $this->current_action() ) {
+			$ids = $_POST['bulk-update'];
+			if ( empty( $ids ) ) {
+				return;
+			}
+
+			$only_days = [];
+			if ( isset( $_POST['day_options'] ) && is_array( $_POST['day_options'] ) ) {
+				$only_days = array_map( 'absint', $_POST['day_options'] );
+			}
+
+			try {
+				$date = new Period( $_POST['datepicker-start'], $_POST['datepicker-end'] );
+
+				foreach ( $ids as $id ) {
+					$room = new Room( (int) $id );
+
+					Concierge::set_availability( $room, $date, $_REQUEST['state'], [
+						'only_days' => $only_days,
+					]);
+				}
+			} catch (Exception $e) {
+				// ...
+			}
+		}
 	}
 }

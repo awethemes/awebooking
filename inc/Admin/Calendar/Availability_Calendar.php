@@ -13,7 +13,7 @@ use AweBooking\Support\Collection;
 use AweBooking\Support\Abstract_Calendar;
 use AweBooking\Booking\Events\Room_State;
 
-class Monthy_Calendar extends Abstract_Calendar {
+class Availability_Calendar extends Abstract_Calendar {
 	/**
 	 * ISO 8601
 	 */
@@ -34,6 +34,8 @@ class Monthy_Calendar extends Abstract_Calendar {
 	protected $rooms;
 
 	protected $room;
+	protected $state;
+	protected $bookings;
 
 	/**
 	 * The year we will working on.
@@ -86,45 +88,28 @@ class Monthy_Calendar extends Abstract_Calendar {
 	 * @param  string $context Context from Calendar.
 	 * @return mixed
 	 */
-	protected function prepare_data( $data, $context ) {
-		if ( 'year' === $context && is_int( $data ) ) {
-			$start_date = Carbonate::createFromDate( $data, 1, 1 );
-			$end_date   = $start_date->copy()->endOfYear();
-		} elseif ( $data instanceof Carbonate ) {
-			$start_date = Carbonate::create_date( $data )->startOfMonth();
-			$end_date   = $start_date->copy()->endOfMonth();
-		} else {
-			return;
-		}
-		$response = Factory::create_availability_calendar( $this->rooms->all() )
-			->getEventsItemized( $start_date, $end_date, Calendar::BAT_DAILY );
-
-		$resources = array_map(function( $item ) {
-			return $item[ Calendar::BAT_DAY ];
-		}, $response );
-
-		return $resources;
-	}
+	protected function prepare_data( $data, $context ) {}
 
 	/**
-	 * Return contents of day in cell.
+	 * Setup unit data before prints.
 	 *
-	 * Override this method if want custom contents.
-	 *
-	 * @param  Carbonate $date    Current day instance.
-	 * @param  string    $context Context from Calendar.
-	 * @return array
+	 * @param  array     $unit  The unit.
+	 * @param  Carbonate $month The Month instance.
+	 * @return void
 	 */
-	protected function get_date_contents( Carbonate $date, $context ) {
-		$room = $this->room;
+	protected function setup_unit_data( $unit, $month ) {
+		$this->room = null;
+		$this->state = null;
+		$this->bookings = null;
 
-		$calendar = new Calendar( [ $room ], awebooking( 'store.availability' ) );
+		$this->room = $this->rooms->where( 'id', $unit['id'] )->first();
+		$calendar = new Calendar( [ $this->room ], awebooking( 'store.availability' ) );
 
 		$current_year = Carbonate::createFromDate( $this->year, 1, 1 );
 		$events = $calendar->getEvents( $current_year, $current_year->copy()->addYear() );
 
 		$states = [];
-		foreach ( $events[ $room->get_id() ] as $state ) {
+		foreach ( $events[ $this->room->get_id() ] as $state ) {
 			$state = Room_State::instance( $state );
 
 			if ( $state->is_available() ) {
@@ -136,11 +121,11 @@ class Monthy_Calendar extends Abstract_Calendar {
 		$this->state = $states;
 
 		// Get all booking events.
-		$booking_calendar = new Calendar( [ $room ], awebooking( 'store.booking' ) );
+		$booking_calendar = new Calendar( [ $this->room ], awebooking( 'store.booking' ) );
 		$booking_events = $booking_calendar->getEvents( $current_year, $current_year->copy()->addYear() );
 
 		$this->bookings = [];
-		foreach ( $booking_events[ $room->get_id() ] as $event ) {
+		foreach ( $booking_events[ $this->room->get_id() ] as $event ) {
 			if ( 0 === $event->getValue() ) {
 				continue;
 			}
@@ -215,29 +200,28 @@ class Monthy_Calendar extends Abstract_Calendar {
 		}// End foreach().
 
 		$this->range = $range;
+	}
 
-		$working_day = Carbonate::createFromDate( $date->year, $date->month, $date->day );
-		$classes = $this->classes_for_a_day( $working_day, $working_day ); // TODO: ...
+	/**
+	 * Return contents of day in cell.
+	 *
+	 * Override this method if want custom contents.
+	 *
+	 * @param  Carbonate $date    Current day instance.
+	 * @param  string    $context Context from Calendar.
+	 * @return array
+	 */
+	protected function get_date_contents( Carbonate $date, $context ) {
+		$date_string = $date->toDateString();
 
-		$date_string = $working_day->toDateString();
 		if ( isset( $this->range[ $date_string ] ) && ! empty( $this->range[ $date_string ]['booking'] ) ) {
 			$booking = $this->range[ $date_string ]['booking'];
 			$booking_id = $booking->getValue();
 		}
 
-		$contents = sprintf( '
-					<div class="%1$s">
-						<i>%2$s</i>
-						<span class="abkngcal__day-state"></span>
-						<span class="abkngcal__day-selection"></span>
-					</div>',
-					implode( ' ', $classes ),
-					isset( $booking_id ) ? '<a href="' . esc_url( get_edit_post_link( $booking_id ) ) . '">#' . $booking_id . '</a>' : ''
-				);
-
-				unset( $booking_id );
-
-		return $contents;
+		return sprintf( '<i>%1$s</i><span class="abkngcal__day-state"></span><span class="abkngcal__day-selection"></span>',
+			isset( $booking_id ) ? '<a href="' . esc_url( get_edit_post_link( $booking_id ) ) . '">#' . $booking_id . '</a>' : ''
+		);
 	}
 
 	/**
@@ -248,8 +232,7 @@ class Monthy_Calendar extends Abstract_Calendar {
 	public function display() {
 		$date = Carbonate::createFromDate( $this->year, $this->month, 1 );
 
-		echo '<div class="abkngcal-container abkngcal--availability-calendar">
-				<div class="abkngcal-ajax-loading" style="display: none;"><div class="spinner"></div></div>';
+		echo '<div class="abkngcal-container abkngcal--availability-calendar">';
 
 		// @codingStandardsIgnoreStart
 		echo '<h2>' . esc_html( $this->room_type->get_title() ) . '</h2>';
@@ -259,38 +242,6 @@ class Monthy_Calendar extends Abstract_Calendar {
 		// @codingStandardsIgnoreEnd
 
 		echo '</div>';
-		?>
-			<style>
-				.abkngcal--availability-calendar .abkngcal__month-heading>span {
-				    width: 125px;
-				    font-size: 11px;
-				    text-align: left;
-				    padding: 0 5px;
-				    white-space: nowrap;
-				    overflow: hidden;
-				    text-overflow: ellipsis;
-				}
-
-				.abkngcal--availability-calendar .abkngcal__day-heading:not(.hover) {
-				    background-color: #fff;
-				}
-
-				.abkngcal--availability-calendar td {
-				    vertical-align: top;
-				}
-			</style>
-		<?php
-	}
-
-	/**
-	 * Setup date data before prints.
-	 *
-	 * @param  Carbonate $date    Date instance.
-	 * @param  string    $context Context from Calendar.
-	 * @return void
-	 */
-	protected function setup_date( Carbonate $date, $context ) {
-		$this->room = $this->rooms->where( 'id', $context['id'] )->first();
 	}
 
 	/**
@@ -304,27 +255,13 @@ class Monthy_Calendar extends Abstract_Calendar {
 		return '<span><i class="check-column"><input type="checkbox" name="bulk-update[]" value="' . esc_attr( $unit['id'] ) . '" /></i>' . esc_html( $unit['name'] ) . '</span>';
 	}
 
-
 	/**
-	 * Build classess for a day.
-	 *
-	 * @param  Carbon $working_day   Working day.
-	 * @param  Carbon $working_month Working month.
-	 * @return array
+	 * {@inheritdoc}
 	 */
-	public function classes_for_a_day( Carbonate $working_day, Carbonate $working_month ) {
-		$classes = [];
+	public function get_date_classes( Carbonate $date ) {
+		$classes = parent::get_date_classes( $date );
 
-		// Is current day is today, future or past.
-		if ( $working_day->isToday() ) {
-			$classes[] = 'abkngcal__day--today';
-		} elseif ( $working_day->lt( $this->today ) ) {
-			$classes[] = 'abkngcal__day--past';
-		} elseif ( $working_day->gt( $this->today ) ) {
-			$classes[] = 'abkngcal__day--future';
-		}
-
-		$date_string = $working_day->toDateString();
+		$date_string = $date->toDateString();
 		if ( isset( $this->range[ $date_string ] ) ) {
 			$classes[] = implode( ' ', $this->range[ $date_string ]['classes'] );
 		}
@@ -332,6 +269,12 @@ class Monthy_Calendar extends Abstract_Calendar {
 		return $classes;
 	}
 
+	/**
+	 * //
+	 *
+	 * @param  Carbonate $day //.
+	 * @return mixed
+	 */
 	public function get_booking( Carbonate $day ) {
 		if ( empty( $this->bookings ) ) {
 			return false;

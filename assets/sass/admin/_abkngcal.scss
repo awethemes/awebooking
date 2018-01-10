@@ -339,3 +339,20 @@
   padding-right: 5px;
   display: inline-block;
 }
+
+// ----
+.abkngcal--availability-calendar .abkngcal__month-heading>span {
+  width: 125px;
+  font-size: 11px;
+  text-align: left;
+  padding: 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.abkngcal--availability-calendar .abkngcal__day-heading:not(.hover) {
+  background-color: #fff;
+}
+.abkngcal--availability-calendar td {
+  vertical-align: top;
+}
