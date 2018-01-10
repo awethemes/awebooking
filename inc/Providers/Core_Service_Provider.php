@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Providers;
 
+use AweBooking\Setting;
 use AweBooking\Cart\Cart;
 use AweBooking\Booking\Store;
 use AweBooking\Currency\Currency;
@@ -51,15 +52,63 @@ class Core_Service_Provider extends Service_Provider {
 		});
 
 		Shortcodes::init();
-		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+
+		add_action( 'widgets_init', function() {
+			array_walk( $this->widgets, function( $widget_class ) {
+				register_widget( $widget_class );
+			});
+		});
 	}
 
 	/**
-	 * Register AweBooking widgets.
+	 * Init (boot) the service provider.
+	 *
+	 * @return void
 	 */
-	public function register_widgets() {
-		foreach ( $this->widgets as $widget ) {
-			register_widget( $widget );
+	public function init() {
+		$this->modify_setting_key();
+	}
+
+	/**
+	 * Modify the setting key when running on multilanguage.
+	 *
+	 * @return string
+	 */
+	protected function modify_setting_key() {
+		if ( ! $this->awebooking->is_running_multilanguage() ) {
+			return;
+		}
+
+		$current_setting = $this->awebooking['setting_key'];
+		$active_language = $this->awebooking['multilingual']->get_active_language();
+
+		// If active language is not "en", "" or all, suffix with current language.
+		if ( ! in_array( $active_language, [ '', 'en', 'all' ] ) ) {
+			$new_setting = $current_setting . '_' . $active_language;
+
+			$this->perform_copy_settings( $current_setting, $new_setting );
+
+			$this->awebooking->instance( 'setting_key', $new_setting );
+
+			if ( $this->awebooking->resolved( 'setting' ) ) {
+				$this->awebooking->instance( 'setting', new Setting( $new_setting ) );
+			}
+		}
+	}
+
+	/**
+	 * Perform the copy settings.
+	 *
+	 * @param  string $current_setting The current setting key.
+	 * @param  string $new_setting     The new setting key.
+	 * @return void
+	 */
+	protected function perform_copy_settings( $current_setting, $new_setting ) {
+		$new_options     = (array) get_option( $new_setting, [] );
+		$current_options = (array) get_option( $current_setting, [] );
+
+		if ( empty( $new_options ) && $current_options ) {
+			update_option( $new_setting, $current_options );
 		}
 	}
 }

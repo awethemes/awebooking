@@ -245,10 +245,9 @@ class Concierge {
 		}
 
 		$query = Room_Type::query( $query_args );
-
 		$room_type_ids = wp_list_pluck( $query->posts, 'ID' );
-		$rooms = Room::get_by_room_type( $room_type_ids );
 
+		$rooms = Room::get_by_room_type( $room_type_ids );
 		if ( empty( $rooms ) ) {
 			return [];
 		}
