@@ -311,7 +311,7 @@ class Concierge {
 	 * @param  Request $request Booking request instance.
 	 * @return array
 	 */
-	public static function check_rooms_available( array $rooms, Request $request ) {
+	public static function check_rooms_available( $rooms, Request $request ) {
 		$calendar = Factory::create_availability_calendar( $rooms );
 
 		$response = $calendar->getMatchingUnits(

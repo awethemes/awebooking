@@ -15,9 +15,12 @@ trait Factory_Deprecated {
 	 * @param  integer $booking_id Booking ID.
 	 * @return Calendar
 	 */
-	public static function create_booking_calendar( array $rooms, $booking_id = 0 ) {
+	public static function create_booking_calendar( $rooms, $booking_id = 0 ) {
+		$rooms = is_object( $rooms ) ? $rooms->all() : $rooms;
+
 		return new Calendar( $rooms, awebooking( 'store.booking' ), $booking_id );
 	}
+
 	/**
 	 * Create availability calendar.
 	 *
@@ -25,7 +28,9 @@ trait Factory_Deprecated {
 	 * @param  integer $default_state Default availability state.
 	 * @return Calendar
 	 */
-	public static function create_availability_calendar( array $rooms, $default_state = AweBooking::STATE_AVAILABLE ) {
+	public static function create_availability_calendar( $rooms, $default_state = AweBooking::STATE_AVAILABLE ) {
+		$rooms = is_object( $rooms ) ? $rooms->all() : $rooms;
+
 		return new Calendar( $rooms, awebooking( 'store.availability' ), $default_state );
 	}
 
