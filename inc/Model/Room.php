@@ -3,11 +3,14 @@ namespace AweBooking\Model;
 
 use AweBooking\Factory;
 use AweBooking\Constants;
+use Skeleton\Support\Validator;
+
 use Roomify\Bat\Unit\UnitInterface;
 use AweBooking\Booking\BAT\Unit_Trait;
+use AweBooking\Deprecated\Model\Room_Deprecated;
 
 class Room extends WP_Object implements UnitInterface {
-	use Unit_Trait;
+	use Unit_Trait, Room_Deprecated;
 
 	/**
 	 * Name of object type.
@@ -55,36 +58,44 @@ class Room extends WP_Object implements UnitInterface {
 	];
 
 	/**
-	 * Constructor.
+	 * Refresh the current instance with existing room data.
 	 *
-	 * @param int $room_id The room ID.
+	 * @param  array $data The room database attributes data.
+	 * @return $this
 	 */
-	public function __construct( $room_id = 0 ) {
-		parent::__construct( $room_id );
+	public function with_instance( array $data ) {
+		static::validate_raw_data( $data );
 
-		// By default, room state is alway available.
-		$this->setDefaultValue( Constants::STATE_AVAILABLE );
+		$this->id = absint( $data['id'] );
+
+		$this->set_instance( $data );
+		$this->exists = true;
+
+		$this->setup();
+		$this->sync_original();
+
+		return $this;
 	}
 
 	/**
-	 * Get list room by room-type ID(s).
+	 * Validate the room raw data.
 	 *
-	 * @param  int|array $ids The room-type ID(s).
-	 * @return array|null
+	 * @param  array $data The room data.
+	 * @return void
+	 *
+	 * @throws \InvalidArgumentException
 	 */
-	public static function get_by_room_type( $ids ) {
-		global $wpdb;
+	protected static function validate_raw_data( array $data ) {
+		$validation = new Validator( $data, [
+			'id'        => 'required|integer|min:1',
+			'name'      => 'required',
+			'order'     => 'required|integer',
+			'room_type' => 'required|integer|min:1',
+		]);
 
-		$ids = is_int( $ids ) ? [ $ids ] : $ids;
-		$ids = apply_filters( 'awebooking/rooms/get_by_room_type', $ids );
-
-		if ( is_array( $ids ) ) {
-			$ids = implode( "', '", array_map( 'esc_sql', $ids ) );
-			$query = "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN ('{$ids}')";
+		if ( $validation->fails() ) {
+			throw new \InvalidArgumentException( 'The room data is invalid.' );
 		}
-
-		// @codingStandardsIgnoreLine
-		return $wpdb->get_results( $query, ARRAY_A );
 	}
 
 	/**
@@ -120,9 +131,9 @@ class Room extends WP_Object implements UnitInterface {
 	 * @param int $room_type The room_type ID.
 	 */
 	public function set_room_type( $room_type ) {
-		$room_type = $room_type instanceof Room_Type ? $room_type->get_id() : $room_type;
-
-		$this->attributes['room_type'] = $room_type;
+		$this->attributes['room_type'] = ( $room_type instanceof Room_Type )
+			? $room_type->get_id()
+			: absint( $room_type );
 	}
 
 	/**
@@ -204,24 +215,6 @@ class Room extends WP_Object implements UnitInterface {
 	}
 
 	/**
-	 * Refresh the current instance with existing room data.
-	 *
-	 * @param  array $data The room database attributes data.
-	 * @return $this
-	 */
-	public function with_instance( array $data ) {
-		$this->id = absint( $data['id'] );
-		$this->exists = true;
-
-		$this->set_instance( $data );
-
-		$this->setup();
-		$this->sync_original();
-
-		return $this;
-	}
-
-	/**
 	 * Setup WP Core Object based on ID and object-type.
 	 *
 	 * @return void
@@ -244,7 +237,7 @@ class Room extends WP_Object implements UnitInterface {
 				return;
 			}
 
-			wp_cache_add( $the_room['id'], $the_room, Constants::CACHE_RAW_ROOM_UNIT );
+			wp_cache_add( (int) $the_room['id'], $the_room, Constants::CACHE_RAW_ROOM_UNIT );
 		}
 
 		$this->set_instance( $the_room );
