@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AweBooking\Model\Room_Type;
+
 function awebooking_update_300_beta10_fix_db_types() {
 	global $wpdb;
 
@@ -49,5 +51,22 @@ function awebooking_update_300_beta12_change_settings() {
 		$settings = awebooking( 'setting' )->save( $settings );
 	} catch ( \Exception $e ) {
 		$settings = update_option( 'awebooking_settings', $settings );
+	}
+}
+
+function awebooking_update_300_beta15_occupancy() {
+	$posts_array = get_posts([
+		'posts_per_page' => -1,
+		'post_type'      => 'room_type',
+	]);
+
+	foreach ( $posts_array as $post ) {
+		$room_type = new Room_type( $post );
+
+		$room_type['maximum_occupancy'] = ( absint( $room_type->get_meta( 'number_adults' ) ) + absint( $room_type->get_meta( 'max_adults' ) ) )
+			+ ( absint( $room_type->get_meta( 'number_adults' ) ) + absint( $room_type->get_meta( 'max_children' ) ) )
+			+ ( absint( $room_type->get_meta( 'number_infants' ) ) + absint( $room_type->get_meta( 'max_infants' ) ) );
+
+		$room_type->save();
 	}
 }

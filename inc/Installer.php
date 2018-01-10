@@ -34,6 +34,9 @@ class Installer {
 		'3.0.0-beta12' => array(
 			'awebooking_update_300_beta12_change_settings',
 		),
+		'3.0.0-beta15' => array(
+			'awebooking_update_300_beta15_occupancy',
+		),
 	];
 
 	/**
