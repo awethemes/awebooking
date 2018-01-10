@@ -362,7 +362,7 @@ class Email_Setting extends Abstract_Setting {
 
 		$contents .= '<table class="awebooking-minimal-table"><tbody>';
 		foreach ( $shortcodes as $key => $value ) {
-			$contents .= '<tr><td><code>' . esc_html( $key ) . '</code></td><td>' . esc_html( $value ) . '</td></tr>';
+			$contents .= '<tr><td><code>{' . esc_html( $key ) . '}</code></td><td>' . esc_html( $value ) . '</td></tr>';
 		}
 
 		$contents .= '</tbody></table>';
