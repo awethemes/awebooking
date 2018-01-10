@@ -153,6 +153,7 @@ class Room extends WP_Object implements UnitInterface {
 	 * @return void
 	 */
 	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), Constants::CACHE_ROOM_UNIT );
 		wp_cache_delete( $this->get_id(), Constants::CACHE_RAW_ROOM_UNIT );
 		wp_cache_delete( $this['room_type'], Constants::CACHE_ROOMS_IN_ROOM_TYPE );
 	}
