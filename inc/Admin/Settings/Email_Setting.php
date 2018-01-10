@@ -176,6 +176,7 @@ class Email_Setting extends Abstract_Setting {
 			'id'      => 'email_new_content',
 			'type'    => 'wysiwyg',
 			'default' => awebooking( 'setting' )->get_default( 'email_new_content' ),
+			'after'   => $this->get_shortcodes_notes(),
 			'options' => array(
 				'media_buttons' => false,
 				'tinymce' => false,
