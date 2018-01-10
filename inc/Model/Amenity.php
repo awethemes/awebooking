@@ -22,4 +22,12 @@ class Amenity extends WP_Object {
 	 * @var string
 	 */
 	protected $meta_type = 'term';
+
+	/**
+	 * Setup the object attributes.
+	 *
+	 * @return void
+	 */
+	protected function setup() {
+	}
 }
