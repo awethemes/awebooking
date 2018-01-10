@@ -106,6 +106,6 @@ trait Occupancy_Attributes_Trait {
 			return 1;
 		}
 
-		return min( absint( $value ), (int) $this['maximum_occupancy'] );
+		return min( absint( $value ), (int) $this->get_maximum_occupancy() );
 	}
 }

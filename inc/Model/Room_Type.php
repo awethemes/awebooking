@@ -82,16 +82,16 @@ class Room_Type extends WP_Object implements Buyable {
 	 * @var array
 	 */
 	protected $maps = [
-		'base_price'      => 'base_price',
-		'minimum_night'   => 'minimum_night',
+		'base_price'        => 'base_price',
+		'minimum_night'     => 'minimum_night',
 
+		'maximum_occupancy' => '_maximum_occupancy',
 		'number_adults'     => 'number_adults',
 		'number_children'   => 'number_children',
 		'number_infants'    => 'number_infants',
-		'maximum_occupancy' => '_maximum_occupancy',
 
-		'gallery_ids'     => 'gallery',
-		'thumbnail_id'    => '_thumbnail_id',
+		'gallery_ids'       => 'gallery',
+		'thumbnail_id'      => '_thumbnail_id',
 	];
 
 	/**

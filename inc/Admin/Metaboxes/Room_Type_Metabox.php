@@ -77,6 +77,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	public function _setup_room_type( $post ) {
 		if ( $this->is_current_screen() ) {
 			global $room_type;
+
 			$room_type = Factory::get_room_type( $post );
 		}
 	}
