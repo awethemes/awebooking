@@ -236,11 +236,11 @@ class Concierge {
 			'hotel_location'   => $request->get_request( 'location' ),
 		];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$query_args['booking_children'] = $request->get_children();
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$query_args['booking_infants'] = $request->get_infants();
 		}
 
@@ -276,11 +276,11 @@ class Concierge {
 			'post__in'         => [ $room_type->get_id() ],
 		];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$query_args['booking_children'] = $request->get_children();
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$query_args['booking_infants'] = $request->get_infants();
 		}
 

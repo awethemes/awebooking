@@ -79,11 +79,11 @@ class Admin_Ajax {
 				'extra_services' => isset( $sanitized['add_services'] ) ? $sanitized['add_services'] : [],
 			];
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$request_options['children'] = $sanitized['add_children'];
 			}
 
-			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			if ( awebooking( 'setting' )->is_infants_bookable() ) {
 				$request_options['infants'] = absint( $_POST['add_infants'] );
 			}
 
@@ -132,11 +132,11 @@ class Admin_Ajax {
 			'adults' => $sanitized['edit_adults'],
 		];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$request_options['children'] = $sanitized['edit_children'];
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$request_options['infants'] = absint( $_POST['edit_infants'] );
 		}
 

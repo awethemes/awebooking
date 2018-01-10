@@ -56,11 +56,11 @@ class Request_Handler {
 			'extra_services' => 'array',
 		];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$validator_rules['children'] = 'integer|min:0';
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$validator_rules['infants'] = 'integer|min:0';
 		}
 
@@ -100,11 +100,11 @@ class Request_Handler {
 					'extra_services' => $extra_services,
 				];
 
-				if ( awebooking( 'setting' )->get_children_bookable() ) {
+				if ( awebooking( 'setting' )->is_children_bookable() ) {
 					$cart_options['children'] = absint( $_POST['children'] );
 				}
 
-				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				if ( awebooking( 'setting' )->is_infants_bookable() ) {
 					$cart_options['infants'] = absint( $_POST['infants'] );
 				}
 
@@ -124,11 +124,11 @@ class Request_Handler {
 						'adults'     => absint( $_POST['adults'] ),
 					];
 
-					if ( awebooking( 'setting' )->get_children_bookable() ) {
+					if ( awebooking( 'setting' )->is_children_bookable() ) {
 						$query_args['children'] = absint( $_POST['children'] );
 					}
 
-					if ( awebooking( 'setting' )->get_infants_bookable() ) {
+					if ( awebooking( 'setting' )->is_infants_bookable() ) {
 						$query_args['infants'] = absint( $_POST['infants'] );
 					}
 
@@ -175,11 +175,11 @@ class Request_Handler {
 				'extra_services' => $cart_item->options['extra_services'],
 			];
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$request_options['children'] = $cart_item->options['children'];
 			}
 
-			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			if ( awebooking( 'setting' )->is_infants_bookable() ) {
 				$request_options['infants'] = $cart_item->options['infants'];
 			}
 
@@ -199,11 +199,11 @@ class Request_Handler {
 					'adults'     => absint( $cart_item->options['adults'] ),
 				];
 
-				if ( awebooking( 'setting' )->get_children_bookable() ) {
+				if ( awebooking( 'setting' )->is_children_bookable() ) {
 					$request_options['children'] = absint( $cart_item->options['children'] );
 				}
 
-				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				if ( awebooking( 'setting' )->is_infants_bookable() ) {
 					$request_options['infants'] = absint( $cart_item->options['infants'] );
 				}
 
@@ -227,11 +227,11 @@ class Request_Handler {
 				'extra_services' => 'array',
 			];
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$request_options['children'] = 'integer|min:0';
 			}
 
-			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			if ( awebooking( 'setting' )->is_infants_bookable() ) {
 				$request_options['infants'] = 'integer|min:0';
 			}
 
@@ -394,11 +394,11 @@ class Request_Handler {
 					'extra_services' => $cart_item->options['extra_services'],
 				];
 
-				if ( awebooking( 'setting' )->get_children_bookable() ) {
+				if ( awebooking( 'setting' )->is_children_bookable() ) {
 					$request_options['children'] = $cart_item->options['children'];
 				}
 
-				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				if ( awebooking( 'setting' )->is_infants_bookable() ) {
 					$request_options['infants'] = $cart_item->options['infants'];
 				}
 
@@ -418,11 +418,11 @@ class Request_Handler {
 					'total'     => $cart_item->get_total(),
 				];
 
-				if ( awebooking( 'setting' )->get_children_bookable() ) {
+				if ( awebooking( 'setting' )->is_children_bookable() ) {
 					$room_item_options['children'] = $request->get_children();
 				}
 
-				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				if ( awebooking( 'setting' )->is_infants_bookable() ) {
 					$room_item_options['infants'] = $request->get_infants();
 				}
 
@@ -504,11 +504,11 @@ class Request_Handler {
 			'adults'         => 'required|integer|min:1',
 		];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$validator_rules['children'] = 'integer|min:0';
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$validator_rules['infants'] = 'integer|min:0';
 		}
 

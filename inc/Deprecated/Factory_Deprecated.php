@@ -79,11 +79,11 @@ trait Factory_Deprecated {
 		$booking_requests = [];
 		$accept_requests  = [ 'adults', 'location', 'room-type' ];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$accept_requests[] = 'children';
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$accept_requests[] = 'infants';
 		}
 

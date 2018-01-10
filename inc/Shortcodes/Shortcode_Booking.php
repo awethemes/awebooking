@@ -67,11 +67,11 @@ class Shortcode_Booking {
 				'extra_services' => $cart_item->options['extra_services'],
 			];
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$booking_request_options['children'] = absint( $cart_item->options['children'] );
 			}
 
-			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			if ( awebooking( 'setting' )->is_infants_bookable() ) {
 				$booking_request_options['infants'] = absint( $cart_item->options['infants'] );
 			}
 
@@ -90,11 +90,11 @@ class Shortcode_Booking {
 					'adults'     => absint( $cart_item->options['adults'] ),
 				];
 
-				if ( awebooking( 'setting' )->get_children_bookable() ) {
+				if ( awebooking( 'setting' )->is_children_bookable() ) {
 					$query_args['children'] = absint( $cart_item->options['children'] );
 				}
 
-				if ( awebooking( 'setting' )->get_infants_bookable() ) {
+				if ( awebooking( 'setting' )->is_infants_bookable() ) {
 					$query_args['infants'] = absint( $cart_item->options['infants'] );
 				}
 

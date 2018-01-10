@@ -69,7 +69,7 @@ class Display_Setting extends Abstract_Setting {
 			'sanitization_cb' => 'absint',
 		) );
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$display->add_field( array(
 				'id'         => 'check_availability_max_children',
 				'type'       => 'text_small',
@@ -81,7 +81,7 @@ class Display_Setting extends Abstract_Setting {
 			) );
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$display->add_field( array(
 				'id'         => 'check_availability_max_infants',
 				'type'       => 'text_small',

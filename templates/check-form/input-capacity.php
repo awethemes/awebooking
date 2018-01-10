@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<?php endif; ?>
 
-	<?php if ( awebooking( 'setting' )->get_children_bookable() && $max_children ) : ?>
+	<?php if ( awebooking( 'setting' )->is_children_bookable() && $max_children ) : ?>
 	<div class="awebooking-field awebooking-children-field">
 		<label for="awebooking-children"><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">
@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<?php endif; ?>
 
-	<?php if ( awebooking( 'setting' )->get_infants_bookable() && $max_infants ) : ?>
+	<?php if ( awebooking( 'setting' )->is_infants_bookable() && $max_infants ) : ?>
 	<div class="awebooking-field awebooking-infants-field">
 		<label for="awebooking-infants"><?php esc_html_e( 'Infants', 'awebooking' ); ?></label>
 		<div class="awebooking-field-group">

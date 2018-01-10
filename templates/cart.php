@@ -62,11 +62,11 @@ $cart_collection = $cart->get_contents();
 								'extra_services' => $cart_item->options['extra_services'],
 							];
 
-							if ( awebooking( 'setting' )->get_children_bookable() ) {
+							if ( awebooking( 'setting' )->is_children_bookable() ) {
 								$request_options['children'] = $cart_item->options['children'];
 							}
 
-							if ( awebooking( 'setting' )->get_infants_bookable() ) {
+							if ( awebooking( 'setting' )->is_infants_bookable() ) {
 								$request_options['infants'] = $cart_item->options['infants'];
 							}
 

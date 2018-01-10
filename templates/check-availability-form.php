@@ -18,8 +18,8 @@ $form_classes = apply_filters( 'awebooking/check_availability_form_classes', arr
 	'awebooking-check-form',
 	$atts['layout'] ? 'awebooking-check-form--' . $atts['layout'] : 'awebooking-check-form--vertical',
 	( awebooking_option( 'enable_location' ) && ! $atts['hide_location'] ) ? 'has-location' : '',
-	awebooking( 'setting' )->get_children_bookable() ? 'has-children' : '',
-	awebooking( 'setting' )->get_infants_bookable() ? 'has-infants' : '',
+	awebooking( 'setting' )->is_children_bookable() ? 'has-children' : '',
+	awebooking( 'setting' )->is_infants_bookable() ? 'has-infants' : '',
 ) );
 ?>
 <form action="<?php echo esc_url( $link ); ?>" class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $form_classes ) ) ); ?>" method="GET">

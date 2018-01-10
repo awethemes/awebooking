@@ -18,8 +18,8 @@ $page_id = get_the_ID();
 $form_classes = apply_filters( 'awebooking/check_availability_form_classes', array(
 	'awebooking-check-form',
 	'awebooking-check-form--vertical',
-	awebooking( 'setting' )->get_children_bookable() ? 'has-children' : '',
-	awebooking( 'setting' )->get_infants_bookable() ? 'has-infants' : '',
+	awebooking( 'setting' )->is_children_bookable() ? 'has-children' : '',
+	awebooking( 'setting' )->is_infants_bookable() ? 'has-infants' : '',
 ) );
 ?>
 <form action="<?php echo esc_url( get_the_permalink() ); ?>" class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $form_classes ) ) ); ?>" method="POST">
@@ -67,7 +67,7 @@ $form_classes = apply_filters( 'awebooking/check_availability_form_classes', arr
 				</div>
 				<?php endif; ?>
 
-				<?php if ( awebooking( 'setting' )->get_children_bookable() && $max_children ) : ?>
+				<?php if ( awebooking( 'setting' )->is_children_bookable() && $max_children ) : ?>
 				<div class="awebooking-field awebooking-children-field">
 					<label for=""><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
 					<div class="awebooking-field-group">
@@ -81,7 +81,7 @@ $form_classes = apply_filters( 'awebooking/check_availability_form_classes', arr
 				</div>
 				<?php endif; ?>
 
-				<?php if ( awebooking( 'setting' )->get_infants_bookable() && $max_infants ) : ?>
+				<?php if ( awebooking( 'setting' )->is_infants_bookable() && $max_infants ) : ?>
 				<div class="awebooking-field awebooking-infants-field">
 					<label for=""><?php esc_html_e( 'Infants', 'awebooking' ); ?></label>
 					<div class="awebooking-field-group">

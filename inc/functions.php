@@ -222,11 +222,11 @@ function awebooking_get_common_titles() {
 function awebooking_get_booking_request_query( $extra_args = array() ) {
 	$raw = [ 'start-date', 'end-date', 'adults' ];
 
-	if ( awebooking( 'setting' )->get_children_bookable() ) {
+	if ( awebooking( 'setting' )->is_children_bookable() ) {
 		$raw[] = 'children';
 	}
 
-	if ( awebooking( 'setting' )->get_infants_bookable() ) {
+	if ( awebooking( 'setting' )->is_infants_bookable() ) {
 		$raw[] = 'infants';
 	}
 

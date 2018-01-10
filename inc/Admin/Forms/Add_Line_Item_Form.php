@@ -70,7 +70,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			'sanitization_cb'  => 'absint',
 		]);
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$this->add_field([
 				'id'              => 'add_children',
 				'type'            => 'select',
@@ -81,7 +81,7 @@ class Add_Line_Item_Form extends Form_Abstract {
 			]);
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$this->add_field([
 				'id'              => 'add_infants',
 				'type'            => 'select',
@@ -149,11 +149,11 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$the_item['adults']    = isset( $sanitized['add_adults'] ) ? absint( $sanitized['add_adults'] ) : 0;
 			$the_item['total']     = $sanitized['add_price'];
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$the_item['children']  = isset( $sanitized['add_children'] ) ? absint( $sanitized['add_children'] ) : 0;
 			}
 
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$the_item['infants']  = isset( $sanitized['add_infants'] ) ? absint( $sanitized['add_infants'] ) : 0;
 			}
 
@@ -201,11 +201,11 @@ class Add_Line_Item_Form extends Form_Abstract {
 		$this['add_adults']->hide();
 		$this['add_services']->hide();
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$this['add_children']->hide();
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$this['add_infants']->hide();
 		}
 
@@ -262,14 +262,14 @@ class Add_Line_Item_Form extends Form_Abstract {
 			$this['add_adults']
 				->set_prop( 'options', array_combine( $a, $a ) )
 				->show();
-			if ( awebooking( 'setting' )->get_children_bookable() ) {
+			if ( awebooking( 'setting' )->is_children_bookable() ) {
 				$b = range( 0, $room_type->get_allowed_children() );
 				$this['add_children']
 					->set_prop( 'options', array_combine( $b, $b ) )
 					->show();
 			}
 
-			if ( awebooking( 'setting' )->get_infants_bookable() ) {
+			if ( awebooking( 'setting' )->is_infants_bookable() ) {
 				$c = range( 0, $room_type->get_allowed_infants() );
 				$this['add_infants']
 					->set_prop( 'options', array_combine( $c, $c ) )

@@ -58,7 +58,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			'sanitization_cb'  => 'absint',
 		]);
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$this->add_field([
 				'id'              => 'edit_children',
 				'type'            => 'select',
@@ -69,7 +69,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			]);
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$this->add_field([
 				'id'              => 'edit_infants',
 				'type'            => 'select',
@@ -115,11 +115,11 @@ class Edit_Line_Item_Form extends Form_Abstract {
 
 		$item_keys = [ 'edit_adults', 'edit_total' ];
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$item_keys[] = 'edit_children';
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$item_keys[] = 'edit_infants';
 		}
 
@@ -220,7 +220,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			->set_value( $this->line_item->get_adults() )
 			->set_prop( 'options', array_combine( $a, $a ) );
 
-		if ( awebooking( 'setting' )->get_children_bookable() ) {
+		if ( awebooking( 'setting' )->is_children_bookable() ) {
 			$b = range( 0, $room_type->get_allowed_children() );
 
 			$this['edit_children']
@@ -228,7 +228,7 @@ class Edit_Line_Item_Form extends Form_Abstract {
 				->set_prop( 'options', array_combine( $b, $b ) );
 		}
 
-		if ( awebooking( 'setting' )->get_infants_bookable() ) {
+		if ( awebooking( 'setting' )->is_infants_bookable() ) {
 			$c = range( 0, $room_type->get_allowed_infants() );
 
 			$this['edit_infants']
