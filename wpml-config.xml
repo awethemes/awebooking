@@ -10,10 +10,8 @@
 	</taxonomies>
 	<custom-fields>
 		<custom-field action="copy">base_price</custom-field>
-		<custom-field action="copy">max_adults</custom-field>
-		<custom-field action="copy">max_children</custom-field>
-		<custom-field action="copy">max_infants</custom-field>
 		<custom-field action="copy">minimum_night</custom-field>
+		<custom-field action="copy">_maximum_occupancy</custom-field>
 		<custom-field action="copy">number_adults</custom-field>
 		<custom-field action="copy">number_children</custom-field>
 		<custom-field action="copy">number_infants</custom-field>
