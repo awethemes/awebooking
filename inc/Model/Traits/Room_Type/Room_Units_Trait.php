@@ -174,14 +174,16 @@ trait Room_Units_Trait {
 		}
 
 		// Attach founded into the rooms, cache each room_unit before that.
-		$this->rooms = new Collection;
+		$room_units = [];
 
 		foreach ( $the_rooms as $r ) {
-			wp_cache_delete( $r['id'], Constants::CACHE_RAW_ROOM_UNIT );
+			wp_cache_delete( (int) $r['id'], Constants::CACHE_RAW_ROOM_UNIT );
 
-			wp_cache_add( $r['id'], $r, Constants::CACHE_RAW_ROOM_UNIT );
+			wp_cache_add( (int) $r['id'], $r, Constants::CACHE_RAW_ROOM_UNIT );
 
-			$this->rooms->push( ( new Room )->with_instance( $r ) );
+			$room_units[] = ( new Room )->with_instance( $r );
 		}
+
+		$this->rooms = Collection::make( $room_units );
 	}
 }
