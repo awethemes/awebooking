@@ -17,7 +17,6 @@ if ( awebooking()->is_multi_language() ) {
 
 ?><div class="cmb-row">
 	<div class="cmb-th">
-		<label for="number_of_rooms"><?php echo esc_html( $field->prop( 'name' ) ); ?></label>
 	</div>
 
 	<div class="cmb-td">

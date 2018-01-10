@@ -26,19 +26,14 @@ $all_services = awebooking_map_instance(
 
 <script type="text/template" id="awebooking-manager-service-template">
 	<div>
+		<div class="skeleton-input-group">
+			<select class="cmb2_select" v-model="serviceExist">
+				<option :value="service.id" :disabled="checkIncludeService(service.id)" v-for="(service, index) in all_services">{{ service.name }}</option>
+			</select>
+			<span class="skeleton-input-group__addon">
 
-		<div class="cmb-row">
-			<div class="cmb-th">
-				<label for="extra-services"><?php esc_html_e( 'Choose an Extra Service', 'awebooking' ); ?></label>
-			</div>
-			<div class="cmb-td">
-				<div class="skeleton-input-group">
-					<select class="cmb2_select" v-model="serviceExist">
-						<option :value="service.id" :disabled="checkIncludeService(service.id)" v-for="(service, index) in all_services">{{ service.name }}</option>
-					</select>
-					<input type="button" class="button" value="<?php esc_html_e( 'Add', 'awebooking' ); ?>" @click.prevent="addNewServiceExist()">
-				</div>
-			</div>
+			<input type="button" class="button" value="<?php esc_html_e( 'Add', 'awebooking' ); ?>" @click.prevent="addNewServiceExist()">
+			</span>
 		</div>
 
 		<div class="cmb-row cmb-type-group cmb-repeatable-group">
@@ -51,11 +46,9 @@ $all_services = awebooking_map_instance(
 			</div>
 		</div>
 
-		<div class="cmb-row">
-			<a href="#" class="hide-if-no-js taxonomy-add-new" v-on:click.stop.prevent="showAddNewContent = !showAddNewContent">
-				<?php esc_html_e( '+ Add New Extra Service', 'awebooking' ); ?>
-			</a>
-		</div>
+		<a href="#" class="hide-if-no-js taxonomy-add-new" v-on:click.stop.prevent="showAddNewContent = !showAddNewContent">
+			<?php esc_html_e( '+ Add New Extra Service', 'awebooking' ); ?>
+		</a>
 
 		<div class="add-new-service-content" v-if="showAddNewContent">
 			<div class="cmb-row">
@@ -68,10 +61,12 @@ $all_services = awebooking_map_instance(
 					</div>
 				</div>
 			</div>
+
 			<div class="cmb-row">
 				<div class="cmb-th">
 					<label for="operation"><?php esc_html_e( 'Operation', 'awebooking' ); ?></label>
 				</div>
+
 				<div class="cmb-td">
 					<div class="skeleton-input-group">
 						<select class="cmb2_select" v-model="newService.operation" id="operation">
@@ -89,6 +84,7 @@ $all_services = awebooking_map_instance(
 					</div>
 				</div>
 			</div>
+
 			<div class="cmb-row">
 				<div class="cmb-th">
 					<label for="type"><?php esc_html_e( 'Type', 'awebooking' ); ?></label>
@@ -102,6 +98,7 @@ $all_services = awebooking_map_instance(
 					</div>
 				</div>
 			</div>
+
 			<div class="cmb-row">
 				<div class="cmb-td">
 					<div class="skeleton-input-group">
