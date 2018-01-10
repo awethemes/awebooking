@@ -40,28 +40,16 @@ class WP_Query_Service_Provider extends Service_Provider {
 			return $pieces;
 		}
 
-		// Booking request query.
+		$total_guest = $this->get_requested_guest( $qv );
+		if ( $total_guest > 0 ) {
+			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_occupancy ON ({$wpdb->posts}.ID = max_occupancy.post_id AND max_occupancy.meta_key = '_maximum_occupancy') ";
+			$pieces['where'] .= " AND CAST(max_occupancy.meta_value AS SIGNED) >= '" . absint( $total_guest ) . "' ";
+		}
+
+		// TODO: Remove this in next version.
 		if ( ! empty( $qv['booking_nights'] ) && $qv['booking_nights'] > 0 ) {
 			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS min_night ON ({$wpdb->posts}.ID = min_night.post_id AND min_night.meta_key = 'minimum_night') ";
 			$pieces['where'] .= " AND CAST(min_night.meta_value AS SIGNED) <= '" . absint( $qv['booking_nights'] ) . "' ";
-		}
-
-		if ( ! empty( $qv['booking_adults'] ) && $qv['booking_adults'] > 0 ) {
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS adults ON ({$wpdb->posts}.ID = adults.post_id AND adults.meta_key = 'number_adults') ";
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_adults ON ({$wpdb->posts}.ID = max_adults.post_id AND max_adults.meta_key = 'max_adults') ";
-			$pieces['where'] .= " AND (CAST(adults.meta_value AS SIGNED) + CAST(max_adults.meta_value AS SIGNED)) >= '" . absint( $qv['booking_adults'] ) . "' ";
-		}
-
-		if ( awebooking( 'setting' )->get_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS children ON ({$wpdb->posts}.ID = children.post_id AND children.meta_key = 'number_children') ";
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_children ON ({$wpdb->posts}.ID = max_children.post_id AND max_children.meta_key = 'max_children') ";
-			$pieces['where'] .= " AND (CAST(children.meta_value AS SIGNED) + CAST(max_children.meta_value AS SIGNED)) >= '" . absint( $qv['booking_children'] ) . "' ";
-		}
-
-		if ( awebooking( 'setting' )->get_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS infants ON ({$wpdb->posts}.ID = infants.post_id AND infants.meta_key = 'number_infants') ";
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_infants ON ({$wpdb->posts}.ID = max_infants.post_id AND max_infants.meta_key = 'max_infants') ";
-			$pieces['where'] .= " AND (CAST(infants.meta_value AS SIGNED) + CAST(max_infants.meta_value AS SIGNED)) >= '" . absint( $qv['booking_infants'] ) . "' ";
 		}
 
 		// Custom order by "booking_rooms".
@@ -72,6 +60,30 @@ class WP_Query_Service_Provider extends Service_Provider {
 		}
 
 		return $pieces;
+	}
+
+	/**
+	 * Get requested guest from query-vars.
+	 *
+	 * @param  array $qv Query vars.
+	 * @return int
+	 */
+	protected function get_requested_guest( array $qv ) {
+		$total = 0;
+
+		if ( ! empty( $qv['booking_adults'] ) && $qv['booking_adults'] > 0 ) {
+			$total += (int) $qv['booking_adults'];
+		}
+
+		if ( awebooking( 'setting' )->is_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
+			$total += (int) $qv['booking_children'];
+		}
+
+		if ( awebooking( 'setting' )->is_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
+			$total += (int) $qv['booking_infants'];
+		}
+
+		return $total;
 	}
 
 	/**
