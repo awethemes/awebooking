@@ -436,6 +436,7 @@ CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(191) DEFAULT NULL,
   `room_type` BIGINT UNSIGNED NOT NULL,
+  `order` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `name` (`name`),
   KEY `room_type` (`room_type`)
