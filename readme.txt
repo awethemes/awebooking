@@ -67,7 +67,13 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
-### [3.0.0-beta13] - [2018-01-08]
+### [3.0.0-beta15] - [2018-01-10]
+#### Fixed
+- Change availability management.
+- Change Maximum occupancy for room type data.
+- Fixed date format for templates.
+
+### [3.0.0-beta14] - [2018-01-08]
 #### Fixed
 - Fixed search booking by ID.
 - Fixed display wrong customer name.
