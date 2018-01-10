@@ -237,7 +237,7 @@ class Concierge_Test extends WP_UnitTestCase {
 		for ( $i = 0; $i < 3; $i++ ) {
 			$luxury_room = new Room;
 			$luxury_room['name'] = 'Luxury - 10' . $i;
-			$luxury_room['room_type_id'] = $luxury->get_id();
+			$luxury_room['room_type'] = $luxury->get_id();
 			$luxury_room->save();
 		}
 
