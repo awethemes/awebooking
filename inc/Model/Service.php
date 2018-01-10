@@ -1,9 +1,8 @@
 <?php
-namespace AweBooking\Hotel;
+namespace AweBooking\Model;
 
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\WP_Object;
 
 class Service extends WP_Object {
 	/* Constants */
@@ -25,7 +24,7 @@ class Service extends WP_Object {
 	 *
 	 * @var string
 	 */
-	protected $object_type = AweBooking::HOTEL_SERVICE;
+	protected $object_type = Constants::HOTEL_SERVICE;
 
 	/**
 	 * WordPress type for object.
@@ -85,7 +84,7 @@ class Service extends WP_Object {
 	 * @return static
 	 */
 	public static function get_by_slug( $slug ) {
-		$service = get_term_by( 'slug', $slug, AweBooking::HOTEL_SERVICE );
+		$service = get_term_by( 'slug', $slug, Constants::HOTEL_SERVICE );
 		if ( $service instanceof \WP_Term ) {
 			return new static( $service->term_id );
 		}
@@ -184,35 +183,35 @@ class Service extends WP_Object {
 		$label = '';
 
 		switch ( $this->get_operation() ) {
-			case Service::OP_ADD:
+			case static::OP_ADD:
 				$label = sprintf( esc_html__( '%2$s + %1$s %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_ADD_DAILY:
+			case static::OP_ADD_DAILY:
 				$label = sprintf( esc_html__( '%2$s + %1$s x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_ADD_PERSON:
+			case static::OP_ADD_PERSON:
 				$label = sprintf( esc_html__( '%2$s + %1$s x person %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_ADD_PERSON_DAILY:
+			case static::OP_ADD_PERSON_DAILY:
 				$label = sprintf( esc_html__( '%2$s + %1$s x person x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_SUB:
+			case static::OP_SUB:
 				$label = sprintf( esc_html__( '%2$s - %1$s %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_SUB_DAILY:
+			case static::OP_SUB_DAILY:
 				$label = sprintf( esc_html__( '%2$s - %1$s x night %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
 				break;
 
-			case Service::OP_INCREASE:
+			case static::OP_INCREASE:
 				$label = sprintf( esc_html__( '%2$s + %1$s%% %3$s to price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
 				break;
 
-			case Service::OP_DECREASE:
+			case static::OP_DECREASE:
 				$label = sprintf( esc_html__( '%2$s - %1$s%% %3$s from price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
 				break;
 		}
@@ -231,46 +230,6 @@ class Service extends WP_Object {
 		}
 
 		return new Price( $this['value'] );
-	}
-
-	public function get_price_label( Request $booking_request, $before_value = '', $after_value = '' ) {
-		$label = '';
-
-		switch ( $this->get_operation() ) {
-			case self::OP_ADD:
-				$label = sprintf( esc_html__( '%2$s + %1$s %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case self::OP_ADD_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x %4$s night(s) %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value, $booking_request->get_nights() );
-				break;
-
-			case self::OP_ADD_PERSON:
-				$label = sprintf( esc_html__( '%2$s + %1$s x %4$s person %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value, $booking_request->get_people() );
-				break;
-
-			case self::OP_ADD_PERSON_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x %4$s person x %5$s night(s) %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value, $booking_request->get_people(), $booking_request->get_nights() );
-				break;
-
-			case self::OP_SUB:
-				$label = sprintf( esc_html__( '%2$s - %1$s %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case self::OP_SUB_DAILY:
-				$label = sprintf( esc_html__( '%2$s - %1$s x %4$s night(s) %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value, $booking_request->get_nights() );
-				break;
-
-			case self::OP_INCREASE:
-				$label = sprintf( esc_html__( '%2$s + %1$s%% %3$s to price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
-				break;
-
-			case self::OP_DECREASE:
-				$label = sprintf( esc_html__( '%2$s - %1$s%% %3$s from price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
-				break;
-		}
-
-		return $label;
 	}
 
 	/**
