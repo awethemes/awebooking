@@ -11,8 +11,14 @@ use AweBooking\Support\Carbonate;
 use Illuminate\Support\Arr;
 use AweBooking\Support\Collection;
 use AweBooking\Support\Abstract_Calendar;
+use AweBooking\Booking\Events\Room_State;
 
 class Monthy_Calendar extends Abstract_Calendar {
+	/**
+	 * ISO 8601
+	 */
+	const DATE_FORMAT = 'Y-m-d';
+
 	/**
 	 * The room-type instance.
 	 *
@@ -110,15 +116,126 @@ class Monthy_Calendar extends Abstract_Calendar {
 	 * @return array
 	 */
 	protected function get_date_contents( Carbonate $date, $context ) {
+		$room = $this->room;
 
-		$getdata = $this->room->get_id() . '.' . $date->format( 'Y.n.\dj' );
+		$calendar = new Calendar( [ $room ], awebooking( 'store.availability' ) );
 
-		if ( Arr::has( $this->data, $getdata ) ) {
-			$contents = '<i></i>
-			<span class="abkngcal__day-state"></span>
-			<span class="abkngcal__day-selection"></span>';
+		$current_year = Carbonate::createFromDate( $this->year, 1, 1 );
+		$events = $calendar->getEvents( $current_year, $current_year->copy()->addYear() );
 
+		$states = [];
+		foreach ( $events[ $room->get_id() ] as $state ) {
+			$state = Room_State::instance( $state );
+
+			if ( $state->is_available() ) {
+				continue;
+			}
+
+			$states[] = $state;
 		}
+		$this->state = $states;
+
+		// Get all booking events.
+		$booking_calendar = new Calendar( [ $room ], awebooking( 'store.booking' ) );
+		$booking_events = $booking_calendar->getEvents( $current_year, $current_year->copy()->addYear() );
+
+		$this->bookings = [];
+		foreach ( $booking_events[ $room->get_id() ] as $event ) {
+			if ( 0 === $event->getValue() ) {
+				continue;
+			}
+
+			$this->bookings[] = $event;
+		}
+
+		$range = [];
+		foreach ( $this->state as $state ) {
+			try {
+				$period = new Period( $state->getStartDate(), $state->getEndDate() );
+			} catch ( \Exception $e ) {
+				continue;
+			}
+
+			$period = $period->get_period();
+			$_period = iterator_to_array( $period );
+			$_period[] = $period->getEndDate();
+
+			$state_class = 'unavailable';
+			if ( $state->is_booked() ) {
+				$state_class = 'booked';
+			} else if ( $state->is_pending() ) {
+				$state_class = 'pending';
+			}
+
+			foreach ( $_period as $i => $day ) {
+				$carbon = Carbonate::create_date( $day );
+				$next_carbon = $carbon->copy()->addDay();
+
+				$uid = $carbon->toDateString();
+				if ( ! isset( $range[ $uid ] ) ) {
+					$range[ $uid ] = [
+						'datetime' => $carbon,
+						'classes' => [],
+					];
+				}
+
+				// Get next day.
+				$uid_next = $next_carbon->toDateString();
+				$range[ $uid_next ] = [
+					'datetime' => $next_carbon,
+					'classes' => [],
+					'booking' => null,
+				];
+
+				$classes = [];
+				$next_classes = [];
+				$booking_id = null;
+
+				if ( $carbon->isSameDay( $state->getStartDate() ) ) {
+					$classes[] = $state_class . '-start triangle-start';
+
+					$booking = $this->get_booking( $carbon );
+					if ( false !== $booking ) {
+						$range[ $uid ]['booking'] = $booking;
+					}
+				}
+
+				if ( $carbon->between( $state->getStartDate(), $state->getEndDate(), false ) ) {
+					$classes[] = $state_class;
+				}
+
+				// Add class to next day.
+				if ( $carbon->isSameDay( $state->getEndDate() ) ) {
+					$next_classes[] = $state_class . '-end triangle-end';
+				}
+
+				$range[ $uid ]['classes'] = array_merge( $range[ $uid ]['classes'], $classes );
+				$range[ $uid_next ]['classes'] = array_merge( $range[ $uid_next ]['classes'], $next_classes );
+			}// End foreach().
+		}// End foreach().
+
+		$this->range = $range;
+
+		$working_day = Carbonate::createFromDate( $date->year, $date->month, $date->day );
+		$classes = $this->classes_for_a_day( $working_day, $working_day ); // TODO: ...
+
+		$date_string = $working_day->toDateString();
+		if ( isset( $this->range[ $date_string ] ) && ! empty( $this->range[ $date_string ]['booking'] ) ) {
+			$booking = $this->range[ $date_string ]['booking'];
+			$booking_id = $booking->getValue();
+		}
+
+		$contents = sprintf( '
+					<div class="%1$s">
+						<i>%2$s</i>
+						<span class="abkngcal__day-state"></span>
+						<span class="abkngcal__day-selection"></span>
+					</div>',
+					implode( ' ', $classes ),
+					isset( $booking_id ) ? '<a href="' . esc_url( get_edit_post_link( $booking_id ) ) . '">#' . $booking_id . '</a>' : ''
+				);
+
+				unset( $booking_id );
 
 		return $contents;
 	}
@@ -185,5 +302,47 @@ class Monthy_Calendar extends Abstract_Calendar {
 	 */
 	protected function get_scheduler_row_heading( $month, $unit ) {
 		return '<span><i class="check-column"><input type="checkbox" name="bulk-update[]" value="' . esc_attr( $unit['id'] ) . '" /></i>' . esc_html( $unit['name'] ) . '</span>';
+	}
+
+
+	/**
+	 * Build classess for a day.
+	 *
+	 * @param  Carbon $working_day   Working day.
+	 * @param  Carbon $working_month Working month.
+	 * @return array
+	 */
+	public function classes_for_a_day( Carbonate $working_day, Carbonate $working_month ) {
+		$classes = [];
+
+		// Is current day is today, future or past.
+		if ( $working_day->isToday() ) {
+			$classes[] = 'abkngcal__day--today';
+		} elseif ( $working_day->lt( $this->today ) ) {
+			$classes[] = 'abkngcal__day--past';
+		} elseif ( $working_day->gt( $this->today ) ) {
+			$classes[] = 'abkngcal__day--future';
+		}
+
+		$date_string = $working_day->toDateString();
+		if ( isset( $this->range[ $date_string ] ) ) {
+			$classes[] = implode( ' ', $this->range[ $date_string ]['classes'] );
+		}
+
+		return $classes;
+	}
+
+	public function get_booking( Carbonate $day ) {
+		if ( empty( $this->bookings ) ) {
+			return false;
+		}
+
+		foreach ( $this->bookings as $event ) {
+			if ( $event->dateIsInRange( $day ) ) {
+				return $event;
+			}
+		}
+
+		return false;
 	}
 }
