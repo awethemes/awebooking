@@ -54,7 +54,7 @@ class DecimalTest extends WP_UnitTestCase {
 	/**
 	 * @dataProvider createDataProvider
 	 */
-	public function testCreate( $input, string $expected ) {
+	public function testCreate( $input, $expected ) {
 		$value = Decimal::create( $input );
 
 		$this->assertSame( $expected, $value->as_string() );
