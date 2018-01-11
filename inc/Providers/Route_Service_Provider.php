@@ -137,8 +137,8 @@ class Route_Service_Provider extends Service_Provider {
 		$router_binding = $this->awebooking->make( 'route_binder' );
 
 		$models = apply_filters( 'awebooking/route_models_binding', [
-			'room'      => \AweBooking\Hotel\Room::class,
-			'room_type' => \AweBooking\Hotel\Room_Type::class,
+			'room'      => \AweBooking\Model\Room::class,
+			'room_type' => \AweBooking\Model\Room_Type::class,
 			'booking'   => \AweBooking\Booking\Booking::class,
 		]);
 

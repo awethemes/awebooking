@@ -3,8 +3,8 @@ namespace AweBooking\Admin\Calendar;
 
 use AweBooking\AweBooking;
 use AweBooking\Factory;
-use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Calendar;
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
@@ -22,7 +22,7 @@ class Availability_Calendar extends Abstract_Calendar {
 	/**
 	 * The room-type instance.
 	 *
-	 * @var AweBooking\Hotel\Room_Type
+	 * @var AweBooking\Model\Room_Type
 	 */
 	protected $room_type;
 

@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 

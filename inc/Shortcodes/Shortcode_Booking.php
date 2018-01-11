@@ -2,7 +2,7 @@
 namespace AweBooking\Shortcodes;
 
 use AweBooking\Concierge;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Request;
 use AweBooking\Support\Template;
 use AweBooking\Factory;

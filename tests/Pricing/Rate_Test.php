@@ -1,7 +1,7 @@
 <?php
 
 use AweBooking\Pricing\Rate;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 
 class RateTest extends WP_UnitTestCase {
 	public function setUp() {

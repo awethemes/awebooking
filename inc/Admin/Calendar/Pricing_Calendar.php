@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Calendar;
 use AweBooking\Factory;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Calendar;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Collection;
@@ -15,7 +15,7 @@ class Pricing_Calendar extends Abstract_Calendar {
 	/**
 	 * The room-type instance.
 	 *
-	 * @var AweBooking\Hotel\Room_Type
+	 * @var AweBooking\Model\Room_Type
 	 */
 	protected $room_type;
 

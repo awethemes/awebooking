@@ -2,8 +2,8 @@
 
 use AweBooking\Concierge;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Events\Room_State;
 use AweBooking\Booking\Items\Line_Item;

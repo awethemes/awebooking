@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Calculator;
 
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 use AweBooking\Pricing\Price;
 use AweBooking\Booking\Request;
 use AweBooking\Pricing\Calculator_Handle;

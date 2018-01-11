@@ -1,8 +1,8 @@
 <?php
 namespace AweBooking;
 
-use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Availability;

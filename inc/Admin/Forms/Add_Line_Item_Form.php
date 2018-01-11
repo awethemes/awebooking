@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Forms;
 use AweBooking\Factory;
 use AweBooking\Concierge;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 use AweBooking\Booking\Booking;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;

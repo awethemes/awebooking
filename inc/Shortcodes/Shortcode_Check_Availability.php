@@ -3,7 +3,7 @@ namespace AweBooking\Shortcodes;
 
 use AweBooking\Factory;
 use AweBooking\Concierge;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\Template;
 
 class Shortcode_Check_Availability {

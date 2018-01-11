@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 
 class Service_Test extends WP_UnitTestCase {
 	public function setUp() {

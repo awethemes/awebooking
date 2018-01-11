@@ -11,7 +11,7 @@
 
 use AweBooking\Support\Period;
 use AweBooking\Booking\Request;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 use AweBooking\Support\Formatting;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

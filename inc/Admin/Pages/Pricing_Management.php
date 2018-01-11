@@ -6,7 +6,7 @@ use WP_List_Table;
 use AweBooking\Concierge;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Pricing\Price;
 use AweBooking\Admin\Calendar\Pricing_Calendar;
 use AweBooking\Support\Carbonate;

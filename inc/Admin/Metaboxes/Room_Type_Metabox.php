@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Factory;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 
 class Room_Type_Metabox extends Post_Type_Metabox {
 	/**

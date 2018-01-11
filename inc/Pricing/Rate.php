@@ -2,7 +2,7 @@
 namespace AweBooking\Pricing;
 
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\WP_Object;
 use AweBooking\Booking\BAT\Unit_Trait;
 use Roomify\Bat\Unit\UnitInterface as Unit_Interface;

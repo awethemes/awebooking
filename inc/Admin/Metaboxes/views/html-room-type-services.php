@@ -1,7 +1,7 @@
 <?php
 
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 
 global $room_type;
 

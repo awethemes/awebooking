@@ -3,7 +3,7 @@ namespace AweBooking\Booking\Events;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Room;
+use AweBooking\Model\Room;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;

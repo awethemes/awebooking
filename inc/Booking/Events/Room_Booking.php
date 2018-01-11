@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Booking\Events;
 
-use AweBooking\Hotel\Room;
+use AweBooking\Model\Room;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Period;
 use AweBooking\Booking\Booking;

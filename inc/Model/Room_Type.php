@@ -6,7 +6,7 @@ use AweBooking\AweBooking;
 use AweBooking\Pricing\Rate;
 use AweBooking\Pricing\Price;
 use AweBooking\Cart\Buyable;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 use AweBooking\Support\Collection;
 use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 

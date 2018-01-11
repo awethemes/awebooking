@@ -3,7 +3,7 @@ namespace AweBooking\Shortcodes;
 
 use Exception;
 use AweBooking\Concierge;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\Template;
 use AweBooking\Booking\Request;
 

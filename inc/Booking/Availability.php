@@ -2,10 +2,10 @@
 namespace AweBooking\Booking;
 
 use AweBooking\Concierge;
-use AweBooking\Hotel\Room;
-use AweBooking\Hotel\Room_Type;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 
 use AweBooking\Pricing\Price;
 use AweBooking\Pricing\Price_Calculator;

@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\AweBooking;
-use AweBooking\Hotel\Service;
+use AweBooking\Model\Service;
 
 class Service_Metabox extends Taxonomy_Metabox {
 	/**
