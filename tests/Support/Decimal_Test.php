@@ -315,7 +315,7 @@ class DecimalTest extends WP_UnitTestCase {
 	 * @param $operation
 	 * @param array     ...$arguments
 	 */
-	public function testImmutableOperations( int $input, int $expected, $operation, ...$arguments ) {
+	public function testImmutableOperations( $input, $expected, $operation, ...$arguments ) {
 		$value = Decimal::create( $input );
 
 		/** @var Decimal $result */
