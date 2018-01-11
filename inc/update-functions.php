@@ -63,6 +63,10 @@ function awebooking_update_300_beta15_occupancy() {
 	foreach ( $posts_array as $post ) {
 		$room_type = new Room_type( $post );
 
+		if ( $room_type->get_meta( '_maximum_occupancy' ) ) {
+			continue;
+		}
+
 		$room_type['maximum_occupancy'] = ( absint( $room_type->get_meta( 'number_adults' ) ) + absint( $room_type->get_meta( 'max_adults' ) ) )
 			+ ( absint( $room_type->get_meta( 'number_adults' ) ) + absint( $room_type->get_meta( 'max_children' ) ) )
 			+ ( absint( $room_type->get_meta( 'number_infants' ) ) + absint( $room_type->get_meta( 'max_infants' ) ) );
