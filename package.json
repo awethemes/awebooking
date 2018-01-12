@@ -8,15 +8,17 @@
     "makepot": "node bin/makepot.js"
   },
   "devDependencies": {
-    "browser-sync": "^2.18.13",
+    "browser-sync": "^2.23.5",
     "browser-sync-webpack-plugin": "^1.2.0",
-    "laravel-mix": "^1.5.0",
-    "node-wp-i18n": "^1.0.3"
+    "laravel-mix": "^1.7.2",
+    "node-wp-i18n": "^1.0.4"
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
-    "popper.js": "^1.12.5",
-    "tooltip.js": "^1.1.5",
-    "vue": "^2.5.2"
+    "magnific-popup": "^1.1.0",
+    "popper.js": "^1.12.9",
+    "sweetalert2": "^7.3.5",
+    "tooltip.js": "^1.1.7",
+    "vue": "^2.5.13"
   }
 }
