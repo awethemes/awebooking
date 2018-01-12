@@ -158,6 +158,18 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'sanitization_cb' => 'absint',
 		]);
 
+		$sanitization_cb = function( $value, $field_args, $field ) {
+			// @codingStandardsIgnoreLine
+			if ( empty( $_POST['_maximum_occupancy'] ) ) {
+				return 0;
+			}
+
+			$value = absint( $value );
+			$maximum_occupancy = absint( $_POST['_maximum_occupancy'] );
+
+			return ( $value > $maximum_occupancy ) ? $maximum_occupancy : $value;
+		};
+
 		$occupancy->add_row( [
 			'id'            => 'maximum-occupancy-row',
 			'flex_columns'  => 5,
@@ -170,7 +182,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'attributes'      => [ 'list' => 'number_adults_datalist' ],
 					'after'           => $this->datalist_number_callback( 1, 20 ),
 					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => 'absint',
+					'sanitization_cb' => $sanitization_cb,
 				],
 				[
 					'id'              => 'number_children',
@@ -179,9 +191,9 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'default'         => 0,
 					'attributes'      => [ 'list' => 'number_children_datalist' ],
 					'after'           => $this->datalist_number_callback( 1, 20 ),
-					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => 'absint',
 					'show_on_cb'      => [ awebooking( 'setting' ), 'is_children_bookable' ],
+					'validate'        => 'required|numeric|min:0',
+					'sanitization_cb' => $sanitization_cb,
 				],
 				[
 					'id'              => 'number_infants',
@@ -190,9 +202,9 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'default'         => 0,
 					'attributes'      => [ 'list' => 'number_infants_datalist' ],
 					'after'           => $this->datalist_number_callback( 1, 20 ),
-					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => 'absint',
 					'show_on_cb'      => [ awebooking( 'setting' ), 'is_infants_bookable' ],
+					'validate'        => 'required|numeric|min:0',
+					'sanitization_cb' => $sanitization_cb,
 				],
 			],
 		]);
