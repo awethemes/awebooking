@@ -228,7 +228,7 @@ class Availability_Management extends WP_List_Table {
 						'only_days' => $only_days,
 					]);
 				}
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
 				// ...
 			}
 		}
