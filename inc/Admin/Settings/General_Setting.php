@@ -81,108 +81,6 @@ class General_Setting extends Abstract_Setting {
 		) );
 
 		$section->add_field( array(
-			'id'   => '__general_hotel__',
-			'type' => 'title',
-			'name' => esc_html__( 'Property', 'awebooking' ),
-		) );
-
-		$section->add_field( array(
-			'id'       => 'property_name',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Property name', 'awebooking' ),
-		) );
-
-		$section->add_field( array(
-			'id'       => 'accommodation_type',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Accommodation type', 'awebooking' ),
-			'options'  => [
-				'' => '',
-			],
-		) );
-
-		$section->add_field( array(
-			'id'       => 'star',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Star', 'awebooking' ),
-			'options'  => [
-				1 => '&#9733;',
-				2 => '&#9733;&#9733;',
-				3 => '&#9733;&#9733;&#9733;',
-				4 => '&#9733;&#9733;&#9733;&#9733;',
-				5 => '&#9733;&#9733;&#9733;&#9733;&#9733;',
-			],
-		) );
-
-		$section->add_field( array(
-			'id'       => 'address',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Address', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'address_supplement',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Address 2', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'country',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Country', 'awebooking' ),
-			'options'  => [
-				'' => '',
-			],
-		) );
-		$section->add_field( array(
-			'id'       => 'city',
-			'type'     => 'select',
-			'name'     => esc_html__( 'City', 'awebooking' ),
-			'options'  => [
-				'' => '',
-			],
-		) );
-		$section->add_field( array(
-			'id'       => 'zipcode',
-			'type'     => 'text_small',
-			'name'     => esc_html__( 'Zipcode', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'phone',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Phone', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'phone_2',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Phone 2', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'map',
-			'type'     => 'map',
-			'name'     => esc_html__( 'Map', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'checkin_start',
-			'type'     => 'text_time',
-			'name'     => esc_html__( 'Check-in start', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'checkin_end',
-			'type'     => 'text_time',
-			'name'     => esc_html__( 'Check-in end', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'checkout_start',
-			'type'     => 'text_time',
-			'name'     => esc_html__( 'Check-out start', 'awebooking' ),
-		) );
-		$section->add_field( array(
-			'id'       => 'checkout_end',
-			'type'     => 'text_time',
-			'name'     => esc_html__( 'Check-out end', 'awebooking' ),
-		) );
-
-
-		$section->add_field( array(
 			'id'   => '__general_currency__',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
@@ -209,21 +107,27 @@ class General_Setting extends Abstract_Setting {
 		) );
 
 		$section->add_field( array(
-			'type'     => 'text_small',
-			'id'       => 'price_thousand_separator',
-			'name'     => esc_html__( 'Thousand separator', 'awebooking' ),
-			// 'desc'     => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'price_thousand_separator' ),
-			'validate' => 'required',
+			'type'            => 'text_small',
+			'id'              => 'price_thousand_separator',
+			'name'            => esc_html__( 'Thousand separator', 'awebooking' ),
+			// 'desc'            => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
+			'default'         => awebooking( 'setting' )->get_default( 'price_thousand_separator' ),
+			'validate'        => 'required',
+			'sanitization_cb' => function( $value ) {
+				return sanitize_text_field( wp_unslash( $value ) );
+			},
 		) );
 
 		$section->add_field( array(
-			'type'     => 'text_small',
-			'id'       => 'price_decimal_separator',
-			'name'     => esc_html__( 'Decimal separator', 'awebooking' ),
-			// 'desc'     => esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'price_decimal_separator' ),
-			'validate' => 'required',
+			'type'            => 'text_small',
+			'id'              => 'price_decimal_separator',
+			'name'            => esc_html__( 'Decimal separator', 'awebooking' ),
+			// 'desc'            => '<div>' . esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ) . '</div>',
+			'default'         => awebooking( 'setting' )->get_default( 'price_decimal_separator' ),
+			'validate'        => 'required',
+			'sanitization_cb' => function( $value ) {
+				return sanitize_text_field( wp_unslash( $value ) );
+			},
 		) );
 
 		$section->add_field( array(

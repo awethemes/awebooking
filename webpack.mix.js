@@ -20,6 +20,9 @@ mix.js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/manager-pricing.js', 'assets/js/admin')
    .js('assets/jssrc/admin/manager-availability.js', 'assets/js/admin');
 
+mix.copy('node_modules/magnific-popup/dist/magnific-popup.css', 'assets/css/magnific-popup.css', false);
+mix.copy('node_modules/magnific-popup/dist/jquery.magnific-popup.min.js', 'assets/js/magnific-popup/jquery.magnific-popup.min.js', false);
+
 mix.extract(['vue', 'form-serialize', 'popper.js', 'tooltip.js']);
 
 if (mix.inProduction()) {
@@ -34,6 +37,5 @@ mix.browserSync({
     'inc/**/*.php',
     'templates/**/*.php',
     'assets/css/**/*.css',
-    // 'assets/js/**/*.js',
   ]
 });
