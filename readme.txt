@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.0.0
+Stable tag:        3.0.3
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,12 +54,6 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 
 == Upgrade Notice ==
 
-The newly-updated AweBooking v3.0-beta4 is **major update**, in which we refactor code API.
-It requires PHP 5.6 or higher, changes the way booking item do, etc...
-
-If you use previous version with our premium please do not update to **v3.0-beta4**.
-We'll release new premiums shortly and guide how to upgrade in to this.
-
 If you have 2.x version, please do not upgrade to this version.
 
 ## Video
@@ -67,6 +61,14 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.3] - [2018-01-17]
+#### Added
+- Added filter and search by customer.
+
+#### Fixed
+- Fixed check-availability issue with WPML.
+- Fixed email issues.
+
 ### [3.0.0] - [2018-01-16]
 - AweBooking v3.0.0
 
