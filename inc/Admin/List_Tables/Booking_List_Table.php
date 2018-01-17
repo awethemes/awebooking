@@ -28,12 +28,11 @@ class Booking_List_Table extends Post_Type_Abstract {
 	public function init() {
 		add_filter( 'request', [ $this, 'request_query' ] );
 		add_filter( 'post_row_actions', [ $this, 'disable_quick_edit' ], 10, 2 );
-		add_filter( 'parse_query', [ $this, 'search_by_booking_id' ] );
-		add_filter( 'parse_query', [ $this, 'search_by_custom_fields' ] );
+		add_filter( 'parse_query', [ $this, 'perform_searching' ] );
 		add_action( 'restrict_manage_posts', [ $this, 'restrict_manage_posts' ] );
 	}
 
-	public function search_by_booking_id( $wp ) {
+	public function perform_searching( $wp ) {
 		global $pagenow;
 
 		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] )
@@ -41,30 +40,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			return;
 		}
 
-		$search_id = sanitize_text_field( $wp->query_vars['s'] );
-
-		if ( ! empty( $search_id ) && is_numeric( $search_id ) ) {
-			// Remove "s" - we don't want to search order name.
-			unset( $wp->query_vars['s'] );
-
-			// Search by found posts.
-			$wp->query_vars['post__in'] = array_merge( (array) $search_id, [ 0 ] );
-		}
-	}
-
-	/**
-	 * Search custom fields as well as content.
-	 * @param WP_Query $wp
-	 */
-	public function search_by_custom_fields( $wp ) {
-		global $pagenow;
-
-		if ( 'edit.php' != $pagenow || empty( $wp->query_vars['s'] ) || Constants::BOOKING !== $wp->query_vars['post_type'] ) {
-			return;
-		}
-
-		$post_ids = $this->search_bookings( $_GET['s'] );
-
+		$post_ids = $this->search_bookings( $wp->query_vars['s'] );
 		if ( ! empty( $post_ids ) ) {
 			// Remove "s" - we don't want to search order name.
 			unset( $wp->query_vars['s'] );
@@ -84,10 +60,12 @@ class Booking_List_Table extends Post_Type_Abstract {
 		global $wpdb;
 
 		$search_fields = array_map( [ $this, 'awebooking_clean' ], apply_filters( 'awebooking/booking_search_fields', array(
-			'_customer_address',
 			'_customer_first_name',
 			'_customer_last_name',
+			'_customer_address',
+			'_customer_company',
 			'_customer_email',
+			'_customer_phone',
 		) ) );
 
 		$booking_ids = array();
