@@ -132,7 +132,9 @@ class Rate extends WP_Object implements Unit_Interface {
 	 * @return int
 	 */
 	public function getDefaultValue() {
-		return $this->get_base_price()->to_integer();
+		$amount = $this->get_base_price()->to_integer();
+
+		return intval( is_float( $amount ) ? round( $amount ) : $amount );
 	}
 
 	/**
