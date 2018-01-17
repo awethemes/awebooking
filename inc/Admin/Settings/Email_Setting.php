@@ -16,8 +16,13 @@ class Email_Setting extends Abstract_Setting {
 
 		$email_general = $settings->add_section( 'email-general', [
 			'title'    => esc_html__( 'Email Sender', 'awebooking' ),
-			'priority' => 10,
+			'priority' => 0,
 			'capability' => 'manage_awebooking',
+		])->as_child_of( $email );
+
+		$admin_new_booking = $settings->add_section( 'admin-new-booking', [
+			'title'    => esc_html__( 'New Booking (Admin)', 'awebooking' ),
+			'priority' => 10,
 		])->as_child_of( $email );
 
 		$new_booking = $settings->add_section( 'email-new-booking', [
@@ -42,6 +47,7 @@ class Email_Setting extends Abstract_Setting {
 
 		$this->register_general_settings( $email_general );
 		$this->register_new_booking_settings( $new_booking );
+		$this->register_admin_new_booking_settings( $admin_new_booking );
 		$this->register_cancelled_booking_settings( $cancelled_booking );
 		$this->register_processing_booking_settings( $processing_booking );
 		$this->register_completed_booking_settings( $completed_booking );
@@ -132,6 +138,49 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'Enter some emails by "," separating values.', 'awebooking' ),
 		) );
 	}
+
+	/**
+	 * Register email new booking (admin) settings.
+	 *
+	 * @param  Skeleton\CMB2\Section $new_booking Section instance.
+	 * @return void
+	 */
+	protected function register_admin_new_booking_settings( $admin_new_booking ) {
+		$admin_new_booking->add_field([
+			'id'   => '__email_admin_new_booking__',
+			'type' => 'title',
+			'desc' => sprintf( esc_html__( 'Email settings for new booking for admin. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=admin_new' ) ) . '" target="_blank">here</a>' ),
+			'name' => esc_html__( 'New booking', 'awebooking' ),
+		]);
+
+		$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email subject', 'awebooking' ),
+			'id'      => 'email_admin_new_subject',
+			'type'    => 'textarea_small',
+			'default' => 'You have new booking #{order_number} - {order_date}',
+			'attributes' => array( 'style' => 'height:50px;' ),
+		]);
+
+		/*$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email header', 'awebooking' ),
+			'id'      => 'email_admin_new_header',
+			'type'    => 'text',
+			'default' => esc_html__( 'New customer booking', 'awebooking' ),
+		]);*/
+
+		$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_admin_new_content',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_admin_new_content' ),
+			'after'   => $this->get_shortcodes_notes(),
+			'options' => array(
+				'media_buttons' => false,
+				'tinymce' => false,
+			),
+		]);
+	}
+
 	/**
 	 * Register email new booking settings.
 	 *

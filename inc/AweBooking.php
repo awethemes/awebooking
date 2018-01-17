@@ -313,9 +313,20 @@ final class AweBooking extends Container {
 
 		do_action( 'awebooking/booting', $this );
 
-		array_walk( $this->loaded_providers, function ( $provider ) {
-			$this->boot_provider( $provider );
-		});
+		// Filter the addons then boot them first.
+		$addons = U::collect( $this->loaded_providers )
+			->filter( function( $provider ) {
+				return $provider instanceof Addon;
+			})->each(function( $provider ) {
+				$this->boot_provider( $provider );
+			});
+
+		// Boot the normal providers late.
+		U::collect( $this->loaded_providers )
+			->except( $addons->keys()->all() )
+			->each(function( $provider ) {
+				$this->boot_provider( $provider );
+			});
 
 		$this->booted = true;
 
