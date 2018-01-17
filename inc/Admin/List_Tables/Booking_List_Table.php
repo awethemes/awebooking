@@ -29,6 +29,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 		add_filter( 'request', [ $this, 'request_query' ] );
 		add_filter( 'post_row_actions', [ $this, 'disable_quick_edit' ], 10, 2 );
 		add_filter( 'parse_query', [ $this, 'search_by_booking_id' ] );
+		add_filter( 'parse_query', [ $this, 'search_by_custom_fields' ] );
 		add_action( 'restrict_manage_posts', [ $this, 'restrict_manage_posts' ] );
 	}
 
@@ -48,6 +49,28 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 			// Search by found posts.
 			$wp->query_vars['post__in'] = array_merge( (array) $search_id, [ 0 ] );
+		}
+	}
+
+	/**
+	 * Search custom fields as well as content.
+	 * @param WP_Query $wp
+	 */
+	public function search_by_custom_fields( $wp ) {
+		global $pagenow;
+
+		if ( 'edit.php' != $pagenow || empty( $wp->query_vars['s'] ) || Constants::BOOKING !== $wp->query_vars['post_type'] ) {
+			return;
+		}
+
+		$post_ids = $this->search_bookings( $_GET['s'] );
+
+		if ( ! empty( $post_ids ) ) {
+			// Remove "s" - we don't want to search order name.
+			unset( $wp->query_vars['s'] );
+
+			// Search by found posts.
+			$wp->query_vars['post__in'] = array_merge( $post_ids, array( 0 ) );
 		}
 	}
 
