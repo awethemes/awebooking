@@ -75,12 +75,24 @@ abstract class Booking_Notification extends Mailable {
 	 */
 	public function set_replacements() {
 		$replacements = [
-			'booking_id'       => $this->booking->get_id(),
-			'created_date'     => $this->booking['date_created'] ? $this->booking->get_booking_date()->to_wp_datetime_string() : '',
-			'contents'         => $this->get_template( 'breakdown', [ 'booking' => $this->booking ] ),
-			'total'            => (string) $this->booking->get_total(),
-			'customer_name'    => $this->booking->get_customer_name(),
-			'customer_details' => $this->get_template( 'customer-details', [ 'booking' => $this->booking ] ),
+			'booking_id'           => $this->booking->get_id(),
+			'created_date'         => $this->booking['date_created'] ? $this->booking->get_booking_date()->to_wp_datetime_string() : '',
+			'contents'             => $this->get_template( 'breakdown', [ 'booking' => $this->booking ] ),
+			'total'                => (string) $this->booking->get_total(),
+			'customer_details'     => $this->get_template( 'customer-details', [ 'booking' => $this->booking ] ),
+			'customer_name'        => $this->booking->get_customer_name(),
+			'customer name'        => $this->booking->get_customer_name(),
+			'customer first_name'  => $this->booking->get_customer_first_name(),
+			'customer last_name'   => $this->booking->get_customer_last_name(),
+			'customer address'     => $this->booking->get_customer_address(),
+			'customer address2'    => $this->booking->get_customer_address2(),
+			'customer city'        => $this->booking->get_customer_city(),
+			'customer state'       => $this->booking->get_customer_state(),
+			'customer postal_code' => $this->booking->get_customer_postal_code(),
+			'customer country'     => $this->booking->get_customer_country(),
+			'customer company'     => $this->booking->get_customer_company(),
+			'customer phone'       => $this->booking->get_customer_phone(),
+			'customer email'       => $this->booking->get_customer_email(),
 		];
 
 		$replacements = apply_filters( 'awebooking/notification/email_fields', $replacements, $this->booking, $this );
