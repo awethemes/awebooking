@@ -66,6 +66,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			'_customer_last_name',
 			'_customer_email',
 		) ) );
+
 		$booking_ids = array();
 
 		if ( is_numeric( $term ) ) {
@@ -109,6 +110,8 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 	/**
 	 * Filters for post types.
+	 *
+	 * @return void
 	 */
 	public function restrict_manage_posts() {
 		global $typenow;
@@ -122,6 +125,8 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 	/**
 	 * Show custom filters to filter orders by status/customer.
+	 *
+	 * @return void
 	 */
 	protected function booking_filters() {
 		$user_string = '';
@@ -365,6 +370,15 @@ class Booking_List_Table extends Post_Type_Abstract {
 			return $query_vars;
 		}
 
+		// Filter the orders by the posted customer.
+		if ( isset( $_GET['customer'] ) && $_GET['customer'] > 0 ) {
+			$query_vars['meta_query'] = [[
+				'key'     => '_customer_id',
+				'value'   => absint( $_GET['customer'] ),
+				'compare' => '=',
+			]];
+		}
+
 		// Sorting handler.
 		if ( isset( $query_vars['orderby'] ) ) {
 			switch ( $query_vars['orderby'] ) {
@@ -375,17 +389,6 @@ class Booking_List_Table extends Post_Type_Abstract {
 					]);
 					break;
 			}
-		}
-
-		// Filter the orders by the posted customer.
-		if ( isset( $_GET['customer'] ) && $_GET['customer'] > 0 ) {
-			$query_vars['meta_query'] = array(
-				array(
-					'key'   => '_customer_id',
-					'value' => (int) $_GET['customer'],
-					'compare' => '=',
-				),
-			);
 		}
 
 		// Added booking status only in "All" section in list-table.
