@@ -365,6 +365,8 @@ class Email_Setting extends Abstract_Setting {
 			$contents .= '<tr><td><code>{' . esc_html( $key ) . '}</code></td><td>' . esc_html( $value ) . '</td></tr>';
 		}
 
+		$contents = apply_filters( 'awebooking/after_add_email_notes', $contents );
+
 		$contents .= '</tbody></table>';
 		$contents .= '</div>';
 

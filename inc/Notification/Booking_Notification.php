@@ -83,6 +83,8 @@ abstract class Booking_Notification extends Mailable {
 			'customer_details' => $this->get_template( 'customer-details', [ 'booking' => $this->booking ] ),
 		];
 
+		$replacements = apply_filters( 'awebooking/notification/email_fields', $replacements, $this->booking, $this );
+
 		// Back-compat.
 		$replacements['order_date']   = $replacements['created_date'];
 		$replacements['order_number'] = $replacements['booking_id'];
