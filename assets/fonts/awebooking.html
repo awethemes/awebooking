@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>awebooking</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 10px 20px;
+		}
+
+		.preview {
+			line-height: 2em;
+		}
+
+		.preview__icon {
+			display: inline-block;
+			width: 32px;
+			text-align: center;
+		}
+
+		._icon {
+			display: inline-block;
+			font-size: 16px;
+		}
+
+		@font-face {
+	font-family: "awebooking";
+	src: url("awebooking.eot?4c92c273137b0778267c7ae8868f7c92?#iefix") format("embedded-opentype"),
+url("awebooking.woff2?4c92c273137b0778267c7ae8868f7c92") format("woff2"),
+url("awebooking.woff?4c92c273137b0778267c7ae8868f7c92") format("woff"),
+url("awebooking.ttf?4c92c273137b0778267c7ae8868f7c92") format("truetype"),
+url("awebooking.svg?4c92c273137b0778267c7ae8868f7c92#awebooking") format("svg");
+}
+
+._icon {
+	line-height: 1;
+}
+
+._icon:before {
+	font-family: awebooking !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.awebooking-bed:before {
+	content: "\61";
+}
+.awebooking-building-alt:before {
+	content: "\62";
+}
+.awebooking-building:before {
+	content: "\63";
+}
+
+	</style>
+</head>
+<body>
+	<h1>awebooking</h1>
+	<div class="preview">
+		<span class="preview__icon">
+		</span>
+		<span>bed</span>
+	</div>
+	<div class="preview">
+		<span class="preview__icon">
+		</span>
+		<span>building-alt</span>
+	</div>
+	<div class="preview">
+		<span class="preview__icon">
+		</span>
+		<span>building</span>
+	</div>
+</body>
+</html>
