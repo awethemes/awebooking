@@ -125,6 +125,10 @@ class Room extends WP_Object implements UnitInterface {
 		return Factory::get_room_type( $this['room_type'] );
 	}
 
+	public function get_room_type_id() {
+		return $this['room_type'];
+	}
+
 	/**
 	 * Set the room_type ID.
 	 *
