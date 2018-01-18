@@ -30,3 +30,8 @@ class_alias( 'AweBooking\\Model\\Amenity', 'AweBooking\\Hotel\\Amenity' );
 class_alias( 'AweBooking\\Model\\Service', 'AweBooking\\Hotel\\Service' );
 class_alias( 'AweBooking\\Model\\Room_Type', 'AweBooking\\Hotel\\Room_Type' );
 class_alias( 'AweBooking\\Model\\Room', 'AweBooking\\Hotel\\Room' );
+
+class_alias( 'AweBooking\\Template', 'AweBooking\\Support\\Template' );
+
+class_alias( 'AweBooking\\Deprecated\\Concierge', 'AweBooking\\Concierge' );
+class_alias( 'AweBooking\\Deprecated\\Support\\Abstract_Calendar', 'AweBooking\\Support\\Abstract_Calendar' );

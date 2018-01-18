@@ -1,5 +1,8 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking\Deprecated\Support;
+
+use AweBooking\Support\Carbonate;
+use AweBooking\Support\Collection;
 
 abstract class Abstract_Calendar {
 	/**

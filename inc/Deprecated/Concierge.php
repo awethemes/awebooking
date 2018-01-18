@@ -1,6 +1,8 @@
 <?php
-namespace AweBooking;
+namespace AweBooking\Deprecated;
 
+use AweBooking\Factory;
+use AweBooking\AweBooking;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Booking;

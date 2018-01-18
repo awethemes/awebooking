@@ -3,7 +3,7 @@
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\Period;
-use AweBooking\Support\Template;
+use AweBooking\Template;
 use AweBooking\Support\Formatting;
 
 /**

@@ -3,17 +3,15 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 use AweBooking\AweBooking;
-use AweBooking\Pricing\Rate;
-use AweBooking\Pricing\Price;
 use AweBooking\Cart\Buyable;
 use AweBooking\Model\Service;
-use AweBooking\Support\Collection;
 use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 
 class Room_Type extends WP_Object implements Buyable {
 	use Traits\Room_Type\Basic_Attributes_Trait,
 		Traits\Room_Type\Occupancy_Attributes_Trait,
 		Traits\Room_Type\Room_Units_Trait,
+		Traits\Room_Type\Room_Rates_Trait,
 		Room_Type_Deprecated;
 
 	/**
@@ -48,12 +46,12 @@ class Room_Type extends WP_Object implements Buyable {
 		'number_infants'      => 0,
 		'calculation_infants' => false,
 
-		'amenities'         => [],
+		'amenities'         => null,
 		'amenity_ids'       => [],
-		'services'          => [],
+		'services'          => null,
 		'service_ids'       => [],
 		'location'          => null,
-		'location_id'       => 0,
+		'location_id'       => null,
 
 		// Extra data.
 		'thumbnail_id'      => 0,
@@ -114,113 +112,20 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	/**
-	 * Bulk sync rooms.
-	 *
-	 * TODO: Remove late.
-	 *
-	 * @param  int   $room_type     The room-type ID.
-	 * @param  array $request_rooms The request rooms.
-	 * @return void
-	 */
-	public function bulk_sync_rooms( array $request_rooms ) {
-		// Current list room of room-type.
-		$db_rooms_ids = array_map( 'absint', $this->get_rooms()->pluck( 'id' )->all() );
-
-		// Multilanguage need this.
-		$room_type_id = apply_filters( $this->prefix( 'get_id_for_rooms' ), $this->get_id() );
-
-		$touch_ids = [];
-		foreach ( $request_rooms as $raw_room ) {
-			// Ignore in-valid rooms from request.
-			if ( ! isset( $raw_room['id'] ) || ! isset( $raw_room['name'] ) ) {
-				continue;
-			}
-
-			// Sanitize data before working with database.
-			$room_args = array_map( 'sanitize_text_field', $raw_room );
-
-			if ( $room_args['id'] > 0 && in_array( (int) $room_args['id'], $db_rooms_ids ) ) {
-				$room_unit = new Room( $room_args['id'] );
-				$room_unit['name'] = $room_args['name'];
-				$room_unit->save();
-			} else {
-				$room_unit = new Room;
-				$room_unit['name'] = $room_args['name'];
-				$room_unit['room_type'] = $room_type_id;
-				$room_unit->save();
-			}
-
-			// We'll map current working ID in $touch_ids...
-			if ( $room_unit->exists() ) {
-				$touch_ids[] = $room_unit->get_id();
-			}
-		}
-
-		// Fimally, delete invisible rooms.
-		$delete_ids = array_diff( $db_rooms_ids, $touch_ids );
-
-		if ( ! empty( $delete_ids ) ) {
-			global $wpdb;
-			$delete_ids = implode( ',', $delete_ids );
-
-			// @codingStandardsIgnoreLine
-			$wpdb->query( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` IN ({$delete_ids})" );
-		}
-	}
-
-	/**
-	 * Get base price.
-	 *
-	 * @return Price
-	 */
-	public function get_base_price() {
-		return apply_filters( $this->prefix( 'get_base_price' ), new Price( $this['base_price'] ), $this );
-	}
-
-	/**
-	 * Get minimum nights.
-	 *
-	 * @return int
-	 */
-	public function get_minimum_night() {
-		return apply_filters( $this->prefix( 'get_minimum_night' ), $this['minimum_night'], $this );
-	}
-
-	/**
-	 * Get collection of rates.
-	 *
-	 * @return Collection
-	 */
-	public function get_rates() {
-		return Collection::make( get_children([
-			'post_parent' => $this->get_id(),
-			'post_type'   => AweBooking::PRICING_RATE,
-			'orderby'     => 'menu_order',
-			'order'       => 'ASC',
-		]))->map(function( $post ) {
-			return new Rate( $post->ID, $this );
-		})->prepend(
-			$this->get_standard_rate()
-		);
-	}
-
-	/**
-	 * Get standard rate.
-	 *
-	 * @return Rate
-	 */
-	public function get_standard_rate() {
-		return new Rate( $this->get_id(), $this );
-	}
-
-	/**
 	 * Get room location.
 	 *
 	 * @return WP_Term|null
 	 */
 	public function get_location() {
-		$location = get_term( $this['location_id'], AweBooking::HOTEL_LOCATION );
+		if ( is_null( $this['location_id'] ) ) {
+			// Location only have one.
+			$hotel_locations = $this->get_term_ids( AweBooking::HOTEL_LOCATION );
+			if ( isset( $hotel_locations[0] ) ) {
+				$this['location_id'] = $hotel_locations[0];
+			}
+		}
 
+		$location = get_term( $this['location_id'], AweBooking::HOTEL_LOCATION );
 		if ( is_null( $location ) || is_wp_error( $location ) ) {
 			$location = null;
 		}
@@ -229,6 +134,7 @@ class Room_Type extends WP_Object implements Buyable {
 	}
 
 	public function get_amenities() {
+		$this['amenity_ids'] = $this->get_term_ids( AweBooking::HOTEL_AMENITY );
 	}
 
 	/**
@@ -237,8 +143,11 @@ class Room_Type extends WP_Object implements Buyable {
 	 * @return array
 	 */
 	public function get_services() {
-		$services = [];
+		if ( is_null( $this['service_ids'] ) ) {
+			$this['service_ids'] = $this->get_term_ids( awebooking::HOTEL_SERVICE );
+		}
 
+		$services = [];
 		foreach ( $this['service_ids'] as $service ) {
 			$services[] = new Service( $service );
 		}
@@ -263,15 +172,6 @@ class Room_Type extends WP_Object implements Buyable {
 		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
 			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
 		}
-
-		// Location only have one.
-		$hotel_locations = $this->get_term_ids( AweBooking::HOTEL_LOCATION );
-		if ( isset( $hotel_locations[0] ) ) {
-			$this['location_id'] = $hotel_locations[0];
-		}
-
-		$this['amenity_ids'] = $this->get_term_ids( AweBooking::HOTEL_AMENITY );
-		$this['service_ids'] = $this->get_term_ids( AweBooking::HOTEL_SERVICE );
 
 		/**
 		 * Fire 'awebooking/room_type/after_setup' action.
