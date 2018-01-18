@@ -105,6 +105,7 @@ final class AweBooking extends Container {
 		\AweBooking\Providers\Core_Service_Provider::class,
 		\AweBooking\Providers\WP_Query_Service_Provider::class,
 		\AweBooking\Providers\Logic_Service_Provider::class,
+		\AweBooking\Providers\Reservation_Service_Provider::class,
 		\AweBooking\Providers\Admin_Service_Provider::class,
 		\AweBooking\Providers\Frontend_Service_Provider::class,
 		\AweBooking\Providers\Route_Service_Provider::class,
