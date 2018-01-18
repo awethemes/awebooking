@@ -7,6 +7,7 @@ use AweBooking\Notification\Booking_Created;
 use AweBooking\Notification\Booking_Cancelled;
 use AweBooking\Notification\Booking_Processing;
 use AweBooking\Notification\Booking_Completed;
+use AweBooking\Notification\Admin_Booking_Created;
 use AweBooking\Booking\Booking;
 
 class Admin_Email_Preview {
@@ -45,6 +46,10 @@ class Admin_Email_Preview {
 				'name'    => __( 'New Booking', 'awebooking' ),
 				'view'    => [ $this, 'get_new_email_preview_template' ],
 			),
+			'admin_new' => array(
+				'name'    => __( 'New Booking', 'awebooking' ),
+				'view'    => [ $this, 'get_admin_new_email_preview_template' ],
+			),
 			'cancelled' => array(
 				'name'    => __( 'Cancelled Booking', 'awebooking' ),
 				'view'    => [ $this, 'get_cancelled_email_preview_template' ],
@@ -71,6 +76,22 @@ class Admin_Email_Preview {
 	 */
 	public function get_content_email_template() {
 		call_user_func( $this->statuses[ $this->status ]['view'], $this );
+	}
+
+	/**
+	 * Get new email template.
+	 */
+	public function get_admin_new_email_preview_template() {
+		$booking = new Booking( 0 );
+		$booking['date_created'] = '2017-08-21 07:20:09';
+
+		try {
+			$booking_created = new Admin_Booking_Created( $booking );
+			$booking_created->set_dummy( true );
+			print $booking_created->message(); // WPCS: xss ok.
+		} catch ( \Exception $e ) {
+			// ...
+		}
 	}
 
 	/**

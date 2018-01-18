@@ -28,11 +28,11 @@ class Booking_List_Table extends Post_Type_Abstract {
 	public function init() {
 		add_filter( 'request', [ $this, 'request_query' ] );
 		add_filter( 'post_row_actions', [ $this, 'disable_quick_edit' ], 10, 2 );
-
-		add_filter( 'parse_query', [ $this, 'search_by_booking_id' ] );
+		add_filter( 'parse_query', [ $this, 'perform_searching' ] );
+		add_action( 'restrict_manage_posts', [ $this, 'restrict_manage_posts' ] );
 	}
 
-	public function search_by_booking_id( $wp ) {
+	public function perform_searching( $wp ) {
 		global $pagenow;
 
 		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] )
@@ -40,15 +40,114 @@ class Booking_List_Table extends Post_Type_Abstract {
 			return;
 		}
 
-		$search_id = sanitize_text_field( $wp->query_vars['s'] );
-
-		if ( ! empty( $search_id ) && is_numeric( $search_id ) ) {
+		$post_ids = $this->search_bookings( $wp->query_vars['s'] );
+		if ( ! empty( $post_ids ) ) {
 			// Remove "s" - we don't want to search order name.
 			unset( $wp->query_vars['s'] );
 
 			// Search by found posts.
-			$wp->query_vars['post__in'] = array_merge( (array) $search_id, [ 0 ] );
+			$wp->query_vars['post__in'] = array_merge( $post_ids, array( 0 ) );
 		}
+	}
+
+	/**
+	 * Search order data for a term and return ids.
+	 *
+	 * @param  string $term
+	 * @return array of ids
+	 */
+	public function search_bookings( $term ) {
+		global $wpdb;
+
+		$search_fields = array_map( [ $this, 'awebooking_clean' ], apply_filters( 'awebooking/booking_search_fields', array(
+			'_customer_first_name',
+			'_customer_last_name',
+			'_customer_address',
+			'_customer_company',
+			'_customer_email',
+			'_customer_phone',
+		) ) );
+
+		$booking_ids = array();
+
+		if ( is_numeric( $term ) ) {
+			$booking_ids[] = absint( $term );
+		}
+
+		if ( ! empty( $search_fields ) ) {
+			$booking_ids = array_unique( array_merge(
+				$booking_ids,
+				$wpdb->get_col(
+					$wpdb->prepare( "SELECT DISTINCT p1.post_id FROM {$wpdb->postmeta} p1 WHERE p1.meta_value LIKE '%%%s%%'", $wpdb->esc_like( $this->awebooking_clean( $term ) ) ) . " AND p1.meta_key IN ('" . implode( "','", array_map( 'esc_sql', $search_fields ) ) . "')"
+				),
+				$wpdb->get_col(
+					$wpdb->prepare( "
+						SELECT booking_id
+						FROM {$wpdb->prefix}awebooking_booking_items as booking_items
+						WHERE booking_item_name LIKE '%%%s%%'
+						",
+						$wpdb->esc_like( $this->awebooking_clean( $term ) )
+					)
+				)
+			) );
+		}
+
+		return apply_filters( 'awebooking/booking_search_results', $booking_ids, $term, $search_fields );
+	}
+
+	/**
+	 * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+	 * Non-scalar values are ignored.
+	 * @param string|array $var
+	 * @return string|array
+	 */
+	public function awebooking_clean( $var ) {
+		if ( is_array( $var ) ) {
+			return array_map( 'awebooking_clean', $var );
+		} else {
+			return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+		}
+	}
+
+	/**
+	 * Filters for post types.
+	 *
+	 * @return void
+	 */
+	public function restrict_manage_posts() {
+		global $typenow;
+
+		if ( Constants::BOOKING !== $typenow ) {
+			return;
+		}
+
+		$this->booking_filters();
+	}
+
+	/**
+	 * Show custom filters to filter orders by status/customer.
+	 *
+	 * @return void
+	 */
+	protected function booking_filters() {
+		$user_string = '';
+		$user_id     = '';
+		if ( ! empty( $_GET['customer'] ) ) {
+			$user_id     = absint( $_GET['customer'] );
+			$user        = get_user_by( 'id', $user_id );
+			/* translators: 1: user display name 2: user ID 3: user email */
+			$user_string = sprintf(
+				esc_html__( '%1$s (#%2$s &ndash; %3$s)', 'awebooking' ),
+				$user->display_name,
+				absint( $user->ID ),
+				$user->user_email
+			);
+		}
+		?>
+		<select class="awebooking-customer-search" name="customer" data-placeholder="<?php esc_attr_e( 'Search for a customer&hellip;', 'awebooking' ); ?>" data-allow-clear="true" style="width: 200px;">
+			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo htmlspecialchars( $user_string ); ?><option>
+		</select>
+		<?php
 	}
 
 	/**
@@ -270,6 +369,15 @@ class Booking_List_Table extends Post_Type_Abstract {
 		// Prevent actions if not current post type.
 		if ( $this->post_type !== $typenow ) {
 			return $query_vars;
+		}
+
+		// Filter the orders by the posted customer.
+		if ( isset( $_GET['customer'] ) && $_GET['customer'] > 0 ) {
+			$query_vars['meta_query'] = [[
+				'key'     => '_customer_id',
+				'value'   => absint( $_GET['customer'] ),
+				'compare' => '=',
+			]];
 		}
 
 		// Sorting handler.

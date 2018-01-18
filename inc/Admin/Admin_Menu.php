@@ -85,7 +85,7 @@ class Admin_Menu {
 		// @codingStandardsIgnoreLine
 		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
 
-		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_options', static::PARENT_SLUG, null, 'dashicons-calendar', 53 );
+		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', static::PARENT_SLUG, null, 'dashicons-calendar', 53 );
 	}
 
 	/**

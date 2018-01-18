@@ -16,8 +16,13 @@ class Email_Setting extends Abstract_Setting {
 
 		$email_general = $settings->add_section( 'email-general', [
 			'title'    => esc_html__( 'Email Sender', 'awebooking' ),
-			'priority' => 10,
+			'priority' => 0,
 			'capability' => 'manage_awebooking',
+		])->as_child_of( $email );
+
+		$admin_new_booking = $settings->add_section( 'admin-new-booking', [
+			'title'    => esc_html__( 'New Booking (Admin)', 'awebooking' ),
+			'priority' => 10,
 		])->as_child_of( $email );
 
 		$new_booking = $settings->add_section( 'email-new-booking', [
@@ -42,6 +47,7 @@ class Email_Setting extends Abstract_Setting {
 
 		$this->register_general_settings( $email_general );
 		$this->register_new_booking_settings( $new_booking );
+		$this->register_admin_new_booking_settings( $admin_new_booking );
 		$this->register_cancelled_booking_settings( $cancelled_booking );
 		$this->register_processing_booking_settings( $processing_booking );
 		$this->register_completed_booking_settings( $completed_booking );
@@ -132,6 +138,49 @@ class Email_Setting extends Abstract_Setting {
 			'desc'    => esc_html__( 'Enter some emails by "," separating values.', 'awebooking' ),
 		) );
 	}
+
+	/**
+	 * Register email new booking (admin) settings.
+	 *
+	 * @param  Skeleton\CMB2\Section $new_booking Section instance.
+	 * @return void
+	 */
+	protected function register_admin_new_booking_settings( $admin_new_booking ) {
+		$admin_new_booking->add_field([
+			'id'   => '__email_admin_new_booking__',
+			'type' => 'title',
+			'desc' => sprintf( esc_html__( 'Email settings for new booking for admin. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=admin_new' ) ) . '" target="_blank">here</a>' ),
+			'name' => esc_html__( 'New booking', 'awebooking' ),
+		]);
+
+		$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email subject', 'awebooking' ),
+			'id'      => 'email_admin_new_subject',
+			'type'    => 'textarea_small',
+			'default' => 'You have new booking #{order_number} - {order_date}',
+			'attributes' => array( 'style' => 'height:50px;' ),
+		]);
+
+		/*$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email header', 'awebooking' ),
+			'id'      => 'email_admin_new_header',
+			'type'    => 'text',
+			'default' => esc_html__( 'New customer booking', 'awebooking' ),
+		]);*/
+
+		$admin_new_booking->add_field([
+			'name'    => esc_html__( 'Email content', 'awebooking' ),
+			'id'      => 'email_admin_new_content',
+			'type'    => 'wysiwyg',
+			'default' => awebooking( 'setting' )->get_default( 'email_admin_new_content' ),
+			'after'   => $this->get_shortcodes_notes(),
+			'options' => array(
+				'media_buttons' => false,
+				'tinymce' => false,
+			),
+		]);
+	}
+
 	/**
 	 * Register email new booking settings.
 	 *
@@ -349,12 +398,24 @@ class Email_Setting extends Abstract_Setting {
 	 */
 	protected function get_shortcodes_notes() {
 		$shortcodes = [
-			'booking_id'       => esc_html__( 'The booking ID', 'awebooking' ),
-			'created_date'     => esc_html__( 'The created date', 'awebooking' ),
-			'contents'         => esc_html__( 'The booking contents', 'awebooking' ),
-			'total'            => esc_html__( 'The total amount', 'awebooking' ),
-			'customer_name'    => esc_html__( 'The customer name', 'awebooking' ),
-			'customer_details' => esc_html__( 'The customer details', 'awebooking' ),
+			'booking_id'           => esc_html__( 'The booking ID', 'awebooking' ),
+			'created_date'         => esc_html__( 'The created date', 'awebooking' ),
+			'contents'             => esc_html__( 'The booking contents', 'awebooking' ),
+			'total'                => esc_html__( 'The total amount', 'awebooking' ),
+			'customer_name'        => esc_html__( 'The customer name', 'awebooking' ),
+			'customer_details'     => esc_html__( 'The customer details', 'awebooking' ),
+			'customer name'        => esc_html__( 'The customer name', 'awebooking' ),
+			'customer first_name'  => esc_html__( 'The customer first name', 'awebooking' ),
+			'customer last_name'   => esc_html__( 'The customer last name', 'awebooking' ),
+			'customer address'     => esc_html__( 'The customer address', 'awebooking' ),
+			'customer address2'    => esc_html__( 'The customer address 2', 'awebooking' ),
+			'customer city'        => esc_html__( 'The customer city', 'awebooking' ),
+			'customer state'       => esc_html__( 'The customer state', 'awebooking' ),
+			'customer postal_code' => esc_html__( 'The customer postal code', 'awebooking' ),
+			'customer country'     => esc_html__( 'The customer country', 'awebooking' ),
+			'customer company'     => esc_html__( 'The customer company', 'awebooking' ),
+			'customer phone'       => esc_html__( 'The customer phone', 'awebooking' ),
+			'customer email'       => esc_html__( 'The customer email', 'awebooking' ),
 		];
 
 		$contents = '<div class="awebooking-sweet-alert" style="margin-top: 1em; max-width: 100%;">';
@@ -364,6 +425,8 @@ class Email_Setting extends Abstract_Setting {
 		foreach ( $shortcodes as $key => $value ) {
 			$contents .= '<tr><td><code>{' . esc_html( $key ) . '}</code></td><td>' . esc_html( $value ) . '</td></tr>';
 		}
+
+		$contents = apply_filters( 'awebooking/after_add_email_notes', $contents );
 
 		$contents .= '</tbody></table>';
 		$contents .= '</div>';

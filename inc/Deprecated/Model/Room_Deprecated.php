@@ -6,7 +6,12 @@ trait Room_Deprecated {
 		global $wpdb;
 
 		$ids = is_int( $ids ) ? [ $ids ] : $ids;
-		$ids = apply_filters( 'awebooking/rooms/get_by_room_type', $ids );
+
+		if ( awebooking()->is_running_multilanguage() ) {
+			$ids = array_map( function( $id ) {
+				return awebooking()->get_multilingual()->get_original_post( $id );
+			}, $ids );
+		}
 
 		if ( is_array( $ids ) ) {
 			$ids = implode( "', '", array_map( 'esc_sql', $ids ) );
