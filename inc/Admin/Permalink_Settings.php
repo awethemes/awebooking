@@ -51,7 +51,7 @@ class Permalink_Settings {
 
 		if ( ! empty( $_POST[ $this->permalink_key ] ) ) {
 			$permalink = sanitize_text_field( $_POST[ $this->permalink_key ] );
-			update_option( $this->permalink_key, $permalink );
+			update_option( $this->permalink_key, $permalink, true );
 		} else {
 			delete_option( $this->permalink_key );
 		}
