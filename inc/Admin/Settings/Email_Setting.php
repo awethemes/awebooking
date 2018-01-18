@@ -132,7 +132,7 @@ class Email_Setting extends Abstract_Setting {
 		) );
 
 		$email_general->add_field( array(
-			'name'    => esc_html__( 'Notify another email address', 'awebooking' ),
+			'name'    => esc_html__( 'Notifications to other emails', 'awebooking' ),
 			'id'      => 'email_notify_another_emails',
 			'type'    => 'text',
 			'desc'    => esc_html__( 'Enter some emails by "," separating values.', 'awebooking' ),

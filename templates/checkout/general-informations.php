@@ -12,7 +12,7 @@
 use AweBooking\Support\Period;
 use AweBooking\Booking\Request;
 use AweBooking\Model\Service;
-use AweBooking\Support\Formatting;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -74,7 +74,7 @@ $cart_collection = $cart->get_contents();
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
-							<?php echo $request->get_fomatted_guest_number(); ?>
+							<?php print $request->get_fomatted_guest_number(); // WPCS: xss ok. ?>
 						</p>
 						<?php if ( $services->implode( 'name', ', ' ) ) : ?>
 							<p>
@@ -83,7 +83,7 @@ $cart_collection = $cart->get_contents();
 							</p>
 						<?php endif; ?>
 					</td>
-					<td><?php echo $room_type->get_buyable_price( $cart_item->options ); ?></td>
+					<td><?php print $room_type->get_buyable_price( $cart_item->options ); // WPCS: xss ok. ?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -91,11 +91,15 @@ $cart_collection = $cart->get_contents();
 	<?php endforeach; ?>
 </div>
 
+<?php do_action( 'awebooking/checkout/before_total_price' ); ?>
+
 <table>
 	<tbody>
 		<tr>
 			<td colspan="3" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-			<td><b><?php echo $cart->total(); ?></b></td>
+			<td><b><?php print $cart->total(); // WPCS: xss ok. ?></b></td>
 		</tr>
 	</tbody>
 </table>
+
+<?php do_action( 'awebooking/checkout/after_total_price' ); ?>
