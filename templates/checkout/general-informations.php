@@ -97,7 +97,7 @@ $cart_collection = $cart->get_contents();
 	<tbody>
 		<tr>
 			<td colspan="3" class="text-right"><b><?php esc_html_e( 'Total', 'awebooking' ); ?></b></td>
-			<td><b><?php print $cart->total(); // WPCS: xss ok. ?></b></td>
+			<td class="awebooking-total-price"><?php print $cart->total(); // WPCS: xss ok. ?></td>
 		</tr>
 	</tbody>
 </table>
