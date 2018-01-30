@@ -102,6 +102,8 @@ class Cart {
 	 */
 	public function destroy() {
 		$this->session->remove( static::CART_CONTENTS );
+
+		do_action( 'awebooking/cart_destroy', $this );
 	}
 
 	/**
@@ -142,14 +144,16 @@ class Cart {
 	/**
 	 * Get the total price of the items in the cart.
 	 *
-	 * @return string
+	 * @return Price
 	 */
 	public function total() {
-		return $this->get_contents()->reduce(
+		$total = $this->get_contents()->reduce(
 			function ( Price $total, Item $cart_item ) {
 				return $total->add( $cart_item->get_total() );
 			}, Price::zero()
 		);
+
+		return apply_filters( 'awebooking/cart/total_price', $total );
 	}
 
 	/**
