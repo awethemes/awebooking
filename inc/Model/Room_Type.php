@@ -3,11 +3,10 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 use AweBooking\AweBooking;
-use AweBooking\Cart\Buyable;
 use AweBooking\Model\Service;
 use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 
-class Room_Type extends WP_Object implements Buyable {
+class Room_Type extends WP_Object {
 	use Traits\Room_Type\Basic_Attributes_Trait,
 		Traits\Room_Type\Occupancy_Attributes_Trait,
 		Traits\Room_Type\Room_Units_Trait,

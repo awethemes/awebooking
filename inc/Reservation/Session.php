@@ -95,6 +95,9 @@ class Session {
 		]);
 	}
 
+	public function keep() {
+	}
+
 	/**
 	 * Flush the reservation payload.
 	 *

@@ -1,13 +1,14 @@
 <?php
 namespace AweBooking\Reservation\Source;
 
+use AweBooking\Model\Source;
 use AweBooking\Support\Collection;
 
 class Manager {
 	/**
 	 * Reservation sources implementation.
 	 *
-	 * @var array Source[]
+	 * @var array \AweBooking\Model\Source[]
 	 */
 	protected $sources = [];
 
@@ -18,7 +19,7 @@ class Manager {
 	 */
 	public function __construct( array $sources = [] ) {
 		foreach ( $sources as $source ) {
-			$this->add( $source );
+			$this->register( $source );
 		}
 	}
 
@@ -26,7 +27,7 @@ class Manager {
 	 * Get a source by ID.
 	 *
 	 * @param  string $source The source ID.
-	 * @return Source
+	 * @return \AweBooking\Model\Source
 	 */
 	public function get( $source ) {
 		return $this->registered( $source ) ? $this->sources[ $source ] : null;
@@ -35,38 +36,16 @@ class Manager {
 	/**
 	 * Returns all sources.
 	 *
-	 * @return array Source[]
+	 * @return array \AweBooking\Model\Source[]
 	 */
 	public function all() {
 		return $this->sources;
 	}
 
 	/**
-	 * Get all direct sources.
-	 *
-	 * @return array Direct[]
-	 */
-	public function get_direct_sources() {
-		return $this->to_collection()->filter( function( $source ) {
-			return $source instanceof Direct;
-		})->all();
-	}
-
-	/**
-	 * Get all third party sources.
-	 *
-	 * @return array Third_Party_Source[]
-	 */
-	public function get_third_party_sources() {
-		return $this->to_collection()->filter( function( $source ) {
-			return $source instanceof Third_Party_Source;
-		})->all();
-	}
-
-	/**
 	 * Add a new reservation source.
 	 *
-	 * @param  Source $source The source implementation.
+	 * @param  \AweBooking\Model\Source $source The source implementation.
 	 * @return $this
 	 */
 	public function register( Source $source ) {
@@ -82,6 +61,8 @@ class Manager {
 	 * @return void
 	 */
 	public function deregister( $source ) {
+		$source = $this->parse_source_uid( $source );
+
 		unset( $this->sources[ $source ] );
 	}
 
@@ -92,7 +73,23 @@ class Manager {
 	 * @return bool
 	 */
 	public function registered( $source ) {
+		$source = $this->parse_source_uid( $source );
+
 		return array_key_exists( $source, $this->sources );
+	}
+
+	/**
+	 * Parse the source_uid.
+	 *
+	 * @param  mixed $source The source.
+	 * @return string
+	 */
+	protected function parse_source_uid( $source ) {
+		if ( $source instanceof Source ) {
+			return $source->get_uid();
+		}
+
+		return $source;
 	}
 
 	/**
@@ -102,5 +99,27 @@ class Manager {
 	 */
 	public function to_collection() {
 		return new Collection( $this->sources );
+	}
+
+	/**
+	 * Get all direct sources.
+	 *
+	 * @return array \AweBooking\Model\Source[]
+	 */
+	public function get_direct_sources() {
+		return $this->to_collection()->filter( function( $source ) {
+			return $source instanceof Source;
+		})->all();
+	}
+
+	/**
+	 * Get all third party sources.
+	 *
+	 * @return array Third_Party_Source[]
+	 */
+	public function get_third_party_sources() {
+		return $this->to_collection()->filter( function( $source ) {
+			return $source instanceof Third_Party_Source;
+		})->all();
 	}
 }

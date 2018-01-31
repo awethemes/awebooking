@@ -24,9 +24,11 @@ class Core_Service_Provider extends Service_Provider {
 	 * Registers services on the AweBooking.
 	 */
 	public function register() {
-		$this->awebooking->singleton( 'currency_manager', function() {
+		$this->awebooking->singleton( 'currencies', function() {
 			return new Currency_Manager;
 		});
+
+		$this->awebooking->alias( 'currencies', 'currency_manager' );
 
 		$this->awebooking->singleton( 'currency', function( $a ) {
 			return new Currency( $a['setting']->get( 'currency' ) );

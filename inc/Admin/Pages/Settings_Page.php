@@ -60,9 +60,7 @@ class Settings_Page {
 
 			<?php $this->print_the_navigation(); ?>
 
-			<form class="cmb-form" method="POST" action="<?php echo esc_url( $this->url_generator->admin_route( 'settings' ) ); ?>" enctype="multipart/form-data">
-				<?php $this->print_the_fields(); ?>
-			</form>
+			<?php $this->print_the_fields(); ?>
 		</div><?php
 	}
 
@@ -98,19 +96,31 @@ class Settings_Page {
 		// Determines current section to display.
 		$current_section = $this->current_section ? $this->current_section : $this->current_tab;
 
-		$this->settings->render_form_open();
-		echo '<input type="hidden" name="_wp_http_referer" value="' . esc_url( $this->url_generator->full() ) . '">';
-		echo '<input type="hidden" name="_setting_section" value="' . esc_attr( $current_section->id ) . '">';
-
 		// Print the sub-navigation in case current tab is a Panel.
 		if ( $this->current_tab instanceof Panel ) {
 			$this->print_panel_navigation( $this->current_tab );
 		}
 
+		if ( ! empty( $current_section->options['render_callback'] ) ) {
+			call_user_func( $current_section->options['render_callback'] );
+			return;
+		}
+
+		// Don't output if empty fields.
+		if ( empty( $current_section->fields ) ) {
+			return;
+		}
+
+		echo '<form class="cmb-form" method="POST" action="' . esc_url( $this->url_generator->admin_route( 'settings' ) ) . '" enctype="multipart/form-data">';
+		echo '<input type="hidden" name="_wp_http_referer" value="' . esc_url( $this->url_generator->full() ) . '">';
+		echo '<input type="hidden" name="_setting_section" value="' . esc_attr( $current_section->id ) . '">';
+		$this->settings->render_form_open();
+
 		$this->print_fields_in_section( $current_section );
 
-		echo '<input type="submit" name="submit-cmb" value="' . esc_html__( 'Save changes', 'awebooking' ) . '" class="button-primary">';
 		$this->settings->render_form_close();
+		echo '<input type="submit" name="submit-cmb" class="button button-primary" value="' . esc_html__( 'Save changes', 'awebooking' ) . '">';
+		echo '</form>';
 	}
 
 	/**
@@ -141,6 +151,7 @@ class Settings_Page {
 		$navigation = [];
 		foreach ( $panel->sections as $section ) {
 			$navigation[] = sprintf( '<li><a href="%1$s" class="%3$s">%2$s</a></li>',
+				/* @codingStandardsIgnoreLine */
 				esc_url( add_query_arg( [ 'tab' => $panel->id, 'section' => $section->id ], admin_url( 'admin.php?page=awebooking-settings' ) ) ),
 				esc_html( $section->title ?: $section->id ),
 				esc_attr( $current_section === $section->id ? 'current' : '' )

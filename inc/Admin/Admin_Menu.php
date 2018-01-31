@@ -113,6 +113,8 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
+		add_submenu_page( 'awebooking', 'New Reservation', 'New Reservation', 'manage_awebooking', 'admin.php?awebooking=/reservation/create' );
+
 		$availability_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Availability', 'awebooking' ), esc_html__( 'Availability', 'awebooking' ), 'manage_awebooking', 'awebooking-availability', $this->create_page_callback( Availability_Management::class ) );
 		$this->no_admin_header( $availability_page_hook );
 

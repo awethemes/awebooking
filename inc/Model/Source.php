@@ -1,11 +1,19 @@
 <?php
-namespace AweBooking\Reservation\Source;
+namespace AweBooking\Model;
 
-use AweBooking\Model\Fee;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
-abstract class Source_Abstract implements Source, Jsonable, Arrayable {
+class Source implements Jsonable, Arrayable {
+	/* Constants */
+	const DIRECT = 'direct';
+	const THIRD_PARTY = 'third_party';
+
+	const OTA = 'ota';
+	const WHOLESALER = 'wholesaler';
+	const TRAVEL_AGENT = 'travel_agent';
+	const CORPORATE_CLIENT = 'corporate_client';
+
 	/**
 	 * The source UID.
 	 *
@@ -26,6 +34,26 @@ abstract class Source_Abstract implements Source, Jsonable, Arrayable {
 	 * @var Surcharge|null
 	 */
 	protected $surcharge;
+
+	/**
+	 * The commission for the third_party source.
+	 *
+	 * @var Commission
+	 */
+	protected $commission;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string         $uid       The source UID.
+	 * @param string         $name      The source name.
+	 * @param Surcharge|null $surcharge The surcharge: tax or fee (optional).
+	 */
+	public function __construct( $uid, $name, Fee $surcharge = null ) {
+		$this->uid  = $uid;
+		$this->name = $name;
+		$this->surcharge = $surcharge;
+	}
 
 	/**
 	 * Get the source unique ID.
@@ -70,9 +98,18 @@ abstract class Source_Abstract implements Source, Jsonable, Arrayable {
 	}
 
 	/**
+	 * Determines if this source have surcharge.
+	 *
+	 * @return boolean
+	 */
+	public function has_surcharge() {
+		return ! is_null( $this->surcharge );
+	}
+
+	/**
 	 * Get the source surcharge (tax or fee).
 	 *
-	 * @return \AweBooking\Mode\Fee
+	 * @return \AweBooking\Mode\Fee|null
 	 */
 	public function get_surcharge() {
 		return $this->surcharge;
@@ -91,7 +128,23 @@ abstract class Source_Abstract implements Source, Jsonable, Arrayable {
 	}
 
 	/**
-	 * Get the label.
+	 * {@inheritdoc}
+	 */
+	public function get_commission() {
+		return $this->commission;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function set_commission( Commission $commission ) {
+		$this->commission = $commission;
+
+		return $this;
+	}
+
+	/**
+	 * Get the source label.
 	 *
 	 * @return string
 	 */
@@ -100,33 +153,21 @@ abstract class Source_Abstract implements Source, Jsonable, Arrayable {
 	}
 
 	/**
-	 * Determines if current source is Direct source.
-	 *
-	 * @return boolean
-	 */
-	public function is_direct() {
-		return $this instanceof Direct;
-	}
-
-	/**
-	 * Determines if current source is Third_Party source.
-	 *
-	 * @return boolean
-	 */
-	public function is_third_party() {
-		return $this instanceof Third_Party_Source;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function toArray();
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function toJson( $options = 0 ) {
 		return json_encode( $this->toArray(), $options );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function toArray() {
+		return [
+			'uid'   => $this->get_uid(),
+			'name'  => $this->get_name(),
+			'label' => $this->get_label(),
+		];
 	}
 
 	/**

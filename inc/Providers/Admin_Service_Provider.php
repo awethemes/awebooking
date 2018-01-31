@@ -16,6 +16,7 @@ class Admin_Service_Provider extends Service_Provider {
 	 */
 	protected $settings = [
 		\AweBooking\Admin\Settings\General_Setting::class,
+		\AweBooking\Admin\Settings\Reservation_Setting::class,
 		\AweBooking\Admin\Settings\Display_Setting::class,
 		\AweBooking\Admin\Settings\Email_Setting::class,
 	];

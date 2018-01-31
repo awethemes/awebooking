@@ -7,6 +7,15 @@ use Awethemes\Http\Exception\AccessDeniedHttpException;
 
 abstract class Controller extends Base_Controller {
 	/**
+	 * Get the `admin_notices` instance.
+	 *
+	 * @return \AweBooking\Support\Flash_Message
+	 */
+	protected function notices() {
+		return awebooking( 'admin_notices' );
+	}
+
+	/**
 	 * Create a view response.
 	 *
 	 * @param  string  $template The template name.

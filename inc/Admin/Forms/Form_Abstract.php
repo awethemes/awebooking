@@ -69,7 +69,7 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 		$nonce = $this->nonce();
 
 		if ( $check_nonce && ( ! isset( $data[ $nonce ] ) || ! wp_verify_nonce( $data[ $nonce ], $nonce ) ) ) {
-			throw new NonceMismatchException;
+			throw new NonceMismatchException( esc_html__( 'Nonce is invalid, please try again.', 'awebooking' ) );
 		}
 
 		// Get sanitized values from input data.

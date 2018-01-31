@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Currency;
+namespace AweBooking\Money;
 
 class Currency {
 	/* Position constants */
@@ -20,7 +20,7 @@ class Currency {
 	 *
 	 * @var array
 	 */
-	protected $args;
+	protected $args = [];
 
 	/**
 	 * Create a currency object.
@@ -33,6 +33,11 @@ class Currency {
 	 */
 	public function __construct( $code, array $args = null ) {
 		$this->code = $code;
+
+		if ( is_null( $args ) ) {
+			$args = awebooking( 'currencies' )->get_currency( $this->code );
+		}
+
 		$this->args = $this->parse_currency_args( $args );
 	}
 
@@ -102,10 +107,6 @@ class Currency {
 	 * @return array|null
 	 */
 	protected function parse_currency_args( $args ) {
-		if ( empty( $args ) ) {
-			return awebooking( 'currency_manager' )->get_currency( $this->code );
-		}
-
 		return wp_parse_args( $args, [
 			'name'   => '',
 			'symbol' => '',

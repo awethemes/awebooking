@@ -13,17 +13,26 @@ interface Store {
 	 * Get reservation source by key.
 	 *
 	 * @param  string $key The key representer for the source.
-	 * @return \AweBooking\Reservation\Source\Source
+	 * @return mixed
 	 */
 	public function get( $key );
 
 	/**
-	 * Determines if a source available in the store.
+	 * Put a source in the store.
 	 *
-	 * @param  string $key The key representer for the source.
+	 * @param  mixed $source The source data.
+	 * @return mixed
+	 */
+	public function insert( $source );
+
+	/**
+	 * Put a source in the store.
+	 *
+	 * @param  string $key  The key representer for the source.
+	 * @param  array  $data The update data.
 	 * @return boolean
 	 */
-	public function has( $key );
+	public function update( $key, $data );
 
 	/**
 	 * Remove a source in the store.
@@ -31,13 +40,5 @@ interface Store {
 	 * @param  string $key The key representer for the source.
 	 * @return boolean
 	 */
-	public function remove( $key );
-
-	/**
-	 * Put a source in the store.
-	 *
-	 * @param  \AweBooking\Reservation\Source\Source $source The source implementation.
-	 * @return \AweBooking\Reservation\Source\Source
-	 */
-	public function put( Source $source );
+	public function delete( $key );
 }

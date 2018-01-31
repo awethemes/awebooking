@@ -11,6 +11,7 @@ class General_Setting extends Abstract_Setting {
 	public function registers( Admin_Settings $settings ) {
 		$section = $settings->add_section( 'general', [
 			'title'      => esc_html__( 'General', 'awebooking' ),
+			'priority'   => 5,
 			'capability' => 'manage_awebooking',
 		]);
 

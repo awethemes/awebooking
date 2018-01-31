@@ -8,6 +8,7 @@ $route->post( '/settings', Settings_Controller::class . '@store' );
 
 // Reservation source routes.
 $route->post( '/sources', Source_Controller::class . '@store' );
+$route->post( '/sources/bulk-update', Source_Controller::class . '@bulk_update' );
 $route->post( '/sources/{source}', Source_Controller::class . '@update' );
 
 // Reservation routes.

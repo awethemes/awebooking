@@ -29,13 +29,8 @@ class Reservation_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	protected function register_sources_fields( $sources ) {
-		$sources->add_field( [
-			'id'            => 'reservation_source',
-			'type'          => '_none_',
-			'save_field'    => false,
-			'render_row_cb' => function() {
-				awebooking( 'admin_template' )->partial( 'sources/manager.php' );
-			},
-		]);
+		$sources->options['render_callback'] = function() {
+			awebooking( 'admin_template' )->partial( 'sources/manager.php' );
+		};
 	}
 }

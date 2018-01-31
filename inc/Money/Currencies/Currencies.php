@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\Currency;
+namespace AweBooking\Money\Currencies;
 
-class Currency_Manager {
+class Currencies {
 	/**
 	 * List all currency.
 	 *
@@ -13,9 +13,18 @@ class Currency_Manager {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->currencies = apply_filters( 'awebooking/currencies',
-			include( trailingslashit( __DIR__ ) . '/currencies.php' )
-		);
+		$currencies = include trailingslashit( __DIR__ ) . 'resources/currencies.php';
+
+		$this->currencies = apply_filters( 'awebooking/currencies', $currencies );
+	}
+
+	/**
+	 * Get all currencies.
+	 *
+	 * @return array
+	 */
+	public function all() {
+		return $this->currencies;
 	}
 
 	/**
@@ -24,9 +33,7 @@ class Currency_Manager {
 	 * @param  string $code Currency code.
 	 * @return array|null
 	 */
-	public function get_currency( $code = null ) {
-		$code = is_null( $code ) ? $this->get_current_currency() : $code;
-
+	public function get_currency( $code ) {
 		return isset( $this->currencies[ $code ] ) ? $this->currencies[ $code ] : null;
 	}
 
@@ -38,11 +45,6 @@ class Currency_Manager {
 	 * @return bool
 	 */
 	public function add_currency( $code, array $args = null ) {
-		if ( $code instanceof Currency ) {
-			$code = $code->get_code();
-			$args = $code->to_array();
-		}
-
 		if ( empty( $args['name'] ) || empty( $args['symbol'] ) ) {
 			return false;
 		}
@@ -53,31 +55,13 @@ class Currency_Manager {
 	}
 
 	/**
-	 * Get all currencies.
-	 *
-	 * @return array
-	 */
-	public function get_currencies() {
-		return $this->currencies;
-	}
-
-	/**
-	 * Return current currency code.
-	 *
-	 * @return array
-	 */
-	public function get_current_currency() {
-		return awebooking_option( 'currency' );
-	}
-
-	/**
 	 * Get list currencies for dropdown.
 	 *
 	 * @param  string $format Optinal display format.
 	 * @return array
 	 */
 	public function get_for_dropdown( $format = null ) {
-		$currencies = $this->get_currencies();
+		$currencies = $this->all();
 
 		// Walk through currencies array and modify the display value.
 		array_walk( $currencies, function( &$currency, $code ) use ( $format ) {

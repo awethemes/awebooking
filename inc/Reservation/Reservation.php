@@ -9,16 +9,16 @@ use AweBooking\Model\Rate;
 use AweBooking\Model\Party;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Source;
 use AweBooking\Concierge\Pricing\Pricing;
 use AweBooking\Concierge\Availability\Checker;
-use AweBooking\Reservation\Source\Source;
 use AweBooking\Reservation\Searcher\Query;
 
 class Reservation {
 	/**
 	 * The request source.
 	 *
-	 * @var \AweBooking\Reservation\Source\Source
+	 * @var \AweBooking\Model\Source
 	 */
 	protected $source;
 
@@ -109,7 +109,7 @@ class Reservation {
 	/**
 	 * Get the Source.
 	 *
-	 * @return \AweBooking\Reservation\Source\Source
+	 * @return \AweBooking\Model\Source
 	 */
 	public function get_source() {
 		return $this->source;

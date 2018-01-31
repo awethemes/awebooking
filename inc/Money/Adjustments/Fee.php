@@ -2,5 +2,4 @@
 namespace AweBooking\Model;
 
 class Fee {
-
 }
