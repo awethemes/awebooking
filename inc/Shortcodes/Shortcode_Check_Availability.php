@@ -48,8 +48,8 @@ class Shortcode_Check_Availability {
 			} catch ( \Exception $e ) {
 				$errors = esc_html__( 'An error occurred while processing your request.', 'awebooking' );
 			}
-		}
 
-		Template::get_template( 'check-availability.php', array( 'results' => $results, 'errors' => $errors ) );
+			Template::get_template( 'check-availability.php', array( 'results' => $results, 'errors' => $errors ) );
+		}
 	}
 }

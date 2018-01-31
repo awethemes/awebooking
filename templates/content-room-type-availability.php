@@ -24,7 +24,7 @@ $room_type_id = $result->get_room_type()->get_id();
 <li <?php post_class( 'awebooking-loop-room-type' ); ?>>
 
 	<div class="awebooking-loop-room-type__media">
-		<a href="<?php echo esc_url( get_the_permalink( $room_type_id ) ) ?>">
+		<a href="<?php echo esc_url( get_the_permalink( $room_type_id ) ) ?>" target="_blank">
 		<?php
 		if ( has_post_thumbnail( $room_type_id ) ) {
 			echo get_the_post_thumbnail( $room_type_id, 'awebooking_catalog' );
@@ -38,7 +38,7 @@ $room_type_id = $result->get_room_type()->get_id();
 
 	<div class="awebooking-loop-room-type__info">
 		<h2 class="awebooking-loop-room-type__title">
-			<a href="<?php echo esc_url( get_permalink( $room_type_id ) ); ?>" rel="bookmark">
+			<a href="<?php echo esc_url( get_permalink( $room_type_id ) ); ?>" rel="bookmark" target="_blank">
 				<?php echo esc_html( $result->get_room_type()->get_title() );?>
 			</a>
 		</h2>
@@ -71,7 +71,7 @@ $room_type_id = $result->get_room_type()->get_id();
 			$default_args = awebooking_get_booking_request_query( array( 'room-type' => $room_type_id ) );
 			$detail_url         = add_query_arg( $default_args, get_the_permalink( $room_type_id ) );
 		?>
-		<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( $detail_url ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
+		<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( $detail_url ); ?>" target="_blank"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
 
 		<?php
 			$booking_url = add_query_arg( array_merge( array( 'booking-action' => 'view' ), (array) $default_args ), awebooking_get_page_permalink( 'booking' ) );

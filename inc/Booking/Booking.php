@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Booking;
 
+use AweBooking\Constants;
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
@@ -379,6 +380,8 @@ class Booking extends WP_Object {
 	 * @return void
 	 */
 	protected function clean_cache() {
+		wp_cache_delete( $this->get_id(), Constants::CACHE_BOOKING );
+
 		wp_cache_delete( $this->get_id(), 'awebooking_cache_booking_items' );
 	}
 
