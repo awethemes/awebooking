@@ -32,5 +32,10 @@ class Constants {
 	const CACHE_BOOKING_ITEM       = 'awebooking_cache_booking_item_object';
 
 	const CACHE_RAW_ROOM_UNIT      = 'awebooking_cache_raw_room';
+	const CACHE_RAW_TAX_RATE       = 'awebooking_cache_raw_tax';
 	const CACHE_ROOMS_IN_ROOM_TYPE = 'awebooking_cache_rooms_in_room_type';
+
+	// The tax amount type.
+	const TAX_AMOUNT_PERCENTAGE = 'percentage';
+	const TAX_AMOUNT_FIXED      = 'fixed';
 }

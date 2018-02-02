@@ -140,6 +140,7 @@ class Route_Service_Provider extends Service_Provider {
 			'room'      => \AweBooking\Model\Room::class,
 			'room_type' => \AweBooking\Model\Room_Type::class,
 			'booking'   => \AweBooking\Booking\Booking::class,
+			'tax'       => \AweBooking\Model\Tax::class,
 		]);
 
 		foreach ( $models as $key => $model ) {

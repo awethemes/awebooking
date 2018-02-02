@@ -466,7 +466,7 @@ CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
   PRIMARY KEY (`rate_id`, `year`, `month`)
 ) $collate;
 CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
-  booking_item_id BIGINT UNSIGNED NOT NULL auto_increment,
+  booking_item_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   booking_item_name TEXT NOT NULL,
   booking_item_type varchar(191) NOT NULL DEFAULT '',
   booking_item_parent BIGINT UNSIGNED NOT NULL,
@@ -476,13 +476,26 @@ CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   KEY booking_item_parent (booking_item_parent)
 ) $collate;
 CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
-  meta_id BIGINT UNSIGNED NOT NULL auto_increment,
+  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   booking_item_id BIGINT UNSIGNED NOT NULL,
   meta_key varchar(191) default NULL,
   meta_value longtext NULL,
   PRIMARY KEY (meta_id),
   KEY booking_item_id (booking_item_id),
   KEY meta_key (meta_key(32))
+) $collate;
+CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name varchar(191) NOT NULL,
+  code varchar(191) NOT NULL,
+  type varchar(191) NOT NULL,
+  category varchar(191) NOT NULL,
+  amount_type varchar(191) NOT NULL,
+  amount varchar(191) NOT NULL,
+  created_date DATETIME NOT NULL,
+  modified_date DATETIME NOT NULL,
+  PRIMARY KEY (id),
+  KEY code (code)
 ) $collate;
 		";
 
