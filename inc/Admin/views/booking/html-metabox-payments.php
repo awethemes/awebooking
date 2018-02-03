@@ -29,7 +29,6 @@ $payment_items = $the_booking->get_payments();
 					<tr>
 						<td>
 							<strong><?php echo esc_html( $payment_item->get_payment_method_title() ); ?></strong>
-
 						</td>
 
 						<td>

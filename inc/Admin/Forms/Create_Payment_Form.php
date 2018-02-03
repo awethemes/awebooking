@@ -16,14 +16,6 @@ class Create_Payment_Form extends Form_Abstract {
 	 */
 	protected function fields() {
 		$this->add_field([
-			'id'          => 'method',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Payment method', 'awebooking' ),
-			'options_cb'  => Dropdown::cb( 'get_payment_methods' ),
-			'default'     => 'cash',
-		]);
-
-		$this->add_field([
 			'id'          => 'amount',
 			'type'        => 'text_small',
 			'name'        => esc_html__( 'Amount', 'awebooking' ),
@@ -32,9 +24,20 @@ class Create_Payment_Form extends Form_Abstract {
 		]);
 
 		$this->add_field([
+			'id'          => 'method',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Payment method', 'awebooking' ),
+			'options_cb'  => Dropdown::cb( 'get_payment_methods' ),
+			'default'     => 'cash',
+		]);
+
+		$this->add_field([
 			'id'          => 'comment',
 			'type'        => 'textarea',
-			'name'        => esc_html__( 'Payment Comment', 'awebooking' ),
+			'name'        => esc_html__( 'Comment', 'awebooking' ),
+			'attributes'  => [
+				'rows' => 5,
+			],
 		]);
 	}
 }

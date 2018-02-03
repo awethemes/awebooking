@@ -106,7 +106,7 @@ class Booking_Payment_Item extends Booking_Item {
 		);
 
 		if ( $nonce ) {
-			$delete_link = wp_nonce_url( $delete_link, 'delete_payment_item' );
+			$delete_link = wp_nonce_url( $delete_link, 'delete_payment_item_' . $this->get_id() );
 		}
 
 		return apply_filters( $this->prefix( 'get_delete_link' ), $delete_link, $this );
