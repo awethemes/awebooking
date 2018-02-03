@@ -144,6 +144,22 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	}
 
 	/**
+	 * Fill the fields value by given an array data.
+	 *
+	 * @param  array $data An array of fill data.
+	 * @return void
+	 */
+	public function fill( array $data ) {
+		foreach ( $data as $key => $value ) {
+			if ( is_null( $this[ $key ] ) ) {
+				continue;
+			}
+
+			$this[ $key ]->set_value( $value );
+		}
+	}
+
+	/**
 	 * Determine if an field exists.
 	 *
 	 * @param  mixed $key The field key ID.
