@@ -1,8 +1,7 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking;
 
 use Pelago\Emogrifier;
-use AweBooking\Support\Template;
 
 abstract class Mailable {
 	/**

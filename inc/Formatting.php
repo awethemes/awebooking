@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support;
+namespace AweBooking;
 
 use DateTime;
 use AweBooking\AweBooking;
