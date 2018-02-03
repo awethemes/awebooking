@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking\Events;
+namespace AweBooking\Deprecated\Booking\Events;
 
 trait Only_Days_Trait {
 	/**

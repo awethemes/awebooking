@@ -2,14 +2,14 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Money\Price;
 use AweBooking\Model\WP_Object;
 use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Period\Period_Collection;
 
 class Booking extends WP_Object {
-	use Traits\Booking_Items_Trait,
-		Traits\Booking_Attributes_Trait;
+	use Traits\Booking\Booking_Items_Trait,
+		Traits\Booking\Payments_Trait,
+		Traits\Booking\Booking_Attributes_Trait;
 
 	/* Booking Status */
 	const PENDING    = 'awebooking-pending';
@@ -242,7 +242,7 @@ class Booking extends WP_Object {
 	}
 
 	public function get_price( $price ) {
-		return new Price( $price, $this->get_currency() );
+		return $price;
 	}
 
 	/**

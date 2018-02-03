@@ -8,7 +8,7 @@ use AweBooking\Notification\Booking_Cancelled;
 use AweBooking\Notification\Booking_Processing;
 use AweBooking\Notification\Booking_Completed;
 use AweBooking\Notification\Admin_Booking_Created;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 
 class Admin_Email_Preview {
 

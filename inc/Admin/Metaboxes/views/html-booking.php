@@ -52,9 +52,9 @@ use AweBooking\Admin\Forms\Booking_General_From;
 				</div>
 			</div>
 
-			<div class="booking-column info-column">
+			<!-- <div class="booking-column info-column"> -->
 
-				<?php if ( ! $the_booking->is_multiple_rooms() ) : ?>
+				<?php /*if ( ! $the_booking->is_multiple_rooms() ) : ?>
 					<p>
 						<?php if ( $the_booking->get_arrival_date() ) : ?>
 							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
@@ -93,10 +93,6 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<strong><?php esc_html_e( 'Guest(s):', 'awebooking' ); ?></strong>
 					<?php $the_booking->get_fomatted_guest_number(); ?>
 				</p>
-
-				<?php if ( $the_booking->get_line_items()->count() && ! $the_booking->is_continuous_periods() ) : ?>
-					<p class="awebooking-label awebooking-label--warning"><?php esc_html_e( 'Interrupted reservation, please check the booking details table', 'awebooking' ); ?></p>
-				<?php endif ?>
 			</div>
 
 			<?php if ( $the_booking->get_customer_note() ) : ?>
@@ -107,15 +103,15 @@ use AweBooking\Admin\Forms\Booking_General_From;
 						<?php echo wp_kses_post( wpautop( $the_booking->get_customer_note() ) ); ?>
 					</div>
 				</div>
-			<?php endif; ?>
+			<?php endif; */ ?>
 		</div>
 	</div>
 
 	<div class="clear"></div>
 </div><!-- /.postbox -->
 
-<div class="postbox" style="padding: 10px;">
-	<table class="awebooking-table widefat fixed" style="margin-bottom: 5px; width: 100%;">
+<div class="" style="margin-top: 1em;">
+	<table class="awebooking-table widefat fixed">
 		<thead>
 			<tr>
 				<th width="20%"><?php echo esc_html__( 'Room Unit', 'awebooking' ) ?></th>
@@ -203,6 +199,7 @@ use AweBooking\Admin\Forms\Booking_General_From;
 				</td>
 			</tr>
 		</tfoot>
-
 	</table>
 </div>
+
+<?php awebooking( 'admin_template' )->partial( 'booking/html-metabox-payments.php', compact( 'the_booking' ) ); ?>

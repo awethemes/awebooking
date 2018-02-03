@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking;
+namespace AweBooking\Deprecated\Booking;
 
 use DateTime;
 use Roomify\Bat\Unit\UnitInterface;

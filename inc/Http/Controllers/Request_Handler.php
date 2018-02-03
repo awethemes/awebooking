@@ -7,7 +7,7 @@ use AweBooking\AweBooking;
 use AweBooking\Model\Service;
 use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Request;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 use AweBooking\Notification\Booking_Created;

@@ -4,7 +4,7 @@ namespace AweBooking;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\WP_Object;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 use AweBooking\Booking\Items\Booking_Item;
 use AweBooking\Support\Utils as U;
 
@@ -101,8 +101,9 @@ class Factory {
 	 */
 	protected static function resolve_booking_item_class( $type ) {
 		$maps = apply_filters( 'awebooking/booking_item_class_maps', [
-			'line_item'    => \AweBooking\Booking\Items\Line_Item::class,
-			'service_item' => \AweBooking\Booking\Items\Service_Item::class,
+			'line_item'    => \AweBooking\Model\Line_Item::class,
+			'service_item' => \AweBooking\Model\Service_Item::class,
+			'payment_item' => \AweBooking\Model\Booking_Payment_Item::class,
 		]);
 
 		if ( array_key_exists( $type, $maps ) ) {

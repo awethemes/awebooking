@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking\Events;
+namespace AweBooking\Deprecated\Booking\Events;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;

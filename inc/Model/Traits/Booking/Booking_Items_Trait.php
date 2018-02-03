@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Model\Traits;
+namespace AweBooking\Model\Traits\Booking;
 
 use AweBooking\Factory;
 use AweBooking\Model\Booking_Item;
@@ -155,11 +155,6 @@ trait Booking_Items_Trait {
 		return $this->get_items( 'line_item' );
 	}
 
-	/**
-	 * Returns collection of service items.
-	 *
-	 * @return Collection
-	 */
 	public function get_service_items() {
 		return $this->get_items( 'service_item' );
 	}

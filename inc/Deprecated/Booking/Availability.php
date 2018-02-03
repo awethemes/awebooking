@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking;
+namespace AweBooking\Deprecated\Booking;
 
 use AweBooking\Concierge;
 use AweBooking\Model\Room;

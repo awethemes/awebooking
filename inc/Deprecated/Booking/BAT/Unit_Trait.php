@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking\BAT;
+namespace AweBooking\Deprecated\Booking\BAT;
 
 trait Unit_Trait {
 	/**

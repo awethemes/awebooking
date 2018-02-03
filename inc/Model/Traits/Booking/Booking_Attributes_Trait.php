@@ -1,9 +1,10 @@
 <?php
-namespace AweBooking\Model\Traits;
+namespace AweBooking\Model\Traits\Booking;
 
 use AweBooking\Money\Price;
 use AweBooking\Money\Currency;
 use AweBooking\Support\Carbonate;
+use AweBooking\Support\Decimal;
 
 trait Booking_Attributes_Trait {
 	/**
@@ -103,9 +104,7 @@ trait Booking_Attributes_Trait {
 	 * @return Price
 	 */
 	public function get_discount_total() {
-		$discount_total = new Price( $this['discount_total'], $this->get_currency() );
-
-		return apply_filters( $this->prefix( 'get_discount_total' ), $discount_total, $this );
+		return apply_filters( $this->prefix( 'get_discount_total' ), $this['discount_total'], $this );
 	}
 
 	/**
@@ -114,9 +113,7 @@ trait Booking_Attributes_Trait {
 	 * @return Price
 	 */
 	public function get_total() {
-		$total = new Price( $this['total'], $this->get_currency() );
-
-		return apply_filters( $this->prefix( 'get_total' ), $total, $this );
+		return apply_filters( $this->prefix( 'get_total' ), Decimal::create( $this['total'] ), $this );
 	}
 
 	/*
@@ -154,6 +151,9 @@ trait Booking_Attributes_Trait {
 	 */
 	public function get_customer_first_name() {
 		return apply_filters( $this->prefix( 'get_customer_first_name' ), $this['customer_first_name'], $this );
+	}
+
+	public function get_customer_name() {
 	}
 
 	/**

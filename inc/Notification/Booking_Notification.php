@@ -4,7 +4,7 @@ namespace AweBooking\Notification;
 use AweBooking\Support\Markdown;
 use AweBooking\Support\Mailable;
 
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 
@@ -12,14 +12,14 @@ abstract class Booking_Notification extends Mailable {
 	/**
 	 * The Booking instance.
 	 *
-	 * @var \AweBooking\Booking\Booking
+	 * @var \AweBooking\Model\Booking
 	 */
 	protected $booking;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Booking\Booking $booking The Booking instance.
+	 * @param \AweBooking\Model\Booking $booking The Booking instance.
 	 */
 	public function __construct( Booking $booking ) {
 		$this->booking = $booking;

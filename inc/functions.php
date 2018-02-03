@@ -30,7 +30,7 @@ function awebooking( $make = null ) {
  * @return mixed
  */
 function awebooking_option( $key, $default = null ) {
-	return awebooking( 'config' )->get( $key, $default );
+	return awebooking( 'setting' )->get( $key, $default );
 }
 
 /**

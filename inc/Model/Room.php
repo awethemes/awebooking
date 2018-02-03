@@ -4,13 +4,10 @@ namespace AweBooking\Model;
 use AweBooking\Factory;
 use AweBooking\Constants;
 use Skeleton\Support\Validator;
-
-use Roomify\Bat\Unit\UnitInterface;
-use AweBooking\Booking\BAT\Unit_Trait;
 use AweBooking\Deprecated\Model\Room_Deprecated;
 
-class Room extends WP_Object implements UnitInterface {
-	use Unit_Trait, Room_Deprecated;
+class Room extends WP_Object {
+	use Room_Deprecated;
 
 	/**
 	 * Name of object type.

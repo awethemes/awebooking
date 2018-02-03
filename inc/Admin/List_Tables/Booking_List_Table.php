@@ -3,7 +3,7 @@ namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
 use AweBooking\AweBooking;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 
 class Booking_List_Table extends Post_Type_Abstract {
 	/**
@@ -275,7 +275,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 			case 'booking_total' :
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
 					$the_booking->get_total(),
-					$the_booking->get_total()->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--info'
+					$the_booking->get_total() == 0 ? 'awebooking-label--danger' : 'awebooking-label--info'
 				);
 
 				if ( $the_booking['payment_method_title'] ) {

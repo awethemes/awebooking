@@ -3,7 +3,6 @@ namespace AweBooking\Model;
 
 use AweBooking\Factory;
 use AweBooking\Concierge;
-use AweBooking\Money\Price;
 use AweBooking\Support\Period;
 
 class Line_Item extends Booking_Item {

@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\AweBooking;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 
 class Booking_General_From extends Form_Abstract {
 	/**

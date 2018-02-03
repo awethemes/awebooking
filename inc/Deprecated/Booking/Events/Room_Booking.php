@@ -1,10 +1,10 @@
 <?php
-namespace AweBooking\Booking\Events;
+namespace AweBooking\Deprecated\Booking\Events;
 
 use AweBooking\Model\Room;
 use Roomify\Bat\Event\Event;
 use AweBooking\Support\Period;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 
 class Room_Booking extends Event {
 	/**

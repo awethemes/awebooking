@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Booking\Events;
+namespace AweBooking\Deprecated\Booking\Events;
 
 use DateTime;
 use Roomify\Bat\Event\Event;

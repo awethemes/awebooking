@@ -3,7 +3,7 @@ namespace AweBooking;
 
 use Skeleton\WP_Option;
 use AweBooking\Model\Service;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 use AweBooking\Currency\Currency;
 use Illuminate\Support\Arr;
 

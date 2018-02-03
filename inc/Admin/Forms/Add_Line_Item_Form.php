@@ -5,7 +5,7 @@ use AweBooking\Factory;
 use AweBooking\Concierge;
 use AweBooking\AweBooking;
 use AweBooking\Model\Service;
-use AweBooking\Booking\Booking;
+use AweBooking\Model\Booking;
 use AweBooking\Booking\Request;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;

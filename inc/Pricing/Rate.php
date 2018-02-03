@@ -4,12 +4,8 @@ namespace AweBooking\Pricing;
 use AweBooking\AweBooking;
 use AweBooking\Model\Room_Type;
 use AweBooking\Support\WP_Object;
-use AweBooking\Booking\BAT\Unit_Trait;
-use Roomify\Bat\Unit\UnitInterface as Unit_Interface;
 
-class Rate extends WP_Object implements Unit_Interface {
-	use Unit_Trait;
-
+class Rate extends WP_Object {
 	/**
 	 * The room-type parent.
 	 *
