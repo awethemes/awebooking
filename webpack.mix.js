@@ -20,6 +20,8 @@ mix.js('assets/jssrc/admin/awebooking.js', 'assets/js/admin')
    .js('assets/jssrc/admin/manager-pricing.js', 'assets/js/admin')
    .js('assets/jssrc/admin/manager-availability.js', 'assets/js/admin');
 
+mix.copy('node_modules/sweetalert2/dist/sweetalert2.css', 'assets/css/sweetalert2.css', false);
+mix.copy('node_modules/sweetalert2/dist/sweetalert2.min.js', 'assets/js/sweetalert2/sweetalert2.min.js', false);
 mix.copy('node_modules/magnific-popup/dist/magnific-popup.css', 'assets/css/magnific-popup.css', false);
 mix.copy('node_modules/magnific-popup/dist/jquery.magnific-popup.min.js', 'assets/js/magnific-popup/jquery.magnific-popup.min.js', false);
 
@@ -37,5 +39,6 @@ mix.browserSync({
     'inc/**/*.php',
     'templates/**/*.php',
     'assets/css/**/*.css',
+    'assets/js/**/*.js',
   ]
 });

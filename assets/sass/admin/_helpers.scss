@@ -1,3 +1,20 @@
+.atext-left {
+  text-align: left !important;
+}
+.atext-right {
+  text-align: right !important;
+}
+.atext-center {
+  text-align: center !important;
+}
+.afloat-left {
+  float: left !important;
+}
+.afloat-right {
+  float: right !important;
+}
+
+
 .awebooking-toolbar {
   position: relative;
   box-sizing: border-box;
@@ -44,6 +61,25 @@
 
 
 /* Tables */
+table.awebooking-table {
+  font-size: 13px;
+
+  th,
+  thead td,
+  tfoot td {
+    font-size: inherit;
+  }
+
+  th {
+    font-weight: 700;
+  }
+
+  tfoot th:not(:first-child) {
+    background-color: #f7f7f7;
+    border-left: solid 1px #eee;
+  }
+}
+
 table.awebooking-minimal-table {
   border-spacing: 0;
   table-layout: fixed;
@@ -53,5 +89,12 @@ table.awebooking-minimal-table {
   td {
     padding: 0.5em;
     font-size: 13px;
+  }
+}
+
+.awebooking-contents {
+
+  p:last-child {
+    margin-bottom: 0;
   }
 }

@@ -1,13 +1,14 @@
 const $ = window.jQuery;
 const settings = window._awebookingSettings || {};
 
-import Popper from 'popper.js';
-import Tooltip from 'tooltip.js';
+import tooltip from 'tooltip.js'
+import popper from 'popper.js'
 
 const AweBooking = _.extend(settings, {
   Vue: require('vue'),
-  Popper: Popper,
-  Tooltip: Tooltip,
+
+  Popper: popper,
+  Tooltip: tooltip,
 
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
@@ -35,6 +36,41 @@ const AweBooking = _.extend(settings, {
       };
 
       $(this).data('awebooking-tooltip', new self.Tooltip(this, options));
+    });
+
+    const createForm = function(link, method) {
+      const form = $('<form>', { 'method': 'POST', 'action': link });
+      const hiddenInput = $('<input>', { 'name': '_method',  'type': 'hidden', 'value': method });
+
+      return form.append(hiddenInput).appendTo('body');
+    };
+
+    $('a[data-method="awebooking-delete"]').on( 'click', function(e) {
+      e.preventDefault();
+
+      const link = $(this);
+
+      swal({
+        toast: true,
+        title: self.trans('confirm_title'),
+        html: self.trans('confirm_message'),
+        type: 'warning',
+        position: 'center',
+        animation: false,
+        reverseButtons: true,
+        showCancelButton: true,
+        buttonsStyling: false,
+        cancelButtonClass: 'button',
+        confirmButtonClass: 'button button-primary',
+        cancelButtonText: self.trans('cancel'),
+        confirmButtonText: self.trans('delete'),
+      }).then(function(result) {
+        if (result.value) {
+          const form = createForm(link.attr('href'), 'DELETE');
+          form.submit();
+        }
+      });
+
     });
 
     require('./utils/init-select2.js');
