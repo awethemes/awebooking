@@ -24,51 +24,49 @@ $taxes = Tax::query();
 		</thead>
 
 		<tbody>
-			<?php if ( $taxes ) : ?>
-			<?php foreach ( $taxes as $tax ) : ?>
+			<?php if ( $taxes->isNotEmpty() ) : ?>
+				<?php foreach ( $taxes as $tax ) : ?>
+					<tr>
+						<td>
+							<strong><?php echo esc_html( $tax->get_name() ); ?></strong>
+						</td>
+
+						<td>
+							<?php echo esc_html( $tax->get_code() ); ?>
+						</td>
+
+						<td>
+							<?php echo esc_html( $tax->get_type() ); ?>
+						</td>
+
+						<td>
+							<?php echo esc_html( $tax->get_category() ); ?>
+						</td>
+
+						<td>
+							<?php echo esc_html( $tax->get_amount_type() ); ?>
+						</td>
+
+						<td>
+							<?php echo esc_html( $tax->get_amount() ); ?>
+						</td>
+
+						<td>
+							<a href="<?php echo esc_url( $tax->get_edit_url() ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> |
+							<a href="<?php echo esc_url( $tax->get_delete_url() ); ?>"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a>
+						</td>
+
+						<td></td>
+					</tr>
+
+				<?php endforeach; ?>
+			<?php else : ?>
 				<tr>
-					<td>
-						<strong><?php echo esc_html( $tax->name ); ?></strong>
+					<td colspan="8">
+						<p><?php esc_html_e( 'No items found.', 'awebooking' ); ?></p>
 					</td>
-
-					<td>
-						<?php echo esc_html( $tax->code ); ?>
-					</td>
-
-					<td>
-						<?php echo esc_html( $tax->type ); ?>
-					</td>
-
-					<td>
-						<?php echo esc_html( $tax->category ); ?>
-					</td>
-
-					<td>
-						<?php echo esc_html( $tax->amount_type ); ?>
-					</td>
-
-					<td>
-						<?php echo esc_html( $tax->amount ); ?>
-					</td>
-
-					<td>
-						<a href="<?php echo esc_url( awebooking( 'url' )->admin_route( "tax/{$tax->id}" ) ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> |
-						<a href="<?php echo esc_url( awebooking( 'url' )->admin_route( "tax/delete/{$tax->id}" ) ); ?>"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a>
-					</td>
-
-					<td></td>
 				</tr>
-
-			<?php endforeach; ?>
-		<?php else : ?>
-			<tr>
-				<td colspan="8">
-					<p><?php esc_html_e( 'No items found.', 'awebooking' ); ?></p>
-				</td>
-			</tr>
-		<?php endif; ?>
+			<?php endif; ?>
 		</tbody>
 	</table>
-
-	<input type="submit" name="submit-cmb" class="button button-primary" value="<?php echo esc_html__( 'Save changes', 'awebooking' ); ?>">
 </form>

@@ -2,12 +2,9 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use Roomify\Bat\Unit\UnitInterface;
-use AweBooking\Booking\BAT\Unit_Trait;
+use AweBooking\Support\Utils as U;
 
-class Tax extends WP_Object implements UnitInterface {
-	use Unit_Trait;
-
+class Tax extends WP_Object {
 	/**
 	 * Type.
 	 *
@@ -72,6 +69,24 @@ class Tax extends WP_Object implements UnitInterface {
 	}
 
 	/**
+	 * The tax rates query.
+	 *
+	 * @param  array $args args.
+	 * @return WP_Query
+	 */
+	public static function query() {
+		global $wpdb;
+
+		$query = "SELECT * FROM {$wpdb->prefix}awebooking_tax_rates AS taxes ORDER BY created_date DESC";
+
+		$results = $wpdb->get_results( $query );
+
+		return U::collect( $results )->map( function ( $a ) {
+			return new static( $a->id );
+		});
+	}
+
+	/**
 	 * Return an array of IDs for for a specific tax / fee code.
 	 * Can return multiple to check for existence.
 	 *
@@ -97,20 +112,6 @@ class Tax extends WP_Object implements UnitInterface {
 		$id = apply_filters( 'awebooking/get_tax_id_from_code', absint( current( $ids ) ), $code, $exclude );
 
 		return new static( $id );
-	}
-
-	/**
-	 * The tax rates query.
-	 *
-	 * @param  array $args args.
-	 * @return WP_Query
-	 */
-	public static function query() {
-		global $wpdb;
-
-		$query = "SELECT * FROM {$wpdb->prefix}awebooking_tax_rates AS taxes ORDER BY created_date DESC";
-
-		return $wpdb->get_results( $query );
 	}
 
 	/**
@@ -165,6 +166,33 @@ class Tax extends WP_Object implements UnitInterface {
 	 */
 	public function get_amount() {
 		return apply_filters( $this->prefix( 'get_amount' ), $this['amount'], $this );
+	}
+
+	/**
+	 * Get delete url.
+	 *
+	 * @param  boolean $nonce Yes or no create nonce.
+	 * @return string
+	 */
+	public function get_delete_url( $nonce = true ) {
+		$url = awebooking( 'url' )->admin_route( "tax/{$this->get_id()}/delete" );
+
+		if ( $nonce ) {
+			$url = wp_nonce_url( $url, 'delete_tax' );
+		}
+
+		return apply_filters( $this->prefix( 'get_delete_url' ), $url, $this );
+	}
+
+	/**
+	 * Get edit url.
+	 *
+	 * @return string
+	 */
+	public function get_edit_url() {
+		$url = awebooking( 'url' )->admin_route( "tax/{$this->get_id()}" );
+
+		return apply_filters( $this->prefix( 'get_edit_url' ), $url, $this );
 	}
 
 	/**

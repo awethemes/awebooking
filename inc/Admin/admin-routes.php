@@ -23,4 +23,4 @@ $route->post( '/tax/store', Tax_Controller::class . '@store' );
 $route->get( '/tax/{tax:\d+}', Tax_Controller::class . '@show' );
 $route->put( '/tax/{tax:\d+}', Tax_Controller::class . '@update' );
 
-$route->delete( '/tax/{tax:\d+}', Tax_Controller::class . '@delete' );
+$route->get( '/tax/{tax:\d+}/delete', Tax_Controller::class . '@delete' );
