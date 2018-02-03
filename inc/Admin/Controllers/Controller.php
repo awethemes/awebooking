@@ -9,10 +9,18 @@ abstract class Controller extends Base_Controller {
 	/**
 	 * Get the `admin_notices` instance.
 	 *
+	 * @param  string $type    Optional, the notice type if provided: 'updated', 'success', 'info', 'error', 'warning'.
+	 * @param  string $message Optional, the notice message.
 	 * @return \AweBooking\Support\Flash_Message
 	 */
-	protected function notices() {
-		return awebooking( 'admin_notices' );
+	protected function notices( $type = null, $message = '' ) {
+		$notices = awebooking( 'admin_notices' );
+
+		if ( is_null( $type ) ) {
+			return $notices;
+		}
+
+		return $notices->add_message( $message, $type );
 	}
 
 	/**
