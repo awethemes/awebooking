@@ -562,3 +562,23 @@ table.wp-list-table .column-booking_total {
     }
   }
 }
+
+table.awebooking_gateways td.sort {
+  padding: 0 7px;
+  cursor: move;
+  font-size: 15px;
+  text-align: center;
+  vertical-align: middle;
+
+  &:before {
+    content: '\f333';
+    font-family: Dashicons;
+    text-align: center;
+    line-height: 1;
+    color: #999;
+    display: block;
+    width: 17px;
+    float: left;
+    height: 100%;
+  }
+}

@@ -19,6 +19,12 @@ class Checkout_Setting extends Abstract_Setting {
 			'capability' => 'manage_awebooking',
 		])->as_child_of( 'checkout' );
 
+		$checkout_options->add_field( array(
+			'id'         => 'gateway_order',
+			'type'       => 'gateway_display_order',
+			'name'       => esc_html__( 'Gateway display order', 'awebooking' ),
+		) );
+
 		// Register the gateways custom fields.
 		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
 			if ( ! $gateway->has_settings() ) {
