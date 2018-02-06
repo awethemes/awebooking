@@ -196,6 +196,74 @@ class Tax extends WP_Object {
 	}
 
 	/**
+	 * Get type label.
+	 *
+	 * @return string
+	 */
+	public function get_type_label() {
+		$labels = [
+			'tax' => esc_html__( 'Tax', 'awebooking' ),
+			'fee' => esc_html__( 'Free', 'awebooking' ),
+		];
+
+		$label = isset( $labels[$this->get_type()] ) ? $labels[$this->get_type()] : '';
+
+		return apply_filters( $this->prefix( 'get_type_label' ), $label, $this );
+	}
+
+	/**
+	 * Get category label.
+	 *
+	 * @return string
+	 */
+	public function get_category_label() {
+		$labels = [
+			'inclusive' => esc_html__( 'Inclusive', 'awebooking' ),
+			'exclusive' => esc_html__( 'Exclusive', 'awebooking' ),
+		];
+
+		$label = isset( $labels[$this->get_category()] ) ? $labels[$this->get_category()] : '';
+
+		return apply_filters( $this->prefix( 'get_category_label' ), $label, $this );
+	}
+
+	/**
+	 * Get amount type label.
+	 *
+	 * @return string
+	 */
+	public function get_amount_type_label() {
+		$labels = [
+			Constants::TAX_AMOUNT_PERCENTAGE => esc_html__( 'Percentage', 'awebooking' ),
+			Constants::TAX_AMOUNT_FIXED      => esc_html__( 'Fixed', 'awebooking' ),
+		];
+
+		$label = isset( $labels[$this->get_amount_type()] ) ? $labels[$this->get_amount_type()] : '';
+
+		return apply_filters( $this->prefix( 'get_amount_type_label' ), $label, $this );
+	}
+
+	/**
+	 * Get amount label.
+	 *
+	 * @return string
+	 */
+	public function get_amount_label() {
+		$label = '';
+		switch ( $this->get_amount_type() ) {
+			case Constants::TAX_AMOUNT_PERCENTAGE:
+				$label = $this->get_amount() . esc_html_x( '%', 'percentage tax', 'awebooking' );
+				break;
+
+			case Constants::TAX_AMOUNT_FIXED:
+				$label = sprintf( esc_html__( '%1$s 2$%', 'awebooking' ), $this->get_amount(), esc_html( awebooking( 'currency' )->get_symbol() ) );
+				break;
+		}
+
+		return $label;
+	}
+
+	/**
 	 * Setup the object attributes.
 	 *
 	 * @return void

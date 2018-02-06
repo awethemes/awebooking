@@ -54,7 +54,7 @@ class Check_Payment_Gateway extends Gateway {
 				'name'        => esc_html__( 'Description', 'awebooking' ),
 				'type'        => 'textarea',
 				'description' => esc_html__( 'Payment method description that the customer will see on your checkout.', 'awebooking' ),
-				'default'     => esc_html__( 'Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'awebooking' ),
+				'default'     => esc_html__( 'Please send a check to Hotel Name, Hotel Street, Hotel Town, Hotel State / County, Hotel Postcode.', 'awebooking' ),
 			],
 			'instructions' => [
 				'name'        => esc_html__( 'Instructions', 'awebooking' ),

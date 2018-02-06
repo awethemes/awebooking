@@ -16,7 +16,6 @@ $taxes = Tax::query();
 				<th><span><?php esc_html_e( 'Category', 'awebooking' ); ?></span></th>
 				<th><span><?php esc_html_e( 'Amount type', 'awebooking' ); ?></span></th>
 				<th><span><?php esc_html_e( 'Amount', 'awebooking' ); ?></span></th>
-				<th><span><?php esc_html_e( 'Actions', 'awebooking' ); ?></span></th>
 				<th style="text-align: right;">
 					<a href="<?php echo esc_url( awebooking( 'url' )->admin_route( 'tax/create' ) ); ?>" class="button"><?php esc_html_e( 'New Tax or Fee', 'awebooking' ); ?></a>
 				</th>
@@ -29,6 +28,10 @@ $taxes = Tax::query();
 					<tr>
 						<td>
 							<strong><?php echo esc_html( $tax->get_name() ); ?></strong>
+							<div class="row-actions afloat-right">
+								<span class="edit"><a href="<?php echo esc_url( $tax->get_edit_url() ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> | </span>
+								<span class="trash"><a href="<?php echo esc_url( $tax->get_delete_url() ); ?>" data-method="awebooking-delete" class="submitdelete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
+							</div>
 						</td>
 
 						<td>
@@ -36,24 +39,19 @@ $taxes = Tax::query();
 						</td>
 
 						<td>
-							<?php echo esc_html( $tax->get_type() ); ?>
+							<?php echo esc_html( $tax->get_type_label() ); ?>
 						</td>
 
 						<td>
-							<?php echo esc_html( $tax->get_category() ); ?>
+							<?php echo esc_html( $tax->get_category_label() ); ?>
 						</td>
 
 						<td>
-							<?php echo esc_html( $tax->get_amount_type() ); ?>
+							<?php echo esc_html( $tax->get_amount_type_label() ); ?>
 						</td>
 
 						<td>
-							<?php echo esc_html( $tax->get_amount() ); ?>
-						</td>
-
-						<td>
-							<a href="<?php echo esc_url( $tax->get_edit_url() ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> |
-							<a href="<?php echo esc_url( $tax->get_delete_url() ); ?>"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a>
+							<?php echo esc_html( $tax->get_amount_label() ); ?>
 						</td>
 
 						<td></td>
