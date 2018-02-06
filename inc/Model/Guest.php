@@ -125,18 +125,7 @@ class Guest implements Stringable {
 	}
 
 	/**
-	 * The magic __toString method.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
-	}
-
-	/**
-	 * Return human readable of the request.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function as_string() {
 		$adults = $this->get_adults();
@@ -179,5 +168,14 @@ class Guest implements Stringable {
 		if ( $value < $minimum ) {
 			throw new \LogicException( "Requires at least {$minimum}" );
 		}
+	}
+
+	/**
+	 * The magic __toString method.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->as_string();
 	}
 }

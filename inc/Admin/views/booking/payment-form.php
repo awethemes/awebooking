@@ -14,8 +14,24 @@ $action_link = $is_updateform
 
 ?><div class="wrap" style="max-width: 1200px;">
 	<h1 class="wp-heading-inline"><?php $is_updateform ? esc_html_e( 'Update payment', 'awebooking' ) : esc_html_e( 'Register payment', 'awebooking' ); ?></h1>
-	<br><span><?php esc_html_e( 'Booking reference', 'awebooking' ); ?> <a href="<?php echo esc_url( $booking->get_edit_url() ); ?>" target="_blank">#<?php echo esc_html( $booking->get_id() ); ?></a></span>
-	<hr class="wp-header-end">
+	<br><span><?php esc_html_e( 'Booking reference:', 'awebooking' ); ?> <a href="<?php echo esc_url( $booking->get_edit_url() ); ?>" style="text-decoration: none;">#<?php echo esc_html( $booking->get_id() ); ?></a></span>
+
+	<hr class="clear">
+
+	<div class="">
+		<?php echo esc_html__( 'Total charge', 'awebooking' ); ?>
+		<?php echo $booking->get_total(); ?>
+	</div>
+
+	<div class="">
+		<?php echo esc_html__( 'Already paid', 'awebooking' ); ?>
+		<?php echo $booking->get_paid(); ?>
+	</div>
+
+	<div class="">
+		<?php echo esc_html__( 'Balance Due', 'awebooking' ); ?>
+		<?php echo $booking->get_balance_due(); ?>
+	</div>
 
 	<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
 		<?php wp_nonce_field( $is_updateform ? 'update_booking_payment_' . $payment_item->get_id() : 'create_booking_payment' ); ?>
@@ -23,23 +39,6 @@ $action_link = $is_updateform
 		<?php if ( $is_updateform ) : ?>
 			<input type="hidden" name="_method" value="PUT">
 		<?php endif ?>
-
-		<hr>
-
-		<div class="">
-			<?php echo esc_html__( 'Total charge', 'awebooking' ); ?>
-			<?php echo $booking->get_total(); ?>
-		</div>
-
-		<div class="">
-			<?php echo esc_html__( 'Already paid', 'awebooking' ); ?>
-			<?php echo $booking->get_paid(); ?>
-		</div>
-
-		<div class="">
-			<?php echo esc_html__( 'Balance Due', 'awebooking' ); ?>
-			<?php echo $booking->get_balance_due(); ?>
-		</div>
 
 		<?php $controls->output(); ?>
 

@@ -1,227 +1,69 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
-use AweBooking\AweBooking;
-use AweBooking\Factory;
-use AweBooking\Model\Room;
+use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
-use AweBooking\Booking\Calendar;
-use AweBooking\Support\Period;
-use AweBooking\Support\Carbonate;
-use Illuminate\Support\Arr;
-use AweBooking\Support\Collection;
-use AweBooking\Support\Abstract_Calendar;
-use AweBooking\Booking\Events\Room_State;
+use AweBooking\Calendar\Calendar;
+use AweBooking\Calendar\Scheduler;
+use AweBooking\Calendar\Period\Month;
+use AweBooking\Calendar\Period\Period;
+use AweBooking\Calendar\Resource\Resource;
+use AweBooking\Calendar\Resource\Resource_Collection;
+use AweBooking\Calendar\Provider\State_Provider;
+use AweBooking\Calendar\Provider\Booking_Provider;
+use AweBooking\Calendar\Provider\Aggregate_Provider;
+use AweBooking\Calendar\Event\State_Event;
+use AweBooking\Support\Utils as U;
 
-class Availability_Calendar extends Abstract_Calendar {
-	/**
-	 * ISO 8601
-	 */
-	const DATE_FORMAT = 'Y-m-d';
-
+class Availability_Calendar extends Schedule_Calendar {
 	/**
 	 * The room-type instance.
 	 *
-	 * @var AweBooking\Model\Room_Type
+	 * @var \AweBooking\Model\Room_Type
 	 */
 	protected $room_type;
 
 	/**
-	 * An collection rooms of room-type.
+	 * List of resource mapped with room-units.
 	 *
-	 * @var Collection
+	 * @var \AweBooking\Calendar\Resource\Resource_Collection
 	 */
-	protected $rooms;
+	protected $resources;
 
-	protected $room;
-	protected $state;
-	protected $bookings;
+	protected $calendar_provider;
+	protected $bookings_provider;
 
 	/**
-	 * The year we will working on.
-	 *
-	 * @var int
-	 */
-	protected $year;
-
-	/**
-	 * The month we will working on.
-	 *
-	 * @var int
-	 */
-	protected $month;
-
-	/**
-	 * The Calendar default options.
-	 *
-	 * @var array
-	 */
-	protected $defaults = [
-		'date_title'       => 'l, M j, Y',
-		'month_label'      => 'abbrev',  // 'abbrev', 'full'.
-		'weekday_label'    => 'abbrev',  // 'initial', 'abbrev', 'full'.
-		'base_class'       => 'abkngcal',
-		'hide_prev_months' => true,
-	];
-
-	/**
-	 * Create pricing calendar.
+	 * Constructor.
 	 *
 	 * @param Room_Type $room_type The room-type instance.
-	 * @param int       $year      Year of calendar.
+	 * @param array     $options   The calendar options.
 	 */
-	public function __construct( Room_Type $room_type, $year = null, $month = null ) {
-		parent::__construct();
-
+	public function __construct( Room_Type $room_type, array $options = [] ) {
+		$this->options = array_merge( $this->options, $options );
 		$this->room_type = $room_type;
-		$rooms = new Collection( $this->room_type->get_rooms() );
-		$this->rooms = $rooms;
 
-		$this->year = $year ? absint( $year ) : absint( date( 'Y' ) );
-		$this->month = ( $month && $month <= 12 && $month >= 1 ) ? $month : absint( date( 'n' ) );
+		$this->resources = $this->create_calendar_resources();
+		$this->calendar_provider = $this->create_calendar_provider();
+		$this->bookings_provider = $this->create_bookings_provider();
 	}
 
 	/**
-	 * Prepare setup the data.
+	 * Get the room-type instance.
 	 *
-	 * @param  mixed  $data    Mixed input data.
-	 * @param  string $context Context from Calendar.
-	 * @return mixed
+	 * @return \AweBooking\Model\Room_Type
 	 */
-	protected function prepare_data( $data, $context ) {}
-
-	/**
-	 * Setup unit data before prints.
-	 *
-	 * @param  array     $unit  The unit.
-	 * @param  Carbonate $month The Month instance.
-	 * @return void
-	 */
-	protected function setup_unit_data( $unit, $month ) {
-		$this->room = null;
-		$this->state = null;
-		$this->bookings = null;
-
-		$this->room = $this->rooms->where( 'id', $unit['id'] )->first();
-		$calendar = new Calendar( [ $this->room ], awebooking( 'store.availability' ) );
-
-		$current_year = Carbonate::createFromDate( $this->year, 1, 1 );
-		$events = $calendar->getEvents( $current_year, $current_year->copy()->addYear() );
-
-		$states = [];
-		foreach ( $events[ $this->room->get_id() ] as $state ) {
-			$state = Room_State::instance( $state );
-
-			if ( $state->is_available() ) {
-				continue;
-			}
-
-			$states[] = $state;
-		}
-		$this->state = $states;
-
-		// Get all booking events.
-		$booking_calendar = new Calendar( [ $this->room ], awebooking( 'store.booking' ) );
-		$booking_events = $booking_calendar->getEvents( $current_year, $current_year->copy()->addYear() );
-
-		$this->bookings = [];
-		foreach ( $booking_events[ $this->room->get_id() ] as $event ) {
-			if ( 0 === $event->getValue() ) {
-				continue;
-			}
-
-			$this->bookings[] = $event;
-		}
-
-		$range = [];
-		foreach ( $this->state as $state ) {
-			try {
-				$period = new Period( $state->getStartDate(), $state->getEndDate() );
-			} catch ( \Exception $e ) {
-				continue;
-			}
-
-			$period = $period->get_period();
-			$_period = iterator_to_array( $period );
-			$_period[] = $period->getEndDate();
-
-			$state_class = 'unavailable';
-			if ( $state->is_booked() ) {
-				$state_class = 'booked';
-			} else if ( $state->is_pending() ) {
-				$state_class = 'pending';
-			}
-
-			foreach ( $_period as $i => $day ) {
-				$carbon = Carbonate::create_date( $day );
-				$next_carbon = $carbon->copy()->addDay();
-
-				$uid = $carbon->toDateString();
-				if ( ! isset( $range[ $uid ] ) ) {
-					$range[ $uid ] = [
-						'datetime' => $carbon,
-						'classes' => [],
-					];
-				}
-
-				// Get next day.
-				$uid_next = $next_carbon->toDateString();
-				$range[ $uid_next ] = [
-					'datetime' => $next_carbon,
-					'classes' => [],
-					'booking' => null,
-				];
-
-				$classes = [];
-				$next_classes = [];
-				$booking_id = null;
-
-				if ( $carbon->isSameDay( $state->getStartDate() ) ) {
-					$classes[] = $state_class . '-start triangle-start';
-
-					$booking = $this->get_booking( $carbon );
-					if ( false !== $booking ) {
-						$range[ $uid ]['booking'] = $booking;
-					}
-				}
-
-				if ( $carbon->between( $state->getStartDate(), $state->getEndDate(), false ) ) {
-					$classes[] = $state_class;
-				}
-
-				// Add class to next day.
-				if ( $carbon->isSameDay( $state->getEndDate() ) ) {
-					$next_classes[] = $state_class . '-end triangle-end';
-				}
-
-				$range[ $uid ]['classes'] = array_merge( $range[ $uid ]['classes'], $classes );
-				$range[ $uid_next ]['classes'] = array_merge( $range[ $uid_next ]['classes'], $next_classes );
-			}// End foreach().
-		}// End foreach().
-
-		$this->range = $range;
+	public function get_room_type() {
+		return $this->room_type;
 	}
 
 	/**
-	 * Return contents of day in cell.
+	 * Get Calendar resources from room_type.
 	 *
-	 * Override this method if want custom contents.
-	 *
-	 * @param  Carbonate $date    Current day instance.
-	 * @param  string    $context Context from Calendar.
-	 * @return array
+	 * @return \AweBooking\Calendar\Resource\Resource_Collection
 	 */
-	protected function get_date_contents( Carbonate $date, $context ) {
-		$date_string = $date->toDateString();
-
-		if ( isset( $this->range[ $date_string ] ) && ! empty( $this->range[ $date_string ]['booking'] ) ) {
-			$booking = $this->range[ $date_string ]['booking'];
-			$booking_id = $booking->getValue();
-		}
-
-		return sprintf( '<i>%1$s</i><span class="abkngcal__day-state"></span><span class="abkngcal__day-selection"></span>',
-			isset( $booking_id ) ? '<a href="' . esc_url( get_edit_post_link( $booking_id ) ) . '">#' . $booking_id . '</a>' : ''
-		);
+	public function get_resources() {
+		return $this->resources;
 	}
 
 	/**
@@ -230,62 +72,121 @@ class Availability_Calendar extends Abstract_Calendar {
 	 * @return void
 	 */
 	public function display() {
-		$date = Carbonate::createFromDate( $this->year, $this->month, 1 );
+		$scheduler = $this->get_scheduler()
+			->set_name( $this->room_type->get_title() );
 
-		echo '<div class="abkngcal-container abkngcal--availability-calendar">';
-
-		// @codingStandardsIgnoreStart
-		echo '<h2>' . esc_html( $this->room_type->get_title() ) . '</h2>';
-		$units = $this->rooms->map->only( 'id', 'name' );
-
-		echo $this->generate_scheduler_calendar( $date, $units );
-		// @codingStandardsIgnoreEnd
-
-		echo '</div>';
+		$month = new Month( 2017, 12 );
+		echo $this->generate( $scheduler, $month );
 	}
 
 	/**
-	 * Return row heading content for scheduler.
+	 * Get the scheduler.
 	 *
-	 * @param  Carbonate $month Current month.
-	 * @param  array     $unit  Array of current unit in loop.
-	 * @return string
+	 * @return \AweBooking\Calendar\Scheduler
 	 */
-	protected function get_scheduler_row_heading( $month, $unit ) {
-		return '<span><i class="check-column"><input type="checkbox" name="bulk-update[]" value="' . esc_attr( $unit['id'] ) . '" /></i>' . esc_html( $unit['name'] ) . '</span>';
+	protected function get_scheduler() {
+		$calendars = U::collect( $this->resources )
+			->map(function( $resource ) {
+				$calendar = new Calendar( $resource, $this->calendar_provider );
+
+				$calendar->set_name( $resource->get_title() );
+
+				return $calendar;
+			});
+
+		return new Scheduler( $calendars );
+	}
+
+	/**
+	 * Create the calendar resources.
+	 *
+	 * @return \AweBooking\Calendar\Resource\Resource_Collection
+	 */
+	protected function create_calendar_resources() {
+		$resources = U::collect( $this->room_type->get_rooms() )
+			->map(function( $room ) {
+				$resource = new Resource( $room->get_id(), Constants::STATE_AVAILABLE );
+
+				$resource->set_title( $room->get_name() );
+
+				return $resource;
+			});
+
+		return Resource_Collection::make( $resources );
+	}
+
+	/**
+	 * Create the base calendar provider.
+	 *
+	 * @return \AweBooking\Calendar\Provider\Provider_Interface
+	 */
+	protected function create_calendar_provider() {
+		$provider = new Aggregate_Provider( [ new State_Provider( $this->resources ) ] );
+
+		return apply_filters( 'awebooking/availability_calendar/calendar_provider', $provider );
+	}
+
+	/**
+	 * Create the booking calendar provider.
+	 *
+	 * @return \AweBooking\Calendar\Provider\Booking_Provider
+	 */
+	protected function create_bookings_provider() {
+		return new Booking_Provider( $this->resources );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_date_classes( Carbonate $date ) {
-		$classes = parent::get_date_classes( $date );
+	protected function get_calendar_events( Calendar $calendar, Period $period ) {
+		$events = parent::get_calendar_events( $calendar, $period )
+			->reject(function( $e ) {
+				return ! $e instanceof State_Event;
+			});
 
-		$date_string = $date->toDateString();
-		if ( isset( $this->range[ $date_string ] ) ) {
-			$classes[] = implode( ' ', $this->range[ $date_string ]['classes'] );
+		$booking_events = ( new Calendar( $calendar->get_resource(), $this->bookings_provider ) )
+			->get_events( $period )
+			->reject( function( $e ) {
+				return ! $e->get_value();
+			});
+
+		foreach ( $events as $key => $event ) {
+			if ( ! $event->is_pending_state() && ! $event->is_booked_state() ) {
+				continue;
+			}
+
+			$found_booking_event = $booking_events->first(function( $e ) use ( $event ) {
+				return $e->contains_period( $event->get_period() );
+			});
+
+			// TODO: Todo something when missing booking.
+			if ( ! $found_booking_event ) {
+				continue;
+			}
+
+			$booking = $found_booking_event->get_booking();
+			$event->set_summary( 'Booking #' . $booking->get_id() );
 		}
 
-		return $classes;
+		return $events->indexes();
 	}
 
 	/**
-	 * //
-	 *
-	 * @param  Carbonate $day //.
-	 * @return mixed
+	 * {@inheritdoc}
 	 */
-	public function get_booking( Carbonate $day ) {
-		if ( empty( $this->bookings ) ) {
-			return false;
-		}
+	protected function get_cell_event_contents( $events, $date, $calendar ) {
+		$html_events = [];
+		if ( $events->has( $date->toDateString() ) ) {
+			$_events = $events->get( $date->toDateString() );
 
-		foreach ( $this->bookings as $event ) {
-			if ( $event->dateIsInRange( $day ) ) {
-				return $event;
+			foreach ( $_events as $event ) {
+				$classes = [];
+				$width   = $event->get_period()->getDateInterval()->format( '%r%a' ) + 1;
+
+				$html_events[] = '<i class="awebooking-schedule__event ' . esc_attr( implode( ' ', $classes ) ) . '" style="left: 30px; width:' . esc_attr( $width * 60 ) . 'px">' . $event->get_summary() . '</i>';
 			}
 		}
 
-		return false;
+		return implode( ' ', $html_events );
 	}
 }

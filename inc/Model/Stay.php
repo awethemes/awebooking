@@ -78,18 +78,7 @@ class Stay implements Stringable {
 	}
 
 	/**
-	 * The magic __toString method.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
-	}
-
-	/**
-	 * Return human readable of the request.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function as_string() {
 		$nights = $this->nights();
@@ -129,5 +118,14 @@ class Stay implements Stringable {
 		if ( $strict && $this->isBefore( Carbonate::today() ) ) {
 			throw new \RangeException( esc_html__( 'The date period must be greater or equal to the today.', 'awebooking' ) );
 		}
+	}
+
+	/**
+	 * The magic __toString method.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->as_string();
 	}
 }

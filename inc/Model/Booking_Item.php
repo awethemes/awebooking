@@ -166,15 +166,6 @@ class Booking_Item extends WP_Object {
 	}
 
 	/**
-	 * Returns item quantity.
-	 *
-	 * @return int
-	 */
-	public function get_quantity() {
-		return 1;
-	}
-
-	/**
 	 * Type checking.
 	 *
 	 * @param  string|array $type Booking type(s) to check.
@@ -182,22 +173,6 @@ class Booking_Item extends WP_Object {
 	 */
 	public function is_type( $type ) {
 		return in_array( $this->get_type(), (array) $type );
-	}
-
-	/**
-	 * Determines if the current item is able to be saved.
-	 *
-	 * @return bool
-	 */
-	public function can_save() {
-		$the_booking = $this->get_booking();
-
-		// Require a exists booking.
-		if ( ! $the_booking->exists() ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -239,10 +214,6 @@ class Booking_Item extends WP_Object {
 	protected function perform_insert() {
 		global $wpdb;
 
-		if ( ! $this->can_save() ) {
-			return -1;
-		}
-
 		$wpdb->insert( $wpdb->prefix . 'awebooking_booking_items',
 			[
 				'booking_item_name'   => $this->get_name(),
@@ -274,10 +245,6 @@ class Booking_Item extends WP_Object {
 		// to tell WP_Object run next action.
 		if ( ! $this->is_dirty( 'name', 'parent_id', 'booking_id' ) ) {
 			return true;
-		}
-
-		if ( ! $this->can_save() ) {
-			return false;
 		}
 
 		$updated = $wpdb->update( $wpdb->prefix . 'awebooking_booking_items',

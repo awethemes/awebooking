@@ -1,16 +1,6 @@
 <?php
 
-use AweBooking\Booking\Items\Booking_Item;
-
-class Test_Booking_Item extends Booking_Item {
-	public function get_type() {
-		return 'line_items';
-	}
-
-	public function can_save() {
-		return true;
-	}
-}
+use AweBooking\Model\Booking_Item;
 
 class Booking_Item_Test extends WP_UnitTestCase {
 	public function setUp() {
@@ -91,5 +81,15 @@ class Booking_Item_Test extends WP_UnitTestCase {
 			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_id` = '%d' LIMIT 1", $id ),
 			ARRAY_A
 		);
+	}
+}
+
+class Test_Booking_Item extends Booking_Item {
+	public function get_type() {
+		return 'line_items';
+	}
+
+	public function can_save() {
+		return true;
 	}
 }

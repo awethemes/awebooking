@@ -123,8 +123,18 @@ class Booking_Metabox extends Post_Type_Metabox {
 		remove_meta_box( 'submitdiv', $this->post_type, 'side' );
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
+		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Payments', 'awebooking' ), [ $this, 'output_metabox' ], AweBooking::BOOKING, 'advanced', 'default' );
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], AweBooking::BOOKING, 'side', 'high' );
+
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], AweBooking::BOOKING, 'side', 'default' );
+	}
+
+	public function output_metabox() {
+		global $the_booking;
+
+		dd( $the_booking );
+
+		awebooking( 'admin_template' )->partial( 'booking/metabox-payments.php' );
 	}
 
 	public function booking_templates() {
@@ -160,6 +170,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	public function output_action_metabox( $post ) {
 		include trailingslashit( __DIR__ ) . 'views/html-booking-action.php';
 	}
+
 
 	/**
 	 * Add customer meta box to this post type.

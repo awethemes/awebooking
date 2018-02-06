@@ -2,12 +2,6 @@
 namespace AweBooking\Money;
 
 class Currency {
-	/* Position constants */
-	const POS_LEFT = 'left';
-	const POS_RIGHT = 'right';
-	const POS_LEFT_SPACE = 'left_space';
-	const POS_RIGHT_SPACE = 'right_space';
-
 	/**
 	 * Currency code.
 	 *
@@ -25,19 +19,11 @@ class Currency {
 	/**
 	 * Create a currency object.
 	 *
-	 * TODO: Maybe we need trigger an error when nothing currency found.
-	 *
 	 * @param string $code Currency code.
-	 * @param array  $args Optional, an array of currency args.
-	 *                     If null or empty, `use currency_manager` to fetch args.
+	 * @param array  $args Optional, array of currency args.
 	 */
-	public function __construct( $code, array $args = null ) {
+	public function __construct( $code, array $args = [] ) {
 		$this->code = $code;
-
-		if ( is_null( $args ) ) {
-			$args = awebooking( 'currencies' )->get_currency( $this->code );
-		}
-
 		$this->args = $this->parse_currency_args( $args );
 	}
 
@@ -69,38 +55,6 @@ class Currency {
 	}
 
 	/**
-	 * Checks whether this currency is the same as an other.
-	 *
-	 * @param Currency $other Other currency.
-	 * @return bool
-	 */
-	public function equals( Currency $other ) {
-		return $this->code === $other->code;
-	}
-
-	/**
-	 * Get currency as array.
-	 *
-	 * @return array
-	 */
-	public function to_array() {
-		return [
-			'code'   => $this->get_code(),
-			'name'   => $this->get_name(),
-			'symbol' => $this->get_symbol(),
-		];
-	}
-
-	/**
-	 * Returns the string representation of the currency.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->get_code();
-	}
-
-	/**
 	 * Parse currency args.
 	 *
 	 * @param  array|null $args Optional, currency args.
@@ -111,5 +65,14 @@ class Currency {
 			'name'   => '',
 			'symbol' => '',
 		]);
+	}
+
+	/**
+	 * Returns the string representation of the currency.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->get_code();
 	}
 }

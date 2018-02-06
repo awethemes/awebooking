@@ -13,6 +13,12 @@ class Constants {
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_extra_service';
 
+	/* Position constants */
+	const CURRENCY_POS_LEFT        = 'left';
+	const CURRENCY_POS_RIGHT       = 'right';
+	const CURRENCY_POS_LEFT_SPACE  = 'left_space';
+	const CURRENCY_POS_RIGHT_SPACE = 'right_space';
+
 	// The availability state.
 	const STATE_AVAILABLE   = 0;
 	const STATE_UNAVAILABLE = 1;

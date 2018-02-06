@@ -3,8 +3,8 @@ namespace AweBooking\Model\Traits\Room_Type;
 
 use AweBooking\Factory;
 use AweBooking\Constants;
-use AweBooking\Pricing\Rate;
-use AweBooking\Pricing\Price;
+use AweBooking\Model\Rate;
+use AweBooking\Support\Decimal;
 use AweBooking\Support\Collection;
 
 trait Room_Rates_Trait {
@@ -15,7 +15,7 @@ trait Room_Rates_Trait {
 	 * @return Price
 	 */
 	public function get_base_price() {
-		return apply_filters( $this->prefix( 'get_base_price' ), new Price( $this['base_price'] ), $this );
+		return apply_filters( $this->prefix( 'get_base_price' ), Decimal::create( $this['base_price'] ), $this );
 	}
 
 	/**
@@ -39,7 +39,7 @@ trait Room_Rates_Trait {
 			'orderby'     => 'menu_order',
 			'order'       => 'ASC',
 		]))->map(function( $post ) {
-			return new Rate( $post->ID, $this );
+			return new Rate( $post->ID );
 		})->prepend(
 			$this->get_standard_rate()
 		);
@@ -51,6 +51,6 @@ trait Room_Rates_Trait {
 	 * @return Rate
 	 */
 	public function get_standard_rate() {
-		return new Rate( $this->get_id(), $this );
+		return new Rate( $this->get_id(), 'room_type' );
 	}
 }

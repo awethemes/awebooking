@@ -3,8 +3,8 @@ namespace AweBooking\Model;
 
 use AweBooking\Dropdown;
 use AweBooking\Support\Decimal;
-use AweBooking\Support\Utils as U;
 use AweBooking\Support\Carbonate;
+use AweBooking\Support\Utils as U;
 
 class Booking_Payment_Item extends Booking_Item {
 	/**
@@ -20,22 +20,11 @@ class Booking_Payment_Item extends Booking_Item {
 	 * @var array
 	 */
 	protected $extra_attributes = [
-		'method'    => '',
-		'amount'    => 0,
-		'comment'   => '',
-		'date_paid' => null,
-
-		// For online payments.
+		'method'         => '',
+		'amount'         => 0,
+		'comment'        => '',
+		'date_paid'      => null,
 		'transaction_id' => '',
-	];
-
-	/**
-	 * The attributes that should be cast to native types.
-	 *
-	 * @var array
-	 */
-	protected $extra_casts = [
-		'amount' => 'float',
 	];
 
 	/**
@@ -60,26 +49,40 @@ class Booking_Payment_Item extends Booking_Item {
 		return 'payment_item';
 	}
 
+	/**
+	 * Get the payment method.
+	 *
+	 * @return string
+	 */
+	public function get_method() {
+		return apply_filters( $this->prefix( 'get_method' ), $this['method'], $this );
+	}
+
+	/**
+	 * Get the amount as Decimal.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
 	public function get_amount() {
 		return apply_filters( $this->prefix( 'get_amount' ), Decimal::create( $this['amount'] ), $this );
 	}
 
 	/**
-	 * Get the payment method title.
+	 * Get the comment.
 	 *
 	 * @return string
 	 */
-	public function get_payment_method_title() {
-		$method = $this['method'];
+	public function get_comment() {
+		return apply_filters( $this->prefix( 'get_comment' ), $this['comment'], $this );
+	}
 
-		if ( empty( $method ) ) {
-			$payment_method = esc_html__( 'N/A', 'awebooking' );
-		} else {
-			$dropdown       = Dropdown::get_payment_methods();
-			$payment_method = array_key_exists( $method, $dropdown ) ? $dropdown[ $method ] : $method;
-		}
-
-		return apply_filters( $this->prefix( 'get_payment_method_title' ), $payment_method, $this );
+	/**
+	 * Get the transaction ID.
+	 *
+	 * @return string
+	 */
+	public function get_transaction_id() {
+		return apply_filters( $this->prefix( 'get_comment' ), $this['transaction_id'], $this );
 	}
 
 	/**
@@ -88,16 +91,31 @@ class Booking_Payment_Item extends Booking_Item {
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_date_paid() {
-		$date_paid = U::rescue(
-			function() {
-				return Carbonate::create( $this['date_paid'] );
-			},
-			function() {
-				return Carbonate::now();
-			}
-		);
+		$date_paid = U::rescue( function() {
+			return Carbonate::create( $this['date_paid'] );
+		}, function() {
+			return Carbonate::now();
+		});
 
 		return apply_filters( $this->prefix( 'get_amount' ), $date_paid, $this );
+	}
+
+	/**
+	 * Get the payment method title.
+	 *
+	 * @return string
+	 */
+	public function get_method_title() {
+		$method = $this->get_method();
+
+		if ( empty( $method ) ) {
+			$payment_method = esc_html__( 'N/A', 'awebooking' );
+		} else {
+			$dropdown       = Dropdown::get_payment_methods();
+			$payment_method = array_key_exists( $method, $dropdown ) ? $dropdown[ $method ] : $method;
+		}
+
+		return apply_filters( $this->prefix( 'get_method_title' ), $payment_method, $this );
 	}
 
 	public function get_delete_link( $nonce = true ) {

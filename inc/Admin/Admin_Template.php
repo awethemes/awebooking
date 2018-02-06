@@ -30,6 +30,12 @@ class Admin_Template {
 		);
 	}
 
+	public function partial_callback( $template, array $vars = [] ) {
+		return function () use ( $template, $vars ) {
+			$this->partial( $template, $vars );
+		};
+	}
+
 	/**
 	 * Locale the template path.
 	 *

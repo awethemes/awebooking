@@ -1,14 +1,15 @@
 <?php
 /* @vars $the_booking */
 
+use AweBooking\Support\Formatting as F;
+
+global $the_booking;
+
+dd( $the_booking );
+
 $payment_items = $the_booking->get_payments();
 
-?>
-
-<div class="clear" style="margin: 1em 0;"></div>
-
-<div id="awebooking-booking-payments">
-	<table class="awebooking-table widefat fixed striped">
+?><table class="awebooking-table widefat fixed striped">
 		<thead>
 			<tr>
 				<th style="width: 200px;"><span><?php esc_html_e( 'Payment', 'awebooking' ); ?></span></th>
@@ -28,7 +29,7 @@ $payment_items = $the_booking->get_payments();
 				<?php foreach ( $payment_items as $payment_item ) : ?>
 					<tr>
 						<td>
-							<strong><?php echo esc_html( $payment_item->get_payment_method_title() ); ?></strong>
+							<strong><?php echo esc_html( $payment_item->get_method_title() ); ?></strong>
 						</td>
 
 						<td>
@@ -66,7 +67,7 @@ $payment_items = $the_booking->get_payments();
 
 				<th colspan="2" style="width: 250px;">
 					<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
-					<span class="afloat-right awebooking-label awebooking-label--danger"><?php echo $the_booking->get_balance_due(); ?></span>
+					<span class="afloat-right awebooking-label awebooking-label--danger"><?php echo F::money( $the_booking->get_balance_due() ); ?></span>
 				</th>
 			</tr>
 		</tfoot>

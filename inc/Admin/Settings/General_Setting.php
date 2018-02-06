@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
+use AweBooking\Dropdown;
 use AweBooking\Constants;
 use AweBooking\Admin\Admin_Settings;
 
@@ -104,7 +105,7 @@ class General_Setting extends Abstract_Setting {
 			// 'desc'     => esc_html__( 'Controls the position of the currency symbol.', 'awebooking' ),
 			'default'  => awebooking( 'setting' )->get_default( 'currency_position' ),
 			'validate' => 'required',
-			'options'  => awebooking( 'setting' )->get_currency_positions(),
+			'options'  => Dropdown::get_currency_positions(),
 		) );
 
 		$section->add_field( array(

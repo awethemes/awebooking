@@ -135,11 +135,12 @@ class Availability {
 	/**
 	 * Determines a room can be added.
 	 *
-	 * @param  Room   $room [description]
-	 * @return [type]
+	 * @param  Room $room The room instance.
+	 * @return boolean
 	 */
 	protected function check( Room $room ) {
 		// TODO: Check valid room in room_types.
+		// ...
 
 		if ( $this->includes->contains( 'room.id', '==', $room->get_id() ) ) {
 			return false;

@@ -2,10 +2,9 @@
 namespace AweBooking\Model;
 
 use AweBooking\Factory;
-use AweBooking\Concierge;
 use AweBooking\Support\Period;
 
-class Line_Item extends Booking_Item {
+class Booking_Room_Item extends Booking_Item {
 	/**
 	 * Name of object type.
 	 *

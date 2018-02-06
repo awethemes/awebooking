@@ -40,11 +40,14 @@ class Booking extends WP_Object {
 		'checked_in'              => false,
 		'checked_out'             => false,
 		'featured'                => false,
-		'discount_total'          => 0,
-		'total'                   => 0,
+		'check_in_date'           => '',
+		'check_out_date'          => '',
 
-		'check_in'                => '',
-		'check_out'               => '',
+		'total_tax'               => 0,
+		'discount_total'          => 0,
+		'subtotal'                => 0,
+		'total'                   => 0,
+		'paid'                    => 0,
 
 		// Customer attributes.
 		'customer_id'             => 0,
@@ -63,13 +66,6 @@ class Booking extends WP_Object {
 		'customer_note'           => '',
 		'customer_ip_address'     => '',
 		'customer_user_agent'     => '',
-
-		// Payments attributes.
-		'payment_method'          => '',
-		'payment_method_title'    => '',
-		'transaction_id'          => '',
-		'created_via'             => '',
-		'date_paid'               => null,
 	];
 
 	/**
@@ -78,12 +74,10 @@ class Booking extends WP_Object {
 	 * @var array
 	 */
 	protected $casts = [
-		'total'          => 'float',
-		'discount_total' => 'float',
-		'checked_in'     => 'bool',
-		'checked_out'    => 'bool',
-		'featured'       => 'bool',
-		'customer_id'    => 'integer',
+		'checked_in'  => 'bool',
+		'checked_out' => 'bool',
+		'featured'    => 'bool',
+		'customer_id' => 'integer',
 	];
 
 	/**

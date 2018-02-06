@@ -2,7 +2,7 @@
 
 use AweBooking\AweBooking;
 use AweBooking\Pricing\Price;
-use AweBooking\Support\Period;
+use AweBooking\Calendar\Period\Period;
 use AweBooking\Template;
 use AweBooking\Support\Formatting;
 
@@ -72,9 +72,9 @@ function awebooking_sanitize_period( $value, $strict = false ) {
 		return [];
 	}
 
-	if ( $period->nights() < 1 ) {
+	/*if ( $period->nights() < 1 ) {
 		return [];
-	}
+	}*/
 
 	return [
 		$period->get_start_date()->toDateString(),

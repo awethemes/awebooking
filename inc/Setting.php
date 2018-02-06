@@ -4,7 +4,7 @@ namespace AweBooking;
 use Skeleton\WP_Option;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking;
-use AweBooking\Currency\Currency;
+use AweBooking\Money\Currency;
 use Illuminate\Support\Arr;
 
 class Setting extends WP_Option {
@@ -60,6 +60,28 @@ class Setting extends WP_Option {
 	 */
 	public function refresh() {
 		$this->options = (array) get_option( $this->key, [] );
+	}
+
+	/**
+	 * Return the price format depending on the currency position.
+	 *
+	 * @return string
+	 */
+	public function get_money_format( $position = null ) {
+		$position = is_null( $position ) ? $this->get( 'currency_position' ) : $position;
+
+		$positions = apply_filters( 'awebooking/price_format_positions', [
+			Constants::CURRENCY_POS_LEFT         => '%2$s%1$s',
+			Constants::CURRENCY_POS_RIGHT        => '%1$s%2$s',
+			Constants::CURRENCY_POS_LEFT_SPACE   => '%2$s&nbsp;%1$s',
+			Constants::CURRENCY_POS_RIGHT_SPACE  => '%1$s&nbsp;%2$s',
+		]);
+
+		$format = array_key_exists( $position, $positions )
+			? $positions[ $position ]
+			: $positions[ Constants::CURRENCY_POS_LEFT ];
+
+		return apply_filters( 'awebooking/get_price_format', $format, $position );
 	}
 
 	/**
@@ -192,22 +214,6 @@ class Setting extends WP_Option {
 			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
 			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
 		]);
-	}
-
-	/**
-	 * Get list position for dropdown.
-	 *
-	 * @return arrays
-	 */
-	public function get_currency_positions() {
-		$symbol = awebooking( 'currency' )->get_symbol();
-
-		return array(
-			Currency::POS_LEFT        => sprintf( esc_html__( 'Left (%s99.99)', 'awebooking' ), $symbol ),
-			Currency::POS_RIGHT       => sprintf( esc_html__( 'Right (99.99%s)', 'awebooking' ), $symbol ),
-			Currency::POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $symbol ),
-			Currency::POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $symbol ),
-		);
 	}
 
 	/**

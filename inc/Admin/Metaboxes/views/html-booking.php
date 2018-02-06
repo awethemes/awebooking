@@ -201,5 +201,3 @@ use AweBooking\Admin\Forms\Booking_General_From;
 		</tfoot>
 	</table>
 </div>
-
-<?php awebooking( 'admin_template' )->partial( 'booking/html-metabox-payments.php', compact( 'the_booking' ) ); ?>

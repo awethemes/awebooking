@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use CMB2_hookup;
 use Skeleton\CMB2\CMB2;
-use AweBooking\Admin\Fields\Field_Proxy;
+use Skeleton\CMB2\Field_Proxy;
 use AweBooking\Admin\Forms\Exceptions\ValidationException;
 use AweBooking\Admin\Forms\Exceptions\NonceMismatchException;
 

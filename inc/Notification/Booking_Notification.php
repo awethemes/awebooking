@@ -1,10 +1,9 @@
 <?php
 namespace AweBooking\Notification;
 
-use AweBooking\Support\Markdown;
-use AweBooking\Support\Mailable;
-
+use AweBooking\Mailable;
 use AweBooking\Model\Booking;
+use AweBooking\Support\Markdown;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
 

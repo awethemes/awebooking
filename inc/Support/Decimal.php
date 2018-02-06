@@ -521,7 +521,7 @@ class Decimal {
 	 * @param  Decimal|int|float|string $other Other value.
 	 * @return static
 	 */
-	public function sub( $other ) {
+	public function subtract( $other ) {
 		if ( ! $other instanceof self ) {
 			$other = static::from_numeric( $other, $this->scale );
 		}
@@ -535,6 +535,16 @@ class Decimal {
 	}
 
 	/**
+	 * Subtracts another price amount.
+	 *
+	 * @param  Decimal|int|float|string $other Other value.
+	 * @return static
+	 */
+	public function sub( $other ) {
+		return $this->subtract( $other );
+	}
+
+	/**
 	 * Multiplies by the given factor.
 	 *
 	 * This does NOT have to be a price amount, but can be
@@ -545,7 +555,7 @@ class Decimal {
 	 * @param  int|null          $rounding_mode The rounding mode.
 	 * @return static
 	 */
-	public function mul( $other, $rounding_mode = null ) {
+	public function multiply( $other, $rounding_mode = null ) {
 		$operand = $this->get_scalar_operand( $other );
 
 		$result = $this->amount * $operand;
@@ -554,6 +564,17 @@ class Decimal {
 		$result = static::to_int_value( $result, $rounding_mode );
 
 		return new static( $result, $this->scale );
+	}
+
+	/**
+	 * Multiplies by the given factor.
+	 *
+	 * @param  int|float|Decimal $other         The other value.
+	 * @param  int|null          $rounding_mode The rounding mode.
+	 * @return static
+	 */
+	public function mul( $other, $rounding_mode = null ) {
+		return $this->multiply( $other, $rounding_mode );
 	}
 
 	/**
@@ -569,7 +590,7 @@ class Decimal {
 	 *
 	 * @throws \LogicException
 	 */
-	public function div( $other, $rounding_mode = null ) {
+	public function divide( $other, $rounding_mode = null ) {
 		$operand = $this->get_scalar_operand( $other );
 		$epsilon = pow( 10, -1 * $this->scale );
 
@@ -583,6 +604,19 @@ class Decimal {
 		$result = static::to_int_value( $result, $rounding_mode );
 
 		return new static( $result, $this->scale );
+	}
+
+	/**
+	 * Divides by the given divisor.
+	 *
+	 * @param  int|float|Decimal $other         The other value.
+	 * @param  int|null          $rounding_mode The rounding mode.
+	 * @return static
+	 *
+	 * @throws \LogicException
+	 */
+	public function div( $other, $rounding_mode = null ) {
+		return $this->divide( $other, $rounding_mode );
 	}
 
 	/**

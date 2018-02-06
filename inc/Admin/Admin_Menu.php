@@ -120,6 +120,8 @@ class Admin_Menu {
 
 		$pricing_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Pricing', 'awebooking' ), esc_html__( 'Pricing', 'awebooking' ), 'manage_awebooking', 'awebooking-pricing', $this->create_page_callback( Pricing_Management::class ) );
 		$this->no_admin_header( $pricing_page_hook );
+
+		add_submenu_page( 'awebooking', esc_html__( 'AweBooking Rates', 'awebooking' ), esc_html_x( 'Rates', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
 	/**

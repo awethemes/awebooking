@@ -4,6 +4,7 @@ namespace AweBooking\Admin\List_Tables;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
 use AweBooking\Model\Booking;
+use AweBooking\Support\Formatting as F;
 
 class Booking_List_Table extends Post_Type_Abstract {
 	/**
@@ -274,7 +275,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 			case 'booking_total' :
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					$the_booking->get_total(),
+					F::money( $the_booking->get_total() ),
 					$the_booking->get_total()->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--info'
 				);
 
