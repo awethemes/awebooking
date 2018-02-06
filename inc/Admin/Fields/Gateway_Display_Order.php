@@ -35,7 +35,7 @@ class Gateway_Display_Order extends CMB2_Field {
 			<tbody class="ui-sortable">
 				<?php foreach ( awebooking( 'gateways' )->all() as $id => $gateway ) : ?>
 					<tr class="">
-						<td width="1%" class="sort ui-sortable-handle">
+						<td class="sort ui-sortable-handle">
 							<input type="hidden" name="<?php echo esc_attr( $field_type_object->_id( '[]' ) ); ?>" value="<?php echo esc_attr( $gateway->get_method() ); ?>">
 						</td>
 						<td class="name">
@@ -55,7 +55,7 @@ class Gateway_Display_Order extends CMB2_Field {
 		</table>
 		<?php
 		wp_enqueue_script( 'jquery-ui-sortable' );
-		echo $this->prints_inline_js();
+		print $this->prints_inline_js(); // WPCS: xss ok.
 	}
 
 	/**

@@ -252,7 +252,7 @@ class Tax extends WP_Object {
 		$label = '';
 		switch ( $this->get_amount_type() ) {
 			case Constants::TAX_AMOUNT_PERCENTAGE:
-				$label = sprintf( esc_html__( '%1$s%', 'awebooking' ), $this->get_amount() );
+				$label = $this->get_amount() . esc_html_x( '%', 'percentage tax', 'awebooking' );
 				break;
 
 			case Constants::TAX_AMOUNT_FIXED:
