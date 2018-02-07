@@ -2,11 +2,11 @@
 namespace AweBooking\Reservation\Searcher\Constraints;
 
 use AweBooking\Reservation\Reservation;
-use AweBooking\Concierge\Availability\Reason;
-use AweBooking\Concierge\Availability\Constraint;
-use AweBooking\Concierge\Availability\Availability;
+use AweBooking\Reservation\Searcher\Reason;
+use AweBooking\Reservation\Searcher\Constraint;
+use AweBooking\Reservation\Searcher\Availability;
 
-class Session_Reservation_Constraint implements Constraint {
+class Session_Reservation implements Constraint {
 	/**
 	 * The reservation instance.
 	 *

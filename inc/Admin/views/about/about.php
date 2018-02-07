@@ -80,8 +80,6 @@ $awebooking_available_addons = [
 	<p class="about-text"><?php esc_html_e( 'AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily.', 'awebooking' ); ?></p>
 	<div class="wp-badge awebooking-badge"><?php printf( esc_html__( 'Version %s', 'awebooking' ), AweBooking::VERSION ); ?></div>
 
-	<?php $this->display_nav_tabs( 'welcome' ); ?>
-
 	<div class="feature-section two-col">
 		<div class="col">
 			<h3><?php esc_html_e( 'What\' news', 'awebooking' ); ?></h3>

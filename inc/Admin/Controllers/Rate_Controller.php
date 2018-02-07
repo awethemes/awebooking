@@ -4,12 +4,12 @@ namespace AweBooking\Admin\Controllers;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Stay;
 use AweBooking\Model\Room_Type;
-use AweBooking\Concierge\Pricing\Pricing;
+use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Admin\Forms\Set_Price_Form;
 use AweBooking\Admin\Calendar\Pricing_Calendar;
 use Awethemes\Http\Request;
 
-class Rate_Controller extends Admin_Controller {
+class Rate_Controller extends Controller {
 	/**
 	 * Constructor.
 	 */
@@ -36,13 +36,10 @@ class Rate_Controller extends Admin_Controller {
 	public function show( Request $request, Room_Type $room_type ) {
 		$scheduler = new Pricing_Calendar( $room_type );
 
-		$set_price_form = new Set_Price_Form( $room_type );
-
-		/* translators: %s Room type name */
-		$page_title = sprintf( esc_html__( '%s Pricing', 'awebooking' ), esc_html( $room_type->get_title() ) );
+		wp_enqueue_script( 'awebooking-schedule-calendar' );
 
 		return $this->response_view( 'rates/show.php', compact(
-			'page_title', 'room_type', 'scheduler', 'set_price_form'
+			'room_type', 'scheduler'
 		));
 	}
 
@@ -54,10 +51,7 @@ class Rate_Controller extends Admin_Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function set_amount( Request $request, Rate $rate ) {
-		$request->validate([
-			'set_amount'        => 'required|numeric',
-			'set_amount_period' => 'date_period',
-		]);
+		$request->verify_nonce( '_nonce', 'set_rate_' . $rate->get_id() );
 
 		$stay = new Stay( $request['set_amount_period'][0], $request['set_amount_period'][1] );
 

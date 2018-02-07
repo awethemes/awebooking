@@ -24,9 +24,6 @@ class Frontend_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		$this->awebooking->make( Ajax_Handler::class );
-		$this->awebooking->make( Request_Handler::class );
-
 		add_filter( 'body_class', [ $this, 'modify_body_class' ] );
 		add_filter( 'template_include', [ $this, 'overwrite_template' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );

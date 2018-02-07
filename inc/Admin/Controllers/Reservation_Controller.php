@@ -23,9 +23,9 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 use AweBooking\Http\Exceptions\Validation_Failed_Exception;
 use AweBooking\Http\Exceptions\Nonce_Mismatch_Exception;
-use AweBooking\Reservation\Searcher\Constraints\Session_Reservation_Constraint;
+use AweBooking\Reservation\Searcher\Constraints\Session_Reservation;
 
-class Reservation_Controller extends Admin_Controller {
+class Reservation_Controller extends Controller {
 	/**
 	 * The AweBooking instance.
 	 *
@@ -102,7 +102,7 @@ class Reservation_Controller extends Admin_Controller {
 	 */
 	protected function perform_search_rooms( Reservation $reservation ) {
 		$constraints = [
-			new Session_Reservation_Constraint( $reservation ),
+			new Session_Reservation( $reservation ),
 		];
 
 		$results = $reservation->search( null, $constraints )

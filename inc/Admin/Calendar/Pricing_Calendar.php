@@ -11,7 +11,7 @@ use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resource_Collection;
 use AweBooking\Calendar\Provider\Pricing_Provider;
-use AweBooking\Concierge\Pricing\Pricing;
+use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Support\Utils as U;
 
 class Pricing_Calendar extends Schedule_Calendar {

@@ -1,7 +1,9 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
-use AweBooking\AweBooking;
+use AweBooking\Constants;
+use AweBooking\Money\Money;
+use AweBooking\Model\Guest;
 
 class Room_Type_List_Table extends Post_Type_Abstract {
 	/**
@@ -9,7 +11,7 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 	 *
 	 * @var string
 	 */
-	protected $post_type = AweBooking::ROOM_TYPE;
+	protected $post_type = Constants::ROOM_TYPE;
 
 	/**
 	 * Init somethings hooks.
@@ -40,7 +42,7 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 			'capacity'        => esc_html__( 'Capacity', 'awebooking' ),
 		];
 
-		if ( awebooking()->is_multi_location() ) {
+		if ( awebooking( 'setting' )->is_multi_location() ) {
 			$columns['location'] = esc_html__( 'Location', 'awebooking' );
 		}
 
@@ -86,40 +88,24 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 					$thumbnail = '<span class="awebooking-no-image"></span>';
 				}
 
-				printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_post_link( $post_id ) ), $thumbnail );
+				printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_post_link( $post_id ) ), $thumbnail ); // @wpcs: XSS OK.
 				break;
 
 			case 'start_price':
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					$base_price, $base_price->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--success'
+					Money::of( $base_price ), $base_price->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--success'
 				);
 				break;
 
 			case 'capacity':
-				printf( '<span class="">%1$d %2$s</span>',
-					$room_type->get_number_adults(),
-					_n( 'adult', 'adults', $room_type->get_number_adults(), 'awebooking' )
-				);
-
-				if ( $room_type['number_children'] ) {
-					printf( ' &amp; <span class="">%1$d %2$s</span>',
-						$room_type->get_number_children(),
-						_n( 'child', 'children', $room_type->get_number_children(), 'awebooking' )
-					);
-				}
-
-				if ( $room_type['number_infants'] ) {
-					printf( ' &amp; <span class="">%1$d %2$s</span>',
-						$room_type->get_number_infants(),
-						_n( 'infant', 'infants', $room_type->get_number_infants(), 'awebooking' )
-					);
-				}
+				$guest = new Guest( $room_type->get_number_adults(), $room_type->get_number_children(), $room_type->get_number_infants() );
+				print $guest->as_string(); // @wpcs: XSS OK.
 				break;
 
 			case 'location':
 				if ( $room_type['location_id'] ) {
 					$location = $room_type->get_location();
-					printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_term_link( $location->term_id ) ), $location->name );
+					printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_term_link( $location->term_id ) ), esc_html( $location->name ) );
 				}
 				break;
 
@@ -138,14 +124,14 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 		global $typenow, $wp_query;
 
 		// Works only on room type page.
-		if ( AweBooking::ROOM_TYPE !== $typenow ) {
+		if ( Constants::ROOM_TYPE !== $typenow ) {
 			return;
 		}
 
-		if ( awebooking()->is_multi_location() ) {
+		if ( awebooking( 'setting' )->is_multi_location() ) {
 			wp_dropdown_categories([
 				'show_option_all' => esc_html__( 'All Location', 'awebooking' ),
-				'taxonomy'        => AweBooking::HOTEL_LOCATION,
+				'taxonomy'        => Constants::HOTEL_LOCATION,
 				'name'            => 'hotel-location', // Don't using "hotel_location", I got some trouble with this.
 				'orderby'         => 'name',
 				'selected'        => isset( $_REQUEST['hotel-location'] ) ? absint( $_REQUEST['hotel-location'] ) : '',
@@ -167,14 +153,14 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 
 
 		// Works only on room type page.
-		if ( AweBooking::ROOM_TYPE !== $typenow ) {
+		if ( Constants::ROOM_TYPE !== $typenow ) {
 			return;
 		}
 
 		// Hotel location.
 		if ( isset( $_REQUEST['hotel-location'] ) && '0' !== $_REQUEST['hotel-location'] ) {
 			$query->query_vars['tax_query'][] = array(
-				'taxonomy' => AweBooking::HOTEL_LOCATION,
+				'taxonomy' => Constants::HOTEL_LOCATION,
 				'terms'    => absint( $_REQUEST['hotel-location'] ),
 				'field'    => 'id',
 				'operator' => 'IN',

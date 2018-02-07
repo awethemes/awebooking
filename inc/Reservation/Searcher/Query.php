@@ -4,7 +4,6 @@ namespace AweBooking\Reservation\Searcher;
 use AweBooking\Model\Stay;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
-use AweBooking\Concierge\Availability\Checker;
 use AweBooking\Support\Utils as U;
 
 class Query {
@@ -56,7 +55,7 @@ class Query {
 		foreach ( $room_type as $room_type ) {
 			$availability = $checker->check( $room_type, $this->stay, $this->constraints );
 
-			$results->push( new Result_Item( $room_type, $availability ) );
+			$results->push( $availability );
 		}
 
 		return $results;
@@ -124,7 +123,7 @@ class Query {
 			'have_rooms'      => true,
 			'post_status'     => 'publish',
 			'posts_per_page'  => 500, // Hard limit 500 room-type in query.
-		] );
+		]);
 
 		// Get all room_types found.
 		$room_types = $room_type_query->posts;

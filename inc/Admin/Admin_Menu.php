@@ -115,12 +115,6 @@ class Admin_Menu {
 	public function register_manager_submenu() {
 		add_submenu_page( 'awebooking', 'New Reservation', 'New Reservation', 'manage_awebooking', 'admin.php?awebooking=/reservation/create' );
 
-		$availability_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Availability', 'awebooking' ), esc_html__( 'Availability', 'awebooking' ), 'manage_awebooking', 'awebooking-availability', $this->create_page_callback( Availability_Management::class ) );
-		$this->no_admin_header( $availability_page_hook );
-
-		$pricing_page_hook = add_submenu_page( static::PARENT_SLUG, esc_html__( 'Manager Pricing', 'awebooking' ), esc_html__( 'Pricing', 'awebooking' ), 'manage_awebooking', 'awebooking-pricing', $this->create_page_callback( Pricing_Management::class ) );
-		$this->no_admin_header( $pricing_page_hook );
-
 		add_submenu_page( 'awebooking', esc_html__( 'AweBooking Rates', 'awebooking' ), esc_html_x( 'Rates', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
@@ -139,7 +133,7 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_about_submenu() {
-		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'awebooking-about', $this->create_page_callback( About_Page::class ) );
+		add_submenu_page( 'awebooking', esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
 	}
 
 	/**

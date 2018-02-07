@@ -52,7 +52,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 
 		do_action( 'awebooking/register_metabox/room_type', $this->metabox );
 
-		add_action( 'edit_form_top', [ $this, '_setup_room_type' ] );
+		add_action( 'edit_form_top', [ $this, '_setup_room_type' ]);
 		add_action( 'admin_menu', array( $this, '_remove_meta_box' ) );
 	}
 
@@ -100,7 +100,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 		$room_type = new Room_Type( $post_id );
 
 		if ( isset( $_POST['abkng_rooms'] ) && is_array( $_POST['abkng_rooms'] ) ) {
-			$request_rooms = wp_unslash( $_POST['abkng_rooms'] );
+			$request_rooms = wp_unslash( $_POST['abkng_rooms']);
 			$room_type->bulk_sync_rooms( $request_rooms );
 		}
 
@@ -110,10 +110,10 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			);
 
 			$term_taxonomy_ids = wp_set_object_terms(
-				$post_id, $services, AweBooking::HOTEL_SERVICE, false
+				$post_id, $services, Constants::HOTEL_SERVICE, false
 			);
 		} else {
-			wp_delete_object_term_relationships( $post_id, AweBooking::HOTEL_SERVICE );
+			wp_delete_object_term_relationships( $post_id, Constants::HOTEL_SERVICE );
 		}
 	}
 
@@ -165,7 +165,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			}
 
 			$value = absint( $value );
-			$maximum_occupancy = absint( $_POST['_maximum_occupancy'] );
+			$maximum_occupancy = absint( $_POST['_maximum_occupancy']);
 
 			return ( $value > $maximum_occupancy ) ? $maximum_occupancy : $value;
 		};
@@ -235,13 +235,13 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	protected function register_pricing_fields() {
 		$pricing = $this->metabox->add_section( 'pricing', [
 			'title' => esc_html__( 'Pricing', 'awebooking' ),
-		] );
+		]);
 
 		$pricing->add_field( [
 			'id'   => '__standard_rate_title__',
 			'type' => 'title',
 			'name' => esc_html__( 'Standard rate', 'awebooking' ),
-		] );
+		]);
 
 		$pricing->add_row( [
 			'id'             => '_row_rate_price_',
@@ -256,15 +256,15 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'validate'        => 'required|price',
 					'sanitization_cb' => 'awebooking_sanitize_price',
 				],
-				/*[
+				[
 					'id'              => '_rate_label',
 					'type'            => 'text_medium',
 					'name'            => esc_html__( 'Public name (optional)', 'awebooking' ),
 					'desc'            => esc_html__( 'E.g. Best rate available (BAR), Room only, etc...', 'awebooking' ),
 					'sanitization_cb' => 'sanitize_text_field',
-				],*/
+				],
 			],
-		] );
+		]);
 
 		$pricing->add_row( [
 			'id'             => '_row_length_of_stay_',
@@ -279,7 +279,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'validate'   => 'required|numeric|min:1',
 					'sanitization_cb' => 'absint',
 				],
-				/*[
+				[
 					'id'         => '_maximum_los',
 					'type'       => 'text_small',
 					'name'       => esc_html__( 'Max length of stay', 'awebooking' ),
@@ -287,22 +287,22 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 					'default'    => 365,
 					'validate'   => 'required|numeric|min:0',
 					'sanitization_cb' => 'absint',
-				],*/
+				],
 			],
-		] );
+		]);
 
 		/*$pricing->add_field( [
 			'id'              => '_extra_guest_charge',
 			'type'            => 'toggle',
 			'desc'            => esc_html__( 'Charge for additional guest?', 'awebooking' ),
 			'default'         => true,
-		] );
+		]);
 
 		$pricing->add_field( [
 			'id'   => 'per_person_pricing',
 			'type' => 'per_person_pricing',
 			'deps' => [ '_extra_guest_charge', '==', true ],
-		] );*/
+		]);*/
 	}
 
 	/**
@@ -374,7 +374,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'default_cb'  => function() {
 				return get_post_field( 'post_excerpt', get_the_ID() );
 			},
-		] );
+		]);
 	}
 
 	/**

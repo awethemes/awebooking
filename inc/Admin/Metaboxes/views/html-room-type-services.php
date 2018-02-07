@@ -1,13 +1,13 @@
 <?php
 
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Model\Service;
 
 global $room_type;
 
 $operation_options = awebooking( 'setting' )->get_service_operations();
 
-$all_services = get_terms( AweBooking::HOTEL_SERVICE, array(
+$all_services = get_terms( Constants::HOTEL_SERVICE, array(
 	'hide_empty' => false,
 ) );
 

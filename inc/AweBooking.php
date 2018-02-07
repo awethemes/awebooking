@@ -10,29 +10,12 @@ use AweBooking\Support\Addon;
 use Illuminate\Container\Container;
 
 final class AweBooking extends Container {
-	use Deprecated\AweBooking_Deprecated;
-
 	/**
 	 * The AweBooking version.
 	 *
 	 * @var string
 	 */
 	const VERSION = '3.0.4';
-
-	/* Deprecated constants */
-	const SETTING_KEY    = 'awebooking_settings';
-	const DATE_FORMAT    = 'Y-m-d';
-	const JS_DATE_FORMAT = 'yy-mm-dd';
-	const BOOKING        = 'awebooking';
-	const ROOM_TYPE      = 'room_type';
-	const PRICING_RATE   = 'pricing_rate';
-	const HOTEL_LOCATION = 'hotel_location';
-	const HOTEL_AMENITY  = 'hotel_amenity';
-	const HOTEL_SERVICE  = 'hotel_extra_service';
-	const STATE_AVAILABLE   = 0;
-	const STATE_UNAVAILABLE = 1;
-	const STATE_PENDING     = 2;
-	const STATE_BOOKED      = 3;
 
 	/**
 	 * The plugin file path.

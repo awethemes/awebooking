@@ -2,7 +2,6 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\AweBooking;
 use AweBooking\Model\Service;
 use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 
@@ -10,15 +9,14 @@ class Room_Type extends WP_Object {
 	use Traits\Room_Type\Basic_Attributes_Trait,
 		Traits\Room_Type\Occupancy_Attributes_Trait,
 		Traits\Room_Type\Room_Units_Trait,
-		Traits\Room_Type\Room_Rates_Trait,
-		Room_Type_Deprecated;
+		Traits\Room_Type\Room_Rates_Trait;
 
 	/**
 	 * This is the name of this object type.
 	 *
 	 * @var string
 	 */
-	protected $object_type = AweBooking::ROOM_TYPE;
+	protected $object_type = Constants::ROOM_TYPE;
 
 	/**
 	 * The attributes for this object.
@@ -99,7 +97,7 @@ class Room_Type extends WP_Object {
 	 */
 	public static function query( array $args = [] ) {
 		$query = wp_parse_args( $args, [
-			'post_type'        => AweBooking::ROOM_TYPE,
+			'post_type'        => Constants::ROOM_TYPE,
 			'booking_adults'   => -1,
 			'booking_children' => -1,
 			'booking_infants'  => -1,
@@ -118,13 +116,13 @@ class Room_Type extends WP_Object {
 	public function get_location() {
 		if ( is_null( $this['location_id'] ) ) {
 			// Location only have one.
-			$hotel_locations = $this->get_term_ids( AweBooking::HOTEL_LOCATION );
+			$hotel_locations = $this->get_term_ids( Constants::HOTEL_LOCATION );
 			if ( isset( $hotel_locations[0] ) ) {
 				$this['location_id'] = $hotel_locations[0];
 			}
 		}
 
-		$location = get_term( $this['location_id'], AweBooking::HOTEL_LOCATION );
+		$location = get_term( $this['location_id'], Constants::HOTEL_LOCATION );
 		if ( is_null( $location ) || is_wp_error( $location ) ) {
 			$location = null;
 		}
@@ -133,7 +131,7 @@ class Room_Type extends WP_Object {
 	}
 
 	public function get_amenities() {
-		$this['amenity_ids'] = $this->get_term_ids( AweBooking::HOTEL_AMENITY );
+		$this['amenity_ids'] = $this->get_term_ids( Constants::HOTEL_AMENITY );
 	}
 
 	/**
@@ -143,7 +141,7 @@ class Room_Type extends WP_Object {
 	 */
 	public function get_services() {
 		if ( is_null( $this['service_ids'] ) ) {
-			$this['service_ids'] = $this->get_term_ids( awebooking::HOTEL_SERVICE );
+			$this['service_ids'] = $this->get_term_ids( Constants::HOTEL_SERVICE );
 		}
 
 		$services = [];

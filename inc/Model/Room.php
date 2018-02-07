@@ -7,8 +7,6 @@ use Skeleton\Support\Validator;
 use AweBooking\Deprecated\Model\Room_Deprecated;
 
 class Room extends WP_Object {
-	use Room_Deprecated;
-
 	/**
 	 * Name of object type.
 	 *

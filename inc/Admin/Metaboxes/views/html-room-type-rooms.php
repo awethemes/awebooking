@@ -3,7 +3,7 @@
 global $room_type;
 
 $is_disabled = false;
-if ( awebooking()->is_multi_language() ) {
+if ( awebooking()->is_running_multilanguage() ) {
 	$multilingual = awebooking( 'multilingual' );
 
 	$rtype_id = $room_type->get_id();

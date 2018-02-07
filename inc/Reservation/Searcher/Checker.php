@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Concierge\Availability;
+namespace AweBooking\Reservation\Searcher;
 
 use AweBooking\Constants;
 use AweBooking\Model\Stay;
@@ -19,7 +19,7 @@ class Checker {
 	 * @param  \AweBooking\Model\Room_Type $room_type   The Room_Type model.
 	 * @param  \AweBooking\Model\Stay      $stay        The Stay model.
 	 * @param  array                       $constraints The constraints.
-	 * @return \AweBooking\Concierge\Availability\Availability
+	 * @return \AweBooking\Reservation\Searcher\Availability
 	 */
 	public function check( Room_Type $room_type, Stay $stay, array $constraints = [] ) {
 		$rooms     = U::collect( $room_type->get_rooms() );

@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Model\Service;
 use AweBooking\Booking\Items\Line_Item;
 use AweBooking\Booking\Items\Service_Item;
@@ -43,8 +43,8 @@ class Edit_Line_Item_Form extends Form_Abstract {
 			'type'        => 'date_range',
 			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
 			'validate'    => 'date_period',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'tabindex' => '-1' ],
-			'date_format' => AweBooking::DATE_FORMAT,
+			'attributes'  => [ 'placeholder' => Constants::DATE_FORMAT, 'tabindex' => '-1' ],
+			'date_format' => Constants::DATE_FORMAT,
 			'locked'      => true,
 		]);
 

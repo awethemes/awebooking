@@ -8,11 +8,11 @@ use AweBooking\Model\Room;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Party;
 use AweBooking\Model\Guest;
-use AweBooking\Model\Room_Type;
 use AweBooking\Model\Source;
-use AweBooking\Concierge\Pricing\Pricing;
-use AweBooking\Concierge\Availability\Checker;
+use AweBooking\Model\Room_Type;
+use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Reservation\Searcher\Query;
+use AweBooking\Reservation\Searcher\Checker;
 
 class Reservation {
 	/**
@@ -247,12 +247,13 @@ class Reservation {
 		}
 	}
 
-	public function create_booking( array $options = [], callable $callback = null ) {
+	public function create_booking( array $options = [] ) {
 		// Parse the options args.
 		$options = wp_parse_args( $options, [
-			'notify'       => true,
-			'admin_notify' => true,
-		] );
+			'notify'          => true,
+			'admin_notify'    => true,
+			'process_payment' => true,
+		]);
 
 		if ( is_null( $this->customer ) ) {
 			throw new Exception("Error Processing Request", 1);
@@ -269,6 +270,14 @@ class Reservation {
 
 		// Fire the callback before booking will be created.
 		call_user_func_array( $callback, [ $booking, $this ] );
+
+		if ( $options['process_payment'] ) {
+			try {
+				$gateway->process( $booking );
+			} catch ( \Exception $e ) {
+				U::report( $e );
+			}
+		}
 
 		// Save the booking in dababase.
 		$booking->save();

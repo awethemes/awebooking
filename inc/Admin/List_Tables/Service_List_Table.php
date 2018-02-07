@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Model\Service;
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Support\Formatting;
 
 class Service_List_Table extends Taxonomy_Abstract {
@@ -11,7 +11,7 @@ class Service_List_Table extends Taxonomy_Abstract {
 	 *
 	 * @var string
 	 */
-	protected $taxonomy = AweBooking::HOTEL_SERVICE;
+	protected $taxonomy = Constants::HOTEL_SERVICE;
 
 	/**
 	 * Registers columns to display in the terms list table.

@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Concierge\Pricing;
+namespace AweBooking\Reservation\Pricing;
 
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Collection;

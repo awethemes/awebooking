@@ -11,6 +11,11 @@ class Currencies {
 	 */
 	protected $currencies;
 
+	/**
+	 * Default currency.
+	 *
+	 * @var \AweBooking\Money\Currency
+	 */
 	protected $current;
 
 	/**
@@ -49,11 +54,8 @@ class Currencies {
 	 *
 	 * @return array
 	 */
-	public function raw() {
-		return $this->currencies;
-	}
-
 	public function all() {
+		return $this->currencies;
 	}
 
 	public function get( $currency ) {
@@ -90,7 +92,7 @@ class Currencies {
 			return false;
 		}
 
-		$this->currencies[ $code ] = $args;
+		$this->currencies->put( $code, $args );
 
 		return true;
 	}
@@ -102,23 +104,17 @@ class Currencies {
 	 * @return array
 	 */
 	public function get_for_dropdown( $format = null ) {
-		$currencies = $this->raw();
-
-		// Walk through currencies array and modify the display value.
-		array_walk( $currencies, function( &$currency, $code ) use ( $format ) {
+		return $this->currencies->map( function( $currency, $code ) use ( $format ) {
 			if ( ! $format ) {
-				$currency = $currency['name'];
-				return;
+				return $currency['name'];
 			}
 
-			$currency = str_replace(
+			return str_replace(
 				[ '%code', '%name', '%symbol' ],
 				[ $code, $currency['name'], $currency['symbol'] ],
 				$format
 			);
-		});
-
-		return $currencies;
+		})->all();
 	}
 
 	/**

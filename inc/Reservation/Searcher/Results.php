@@ -11,9 +11,7 @@ class Results extends Collection {
 	 */
 	public function only_available_items() {
 		return $this->filter( function( $item ) {
-			$remain_rooms = $item->get_availability()->remain_rooms();
-
-			return $remain_rooms->count() > 0;
+			return $item->remain_rooms()->count() > 0;
 		} );
 	}
 }

@@ -55,6 +55,15 @@ abstract class Gateway {
 	protected $setting_fields;
 
 	/**
+	 * The extra metadata this gateway support.
+	 *
+	 * Support: "transaction_id", "credit_card"
+	 *
+	 * @var array
+	 */
+	protected $supports = [];
+
+	/**
 	 * Get method name.
 	 *
 	 * @return string
@@ -106,6 +115,35 @@ abstract class Gateway {
 	 */
 	public function get_description() {
 		return apply_filters( 'awebooking/gateway/get_description', $this->description, $this->method );
+	}
+
+	/**
+	 * Get the gateway supports.
+	 *
+	 * @return array
+	 */
+	public function get_supports() {
+		return apply_filters( 'awebooking/gateway/get_supports', $this->supports, $this );
+	}
+
+	/**
+	 * Determine if the gateway support a given meta field.
+	 *
+	 * @param  string|array $meta An array keys or a string of special key.
+	 * @return bool
+	 */
+	public function is_support( $meta ) {
+		$keys = is_array( $meta ) ? $meta : func_get_args();
+
+		$supported = $this->get_supports();
+
+		foreach ( $keys as $value ) {
+			if ( ! in_array( $value, $supported ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

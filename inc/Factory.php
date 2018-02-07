@@ -14,8 +14,6 @@ use AweBooking\Support\Utils as U;
  * Create all things related to AweBooking.
  */
 class Factory {
-	use Deprecated\Factory_Deprecated;
-
 	/**
 	 * Get room unit by ID.
 	 *

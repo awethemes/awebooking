@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Concierge\Pricing;
+namespace AweBooking\Reservation\Pricing;
 
 use DateInterval;
 use AweBooking\Model\Stay;

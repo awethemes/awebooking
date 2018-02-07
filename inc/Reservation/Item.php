@@ -5,7 +5,7 @@ use AweBooking\Model\Stay;
 use AweBooking\Model\Room;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
-use AweBooking\Concierge\Pricing\Pricing;
+use AweBooking\Reservation\Pricing\Pricing;
 
 class Item {
 	/**
@@ -39,7 +39,7 @@ class Item {
 	/**
 	 * Cache the pricing results.
 	 *
-	 * @var \AweBooking\Concierge\Pricing\Pricing
+	 * @var \AweBooking\Reservation\Pricing\Pricing
 	 */
 	protected $pricing;
 
@@ -61,7 +61,7 @@ class Item {
 	/**
 	 * Get the pricing.
 	 *
-	 * @return \AweBooking\Concierge\Pricing\Pricing
+	 * @return \AweBooking\Reservation\Pricing\Pricing
 	 */
 	public function get_pricing() {
 		if ( is_null( $this->pricing ) ) {

@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
 use AweBooking\Concierge;
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking;
 use AweBooking\Booking\Request;
@@ -47,8 +47,8 @@ class Add_Line_Item_Form extends Form_Abstract {
 			'type'        => 'date_range',
 			'name'        => esc_html__( 'Check-in/out', 'awebooking' ),
 			'validate'    => 'required|datePeriod',
-			'attributes'  => [ 'placeholder' => AweBooking::DATE_FORMAT, 'tabindex' => '-1' ],
-			'date_format' => AweBooking::DATE_FORMAT,
+			'attributes'  => [ 'placeholder' => Constants::DATE_FORMAT, 'tabindex' => '-1' ],
+			'date_format' => Constants::DATE_FORMAT,
 		]);
 
 		$this->add_field([

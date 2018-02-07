@@ -1,11 +1,11 @@
 <?php
-/* @vars $the_booking */
 
-use AweBooking\Support\Formatting as F;
+use AweBooking\Factory;
+use AweBooking\Money\Money;
 
-global $the_booking;
+global $post;
 
-dd( $the_booking );
+$the_booking = Factory::get_booking( $post );
 
 $payment_items = $the_booking->get_payments();
 
@@ -67,7 +67,7 @@ $payment_items = $the_booking->get_payments();
 
 				<th colspan="2" style="width: 250px;">
 					<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
-					<span class="afloat-right awebooking-label awebooking-label--danger"><?php echo F::money( $the_booking->get_balance_due() ); ?></span>
+					<span class="afloat-right awebooking-label awebooking-label--danger"><?php echo Money::of( $the_booking->get_balance_due(), $the_booking->get_currency() ); ?></span>
 				</th>
 			</tr>
 		</tfoot>

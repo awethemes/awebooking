@@ -81,11 +81,7 @@ class Stay implements Stringable {
 	 * {@inheritdoc}
 	 */
 	public function as_string() {
-		$nights = $this->nights();
-
-		return sprintf( '<strong>%1$d %2$s</strong> <br> <span>%3$s</span> - <span>%4$s</span>',
-			esc_html( $nights ),
-			esc_html( _n( 'night', 'nights', $nights, 'awebooking' ) ),
+		return sprintf( '<span class="awebooking-stay"><span class="awebooking-stay__checkin">%1$s</span> - <span class="awebooking-stay__checkout">%2$s</span></span>',
 			esc_html( $this->check_in->to_wp_date_string() ),
 			esc_html( $this->check_out->to_wp_date_string() )
 		);

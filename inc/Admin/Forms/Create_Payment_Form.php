@@ -32,6 +32,13 @@ class Create_Payment_Form extends Form_Abstract {
 		]);
 
 		$this->add_field([
+			'id'          => 'transaction_id',
+			'type'        => 'text',
+			'name'        => esc_html__( 'Transaction ID', 'awebooking' ),
+			'deps'        => [ 'method', 'any', $this->get_gateways_support( 'transaction_id' ) ],
+		]);
+
+		$this->add_field([
 			'id'          => 'comment',
 			'type'        => 'textarea',
 			'name'        => esc_html__( 'Comment', 'awebooking' ),
@@ -39,5 +46,20 @@ class Create_Payment_Form extends Form_Abstract {
 				'rows' => 5,
 			],
 		]);
+	}
+
+	/**
+	 * Get gateways support a speical meta for the deps.
+	 *
+	 * @param  string|array $type The meta type.
+	 * @return string
+	 */
+	protected function get_gateways_support( $type = 'transaction_id' ) {
+		$gateways = awebooking()->make( 'gateways' )->enabled()
+			->filter( function( $gateway ) use ( $type ) {
+				return $gateway->is_support( $type );
+			})->keys();
+
+		return implode( ',', $gateways->all() );
 	}
 }

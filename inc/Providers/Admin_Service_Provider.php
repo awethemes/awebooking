@@ -31,8 +31,6 @@ class Admin_Service_Provider extends Service_Provider {
 		// TODO: ...
 		\AweBooking\Admin\Admin_Scripts::class,
 		\AweBooking\Admin\Permalink_Settings::class,
-		\AweBooking\Admin\Controllers\Admin_Ajax::class,
-		\AweBooking\Admin\Controllers\Action_Handler::class,
 		\AweBooking\Admin\Pages\Admin_Email_Preview::class,
 		\AweBooking\Admin\Pages\Admin_Setup_Wizard::class,
 

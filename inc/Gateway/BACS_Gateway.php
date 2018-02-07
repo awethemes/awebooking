@@ -10,7 +10,14 @@ class BACS_Gateway extends Gateway {
 	 *
 	 * @var string
 	 */
-	protected $method = 'BACS';
+	protected $method = 'bacs';
+
+	/**
+	 * The extra metadata this gateway support.
+	 *
+	 * @var array
+	 */
+	protected $supports = [ 'transaction_id' ];
 
 	/**
 	 * Constructor.
@@ -26,7 +33,7 @@ class BACS_Gateway extends Gateway {
 	public function setup() {
 		$this->setting_fields();
 
-		$this->enabled     = (bool) $this->get_option( 'enabled' );
+		$this->enabled     = (bool) $this->get_option( 'enabled', true );
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
 	}

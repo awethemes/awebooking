@@ -6,13 +6,16 @@ use AweBooking\Admin\Controllers\Reservation_Controller;
 use AweBooking\Admin\Controllers\Booking_Payment_Controller;
 use AweBooking\Admin\Controllers\Source_Controller;
 use AweBooking\Admin\Controllers\Tax_Controller;
+use AweBooking\Admin\Controllers\About_Controller;
+
+$route->get( '/about', About_Controller::class . '@about' );
 
 $route->post( '/settings', Settings_Controller::class . '@store' );
 
 // Rates routes.
 $route->get( '/rates', Rate_Controller::class . '@index' );
 $route->get( '/rates/{room_type:\d+}', Rate_Controller::class . '@show' );
-$route->post( '/rates/{rate:\d+}', Rate_Controller::class . '@set_amount' );
+$route->post( '/rates/{room_type:\d+}', Rate_Controller::class . '@set_amount' );
 
 // Reservation source routes.
 $route->post( '/sources', Source_Controller::class . '@store' );

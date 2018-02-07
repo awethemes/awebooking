@@ -8,8 +8,6 @@ use AweBooking\Money\Currency;
 use Illuminate\Support\Arr;
 
 class Setting extends WP_Option {
-	use Deprecated\Setting_Deprecated;
-
 	/**
 	 * Default all settings of AweBooking.
 	 *

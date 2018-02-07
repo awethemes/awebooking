@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Model\Service;
 
 class Service_Metabox extends Taxonomy_Metabox {
@@ -10,7 +10,7 @@ class Service_Metabox extends Taxonomy_Metabox {
 	 *
 	 * @var string
 	 */
-	protected $taxonomy = AweBooking::HOTEL_SERVICE;
+	protected $taxonomy = Constants::HOTEL_SERVICE;
 
 	/**
 	 * Register fields.

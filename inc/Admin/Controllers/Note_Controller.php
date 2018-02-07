@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Controllers;
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
-class Note_Controller extends Admin_Controller {
+class Note_Controller extends Controller {
 	/**
 	 * Ajax add a booking note.
 	 *

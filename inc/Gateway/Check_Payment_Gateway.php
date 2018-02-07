@@ -13,6 +13,13 @@ class Check_Payment_Gateway extends Gateway {
 	protected $method = 'check_payment';
 
 	/**
+	 * The extra metadata this gateway support.
+	 *
+	 * @var array
+	 */
+	protected $supports = [ 'transaction_id' ];
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -69,6 +76,6 @@ class Check_Payment_Gateway extends Gateway {
 	 * {@inheritdoc}
 	 */
 	public function process( Booking $booking ) {
-		//...
+		// ...
 	}
 }

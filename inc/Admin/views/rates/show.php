@@ -1,10 +1,12 @@
 <?php
 
+use AweBooking\Admin\Forms\Set_Price_Form;
+
+$set_price_form = new Set_Price_Form( $room_type );
+
 ?><div class="wrap">
-	<h1 class="wp-heading-inline">
-		<?php /* translators: %s Room type name */ ?>
-		<?php printf( esc_html__( '%s Rates', 'awebooking' ), esc_html( $room_type->get_title() ) ); ?>
-	</h1><hr class="wp-header-end">
+	<h1 class="wp-heading-inline"><?php printf( esc_html__( '%s Pricing', 'awebooking' ), esc_html( $room_type->get_title() ) ); ?></h1>
+	<hr class="wp-header-end">
 
 	<?php $scheduler->display(); ?>
 </div>

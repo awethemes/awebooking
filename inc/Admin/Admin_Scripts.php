@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Admin;
 
+use AweBooking\Constants;
 use AweBooking\AweBooking;
 
 class Admin_Scripts {
@@ -45,8 +46,7 @@ class Admin_Scripts {
 		wp_register_script( 'awebooking-edit-service', awebooking()->plugin_url() . '/assets/js/admin/edit-service.js', array( 'awebooking-admin' ), $version, true );
 		wp_register_script( 'awebooking-edit-room-type', awebooking()->plugin_url() . '/assets/js/admin/edit-room-type.js', array( 'awebooking-admin' ), $version, true );
 
-		wp_register_script( 'awebooking-manager-pricing', $awebooking_url . '/assets/js/admin/manager-pricing.js', [ 'awebooking-admin', 'awebooking-pricing-calendar' ], $version, true );
-		wp_register_script( 'awebooking-manager-availability', $awebooking_url . '/assets/js/admin/manager-availability.js', [ 'awebooking-admin', 'awebooking-yearly-calendar' ], $version, true );
+		wp_register_script( 'awebooking-schedule-calendar', awebooking()->plugin_url() . '/assets/js/admin/schedule-calendar.js', [ 'backbone', 'awebooking-admin' ], $version, true );
 
 		// Send AweBooking object.
 		wp_localize_script( 'awebooking-admin', '_awebookingSettings', array(
@@ -91,11 +91,11 @@ class Admin_Scripts {
 		wp_enqueue_style( 'awebooking-admin' );
 		wp_enqueue_script( 'awebooking-admin' );
 
-		if ( AweBooking::ROOM_TYPE === $screen->id ) {
+		if ( Constants::ROOM_TYPE === $screen->id ) {
 			wp_enqueue_script( 'awebooking-edit-room-type' );
 		}
 
-		if ( AweBooking::BOOKING === $screen->id ) {
+		if ( Constants::BOOKING === $screen->id ) {
 			wp_enqueue_script( 'awebooking-edit-booking' );
 		}
 

@@ -1,5 +1,0 @@
-const $ = window.jQuery;
-
-$(function() {
-  // ...
-});

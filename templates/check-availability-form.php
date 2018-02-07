@@ -27,7 +27,7 @@ $form_classes = apply_filters( 'awebooking/check_availability_form_classes', arr
 		<input type="hidden" name="p" value="<?php echo esc_attr( awebooking_get_page_id( 'check_availability' ) ) ?>">
 	<?php endif ?>
 
-	<?php if ( awebooking()->is_multi_language() ) : ?>
+	<?php if ( awebooking()->is_running_multilanguage() ) : ?>
 		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_active_language() ) ?>">
 	<?php endif ?>
 

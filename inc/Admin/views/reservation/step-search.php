@@ -13,6 +13,8 @@
 				<?php wp_nonce_field( 'awebooking_add_room', '_wpnonce', true ); ?>
 
 				<?php $availability_table->display(); ?>
+
+				<?php dump( $availability_table->items ); ?>
 			</form>
 		</div>
 

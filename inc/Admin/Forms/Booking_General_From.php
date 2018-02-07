@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
-use AweBooking\AweBooking;
+use AweBooking\Constants;
 use AweBooking\Model\Booking;
 
 class Booking_General_From extends Form_Abstract {
@@ -41,7 +41,7 @@ class Booking_General_From extends Form_Abstract {
 			'id'          => 'booking_created_date',
 			'type'        => 'text_datetime_timestamp',
 			'name'        => esc_html__( 'Booking Date', 'awebooking' ),
-			'date_format' => AweBooking::DATE_FORMAT,
+			'date_format' => Constants::DATE_FORMAT,
 			'time_format' => 'H:i:s',
 			'validate'    => 'required',
 			'attributes'  => [

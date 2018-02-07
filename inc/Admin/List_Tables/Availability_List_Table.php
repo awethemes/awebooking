@@ -70,9 +70,8 @@ class Availability_List_Table extends \WP_List_Table {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function column_default( $item, $column_name ) {
-		list( $room_type, $availability ) = [ $item->get_room_type(), $item->get_availability() ];
-
+	protected function column_default( $availability, $column_name ) {
+		$room_type = $availability->get_room_type();
 		$remain_rooms = $availability->remain_rooms();
 
 		// The input prefix.
