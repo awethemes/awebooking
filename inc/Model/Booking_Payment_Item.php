@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Dropdown;
+use AweBooking\Gateway\Manager;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Utils as U;
@@ -150,5 +151,16 @@ class Booking_Payment_Item extends Booking_Item {
 		}
 
 		return apply_filters( $this->prefix( 'get_method_title' ), $payment_method, $this );
+	}
+
+	/**
+	 * Resolve the gateway from current payment method.
+	 *
+	 * @return \AweBooking\Gateway\Gateway
+	 */
+	public function resolve_gateway() {
+		$gateways = awebooking()->make( Manager::class );
+
+		return $gateways->all()->get( $this->get_method() );
 	}
 }

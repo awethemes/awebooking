@@ -1,6 +1,7 @@
 <?php
 
 use AweBooking\Money\Money;
+use AweBooking\Support\Utils as U;
 
 $payment_items = $the_booking->get_payments();
 
@@ -31,13 +32,28 @@ $payment_items = $the_booking->get_payments();
 							<?php if ( $payment_item->is_deposit() ) : ?>
 								<sup><?php echo esc_html_x( 'Deposit', 'deposit label', 'awebooking' ); ?></sup>
 							<?php endif ?>
+
+							<?php if ( $comment = $payment_item->get_comment() ) : ?>
+								<a href="#payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" class="afloat-right" data-toggle="awebooking-popup" data-placement="right"><span class="dashicons dashicons-info"></span></a>
+
+								<div class="awebooking-debug-rooms__dialog awebooking-dialog-contents" id="payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" title="<?php esc_html_e( 'Payment comment', 'awebooking' ); ?>" style="display: none;">
+									<?php echo wp_kses_post( wpautop( wptexturize( $payment_item['comment'] ) ) ); ?>
+								</div>
+							<?php endif ?>
+
 						</td>
 
 						<td>
 							<div class="awebooking-contents">
-								<?php if ( $payment_item['comment'] ) : ?>
-									<?php echo wp_kses_post( wpautop( wptexturize( $payment_item['comment'] ) ) ); ?>
-								<?php endif ?>
+								<?php
+								if ( $gateway = $payment_item->resolve_gateway() ) {
+									U::optional( $gateway )->display_payment_contents( $payment_item, $the_booking );
+								}
+
+								do_action( "awebooking/booking/display_payment_{$payment_item->get_method()}", $payment_item, $the_booking );
+
+								do_action( 'awebooking/booking/display_payment', $payment_item, $the_booking );
+								?>
 							</div>
 						</td>
 
