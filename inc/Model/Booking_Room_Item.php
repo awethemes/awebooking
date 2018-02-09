@@ -1,8 +1,18 @@
 <?php
 namespace AweBooking\Model;
 
+use WP_Error;
 use AweBooking\Factory;
-use AweBooking\Support\Period;
+use AweBooking\Model\Stay;
+use AweBooking\Model\Guest;
+use AweBooking\Reservation\Creator;
+use AweBooking\Reservation\Searcher\Checker;
+use AweBooking\Calendar\Period\Period;
+use AweBooking\Support\Utils as U;
+
+use AweBooking\Calendar\Resource\Resource;
+use AweBooking\Calendar\Event\State_Event;
+use AweBooking\Calendar\Event\Booking_Event;
 
 class Booking_Room_Item extends Booking_Item {
 	/**
@@ -19,6 +29,8 @@ class Booking_Room_Item extends Booking_Item {
 	 */
 	protected $extra_attributes = [
 		'room_id'      => 0,
+		'check_in'     => null,
+		'check_out'    => null,
 		'adults'       => 0,
 		'children'     => 0,
 		'infants'      => 0,
@@ -57,6 +69,25 @@ class Booking_Room_Item extends Booking_Item {
 	];
 
 	/**
+	 * The permalinks actions.
+	 *
+	 * @var array
+	 */
+	protected $permalinks = [
+		'edit'   => '/booking/{booking}/room/{item}/edit',
+		'swap'   => '/booking/{booking}/room/{item}/swap',
+		'update' => '/booking/{booking}/room/{item}',
+		'delete' => '/booking/{booking}/room/{item}',
+	];
+
+	/**
+	 * Force modify the check_in and check_out attribute.
+	 *
+	 * @var boolean
+	 */
+	protected $force_modify_stay = false;
+
+	/**
 	 * Returns booking item type.
 	 *
 	 * @return string
@@ -81,7 +112,7 @@ class Booking_Room_Item extends Booking_Item {
 	 * @return void
 	 */
 	public function set_room_id( $room ) {
-		if ( $room instanceof Price ) {
+		if ( $room instanceof Room ) {
 			$this->attributes['room_id'] = $room->get_id();
 		} else {
 			$this->attributes['room_id'] = absint( $room );
@@ -95,6 +126,21 @@ class Booking_Room_Item extends Booking_Item {
 	 */
 	public function get_room_unit() {
 		return Factory::get_room_unit( $this->get_room_id() );
+	}
+
+	/**
+	 * Resolve the room_type from current room_unit.
+	 *
+	 * @return \AweBooking\Model\Room_Type|null
+	 */
+	public function resolve_room_type() {
+		if ( empty( $this->room_id ) ) {
+			return;
+		}
+
+		return U::rescue( function() {
+			return $this->get_room_unit()->get_room_type();
+		});
 	}
 
 	/**
@@ -116,29 +162,27 @@ class Booking_Room_Item extends Booking_Item {
 	}
 
 	/**
-	 * Get the Period of check-in, check-out.
+	 * Get the Stay of check-in, check-out.
 	 *
-	 * Note: An exception or more will be thrown if any invalid found.
-	 *
-	 * @return Period
+	 * @return \AweBooking\Model\Stay|null
 	 */
-	public function get_period() {
-		return new Period( $this->get_check_in(), $this->get_check_out() );
+	public function get_stay() {
+		$stay = U::rescue( function () {
+			return new Stay( $this->get_check_in(), $this->get_check_out() );
+		});
+
+		return apply_filters( $this->prefix( 'get_stay' ), $stay, $this );
 	}
 
 	/**
 	 * Returns nights stayed of this line item.
 	 *
-	 * If have any errors, -1 will be return.
-	 *
 	 * @return int
 	 */
 	public function get_nights_stayed() {
-		try {
-			return $this->get_period()->nights();
-		} catch ( \Exception $e ) {
-			return -1;
-		}
+		$stay = $this->get_stay();
+
+		return ! is_null( $stay ) ? $stay->nights() : 0;
 	}
 
 	/**
@@ -166,6 +210,19 @@ class Booking_Room_Item extends Booking_Item {
 	 */
 	public function get_infants() {
 		return apply_filters( $this->prefix( 'get_infants' ), $this['infants'], $this );
+	}
+
+	/**
+	 * Create the Guest instance.
+	 *
+	 * @return \AweBooking\Model\Guest|null
+	 */
+	public function get_guest() {
+		$guest = U::rescue( function () {
+			return new Guest( $this->get_adults(), $this->get_children(), $this->get_infants() );
+		});
+
+		return apply_filters( $this->prefix( 'get_guest' ), $guest, $this );
 	}
 
 	/**
@@ -210,113 +267,114 @@ class Booking_Room_Item extends Booking_Item {
 	}
 
 	/**
-	 * Gets formatted nights stayed.
+	 * Print the room_item label.
 	 *
-	 * @param  boolean $echo Echo or return output.
-	 * @return string|void
+	 * @return string
 	 */
-	public function get_formatted_nights_stayed( $echo = true ) {
-		$nights = $this->get_nights_stayed();
-		$nights = $nights . ' ' . _n( 'night', 'nights', $nights, 'awebooking' );
+	public function print_label() {
+		$name = $this->get_name();
 
-		if ( $echo ) {
-			print $nights; // WPCS: XSS OK.
-		} else {
-			return $nights;
+		if ( ! empty( $name ) ) {
+			print '<strong>' . esc_html( $name ) . '</strong>';
+			return;
 		}
-	}
 
-	/**
-	 * Gets formatted guest number HTML.
-	 *
-	 * @param  boolean $echo Echo or return output.
-	 * @return string|void
-	 */
-	public function get_fomatted_guest_number( $echo = true ) {
-		$html = '';
-
-		$html .= sprintf(
-			'<span class="">%1$d %2$s</span>',
-			$this->get_adults(),
-			_n( 'adult', 'adults', $this->get_adults(), 'awebooking' )
+		printf( '<span><strong>%s</strong> (</span>(%s)</span>)</span>',
+			esc_html( U::optional( $this->get_room_unit() )->get_name() ),
+			esc_html( U::optional( $this->resolve_room_type() )->get_name() )
 		);
-
-		if ( $this['children'] ) {
-			$html .= sprintf(
-				' &amp; <span class="">%1$d %2$s</span>',
-				$this->get_children(),
-				_n( 'child', 'children', $this->get_children(), 'awebooking' )
-			);
-		}
-
-		if ( $this['infants'] ) {
-			$html .= sprintf(
-				' &amp; <span class="">%1$d %2$s</span>',
-				$this->get_infants(),
-				_n( 'infant', 'infants', $this->get_infants(), 'awebooking' )
-			);
-		}
-
-		if ( $echo ) {
-			print $html; // WPCS: XSS OK.
-		} else {
-			return $html;
-		}
 	}
 
 	/**
-	 * Determines if the current item is able to be saved.
+	 * Modify the stay date.
 	 *
-	 * @return bool
+	 * @param  \AweBooking\Model\Stay $stay The new stay.
+	 * @return boolean|WP_Error
 	 */
-	public function can_save() {
-		if ( ! $this->get_room_unit()->exists() ) {
+	public function modify_stay( Stay $stay ) {
+		// Prevent change on non-exists object.
+		if ( ! $this->exists() ) {
 			return false;
 		}
 
-		return parent::can_save();
+		$this->force_modify_stay = true;
+
+		try {
+			$stay->require_minimum_nights();
+		} catch ( \Exception $e ) {
+			return new WP_Error( 'date_error', $e->getMessage() );
+		}
+
+		// Check the new stay date to ensure we have no any conflicts.
+		if ( ! $this->can_change_stay( $stay ) ) {
+			return new WP_Error( 'change_error', esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
+		}
+
+		// Perfom set the check-in and check-out attributes.
+		$this->attributes['check_in'] = $stay->get_check_in()->toDateString();
+		$this->attributes['check_out'] = $stay->get_check_out()->toDateString();
+
+		$saved = $this->save();
+
+		$this->force_modify_stay = false;
+
+		return $saved;
 	}
 
 	/**
-	 * Determines whether the new period can be changeable.
+	 * Determines whether this booking item can change to other stay date.
 	 *
-	 * @throws \LogicException
-	 *
-	 * @param  Period $to_period Change to date period.
-	 * @return bool|null
+	 * @param  \AweBooking\Model\Stay $other_stay Other stay date.
+	 * @return boolean
 	 */
-	public function is_changeable( Period $to_period ) {
-		$to_period->required_minimum_nights();
+	public function can_change_stay( Stay $other_stay ) {
+		if ( ! $this->exists() ) {
+			return false;
+		}
 
+		try {
+			$other_stay->require_minimum_nights();
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		// Get and validate the room_unit.
 		$room_unit = $this->get_room_unit();
 		if ( ! $room_unit->exists() ) {
-			return;
+			return false;
 		}
 
 		$original_period = new Period(
 			$this->original['check_in'], $this->original['check_out']
 		);
 
+		$checker = new Checker;
+		$other_period = $other_stay->to_period();
+
 		// If new period inside the current-period,
 		// so it alway can be change.
-		if ( $original_period->contains( $to_period ) ) {
+		if ( $original_period->contains( $other_period ) ) {
 			return true;
 		}
 
 		// If both period object not overlaps, so we just
-		// determines new period is bookable or not.
-		if ( ! $original_period->overlaps( $to_period ) ) {
-			return Concierge::is_available( $room_unit, $to_period );
+		// determines new period is available or not.
+		if ( ! $original_period->overlaps( $other_period ) ) {
+			return $checker->is_available_for( $room_unit, $other_stay );
 		}
 
 		// Create an array difference between two Period.
-		// @see http://period.thephpleague.com/api/comparing/#perioddiff .
-		$diff = $original_period->diff( $to_period );
+		// @see http://period.thephpleague.com/3.0/api/comparing/#perioddiff.
+		$diff = $original_period->diff( $other_period );
 
 		// Loop each piece of diff-period, if one of them
-		// un-available for changing just leave and return false.
+		// unavailable for changing just leave and return false.
 		foreach ( $diff as $piece ) {
-			if ( ! $original_period->contains( $piece ) && ! Concierge::is_available( $room_unit, $piece ) ) {
+			if ( $original_period->contains( $piece ) ) {
+				continue;
+			}
+
+			if ( ! $checker->is_available_for( $room_unit, Stay::from_period( $piece ) ) ) {
 				return false;
 			}
 		}
@@ -325,93 +383,82 @@ class Booking_Room_Item extends Booking_Item {
 	}
 
 	/**
-	 * Do something before doing save.
+	 * Peform apply the calendar state.
 	 *
-	 * @throws \RuntimeException
+	 * @return boolean
+	 */
+	public function apply_calendar_state() {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		$booking = $this->get_booking();
+		if ( $booking->exists() ) {
+			return false;
+		}
+
+		$room_unit = $this->get_room_unit();
+		if ( ! $room_unit->exists() ) {
+			return false;
+		}
+
+		$creator = new Creator;
+		$resource = new Resource( $room_unit->get_id() );
+
+		try {
+			$state_event = new State_Event( $resource, $this->get_check_in(), $this->get_check_out(), $booking->get_state_status() );
+			$booking_event = new Booking_Event( $resource, $this->get_check_in(), $this->get_check_out(), $booking );
+		} catch ( sException $e ) {
+			return false;
+		}
+
+		$creator->create_state_calendar( $resource )
+				->store( $state_event );
+
+		$creator->create_booking_calendar( $resource )
+				->store( $booking_event );
+
+		return true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function finish_save() {
+		parent::finish_save();
+
+		if ( $this->recently_created ) {
+			$this->apply_calendar_state();
+		}
+	}
+
+	/**
+	 * Perform revert attributes when update.
 	 *
 	 * @return void
 	 */
-	protected function before_save() {
-		$period = $this->get_period();
-		$period->required_minimum_nights();
-
-		// If this save action considered as update, we check `check_in`, `check_out`
-		// have changes, we'll re-check available of booking room again to make sure
-		// everything in AweBooking it is working perfect.
-		if ( $this->exists() && $this->is_dirty( 'check_in', 'check_out' ) ) {
-			if ( ! $this->is_changeable( $period ) ) {
-				throw new \RuntimeException( esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
-			}
-		}
-
-		// To prevent change `room_id` and `booking_id`, we don't
-		// allow change them, so just set to original value.
-		if ( $this->exists() && $this->is_dirty( 'room_id', 'booking_id' ) ) {
+	protected function updating() {
+		// Prevent user changes `room_id` and `booking_id`.
+		if ( $this->is_dirty( 'room_id', 'booking_id' ) ) {
 			$this->revert_attribute( 'room_id' );
 			$this->revert_attribute( 'booking_id' );
 		}
+
+		if ( ! $this->force_modify_stay && $this->is_dirty( 'check_in', 'check_out' ) ) {
+			$this->revert_attribute( 'check_in' );
+			$this->revert_attribute( 'check_out' );
+		}
 	}
 
 	/**
-	 * Do somethings when finish save.
-	 *
-	 * TODO: Maybe we have bugs in this method.
-	 *
-	 * @return void
-	 */
-	protected function finish_save() {
-		$period    = $this->get_period();
-		$booking   = $this->get_booking();
-		$room_unit = $this->get_room_unit();
-
-		// Moving date period.
-		if ( ! $this->recently_created && $this->is_dirty( 'check_in', 'check_out' ) && $this->is_changeable( $period ) ) {
-			// Start a mysql transaction.
-			awebooking_wpdb_transaction( 'start' );
-
-			$original_period = new Period(
-				$this->original['check_in'], $this->original['check_out']
-			);
-
-			// Clear booking and availability state.
-			$clear_result = Concierge::clear_booking_state( $room_unit, $original_period, $booking );
-			$set_result = Concierge::set_booking_state( $room_unit, $period, $booking );
-
-			if ( ! $clear_result || ! $set_result ) {
-				awebooking_wpdb_transaction( 'rollback' );
-			} else {
-				awebooking_wpdb_transaction( 'commit' );
-			}
-
-			$saved_state = ( $clear_result && $set_result );
-		} elseif ( $this->recently_created ) {
-			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking );
-		} else {
-			$saved_state = Concierge::set_booking_state( $this->get_room_unit(), $period, $booking, [
-				'force' => true,
-			]);
-		}
-
-		if ( isset( $saved_state ) && $saved_state ) {
-			$this['check_in'] = $period->get_start_date()->toDateString();
-			$this['check_out'] = $period->get_end_date()->toDateString();
-		}
-
-		parent::finish_save();
-	}
-
-	/**
-	 * Perform delete object.
-	 *
-	 * @param  bool $force Not used.
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	protected function perform_delete( $force ) {
-		// Before we delete room unit, restore available state and set booking room to zero.
-		Concierge::clear_booking_state(
-			$this->get_room_unit(), $this->get_period(), $this->get_booking()
-		);
+		$deleted = parent::perform_delete( $force );
 
-		return parent::perform_delete( $force );
+		// Before we delete room unit, restore available state and set booking room to zero.
+		// TODO: ...
+
+		return $deleted;
 	}
 }

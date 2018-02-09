@@ -57,7 +57,7 @@ class Url_Generator {
 	 * @return string
 	 */
 	public function to( $path = '', $parameters = [], $scheme = null ) {
-		if ( $this->is_valid_path( $path ) ) {
+		if ( $this->is_valid_url( $path ) ) {
 			return $path;
 		}
 
@@ -218,7 +218,7 @@ class Url_Generator {
 	 * @param  string $path The input URL to check.
 	 * @return bool
 	 */
-	public function is_valid_path( $path ) {
+	public function is_valid_url( $path ) {
 		if ( ! preg_match( '~^(#|//|https?://|mailto:|tel:)~', $path ) ) {
 			return filter_var( $path, FILTER_VALIDATE_URL ) !== false;
 		}

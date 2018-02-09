@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Dropdown;
+use AweBooking\Model\Booking;
 
 class Create_Payment_Form extends Form_Abstract {
 	/**
@@ -10,6 +11,24 @@ class Create_Payment_Form extends Form_Abstract {
 	 * @var string
 	 */
 	protected $form_id = 'awebooking_new_reservation_source';
+
+	/**
+	 * The booking instance.
+	 *
+	 * @var \AweBooking\Model\Booking
+	 */
+	protected $booking;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \AweBooking\Model\Booking $booking The booking instance.
+	 */
+	public function __construct( Booking $booking ) {
+		$this->booking = $booking;
+
+		parent::__construct();
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -21,6 +40,7 @@ class Create_Payment_Form extends Form_Abstract {
 			'name'        => esc_html__( 'Amount', 'awebooking' ),
 			'append'      => awebooking( 'currency' )->get_symbol(),
 			'validate'    => 'required|numeric|min:0',
+			'before_row'  => $this->callback_before_amount(),
 		]);
 
 		$this->add_field([
@@ -36,6 +56,13 @@ class Create_Payment_Form extends Form_Abstract {
 			'type'        => 'text',
 			'name'        => esc_html__( 'Transaction ID', 'awebooking' ),
 			'deps'        => [ 'method', 'any', $this->get_gateways_support( 'transaction_id' ) ],
+		]);
+
+		$this->add_field([
+			'id'          => 'is_deposit',
+			'type'        => 'toggle',
+			'name'        => esc_html__( 'Deposit', 'awebooking' ),
+			'desc'        => esc_html__( 'Is this deposit?', 'awebooking' ),
 		]);
 
 		$this->add_field([
@@ -61,5 +88,43 @@ class Create_Payment_Form extends Form_Abstract {
 			})->keys();
 
 		return implode( ',', $gateways->all() );
+	}
+
+	/**
+	 * Callback before print amout field.
+	 *
+	 * @return Closure
+	 */
+	protected function callback_before_amount() {
+		return function() {
+			$booking = $this->booking;
+
+			$paid = $booking->get_paid();
+			$balance_due = $booking->get_balance_due(); ?>
+
+			<div class="cmb-row">
+				<div class="cmb-th"><?php echo esc_html__( 'Total charge', 'awebooking' ); ?></div>
+
+				<div class="cmb-td">
+					<span class="awebooking-label"><?php $booking->format_money( $booking->get_total() ); ?></span>
+				</div>
+			</div>
+
+			<div class="cmb-row">
+				<div class="cmb-th"><?php echo esc_html__( 'Already paid', 'awebooking' ); ?></div>
+
+				<div class="cmb-td">
+					<span class="awebooking-label awebooking-label--<?php echo ( $paid->is_zero() ) ? 'danger' : 'success'; ?>"><?php $booking->format_money( $paid ); ?></span>
+				</div>
+			</div>
+
+			<div class="cmb-row">
+				<div class="cmb-th"><?php echo esc_html__( 'Balance Due', 'awebooking' ); ?></div>
+
+				<div class="cmb-td">
+					<span class="awebooking-label awebooking-label--<?php echo ( $balance_due->is_zero() ) ? 'success' : 'danger'; ?>"><?php $booking->format_money( $balance_due ); ?></span>
+				</div>
+			</div>
+		<?php }; // @codingStandardsIgnoreLine
 	}
 }

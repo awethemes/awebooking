@@ -99,7 +99,7 @@ class Factory {
 	 */
 	protected static function resolve_booking_item_class( $type ) {
 		$maps = apply_filters( 'awebooking/booking_item_class_maps', [
-			'line_item'    => \AweBooking\Model\Line_Item::class,
+			'line_item'    => \AweBooking\Model\Booking_Room_Item::class,
 			'service_item' => \AweBooking\Model\Service_Item::class,
 			'payment_item' => \AweBooking\Model\Booking_Payment_Item::class,
 		]);

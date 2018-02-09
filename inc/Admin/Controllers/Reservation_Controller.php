@@ -2,13 +2,14 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
+use AweBooking\Assert;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
 
 use AweBooking\Reservation\Searcher\Query;
 use AweBooking\Reservation\Item as Reservation_Item;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Admin\Forms\New_Reservation_Form;
+use AweBooking\Admin\Forms\Search_Reservation_Form;
 use AweBooking\Admin\List_Tables\Availability_List_Table;
 
 use Illuminate\Support\Arr;
@@ -23,7 +24,7 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 use AweBooking\Http\Exceptions\Validation_Failed_Exception;
 use AweBooking\Http\Exceptions\Nonce_Mismatch_Exception;
-use AweBooking\Reservation\Searcher\Constraints\Session_Reservation;
+use AweBooking\Reservation\Searcher\Constraints\Session_Reservation_Constraint;
 
 class Reservation_Controller extends Controller {
 	/**
@@ -64,7 +65,7 @@ class Reservation_Controller extends Controller {
 
 		if ( $request->has( 'reservation_source' ) && $request->has( 'check_in_out' ) ) {
 			try {
-				( new New_Reservation_Form )->handle( $request->all(), false );
+				( new Search_Reservation_Form )->handle( $request->all(), false );
 			} catch ( Validation_Failed_Exception $e ) {
 				return $this->redirect()->admin_route( 'reservation/create' );
 			}
@@ -86,7 +87,7 @@ class Reservation_Controller extends Controller {
 		}
 
 		// Attach the search to availability_table items.
-		$availability_table = new Availability_List_Table;
+		$availability_table = new Availability_List_Table( $reservation );
 		$availability_table->items = $this->perform_search_rooms( $reservation );
 
 		return $this->response_view( 'reservation/step-search.php', compact(
@@ -98,11 +99,11 @@ class Reservation_Controller extends Controller {
 	 * Perform search rooms.
 	 *
 	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
-	 * @return array
+	 * @return \\AweBooking\Reservation\Searcher\Results
 	 */
 	protected function perform_search_rooms( Reservation $reservation ) {
 		$constraints = [
-			new Session_Reservation( $reservation ),
+			new Session_Reservation_Constraint( $reservation ),
 		];
 
 		$results = $reservation->search( null, $constraints )
@@ -185,10 +186,10 @@ class Reservation_Controller extends Controller {
 
 		// Validate the room_type.
 		$room_type = Factory::get_room_type( $data['room_type'] );
-		$this->assert_object_exists( $room_type );
+		Assert::object_exists( $room_type );
 
 		$room_unit = $room_type->get_room( $data['room_unit'] );
-		$this->assert_object_exists( $room_unit );
+		Assert::object_exists( $room_unit );
 
 		// ...
 		$rate = new Rate( $room_type->get_id(), 'room_type' );
@@ -200,24 +201,5 @@ class Reservation_Controller extends Controller {
 
 		// Update the reservation in the session store.
 		$this->awebooking['reservation_admin_session']->update( $reservation );
-	}
-
-	/**
-	 * Assert a given object exists.
-	 *
-	 * @param  \AweBooking\Model\WP_Object $object WP_Object implementation.
-	 * @return void
-	 *
-	 * @throws \InvalidArgumentException
-	 * @throws \AweBooking\Model\Exceptions\Model_Not_Found_Exception
-	 */
-	protected function assert_object_exists( $object ) {
-		if ( is_null( $object ) ) {
-			throw new Model_Not_Found_Exception( esc_html__( 'Resource not found', 'awebooking' ) );
-		}
-
-		if ( ! $object->exists() ) {
-			throw (new Model_Not_Found_Exception)->set_model( get_class( $object ) );
-		}
 	}
 }

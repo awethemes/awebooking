@@ -28,12 +28,10 @@ trait Booking_Attributes_Trait {
 	/**
 	 * Gets the booking currency.
 	 *
-	 * @return Currency
+	 * @return string
 	 */
 	public function get_currency() {
-		$currency = $this['currency'] ? new Currency( $this['currency'] ) : awebooking()->make( 'currency' );
-
-		return apply_filters( $this->prefix( 'get_currency' ), $currency, $this );
+		return apply_filters( $this->prefix( 'get_currency' ), $this['currency'], $this );
 	}
 
 	/**

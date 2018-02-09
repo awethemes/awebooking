@@ -18,21 +18,6 @@ $action_link = $is_updateform
 
 	<hr class="clear">
 
-	<div class="">
-		<?php echo esc_html__( 'Total charge', 'awebooking' ); ?>
-		<?php echo $booking->get_total(); ?>
-	</div>
-
-	<div class="">
-		<?php echo esc_html__( 'Already paid', 'awebooking' ); ?>
-		<?php echo $booking->get_paid(); ?>
-	</div>
-
-	<div class="">
-		<?php echo esc_html__( 'Balance Due', 'awebooking' ); ?>
-		<?php echo $booking->get_balance_due(); ?>
-	</div>
-
 	<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
 		<?php wp_nonce_field( $is_updateform ? 'update_booking_payment_' . $payment_item->get_id() : 'create_booking_payment' ); ?>
 

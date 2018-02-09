@@ -52,6 +52,18 @@ class Booking_Item extends WP_Object {
 	];
 
 	/**
+	 * The permalinks actions, e.g:
+	 *
+	 * $permalinks = [
+	 *     'edit'   => '/booking/{booking}/payment/{item}/edit',
+	 *     'delete' => '/booking/{booking}/payment/{item}',
+	 * ];
+	 *
+	 * @var array
+	 */
+	protected $permalinks = [];
+
+	/**
 	 * Booking item constructor.
 	 *
 	 * @param mixed $object Object ID we'll working for.
@@ -176,25 +188,74 @@ class Booking_Item extends WP_Object {
 	}
 
 	/**
-	 * Returns delete URL.
+	 * Get the permalink.
 	 *
-	 * @return string|null
+	 * @param  string $type       The permalink type.
+	 * @param  array  $parameters Optional, extra parameters.
+	 * @return string
 	 */
-	public function get_delete_url() {
-		if ( ! $this->exists() ) {
+	public function get_permalink( $type, array $parameters = [] ) {
+		if ( empty( $this->permalinks[ $type ] ) ) {
 			return;
 		}
 
-		$post_type   = get_post_type_object( Constants::BOOKING );
-		$delete_link = admin_url( sprintf( $post_type->_edit_link, $this->get_booking_id() ) );
+		$url_generator = awebooking()->make( 'url' );
+		$link = $this->format_permalink( $this->permalinks[ $type ] );
 
-		$delete_link = add_query_arg([
-			'action'    => 'delete_awebooking_item',
-			'item'      => $this->get_id(),
-			'item_type' => $this->get_type(),
-		], $delete_link );
+		if ( ! $url_generator->is_valid_url( $link ) ) {
+			$link = $url_generator->admin_route( $link );
+		}
 
-		return wp_nonce_url( $delete_link, "delete_item_awebooking_{$this->get_booking_id()}" );
+		$link = add_query_arg( $parameters, $link );
+
+		return apply_filters( $this->prefix( 'get_permalink' ), $link, $this );
+	}
+
+	/**
+	 * Get the edit link.
+	 *
+	 * @return string
+	 */
+	public function get_edit_link() {
+		return apply_filters( $this->prefix( 'get_edit_link' ), $this->get_permalink( 'edit' ), $this );
+	}
+
+	/**
+	 * Get the delete link.
+	 *
+	 * @param  boolean $nonce Should include with nonce?.
+	 * @return string
+	 */
+	public function get_delete_link( $nonce = true ) {
+		$delete_link = $this->get_permalink( 'delete' );
+
+		if ( $nonce && $delete_link ) {
+			$delete_link = wp_nonce_url( $delete_link, 'delete_' . $this->get_type() . '_' . $this->get_id() );
+		}
+
+		return apply_filters( $this->prefix( 'get_delete_link' ), $delete_link, $this );
+	}
+
+	/**
+	 * Format the permalink structure.
+	 *
+	 * {item}    - The payment item ID.
+	 * {booking} - The Booking ID.
+	 *
+	 * @param  string $link The link.
+	 * @return string
+	 */
+	protected function format_permalink( $link ) {
+		if ( empty( $link ) ) {
+			return '';
+		}
+
+		$replaces = [
+			'{item}'    => $this->get_id(),
+			'{booking}' => $this->get_booking()->get_id(),
+		];
+
+		return str_replace( array_keys( $replaces ), array_values( $replaces ), $link );
 	}
 
 	/**

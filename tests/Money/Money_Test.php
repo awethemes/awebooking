@@ -2,7 +2,7 @@
 
 use AweBooking\Money\Money;
 
-class SampleTest extends WP_UnitTestCase {
+class Money_Money_Test extends WP_UnitTestCase {
 	/**
 	 * Set up the test fixture.
 	 */

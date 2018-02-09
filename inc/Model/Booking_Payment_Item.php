@@ -23,6 +23,7 @@ class Booking_Payment_Item extends Booking_Item {
 		'method'         => '',
 		'amount'         => 0,
 		'comment'        => '',
+		'is_deposit'     => false,
 		'date_paid'      => null,
 		'transaction_id' => '',
 	];
@@ -36,8 +37,32 @@ class Booking_Payment_Item extends Booking_Item {
 		'method'         => '_payment_method',
 		'amount'         => '_payment_amount',
 		'comment'        => '_payment_comment',
+		'is_deposit'     => '_payment_is_deposit',
 		'date_paid'      => '_payment_date_paid',
 		'transaction_id' => '_payment_transaction_id',
+	];
+
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'parent_id'  => 'int',
+		'booking_id' => 'int',
+		'booking_id' => 'int',
+		'is_deposit' => 'boolean',
+	];
+
+	/**
+	 * The permalinks actions.
+	 *
+	 * @var array
+	 */
+	protected $permalinks = [
+		'edit'   => '/booking/{booking}/payment/{item}/edit',
+		'update' => '/booking/{booking}/payment/{item}',
+		'delete' => '/booking/{booking}/payment/{item}',
 	];
 
 	/**
@@ -74,6 +99,15 @@ class Booking_Payment_Item extends Booking_Item {
 	 */
 	public function get_comment() {
 		return apply_filters( $this->prefix( 'get_comment' ), $this['comment'], $this );
+	}
+
+	/**
+	 * Is this payment is deposit or not?
+	 *
+	 * @return boolean
+	 */
+	public function is_deposit() {
+		return apply_filters( $this->prefix( 'is_deposit' ), $this['is_deposit'], $this );
 	}
 
 	/**
@@ -116,38 +150,5 @@ class Booking_Payment_Item extends Booking_Item {
 		}
 
 		return apply_filters( $this->prefix( 'get_method_title' ), $payment_method, $this );
-	}
-
-	public function get_delete_link( $nonce = true ) {
-		$delete_link = awebooking( 'url' )->admin_route(
-			$this->format_permalink( '/booking/%1$d/payment/%2$d' )
-		);
-
-		if ( $nonce ) {
-			$delete_link = wp_nonce_url( $delete_link, 'delete_payment_item_' . $this->get_id() );
-		}
-
-		return apply_filters( $this->prefix( 'get_delete_link' ), $delete_link, $this );
-	}
-
-	public function get_edit_link() {
-		$delete_link = awebooking( 'url' )->admin_route(
-			$this->format_permalink( '/booking/%1$d/payment/%2$d/edit' )
-		);
-
-		return apply_filters( $this->prefix( 'get_edit_link' ), $delete_link, $this );
-	}
-
-	/**
-	 * [format_permalink description]
-	 *
-	 * %1$d - The Booking ID.
-	 * %2$d - The payment item ID.
-	 *
-	 * @param  [type] $format [description]
-	 * @return [type]
-	 */
-	protected function format_permalink( $format ) {
-		return sprintf( $format, $this->get_booking()->get_id(), $this->get_id() );
 	}
 }

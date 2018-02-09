@@ -7,11 +7,6 @@
 	</div>
 
 	<div class="awebooking-reservation__container">
-
-		<div class="awebooking-reservation__placeholder">
-			<span class="dashicons dashicons-calendar"></span>
-			<p><?php esc_html_e( 'Check-In and Check-out dates to search for availability', 'awebooking' ); ?></p>
-		</div>
-
+		<?php $this->partial( 'reservation/placeholder.php' ); ?>
 	</div><!-- /.awebooking__reservation-container -->
 </div><!-- /.wrap -->

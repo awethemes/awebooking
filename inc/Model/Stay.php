@@ -10,16 +10,33 @@ class Stay implements Stringable {
 	/**
 	 * Get the check-in date.
 	 *
-	 * @var Carbonate
+	 * @var \AweBooking\Support\Carbonate
 	 */
 	protected $check_in;
 
 	/**
 	 * Get the check-out date.
 	 *
-	 * @var Carbonate
+	 * @var \AweBooking\Support\Carbonate
 	 */
 	protected $check_out;
+
+	/**
+	 * The period instance.
+	 *
+	 * @var \AweBooking\Calendar\Period\Period
+	 */
+	protected $period;
+
+	/**
+	 * Create new instance from period.
+	 *
+	 * @param  \AweBooking\Calendar\Period\Period $period The period.
+	 * @return static
+	 */
+	public static function from_period( Period $period ) {
+		return new static( $period->get_start_date(), $period->get_end_date() );
+	}
 
 	/**
 	 * Create the stay.
@@ -44,7 +61,7 @@ class Stay implements Stringable {
 	/**
 	 * Returns the check-in date point.
 	 *
-	 * @return Carbonate
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_in() {
 		return $this->check_in->copy();
@@ -53,7 +70,7 @@ class Stay implements Stringable {
 	/**
 	 * Returns the check-out datepoint.
 	 *
-	 * @return Carbonate
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_out() {
 		return $this->check_out->copy();
@@ -65,7 +82,7 @@ class Stay implements Stringable {
 	 * @return int
 	 */
 	public function nights() {
-		return (int) $this->get_period()->getDateInterval()->format( '%r%a' );
+		return (int) $this->to_period()->getDateInterval()->format( '%r%a' );
 	}
 
 	/**
@@ -73,8 +90,24 @@ class Stay implements Stringable {
 	 *
 	 * @return \AweBooking\Calendar\Period\Period
 	 */
-	public function get_period() {
-		return new Period( $this->check_in, $this->check_out );
+	public function to_period() {
+		if ( is_null( $this->period ) ) {
+			$this->period = new Period( $this->check_in, $this->check_out );
+		}
+
+		return $this->period;
+	}
+
+	/**
+	 * Get the stay object as array.
+	 *
+	 * @return array
+	 */
+	public function to_array() {
+		return [
+			$this->check_in->toDateString(),
+			$this->check_out->toDateString(),
+		];
 	}
 
 	/**

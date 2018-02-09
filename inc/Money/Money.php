@@ -112,7 +112,7 @@ class Money implements Stringable {
 	protected function resolve_currency( $currency ) {
 		$currencies = Currencies::get_instance();
 
-		if ( is_null( $currency ) ) {
+		if ( empty( $currency ) ) {
 			return $currencies->get_current();
 		}
 

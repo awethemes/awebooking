@@ -6,7 +6,7 @@ use AweBooking\Reservation\Searcher\Reason;
 use AweBooking\Reservation\Searcher\Constraint;
 use AweBooking\Reservation\Searcher\Availability;
 
-class Session_Reservation implements Constraint {
+class Session_Reservation_Constraint implements Constraint {
 	/**
 	 * The reservation instance.
 	 *

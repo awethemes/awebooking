@@ -690,7 +690,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
 		];
 
 		// Room type.
-		$room_type = AweBooking::ROOM_TYPE;
+		$room_type = Constants::ROOM_TYPE;
 
 		$capabilities[ $room_type ] = [
 			"read_{$room_type}",
@@ -703,7 +703,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
 		];
 
 		// Pricing rate.
-		$pricing_rate = AweBooking::PRICING_RATE;
+		$pricing_rate = Constants::PRICING_RATE;
 
 		$capabilities[ $pricing_rate ] = [
 			"read_{$pricing_rate}",
@@ -713,7 +713,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
 		];
 
 		// Booking.
-		$booking = AweBooking::BOOKING;
+		$booking = Constants::BOOKING;
 
 		$capabilities[ $booking ] = [
 			// Post type.

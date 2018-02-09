@@ -1,40 +1,28 @@
 <?php
 namespace AweBooking\Admin\List_Tables;
 
+use AweBooking\Reservation\Reservation;
+
 class Availability_List_Table extends \WP_List_Table {
 	/**
-	 * Constructor.
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
 	 */
-	public function __construct() {
+	protected $reservation;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \AweBooking\Reservation\Reservation $reservation //.
+	 */
+	public function __construct( Reservation $reservation ) {
+		$this->reservation = $reservation;
+
 		parent::__construct([
-			'ajax'     => false,
 			'singular' => 'availability',
 			'plural'   => 'availabilities',
 		]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function display() {
-		$this->prepare_items();
-
-		$this->screen->render_screen_reader_content( 'heading_list' );
-
-		?><table class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
-			<thead>
-				<tr>
-					<?php $this->print_column_headers(); ?>
-				</tr>
-			</thead>
-
-			<tbody id="the-list">
-				<?php $this->display_rows_or_placeholder(); ?>
-			</tbody>
-		</table>
-		<?php
-
-		$this->display_tablenav( 'bottom' );
 	}
 
 	/**
@@ -55,16 +43,25 @@ class Availability_List_Table extends \WP_List_Table {
 	 * {@inheritdoc}
 	 */
 	public function get_columns() {
-		return [
+		$columns = [
 			'room_type'       => esc_html__( 'Room Type', 'awebooking' ),
-			'starting_from'   => esc_html__( 'Starting From', 'awebooking' ),
-			'stay_infomation' => esc_html__( 'Stay', 'awebooking' ),
-			'availabe_rooms'  => esc_html__( 'Available', 'awebooking' ),
+			'availabe_rooms'  => esc_html__( 'Room', 'awebooking' ),
 			'column_adults'   => esc_html__( 'Adults', 'awebooking' ),
 			'column_children' => esc_html__( 'Children', 'awebooking' ),
 			'column_infants'  => esc_html__( 'Infants', 'awebooking' ),
+			'starting_from'   => esc_html__( 'Price', 'awebooking' ),
 			'booknow'         => '',
 		];
+
+		if ( ! awebooking( 'setting' )->is_children_bookable() ) {
+			unset( $columns['column_children'] );
+		}
+
+		if ( ! awebooking( 'setting' )->is_infants_bookable() ) {
+			unset( $columns['column_infants'] );
+		}
+
+		return $columns;
 	}
 
 	/**
@@ -79,15 +76,13 @@ class Availability_List_Table extends \WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'room_type':
-				echo '<p><strong>', esc_html( $room_type->get_title() ) ,'</strong></p>';
+				echo '<strong>', esc_html( $room_type->get_title() ) ,'</strong>';
 
+				echo '<div class="afloat-right row-actions">';
 				/* translators: %d Number of rooms left */
 				echo esc_html( sprintf( _n( '%d room left', '%d rooms left', $remain_rooms->count(), 'awebooking' ), $remain_rooms->count() ) );
 				$this->print_rooms_debug( $room_type, $remain_rooms, $availability->get_excluded() );
-				break;
-
-			case 'stay_infomation':
-				print $availability->get_stay()->as_string(); // @WPCS: XSS OK.
+				echo '</div>';
 				break;
 
 			case 'availabe_rooms':
@@ -109,7 +104,7 @@ class Availability_List_Table extends \WP_List_Table {
 				break;
 
 			case 'booknow':
-				echo '<input type="submit" class="button button-primary" name="submit[' . esc_attr( $room_type->get_id() ) . ']" value="', esc_html__( 'Book Now', 'awebooking' ) , '" />';
+				echo '<div class="row-actions"><input type="submit" class="button button-primary" name="submit[' . esc_attr( $room_type->get_id() ) . ']" value="', esc_html__( 'Book Now', 'awebooking' ) , '" /></div>';
 				break;
 		}
 	}
@@ -180,5 +175,40 @@ class Availability_List_Table extends \WP_List_Table {
 		}
 
 		echo '</select>';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function display() {
+		$this->prepare_items();
+
+		$this->screen->render_screen_reader_content( 'heading_list' );
+
+		$stay = $this->reservation->get_stay();
+
+		?>
+		<input type="hidden" name="check_in" value="<?php echo esc_attr( $stay->get_check_in()->toDateString() ); ?>">
+		<input type="hidden" name="check_out" value="<?php echo esc_attr( $stay->get_check_out()->toDateString() ); ?>">
+
+		<div class="tablenav">
+			<div class="alignleft actions">
+				<span><?php echo esc_html__( 'Searching for:', 'awebooking' ); ?></span>
+				<strong><?php printf( _n( '%s night', '%s nights', $stay->nights(), 'awebooking' ), esc_html( $stay->nights() ) ); // @codingStandardsIgnoreLine ?></strong>,
+				<span><?php echo wp_kses_post( $stay->as_string() ); ?></span>
+			</div>
+		</div>
+
+		<table class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
+			<thead>
+				<tr><?php $this->print_column_headers(); ?></tr>
+			</thead>
+
+			<tbody id="the-list">
+				<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+		</table><?php // @codingStandardsIgnoreLine
+
+		$this->display_tablenav( 'bottom' );
 	}
 }

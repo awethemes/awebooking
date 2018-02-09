@@ -109,6 +109,22 @@ class Room_Type extends WP_Object {
 	}
 
 	/**
+	 * Get the edit room_type link.
+	 *
+	 * @param  array $query_args Optional, extra query url.
+	 * @return string
+	 */
+	public function get_edit_link( array $query_args = [] ) {
+		$link = get_edit_post_link( $this->get_id() );
+
+		if ( ! empty( $query_args ) ) {
+			$link = add_query_arg( $query_args, $link );
+		}
+
+		return apply_filters( $this->prefix( 'get_edit_link' ), $link, $query_args, $this );
+	}
+
+	/**
 	 * Get room location.
 	 *
 	 * @return WP_Term|null

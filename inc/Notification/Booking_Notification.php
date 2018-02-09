@@ -4,7 +4,7 @@ namespace AweBooking\Notification;
 use AweBooking\Mailable;
 use AweBooking\Model\Booking;
 use AweBooking\Support\Markdown;
-use AweBooking\Booking\Items\Line_Item;
+use AweBooking\Booking\Items\Booking_Room_Item;
 use AweBooking\Booking\Items\Service_Item;
 
 abstract class Booking_Notification extends Mailable {
@@ -42,7 +42,7 @@ abstract class Booking_Notification extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function dummy() {
-		$line_item = new Line_Item;
+		$line_item = new Booking_Room_Item;
 		$line_item['name'] = 'Dummy Room';
 		$line_item['price'] = 80;
 		$line_item['adults'] = 2;

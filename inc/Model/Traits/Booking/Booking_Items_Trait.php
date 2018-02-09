@@ -155,6 +155,10 @@ trait Booking_Items_Trait {
 		return $this->get_items( 'line_item' );
 	}
 
+	public function get_room_items() {
+		return $this->get_items( 'line_item' );
+	}
+
 	public function get_service_items() {
 		return $this->get_items( 'service_item' );
 	}

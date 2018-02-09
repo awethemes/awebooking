@@ -93,8 +93,13 @@ table.awebooking-minimal-table {
 }
 
 .awebooking-contents {
-
   p:last-child {
     margin-bottom: 0;
   }
+}
+
+p.awebooking-no-items {
+  text-align: center;
+  color: #676767 !important;
+  margin: 1em 0 !important;
 }

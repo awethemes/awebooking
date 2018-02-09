@@ -3,6 +3,8 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 use AweBooking\Model\WP_Object;
+use AweBooking\Money\Money;
+use AweBooking\Support\Utils as U;
 use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Period\Period_Collection;
 
@@ -235,52 +237,22 @@ class Booking extends WP_Object {
 		return $nights;
 	}
 
-	public function get_price( $price ) {
-		return $price;
-	}
-
 	/**
-	 * Gets formatted guest number HTML.
+	 * Format the amount as price with current booking currency.
 	 *
-	 * @param  boolean $echo Echo or return output.
+	 * @param  mixed   $amount The amount.
+	 * @param  boolean $echo   Should echo or not.
 	 * @return string|void
 	 */
-	public function get_fomatted_guest_number( $echo = true ) {
-		$adults = $children = $infants = 0;
-		foreach ( $this->get_line_items() as $key => $item ) {
-			$adults += $item->get_adults();
-			$children += $item->get_children();
-			$infants += $item->get_infants();
-		}
+	public function format_money( $amount, $echo = true ) {
+		$money = Money::of( $amount, $this->get_currency() );
 
-		$html = '';
-
-		$html .= sprintf(
-			'<span class="">%1$d %2$s</span>',
-			$adults,
-			_n( 'adult', 'adults', $adults, 'awebooking' )
-		);
-
-		if ( $children ) {
-			$html .= sprintf(
-				' &amp; <span class="">%1$d %2$s</span>',
-				$children,
-				_n( 'child', 'children', $children, 'awebooking' )
-			);
-		}
-
-		if ( $infants ) {
-			$html .= sprintf(
-				' &amp; <span class="">%1$d %2$s</span>',
-				$infants,
-				_n( 'infant', 'infants', $infants, 'awebooking' )
-			);
-		}
+		$formatted = apply_filters( $this->prefix( 'format_money' ), $money->as_string(), $money, $this );
 
 		if ( $echo ) {
-			print $html; // WPCS: XSS OK.
+			echo $formatted; // @WPCS: XSS OK.
 		} else {
-			return $html;
+			return $formatted;
 		}
 	}
 
@@ -296,12 +268,12 @@ class Booking extends WP_Object {
 	/**
 	 * Returns Period collection of booking items.
 	 *
-	 * @return Period_Collection
+	 * @return \AweBooking\Calendar\Period\Period_Collection
 	 */
 	public function get_period_collection() {
 		$periods = $this->get_line_items()->map(function( $item ) {
-			return $item->get_period();
-		})->values();
+			return U::optional( $item->get_stay() )->to_period();
+		})->filter()->values();
 
 		return new Period_Collection( $periods->to_array() );
 	}

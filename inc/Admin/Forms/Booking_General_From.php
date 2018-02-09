@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Factory;
+use AweBooking\Dropdown;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
 
@@ -50,6 +51,14 @@ class Booking_General_From extends Form_Abstract {
 					'stepMinute' => 1,
 				]),
 			],
+		]);
+
+		$this->add_field([
+			'id'          => 'booking_source',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Source', 'awebooking' ),
+			'validate'    => 'required',
+			'options_cb'  => Dropdown::cb( 'get_reservation_sources' ),
 		]);
 
 		$this->add_field([

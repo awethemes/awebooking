@@ -3,6 +3,7 @@ namespace AweBooking\Reservation\Searcher;
 
 use AweBooking\Constants;
 use AweBooking\Model\Stay;
+use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Scheduler;
@@ -25,7 +26,7 @@ class Checker {
 		$rooms     = U::collect( $room_type->get_rooms() );
 		$resources = $this->map_units_to_resources( $rooms );
 
-		$period    = $stay->get_period();
+		$period    = $stay->to_period();
 		$scheduler = $this->create_scheduler( $resources );
 
 		// Create the availability.
@@ -50,6 +51,26 @@ class Checker {
 	}
 
 	/**
+	 * Determines if given a Room is available for booking.
+	 *
+	 * @param  \AweBooking\Model\Room $room_unit The Room unit.
+	 * @param  \AweBooking\Model\Stay $stay      The Stay instance.
+	 * @return boolean
+	 */
+	public function is_available_for( Room $room_unit, Stay $stay ) {
+		$resources = $this->map_units_to_resources(
+			U::collect( [ $room_unit ] )
+		);
+
+		$calendar = $this->create_scheduler( $resources )
+						 ->first();
+
+		return ! $this->has_unavaiable_state(
+			$calendar->get_events( $stay->to_period() )
+		);
+	}
+
+	/**
 	 * Create the availability scheduler.
 	 *
 	 * @param  \AweBooking\Calendar\Resources\Resource_Collection $resources The resources.
@@ -60,7 +81,7 @@ class Checker {
 
 		$calendars = $resources->map( function( $resource ) use ( $provider ) {
 			return new Calendar( $resource, $provider );
-		} );
+		});
 
 		return Scheduler::make( $calendars );
 	}
@@ -74,7 +95,7 @@ class Checker {
 	protected function map_units_to_resources( $rooms ) {
 		return $rooms->map( function( $room ) {
 			return new Resource( $room->get_id(), Constants::STATE_AVAILABLE );
-		} );
+		});
 	}
 
 	/**
@@ -102,7 +123,7 @@ class Checker {
 			return ! $e instanceof State_Event;
 		});
 
-		// If we have any "unavailable" events in the collect,
+		// If we have any "unavailable-like" events in the collect,
 		// set current room_unit is not included in the availability.
 		return $events->contains( function( $e ) {
 			return ! $e->is_available_state();

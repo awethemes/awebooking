@@ -32,7 +32,6 @@ class Booking_Metabox extends Post_Type_Metabox {
 		// Register/un-register metaboxes.
 		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
 		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
-		add_action( 'admin_footer', [ $this, 'booking_templates' ] );
 	}
 
 	/**
@@ -124,18 +123,8 @@ class Booking_Metabox extends Post_Type_Metabox {
 		remove_meta_box( 'submitdiv', $this->post_type, 'side' );
 		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
 
-		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Payments', 'awebooking' ), awebooking( 'admin_template' )->partial_callback( 'booking/metabox-payments.php' ), Constants::BOOKING, 'advanced', 'default' );
 		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], Constants::BOOKING, 'side', 'high' );
-
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], Constants::BOOKING, 'side', 'default' );
-	}
-
-	public function booking_templates() {
-		$screen = get_current_screen();
-
-		if ( $this->is_current_screen() ) {
-			include trailingslashit( __DIR__ ) . 'views/html-booking-templates.php';
-		}
 	}
 
 	/**
@@ -152,7 +141,12 @@ class Booking_Metabox extends Post_Type_Metabox {
 		}
 
 		$the_booking = Factory::get_booking( $post );
+
 		include trailingslashit( __DIR__ ) . 'views/html-booking.php';
+
+		awebooking( 'admin_template' )->partial( 'booking/metabox-rooms.php', compact( 'the_booking' ) );
+
+		awebooking( 'admin_template' )->partial( 'booking/metabox-payments.php', compact( 'the_booking' ) );
 	}
 
 	/**
@@ -163,7 +157,6 @@ class Booking_Metabox extends Post_Type_Metabox {
 	public function output_action_metabox( $post ) {
 		include trailingslashit( __DIR__ ) . 'views/html-booking-action.php';
 	}
-
 
 	/**
 	 * Add customer meta box to this post type.

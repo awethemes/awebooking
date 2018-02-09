@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking;
 
+use AweBooking\Support\Utils as U;
+
 class Dropdown {
 	/**
 	 * Create a callback to call a method.
@@ -13,6 +15,17 @@ class Dropdown {
 		return function() use ( $method, $parameters ) {
 			return call_user_func_array( [ Dropdown::class, $method ], $parameters );
 		};
+	}
+
+	/**
+	 * Get the reservation sources.
+	 *
+	 * @return array
+	 */
+	public static function get_reservation_sources() {
+		return U::collect( awebooking()->make( 'reservation_sources' )->all() )
+			->pluck( 'label', 'uid' )
+			->toArray();
 	}
 
 	/**
