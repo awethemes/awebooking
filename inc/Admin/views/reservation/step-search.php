@@ -3,7 +3,7 @@
 	<hr class="wp-header-end">
 
 	<div class="awebooking-toolbar">
-		<?php $this->partial( 'reservation/search-form.php' ); ?>
+		<?php $this->partial( 'reservation/search-form.php', compact( 'reservation' ) ); ?>
 	</div>
 
 	<div class="awebooking-reservation__container">
@@ -13,8 +13,6 @@
 				<?php wp_nonce_field( 'awebooking_add_room', '_wpnonce', true ); ?>
 
 				<?php $availability_table->display(); ?>
-
-				<?php dump( $availability_table->items ); ?>
 			</form>
 		</div>
 

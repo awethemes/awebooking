@@ -3,6 +3,8 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Dropdown;
 use AweBooking\Constants;
+use AweBooking\Support\Carbonate;
+use AweBooking\Reservation\Reservation;
 
 class Search_Reservation_Form extends Form_Abstract {
 	/**
@@ -20,6 +22,13 @@ class Search_Reservation_Form extends Form_Abstract {
 	protected $layout;
 
 	/**
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
+	 */
+	protected $reservation;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $layout The form layout.
@@ -28,6 +37,15 @@ class Search_Reservation_Form extends Form_Abstract {
 		$this->layout = $layout;
 
 		parent::__construct();
+	}
+
+	/**
+	 * Set the reservation.
+	 *
+	 * @param \AweBooking\Reservation\Reservation $reservation The reservation.
+	 */
+	public function with_reservation( Reservation $reservation ) {
+		$this->reservation = $reservation;
 	}
 
 	/**
@@ -64,10 +82,18 @@ class Search_Reservation_Form extends Form_Abstract {
 
 		if ( $request->has( 'check_in_out' ) ) {
 			$this['check_in_out']->set_value( $request->get( 'check_in_out' ) );
+		} elseif ( $this->reservation ) {
+			$this['check_in_out']->set_value( $this->reservation->get_stay()->to_array() );
+		} elseif ( empty( $this['check_in_out']->get_value() ) ) {
+			$this['check_in_out']->set_value( $this->get_default_date_range() );
 		}
 
-		if ( 'minimal' !== $this->layout && $request->has( 'reservation_source' ) ) {
-			$this['reservation_source']->set_value( $request->get( 'reservation_source' ) );
+		if ( ! empty( $this['reservation_source'] ) ) {
+			if ( $request->has( 'reservation_source' ) ) {
+				$this['reservation_source']->set_value( $request->get( 'reservation_source' ) );
+			} elseif ( $this->reservation ) {
+				$this['reservation_source']->set_value( $this->reservation->get_source()->get_uid() );
+			}
 		}
 
 		?><div class="awebooking-row">
@@ -98,5 +124,17 @@ class Search_Reservation_Form extends Form_Abstract {
 				</button>
 			</div>
 		</div><?php // @codingStandardsIgnoreLine
+	}
+
+	/**
+	 * Get default date period.
+	 *
+	 * @return array
+	 */
+	protected function get_default_date_range() {
+		return [
+			Carbonate::today()->toDateString(),
+			Carbonate::today()->addDay( 2 )->toDateString(),
+		];
 	}
 }

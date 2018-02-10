@@ -53,20 +53,25 @@ class Booking_General_From extends Form_Abstract {
 			],
 		]);
 
-		$this->add_field([
-			'id'          => 'booking_source',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Source', 'awebooking' ),
-			'validate'    => 'required',
-			'options_cb'  => Dropdown::cb( 'get_reservation_sources' ),
-		]);
-
-		$this->add_field([
-			'id'       => 'booking_status',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Booking status', 'awebooking' ),
-			'validate' => 'required',
-			'options'  => awebooking( 'setting' )->get_booking_statuses(),
+		$this->add_row([
+			'id'           => '__row',
+			'flex_columns' => 2,
+			'fields'       => [
+				[
+					'id'          => 'booking_source',
+					'type'        => 'select',
+					'name'        => esc_html__( 'Source', 'awebooking' ),
+					'validate'    => 'required',
+					'options_cb'  => Dropdown::cb( 'get_reservation_sources' ),
+				],
+				[
+					'id'       => 'booking_status',
+					'type'     => 'select',
+					'name'     => esc_html__( 'Booking status', 'awebooking' ),
+					'validate' => 'required',
+					'options'  => awebooking( 'setting' )->get_booking_statuses(),
+				],
+			],
 		]);
 
 		$this->add_field([
