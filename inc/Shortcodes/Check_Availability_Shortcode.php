@@ -14,25 +14,25 @@ class Check_Availability_Shortcode extends Shortcode {
 	 * {@inheritdoc}
 	 */
 	public function output( Request $request ) {
-		if ( ! $request->filled( 'start-date', 'end-date', 'adults' ) ) {
-			return $this->template( 'search/welcome-screen.php' );
+		if ( $request->filled( 'check_in', 'check_out', 'adults' ) ) {
+			$guest = $this->create_guest_from_request( $request );
+			if ( is_null( $guest ) ) {
+				return $this->print_error( esc_html__( 'The guest number is invalid.', 'awebooking' ) );
+			}
+
+			$reservation = $this->resolve_reservation( $request );
+			if ( is_null( $reservation ) || is_wp_error( $reservation ) ) {
+				return $this->print_error( $reservation ?: esc_html__( 'Some error has occurred, please try again.', 'awebooking' ) );
+			}
+
+			$results = $this->perform_search_rooms( $reservation, $guest );
+
+			return $this->template( 'search/results.php',
+				compact( 'reservation', 'guest', 'results' )
+			);
 		}
 
-		$guest = $this->create_guest_from_request( $request );
-		if ( is_null( $guest ) ) {
-			return $this->print_error( esc_html__( 'The guest number is invalid.', 'awebooking' ) );
-		}
-
-		$reservation = $this->resolve_reservation( $request );
-		if ( is_wp_error( $reservation ) ) {
-			return $this->print_error( $reservation );
-		}
-
-		$results = $this->perform_search_rooms( $reservation, $guest );
-
-		return $this->template( 'search/results.php',
-			compact( 'reservation', 'guest', 'results' )
-		);
+		return $this->template( 'search/welcome-screen.php' );
 	}
 
 	/**
@@ -61,22 +61,22 @@ class Check_Availability_Shortcode extends Shortcode {
 	 * Resolve the reservation from request or session.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \AweBooking\Reservation\Reservation
+	 * @return \AweBooking\Reservation\Reservation|WP_Error|null
 	 */
 	protected function resolve_reservation( Request $request ) {
 		$session = awebooking()->make( 'reservation_session' );
 
-		$reservation = U::rescue( function() use ( $session ) {
-			return $session->resolve();
-		});
+		if ( $request->filled( 'session_id' ) ) {
+			$reservation = U::rescue( function() use ( $session, $request ) {
+				return $session->resolve( $request->get( 'session_id' ) );
+			});
+		}
 
-		if ( is_null( $reservation ) ) {
-			$reservation = $this->create_reservation_from_request( $request );
+		$reservation = $this->create_reservation_from_request( $request );
 
-			if ( ! is_wp_error( $reservation ) ) {
-				// Store new reservation in the session.
-				$session->store( $reservation );
-			}
+		if ( ! is_wp_error( $reservation ) ) {
+			// Store new reservation in the session.
+			$session->store( $reservation );
 		}
 
 		return $reservation;
@@ -96,7 +96,7 @@ class Check_Availability_Shortcode extends Shortcode {
 		}
 
 		try {
-			$stay = new Stay( $request->input( 'start-date' ), $request->input( 'end-date' ) );
+			$stay = new Stay( $request->input( 'check_in' ), $request->input( 'check_out' ) );
 			$stay->require_minimum_nights( 1 );
 		} catch ( \Exception $e ) {
 			return new WP_Error( 'stay_error', $e->getMessage() );

@@ -151,60 +151,12 @@ class Url_Generator {
 	}
 
 	/**
-	 * Get the check availability page url (fallback to home-url).
-	 *
-	 * @param  array $parameters The additional parameters.
-	 * @return string
-	 */
-	public function availability_page( $parameters = [] ) {
-		$permalink = $this->get_page_permalink( 'check_availability' );
-
-		if ( ! empty( $parameters ) ) {
-			$permalink = add_query_arg( $parameters, $permalink );
-		}
-
-		return $permalink;
-	}
-
-	/**
-	 * Get the booking page url (fallback to home-url).
-	 *
-	 * @param  array $parameters The additional parameters.
-	 * @return string
-	 */
-	public function booking_page( $parameters = [] ) {
-		$permalink = $this->get_page_permalink( 'booking' );
-
-		if ( ! empty( $parameters ) ) {
-			$permalink = add_query_arg( $parameters, $permalink );
-		}
-
-		return $permalink;
-	}
-
-	/**
-	 * Get the checkout page url (fallback to home-url).
-	 *
-	 * @param  array $parameters The additional parameters.
-	 * @return string
-	 */
-	public function checkout_page( $parameters = [] ) {
-		$permalink = $this->get_page_permalink( 'checkout' );
-
-		if ( ! empty( $parameters ) ) {
-			$permalink = add_query_arg( $parameters, $permalink );
-		}
-
-		return $permalink;
-	}
-
-	/**
 	 * Retrieve page permalink by setting name.
 	 *
 	 * @param  string $page The retrieve page.
 	 * @return string
 	 */
-	protected function get_page_permalink( $page ) {
+	public function get_page_permalink( $page ) {
 		$page_id = apply_filters( "awebooking/get_{$page}_page_id", $this->awebooking['setting']->get( "page_{$page}" ) );
 
 		$permalink = $page_id ? get_permalink( $page_id ) : get_home_url();

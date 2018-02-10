@@ -196,6 +196,15 @@ class Reservation {
 	}
 
 	/**
+	 * Generate the reservation session_id.
+	 *
+	 * @return string
+	 */
+	public function generate_session_id() {
+		return sha1( $this->source->get_uid() . implode( '', $this->stay->to_array() ) );
+	}
+
+	/**
 	 * Check if this room can be for booking.
 	 *
 	 * @param  Room $room The room instance.

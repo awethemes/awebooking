@@ -31,6 +31,13 @@ class Session {
 	protected $lifetime;
 
 	/**
+	 * Keep the session alive.
+	 *
+	 * @var boolean
+	 */
+	protected $keep_session = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param WP_Session $wp_session   The WP_Session instance.
@@ -46,18 +53,25 @@ class Session {
 	/**
 	 * Resolve the reservation from session.
 	 *
+	 * @param  string $session_id Optional, the reservation session ID to compare.
 	 * @return Reservation|null
 	 */
-	public function resolve() {
+	public function resolve( $session_id = null ) {
 		$payload = $this->wp_session->get( $this->session_name );
 
-		if ( empty( $payload['data'] ) || empty( $payload['timeout'] ) ) {
+		if ( empty( $payload['data'] )
+			|| empty( $payload['timeout'] )
+			|| empty( $payload['session_id'] ) ) {
 			return;
 		}
 
 		// Verify payload timeout.
-		if ( time() > $payload['timeout'] ) {
+		if ( ! $this->keep_session && time() > $payload['timeout'] ) {
 			$this->flush();
+			return;
+		}
+
+		if ( ! is_null( $session_id ) && $session_id !== $payload['session_id'] ) {
 			return;
 		}
 
@@ -72,6 +86,11 @@ class Session {
 	 */
 	public function update( Reservation $reservation ) {
 		if ( ! $stored_reservation = $this->resolve() ) {
+			return false;
+		}
+
+		if ( empty( $stored_reservation['session_id'] ) ||
+			$stored_reservation['session_id'] !== $reservation->generate_session_id() ) {
 			return false;
 		}
 
@@ -90,12 +109,20 @@ class Session {
 	 */
 	public function store( Reservation $reservation ) {
 		$this->wp_session->put( $this->session_name, [
-			'data' => $reservation,
-			'timeout' => time() + ( $this->lifetime * MINUTE_IN_SECONDS ),
+			'data'       => $reservation,
+			'timeout'    => time() + ( $this->lifetime * MINUTE_IN_SECONDS ),
+			'session_id' => $reservation->generate_session_id(),
 		]);
 	}
 
-	public function keep() {
+	/**
+	 * Keep the session.
+	 *
+	 * @param  bool $keep Keep or not.
+	 * @return void
+	 */
+	public function keep( $keep = true ) {
+		$this->keep_session = $keep;
 	}
 
 	/**
