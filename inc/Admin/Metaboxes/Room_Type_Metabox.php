@@ -308,9 +308,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'type'            => '_none_',
 			'name'            => esc_html__( 'Services', 'awebooking' ),
 			'save_field'      => false,
-			'render_field_cb' => function() {
-				include trailingslashit( __DIR__ ) . 'views/html-room-type-services.php';
-			},
+			'render_field_cb' => $this->categories_box_callback( Constants::HOTEL_SERVICE ),
 		]);
 	}
 
@@ -374,6 +372,14 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	protected function categories_box_callback( $taxonomy ) {
 		return function() use ( $taxonomy ) {
 			post_categories_meta_box( get_post(), [ 'args' => [ 'taxonomy' => $taxonomy ] ] );
+			// Temp commit.
+			?>
+			<style>
+				#hotel_extra_service-add-toggle {
+					display: none;
+				}
+			</style>
+			<?php
 		};
 	}
 

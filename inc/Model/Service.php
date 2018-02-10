@@ -3,6 +3,7 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 use AweBooking\Support\Decimal;
+use AweBooking\Money\Money;
 
 class Service extends WP_Object {
 	/* Constants */
@@ -115,7 +116,16 @@ class Service extends WP_Object {
 	 * @return float
 	 */
 	public function get_value() {
-		return apply_filters( $this->prefix( 'get_value' ), Decimal::create( $this['value'] ), $this );
+		return apply_filters( $this->prefix( 'get_value' ), $this['value'], $this );
+	}
+
+	/**
+	 * Returns price.
+	 *
+	 * @return float
+	 */
+	public function get_price() {
+		return apply_filters( $this->prefix( 'get_price' ), Money::of( Decimal::create( $this->get_value() ) ), $this );
 	}
 
 	/**
