@@ -42,7 +42,7 @@ class Check_Availability_Widget extends Widget {
 
 		// Build shortcode attributes.
 		$attributes = apply_filters( 'awebooking/widget/check_availability_attributes', [
-			'hide_location' => ( awebooking()->is_multi_location() && $instance['hide_location'] ) ? '1' : '0',
+			'hide_location' => ( awebooking( 'setting' )->is_multi_location() && $instance['hide_location'] ) ? '1' : '0',
 		]);
 
 		// Output the widget.
@@ -72,7 +72,7 @@ class Check_Availability_Widget extends Widget {
 			'name' => esc_html__( 'Title', 'awebooking' ),
 		];
 
-		if ( awebooking()->is_multi_location() ) {
+		if ( awebooking( 'setting' )->is_multi_location() ) {
 			$fields[] = [
 				'id'   => 'hide_location',
 				'type' => 'checkbox',
