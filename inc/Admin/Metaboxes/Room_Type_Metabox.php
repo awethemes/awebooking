@@ -5,6 +5,7 @@ use AweBooking\Factory;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Room;
 
 class Room_Type_Metabox extends Post_Type_Metabox {
 	/**
@@ -101,7 +102,52 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 
 		if ( isset( $_POST['abkng_rooms'] ) && is_array( $_POST['abkng_rooms'] ) ) {
 			$request_rooms = wp_unslash( $_POST['abkng_rooms']);
-			$room_type->bulk_sync_rooms( $request_rooms );
+			$this->bulk_sync_rooms( $request_rooms, $room_type );
+		}
+	}
+
+	/**
+	 * Bulk sync rooms.
+	 *
+	 * @param  array       $request_rooms The request rooms.
+	 * @param  Room_Type   $room_type     The room type.
+	 * @return void
+	 */
+	public function bulk_sync_rooms( array $request_rooms, Room_Type $room_type ) {
+		// Current list room of room-type.
+		$db_rooms_ids = array_map( 'absint', $room_type->get_rooms()->pluck( 'id' )->all() );
+		// Multilanguage need this.
+		$room_type_id = apply_filters( 'awebooking/room_type/get_id_for_rooms', $room_type->get_id() );
+		$touch_ids = [];
+		foreach ( $request_rooms as $raw_room ) {
+			// Ignore in-valid rooms from request.
+			if ( ! isset( $raw_room['id'] ) || ! isset( $raw_room['name'] ) ) {
+				continue;
+			}
+			// Sanitize data before working with database.
+			$room_args = array_map( 'sanitize_text_field', $raw_room );
+			if ( $room_args['id'] > 0 && in_array( (int) $room_args['id'], $db_rooms_ids ) ) {
+				$room_unit = new Room( $room_args['id'] );
+				$room_unit['name'] = $room_args['name'];
+				$room_unit->save();
+			} else {
+				$room_unit = new Room;
+				$room_unit['name'] = $room_args['name'];
+				$room_unit['room_type'] = $room_type_id;
+				$room_unit->save();
+			}
+			// We'll map current working ID in $touch_ids...
+			if ( $room_unit->exists() ) {
+				$touch_ids[] = $room_unit->get_id();
+			}
+		}
+		// Fimally, delete invisible rooms.
+		$delete_ids = array_diff( $db_rooms_ids, $touch_ids );
+		if ( ! empty( $delete_ids ) ) {
+			global $wpdb;
+			$delete_ids = implode( ',', $delete_ids );
+			// @codingStandardsIgnoreLine
+			$wpdb->query( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` IN ({$delete_ids})" );
 		}
 	}
 
@@ -308,9 +354,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'type'            => '_none_',
 			'name'            => esc_html__( 'Services', 'awebooking' ),
 			'save_field'      => false,
-			'render_field_cb' => function() {
-				include trailingslashit( __DIR__ ) . 'views/html-room-type-services.php';
-			},
+			'render_field_cb' => $this->categories_box_callback( Constants::HOTEL_SERVICE ),
 		]);
 	}
 
@@ -374,6 +418,14 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	protected function categories_box_callback( $taxonomy ) {
 		return function() use ( $taxonomy ) {
 			post_categories_meta_box( get_post(), [ 'args' => [ 'taxonomy' => $taxonomy ] ] );
+			// Temp commit.
+			?>
+			<style>
+				#hotel_extra_service-add-toggle {
+					display: none;
+				}
+			</style>
+			<?php
 		};
 	}
 

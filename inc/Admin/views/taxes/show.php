@@ -1,6 +1,7 @@
 
-<h1><?php esc_html_e( 'Edit the tax or fee', 'awebooking' ); ?></h1>
 <div class="wrap">
+	<h1 class="wp-heading-inline"><?php esc_html_e( 'Edit the tax or fee', 'awebooking' ); ?></h1>
+	<hr class="wp-header-end">
 	<form method="POST" action="<?php echo esc_url( awebooking( 'url' )->admin_route( "tax/{$tax->id}" ) ); ?>">
 		<?php wp_nonce_field( 'update_tax', '_wpnonce', true ); ?>
 
