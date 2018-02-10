@@ -20,6 +20,18 @@ class Core_Service_Provider extends Service_Provider {
 	];
 
 	/**
+	 * The AweBooking core shortcodes.
+	 *
+	 * @var array
+	 */
+	protected $shortcodes = [
+		'awebooking_check_form'         => \AweBooking\Shortcodes\Check_Form_Shortcode::class,
+		'awebooking_check_availability' => \AweBooking\Shortcodes\Check_Availability_Shortcode::class,
+		'awebooking_checkout'           => \AweBooking\Shortcodes\Checkout_Shortcode::class,
+		'awebooking_room_types'         => \AweBooking\Shortcodes\Room_Types_Shortcode::class,
+	];
+
+	/**
 	 * Registers services on the AweBooking.
 	 */
 	public function register() {
@@ -33,12 +45,22 @@ class Core_Service_Provider extends Service_Provider {
 			return new Currency( $a['setting']->get( 'currency' ) );
 		});
 
-		Shortcodes::init();
+		$this->register_widgets();
+	}
 
+	/**
+	 * Init the core widgets.
+	 *
+	 * @return void
+	 */
+	protected function register_widgets() {
 		add_action( 'widgets_init', function() {
-			array_walk( $this->widgets, function( $widget_class ) {
-				register_widget( $widget_class );
-			});
+			$widgets = apply_filters( 'awebooking/widgets', $this->widgets );
+
+			// Loop each widgets and call the register.
+			foreach ( $widgets as $class_name ) {
+				register_widget( $class_name );
+			}
 		});
 	}
 
@@ -49,6 +71,25 @@ class Core_Service_Provider extends Service_Provider {
 	 */
 	public function init() {
 		$this->modify_setting_key();
+
+		$this->init_shortcodes();
+	}
+
+	/**
+	 * Init the core shortcodes.
+	 *
+	 * @return void
+	 */
+	protected function init_shortcodes() {
+		$shortcodes = apply_filters( 'awebooking/shortcodes', $this->shortcodes );
+
+		foreach ( $shortcodes as $tag => $class_name ) {
+			add_shortcode( $tag, function( $atts, $contents = '' ) use ( $class_name ) {
+				return $this->awebooking
+					->makeWith( $class_name, compact( 'atts', 'contents' ) )
+					->build();
+			});
+		}
 	}
 
 	/**

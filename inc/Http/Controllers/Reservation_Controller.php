@@ -1,45 +1,52 @@
 <?php
 namespace AweBooking\Http\Controllers;
 
-use Awethemes\Http\Request;
-use Illuminate\Support\Arr;
-use AweBooking\Model\Rate;
 use AweBooking\Factory;
+use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
+use Illuminate\Support\Arr;
+use Awethemes\Http\Request;
 
-class Reservation_Controller extends Controller{
-
-	public function create( Request $request ) {
+class Reservation_Controller extends Controller {
+	/**
+	 * Add a room-item in session reservation.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return \Awethemes\Http\Response
+	 *
+	 * @throws \RuntimeException
+	 */
+	public function add_item( Request $request ) {
 		$request->verify_nonce( '_wpnonce', 'awebooking_reservation' );
 
-		// Try to resolve from session.
 		$reservation = awebooking( 'reservation_session' )->resolve();
 
 		if ( is_null( $reservation ) ) {
-			throw new \RuntimeException( esc_html__( 'The reservation session could not found, please try again.', 'awebooking' ) );
+			$this->notices( 'error', esc_html__( 'The reservation session could not found, please try again.', 'awebooking' ) );
+			return $this->redirect()->back();
 		}
 
 		// Get the submited room-item.
 		$submited_item = Arr::first( array_keys( (array) $request->submit ) );
+		dd( $submited_item );
 
-		// Build the add room-item data.
-		// $item_data = (array) $request->input( "reservation_room.{$submited_item}" );
-		$item_data['room_type'] = $submited_item;
-		$item_data['room_unit'] = 30;
-		$item_data['room_rate'] = 0;
-		$item_data['adults'] = $request->get( 'adults' );
-		$item_data['children'] = $request->get( 'children' );
-		$item_data['infants'] = $request->get( 'infants' );
+		// // Build the add room-item data.
+		// // $item_data = (array) $request->input( "reservation_room.{$submited_item}" );
+		// $item_data['room_type'] = $submited_item;
+		// $item_data['room_unit'] = 30;
+		// $item_data['room_rate'] = 0;
+		// $item_data['adults'] = $request->get( 'adults' );
+		// $item_data['children'] = $request->get( 'children' );
+		// $item_data['infants'] = $request->get( 'infants' );
 
-		try {
-			$this->add_reservation_item( $reservation, $item_data );
+		// try {
+		// 	$this->add_reservation_item( $reservation, $item_data );
 
-			// awebooking( 'admin_notices' )->success( esc_html__( 'Item added successfully', 'awebooking' ) );
-		} catch ( \Exception $e ) {
-			// awebooking( 'admin_notices' )->error( $e->getMessage() );
-		}
+		// 	// awebooking( 'admin_notices' )->success( esc_html__( 'Item added successfully', 'awebooking' ) );
+		// } catch ( \Exception $e ) {
+		// 	// awebooking( 'admin_notices' )->error( $e->getMessage() );
+		// }
 
 		return $this->redirect()->back();
 	}
@@ -78,25 +85,5 @@ class Reservation_Controller extends Controller{
 
 		// Update the reservation in the session store.
 		awebooking( 'reservation_session' )->update( $reservation );
-	}
-
-
-	/**
-	 * Assert a given object exists.
-	 *
-	 * @param  \AweBooking\Model\WP_Object $object WP_Object implementation.
-	 * @return void
-	 *
-	 * @throws \InvalidArgumentException
-	 * @throws \AweBooking\Model\Exceptions\Model_Not_Found_Exception
-	 */
-	protected function assert_object_exists( $object ) {
-		if ( is_null( $object ) ) {
-			throw new Model_Not_Found_Exception( esc_html__( 'Resource not found', 'awebooking' ) );
-		}
-
-		if ( ! $object->exists() ) {
-			throw (new Model_Not_Found_Exception)->set_model( get_class( $object ) );
-		}
 	}
 }

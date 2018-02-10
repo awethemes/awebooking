@@ -16,4 +16,21 @@ abstract class Controller {
 
 		return $url ? $redirector->to( $url ) : $redirector;
 	}
+
+	/**
+	 * Get the `flash_message` instance.
+	 *
+	 * @param  string $type    Optional, the notice type if provided: 'updated', 'success', 'info', 'error', 'warning'.
+	 * @param  string $message Optional, the notice message.
+	 * @return \AweBooking\Support\Flash_Message
+	 */
+	protected function notices( $type = null, $message = '' ) {
+		$notices = awebooking( 'flash_message' );
+
+		if ( is_null( $type ) ) {
+			return $notices;
+		}
+
+		return $notices->add_message( $message, $type );
+	}
 }
