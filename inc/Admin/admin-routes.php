@@ -21,7 +21,8 @@ $route->post( '/rates/{room_type:\d+}', Rate_Controller::class . '@set_amount' )
 // Reservation source routes.
 $route->post( '/sources', Source_Controller::class . '@store' );
 $route->post( '/sources/bulk-update', Source_Controller::class . '@bulk_update' );
-$route->post( '/sources/{source}', Source_Controller::class . '@update' );
+$route->get( '/source/{source}', Source_Controller::class . '@show' );
+$route->put( '/source/{source}', Source_Controller::class . '@update' );
 
 // Reservation routes.
 $route->get( '/reservation/create', Reservation_Controller::class . '@create' );

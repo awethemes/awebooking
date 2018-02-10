@@ -11,13 +11,17 @@
 
 	<td>
 		<strong><?php echo esc_html( $source['name'] ); ?></strong>
+		<div class="row-actions afloat-right">
+			<span class="edit"><a href="<?php echo esc_url( awebooking( 'url' )->admin_route( "source/{$source['uid']}" ) ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> | </span>
+		</div>
+	</td>
+	<?php var_dump($source) ?>
+	<td>
+		<?php if ( isset( $source['tax'] ) && $source['tax'] ) : ?>
+			<?php esc_html_e( 'Tax or Fee:', 'awebooking' ); ?> <?php echo esc_html( $source['tax'] ); ?>
+		<?php else : ?>
+			<i><?php esc_html_e( 'No tax or fee', 'awebooking' ); ?></i>
+		<?php endif; ?>
 	</td>
 
-	<td>
-		<i>No tax or fee</i>
-	</td>
-
-	<td>
-		<input type="hidden" name="sources[<?php echo esc_attr( $source['uid'] ); ?>][uid]" value="<?php echo esc_attr( $source['uid'] ); ?>">
-	</td>
 </tr>

@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Model;
 
+use AweBooking\Model\Tax;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -49,7 +50,7 @@ class Source implements Jsonable, Arrayable {
 	 * @param string         $name      The source name.
 	 * @param Surcharge|null $surcharge The surcharge: tax or fee (optional).
 	 */
-	public function __construct( $uid, $name, Fee $surcharge = null ) {
+	public function __construct( $uid, $name, Tax $surcharge = null ) {
 		$this->uid  = $uid;
 		$this->name = $name;
 		$this->surcharge = $surcharge;
@@ -109,7 +110,7 @@ class Source implements Jsonable, Arrayable {
 	/**
 	 * Get the source surcharge (tax or fee).
 	 *
-	 * @return \AweBooking\Mode\Fee|null
+	 * @return \AweBooking\Mode\Tax|null
 	 */
 	public function get_surcharge() {
 		return $this->surcharge;
@@ -118,10 +119,10 @@ class Source implements Jsonable, Arrayable {
 	/**
 	 * Set the source surcharge.
 	 *
-	 * @param  Fee $surcharge Surcharge tax or fee.
+	 * @param  Tax $surcharge Surcharge tax or fee.
 	 * @return $this
 	 */
-	public function set_surcharge( Fee $surcharge ) {
+	public function set_surcharge( Tax $surcharge ) {
 		$this->surcharge = $surcharge;
 
 		return $this;
