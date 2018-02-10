@@ -2,7 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Pricing\Price;
+use AweBooking\Support\Decimal;
 
 class Service extends WP_Object {
 	/* Constants */
@@ -69,15 +69,6 @@ class Service extends WP_Object {
 	];
 
 	/**
-	 * The attributes that should be cast to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'value' => 'float',
-	];
-
-	/**
 	 * Get service by given a slug.
 	 *
 	 * @param  string $slug Service slug.
@@ -124,7 +115,7 @@ class Service extends WP_Object {
 	 * @return float
 	 */
 	public function get_value() {
-		return apply_filters( $this->prefix( 'get_value' ), $this['value'], $this );
+		return apply_filters( $this->prefix( 'get_value' ), Decimal::create( $this['value'] ), $this );
 	}
 
 	/**
@@ -217,19 +208,6 @@ class Service extends WP_Object {
 		}
 
 		return $label;
-	}
-
-	/**
-	 * The room-type title.
-	 *
-	 * @return Price
-	 */
-	public function get_price() {
-		if ( in_array( $this->get_operation(), [ static::OP_INCREASE, static::OP_DECREASE ] ) ) {
-			return new Price( 0 );
-		}
-
-		return new Price( $this['value'] );
 	}
 
 	/**

@@ -103,18 +103,6 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			$request_rooms = wp_unslash( $_POST['abkng_rooms']);
 			$room_type->bulk_sync_rooms( $request_rooms );
 		}
-
-		if ( isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ) {
-			$services = array_unique(
-				array_map( 'intval', $_POST['awebooking_services'] )
-			);
-
-			$term_taxonomy_ids = wp_set_object_terms(
-				$post_id, $services, Constants::HOTEL_SERVICE, false
-			);
-		} else {
-			wp_delete_object_term_relationships( $post_id, Constants::HOTEL_SERVICE );
-		}
 	}
 
 	/**
