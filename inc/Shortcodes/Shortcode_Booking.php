@@ -4,7 +4,7 @@ namespace AweBooking\Shortcodes;
 use AweBooking\Concierge;
 use AweBooking\Model\Room_Type;
 use AweBooking\Booking\Request;
-use AweBooking\Support\Template;
+use AweBooking\Template;
 use AweBooking\Factory;
 use AweBooking\Support\Period;
 

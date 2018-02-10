@@ -10,7 +10,6 @@ class Shortcodes {
 		$shortcodes = array(
 			'awebooking_check_availability'  => __CLASS__ . '::check_availability',
 			'awebooking_booking'             => __CLASS__ . '::booking',
-			'awebooking_cart'                => __CLASS__ . '::cart',
 			'awebooking_checkout'            => __CLASS__ . '::checkout',
 			'awebooking_check_form'          => __CLASS__ . '::check_form',
 			'awebooking_room_types'          => __CLASS__ . '::room_types',
@@ -67,16 +66,6 @@ class Shortcodes {
 	}
 
 	/**
-	 * Cart shortcode.
-	 *
-	 * @param mixed $atts
-	 * @return string
-	 */
-	public static function cart( $atts ) {
-		return self::shortcode_wrapper( array( 'AweBooking\\Shortcodes\\Shortcode_Cart', 'output' ), $atts );
-	}
-
-	/**
 	 * Checkout page shortcode.
 	 *
 	 * @param mixed $atts
@@ -102,7 +91,11 @@ class Shortcodes {
 
 		$template = apply_filters( 'awebooking/check_availability/layout', $template, $atts );
 
+		ob_start();
+
 		awebooking_get_template( $template, array( 'atts' => $atts ) );
+
+		return ob_get_clean();
 	}
 
 	/**

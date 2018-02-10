@@ -1,0 +1,488 @@
+.awebooking-availability-container {
+  &.has-sidebar {
+    &:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .awebooking-availability-room-types {
+      width: 75%;
+      float: left;
+    }
+
+    .awebooking-availability-sidebar {
+      width: 25%;
+      float: left;
+      padding: 0 10px;
+    }
+  }
+}
+
+.awebooking-availability-room-types {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.awebooking-availability-room-type {
+  margin-left: -15px;
+  margin-right: -15px;
+  background: #f8f8f8;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 10px;
+
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+.awebooking-availability-room-type__title {
+  margin-bottom: 10px;
+}
+
+.awebooking-availability-room-type__media {
+  width: 100%;
+  float: left;
+  padding-right: 15px;
+  margin-bottom: 15px;
+
+  @media (min-width: 992px) {
+    width: 30%;
+  }
+}
+
+.awebooking-availability-room-type__info {
+  width: 100%;
+  float: left;
+
+  @media (min-width: 992px) {
+    width: 70%;
+    padding-left: 0;
+  }
+}
+
+.awebooking-availability-room-type__thumbnail {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+
+  img {
+    width: 100%;
+    transition: all ease .4s;
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.awebooking-availability-room-type .awebooking-availability-room-type__title {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background: rgba(0, 0, 0, .6);
+  padding: 5px 0;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    box-shadow: none;
+  }
+}
+
+.awebooking-rates {
+  border-radius: 3px;
+  position: relative;
+}
+
+.awebooking-discount {
+  font-size: 12px;
+  background: #EF4040;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0px 6px;
+  position: absolute;
+  right: -1px;
+  top: 10px;
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+  }
+
+  &:before {
+    background: #EF4040;
+    height: 100%;
+    width: 10px;
+    right: -6px;
+    top: 0px;
+  }
+
+  &:after {
+    bottom: -6px;
+    right: -6px;
+    height: 0px;
+    width: 0px;
+    border-top: 3px solid #921313;
+    border-left: 3px solid #921313;
+    border-bottom: 3px solid rgba(0, 0, 0, 0);
+    border-right: 3px solid rgba(0, 0, 0, 0);
+  }
+}
+
+.awebooking-rate {
+  position: relative;
+  border: 1px solid #ccc;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+  margin-bottom: 15px;
+
+  .awebooking-rate__name {
+    font-size: 21px;
+    color: #045578;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-right: 68px;
+
+    @media (min-width: 992px) {
+      margin-bottom: 0;
+      height: 50px;
+      overflow: hidden;
+    }
+  }
+
+  &.editing {
+    border: 2px solid #fcc045;
+  }
+}
+
+.awebooking-rate__body {
+  padding: 15px;
+}
+
+.awebooking-rate__content {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 15px;
+
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+.awebooking-rate__info {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  p {
+    font-size: 14px;
+    margin-bottom: 0px;
+    line-height: 22px;
+  }
+
+  @media (min-width: 992px) {
+    width: 60%;
+    float: right;
+    margin-top: 15px;
+  }
+}
+
+.awebooking-rate__price {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+  margin-bottom: 15px;
+
+  .price {
+    del {
+      display: block;
+      font-size: 15px;
+    }
+
+    ins {
+      display: inline-block;
+      font-size: 24px;
+      color: #111212;
+      padding: 0;
+      background: none;
+      line-height: 1;
+      vertical-align: middle;
+    }
+  }
+
+  @media (min-width: 992px) {
+    width: 40%;
+    float: right;
+    text-align: right;
+    margin-bottom: 0;
+  }
+}
+
+.awebooking-rate__bottom,
+.awebooking-rate__services {
+  width: 100%;
+  background: #fff;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  border-radius: 0 0 3px 3px;
+  overflow: hidden;
+}
+
+.awebooking-rate__services {
+  .awebooking-service__item {
+    margin-top: 0;
+    font-size: 14px;
+
+    label {
+      cursor: pointer;
+      margin-bottom: 0px;
+      line-height: 22px;
+      color: #04aa07;
+    }
+
+    input {
+      cursor: pointer;
+    }
+  }
+}
+
+.awebooking-rate__price_detail {
+  p {
+    font-size: 12px;
+    margin-bottom: 0px;
+    line-height: 1.5;
+  }
+}
+
+.awebooking-rate__included {
+  color: #04aa07;
+}
+
+.awebooking-rate__actions-left {
+  float: left;
+}
+
+.awebooking-rate__actions-right {
+  float: right;
+}
+
+.awebooking-rate__book {
+  background: #FFCA11;
+  color: #8f5600;
+  padding: 8px 10px;
+  min-width: 100px;
+  text-align: center;
+  float: right;
+  border: 0px solid #ccc;
+  line-height: 1;
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 14px;
+  text-decoration: none;
+  vertical-align: middle;
+  letter-spacing: 0;
+  transition: all ease .2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.awebooking-rate__rooms {
+  font-size: 13px;
+  color: #2f7131;
+  font-weight: normal;
+  margin-right: 15px;
+}
+
+.awebooking-rate__actions-left {
+  a {
+    font-size: 14px;
+    margin: 0px 10px 0px 0px;
+    text-decoration: none;
+    color: #db0021;
+    vertical-align: middle;
+    box-shadow: none;
+
+    &:hover {
+      color: #5C1111;
+    }
+  }
+}
+
+.awebooking-price__info {
+  border-radius: 50%;
+  background: #7D7878;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  vertical-align: middle;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  text-decoration: none;
+  transition: all 0.3s ease-in;
+
+  &:hover, &:focus, &:visited {
+    color: #7D7878;
+    background: #fff;
+    border: 1px solid #7D7878;
+  }
+}
+
+.awebooking-breakdown-popup.mfp-bg {
+  background: #000 !important;
+  opacity: 0.5 !important;
+}
+
+.breakdown-popup  {
+  position: relative;
+  background: #FFF;
+  width: auto;
+  max-width: 650px;
+  margin: 20px auto;
+}
+
+.awebooking-breakdown__header {
+  color: #FEFDF7;
+  background: #4798c4;
+
+  h3 {
+    color: #fff;
+    font-weight: 100;
+    font-size: 16px;
+    text-align: left;
+    margin: 0px;
+    padding: 15px;
+  }
+}
+
+.awebooking-breakdown__title {
+  padding: 0 15px;
+}
+
+.awebooking-breakdown__table {
+  margin: 0;
+  width: 100%;
+  border: none;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
+
+  th {
+    border-top: 1px solid #ddd;
+    background: #f8f8f8;
+  }
+
+  th,
+  td {
+    margin: 0;
+    padding: 5px 15px;
+    line-height: 1;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
+}
+
+.breakdown-popup .mfp-close {
+  color: #fff !important;
+}
+
+.awebooking-breakdown-popup {
+  .mfp-content {
+    width: auto !important;
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.awebooking-rate__book-action {
+  display: inline-block;
+  width: 100px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.awebooking-rate__nums {
+  border: 1px solid #ccc;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+.awebooking-cal {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+  color: #333;
+  padding: 0px 10px;
+  box-shadow: none !important;
+  font-size: 14px;
+  font-weight: bold;
+
+  &:first-child {
+    border-radius: 3px 0 0 3px;
+    border-right: 1px solid #ccc;
+  }
+
+  &:last-child {
+    border-radius: 0 3px 3px 0;
+    border-left: 1px solid #ccc;
+  }
+}
+
+.js-awebooking-count-room {
+  padding: 0px 10px;
+}
+
+.awebooking-dropdown-content {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  margin-top: 1px;
+  overflow: hidden;
+  display: none;
+  overflow-y: auto;
+  z-index: 9
+}
+
+.awebooking-rate__list-services {
+  font-size: 14px;
+  margin-bottom: 0px;
+  line-height: 22px;
+  color: #04aa07;
+}
+
+.awebooking-rate__service-btn.active i {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+.awebooking-cart-item__edit {
+  float: left;
+  font-size: 16px;
+  color: #045578;
+  text-decoration: none;
+  box-shadow: none !important;
+}

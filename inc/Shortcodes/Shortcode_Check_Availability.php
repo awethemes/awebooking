@@ -1,10 +1,30 @@
 <?php
 namespace AweBooking\Shortcodes;
 
+use WP_Error;
 use AweBooking\Factory;
-use AweBooking\Concierge;
+use AweBooking\AweBooking;
+use AweBooking\Template;
+
+use AweBooking\Reservation\Searcher\Query;
+use AweBooking\Reservation\Item as Reservation_Item;
+use AweBooking\Reservation\Reservation;
+use AweBooking\Admin\Forms\New_Reservation_Form;
+use AweBooking\Admin\List_Tables\Availability_List_Table;
+
+use Illuminate\Support\Arr;
+use Awethemes\Http\Request;
+
+use AweBooking\Model\Stay;
+use AweBooking\Model\Room;
+use AweBooking\Model\Rate;
+use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
-use AweBooking\Support\Template;
+
+use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
+use AweBooking\Http\Exceptions\Validation_Failed_Exception;
+use AweBooking\Http\Exceptions\Nonce_Mismatch_Exception;
+use AweBooking\Reservation\Searcher\Constraints\Session_Reservation_Constraint;
 
 class Shortcode_Check_Availability {
 
@@ -37,19 +57,80 @@ class Shortcode_Check_Availability {
 		$errors = '';
 		$results = [];
 
-		if ( isset( $_REQUEST['start-date'] ) && isset( $_REQUEST['end-date'] ) ) {
-			try {
-				$booking_request = Factory::create_booking_request();
-				$results = Concierge::check_availability( $booking_request );
-			} catch ( \InvalidArgumentException $e ) {
-				$errors = esc_html__( 'Missing data, please enter the required data.', 'awebooking' );
-			} catch ( \LogicException $e ) {
-				$errors = esc_html__( 'Period dates are invalid.', 'awebooking' );
-			} catch ( \Exception $e ) {
-				$errors = esc_html__( 'An error occurred while processing your request.', 'awebooking' );
-			}
+		$request = awebooking()->make( 'request' );
 
-			Template::get_template( 'check-availability.php', array( 'results' => $results, 'errors' => $errors ) );
+		self::step_search( $request );
+	}
+
+	protected static function step_search( Request $request ) {
+		$session = awebooking()->make( 'reservation_session' );
+		$resolve = $session->resolve();
+
+		// Create new reservation from request.
+		$reservation = self::new_reservation_from_request( $request );
+
+		if ( ! $resolve || ( ! self::is_new_stay( $reservation, $session->resolve() ) ) ) {
+
+			// Store in the session.
+			$session->store( $reservation );
+		} else {
+			// Try to resolve from session.
+			$reservation = $session->resolve();
 		}
+
+		$guest = new Guest( $request->get( 'adults' ), $request->get( 'children' ), $request->get( 'infants' ) );
+
+		// Attach the search to availability_table items.
+		$items = self::perform_search_rooms( $reservation, $guest );
+
+		Template::get_template( 'check-availability.php', compact(
+			'reservation', 'items', 'guest'
+		) );
+	}
+
+	/**
+	 * Perform search rooms.
+	 *
+	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
+	 * @return array
+	 */
+	protected static function perform_search_rooms( Reservation $reservation, Guest $guest ) {
+		$constraints = [
+			new Session_Reservation_Constraint( $reservation ),
+		];
+
+		$results = $reservation->search( $guest, $constraints )
+			->only_available_items();
+
+		return $results;
+	}
+
+	/**
+	 * Create new reservation from request.
+	 *
+	 * @param  \Awethemes\Http\Request $r The current request.
+	 * @return \AweBooking\Reservation\Reservation
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	protected static function new_reservation_from_request( Request $request ) {
+		$source = awebooking( 'reservation_sources' )->get( 'direct_website' );
+
+		return new Reservation( $source,
+			new Stay( $request->get( 'start-date' ), $request->get( 'end-date' ) )
+		);
+	}
+
+	protected static function is_new_stay( Reservation $reservation, Reservation $other_reservation ) {
+
+		if ( $reservation->get_stay()->get_check_in() != $other_reservation->get_stay()->get_check_in() ) {
+			return false;
+		}
+
+		if ( $reservation->get_stay()->get_check_out() != $other_reservation->get_stay()->get_check_out() ) {
+			return false;
+		}
+
+		return true;
 	}
 }

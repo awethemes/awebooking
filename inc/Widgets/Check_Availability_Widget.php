@@ -56,7 +56,7 @@ class Check_Availability_Widget extends Widget {
 			$html_attributes .= $key . '="' . esc_attr( $value ) . '" ';
 		}
 
-		do_shortcode( '[awebooking_check_form ' . $html_attributes . ']' );
+		echo do_shortcode( '[awebooking_check_form ' . $html_attributes . ']' );
 		echo $args['after_widget']; // WPCS: XSS OK.
 	}
 
