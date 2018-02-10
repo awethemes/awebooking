@@ -300,7 +300,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 						esc_html( $the_room->get_name() )
 					);
 
-					if ( awebooking()->is_multi_location() && $hotel_location ) {
+					if ( awebooking( 'setting' )->is_multi_location() && $hotel_location ) {
 						echo '<br>' . esc_html__( 'Location:', 'awebooking' ) . ' <span>' . esc_html( $hotel_location->name ) . '</span>';
 					}
 				} else {

@@ -322,7 +322,7 @@ if ( ! function_exists( 'is_room_type_archive' ) ) :
 	 * @return bool
 	 */
 	function is_room_type_archive() {
-		return is_post_type_archive( AweBooking::ROOM_TYPE );
+		return is_post_type_archive( Constants::ROOM_TYPE );
 	}
 endif;
 
@@ -333,7 +333,7 @@ if ( ! function_exists( 'is_room_type' ) ) :
 	 * @return bool
 	 */
 	function is_room_type() {
-		return is_singular( AweBooking::ROOM_TYPE );
+		return is_singular( Constants::ROOM_TYPE );
 	}
 endif;
 

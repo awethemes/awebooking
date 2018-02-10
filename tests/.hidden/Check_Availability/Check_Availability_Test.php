@@ -74,7 +74,7 @@ class Check_Availability_Test extends WP_UnitTestCase {
 	 */
 	public function test_room_type() {
 		$query = Room_Type::query( [
-			'post_type'   => AweBooking::ROOM_TYPE,
+			'post_type'   => Constants::ROOM_TYPE,
 		] );
 
 		$this->assertCount( 3, $query->posts );

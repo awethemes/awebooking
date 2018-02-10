@@ -45,7 +45,8 @@ class Template {
 	 */
 	public static function get_template( $template_name, array $args = array() ) {
 		if ( ! empty( $args ) ) {
-			extract( $args ); // @codingStandardsIgnoreLine, we need extract at here.
+			// @codingStandardsIgnoreLine, Okay, just fine!
+			extract( $args, EXTR_SKIP );
 		}
 
 		$located = static::locate_template( $template_name );

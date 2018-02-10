@@ -6,7 +6,19 @@ use AweBooking\Http\Controllers\Controller as Base_Controller;
 use Awethemes\Http\Exception\AccessDeniedHttpException;
 use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 
-abstract class Controller extends Base_Controller {
+abstract class Controller {
+	/**
+	 * Get instance of the Redirector.
+	 *
+	 * @param  string $url Optional URL to redirect.
+	 * @return \AweBooking\Http\Routing\Redirector|\AweBooking\Http\Redirect_Response
+	 */
+	protected function redirect( $url = null ) {
+		$redirector = awebooking()->make( 'redirector' );
+
+		return $url ? $redirector->admin( $url ) : $redirector;
+	}
+
 	/**
 	 * Get the `admin_notices` instance.
 	 *
@@ -50,24 +62,6 @@ abstract class Controller extends Base_Controller {
 	protected function check_capability( $capability ) {
 		if ( ! current_user_can( $capability ) ) {
 			throw new AccessDeniedHttpException( esc_html__( 'Sorry, you are not allowed to access this page.', 'awebooking' ) );
-		}
-	}
-
-	/**
-	 * Assert a given object must be exists.
-	 *
-	 * @param  \AweBooking\Model\WP_Object $object WP_Object implementation.
-	 * @return void
-	 *
-	 * @throws Model_Not_Found_Exception
-	 */
-	protected static function assert_object_exists( $object ) {
-		if ( is_null( $object ) ) {
-			throw new Model_Not_Found_Exception( esc_html__( 'Resource not found', 'awebooking' ) );
-		}
-
-		if ( ! $object->exists() ) {
-			throw (new Model_Not_Found_Exception)->set_model( get_class( $object ) );
 		}
 	}
 }

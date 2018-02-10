@@ -5,36 +5,6 @@ use AweBooking\Support\Formatting;
 
 require_once trailingslashit( __DIR__ ) . 'template-hooks.php';
 
-/**
- * Enqueue Scripts
- */
-function awebooking_template_scripts() {
-	wp_enqueue_style( 'awebooking-template', awebooking()->plugin_url() . '/assets/css/awebooking.css', array(), AweBooking::VERSION );
-
-	wp_enqueue_script( 'jquery-ui-accordion' );
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'awebooking', awebooking()->plugin_url() . '/assets/js/front-end/awebooking.js', array( 'jquery' ), AweBooking::VERSION, true );
-
-	wp_enqueue_script( 'booking-ajax', awebooking()->plugin_url() . '/assets/js/front-end/booking-handler.js', array( 'jquery' ), AweBooking::VERSION, true );
-	wp_localize_script( 'booking-ajax', 'booking_ajax', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),
-	));
-
-	global $wp_locale;
-
-	wp_localize_script( 'awebooking', '_awebookingDateSetting', array(
-		'i10n' => [
-			'locale'        => get_locale(),
-			'months'        => array_values( $wp_locale->month ),
-			'monthsShort'   => array_values( $wp_locale->month_abbrev ),
-			'weekdays'      => array_values( $wp_locale->weekday ),
-			'weekdaysMin'   => array_values( $wp_locale->weekday_initial ),
-			'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
-		],
-	));
-}
-add_action( 'wp_enqueue_scripts', 'awebooking_template_scripts', 20 );
-
 if ( ! function_exists( 'awebooking_output_content_wrapper' ) ) {
 
 	/**

@@ -131,10 +131,10 @@ class Setting extends WP_Option {
 		$default_location = (int) $this->get( 'location_default' );
 
 		if ( $default_location && 0 < $default_location ) {
-			$term = get_term( $default_location, AweBooking::HOTEL_LOCATION );
+			$term = get_term( $default_location, Constants::HOTEL_LOCATION );
 		} else {
 			$terms = get_terms([
-				'taxonomy'   => AweBooking::HOTEL_LOCATION,
+				'taxonomy'   => Constants::HOTEL_LOCATION,
 				'hide_empty' => false,
 			]);
 
@@ -175,10 +175,10 @@ class Setting extends WP_Option {
 	 */
 	public function get_room_states() {
 		return [
-			AweBooking::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
-			AweBooking::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
-			AweBooking::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
-			AweBooking::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+			Constants::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			Constants::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			Constants::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			Constants::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
 		];
 	}
 
