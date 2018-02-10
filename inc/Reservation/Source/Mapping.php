@@ -10,5 +10,6 @@ class Mapping {
 	 * @return void
 	 */
 	public static function map( Manager $manager, Store $store ) {
+		//
 	}
 }

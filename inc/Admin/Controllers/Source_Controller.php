@@ -6,8 +6,11 @@ use Awethemes\Http\Request;
 use AweBooking\Setting;
 use AweBooking\Admin\Admin_Settings;
 use AweBooking\Admin\Forms\New_Source_Form;
+use AweBooking\Admin\Forms\Edit_Source_Form;
 use AweBooking\Reservation\Source\Store;
+use AweBooking\Model\Source;
 use AweBooking\Support\Utils as U;
+use AweBooking\Model\Tax;
 
 class Source_Controller extends Controller {
 	/**
@@ -73,8 +76,29 @@ class Source_Controller extends Controller {
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function update( Request $request ) {
-		dd( $request );
+	public function update( Request $request, $source ) {
+		$request->verify_nonce( '_wpnonce', 'update_source' );
+
+		$source = awebooking( 'reservation_sources' )->get( $source );
+
+		try {
+			$input = ( new Edit_Source_Form )->handle( $request->all() );
+		} catch ( \Exception $e ) {
+			$this->notices()->error( $e->getMessage() );
+			return $this->redirect()->back( $this->fallback );
+		}
+
+		$tax = new Tax( $input['tax_rates'] );
+
+		$saved = $source->set_surcharge( $tax );
+
+		// if ( $saved ) {
+		// 	$this->notices()->success( esc_html__( 'Updated the source successfully!', 'awebooking' ) );
+		// } else {
+		// 	$this->notices()->warning( esc_html__( 'Error when the update source', 'awebooking' ) );
+		// }
+
+		return $this->redirect()->to( $this->fallback );
 	}
 
 	/**
@@ -143,5 +167,19 @@ class Source_Controller extends Controller {
 		}
 
 		return in_array( $source['enabled'], [ '1', 'on', 'enable', 'true', true, 1 ] );
+	}
+
+	/**
+	 * Show update form the settings.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return \Awethemes\Http\Response
+	 */
+	public function show( Request $request, $source ) {
+		$controls = new Edit_Source_Form;
+		$source = awebooking( 'reservation_sources' )->get( $source );
+		$controls['tax_rates']->set_value( $source->get_surcharge() );
+
+		return $this->response_view( 'sources/show.php', compact( 'request', 'controls' ) );
 	}
 }
