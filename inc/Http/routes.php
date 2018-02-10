@@ -1,5 +1,4 @@
 <?php
+use AweBooking\Http\Controllers\Reservation_Controller;
 
-$route->get( '/', function () {
-
-});
+$route->post( '/reservation', Reservation_Controller::class . '@create' );

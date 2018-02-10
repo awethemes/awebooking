@@ -4,7 +4,7 @@ namespace AweBooking\Shortcodes;
 use Exception;
 use AweBooking\Concierge;
 use AweBooking\Model\Room_Type;
-use AweBooking\Support\Template;
+use AweBooking\Template;
 use AweBooking\Booking\Request;
 
 class Shortcode_Checkout {

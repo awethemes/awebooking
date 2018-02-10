@@ -16,7 +16,6 @@ class Core_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $widgets = [
-		\AweBooking\Widgets\Booking_Cart_Widget::class,
 		\AweBooking\Widgets\Check_Availability_Widget::class,
 	];
 
