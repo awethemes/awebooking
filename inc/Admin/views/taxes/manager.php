@@ -60,7 +60,7 @@ $taxes = Tax::query();
 				<?php endforeach; ?>
 			<?php else : ?>
 				<tr>
-					<td colspan="8">
+					<td colspan="7">
 						<p><?php esc_html_e( 'No items found.', 'awebooking' ); ?></p>
 					</td>
 				</tr>
