@@ -8,6 +8,7 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking_Item;
 use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
+use AweBooking\Reservation\Exceptions\Overflow_Guest_Exception;
 
 class Assert {
 	/**
@@ -49,7 +50,7 @@ class Assert {
 	 * @param  \AweBooking\Model\Room_Type $room_type The room-type.
 	 * @return void
 	 *
-	 * @throws OverflowException
+	 * @throws Overflow_Guest_Exception
 	 */
 	public static function guest_number( Guest $guest, Room_Type $room_type ) {
 		$total_guest = $room_type->is_calculation_infants()
@@ -57,7 +58,7 @@ class Assert {
 			: $guest->total_without_infants();
 
 		if ( $total_guest > $room_type->get_maximum_occupancy() ) {
-			throw new OverflowException( sprintf(
+			throw new Overflow_Guest_Exception( sprintf(
 				/* translators: %1$s: Room type title, %2$d: Maximum occupancy, %3$d: Given occupancy */
 				esc_html__( 'The %1$s room can only stay maximum %2$d guest but given %3$d', 'awebooking' ),
 				esc_html( $room_type->get_title() ),

@@ -6,6 +6,10 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Support\Decimal;
 
 class Rate extends WP_Object {
+	/* Constants */
+	const GROUP_STANDARD   = 'standard';
+	const GROUP_CUMULATIVE = 'cumulative';
+
 	/**
 	 * This is the name of this object type.
 	 *
@@ -50,7 +54,6 @@ class Rate extends WP_Object {
 		'order'       => 'integer',
 		'min_los'     => 'integer',
 		'max_los'     => 'integer',
-		'base_amount' => 'float',
 	];
 
 	/**
@@ -88,6 +91,15 @@ class Rate extends WP_Object {
 	 */
 	public function is_standard_rate() {
 		return $this->exists() && Constants::ROOM_TYPE == $this->object_type;
+	}
+
+	/**
+	 * Get the rate group.
+	 *
+	 * @return string
+	 */
+	public function get_group() {
+		return apply_filters( $this->prefix( 'get_group' ), $this['group'], $this );
 	}
 
 	/**
@@ -147,8 +159,9 @@ class Rate extends WP_Object {
 		}
 
 		if ( $this->is_standard_rate() ) {
-			$this['order'] = 0;
-			$this['group'] = 'standard';
+			$this['order']       = 0;
+			$this['group']       = static::GROUP_STANDARD;
+			$this['base_amount'] = $this->get_meta( 'base_price' );
 		}
 	}
 

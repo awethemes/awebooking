@@ -36,9 +36,6 @@ class Booking_Room_Controller extends Controller {
 		$controls = new Search_Reservation_Form( 'minimal' );
 		$controls->set_request( $request );
 
-		// Fill the control "check_in_out" value.
-		$controls['check_in_out']->set_value( [ '2018-02-07', '2018-02-10' ] );
-
 		if ( $request->filled( 'check_in_out' ) ) {
 			$reservation = U::rescue( function() use ( $request, $booking ) {
 				return $this->create_booking_reservation( $request, $booking );
@@ -113,16 +110,22 @@ class Booking_Room_Controller extends Controller {
 		// Demo:
 		$rate = new Rate( $room_type->get_id(), 'room_type' );
 
-		$item = $reservation->add_room( $room_unit, $rate,
-			new Guest( $item_data['adults'], $item_data['children'] )
-		);
+		try {
+			$item = $reservation->add_room( $room_unit, $rate,
+				new Guest( $item_data['adults'], $item_data['children'] )
+			);
+		} catch ( \Exception $e ) {
+			$this->notices( 'error', $e->getMessage() );
+
+			return $this->redirect()->back()->with_input();
+		}
 
 		$room_item = ( new Creator )->create_booking_room( $item, $booking );
 
 		if ( $room_item->save() ) {
-			$this->notices()->success( esc_html__( 'Added room item successfully!', 'awebooking' ) );
+			$this->notices( 'success', esc_html__( 'Added room item successfully!', 'awebooking' ) );
 		} else {
-			$this->notices()->warning( esc_html__( 'Error when add room', 'awebooking' ) );
+			$this->notices( 'warning', esc_html__( 'Error when add room', 'awebooking' ) );
 		}
 
 		return $this->redirect()->to( $booking->get_edit_url() );

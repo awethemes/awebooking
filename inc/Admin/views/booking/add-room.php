@@ -3,9 +3,9 @@
 
 ?><div class="wrap" style="max-width: 1200px;">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Add Room', 'awebooking' ); ?></h1>
-	<br><span><?php esc_html_e( 'Booking reference:', 'awebooking' ); ?> <a href="<?php echo esc_url( $booking->get_edit_url() ); ?>" style="text-decoration: none;">#<?php echo esc_html( $booking->get_id() ); ?></a></span>
+	<a class="page-title-action" href="<?php echo esc_url( $booking->get_edit_url() ); ?>"><?php esc_html_e( 'Booking reference', 'awebooking' ); ?> #<?php echo esc_html( $booking->get_id() ); ?></a>
 
-	<hr class="clear">
+	<hr class="wp-header-end">
 
 	<form method="GET" action="" class="awebooking-reservation__searching-from" >
 		<input type="hidden" name="awebooking" value="<?php echo esc_attr( $request->route_path() ); ?>">

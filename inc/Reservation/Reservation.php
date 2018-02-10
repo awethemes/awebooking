@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Reservation;
 
+use AweBooking\Assert;
 use AweBooking\Factory;
 use AweBooking\Constants;
 use AweBooking\Model\Stay;
@@ -62,7 +63,7 @@ class Reservation {
 	 * Create new reservation.
 	 *
 	 * @param Source $source The source implementation.
-	 * @param Stay             $stay   The stay for the reservation.
+	 * @param Stay   $stay   The stay for the reservation.
 	 */
 	public function __construct( Source $source, Stay $stay ) {
 		$this->source = $source;
@@ -83,9 +84,6 @@ class Reservation {
 	 */
 	public function search( Guest $guest = null, array $constraints = [] ) {
 		return ( new Query( $this->stay, $guest, $constraints ) )->get();
-	}
-
-	public function create( array $options = [], callable $callback = null ) {
 	}
 
 	/**
@@ -174,7 +172,7 @@ class Reservation {
 	 */
 	public function add_room( Room $room, Rate $rate, Guest $guest ) {
 		// First, we will check the valid number of guest.
-		$this->validate_guest_number( $room, $guest );
+		Assert::guest_number( $guest, $room_type = $this->resolve_room_type( $room ) );
 
 		// Next, check the current room can be bookable.
 		$this->validate_bookable( $room, $this->stay );
@@ -198,33 +196,6 @@ class Reservation {
 	}
 
 	/**
-	 * Validate the guest number depends by restriction of room type.
-	 *
-	 * @param  Room  $room  The room instance.
-	 * @param  Guest $guest The guest instance.
-	 * @return void
-	 *
-	 * @throws Exceptions\Overflow_Guest_Exception
-	 */
-	protected function validate_guest_number( Room $room, Guest $guest ) {
-		$room_type = $this->resolve_room_type( $room );
-
-		// if current room-type include "calculation_infants" we will
-		// get total number guest (included infants) to compare.
-		$total_guest = $room_type->is_calculation_infants() ? $guest->total() : $guest->total_without_infants();
-
-		if ( $total_guest > $room_type->get_maximum_occupancy() ) {
-			throw new Exceptions\Overflow_Guest_Exception( sprintf(
-				/* translators: %1$s: Room type title, %2$d: Maximum occupancy, %3$d: Given occupancy */
-				esc_html__( 'The %1$s room can only stay maximum %2$d guest but given %3$d', 'awebooking' ),
-				esc_html( $room_type->get_title() ),
-				esc_html( $room_type->get_maximum_occupancy() ),
-				esc_html( $total_guest )
-			) );
-		}
-	}
-
-	/**
 	 * Check if this room can be for booking.
 	 *
 	 * @param  Room $room The room instance.
@@ -239,10 +210,9 @@ class Reservation {
 		}
 
 		// Check the availability state.
-		$room_type = $this->resolve_room_type( $room );
-		$availability = ( new Checker )->check( $room_type, $stay );
+		$checker = new Checker;
 
-		if ( ! $availability->remain( $room ) ) {
+		if ( ! $checker->is_available_for( $room, $stay ) ) {
 			throw new Exceptions\No_Room_Left_Exception( esc_html__( 'No room left for the reservation', 'awebooking' ) );
 		}
 	}

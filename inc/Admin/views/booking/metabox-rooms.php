@@ -57,7 +57,16 @@ $room_items = $the_booking->get_line_items();
 
 		<tfoot>
 			<tr>
-				<td colspan="3">
+				<td colspan="3"></td>
+
+				<th colspan="2">
+					<strong><?php esc_html_e( 'Tax', 'awebooking' ); ?></strong>
+					<span class="afloat-right awebooking-label awebooking-label--info"><?php echo Money::of( $the_booking->get_total(), $the_booking->get_currency() ); // WPCS: XSS OK. ?></span>
+				</th>
+			</tr>
+
+			<tr>
+				<td colspan="3" style="border-top: none;">
 					<?php if ( $the_booking->is_editable() ) : ?>
 
 						<a href="<?php echo esc_url( awebooking( 'url' )->admin_route( "/booking/{$the_booking->get_id()}/room/add" ) ); ?>" class="button">
@@ -71,7 +80,7 @@ $room_items = $the_booking->get_line_items();
 					<?php endif ?>
 				</td>
 
-				<th colspan="2" style="width: 250px;">
+				<th colspan="2" style="width: 250px; border-top: none;">
 					<strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong>
 					<span class="afloat-right awebooking-label awebooking-label--info"><?php echo Money::of( $the_booking->get_total(), $the_booking->get_currency() ); // WPCS: XSS OK. ?></span>
 				</th>

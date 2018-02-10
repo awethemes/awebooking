@@ -2,11 +2,15 @@
 
 use AweBooking\Admin\Forms\Set_Price_Form;
 
-$set_price_form = new Set_Price_Form( $room_type );
-
 ?><div class="wrap">
-	<h1 class="wp-heading-inline"><?php printf( esc_html__( '%s Pricing', 'awebooking' ), esc_html( $room_type->get_title() ) ); ?></h1>
+	<h1 class="wp-heading-inline"><?php printf( esc_html__( 'Pricing "%s"', 'awebooking' ), esc_html( $room_type->get_title() ) ); ?></h1>
 	<hr class="wp-header-end">
+
+	<div class="awebooking-toolbar">
+		<div class="awebooking-row">
+			Toolbar
+		</div>
+	</div>
 
 	<?php $scheduler->display(); ?>
 </div>
@@ -16,7 +20,7 @@ $set_price_form = new Set_Price_Form( $room_type );
 		<div class="awebooking-form__loading"><span class="spinner"></span></div>
 
 		<div class="awebooking-dialog-contents">
-			<?php print $set_price_form->output(); // WPCS: XSS OK. ?>
+			<?php print ( new Set_Price_Form( $room_type ) )->output(); // WPCS: XSS OK. ?>
 		</div>
 
 		<div class="awebooking-dialog-buttons">

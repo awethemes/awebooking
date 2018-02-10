@@ -106,6 +106,11 @@ class Availability_List_Table extends \WP_List_Table {
 			case 'booknow':
 				echo '<div class="row-actions"><input type="submit" class="button button-primary" name="submit[' . esc_attr( $room_type->get_id() ) . ']" value="', esc_html__( 'Book Now', 'awebooking' ) , '" /></div>';
 				break;
+
+			case 'starting_from':
+				$a = new \AweBooking\Reservation\Pricing\Resolver( $this->reservation );
+				echo ( $a->resolve( $room_type )->total() );
+				break;
 		}
 	}
 
