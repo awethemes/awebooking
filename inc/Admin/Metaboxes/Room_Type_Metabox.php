@@ -46,6 +46,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 		$this->register_room_fields();
 		$this->register_occupancy_fields();
 		$this->register_pricing_fields();
+		$this->register_deposit_fields();
 		$this->register_services_fields();
 		$this->register_amenities_fields();
 		$this->register_description_fields();
@@ -303,6 +304,33 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'type' => 'per_person_pricing',
 			'deps' => [ '_extra_guest_charge', '==', true ],
 		] );*/
+	}
+
+	/**
+	 * Register the deposit fields.
+	 *
+	 * @return void
+	 */
+	protected function register_deposit_fields() {
+		$pricing = $this->metabox->add_section( 'deposit', [
+			'title' => esc_html__( 'Deposit', 'awebooking' ),
+		] );
+
+		$pricing->add_field([
+			'id'          => '_enable_deposit',
+			'type'        => 'toggle',
+			'name'        => esc_html__( 'Enable deposit', 'awebooking' ),
+		]);
+
+		$pricing->add_field([
+			'id'              => '_deposit_value',
+			'type'            => 'text_small',
+			'name'            => esc_html__( 'Deposit value', 'awebooking' ),
+			'append'          => esc_html( awebooking( 'currency' )->get_symbol() ),
+			'validate'        => 'required|price',
+			'sanitization_cb' => 'awebooking_sanitize_price',
+			'deps'            => [ '_enable_deposit', '==', true ],
+		]);
 	}
 
 	/**
