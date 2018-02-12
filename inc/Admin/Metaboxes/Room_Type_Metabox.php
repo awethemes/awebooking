@@ -46,7 +46,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 		$this->register_room_fields();
 		$this->register_occupancy_fields();
 		$this->register_pricing_fields();
-		$this->register_deposit_fields();
+		// $this->register_deposit_fields();
 		$this->register_services_fields();
 		$this->register_amenities_fields();
 		$this->register_description_fields();
