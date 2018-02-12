@@ -230,6 +230,8 @@ class Setup_Environment {
 			'show_ui'             => true,
 			'show_in_menu'        => 'edit.php?post_type=room_type',
 			'supports'            => array( 'title', 'page-attributes' ),
+			'capability_type'     => 'pricing_rate',
+			'map_meta_cap'        => true,
 			'labels'              => [
 				'all_items' => esc_html__( 'Rates', 'awebooking' ),
 			],
