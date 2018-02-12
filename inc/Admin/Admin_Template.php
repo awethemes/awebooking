@@ -31,6 +31,19 @@ class Admin_Template {
 	}
 
 	/**
+	 * Create a callback display a partial template.
+	 *
+	 * @param  string $template The template name.
+	 * @param  array  $vars     The data inject to template.
+	 * @return \Closure
+	 */
+	public function partial_callback( $template, array $vars = [] ) {
+		return function () use ( $template, $vars ) {
+			$this->partial( $template, $vars );
+		};
+	}
+
+	/**
 	 * Locale the template path.
 	 *
 	 * @param  string $template Template name.

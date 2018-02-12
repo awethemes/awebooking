@@ -1,10 +1,10 @@
 <?php
-namespace AweBooking\Concierge\Pricing;
+namespace AweBooking\Reservation\Pricing;
 
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Collection;
 
-class Breakdown extends Collection {
+class Pricing_Items extends Collection {
 	/**
 	 * Get total amount of the breakdown.
 	 *

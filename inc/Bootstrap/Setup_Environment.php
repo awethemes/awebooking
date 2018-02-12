@@ -133,8 +133,8 @@ class Setup_Environment {
 		]))->register();
 
 		if ( awebooking()->bound( 'setting' ) && awebooking( 'setting' )->is_multi_location() ) {
-			Taxonomy::make( AweBooking::HOTEL_LOCATION,
-				apply_filters( 'awebooking/taxonomy_objects/hotel_location', AweBooking::ROOM_TYPE ),
+			Taxonomy::make( Constants::HOTEL_LOCATION,
+				apply_filters( 'awebooking/taxonomy_objects/hotel_location', Constants::ROOM_TYPE ),
 				esc_html__( 'Location', 'awebooking' ),
 				esc_html__( 'Locations', 'awebooking' )
 			)->set( apply_filters( 'awebooking/taxonomy_args/hotel_location', [

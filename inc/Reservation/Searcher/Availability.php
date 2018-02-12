@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Concierge\Availability;
+namespace AweBooking\Reservation\Searcher;
 
 use AweBooking\Model\Stay;
 use AweBooking\Model\Room;
@@ -22,6 +22,13 @@ class Availability {
 	protected $stay;
 
 	/**
+	 * The room-type rooms.
+	 *
+	 * @var \AweBooking\Support\Collection
+	 */
+	protected $rooms;
+
+	/**
 	 * The remain rooms.
 	 *
 	 * @var \AweBooking\Support\Collection
@@ -41,9 +48,11 @@ class Availability {
 	 * @param \AweBooking\Model\Room_Type $room_type The Room_Type model.
 	 * @param \AweBooking\Model\Stay      $stay      The Stay model.
 	 */
-	public function __construct( Room_Type $room_type, Stay $stay ) {
+	public function __construct( Room_Type $room_type, Stay $stay, $rooms ) {
 		$this->stay      = $stay;
 		$this->room_type = $room_type;
+		$this->rooms     = $rooms;
+
 		$this->includes  = Collection::make();
 		$this->excludes  = Collection::make();
 	}
@@ -64,22 +73,6 @@ class Availability {
 	 */
 	public function get_room_type() {
 		return $this->room_type;
-	}
-
-	/**
-	 * Apply the constraints.
-	 *
-	 * @param  array $constraints Constraint[].
-	 * @return void
-	 */
-	public function apply_constraints( array $constraints ) {
-		foreach ( $constraints as $constraint ) {
-			if ( is_string( $constraint ) ) {
-				awebooking()->call( $constraint, [ $this ], 'apply' );
-			} else {
-				$constraint->apply( $this );
-			}
-		}
 	}
 
 	/**
@@ -120,7 +113,7 @@ class Availability {
 	 * @param  Room   $room           The room.
 	 * @param  string $reason         The reason why added into this.
 	 * @param  string $reason_message Optional, the reason message.
-	 * @return $this
+	 * @return bool
 	 */
 	public function reject( Room $room, $reason, $reason_message = '' ) {
 		if ( $this->remain( $room ) ) {
@@ -130,26 +123,6 @@ class Availability {
 		}
 
 		return $this->exclude( $room, $reason, $reason_message );
-	}
-
-	/**
-	 * Determines a room can be added.
-	 *
-	 * @param  Room   $room [description]
-	 * @return [type]
-	 */
-	protected function check( Room $room ) {
-		// TODO: Check valid room in room_types.
-
-		if ( $this->includes->contains( 'room.id', '==', $room->get_id() ) ) {
-			return false;
-		}
-
-		if ( $this->excludes->contains( 'room.id', '==', $room->get_id() ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -187,5 +160,21 @@ class Availability {
 	 */
 	public function get_excluded() {
 		return $this->excludes;
+	}
+
+	/**
+	 * Apply the constraints.
+	 *
+	 * @param  array $constraints Constraint[].
+	 * @return void
+	 */
+	public function apply_constraints( array $constraints ) {
+		foreach ( $constraints as $constraint ) {
+			if ( is_string( $constraint ) ) {
+				awebooking()->call( $constraint, [ $this ], 'apply' );
+			} else {
+				$constraint->apply( $this );
+			}
+		}
 	}
 }

@@ -10,16 +10,33 @@ class Stay implements Stringable {
 	/**
 	 * Get the check-in date.
 	 *
-	 * @var Carbonate
+	 * @var \AweBooking\Support\Carbonate
 	 */
 	protected $check_in;
 
 	/**
 	 * Get the check-out date.
 	 *
-	 * @var Carbonate
+	 * @var \AweBooking\Support\Carbonate
 	 */
 	protected $check_out;
+
+	/**
+	 * The period instance.
+	 *
+	 * @var \AweBooking\Calendar\Period\Period
+	 */
+	protected $period;
+
+	/**
+	 * Create new instance from period.
+	 *
+	 * @param  \AweBooking\Calendar\Period\Period $period The period.
+	 * @return static
+	 */
+	public static function from_period( Period $period ) {
+		return new static( $period->get_start_date(), $period->get_end_date() );
+	}
 
 	/**
 	 * Create the stay.
@@ -44,7 +61,7 @@ class Stay implements Stringable {
 	/**
 	 * Returns the check-in date point.
 	 *
-	 * @return Carbonate
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_in() {
 		return $this->check_in->copy();
@@ -53,7 +70,7 @@ class Stay implements Stringable {
 	/**
 	 * Returns the check-out datepoint.
 	 *
-	 * @return Carbonate
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_out() {
 		return $this->check_out->copy();
@@ -65,7 +82,7 @@ class Stay implements Stringable {
 	 * @return int
 	 */
 	public function nights() {
-		return (int) $this->get_period()->getDateInterval()->format( '%r%a' );
+		return (int) $this->to_period()->getDateInterval()->format( '%r%a' );
 	}
 
 	/**
@@ -73,30 +90,31 @@ class Stay implements Stringable {
 	 *
 	 * @return \AweBooking\Calendar\Period\Period
 	 */
-	public function get_period() {
-		return new Period( $this->check_in, $this->check_out );
+	public function to_period() {
+		if ( is_null( $this->period ) ) {
+			$this->period = new Period( $this->check_in, $this->check_out );
+		}
+
+		return $this->period;
 	}
 
 	/**
-	 * The magic __toString method.
+	 * Get the stay object as array.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function __toString() {
-		return $this->as_string();
+	public function to_array() {
+		return [
+			$this->check_in->toDateString(),
+			$this->check_out->toDateString(),
+		];
 	}
 
 	/**
-	 * Return human readable of the request.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function as_string() {
-		$nights = $this->nights();
-
-		return sprintf( '<strong>%1$d %2$s</strong> <br> <span>%3$s</span> - <span>%4$s</span>',
-			esc_html( $nights ),
-			esc_html( _n( 'night', 'nights', $nights, 'awebooking' ) ),
+		return sprintf( '<span class="awebooking-stay"><span class="awebooking-stay__checkin">%1$s</span> - <span class="awebooking-stay__checkout">%2$s</span></span>',
 			esc_html( $this->check_in->to_wp_date_string() ),
 			esc_html( $this->check_out->to_wp_date_string() )
 		);
@@ -129,5 +147,14 @@ class Stay implements Stringable {
 		if ( $strict && $this->isBefore( Carbonate::today() ) ) {
 			throw new \RangeException( esc_html__( 'The date period must be greater or equal to the today.', 'awebooking' ) );
 		}
+	}
+
+	/**
+	 * The magic __toString method.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->as_string();
 	}
 }

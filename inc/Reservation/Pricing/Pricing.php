@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Concierge\Pricing;
+namespace AweBooking\Reservation\Pricing;
 
 use DateInterval;
 use AweBooking\Model\Stay;
@@ -84,7 +84,7 @@ class Pricing {
 	public function get_breakdown() {
 		$breakdown = new Breakdown;
 
-		foreach ( $this->stay->get_period() as $night ) {
+		foreach ( $this->stay->to_period() as $night ) {
 			$breakdown->put( $night->format( 'Y-m-d' ),
 				new Night( $night, $this->get_night_amount( $night ) )
 			);
@@ -190,7 +190,7 @@ class Pricing {
 	public function get_pricing_events() {
 		if ( ! $this->pricing_events ) {
 			$this->pricing_events = $this->get_calendar()
-				->get_events( $this->stay->get_period() );
+				->get_events( $this->stay->to_period() );
 		}
 
 		return $this->pricing_events;

@@ -125,31 +125,20 @@ class Guest implements Stringable {
 	}
 
 	/**
-	 * The magic __toString method.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
-	}
-
-	/**
-	 * Return human readable of the request.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function as_string() {
 		$adults = $this->get_adults();
 
 		$html = sprintf(
-			'<span class="awebooking_party__adults">%1$d %2$s</span>',
+			'<span class="awebooking_guest__adults">%1$d %2$s</span>',
 			esc_html( $adults ),
 			esc_html( _n( 'adult', 'adults', $this->get_adults(), 'awebooking' ) )
 		);
 
 		if ( $children = $this->get_children() ) {
 			$html .= sprintf(
-				' , <span class="awebooking_party__children">%1$d %2$s</span>',
+				' , <span class="awebooking_guest__children">%1$d %2$s</span>',
 				esc_html( $children ),
 				esc_html( _n( 'child', 'children', $children, 'awebooking' ) )
 			);
@@ -157,7 +146,7 @@ class Guest implements Stringable {
 
 		if ( $infants = $this->get_infants() ) {
 			$html .= sprintf(
-				' &amp; <span class="awebooking_party__infants">%1$d %2$s</span>',
+				' &amp; <span class="awebooking_guest__infants">%1$d %2$s</span>',
 				esc_html( $infants ),
 				esc_html( _n( 'infant', 'infants', $infants, 'awebooking' ) )
 			);
@@ -179,5 +168,14 @@ class Guest implements Stringable {
 		if ( $value < $minimum ) {
 			throw new \LogicException( "Requires at least {$minimum}" );
 		}
+	}
+
+	/**
+	 * The magic __toString method.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->as_string();
 	}
 }
