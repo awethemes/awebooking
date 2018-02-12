@@ -4,12 +4,29 @@ namespace AweBooking\Http\Controllers;
 use AweBooking\Factory;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
+use AweBooking\Reservation\Creator;
 use AweBooking\Reservation\Reservation;
-use Illuminate\Support\Arr;
-use Awethemes\Http\Request;
 use AweBooking\Reservation\Url_Generator;
+use Awethemes\Http\Request;
+use Illuminate\Support\Arr;
 
 class Reservation_Controller extends Controller {
+	/**
+	 * The reservation creator.
+	 *
+	 * @var \AweBooking\Reservation\Creator
+	 */
+	protected $creator;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \AweBooking\Reservation\Creator $creator The creator instance.
+	 */
+	public function __construct( Creator $creator ) {
+		$this->creator = $creator;
+	}
+
 	/**
 	 * Add a room-item in session reservation.
 	 *
@@ -28,11 +45,13 @@ class Reservation_Controller extends Controller {
 			return $this->redirect()->back();
 		}
 
-		$url_generator = new Url_Generator( $reservation );
-
 		// Get the submited room-type.
 		$request_room_type = Arr::first( array_keys( (array) $request->submit ) );
 
-		return $this->redirect()->to( $url_generator->get_search_link( new Guest( 1 ), true ) );
+		$url_generator = new Url_Generator( awebooking()->get_instance(), $reservation );
+
+		return $this->redirect()->to(
+			$url_generator->get_search_link( new Guest( 1 ), true )
+		);
 	}
 }

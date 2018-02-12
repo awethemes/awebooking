@@ -7,7 +7,6 @@ use AweBooking\Constants;
 use AweBooking\Model\Stay;
 use AweBooking\Model\Room;
 use AweBooking\Model\Rate;
-use AweBooking\Model\Party;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Source;
 use AweBooking\Model\Room_Type;
@@ -31,6 +30,13 @@ class Reservation {
 	protected $stay;
 
 	/**
+	 * The request Guest instance.
+	 *
+	 * @var \AweBooking\Model\Guest|null
+	 */
+	protected $guest;
+
+	/**
 	 * The reservation customer.
 	 *
 	 * @var \AweBooking\Model\Customer
@@ -44,55 +50,43 @@ class Reservation {
 	 */
 	protected $rooms;
 
-	/**
-	 * [$services description]
-	 *
-	 * @var [type]
-	 */
 	protected $services;
-
 	protected $taxes;
 	protected $fees;
-
 	protected $deposit;
+	protected $payment_method;
 
-	protected $payment;
-	protected $recently_created = false;
+	protected $totals;
 
 	/**
 	 * Create new reservation.
 	 *
-	 * @param Source $source The source implementation.
-	 * @param Stay   $stay   The stay for the reservation.
+	 * @param \AweBooking\Model\Source $source The source implementation.
+	 * @param \AweBooking\Model\Stay   $stay   The stay for the reservation.
+	 * @param \AweBooking\Model\Guest  $guest  Optional, the guest for the reservation.
 	 */
-	public function __construct( Source $source, Stay $stay ) {
+	public function __construct( Source $source, Stay $stay, Guest $guest = null ) {
 		$this->source = $source;
 
 		$stay->require_minimum_nights( 1 );
 		$this->stay = $stay;
+
+		if ( ! is_null( $guest ) ) {
+			$this->guest = $guest;
+		}
 
 		// Create empty rooms.
 		$this->rooms = new Item_Collection;
 	}
 
 	/**
-	 * Search pricing and availability.
+	 * Search the availability.
 	 *
-	 * @param  Guest $guest       The Guest instance.
 	 * @param  array $constraints The constraints.
 	 * @return \AweBooking\Reservation\Searcher\Results
 	 */
-	public function search( Guest $guest = null, array $constraints = [] ) {
-		return ( new Query( $this->stay, $guest, $constraints ) )->get();
-	}
-
-	/**
-	 * Get the totals.
-	 *
-	 * @return \AweBooking\Reservation\Totals
-	 */
-	public function get_totals() {
-		return new Totals( $this );
+	public function search( array $constraints = [] ) {
+		return ( new Query( $this->stay, $this->guest, $constraints ) )->get();
 	}
 
 	/**
@@ -114,6 +108,26 @@ class Reservation {
 	}
 
 	/**
+	 * Get the Guest.
+	 *
+	 * @return \AweBooking\Model\Guest|null
+	 */
+	public function get_guest() {
+		return $this->guest;
+	}
+
+	/**
+	 * Set the Guest.
+	 *
+	 * @param Guest $guest The Guest instance.
+	 */
+	public function set_guest( Guest $guest ) {
+		$this->guest = $guest;
+
+		return $this;
+	}
+
+	/**
 	 * Get the customer.
 	 *
 	 * @return \AweBooking\Model\Customer
@@ -132,6 +146,19 @@ class Reservation {
 		$this->customer = $customer;
 
 		return $this;
+	}
+
+	/**
+	 * Get the totals.
+	 *
+	 * @return \AweBooking\Reservation\Totals
+	 */
+	public function get_totals() {
+		if ( is_null( $this->totals ) ) {
+			$this->totals = new Totals( $this );
+		}
+
+		return $this->totals;
 	}
 
 	/**

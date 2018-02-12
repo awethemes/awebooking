@@ -15,7 +15,7 @@ class Url_Generator {
 	/**
 	 * Constructor.
 	 *
-	 * @param AweBooking $awebooking awebooking The AweBooking instance.
+	 * @param AweBooking $awebooking The AweBooking instance.
 	 */
 	public function __construct( AweBooking $awebooking ) {
 		$this->awebooking = $awebooking;

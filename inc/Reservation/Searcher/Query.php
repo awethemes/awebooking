@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Reservation\Searcher;
 
+use AweBooking\Factory;
 use AweBooking\Model\Stay;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
@@ -119,17 +120,20 @@ class Query {
 	 * @return \AweBooking\Support\Collection
 	 */
 	protected function query_rooms_types() {
-		$room_type_query = Room_Type::query( [
-			'have_rooms'      => true,
-			'post_status'     => 'publish',
-			'posts_per_page'  => 500, // Hard limit 500 room-type in query.
-		]);
+		$args = apply_filters( 'awebooking/query_room_type_args', [
+			'post_status'      => 'publish',
+			'posts_per_page'   => 1000, // Force limit 1000 room-type in query.
+			'have_rooms'       => true, // TODO: ...
+			'booking_adults'   => $this->guest ? $this->guest->get_adults() : -1,
+			'booking_children' => $this->guest ? $this->guest->get_children() : -1,
+			'booking_infants'  => $this->guest ? $this->guest->get_infants() : -1,
+		], $this );
 
-		// Get all room_types found.
-		$room_types = $room_type_query->posts;
+		// Query the room_typess.
+		$room_types = Room_Type::query( $args )->posts;
 
 		return U::collect( $room_types )->map( function( $post ) {
-			return new Room_Type( $post );
+			return Factory::get_room_type( $post );
 		});
 	}
 }

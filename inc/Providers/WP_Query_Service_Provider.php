@@ -41,15 +41,10 @@ class WP_Query_Service_Provider extends Service_Provider {
 		}
 
 		$total_guest = $this->get_requested_guest( $qv );
+
 		if ( $total_guest > 0 ) {
 			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS max_occupancy ON ({$wpdb->posts}.ID = max_occupancy.post_id AND max_occupancy.meta_key = '_maximum_occupancy') ";
 			$pieces['where'] .= " AND CAST(max_occupancy.meta_value AS SIGNED) >= '" . absint( $total_guest ) . "' ";
-		}
-
-		// TODO: Remove this in next version.
-		if ( ! empty( $qv['booking_nights'] ) && $qv['booking_nights'] > 0 ) {
-			$pieces['join']  .= " INNER JOIN {$wpdb->postmeta} AS min_night ON ({$wpdb->posts}.ID = min_night.post_id AND min_night.meta_key = 'minimum_night') ";
-			$pieces['where'] .= " AND CAST(min_night.meta_value AS SIGNED) <= '" . absint( $qv['booking_nights'] ) . "' ";
 		}
 
 		// Custom order by "booking_rooms".
@@ -75,11 +70,11 @@ class WP_Query_Service_Provider extends Service_Provider {
 			$total += (int) $qv['booking_adults'];
 		}
 
-		if ( awebooking( 'setting' )->is_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
+		if ( $this->awebooking['setting']->is_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
 			$total += (int) $qv['booking_children'];
 		}
 
-		if ( awebooking( 'setting' )->is_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
+		if ( $this->awebooking['setting']->is_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
 			$total += (int) $qv['booking_infants'];
 		}
 

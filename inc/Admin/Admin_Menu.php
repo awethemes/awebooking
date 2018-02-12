@@ -3,10 +3,7 @@ namespace AweBooking\Admin;
 
 use AweBooking\Constants;
 use AweBooking\Support\Collection;
-use AweBooking\Admin\Pages\About_Page;
 use AweBooking\Admin\Pages\Settings_Page;
-use AweBooking\Admin\Pages\Pricing_Management;
-use AweBooking\Admin\Pages\Availability_Management;
 
 class Admin_Menu {
 	/* Constants */
@@ -113,9 +110,11 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( 'awebooking', 'New Reservation', 'New Reservation', 'manage_awebooking', 'admin.php?awebooking=/reservation/create' );
+		add_submenu_page( 'awebooking', esc_html__( 'New Booking', 'awebooking' ), esc_html_x( 'New Booking', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/reservation/create' );
 
-		add_submenu_page( 'awebooking', esc_html__( 'AweBooking Rates', 'awebooking' ), esc_html_x( 'Rates', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
+		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
+
+		add_submenu_page( 'awebooking', esc_html__( 'Rates', 'awebooking' ), esc_html_x( 'Rates', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
 	/**
@@ -124,7 +123,7 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function regsiter_setting_submenu() {
-		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'awebooking-settings', $this->create_page_callback( Settings_Page::class ) );
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'awebooking-settings', $this->create_page_callback( Settings_Page::class ) );
 	}
 
 	/**

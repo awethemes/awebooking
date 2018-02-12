@@ -13,6 +13,7 @@ use AweBooking\Calendar\Resource\Resource_Collection;
 use AweBooking\Calendar\Provider\Pricing_Provider;
 use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Support\Utils as U;
+use AweBooking\Support\Formatting;
 
 class Pricing_Calendar extends Schedule_Calendar {
 	/**
@@ -154,6 +155,6 @@ class Pricing_Calendar extends Schedule_Calendar {
 			$append = '<span class="dashicons dashicons-arrow-down"></span>';
 		}
 
-		return '<span class="' . esc_attr( $this->html_class( '&__float-amount' ) ) . '">' . esc_html( $amount->as_string() ) . $append . '</span>';
+		return '<span class="awebooking-schedule__float-amount">' . Formatting::money( $amount, true ) . $append . '</span>';
 	}
 }

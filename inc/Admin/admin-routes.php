@@ -1,16 +1,16 @@
 <?php
 
+use AweBooking\Admin\Controllers\Tax_Controller;
 use AweBooking\Admin\Controllers\Rate_Controller;
+use AweBooking\Admin\Controllers\About_Controller;
+use AweBooking\Admin\Controllers\Source_Controller;
+use AweBooking\Admin\Controllers\Calendar_Controller;
 use AweBooking\Admin\Controllers\Settings_Controller;
 use AweBooking\Admin\Controllers\Reservation_Controller;
 use AweBooking\Admin\Controllers\Booking_Room_Controller;
 use AweBooking\Admin\Controllers\Booking_Payment_Controller;
-use AweBooking\Admin\Controllers\Source_Controller;
-use AweBooking\Admin\Controllers\Tax_Controller;
-use AweBooking\Admin\Controllers\About_Controller;
 
 $route->get( '/about', About_Controller::class . '@about' );
-
 $route->post( '/settings', Settings_Controller::class . '@store' );
 
 // Rates routes.
@@ -18,15 +18,27 @@ $route->get( '/rates', Rate_Controller::class . '@index' );
 $route->get( '/rates/{room_type:\d+}', Rate_Controller::class . '@show' );
 $route->post( '/rates/{room_type:\d+}', Rate_Controller::class . '@set_amount' );
 
-// Reservation source routes.
+// Calendar routes.
+$route->get( '/calendar', Calendar_Controller::class . '@index' );
+$route->get( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@show' );
+$route->post( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@update' );
+
+// New reservation routes.
+$route->get( '/reservation/create', Reservation_Controller::class . '@create' );
+$route->post( '/reservation/add_item', Reservation_Controller::class . '@add_item' );
+
+// Tax routes.
+$route->get( '/tax/create', Tax_Controller::class . '@create' );
+$route->post( '/tax/store', Tax_Controller::class . '@store' );
+$route->get( '/tax/{tax:\d+}', Tax_Controller::class . '@show' );
+$route->put( '/tax/{tax:\d+}', Tax_Controller::class . '@update' );
+$route->delete( '/tax/{tax:\d+}/delete', Tax_Controller::class . '@delete' );
+
+// Source routes.
 $route->post( '/sources', Source_Controller::class . '@store' );
 $route->post( '/sources/bulk-update', Source_Controller::class . '@bulk_update' );
 $route->get( '/source/{source}', Source_Controller::class . '@show' );
 $route->put( '/source/{source}', Source_Controller::class . '@update' );
-
-// Reservation routes.
-$route->get( '/reservation/create', Reservation_Controller::class . '@create' );
-$route->post( '/reservation/add_item', Reservation_Controller::class . '@add_item' );
 
 // Booking routes.
 $route->addGroup( '/booking/{booking:\d+}', function ( $r ) {
@@ -46,10 +58,3 @@ $route->addGroup( '/booking/{booking:\d+}', function ( $r ) {
 	$r->put( '/room/{room_item:\d+}', Booking_Room_Controller::class . '@update' );
 	$r->delete( '/room/{room_item:\d+}', Booking_Room_Controller::class . '@destroy' );
 });
-
-// Reservation tax routes.
-$route->get( '/tax/create', Tax_Controller::class . '@create' );
-$route->post( '/tax/store', Tax_Controller::class . '@store' );
-$route->get( '/tax/{tax:\d+}', Tax_Controller::class . '@show' );
-$route->put( '/tax/{tax:\d+}', Tax_Controller::class . '@update' );
-$route->delete( '/tax/{tax:\d+}/delete', Tax_Controller::class . '@delete' );

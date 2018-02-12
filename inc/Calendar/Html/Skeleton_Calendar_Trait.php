@@ -5,17 +5,6 @@ use AweBooking\Support\Carbonate;
 
 trait Skeleton_Calendar_Trait {
 	/**
-	 * Get the Calendar option.
-	 *
-	 * @param  string $option  Option key name.
-	 * @param  mixed  $default Default value.
-	 * @return mixed
-	 */
-	protected function get_option( $option, $default = null ) {
-		return isset( $this->options[ $option ] ) ? $this->options[ $option ] : $default;
-	}
-
-	/**
 	 * Get html base class or build new class.
 	 *
 	 * Uses "&" to represent to "base_class" like SCSS, eg: &__heading.
@@ -36,23 +25,24 @@ trait Skeleton_Calendar_Trait {
 	/**
 	 * Get classess for date.
 	 *
-	 * @param  Carbonate $date Date instance.
+	 * @param  Carbonate $date       Date instance.
+	 * @param  string    $base_class The base class.
 	 * @return array
 	 */
-	protected function get_date_classes( Carbonate $date ) {
-		$classes[] = $this->html_class( '&__day' );
+	protected function get_date_classes( Carbonate $date, $base_class = '&__day' ) {
+		$classes[] = $this->html_class( $base_class );
 
 		// Is current day is today, future or past.
 		if ( $date->isToday() ) {
-			$classes[] = $this->html_class( '&__day--today' );
+			$classes[] = $this->html_class( $base_class . '--today' );
 		} elseif ( $date->isPast() ) {
-			$classes[] = $this->html_class( '&__day--past' );
+			$classes[] = $this->html_class( $base_class . '--past' );
 		} elseif ( $date->isFuture() ) {
-			$classes[] = $this->html_class( '&__day--future' );
+			$classes[] = $this->html_class( $base_class . '--future' );
 		}
 
 		if ( $date->isWeekend() ) {
-			$classes[] = $this->html_class( '&__day--weekend' );
+			$classes[] = $this->html_class( $base_class . '--weekend' );
 		}
 
 		return $classes;
@@ -99,5 +89,16 @@ trait Skeleton_Calendar_Trait {
 			default:
 				return $weekday_name;
 		}
+	}
+
+	/**
+	 * Get the Calendar option.
+	 *
+	 * @param  string $option  Option key name.
+	 * @param  mixed  $default Default value.
+	 * @return mixed
+	 */
+	protected function get_option( $option, $default = null ) {
+		return isset( $this->options[ $option ] ) ? $this->options[ $option ] : $default;
 	}
 }
