@@ -150,6 +150,8 @@ class Booking_Metabox extends Post_Type_Metabox {
 
 		$the_booking = Factory::get_booking( $post );
 		include trailingslashit( __DIR__ ) . 'views/html-booking.php';
+
+		awebooking( 'admin_template' )->partial( 'booking/metabox-payments.php', compact( 'the_booking' ) );
 	}
 
 	/**

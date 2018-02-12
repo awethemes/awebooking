@@ -3,9 +3,10 @@ namespace AweBooking\Admin\Forms;
 
 use CMB2_hookup;
 use Skeleton\CMB2\CMB2;
-use AweBooking\Admin\Fields\Field_Proxy;
+use Skeleton\CMB2\Field_Proxy;
 use AweBooking\Admin\Forms\Exceptions\ValidationException;
 use AweBooking\Admin\Forms\Exceptions\NonceMismatchException;
+use Awethemes\Http\Request;
 
 abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	/**
@@ -14,6 +15,13 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	 * @var string
 	 */
 	protected $form_id;
+
+	/**
+	 * The request instance.
+	 *
+	 * @var \Awethemes\Http\Request
+	 */
+	protected $request;
 
 	/**
 	 * Form constructor.
@@ -31,6 +39,24 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 		$this->object_type( 'options-page' );
 
 		$this->fields();
+	}
+
+	/**
+	 * Set the http request.
+	 *
+	 * @param \Awethemes\Http\Request $request The request instance.
+	 */
+	public function set_request( Request $request ) {
+		$this->request = $request;
+	}
+
+	/**
+	 * Get the http request.
+	 *
+	 * @return \Awethemes\Http\Request
+	 */
+	public function get_request() {
+		return $this->request ?: awebooking()->make( Request::class );
 	}
 
 	/**
@@ -69,7 +95,7 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 		$nonce = $this->nonce();
 
 		if ( $check_nonce && ( ! isset( $data[ $nonce ] ) || ! wp_verify_nonce( $data[ $nonce ], $nonce ) ) ) {
-			throw new NonceMismatchException;
+			throw new NonceMismatchException( esc_html__( 'Nonce is invalid, please try again.', 'awebooking' ) );
 		}
 
 		// Get sanitized values from input data.
@@ -131,16 +157,28 @@ abstract class Form_Abstract extends CMB2 implements \ArrayAccess {
 	}
 
 	/**
-	 * Get a field object.
-	 *
-	 * @param  mixed           $field The field id or field config array or CMB2_Field object.
-	 * @param  CMB2_Field|null $group Optional, CMB2_Field object (group parent).
-	 * @return Field_Proxy|null
+	 * {@inheritdoc}
 	 */
 	public function get_field( $field, $group = null, $reset_cached = false ) {
 		$field = parent::get_field( $field, $group, $reset_cached );
 
 		return $field ? new Field_Proxy( $this, $field ) : null;
+	}
+
+	/**
+	 * Fill the fields value by given an array data.
+	 *
+	 * @param  array $data An array of fill data.
+	 * @return void
+	 */
+	public function fill( array $data ) {
+		foreach ( $data as $key => $value ) {
+			if ( is_null( $this[ $key ] ) ) {
+				continue;
+			}
+
+			$this[ $key ]->set_value( $value );
+		}
 	}
 
 	/**

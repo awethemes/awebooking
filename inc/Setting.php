@@ -63,6 +63,28 @@ class Setting extends WP_Option {
 	}
 
 	/**
+	 * Return the price format depending on the currency position.
+	 *
+	 * @return string
+	 */
+	public function get_money_format( $position = null ) {
+		$position = is_null( $position ) ? $this->get( 'currency_position' ) : $position;
+
+		$positions = apply_filters( 'awebooking/price_format_positions', [
+			Constants::CURRENCY_POS_LEFT         => '%2$s%1$s',
+			Constants::CURRENCY_POS_RIGHT        => '%1$s%2$s',
+			Constants::CURRENCY_POS_LEFT_SPACE   => '%2$s&nbsp;%1$s',
+			Constants::CURRENCY_POS_RIGHT_SPACE  => '%1$s&nbsp;%2$s',
+		]);
+
+		$format = array_key_exists( $position, $positions )
+			? $positions[ $position ]
+			: $positions[ Constants::CURRENCY_POS_LEFT ];
+
+		return apply_filters( 'awebooking/get_price_format', $format, $position );
+	}
+
+	/**
 	 * Is the children bookable?
 	 *
 	 * @return boolean
@@ -111,10 +133,10 @@ class Setting extends WP_Option {
 		$default_location = (int) $this->get( 'location_default' );
 
 		if ( $default_location && 0 < $default_location ) {
-			$term = get_term( $default_location, AweBooking::HOTEL_LOCATION );
+			$term = get_term( $default_location, Constants::HOTEL_LOCATION );
 		} else {
 			$terms = get_terms([
-				'taxonomy'   => AweBooking::HOTEL_LOCATION,
+				'taxonomy'   => Constants::HOTEL_LOCATION,
 				'hide_empty' => false,
 			]);
 
@@ -155,10 +177,10 @@ class Setting extends WP_Option {
 	 */
 	public function get_room_states() {
 		return [
-			AweBooking::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
-			AweBooking::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
-			AweBooking::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
-			AweBooking::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+			Constants::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			Constants::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			Constants::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			Constants::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
 		];
 	}
 

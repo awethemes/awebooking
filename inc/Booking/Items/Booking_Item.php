@@ -4,6 +4,7 @@ namespace AweBooking\Booking\Items;
 use AweBooking\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Support\WP_Object;
+use AweBooking\Support\Carbonate;
 
 class Booking_Item extends WP_Object {
 	/**
@@ -51,6 +52,18 @@ class Booking_Item extends WP_Object {
 		'parent_id'  => 'int',
 		'booking_id' => 'int',
 	];
+
+	/**
+	 * The permalinks actions, e.g:
+	 *
+	 * $permalinks = [
+	 *     'edit'   => '/booking/{booking}/payment/{item}/edit',
+	 *     'delete' => '/booking/{booking}/payment/{item}',
+	 * ];
+	 *
+	 * @var array
+	 */
+	protected $permalinks = [];
 
 	/**
 	 * Booking item constructor.
@@ -186,6 +199,77 @@ class Booking_Item extends WP_Object {
 	}
 
 	/**
+	 * Get the permalink.
+	 *
+	 * @param  string $type       The permalink type.
+	 * @param  array  $parameters Optional, extra parameters.
+	 * @return string
+	 */
+	public function get_permalink( $type, array $parameters = [] ) {
+		if ( empty( $this->permalinks[ $type ] ) ) {
+			return;
+		}
+
+		$url_generator = awebooking()->make( 'url' );
+		$link = $this->format_permalink( $this->permalinks[ $type ] );
+
+		if ( ! $url_generator->is_valid_url( $link ) ) {
+			$link = $url_generator->admin_route( $link );
+		}
+
+		$link = add_query_arg( $parameters, $link );
+
+		return apply_filters( $this->prefix( 'get_permalink' ), $link, $this );
+	}
+
+	/**
+	 * Get the edit link.
+	 *
+	 * @return string
+	 */
+	public function get_edit_link() {
+		return apply_filters( $this->prefix( 'get_edit_link' ), $this->get_permalink( 'edit' ), $this );
+	}
+
+	/**
+	 * Get the delete link.
+	 *
+	 * @param  boolean $nonce Should include with nonce?.
+	 * @return string
+	 */
+	public function get_delete_link( $nonce = true ) {
+		$delete_link = $this->get_permalink( 'delete' );
+
+		if ( $nonce && $delete_link ) {
+			$delete_link = wp_nonce_url( $delete_link, 'delete_' . $this->get_type() . '_' . $this->get_id() );
+		}
+
+		return apply_filters( $this->prefix( 'get_delete_link' ), $delete_link, $this );
+	}
+
+	/**
+	 * Format the permalink structure.
+	 *
+	 * {item}    - The payment item ID.
+	 * {booking} - The Booking ID.
+	 *
+	 * @param  string $link The link.
+	 * @return string
+	 */
+	protected function format_permalink( $link ) {
+		if ( empty( $link ) ) {
+			return '';
+		}
+
+		$replaces = [
+			'{item}'    => $this->get_id(),
+			'{booking}' => $this->get_booking()->get_id(),
+		];
+
+		return str_replace( array_keys( $replaces ), array_values( $replaces ), $link );
+	}
+
+	/**
 	 * Determines if the current item is able to be saved.
 	 *
 	 * @return bool
@@ -230,6 +314,17 @@ class Booking_Item extends WP_Object {
 	 */
 	protected function clean_cache() {
 		wp_cache_delete( $this->get_id(), 'awebooking_cache_booking_item' );
+	}
+
+	/**
+	 * Inserting.
+	 *
+	 * @return void
+	 */
+	protected function inserting() {
+		if ( empty( $this->attributes['date_paid'] ) ) {
+			$this->attributes['date_paid'] = Carbonate::now()->toDateTimeString();
+		}
 	}
 
 	/**

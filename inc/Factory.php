@@ -103,6 +103,7 @@ class Factory {
 		$maps = apply_filters( 'awebooking/booking_item_class_maps', [
 			'line_item'    => \AweBooking\Booking\Items\Line_Item::class,
 			'service_item' => \AweBooking\Booking\Items\Service_Item::class,
+			'payment_item' => \AweBooking\Model\Booking_Payment_Item::class,
 		]);
 
 		if ( array_key_exists( $type, $maps ) ) {

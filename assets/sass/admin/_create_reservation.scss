@@ -172,6 +172,17 @@
     width: 100px;
     text-align: right;
   }
+
+  .column-room_type > .row-actions {
+    color: #696969;
+    font-size: 12px;
+
+    .dashicons {
+      color: #aaa;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+  }
 }
 
 .awebooking-debug-rooms__table {

@@ -13,6 +13,12 @@ class Constants {
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_extra_service';
 
+	/* Position constants */
+	const CURRENCY_POS_LEFT        = 'left';
+	const CURRENCY_POS_RIGHT       = 'right';
+	const CURRENCY_POS_LEFT_SPACE  = 'left_space';
+	const CURRENCY_POS_RIGHT_SPACE = 'right_space';
+
 	// The availability state.
 	const STATE_AVAILABLE   = 0;
 	const STATE_UNAVAILABLE = 1;
@@ -32,5 +38,10 @@ class Constants {
 	const CACHE_BOOKING_ITEM       = 'awebooking_cache_booking_item_object';
 
 	const CACHE_RAW_ROOM_UNIT      = 'awebooking_cache_raw_room';
+	const CACHE_RAW_TAX_RATE       = 'awebooking_cache_raw_tax';
 	const CACHE_ROOMS_IN_ROOM_TYPE = 'awebooking_cache_rooms_in_room_type';
+
+	// The tax amount type.
+	const TAX_AMOUNT_PERCENTAGE = 'percentage';
+	const TAX_AMOUNT_FIXED      = 'fixed';
 }

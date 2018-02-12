@@ -7,10 +7,12 @@ use AweBooking\Pricing\Price;
 use AweBooking\Support\WP_Object;
 use AweBooking\Support\Period_Collection;
 use AweBooking\Support\Period;
+use AweBooking\Support\Decimal;
 
 class Booking extends WP_Object {
 	use Traits\Booking_Items_Trait,
-		Traits\Booking_Attributes_Trait;
+		Traits\Booking_Attributes_Trait,
+		Traits\Payments_Trait;
 
 	/* Booking Status */
 	const PENDING    = 'awebooking-pending';
@@ -241,6 +243,30 @@ class Booking extends WP_Object {
 
 	public function get_price( $price ) {
 		return new Price( $price, $this->get_currency() );
+	}
+
+	/**
+	 * Format the amount as price with current booking currency.
+	 *
+	 * @param  mixed   $amount The amount.
+	 * @param  boolean $echo   Should echo or not.
+	 * @return string|void
+	 */
+	public function format_money( $amount, $echo = true ) {
+		if ( $amount instanceof Decimal ) {
+			$amount = $amount->as_numeric();
+		} elseif ( $amount instanceof Price ) {
+			$amount = $amount->get_amount();
+		}
+
+		$money = new Price( $amount, $this->get_currency() );
+		$formatted = apply_filters( $this->prefix( 'format_money' ), (string) $money, $money, $this );
+
+		if ( $echo ) {
+			echo $formatted; // @WPCS: XSS OK.
+		} else {
+			return $formatted;
+		}
 	}
 
 	/**
