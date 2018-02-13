@@ -268,6 +268,17 @@ class Booking_Item extends WP_Object {
 	}
 
 	/**
+	 * Inserting.
+	 *
+	 * @return void
+	 */
+	protected function inserting() {
+		if ( empty( $this->attributes['date_paid'] ) ) {
+			$this->attributes['date_paid'] = Carbonate::now()->toDateTimeString();
+		}
+	}
+
+	/**
 	 * Run perform insert object into database.
 	 *
 	 * @return int|void

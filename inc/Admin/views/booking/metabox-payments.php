@@ -36,11 +36,10 @@ $payment_items = $the_booking->get_payments();
 							<?php if ( $comment = $payment_item->get_comment() ) : ?>
 								<a href="#payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" class="afloat-right" data-toggle="awebooking-popup" data-placement="right"><span class="dashicons dashicons-info"></span></a>
 
-								<div class="awebooking-debug-rooms__dialog awebooking-dialog-contents" id="payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" title="<?php esc_html_e( 'Payment comment', 'awebooking' ); ?>" style="display: none;">
-									<?php echo wp_kses_post( wpautop( wptexturize( $payment_item['comment'] ) ) ); ?>
+								<div id="payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" style="display: none;">
+									<div class="awebooking-dialog-contents" style="padding: 0 1em;"><?php echo wp_kses_post( wpautop( wptexturize( $payment_item['comment'] ) ) ); ?></div>
 								</div>
 							<?php endif ?>
-
 						</td>
 
 						<td>
@@ -84,7 +83,7 @@ $payment_items = $the_booking->get_payments();
 
 				<th colspan="2" style="width: 250px;">
 					<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
-					<span class="afloat-right awebooking-label awebooking-label--danger"><?php $the_booking->format_money( $the_booking->get_balance_due() ); ?></span>
+					<span class="afloat-right awebooking-label awebooking-label--<?php echo $balance_due->is_zero() ? 'success' : 'danger'; ?>"><?php $the_booking->format_money( $balance_due ); ?></span>
 				</th>
 			</tr>
 		</tfoot>
