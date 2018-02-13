@@ -64,7 +64,7 @@ class Booking_Room_Controller extends Controller {
 			new Rooms_In_Booking_Constraint( $booking ),
 		]);
 
-		$results = $reservation->search( null, $constraints )
+		$results = $reservation->search( $constraints )
 			->only_available_items();
 
 		return apply_filters( 'awebooking/add_room_reservation/search_results', $results, $reservation, $booking );
@@ -120,7 +120,8 @@ class Booking_Room_Controller extends Controller {
 			return $this->redirect()->back()->with_input();
 		}
 
-		$room_item = ( new Creator )->create_booking_room( $item, $booking );
+		$creator = awebooking()->make( Creator::class );
+		$room_item = $creator->create_booking_room( $item, $booking );
 
 		if ( $room_item->save() ) {
 			$this->notices( 'success', esc_html__( 'Added room item successfully!', 'awebooking' ) );

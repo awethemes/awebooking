@@ -166,7 +166,14 @@ class Availability_Calendar extends Schedule_Calendar {
 
 	protected function setup_event_with_booking( $event, $booking ) {
 		$event->set_summary( 'Booking #' . $booking->get_id() );
-		$event->set_description( 'Booking #' . $booking->get_id() );
+
+		ob_start();
+		include trailingslashit( __DIR__ ) . 'html-booking-summary.php';
+		$booking_summary = trim( ob_get_clean() );
+
+		$event->set_description( $booking_summary );
+
+		$event->set_url( $booking->get_edit_url() );
 	}
 
 	/**
@@ -183,8 +190,19 @@ class Availability_Calendar extends Schedule_Calendar {
 		foreach ( $day_events as $event ) {
 			$width = $event->get_period()->getDateInterval()->format( '%r%a' ) + 1;
 
+
 			$html  = '<div class="awebooking-schedule__event ' . esc_attr( implode( ' ', $this->get_event_classes( $event ) ) ) . '" style="left: 30px; width:' . esc_attr( $width * 60 ) . 'px">';
+
+			if ( $event_url = $event->get_url() ) {
+				$html .= '<a href="' . esc_url( $event_url ) . '" style="width: 100%; height: 100%; display: block;">';
+			}
+
 			$html .= '<span class="screen-reader-text">' . $event->get_summary() . '</span>';
+
+			if ( $event_url = $event->get_url() ) {
+				$html .= '</a>';
+			}
+
 			$html .= '<div class="popper" style="display: none;"><div class="popper__arrow" x-arrow></div>' . $event->get_description() . '</div>';
 			$html .= '</div>';
 
