@@ -101,7 +101,6 @@ class Room_Type extends WP_Object {
 			'booking_adults'   => -1,
 			'booking_children' => -1,
 			'booking_infants'  => -1,
-			'booking_nights'   => -1,
 			'posts_per_page'   => -1,
 		]);
 

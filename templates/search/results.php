@@ -39,4 +39,6 @@ do_action( 'awebooking/template_notices' );
 			<?php endif; ?>
 		</ul><!-- /.awebooking-availability-room-types -->
 	</form>
+
+	<?php awebooking_get_template( 'search/booked.php', compact( 'guest', 'reservation' ) ); ?>
 </div>

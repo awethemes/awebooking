@@ -67,7 +67,7 @@ $remain_rooms = $availability->remain_rooms();
 						</div>
 						<div class="awebooking-rate__price_detail">
 							<p><?php printf( esc_html__( 'price for %d Nights', 'awebooking' ), absint( $reservation->get_stay()->nights() ) ); ?></p>
-							<p><?php print $guest->as_string(); // WPCS: xss ok. ?></p>
+							<p><?php print $reservation->get_guest()->as_string(); // WPCS: xss ok. ?></p>
 						</div>
 					</div>
 

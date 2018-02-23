@@ -402,13 +402,13 @@ class Booking_Room_Item extends Booking_Item {
 			return false;
 		}
 
-		$creator = new Creator;
+		$creator = new Factory;
 		$resource = new Resource( $room_unit->get_id() );
 
 		try {
 			$state_event = new State_Event( $resource, $this->get_check_in(), $this->get_check_out(), $booking->get_state_status() );
 			$booking_event = new Booking_Event( $resource, $this->get_check_in(), $this->get_check_out(), $booking );
-		} catch ( sException $e ) {
+		} catch ( \Exception $e ) {
 			return false;
 		}
 
