@@ -13,7 +13,7 @@ class Booking_Cancelled extends Booking_Notification {
 	 * {@inheritdoc}
 	 */
 	public function get_subject() {
-		return $this->format_string( awebooking_option( 'email_cancelled_content' ) );
+		return $this->format_string( awebooking_option( 'email_cancelled_subject' ) );
 	}
 
 	/**
