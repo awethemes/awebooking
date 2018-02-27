@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Item;
+use AweBooking\Booking\Items\Booking_Item;
 use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 use AweBooking\Reservation\Exceptions\Overflow_Guest_Exception;
 

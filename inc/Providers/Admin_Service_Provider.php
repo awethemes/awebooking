@@ -20,6 +20,7 @@ class Admin_Service_Provider extends Service_Provider {
 		\AweBooking\Admin\Settings\Checkout_Setting::class,
 		\AweBooking\Admin\Settings\Display_Setting::class,
 		\AweBooking\Admin\Settings\Email_Setting::class,
+		\AweBooking\Admin\Settings\Premium_Setting::class,
 	];
 
 	/**
