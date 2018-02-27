@@ -30,6 +30,4 @@ class_alias( 'AweBooking\\Model\\Amenity', 'AweBooking\\Hotel\\Amenity' );
 class_alias( 'AweBooking\\Model\\Service', 'AweBooking\\Hotel\\Service' );
 class_alias( 'AweBooking\\Model\\Room_Type', 'AweBooking\\Hotel\\Room_Type' );
 class_alias( 'AweBooking\\Model\\Room', 'AweBooking\\Hotel\\Room' );
-
 class_alias( 'AweBooking\\Booking\\Booking', 'AweBooking\\Model\\Booking' );
-class_alias( 'AweBooking\\Booking\\Items\\Booking_Item', 'AweBooking\Model\Booking_Item' );

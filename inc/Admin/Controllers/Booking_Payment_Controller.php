@@ -3,7 +3,6 @@ namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Assert;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Item;
 use AweBooking\Model\Booking_Payment_Item;
 use AweBooking\Admin\Forms\Create_Payment_Form;
 use AweBooking\Support\Utils as U;
