@@ -86,6 +86,7 @@ class Admin_Menu {
 		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
 
 		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', static::PARENT_SLUG, null, 'dashicons-calendar', 53 );
+		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', 'awebooking-about', $this->create_page_callback( About_Page::class ) );
 	}
 
 	/**
@@ -135,7 +136,7 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_about_submenu() {
-		add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'awebooking-about', $this->create_page_callback( About_Page::class ) );
+		// add_submenu_page( static::PARENT_SLUG, esc_html__( 'AweBooking About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'awebooking-about', $this->create_page_callback( About_Page::class ) );
 	}
 
 	/**
