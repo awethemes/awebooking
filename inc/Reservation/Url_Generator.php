@@ -31,10 +31,14 @@ class Url_Generator extends Base_Url_Generator {
 	 * @param  \AweBooking\Model\Guest $guest The guest.
 	 * @return string
 	 */
-	public function get_search_link( Guest $guest, $with_session_id = false ) {
-		$stay = $this->reservation->get_stay();
-
+	public function get_search_link( Guest $guest ) {
 		$base_url = $this->get_page_permalink( 'check_availability' );
+
+		if ( $session_id = $this->reservation->get_session_id() ) {
+			return add_query_arg( 'session_id', $session_id, $base_url );
+		}
+
+		$stay = $this->reservation->get_stay();
 
 		$add_query = [
 			'check_in'  => $stay->to_array()[0],
@@ -48,10 +52,6 @@ class Url_Generator extends Base_Url_Generator {
 
 		if ( awebooking( 'setting' )->is_infants_bookable() && $infants = $guest->get_infants() ) {
 			$add_query['infants'] = $children;
-		}
-
-		if ( $with_session_id ) {
-			$add_query['session_id'] = $this->reservation->generate_session_id();
 		}
 
 		return add_query_arg( $add_query, $base_url );

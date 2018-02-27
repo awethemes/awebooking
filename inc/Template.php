@@ -10,6 +10,25 @@ class Template {
 	public static $template_dirs = [];
 
 	/**
+	 * Create a full template.
+	 *
+	 * @param  string $template The template name.
+	 * @param  array  $vars     The data inject to template.
+	 * @return string
+	 */
+	public function view( $template, array $vars = [] ) {
+		ob_start();
+
+		static::get_template( $template, $vars );
+
+		return trim( ob_get_clean() );
+	}
+
+	public function get( $template, array $vars = [] ) {
+		return static::get_template( $template, $vars );
+	}
+
+	/**
 	 * Locate a template and return the path for inclusion.
 	 *
 	 * @param  string $template_name Template name.
@@ -50,6 +69,7 @@ class Template {
 		}
 
 		$located = static::locate_template( $template_name );
+
 		if ( ! file_exists( $located ) ) {
 			return;
 		}

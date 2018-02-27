@@ -59,6 +59,13 @@ class Reservation {
 	protected $totals;
 
 	/**
+	 * The reservation session ID.
+	 *
+	 * @var string
+	 */
+	protected $session_id = '';
+
+	/**
 	 * Create new reservation.
 	 *
 	 * @param \AweBooking\Model\Source $source The source implementation.
@@ -223,12 +230,21 @@ class Reservation {
 	}
 
 	/**
-	 * Generate the reservation session_id.
+	 * Set the reservation session ID.
+	 *
+	 * @param string $session_id The session ID.
+	 */
+	public function set_session_id( $session_id ) {
+		$this->session_id = $session_id;
+	}
+
+	/**
+	 * Get the reservation session ID.
 	 *
 	 * @return string
 	 */
-	public function generate_session_id() {
-		return sha1( $this->source->get_uid() . implode( '', $this->stay->to_array() ) );
+	public function get_session_id() {
+		return $this->session_id;
 	}
 
 	/**

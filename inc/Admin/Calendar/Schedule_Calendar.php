@@ -1,17 +1,19 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\Carbonate;
+use AweBooking\Support\Collection;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Event\State_Event;
 use AweBooking\Calendar\Event\Pricing_Event;
 use AweBooking\Calendar\Event\Booking_Event;
-use AweBooking\Calendar\Html\Skeleton_Calendar_Trait;
+use AweBooking\Calendar\Html\Html_Skeleton_Calendar;
 
 abstract class Schedule_Calendar {
-	use Skeleton_Calendar_Trait;
+	use Html_Skeleton_Calendar;
 
 	/**
 	 * The Calendar default options.
@@ -24,41 +26,8 @@ abstract class Schedule_Calendar {
 		'weekday_label' => 'abbrev',  // 'initial', 'abbrev', 'full'.
 	];
 
-	/**
-	 * Generate the schedule calendar.
-	 *
-	 * @param  Scheduler $scheduler The Scheduler instance.
-	 * @param  Period    $period    The Period.
-	 * @return string
-	 */
-	protected function generate( Scheduler $scheduler, Period $period ) {
-		wp_enqueue_script( 'awebooking-schedule-calendar' );
-
-		ob_start();
-		include trailingslashit( __DIR__ ) . 'html-layout.php';
-
-		return trim( ob_get_clean() );
-	}
-
-	protected function get_cell_date_contents( $date, $calendar ) {}
-
-	protected function get_cell_event_contents( $events, $date, $calendar ) {}
-
-	/**
-	 * Get events from the Calendar in a Period.
-	 *
-	 * @param  Calendar $calendar [description]
-	 * @param  Period   $period   [description]
-	 * @return [type]
-	 */
-	protected function get_calendar_events( Calendar $calendar, Period $period ) {
-		return $calendar->get_events( $period )
-			->reject(function( $e ) {
-				return ( $e instanceof State_Event
-					|| $e instanceof Booking_Event
-					|| $e instanceof Pricing_Event ) && ! $e->get_value();
-			});
-	}
+	public function cell_date_contents( $date, $calendar ) {}
+	public function cell_event_contents( $events, $date, $calendar ) {}
 
 	/**
 	 * Get the actions_menu.
@@ -107,5 +76,44 @@ abstract class Schedule_Calendar {
 		$icon_class = ! empty( $menu['icon'] ) ? $menu['icon'] : '';
 
 		return '<a' . $item_id . ' href="' . esc_attr( $href ) . '"><span class="awebooking-schedule__action-icon ' . esc_attr( $icon_class ) . '"></span>' . esc_html( $name ) . '</a>';
+	}
+
+	/**
+	 * Get events from the Calendar in a Period.
+	 *
+	 * @param  Calendar $calendar [description]
+	 * @param  Period   $period   [description]
+	 * @return [type]
+	 */
+	public function get_calendar_events( Calendar $calendar, Period $period ) {
+		$period = $period
+			->moveEndDate( '2 DAYS' )
+			->moveStartDate( '2 DAYS' );
+
+		return $calendar->get_events( $period )
+			->reject(function( $e ) {
+				return ( $e instanceof State_Event
+					|| $e instanceof Booking_Event
+					|| $e instanceof Pricing_Event ) && ! $e->get_value();
+			});
+	}
+
+	/**
+	 * Get room types for the scheduler.
+	 *
+	 * @param  array $args Custom WP_Query args.
+	 * @return \AweBooking\Support\Collection
+	 */
+	protected function get_room_types( $args = [] ) {
+		$args = apply_filters( 'awebooking/calendar/query_room_types_args', wp_parse_args( $args, [
+			'posts_per_page' => 50,
+		]), $this );
+
+		return Collection::make( Room_Type::query( $args )->posts )
+			->map( function ( $post ) {
+				return new Room_Type( $post );
+			})->reject( function ( $room_type ) {
+				return $room_type->get_total_rooms() <= 0;
+			});
 	}
 }

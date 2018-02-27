@@ -31,12 +31,12 @@ class Resolver {
 	 * @return \AweBooking\Reservation\Pricing\Pricing_Items
 	 */
 	public function resolve( Room_Type $room_type ) {
-		$rates = $this->filter_select_rates( $room_type->get_rates(), $room_type );
+		$rates = $this->filter_valid_rates( $room_type->get_rates(), $room_type );
 
 		$base_rate = $this->resolve_base_rate( $rates, $room_type );
 
 		return Pricing_Items::make( [ $base_rate ] )->map( function( $rate ) {
-			return new Pricing( $rate, $this->reservation->get_stay() );
+			return new Rate_Pricing( $rate, $this->reservation->get_stay() );
 		});
 	}
 
@@ -47,9 +47,9 @@ class Resolver {
 	 * @param  [type] $room_type [description]
 	 * @return [type]
 	 */
-	protected function filter_select_rates( $rates, $room_type ) {
+	protected function filter_valid_rates( $rates, $room_type ) {
 		$rates = $rates->reject( function( $rate ) {
-			return Rate::GROUP_CUMULATIVE === $rate->get_group();
+			return Rate::GROUP_STANDARD !== $rate->get_group();
 		});
 
 		return apply_filters( 'awebooking/pricing/filter_rates', $rates, $room_type );

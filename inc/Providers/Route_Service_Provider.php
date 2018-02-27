@@ -5,6 +5,7 @@ use Awethemes\Http\Request;
 use AweBooking\Http\Kernel;
 use AweBooking\Http\Routing\Redirector;
 use AweBooking\Http\Routing\Url_Generator;
+use AweBooking\Http\Routing\Response_Factory;
 use AweBooking\Http\Routing\Binding_Resolver;
 use AweBooking\Http\Exceptions\Nonce_Mismatch_Exception;
 use AweBooking\Http\Exceptions\Validation_Failed_Exception;
@@ -21,6 +22,7 @@ class Route_Service_Provider extends Service_Provider {
 
 		$this->register_redirector();
 		$this->register_url_generator();
+		$this->register_response_factory();
 
 		$this->register_kernel();
 	}
@@ -96,6 +98,19 @@ class Route_Service_Provider extends Service_Provider {
 		});
 
 		$this->awebooking->alias( 'url', Url_Generator::class );
+	}
+
+	/**
+	 * Register the response binding.
+	 *
+	 * @return void
+	 */
+	protected function register_response_factory() {
+		$this->awebooking->singleton( 'response', function ( $a ) {
+			return new Response_Factory( $a['redirector'] );
+		});
+
+		$this->awebooking->alias( 'response', Response_Factory::class );
 	}
 
 	/**

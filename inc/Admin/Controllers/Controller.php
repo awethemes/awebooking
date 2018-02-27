@@ -2,9 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Response;
-use AweBooking\Http\Controllers\Controller as Base_Controller;
 use Awethemes\Http\Exception\AccessDeniedHttpException;
-use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 
 abstract class Controller {
 	/**

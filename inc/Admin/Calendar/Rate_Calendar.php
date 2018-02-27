@@ -11,7 +11,7 @@ use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resource_Collection;
 use AweBooking\Calendar\Provider\Pricing_Provider;
-use AweBooking\Reservation\Pricing\Pricing;
+use AweBooking\Reservation\Pricing\Rate_Pricing;
 use AweBooking\Support\Utils as U;
 use AweBooking\Support\Formatting;
 
@@ -127,7 +127,7 @@ class Pricing_Calendar extends Schedule_Calendar {
 	protected function get_calendar_events( Calendar $calendar, Period $period ) {
 		$stay = new Stay( $period->get_start_date(), $period->get_end_date() );
 
-		$pricing = new Pricing(
+		$pricing = new Rate_Pricing(
 			$calendar->get_resource()->get_reference(), $stay
 		);
 

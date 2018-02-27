@@ -35,13 +35,7 @@ class Booking_Metabox extends Post_Type_Metabox {
 	}
 
 	/**
-	 * Save CPT metadata when a custom post is saved.
-	 *
-	 * @access private
-	 *
-	 * @param int  $post_id The post ID.
-	 * @param post $post    The post object.
-	 * @param bool $update  Whether this is an existing post being updated or not.
+	 * {@inheritdoc}
 	 */
 	public function doing_save( $post_id, $post, $update ) {
 		// If this is just a revision, don't do anything.

@@ -75,22 +75,20 @@ class Session {
 			return;
 		}
 
-		return $payload['data'];
+		$reservation = $payload['data'];
+		$reservation->set_session_id( $payload['session_id'] );
+
+		return $reservation;
 	}
 
 	/**
 	 * Update the reservation into the session.
 	 *
-	 * @param  Reservation $reservation The reservation instance.
+	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
 	 * @return bool
 	 */
 	public function update( Reservation $reservation ) {
 		if ( ! $stored_reservation = $this->resolve() ) {
-			return false;
-		}
-
-		if ( empty( $stored_reservation['session_id'] ) ||
-			$stored_reservation['session_id'] !== $reservation->generate_session_id() ) {
 			return false;
 		}
 
@@ -104,14 +102,14 @@ class Session {
 	/**
 	 * Store the reservation into the session.
 	 *
-	 * @param  Reservation $reservation The reservation instance.
+	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
 	 * @return void
 	 */
 	public function store( Reservation $reservation ) {
 		$this->wp_session->put( $this->session_name, [
 			'data'       => $reservation,
 			'timeout'    => time() + ( $this->lifetime * MINUTE_IN_SECONDS ),
-			'session_id' => $reservation->generate_session_id(),
+			'session_id' => $this->generate_session_id( $reservation ),
 		]);
 	}
 
@@ -132,5 +130,17 @@ class Session {
 	 */
 	public function flush() {
 		$this->wp_session->remove( $this->session_name );
+	}
+
+	/**
+	 * Generate the reservation session_id.
+	 *
+	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
+	 * @return string
+	 */
+	protected function generate_session_id( Reservation $reservation ) {
+		list( $source, $stay ) = [ $reservation->get_source(), $reservation->get_stay() ];
+
+		return sha1( $source->get_uid() . implode( '', $stay->to_array() ) );
 	}
 }

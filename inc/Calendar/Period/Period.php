@@ -2,6 +2,7 @@
 namespace AweBooking\Calendar\Period;
 
 use DatePeriod;
+use DateInterval;
 use AweBooking\Support\Carbonate;
 use League\Period\Period as League_Period;
 
@@ -100,7 +101,7 @@ class Period extends League_Period implements \IteratorAggregate {
 	 * @return \DateInterval
 	 */
 	public function get_iterator_interval() {
-		return new \DateInterval( 'P1D' );
+		return new DateInterval( 'P1D' );
 	}
 
 	/**
@@ -125,7 +126,7 @@ class Period extends League_Period implements \IteratorAggregate {
 	 */
 	public function getIterator() {
 		// @codingStandardsIgnoreLine
-		$initial = new Day( $this->startDate );
+		$initial = new Day( $this->get_start_date() );
 
 		return $this->generate_iterator( $initial, function( $current, $initial ) {
 			return $this->contains( $current->get_start_date() );

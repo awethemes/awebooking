@@ -3,6 +3,7 @@ namespace AweBooking\Model;
 
 use AweBooking\Factory;
 use AweBooking\Constants;
+use AweBooking\Support\Carbonate;
 
 class Booking_Item extends WP_Object {
 	/**

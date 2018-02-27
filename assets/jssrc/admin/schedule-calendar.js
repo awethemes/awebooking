@@ -11,10 +11,6 @@
       startDate: null,
     },
 
-    validate(attrs, options) {
-      // ...
-    },
-
     clearSelectedDate(newUnit) {
       this.set({ startDate: null, endDate: null });
       this.set('unit', newUnit);
@@ -93,6 +89,8 @@
       const setUnit = this.getUnitByElement($target);
       const clickDate = moment($target.data('date'));
 
+      console.log(e);
+
       if (this.model.has('calendar') && setUnit !== this.model.get('calendar')
           || this.model.has('startDate') && this.model.has('endDate')
           || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), 'day')) {
@@ -151,7 +149,7 @@
         const nights = ($target.index() - $startDateEl.index() + 1);
 
         this.$marker.css('width', nights * COLUMN_WIDTH);
-        this.$marker.find('span').html(`${nights} night(s)`);
+        this.$marker.find('span').text(nights);
       }
     },
 

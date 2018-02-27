@@ -34,8 +34,8 @@ class BACS_Gateway extends Gateway {
 		$this->setting_fields();
 
 		$this->enabled     = (bool) $this->get_option( 'enabled', true );
-		$this->title       = $this->get_option( 'title' );
-		$this->description = $this->get_option( 'description' );
+		$this->title       = esc_html( $this->get_option( 'title' ) );
+		$this->description = esc_textarea( $this->get_option( 'description' ) );
 	}
 
 	/**

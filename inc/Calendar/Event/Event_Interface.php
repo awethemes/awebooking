@@ -13,11 +13,27 @@ interface Event_Interface {
 	public function get_start_date();
 
 	/**
+	 * Set the start date.
+	 *
+	 * @param DateTime|string $start_date The start date of the event.
+	 * @return void
+	 */
+	public function set_start_date( $start_date );
+
+	/**
 	 * Returns the end date instance.
 	 *
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date();
+
+	/**
+	 * Set the end date.
+	 *
+	 * @param  DateTime|string $end_date The end date of the event.
+	 * @return void
+	 */
+	public function set_end_date( $end_date );
 
 	/**
 	 * Returns the event value.

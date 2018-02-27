@@ -2,6 +2,7 @@
 namespace AweBooking\Http\Controllers;
 
 use AweBooking\Factory;
+use AweBooking\AweBooking;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
 use AweBooking\Reservation\Creator;
@@ -9,8 +10,17 @@ use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Url_Generator;
 use Awethemes\Http\Request;
 use Illuminate\Support\Arr;
+use AweBooking\Reservation\Searcher\Checker;
+use AweBooking\Reservation\Searcher\Constraints\Session_Reservation_Constraint;
 
 class Reservation_Controller extends Controller {
+	/**
+	 * The awebooking instance.
+	 *
+	 * @var \AweBooking\AweBooking
+	 */
+	protected $awebooking;
+
 	/**
 	 * The reservation creator.
 	 *
@@ -21,9 +31,11 @@ class Reservation_Controller extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Creator $creator The creator instance.
+	 * @param \AweBooking\AweBooking          $awebooking The awebooking instance.
+	 * @param \AweBooking\Reservation\Creator $creator    The creator instance.
 	 */
-	public function __construct( Creator $creator ) {
+	public function __construct( AweBooking $awebooking, Creator $creator ) {
+		$this->awebooking = $awebooking;
 		$this->creator = $creator;
 	}
 
@@ -38,20 +50,55 @@ class Reservation_Controller extends Controller {
 	public function add_item( Request $request ) {
 		$request->verify_nonce( '_wpnonce', 'awebooking_reservation' );
 
-		$reservation = awebooking( 'reservation_session' )->resolve();
+		$session = $this->awebooking->make( 'reservation_session' );
 
-		if ( is_null( $reservation ) ) {
-			$this->notices( 'error', esc_html__( 'The reservation session could not found, please try again.', 'awebooking' ) );
-			return $this->redirect()->back();
+		if ( $request->filled( 'session_id' ) ) {
+			$reservation = $session->resolve( $request->input( 'session_id' ) );
+
+			if ( is_null( $reservation ) ) {
+				$this->notices( 'error', esc_html__( 'The reservation session could not found, please try again.', 'awebooking' ) );
+				return $this->redirect()->back();
+			}
+		} else {
+			$reservation = $this->creator->create_reservation_from_request( $request );
+
+			if ( is_wp_error( $reservation ) ) {
+				$this->notices( 'error', $reservation->get_error_message() );
+				return $this->redirect()->back();
+			}
+
+			$session->store( $reservation );
 		}
 
 		// Get the submited room-type.
-		$request_room_type = Arr::first( array_keys( (array) $request->submit ) );
+		$requested_room_type = Arr::first( array_keys( (array) $request->submit ) );
+
+		$this->perform_add_item( $reservation, $requested_room_type );
+		$session->update( $reservation );
 
 		$url_generator = new Url_Generator( awebooking()->get_instance(), $reservation );
 
 		return $this->redirect()->to(
 			$url_generator->get_search_link( new Guest( 1 ), true )
 		);
+	}
+
+	protected function perform_add_item( $reservation, $room_type ) {
+		$room_type = Factory::get_room_type( $room_type );
+
+		$constraints = apply_filters( 'awebooking/reservation/constraints', [
+			new Session_Reservation_Constraint( $reservation ),
+		], $reservation );
+
+		$availability = ( new Checker )->check( $room_type, $reservation->get_stay(), $constraints );
+		$remain_rooms = $availability->remain_rooms();
+
+		if ( $remain_rooms->count() ) {
+			$select_room = $remain_rooms->first();
+			$select_room = apply_filters( 'awebooking/reservation/select_room', $select_room['room'], $availability, $reservation );
+
+			$rate = new \AweBooking\Model\Rate;
+			$reservation->add_room( $select_room, $rate, $reservation->get_guest() );
+		}
 	}
 }

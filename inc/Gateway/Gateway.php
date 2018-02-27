@@ -153,7 +153,7 @@ abstract class Gateway {
 	 * @return array|null
 	 */
 	public function get_setting_fields() {
-		return apply_filters( 'awebooking/gateway/get_description', $this->setting_fields, $this );
+		return apply_filters( 'awebooking/gateway/setting_fields', $this->setting_fields, $this );
 	}
 
 	/**
@@ -195,11 +195,7 @@ abstract class Gateway {
 	 *
 	 * @return void
 	 */
-	public function print_payment_fields() {
-		if ( $description = $this->get_description() ) {
-			echo wp_kses_post( wpautop( wptexturize( $description ) ) );
-		}
-	}
+	public function print_payment_fields() {}
 
 	/**
 	 * Validate frontend payment fields.
@@ -232,6 +228,10 @@ abstract class Gateway {
 	 */
 	protected function get_option( $key, $default = null ) {
 		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
+
+		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
+			$default = $this->setting_fields[ $key ]['default'];
+		}
 
 		return awebooking_option( $prefix . '_' . $key, $default );
 	}

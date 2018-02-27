@@ -92,19 +92,33 @@ class Event implements Event_Interface {
 	 * @param DateTime|string    $start_date The start date of the event.
 	 * @param DateTime|string    $end_date   The end date of the event.
 	 * @param int                $value      The event value.
-	 *
-	 * @throws \LogicException
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = 0 ) {
-		$this->start_date = Carbonate::create_datetime( $start_date );
-		$this->end_date   = Carbonate::create_datetime( $end_date );
+		static::assert_valid_dates(
+			$start_date = Carbonate::create_datetime( $start_date ),
+			$end_date = Carbonate::create_datetime( $end_date )
+		);
 
-		if ( $this->start_date > $this->end_date ) {
-			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
-		}
+		$this->start_date = $start_date;
+		$this->end_date = $end_date;
 
 		$this->set_value( $value );
 		$this->set_resource( $resource );
+	}
+
+	/**
+	 * Assert that given valid dates.
+	 *
+	 * @param  \AweBooking\Support\Carbonate $start_date The start date of the event.
+	 * @param  \AweBooking\Support\Carbonate $end_date   The end date of the event.
+	 * @return void
+	 *
+	 * @throws \LogicException
+	 */
+	protected static function assert_valid_dates( Carbonate $start_date, Carbonate $end_date ) {
+		if ( $start_date > $end_date ) {
+			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
+		}
 	}
 
 	/**
@@ -117,12 +131,40 @@ class Event implements Event_Interface {
 	}
 
 	/**
+	 * Set the start date.
+	 *
+	 * @param DateTime|string $start_date The start date of the event.
+	 * @return void
+	 */
+	public function set_start_date( $start_date ) {
+		$start_date = Carbonate::create_datetime( $start_date );
+
+		static::assert_valid_dates( $start_date, $this->end_date );
+
+		$this->start_date = $start_date;
+	}
+
+	/**
 	 * Returns the end date as new instance.
 	 *
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date() {
 		return $this->end_date->copy();
+	}
+
+	/**
+	 * Set the end date.
+	 *
+	 * @param  DateTime|string $end_date The end date of the event.
+	 * @return void
+	 */
+	public function set_end_date( $end_date ) {
+		$end_date = Carbonate::create_datetime( $end_date );
+
+		static::assert_valid_dates( $this->start_date, $end_date );
+
+		$this->end_date = $end_date;
 	}
 
 	/**
@@ -144,6 +186,15 @@ class Event implements Event_Interface {
 		$this->resource = $resource;
 
 		return $this;
+	}
+
+	/**
+	 * Determines if this event have untrusted resource.
+	 *
+	 * @return boolean
+	 */
+	public function is_untrusted_resource() {
+		return $this->resource && $this->resource->get_id() < 1;
 	}
 
 	/**
@@ -341,14 +392,5 @@ class Event implements Event_Interface {
 	 */
 	public function contains_period( Period $period ) {
 		return $this->get_period()->contains( $period );
-	}
-
-	/**
-	 * Determines if this event have untrusted resource.
-	 *
-	 * @return boolean
-	 */
-	public function is_untrusted_resource() {
-		return $this->resource && $this->resource->get_id() < 1;
 	}
 }

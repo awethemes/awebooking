@@ -2,8 +2,9 @@
 namespace AweBooking\Calendar\Html;
 
 use AweBooking\Support\Carbonate;
+use AweBooking\Calendar\Period\Day;
 
-trait Skeleton_Calendar_Trait {
+trait Html_Skeleton_Calendar {
 	/**
 	 * Get html base class or build new class.
 	 *
@@ -12,7 +13,7 @@ trait Skeleton_Calendar_Trait {
 	 * @param  string $class Optional, extra classes.
 	 * @return string
 	 */
-	protected function html_class( $class = null ) {
+	public function html_class( $class = null ) {
 		$base_class = $this->get_option( 'base_class' );
 
 		if ( is_null( $class ) ) {
@@ -29,20 +30,24 @@ trait Skeleton_Calendar_Trait {
 	 * @param  string    $base_class The base class.
 	 * @return array
 	 */
-	protected function get_date_classes( Carbonate $date, $base_class = '&__day' ) {
+	public function get_date_classes( $date, $base_class = '&__day' ) {
+		$date = $date instanceof Day
+			? $date->get_start_date()
+			: Carbonate::create_date( $date );
+
 		$classes[] = $this->html_class( $base_class );
 
 		// Is current day is today, future or past.
 		if ( $date->isToday() ) {
-			$classes[] = $this->html_class( $base_class . '--today' );
+			$classes[] = 'today';
 		} elseif ( $date->isPast() ) {
-			$classes[] = $this->html_class( $base_class . '--past' );
+			$classes[] = 'past';
 		} elseif ( $date->isFuture() ) {
-			$classes[] = $this->html_class( $base_class . '--future' );
+			$classes[] = 'future';
 		}
 
 		if ( $date->isWeekend() ) {
-			$classes[] = $this->html_class( $base_class . '--weekend' );
+			$classes[] = 'weekend';
 		}
 
 		return $classes;
@@ -55,7 +60,7 @@ trait Skeleton_Calendar_Trait {
 	 * @param  string     $type  Optional, if null given using value from "month_label" option.
 	 * @return string
 	 */
-	protected function get_month_name( $month, $type = null ) {
+	public function get_month_name( $month, $type = null ) {
 		global $wp_locale;
 
 		$type = is_null( $type ) ? $this->get_option( 'month_label' ) : $type;
@@ -75,7 +80,7 @@ trait Skeleton_Calendar_Trait {
 	 * @param  string $type    Optional, if null given using value from "weekday_label" option.
 	 * @return string
 	 */
-	protected function get_weekday_name( $weekday, $type = null ) {
+	public function get_weekday_name( $weekday, $type = null ) {
 		global $wp_locale;
 
 		$type = is_null( $type ) ? $this->get_option( 'weekday_label' ) : $type;
@@ -98,7 +103,7 @@ trait Skeleton_Calendar_Trait {
 	 * @param  mixed  $default Default value.
 	 * @return mixed
 	 */
-	protected function get_option( $option, $default = null ) {
+	public function get_option( $option, $default = null ) {
 		return isset( $this->options[ $option ] ) ? $this->options[ $option ] : $default;
 	}
 }

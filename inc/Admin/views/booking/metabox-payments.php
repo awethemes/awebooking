@@ -3,7 +3,12 @@
 use AweBooking\Money\Money;
 use AweBooking\Support\Utils as U;
 
-$payment_items = $the_booking->get_payments();
+$balance_due = $the_booking->get_balance_due();
+
+$payment_items = $the_booking->get_payments()
+	->sortByDesc( function ( $e ) {
+		return $e->is_deposit();
+	});
 
 ?><div id="awebooking-booking-payments" style="margin-top: 20px;">
 
@@ -63,7 +68,9 @@ $payment_items = $the_booking->get_payments();
 							</div>
 						</td>
 
-						<td><?php echo esc_html( $payment_item->get_date_paid()->to_wp_datetime_string() ); ?></td>
+						<td>
+							<?php echo esc_html( U::optional( $payment_item->get_date_paid() )->to_wp_datetime_string() ); ?>
+						</td>
 
 						<td class="atext-right">
 							<span class="awebooking-label"><?php $the_booking->format_money( $payment_item->get_amount() ); ?></span>

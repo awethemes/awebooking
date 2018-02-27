@@ -13,15 +13,14 @@ use AweBooking\Admin\Controllers\Booking_Payment_Controller;
 $route->get( '/about', About_Controller::class . '@about' );
 $route->post( '/settings', Settings_Controller::class . '@store' );
 
+// Calendar routes.
+$route->get( '/calendar', Calendar_Controller::class . '@index' );
+$route->post( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@update' );
+
 // Rates routes.
 $route->get( '/rates', Rate_Controller::class . '@index' );
 $route->get( '/rates/{room_type:\d+}', Rate_Controller::class . '@show' );
 $route->post( '/rates/{room_type:\d+}', Rate_Controller::class . '@set_amount' );
-
-// Calendar routes.
-$route->get( '/calendar', Calendar_Controller::class . '@index' );
-$route->get( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@show' );
-$route->post( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@update' );
 
 // New reservation routes.
 $route->get( '/reservation/create', Reservation_Controller::class . '@create' );

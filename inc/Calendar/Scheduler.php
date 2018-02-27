@@ -12,6 +12,13 @@ class Scheduler extends Collection {
 	protected $name;
 
 	/**
+	 * The scheduler reference.
+	 *
+	 * @var mixed
+	 */
+	protected $reference;
+
+	/**
 	 * Get the Calendar name.
 	 *
 	 * @return string
@@ -28,6 +35,26 @@ class Scheduler extends Collection {
 	 */
 	public function set_name( $name ) {
 		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * Get the reference.
+	 *
+	 * @return mixed
+	 */
+	public function get_reference() {
+		return $this->reference;
+	}
+
+	/**
+	 * Set the reference.
+	 *
+	 * @param mixed $reference The reference.
+	 */
+	public function set_reference( $reference ) {
+		$this->reference = $reference;
 
 		return $this;
 	}

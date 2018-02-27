@@ -7,7 +7,7 @@ abstract class Period_Unit extends Period {
 	 *
 	 * @var string
 	 */
-	protected $interval = 'P1D';
+	protected $interval;
 
 	/**
 	 * Create a period.

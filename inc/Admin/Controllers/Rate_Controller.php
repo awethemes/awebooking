@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Controllers;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Stay;
 use AweBooking\Model\Room_Type;
-use AweBooking\Reservation\Pricing\Pricing;
+use AweBooking\Reservation\Pricing\Rate_Pricing;
 use AweBooking\Admin\Forms\Set_Price_Form;
 use AweBooking\Admin\Calendar\Pricing_Calendar;
 use Awethemes\Http\Request;
@@ -56,7 +56,7 @@ class Rate_Controller extends Controller {
 		$stay = new Stay( $request['set_amount_period'][0], $request['set_amount_period'][1] );
 
 		// Set the pricing.
-		$updated = ( new Pricing( $rate, $stay ) )
+		$updated = ( new Rate_Pricing( $rate, $stay ) )
 			->set_amount( $request['set_amount'] );
 
 		awebooking( 'admin_notices' )->success( esc_html__( 'Update price successfully!', 'awebooking' ) );

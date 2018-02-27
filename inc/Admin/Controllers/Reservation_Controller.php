@@ -106,7 +106,7 @@ class Reservation_Controller extends Controller {
 			new Session_Reservation_Constraint( $reservation ),
 		];
 
-		$results = $reservation->search( null, $constraints )
+		$results = $reservation->search( $constraints )
 			->only_available_items();
 
 		return $results;

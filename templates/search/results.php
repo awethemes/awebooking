@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* @vars $guest, $reservation, $results */
 
+list( $guest, $stay ) = [ $reservation->get_guest(), $reservation->get_stay() ];
+
 do_action( 'awebooking/template_notices' );
 
 ?>
@@ -38,6 +40,24 @@ do_action( 'awebooking/template_notices' );
 
 			<?php endif; ?>
 		</ul><!-- /.awebooking-availability-room-types -->
+
+		<?php if ( $session_id = $reservation->get_session_id() ) : ?>
+			<input type="hidden" name="session_id" value="<?php echo esc_attr( $session_id ); ?>">
+		<?php endif; ?>
+
+		<input type="hidden" name="check_in" value="<?php echo esc_attr( $stay->get_check_in()->toDateString() ); ?>">
+		<input type="hidden" name="check_out" value="<?php echo esc_attr( $stay->get_check_out()->toDateString() ); ?>">
+
+		<input type="hidden" name="adults" value="<?php echo esc_attr( $guest->get_adults() ); ?>">
+		<?php if ( awebooking( 'setting' )->is_children_bookable() ) : ?>
+			<input type="hidden" name="children" value="<?php echo esc_attr( $guest->get_children() ); ?>">
+		<?php endif; ?>
+
+		<?php if ( awebooking( 'setting' )->is_infants_bookable() ) : ?>
+			<input type="hidden" name="infants" value="<?php echo esc_attr( $guest->get_infants() ); ?>">
+		<?php endif; ?>
+
+		<?php do_action( 'awebooking/after_search_form', $reservation ); ?>
 	</form>
 
 	<?php awebooking_get_template( 'search/booked.php', compact( 'guest', 'reservation' ) ); ?>

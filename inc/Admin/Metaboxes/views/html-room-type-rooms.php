@@ -42,7 +42,7 @@ if ( awebooking()->is_running_multilanguage() ) {
 				<span>{{ index + 1 }}</span>
 
 				<input type="hidden" :name="'abkng_rooms[' + index + '][id]'" :value="room.id">
-				<input type="text" :name="'abkng_rooms[' + index + '][name]'" :value="room.name" v-model="room.name" <?php echo $is_disabled ? 'disabled=""' : '' ?>>
+				<input type="text" :name="'abkng_rooms[' + index + '][name]'" v-model="room.name" <?php echo $is_disabled ? 'disabled=""' : '' ?>>
 				<button type="button" @click.prevent="deleteRoomByIndex(index)" <?php echo $is_disabled ? 'disabled=""' : '' ?>>&times;</button>
 			</li>
 		</ul>

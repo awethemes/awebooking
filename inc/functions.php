@@ -3,7 +3,9 @@
 use AweBooking\Template;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
+use AweBooking\Support\Carbonate;
 use AweBooking\Support\Formatting;
+use AweBooking\Support\Utils as U;
 use AweBooking\Calendar\Period\Period;
 
 /**
@@ -78,6 +80,11 @@ function awebooking_sanitize_period( $value, $strict = false ) {
 	];
 }
 
+function awebooking_sanitize_standard_date( $value ) {
+	return U::rescue( function () use ( $value ) {
+		return Carbonate::create_date( $value )->toDateString();
+	});
+}
 
 /**
  * ------------------------------------------------------

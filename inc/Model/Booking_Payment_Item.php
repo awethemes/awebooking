@@ -117,7 +117,7 @@ class Booking_Payment_Item extends Booking_Item {
 	 * @return string
 	 */
 	public function get_transaction_id() {
-		return apply_filters( $this->prefix( 'get_comment' ), $this['transaction_id'], $this );
+		return apply_filters( $this->prefix( 'get_transaction_id' ), $this['transaction_id'], $this );
 	}
 
 	/**
@@ -127,12 +127,10 @@ class Booking_Payment_Item extends Booking_Item {
 	 */
 	public function get_date_paid() {
 		$date_paid = U::rescue( function() {
-			return Carbonate::create( $this['date_paid'] );
-		}, function() {
-			return Carbonate::now();
+			return Carbonate::create_datetime( $this['date_paid'] );
 		});
 
-		return apply_filters( $this->prefix( 'get_amount' ), $date_paid, $this );
+		return apply_filters( $this->prefix( 'get_date_paid' ), $date_paid, $this );
 	}
 
 	/**

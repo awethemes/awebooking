@@ -31,7 +31,7 @@ class Checkout_Shortcode extends Shortcode {
 
 		// Abort if empty the reservation session.
 		if ( is_null( $reservation ) ) {
-			return;
+			// return;
 		}
 
 		$session->keep();

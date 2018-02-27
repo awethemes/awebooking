@@ -64,10 +64,6 @@ class Item {
 	 * @return \AweBooking\Reservation\Pricing\Pricing
 	 */
 	public function get_pricing() {
-		if ( is_null( $this->pricing ) ) {
-			$this->pricing = new Pricing( $this->rate, $this->stay );
-		}
-
 		return $this->pricing;
 	}
 

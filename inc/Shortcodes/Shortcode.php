@@ -114,7 +114,15 @@ abstract class Shortcode {
 	 * @return \Awethemes\Http\Request
 	 */
 	protected function resolve_http_request() {
-		return awebooking()->make( Request::class );
+		$awebooking = awebooking()->get_instance();
+
+		if ( ! $awebooking->resolved( Request::class ) ) {
+			$awebooking->instance( 'request', $request = $awebooking->make( Request::class ) );
+		} else {
+			$request = $awebooking->make( 'request' );
+		}
+
+		return $request;
 	}
 
 	/**

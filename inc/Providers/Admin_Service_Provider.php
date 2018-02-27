@@ -66,6 +66,7 @@ class Admin_Service_Provider extends Service_Provider {
 			return new Admin_Settings( $a['setting'] );
 		});
 
+		$this->awebooking->alias( 'admin_template', Admin_Template::class );
 		$this->awebooking->alias( 'admin_settings', Admin_Settings::class );
 	}
 
@@ -146,7 +147,7 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function correct_admin_menus() {
-		global $parent_file, $submenu_file;
+		global $parent_file, $submenu_file, $submenu;
 
 		$current_screen = get_current_screen();
 		if ( ! $current_screen ) {
@@ -157,6 +158,10 @@ class Admin_Service_Provider extends Service_Provider {
 			// @codingStandardsIgnoreStart
 			$parent_file  = 'awebooking';
 			$submenu_file = 'admin.php?awebooking=' . awebooking('request')->route_path();
+
+			if ( 0 === strpos( $current_screen->id, 'awebooking/booking' ) ) {
+				$submenu_file = 'edit.php?post_type=awebooking';
+			}
 			// @codingStandardsIgnoreEnd
 		}
 	}

@@ -57,8 +57,8 @@
     datePickerCallBack: function() {
       $('[data-init="datepicker"]').each(function () {
         var el = $(this);
-        var start_date = el.parents('form').find('input[name="start-date"]').val(),
-            end_date = el.parents('form').find('input[name="end-date"]').val();
+        var start_date = el.parents('form').find('input[name="check_in"]').val(),
+            end_date = el.parents('form').find('input[name="check_out"]').val();
 
         if ( start_date ) {
           var valid_start_date = new Date(start_date);

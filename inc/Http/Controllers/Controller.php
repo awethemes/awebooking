@@ -1,10 +1,23 @@
 <?php
 namespace AweBooking\Http\Controllers;
 
-use Awethemes\Http\Request;
-use Skeleton\Support\Validator;
+use Awethemes\Http\Response;
 
 abstract class Controller {
+	/**
+	 * Return a new response or a response factory.
+	 *
+	 * @param  string|null $content  The response content.
+	 * @param  integer     $status   The response status.
+	 * @param  array       $headers  The response headers.
+	 * @return \Awethemes\Http\Response
+	 */
+	protected function response( $content = null, $status = 200, array $headers = [] ) {
+		$response = awebooking()->make( 'response' );
+
+		return is_null( $content ) ? $response : $response->create( $content, $status, $headers );
+	}
+
 	/**
 	 * Get instance of the Redirector.
 	 *

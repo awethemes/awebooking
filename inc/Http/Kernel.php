@@ -59,11 +59,7 @@ class Kernel extends Base_Kernel {
 	}
 
 	/**
-	 * Handle a route found by the dispatcher.
-	 *
-	 * @param  SymfonyRequest $request   The incoming request.
-	 * @param  array          $routeinfo The response from dispatcher.
-	 * @return Response
+	 * {@inheritdoc}
 	 */
 	protected function handle_found_route( SymfonyRequest $request, array $routeinfo ) {
 		// In this, we'll instance the request into the Container.
@@ -77,11 +73,7 @@ class Kernel extends Base_Kernel {
 	}
 
 	/**
-	 * Get the exception messages.
-	 *
-	 * @param  \Exception|\Throwable $e       The Exception.
-	 * @param  integer               $status  The response status code.
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	protected function get_exception_message( $e, $status ) {
 		switch ( $status ) {
