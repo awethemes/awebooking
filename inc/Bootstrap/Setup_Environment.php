@@ -173,9 +173,9 @@ class Setup_Environment {
 		)->set( apply_filters( 'awebooking/post_type/args_room_type', [
 			'menu_icon'       => 'dashicons-building',
 			'menu_position'   => 53,
-			'supports'        => array( 'title', 'editor', 'thumbnail' ),
+			'supports'        => [ 'title', 'editor', 'thumbnail' ],
 			'map_meta_cap'    => true,
-			'capability_type' => 'room_type',
+			'capability_type' => Constants::ROOM_TYPE,
 			'rewrite'         => [
 				'slug' => get_option( 'awebooking_room_type_permalink', 'room_type' ),
 				'feeds' => true,
@@ -207,7 +207,7 @@ class Setup_Environment {
 			'show_ui'             => true,
 			'show_in_menu'        => 'awebooking',
 			'supports'            => [ 'comments' ],
-			'capability_type'     => 'awebooking',
+			'capability_type'     => Constants::BOOKING,
 			'map_meta_cap'        => true,
 			'labels'              => [
 				'all_items' => esc_html__( 'Bookings', 'awebooking' ),
@@ -229,8 +229,8 @@ class Setup_Environment {
 			'hierarchical'        => true,
 			'show_ui'             => true,
 			'show_in_menu'        => 'edit.php?post_type=room_type',
-			'supports'            => array( 'title', 'page-attributes' ),
-			'capability_type'     => 'pricing_rate',
+			'supports'            => [ 'title', 'page-attributes' ],
+			'capability_type'     => Constants::PRICING_RATE,
 			'map_meta_cap'        => true,
 			'labels'              => [
 				'all_items' => esc_html__( 'Rates', 'awebooking' ),
@@ -247,38 +247,38 @@ class Setup_Environment {
 	 */
 	public function register_post_status() {
 		$booking_statuses = apply_filters( 'awebooking/register_booking_statuses', [
-			'awebooking-pending' => array(
+			'awebooking-pending' => [
 				'label'                     => _x( 'Pending', 'Booking status', 'awebooking' ),
 				'public'                    => false,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				'label_count'               => _n_noop( 'Pending <span class="count">(%s)</span>', 'Pending <span class="count">(%s)</span>', 'awebooking' ),
-			),
-			'awebooking-inprocess' => array(
+			],
+			'awebooking-inprocess' => [
 				'label'                     => _x( 'Processing', 'Booking status', 'awebooking' ),
 				'public'                    => false,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'awebooking' ),
-			),
-			'awebooking-completed' => array(
+			],
+			'awebooking-completed' => [
 				'label'                     => _x( 'Completed', 'Booking status', 'awebooking' ),
 				'public'                    => false,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				'label_count'               => _n_noop( 'Completed <span class="count">(%s)</span>', 'Completed <span class="count">(%s)</span>', 'awebooking' ),
-			),
-			'awebooking-cancelled' => array(
+			],
+			'awebooking-cancelled' => [
 				'label'                     => _x( 'Cancelled', 'Booking status', 'awebooking' ),
 				'public'                    => false,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'awebooking' ),
-			),
+			],
 		]);
 
 		foreach ( $booking_statuses as $status => $args ) {
