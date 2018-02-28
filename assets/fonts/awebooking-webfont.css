@@ -1,0 +1,43 @@
+@font-face {
+	font-family: "awebooking-webfont";
+	font-style: normal;
+	font-weight: normal;
+	src: url("awebooking-webfont.eot?308251f74d5b7170b1cfd1e6e4d628df?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?308251f74d5b7170b1cfd1e6e4d628df") format("woff2"),
+url("awebooking-webfont.woff?308251f74d5b7170b1cfd1e6e4d628df") format("woff"),
+url("awebooking-webfont.ttf?308251f74d5b7170b1cfd1e6e4d628df") format("truetype"),
+url("awebooking-webfont.svg?308251f74d5b7170b1cfd1e6e4d628df#awebooking-webfont") format("svg");
+}
+
+.afc {
+	font-family: awebooking-webfont;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+}
+
+.afc-bed:before {
+	content: "\e001";
+}
+.afc-building-alt:before {
+	content: "\e002";
+}
+.afc-building:before {
+	content: "\e003";
+}
+.afc-calendar-alt:before {
+	content: "\e004";
+}
+.afc-calendar:before {
+	content: "\e005";
+}
+.afc-credit-card:before {
+	content: "\e006";
+}
+.afc-room-service:before {
+	content: "\e007";
+}

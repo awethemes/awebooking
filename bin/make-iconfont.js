@@ -2,18 +2,18 @@ const path = require('path');
 const generator = require('icon.font');
 
 const options = {
-  fontName:        'awebooking',
-  configFile:      './assets/svg/config.json',
   src:             './assets/svg',
   dest:            './assets/fonts',
   image:           false,
+  fontName:        'awebooking-webfont',
+  configFile:      'bin/webfonts/config.json',
   htmlTemplate:    'bin/webfonts/html.hbs',
   cssTemplate:     'bin/webfonts/css.hbs',
+  types:           ['woff2', 'woff', 'ttf', 'eot', 'svg'],
   codepointRanges: [ [0xF101, Infinity] ],
   templateOptions: {
-    classPrefix:   'awebooking-',
-    baseSelector:  '._icon',
-    baseClassname: '_icon',
+    baseSelector:  'afc', // awebooking-webfont
+    classPrefix:   'afc-',
   },
 };
 
