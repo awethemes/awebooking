@@ -12,7 +12,81 @@ module.exports = __webpack_require__(22);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar $ = window.jQuery;\nvar AweBooking = window.TheAweBooking;\n\nvar RoomsCreator = {\n  el: '#abkng-rooms',\n  template: '#awebooking-rooms-manager-template',\n\n  data: {\n    rooms: [],\n    totalRooms: 0,\n    roomTypeTitle: ''\n  },\n\n  created: function created() {\n    this.rooms = window.ABKNG_ROOMS || [];\n    this.totalRooms = this.rooms.length;\n    this.roomTypeTitle = $('#title').val();\n\n    if (this.totalRooms == 0) {\n      this.totalRooms = 1;\n      this.regenerateRooms();\n    }\n  },\n\n  methods: {\n    regenerateRooms: function regenerateRooms() {\n      var roomsLength = this.rooms.length;\n      var numberOfRooms = parseInt(this.totalRooms, 10);\n\n      // Re-update title.\n      this.roomTypeTitle = $('#title').val();\n\n      if (numberOfRooms <= 0) {\n        this.totalRooms = 1;\n      }\n\n      if (numberOfRooms > roomsLength) {\n        for (var i = roomsLength; i < numberOfRooms; i++) {\n          this.rooms.push({ id: -1, name: this.roomTypeTitle + ' - ' + (i + 1) });\n        }\n      } else if (numberOfRooms < roomsLength) {\n        if (confirm(AweBooking.trans('ask_reduce_the_rooms'))) {\n          for (var i = roomsLength - 1; i >= numberOfRooms; i--) {\n            this.rooms.splice(i, 1);\n          }\n        }\n      }\n    },\n\n    deleteRoomByIndex: function deleteRoomByIndex(index) {\n      if (!confirm(AweBooking.trans('warning'))) {\n        return;\n      }\n\n      if (this.rooms.length > 1) {\n        this.rooms.splice(index, 1);\n        this.totalRooms = this.rooms.length;\n      }\n    }\n  }\n};\n\n$(function () {\n\n  var roomsCreator = new AweBooking.Vue(RoomsCreator);\n  $('#title').on('change', function () {\n    var title = $(this).val();\n\n    if (roomsCreator.$data.rooms.length === 1 && roomsCreator.$data.rooms[0].name == ' - 1') {\n      roomsCreator.$data.rooms[0].name = title + ' - 1';\n    }\n  });\n});//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9hc3NldHMvanNzcmMvYWRtaW4vZWRpdC1yb29tLXR5cGUuanM/NWNhMSJdLCJuYW1lcyI6WyIkIiwid2luZG93IiwialF1ZXJ5IiwiQXdlQm9va2luZyIsIlRoZUF3ZUJvb2tpbmciLCJSb29tc0NyZWF0b3IiLCJlbCIsInRlbXBsYXRlIiwiZGF0YSIsInJvb21zIiwidG90YWxSb29tcyIsInJvb21UeXBlVGl0bGUiLCJjcmVhdGVkIiwiQUJLTkdfUk9PTVMiLCJsZW5ndGgiLCJ2YWwiLCJyZWdlbmVyYXRlUm9vbXMiLCJtZXRob2RzIiwicm9vbXNMZW5ndGgiLCJudW1iZXJPZlJvb21zIiwicGFyc2VJbnQiLCJpIiwicHVzaCIsImlkIiwibmFtZSIsImNvbmZpcm0iLCJ0cmFucyIsInNwbGljZSIsImRlbGV0ZVJvb21CeUluZGV4IiwiaW5kZXgiLCJyb29tc0NyZWF0b3IiLCJWdWUiLCJvbiIsInRpdGxlIiwiJGRhdGEiXSwibWFwcGluZ3MiOiJBQUFBOztBQUVBLElBQU1BLElBQUlDLE9BQU9DLE1BQWpCO0FBQ0EsSUFBTUMsYUFBYUYsT0FBT0csYUFBMUI7O0FBRUEsSUFBTUMsZUFBZTtBQUNuQkMsTUFBSSxjQURlO0FBRW5CQyxZQUFVLG9DQUZTOztBQUluQkMsUUFBTTtBQUNKQyxXQUFPLEVBREg7QUFFSkMsZ0JBQVksQ0FGUjtBQUdKQyxtQkFBZTtBQUhYLEdBSmE7O0FBVW5CQyxXQUFTLG1CQUFXO0FBQ2xCLFNBQUtILEtBQUwsR0FBYVIsT0FBT1ksV0FBUCxJQUFzQixFQUFuQztBQUNBLFNBQUtILFVBQUwsR0FBa0IsS0FBS0QsS0FBTCxDQUFXSyxNQUE3QjtBQUNBLFNBQUtILGFBQUwsR0FBcUJYLEVBQUUsUUFBRixFQUFZZSxHQUFaLEVBQXJCOztBQUVBLFFBQUksS0FBS0wsVUFBTCxJQUFtQixDQUF2QixFQUEwQjtBQUN4QixXQUFLQSxVQUFMLEdBQWtCLENBQWxCO0FBQ0EsV0FBS00sZUFBTDtBQUNEO0FBQ0YsR0FuQmtCOztBQXFCbkJDLFdBQVM7QUFDUEQscUJBQWlCLDJCQUFXO0FBQzFCLFVBQUlFLGNBQWMsS0FBS1QsS0FBTCxDQUFXSyxNQUE3QjtBQUNBLFVBQUlLLGdCQUFnQkMsU0FBUyxLQUFLVixVQUFkLEVBQTBCLEVBQTFCLENBQXBCOztBQUVBO0FBQ0EsV0FBS0MsYUFBTCxHQUFxQlgsRUFBRSxRQUFGLEVBQVllLEdBQVosRUFBckI7O0FBRUEsVUFBSUksaUJBQWlCLENBQXJCLEVBQXdCO0FBQ3RCLGFBQUtULFVBQUwsR0FBa0IsQ0FBbEI7QUFDRDs7QUFFRCxVQUFJUyxnQkFBZ0JELFdBQXBCLEVBQWlDO0FBQy9CLGFBQUssSUFBSUcsSUFBSUgsV0FBYixFQUEwQkcsSUFBSUYsYUFBOUIsRUFBNkNFLEdBQTdDLEVBQWtEO0FBQ2hELGVBQUtaLEtBQUwsQ0FBV2EsSUFBWCxDQUFnQixFQUFFQyxJQUFJLENBQUMsQ0FBUCxFQUFVQyxNQUFNLEtBQUtiLGFBQUwsR0FBcUIsS0FBckIsSUFBK0JVLElBQUUsQ0FBakMsQ0FBaEIsRUFBaEI7QUFDRDtBQUNGLE9BSkQsTUFJTyxJQUFJRixnQkFBZ0JELFdBQXBCLEVBQWlDO0FBQ3RDLFlBQUlPLFFBQVF0QixXQUFXdUIsS0FBWCxDQUFpQixzQkFBakIsQ0FBUixDQUFKLEVBQXVEO0FBQ3JELGVBQUssSUFBSUwsSUFBSUgsY0FBYyxDQUEzQixFQUE4QkcsS0FBS0YsYUFBbkMsRUFBa0RFLEdBQWxELEVBQXVEO0FBQ3JELGlCQUFLWixLQUFMLENBQVdrQixNQUFYLENBQWtCTixDQUFsQixFQUFxQixDQUFyQjtBQUNEO0FBQ0Y7QUFDRjtBQUNGLEtBdkJNOztBQXlCUE8sdUJBQW1CLDJCQUFTQyxLQUFULEVBQWdCO0FBQ2pDLFVBQUksQ0FBRUosUUFBUXRCLFdBQVd1QixLQUFYLENBQWlCLFNBQWpCLENBQVIsQ0FBTixFQUE0QztBQUMxQztBQUNEOztBQUVELFVBQUksS0FBS2pCLEtBQUwsQ0FBV0ssTUFBWCxHQUFvQixDQUF4QixFQUEyQjtBQUN6QixhQUFLTCxLQUFMLENBQVdrQixNQUFYLENBQWtCRSxLQUFsQixFQUF5QixDQUF6QjtBQUNBLGFBQUtuQixVQUFMLEdBQWtCLEtBQUtELEtBQUwsQ0FBV0ssTUFBN0I7QUFDRDtBQUNGO0FBbENNO0FBckJVLENBQXJCOztBQTJEQWQsRUFBRSxZQUFXOztBQUVYLE1BQU04QixlQUFlLElBQUkzQixXQUFXNEIsR0FBZixDQUFtQjFCLFlBQW5CLENBQXJCO0FBQ0FMLElBQUUsUUFBRixFQUFZZ0MsRUFBWixDQUFlLFFBQWYsRUFBeUIsWUFBVztBQUNsQyxRQUFJQyxRQUFRakMsRUFBRSxJQUFGLEVBQVFlLEdBQVIsRUFBWjs7QUFFQSxRQUFJZSxhQUFhSSxLQUFiLENBQW1CekIsS0FBbkIsQ0FBeUJLLE1BQXpCLEtBQW9DLENBQXBDLElBQXlDZ0IsYUFBYUksS0FBYixDQUFtQnpCLEtBQW5CLENBQXlCLENBQXpCLEVBQTRCZSxJQUE1QixJQUFvQyxNQUFqRixFQUF5RjtBQUN2Rk0sbUJBQWFJLEtBQWIsQ0FBbUJ6QixLQUFuQixDQUF5QixDQUF6QixFQUE0QmUsSUFBNUIsR0FBbUNTLFFBQVEsTUFBM0M7QUFDRDtBQUNGLEdBTkQ7QUFRRCxDQVhEIiwiZmlsZSI6IjIyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnO1xuXG5jb25zdCAkID0gd2luZG93LmpRdWVyeTtcbmNvbnN0IEF3ZUJvb2tpbmcgPSB3aW5kb3cuVGhlQXdlQm9va2luZztcblxuY29uc3QgUm9vbXNDcmVhdG9yID0ge1xuICBlbDogJyNhYmtuZy1yb29tcycsXG4gIHRlbXBsYXRlOiAnI2F3ZWJvb2tpbmctcm9vbXMtbWFuYWdlci10ZW1wbGF0ZScsXG5cbiAgZGF0YToge1xuICAgIHJvb21zOiBbXSxcbiAgICB0b3RhbFJvb21zOiAwLFxuICAgIHJvb21UeXBlVGl0bGU6ICcnLFxuICB9LFxuXG4gIGNyZWF0ZWQ6IGZ1bmN0aW9uKCkge1xuICAgIHRoaXMucm9vbXMgPSB3aW5kb3cuQUJLTkdfUk9PTVMgfHwgW107XG4gICAgdGhpcy50b3RhbFJvb21zID0gdGhpcy5yb29tcy5sZW5ndGg7XG4gICAgdGhpcy5yb29tVHlwZVRpdGxlID0gJCgnI3RpdGxlJykudmFsKCk7XG5cbiAgICBpZiAodGhpcy50b3RhbFJvb21zID09IDApIHtcbiAgICAgIHRoaXMudG90YWxSb29tcyA9IDE7XG4gICAgICB0aGlzLnJlZ2VuZXJhdGVSb29tcygpO1xuICAgIH1cbiAgfSxcblxuICBtZXRob2RzOiB7XG4gICAgcmVnZW5lcmF0ZVJvb21zOiBmdW5jdGlvbigpIHtcbiAgICAgIHZhciByb29tc0xlbmd0aCA9IHRoaXMucm9vbXMubGVuZ3RoO1xuICAgICAgdmFyIG51bWJlck9mUm9vbXMgPSBwYXJzZUludCh0aGlzLnRvdGFsUm9vbXMsIDEwKTtcblxuICAgICAgLy8gUmUtdXBkYXRlIHRpdGxlLlxuICAgICAgdGhpcy5yb29tVHlwZVRpdGxlID0gJCgnI3RpdGxlJykudmFsKCk7XG5cbiAgICAgIGlmIChudW1iZXJPZlJvb21zIDw9IDApIHtcbiAgICAgICAgdGhpcy50b3RhbFJvb21zID0gMTtcbiAgICAgIH1cblxuICAgICAgaWYgKG51bWJlck9mUm9vbXMgPiByb29tc0xlbmd0aCkge1xuICAgICAgICBmb3IgKHZhciBpID0gcm9vbXNMZW5ndGg7IGkgPCBudW1iZXJPZlJvb21zOyBpKyspIHtcbiAgICAgICAgICB0aGlzLnJvb21zLnB1c2goeyBpZDogLTEsIG5hbWU6IHRoaXMucm9vbVR5cGVUaXRsZSArICcgLSAnICsgIChpKzEpIH0pO1xuICAgICAgICB9XG4gICAgICB9IGVsc2UgaWYgKG51bWJlck9mUm9vbXMgPCByb29tc0xlbmd0aCkge1xuICAgICAgICBpZiAoY29uZmlybShBd2VCb29raW5nLnRyYW5zKCdhc2tfcmVkdWNlX3RoZV9yb29tcycpKSkge1xuICAgICAgICAgIGZvciAodmFyIGkgPSByb29tc0xlbmd0aCAtIDE7IGkgPj0gbnVtYmVyT2ZSb29tczsgaS0tKSB7XG4gICAgICAgICAgICB0aGlzLnJvb21zLnNwbGljZShpLCAxKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9LFxuXG4gICAgZGVsZXRlUm9vbUJ5SW5kZXg6IGZ1bmN0aW9uKGluZGV4KSB7XG4gICAgICBpZiAoISBjb25maXJtKEF3ZUJvb2tpbmcudHJhbnMoJ3dhcm5pbmcnKSkpIHtcbiAgICAgICAgcmV0dXJuO1xuICAgICAgfVxuXG4gICAgICBpZiAodGhpcy5yb29tcy5sZW5ndGggPiAxKSB7XG4gICAgICAgIHRoaXMucm9vbXMuc3BsaWNlKGluZGV4LCAxKTtcbiAgICAgICAgdGhpcy50b3RhbFJvb21zID0gdGhpcy5yb29tcy5sZW5ndGg7XG4gICAgICB9XG4gICAgfVxuICB9LFxufTtcblxuJChmdW5jdGlvbigpIHtcblxuICBjb25zdCByb29tc0NyZWF0b3IgPSBuZXcgQXdlQm9va2luZy5WdWUoUm9vbXNDcmVhdG9yKTtcbiAgJCgnI3RpdGxlJykub24oJ2NoYW5nZScsIGZ1bmN0aW9uKCkge1xuICAgIHZhciB0aXRsZSA9ICQodGhpcykudmFsKCk7XG5cbiAgICBpZiAocm9vbXNDcmVhdG9yLiRkYXRhLnJvb21zLmxlbmd0aCA9PT0gMSAmJiByb29tc0NyZWF0b3IuJGRhdGEucm9vbXNbMF0ubmFtZSA9PSAnIC0gMScpIHtcbiAgICAgIHJvb21zQ3JlYXRvci4kZGF0YS5yb29tc1swXS5uYW1lID0gdGl0bGUgKyAnIC0gMSc7XG4gICAgfVxuICB9KTtcblxufSk7XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gLi9hc3NldHMvanNzcmMvYWRtaW4vZWRpdC1yb29tLXR5cGUuanMiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///22\n");
+
+
+var $ = window.jQuery;
+var AweBooking = window.TheAweBooking;
+
+var RoomsCreator = {
+  el: '#abkng-rooms',
+  template: '#awebooking-rooms-manager-template',
+
+  data: {
+    rooms: [],
+    totalRooms: 0,
+    roomTypeTitle: ''
+  },
+
+  created: function created() {
+    this.rooms = window.ABKNG_ROOMS || [];
+    this.totalRooms = this.rooms.length;
+    this.roomTypeTitle = $('#title').val();
+
+    if (this.totalRooms == 0) {
+      this.totalRooms = 1;
+      this.regenerateRooms();
+    }
+  },
+
+  methods: {
+    regenerateRooms: function regenerateRooms() {
+      var roomsLength = this.rooms.length;
+      var numberOfRooms = parseInt(this.totalRooms, 10);
+
+      // Re-update title.
+      this.roomTypeTitle = $('#title').val();
+
+      if (numberOfRooms <= 0) {
+        this.totalRooms = 1;
+      }
+
+      if (numberOfRooms > roomsLength) {
+        for (var i = roomsLength; i < numberOfRooms; i++) {
+          this.rooms.push({ id: -1, name: this.roomTypeTitle + ' - ' + (i + 1) });
+        }
+      } else if (numberOfRooms < roomsLength) {
+        if (confirm(AweBooking.trans('ask_reduce_the_rooms'))) {
+          for (var i = roomsLength - 1; i >= numberOfRooms; i--) {
+            this.rooms.splice(i, 1);
+          }
+        }
+      }
+    },
+
+    deleteRoomByIndex: function deleteRoomByIndex(index) {
+      if (!confirm(AweBooking.trans('warning'))) {
+        return;
+      }
+
+      if (this.rooms.length > 1) {
+        this.rooms.splice(index, 1);
+        this.totalRooms = this.rooms.length;
+      }
+    }
+  }
+};
+
+$(function () {
+
+  var roomsCreator = new AweBooking.Vue(RoomsCreator);
+  $('#title').on('change', function () {
+    var title = $(this).val();
+
+    if (roomsCreator.$data.rooms.length === 1 && roomsCreator.$data.rooms[0].name == ' - 1') {
+      roomsCreator.$data.rooms[0].name = title + ' - 1';
+    }
+  });
+});
 
 /***/ })
 
