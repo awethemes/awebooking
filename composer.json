@@ -25,20 +25,22 @@
         "awethemes/wp-http": "^1.0",
         "awethemes/wp-object": "dev-master",
         "awethemes/wp-session": "dev-master",
-        "erusev/parsedown": "^1.6",
-        "league/period": "^3.3",
+        "erusev/parsedown": "^1.7",
+        "league/period": "^3.4",
         "monolog/monolog": "^1.23",
-        "nesbot/carbon": "^1.22",
-        "pelago/emogrifier": "^1.2",
+        "nesbot/carbon": "^1.23",
+        "pelago/emogrifier": "^2.0",
         "roomify/bat": "dev-master",
+        "ruler/ruler": "^0.3.0",
         "symfony/http-foundation": "3.3.*",
+        "symfony/translation": "3.3.*",
         "tightenco/collect": "5.4.*",
         "webdevstudios/taxonomy_single_term": "dev-master"
     },
     "require-dev": {
         "10up/wp_mock": "^0.2.0",
-        "symfony/debug": "^3.3",
-        "symfony/var-dumper": "^3.3"
+        "symfony/debug": "3.3.*",
+        "symfony/var-dumper": "3.3.*"
     },
     "autoload": {
         "psr-4": {

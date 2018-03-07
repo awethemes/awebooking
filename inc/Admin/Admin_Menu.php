@@ -114,7 +114,7 @@ class Admin_Menu {
 
 		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
 
-		add_submenu_page( 'awebooking', esc_html__( 'Rates', 'awebooking' ), esc_html_x( 'Rates', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
+		add_submenu_page( 'awebooking', esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
 	/**

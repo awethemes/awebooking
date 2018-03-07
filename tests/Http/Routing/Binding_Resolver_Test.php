@@ -57,7 +57,7 @@ class Http_Routing_Binding_Resolver_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @expectedException AweBooking\Model\Exceptions\Model_Not_Found_Exception
+	 * @expectedException AweBooking\Http\Exceptions\Model_Not_Found_Exception
 	 */
 	public function testModelBindingNotWork() {
 		$this->binding->model( 'room', 'TestRoomModelNotExists' );

@@ -19,8 +19,7 @@ $route->post( '/calendar/{room_type:\d+}', Calendar_Controller::class . '@update
 
 // Rates routes.
 $route->get( '/rates', Rate_Controller::class . '@index' );
-$route->get( '/rates/{room_type:\d+}', Rate_Controller::class . '@show' );
-$route->post( '/rates/{room_type:\d+}', Rate_Controller::class . '@set_amount' );
+$route->post( '/rates', Rate_Controller::class . '@update' );
 
 // New reservation routes.
 $route->get( '/reservation/create', Reservation_Controller::class . '@create' );

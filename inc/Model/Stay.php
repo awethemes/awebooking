@@ -64,7 +64,7 @@ class Stay implements Stringable {
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_in() {
-		return $this->check_in->copy();
+		return $this->check_in;
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Stay implements Stringable {
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_check_out() {
-		return $this->check_out->copy();
+		return $this->check_out;
 	}
 
 	/**

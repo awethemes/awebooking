@@ -6,10 +6,10 @@ use AweBooking\Model\Service;
 use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 
 class Room_Type extends WP_Object {
-	use Traits\Room_Type\Basic_Attributes_Trait,
-		Traits\Room_Type\Occupancy_Attributes_Trait,
-		Traits\Room_Type\Room_Units_Trait,
-		Traits\Room_Type\Room_Rates_Trait;
+	use Traits\Room_Type\Rooms_Trait,
+		Traits\Room_Type\Rate_Plans_Trait,
+		Traits\Room_Type\Occupancy_Trait,
+		Traits\Room_Type\Attributes_Trait;
 
 	/**
 	 * This is the name of this object type.
@@ -143,10 +143,6 @@ class Room_Type extends WP_Object {
 		}
 
 		return apply_filters( $this->prefix( 'get_location' ), $location, $this );
-	}
-
-	public function get_amenities() {
-		$this['amenity_ids'] = $this->get_term_ids( Constants::HOTEL_AMENITY );
 	}
 
 	/**

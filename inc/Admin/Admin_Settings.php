@@ -15,6 +15,20 @@ class Admin_Settings extends CMB2 {
 	protected $setting;
 
 	/**
+	 * The core setting classes.
+	 *
+	 * @var array
+	 */
+	protected $core_settings = [
+		\AweBooking\Admin\Settings\General_Setting::class,
+		\AweBooking\Admin\Settings\Reservation_Setting::class,
+		\AweBooking\Admin\Settings\Checkout_Setting::class,
+		\AweBooking\Admin\Settings\Display_Setting::class,
+		\AweBooking\Admin\Settings\Email_Setting::class,
+		\AweBooking\Admin\Settings\Premium_Setting::class,
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Setting $setting The Setting instance.
@@ -30,6 +44,25 @@ class Admin_Settings extends CMB2 {
 
 		$this->object_id( $this->setting->get_setting_key() );
 		$this->object_type( 'options-page' );
+	}
+
+	/**
+	 * Register the core admin settings.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		// Register all core settings.
+		foreach ( $this->core_settings as $setting_class ) {
+			$this->register( $setting_class );
+		}
+
+		/**
+		 * Here you can register or custom AweBooking settings.
+		 *
+		 * @param Admin_Settings $settings The Admin_Setting instance.
+		 */
+		do_action( 'awebooking/register_admin_settings', $this );
 	}
 
 	/**

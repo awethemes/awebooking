@@ -10,20 +10,6 @@ use Illuminate\Support\Arr;
 
 class Admin_Service_Provider extends Service_Provider {
 	/**
-	 * The core setting classes.
-	 *
-	 * @var array
-	 */
-	protected $settings = [
-		\AweBooking\Admin\Settings\General_Setting::class,
-		\AweBooking\Admin\Settings\Reservation_Setting::class,
-		\AweBooking\Admin\Settings\Checkout_Setting::class,
-		\AweBooking\Admin\Settings\Display_Setting::class,
-		\AweBooking\Admin\Settings\Email_Setting::class,
-		\AweBooking\Admin\Settings\Premium_Setting::class,
-	];
-
-	/**
 	 * The initializations classes.
 	 *
 	 * @var array
@@ -81,8 +67,8 @@ class Admin_Service_Provider extends Service_Provider {
 			return;
 		}
 
-		// Register core admin settings.
-		$this->register_core_settings();
+		// Init the core settings.
+		$this->awebooking->make( 'admin_settings' )->init();
 
 		// Fire the admin hooks.
 		$this->awebooking->make( 'admin_menu' )->init();
@@ -98,27 +84,6 @@ class Admin_Service_Provider extends Service_Provider {
 
 		add_filter( 'admin_title', [ $this, 'correct_admin_title' ], 10, 2 );
 		add_filter( 'display_post_states', [ $this, 'display_post_states' ], 10, 2 );
-	}
-
-	/**
-	 * Register the core admin settings.
-	 *
-	 * @return void
-	 */
-	protected function register_core_settings() {
-		$settings = $this->awebooking->make( 'admin_settings' );
-
-		// Loop all core settings and register them.
-		foreach ( $this->settings as $setting ) {
-			$settings->register( $setting );
-		}
-
-		/**
-		 * Here you can register or custom AweBooking settings.
-		 *
-		 * @param Admin_Settings $settings The Admin_Setting instance.
-		 */
-		do_action( 'awebooking/register_admin_settings', $settings );
 	}
 
 	/**

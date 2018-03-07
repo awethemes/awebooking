@@ -1,7 +1,7 @@
 <?php
 
 use AweBooking\Model\Room_Type;
-use AweBooking\Reservation\Source\Store;
+use AweBooking\Source\Store;
 use AweBooking\Admin\Forms\New_Source_Form;
 
 $store = awebooking()->make( Store::class );

@@ -42,7 +42,7 @@ class Core_Service_Provider extends Service_Provider {
 		$this->awebooking->alias( 'currencies', 'currency_manager' );
 
 		$this->awebooking->singleton( 'currency', function( $a ) {
-			return new Currency( $a['setting']->get( 'currency' ) );
+			return $a['currencies']->get( $a['setting']->get( 'currency' ) );
 		});
 
 		$this->register_widgets();

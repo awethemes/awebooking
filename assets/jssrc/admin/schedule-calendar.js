@@ -6,19 +6,34 @@
 
   const Selection = Backbone.Model.extend({
     defaults: {
-      unit: null,
       endDate: null,
       startDate: null,
+      calendar: null,
     },
 
-    clearSelectedDate(newUnit) {
+    clear() {
+      this.clearSelectedDate(null);
+    },
+
+    isValid() {
+      if (! this.has('calendar') || this.get('calendar') < 1) {
+        return false;
+      }
+
+      return this.getNights() >= 0;
+    },
+
+    clearSelectedDate(calendar) {
       this.set({ startDate: null, endDate: null });
-      this.set('unit', newUnit);
+
+      this.set('calendar', calendar);
+
+      this.trigger('clear_dates');
     },
 
     getNights() {
       if (! this.has('endDate') || ! this.has('startDate')) {
-        return 0;
+        return -1;
       }
 
       return this.get('endDate').diff(this.get('startDate'), 'days');
@@ -27,14 +42,15 @@
 
   const ScheduleCalendar = Backbone.View.extend({
     options: {
-      debug: true,
-      marker: '.awebooking-schedule__marker',
-      popper: '.awebooking-schedule_popper',
+      debug: false,
+      marker: '.scheduler__marker',
+      popper: '.scheduler__popper',
     },
 
     events: {
-      'click .awebooking-schedule__day': 'setSelectionDate',
-      'mouseenter .awebooking-schedule__day': 'drawMarkerOnHover',
+      'click      .scheduler__body .scheduler__date': 'setSelectionDate',
+      'mouseenter .scheduler__body .scheduler__date': 'drawMarkerOnHover',
+      'click      .schedule__actions [data-schedule-action]': 'triggerClickAction',
     },
 
     initialize() {
@@ -55,16 +71,15 @@
         }
       });
 
-      $(document).on('keyup', this.keyup.bind(this));
-      // $(document).off('keyup', this.keyup);
-
+      $(document).on('keyup', this.onKeyup.bind(this));
       this.listenTo(this.model, 'change:startDate change:endDate', this.setMarkerPosition);
+      this.listenTo(this.model, 'clear_dates', this.onClearSelectedDates);
 
       if (this.options.debug) {
         this.listenTo(this.model, 'change', this.debug);
       }
 
-      this.$el.data('schedule-calendar', this);
+      this.$el.data('scheduler', this);
     },
 
     debug () {
@@ -74,14 +89,38 @@
         console.log(this.model.get('calendar'), this.model.get('startDate').format(DATE_FORMAT) + ' - null');
       } else if(this.model.has('endDate')) {
         console.log(this.model.get('calendar'), 'null' + ' - ' + this.model.get('endDate').format(DATE_FORMAT));
+      } else {
+        console.log('null - null');
       }
     },
 
-    keyup(e) {
+    onKeyup(e) {
       if (e.keyCode == 27) {
         this.model.clearSelectedDate();
-        this.$popper.hide();
       }
+    },
+
+    triggerClickAction: function(e) {
+      e.preventDefault();
+
+      const model = this.model;
+      if (! model.isValid()) {
+        return false;
+      }
+
+      const $targetLink = $(e.currentTarget);
+      if (! $targetLink.data('scheduleAction')) {
+        return false;
+      }
+
+      this.trigger('action:' + $targetLink.data('scheduleAction'), e, model );
+    },
+
+    onClearSelectedDates() {
+      this.$popper.hide();
+      this.$marker.find('span').text('1');
+
+      this.trigger('clear');
     },
 
     setSelectionDate(e) {
@@ -89,13 +128,14 @@
       const setUnit = this.getUnitByElement($target);
       const clickDate = moment($target.data('date'));
 
-      console.log(e);
+      if (this.model.has('startDate') && this.model.has('endDate')) {
+        this.model.clearSelectedDate(setUnit);
+        return;
+      }
 
       if (this.model.has('calendar') && setUnit !== this.model.get('calendar')
-          || this.model.has('startDate') && this.model.has('endDate')
           || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), 'day')) {
         this.model.clearSelectedDate(setUnit);
-        this.$popper.hide();
       }
 
       if (!this.model.has('startDate') && !this.model.has('endDate')) {
@@ -104,8 +144,8 @@
       } else {
         this.model.set('endDate', clickDate.clone());
 
-        this.$popper.show();
         this.popper.update();
+        this.$popper.show();
 
         this.trigger('apply', this.model, this);
       }
@@ -120,7 +160,10 @@
         return;
       }
 
-      const $startDateEl = this.getElementByDate(this.model.get('calendar'), startDate);
+      const $startDateEl = this.getElementByDate(
+        this.model.get('calendar'), startDate
+      );
+
       if (_.isNull(endDate)) {
         const position = this.getCellPossiton($startDateEl);
         this.$marker.show().css({ top: position.top, left: position.left });
@@ -160,7 +203,7 @@
 
       return this.$el
         .find('[data-calendar="' + calendar + '"]')
-        .find('.awebooking-schedule__day[data-date="' + date + '"]');
+        .find('.scheduler__date[data-date="' + date + '"]');
     },
 
     getUnitByElement(element) {
@@ -176,7 +219,7 @@
 
     getCellPossiton(element) {
       var childPos = element.offset();
-      var parentPos = this.$el.find('.awebooking-schedule__body').offset();
+      var parentPos = this.$el.find('.scheduler__body').offset();
 
       return {
         top: childPos.top - parentPos.top,
@@ -185,8 +228,6 @@
     }
   });
 
-  new ScheduleCalendar({
-    el: '.awebooking-schedule'
-  });
+  TheAweBooking.ScheduleCalendar = ScheduleCalendar;
 
 })(jQuery, TheAweBooking.Popper, TheAweBooking.momment || window.moment);

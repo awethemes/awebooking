@@ -2,7 +2,7 @@
 namespace AweBooking\Support;
 
 /**
- * This class is copy from Illuminate\Support\Optional.
+ * Original from Illuminate\Support\Optional.
  *
  * @link https://github.com/illuminate/support/blob/master/Optional.php
  */

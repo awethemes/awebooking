@@ -3,10 +3,10 @@ namespace AweBooking\Providers;
 
 use AweBooking\Reservation\Session;
 use AweBooking\Model\Source;
-use AweBooking\Reservation\Source\Store;
-use AweBooking\Reservation\Source\WP_Options_Store;
-use AweBooking\Reservation\Source\Manager;
-use AweBooking\Reservation\Source\Mapping;
+use AweBooking\Source\Store;
+use AweBooking\Source\WP_Options_Store;
+use AweBooking\Source\Manager;
+use AweBooking\Source\Mapping;
 use AweBooking\Support\Service_Provider;
 
 class Reservation_Service_Provider extends Service_Provider {

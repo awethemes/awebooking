@@ -21,7 +21,6 @@ use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Room_Type;
 
-use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 use AweBooking\Http\Exceptions\Validation_Failed_Exception;
 use AweBooking\Http\Exceptions\Nonce_Mismatch_Exception;
 use AweBooking\Reservation\Searcher\Constraints\Session_Reservation_Constraint;
@@ -86,9 +85,12 @@ class Reservation_Controller extends Controller {
 			}
 		}
 
+		$stay = new Stay( $request['check_in_out'][0], $request['check_in_out'][1] );
+
 		// Attach the search to availability_table items.
 		$availability_table = new Availability_List_Table( $reservation );
-		$availability_table->items = $this->perform_search_rooms( $reservation );
+
+		$availability_table->items = $this->perform_search_rooms( $reservation, $stay );
 
 		return $this->response_view( 'reservation/step-search.php', compact(
 			'reservation', 'availability_table'
@@ -101,15 +103,11 @@ class Reservation_Controller extends Controller {
 	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
 	 * @return \\AweBooking\Reservation\Searcher\Results
 	 */
-	protected function perform_search_rooms( Reservation $reservation ) {
-		$constraints = [
-			new Session_Reservation_Constraint( $reservation ),
-		];
+	protected function perform_search_rooms( Reservation $reservation, $stay ) {
+		$constraints = apply_filters( 'awebooking/admin/reservation/constraints', [] );
 
-		$results = $reservation->search( $constraints )
+		return $reservation->search( $stay, null, $constraints )
 			->only_available_items();
-
-		return $results;
 	}
 
 	/**
@@ -162,9 +160,7 @@ class Reservation_Controller extends Controller {
 			throw new \InvalidArgumentException( esc_html__( 'Sorry, the source was not found!', 'awebooking' ) );
 		}
 
-		return new Reservation( $source,
-			new Stay( $r['check_in_out'][0], $r['check_in_out'][1] )
-		);
+		return new Reservation( $source );
 	}
 
 	/**

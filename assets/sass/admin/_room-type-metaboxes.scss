@@ -23,14 +23,18 @@
   }
 
   // Fixed category select-box.
-  #taxonomy-hotel_amenity {
+  #taxonomy-hotel_amenity,
+  #taxonomy-hotel_extra_service {
     max-width: 650px;
   }
-  #hotel_amenity-tabs {
+  #hotel_amenity-tabs,
+  #hotel_extra_service-tabs {
     margin: 8px 0 5px !important;
   }
   #hotel_amenitychecklist,
-  #hotel_amenitychecklist-pop {
+  #hotel_amenitychecklist-pop,
+  #hotel_extra_servicechecklist,
+  #hotel_extra_servicechecklist-pop {
     margin-top: 1em;
     margin-bottom: 1em;
   }

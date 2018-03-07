@@ -123,7 +123,6 @@ class Query {
 		$args = apply_filters( 'awebooking/query_room_type_args', [
 			'post_status'      => 'publish',
 			'posts_per_page'   => 1000, // Force limit 1000 room-type in query.
-			'have_rooms'       => true, // TODO: ...
 			'booking_adults'   => $this->guest ? $this->guest->get_adults() : -1,
 			'booking_children' => $this->guest ? $this->guest->get_children() : -1,
 			'booking_infants'  => $this->guest ? $this->guest->get_infants() : -1,

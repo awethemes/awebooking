@@ -7,7 +7,7 @@ use AweBooking\Setting;
 use AweBooking\Admin\Admin_Settings;
 use AweBooking\Admin\Forms\New_Source_Form;
 use AweBooking\Admin\Forms\Edit_Source_Form;
-use AweBooking\Reservation\Source\Store;
+use AweBooking\Source\Store;
 use AweBooking\Model\Source;
 use AweBooking\Support\Utils as U;
 use AweBooking\Model\Tax;
@@ -16,7 +16,7 @@ class Source_Controller extends Controller {
 	/**
 	 * The Store instance.
 	 *
-	 * @var \AweBooking\Reservation\Source\Store
+	 * @var \AweBooking\Source\Store
 	 */
 	protected $store;
 
@@ -30,7 +30,7 @@ class Source_Controller extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Source\Store $store The Store instance.
+	 * @param \AweBooking\Source\Store $store The Store instance.
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;

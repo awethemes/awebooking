@@ -3,9 +3,8 @@ namespace AweBooking\Reservation;
 
 use AweBooking\AweBooking;
 use AweBooking\Model\Guest;
-use AweBooking\Http\Routing\Url_Generator as Base_Url_Generator;
 
-class Url_Generator extends Base_Url_Generator {
+class Url_Generator {
 	/**
 	 * The reservation instance.
 	 *
@@ -21,8 +20,6 @@ class Url_Generator extends Base_Url_Generator {
 	 */
 	public function __construct( AweBooking $awebooking, Reservation $reservation ) {
 		$this->reservation = $reservation;
-
-		parent::__construct( $awebooking );
 	}
 
 	/**

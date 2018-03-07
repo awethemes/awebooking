@@ -62,8 +62,7 @@ class Checker {
 			U::collect( [ $room_unit ] )
 		);
 
-		$calendar = $this->create_scheduler( $resources )
-						 ->first();
+		$calendar = $this->create_scheduler( $resources )->first();
 
 		return ! $this->has_unavaiable_state(
 			$calendar->get_events( $stay->to_period() )

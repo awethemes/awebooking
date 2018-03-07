@@ -1,14 +1,16 @@
 const $ = window.jQuery;
 const settings = window._awebookingSettings || {};
 
-import tooltip from 'tooltip.js'
-import popper from 'popper.js'
+import popper from 'popper.js';
+import tooltip from 'tooltip.js';
+import flatpickr from 'flatpickr';
 
 const AweBooking = _.extend(settings, {
   Vue: require('vue'),
 
   Popper: popper,
   Tooltip: tooltip,
+  Flatpickr: flatpickr,
 
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
@@ -47,33 +49,44 @@ const AweBooking = _.extend(settings, {
 
     $('a[data-method="awebooking-delete"]').on( 'click', function(e) {
       e.preventDefault();
+      const link = $(this).attr('href');
 
-      const link = $(this);
-
-      swal({
-        toast: true,
-        title: self.trans('confirm_title'),
-        html: self.trans('confirm_message'),
-        type: 'warning',
-        position: 'center',
-        animation: false,
-        reverseButtons: true,
-        showCancelButton: true,
-        buttonsStyling: false,
-        cancelButtonClass: 'button',
-        confirmButtonClass: 'button button-primary',
-        cancelButtonText: self.trans('cancel'),
-        confirmButtonText: self.trans('delete'),
-      }).then(function(result) {
-        if (result.value) {
-          const form = createForm(link.attr('href'), 'DELETE');
-          form.submit();
-        }
-      });
-
+      self.confirm(function(result) {
+        const form = createForm(link, 'DELETE');
+        form.submit();
+      }, { confirmButtonText: self.trans('delete') });
     });
 
     require('./utils/init-select2.js');
+  },
+
+  /**
+   * Show the confirm message.
+   */
+  confirm(callback, settings) {
+    const confirm = swal(_.extend({
+      toast: true,
+      title: this.trans('confirm_title'),
+      html: this.trans('confirm_message'),
+      type: 'warning',
+      position: 'center',
+      animation: false,
+      reverseButtons: true,
+      showCancelButton: true,
+      buttonsStyling: false,
+      cancelButtonClass: 'button',
+      confirmButtonClass: 'button button-primary',
+      cancelButtonText: this.trans('cancel'),
+      confirmButtonText: this.trans('ok'),
+    }, settings || {}));
+
+    if (callback) {
+      return confirm.then(function(result) {
+        if (result.value) callback(result);
+      });
+    }
+
+    return confirm;
   },
 
   /**
@@ -93,10 +106,9 @@ const AweBooking = _.extend(settings, {
     // Add .ajax-loading class in to the form.
     $(form).addClass('ajax-loading');
 
-    return wp.ajax.post(action, data)
-      .always(function() {
-        $(form).removeClass('ajax-loading');
-      });
+    return wp.ajax.post(action, data).always(function() {
+      $(form).removeClass('ajax-loading');
+    });
   },
 });
 

@@ -24,13 +24,12 @@ mix.copy('node_modules/sweetalert2/dist/sweetalert2.css', 'assets/css/sweetalert
 mix.copy('node_modules/sweetalert2/dist/sweetalert2.min.js', 'assets/js/sweetalert2/sweetalert2.min.js', false);
 mix.copy('node_modules/magnific-popup/dist/magnific-popup.css', 'assets/css/magnific-popup.css', false);
 mix.copy('node_modules/magnific-popup/dist/jquery.magnific-popup.min.js', 'assets/js/magnific-popup/jquery.magnific-popup.min.js', false);
+mix.copy('node_modules/flatpickr/dist/themes/confetti.css', 'assets/css/flatpickr.css', false);
 
-mix.extract(['vue', 'form-serialize', 'popper.js', 'tooltip.js']);
+mix.extract(['vue', 'form-serialize', 'popper.js', 'tooltip.js', 'flatpickr']);
 
 if (mix.inProduction()) {
   mix.version();
-} else {
-  mix.sourceMaps()
 }
 
 mix.browserSync({

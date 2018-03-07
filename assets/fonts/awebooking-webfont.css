@@ -2,11 +2,11 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?308251f74d5b7170b1cfd1e6e4d628df?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?308251f74d5b7170b1cfd1e6e4d628df") format("woff2"),
-url("awebooking-webfont.woff?308251f74d5b7170b1cfd1e6e4d628df") format("woff"),
-url("awebooking-webfont.ttf?308251f74d5b7170b1cfd1e6e4d628df") format("truetype"),
-url("awebooking-webfont.svg?308251f74d5b7170b1cfd1e6e4d628df#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?66c71c2866403ff308adf071a26cec5c?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?66c71c2866403ff308adf071a26cec5c") format("woff2"),
+url("awebooking-webfont.woff?66c71c2866403ff308adf071a26cec5c") format("woff"),
+url("awebooking-webfont.ttf?66c71c2866403ff308adf071a26cec5c") format("truetype"),
+url("awebooking-webfont.svg?66c71c2866403ff308adf071a26cec5c#awebooking-webfont") format("svg");
 }
 
 .afc {
@@ -40,4 +40,115 @@ url("awebooking-webfont.svg?308251f74d5b7170b1cfd1e6e4d628df#awebooking-webfont"
 }
 .afc-room-service:before {
 	content: "\e007";
+}
+.afc-bath:before {
+	content: "\e008";
+}
+.afc-birthday-cake:before {
+	content: "\e009";
+}
+.afc-calendar-check:before {
+	content: "\e00a";
+}
+.afc-calendar-minus:before {
+	content: "\e00b";
+}
+.afc-calendar-plus:before {
+	content: "\e00c";
+}
+.afc-calendar-times:before {
+	content: "\e00d";
+}
+.afc-camera:before {
+	content: "\e00e";
+}
+.afc-dollar-sign:before {
+	content: "\e00f";
+}
+.afc-female:before {
+	content: "\e010";
+}
+.afc-male:before {
+	content: "\e011";
+}
+.afc-money-bill-alt:before {
+	content: "\e012";
+}
+.afc-shower:before {
+	content: "\e013";
+}
+.afc-taxi:before {
+	content: "\e014";
+}
+.afc-wheelchair:before {
+	content: "\e015";
+}
+.afc-wifi:before {
+	content: "\e016";
+}
+.afc-bbq-facilities:before {
+	content: "\e017";
+}
+.afc-beach:before {
+	content: "\e018";
+}
+.afc-dogs-not-permitted:before {
+	content: "\e019";
+}
+.afc-dogs-permitted:before {
+	content: "\e01a";
+}
+.afc-elevator:before {
+	content: "\e01b";
+}
+.afc-bell-slash:before {
+	content: "\e01c";
+}
+.afc-bell:before {
+	content: "\e01d";
+}
+.afc-child:before {
+	content: "\e01e";
+}
+.afc-heart:before {
+	content: "\e01f";
+}
+.afc-heartbeat:before {
+	content: "\e020";
+}
+.afc-home:before {
+	content: "\e021";
+}
+.afc-hospital:before {
+	content: "\e022";
+}
+.afc-moon:before {
+	content: "\e023";
+}
+.afc-shield-alt:before {
+	content: "\e024";
+}
+.afc-shipping-fast:before {
+	content: "\e025";
+}
+.afc-snowflake:before {
+	content: "\e026";
+}
+.afc-thumbs-down:before {
+	content: "\e027";
+}
+.afc-thumbs-up:before {
+	content: "\e028";
+}
+.afc-train:before {
+	content: "\e029";
+}
+.afc-truck:before {
+	content: "\e02a";
+}
+.afc-umbrella:before {
+	content: "\e02b";
+}
+.afc-warehouse:before {
+	content: "\e02c";
 }

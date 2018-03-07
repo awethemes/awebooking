@@ -30,7 +30,7 @@ trait Html_Skeleton_Calendar {
 	 * @param  string    $base_class The base class.
 	 * @return array
 	 */
-	public function get_date_classes( $date, $base_class = '&__day' ) {
+	public function get_date_classes( $date, $base_class = '' ) {
 		$date = $date instanceof Day
 			? $date->get_start_date()
 			: Carbonate::create_date( $date );
@@ -50,7 +50,7 @@ trait Html_Skeleton_Calendar {
 			$classes[] = 'weekend';
 		}
 
-		return $classes;
+		return array_filter( $classes );
 	}
 
 	/**

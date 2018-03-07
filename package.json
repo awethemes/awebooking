@@ -16,6 +16,7 @@
     "node-wp-i18n": "^1.0.5"
   },
   "dependencies": {
+    "flatpickr": "^4.3.2",
     "form-serialize": "^0.7.2",
     "magnific-popup": "^1.1.0",
     "popper.js": "^1.13.0",

@@ -44,7 +44,7 @@ class Session {
 	 * @param string     $session_name The session key name.
 	 * @param integer    $lifetime     The session lifetime in minutes.
 	 */
-	public function __construct( WP_Session $wp_session, $session_name = self::DEFAULT_GROUP, $lifetime = 30 ) {
+	public function __construct( WP_Session $wp_session, $session_name = self::DEFAULT_GROUP, $lifetime = 1 ) {
 		$this->wp_session   = $wp_session;
 		$this->session_name = $session_name;
 		$this->lifetime     = $lifetime;
@@ -139,8 +139,6 @@ class Session {
 	 * @return string
 	 */
 	protected function generate_session_id( Reservation $reservation ) {
-		list( $source, $stay ) = [ $reservation->get_source(), $reservation->get_stay() ];
-
-		return sha1( $source->get_uid() . implode( '', $stay->to_array() ) );
+		return sha1( $reservation->get_source()->get_uid() . time() );
 	}
 }

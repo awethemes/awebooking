@@ -26,9 +26,10 @@ class Admin_Scripts {
 
 		// Register vendor styles and scripts.
 		wp_register_style( 'select2', $awebooking_url . '/assets/css/select2.css', [], '4.0.3' );
+		wp_register_style( 'flatpickr', $awebooking_url . '/assets/css/flatpickr.css', [], '4.3.2' );
 		wp_register_style( 'sweetalert2', $awebooking_url . '/assets/css/sweetalert2.css', [], '7.9.0' );
 		wp_register_style( 'awebooking-iconfont', $awebooking_url . '/assets/fonts/awebooking-webfont.css', [], $version );
-		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin.css', [ 'awebooking-iconfont', 'wp-jquery-ui-dialog', 'select2', 'sweetalert2' ], $version );
+		wp_register_style( 'awebooking-admin', $awebooking_url . '/assets/css/admin.css', [ 'awebooking-iconfont', 'wp-jquery-ui-dialog', 'select2', 'flatpickr', 'sweetalert2' ], $version );
 
 		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment.js', [], '2.18.1' );
 		wp_register_script( 'select2', $awebooking_url . '/assets/js/select2/select2.full.js', [ 'jquery' ], '4.0.3' );

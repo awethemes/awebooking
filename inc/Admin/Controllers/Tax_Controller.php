@@ -3,14 +3,14 @@ namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Request;
 use AweBooking\Admin\Forms\New_Tax_Form;
-use AweBooking\Reservation\Source\Store;
+use AweBooking\Source\Store;
 use AweBooking\Model\Tax;
 
 class Tax_Controller extends Controller {
 	/**
 	 * The Store instance.
 	 *
-	 * @var \AweBooking\Reservation\Source\Store
+	 * @var \AweBooking\Source\Store
 	 */
 	protected $store;
 
@@ -24,7 +24,7 @@ class Tax_Controller extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Source\Store $store The Store instance.
+	 * @param \AweBooking\Source\Store $store The Store instance.
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;

@@ -12,5 +12,4 @@ if ( isset( $reservation ) ) {
 	<input type="hidden" name="step" value="search">
 
 	<?php $controls->output(); ?>
-
 </form><!-- /.awebooking-reservation__searching-from -->

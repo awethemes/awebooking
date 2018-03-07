@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Model;
 
-class Service_Item extends Booking_Item {
+class Booking_Service_Item extends Booking_Item {
 	/**
 	 * Name of object type.
 	 *

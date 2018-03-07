@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{fontName}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="{{fontName}}.css">
 
 	<style type="text/css">
@@ -147,6 +147,9 @@
 		.fs1 {
 			font-size: 32px;
 		}
+		.afc {
+			color: #03A9F4;
+		}
 	</style>
 </head>
 <body>
@@ -160,11 +163,11 @@
 		<div class="glyph fs1">
 			<div class="clearfix bshadow0 pbs">
 				<span class="{{../baseSelector}} {{../classPrefix}}{{this}}"></span>
-				<span class="mls">{{../classPrefix}}{{this}}</span>
+				<span class="mls">{{this}}</span>
 			</div>
 
 			<fieldset class="fs0 size1of1 clearfix hidden-false">
-				<input type="text" readonly value="{{../baseSelector}} {{../classPrefix}}{{this}}" class="unit size1of1" />
+				<input type="text" readonly value="<i class=&quot;{{../baseSelector}} {{../classPrefix}}{{this}}&quot;></i>" class="unit size1of1" />
 			</fieldset>
 		</div>
 		{{/each}}

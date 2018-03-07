@@ -78,8 +78,6 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 	public function columns_display( $column, $post_id ) {
 		global $room_type;
 
-		$base_price = $room_type->get_base_price();
-
 		switch ( $column ) {
 			case 'thumb':
 				if ( has_post_thumbnail( $post_id ) ) {
@@ -92,9 +90,11 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 				break;
 
 			case 'start_price':
+				/*$base_price = $room_type->get_base_price();
+
 				printf( '<span class="awebooking-label %2$s">%1$s</span>',
 					Money::of( $base_price ), $base_price->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--success'
-				);
+				);*/
 				break;
 
 			case 'capacity':

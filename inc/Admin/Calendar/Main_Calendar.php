@@ -55,7 +55,7 @@ class Main_Calendar extends Schedule_Calendar {
 	public function __construct( $options = [] ) {
 		$this->options = array_merge( $this->options, $options );
 
-		$this->room_types = $this->get_room_types();
+		$this->room_types = $this->fetch_room_types();
 	}
 
 	/**

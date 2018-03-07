@@ -30,55 +30,6 @@ abstract class Schedule_Calendar {
 	public function cell_event_contents( $events, $date, $calendar ) {}
 
 	/**
-	 * Get the actions_menu.
-	 *
-	 * @return array
-	 */
-	protected function get_actions_menu() {
-		return [];
-	}
-
-	/**
-	 * Generate the actions_menu.
-	 *
-	 * @return string
-	 */
-	protected function generate_actions_menu() {
-		$actions_menu = $this->get_actions_menu();
-
-		if ( is_string( $actions_menu ) ) {
-			return $actions_menu;
-		}
-
-		$output_menu = '';
-		foreach ( $actions_menu as $id => $menu ) {
-			$output_menu .= '<li>' . $this->generate_action_link( $menu ) . '</li>';
-		}
-
-		return '<ul class="awebooking-schedule__actions-menu">' . $output_menu . '</ul>';
-	}
-
-	/**
-	 * Generate the action_link.
-	 *
-	 * @param  string|array $menu The menu item.
-	 * @return string
-	 */
-	protected function generate_action_link( $menu ) {
-		if ( is_string( $menu ) ) {
-			return '<a href="#">' . esc_html( $menu ) . '</a>';
-		}
-
-		$href = ! empty( $menu['href'] ) ? $menu['href'] : '#';
-		$name = ! empty( $menu['name'] ) ? $menu['name'] : '';
-
-		$item_id = ! empty( $menu['id'] ) ? ' id="' . esc_attr( $menu['id'] ) . '"' : '';
-		$icon_class = ! empty( $menu['icon'] ) ? $menu['icon'] : '';
-
-		return '<a' . $item_id . ' href="' . esc_attr( $href ) . '"><span class="awebooking-schedule__action-icon ' . esc_attr( $icon_class ) . '"></span>' . esc_html( $name ) . '</a>';
-	}
-
-	/**
 	 * Get events from the Calendar in a Period.
 	 *
 	 * @param  Calendar $calendar [description]
@@ -104,9 +55,9 @@ abstract class Schedule_Calendar {
 	 * @param  array $args Custom WP_Query args.
 	 * @return \AweBooking\Support\Collection
 	 */
-	protected function get_room_types( $args = [] ) {
+	protected function fetch_room_types( $args = [] ) {
 		$args = apply_filters( 'awebooking/calendar/query_room_types_args', wp_parse_args( $args, [
-			'posts_per_page' => 50,
+			'posts_per_page' => 50, // Limit 50 items.
 		]), $this );
 
 		return Collection::make( Room_Type::query( $args )->posts )

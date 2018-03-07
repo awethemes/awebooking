@@ -16,8 +16,6 @@ abstract class Post_Type_Metabox {
 	 */
 	public function __construct() {
 		$this->register();
-
-		add_action( 'save_post_' . $this->post_type, [ $this, 'doing_save' ], 10, 3 );
 	}
 
 	/**
@@ -25,7 +23,9 @@ abstract class Post_Type_Metabox {
 	 *
 	 * @return void
 	 */
-	public function register() {}
+	public function register() {
+		add_action( 'save_post_' . $this->post_type, [ $this, 'doing_save' ], 10, 3 );
+	}
 
 	/**
 	 * Save CPT metadata when a custom post is saved.

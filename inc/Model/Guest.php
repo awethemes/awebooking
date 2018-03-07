@@ -55,9 +55,7 @@ class Guest implements Stringable {
 	 * @param int $adults The number of adults.
 	 */
 	public function set_adults( $adults ) {
-		static::assert_minimum( $adults, 1 );
-
-		$this->adults = absint( $adults );
+		$this->adults = $this->requires_minimum( $adults, 1 );
 
 		return $this;
 	}
@@ -77,9 +75,7 @@ class Guest implements Stringable {
 	 * @param int $children The number of children.
 	 */
 	public function set_children( $children ) {
-		static::assert_minimum( $children, 0 );
-
-		$this->children = absint( $children );
+		$this->children = $this->requires_minimum( $children, 0 );
 
 		return $this;
 	}
@@ -99,9 +95,7 @@ class Guest implements Stringable {
 	 * @param int $infants The number of infants.
 	 */
 	public function set_infants( $infants ) {
-		static::assert_minimum( $infants, 0 );
-
-		$this->infants = absint( $infants );
+		$this->infants = $this->requires_minimum( $infants, 0 );
 
 		return $this;
 	}
@@ -122,6 +116,15 @@ class Guest implements Stringable {
 	 */
 	public function total_without_infants() {
 		return ( $this->adults + $this->children );
+	}
+
+	/**
+	 * Magic output this class as string.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->as_string();
 	}
 
 	/**
@@ -156,26 +159,13 @@ class Guest implements Stringable {
 	}
 
 	/**
-	 * Assert the value requires at least $minimum.
+	 * Check to requires at least a $minimum number.
 	 *
 	 * @param  mixed   $value   The value.
 	 * @param  integer $minimum The minium.
-	 * @return void
-	 *
-	 * @throws \LogicException
+	 * @return int
 	 */
-	protected static function assert_minimum( $value, $minimum = 0 ) {
-		if ( $value < $minimum ) {
-			throw new \LogicException( "Requires at least {$minimum}" );
-		}
-	}
-
-	/**
-	 * The magic __toString method.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
+	protected function requires_minimum( $value, $minimum = 0 ) {
+		return absint( $value < $minimum ? $minium : $value );
 	}
 }

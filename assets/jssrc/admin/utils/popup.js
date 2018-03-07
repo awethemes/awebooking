@@ -2,9 +2,6 @@ const $ = window.jQuery;
 const Utils = require('./utils.js');
 
 class Popup {
-  /**
-   * Wrapper the jquery-ui-popup.
-   */
   constructor(el) {
     this.el = el;
     this.target = Utils.getSelectorFromElement(el);

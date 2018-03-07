@@ -87,7 +87,6 @@ class Availability_List_Table extends \WP_List_Table {
 
 			case 'availabe_rooms':
 				$rooms = $remain_rooms->pluck( 'room' )->pluck( 'name', 'id' )->all();
-
 				$this->print_select_options( $input_prefix . '[room_unit]', $rooms );
 				break;
 
@@ -108,8 +107,8 @@ class Availability_List_Table extends \WP_List_Table {
 				break;
 
 			case 'starting_from':
-				$a = new \AweBooking\Reservation\Pricing\Resolver( $this->reservation );
-				echo ( $a->resolve( $room_type )->total() );
+				// $a = new \AweBooking\Reservation\Pricing\Resolver( $this->reservation );
+				// echo ( $a->resolve( $room_type )->total() );
 				break;
 		}
 	}
@@ -190,20 +189,7 @@ class Availability_List_Table extends \WP_List_Table {
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
 
-		$stay = $this->reservation->get_stay();
-
 		?>
-		<input type="hidden" name="check_in" value="<?php echo esc_attr( $stay->get_check_in()->toDateString() ); ?>">
-		<input type="hidden" name="check_out" value="<?php echo esc_attr( $stay->get_check_out()->toDateString() ); ?>">
-
-		<div class="tablenav">
-			<div class="alignleft actions">
-				<span><?php echo esc_html__( 'Searching for:', 'awebooking' ); ?></span>
-				<strong><?php printf( _n( '%s night', '%s nights', $stay->nights(), 'awebooking' ), esc_html( $stay->nights() ) ); // @codingStandardsIgnoreLine ?></strong>,
-				<span><?php echo wp_kses_post( $stay->as_string() ); ?></span>
-			</div>
-		</div>
-
 		<table class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
 			<thead>
 				<tr><?php $this->print_column_headers(); ?></tr>

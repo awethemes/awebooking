@@ -10,6 +10,7 @@ use AweBooking\Model\Rate;
 use AweBooking\Model\Guest;
 use AweBooking\Model\Source;
 use AweBooking\Model\Room_Type;
+use AweBooking\Support\Collection;
 use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Reservation\Searcher\Query;
 use AweBooking\Reservation\Searcher\Checker;
@@ -23,86 +24,74 @@ class Reservation {
 	protected $source;
 
 	/**
-	 * The request Stay instance.
+	 * The room stays.
 	 *
-	 * @var \AweBooking\Model\Stay
+	 * @var \AweBooking\Support\Collection
 	 */
-	protected $stay;
+	protected $room_stays;
 
 	/**
-	 * The request Guest instance.
+	 * The selected services.
 	 *
-	 * @var \AweBooking\Model\Guest|null
+	 * @var \AweBooking\Support\Collection
 	 */
-	protected $guest;
-
-	/**
-	 * The reservation customer.
-	 *
-	 * @var \AweBooking\Model\Customer
-	 */
-	protected $customer;
-
-	/**
-	 * The selected rooms.
-	 *
-	 * @var \AweBooking\Reservation\Item_Collection
-	 */
-	protected $rooms;
-
 	protected $services;
-	protected $taxes;
-	protected $fees;
-	protected $deposit;
-	protected $payment_method;
 
+	/**
+	 * The deposit amount.
+	 *
+	 * @var \AweBooking\Model\Deposit
+	 */
+	protected $deposit;
+
+	/**
+	 * The totals.
+	 *
+	 * @var \AweBooking\Reservation\Totals
+	 */
 	protected $totals;
+
+	/**
+	 * The reservation currency.
+	 *
+	 * @var \AweBooking\Money\Currency
+	 */
+	protected $currency;
+
+	protected $language;
 
 	/**
 	 * The reservation session ID.
 	 *
 	 * @var string
 	 */
-	protected $session_id = '';
+	protected $session_id;
 
 	/**
 	 * Create new reservation.
 	 *
 	 * @param \AweBooking\Model\Source $source The source implementation.
-	 * @param \AweBooking\Model\Stay   $stay   The stay for the reservation.
-	 * @param \AweBooking\Model\Guest  $guest  Optional, the guest for the reservation.
 	 */
-	public function __construct( Source $source, Stay $stay, Guest $guest = null ) {
+	public function __construct( Source $source ) {
 		$this->source = $source;
-
-		$stay->require_minimum_nights( 1 );
-		$this->stay = $stay;
-
-		if ( ! is_null( $guest ) ) {
-			$this->guest = $guest;
-		}
-
-		// Create empty rooms.
-		$this->rooms = new Item_Collection;
+		$this->rooms = new Collection;
+		$this->totals = new Totals( $this );
 	}
 
 	/**
 	 * Search the availability.
 	 *
-	 * @param  array $constraints The constraints.
+	 * @param  \AweBooking\Model\Stay  $stay        The stay for the reservation.
+	 * @param  \AweBooking\Model\Guest $guest       Optional, the guest for the reservation.
+	 * @param  array                   $constraints The constraints.
 	 * @return \AweBooking\Reservation\Searcher\Results
 	 */
-	public function search( array $constraints = [] ) {
-		return ( new Query( $this->stay, $this->guest, $constraints ) )->get();
-	}
+	public function search( Stay $stay, Guest $guest = null, array $constraints = [] ) {
+		$constraints = array_merge( $constraints, [
+			new Searcher\Constraints\Session_Reservation_Constraint( $this ),
+		]);
 
-	/**
-	 * Get the Stay.
-	 *
-	 * @return \AweBooking\Model\Stay
-	 */
-	public function get_stay() {
-		return $this->stay;
+		return ( new Query( $stay, $guest, $constraints ) )->get();
 	}
 
 	/**
@@ -112,6 +101,9 @@ class Reservation {
 	 */
 	public function get_source() {
 		return $this->source;
+	}
+
+	public function set_source() {
 	}
 
 	/**
@@ -135,22 +127,22 @@ class Reservation {
 	}
 
 	/**
-	 * Get the customer.
+	 * Get the deposit.
 	 *
-	 * @return \AweBooking\Model\Customer
+	 * @return \AweBooking\Model\Deposit|null
 	 */
-	public function get_customer() {
-		return $this->customer;
+	public function get_deposit() {
+		return $this->deposit;
 	}
 
 	/**
-	 * Set the reservation customer.
+	 * Set the deposit.
 	 *
-	 * @param  \AweBooking\Model\Customer $customer The customer instance.
+	 * @param  \AweBooking\Model\Deposit $deposit The deposit instance.
 	 * @return $this
 	 */
-	public function set_customer( Customer $customer ) {
-		$this->customer = $customer;
+	public function set_deposit( Deposit $deposit ) {
+		$this->deposit = $deposit;
 
 		return $this;
 	}
@@ -160,18 +152,23 @@ class Reservation {
 	 *
 	 * @return \AweBooking\Reservation\Totals
 	 */
-	public function get_totals() {
-		if ( is_null( $this->totals ) ) {
-			$this->totals = new Totals( $this );
-		}
+	public function totals() {
+		return $this->get_totals();
+	}
 
+	/**
+	 * Get the totals.
+	 *
+	 * @return \AweBooking\Reservation\Totals
+	 */
+	public function get_totals() {
 		return $this->totals;
 	}
 
 	/**
 	 * Get all reservation rooms.
 	 *
-	 * @return \AweBooking\Reservation\Item_Collection
+	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_rooms() {
 		return $this->rooms;
@@ -191,7 +188,7 @@ class Reservation {
 	 * Get reservation-room by given a room-unit.
 	 *
 	 * @param  \AweBooking\Model\Room $room The room instance.
-	 * @return \AweBooking\Reservation\Item
+	 * @return \AweBooking\Reservation\Room_Stay
 	 */
 	public function get_room( Room $room ) {
 		return $this->rooms->get( $room->get_id() );
@@ -212,7 +209,7 @@ class Reservation {
 		$this->validate_bookable( $room, $this->stay );
 
 		// Everything OK.
-		$item = new Item( $room, $rate, $this->stay, $guest );
+		$item = new Room_Stay( $room, $rate, $this->stay, $guest );
 
 		$this->rooms->put( $room->get_id(), $item );
 
@@ -247,6 +244,27 @@ class Reservation {
 		return $this->session_id;
 	}
 
+	public function get_context() {
+		$overflow_adults = max( 0, $this->request->get_adults() - $this->room_type->get_number_adults() );
+		$overflow_children = max( 0, $this->request->get_children() - $this->room_type->get_number_children() );
+
+		return [
+			'booking_date'      => Carbonate::today(),
+			'check_in_date'     => $this->period->get_start_date(),
+			'check_out_date'    => $this->period->get_end_date(),
+			'booking_before'    => Carbonate::today()->diffInDays( $this->period->get_start_date() ),
+			'check_in'          => $this->period->get_start_date()->dayOfWeek,
+			'check_out'         => $this->period->get_end_date()->dayOfWeek,
+			'stay_nights'       => $this->request->get_nights(),
+			'number_adults'     => $this->request->get_adults(),
+			'number_children'   => $this->request->get_children(),
+			'number_people'     => $this->request->get_people(),
+			'overflow_adults'   => $overflow_adults,
+			'overflow_children' => $overflow_children,
+			'overflow_people'   => $overflow_adults + $overflow_children,
+		];
+	}
+
 	/**
 	 * Check if this room can be for booking.
 	 *
@@ -267,55 +285,5 @@ class Reservation {
 		if ( ! $checker->is_available_for( $room, $stay ) ) {
 			throw new Exceptions\No_Room_Left_Exception( esc_html__( 'No room left for the reservation', 'awebooking' ) );
 		}
-	}
-
-	public function create_booking( array $options = [] ) {
-		// Parse the options args.
-		$options = wp_parse_args( $options, [
-			'notify'          => true,
-			'admin_notify'    => true,
-			'process_payment' => true,
-		]);
-
-		if ( is_null( $this->customer ) ) {
-			throw new Exception("Error Processing Request", 1);
-		}
-
-		if ( $this->items->isEmpty() ) {
-			throw new Exceptions\Empty_Room_Exception("Error Processing Request", 1);
-		}
-
-		// Create new booking.
-		$booking = (new Booking)->fill( apply_filters( 'awebooking/store_booking_args', [
-			'status'              => Booking::PENDING,
-		] ) );
-
-		// Fire the callback before booking will be created.
-		call_user_func_array( $callback, [ $booking, $this ] );
-
-		if ( $options['process_payment'] ) {
-			try {
-				$gateway->process( $booking );
-			} catch ( \Exception $e ) {
-				U::report( $e );
-			}
-		}
-
-		// Save the booking in dababase.
-		$booking->save();
-
-		// Send emails notifications.
-		if ( $options['notify'] ) {
-			$this->send_booking_notifications();
-		}
-
-		if ( $options['admin_notify'] ) {
-			$this->send_admin_notifications();
-		}
-
-		return $booking;
-	}
-
-	protected function send_admin_notifications( Booking $booking ) {
 	}
 }

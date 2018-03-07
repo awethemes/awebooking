@@ -4,8 +4,8 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Factory;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
-use AweBooking\Model\Room_Type;
 use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 
 class Room_Type_Metabox extends Post_Type_Metabox {
 	/**
@@ -27,13 +27,13 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	 */
 	public function __construct() {
 		$this->metabox = $this->create_metabox( 'room_type', [
-			'title'         => esc_html__( 'Room Type Data', 'awebooking' ),
+			'title'         => esc_html__( 'Details', 'awebooking' ),
 			'context'       => 'normal',
 			'priority'      => 'default',
 			'vertical_tabs' => true,
 		]);
 
-		parent::__construct();
+		$this->register();
 	}
 
 	/**
@@ -47,14 +47,13 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 		$this->register_room_fields();
 		$this->register_occupancy_fields();
 		$this->register_pricing_fields();
-		// $this->register_deposit_fields();
-		$this->register_services_fields();
 		$this->register_amenities_fields();
+		$this->register_services_fields();
 		$this->register_description_fields();
 
 		do_action( 'awebooking/register_metabox/room_type', $this->metabox );
 
-		add_action( 'edit_form_top', [ $this, '_setup_room_type' ]);
+		add_action( 'edit_form_top', [ $this, 'setup_room_type' ] );
 		add_action( 'admin_menu', array( $this, '_remove_meta_box' ) );
 	}
 
@@ -76,7 +75,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	 *
 	 * @param WP_Post $post Post object.
 	 */
-	public function _setup_room_type( $post ) {
+	public function setup_room_type( $post ) {
 		if ( $this->is_current_screen() ) {
 			global $room_type;
 
@@ -153,7 +152,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	 */
 	protected function register_room_fields() {
 		$room = $this->metabox->add_section( 'room', [
-			'title' => esc_html__( 'Room', 'awebooking' ),
+			'title' => esc_html__( 'Rooms', 'awebooking' ),
 		]);
 
 		$room->add_field( array(
@@ -266,98 +265,105 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 			'title' => esc_html__( 'Pricing', 'awebooking' ),
 		]);
 
-		$pricing->add_field( [
-			'id'   => '__standard_rate_title__',
-			'type' => 'title',
-			'name' => esc_html__( 'Standard rate', 'awebooking' ),
-		]);
-
-		$pricing->add_row( [
-			'id'             => '_row_rate_price_',
-			'flex_columns'   => 4,
-			'fields'         => [
+		$pricing->add_row([
+			'id' => 'sadasd',
+			'flex_columns'  => 4,
+			'fields' => [
 				[
 					'id'              => 'base_price',
 					'type'            => 'text_small',
-					'name'            => esc_html__( 'Base price', 'awebooking' ),
+					'name'            => esc_html__( 'Rack Rate', 'awebooking' ),
 					/* translators: %s The currency symbol */
-					'append'          => sprintf( esc_html__( '%s / room / night', 'awebooking' ), esc_html( awebooking( 'currency' )->get_symbol() ) ),
+					'append'          => awebooking( 'currency' )->get_symbol(),
 					'validate'        => 'required|price',
 					'sanitization_cb' => 'awebooking_sanitize_price',
 				],
-				[
-					'id'              => '_rate_label',
-					'type'            => 'text_medium',
-					'name'            => esc_html__( 'Public name (optional)', 'awebooking' ),
-					'desc'            => esc_html__( 'E.g. Best rate available (BAR), Room only, etc...', 'awebooking' ),
-					'sanitization_cb' => 'sanitize_text_field',
-				],
+				/*[
+					'id'              => '_extra_guest_charge',
+					'type'            => 'toggle',
+					'name' => 'Extra Guest',
+					'desc'            => esc_html__( 'Charge for additional guest?', 'awebooking' ),
+					'default'         => true,
+				],*/
 			],
 		]);
 
-		$pricing->add_row( [
-			'id'             => '_row_length_of_stay_',
-			'flex_columns'   => 4,
-			'fields'         => [
+		/*$pricing->add_field( [
+			'id'   => 'per_person_pricing',
+			'type' => 'per_person_pricing',
+			'name' => 'Extra guest',
+			'deps' => [ '_extra_guest_charge', '==', true ],
+			'show_names' => false,
+		]);*/
+
+		/*$pricing->add_row([
+			'id'            => 'asddasd',
+			'flex_columns'  => 4,
+			'fields'        => [
+				[
+					'id'          => '_rate_enable_deposit',
+					'type'        => 'toggle',
+					'name'        => esc_html__( 'Deposit?', 'awebooking' ),
+					'desc'        => esc_html__( 'Enable deposit?', 'awebooking' ),
+					'show_names'   => false,
+				],
+				[
+					'id'              => '_rate_deposit_amount',
+					'type'            => 'text_small',
+					'name'            => esc_html__( 'Deposit Amount', 'awebooking' ),
+					'append'          => '%',
+					'validate'        => 'required|price',
+					'sanitization_cb' => 'awebooking_sanitize_price',
+					'deps'            => [ '_rate_enable_deposit', '==', true ],
+					'show_names'   => false,
+				],
+			],
+		]);*/
+
+		$pricing->add_field( [
+			'id'          => '_rate_inclusions',
+			'type'        => 'text',
+			'name'        => esc_html__( 'Inclusions', 'awebooking' ),
+			'desc'        => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
+			'repeatable'  => true,
+		]);
+
+		$pricing->add_field( [
+			'id'          => '_rate_policies',
+			'type'        => 'text',
+			'name'        => esc_html__( 'Policies', 'awebooking' ),
+			'repeatable'  => true,
+		]);
+
+		$pricing->add_field([
+			'id'   => '__rate_restrictions_title__',
+			'type' => 'title',
+			'name' => esc_html__( 'Restrictions', 'awebooking' ),
+		]);
+
+		$pricing->add_row([
+			'id'            => '_los_row',
+			'flex_columns'  => 4,
+			'fields'        => [
 				[
 					'id'         => 'minimum_night',
 					'type'       => 'text_small',
 					'name'       => esc_html__( 'Min length of stay', 'awebooking' ),
-					'append'     => esc_html__( 'night(s)', 'awebooking' ),
+					'append'     => esc_html__( 'nights', 'awebooking' ),
 					'default'    => 1,
 					'validate'   => 'required|numeric|min:1',
 					'sanitization_cb' => 'absint',
 				],
 				[
-					'id'         => '_maximum_los',
+					'id'         => '_rate_maximum_los',
 					'type'       => 'text_small',
 					'name'       => esc_html__( 'Max length of stay', 'awebooking' ),
-					'append'     => esc_html__( 'night(s)', 'awebooking' ),
-					'default'    => 365,
+					'append'     => esc_html__( 'nights', 'awebooking' ),
+					'default'    => 0,
 					'validate'   => 'required|numeric|min:0',
 					'sanitization_cb' => 'absint',
 				],
 			],
-		]);
-
-		/*$pricing->add_field( [
-			'id'              => '_extra_guest_charge',
-			'type'            => 'toggle',
-			'desc'            => esc_html__( 'Charge for additional guest?', 'awebooking' ),
-			'default'         => true,
-		]);
-
-		$pricing->add_field( [
-			'id'   => 'per_person_pricing',
-			'type' => 'per_person_pricing',
-			'deps' => [ '_extra_guest_charge', '==', true ],
-		]);*/
-	}
-
-	/**
-	 * Register the deposit fields.
-	 *
-	 * @return void
-	 */
-	protected function register_deposit_fields() {
-		$pricing = $this->metabox->add_section( 'deposit', [
-			'title' => esc_html__( 'Deposit', 'awebooking' ),
-		] );
-
-		$pricing->add_field([
-			'id'          => '_enable_deposit',
-			'type'        => 'toggle',
-			'name'        => esc_html__( 'Enable deposit', 'awebooking' ),
-		]);
-
-		$pricing->add_field([
-			'id'              => '_deposit_value',
-			'type'            => 'text_small',
-			'name'            => esc_html__( 'Deposit value', 'awebooking' ),
-			'append'          => esc_html( awebooking( 'currency' )->get_symbol() ),
-			'validate'        => 'required|price',
-			'sanitization_cb' => 'awebooking_sanitize_price',
-			'deps'            => [ '_enable_deposit', '==', true ],
 		]);
 	}
 
@@ -440,14 +446,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	protected function categories_box_callback( $taxonomy ) {
 		return function() use ( $taxonomy ) {
 			post_categories_meta_box( get_post(), [ 'args' => [ 'taxonomy' => $taxonomy ] ] );
-			// Temp commit.
-			?>
-			<style>
-				#hotel_extra_service-add-toggle {
-					display: none;
-				}
-			</style>
-			<?php
+			?><style>#hotel_extra_service-add-toggle { display: none; }</style><?php // @codingStandardsIgnoreLine
 		};
 	}
 

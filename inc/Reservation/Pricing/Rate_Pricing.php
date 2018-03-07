@@ -3,7 +3,7 @@ namespace AweBooking\Reservation\Pricing;
 
 use DateInterval;
 use AweBooking\Model\Stay;
-use AweBooking\Model\Rate;
+use AweBooking\Model\Contracts\Rate;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Event\Pricing_Event;
@@ -13,11 +13,11 @@ use AweBooking\Support\Utils as U;
 use Roomify\Bat\Event\EventInterval;
 use Illuminate\Support\Arr;
 
-class Rate_Pricing implements Pricing_Interface {
+class Rate_Pricing {
 	/**
 	 * The Rate instance.
 	 *
-	 * @var \AweBooking\Model\Rate
+	 * @var \AweBooking\Model\Contracts\Rate
 	 */
 	protected $rate;
 
@@ -50,6 +50,13 @@ class Rate_Pricing implements Pricing_Interface {
 	protected $events_itemized;
 
 	/**
+	 * Cache the amount.
+	 *
+	 * @var \AweBooking\Support\Decimal
+	 */
+	protected $cache_amount;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Rate $rate The Rate instance.
@@ -61,14 +68,19 @@ class Rate_Pricing implements Pricing_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Get the stay.
+	 *
+	 * @return \AweBooking\Model\Stay
 	 */
 	public function get_stay() {
 		return $this->stay;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Set the stay.
+	 *
+	 * @param  \AweBooking\Model\Stay $stay The stay.
+	 * @return void
 	 */
 	public function set_stay( Stay $stay ) {
 		$this->stay = $stay;
@@ -77,25 +89,40 @@ class Rate_Pricing implements Pricing_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Get the total amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_amount() {
-		return $this->interval_valuator( 'P1D' );
+		if ( is_null( $this->cache_amount ) ) {
+			$this->cache_amount = $this->interval_valuator( 'P1D' );
+		}
+
+		return $this->cache_amount;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Set the amount.
+	 *
+	 * @param  float|int $amount The amount.
+	 * @return true
 	 */
 	public function set_amount( $amount ) {
 		$event = new Pricing_Event(
 			$this->get_calendar_resource(), $this->stay->get_check_in(), $this->stay->get_check_out(), $amount
 		);
 
-		$this->get_calendar()->store( $event );
+		$stored = $this->get_calendar()->store( $event );
+
+		$this->flush();
+
+		return $stored;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Get the breakdown.
+	 *
+	 * @return \AweBooking\Reservation\Pricing\Breakdown
 	 */
 	public function get_breakdown() {
 		$breakdown = new Breakdown;
@@ -211,7 +238,7 @@ class Rate_Pricing implements Pricing_Interface {
 	 * @return \AweBooking\Calendar\Resource\Resource
 	 */
 	protected function get_calendar_resource() {
-		$amount = Decimal::create( $this->rate->get_base_amount() );
+		$amount = Decimal::create( $this->rate->get_amount() );
 
 		$resource = new Resource( $this->rate->get_id(), $amount->as_raw_value() );
 		$resource->set_title( $this->rate->get_name() );

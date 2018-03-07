@@ -8,6 +8,33 @@ use AweBooking\Money\Currency;
 
 class Formatting {
 	/**
+	 * Format a number with grouped thousands.
+	 *
+	 * @param  float   $number     The number being formatted.
+	 * @param  boolean $trim_zeros Trim zeros or not.
+	 * @return string
+	 */
+	public static function number( $number, $trim_zeros = false ) {
+		$number = ( $number instanceof Decimal ) ? $number->as_numeric() : $number;
+
+		$config = awebooking()->make( 'setting' );
+
+		$args = apply_filters( 'awebooking/number_format_args', [
+			'number_decimals'    => $config->get( 'price_number_decimals' ),
+			'decimal_separator'  => $config->get( 'price_decimal_separator' ),
+			'thousand_separator' => $config->get( 'price_thousand_separator' ),
+		]);
+
+		$formatted = number_format( $number, absint( $args['number_decimals'] ), $args['decimal_separator'], $args['thousand_separator'] );
+
+		if ( $trim_zeros ) {
+			$formatted = preg_replace( '/' . preg_quote( $config->get( 'price_decimal_separator' ), '/' ) . '0++$/', '', $formatted );
+		}
+
+		return apply_filters( 'awebooking/number_formatted', $formatted, $number, $args );
+	}
+
+	/**
 	 * Format the money to human readable.
 	 *
 	 * @param  mixed   $amount     The amount.
@@ -22,9 +49,8 @@ class Formatting {
 		// Do we have a negative amount?
 		$negative = $amount->is_negative() ? '-' : '';
 
-		$formatted_amount = static::number_format( $amount->abs()->as_numeric(), [
-			'trim_zeros' => $trim_zeros,
-		]);
+		$negative_amount  = $amount->abs()->get_amount();
+		$formatted_amount = static::number( $negative_amount->as_string(), $trim_zeros );
 
 		$formatted = sprintf( awebooking( 'setting' )->get_money_format(),
 			'<span class="awebooking-price__amount">' . $formatted_amount . '</span>',
@@ -34,43 +60,6 @@ class Formatting {
 		$formatted = '<span class="awebooking-price">' . ( $negative . $formatted ) . '</span>';
 
 		return apply_filters( 'awebooking/price_format', $formatted, $amount );
-	}
-
-	/**
-	 * Alias of `money` method.
-	 *
-	 * @param  mixed   $amount     The amount.
-	 * @param  boolean $trim_zeros Trim zeros or not.
-	 * @return string
-	 */
-	public static function price( $amount, $trim_zeros = false ) {
-		return static::price( $amount, $trim_zeros );
-	}
-
-	/**
-	 * Format a number with grouped thousands.
-	 *
-	 * @param float $number The number being formatted.
-	 * @param array $args   The arguments for formatting.
-	 * @return string
-	 */
-	public static function number_format( $number, array $args = [] ) {
-		$config = awebooking()->make( 'config' );
-
-		$args = apply_filters( 'awebooking/number_format_args', wp_parse_args( $args, [
-			'trim_zeros'         => false,
-			'number_decimals'    => $config->get( 'price_number_decimals' ),
-			'decimal_separator'  => $config->get( 'price_decimal_separator' ),
-			'thousand_separator' => $config->get( 'price_thousand_separator' ),
-		]));
-
-		$formatted = number_format( $number, absint( $args['number_decimals'] ), $args['decimal_separator'], $args['thousand_separator'] );
-
-		if ( $args['trim_zeros'] ) {
-			$formatted = preg_replace( '/' . preg_quote( $config->get( 'price_decimal_separator' ), '/' ) . '0++$/', '', $formatted );
-		}
-
-		return apply_filters( 'awebooking/number_format', $formatted, $number, $args );
 	}
 
 	/**

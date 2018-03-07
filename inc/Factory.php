@@ -110,6 +110,24 @@ class Factory {
 	}
 
 	/**
+	 * Get booking item instance by ID.
+	 *
+	 * @param  int $item_id Booking item ID.
+	 * @return mixed|false|null
+	 */
+	public static function get_rate( $item_id ) {
+		list( $item_id, $item_type ) = static::resolve_booking_item( $item_id );
+
+		// Resolve booking item class by type.
+		$classname = static::resolve_booking_item_class( $item_type );
+		if ( ! $classname || ! class_exists( $classname ) ) {
+			return false;
+		}
+
+		return static::get_object_from_cache( $item_id, $classname, Constants::CACHE_BOOKING_ITEM );
+	}
+
+	/**
 	 * Create an object, cache it if exists.
 	 *
 	 * @param  int    $object_id    The object ID.

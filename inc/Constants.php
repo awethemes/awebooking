@@ -8,22 +8,27 @@ class Constants {
 	// The room-type defined.
 	const BOOKING           = 'awebooking';
 	const ROOM_TYPE         = 'room_type';
-	const PRICING_RATE      = 'pricing_rate';
+	const HOTEL_RATE        = 'hotel_rate';
+	const HOTEL_RATE_PLAN   = 'hotel_rate_plan';
 	const HOTEL_LOCATION    = 'hotel_location';
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_extra_service';
+
+	// Availability constants.
+	const STATE_AVAILABLE   = 0;
+	const STATE_UNAVAILABLE = 1;
+	const STATE_PENDING     = 2;
+	const STATE_BOOKED      = 3;
+
+	const PERCENTAGE_AMOUNT = 'percentage';
+	const FIXED_AMOUNT      = 'fixed';
+	const PRICING_RATE      = 'pricing_rate';
 
 	/* Position constants */
 	const CURRENCY_POS_LEFT        = 'left';
 	const CURRENCY_POS_RIGHT       = 'right';
 	const CURRENCY_POS_LEFT_SPACE  = 'left_space';
 	const CURRENCY_POS_RIGHT_SPACE = 'right_space';
-
-	// The availability state.
-	const STATE_AVAILABLE   = 0;
-	const STATE_UNAVAILABLE = 1;
-	const STATE_PENDING     = 2;
-	const STATE_BOOKED      = 3;
 
 	const CAPABILITY_MANAGER      = 'manage_awebooking';
 
@@ -40,8 +45,4 @@ class Constants {
 	const CACHE_RAW_ROOM_UNIT      = 'awebooking_cache_raw_room';
 	const CACHE_RAW_TAX_RATE       = 'awebooking_cache_raw_tax';
 	const CACHE_ROOMS_IN_ROOM_TYPE = 'awebooking_cache_rooms_in_room_type';
-
-	// The tax amount type.
-	const TAX_AMOUNT_PERCENTAGE = 'percentage';
-	const TAX_AMOUNT_FIXED      = 'fixed';
 }

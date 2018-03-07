@@ -18,6 +18,34 @@ class Dropdown {
 	}
 
 	/**
+	 * Get the  week_days sort by "start_of_week".
+	 *
+	 * @param  string $day_label The day_label, "abbrev", "initial", "full".
+	 * @return array
+	 */
+	public static function get_week_days( $day_label = 'full' ) {
+		global $wp_locale;
+
+		$week_days = [];
+		$week_begins = (int) get_option( 'start_of_week' );
+
+		for ( $i = 0; $i <= 6; $i++ ) {
+			$wd = (int) ( $i + $week_begins ) % 7;
+			$wd_name = $wp_locale->get_weekday( $wd );
+
+			if ( 'initial' === $day_label ) {
+				$wd_name = $wp_locale->get_weekday_initial( $wd_name );
+			} elseif ( 'abbrev' === $day_label ) {
+				$wd_name = $wp_locale->get_weekday_abbrev( $wd_name );
+			}
+
+			$week_days[ $wd ] = $wd_name;
+		}
+
+		return $week_days;
+	}
+
+	/**
 	 * Get the reservation sources.
 	 *
 	 * @return array

@@ -1,12 +1,14 @@
 .awebooking-dialog {
   .ui-dialog-titlebar {
-    height: 42px;
-    line-height: 42px;
+    height: 45px;
+    line-height: 45px;
+    font-weight: 400;
+    font-size: 16px;
   }
 
   .ui-button.ui-dialog-titlebar-close {
-    width: 42px;
-    height: 42px;
+    width: 45px;
+    height: 45px;
     border-left: 1px solid #dfdfdf;
     transition: all 0.25s ease;
 

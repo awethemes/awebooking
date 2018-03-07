@@ -38,6 +38,7 @@ class Skeleton_Service_Provider extends Service_Provider {
 		foreach ( [
 			'note'                => \AweBooking\Admin\Fields\Note_Field::class,
 			'date_range'          => \AweBooking\Admin\Fields\Date_Range_Field::class,
+			'select_days'         => \AweBooking\Admin\Fields\Select_Days_Field::class,
 			'per_person_pricing'  => \AweBooking\Admin\Fields\Per_Person_Pricing_Field::class,
 			'gateway_display_order' => \AweBooking\Admin\Fields\Gateway_Display_Order::class,
 		] as $key => $value ) {

@@ -5,7 +5,7 @@ use AweBooking\Factory;
 use AweBooking\Constants;
 use AweBooking\Support\Carbonate;
 
-class Booking_Item extends WP_Object {
+abstract class Booking_Item extends WP_Object {
 	/**
 	 * Name of object type.
 	 *

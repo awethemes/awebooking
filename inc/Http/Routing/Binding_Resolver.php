@@ -4,7 +4,7 @@ namespace AweBooking\Http\Routing;
 use Closure;
 use AweBooking\AweBooking;
 use InvalidArgumentException;
-use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
+use AweBooking\Http\Exceptions\Model_Not_Found_Exception;
 
 class Binding_Resolver {
 	/**

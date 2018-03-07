@@ -29,6 +29,13 @@ class Availability {
 	protected $rooms;
 
 	/**
+	 * [$rate_plans description]
+	 *
+	 * @var [type]
+	 */
+	protected $rate_plans;
+
+	/**
 	 * The remain rooms.
 	 *
 	 * @var \AweBooking\Support\Collection

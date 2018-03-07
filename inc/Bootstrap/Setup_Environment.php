@@ -214,29 +214,6 @@ class Setup_Environment {
 			],
 		]))->register();
 
-		Post_Type::make( Constants::PRICING_RATE,
-			esc_html__( 'Rate', 'awebooking' ),
-			esc_html__( 'Rates', 'awebooking' )
-		)->set( apply_filters( 'awebooking/post_type/args_pricing_rate', [
-			'public'              => false,
-			'rewrite'             => false,
-			'query_var'           => false,
-			'has_archive'         => false,
-			'publicly_queryable'  => false,
-			'show_in_nav_menus'   => false,
-			'show_in_admin_bar'   => false,
-			'exclude_from_search' => true,
-			'hierarchical'        => true,
-			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=room_type',
-			'supports'            => [ 'title', 'page-attributes' ],
-			'capability_type'     => Constants::PRICING_RATE,
-			'map_meta_cap'        => true,
-			'labels'              => [
-				'all_items' => esc_html__( 'Rates', 'awebooking' ),
-			],
-		]))->register();
-
 		do_action( 'awebooking/register_post_type' );
 	}
 
