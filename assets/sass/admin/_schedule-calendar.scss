@@ -1,16 +1,15 @@
 // Variables
-$schedule-color:           #2196f3;
-$schedule-hover-bg:        #eaf7ff;
-$schedule-sidebar-width:   320px;
-$schedule-item-width:      60px;
-$schedule-item-height:     60px;
-$schedule-border-color:    #eee;
-$schedule-border-color2:   #ddd;
-$schedule-subitem-height:  60px;
+$schedule-color:               #2196f3;
+$schedule-hover-bg:            #eaf7ff;
+$schedule-sidebar-width:       320px;
+$schedule-item-width:          60px;
+$schedule-item-height:         60px;
+$schedule-nested-item-height:  35px;
+$schedule-border-color:        #eee;
+$schedule-border-color2:       #d2d2d2;
 
 /* Schedule Layout */
-.scheduler,
-.awebooking-scheduler {
+.scheduler {
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(#000, 0.1);
@@ -51,14 +50,14 @@ $schedule-subitem-height:  60px;
   align-items: center;
 }
 
-.scheduler__legend,
+.scheduler__header-aside,
 .scheduler__aside {
   flex: 0 0 $schedule-sidebar-width;
   max-width: $schedule-sidebar-width;
 }
 
 .scheduler__main,
-.scheduler__header-block {
+.scheduler__header-main {
   flex: 1 1 0%;
 }
 
@@ -77,6 +76,11 @@ $schedule-subitem-height:  60px;
 .scheduler__main {
   overflow-y: hidden !important;
   overflow-x: visible !important;
+}
+
+.scheduler__header-aside,
+.scheduler__header-main {
+  padding: 0 1.5em;
 }
 
 // Childs of .scheduler__aside
@@ -161,18 +165,6 @@ $schedule-subitem-height:  60px;
   height: $schedule-item-height;
 }
 
-.scheduler__column {
-  flex: 1 1 0%;
-  position: relative;
-
-  width: $schedule-item-width;
-  height: $schedule-item-height;
-  min-width: $schedule-item-width;
-
-  margin: 0;
-  padding: 0;
-}
-
 .scheduler__days {
   display: flex;
 
@@ -191,78 +183,24 @@ $schedule-subitem-height:  60px;
 
 .scheduler__events-row {
   display: flex;
-  overflow: hidden;
-
   position: relative;
-  z-index: 115;
+  overflow: hidden;
 }
 
-/* Schedule styles */
-.scheduler__header {
-  .flatpickr {
-    color: #616161;
-    font-size: 16px;
-    font-weight: 400;
-    text-align: center;
-
-    width: 200px;
-    height: 36px;
-    line-height: 36px;
-
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    vertical-align: middle;
-    cursor: pointer;
-
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-
-    &[readonly="readonly"] {
-      opacity: 1 !important;
-    }
-  }
-}
-
-.scheduler__arrow {
-  width: 28px;
-  height: 28px;
-  display: inline-block;
-  vertical-align: middle;
-
-  font-size: 0;
-  color: $schedule-color;
-
+.scheduler__column {
+  flex: 1 1 0%;
+  position: relative;
   margin: 0;
-  border: none;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 28px;
+  padding: 0;
 
-  &:hover {
-    background-color: $schedule-hover-bg;
-  }
-
-  &:focus,
-  &:active {
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  .afc,
-  .dashicons {
-    font-size: 16px;
-  }
+  width: $schedule-item-width;
+  height: $schedule-item-height;
+  min-width: $schedule-item-width;
 }
 
-.scheduler__header-block {
-  padding: 0 1.5em;
-}
-
-.scheduler__date {
+.scheduler__days .scheduler__column,
+.scheduler__heading .scheduler__column {
   font-size: 12px;
-
   border-right: 1px solid $schedule-border-color;
   border-bottom: 1px solid $schedule-border-color;
 
@@ -279,19 +217,7 @@ $schedule-subitem-height:  60px;
   }
 }
 
-/* .scheduler__event {
-  top: 0;
-  left: ( $schedule-item-width / 2 );
-  position: absolute;
-  z-index: 35;
-
-  height: 100%;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.2s ease;
-} */
-
-.scheduler__heading .scheduler__date {
+.scheduler__heading .scheduler__column {
   padding-top: 12px;
   border-bottom: solid 1px $schedule-border-color2;
 
@@ -306,21 +232,9 @@ $schedule-subitem-height:  60px;
     font-size: 13px;
     text-transform: uppercase;
   }
-
-  .newmonth {
-    background: #607D8B;
-    z-index: 110;
-    position: absolute;
-    top: -5px;
-    left: 2px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    display: inline-block;
-    padding: 0 5px;
-  }
 }
 
+// Miscs
 .scheduler__datehover {
   opacity: 0;
   visibility: hidden;
@@ -329,7 +243,7 @@ $schedule-subitem-height:  60px;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 111;
+  z-index: 115;
   position: absolute;
 
   width: auto;
@@ -366,39 +280,38 @@ $schedule-subitem-height:  60px;
   }
 }
 
-.scheduler__rate-state {
-  // color: #fff;
-  // background-color: red;
+.scheduler__month-label {
+  z-index: 150;
   position: absolute;
 
-  border-radius: 10px;
-}
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #333;
+  background: #fff;
 
-.scheduler__event > .scheduler__rate-amount {
-  color: #607d8b;
-  font-size: 11px;
-
-  width: 100%;
-  padding: 5px 7px;
-  text-align: right;
+  padding: 0 5px;
+  border-radius: 2px;
   display: inline-block;
-  white-space: nowrap;
+  width: $schedule-item-width;
+
   overflow: hidden;
+  white-space: nowrap;
 
-  right: 0;
-  bottom: 0;
-  position: absolute;
+  .scheduler__column & {
+    top: 50px;
+    left: 0;
 
-  &.rateup {
-    color: yellow;
+    color: #fff;
+    background-color: #333;
   }
 
-  &.ratedown {
-    color: red;
+  .scheduler__aside & {
+    top: 50px;
+    right: 0;
   }
 }
 
-// Miscs
 .scheduler__marker {
   left: 0;
   bottom: 0;
@@ -501,5 +414,161 @@ $schedule-subitem-height:  60px;
   a:hover > .dashicons {
     color: #fff;
     background-color: #666;
+  }
+}
+
+.scheduler__legends {
+  > span {
+    width: 14px;
+    height: 14px;
+    font-size: 0;
+    float: left;
+
+    border: solid 1px rgba(#000, .15);
+    background-color: #eee;
+    border-radius: 2px;
+
+    margin-right: 7px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.scheduler__arrow {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  vertical-align: middle;
+
+  font-size: 0;
+  color: $schedule-color;
+
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+
+  &:hover {
+    background-color: $schedule-hover-bg;
+  }
+
+  &:focus,
+  &:active {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .afc,
+  .dashicons {
+    font-size: 16px;
+  }
+}
+
+.scheduler__datepicker > input {
+  color: #616161;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+
+  width: 180px;
+  height: 36px;
+  line-height: 36px;
+
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  &[readonly] {
+    opacity: 1 !important;
+  }
+}
+
+// Nested scheduler.
+.awebooking-scheduler {
+  .scheduler__marker,
+  .schedule__submenu > .scheduler__menu,
+  .schedule__section > .scheduler__row,
+  .schedule__section .scheduler__column {
+    height: $schedule-nested-item-height !important;
+  }
+
+  .schedule__submenu .scheduler__menu {
+    padding-left: 52px;
+  }
+
+  .scheduler__menus > li > .scheduler__menu,
+  .scheduler__body > .scheduler__row .scheduler__column,
+  .schedule__section > .scheduler__row:last-child .scheduler__column {
+    border-bottom-color: $schedule-border-color2;
+  }
+
+  .scheduler__menu:last-child {
+    border-bottom: solid 1px $schedule-border-color2;
+  }
+
+  .scheduler__menus > li:last-child .scheduler__menu:last-child {
+    border-bottom: none;
+  }
+}
+
+// Extra css
+.scheduler__rate-amount {
+  color: #607d8b;
+  font-size: 11px;
+
+  width: 100%;
+  padding: 5px 7px;
+  text-align: right;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+  position: absolute;
+
+  &.stateup {
+    color: #416b0e;
+  }
+
+  &.statedown {
+    color: #b71206;
+  }
+}
+
+.scheduler__state-event {
+  top: 0;
+  left: 0;
+  z-index: 150;
+  position: absolute;
+
+  height: 100%;
+  background: rgba(#000, 0.1);
+  transition: all 0.2s ease;
+
+  cursor: pointer;
+  pointer-events: auto !important;
+
+  &.booked {
+    background-color: rgba(#2196f3, 0.5);
+    &:hover { background-color: rgba(#2196f3, 0.3); }
+  }
+
+  &.pending {
+    background-color: rgba(#ffc107, 0.5);
+    &:hover { background-color: rgba(#ffc107, 0.7); }
+  }
+
+  &.unavailable {
+    background: url('../img/blocked-pattern.png') rgba(black, .01);
+    &:hover { background-color: rgba(black, .03); }
   }
 }

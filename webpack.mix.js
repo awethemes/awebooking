@@ -25,6 +25,7 @@ mix.copy('node_modules/sweetalert2/dist/sweetalert2.min.js', 'assets/js/sweetale
 mix.copy('node_modules/magnific-popup/dist/magnific-popup.css', 'assets/css/magnific-popup.css', false);
 mix.copy('node_modules/magnific-popup/dist/jquery.magnific-popup.min.js', 'assets/js/magnific-popup/jquery.magnific-popup.min.js', false);
 mix.copy('node_modules/flatpickr/dist/themes/confetti.css', 'assets/css/flatpickr.css', false);
+mix.copy('node_modules/waypoints/lib/noframework.waypoints.min.js', 'assets/js/waypoints/waypoints.min.js', false);
 
 mix.extract(['vue', 'form-serialize', 'popper.js', 'tooltip.js', 'flatpickr']);
 
@@ -38,6 +39,6 @@ mix.browserSync({
     'inc/**/*.php',
     'templates/**/*.php',
     'assets/css/**/*.css',
-    'assets/js/**/*.js',
+    // 'assets/js/**/*.js',
   ]
 });

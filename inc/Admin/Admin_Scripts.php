@@ -34,9 +34,7 @@ class Admin_Scripts {
 		wp_register_script( 'moment', $awebooking_url . '/assets/js/moment/moment.js', [], '2.18.1' );
 		wp_register_script( 'select2', $awebooking_url . '/assets/js/select2/select2.full.js', [ 'jquery' ], '4.0.3' );
 		wp_register_script( 'sweetalert2', $awebooking_url . '/assets/js/sweetalert2/sweetalert2.min.js', [], '7.9.0' );
-
-		wp_register_script( 'awebooking-yearly-calendar', $awebooking_url . '/assets/js/abkng-calendar/yearly-calendar.js', [ 'wp-backbone' ], $version, true );
-		wp_register_script( 'awebooking-pricing-calendar', $awebooking_url . '/assets/js/abkng-calendar/pricing-calendar.js', [ 'wp-backbone' ], $version, true );
+		wp_register_script( 'waypoints', $awebooking_url . '/assets/js/waypoints/waypoints.min.js', [], '4.0.1' );
 
 		// Register awebooking main styles and scripts.
 		$deps = [ 'awebooking-manifest', 'awebooking-vendor', 'moment', 'select2', 'wp-util', 'jquery-effects-highlight', 'jquery-ui-dialog', 'jquery-ui-datepicker', 'sweetalert2' ];
@@ -48,7 +46,7 @@ class Admin_Scripts {
 		wp_register_script( 'awebooking-edit-service', awebooking()->plugin_url() . '/assets/js/admin/edit-service.js', array( 'awebooking-admin' ), $version, true );
 		wp_register_script( 'awebooking-edit-room-type', awebooking()->plugin_url() . '/assets/js/admin/edit-room-type.js', array( 'awebooking-admin' ), $version, true );
 
-		wp_register_script( 'awebooking-schedule-calendar', awebooking()->plugin_url() . '/assets/js/admin/schedule-calendar.js', [ 'backbone', 'awebooking-admin' ], $version, true );
+		wp_register_script( 'awebooking-schedule-calendar', awebooking()->plugin_url() . '/assets/js/admin/schedule-calendar.js', [ 'backbone', 'waypoints', 'awebooking-admin' ], $version, true );
 
 		// Send AweBooking object.
 		wp_localize_script( 'awebooking-admin', '_awebookingSettings', array(

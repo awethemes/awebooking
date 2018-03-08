@@ -38,8 +38,8 @@ abstract class Schedule_Calendar {
 	 */
 	public function get_calendar_events( Calendar $calendar, Period $period ) {
 		$period = $period
-			->moveEndDate( '2 DAYS' )
-			->moveStartDate( '2 DAYS' );
+			->moveStartDate( '-2 DAYS' )
+			->moveEndDate( '+2 DAYS' );
 
 		return $calendar->get_events( $period )
 			->reject(function( $e ) {

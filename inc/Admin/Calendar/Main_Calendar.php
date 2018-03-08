@@ -72,29 +72,19 @@ class Main_Calendar extends Schedule_Calendar {
 		}
 
 		$cal = $this;
-		$actions_menu = $this->generate_actions_menu();
-
 		$period = new Period(
 			Carbonate::today()->subDays( 2 ),
 			Carbonate::today()->addDays( 30 )
 		);
 
+		$date = Carbonate::today();
+
 		// Enqueue the schedule-calendar.
 		wp_enqueue_script( 'awebooking-schedule-calendar' );
 
 		return $admin_template->partial( 'calendar/html-layout.php',
-			compact( 'cal', 'scheduler', 'period', 'actions_menu' )
+			compact( 'cal', 'scheduler', 'period', 'date' )
 		);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function get_actions_menu() {
-		return [
-			[ 'id' => 'awebooking-set-price', 'icon' => 'dashicons dashicons-edit', 'href' => '#awebooking-add-line-item-popup', 'name' => 'Adjust Price' ],
-			[ 'icon' => 'dashicons dashicons-update', 'name' => 'Clear Adjust' ],
-		];
 	}
 
 	/**
@@ -106,14 +96,11 @@ class Main_Calendar extends Schedule_Calendar {
 				return ! $e instanceof State_Event;
 			})->each( function ( $e ) use ( $period ) {
 				if ( $e->get_start_date()->lt( $period->get_start_date() ) ) {
-					dump( 1 );
+					$e->set_start_date( $period->get_start_date() );
 				}
 
 				if ( $e->get_end_date()->gt( $period->get_end_date()->subDay() ) ) {
 					$e->set_end_date( $period->get_end_date()->subDay() );
-
-					// dump( $e );
-					// dump( $period->get_end_date() );
 				}
 			});
 
@@ -166,7 +153,7 @@ class Main_Calendar extends Schedule_Calendar {
 		foreach ( $day_events as $event ) {
 			$width = $event->get_period()->getDateInterval()->format( '%r%a' ) + 1;
 
-			$html  = '<div class="awebooking-schedule__event ' . esc_attr( implode( ' ', $this->get_event_classes( $event ) ) ) . '" style="width: ' .  ( $width * 100 ) . '%">';
+			$html  = '<div class="scheduler__state-event ' . esc_attr( implode( ' ', $this->get_event_classes( $event ) ) ) . '" style="width: ' .  ( $width * 100 ) . '%">';
 
 			if ( $event_url = $event->get_url() ) {
 				$html .= '<a href="' . esc_url( $event_url ) . '" style="width: 100%; height: 100%; display: block;">';

@@ -22,7 +22,7 @@ $route->get( '/rates', Rate_Controller::class . '@index' );
 $route->post( '/rates', Rate_Controller::class . '@update' );
 
 // New reservation routes.
-$route->get( '/reservation/create', Reservation_Controller::class . '@create' );
+$route->get( '/reservation', Reservation_Controller::class . '@index' );
 $route->post( '/reservation/add_item', Reservation_Controller::class . '@add_item' );
 
 // Tax routes.

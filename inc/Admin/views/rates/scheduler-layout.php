@@ -11,12 +11,19 @@ list( $prev_date, $next_date ) = [
 ];
 
 ?>
-<div class="scheduler awebooking-scheduler">
+<div class="scheduler awebooking-pricing-scheduler">
 
 	<div class="scheduler__header">
-		<div class="scheduler__legend"></div>
+		<div class="scheduler__header-aside">
+			<div class="scheduler__legends">
+				<span data-init="awebooking-tooltip" title="<?php echo esc_html__( 'Today', 'awebooking' ); ?>" style="background-color: #fdf7c3"></span>
+				<span data-init="awebooking-tooltip" title="<?php echo esc_html__( 'Weekend', 'awebooking' ); ?>" style="background-color: #eee"></span>
+				<span data-init="awebooking-tooltip" title="<?php echo esc_html__( 'Greater than base price', 'awebooking' ); ?>" style="background-color: #c9e4a9">></span>
+				<span data-init="awebooking-tooltip" title="<?php echo esc_html__( 'Less than base price', 'awebooking' ); ?>" style="background-color: #ff837a">></span>
+			</div>
+		</div>
 
-		<div class="scheduler__header-block">
+		<div class="scheduler__header-main">
 			<div class="scheduler-flex">
 				<div class="scheduler-flexspace"></div>
 
@@ -40,6 +47,8 @@ list( $prev_date, $next_date ) = [
 
 	<div class="scheduler__container">
 		<aside class="scheduler__aside">
+			<span class="scheduler__month-label"><?php echo esc_html( $date->format( 'Y-m' ) ); ?></span>
+
 			<div class="scheduler__aside-heading">
 				<?php if ( $calendar_name = $scheduler->get_name() ) : ?>
 					<h2><?php echo esc_html( $calendar_name ); ?></h2>
@@ -71,12 +80,12 @@ list( $prev_date, $next_date ) = [
 				<div class="scheduler__row">
 
 					<?php foreach ( $period as $date ) : ?>
-						<div class="scheduler__column scheduler__date <?php echo esc_attr( implode( ' ', $cal->get_date_classes( $date ) ) ); ?>" title="<?php echo esc_attr( $date->format( $cal->get_option( 'date_title' ) ) ); ?>" data-date="<?php echo esc_attr( $date->format( 'Y-m-d' ) ); ?>">
+						<div class="scheduler__column <?php echo esc_attr( implode( ' ', $cal->get_date_classes( $date ) ) ); ?>" title="<?php echo esc_attr( $date->format( $cal->get_option( 'date_title' ) ) ); ?>" data-date="<?php echo esc_attr( $date->format( 'Y-m-d' ) ); ?>">
 							<span class="weekday"><?php echo esc_html( $cal->get_weekday_name( $date->dayOfWeek, 'abbrev' ) ); // @codingStandardsIgnoreLine ?></span>
 							<span class="day"><?php echo esc_html( $date->format( 'd' ) ); ?></span>
 
 							<?php if ( 1 == $date->day ) : ?>
-								<span class="newmonth"><?php echo esc_html( $date->format( 'Y-m' ) ); ?></span>
+								<span class="scheduler__month-label"><?php echo esc_html( $date->format( 'Y-m' ) ); ?></span>
 							<?php endif ?>
 						</div>
 					<?php endforeach; ?>
@@ -102,15 +111,18 @@ list( $prev_date, $next_date ) = [
 								<?php list( $base_amount, $pricing ) = $list_pricing[ $calendar->get_uid() ]; ?>
 
 								<?php foreach ( $period as $date ) : ?>
-									<?php $amount = $pricing->get( $date->format( 'Y-m-d' ) )->get_amount(); ?>
-									<div class="scheduler__column scheduler__event" data-date="<?php echo esc_attr( $date->format( 'Y-m-d' ) ); ?>">
-										<?php if ( $amount->greater_than( $base_amount ) ) : ?>
-											<span class="scheduler__rate-state stateup"><i class="dashicons dashicons-arrow-up"></i></span>
-										<?php elseif ( $amount->less_than( $base_amount ) ) : ?>
-											<span class="scheduler__rate-state statedown"><i class="dashicons dashicons-arrow-down"></i></span>
-										<?php endif ?>
+									<?php
+									$amount = $pricing->get( $date->format( 'Y-m-d' ) )->get_amount();
 
-										<span class="scheduler__rate-amount">
+									$state_class = '';
+									if ( $amount->greater_than( $base_amount ) ) {
+										$state_class = 'stateup';
+									} elseif ( $amount->less_than( $base_amount ) ) {
+										$state_class = 'statedown';
+									}
+									?>
+									<div class="scheduler__column scheduler__event" data-date="<?php echo esc_attr( $date->format( 'Y-m-d' ) ); ?>">
+										<span class="scheduler__rate-amount <?php echo esc_attr( $state_class ); ?>">
 											<span><?php echo format::money( $amount, true ); // WPCS: XSS OK. ?></span>
 										</span>
 									</div>
@@ -161,7 +173,13 @@ list( $prev_date, $next_date ) = [
 	<input type="hidden" name="start_date" value="{{ data.startDate.format('YYYY-MM-DD') }}">
 	<input type="hidden" name="end_date" value="{{ data.endDate.format('YYYY-MM-DD') }}">
 
-	<p>{{ data.startDate }}</p>
+	<p>{{ data.startDate.format() }}</p>
+	<p>{{ data.endDate.format() }}</p>
+
+	<div class="skeleton-input-group">
+		<input type="text" name="amount" value="0" class="cmb2-text-small">
+		<span class="skeleton-input-group__addon"><?php echo esc_html( awebooking( 'currency' )->get_symbol() ); ?></span>
+	</div>
 </script>
 
 <script>
@@ -173,7 +191,7 @@ list( $prev_date, $next_date ) = [
 
 		// Create the scheduler.
 		var scheduler = new awebooking.ScheduleCalendar({
-			el: '.awebooking-scheduler',
+			el: '.awebooking-pricing-scheduler',
 		});
 
 		var compileHtmlControls = function(action) {
@@ -227,6 +245,29 @@ list( $prev_date, $next_date ) = [
 				model.clear();
 			});
 		});
+
+		// Helpers.
+		$('.scheduler__month-label').each(function() {
+			var point = new Waypoint({
+				element: this,
+				context: $('.scheduler__main')[0],
+				horizontal: true,
+				offset: -50,
+				handler: function(direction) {
+					var $monthLabel = $('.scheduler__aside .scheduler__month-label');
+
+					if ('right' === direction) {
+						// var currentText = $monthLabel.text();
+						$monthLabel.text($(this.element).text());
+						// $monthLabel.attr('data-prev-text', currentText);
+					} else {
+						$monthLabel.text($(this.element).text());
+						// $monthLabel.text($monthLabel.data('prevText'));
+					}
+				},
+			});
+		});
+
 	});
 
 })(jQuery);

@@ -50,7 +50,7 @@ class Reservation_Controller extends Controller {
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function create( Request $request ) {
+	public function index( Request $request ) {
 		switch ( $request->get( 'step' ) ) {
 			case 'search':
 				return $this->step_search( $request );
@@ -66,7 +66,7 @@ class Reservation_Controller extends Controller {
 			try {
 				( new Search_Reservation_Form )->handle( $request->all(), false );
 			} catch ( Validation_Failed_Exception $e ) {
-				return $this->redirect()->admin_route( 'reservation/create' );
+				return $this->redirect()->admin_route( 'reservation' );
 			}
 
 			// Create new reservation from request.
@@ -81,7 +81,7 @@ class Reservation_Controller extends Controller {
 			if ( is_null( $reservation ) ) {
 				awebooking( 'admin_notices' )->warning( esc_html__( 'The reservation session has been expired', 'awebooking' ) );
 
-				return $this->redirect()->admin_route( 'reservation/create' );
+				return $this->redirect()->admin_route( 'reservation' );
 			}
 		}
 
@@ -142,7 +142,7 @@ class Reservation_Controller extends Controller {
 			awebooking( 'admin_notices' )->error( $e->getMessage() );
 		}
 
-		return $this->redirect()->admin_route( 'reservation/create', [ 'step' => 'search' ] );
+		return $this->redirect()->admin_route( 'reservation', [ 'step' => 'search' ] );
 	}
 
 	/**

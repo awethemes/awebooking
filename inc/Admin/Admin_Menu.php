@@ -110,7 +110,7 @@ class Admin_Menu {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( 'awebooking', esc_html__( 'New Booking', 'awebooking' ), esc_html_x( 'New Booking', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/reservation/create' );
+		add_submenu_page( 'awebooking', esc_html__( 'New Booking', 'awebooking' ), esc_html_x( 'New Booking', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/reservation' );
 
 		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
 

@@ -57,7 +57,7 @@ class Rate_Calendar extends Schedule_Calendar {
 
 		$period = new Period(
 			$date->copy()->subDays( 2 ),
-			$date->copy()->addDays( 120 )
+			$date->copy()->addDays( 30 )
 		);
 
 		$list_pricing = [];

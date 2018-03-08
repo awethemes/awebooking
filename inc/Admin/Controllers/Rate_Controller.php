@@ -47,14 +47,12 @@ class Rate_Controller extends Controller {
 		if ( 'reset_price' === $request->get( 'action' ) ) {
 			$amount = 0;
 		} else {
-			$amount = $request->get( 'action', 0 );
+			$amount = $request->get( 'amount', 0 );
 		}
 
 		$this->perform_update_amount( $stay, $apply_calendar, $amount );
 
-		awebooking( 'admin_notices' )->success( esc_html__( 'Update price successfully!', 'awebooking' ) );
-
-		return $this->redirect()->back();
+		return $this->redirect()->back( $fallback_url );
 	}
 
 	/**
