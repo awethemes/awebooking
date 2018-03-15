@@ -13,7 +13,7 @@ class Factory {
 	/**
 	 * Create the state calendar by given a room_unit.
 	 *
-	 * @param  \AweBooking\Model\Room|init $room_unit The room unit.
+	 * @param  init $room_unit The room unit.
 	 * @return \AweBooking\Calendar\Calendar
 	 */
 	public function create_state_calendar( $room_unit ) {
@@ -25,7 +25,7 @@ class Factory {
 	/**
 	 * Create the state calendar by given a room_unit.
 	 *
-	 * @param  \AweBooking\Model\Room|init $room_unit The room unit.
+	 * @param  init $room_unit The room unit.
 	 * @return \AweBooking\Calendar\Calendar
 	 */
 	public function create_booking_calendar( $room_unit ) {
@@ -37,7 +37,7 @@ class Factory {
 	/**
 	 * Create the state calendar by given a room_unit.
 	 *
-	 * @param  \AweBooking\Model\Contracts\Rate|init                 $rate        The rate unit.
+	 * @param  init                                                  $rate        The rate unit.
 	 * @param  \AweBooking\Support\Decimal|int                       $base_amount The rate base amount.
 	 * @param  \AweBooking\Calendar\Provider\Provider_Interface|null $provider    Optional, the calendar provider.
 	 * @return \AweBooking\Calendar\Calendar

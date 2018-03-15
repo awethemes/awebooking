@@ -34,9 +34,9 @@ module.exports = Utils;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(8);
-__webpack_require__(17);
 __webpack_require__(18);
-module.exports = __webpack_require__(19);
+__webpack_require__(19);
+module.exports = __webpack_require__(20);
 
 
 /***/ }),
@@ -50,7 +50,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_flatpickr__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_flatpickr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_flatpickr__);
 var $ = window.jQuery;
-var settings = window._awebookingSettings || {};
+var settings = window._awebooking || {};
 
 
 
@@ -62,11 +62,12 @@ var AweBooking = _.extend(settings, {
   Popper: __WEBPACK_IMPORTED_MODULE_0_popper_js__["default"],
   Tooltip: __WEBPACK_IMPORTED_MODULE_1_tooltip_js__["default"],
   Flatpickr: __WEBPACK_IMPORTED_MODULE_2_flatpickr___default.a,
+  FlatpickrRange: __webpack_require__(12),
 
-  Popup: __webpack_require__(12),
-  ToggleClass: __webpack_require__(13),
-  RangeDatepicker: __webpack_require__(14),
-  ToggleCheckboxes: __webpack_require__(15),
+  Popup: __webpack_require__(13),
+  ToggleClass: __webpack_require__(14),
+  RangeDatepicker: __webpack_require__(15),
+  ToggleCheckboxes: __webpack_require__(16),
 
   /**
    * Init the AweBooking
@@ -85,7 +86,7 @@ var AweBooking = _.extend(settings, {
 
     $('[data-init="awebooking-tooltip"]').each(function () {
       var options = {
-        template: '<div class="awebooking-tooltip tooltip" role="tooltip"><div class="tooltip__arrow"></div><div class="tooltip__inner"></div></div>'
+        template: '<div class="awebooking-tooltip" role="tooltip"><div class="awebooking-tooltip__arrow" x-arrow></div><div class="tooltip__inner"></div></div>'
       };
 
       $(this).data('awebooking-tooltip', new self.Tooltip(this, options));
@@ -108,7 +109,7 @@ var AweBooking = _.extend(settings, {
       }, { confirmButtonText: self.trans('delete') });
     });
 
-    __webpack_require__(16);
+    __webpack_require__(17);
   },
 
 
@@ -177,6 +178,141 @@ window.TheAweBooking = AweBooking;
 /* 10 */,
 /* 11 */,
 /* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* flatpickr v4.3.2, @license MIT */
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.rangePlugin = factory());
+}(this, (function () { 'use strict';
+
+function rangePlugin(config) {
+    if (config === void 0) { config = {}; }
+    return function (fp) {
+        var dateFormat = "", secondInput, _firstInputFocused, _secondInputFocused, _prevDates;
+        var createSecondInput = function () {
+            if (config.input) {
+                secondInput =
+                    config.input instanceof Element
+                        ? config.input
+                        : window.document.querySelector(config.input);
+            }
+            else {
+                secondInput = fp._input.cloneNode();
+                secondInput.removeAttribute("id");
+                secondInput._flatpickr = undefined;
+            }
+            if (secondInput.value) {
+                var parsedDate = fp.parseDate(secondInput.value);
+                if (parsedDate)
+                    fp.selectedDates.push(parsedDate);
+            }
+            secondInput.setAttribute("data-fp-omit", "");
+            fp._bind(secondInput, ["focus", "click"], function () {
+                if (fp.selectedDates[1]) {
+                    fp.latestSelectedDateObj = fp.selectedDates[1];
+                    fp._setHoursFromDate(fp.selectedDates[1]);
+                    fp.jumpToDate(fp.selectedDates[1]);
+                }
+                _a = [false, true], _firstInputFocused = _a[0], _secondInputFocused = _a[1];
+                fp.open(undefined, secondInput);
+                var _a;
+            });
+            fp._bind(secondInput, "keydown", function (e) {
+                if (e.key === "Enter") {
+                    fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
+                    secondInput.click();
+                }
+            });
+            if (!config.input)
+                fp._input.parentNode &&
+                    fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+        };
+        var plugin = {
+            onParseConfig: function () {
+                fp.config.mode = "range";
+                fp.config.allowInput = true;
+                dateFormat = fp.config.altInput
+                    ? fp.config.altFormat
+                    : fp.config.dateFormat;
+            },
+            onReady: function () {
+                createSecondInput();
+                fp.config.ignoredFocusElements.push(secondInput);
+                fp._input.removeAttribute("readonly");
+                secondInput.removeAttribute("readonly");
+                fp._bind(fp._input, "focus", function () {
+                    fp.latestSelectedDateObj = fp.selectedDates[0];
+                    fp._setHoursFromDate(fp.selectedDates[0]);
+                    _a = [true, false], _firstInputFocused = _a[0], _secondInputFocused = _a[1];
+                    fp.jumpToDate(fp.selectedDates[0]);
+                    var _a;
+                });
+                fp._bind(fp._input, "keydown", function (e) {
+                    if (e.key === "Enter")
+                        fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
+                });
+                fp.setDate(fp.selectedDates, false);
+                plugin.onValueUpdate(fp.selectedDates);
+            },
+            onPreCalendarPosition: function () {
+                if (_secondInputFocused) {
+                    fp._positionElement = secondInput;
+                    setTimeout(function () {
+                        fp._positionElement = fp._input;
+                    }, 0);
+                }
+            },
+            onChange: function () {
+                if (!fp.selectedDates.length) {
+                    setTimeout(function () {
+                        if (fp.selectedDates.length)
+                            return;
+                        secondInput.value = "";
+                        _prevDates = [];
+                    }, 10);
+                }
+                if (_secondInputFocused) {
+                    setTimeout(function () {
+                        secondInput.focus();
+                    }, 0);
+                }
+            },
+            onDestroy: function () {
+                if (!config.input)
+                    secondInput.parentNode &&
+                        secondInput.parentNode.removeChild(secondInput);
+            },
+            onValueUpdate: function (selDates) {
+                if (!secondInput)
+                    return;
+                _prevDates =
+                    !_prevDates || selDates.length >= _prevDates.length
+                        ? selDates.slice() : _prevDates;
+                if (_prevDates.length > selDates.length) {
+                    var newSelectedDate = selDates[0];
+                    var newDates = _secondInputFocused
+                        ? [_prevDates[0], newSelectedDate]
+                        : [newSelectedDate, _prevDates[1]];
+                    fp.setDate(newDates, false);
+                    _prevDates = newDates.slice();
+                }
+                _a = fp.selectedDates.map(function (d) { return fp.formatDate(d, dateFormat); }), _b = _a[0], fp._input.value = _b === void 0 ? "" : _b, _c = _a[1], secondInput.value = _c === void 0 ? "" : _c;
+                var _a, _b, _c;
+            },
+        };
+        return plugin;
+    };
+}
+
+return rangePlugin;
+
+})));
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -261,7 +397,7 @@ var Popup = function () {
 module.exports = Popup;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -311,7 +447,7 @@ var ToggleClass = function () {
 module.exports = ToggleClass;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -374,7 +510,7 @@ var RangeDatepicker = function () {
 module.exports = RangeDatepicker;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -415,7 +551,7 @@ function ToggleCheckboxes(table) {
 module.exports = ToggleCheckboxes;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -487,12 +623,6 @@ var InitSelect2 = function () {
 module.exports = new InitSelect2();
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
@@ -500,6 +630,12 @@ module.exports = new InitSelect2();
 
 /***/ }),
 /* 19 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

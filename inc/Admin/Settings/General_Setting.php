@@ -94,7 +94,7 @@ class General_Setting extends Abstract_Setting {
 			'name'     => esc_html__( 'Currency', 'awebooking' ),
 			'default' => awebooking( 'setting' )->get_default( 'currency' ),
 			'options_cb'  => function() {
-				return awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
+				return awebooking( 'currencies' )->get_for_dropdown( '%name (%symbol)' );
 			},
 		) );
 

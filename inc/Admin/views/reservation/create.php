@@ -1,14 +1,20 @@
 <?php
 
-use AweBooking\Model\Stay;
-use AweBooking\Model\Room_Type;
-use AweBooking\Reservation\Pricing\Room_Rate;
+// use AweBooking\Calendar\Finder\Finder;
+// use AweBooking\Calendar\Resource\Resource;
+// use AweBooking\Calendar\Provider\State_Provider;
+// use AweBooking\Calendar\Provider\Cached_Provider;
+// use AweBooking\Calendar\Period\Month;
 
-/*$room_type = new Room_Type( 83 );
-$stay = new Stay( '2017-03-05', '2017-03-10' );
+// $resources = [
+// 	new Resource( 1 ),
+// 	new Resource( 2 ),
+// ];
 
-$room_rate = new Room_Rate( $stay, $room_type );
-dd( $room_rate );*/
+// $month = new Month( 2018, 03 );
+
+// $finder = new Finder( $resources, new Cached_Provider( new State_Provider( $resources ) ) );
+// dump( $finder->only( 1 )->find( $month ) );
 
 ?>
 <div class="wrap awebooking-reservation-page">

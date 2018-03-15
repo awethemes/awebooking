@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Reservation;
 
-use AweBooking\Model\Stay;
+use AweBooking\Model\Common\Timespan;
 use Awethemes\WP_Session\WP_Session;
 
 class Session {
@@ -44,7 +44,7 @@ class Session {
 	 * @param string     $session_name The session key name.
 	 * @param integer    $lifetime     The session lifetime in minutes.
 	 */
-	public function __construct( WP_Session $wp_session, $session_name = self::DEFAULT_GROUP, $lifetime = 1 ) {
+	public function __construct( WP_Session $wp_session, $session_name = self::DEFAULT_GROUP, $lifetime = 30 ) {
 		$this->wp_session   = $wp_session;
 		$this->session_name = $session_name;
 		$this->lifetime     = $lifetime;

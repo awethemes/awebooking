@@ -39,7 +39,7 @@ class Rooms_In_Booking_Constraint implements Constraint {
 
 		// Loop througth remain_rooms and reject booking rooms.
 		$remain_rooms->each( function( $item ) use ( $booked_rooms, $availability ) {
-			if ( $this->room_was_booked( $item['room'], $booked_rooms, $availability->get_stay() ) ) {
+			if ( $this->room_was_booked( $item['room'], $booked_rooms, $availability->get_timespan() ) ) {
 				$availability->reject( $item['room'], Reason::BOOKED_ROOM );
 			}
 		});
@@ -52,11 +52,11 @@ class Rooms_In_Booking_Constraint implements Constraint {
 	 * @param  \AweBooking\Support\Collection $booked_rooms The booked rooms.
 	 * @return boolean
 	 */
-	protected function room_was_booked( $room, $booked_rooms, $stay ) {
-		return $booked_rooms->contains( function( $booked_room ) use ( $room, $stay ) {
+	protected function room_was_booked( $room, $booked_rooms, $timespan ) {
+		return $booked_rooms->contains( function( $booked_room ) use ( $room, $timespan ) {
 			return $booked_room->get_room_id() === $room->get_id()
-				&& $booked_room->check_in == $stay->get_check_in()->toDateString()
-				&& $booked_room->check_out == $stay->get_check_out()->toDateString();
+				&& $booked_room->check_in == $timespan->get_start_date()->toDateString()
+				&& $booked_room->check_out == $timespan->get_end_date()->toDateString();
 		});
 	}
 }

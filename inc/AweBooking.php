@@ -2,12 +2,13 @@
 namespace AweBooking;
 
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
+use Psr\Log\LoggerInterface;
+use Illuminate\Container\Container;
+use AweBooking\Resources\Currencies;
 use AweBooking\Support\Utils as U;
 use AweBooking\Support\Addon;
-use Illuminate\Container\Container;
 
 final class AweBooking extends Container {
 	/**
@@ -576,6 +577,15 @@ final class AweBooking extends Container {
 	 */
 	public function get_multilingual() {
 		return $this->make( Multilingual::class );
+	}
+
+	/**
+	 * Gets the current currency code.
+	 *
+	 * @return string
+	 */
+	public function get_current_currency() {
+		return $this->make( Setting::class )->get( 'currency', '' );
 	}
 
 	/**

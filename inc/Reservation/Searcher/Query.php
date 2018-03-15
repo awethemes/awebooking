@@ -1,26 +1,18 @@
 <?php
 namespace AweBooking\Reservation\Searcher;
 
-use AweBooking\Factory;
-use AweBooking\Model\Stay;
-use AweBooking\Model\Guest;
-use AweBooking\Model\Room_Type;
+use AweBooking\Model\Factory;
 use AweBooking\Support\Utils as U;
+use AweBooking\Reservation\Request;
+use AweBooking\Model\Room_Type;
 
 class Query {
 	/**
-	 * The Stay instance.
+	 * The request instance.
 	 *
-	 * @var \AweBooking\Model\Stay
+	 * @var \AweBooking\Reservation\Request
 	 */
-	protected $stay;
-
-	/**
-	 * The Guest instance.
-	 *
-	 * @var \AweBooking\Model\Guest
-	 */
-	protected $guest;
+	protected $request;
 
 	/**
 	 * The constraints to apply to search.
@@ -32,14 +24,36 @@ class Query {
 	/**
 	 * Constructor.
 	 *
-	 * @param Stay  $stay        The Stay instance.
-	 * @param Guest $guest       The Guest instance.
-	 * @param array $constraints The constraints.
+	 * @param \AweBooking\Reservation\Request $request     The request.
+	 * @param array                           $constraints The constraints.
 	 */
-	public function __construct( Stay $stay, Guest $guest = null, array $constraints = [] ) {
-		$this->stay = $stay;
-		$this->guest = $guest;
+	public function __construct( Request $request, $constraints = [] ) {
+		$this->request = $request;
 		$this->constraints = $constraints;
+	}
+
+	/**
+	 * Set the reservation request.
+	 *
+	 * @param  \AweBooking\Reservation\Request $request The request.
+	 * @return $this
+	 */
+	public function set_request( Request $request ) {
+		$this->request = $request;
+
+		return $this;
+	}
+
+	/**
+	 * Apply constraints.
+	 *
+	 * @param  array $constraints \AweBooking\Reservation\Searcher\Constraint[].
+	 * @return $this
+	 */
+	public function set_constraints( $constraints ) {
+		$this->constraints = $constraints;
+
+		return $this;
 	}
 
 	/**
@@ -48,13 +62,15 @@ class Query {
 	 * @return \AweBooking\Reservation\Searcher\Results
 	 */
 	public function get() {
-		$room_type = $this->query_rooms_types();
-
 		$results = new Results;
 		$checker = new Checker;
 
-		foreach ( $room_type as $room_type ) {
-			$availability = $checker->check( $room_type, $this->stay, $this->constraints );
+		$room_types = $this->search_room_types();
+
+		foreach ( $room_types as $room_type ) {
+			$availability = $checker->check( $room_type, $this->request->get_timespan() );
+
+			$availability->apply_constraints( $this->constraints );
 
 			$results->push( $availability );
 		}
@@ -63,76 +79,26 @@ class Query {
 	}
 
 	/**
-	 * Get the Stay.
-	 *
-	 * @return \AweBooking\Model\Stay
-	 */
-	public function get_stay() {
-		return $this->stay;
-	}
-
-	/**
-	 * Set the Stay.
-	 *
-	 * @param Stay $stay The Stay instance.
-	 */
-	public function set_stay( Stay $stay ) {
-		$this->stay = $stay;
-
-		return $this;
-	}
-
-	/**
-	 * Get the Guest.
-	 *
-	 * @return \AweBooking\Model\Guest
-	 */
-	public function get_guest() {
-		return $this->guest;
-	}
-
-	/**
-	 * Set the Guest.
-	 *
-	 * @param Guest $guest The Guest instance.
-	 */
-	public function set_guest( Guest $guest ) {
-		$this->guest = $guest;
-
-		return $this;
-	}
-
-	/**
-	 * Apply constraints.
-	 *
-	 * @param  array $constraints Constraint_Interface[].
-	 * @return $this
-	 */
-	public function set_constraints( array $constraints ) {
-		$this->constraints = $constraints;
-
-		return $this;
-	}
-
-	/**
-	 * Query the room types available for searching.
+	 * Query the room-types matches for searching.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	protected function query_rooms_types() {
-		$args = apply_filters( 'awebooking/query_room_type_args', [
+	protected function search_room_types() {
+		$guestcounts = $this->request->get_guest_counts();
+
+		$queryargs = apply_filters( 'awebooking/reservation/query_room_types', [
 			'post_status'      => 'publish',
-			'posts_per_page'   => 1000, // Force limit 1000 room-type in query.
-			'booking_adults'   => $this->guest ? $this->guest->get_adults() : -1,
-			'booking_children' => $this->guest ? $this->guest->get_children() : -1,
-			'booking_infants'  => $this->guest ? $this->guest->get_infants() : -1,
+			'posts_per_page'   => 256,
+			'booking_adults'   => $guestcounts ? $guestcounts->get_adults() : -1,
+			'booking_children' => $guestcounts ? $guestcounts->get_children() : -1,
+			'booking_infants'  => $guestcounts ? $guestcounts->get_infants() : -1,
 		], $this );
 
-		// Query the room_typess.
-		$room_types = Room_Type::query( $args )->posts;
+		$room_types = Room_Type::query( $queryargs )->posts;
 
-		return U::collect( $room_types )->map( function( $post ) {
-			return Factory::get_room_type( $post );
-		});
+		return U::collect( $room_types )
+			->map( function( $post ) {
+				return Factory::get_room_type( $post );
+			});
 	}
 }

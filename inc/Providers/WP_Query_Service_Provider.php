@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Providers;
 
-use AweBooking\Factory;
+use AweBooking\Model\Factory;
 use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
 

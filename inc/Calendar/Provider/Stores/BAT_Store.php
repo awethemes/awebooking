@@ -7,7 +7,7 @@ use Roomify\Bat\Store\Store;
 use Roomify\Bat\Event\Event;
 use Roomify\Bat\Event\EventItemizer;
 use Roomify\Bat\Event\EventInterface;
-use AweBooking\Support\Carbonate;
+use AweBooking\Support\Date_Utils;
 
 class BAT_Store extends Store {
 	/**
@@ -48,7 +48,7 @@ class BAT_Store extends Store {
 
 		// Cycle through day results and setup an event array.
 		foreach ( $results as $data ) {
-			$days_in_month = Carbonate::days_in_month( $data['month'], $data['year'] );
+			$days_in_month = Date_Utils::days_in_month( $data['month'], $data['year'] );
 
 			for ( $i = 1; $i <= $days_in_month; $i++ ) {
 				$db_events[ $data[ $this->foreign_key ] ][ Event::BAT_DAY ][ $data['year'] ][ $data['month'] ][ 'd' . $i ] = $data[ 'd' . $i ];

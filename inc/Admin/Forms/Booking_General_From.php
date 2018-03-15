@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Forms;
 
-use AweBooking\Factory;
+use AweBooking\Model\Factory;
 use AweBooking\Dropdown;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
@@ -65,11 +65,11 @@ class Booking_General_From extends Form_Abstract {
 					'options_cb'  => Dropdown::cb( 'get_reservation_sources' ),
 				],
 				[
-					'id'       => 'booking_status',
-					'type'     => 'select',
-					'name'     => esc_html__( 'Booking status', 'awebooking' ),
-					'validate' => 'required',
-					'options'  => awebooking( 'setting' )->get_booking_statuses(),
+					'id'          => 'booking_status',
+					'type'        => 'select',
+					'name'        => esc_html__( 'Booking status', 'awebooking' ),
+					'validate'    => 'required',
+					'options_cb'  => Dropdown::cb( 'get_booking_statuses' ),
 				],
 			],
 		]);

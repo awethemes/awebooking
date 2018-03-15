@@ -2,6 +2,7 @@
 namespace AweBooking;
 
 use AweBooking\Support\Utils as U;
+use AweBooking\Model\Booking;
 
 class Dropdown {
 	/**
@@ -62,10 +63,10 @@ class Dropdown {
 	 * @return array
 	 */
 	public static function get_payment_methods() {
-		$methods = [
+		$methods = apply_filters( 'awebooking/base_payment_methods', [
 			''     => esc_html__( 'N/A', 'awebooking' ),
 			'cash' => esc_html__( 'Cash', 'awebooking' ),
-		];
+		]);
 
 		$gateways = awebooking()->make( 'gateways' )->enabled()
 			->map( function( $m ) {
@@ -89,5 +90,51 @@ class Dropdown {
 			Constants::CURRENCY_POS_LEFT_SPACE  => sprintf( esc_html__( 'Left with space (%s 99.99)', 'awebooking' ), $symbol ),
 			Constants::CURRENCY_POS_RIGHT_SPACE => sprintf( esc_html__( 'Right with space (99.99 %s)', 'awebooking' ), $symbol ),
 		]; // @codingStandardsIgnoreEnd
+	}
+
+	/**
+	 * Return list room states.
+	 *
+	 * @return array
+	 */
+	public static function get_room_states() {
+		return [
+			Constants::STATE_AVAILABLE   => esc_html__( 'Available', 'awebooking' ),
+			Constants::STATE_UNAVAILABLE => esc_html__( 'Unavailable', 'awebooking' ),
+			Constants::STATE_PENDING     => esc_html__( 'Pending', 'awebooking' ),
+			Constants::STATE_BOOKED      => esc_html__( 'Booked', 'awebooking' ),
+		];
+	}
+
+	/**
+	 * Get all order statuses.
+	 *
+	 * @return array
+	 */
+	public static function get_booking_statuses() {
+		return apply_filters( 'awebooking/get_booking_statuses', [
+			Booking::PENDING    => _x( 'Pending',    'Booking status', 'awebooking' ),
+			Booking::PROCESSING => _x( 'Processing', 'Booking status', 'awebooking' ),
+			Booking::COMPLETED  => _x( 'Completed',  'Booking status', 'awebooking' ),
+			Booking::CANCELLED  => _x( 'Cancelled',  'Booking status', 'awebooking' ),
+		]);
+	}
+
+	/**
+	 * Get all service operations.
+	 *
+	 * @return array
+	 */
+	public static function get_service_operations() {
+		return apply_filters( 'awebooking/service_operations', [
+			Service::OP_ADD               => esc_html__( 'Add to price', 'awebooking' ),
+			Service::OP_ADD_DAILY         => esc_html__( 'Add to price per night', 'awebooking' ),
+			Service::OP_ADD_PERSON        => esc_html__( 'Add to price per person', 'awebooking' ),
+			Service::OP_ADD_PERSON_DAILY  => esc_html__( 'Add to price per person per night', 'awebooking' ),
+			Service::OP_SUB               => esc_html__( 'Subtract from price', 'awebooking' ),
+			Service::OP_SUB_DAILY         => esc_html__( 'Subtract from price per night', 'awebooking' ),
+			Service::OP_INCREASE          => esc_html__( 'Increase price by % amount', 'awebooking' ),
+			Service::OP_DECREASE          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
+		]);
 	}
 }

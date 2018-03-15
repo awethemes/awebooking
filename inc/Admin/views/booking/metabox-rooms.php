@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Money\Money;
+use AweBooking\Model\Common\Money;
 use AweBooking\Support\Utils as U;
 
 $room_items = $the_booking->get_line_items();
@@ -10,6 +10,7 @@ $room_items = $the_booking->get_line_items();
 		<thead>
 			<tr>
 				<th style="width: 250px;"><?php echo esc_html__( 'Room', 'awebooking' ); ?></th>
+				<th style="width: 250px;"><?php echo esc_html__( 'Nights', 'awebooking' ); ?></th>
 				<th style="width: 250px;"><?php echo esc_html__( 'Stay', 'awebooking' ); ?></th>
 				<th width=""><?php echo esc_html__( 'Guest', 'awebooking' ); ?></th>
 				<th style="width: 150px;"></th>
@@ -21,7 +22,7 @@ $room_items = $the_booking->get_line_items();
 			<?php if ( $room_items->isEmpty() ) : ?>
 
 				<tr>
-					<td colspan="5">
+					<td colspan="6">
 						<p class="awebooking-no-items"><?php esc_html_e( 'No rooms found', 'awebooking' ); ?></p>
 					</td>
 				</tr>
@@ -33,7 +34,9 @@ $room_items = $the_booking->get_line_items();
 					<tr>
 						<td><?php $room_item->print_label(); ?></td>
 
-						<td><?php print U::optional( $room_item->get_stay() )->as_string(); // WPCS: XSS OK. ?></td>
+						<td><?php echo $room_item->get_nights_stayed(); ?></td>
+
+						<td><?php print U::optional( $room_item->get_timespan() )->as_string(); // WPCS: XSS OK. ?></td>
 
 						<td><?php print U::optional( $room_item->get_guest() )->as_string(); // WPCS: XSS OK. ?></td>
 

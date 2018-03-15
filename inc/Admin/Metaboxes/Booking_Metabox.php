@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use AweBooking\Factory;
+use AweBooking\Model\Factory;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
 use AweBooking\Model\Booking;

@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Calendar\Provider;
 
-use AweBooking\Factory;
+use AweBooking\Model\Factory;
 use AweBooking\Calendar\Event\Booking_Event;
 use AweBooking\Calendar\Resource\Resource_Interface;
 use Roomify\Bat\Event\Event as BAT_Event;
@@ -10,7 +10,7 @@ class Booking_Provider extends WP_Provider {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resource_Collection|array $resources The resources to get events.
+	 * @param Resources|array $resources The resources to get events.
 	 */
 	public function __construct( $resources ) {
 		parent::__construct( $resources, 'awebooking_booking', 'room_id' );

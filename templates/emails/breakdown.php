@@ -30,7 +30,7 @@ $total_price          = (string) $booking->get_total();
 		<tbody>
 			<tr>
 				<td style="text-align: left;"><b><?php echo esc_html( $room_item->get_name() ); ?></b></td>
-				<td style="text-align: left; padding: 10px 5px;"><?php printf( __( 'From %1$s to %2$s, %3$s nights', 'awebooking' ), $room_item->get_check_in(), $room_item->get_check_out(), $room_item->get_nights_stayed() ); // WPCS: xss ok. ?></td>
+				<td style="text-align: left; padding: 10px 5px;"><?php printf( __( 'From %1$s to %2$s, %3$s nights', 'awebooking' ), $room_item->get_start_date(), $room_item->get_end_date(), $room_item->get_nights_stayed() ); // WPCS: xss ok. ?></td>
 				<td style="text-align: right;"><?php $room_item->get_fomatted_guest_number(); ?></td>
 			</tr>
 

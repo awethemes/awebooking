@@ -2,10 +2,13 @@
 namespace AweBooking\Model;
 
 use AweBooking\Model\Tax;
+use AweBooking\Support\Traits\Fluent_Getter;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Source implements Jsonable, Arrayable {
+	use Fluent_Getter;
+
 	/* Constants */
 	const DIRECT = 'direct';
 	const THIRD_PARTY = 'third_party';
@@ -169,27 +172,5 @@ class Source implements Jsonable, Arrayable {
 			'name'  => $this->get_name(),
 			'label' => $this->get_label(),
 		];
-	}
-
-	/**
-	 * Magic isset method.
-	 *
-	 * @param  string $property The property name.
-	 * @return bool
-	 */
-	public function __isset( $property ) {
-		return null !== $this->__get( $property );
-	}
-
-	/**
-	 * Magic getter method.
-	 *
-	 * @param  string $property The property name.
-	 * @return mixed
-	 */
-	public function __get( $property ) {
-		if ( method_exists( $this, $method = "get_{$property}" ) ) {
-			return $this->{$method}();
-		}
 	}
 }

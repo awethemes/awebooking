@@ -62,11 +62,11 @@ $cart_collection = $cart->get_contents();
 					<td class="awebooking-booking-item__reservation">
 						<p>
 							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $request->get_check_in()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $request->get_start_date()->to_date_string() ); ?>
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $request->get_check_out()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $request->get_end_date()->to_date_string() ); ?>
 						</p>
 						<p>
 							<strong><?php esc_html_e( 'Night(s):', 'awebooking' ); ?></strong>

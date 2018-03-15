@@ -2,8 +2,7 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
-use AweBooking\Money\Money;
-use AweBooking\Model\Guest;
+use AweBooking\Model\Common\Guest_Counts;
 
 class Room_Type_List_Table extends Post_Type_Abstract {
 	/**
@@ -98,7 +97,7 @@ class Room_Type_List_Table extends Post_Type_Abstract {
 				break;
 
 			case 'capacity':
-				$guest = new Guest( $room_type->get_number_adults(), $room_type->get_number_children(), $room_type->get_number_infants() );
+				$guest = new Guest_Counts( $room_type->get_number_adults(), $room_type->get_number_children(), $room_type->get_number_infants() );
 				print $guest->as_string(); // @wpcs: XSS OK.
 				break;
 

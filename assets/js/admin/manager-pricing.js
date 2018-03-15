@@ -1,80 +1,79 @@
 webpackJsonp([3],{
 
-/***/ 24:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(25);
+module.exports = __webpack_require__(26);
 
 
 /***/ }),
 
-/***/ 25:
+/***/ 26:
 /***/ (function(module, exports) {
 
-var $ = window.jQuery;
-var awebooking = window.TheAweBooking;
-
-$(function () {
+(function ($) {
   'use strict';
 
-  var $dialog = awebooking.Popup.setup('#awebooking-set-price-popup');
+  $(function () {
+    var awebooking = window.TheAweBooking;
 
-  var showComments = function showComments(calendar) {
-    var nights = calendar.getNights();
-
-    var text = '';
-    var toNight = calendar.endDay;
-
-    if (nights === 1) {
-      text = 'One night: ' + toNight.format(calendar.format);
-    } else {
-      text = '<b>' + nights + '</b> nights' + ' nights, from <b>' + calendar.startDay.format(calendar.format) + '</b> to <b>' + toNight.format(calendar.format) + '</b>';
-    }
-
-    return text;
-  };
-
-  var onApplyCalendar = function onApplyCalendar() {
-    var calendar = this;
-
-    calendar.room_type = this.$el.closest('.abkngcal-container').find('h2').text();
-    // calendar.unit_name = this.$el.find('.abkngcal__month-heading').text();
-    calendar.unit_name = '';
-    calendar.data_id = this.$el.closest('[data-unit]').data('unit');
-    calendar.comments = showComments(calendar);
-
-    var formTemplate = wp.template('pricing-calendar-form');
-    $dialog.find('.awebooking-dialog-contents').html(formTemplate(calendar));
-
-    calendar.keepRange = true;
-    $dialog.dialog('open');
-  };
-
-  var createCalendar = function createCalendar(el) {
-    var calendar = new PricingCalendar(el);
-
-    calendar.on('apply', onApplyCalendar);
-
-    $dialog.on('dialogclose', function () {
-      calendar.keepRange = false;
+    // Create the scheduler.
+    var scheduler = new awebooking.ScheduleCalendar({
+      el: '.scheduler'
     });
-  };
 
-  $('.abkngcal--pricing-calendar .abkngcal__table').each(function (index, el) {
-    if ($(el).hasClass('abkngcal__table--scheduler')) {
-      $(el).find('tbody > tr').each(function (i, subel) {
-        createCalendar(subel);
+    var selectCalendar = null;
+    var enableSelectCalendar = function enableSelectCalendar() {
+      awebooking.Flatpickr($('.booking-dates__picker.checkin > input')[0], {
+        altInput: false,
+        altFormat: 'F j, Y',
+        dateFormat: 'Y-m-d',
+        plugins: [new awebooking.FlatpickrRange({ input: $('.booking-dates__picker.checkout > input')[0] })]
       });
-    } else {
-      createCalendar(el);
-    }
+    };
+
+    var compileHtmlControls = function compileHtmlControls(action) {
+      var template = wp.template('scheduler-pricing-controls');
+      var data = scheduler.model.toJSON();
+
+      data.action = action;
+      $('#js-scheduler-form-controls').html(template(data));
+
+      enableSelectCalendar();
+    };
+
+    // Setup popup
+    var $popup = awebooking.Popup.setup($('#scheduler-form-dialog')[0]);
+    $popup.dialog('close');
+
+    var $schedulerForm = $('#scheduler-form');
+
+    scheduler.on('clear', function () {
+      window.swal && swal.close();
+
+      $popup.dialog('close');
+    });
+
+    scheduler.on('action:set-price', function (e, model) {
+      window.swal && swal.close();
+
+      compileHtmlControls();
+
+      $popup.dialog('open');
+    });
+
+    scheduler.on('action:reset-price', function (e, model) {
+      awebooking.confirm(function () {
+        compileHtmlControls('reset_price');
+
+        $schedulerForm.submit();
+
+        model.clear();
+      });
+    });
   });
-
-  new awebooking.RangeDatepicker('input[name="datepicker-start"]', 'input[name="datepicker-end"]').init();
-
-  new awebooking.ToggleCheckboxes('table.pricing_management');
-});
+})(jQuery);
 
 /***/ })
 
-},[24]);
+},[25]);

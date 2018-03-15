@@ -1,7 +1,13 @@
 <?php
 namespace AweBooking\Calendar\Resource;
 
+use AweBooking\Support\Traits\Fluent_Getter;
+use AweBooking\Calendar\Traits\With_Reference;
+use AweBooking\Calendar\Traits\With_Constraints;
+
 class Resource implements Resource_Interface {
+	use Fluent_Getter, With_Reference, With_Constraints;
+
 	/**
 	 * The resource ID.
 	 *
@@ -31,20 +37,13 @@ class Resource implements Resource_Interface {
 	protected $description;
 
 	/**
-	 * The resource reference (Rate, Room. etc...).
-	 *
-	 * @var mixed
-	 */
-	protected $reference;
-
-	/**
 	 * Create new resource unit.
 	 *
 	 * @param int     $id    The ID.
 	 * @param integer $value The value of this resource.
 	 */
 	public function __construct( $id, $value = 0 ) {
-		$this->id = (int) $id;
+		$this->id    = (int) $id;
 		$this->value = (int) $value;
 	}
 
@@ -124,26 +123,6 @@ class Resource implements Resource_Interface {
 	 */
 	public function set_description( $description ) {
 		$this->description = $description;
-
-		return $this;
-	}
-
-	/**
-	 * Get the reference.
-	 *
-	 * @return mixed
-	 */
-	public function get_reference() {
-		return $this->reference;
-	}
-
-	/**
-	 * Set the reference.
-	 *
-	 * @param mixed $reference The reference.
-	 */
-	public function set_reference( $reference ) {
-		$this->reference = $reference;
 
 		return $this;
 	}

@@ -5,20 +5,6 @@ use AweBooking\Support\Collection;
 
 class Period_Collection extends Collection {
 	/**
-	 * Create period collection.
-	 *
-	 * @param array $periods An array of periods.
-	 * @throws \InvalidArgumentException
-	 */
-	public function __construct( $periods ) {
-		foreach ( $periods = $this->getArrayableItems( $periods ) as $period ) {
-			static::assert_is_period( $period );
-		}
-
-		$this->items = $periods;
-	}
-
-	/**
 	 * Collapse the collection of periods into a single period.
 	 *
 	 * @return Period|null
@@ -37,9 +23,41 @@ class Period_Collection extends Collection {
 			return $periods[0];
 		}
 
+		// Remove first period from $periods and return it.
 		$period = array_shift( $periods );
 
 		return $period->merge( ...$periods );
+	}
+
+	public function merge_continuous() {
+		$periods = array_values( $this->items );
+
+		$return = [];
+		$continue = false;
+
+		for ( $i = 0; $i < $this->count(); $i++ ) {
+			$current = $periods[ $i ];
+
+			if ( $continue && ! isset( $periods[ $i + 1 ] ) ) {
+				continue;
+			}
+
+			$next = $periods[ $i + 1 ];
+
+			if ( $current->abuts( $next ) ) {
+				$return[] = Period::create( $current->getStartDate(), $next->getEndDate() );
+
+				$continue = true;
+
+				continue;
+			}
+
+			$return[] = $next;
+
+			$continuous = false;
+		}
+
+		return new static( $return );
 	}
 
 	/**
@@ -94,37 +112,5 @@ class Period_Collection extends Collection {
 		}
 
 		return $abuts;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function prepend( $value, $key = null ) {
-		static::assert_is_period( $value );
-
-		parent::prepend( $value, $key );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function offsetSet( $key, $value ) {
-		static::assert_is_period( $value );
-
-		parent::offsetSet( $key, $value );
-	}
-
-	/**
-	 * Assert given value instance of Period.
-	 *
-	 * @param  mixed $value Input value.
-	 * @return void
-	 *
-	 * @throws \InvalidArgumentException
-	 */
-	protected static function assert_is_period( $value ) {
-		if ( ! $value instanceof Period ) {
-			throw new \InvalidArgumentException( 'Must receive a Period object. Received: ' . get_class( $value ) );
-		}
 	}
 }

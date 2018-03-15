@@ -1,37 +1,36 @@
 <?php
 namespace AweBooking\Reservation;
 
-use AweBooking\Assert;
-use AweBooking\Factory;
-use AweBooking\Constants;
-use AweBooking\Model\Stay;
-use AweBooking\Model\Room;
-use AweBooking\Model\Rate;
-use AweBooking\Model\Guest;
-use AweBooking\Model\Source;
-use AweBooking\Model\Room_Type;
 use AweBooking\Support\Collection;
-use AweBooking\Reservation\Pricing\Pricing;
-use AweBooking\Reservation\Searcher\Query;
-use AweBooking\Reservation\Searcher\Checker;
+use AweBooking\Model\Source;
+use AweBooking\Model\Common\Deposit;
+use AweBooking\Model\Common\Timespan;
+use AweBooking\Model\Common\Guest_Counts;
 
 class Reservation {
 	/**
-	 * The request source.
+	 * The reservation source.
 	 *
 	 * @var \AweBooking\Model\Source
 	 */
 	protected $source;
 
 	/**
-	 * The room stays.
+	 * ISO currency code.
 	 *
-	 * @var \AweBooking\Support\Collection
+	 * @var string
+	 */
+	protected $currency;
+
+	/**
+	 * The list of room stays.
+	 *
+	 * @var \AweBooking\Reservation\Room_Stays
 	 */
 	protected $room_stays;
 
 	/**
-	 * The selected services.
+	 * The list of services.
 	 *
 	 * @var \AweBooking\Support\Collection
 	 */
@@ -52,50 +51,35 @@ class Reservation {
 	protected $totals;
 
 	/**
-	 * The reservation currency.
-	 *
-	 * @var \AweBooking\Money\Currency
-	 */
-	protected $currency;
-
-	protected $language;
-
-	/**
 	 * The reservation session ID.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $session_id;
+
+	/**
+	 * The current request.
+	 *
+	 * @var \AweBooking\Reservation\Request
+	 */
+	protected $current_request;
 
 	/**
 	 * Create new reservation.
 	 *
 	 * @param \AweBooking\Model\Source $source The source implementation.
 	 */
-	public function __construct( Source $source ) {
+	public function __construct( Source $source, $currency = null ) {
 		$this->source = $source;
-		$this->rooms = new Collection;
-		$this->totals = new Totals( $this );
+
+		$this->set_currency( $currency );
+		// $this->set_language( $language );
+
+		$this->room_stays = new Room_Stays;
 	}
 
 	/**
-	 * Search the availability.
-	 *
-	 * @param  \AweBooking\Model\Stay  $stay        The stay for the reservation.
-	 * @param  \AweBooking\Model\Guest $guest       Optional, the guest for the reservation.
-	 * @param  array                   $constraints The constraints.
-	 * @return \AweBooking\Reservation\Searcher\Results
-	 */
-	public function search( Stay $stay, Guest $guest = null, array $constraints = [] ) {
-		$constraints = array_merge( $constraints, [
-			new Searcher\Constraints\Session_Reservation_Constraint( $this ),
-		]);
-
-		return ( new Query( $stay, $guest, $constraints ) )->get();
-	}
-
-	/**
-	 * Get the Source.
+	 * Get the source.
 	 *
 	 * @return \AweBooking\Model\Source
 	 */
@@ -103,25 +87,45 @@ class Reservation {
 		return $this->source;
 	}
 
-	public function set_source() {
+	/**
+	 * Gets the ISO currency code.
+	 *
+	 * @return string
+	 */
+	public function get_currency() {
+		return $this->currency;
 	}
 
 	/**
-	 * Get the Guest.
+	 * Sets the ISO currency code.
 	 *
-	 * @return \AweBooking\Model\Guest|null
+	 * @param string $currency The ISO code currency.
 	 */
-	public function get_guest() {
-		return $this->guest;
+	public function set_currency( $currency ) {
+		if ( empty( $currency ) ) {
+			$this->currency = awebooking()->get_current_currency();
+		} else {
+			$this->currency = ( $currency instanceof Currency ) ? $currency->get_code() : $currency;
+		}
 	}
 
 	/**
-	 * Set the Guest.
+	 * Gets the current request.
 	 *
-	 * @param Guest $guest The Guest instance.
+	 * @return \AweBooking\Reservation\Request
 	 */
-	public function set_guest( Guest $guest ) {
-		$this->guest = $guest;
+	public function get_current_request() {
+		return $this->current_request;
+	}
+
+	/**
+	 * Sets the current request.
+	 *
+	 * @param  \AweBooking\Reservation\Request $current_request The request instance.
+	 * @return $this
+	 */
+	public function set_current_request( Request $current_request ) {
+		$this->current_request = $current_request;
 
 		return $this;
 	}
@@ -148,7 +152,7 @@ class Reservation {
 	}
 
 	/**
-	 * Get the totals.
+	 * Return the totals.
 	 *
 	 * @return \AweBooking\Reservation\Totals
 	 */
@@ -162,128 +166,17 @@ class Reservation {
 	 * @return \AweBooking\Reservation\Totals
 	 */
 	public function get_totals() {
+		if ( is_null( $this->totals ) ) {
+			$this->totals = new Totals( $this );
+		}
+
 		return $this->totals;
 	}
 
-	/**
-	 * Get all reservation rooms.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function get_rooms() {
-		return $this->rooms;
+	public function get_room_stays() {
+		return $this->room_stays;
 	}
 
-	/**
-	 * Determines a reservation-room exists in current reservation.
-	 *
-	 * @param  \AweBooking\Model\Room $room The room instance.
-	 * @return boolean
-	 */
-	public function has_room( Room $room ) {
-		return $this->rooms->has( $room->get_id() );
-	}
-
-	/**
-	 * Get reservation-room by given a room-unit.
-	 *
-	 * @param  \AweBooking\Model\Room $room The room instance.
-	 * @return \AweBooking\Reservation\Room_Stay
-	 */
-	public function get_room( Room $room ) {
-		return $this->rooms->get( $room->get_id() );
-	}
-
-	/**
-	 * Add a reservation-room to the reservation.
-	 *
-	 * @param \AweBooking\Model\Room  $room  The room instance.
-	 * @param \AweBooking\Model\Rate  $rate  The rate instance.
-	 * @param \AweBooking\Model\Guest $guest The guest instance.
-	 */
-	public function add_room( Room $room, Rate $rate, Guest $guest ) {
-		// First, we will check the valid number of guest.
-		Assert::guest_number( $guest, $room_type = $this->resolve_room_type( $room ) );
-
-		// Next, check the current room can be bookable.
-		$this->validate_bookable( $room, $this->stay );
-
-		// Everything OK.
-		$item = new Room_Stay( $room, $rate, $this->stay, $guest );
-
-		$this->rooms->put( $room->get_id(), $item );
-
-		return $item;
-	}
-
-	/**
-	 * Resolve room type by given room-unit.
-	 *
-	 * @param  Room $room The room-unit instance.
-	 * @return \AweBooking\Model\Room_Type
-	 */
-	protected function resolve_room_type( Room $room ) {
-		return Factory::get_room_type( $room->get_room_type_id() );
-	}
-
-	/**
-	 * Set the reservation session ID.
-	 *
-	 * @param string $session_id The session ID.
-	 */
-	public function set_session_id( $session_id ) {
-		$this->session_id = $session_id;
-	}
-
-	/**
-	 * Get the reservation session ID.
-	 *
-	 * @return string
-	 */
-	public function get_session_id() {
-		return $this->session_id;
-	}
-
-	public function get_context() {
-		$overflow_adults = max( 0, $this->request->get_adults() - $this->room_type->get_number_adults() );
-		$overflow_children = max( 0, $this->request->get_children() - $this->room_type->get_number_children() );
-
-		return [
-			'booking_date'      => Carbonate::today(),
-			'check_in_date'     => $this->period->get_start_date(),
-			'check_out_date'    => $this->period->get_end_date(),
-			'booking_before'    => Carbonate::today()->diffInDays( $this->period->get_start_date() ),
-			'check_in'          => $this->period->get_start_date()->dayOfWeek,
-			'check_out'         => $this->period->get_end_date()->dayOfWeek,
-			'stay_nights'       => $this->request->get_nights(),
-			'number_adults'     => $this->request->get_adults(),
-			'number_children'   => $this->request->get_children(),
-			'number_people'     => $this->request->get_people(),
-			'overflow_adults'   => $overflow_adults,
-			'overflow_children' => $overflow_children,
-			'overflow_people'   => $overflow_adults + $overflow_children,
-		];
-	}
-
-	/**
-	 * Check if this room can be for booking.
-	 *
-	 * @param  Room $room The room instance.
-	 * @param  Stay $stay The stay instance.
-	 *
-	 * @throws Exceptions\No_Room_Left_Exception
-	 * @throws Exceptions\Duplicate_Room_Exception
-	 */
-	protected function validate_bookable( Room $room, Stay $stay ) {
-		if ( $this->has_room( $room ) ) {
-			throw new Exceptions\Duplicate_Room_Exception( esc_html__( 'A room already exists in current reservation', 'awebooking' ) );
-		}
-
-		// Check the availability state.
-		$checker = new Checker;
-
-		if ( ! $checker->is_available_for( $room, $stay ) ) {
-			throw new Exceptions\No_Room_Left_Exception( esc_html__( 'No room left for the reservation', 'awebooking' ) );
-		}
+	public function get_room_stay( $room ) {
 	}
 }

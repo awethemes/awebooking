@@ -3,7 +3,7 @@ namespace AweBooking\Gateway;
 
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Payment_Item;
+use AweBooking\Model\Booking\Payment_Item;
 
 abstract class Gateway {
 	/**
@@ -212,7 +212,7 @@ abstract class Gateway {
 	 *
 	 * @return void
 	 */
-	public function display_payment_contents( Booking_Payment_Item $payment_item, Booking $booking ) {
+	public function display_payment_contents( Payment_Item $payment_item, Booking $booking ) {
 
 		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get_transaction_id() ) {
 			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> '. esc_html( $transaction_id );

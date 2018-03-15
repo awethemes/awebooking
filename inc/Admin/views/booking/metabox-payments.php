@@ -1,6 +1,5 @@
 <?php
 
-use AweBooking\Money\Money;
 use AweBooking\Support\Utils as U;
 
 $balance_due = $the_booking->get_balance_due();
@@ -69,7 +68,7 @@ $payment_items = $the_booking->get_payments()
 						</td>
 
 						<td>
-							<?php echo esc_html( U::optional( $payment_item->get_date_paid() )->to_wp_datetime_string() ); ?>
+							<?php echo esc_html( U::optional( $payment_item->get_date_paid() )->to_datetime_string() ); ?>
 						</td>
 
 						<td class="atext-right">

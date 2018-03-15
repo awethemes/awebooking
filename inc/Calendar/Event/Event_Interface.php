@@ -113,4 +113,12 @@ interface Event_Interface {
 	 * @return bool
 	 */
 	public function contains_period( Period $period );
+
+	/**
+	 * Format the event to a special format (JSON, iCal).
+	 *
+	 * @param  \AweBooking\Calendar\Event\Formatter $formater The formater class.
+	 * @return mixed
+	 */
+	public function format( Formatter $formater );
 }

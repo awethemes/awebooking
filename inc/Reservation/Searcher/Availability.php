@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Reservation\Searcher;
 
-use AweBooking\Model\Stay;
+use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Support\Collection;
@@ -15,11 +15,11 @@ class Availability {
 	protected $room_type;
 
 	/**
-	 * The Stay model.
+	 * The Timespan model.
 	 *
-	 * @var \AweBooking\Model\Stay
+	 * @var \AweBooking\Model\Common\Timespan
 	 */
-	protected $stay;
+	protected $timespan;
 
 	/**
 	 * The room-type rooms.
@@ -53,12 +53,14 @@ class Availability {
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Model\Room_Type $room_type The Room_Type model.
-	 * @param \AweBooking\Model\Stay      $stay      The Stay model.
+	 * @param \AweBooking\Model\Common\Timespan      $timespan      The Timespan model.
 	 */
-	public function __construct( Room_Type $room_type, Stay $stay, $rooms ) {
-		$this->stay      = $stay;
+	public function __construct( Room_Type $room_type, Timespan $timespan, $rooms ) {
+		$this->timespan      = $timespan;
 		$this->room_type = $room_type;
 		$this->rooms     = $rooms;
+
+		dd( $this );
 
 		$this->includes  = Collection::make();
 		$this->excludes  = Collection::make();
@@ -67,10 +69,10 @@ class Availability {
 	/**
 	 * The the stay.
 	 *
-	 * @return \AweBooking\Model\Stay
+	 * @return \AweBooking\Model\Common\Timespan
 	 */
-	public function get_stay() {
-		return $this->stay;
+	public function get_timespan() {
+		return $this->timespan;
 	}
 
 	/**

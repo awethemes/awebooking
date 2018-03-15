@@ -4,6 +4,15 @@ namespace AweBooking\Calendar;
 use AweBooking\Support\Collection;
 
 class Scheduler extends Collection {
+	use Traits\With_Reference;
+
+	/**
+	 * The scheduler ID.
+	 *
+	 * @var string
+	 */
+	protected $uid;
+
 	/**
 	 * The scheduler name.
 	 *
@@ -12,14 +21,35 @@ class Scheduler extends Collection {
 	protected $name;
 
 	/**
-	 * The scheduler reference.
+	 * Description of the calendar.
 	 *
-	 * @var mixed
+	 * @var string
 	 */
-	protected $reference;
+	protected $description;
 
 	/**
-	 * Get the Calendar name.
+	 * Returns an unique identifier for the Scheduler.
+	 *
+	 * @return int
+	 */
+	public function get_uid() {
+		return $this->uid;
+	}
+
+	/**
+	 * Set the scheduler UID.
+	 *
+	 * @param  int $uid The UID.
+	 * @return $this
+	 */
+	public function set_uid( $uid ) {
+		$this->uid = $uid;
+
+		return $this;
+	}
+
+	/**
+	 * Get the name.
 	 *
 	 * @return string
 	 */
@@ -28,9 +58,9 @@ class Scheduler extends Collection {
 	}
 
 	/**
-	 * Set the Calendar name.
+	 * Set the name.
 	 *
-	 * @param  string $name The Calendar name.
+	 * @param  string $name The name.
 	 * @return $this
 	 */
 	public function set_name( $name ) {
@@ -40,21 +70,22 @@ class Scheduler extends Collection {
 	}
 
 	/**
-	 * Get the reference.
+	 * Get the description.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_reference() {
-		return $this->reference;
+	public function get_description() {
+		return $this->description;
 	}
 
 	/**
-	 * Set the reference.
+	 * Set the description.
 	 *
-	 * @param mixed $reference The reference.
+	 * @param  string $description The description.
+	 * @return $this
 	 */
-	public function set_reference( $reference ) {
-		$this->reference = $reference;
+	public function set_description( $description ) {
+		$this->description = $description;
 
 		return $this;
 	}

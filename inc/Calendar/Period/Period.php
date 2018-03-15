@@ -8,6 +8,17 @@ use League\Period\Period as League_Period;
 
 class Period extends League_Period implements \IteratorAggregate {
 	/**
+	 * Create a period instance.
+	 *
+	 * @param string|Carbonate $start_date Starting date point.
+	 * @param string|Carbonate $end_date   Ending date point.
+	 * @return static
+	 */
+	public static function create( $start_date, $end_date ) {
+		return new static( $start_date, $end_date );
+	}
+
+	/**
 	 * Create date period.
 	 *
 	 * The date should be a string using
@@ -72,6 +83,24 @@ class Period extends League_Period implements \IteratorAggregate {
 	public function contains_event( Event_Interface $event ) {
 		// TODO: ...
 		return false;
+	}
+
+	/**
+	 * [split_days description]
+	 *
+	 * @param  array  $days The number of days the event lasts.
+	 * @return Period_Collection
+	 */
+	public function split_by_days( $days = [] ) {
+		$periods = Period_Collection::make( $this->getIterator() );
+
+		if ( ! empty( $periods ) ) {
+			$periods = $periods->reject( function( $date ) use ( $days ) {
+				return ! in_array( $date->dayOfWeek, (array) $days ); // @codingStandardsIgnoreLine
+			});
+		}
+
+		return $periods;
 	}
 
 	/**

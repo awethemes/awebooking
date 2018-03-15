@@ -1,11 +1,14 @@
 <?php
 namespace AweBooking\Calendar\Event;
 
-use AweBooking\Support\Carbonate;
 use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Resource\Resource_Interface;
+use AweBooking\Support\Carbonate;
+use AweBooking\Support\Traits\Fluent_Getter;
 
 class Event implements Event_Interface {
+	use Fluent_Getter;
+
 	/**
 	 * The start date for the event.
 	 *
@@ -392,5 +395,12 @@ class Event implements Event_Interface {
 	 */
 	public function contains_period( Period $period ) {
 		return $this->get_period()->contains( $period );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function format( Formatter $formater ) {
+		return $formater->format( $this );
 	}
 }

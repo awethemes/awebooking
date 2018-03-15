@@ -2,30 +2,15 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\AweBooking;
-use AweBooking\Model\Guest;
+use \AweBooking\Model\Common\Guest_Counts;
 
 class Url_Generator {
-	/**
-	 * The reservation instance.
-	 *
-	 * @var \AweBooking\Reservation\Reservation
-	 */
-	protected $reservation;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param \AweBooking\AweBooking              $awebooking  The AweBooking.
-	 * @param \AweBooking\Reservation\Reservation $reservation The reservation.
-	 */
-	public function __construct( AweBooking $awebooking, Reservation $reservation ) {
-		$this->reservation = $reservation;
-	}
 
 	/**
 	 * Return the search link.
 	 *
-	 * @param  \AweBooking\Model\Guest $guest The guest.
+	 * @param  \\AweBooking\Model\Common\Guest_Counts $guest The guest.
 	 * @return string
 	 */
 	public function get_search_link( Guest $guest ) {
@@ -35,11 +20,11 @@ class Url_Generator {
 			return add_query_arg( 'session_id', $session_id, $base_url );
 		}
 
-		$stay = $this->reservation->get_stay();
+		$timespan = $this->reservation->get_timespan();
 
 		$add_query = [
-			'check_in'  => $stay->to_array()[0],
-			'check_out' => $stay->to_array()[1],
+			'check_in'  => $timespan->to_array()[0],
+			'check_out' => $timespan->to_array()[1],
 			'adults'    => $guest->get_adults(),
 		];
 

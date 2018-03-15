@@ -2,11 +2,13 @@
 namespace AweBooking\Providers;
 
 use AweBooking\Reservation\Session;
-use AweBooking\Model\Source;
 use AweBooking\Source\Store;
-use AweBooking\Source\WP_Options_Store;
-use AweBooking\Source\Manager;
-use AweBooking\Source\Mapping;
+
+use AweBooking\Model\Source;
+use AweBooking\Resources\Sources;
+use AweBooking\Resources\Source\Mapping;
+use AweBooking\Resources\Source\WP_Options_Store;
+
 use AweBooking\Support\Service_Provider;
 
 class Reservation_Service_Provider extends Service_Provider {
@@ -28,7 +30,7 @@ class Reservation_Service_Provider extends Service_Provider {
 		$this->awebooking->alias( Store::class, 'source_store' );
 
 		$this->awebooking->singleton( 'reservation_sources', function() {
-			return new Manager;
+			return new Sources;
 		});
 
 		$this->awebooking->alias( 'reservation_sources', Manager::class );
@@ -71,8 +73,6 @@ class Reservation_Service_Provider extends Service_Provider {
 		$sources->register(
 			new Source( 'direct_email', esc_html_x( 'Email', 'reservation source', 'awebooking' ) )
 		);
-
-		Mapping::map( $sources, $store );
 	}
 
 	/**

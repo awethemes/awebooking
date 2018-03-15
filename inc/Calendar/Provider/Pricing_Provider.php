@@ -10,7 +10,7 @@ class Pricing_Provider extends WP_Provider {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resource_Collection|array $resources The resources to get events.
+	 * @param Resources|array $resources The resources to get events.
 	 */
 	public function __construct( $resources ) {
 		parent::__construct( $resources, 'awebooking_pricing', 'rate_id' );

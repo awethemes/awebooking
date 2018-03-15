@@ -92,11 +92,20 @@ class Date_Range_Field extends CMB2_Field {
 			jQuery(function($) {
 				'use strict';
 
+				var awebooking = window.TheAweBooking;
+
 				var _fromDateID = '#<?php echo esc_attr( $start_date_id ); ?>',
 					_toDateID   = '#<?php echo esc_attr( $end_date_id ); ?>';
 
-				var rangepicker = new TheAweBooking.RangeDatepicker(_fromDateID, _toDateID);
-				rangepicker.init();
+				awebooking.Flatpickr(_fromDateID, {
+					// altInput: true,
+					altFormat: 'F j, Y',
+					dateFormat: 'Y-m-d',
+					plugins: [ new awebooking.FlatpickrRange({ input: _toDateID }) ]
+				});
+
+				// var rangepicker = new TheAweBooking.RangeDatepicker(_fromDateID, _toDateID);
+				// rangepicker.init();
 
 				<?php if ( $toggle_lock ) : ?>
 					$('#<?php echo esc_attr( $toggle_lock ); ?>').on('click', function(e) {

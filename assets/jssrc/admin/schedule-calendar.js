@@ -1,8 +1,10 @@
-(function($, Popper, moment) {
+(function($, Popper, Flatpickr, moment) {
   'use strict';
 
   const DATE_FORMAT  = 'YYYY-MM-DD';
   const COLUMN_WIDTH = 60;
+
+  const awebooking = window.TheAweBooking;
 
   const Selection = Backbone.Model.extend({
     defaults: {
@@ -45,12 +47,13 @@
       debug: false,
       marker: '.scheduler__marker',
       popper: '.scheduler__popper',
+      datepicker: '.scheduler__datepicker > input',
     },
 
     events: {
       'click      .scheduler__body .scheduler__date': 'setSelectionDate',
       'mouseenter .scheduler__body .scheduler__date': 'drawMarkerOnHover',
-      'click      .schedule__actions [data-schedule-action]': 'triggerClickAction',
+      'click      .scheduler__actions [data-schedule-action]': 'triggerClickAction',
     },
 
     initialize() {
@@ -70,6 +73,18 @@
           preventOverflow: { enabled: false }
         }
       });
+
+      this.datepicker = Flatpickr(this.options.datepicker, {
+        altInput: true,
+        dateFormat: awebooking.date_format,
+        altFormat: awebooking.date_alt_format,
+        position: 'below',
+        onChange: (dates, date, flatpickr) => {
+          this.trigger('pickdate', date, dates, flatpickr);
+        },
+      });
+
+      this.setupLabelAnimate();
 
       $(document).on('keyup', this.onKeyup.bind(this));
       this.listenTo(this.model, 'change:startDate change:endDate', this.setMarkerPosition);
@@ -189,10 +204,10 @@
 
       if (startDate.isSameOrBefore(hoverDate, 'day')) {
         const $startDateEl = this.getElementByDate(targetUnit, startDate);
-        const nights = ($target.index() - $startDateEl.index() + 1);
+        const days = ($target.index() - $startDateEl.index() + 1);
 
-        this.$marker.css('width', nights * COLUMN_WIDTH);
-        this.$marker.find('span').text(nights);
+        this.$marker.css('width', days * COLUMN_WIDTH);
+        this.$marker.find('span').text(days - 1);
       }
     },
 
@@ -218,16 +233,44 @@
     },
 
     getCellPossiton(element) {
-      var childPos = element.offset();
-      var parentPos = this.$el.find('.scheduler__body').offset();
+      const childPos = element.offset();
+      const parentPos = this.$el.find('.scheduler__body').offset();
 
       return {
         top: childPos.top - parentPos.top,
         left: childPos.left - parentPos.left
       };
+    },
+
+    setupLabelAnimate() {
+      const self = this;
+      const $mainContext  = self.$el.find('.scheduler__main')[0];
+
+      const onHandler = function(direction) {
+        const $mainLabel    = self.$el.find('.scheduler__aside .scheduler__month-label');
+        const $currentLabel = $(this.element);
+
+        if ('right' === direction) {
+          $currentLabel.attr('data-prev-text', $mainLabel.text());
+          $mainLabel.text($currentLabel.text());
+        } else {
+          $mainLabel.text($currentLabel.data('prevText'));
+          $currentLabel.attr('data-prev-text', '');
+        }
+      };
+
+      self.$el.find('.scheduler__month-label').each(function() {
+        new Waypoint({
+          element: this,
+          context: $mainContext,
+          offset: -50,
+          horizontal: true,
+          handler: onHandler,
+        });
+      });
     }
   });
 
   TheAweBooking.ScheduleCalendar = ScheduleCalendar;
 
-})(jQuery, TheAweBooking.Popper, TheAweBooking.momment || window.moment);
+})(jQuery, TheAweBooking.Popper, TheAweBooking.Flatpickr, TheAweBooking.moment || window.moment);

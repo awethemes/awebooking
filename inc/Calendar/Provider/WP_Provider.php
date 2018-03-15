@@ -1,22 +1,22 @@
 <?php
 namespace AweBooking\Calendar\Provider;
 
-use Roomify\Bat\Unit\Unit;
-use Roomify\Bat\Event\Event as BAT_Event;
-use Roomify\Bat\Calendar\Calendar as BAT_Calendar;
+use AweBooking\Support\Carbonate;
+use AweBooking\Support\Utils as U;
 use AweBooking\Calendar\Event\Event;
 use AweBooking\Calendar\Event\Event_Interface;
 use AweBooking\Calendar\Provider\Stores\BAT_Store;
-use AweBooking\Calendar\Resource\Resource_Collection;
+use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Resource\Resource_Interface;
-use AweBooking\Support\Carbonate;
-use AweBooking\Support\Utils as U;
+use Roomify\Bat\Unit\Unit as BATUnit;
+use Roomify\Bat\Event\Event as BATEvent;
+use Roomify\Bat\Calendar\Calendar as BATCalendar;
 
 class WP_Provider implements Provider_Interface, Contracts\Storable {
 	/**
 	 * The collect of resource.
 	 *
-	 * @var \AweBooking\Calendar\Resource\Resource_Collection
+	 * @var \AweBooking\Calendar\Resource\Resources
 	 */
 	protected $resources;
 
@@ -30,13 +30,13 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resource_Collection|array $resources   The resources to get events.
+	 * @param Resources|array $resources   The resources to get events.
 	 * @param string                    $table       The table name.
 	 * @param string                    $foreign_key The foreign key.
 	 */
 	public function __construct( $resources, $table, $foreign_key ) {
 		$this->store = new BAT_Store( $table, $foreign_key );
-		$this->resources = new Resource_Collection( $resources instanceof Resource_Interface ? [ $resources ] : $resources );
+		$this->resources = new Resources( $resources instanceof Resource_Interface ? [ $resources ] : $resources );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 	/**
 	 * Get the resources collection.
 	 *
-	 * @return \AweBooking\Calendar\Resource\Resource_Collection
+	 * @return \AweBooking\Calendar\Resource\Resources
 	 */
 	public function get_resources() {
 		return $this->resources;
@@ -97,8 +97,7 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 				});
 
 				return $this->transform_calendar_event( $raw_event, $resource );
-			})
-			->all();
+			})->all();
 	}
 
 	/**
@@ -109,16 +108,16 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 			throw new Exceptions\Untrusted_Resource_Exception( 'Cannot store an event have untrusted source' );
 		}
 
-		// Transform resource to BAT Unit.
+		// Transform resource to BATUnit.
 		$resource = $event->get_resource();
-		$unit = new Unit( $resource->get_id(), $resource->get_value() );
+		$mockunit = new BATUnit( $resource->get_id(), $resource->get_value() );
 
 		// Note: The $end_date date should be exclude.
-		$end_date = $event->get_end_date()->subDay()->setTime( 23, 59, 00 );
-		$bat_event = new BAT_Event( $event->get_start_date(), $end_date, $unit, $event->get_value() );
+		$end_date  = $event->get_end_date()->subDay()->setTime( 23, 59, 00 );
+		$mockevent = new BATEvent( $event->get_start_date(), $end_date, $mockunit, $event->get_value() );
 
-		return U::rescue( function() use ( $bat_event ) {
-			return $this->get_store()->storeEvent( $bat_event, null );
+		return U::rescue( function() use ( $mockevent ) {
+			return $this->get_store()->storeEvent( $mockevent, null );
 		}, false );
 	}
 
@@ -131,6 +130,8 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 	 */
 	public function get_events_itemized( Carbonate $start_date, Carbonate $end_date ) {
 		$units = $this->transform_resources_to_units();
+
+		// If empty units, leave and return an empty array.
 		if ( empty( $units ) ) {
 			return [];
 		}
@@ -139,10 +140,10 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 		$end_date = $end_date->subDay()->setTime( 23, 59, 00 );
 
 		$itemized = $this->get_calendar( $units )
-			->getEventsItemized( $start_date, $end_date, BAT_Event::BAT_DAILY );
+			->getEventsItemized( $start_date, $end_date, BATEvent::BAT_DAILY );
 
 		return array_map( function( $item ) {
-			return $item[ BAT_Event::BAT_DAY ];
+			return $item[ BATEvent::BAT_DAY ];
 		}, $itemized );
 	}
 
@@ -153,17 +154,17 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 	 * @return \Roomify\Bat\Calendar\Calendar
 	 */
 	protected function get_calendar( array $units ) {
-		return new BAT_Calendar( $units, $this->store, 0 );
+		return new BATCalendar( $units, $this->store, 0 );
 	}
 
 	/**
-	 * Transform the BAT_Event to the AweBooking Calendar Event.
+	 * Transform the BATEvent to the AweBooking Calendar Event.
 	 *
-	 * @param  BAT_Event          $raw_event The BAT event.
+	 * @param  BATEvent           $raw_event The BAT event.
 	 * @param  Resource_Interface $resource  The mapping resource.
 	 * @return \AweBooking\Calendar\Event\Event_Interface
 	 */
-	protected function transform_calendar_event( BAT_Event $raw_event, Resource_Interface $resource ) {
+	protected function transform_calendar_event( BATEvent $raw_event, Resource_Interface $resource ) {
 		return new Event( $resource, $raw_event->getStartDate(), $raw_event->getEndDate(), $raw_event->getValue() );
 	}
 
@@ -175,7 +176,7 @@ class WP_Provider implements Provider_Interface, Contracts\Storable {
 	protected function transform_resources_to_units() {
 		return U::collect( $this->resources )
 		->map(function( $r ) {
-			return new Unit( $r->get_id(), $r->get_value() );
+			return new BATUnit( $r->get_id(), $r->get_value() );
 		})->unique(function( $u ) {
 			return $u->getUnitId();
 		})->all();

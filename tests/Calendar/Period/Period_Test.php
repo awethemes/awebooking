@@ -5,9 +5,16 @@ use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Period\Period_Collection;
 
 class Period_Test extends WP_UnitTestCase {
-	/**
-	 * A single example test.
-	 */
+	public function testSplitByDays() {
+		$period = new Period( '2018-03-10', '2018-03-20' );
+		$days = $period->split_by_days( [ 1, 2 ] ); // With no args.
+
+		$this->assertInstanceOf(Period_Collection::class, $days);
+
+		dump($days);
+		dump($days->merge_continuous());
+	}
+
 	function test_working_right() {
 		$days = new Period( '2017-05-10', '2017-05-20' );
 		$days2 = new Period( Carbon::create(2017, 05, 10)->startOfDay(), Carbon::create(2017, 05, 20)->startOfDay() );
@@ -23,28 +30,6 @@ class Period_Test extends WP_UnitTestCase {
 		$this->assertEquals('10/05/2017', $period->get_start_date()->format('d/m/Y'));
 		$this->assertEquals('20/05/2017', $period->get_end_date()->format('d/m/Y'));
 	}
-
-	/*public function test_segments1() {
-		$period = new Period( '2017-10-20', '2017-11-01' );
-		$segments = iterator_to_array($period->segments( 1 )); // With start of week is Monday.
-
-		$this->assertCount(3, $segments);
-		$this->assertEquals(new Period('2017-10-20', '2017-10-23'), $segments[0]);
-		$this->assertEquals(new Period('2017-10-23', '2017-10-30'), $segments[1]);
-		$this->assertEquals(new Period('2017-10-30', '2017-11-01'), $segments[2]);
-
-		$this->assertTrue((new Period_Collection($segments))->is_continuous());
-	}*/
-
-	/*public function test_segments2() {
-		$period = new Period( '2017-10-21', '2017-10-31' );
-		$segments = iterator_to_array($period->segments( 0 )); // With start of week is Monday.
-
-		$this->assertCount(3, $segments);
-		$this->assertEquals(new Period('2017-10-21', '2017-10-22'), $segments[0]);
-		$this->assertEquals(new Period('2017-10-22', '2017-10-29'), $segments[1]);
-		$this->assertEquals(new Period('2017-10-29', '2017-10-31'), $segments[2]);
-	}*/
 
 	/**
 	 * @expectedException LogicException

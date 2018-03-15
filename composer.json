@@ -69,7 +69,7 @@
     },
     "config": {
         "sort-packages": true,
-        "optimize-autoloader": false,
+        "optimize-autoloader": true,
         "preferred-install": "dist"
     }
 }

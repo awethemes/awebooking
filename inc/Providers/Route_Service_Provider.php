@@ -155,8 +155,8 @@ class Route_Service_Provider extends Service_Provider {
 			'room'          => \AweBooking\Model\Room::class,
 			'room_type'     => \AweBooking\Model\Room_Type::class,
 			'booking'       => \AweBooking\Model\Booking::class,
-			'room_item'     => \AweBooking\Model\Booking_Room_Item::class,
-			'payment_item'  => \AweBooking\Model\Booking_Payment_Item::class,
+			'room_item'     => \AweBooking\Model\Booking\Room_Item::class,
+			'payment_item'  => \AweBooking\Model\Booking\Payment_Item::class,
 			'tax'           => \AweBooking\Model\Tax::class,
 		]);
 

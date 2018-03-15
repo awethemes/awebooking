@@ -3,7 +3,7 @@ namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Model\Service;
 use AweBooking\Constants;
-use AweBooking\Support\Formatting;
+use AweBooking\Formatting;
 
 class Service_List_Table extends Taxonomy_Abstract {
 	/**

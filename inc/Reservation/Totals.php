@@ -18,6 +18,8 @@ class Totals {
 	 */
 	protected $subtotal;
 
+	protected $total;
+
 	/**
 	 * The reservation totals.
 	 *
@@ -58,6 +60,9 @@ class Totals {
 		}
 
 		return $payment_total;
+	}
+
+	public function recalculate() {
 	}
 
 	/**

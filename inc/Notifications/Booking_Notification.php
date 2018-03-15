@@ -75,7 +75,7 @@ abstract class Booking_Notification extends Mailable {
 	public function set_replacements() {
 		$replacements = [
 			'booking_id'           => $this->booking->get_id(),
-			'created_date'         => $this->booking['date_created'] ? $this->booking->get_booking_date()->to_wp_datetime_string() : '',
+			'created_date'         => $this->booking['date_created'] ? $this->booking->get_booking_date()->to_datetime_string() : '',
 			'contents'             => $this->get_template( 'breakdown', [ 'booking' => $this->booking ] ),
 			'total'                => (string) $this->booking->get_total(),
 			'customer_details'     => $this->get_template( 'customer-details', [ 'booking' => $this->booking ] ),

@@ -1,23 +1,25 @@
 webpackJsonp([2],{
 
-/***/ 28:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(29);
+module.exports = __webpack_require__(30);
 
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-(function ($, Popper, moment) {
+(function ($, Popper, Flatpickr, moment) {
   'use strict';
 
   var DATE_FORMAT = 'YYYY-MM-DD';
   var COLUMN_WIDTH = 60;
+
+  var awebooking = window.TheAweBooking;
 
   var Selection = Backbone.Model.extend({
     defaults: {
@@ -56,16 +58,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     options: {
       debug: false,
       marker: '.scheduler__marker',
-      popper: '.scheduler__popper'
+      popper: '.scheduler__popper',
+      datepicker: '.scheduler__datepicker > input'
     },
 
     events: {
       'click      .scheduler__body .scheduler__date': 'setSelectionDate',
       'mouseenter .scheduler__body .scheduler__date': 'drawMarkerOnHover',
-      'click      .schedule__actions [data-schedule-action]': 'triggerClickAction'
+      'click      .scheduler__actions [data-schedule-action]': 'triggerClickAction'
     },
 
     initialize: function initialize() {
+      var _this = this;
+
       this.model = new Selection();
 
       this.$marker = this.$el.find(this.options.marker);
@@ -82,6 +87,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           preventOverflow: { enabled: false }
         }
       });
+
+      this.datepicker = Flatpickr(this.options.datepicker, {
+        altInput: true,
+        dateFormat: awebooking.date_format,
+        altFormat: awebooking.date_alt_format,
+        position: 'below',
+        onChange: function onChange(dates, date, flatpickr) {
+          _this.trigger('pickdate', date, dates, flatpickr);
+        }
+      });
+
+      this.setupLabelAnimate();
 
       $(document).on('keyup', this.onKeyup.bind(this));
       this.listenTo(this.model, 'change:startDate change:endDate', this.setMarkerPosition);
@@ -191,10 +208,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
       if (startDate.isSameOrBefore(hoverDate, 'day')) {
         var $startDateEl = this.getElementByDate(targetUnit, startDate);
-        var nights = $target.index() - $startDateEl.index() + 1;
+        var days = $target.index() - $startDateEl.index() + 1;
 
-        this.$marker.css('width', nights * COLUMN_WIDTH);
-        this.$marker.find('span').text(nights);
+        this.$marker.css('width', days * COLUMN_WIDTH);
+        this.$marker.find('span').text(days - 1);
       }
     },
     getElementByDate: function getElementByDate(calendar, date) {
@@ -222,12 +239,39 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         top: childPos.top - parentPos.top,
         left: childPos.left - parentPos.left
       };
+    },
+    setupLabelAnimate: function setupLabelAnimate() {
+      var self = this;
+      var $mainContext = self.$el.find('.scheduler__main')[0];
+
+      var onHandler = function onHandler(direction) {
+        var $mainLabel = self.$el.find('.scheduler__aside .scheduler__month-label');
+        var $currentLabel = $(this.element);
+
+        if ('right' === direction) {
+          $currentLabel.attr('data-prev-text', $mainLabel.text());
+          $mainLabel.text($currentLabel.text());
+        } else {
+          $mainLabel.text($currentLabel.data('prevText'));
+          $currentLabel.attr('data-prev-text', '');
+        }
+      };
+
+      self.$el.find('.scheduler__month-label').each(function () {
+        new Waypoint({
+          element: this,
+          context: $mainContext,
+          offset: -50,
+          horizontal: true,
+          handler: onHandler
+        });
+      });
     }
   });
 
   TheAweBooking.ScheduleCalendar = ScheduleCalendar;
-})(jQuery, TheAweBooking.Popper, TheAweBooking.momment || window.moment);
+})(jQuery, TheAweBooking.Popper, TheAweBooking.Flatpickr, TheAweBooking.moment || window.moment);
 
 /***/ })
 
-},[28]);
+},[29]);

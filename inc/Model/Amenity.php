@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Model\WP_Object;
 
 class Amenity extends WP_Object {
 	/**

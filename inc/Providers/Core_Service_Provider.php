@@ -4,8 +4,7 @@ namespace AweBooking\Providers;
 use AweBooking\Setting;
 use AweBooking\Cart\Cart;
 use AweBooking\Booking\Store;
-use AweBooking\Money\Currency;
-use AweBooking\Money\Currencies;
+use AweBooking\Resources\Currencies;
 use AweBooking\Shortcodes\Shortcodes;
 use AweBooking\Support\Service_Provider;
 
@@ -25,24 +24,22 @@ class Core_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $shortcodes = [
-		'awebooking_check_form'         => \AweBooking\Shortcodes\Check_Form_Shortcode::class,
-		'awebooking_check_availability' => \AweBooking\Shortcodes\Check_Availability_Shortcode::class,
 		'awebooking_checkout'           => \AweBooking\Shortcodes\Checkout_Shortcode::class,
 		'awebooking_room_types'         => \AweBooking\Shortcodes\Room_Types_Shortcode::class,
+		'awebooking_check_form'         => \AweBooking\Shortcodes\Check_Form_Shortcode::class,
+		'awebooking_check_availability' => \AweBooking\Shortcodes\Check_Availability_Shortcode::class,
 	];
 
 	/**
 	 * Registers services on the AweBooking.
 	 */
 	public function register() {
-		$this->awebooking->singleton( 'currencies', function() {
-			return new Currencies;
+		$this->awebooking->bind( 'currencies', function() {
+			return Currencies::get_instance();
 		});
 
-		$this->awebooking->alias( 'currencies', 'currency_manager' );
-
-		$this->awebooking->singleton( 'currency', function( $a ) {
-			return $a['currencies']->get( $a['setting']->get( 'currency' ) );
+		$this->awebooking->bind( 'currency', function( $a ) {
+			return $a->currencies->get( $a['setting']->get( 'currency' ) );
 		});
 
 		$this->register_widgets();

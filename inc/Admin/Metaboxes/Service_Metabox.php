@@ -31,7 +31,7 @@ class Service_Metabox extends Taxonomy_Metabox {
 			'name'            => esc_html__( 'Operation', 'awebooking' ),
 			'id'              => '_service_operation',
 			'type'            => 'select',
-			'options'         => awebooking( 'setting' )->get_service_operations(),
+			// 'options'         => awebooking( 'setting' )->get_service_operations(),
 			'render_field_cb' => array( $this, '_operation_field_callback' ),
 		]);
 

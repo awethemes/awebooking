@@ -2,22 +2,15 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Reservation\Reservation;
+use AweBooking\Reservation\Pricing\Selector;
 
 class Availability_List_Table extends \WP_List_Table {
-	/**
-	 * The reservation instance.
-	 *
-	 * @var \AweBooking\Reservation\Reservation
-	 */
-	protected $reservation;
-
+	protected $request;
 	/**
 	 * Constructor.
-	 *
-	 * @param \AweBooking\Reservation\Reservation $reservation //.
 	 */
-	public function __construct( Reservation $reservation ) {
-		$this->reservation = $reservation;
+	public function __construct( $request ) {
+		$this->request = $request;
 
 		parent::__construct([
 			'singular' => 'availability',
@@ -45,6 +38,7 @@ class Availability_List_Table extends \WP_List_Table {
 	public function get_columns() {
 		$columns = [
 			'room_type'       => esc_html__( 'Room Type', 'awebooking' ),
+			'nights'          => esc_html__( 'Nights', 'awebooking' ),
 			'availabe_rooms'  => esc_html__( 'Room', 'awebooking' ),
 			'column_adults'   => esc_html__( 'Adults', 'awebooking' ),
 			'column_children' => esc_html__( 'Children', 'awebooking' ),
@@ -85,6 +79,11 @@ class Availability_List_Table extends \WP_List_Table {
 				echo '</div>';
 				break;
 
+			case 'nights':
+				$timespan = $this->request->get_timespan();
+				echo '<span class="awebooking-label awebooking-label--info">' . esc_html( $timespan->nights() ) . '</span>';
+				break;
+
 			case 'availabe_rooms':
 				$rooms = $remain_rooms->pluck( 'room' )->pluck( 'name', 'id' )->all();
 				$this->print_select_options( $input_prefix . '[room_unit]', $rooms );
@@ -107,8 +106,8 @@ class Availability_List_Table extends \WP_List_Table {
 				break;
 
 			case 'starting_from':
-				// $a = new \AweBooking\Reservation\Pricing\Resolver( $this->reservation );
-				// echo ( $a->resolve( $room_type )->total() );
+				// $a = new Selector( $this->request );
+				// dump( $a->select( $room_type ) );
 				break;
 		}
 	}

@@ -83,7 +83,7 @@ class Search_Reservation_Form extends Form_Abstract {
 		if ( $request->has( 'check_in_out' ) ) {
 			$this['check_in_out']->set_value( $request->get( 'check_in_out' ) );
 		} elseif ( $this->reservation ) {
-			$this['check_in_out']->set_value( $this->reservation->get_stay()->to_array() );
+			$this['check_in_out']->set_value( $this->reservation->get_timespan()->to_array() );
 		} elseif ( empty( $this['check_in_out']->get_value() ) ) {
 			$this['check_in_out']->set_value( $this->get_default_date_range() );
 		}

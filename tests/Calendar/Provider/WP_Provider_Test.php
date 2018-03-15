@@ -3,7 +3,7 @@
 use AweBooking\Support\Carbonate;
 use AweBooking\Calendar\Event\Event;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Calendar\Resource\Resource_Collection;
+use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Provider\WP_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
 use AweBooking\Calendar\Provider\Contracts\Storable;
@@ -21,7 +21,7 @@ class Calendar_Store_WP_Store_Test extends WP_UnitTestCase {
 
 		$this->assertInstanceOf( Provider_Interface::class, $provider);
 		$this->assertInstanceOf( Storable::class, $provider);
-		$this->assertInstanceOf( Resource_Collection::class, $provider->get_resources());
+		$this->assertInstanceOf( Resources::class, $provider->get_resources());
 		$this->assertInstanceOf( \AweBooking\Calendar\Provider\Stores\BAT_Store::class, $provider->get_store());
 	}
 

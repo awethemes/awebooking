@@ -298,7 +298,7 @@ class Admin_Setup_Wizard {
 	 * Locale settings.
 	 */
 	public function setup_locale() {
-		$currencies   = awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
+		$currencies   = awebooking( 'currencies' )->get_for_dropdown( '%name (%symbol)' );
 		$currency_pos = Dropdown::get_currency_positions();
 
 		// Defaults

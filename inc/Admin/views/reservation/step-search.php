@@ -9,17 +9,17 @@
 	<div class="awebooking-reservation__container">
 
 		<div class="awebooking-reservation__main">
-			<form method="POST" action="<?php echo esc_url( awebooking( 'url' )->admin_route( '/reservation/add_item' ) ); ?>">
-				<?php wp_nonce_field( 'awebooking_add_room', '_wpnonce', true ); ?>
+			<form method="POST" action="<?php echo esc_url( awebooking( 'url' )->admin_route( '/reservation' ) ); ?>">
+				<?php wp_nonce_field( 'add_roomstay', '_wpnonce', true ); ?>
 
-				<input type="hidden" name="check_in" value="<?php // echo esc_attr( $stay->get_check_in()->toDateString() ); ?>">
-				<input type="hidden" name="check_out" value="<?php // echo esc_attr( $stay->get_check_out()->toDateString() ); ?>">
+				<input type="hidden" name="check_in" value="<?php // echo esc_attr( $timespan->get_start_date()->toDateString() ); ?>">
+				<input type="hidden" name="check_out" value="<?php // echo esc_attr( $timespan->get_end_date()->toDateString() ); ?>">
 
 <!-- 				<div class="tablenav">
 					<div class="alignleft actions">
 						<span><?php echo esc_html__( 'Searching for:', 'awebooking' ); ?></span>
-						<strong><?php //printf( _n( '%s night', '%s nights', $stay->nights(), 'awebooking' ), esc_html( $stay->nights() ) ); // @codingStandardsIgnoreLine ?></strong>,
-						<span><?php //echo wp_kses_post( $stay->as_string() ); ?></span>
+						<strong><?php //printf( _n( '%s night', '%s nights', $timespan->nights(), 'awebooking' ), esc_html( $timespan->nights() ) ); // @codingStandardsIgnoreLine ?></strong>,
+						<span><?php //echo wp_kses_post( $timespan->as_string() ); ?></span>
 					</div>
 				</div> -->
 
@@ -28,7 +28,7 @@
 		</div>
 
 		<div class="awebooking-reservation__aside">
-			<?php $this->partial( 'reservation/aside-reservation.php', compact( 'reservation' ) ); ?>
+			<?php // $this->partial( 'reservation/aside-reservation.php', compact( 'reservation' ) ); ?>
 		</div>
 
 	</div><!-- /.awebooking__reservation-container -->

@@ -2,14 +2,11 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Model\Service;
-use AweBooking\Deprecated\Model\Room_Type_Deprecated;
 
 class Room_Type extends WP_Object {
-	use Traits\Room_Type\Rooms_Trait,
-		Traits\Room_Type\Rate_Plans_Trait,
-		Traits\Room_Type\Occupancy_Trait,
-		Traits\Room_Type\Attributes_Trait;
+	use Concerns\Room_Type_Attributes,
+		Concerns\Room_Type_Rooms,
+		Concerns\Room_Type_Rates;
 
 	/**
 	 * This is the name of this object type.
@@ -90,7 +87,7 @@ class Room_Type extends WP_Object {
 	];
 
 	/**
-	 * //
+	 * Query room types.
 	 *
 	 * @param  array $args //.
 	 * @return WP_Query

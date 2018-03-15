@@ -4,7 +4,7 @@ use AweBooking\Template;
 use AweBooking\Constants;
 use AweBooking\AweBooking;
 use AweBooking\Support\Carbonate;
-use AweBooking\Support\Formatting;
+use AweBooking\Formatting;
 use AweBooking\Support\Utils as U;
 use AweBooking\Calendar\Period\Period;
 
@@ -92,56 +92,6 @@ function awebooking_sanitize_standard_date( $value ) {
  * ------------------------------------------------------
  */
 
-/**
- * Generate a random string.
- *
- * @param  integer $length Random string length.
- * @return string
- */
-function awebooking_random_string( $length = 16 ) {
-	require_once ABSPATH . 'wp-includes/class-phpass.php';
-
-	$bytes = (new PasswordHash( 8, false ))->get_random_bytes( $length * 2 );
-
-	return substr( str_replace( [ '/', '+', '=' ], '', base64_encode( $bytes ) ), 0, $length );
-}
-
-/**
- * Create an array instance.
- *
- * @param  array           $ids   An array IDs.
- * @param  string|callable $class Class instance or a callable.
- * @return array
- */
-function awebooking_map_instance( array $ids, $class ) {
-	return array_filter(
-		array_map( function( $id ) use ( $class ) {
-			if ( is_string( $class ) && class_exists( $class ) ) {
-				return new $class( $id );
-			} elseif ( is_callable( $class ) ) {
-				return call_user_func( $class, $id );
-			}
-		}, $ids )
-	);
-}
-
-/**
- * Make a list sort by priority.
- *
- * @param  array $values An array values.
- * @return Skeleton\Support\Priority_List
- */
-function awebooking_priority_list( array $values ) {
-	$stack = new Skeleton\Support\Priority_List;
-
-	foreach ( $values as $key => $value ) {
-		$priority = is_object( $value ) ? $value->priority : $value['priority'];
-		$stack->insert( $key, $value, $priority );
-	}
-
-	return $stack;
-}
-
 if ( ! function_exists( 'wp_data_callback' ) ) :
 	/**
 	 * Get Wordpress specific data from the DB and return in a usable array.
@@ -158,55 +108,6 @@ if ( ! function_exists( 'wp_data_callback' ) ) :
 endif;
 
 /**
- * Run a MySQL transaction query, if supported.
- *
- * @param  string $type Transaction type, start (default), commit, rollback.
- * @return void
- */
-function awebooking_wpdb_transaction( $type = 'start' ) {
-	global $wpdb;
-
-	$wpdb->hide_errors();
-
-	if ( ! defined( 'AWEBOOKING_USE_TRANSACTIONS' ) ) {
-		define( 'AWEBOOKING_USE_TRANSACTIONS', true );
-	}
-
-	if ( AWEBOOKING_USE_TRANSACTIONS ) {
-		switch ( $type ) {
-			case 'commit':
-				$wpdb->query( 'COMMIT' );
-				break;
-			case 'rollback':
-				$wpdb->query( 'ROLLBACK' );
-				break;
-			default:
-				$wpdb->query( 'START TRANSACTION' );
-				break;
-		}
-	}
-}
-
-/**
- * Set a cookie - Wrapper for setcookie using WP constants.
- *
- * @param  string  $name   Name of the cookie being set.
- * @param  string  $value  Value of the cookie.
- * @param  integer $expire Expiry of the cookie.
- * @param  string  $secure Whether the cookie should be served only over https.
- */
-function awebooking_setcookie( $name, $value, $expire = 0, $secure = null ) {
-	$secure = is_null( $secure ) ? is_ssl() : $secure;
-
-	if ( ! headers_sent() ) {
-		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure );
-	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		headers_sent( $file, $line );
-		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );
-	}
-}
-
-/**
  * Return list of common titles.
  *
  * @return string
@@ -220,25 +121,6 @@ function awebooking_get_common_titles() {
 		'dr'   => esc_html__( 'Dr.', 'awebooking' ),
 		'prof' => esc_html__( 'Prof.', 'awebooking' ),
 	));
-}
-
-function awebooking_get_booking_request_query( $extra_args = array() ) {
-	$raw = [ 'start-date', 'end-date', 'adults' ];
-
-	if ( awebooking( 'setting' )->is_children_bookable() ) {
-		$raw[] = 'children';
-	}
-
-	if ( awebooking( 'setting' )->is_infants_bookable() ) {
-		$raw[] = 'infants';
-	}
-
-	$clean = [];
-	foreach ( $raw as $key ) {
-		$clean[ $key ] = isset( $_REQUEST[ $key ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ) : '';
-	}
-
-	return array_merge( $clean, $extra_args );
 }
 
 /**

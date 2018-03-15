@@ -1453,7 +1453,7 @@ msgstr ""
 msgid "Order &ndash; %s"
 msgstr ""
 
-#: inc/Booking/Items/Line_Item.php:224 inc/Model/Stay.php:99
+#: inc/Booking/Items/Line_Item.php:224 inc/Model/Timespan.php:99
 msgid "night"
 msgid_plural "nights"
 msgstr[0] ""
@@ -1673,16 +1673,16 @@ msgstr ""
 msgid "%2$s - %1$s%% %3$s from price"
 msgstr ""
 
-#: inc/Model/Stay.php:37
+#: inc/Model/Timespan.php:37
 msgid "The check-in datepoint must be greater or equal to the check-out datepoint"
 msgstr ""
 
-#: inc/Model/Stay.php:116 inc/Support/Period.php:79
+#: inc/Model/Timespan.php:116 inc/Support/Period.php:79
 #. translators: %d: Number of nights
 msgid "The date period must be have minimum %d night(s)."
 msgstr ""
 
-#: inc/Model/Stay.php:130 inc/Support/Period.php:93
+#: inc/Model/Timespan.php:130 inc/Support/Period.php:93
 msgid "The date period must be greater or equal to the today."
 msgstr ""
 

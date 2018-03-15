@@ -3,9 +3,9 @@ namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
 use AweBooking\Assert;
-use AweBooking\Factory;
-use AweBooking\Model\Stay;
-use AweBooking\Model\Guest;
+use AweBooking\Model\Factory;
+use AweBooking\Model\Common\Timespan;
+use \AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking_Room_Item;
@@ -87,7 +87,7 @@ class Booking_Room_Controller extends Controller {
 			$check_in_out = [ $request->input( 'check_in' ), $request->input( 'check_out' ) ];
 		}
 
-		return new Reservation( $source, new Stay( ...$check_in_out ) );
+		return new Reservation( $source, new Timespan( ...$check_in_out ) );
 	}
 
 	/**
@@ -183,7 +183,7 @@ class Booking_Room_Controller extends Controller {
 		$controls = new Edit_Room_Item_Form( $room_item );
 
 		$controls->fill( $room_item->get_attributes() );
-		$controls['check_in_out']->set_value( U::optional( $room_item->get_stay() )->to_array() );
+		$controls['check_in_out']->set_value( U::optional( $room_item->get_timespan() )->to_array() );
 
 		return $this->response_view( 'booking/edit-room.php', compact( 'booking', 'controls', 'room_item' ) );
 	}
@@ -246,16 +246,16 @@ class Booking_Room_Controller extends Controller {
 			return;
 		}
 
-		$stay = U::rescue( function () use ( $request ) {
-			return new Stay( $request['check_in_out'][0], $request['check_in_out'][1] );
+		$timespan = U::rescue( function () use ( $request ) {
+			return new Timespan( $request['check_in_out'][0], $request['check_in_out'][1] );
 		});
 
 		// Don't do anything if got invalid stay.
-		if ( is_null( $stay ) ) {
+		if ( is_null( $timespan ) ) {
 			return;
 		}
 
-		$modified = $room_item->modify_stay( $stay );
+		$modified = $room_item->modify_stay( $timespan );
 		if ( is_wp_error( $modified ) ) {
 			$this->notices( 'error', $modified->get_error_message() );
 		}

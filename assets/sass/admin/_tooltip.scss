@@ -2,8 +2,8 @@ $tooltip-arrow-size:   10px;
 $tooltip-background:   #fff;
 $tooltip-border-color: #fff;
 
-.popper,
-.tooltip {
+.awebooking-popper,
+.awebooking-tooltip {
   padding: 10px;
   min-width: 150px;
   text-align: center;
@@ -13,8 +13,8 @@ $tooltip-border-color: #fff;
   box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.popper .popper__arrow,
-.tooltip .tooltip__arrow {
+.awebooking-popper .awebooking-popper__arrow,
+.awebooking-tooltip .awebooking-tooltip__arrow {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -42,8 +42,12 @@ $tooltip-border-color: #fff;
   }
 }
 
-.popper[x-placement^="top"] .popper__arrow,
-.tooltip[x-placement^="top"] .tooltip__arrow {
+.awebooking-popper[x-placement^="top"],
+.awebooking-tooltip[x-placement^="top"] {
+  margin-bottom: $tooltip-arrow-size;
+}
+.awebooking-popper[x-placement^="top"] .awebooking-popper__arrow,
+.awebooking-tooltip[x-placement^="top"] .awebooking-tooltip__arrow {
   top: 100%;
   left: calc(50% - #{$tooltip-arrow-size} );
 
@@ -62,8 +66,12 @@ $tooltip-border-color: #fff;
   }
 }
 
-.popper[x-placement^="bottom"] .popper__arrow,
-.tooltip[x-placement^="bottom"] .tooltip__arrow {
+.awebooking-popper[x-placement^="bottom"],
+.awebooking-tooltip[x-placement^="bottom"] {
+  margin-top: $tooltip-arrow-size;
+}
+.awebooking-popper[x-placement^="bottom"] .awebooking-popper__arrow,
+.awebooking-tooltip[x-placement^="bottom"] .awebooking-tooltip__arrow {
   bottom: 100%;
   left: calc(50% - #{$tooltip-arrow-size} );
 
@@ -79,8 +87,12 @@ $tooltip-border-color: #fff;
   }
 }
 
-.popper[x-placement^="right"] .popper__arrow,
-.tooltip[x-placement^="right"] .tooltip__arrow {
+.awebooking-popper[x-placement^="right"],
+.awebooking-tooltip[x-placement^="right"] {
+  margin-left: $tooltip-arrow-size;
+}
+.awebooking-popper[x-placement^="right"] .awebooking-popper__arrow,
+.awebooking-tooltip[x-placement^="right"] .awebooking-tooltip__arrow {
   top: calc(50% - #{$tooltip-arrow-size} );
   right: 100%;
 
@@ -103,8 +115,12 @@ $tooltip-border-color: #fff;
   }
 }
 
-.popper[x-placement^="left"] .popper__arrow,
-.tooltip[x-placement^="left"] .tooltip__arrow {
+.awebooking-popper[x-placement^="left"],
+.awebooking-tooltip[x-placement^="left"] {
+  margin-right: $tooltip-arrow-size;
+}
+.awebooking-popper[x-placement^="left"] .awebooking-popper__arrow,
+.awebooking-tooltip[x-placement^="left"] .awebooking-tooltip__arrow {
   top: calc(50% - #{$tooltip-arrow-size} );
   left: 100%;
 

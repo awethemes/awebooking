@@ -58,28 +58,28 @@ use AweBooking\Admin\Forms\Booking_General_From;
 					<p>
 						<?php if ( $the_booking->get_arrival_date() ) : ?>
 							<strong><?php esc_html_e( 'Check-in:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $the_booking->get_arrival_date()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $the_booking->get_arrival_date()->to_date_string() ); ?>
 						<?php endif; ?>
 					</p>
 
 					<p>
 						<?php if ( $the_booking->get_departure_date() ) : ?>
 							<strong><?php esc_html_e( 'Check-out:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $the_booking->get_departure_date()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $the_booking->get_departure_date()->to_date_string() ); ?>
 						<?php endif; ?>
 					</p>
 				<?php else : ?>
 					<?php if ( $the_booking->get_arrival_date() ) : ?>
 						<p>
 							<strong><?php esc_html_e( 'Arrival:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $the_booking->get_arrival_date()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $the_booking->get_arrival_date()->to_date_string() ); ?>
 						</p>
 					<?php endif; ?>
 
 					<?php if ( $the_booking->get_departure_date() ) : ?>
 						<p>
 							<strong><?php esc_html_e( 'Departure:', 'awebooking' ); ?></strong>
-							<?php echo esc_html( $the_booking->get_departure_date()->to_wp_date_string() ); ?>
+							<?php echo esc_html( $the_booking->get_departure_date()->to_date_string() ); ?>
 						</p>
 					<?php endif; ?>
 				<?php endif ?>

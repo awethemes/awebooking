@@ -35,11 +35,11 @@ $primary-color: #2196f3;
 }
 
 @import "admin/utils";
+@import "admin/datepicker";
 
 @import "admin/room-type-metaboxes";
 
 @import "admin/tooltip";
-@import "admin/abkngcal";
 @import "admin/booking-notes";
 @import "admin/cmb2";
 @import "admin/dialog";
@@ -49,4 +49,3 @@ $primary-color: #2196f3;
 @import "admin/month-calendar";
 @import "admin/schedule-calendar";
 @import "admin/create_reservation";
-@import "admin/navigation";

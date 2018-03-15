@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Money\Money;
+use AweBooking\Model\Common\Money;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -8,12 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* @vars $availability, $guest, $reservation */
 
-list( $stay, $room_type ) = [ // @codingStandardsIgnoreLine
-	$availability->get_stay(), $availability->get_room_type()
+list( $timespan, $room_type ) = [ // @codingStandardsIgnoreLine
+	$availability->get_timespan(), $availability->get_room_type()
 ];
 
 $remain_rooms = $availability->remain_rooms();
-
 ?>
 
 <div class="awebooking-availability-room-type__media">
@@ -66,7 +65,7 @@ $remain_rooms = $availability->remain_rooms();
 							<a href="#popup-rate-<?php echo absint( $room_type->get_id() ); ?>" class="awebooking-price__info awebooking-price-info"><strong>&#161;</strong></a>
 						</div>
 						<div class="awebooking-rate__price_detail">
-							<p><?php printf( esc_html__( 'price for %d Nights', 'awebooking' ), absint( $reservation->get_stay()->nights() ) ); ?></p>
+							<p><?php printf( esc_html__( 'price for %d Nights', 'awebooking' ), absint( $reservation->get_timespan()->nights() ) ); ?></p>
 							<p><?php print $reservation->get_guest()->as_string(); // WPCS: xss ok. ?></p>
 						</div>
 					</div>

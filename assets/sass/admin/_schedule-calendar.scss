@@ -6,7 +6,7 @@ $schedule-item-width:          60px;
 $schedule-item-height:         60px;
 $schedule-nested-item-height:  35px;
 $schedule-border-color:        #eee;
-$schedule-border-color2:       #d2d2d2;
+$schedule-border-color2:       #ccc;
 
 /* Schedule Layout */
 .scheduler {
@@ -57,14 +57,15 @@ $schedule-border-color2:       #d2d2d2;
 }
 
 .scheduler__main,
-.scheduler__header-main {
+.scheduler__header-toolbar {
   flex: 1 1 0%;
 }
 
 .scheduler__aside {
-  box-shadow: 3px 0px 0px 0px rgba(0, 0, 0, 0.02);
+  box-shadow: 3px 0px 0 rgba(0, 0, 0, 0.03);
   border-right: solid 1px $schedule-border-color2;
   position: relative;
+  z-index: 110;
 
   ul,
   li {
@@ -76,11 +77,6 @@ $schedule-border-color2:       #d2d2d2;
 .scheduler__main {
   overflow-y: hidden !important;
   overflow-x: visible !important;
-}
-
-.scheduler__header-aside,
-.scheduler__header-main {
-  padding: 0 1.5em;
 }
 
 // Childs of .scheduler__aside
@@ -183,6 +179,7 @@ $schedule-border-color2:       #d2d2d2;
 
 .scheduler__events-row {
   display: flex;
+  z-index: 115;
   position: relative;
   overflow: hidden;
 }
@@ -206,6 +203,10 @@ $schedule-border-color2:       #d2d2d2;
 
   &:last-child {
     border-right: none;
+  }
+
+  &.lastmonth {
+    border-right-color: $schedule-border-color2;
   }
 
   &.today {
@@ -235,6 +236,14 @@ $schedule-border-color2:       #d2d2d2;
 }
 
 // Miscs
+.scheduler__legends {
+  padding: 0 1.5em;
+}
+
+.scheduler__toolbar {
+  padding-right: 1.5em;
+}
+
 .scheduler__datehover {
   opacity: 0;
   visibility: hidden;
@@ -243,7 +252,7 @@ $schedule-border-color2:       #d2d2d2;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 115;
+  z-index: 120;
   position: absolute;
 
   width: auto;
@@ -352,10 +361,14 @@ $schedule-border-color2:       #d2d2d2;
 
   padding: 0;
   width: 200px;
-  border-radius: 4px;
+  border-radius: 3px;
+
+  &[x-placement^="bottom"] {
+    margin-top: 0 !important;
+  }
 }
 
-.schedule__actions {
+.scheduler__actions {
   margin: 0;
   display: block;
   text-align: left;
@@ -491,21 +504,21 @@ $schedule-border-color2:       #d2d2d2;
 }
 
 // Nested scheduler.
-.awebooking-scheduler {
+.nested-scheduler {
   .scheduler__marker,
-  .schedule__submenu > .scheduler__menu,
-  .schedule__section > .scheduler__row,
-  .schedule__section .scheduler__column {
+  .scheduler__submenu > .scheduler__menu,
+  .scheduler__section > .scheduler__row,
+  .scheduler__section .scheduler__column {
     height: $schedule-nested-item-height !important;
   }
 
-  .schedule__submenu .scheduler__menu {
+  .scheduler__submenu .scheduler__menu {
     padding-left: 52px;
   }
 
   .scheduler__menus > li > .scheduler__menu,
   .scheduler__body > .scheduler__row .scheduler__column,
-  .schedule__section > .scheduler__row:last-child .scheduler__column {
+  .scheduler__section > .scheduler__row:last-child .scheduler__column {
     border-bottom-color: $schedule-border-color2;
   }
 

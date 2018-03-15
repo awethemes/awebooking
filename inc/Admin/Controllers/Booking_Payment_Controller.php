@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Assert;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Payment_Item;
+use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Admin\Forms\Create_Payment_Form;
 use AweBooking\Support\Utils as U;
 use Awethemes\Http\Request;
@@ -47,7 +47,7 @@ class Booking_Payment_Controller extends Controller {
 		}
 
 		// Store the payment item.
-		$payment_item = ( new Booking_Payment_Item )->fill(
+		$payment_item = ( new Payment_Item )->fill(
 			$request->only( 'method', 'amount', 'comment', 'is_deposit', 'transaction_id' )
 		);
 
@@ -67,11 +67,11 @@ class Booking_Payment_Controller extends Controller {
 	 * Show edit for.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking      $booking      The booking reference.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function edit( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
+	public function edit( Request $request, Booking $booking, Payment_Item $payment_item ) {
 		Assert::booking_item( $payment_item, $booking );
 
 		$controls = new Create_Payment_Form( $booking );
@@ -86,11 +86,11 @@ class Booking_Payment_Controller extends Controller {
 	 * Perform update a payment item.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking      $booking      The booking reference.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function update( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
+	public function update( Request $request, Booking $booking, Payment_Item $payment_item ) {
 		Assert::booking_item( $payment_item, $booking );
 
 		$request->verify_nonce( '_wpnonce', 'update_booking_payment_' . $payment_item->get_id() );
@@ -119,11 +119,11 @@ class Booking_Payment_Controller extends Controller {
 	 * Perform delete a payment item.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking      $booking      The booking reference.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function destroy( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
+	public function destroy( Request $request, Booking $booking, Payment_Item $payment_item ) {
 		Assert::booking_item( $payment_item, $booking );
 
 		$request->verify_nonce( '_wpnonce', 'delete_payment_item_' . $payment_item->get_id() );

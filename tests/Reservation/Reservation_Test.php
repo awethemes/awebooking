@@ -1,9 +1,9 @@
 <?php
 
 use AweBooking\Model\Rate;
-use AweBooking\Model\Stay;
+use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Room;
-use AweBooking\Model\Guest;
+use \AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Room_Type;
 use AweBooking\Reservation\Item;
 use AweBooking\Reservation\Reservation;
@@ -52,7 +52,7 @@ class Reservation_Test extends WP_UnitTestCase {
 	protected function createReservation() {
 		$source = new Source( 'direct', 'Direct' );
 
-		return new Reservation( $source, new Stay( '2017-12-12', '2017-12-22' ) );
+		return new Reservation( $source, new Timespan( '2017-12-12', '2017-12-22' ) );
 	}
 
 	public function testBasicAddRoom() {

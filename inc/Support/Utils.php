@@ -81,10 +81,10 @@ class Utils {
 			return $callback();
 		} catch ( \Exception $e ) {
 			static::report( $e );
-			return $rescue instanceof Closure ? $rescue( $e ) : $rescue;
+			return static::value( $rescue );
 		} catch ( \Throwable $e ) {
 			static::report( $e );
-			return $rescue instanceof Closure ? $rescue( $e ) : $rescue;
+			return static::value( $rescue );
 		}
 	}
 
@@ -110,5 +110,37 @@ class Utils {
 	 */
 	public static function value( $value ) {
 		return $value instanceof Closure ? $value() : $value;
+	}
+
+	/**
+	 * Run a MySQL transaction query, if supported.
+	 *
+	 * @param  string $type The transaction type, start (default), commit, rollback.
+	 * @return void
+	 */
+	public static function wpdb_transaction( $type = 'start' ) {
+		global $wpdb;
+
+		$wpdb->hide_errors();
+
+		if ( ! defined( 'AWEBOOKING_USE_TRANSACTIONS' ) ) {
+			define( 'AWEBOOKING_USE_TRANSACTIONS', true );
+		}
+
+		if ( false === AWEBOOKING_USE_TRANSACTIONS ) {
+			return;
+		}
+
+		switch ( $type ) {
+			case 'commit':
+				$wpdb->query( 'COMMIT' );
+				break;
+			case 'rollback':
+				$wpdb->query( 'ROLLBACK' );
+				break;
+			default:
+				$wpdb->query( 'START TRANSACTION' );
+				break;
+		}
 	}
 }

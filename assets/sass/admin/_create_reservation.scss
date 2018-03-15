@@ -49,10 +49,12 @@
     flex: 0 0 20%;
     max-width: 20%;
 
-    #check_in_out_0 {
+    #check_in_out_0,
+    .flatpickr-input {
       width: 48%;
       float: left;
     }
+
     #check_in_out_1 {
       width: 48%;
       float: right;

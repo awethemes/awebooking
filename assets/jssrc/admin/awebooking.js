@@ -1,5 +1,5 @@
 const $ = window.jQuery;
-const settings = window._awebookingSettings || {};
+const settings = window._awebooking || {};
 
 import popper from 'popper.js';
 import tooltip from 'tooltip.js';
@@ -11,6 +11,7 @@ const AweBooking = _.extend(settings, {
   Popper: popper,
   Tooltip: tooltip,
   Flatpickr: flatpickr,
+  FlatpickrRange: require('../../../node_modules/flatpickr/dist/plugins/rangePlugin.js'),
 
   Popup: require('./utils/popup.js'),
   ToggleClass: require('./utils/toggle-class.js'),
@@ -34,7 +35,7 @@ const AweBooking = _.extend(settings, {
 
     $('[data-init="awebooking-tooltip"]').each(function() {
       const options = {
-        template: '<div class="awebooking-tooltip tooltip" role="tooltip"><div class="tooltip__arrow"></div><div class="tooltip__inner"></div></div>',
+        template: '<div class="awebooking-tooltip" role="tooltip"><div class="awebooking-tooltip__arrow" x-arrow></div><div class="tooltip__inner"></div></div>',
       };
 
       $(this).data('awebooking-tooltip', new self.Tooltip(this, options));

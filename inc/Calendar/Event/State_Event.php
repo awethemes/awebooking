@@ -3,28 +3,8 @@ namespace AweBooking\Calendar\Event;
 
 use AweBooking\Constants;
 use AweBooking\Calendar\Resource\Resource_Interface;
-use AweBooking\Calendar\Event\Exceptions\Invalid_State_Exception;
 
 class State_Event extends Event {
-	/**
-	 * The state reference.
-	 *
-	 * @var mixed
-	 */
-	protected $reference;
-
-	/**
-	 * The valid states.
-	 *
-	 * @var array
-	 */
-	protected static $valid_states = [
-		Constants::STATE_BOOKED,
-		Constants::STATE_PENDING,
-		Constants::STATE_AVAILABLE,
-		Constants::STATE_UNAVAILABLE,
-	];
-
 	/**
 	 * Create an event.
 	 *
@@ -37,44 +17,6 @@ class State_Event extends Event {
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = Constants::STATE_AVAILABLE ) {
 		parent::__construct( $resource, $start_date, $end_date, $value );
-	}
-
-	/**
-	 * Set the event value.
-	 *
-	 * @param  int $value The event value.
-	 * @return $this
-	 *
-	 * @throws Invalid_State_Exception
-	 */
-	public function set_value( $value ) {
-		if ( ! in_array( $value, static::$valid_states ) ) {
-			throw new Invalid_State_Exception( 'Invalid state' );
-		}
-
-		return parent::set_value( $value );
-	}
-
-	/**
-	 * Get the reference.
-	 *
-	 * @return mixed
-	 */
-	public function get_reference() {
-		return $this->reference;
-	}
-
-	/**
-	 * Set the reference.
-	 *
-	 * "Reference" can be a booking or whaterver.
-	 *
-	 * @param mixed $reference The reference.
-	 */
-	public function set_reference( $reference ) {
-		$this->reference = $reference;
-
-		return $this;
 	}
 
 	/**

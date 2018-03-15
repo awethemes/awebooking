@@ -2,9 +2,10 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
+use AweBooking\Dropdown;
 use AweBooking\AweBooking;
 use AweBooking\Model\Booking;
-use AweBooking\Support\Formatting as F;
+use AweBooking\Formatting as F;
 
 class Booking_List_Table extends Post_Type_Abstract {
 	/**
@@ -202,7 +203,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 		switch ( $column ) {
 			case 'booking_status':
 				$status = $the_booking->get_status();
-				$statuses = awebooking( 'setting' )->get_booking_statuses();
+				$statuses = Dropdown::get_booking_statuses();
 
 				$status_color = '';
 				$status_label = isset( $statuses[ $status ] ) ? $statuses[ $status ] : '';
@@ -395,7 +396,7 @@ class Booking_List_Table extends Post_Type_Abstract {
 
 		// Added booking status only in "All" section in list-table.
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = awebooking( 'setting' )->get_booking_statuses();
+			$statuses = Dropdown::get_booking_statuses();
 
 			foreach ( $statuses as $status => $display_name ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

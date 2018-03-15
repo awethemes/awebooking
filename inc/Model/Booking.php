@@ -3,15 +3,15 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 use AweBooking\Model\WP_Object;
-use AweBooking\Money\Money;
+use AweBooking\Model\Common\Money;
 use AweBooking\Support\Utils as U;
 use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Period\Period_Collection;
 
 class Booking extends WP_Object {
-	use Traits\Booking\Booking_Items_Trait,
-		Traits\Booking\Payments_Trait,
-		Traits\Booking\Booking_Attributes_Trait;
+	use Concerns\Booking_Items,
+		Concerns\Booking_Payments,
+		Concerns\Booking_Attributes;
 
 	/* Booking Status */
 	const PENDING    = 'awebooking-pending';
@@ -272,7 +272,7 @@ class Booking extends WP_Object {
 	 */
 	public function get_period_collection() {
 		$periods = $this->get_line_items()->map(function( $item ) {
-			return U::optional( $item->get_stay() )->to_period();
+			return U::optional( $item->get_timespan() )->to_period();
 		})->filter()->values();
 
 		return new Period_Collection( $periods->to_array() );

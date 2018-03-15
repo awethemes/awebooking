@@ -39,7 +39,7 @@
 										<tbody>
 											<?php foreach ( $breakdown as $night ) : ?>
 												<tr>
-													<td><?php echo $night->get_start_date()->to_wp_date_string(); ?></td>
+													<td><?php echo $night->get_start_date()->to_date_string(); ?></td>
 													<td><?php echo $night->get_amount(); ?></td>
 												</tr>
 											<?php endforeach ?>

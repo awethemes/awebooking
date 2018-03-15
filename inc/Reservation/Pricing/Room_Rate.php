@@ -1,162 +1,83 @@
 <?php
 namespace AweBooking\Reservation\Pricing;
 
-use AweBooking\Model\Stay;
-use AweBooking\Model\Room_Type;
-use AweBooking\Model\Base_Rate;
-use AweBooking\Model\Contracts\Rate;
-use AweBooking\Model\Contracts\Rate_Plan;
-use AweBooking\Support\Decimal;
 use AweBooking\Support\Collection;
+use AweBooking\Model\Pricing\Rate;
 
 class Room_Rate {
 	/**
-	 * The stay date.
+	 * The room rate.
 	 *
-	 * @var \AweBooking\Model\Stay
+	 * @var \AweBooking\Model\Pricing\Rate
 	 */
-	protected $stay;
+	protected $rate;
 
 	/**
-	 * The selected room-type.
+	 * The addition rates.
 	 *
-	 * @var \AweBooking\Model\Room_Type
+	 * @var \AweBooking\Support\Collection
 	 */
-	protected $room_type;
-
-	/**
-	 * The booked rate-plan.
-	 *
-	 * @var \AweBooking\Model\Contracts\Rate_Plan
-	 */
-	protected $rate_plan;
-
-	/**
-	 * The selected rates.
-	 *
-	 * @var \AweBooking\Model\Contracts\Rate
-	 */
-	protected $selected;
-	protected $extra;
-
-	/**
-	 * The total of selected rates.
-	 *
-	 * @var \AweBooking\Support\Decimal
-	 */
-	protected $total;
+	protected $addition_rates;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Model\Stay      $stay       The Stay instance.
-	 * @param \AweBooking\Model\Room_Type $room_type  The room-type.
+	 * @param \AweBooking\Model\Pricing\Rate|null $rate           The rate.
+	 * @param array                               $addition_rates The addition_rates.
 	 */
-	public function __construct( Stay $stay, Room_Type $room_type, Rate_Plan $rate_plan = null ) {
-		$this->stay = $stay;
-		$this->room_type = $room_type;
-
-		if ( is_null( $rate_plan ) ) {
-			$rate_plan = new Base_Rate( $room_type );
-		}
-
-		$this->use_rate_plan( $rate_plan );
+	public function __construct( Rate $rate = null, $addition_rates = [] ) {
+		$this->rate = $rate;
+		$this->addition_rates = Collection::make( $addition_rates );
 	}
 
 	/**
-	 * Get the stay instance.
+	 * Sets the room rate.
 	 *
-	 * @return \AweBooking\Model\Stay
-	 */
-	public function get_stay() {
-		return $this->stay;
-	}
-
-	/**
-	 * Get the room-type instance.
-	 *
-	 * @return \AweBooking\Model\Room
-	 */
-	public function get_room_type() {
-		return $this->room_type;
-	}
-
-	/**
-	 * Get the rate plan instance.
-	 *
-	 * @return \AweBooking\Model\Contracts\Rate_Plan
-	 */
-	public function get_rate_plan() {
-		return $this->rate_plan;
-	}
-
-	/**
-	 * Use a rate_plan for retrieve the price.
-	 *
-	 * @param  \AweBooking\Model\Contracts\Rate_Plan $rate_plan The rate plan instance.
+	 * @param  \AweBooking\Model\Pricing\Rate $rate The rate.
 	 * @return $this
 	 */
-	public function use_rate_plan( Rate_Plan $rate_plan ) {
-		if ( ! $this->room_type->has_rate_plan( $rate_plan ) ) {
-			throw new \InvalidArgumentException;
-		}
-
-		$this->rate_plan = $rate_plan;
-
-		$this->selected = null;
-
-		return $this;
-	}
-
 	public function select( Rate $rate ) {
-	}
-
-	/**
-	 * Select a rate.
-	 *
-	 * @param  \AweBooking\Model\Rate|int $rate   The rate ID or instance.
-	 * @param  boolean                    $on_top Add rate on the top.
-	 * @return $this
-	 */
-	public function with( Rate $rate, $on_top = false ) {
-		$pricing = new Pricing( $rate, $this->stay );
-
-		$item = compact( 'rate', 'pricing' );
-
-		if ( $on_top ) {
-			$this->selected_rates->prepend( $item, $rate->get_id() );
-		} else {
-			$this->selected_rates->put( $rate->get_id(), $item );
-		}
-
-		if ( $this->total ) {
-			$this->total = $total->add( $pricing->get_amount() );
-		}
+		$this->rate = $rate;
 
 		return $this;
 	}
 
 	/**
-	 * Return the total.
+	 * Push a rate into the addition_rates.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @param  \AweBooking\Model\Pricing\Rate $rate The rate.
+	 * @return $this
 	 */
-	public function total() {
-		if ( is_null( $this->total ) ) {
-			$this->total = $this->calculate_total();
-		}
+	public function addition( Rate $rate ) {
+		$this->addition_rates->push( $rate );
 
-		return $this->total;
+		return $this;
 	}
 
 	/**
-	 * Calculate the total amount of rates.
+	 * Gets the room rate.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return \AweBooking\Model\Pricing\Rate
 	 */
-	protected function calculate_total() {
-		return $this->selected_rates->reduce( function( $total, $rate ) {
-			return $total->add( $rate['pricing']->get_amount() );
-		}, Decimal::zero() );
+	public function get_rate() {
+		return $this->rate;
+	}
+
+	/**
+	 * Gets the addition rates.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_addition_rates() {
+		return $this->addition_rates;
+	}
+
+	/**
+	 * Empty the addition_rates.
+	 *
+	 * @return void
+	 */
+	public function flush_addition_rates() {
+		$this->addition_rates = new Collection;
 	}
 }

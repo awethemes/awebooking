@@ -1,10 +1,10 @@
 <?php
 namespace AweBooking\Http\Controllers;
 
-use AweBooking\Factory;
+use AweBooking\Model\Factory;
 use AweBooking\AweBooking;
 use AweBooking\Model\Rate;
-use AweBooking\Model\Guest;
+use \AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Reservation\Creator;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Url_Generator;
@@ -90,7 +90,7 @@ class Reservation_Controller extends Controller {
 			new Session_Reservation_Constraint( $reservation ),
 		], $reservation );
 
-		$availability = ( new Checker )->check( $room_type, $reservation->get_stay(), $constraints );
+		$availability = ( new Checker )->check( $room_type, $reservation->get_timespan(), $constraints );
 		$remain_rooms = $availability->remain_rooms();
 
 		if ( $remain_rooms->count() ) {

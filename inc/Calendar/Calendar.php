@@ -2,8 +2,9 @@
 namespace AweBooking\Calendar;
 
 use AweBooking\Calendar\Period\Period;
+use AweBooking\Calendar\Event\Events;
+use AweBooking\Calendar\Event\Itemizer;
 use AweBooking\Calendar\Event\Event_Interface;
-use AweBooking\Calendar\Event\Event_Collection;
 use AweBooking\Calendar\Resource\Resource_Interface;
 use AweBooking\Calendar\Provider\Provider_Interface;
 use AweBooking\Calendar\Provider\Contracts\Storable;
@@ -18,11 +19,18 @@ class Calendar {
 	protected $resource;
 
 	/**
-	 * The Calendar Store
+	 * The provider instance.
 	 *
 	 * @var \AweBooking\Calendar\Provider\Provider_Interface
 	 */
 	protected $provider;
+
+	/**
+	 * The scheduler ID.
+	 *
+	 * @var string
+	 */
+	protected $uid;
 
 	/**
 	 * Name of the calendar.
@@ -84,18 +92,32 @@ class Calendar {
 	 *
 	 * @param  Period $period  The period.
 	 * @param  array  $options Optional, something pass to provider to get events.
-	 * @return \AweBooking\Calendar\Event\Event_Collection
+	 * @return \AweBooking\Calendar\Event\Events
 	 */
 	public function get_events( Period $period, array $options = [] ) {
-		return Event_Collection::make( $this->get_provider_events( $period, $options ) )
+		return Events::make( $this->get_provider_events( $period, $options ) )
+			->reject(function( $e ) {
+				return $this->get_resource()->get_id() !== $e->get_resource()->get_id();
+			})
 			->each(function( $e ) {
 				if ( $e->is_untrusted_resource() ) {
 					$e->set_resource( $this->get_resource() );
 				}
 			})
-			->reject(function( $e ) {
-				return $this->get_resource()->get_id() !== $e->get_resource()->get_id();
-			});
+			->values();
+	}
+
+	/**
+	 * Get itemized in a period.
+	 *
+	 * @param  Period $period  The period.
+	 * @param  array  $options Optional, something pass to provider to get events.
+	 * @return array
+	 */
+	public function get_itemized( Period $period, array $options = [] ) {
+		$events = $this->get_events( $period, $options );
+
+		return ( new Itemizer( $events ) )->itemize( $period );
 	}
 
 	/**
@@ -109,15 +131,6 @@ class Calendar {
 		return $this->provider->get_events(
 			$period->get_start_date(), $period->get_end_date(), $options
 		);
-	}
-
-	/**
-	 * Get unique ID for this calendar.
-	 *
-	 * @return string
-	 */
-	public function get_uid() {
-		return $this->resource->get_id();
 	}
 
 	/**
@@ -136,6 +149,27 @@ class Calendar {
 	 */
 	public function get_provider() {
 		return $this->provider;
+	}
+
+	/**
+	 * Get unique ID for this calendar.
+	 *
+	 * @return string
+	 */
+	public function get_uid() {
+		return $this->uid ?: $this->resource->get_id();
+	}
+
+	/**
+	 * Set the calendar UID.
+	 *
+	 * @param  int $uid The calendar UID.
+	 * @return $this
+	 */
+	public function set_uid( $uid ) {
+		$this->uid = $uid;
+
+		return $this;
 	}
 
 	/**

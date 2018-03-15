@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* @vars $guest, $reservation, $results */
 
-list( $guest, $stay ) = [ $reservation->get_guest(), $reservation->get_stay() ];
+list( $guest, $timespan ) = [ $reservation->get_guest(), $reservation->get_timespan() ];
 
 do_action( 'awebooking/template_notices' );
 
@@ -45,8 +45,8 @@ do_action( 'awebooking/template_notices' );
 			<input type="hidden" name="session_id" value="<?php echo esc_attr( $session_id ); ?>">
 		<?php endif; ?>
 
-		<input type="hidden" name="check_in" value="<?php echo esc_attr( $stay->get_check_in()->toDateString() ); ?>">
-		<input type="hidden" name="check_out" value="<?php echo esc_attr( $stay->get_check_out()->toDateString() ); ?>">
+		<input type="hidden" name="check_in" value="<?php echo esc_attr( $timespan->get_start_date()->toDateString() ); ?>">
+		<input type="hidden" name="check_out" value="<?php echo esc_attr( $timespan->get_end_date()->toDateString() ); ?>">
 
 		<input type="hidden" name="adults" value="<?php echo esc_attr( $guest->get_adults() ); ?>">
 		<?php if ( awebooking( 'setting' )->is_children_bookable() ) : ?>
