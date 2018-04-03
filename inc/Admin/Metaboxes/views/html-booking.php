@@ -186,6 +186,8 @@ use AweBooking\Admin\Forms\Booking_General_From;
 		<?php endforeach ?>
 		</tbody>
 
+		<?php do_action( 'awebooking/booking/before_total_price', $the_booking->get_total() ); ?>
+
 		<tfoot>
 			<tr>
 				<td colspan="4">
