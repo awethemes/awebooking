@@ -109,6 +109,7 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
  * Load the bootstrap file.
  */
 require trailingslashit( __DIR__ ) . 'bootstrap.php';
+require trailingslashit( __DIR__ ) . 'check_addons.php';
 
 /* Constants */
 define( 'AWEBOOKING_PLUGIN_FILE_PATH', __FILE__ );
