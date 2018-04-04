@@ -54,7 +54,7 @@ $cart_collection = $cart->get_contents();
 						<b>
 						<?php
 							/* translators: %s: booking room */
-							printf( esc_html__( 'Room %1$s' ), intval( $index ) );
+							printf( esc_html__( 'Room %1$s', 'awebooking' ), intval( $index ) );
 						?>
 						</b>
 					</th>
