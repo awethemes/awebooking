@@ -17,7 +17,7 @@ final class AweBooking extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.0.6';
+	const VERSION = '3.0.7';
 
 	/* Deprecated constants */
 	const SETTING_KEY    = 'awebooking_settings';

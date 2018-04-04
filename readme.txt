@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.0.6
+Stable tag:        3.0.7
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,11 @@ If you have 2.x version, please do not upgrade to this version.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [3.0.7] - [2018-04-04]
+#### Fixed
+- Fixed missing text domain.
+- Fixed shortcode bugs.
+
 ### [3.0.6] - [2018-02-27]
 #### Fixed
 - Fixed wrong subject on the cancelled email.
