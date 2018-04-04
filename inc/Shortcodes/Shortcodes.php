@@ -102,7 +102,11 @@ class Shortcodes {
 
 		$template = apply_filters( 'awebooking/check_availability/layout', $template, $atts );
 
+		ob_start();
+
 		awebooking_get_template( $template, array( 'atts' => $atts ) );
+
+		return ob_get_clean();
 	}
 
 	/**
@@ -130,6 +134,8 @@ class Shortcodes {
 
 		$room_types = new \WP_Query( $query_args );
 
+		ob_start();
+
 		do_action( 'awebooking/before_room_types_shortcode', $atts );
 
 		if ( $room_types->have_posts() ) : ?>
@@ -144,5 +150,7 @@ class Shortcodes {
 
 		do_action( 'awebooking/after_room_types_shortcode', $atts );
 		wp_reset_postdata();
+
+		return ob_get_clean();
 	}
 }
