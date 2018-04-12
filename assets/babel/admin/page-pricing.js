@@ -34,6 +34,7 @@
       this.scheduler.on('clear', this.handleClearSelected.bind(this));
       this.scheduler.on('action:set-price', this.handleSetPrice.bind(this));
       this.scheduler.on('action:reset-price', this.handleResetPrice.bind(this));
+      this.initBulkUpdate();
     }
 
     /**
@@ -119,6 +120,33 @@
       });
 
       return $form;
+    }
+
+    /**
+     * Handle bulk update action.
+     */
+    initBulkUpdate() {
+       // Create the flatpickr after.
+      this.flatpickr = flatpickr('#bulk_date_start', {
+        dateFormat: 'Y-m-d',
+        plugins: [ new rangePlugin({ input: '#bulk_date_end' }) ],
+      });
+
+      const $dialog = $('#bulk-update-form-dialog').dialog({
+        modal: true,
+        width: 'auto',
+        height: 'auto',
+        autoOpen: false,
+        draggable: false,
+        resizable: false,
+        closeOnEscape: true,
+        dialogClass: 'wp-dialog awebooking-dialog',
+        position: { my: 'center', at: 'center center-15%', of: window },
+      });
+
+      $('#bulk-update-button-dialog').on('click', function() {
+        $dialog.dialog('open');
+      });
     }
   }
 
