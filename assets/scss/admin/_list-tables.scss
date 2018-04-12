@@ -1,0 +1,38 @@
+table.wp-list-table {
+  .column-rate {
+    width: 10%;
+  }
+  .column-rooms {
+    width: 15%;
+  }
+  .column-capacity {
+    width: 20%;
+  }
+
+  .column-thumb {
+    width: 52px;
+    text-align: center;
+
+    @include in-small() {
+      display: none;
+      text-align: left;
+
+      &:before {
+        content: '' !important;
+      }
+    }
+
+    > a {
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 50%;
+      @include size(38px);
+    }
+
+    > a > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

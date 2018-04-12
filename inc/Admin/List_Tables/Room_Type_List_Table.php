@@ -4,197 +4,153 @@ namespace AweBooking\Admin\List_Tables;
 use AweBooking\Constants;
 use AweBooking\Model\Common\Guest_Counts;
 
-class Room_Type_List_Table extends Post_Type_Abstract {
+class Room_Type_List_Table extends Abstract_List_Table {
 	/**
-	 * Post type slug.
+	 * The post type name.
 	 *
 	 * @var string
 	 */
-	protected $post_type = Constants::ROOM_TYPE;
+	protected $list_table = Constants::ROOM_TYPE;
 
 	/**
-	 * Init somethings hooks.
+	 * The current loop room type.
 	 *
-	 * @access private
+	 * @var \AweBooking\Model\Room_Type
 	 */
-	public function init() {
-		add_filter( 'request', array( $this, 'request_query' ) );
-		add_filter( 'parse_query', array( $this, 'filters_query' ) );
-		add_filter( 'restrict_manage_posts', array( $this, 'restrict_manage_rooms' ) );
-	}
+	protected $room_type;
 
 	/**
-	 * Registers admin columns to display.
-	 *
-	 * @access private
-	 *
-	 * @param  array $columns Array of registered column names/labels.
-	 * @return array
+	 * {@inheritdoc}
 	 */
-	public function columns( $columns ) {
-		$columns = [
-			'cb'              => '<input type="checkbox" />',
-			'thumb'           => sprintf( '<span class="awebooking-column-image" title="%1$s">%1$s</span>', esc_html__( 'Image', 'awebooking' ) ),
-			'title'           => esc_html__( 'Title', 'awebooking' ),
-			'start_price'     => esc_html__( 'Starting Price', 'awebooking' ),
-			'number_of_rooms' => esc_html__( 'No. of rooms', 'awebooking' ),
-			'capacity'        => esc_html__( 'Capacity', 'awebooking' ),
-		];
-
-		if ( awebooking( 'setting' )->is_multi_location() ) {
-			$columns['location'] = esc_html__( 'Location', 'awebooking' );
+	public function define_columns( $columns ) {
+		if ( empty( $columns ) && ! is_array( $columns ) ) {
+			$columns = [];
 		}
 
-		$columns['date'] = esc_html__( 'Date', 'awebooking' );
+		// Temp remove columns, we will rebuild late.
+		unset( $columns['title'], $columns['comments'], $columns['date'] );
 
-		return $columns;
+		$show_columns              = [];
+		$show_columns['thumb']     = '<span class="tippy" title="' . esc_attr__( 'Image', 'awebooking' ) . '"><span class="dashicons dashicons-format-image"></span><span class="screen-reader-text">' . esc_html__( 'Image', 'awebooking' ) . '</span></span>';
+		$show_columns['title']     = esc_html__( 'Title', 'awebooking' );
+		$show_columns['rooms']     = esc_html__( 'Rooms', 'awebooking' );
+		$show_columns['rate']      = esc_html__( 'Rack Rate', 'awebooking' );
+		$show_columns['capacity']  = esc_html__( 'Capacity', 'awebooking' );
+		$show_columns['date']      = esc_html__( 'Date', 'awebooking' );
+
+		return array_merge( $columns, $show_columns );
 	}
 
 	/**
-	 * Registers which columns are sortable.
-	 *
-	 * @access private
-	 *
-	 * @param  array $sortable_columns Array of registered column keys => data-identifier.
-	 * @return array
+	 * {@inheritdoc}
 	 */
-	public function sortable_columns( $sortable_columns ) {
-		$sortable_columns['start_price']     = 'price';
-		// $sortable_columns['capacity']        = 'capacity';
-		$sortable_columns['number_of_rooms'] = 'number_of_rooms';
-
-		return $sortable_columns;
+	public function define_sortable_columns( $columns ) {
+		return array_merge( $columns, [
+			// 'rooms'    => 'rooms',
+			'rate'     => 'rack_rate',
+			'capacity' => 'capacity',
+		]);
 	}
 
 	/**
-	 * Handles admin column display.
-	 *
-	 * @access private
-	 *
-	 * @param string $column  The name of the column to display.
-	 * @param int    $post_id Current post ID.
+	 * {@inheritdoc}
 	 */
-	public function columns_display( $column, $post_id ) {
-		global $room_type;
+	protected function prepare_row_data( $post_id ) {
+		global $the_room_type;
 
-		switch ( $column ) {
-			case 'thumb':
-				if ( has_post_thumbnail( $post_id ) ) {
-					$thumbnail = get_the_post_thumbnail( $post_id, [ 38, 38 ] );
-				} else {
-					$thumbnail = '<span class="awebooking-no-image"></span>';
-				}
-
-				printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_post_link( $post_id ) ), $thumbnail ); // @wpcs: XSS OK.
-				break;
-
-			case 'start_price':
-				/*$base_price = $room_type->get_base_price();
-
-				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					Money::of( $base_price ), $base_price->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--success'
-				);*/
-				break;
-
-			case 'capacity':
-				$guest = new Guest_Counts( $room_type->get_number_adults(), $room_type->get_number_children(), $room_type->get_number_infants() );
-				print $guest->as_string(); // @wpcs: XSS OK.
-				break;
-
-			case 'location':
-				if ( $room_type['location_id'] ) {
-					$location = $room_type->get_location();
-					printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_term_link( $location->term_id ) ), esc_html( $location->name ) );
-				}
-				break;
-
-			case 'number_of_rooms':
-				echo esc_html( $room_type->get_total_rooms() );
-				break;
-		} // End switch().
+		if ( is_null( $this->room_type ) || $this->room_type->get_id() !== (int) $post_id ) {
+			$the_room_type   = abrs_get_room_type( $post_id );
+			$this->room_type = $the_room_type;
+		}
 	}
 
 	/**
-	 * Display filter rooms type.
+	 * Display the thumbnail column.
+	 *
+	 * @param  int $post_id The post ID.
+	 * @return void
+	 */
+	protected function display_thumb_column( $post_id ) {
+		$thumbnail = '<span class="abrs-no-image"></span>';
+
+		if ( has_post_thumbnail( $post_id ) ) {
+			$thumbnail = get_the_post_thumbnail( $post_id, 'thumbnail' );
+		}
+
+		printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_post_link( $post_id ) ), $thumbnail ); // @wpcs: XSS OK.
+	}
+
+	/**
+	 * Display the rate column.
 	 *
 	 * @return void
 	 */
-	public function restrict_manage_rooms() {
-		global $typenow, $wp_query;
-
-		// Works only on room type page.
-		if ( Constants::ROOM_TYPE !== $typenow ) {
-			return;
-		}
-
-		if ( awebooking( 'setting' )->is_multi_location() ) {
-			wp_dropdown_categories([
-				'show_option_all' => esc_html__( 'All Location', 'awebooking' ),
-				'taxonomy'        => Constants::HOTEL_LOCATION,
-				'name'            => 'hotel-location', // Don't using "hotel_location", I got some trouble with this.
-				'orderby'         => 'name',
-				'selected'        => isset( $_REQUEST['hotel-location'] ) ? absint( $_REQUEST['hotel-location'] ) : '',
-				'hierarchical'    => false,
-				'show_count'      => true,
-				'hide_empty'      => false,
-			]);
-		}
+	protected function display_rooms_column() {
+		echo '<span class="abrs-label abrs-label--info">' . esc_html( $this->room_type->get_total_rooms() ) . '</span>'; // WPCS: XSS OK.
 	}
 
-
 	/**
-	 * Filter the products in admin based on options.
+	 * Display the rate column.
 	 *
-	 * @param mixed $query //.
+	 * @return void
 	 */
-	public function filters_query( $query ) {
-		global $typenow, $wp_query;
-
-
-		// Works only on room type page.
-		if ( Constants::ROOM_TYPE !== $typenow ) {
-			return;
-		}
-
-		// Hotel location.
-		if ( isset( $_REQUEST['hotel-location'] ) && '0' !== $_REQUEST['hotel-location'] ) {
-			$query->query_vars['tax_query'][] = array(
-				'taxonomy' => Constants::HOTEL_LOCATION,
-				'terms'    => absint( $_REQUEST['hotel-location'] ),
-				'field'    => 'id',
-				'operator' => 'IN',
-			);
+	protected function display_rate_column() {
+		if ( 0 == $this->room_type['rack_rate'] ) {
+			echo '<span class="abrs-badge abrs-badge--negative">' . abrs_price( 0 ) . '</span>'; // WPCS: XSS OK.
+		} else {
+			echo '<span class="abrs-badge abrs-badge--primary">' . abrs_price( $this->room_type['rack_rate'] ) . '</span>'; // WPCS: XSS OK.
 		}
 	}
 
 	/**
-	 * Filters and sorting handler.
+	 * Display the capacity column.
 	 *
-	 * @param  array $query_vars WP query_vars property.
+	 * @return void
+	 */
+	protected function display_capacity_column() {
+		$guests = new Guest_Counts( $this->room_type['number_adults'] );
+
+		if ( abrs_is_children_bookable() && $this->room_type['number_children'] ) {
+			$guests->set_children( $this->room_type['number_children'] );
+		}
+
+		if ( abrs_is_infants_bookable() && $this->room_type['number_infants'] ) {
+			$guests->set_infants( $this->room_type['number_infants'] );
+		}
+
+		/* translators: %s Max occupancy */
+		echo ' <span class="abrs-badge abrs-badge--primary">' . sprintf( esc_html__( 'Max %d', 'awebooking' ), absint( $this->room_type['maximum_occupancy'] ) ) . '</span>';
+		print '<br>' . $guests->as_string(); // @wpcs: XSS OK.
+	}
+
+	/**
+	 * Handle any custom filters.
+	 *
+	 * @param  array $query_vars Query vars.
 	 * @return array
 	 */
-	public function request_query( $query_vars ) {
-		global $typenow, $wp_query;
-
-		// Prevent actions if not current post type.
-		if ( $this->post_type !== $typenow ) {
-			return $query_vars;
-		}
-
-		// Sorting handler.
-		if ( isset( $query_vars['orderby'] ) ) {
+	protected function query_filters( $query_vars ) {
+		// Handle custom order by.
+		if ( ! empty( $query_vars['orderby'] ) ) {
 			switch ( $query_vars['orderby'] ) {
-				case 'price':
+				case 'rooms':
+					$query_vars = array_merge( $query_vars, [
+						'meta_key'  => '_cache_total_rooms',
+						'orderby'   => 'meta_value_num',
+					]);
+					break;
+
+				case 'rack_rate':
 					$query_vars = array_merge( $query_vars, [
 						'meta_key'  => 'base_price',
 						'orderby'   => 'meta_value_num',
 					]);
 					break;
 
-				// TODO: Our custom orderby.
-				case 'number_of_rooms':
+				case 'capacity':
 					$query_vars = array_merge( $query_vars, [
-						'orderby'   => 'booking_rooms',
+						'meta_key'  => '_maximum_occupancy',
+						'orderby'   => 'meta_value_num',
 					]);
 					break;
 			}

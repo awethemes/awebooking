@@ -10,13 +10,6 @@ interface Rate_Plan {
 	public function get_id();
 
 	/**
-	 * Get the priority.
-	 *
-	 * @return int
-	 */
-	public function get_priority();
-
-	/**
 	 * Get the name.
 	 *
 	 * @return string
@@ -36,4 +29,11 @@ interface Rate_Plan {
 	 * @return string
 	 */
 	public function get_inclusions();
+
+	/**
+	 * Get the priority.
+	 *
+	 * @return int
+	 */
+	public function get_priority();
 }

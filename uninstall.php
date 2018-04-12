@@ -1,4 +1,11 @@
 <?php
+/**
+ * AweBooking Uninstall.
+ *
+ * Deletes user roles, pages, tables, and options.
+ *
+ * @package AweBooking
+ */
 
 global $wpdb, $wp_version;
 

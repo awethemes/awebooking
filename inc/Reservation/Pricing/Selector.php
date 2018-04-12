@@ -4,89 +4,88 @@ namespace AweBooking\Reservation\Pricing;
 use AweBooking\Ruler\Rule;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Rate_Plan;
+use AweBooking\Model\Common\Timespan;
 use AweBooking\Reservation\Request;
 use AweBooking\Support\Collection;
+use AweBooking\Support\Utils as U;
+
+use AweBooking\Calendar\Finder\Finder;
+use AweBooking\Calendar\Finder\Response;
+use AweBooking\Calendar\Resource\Resource;
+use AweBooking\Calendar\Provider\Cached_Provider;
+use AweBooking\Calendar\Provider\Core\Pricing_Provider;
 
 class Selector {
 	/**
-	 * The reservation request.
-	 *
-	 * @var \AweBooking\Reservation\Request
-	 */
-	protected $request;
-
-	/**
-	 * List rates passed the restrictions.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $passed_rates;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param \AweBooking\Reservation\Request $request The reservation request.
-	 */
-	public function __construct( Request $request ) {
-		$this->request = $request;
-		$this->passed_rates = new Collection;
-	}
-
-	/**
-	 * Get the request.
-	 *
-	 * @return \AweBooking\Reservation\Request
-	 */
-	public function get_request() {
-		return $this->request;
-	}
-
-	/**
-	 * Get the passed_rates.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function get_passed_rates() {
-		return $this->passed_rates;
-	}
-
-	/**
 	 * Perform the select room-rate by given.
 	 *
-	 * @param  \AweBooking\Model\Room_Type              $room_type The room-type.
 	 * @param  \AweBooking\Model\Pricing\Rate_Plan|null $rate_plan The rate-plan.
+	 * @param  \AweBooking\Model\Room_Type              $room_type The room-type.
 	 * @return \AweBooking\Reservation\Pricing\Room_Rate|null
 	 */
-	public function select( Room_Type $room_type, Rate_Plan $rate_plan = null ) {
-		// If no rate plan given, use standard rate plan instead.
-		$rate_plan = $rate_plan ?: $room_type->get_standard_rate_plan();
+	public function select( Rate_Plan $rate_plan, Room_Type $room_type, Timespan $timespan, $constraints = [] ) {
+		$room_rate = new Room_Rate( $room_type, $timespan );
 
-		// Get all rates of their rate-plan.
+		// Perform filter rates.
 		$rates = $room_type->get_rates( $rate_plan );
+		$response = $this->perform_filter_rates( $rates, $timespan, $constraints );
 
-		// Filter passed rates.
-		$this->perform_filter_rates( $rates );
+		$passed_rates = Collection::make( $response->get_included() )
+			->transform( function ( $matching ) {
+				$matching['rate'] = $matching['resource']->get_reference();
 
-		// None of any rates passed, leave.
-		if ( $this->passed_rates->isEmpty() ) {
-			return;
+				unset( $matching['resource'] );
+
+				return $matching;
+			})
+			->sortBy( function ( $matching ) {
+				return $matching['rate']->get_priority();
+			});
+
+		if ( $passed_rates->isNotEmpty() ) {
+			$passed_rates = $passed_rates->first();
+			$room_rate->select( $passed_rates['rate'] );
 		}
-
-		$selected = $this->passed_rates->first();
-		$selected = apply_filters( 'awebooking/pricing/rate_selecting', $selected, $this, $room_type, $rate_plan );
-
-		$room_rate = new Room_Rate( $selected );
 
 		return $room_rate;
 	}
 
-	protected function perform_filter_rates( $rates ) {
-		$context = $this->get_context();
+	/**
+	 * Perform filter rates with constraints.
+	 *
+	 * @param  mixed                             $rates       The rates.
+	 * @param  \AweBooking\Model\Common\Timespan $timespan    The timespan.
+	 * @param  array                             $constraints The constraints.
+	 * @return \AweBooking\Calendar\Finder\Response
+	 */
+	protected function perform_filter_rates( $rates, Timespan $timespan, $constraints ) {
+		// Transform the resources.
+		$resources = Collection::make( $rates )
+			->keyBy( function( $rate ) {
+				return $rate->get_id();
+			})
+			->transform( function( $rate ) {
+				$resource = new Resource( $rate->get_id(), $rate->get_base_amount()->as_raw_value() );
 
-		$rates->each( function ( $rate ) {
-			if ( $rate->apply( $context ) ) {
-				$this->passed_rates[] = $rate;
-			}
-		});
+				$resource->set_reference( $rate );
+				$resource->set_title( $rate->get_name() );
+
+				return $resource;
+			});
+
+		// New calendar response.
+		$response = new Response( $timespan->to_period(), $resources );
+
+		foreach ( $resources as $resource ) {
+			$response->add_match( $resource, 'valid' );
+
+			// Applly the resource constraints.
+			// $response->apply_constraints( $resource->get_constraints() );
+		}
+
+		// Apply the global constraints.
+		$response->apply_constraints( $constraints );
+
+		return $response;
 	}
 }

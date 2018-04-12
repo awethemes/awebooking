@@ -1,11 +1,13 @@
 <?php
 namespace AweBooking\Admin;
 
+use Exception;
+use Throwable;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Admin_Template {
 	/**
-	 * Create a full template.
+	 * Returns a template contents.
 	 *
 	 * @param  string $template The template name.
 	 * @param  array  $vars     The data inject to template.
@@ -13,34 +15,34 @@ class Admin_Template {
 	 */
 	public function get( $template, array $vars = [] ) {
 		return $this->evaluate_template(
-			$this->locale_template( $template ), $vars
+			$this->locale_template( $template ), $vars, false
 		);
 	}
 
 	/**
 	 * Display a partial template.
 	 *
-	 * @param  string $template The template name.
-	 * @param  array  $vars     The data inject to template.
+	 * @param  string $partial The partial template.
+	 * @param  array  $vars    The data inject to template.
 	 * @return void
 	 */
-	public function partial( $template, array $vars = [] ) {
+	public function partial( $partial, array $vars = [] ) {
 		print $this->evaluate_template( // @codingStandardsIgnoreLine
-			$this->locale_template( $template ), $vars, false
+			$this->locale_template( $partial ), $vars, false // @codingStandardsIgnoreLine
 		);
 	}
 
 	/**
-	 * Create a callback display a partial template.
+	 * Returns a full page template.
 	 *
-	 * @param  string $template The template name.
-	 * @param  array  $vars     The data inject to template.
-	 * @return \Closure
+	 * @param  string $page The template page.
+	 * @param  array  $vars The data inject to template.
+	 * @return string
 	 */
-	public function partial_callback( $template, array $vars = [] ) {
-		return function () use ( $template, $vars ) {
-			$this->partial( $template, $vars );
-		};
+	public function page( $page, array $vars = [] ) {
+		return $this->evaluate_template(
+			$this->locale_template( $page ), $vars, true
+		);
 	}
 
 	/**
@@ -63,7 +65,7 @@ class Admin_Template {
 	 * @param  bool   $admin_template Should be include admin template?.
 	 * @return string
 	 */
-	protected function evaluate_template( $template, $vars, $admin_template = true ) {
+	protected function evaluate_template( $template, $vars, $admin_template = false ) {
 		$ob_level = ob_get_level();
 
 		// Turn on output buffering.
@@ -93,9 +95,9 @@ class Admin_Template {
 			if ( $admin_template ) {
 				include ABSPATH . 'wp-admin/admin-footer.php';
 			}
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->handle_view_exception( $e, $ob_level );
-		} catch ( \Throwable $e ) {
+		} catch ( Throwable $e ) {
 			$this->handle_view_exception( $e, $ob_level );
 		}
 

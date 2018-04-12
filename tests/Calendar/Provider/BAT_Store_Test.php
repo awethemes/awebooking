@@ -2,9 +2,9 @@
 
 use Roomify\Bat\Unit\Unit;
 use Roomify\Bat\Event\Event;
-use AweBooking\Calendar\Provider\Stores\BAT_Store;
+use AweBooking\Calendar\Provider\Stores\BATStore;
 
-class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
+class Calendar_Store_BATStore_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 	}
@@ -13,7 +13,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 	 * @expectedException LogicException
 	 */
 	public function testQueryBuilderFaied2() {
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$store->build_the_query( new DateTime( '2017-10-10' ), new DateTime( '2017-10-09' ) );
 	}
 
@@ -21,7 +21,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 	 * @dataProvider getDataQueryBuilder
 	 */
 	public function testQueryBuilderOK( $expected, $params ) {
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$this->assertEquals($expected, $store->build_the_query( ...$params ) );
 	}
 
@@ -47,7 +47,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 	}
 
 	public function testInstance() {
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$this->assertInstanceOf('Roomify\Bat\Store\Store', $store);
 	}
 
@@ -55,7 +55,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 		global $wpdb;
 		$wpdb->query("INSERT INTO `{$wpdb->prefix}awebooking_booking` (`room_id`, `year`, `month`, `d25`, `d26`, `d27`, `d28`) VALUES ('11', '2017', '11', '5', '5', '5', '10');");
 
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$events1 = $store->getEventData( new DateTime( '2017-11-10' ), new DateTime( '2017-11-29' ), [ 100 ] );
 		$events2 = $store->getEventData( new DateTime( '2017-11-10' ), new DateTime( '2017-11-29' ), [ 11 ] );
 
@@ -72,7 +72,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 		$wpdb->query("INSERT INTO `{$wpdb->prefix}awebooking_booking` (`room_id`, `year`, `month`, `d25`, `d26`, `d27`, `d28`) VALUES ('11', '2017', '12', '5', '5', '5', '10');");
 		$wpdb->query("INSERT INTO `{$wpdb->prefix}awebooking_booking` (`room_id`, `year`, `month`, `d25`, `d26`, `d27`) VALUES ('11', '2018', '1', '10', '10', '10');");
 
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$events = $store->getEventData( new DateTime( '2017-12-11' ), new DateTime( '2018-01-29' ), [ 11 ] );
 
 		$this->assertEquals(5, $events[11]['bat_day'][2017][12]['d25']);
@@ -85,7 +85,7 @@ class Calendar_Store_BAT_Store_Test extends WP_UnitTestCase {
 	}
 
 	public function testStoreEvent() {
-		$store = new BAT_Store( 'awebooking_booking', 'room_id' );
+		$store = new BATStore( 'awebooking_booking', 'room_id' );
 		$event1 = new Event( new DateTime( '2017-11-10' ), new DateTime( '2017-11-29' ), new Unit( 101, 0 ), 150 );
 		$event2 = new Event( new DateTime( '2017-12-10' ), new DateTime( '2017-12-15' ), new Unit( 101, 0 ), 250 );
 		$event3 = new Event( new DateTime( '2018-02-10' ), new DateTime( '2018-02-18' ), new Unit( 101, 0 ), 500 );

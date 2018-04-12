@@ -1,25 +1,27 @@
 <?php
 namespace AweBooking\Bootstrap;
 
-use AweBooking\AweBooking;
-use AweBooking\Support\Flash_Message;
+use AweBooking\Plugin;
 use Awethemes\WP_Session\WP_Session;
+use AweBooking\Component\Flash\Session_Store;
+use AweBooking\Component\Flash\WP_Sesstion_Store;
+use AweBooking\Component\Flash\Flash_Notifier;
 
 class Start_Session {
 	/**
-	 * The AweBooking instance.
+	 * The plugin instance.
 	 *
-	 * @var \AweBooking\AweBooking
+	 * @var \AweBooking\Plugin
 	 */
-	protected $awebooking;
+	protected $plugin;
 
 	/**
 	 * Start session bootstrapper.
 	 *
-	 * @param AweBooking $awebooking The AweBooking instance.
+	 * @param \AweBooking\Plugin $plugin The plugin instance.
 	 */
-	public function __construct( AweBooking $awebooking ) {
-		$this->awebooking = $awebooking;
+	public function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
 	}
 
 	/**
@@ -28,27 +30,11 @@ class Start_Session {
 	 * @return void
 	 */
 	public function bootstrap() {
-		$this->register_session_bindings();
+		$this->register_session_binding();
 
 		$this->start_session();
-	}
 
-	/**
-	 * Register the wp-session binding.
-	 *
-	 * @return void
-	 */
-	protected function register_session_bindings() {
-		// Binding the session manager.
-		$this->awebooking->singleton( 'session', function() {
-			return new WP_Session( 'awebooking_session', [ 'lifetime' => 120 ] );
-		});
-
-		$this->awebooking->singleton( 'session.store', function( $a ) {
-			return $a['session']->get_store();
-		});
-
-		$this->awebooking->alias( 'session', WP_Session::class );
+		$this->register_flash_binding();
 	}
 
 	/**
@@ -58,10 +44,40 @@ class Start_Session {
 	 */
 	protected function start_session() {
 		// Start the session.
-		$this->awebooking->make( 'session' )->hooks();
+		$this->plugin->make( 'session' )->hooks();
 
 		if ( did_action( 'plugins_loaded' ) ) {
-			$this->awebooking['session']->start_session();
+			$this->plugin['session']->start_session();
 		}
+	}
+
+	/**
+	 * Register the wp-session binding.
+	 *
+	 * @return void
+	 */
+	protected function register_session_binding() {
+		$this->plugin->singleton( 'session', function() {
+			return new WP_Session( 'awebooking_session', [ 'lifetime' => 120 ] );
+		});
+
+		$this->plugin->singleton( 'session.store', function( $a ) {
+			return $this->plugin['session']->get_store();
+		});
+
+		$this->plugin->alias( 'session', WP_Session::class );
+	}
+
+	/**
+	 * Register the wp-session binding.
+	 *
+	 * @return void
+	 */
+	protected function register_flash_binding() {
+		$this->plugin->bind( Session_Store::class, WP_Sesstion_Store::class );
+
+		$this->plugin->singleton( 'flash', function () {
+			return new Flash_Notifier( $this->plugin->make( Session_Store::class ) );
+		});
 	}
 }

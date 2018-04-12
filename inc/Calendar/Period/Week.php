@@ -3,7 +3,7 @@ namespace AweBooking\Calendar\Period;
 
 use AweBooking\Support\Carbonate;
 
-class Week extends Period_Unit implements \IteratorAggregate {
+class Week extends Iterator_Period {
 	/**
 	 * The date interval specification for the period.
 	 *
@@ -17,9 +17,11 @@ class Week extends Period_Unit implements \IteratorAggregate {
 	 * @param string|DateTime $start_date The start date point.
 	 */
 	public function __construct( $start_date ) {
-		$start_date = Carbonate::create_date( $start_date );
+		$start_date = Carbonate::create_date( $start_date )->startOfWeek();
 
-		parent::__construct( $start_date->startOfWeek() );
+		list( $start_date, $end_date ) = $this->filter_from_datepoint( $start_date );
+
+		parent::__construct( $start_date, $end_date );
 	}
 
 	/**

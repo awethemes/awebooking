@@ -1,0 +1,241 @@
+.arbs-postbox-title {
+  padding: 0.6em 1em;
+  background-color: #fafafa;
+
+  h3,
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+}
+
+#awebooking-booking-data .inside,
+#awebooking-booking-actions .inside,
+#awebooking-booking-payments .inside,
+#awebooking-booking-rooms .inside,
+#awebooking-room-type-data .inside {
+  margin: 0;
+  padding: 0;
+}
+
+#awebooking-room-type-data {
+  .awebooking-tabs > li {
+    > a {
+      padding-left: 45px;
+    }
+
+    > a:before {
+      @include pseudoicon('', 'awebooking-webfont');
+      @include size(20px);
+
+      font-size: 14px;
+      line-height: 20px;
+      top: 12px;
+      left: 15px;
+      position: absolute;
+    }
+
+    &.tab-room-type-general > a:before {
+      content: "\e001";
+    }
+    &.tab-room-type-pricing > a:before {
+      content: "\e012";
+    }
+    &.tab-room-type-services > a:before {
+      content: "\e007";
+    }
+    &.tab-room-type-amenities > a:before {
+      content: "\e016";
+    }
+    &.tab-room-type-description > a:before {
+      content: "\f348";
+      font-size: 18px;
+      font-family: "Dashicons";
+    }
+  }
+
+  .awebooking-panel {
+    padding: 0 10px 10px;
+    min-height: 510px;
+
+    select,
+    .regular-text {
+      width: 100%;
+    }
+
+    .cmb-th > label {
+      padding-top: 0;
+      padding-bottom: 7px;
+      display: inline-block;
+    }
+
+    .cmb2-tooltip {
+      vertical-align: top;
+      display: inline-block;
+
+      .dashicons {
+        font-size: 14px;
+        width: auto;
+        height: auto;
+      }
+    }
+
+    > .abrow {
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+
+    > .abrow,
+    > .cmb-row {
+      padding: 0;
+      box-sizing: border-box;
+      border-bottom: solid 1px #eee;
+    }
+
+    > .abrow > [class*="abcol"],
+    > .abrow > [class*="abcol-"] {
+      padding: 10px;
+      border-right: solid 1px #eee;
+    }
+  }
+
+  .category-tabs {
+    margin: 12px 0 5px;
+  }
+}
+
+#awebooking-booking-data {
+  h3 { font-size: 14px; }
+  h4 { font-size: 13px; }
+
+  select,
+  .regular-text {
+    width: 100%;
+  }
+
+  .booking-heading {
+    padding: 10px 1em;
+    margin-left: -1em;
+    margin-right: -1em;
+    border-bottom: solid 1px #eee;
+
+    h2 {
+      margin: 0;
+      padding: 0;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+  }
+
+  .cmb-row {
+    margin-bottom: 1em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .cmb-th > label {
+    padding-top: 0;
+    padding-bottom: 5px;
+    display: inline-block;
+    font-weight: 400;
+  }
+
+  .js-editnow {
+    cursor: pointer;
+  }
+
+  .button-editnow {
+    float: right;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    background-color: #f7f7f7;
+
+    .dashicons,
+    .dashicons:before {
+      height: 32px;
+      line-height: 32px;
+    }
+
+    &:hover {
+      color: #fff;
+      background-color: #00a0d2;
+    }
+  }
+
+  #excerpt {
+    height: auto;
+  }
+
+  .customer_note {
+    color: #444;
+    background-color: #f7f7f7;
+    max-height: 150px;
+    overflow: auto;
+    padding: 1em;
+
+    p:first-child { margin-top: 0; }
+    p:last-child { margin-bottom: 0; }
+  }
+}
+
+#awebooking-booking-rooms table,
+#awebooking-booking-payments table {
+  border: none;
+}
+
+.reservation-summary-block {
+  color: #898989;
+  font-size: 13px;
+
+  strong {
+    color: #444;
+    font-weight: 400;
+    display: inline-block;
+  }
+}
+
+.reservation-details {
+  color: #898989;
+  margin-top: 1em;
+  border: 2px solid #ececec;
+  border-top-width: 1px;
+  border-radius: 2px;
+
+  p {
+    margin-top: 0;
+    padding: 10px 20px 0;
+    border-top: 1px solid #ececec;
+  }
+
+  strong {
+    color: #545454;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2em;
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 3px;
+  }
+
+  .night-stay > strong {
+    color: #1885dc;
+  }
+
+  .abrow > [class*="abcol-"]:first-child {
+    border-right: solid 1px #ececec;
+  }
+}

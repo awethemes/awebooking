@@ -143,7 +143,9 @@ class Decimal {
 	}
 
 	/**
-	 * Creates a value from an raw integer input. No value conversions will be done.
+	 * Creates a value from a raw integer input.
+	 *
+	 * No value conversions will be done.
 	 *
 	 * @param  int      $amount The amount.
 	 * @param  int|null $scale  Optional, the scale.

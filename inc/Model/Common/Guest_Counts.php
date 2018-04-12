@@ -1,11 +1,9 @@
 <?php
 namespace AweBooking\Model\Common;
 
-use AweBooking\Support\Contracts\Stringable;
-
-class Guest_Counts implements Stringable {
+class Guest_Counts {
 	/**
-	 * Store the listed guest count.
+	 * The listed guest count.
 	 *
 	 * @var array
 	 */
@@ -34,7 +32,7 @@ class Guest_Counts implements Stringable {
 	 * Get the Guest_Count instance by given a age code.
 	 *
 	 * @param  string $age_code The age code.
-	 * @return \\AweBooking\Model\Common\Guest_Count|null
+	 * @return \AweBooking\Model\Common\Guest_Count|null
 	 */
 	public function get( $age_code ) {
 		return array_key_exists( $age_code, $this->guest_counts )
@@ -45,7 +43,7 @@ class Guest_Counts implements Stringable {
 	/**
 	 * Add a guest count.
 	 *
-	 * @param  \\AweBooking\Model\Common\Guest_Count $guest_count The guest count to add.
+	 * @param  \AweBooking\Model\Common\Guest_Count $guest_count The guest count to add.
 	 * @return $this
 	 */
 	public function add( Guest_Count $guest_count ) {
@@ -68,7 +66,7 @@ class Guest_Counts implements Stringable {
 	/**
 	 * Get the adults count.
 	 *
-	 * @return \\AweBooking\Model\Common\Guest_Count
+	 * @return \AweBooking\Model\Common\Guest_Count
 	 */
 	public function get_adults() {
 		return $this->get( 'adults' );
@@ -95,7 +93,7 @@ class Guest_Counts implements Stringable {
 	/**
 	 * Get the children count.
 	 *
-	 * @return \\AweBooking\Model\Common\Guest_Count
+	 * @return \AweBooking\Model\Common\Guest_Count
 	 */
 	public function get_children() {
 		return $this->get( 'children' );
@@ -122,7 +120,7 @@ class Guest_Counts implements Stringable {
 	/**
 	 * Get the infants count.
 	 *
-	 * @return \\AweBooking\Model\Common\Guest_Count
+	 * @return \AweBooking\Model\Common\Guest_Count
 	 */
 	public function get_infants() {
 		return $this->get( 'infants' );
@@ -144,15 +142,6 @@ class Guest_Counts implements Stringable {
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Allow output this class as string.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
 	}
 
 	/**

@@ -1,10 +1,17 @@
 <?php
 namespace AweBooking\Gateway;
 
-use AweBooking\AweBooking;
+use AweBooking\Plugin;
 use AweBooking\Support\Collection;
 
 class Manager {
+	/**
+	 * The plugin instance.
+	 *
+	 * @var \AweBooking\Plugin
+	 */
+	protected $plugin;
+
 	/**
 	 * The gateways store.
 	 *
@@ -15,13 +22,15 @@ class Manager {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $gateways Optional, the gateways.
+	 * @param \AweBooking\Plugin $plugin   The plugin instance.
+	 * @param array              $gateways Optional, the gateways.
 	 */
-	public function __construct( $gateways = [] ) {
+	public function __construct( Plugin $plugin, $gateways = [] ) {
+		$this->plugin   = $plugin;
 		$this->gateways = new Collection;
 
 		foreach ( $gateways as $gateway ) {
-			$this->register( $gateway );
+			$this->register( $this->plugin->make( $gateway ) );
 		}
 	}
 

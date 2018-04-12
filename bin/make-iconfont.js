@@ -2,7 +2,7 @@ const path = require('path');
 const generator = require('icon.font');
 
 const options = {
-  src:             './assets/svg',
+  src:             './assets/img/raw-svg',
   dest:            './assets/fonts',
   image:           false,
   fontName:        'awebooking-webfont',

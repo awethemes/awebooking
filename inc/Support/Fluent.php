@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Support;
 
+use Countable;
 use ArrayAccess;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -11,7 +12,7 @@ use Illuminate\Contracts\Support\Arrayable;
  *
  * @link https://github.com/illuminate/support/blob/master/Fluent.php
  */
-class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
+class Fluent implements ArrayAccess, Countable, Arrayable, Jsonable, JsonSerializable {
 	/**
 	 * All of the attributes set on the container.
 	 *
@@ -63,6 +64,15 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
 	 */
 	public function get_attributes() {
 		return $this->attributes;
+	}
+
+	/**
+	 * Count the number of attributes.
+	 *
+	 * @return int
+	 */
+	public function count() {
+		return count( $this->attributes );
 	}
 
 	/**

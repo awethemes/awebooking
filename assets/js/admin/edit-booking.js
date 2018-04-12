@@ -1,54 +1,50 @@
-webpackJsonp([6],{
+"use strict";
 
-/***/ 21:
-/***/ (function(module, exports, __webpack_require__) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-module.exports = __webpack_require__(22);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/***/ }),
+(function ($, awebooking) {
+  'use strict';
 
-/***/ 22:
-/***/ (function(module, exports) {
+  var EditBooking =
+  /*#__PURE__*/
+  function () {
+    function EditBooking() {
+      _classCallCheck(this, EditBooking);
 
-var $ = window.jQuery;
-var awebooking = window.TheAweBooking;
-
-$(function () {
-
-  $('#awebooking-booking-notes').on('click', '.delete_note', function (e) {
-    e.preventDefault();
-
-    var el = $(this);
-    var note = $(this).closest('li.note');
-
-    wp.ajax.post('delete_awebooking_note', {
-      note_id: $(note).attr('rel'),
-      booking_id: $('#post_ID').val()
-    }).done(function (response) {
-      $(note).remove();
-    });
-  });
-
-  $('#awebooking-booking-notes').on('click', 'button.add_note', function (e) {
-    e.preventDefault();
-
-    var noteContents = $('textarea#add_booking_note').val();
-    if (!noteContents) {
-      return;
+      $('.js-editnow').click(this.handleEditAddress);
     }
 
-    wp.ajax.post('add_awebooking_note', {
-      booking_id: $('#post_ID').val(),
-      note: $('textarea#add_booking_note').val(),
-      note_type: $('select#booking_note_type').val()
-    }).done(function (data) {
-      $('ul.booking_notes').prepend(data.new_note);
-      $('#add_booking_note').val('');
-    });
+    _createClass(EditBooking, [{
+      key: "handleEditAddress",
+      value: function handleEditAddress(e) {
+        e.preventDefault();
+        var focus = $(this).data('focus');
+        var $wrapper = $(this).closest('.js-booking-column');
+        $wrapper.find('h3 > a.button-editnow').hide();
+        $wrapper.find('div.js-booking-data').hide();
+        $wrapper.find('div.js-edit-booking-data').show();
+
+        if (focus && $(focus, $wrapper).length) {
+          $(focus, $wrapper).focus();
+        }
+      }
+    }]);
+
+    return EditBooking;
+  }();
+  /**
+   * Document ready!
+   *
+   * @return {void}
+   */
+
+
+  $(function () {
+    awebooking.instances.editBooking = new EditBooking();
   });
-});
-
-/***/ })
-
-},[21]);
+})(jQuery, window.awebooking || {});
+//# sourceMappingURL=edit-booking.js.map

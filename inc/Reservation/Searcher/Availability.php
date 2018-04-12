@@ -1,12 +1,15 @@
 <?php
 namespace AweBooking\Reservation\Searcher;
 
-use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
-use AweBooking\Support\Collection;
+use AweBooking\Model\Common\Timespan;
+use AweBooking\Calendar\Finder\Response;
+use AweBooking\Support\Traits\Fluent_Getter;
 
 class Availability {
+	use Fluent_Getter;
+
 	/**
 	 * The Room_Type model.
 	 *
@@ -22,52 +25,34 @@ class Availability {
 	protected $timespan;
 
 	/**
-	 * The room-type rooms.
+	 * The response of rooms.
 	 *
-	 * @var \AweBooking\Support\Collection
+	 * @var \AweBooking\Calendar\Finder\Response
 	 */
-	protected $rooms;
+	protected $response_rooms;
 
 	/**
-	 * [$rate_plans description]
+	 * The response of rate plans.
 	 *
-	 * @var [type]
+	 * @var \AweBooking\Calendar\Finder\Response
 	 */
 	protected $rate_plans;
 
 	/**
-	 * The remain rooms.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $includes;
-
-	/**
-	 * The excludes room-units.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $excludes;
-
-	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Model\Room_Type $room_type The Room_Type model.
-	 * @param \AweBooking\Model\Common\Timespan      $timespan      The Timespan model.
+	 * @param \AweBooking\Model\Common\Timespan    $timespan       The timespan.
+	 * @param \AweBooking\Model\Room_Type          $room_type      The room_type.
+	 * @param \AweBooking\Calendar\Finder\Response $response_rooms The response_rooms.
 	 */
-	public function __construct( Room_Type $room_type, Timespan $timespan, $rooms ) {
-		$this->timespan      = $timespan;
+	public function __construct( Timespan $timespan, Room_Type $room_type, Response $response_rooms ) {
+		$this->timespan = $timespan;
 		$this->room_type = $room_type;
-		$this->rooms     = $rooms;
-
-		dd( $this );
-
-		$this->includes  = Collection::make();
-		$this->excludes  = Collection::make();
+		$this->response_rooms = $response_rooms;
 	}
 
 	/**
-	 * The the stay.
+	 * Gets the timespan.
 	 *
 	 * @return \AweBooking\Model\Common\Timespan
 	 */
@@ -76,7 +61,7 @@ class Availability {
 	}
 
 	/**
-	 * Get the room_type model.
+	 * Gets the room_type.
 	 *
 	 * @return \AweBooking\Model\Room_Type
 	 */
@@ -85,105 +70,58 @@ class Availability {
 	}
 
 	/**
-	 * Include a room from the availability.
+	 * Get the response of rooms.
 	 *
-	 * @param  Room   $room           The room.
-	 * @param  string $reason         The reason why added into this.
-	 * @param  string $reason_message Optional, the reason message.
-	 * @return bool
+	 * @return \AweBooking\Calendar\Finder\Response
 	 */
-	public function include( Room $room, $reason, $reason_message = '' ) {
-		$reason_message = $reason_message ?: Reason::get_message( $reason );
-
-		$this->includes->push( compact( 'room', 'reason', 'reason_message' ) );
-
-		return true;
+	public function get_response_rooms() {
+		return $this->response_rooms;
 	}
 
 	/**
-	 * Exclude a room from the availability.
-	 *
-	 * @param  Room   $room           The room.
-	 * @param  string $reason         The reason why added into this.
-	 * @param  string $reason_message Optional, the reason message.
-	 * @return bool
-	 */
-	public function exclude( Room $room, $reason, $reason_message = '' ) {
-		$reason_message = $reason_message ?: Reason::get_message( $reason );
-
-		$this->excludes->push( compact( 'room', 'reason', 'reason_message' ) );
-
-		return true;
-	}
-
-	/**
-	 * Reject a included room from the availability.
-	 *
-	 * @param  Room   $room           The room.
-	 * @param  string $reason         The reason why added into this.
-	 * @param  string $reason_message Optional, the reason message.
-	 * @return bool
-	 */
-	public function reject( Room $room, $reason, $reason_message = '' ) {
-		if ( $this->remain( $room ) ) {
-			$this->includes = $this->includes->reject( function( $item ) use ( $room ) {
-				return $item['room']->get_id() === $room->get_id();
-			});
-		}
-
-		return $this->exclude( $room, $reason, $reason_message );
-	}
-
-	/**
-	 * Determines if a room-unit contains in remain_rooms.
+	 * Determines if room still remain.
 	 *
 	 * @param  \AweBooking\Model\Room $room The room_unit instance.
 	 * @return bool
 	 */
-	public function remain( Room $room ) {
-		return $this->remain_rooms()->contains( 'room.id', '==', $room->get_id() );
+	public function remain( $room ) {
+		$room_id = ( $room instanceof Room ) ? $room->get_id() : absint( $room );
+
+		return $this->response_rooms->remain( $room_id );
 	}
 
 	/**
-	 * Get the remain rooms left.
+	 * Returns the remain rooms left.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function remain_rooms() {
-		return $this->includes;
+		return abrs_collect( $this->response_rooms->get_included() )
+			->transform( $this->transform_callback() );
 	}
 
 	/**
-	 * Get the rooms included.
+	 * Returns the excluded rooms.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	public function get_included() {
-		return $this->includes;
+	public function excluded_rooms() {
+		return abrs_collect( $this->response_rooms->get_excluded() )
+			->transform( $this->transform_callback() );
 	}
 
 	/**
-	 * Get the rooms excluded.
+	 * Returns callback to transform the calendar response.
 	 *
-	 * @return \AweBooking\Support\Collection
+	 * @return \Closure
 	 */
-	public function get_excluded() {
-		return $this->excludes;
-	}
-
-	/**
-	 * Apply the constraints.
-	 *
-	 * @param  array $constraints Constraint[].
-	 * @return void
-	 */
-	public function apply_constraints( array $constraints ) {
-		foreach ( $constraints as $constraint ) {
-			if ( is_string( $constraint ) ) {
-				awebooking()->call( $constraint, [ $this ], 'apply' );
-			} else {
-				$constraint->apply( $this );
-			}
-		}
+	protected function transform_callback() {
+		return function ( $matching ) {
+			return [
+				'room'           => $matching['resource']->get_reference(),
+				'reason'         => $matching['reason'],
+				'reason_message' => Reason::get_message( $matching['reason'] ),
+			];
+		};
 	}
 }

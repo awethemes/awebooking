@@ -21,7 +21,7 @@ class Aggregate_Provider implements Provider_Interface {
 	public function __construct( array $providers ) {
 		foreach ( $providers as $provider ) {
 			if ( ! $provider instanceof Provider_Interface ) {
-				throw new \InvalidArgumentException( 'Providers must implement AweBooking\\Calendar\\Provider\\Provider_Interface' );
+				throw new \InvalidArgumentException( 'Providers must implement Provider_Interface' );
 			}
 
 			$this->providers[] = $provider;

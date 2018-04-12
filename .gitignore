@@ -1,9 +1,10 @@
 .DS_Store
+phpcs.xml
+phpunit.xml
 Thumbs.db
 wp-cli.local.yml
 node_modules/
 vendor/
-awethemes/
-*.zip
+*.sql
 *.tar.gz
-composer.lock
+*.zip

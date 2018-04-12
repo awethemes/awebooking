@@ -2,10 +2,7 @@
 namespace AweBooking;
 
 class Constants {
-	const DATE_FORMAT       = 'Y-m-d';
-	const JS_DATE_FORMAT    = 'yy-mm-dd';
-
-	// The room-type defined.
+	// The core constants.
 	const BOOKING           = 'awebooking';
 	const ROOM_TYPE         = 'room_type';
 	const HOTEL_RATE        = 'hotel_rate';
@@ -14,35 +11,9 @@ class Constants {
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_extra_service';
 
-	// Availability constants.
-	const STATE_AVAILABLE   = 0;
-	const STATE_UNAVAILABLE = 1;
-	const STATE_PENDING     = 2;
+	// Booking constants.
 	const STATE_BOOKED      = 3;
-
-	const PERCENTAGE_AMOUNT = 'percentage';
-	const FIXED_AMOUNT      = 'fixed';
-	const PRICING_RATE      = 'pricing_rate';
-
-	/* Position constants */
-	const CURRENCY_POS_LEFT        = 'left';
-	const CURRENCY_POS_RIGHT       = 'right';
-	const CURRENCY_POS_LEFT_SPACE  = 'left_space';
-	const CURRENCY_POS_RIGHT_SPACE = 'right_space';
-
-	const CAPABILITY_MANAGER      = 'manage_awebooking';
-
-	// The menu page constants.
-	const ADMIN_PAGE_HOTEL   = 'edit.php?post_type=room_type';
-	const ADMIN_PAGE_BOOKING = 'admin.php?page=awebooking';
-
-	// The cache group.
-	const CACHE_ROOM_UNIT          = 'awebooking_cache_room_object';
-	const CACHE_ROOM_TYPE          = 'awebooking_cache_room_type_object';
-	const CACHE_BOOKING            = 'awebooking_cache_booking_object';
-	const CACHE_BOOKING_ITEM       = 'awebooking_cache_booking_item_object';
-
-	const CACHE_RAW_ROOM_UNIT      = 'awebooking_cache_raw_room';
-	const CACHE_RAW_TAX_RATE       = 'awebooking_cache_raw_tax';
-	const CACHE_ROOMS_IN_ROOM_TYPE = 'awebooking_cache_rooms_in_room_type';
+	const STATE_PENDING     = 2;
+	const STATE_UNAVAILABLE = 1;
+	const STATE_AVAILABLE   = 0;
 }

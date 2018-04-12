@@ -1,0 +1,46 @@
+.awebooking-tabs {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0 0 10px;
+  list-style: none;
+  height: 100%;
+
+  background-color: #fafafa;
+  border-right: 1px solid #eee;
+
+  > li {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+  }
+
+  > li > a {
+    font-size: 13px;
+    margin: 0;
+    padding: 10px;
+    display: block;
+    box-shadow: none;
+    text-decoration: none;
+    line-height: 24px !important;
+    border-bottom: 1px solid #eee;
+    border-left: 3px solid transparent;
+  }
+
+  .active > a {
+    color: #333;
+    background-color: #fff;
+    border-left-color: #25a1ce;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+  }
+}
+
+.awebooking-tabs-panels {
+  .awebooking-panel {
+    display: none;
+    @include clearfix;
+  }
+}

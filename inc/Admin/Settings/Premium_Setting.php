@@ -24,7 +24,6 @@ class Premium_Setting extends Abstract_Setting {
 			'id'         => 'purchase_code',
 			'type'       => 'text',
 			'name'       => esc_html__( 'Purchase code', 'awebooking' ),
-			'validate'   => 'length:45',
 		));
 	}
 }

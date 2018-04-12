@@ -46,10 +46,10 @@ class BACS_Gateway extends Gateway {
 	public function setting_fields() {
 		$this->setting_fields = [
 			'enabled' => [
-				'name'    => esc_html__( 'Enable / Disable', 'awebooking' ),
-				'type'    => 'toggle',
-				'label'   => esc_html__( 'Enable check payments', 'awebooking' ),
-				'default' => true,
+				'name'        => esc_html__( 'Enable / Disable', 'awebooking' ),
+				'type'        => 'toggle',
+				'label'       => esc_html__( 'Enable check payments', 'awebooking' ),
+				'default'     => true,
 			],
 			'title' => [
 				'name'        => esc_html__( 'Title', 'awebooking' ),
@@ -70,44 +70,45 @@ class BACS_Gateway extends Gateway {
 				'default'     => '',
 			],
 			'accounts' => [
-				'name'        => esc_html__( 'Account detail', 'awebooking' ),
-				'type'        => 'group',
-				'options'     => [
-					'group_title'   => esc_html__( 'Account {#}', 'awebooking' ),
+				'name'         => esc_html__( 'Account detail', 'awebooking' ),
+				'type'         => 'group',
+				'options'      => [
+					'sortable'      => true,
+					'table_layout'  => true,
 					'add_button'    => esc_html__( 'Add', 'awebooking' ),
 					'remove_button' => esc_html__( 'Remove', 'awebooking' ),
-					'sortable'      => true,
+					'group_title'   => esc_html__( 'Account {#}', 'awebooking' ),
 				],
 				'fields'      => [
 					[
 						'id'          => 'account_name',
+						'type'        => 'text',
 						'name'        => esc_html__( 'Account name', 'awebooking' ),
-						'type'        => 'input',
 					],
 					[
 						'id'          => 'account_number',
+						'type'        => 'text',
 						'name'        => esc_html__( 'Account number', 'awebooking' ),
-						'type'        => 'input',
 					],
 					[
 						'id'          => 'bank_name',
+						'type'        => 'text',
 						'name'        => esc_html__( 'Bank name', 'awebooking' ),
-						'type'        => 'input',
 					],
 					[
 						'id'          => 'sort_code',
+						'type'        => 'text',
 						'name'        => esc_html__( 'Sort code', 'awebooking' ),
-						'type'        => 'input',
 					],
 					[
 						'id'          => 'iban',
+						'type'        => 'text',
 						'name'        => esc_html__( 'IBAN', 'awebooking' ),
-						'type'        => 'input',
 					],
 					[
 						'id'          => 'bic_swift',
+						'type'        => 'text',
 						'name'        => esc_html__( 'BIC / Swift', 'awebooking' ),
-						'type'        => 'input',
 					],
 				],
 			],

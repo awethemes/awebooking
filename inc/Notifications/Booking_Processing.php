@@ -6,14 +6,14 @@ class Booking_Processing extends Booking_Notification {
 	 * {@inheritdoc}
 	 */
 	public function get_markdown_contents() {
-		return awebooking_option( 'email_processing_content' );
+		return abrs_option( 'email_processing_content' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_subject() {
-		return $this->format_string( awebooking_option( 'email_processing_subject' ) );
+		return $this->format_string( abrs_option( 'email_processing_subject' ) );
 	}
 
 	/**

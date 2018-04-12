@@ -1,8 +1,8 @@
 <?php
 namespace AweBooking\Calendar\Finder;
 
+use AweBooking\Support\Period;
 use AweBooking\Support\Collection;
-use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Resource\Resource_Interface;
 
 class Response {
@@ -13,7 +13,7 @@ class Response {
 	/**
 	 * The period instance.
 	 *
-	 * @var \AweBooking\Calendar\Period\Period
+	 * @var \AweBooking\Support\Period
 	 */
 	protected $period;
 
@@ -41,7 +41,7 @@ class Response {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Calendar\Period\Period      $period    The period of the finding.
+	 * @param \AweBooking\Support\Period              $period    The period of the finding.
 	 * @param \AweBooking\Calendar\Resource\Resources $resources All resources.
 	 */
 	public function __construct( Period $period, $resources ) {
@@ -55,7 +55,7 @@ class Response {
 	/**
 	 * The the period instance.
 	 *
-	 * @return \AweBooking\Calendar\Period\Period
+	 * @return \AweBooking\Support\Period
 	 */
 	public function get_period() {
 		return $this->period;
@@ -89,17 +89,23 @@ class Response {
 	}
 
 	/**
-	 * Determines if a resource remain the the matches.
+	 * Determines if resource(s) remain the the matches.
 	 *
-	 * @param  \AweBooking\Model\Room $resource The resource_unit instance.
+	 * @param  mixed $resource A resource implementation or a collection of resources.
 	 * @return bool
 	 */
 	public function remain( $resource ) {
-		$resource = ( $resource instanceof Resource_Interface )
-			? $resource->get_uid()
-			: (int) $resource;
+		$resources = is_array( $resource ) ? $resource : func_get_args();
 
-		return $this->included->has( $resource );
+		foreach ( $resources as $rs ) {
+			$rsid = ( $rs instanceof Resource_Interface ) ? $rs->get_id() : (int) $rs;
+
+			if ( ! $this->included->has( $rsid ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -107,9 +113,10 @@ class Response {
 	 *
 	 * @param  \AweBooking\Calendar\Resource\Resource_Interface $resource The resource to add.
 	 * @param  string                                           $reason   The reason why added into this.
+	 * @param  mixed                                            $data     The resource data.
 	 * @return bool
 	 */
-	public function add_match( Resource_Interface $resource, $reason ) {
+	public function add_match( Resource_Interface $resource, $reason, $data = null ) {
 		$index = $resource->get_id();
 
 		// Can't add a unknown resource or has been excluded.
@@ -117,7 +124,7 @@ class Response {
 			return false;
 		}
 
-		$this->included->put( $index, compact( 'resource', 'reason' ) );
+		$this->included->put( $index, compact( 'resource', 'reason', 'data' ) );
 
 		return true;
 	}

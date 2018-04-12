@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Calendar\Period;
 
-class Year extends Period_Unit implements \IteratorAggregate {
+class Year extends Iterator_Period {
 	/**
 	 * The date interval specification for the period.
 	 *
@@ -19,7 +19,11 @@ class Year extends Period_Unit implements \IteratorAggregate {
 			$year = (int) $year->format( 'Y' );
 		}
 
-		parent::__construct( static::validateYear( $year ) . '-01-01' );
+		list( $start_date, $end_date ) = $this->filter_from_datepoint(
+			static::validateYear( $year ) . '-01-01'
+		);
+
+		parent::__construct( $start_date, $end_date );
 	}
 
 	/**

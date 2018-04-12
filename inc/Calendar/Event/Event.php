@@ -1,10 +1,10 @@
 <?php
 namespace AweBooking\Calendar\Event;
 
-use AweBooking\Calendar\Period\Period;
-use AweBooking\Calendar\Resource\Resource_Interface;
+use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\Fluent_Getter;
+use AweBooking\Calendar\Resource\Resource_Interface;
 
 class Event implements Event_Interface {
 	use Fluent_Getter;
@@ -98,8 +98,8 @@ class Event implements Event_Interface {
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = 0 ) {
 		static::assert_valid_dates(
-			$start_date = Carbonate::create_datetime( $start_date ),
-			$end_date = Carbonate::create_datetime( $end_date )
+			$start_date = Carbonate::create_date_time( $start_date ),
+			$end_date = Carbonate::create_date_time( $end_date )
 		);
 
 		$this->start_date = $start_date;
@@ -140,7 +140,7 @@ class Event implements Event_Interface {
 	 * @return void
 	 */
 	public function set_start_date( $start_date ) {
-		$start_date = Carbonate::create_datetime( $start_date );
+		$start_date = Carbonate::create_date_time( $start_date );
 
 		static::assert_valid_dates( $start_date, $this->end_date );
 
@@ -163,7 +163,7 @@ class Event implements Event_Interface {
 	 * @return void
 	 */
 	public function set_end_date( $end_date ) {
-		$end_date = Carbonate::create_datetime( $end_date );
+		$end_date = Carbonate::create_date_time( $end_date );
 
 		static::assert_valid_dates( $this->start_date, $end_date );
 
@@ -342,7 +342,7 @@ class Event implements Event_Interface {
 	 * @return $this
 	 */
 	public function set_created( $created ) {
-		$this->created = Carbonate::create_datetime( $created );
+		$this->created = Carbonate::create_date_time( $created );
 
 		return $this;
 	}
@@ -363,7 +363,7 @@ class Event implements Event_Interface {
 	 * @return $this
 	 */
 	public function set_last_modified( $last_modified ) {
-		$this->last_modified = Carbonate::create_datetime( $last_modified );
+		$this->last_modified = Carbonate::create_date_time( $last_modified );
 
 		return $this;
 	}
@@ -384,7 +384,7 @@ class Event implements Event_Interface {
 	 * @return bool
 	 */
 	public function contains( $date ) {
-		return $this->get_period()->contains( Carbonate::create_datetime( $date ) );
+		return $this->get_period()->contains( Carbonate::create_date_time( $date ) );
 	}
 
 	/**

@@ -1,14 +1,13 @@
 <?php
 namespace AweBooking\Calendar;
 
-use AweBooking\Calendar\Period\Period;
+use AweBooking\Support\Period;
 use AweBooking\Calendar\Event\Events;
 use AweBooking\Calendar\Event\Itemizer;
 use AweBooking\Calendar\Event\Event_Interface;
 use AweBooking\Calendar\Resource\Resource_Interface;
 use AweBooking\Calendar\Provider\Provider_Interface;
 use AweBooking\Calendar\Provider\Contracts\Storable;
-use AweBooking\Calendar\Provider\Exceptions\Not_Supported_Exception;
 
 class Calendar {
 	/**
@@ -77,11 +76,11 @@ class Calendar {
 	 * @param  Event_Interface $event The event implementation.
 	 * @return bool
 	 *
-	 * @throws Not_Supported_Exception
+	 * @throws Exceptions\StoreNotSupportedException
 	 */
 	public function store( Event_Interface $event ) {
 		if ( ! $this->provider instanceof Storable ) {
-			throw new Not_Supported_Exception( 'The provider `' . get_class( $this->provider ) . '` not support store event.' );
+			throw new Exceptions\StoreNotSupportedException( 'The provider `' . get_class( $this->provider ) . '` not support store event.' );
 		}
 
 		return $this->provider->store_event( $event );

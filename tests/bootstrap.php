@@ -2,20 +2,18 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package AweBooking
+ * @package Awebooking
  */
 
-ini_set( 'display_errors', 'on' );
-error_reporting( E_ALL );
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
 
-// Ensure server variable is set for WP email functions.
-if ( ! isset( $_SERVER['SERVER_NAME'] ) ) {
-	$_SERVER['SERVER_NAME'] = 'localhost';
+if ( ! $_tests_dir ) {
+	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
 }
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
+if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
+	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL;
+	exit( 1 );
 }
 
 // Give access to tests_add_filter() function.
@@ -36,10 +34,9 @@ tests_add_filter( 'muplugins_loaded', function () {
  * Install AweBooking.
  */
 tests_add_filter( 'setup_theme', function () {
-	AweBooking\Support\Decimal::set_default_scale( 4 );
-
 	// Clean existing install first.
 	define( 'WP_UNINSTALL_PLUGIN', true );
+
 	define( 'AWEBOOKING_REMOVE_ALL_DATA', true );
 
 	require dirname( __DIR__ ) . '/uninstall.php';

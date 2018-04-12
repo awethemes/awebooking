@@ -166,6 +166,23 @@ abstract class Gateway {
 	}
 
 	/**
+	 * Get the option by key (no prefix include).
+	 *
+	 * @param  string $key     The key.
+	 * @param  mixed  $default The default value.
+	 * @return mixed
+	 */
+	public function get_option( $key, $default = null ) {
+		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
+
+		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
+			$default = $this->setting_fields[ $key ]['default'];
+		}
+
+		return abrs_option( $prefix . '_' . $key, $default );
+	}
+
+	/**
 	 * Setup the gateway.
 	 *
 	 * @return void
@@ -213,26 +230,8 @@ abstract class Gateway {
 	 * @return void
 	 */
 	public function display_payment_contents( Payment_Item $payment_item, Booking $booking ) {
-
 		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get_transaction_id() ) {
-			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> '. esc_html( $transaction_id );
+			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
 		}
-	}
-
-	/**
-	 * Get the option by key (no prefix include).
-	 *
-	 * @param  string $key     The key.
-	 * @param  mixed  $default The default value.
-	 * @return mixed
-	 */
-	protected function get_option( $key, $default = null ) {
-		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
-
-		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
-			$default = $this->setting_fields[ $key ]['default'];
-		}
-
-		return awebooking_option( $prefix . '_' . $key, $default );
 	}
 }

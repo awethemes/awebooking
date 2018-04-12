@@ -3,52 +3,38 @@ namespace AweBooking;
 
 class Multilingual {
 	/**
-	 * The active language.
+	 * The current language.
 	 *
 	 * @var string
 	 */
-	protected $active_language;
+	protected $current_language;
 
 	/**
-	 * The "main" language.
+	 * The default language.
 	 *
 	 * @var string
 	 */
 	protected $default_language;
 
 	/**
-	 * An array of all available languages.
-	 *
-	 * @var array
-	 */
-	protected $available_languages = [];
-
-	/**
-	 * Class constructor.
+	 * Constructor.
 	 */
 	public function __construct() {
-		// ...
+		// Make sure to create class after/within 'setup_theme' action.
+		if ( ! did_action( 'setup_theme' ) ) {
+			trigger_error( 'The class must be call after "setup_theme" has been fire.' );
+		} else {
+			$this->check();
+		}
 	}
 
 	/**
-	 * Get the main language.
+	 * Get the current language.
 	 *
 	 * @return string|null
 	 */
-	public function get_active_language() {
-		if ( $this->active_language ) {
-			return $this->active_language;
-		}
-
-		if ( $this->is_wpml() ) {
-			global $sitepress;
-			$this->active_language = $sitepress->get_current_language();
-		} elseif ( $this->is_polylang() ) {
-			$current = pll_current_language( 'slug' );
-			$this->active_language = ( false !== $current ) ? $current : null;
-		}
-
-		return $this->active_language;
+	public function get_current_language() {
+		return $this->current_language ?: null;
 	}
 
 	/**
@@ -57,38 +43,7 @@ class Multilingual {
 	 * @return string|null
 	 */
 	public function get_default_language() {
-		if ( $this->default_language ) {
-			return $this->default_language;
-		}
-
-		if ( $this->is_wpml() ) {
-			global $sitepress;
-			$this->default_language = $sitepress->get_default_language();
-		} elseif ( $this->is_polylang() ) {
-			$this->default_language = pll_default_language( 'slug' );
-		}
-
-		return $this->default_language;
-	}
-
-	/**
-	 * Determine if we're using PolyLang.
-	 *
-	 * @return bool
-	 */
-	public function is_polylang() {
-		return class_exists( 'Polylang' ) && function_exists( 'pll_current_language' );
-	}
-
-	/**
-	 * Determine if we're using WPML.
-	 *
-	 * Since PolyLang has a compatibility layer for WPML, we'll have to consider that too.
-	 *
-	 * @return bool
-	 */
-	public function is_wpml() {
-		return ( defined( 'ICL_SITEPRESS_VERSION' ) && ! $this->is_polylang() );
+		return $this->default_language ?: null;
 	}
 
 	/**
@@ -98,17 +53,57 @@ class Multilingual {
 	 * @return int
 	 */
 	public function get_original_post( $post_id ) {
-		return $this->get_original_object_id( $post_id, 'post' );
+		return $this->get_original_object( $post_id, 'post' );
 	}
 
 	/**
-	 * [get_original_object_id description]
+	 * Get the original object ID (post, taxonomy, etc...).
 	 *
-	 * @param  [type] $object_id   [description]
-	 * @param  string $object_type [description]
-	 * @return [type]
+	 * @param  int    $id   The object id.
+	 * @param  string $type Optional, post type or taxonomy name of the object, defaults to 'post'.
+	 * @return int|null
 	 */
-	public function get_original_object_id( $object_id, $object_type = 'post' ) {
-		return icl_object_id( $object_id, $object_type, true, $this->get_default_language() );
+	public function get_original_object( $id, $type = 'post' ) {
+		return icl_object_id( $id, $type, true, $this->get_default_language() );
+	}
+
+	/**
+	 * Perform check the language.
+	 *
+	 * @access private
+	 */
+	public function check() {
+		switch ( true ) {
+			case ( static::is_wpml() ):
+				global $sitepress;
+				$this->current_language = $sitepress->get_current_language();
+				$this->default_language = $sitepress->get_default_language();
+				break;
+
+			case ( static::is_polylang() ):
+				$this->default_language = pll_default_language( 'slug' );
+				$this->current_language = pll_current_language( 'slug' );
+				break;
+		}
+	}
+
+	/**
+	 * Determine if we're using WPML.
+	 *
+	 * Since PolyLang has a compatibility layer for WPML, we'll have to consider that too.
+	 *
+	 * @return bool
+	 */
+	public static function is_wpml() {
+		return ( defined( 'ICL_SITEPRESS_VERSION' ) && ! static::is_polylang() );
+	}
+
+	/**
+	 * Determine if we're using PolyLang.
+	 *
+	 * @return bool
+	 */
+	public static function is_polylang() {
+		return class_exists( 'Polylang' ) && function_exists( 'pll_current_language' );
 	}
 }

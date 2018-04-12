@@ -1,116 +1,90 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
+use AweBooking\Support\WP_Data;
 use AweBooking\Admin\Admin_Settings;
 
 class Display_Setting extends Abstract_Setting {
 	/**
-	 * {@inheritdoc}
+	 * The setting ID.
+	 *
+	 * @var string
 	 */
-	public function registers( Admin_Settings $settings ) {
-		$display = $settings->add_section( 'display', [
-			'title' => esc_html__( 'Display', 'awebooking' ),
-			'capability' => 'manage_awebooking',
+	protected $form_id = 'display';
+
+	/**
+	 * Get the setting label.
+	 *
+	 * @return string
+	 */
+	public function get_label() {
+		return esc_html__( 'Display', 'awebooking' );
+	}
+
+	/**
+	 * Setup the fields.
+	 *
+	 * @return void
+	 */
+	public function setup_fields() {
+		$all_pages_cb = WP_Data::cb( 'pages', [ 'post_status' => 'publish' ] );
+
+		$this->add_field([
+			'id'    => '__display_title',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Pages', 'awebooking' ),
 		]);
 
-		$display->add_field( array(
-			'id'   => '__display_pages__',
-			'type' => 'title',
-			'name' => esc_html__( 'AweBooking Pages', 'awebooking' ),
-			'description' => esc_html__( 'These pages need to be set so that AweBooking knows where to send users to handle.', 'awebooking' ),
-		) );
+		$this->add_field([
+			'id'               => 'page_check_availability',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Availability Results', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+		]);
 
-		$display->add_field( array(
-			'id'           => 'page_check_availability',
-			'type'         => 'select',
-			'name'         => esc_html__( 'Check Availability', 'awebooking' ),
-			'description'  => esc_html__( 'Selected page to display check availability form.', 'awebooking' ),
-			'default'      => awebooking( 'setting' )->get_default( 'page_check_availability' ),
-			'options_cb'   => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'     => 'integer',
-			'show_option_none' => true,
-		) );
+		$this->add_field([
+			'id'               => 'page_booking',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Confirm Booking', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+		]);
 
-		$display->add_field( array(
-			'id'          => 'page_booking',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Booking Informations', 'awebooking' ),
-			'description' => esc_html__( 'Selected page to display booking informations.', 'awebooking' ),
-			'default'     => awebooking( 'setting' )->get_default( 'page_booking' ),
-			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'    => 'integer',
-			'show_option_none' => true,
-		) );
+		$this->add_field([
+			'id'               => 'page_checkout',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Checkout Page', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+		]);
 
-		$display->add_field( array(
-			'id'          => 'page_checkout',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Confirm Booking', 'awebooking' ),
-			'description' => esc_html__( 'Selected page to display checkout informations.', 'awebooking' ),
-			'default'     => awebooking( 'setting' )->get_default( 'page_checkout' ),
-			'options_cb'  => wp_data_callback( 'pages', array( 'post_status' => 'publish' ) ),
-			'validate'    => 'integer',
-			'show_option_none' => true,
-		) );
+		$this->add_field([
+			'id'    => '__admin_calendar',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Admin Calendar', 'awebooking' ),
+		]);
 
-		$display->add_field( array(
-			'id'       => '__display_check_availability__',
-			'type'     => 'title',
-			'name'     => esc_html__( 'Check availability', 'awebooking' ),
-		) );
-
-		$display->add_field( array(
-			'id'         => 'check_availability_max_adults',
-			'type'       => 'text_small',
-			'attributes' => array( 'type' => 'number' ),
-			'name'       => esc_html__( 'Max adults', 'awebooking' ),
-			'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_adults' ),
-			'validate'   => 'integer|min:1',
+		$this->add_field([
+			'id'              => 'scheduler_display_duration',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Calendar Duration', 'awebooking' ),
+			'classes'         => 'with-selectize',
+			'default'         => 30,
 			'sanitization_cb' => 'absint',
-		) );
-
-		if ( awebooking( 'setting' )->is_children_bookable() ) {
-			$display->add_field( array(
-				'id'         => 'check_availability_max_children',
-				'type'       => 'text_small',
-				'attributes' => array( 'type' => 'number' ),
-				'name'       => esc_html__( 'Max children', 'awebooking' ),
-				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_children' ),
-				'validate'   => 'integer|min:0',
-				'sanitization_cb' => 'absint',
-			) );
-		}
-
-		if ( awebooking( 'setting' )->is_infants_bookable() ) {
-			$display->add_field( array(
-				'id'         => 'check_availability_max_infants',
-				'type'       => 'text_small',
-				'attributes' => array( 'type' => 'number' ),
-				'name'       => esc_html__( 'Max infants', 'awebooking' ),
-				'default'    => awebooking( 'setting' )->get_default( 'check_availability_max_infants' ),
-				'validate'   => 'integer|min:0',
-				'sanitization_cb' => 'absint',
-			) );
-		}
-
-		$display->add_field( array(
-			'id'   => 'page_for_check_availability',
-			'type' => 'title',
-			'name' => esc_html__( 'Page for check availability ', 'awebooking' ),
-		) );
-
-		$display->add_field( array(
-			'id'       => 'showing_price',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Showing price', 'awebooking' ),
-			'description' => esc_html__( 'Selected a type of price to showing in the checking availability page.', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'showing_price' ),
-			'options'  => array(
-				'start_price'    => esc_html__( 'Starting price', 'awebooking' ),
-				'average_price'  => esc_html__( 'Average price', 'awebooking' ),
-				'total_price'    => esc_html__( 'Total price', 'awebooking' ),
-			),
-			'show_option_none' => false,
-		) );
+			'options'         => [
+				14  => esc_html__( '2 Weeks', 'awebooking' ),
+				30  => esc_html__( '1 Month', 'awebooking' ),
+				60  => esc_html__( '2 Months', 'awebooking' ),
+				90  => esc_html__( '3 Months', 'awebooking' ),
+				120 => esc_html__( '4 Months', 'awebooking' ),
+			],
+		]);
 	}
 }

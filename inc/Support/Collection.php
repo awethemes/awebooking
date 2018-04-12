@@ -2,21 +2,9 @@
 namespace AweBooking\Support;
 
 use AweBooking\Support\Debug\Dumper;
-use Illuminate\Support\Collection as Base_Collection;
+use Illuminate\Support\Collection as Illuminate_Collection;
 
-class Collection extends Base_Collection {
-	/**
-	 * Map the values into a new class.
-	 *
-	 * @param  string $class The class name.
-	 * @return static
-	 */
-	public function map_into( $class ) {
-		return $this->map( function ( $value, $key ) use ( $class ) {
-			return new $class( $value, $key );
-		});
-	}
-
+class Collection extends Illuminate_Collection {
 	/**
 	 * Dump the collection and end the script.
 	 *
@@ -41,6 +29,29 @@ class Collection extends Base_Collection {
 			->each( function ( $item ) {
 				( new Dumper )->dump( $item );
 			});
+
+		return $this;
+	}
+
+	/**
+	 * Map the values into a new class.
+	 *
+	 * @param  string $class The class name.
+	 * @return static
+	 */
+	public function map_into( $class ) {
+		return $this->map( function ( $value, $key ) use ( $class ) {
+			return new $class( $value, $key );
+		});
+	}
+
+	/**
+	 * Clear the collection, careful with this.
+	 *
+	 * @return $this
+	 */
+	public function clear() {
+		$this->items = [];
 
 		return $this;
 	}

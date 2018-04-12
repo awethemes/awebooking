@@ -5,6 +5,15 @@ use AweBooking\Support\Collection;
 
 class Events extends Collection {
 	/**
+	 * Transforms events in a breakdown of days with associated values.
+	 *
+	 * @return \AweBooking\Calendar\Event\Itemized
+	 */
+	public function itemize() {
+		return ( new Itemizer( $this ) )->itemize();
+	}
+
+	/**
 	 * Group events by resources.
 	 *
 	 * @return static

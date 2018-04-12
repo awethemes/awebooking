@@ -3,11 +3,11 @@ namespace AweBooking\Reservation\Searcher;
 
 class Reason {
 	/* Constants */
-	const VALID_STATE   = 'VALID_STATE';
-	const INVALID_STATE = 'INVALID_STATE';
-	const SELECTED_ROOM = 'SELECTED_ROOM';
-	const BOOKED_ROOM   = 'BOOKED_ROOM';
-	const UNKNOWN       = 'UNKNOWN';
+	const VALID_STATE   = 'valid_state';
+	const INVALID_STATE = 'invalid_state';
+	const SELECTED_ROOM = 'selected_room';
+	const BOOKED_ROOM   = 'booked_room';
+	const UNKNOWN       = 'unknown';
 
 	/**
 	 * Get the reason message.

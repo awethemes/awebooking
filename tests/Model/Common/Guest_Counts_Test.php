@@ -2,7 +2,6 @@
 
 use AweBooking\Model\Common\Guest_Count;
 use AweBooking\Model\Common\Guest_Counts;
-use AweBooking\Support\Contracts\Stringable;
 
 class Model_Guest_Counts_Test extends WP_UnitTestCase {
 	public function testConstructor() {

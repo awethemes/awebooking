@@ -1,93 +1,40 @@
-webpackJsonp([5],{
-
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(24);
-
-
-/***/ }),
-
-/***/ 24:
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
+(function ($) {
+  'use strict';
 
-var $ = window.jQuery;
-var AweBooking = window.TheAweBooking;
+  var awebooking = window.awebooking || {};
+  /**
+   * Scroll to first checked category.
+   *
+   * @link https://github.com/scribu/wp-category-checklist-tree/blob/master/category-checklist-tree.php
+   */
 
-var RoomsCreator = {
-  el: '#abkng-rooms',
-  template: '#awebooking-rooms-manager-template',
+  $(function () {
+    $('[id$="-all"] > ul.categorychecklist').each(function () {
+      var $list = $(this);
+      var $firstChecked = $list.find(':checked').first();
 
-  data: {
-    rooms: [],
-    totalRooms: 0,
-    roomTypeTitle: ''
-  },
-
-  created: function created() {
-    this.rooms = window.ABKNG_ROOMS || [];
-    this.totalRooms = this.rooms.length;
-    this.roomTypeTitle = $('#title').val();
-
-    if (this.totalRooms == 0) {
-      this.totalRooms = 1;
-      this.regenerateRooms();
-    }
-  },
-
-  methods: {
-    regenerateRooms: function regenerateRooms() {
-      var roomsLength = this.rooms.length;
-      var numberOfRooms = parseInt(this.totalRooms, 10);
-
-      // Re-update title.
-      this.roomTypeTitle = $('#title').val();
-
-      if (numberOfRooms <= 0) {
-        this.totalRooms = 1;
-      }
-
-      if (numberOfRooms > roomsLength) {
-        for (var i = roomsLength; i < numberOfRooms; i++) {
-          this.rooms.push({ id: -1, name: this.roomTypeTitle + ' - ' + (i + 1) });
-        }
-      } else if (numberOfRooms < roomsLength) {
-        if (confirm(AweBooking.trans('ask_reduce_the_rooms'))) {
-          for (var i = roomsLength - 1; i >= numberOfRooms; i--) {
-            this.rooms.splice(i, 1);
-          }
-        }
-      }
-    },
-
-    deleteRoomByIndex: function deleteRoomByIndex(index) {
-      if (!confirm(AweBooking.trans('warning'))) {
+      if (!$firstChecked.length) {
         return;
       }
 
-      if (this.rooms.length > 1) {
-        this.rooms.splice(index, 1);
-        this.totalRooms = this.rooms.length;
-      }
-    }
-  }
-};
-
-$(function () {
-
-  var roomsCreator = new AweBooking.Vue(RoomsCreator);
-  $('#title').on('change', function () {
-    var title = $(this).val();
-
-    if (roomsCreator.$data.rooms.length === 1 && roomsCreator.$data.rooms[0].name == ' - 1') {
-      roomsCreator.$data.rooms[0].name = title + ' - 1';
-    }
+      var posFirst = $list.find('input').position().top;
+      var posChecked = $firstChecked.position().top;
+      $list.closest('.tabs-panel').scrollTop(posChecked - posFirst + 5);
+    });
   });
-});
+  $(function () {
+    var $metabox = $('#awebooking-room-type-data'); // Handle tabs.
 
-/***/ })
-
-},[23]);
+    $metabox.on('click', '.awebooking-tabs a', function (e) {
+      e.preventDefault();
+      $('.awebooking-tabs > li.active', $metabox).removeClass('active');
+      $(this).parent().addClass('active');
+      $('.awebooking-tabs-panels > div', $metabox).hide();
+      $($(this).attr('href'), $metabox).show();
+    });
+    $('.awebooking-tabs > li:first > a', $metabox).trigger('click');
+  });
+})(jQuery);
+//# sourceMappingURL=edit-room-type.js.map

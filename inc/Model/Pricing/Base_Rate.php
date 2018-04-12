@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
-use AweBooking\Model\Factory;
 use AweBooking\Ruler\Rule;
 use AweBooking\Support\Fluent;
 use AweBooking\Support\Decimal;
@@ -28,7 +27,7 @@ class Base_Rate implements Rate {
 	 * @param mixed $instance The room-type ID or instance.
 	 */
 	public function __construct( $instance ) {
-		$this->instance = Factory::get_room_type( $instance );
+		$this->instance = abrs_get_room_type( $instance );
 	}
 
 	/**
@@ -49,14 +48,32 @@ class Base_Rate implements Rate {
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return '';
+		return $this->instance->get_title();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_amount() {
-		return Decimal::create( $this->instance->get_meta( 'base_price' ) );
+	public function get_rack_rate() {
+		return abrs_decimal( $this->instance['rack_rate'] );
+	}
+
+	/**
+	 * Get the effective_date.
+	 *
+	 * @return \AweBooking\Support\Carbonate
+	 */
+	public function get_effective_date() {
+		return;
+	}
+
+	/**
+	 * Get the expire_date.
+	 *
+	 * @return \AweBooking\Support\Carbonate
+	 */
+	public function get_expire_date() {
+		return;
 	}
 
 	/**
@@ -64,26 +81,6 @@ class Base_Rate implements Rate {
 	 */
 	public function get_priority() {
 		return 0;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_restrictions() {
-		if ( is_null( $this->restrictions ) ) {
-			$this->restrictions = new Rule;
-		}
-
-		return $this->restrictions;
-	}
-
-	/**
-	 * Set the rule restrictions.
-	 *
-	 * @param \AweBooking\Ruler\Rule $restrictions The rule.
-	 */
-	public function set_restrictions( Rule $restrictions ) {
-		$this->restrictions = $restrictions;
 	}
 
 	/**

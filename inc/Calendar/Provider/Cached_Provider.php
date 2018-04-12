@@ -3,6 +3,7 @@ namespace AweBooking\Calendar\Provider;
 
 use AweBooking\Support\Carbonate;
 use AweBooking\Calendar\Event\Event_Interface;
+use AweBooking\Calendar\Exceptions\StoreNotSupportedException;
 
 class Cached_Provider implements Provider_Interface, Contracts\Storable {
 	/**
@@ -33,7 +34,7 @@ class Cached_Provider implements Provider_Interface, Contracts\Storable {
 	 */
 	public function store_event( Event_Interface $event ) {
 		if ( ! $this->provider instanceof Storable ) {
-			throw new Exceptions\Not_Supported_Exception( 'The provider `' . get_class( $this->provider ) . '` not support store event.' );
+			throw new StoreNotSupportedException( 'The provider `' . get_class( $this->provider ) . '` not support store event.' );
 		}
 
 		return $this->provider->store_event( $event );

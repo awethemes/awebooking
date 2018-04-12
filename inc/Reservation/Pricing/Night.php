@@ -1,10 +1,9 @@
 <?php
 namespace AweBooking\Reservation\Pricing;
 
+use AweBooking\Support\Period;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Carbonate;
-use AweBooking\Calendar\Period\Day;
-use AweBooking\Calendar\Period\Period;
 
 class Night extends Period {
 	/**
@@ -20,13 +19,13 @@ class Night extends Period {
 	 * @param DateTime|string $night  The night period.
 	 * @param Decimal         $amount The amount.
 	 */
-	public function __construct( $night, Decimal $amount ) {
-		$this->amount = $amount;
+	public function __construct( $night, $amount ) {
+		$this->amount = abrs_decimal( $amount );
 
-		if ( $night instanceof Day ) {
+		if ( $night instanceof Period ) {
 			$night = $night->get_start_date();
 		} else {
-			$night = Carbonate::create_datetime( $night );
+			$night = Carbonate::create_date_time( $night );
 		}
 
 		// Adjust the night time begin.
@@ -37,21 +36,21 @@ class Night extends Period {
 	}
 
 	/**
+	 * Adjust the amount.
+	 *
+	 * @param \AweBooking\Support\Decimal $amount The Decimal amount.
+	 */
+	public function adjust( Decimal $amount ) {
+		$this->amount = abrs_decimal( $amount );
+	}
+
+	/**
 	 * Get the amount of night.
 	 *
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_amount() {
 		return $this->amount;
-	}
-
-	/**
-	 * Adjust the amount.
-	 *
-	 * @param \AweBooking\Support\Decimal $amount The Decimal amount.
-	 */
-	public function adjust( Decimal $amount ) {
-		$this->amount = $amount;
 	}
 
 	/**

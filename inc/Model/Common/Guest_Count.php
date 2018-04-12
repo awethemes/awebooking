@@ -1,9 +1,7 @@
 <?php
 namespace AweBooking\Model\Common;
 
-use AweBooking\Support\Contracts\Stringable;
-
-class Guest_Count implements Stringable {
+class Guest_Count {
 	/**
 	 * The age of qualifying.
 	 *
@@ -97,23 +95,5 @@ class Guest_Count implements Stringable {
 		$this->count = absint( $count );
 
 		return $this;
-	}
-
-	/**
-	 * Returns a string representer for this class.
-	 *
-	 * @return string
-	 */
-	public function as_string() {
-		return (string) $this->get_count();
-	}
-
-	/**
-	 * The __toString magic method.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->as_string();
 	}
 }

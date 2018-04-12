@@ -1,309 +1,284 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use AweBooking\Model\Factory;
-use AweBooking\Constants;
-use AweBooking\AweBooking;
+use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
-use AweBooking\Admin\Forms\Booking_General_From;
-use AweBooking\Support\Carbonate;
-use AweBooking\Support\Mailer;
-use AweBooking\Notification\Booking_Cancelled;
-use AweBooking\Notification\Booking_Processing;
-use AweBooking\Notification\Booking_Completed;
+use AweBooking\Component\Form\Form_Builder;
 
-class Booking_Metabox extends Post_Type_Metabox {
+class Booking_Metabox {
 	/**
-	 * Post type ID to register meta-boxes.
+	 * The form builder.
 	 *
-	 * @var string
+	 * @var \AweBooking\Component\Form\Form_Builder
 	 */
-	protected $post_type = 'awebooking';
+	protected $form_builder;
 
 	/**
-	 * Constructor of class.
+	 * Constructor.
 	 */
 	public function __construct() {
-		parent::__construct();
+		$this->form_builder = new Form_Builder( 'room-type' );
 
-		// Register metaboxes.
-		$this->register_customer_metabox();
-
-		// Register/un-register metaboxes.
-		add_action( 'add_meta_boxes', array( $this, 'handler_meta_boxes' ), 10 );
-		add_action( 'edit_form_after_title', array( $this, 'booking_title' ), 10 );
+		$this->form_fields( $this->form_builder );
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Output the metabox.
+	 *
+	 * @param WP_Post $post The WP_Post object.
 	 */
-	public function doing_save( $post_id, $post, $update ) {
-		// If this is just a revision, don't do anything.
-		if ( wp_is_post_revision( $post_id ) ) {
-			return;
+	public function output( $post ) {
+		global $the_booking;
+
+		if ( is_null( $the_booking ) ) {
+			$the_booking = abrs_get_booking( $post );
 		}
 
-		if ( empty( $_POST ) ) {
-			return;
-		}
+		// Prepare form builder.
+		$form = $this->form_builder;
+		$form->object_id( $post->ID );
+		$form->prepare_fields();
 
-		$booking = Factory::get_booking( $post_id );
+		// Print the core nonce field.
+		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
 
-		try {
-			$sanitized = (new Booking_General_From( $booking ))->handle( $_POST );
-			$datetime = Carbonate::create_datetime( $sanitized['booking_created_date'] );
-
-			$booking['date_created'] = $datetime->toDateTimeString();
-			$booking['status']       = $sanitized['booking_status'];
-			$booking['customer_id']  = isset( $sanitized['booking_customer'] ) ? (int) $sanitized['booking_customer'] : 0;
-		} catch ( \Exception $e ) {
-			// ...
-		}
-
-		// Set checked-in, checked-out.
-		$booking['checked_in']  = ( isset( $_POST['booking_checked_in'] ) && $_POST['booking_checked_in'] );
-		$booking['checked_out'] = ( isset( $_POST['booking_checked_out'] ) && $_POST['booking_checked_out'] );
-		$booking['featured']    = ( isset( $_POST['booking_featured'] ) && $_POST['booking_featured'] );
-
-		// Save the booking.
-		$booking->save();
-
-		$this->proccess_booking_actions( $booking );
+		include trailingslashit( __DIR__ ) . 'views/html-booking-main.php';
 	}
 
 	/**
-	 * Handler booking actions.
+	 * Handle save the the metabox.
 	 *
-	 * @param  Booking $booking //.
-	 * @return void
+	 * @param \WP_Post                $post    The WP_Post object instance.
+	 * @param \Awethemes\Http\Request $request The HTTP Request.
 	 */
-	protected function proccess_booking_actions( Booking $booking ) {
-		// Handle button actions.
-		if ( empty( $_POST['awebooking_action'] ) ) {
-			return;
-		}
+	public function save( $post, Request $request ) {
+		$booking = abrs_get_booking( $post );
 
-		$action = $_POST['awebooking_action'];
+		// Get the sanitized values.
+		$values = $this->form_builder->handle( $request );
 
-		if ( strstr( $action, 'send_email_' ) ) {
-			// Load mailer.
-			$email_to_send = str_replace( 'send_email_', '', $action );
-
-			try {
-				switch ( $email_to_send ) {
-					case 'cancelled_order':
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Cancelled( $booking ) );
-						break;
-
-					case 'customer_processing_order':
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Processing( $booking ) );
-						break;
-
-					case 'customer_completed_order':
-						Mailer::to( $booking->get_customer_email() )->send( new Booking_Completed( $booking ) );
-						break;
-				}
-			} catch ( \Exception $e ) {
-				// ...
-			}
-		}
-	}
-
-	/**
-	 * Remove some un-used meta boxes.
-	 */
-	public function handler_meta_boxes() {
-		remove_meta_box( 'slugdiv', $this->post_type, 'normal' );
-		remove_meta_box( 'submitdiv', $this->post_type, 'side' );
-		remove_meta_box( 'commentstatusdiv', $this->post_type, 'normal' );
-
-		add_meta_box( 'awebooking_booking_action', esc_html__( 'Booking Action', 'awebooking' ), [ $this, 'output_action_metabox' ], Constants::BOOKING, 'side', 'high' );
-		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Booking notes', 'awebooking' ), [ $this, 'booking_note_output' ], Constants::BOOKING, 'side', 'default' );
-	}
-
-	/**
-	 * Prints the booking title.
-	 *
-	 * @access private
-	 *
-	 * @param  WP_Post $post WP_Post instance.
-	 * @return void
-	 */
-	public function booking_title( $post ) {
-		if ( Constants::BOOKING !== $post->post_type ) {
-			return;
-		}
-
-		$the_booking = Factory::get_booking( $post );
-
-		include trailingslashit( __DIR__ ) . 'views/html-booking.php';
-
-		awebooking( 'admin_template' )->partial( 'booking/metabox-rooms.php', compact( 'the_booking' ) );
-
-		awebooking( 'admin_template' )->partial( 'booking/metabox-payments.php', compact( 'the_booking' ) );
-	}
-
-	/**
-	 * Output the action metabox.
-	 *
-	 * @param WP_Post $post WP_Post object instance.
-	 */
-	public function output_action_metabox( $post ) {
-		include trailingslashit( __DIR__ ) . 'views/html-booking-action.php';
-	}
-
-	/**
-	 * Add customer meta box to this post type.
-	 *
-	 * @access private
-	 *
-	 * @return void
-	 */
-	public function register_customer_metabox() {
-		$metabox = $this->create_metabox( 'awebooking_booking_general', [
-			'title'  => esc_html__( 'Details', 'awebooking' ),
-			'closed' => false,
+		$booking->fill([
+			'date_created'            => $values->get( '_date_created', current_time( 'timestamp' ) ),
+			'source'                  => $values->get( '_source', 'website' ),
+			'status'                  => $values->get( '_status', 'awebooking-pending' ),
+			'customer_id'             => absint( $values->get( '_customer_id', 0 ) ),
+			'arrival_time'            => $values->get( '_arrival_time', '' ),
+			'customer_title'          => $values->get( '_customer_title', '' ),
+			'customer_first_name'     => $values->get( '_customer_first_name', '' ),
+			'customer_last_name'      => $values->get( '_customer_last_name', '' ),
+			'customer_address'        => $values->get( '_customer_address', '' ),
+			'customer_address_2'      => $values->get( '_customer_address_2', '' ),
+			'customer_city'           => $values->get( '_customer_city', '' ),
+			'customer_state'          => $values->get( '_customer_state', '' ),
+			'customer_postal_code'    => $values->get( '_customer_postal_code', '' ),
+			'customer_country'        => $values->get( '_customer_country', '' ),
+			'customer_company'        => $values->get( '_customer_company', '' ),
+			'customer_phone'          => $values->get( '_customer_phone', '' ),
+			'customer_email'          => $values->get( '_customer_email', '' ),
 		]);
 
-		$customer = $metabox->add_section( 'customer_infomation', [
-			'title' => esc_html__( 'Customer', 'awebooking' ),
+		// Fire action before save.
+		do_action( 'awebooking/process_booking_data', $booking, $values, $request );
+
+		// Save the data.
+		if ( $booking->save() ) {
+			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+		}
+	}
+
+	/**
+	 * Register the fields on the form.
+	 *
+	 * @param  \AweBooking\Component\Form\Form_Builder $form The form builder.
+	 * @return void
+	 */
+	protected function form_fields( $form ) {
+		$general = $form->add_section( 'general' );
+
+		$general->add_field([
+			'id'          => '_date_created',
+			'type'        => 'text_datetime_timestamp',
+			'name'        => esc_html__( 'Date created', 'awebooking' ),
+			'escape_cb'   => false,
+			'date_format' => 'Y-m-d',
+			'time_format' => 'H:i',
+			'attributes'  => [
+				'data-timepicker' => json_encode([
+					'timeFormat' => 'HH:mm',
+					'stepMinute' => 1,
+				]),
+			],
+			'default_cb'  => function() {
+				return get_the_time( 'U' );
+			},
 		]);
+
+		$general->add_field([
+			'id'          => '_source',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Source', 'awebooking' ),
+			'classes'     => 'with-selectize',
+			// 'options_cb'  => Dropdown::cb( 'get_reservation_sources' ),
+		]);
+
+		$general->add_field([
+			'id'          => '_status',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Status', 'awebooking' ),
+			'classes'     => 'with-selectize',
+			'options_cb'  => 'abrs_list_booking_statuses',
+			'escape_cb'   => false,
+			'default_cb'  => function() {
+				return get_post_status( get_the_ID() );
+			},
+		]);
+
+		$general->add_field([
+			'id'         => '_customer_id',
+			'type'       => 'select',
+			'name'       => esc_html__( 'Customer', 'awebooking' ),
+			'options_cb' => $this->get_customer_options(),
+			'classes'    => 'selectize-search-customer abrs-mb0',
+		]);
+
+		// Booking.
+		$booking = $form->add_section( 'booking' );
+
+		$booking->add_field([
+			'id'               => '_arrival_time',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Estimated time of arrival', 'awebooking' ),
+			'options_cb'       => 'abrs_list_hours',
+			'classes'          => 'with-selectize',
+			'show_option_none' => esc_html__( 'I don\'t know', 'awebooking' ),
+		]);
+
+		$booking->add_field( array(
+			'id'              => 'excerpt',
+			'type'            => 'textarea',
+			'name'            => esc_html__( 'Special requests', 'awebooking' ),
+			'save_field'      => false, // Let wp handle save this.
+			'escape_cb'       => false,
+			'default_cb'      => function() {
+				return get_post_field( 'post_excerpt', get_the_ID() );
+			},
+			'attributes'      => [
+				'rows'        => 5,
+			],
+		));
+
+		// Customer.
+		$customer = $form->add_section( 'customer' );
 
 		$customer->add_field( array(
 			'id'               => '_customer_title',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Title', 'awebooking' ),
-			'options'          => awebooking_get_common_titles(),
+			'options_cb'       => 'abrs_list_common_titles',
+			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_first_name',
-			'type' => 'text',
-			'name' => esc_html__( 'First name', 'awebooking' ),
-			'validate' => 'required',
+			'id'       => '_customer_first_name',
+			'type'     => 'text',
+			'name'     => esc_html__( 'First name', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_last_name',
-			'type' => 'text',
-			'name' => esc_html__( 'Last name', 'awebooking' ),
-			'validate' => 'required',
+			'id'       => '_customer_last_name',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Last name', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_address',
-			'type' => 'text',
-			'name' => esc_html__( 'Address', 'awebooking' ),
+			'id'       => '_customer_company',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Company', 'awebooking' ),
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_address2',
-			'type' => 'text',
-			'name' => esc_html__( 'Address 2', 'awebooking' ),
+			'id'       => '_customer_address',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Address', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_city',
-			'type' => 'text',
-			'name' => esc_html__( 'City', 'awebooking' ),
+			'id'       => '_customer_address_2',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Address 2', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_state',
-			'type' => 'text',
-			'name' => esc_html__( 'State', 'awebooking' ),
+			'id'       => '_customer_city',
+			'type'     => 'text',
+			'name'     => esc_html__( 'City', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_postal_code',
-			'type' => 'text',
-			'name' => esc_html__( 'Postal code', 'awebooking' ),
+			'id'       => '_customer_state',
+			'type'     => 'text',
+			'name'     => esc_html__( 'State', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_country',
-			'type' => 'text',
-			'name' => esc_html__( 'Country', 'awebooking' ),
+			'id'               => '_customer_country',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Country', 'awebooking' ),
+			'classes'          => 'with-selectize',
+			'options_cb'       => 'abrs_list_countries',
+			'show_option_none' => '---',
+			'col-half'         => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_phone',
-			'type' => 'text',
-			'name' => esc_html__( 'Phone number', 'awebooking' ),
-			'validate' => 'required',
+			'id'       => '_customer_postal_code',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Postal code', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_email',
-			'type' => 'text',
-			'name' => esc_html__( 'Email address', 'awebooking' ),
-			'validate' => 'email',
+			'id'       => '_customer_phone',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Phone number', 'awebooking' ),
+			'col-half' => true,
 		));
 
 		$customer->add_field( array(
-			'id'   => '_customer_company',
-			'type' => 'text',
-			'name' => esc_html__( 'Company', 'awebooking' ),
+			'id'       => '_customer_email',
+			'type'     => 'text',
+			'name'     => esc_html__( 'Email address', 'awebooking' ),
+			'col-half' => true,
 		));
-
-		// Payment section.
-		$payment = $metabox->add_section( 'payment', [
-			'title' => esc_html__( 'Payment', 'awebooking' ),
-		]);
-
-		/*$payment->add_field( array(
-			'type'            => 'select',
-			'id'              => '_payment_method',
-			'name'            => esc_html__( 'Payment method', 'awebooking' ),
-		));*/
-
-		$payment->add_field( array(
-			'type' => 'text',
-			'id'   => '_transaction_id',
-			'name' => esc_html__( 'Transaction ID', 'awebooking' ),
-		));
-
-		$payment->add_field( array(
-			'id'              => '_customer_note',
-			'type'            => 'textarea',
-			'name'            => esc_html__( 'Customer provided note:', 'awebooking' ),
-			'sanitization_cb' => 'sanitize_textarea_field',
-		));
-
-		do_action( 'awebooking/booking/register_metabox_fields', $metabox, $this );
 	}
 
 	/**
-	 * Output the metabox.
-	 */
-	public function booking_note_output() {
-		global $post;
-
-		remove_filter( 'comments_clauses', array( $this, '_exclude_booking_comments' ), 10, 1 );
-
-		$notes = get_comments( array(
-			'post_id'   => $post->ID,
-			'orderby'   => 'comment_ID',
-			'order'     => 'DESC',
-			'approve'   => 'approve',
-			'type'      => 'booking_note',
-		) );
-
-		add_filter( 'comments_clauses', array( $this, '_exclude_booking_comments' ), 10, 1 );
-
-		include trailingslashit( __DIR__ ) . 'views/html-booking-notes.php';
-	}
-
-	/**
-	 * Exclude booking comments from queries and RSS.
+	 * Returns the current booking customer for the select.
 	 *
-	 * @param  array $clauses clauses.
-	 * @return array
+	 * @return \Closure
 	 */
-	public function _exclude_booking_comments( $clauses ) {
-		$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
+	protected function get_customer_options() {
+		return function() {
+			global $the_booking;
 
-		return $clauses;
+			if ( is_null( $the_booking ) || empty( $the_booking['customer_id'] ) ) {
+				return [];
+			}
+
+			// Retrieve user info.
+			$user = get_user_by( 'id', $the_booking['customer_id'] );
+
+			/* translators: 1: user display name 2: user ID 3: user email */
+			$user_string = sprintf( esc_html__( '%1$s (#%2$s - %3$s)', 'awebooking' ), $user->display_name, absint( $user->ID ), $user->user_email );
+
+			return [ $user->ID => $user_string ];
+		};
 	}
 }

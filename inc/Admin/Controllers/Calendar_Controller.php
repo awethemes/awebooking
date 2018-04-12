@@ -2,28 +2,20 @@
 namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Request;
-use AweBooking\Model\Room_Type;
-use AweBooking\Admin\Calendar\Main_Calendar;
+use AweBooking\Admin\Calendar\Booking_Scheduler;
 
 class Calendar_Controller extends Controller {
 	/**
-	 * Show all room-types.
+	 * Show the booking scheduler.
 	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
 	public function index( Request $request ) {
-		$scheduler = new Main_Calendar;
+		$scheduler = new Booking_Scheduler;
 
-		return $this->response_view( 'calendar/main.php', compact( 'scheduler' ) );
-	}
+		$scheduler->prepare( $request );
 
-	/**
-	 * Show room_type rate.
-	 *
-	 * @param \Awethemes\Http\Request $request The current request.
-	 * @param \AweBooking\Model\Rate  $rate    The rate instance.
-	 * @return \Awethemes\Http\Response
-	 */
-	public function update( Request $request, Rate $rate ) {
+		return $this->response( 'calendar/index.php', compact( 'scheduler' ) );
 	}
 }

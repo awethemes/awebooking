@@ -2,7 +2,7 @@
 namespace AweBooking\Calendar\Event;
 
 use DateTimeInterface;
-use AweBooking\Calendar\Period\Period;
+use AweBooking\Support\Period;
 
 interface Event_Interface {
 	/**

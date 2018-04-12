@@ -21,17 +21,11 @@ class Payment_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
-		// Binding the gateways manager.
-		$this->awebooking->singleton( 'gateways', function() {
-			// Make class instance of gateways classes.
-			$gateways = array_map( function( $gateway ) {
-				return $this->awebooking->make( $gateway );
-			}, $this->gateways );
-
-			return new Manager( $gateways );
+		$this->plugin->singleton( 'gateways', function() {
+			return new Manager( $this->plugin, $this->gateways );
 		});
 
-		$this->awebooking->alias( 'gateways', Manager::class );
+		$this->plugin->alias( 'gateways', Manager::class );
 	}
 
 	/**

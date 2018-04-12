@@ -3,11 +3,7 @@ namespace AweBooking\Model;
 
 use AweBooking\Constants;
 
-class Room_Type extends WP_Object {
-	use Concerns\Room_Type_Attributes,
-		Concerns\Room_Type_Rooms,
-		Concerns\Room_Type_Rates;
-
+class Room_Type extends Model {
 	/**
 	 * This is the name of this object type.
 	 *
@@ -16,154 +12,80 @@ class Room_Type extends WP_Object {
 	protected $object_type = Constants::ROOM_TYPE;
 
 	/**
-	 * The attributes for this object.
+	 * The list rooms.
 	 *
-	 * @var array
+	 * @var \AweBooking\Support\Collection
 	 */
-	protected $attributes = [
-		// Basic infomations.
-		'title'             => '',
-		'slug'              => '',
-		'status'            => '',
-		'description'       => '',
-		'short_description' => '',
-		'date_created'      => null,
-		'date_modified'     => null,
-
-		// Room infomations.
-		'base_price'        => 0.00,
-		'minimum_night'     => 0,
-
-		'maximum_occupancy'   => 0,
-		'number_adults'       => 0,
-		'number_children'     => 0,
-		'number_infants'      => 0,
-		'calculation_infants' => false,
-
-		'amenities'         => null,
-		'amenity_ids'       => [],
-		'services'          => null,
-		'service_ids'       => [],
-		'location'          => null,
-		'location_id'       => null,
-
-		// Extra data.
-		'thumbnail_id'      => 0,
-		'gallery_ids'       => [],
-	];
+	protected $rooms;
 
 	/**
-	 * The attributes that should be cast to native types.
+	 * The room type base rate.
 	 *
-	 * @var array
+	 * @var \AweBooking\Model\Pricing\Base_Rate
 	 */
-	protected $casts = [
-		'base_price'          => 'float',
-		'minimum_night'       => 'integer',
-
-		'maximum_occupancy'   => 'integer',
-		'number_adults'       => 'integer',
-		'number_children'     => 'integer',
-		'number_infants'      => 'integer',
-		'calculation_infants' => 'boolean',
-	];
+	protected $base_rate;
 
 	/**
-	 * An array of meta data mapped with attributes.
+	 * List the rate plans.
 	 *
-	 * @var array
+	 * @var \AweBooking\Support\Collection
 	 */
-	protected $maps = [
-		'base_price'        => 'base_price',
-		'minimum_night'     => 'minimum_night',
-
-		'maximum_occupancy' => '_maximum_occupancy',
-		'number_adults'     => 'number_adults',
-		'number_children'   => 'number_children',
-		'number_infants'    => 'number_infants',
-
-		'gallery_ids'       => 'gallery',
-		'thumbnail_id'      => '_thumbnail_id',
-	];
+	protected $rate_plans;
 
 	/**
-	 * Query room types.
+	 * Get rooms belongs to this room type.
 	 *
-	 * @param  array $args //.
-	 * @return WP_Query
+	 * @return array \AweBooking\Support\Collection
 	 */
-	public static function query( array $args = [] ) {
-		$query = wp_parse_args( $args, [
-			'post_type'        => Constants::ROOM_TYPE,
-			'booking_adults'   => -1,
-			'booking_children' => -1,
-			'booking_infants'  => -1,
-			'posts_per_page'   => -1,
-		]);
+	public function get_rooms() {
+		$this->maybe_setup_rooms();
 
-		return new \WP_Query( $query );
+		return apply_filters( $this->prefix( 'get_rooms' ), $this->rooms, $this );
 	}
 
 	/**
-	 * Get the edit room_type link.
-	 *
-	 * @param  array $query_args Optional, extra query url.
-	 * @return string
-	 */
-	public function get_edit_link( array $query_args = [] ) {
-		$link = get_edit_post_link( $this->get_id() );
-
-		if ( ! empty( $query_args ) ) {
-			$link = add_query_arg( $query_args, $link );
-		}
-
-		return apply_filters( $this->prefix( 'get_edit_link' ), $link, $query_args, $this );
-	}
-
-	/**
-	 * Get room location.
-	 *
-	 * @return WP_Term|null
-	 */
-	public function get_location() {
-		if ( is_null( $this['location_id'] ) ) {
-			// Location only have one.
-			$hotel_locations = $this->get_term_ids( Constants::HOTEL_LOCATION );
-			if ( isset( $hotel_locations[0] ) ) {
-				$this['location_id'] = $hotel_locations[0];
-			}
-		}
-
-		$location = get_term( $this['location_id'], Constants::HOTEL_LOCATION );
-		if ( is_null( $location ) || is_wp_error( $location ) ) {
-			$location = null;
-		}
-
-		return apply_filters( $this->prefix( 'get_location' ), $location, $this );
-	}
-
-	/**
-	 * Get room services or extra-services.
+	 * Get list IDs of rooms.
 	 *
 	 * @return array
 	 */
-	public function get_services() {
-		if ( is_null( $this['service_ids'] ) ) {
-			$this['service_ids'] = $this->get_term_ids( Constants::HOTEL_SERVICE );
-		}
-
-		$services = [];
-		foreach ( $this['service_ids'] as $service ) {
-			$services[] = new Service( $service );
-		}
-
-		return apply_filters( $this->prefix( 'get_services' ), $services, $this );
+	public function get_room_ids() {
+		return $this->get_rooms()->pluck( 'id' )->all();
 	}
 
 	/**
-	 * Setup the object attributes.
+	 * Get the total rooms.
+	 *
+	 * @return int
+	 */
+	public function get_total_rooms() {
+		return count( $this->get_rooms() );
+	}
+
+	/**
+	 * Maybe setup room units.
 	 *
 	 * @return void
+	 */
+	protected function maybe_setup_rooms() {
+		if ( is_null( $this->rooms ) ) {
+			// If working on non-exists room type, just create an empty rooms.
+			$rooms = ! $this->exists() ? [] : abrs_get_rooms( $this->id );
+
+			$this->rooms = abrs_collect( $rooms )->map_into( Room::class );
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function clean_cache() {
+		parent::clean_cache();
+
+		wp_cache_delete( $this->get_id(), 'awebooking_rooms' );
+	}
+
+	/**
+	 * {@inheritdoc}
 	 */
 	protected function setup() {
 		$this['title']             = $this->instance->post_title;
@@ -174,41 +96,25 @@ class Room_Type extends WP_Object {
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
 
+		// Correct the gallery_ids.
 		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
 			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
 		}
 
-		/**
-		 * Fire 'awebooking/room_type/after_setup' action.
-		 *
-		 * @param Room_Type $room_type The room type object instance.
-		 */
 		do_action( $this->prefix( 'after_setup' ), $this );
 	}
 
 	/**
-	 * Clean object cache after saved.
-	 *
-	 * @return void
-	 */
-	protected function clean_cache() {
-		wp_cache_delete( $this['room_type'], Constants::CACHE_ROOMS_IN_ROOM_TYPE );
-	}
-
-	/**
-	 * Run perform insert object into database.
-	 *
-	 * @see wp_insert_post()
-	 *
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	protected function perform_insert() {
 		$insert_id = wp_insert_post([
 			'post_type'    => $this->object_type,
-			'post_title'   => $this->get_title(),
-			'post_content' => $this->get_description(),
-			'post_excerpt' => $this->get_short_description(),
-			'post_status'  => $this->get_status(),
+			'post_title'   => $this['title'],
+			'post_content' => $this['description'],
+			'post_excerpt' => $this['short_description'],
+			'post_status'  => $this['status'] ? $this['status'] : 'publish',
+			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
@@ -217,37 +123,114 @@ class Room_Type extends WP_Object {
 	}
 
 	/**
-	 * Run perform update object.
-	 *
-	 * @see wp_update_post()
-	 *
-	 * @param  array $dirty The attributes changed.
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	protected function perform_update( array $dirty ) {
-		$postarr = [];
+		$this->update_the_post([
+			'post_title'    => $this['title'],
+			'post_status'   => $this['status'],
+			'post_content'  => $this['description'],
+			'post_excerpt'  => $this['short_description'],
+			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
+			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
+		]);
 
-		// Only update the post when the post data dirty.
-		if ( isset( $dirty['title'] ) ) {
-			$postarr['post_title'] = $this->get_title();
-		}
-
-		if ( isset( $dirty['description'] ) ) {
-			$postarr['post_content'] = $this->get_description();
-		}
-
-		if ( isset( $dirty['short_description'] ) ) {
-			$postarr['post_excerpt'] = $this->get_short_description();
-		}
-
-		if ( ! empty( $postarr ) ) {
-			$updated = wp_update_post(
-				array_merge( $postarr, [ 'ID' => $this->get_id() ] ), true
-			);
-
-			return ! is_wp_error( $updated );
-		}
-
+		// Allow continue save meta-data if nothing to update post.
 		return true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function setup_attributes() {
+		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
+			// Basic infomations.
+			'title'             => '',
+			'slug'              => '',
+			'status'            => '',
+			'date_created'      => null,
+			'date_modified'     => null,
+			'description'       => '',
+			'short_description' => '',
+			'thumbnail_id'      => 0,
+			'gallery_ids'       => [],
+
+			// Room data.
+			'maximum_occupancy'   => 0,
+			'number_adults'       => 0,
+			'number_children'     => 0,
+			'number_infants'      => 0,
+			'calculation_infants' => 'on', // on | off.
+
+			// Rate.
+			'rack_rate'           => 0,
+			'rate_inclusions'     => [],
+			'rate_policies'       => [],
+			'rate_min_los'        => 0,
+			'rate_max_los'        => 0,
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function map_attributes() {
+		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
+			'gallery_ids'         => 'gallery',
+			'thumbnail_id'        => '_thumbnail_id',
+
+			'maximum_occupancy'   => '_maximum_occupancy',
+			'number_adults'       => 'number_adults',
+			'number_children'     => 'number_children',
+			'number_infants'      => 'number_infants',
+			'calculation_infants' => '_infants_in_calculations',
+
+			'rack_rate'           => 'base_price',
+			'rate_inclusions'     => '_rate_inclusions',
+			'rate_policies'       => '_rate_policies',
+			'rate_min_los'        => 'minimum_night',
+			'rate_max_los'        => '_rate_maximum_los',
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function sanitize_attribute( $key, $value ) {
+		switch ( $key ) {
+			case 'gallery_ids':
+				$value = is_array( $value ) ? $value : [];
+				break;
+
+			case 'rack_rate':
+				$value = abrs_sanitize_decimal( $value );
+				break;
+
+			case 'description':
+			case 'short_description':
+				$value = abrs_sanitize_html( $value );
+				break;
+
+			case 'rate_policies':
+			case 'rate_inclusions':
+				if ( $value && is_string( $value ) ) {
+					$value = abrs_clean( explode( "\n", $value ) );
+				}
+
+				$value = is_array( $value ) ? array_filter( $value ) : [];
+				break;
+
+			case 'thumbnail_id':
+			case 'maximum_occupancy':
+			case 'number_adults':
+			case 'number_children':
+			case 'number_infants':
+			case 'rate_min_los':
+			case 'rate_max_los':
+				$value = absint( $value );
+				break;
+		}
+
+		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );
 	}
 }

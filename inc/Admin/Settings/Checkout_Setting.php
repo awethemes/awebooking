@@ -6,24 +6,37 @@ use AweBooking\Admin\Admin_Settings;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**
-	 * {@inheritdoc}
+	 * The setting ID.
+	 *
+	 * @var string
 	 */
-	public function registers( Admin_Settings $settings ) {
-		$checkout = $settings->add_panel( 'checkout', [
-			'title'      => esc_html__( 'Checkout', 'awebooking' ),
+	protected $form_id = 'checkout';
+
+	/**
+	 * Get the setting label.
+	 *
+	 * @return string
+	 */
+	public function get_label() {
+		return esc_html__( 'Checkout', 'awebooking' );
+	}
+
+	/**
+	 * Setup the fields.
+	 *
+	 * @return void
+	 */
+	public function setup_fields() {
+		$options = $this->add_section( 'checkout-options', [
+			'title'      => esc_html__( 'Checkout Options', 'awebooking' ),
 			'capability' => 'manage_awebooking',
 		]);
 
-		$checkout_options = $settings->add_section( 'checkout-options', [
-			'title'      => esc_html__( 'Checkout Options', 'awebooking' ),
-			'capability' => 'manage_awebooking',
-		])->as_child_of( 'checkout' );
-
-		$checkout_options->add_field( array(
+		$options->add_field([
 			'id'         => 'gateway_order',
 			'type'       => 'gateway_display_order',
 			'name'       => esc_html__( 'Gateway display order', 'awebooking' ),
-		) );
+		]);
 
 		// Register the gateways custom fields.
 		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
@@ -31,27 +44,25 @@ class Checkout_Setting extends Abstract_Setting {
 				continue;
 			}
 
-			$this->register_gateway_settings( $settings, $gateway );
+			$this->register_gateway_settings( $gateway );
 		}
 	}
 
 	/**
 	 * Register the gateway settings.
 	 *
-	 * @param  \AweBooking\Admin\Admin_Settings $settings The admin settings instance.
-	 * @param  \AweBooking\Gateway\Gateway      $gateway  The gateway.
+	 * @param  \AweBooking\Gateway\Gateway $gateway  The gateway.
 	 * @return void
 	 */
-	protected function register_gateway_settings( Admin_Settings $settings, Gateway $gateway ) {
+	protected function register_gateway_settings( Gateway $gateway ) {
 		$prefix = sanitize_key( 'gateway_' . $gateway->get_method() );
 
-		$section = $settings->add_section( $prefix, [
-			'title'      => $gateway->get_method_title(),
-			'capability' => 'manage_awebooking',
-		])->as_child_of( 'checkout' );
+		$section = $this->add_section( $prefix, [
+			'title' => $gateway->get_method_title(),
+		]);
 
 		$section->add_field([
-			'id'    => $prefix . '__heading_title__',
+			'id'    => $prefix . '__title',
 			'type'  => 'title',
 			'name'  => $gateway->get_method_title(),
 			'desc'  => $gateway->get_method_description(),
@@ -59,11 +70,17 @@ class Checkout_Setting extends Abstract_Setting {
 
 		// Loop each settings field and doing register.
 		foreach ( $gateway->get_setting_fields() as $key => $args ) {
-			$section->add_field(
-				array_merge( $args, [ 'id' => $prefix . '_' . $key ] )
-			);
+			$field_args = array_merge( $args, [ 'id' => $prefix . '_' . $key ] );
+
+			if ( 'checkbox' === $field_args['type'] ) {
+				$field_args['type'] = 'abrs_checkbox';
+			} elseif ( 'toggle' === $field_args['type'] ) {
+				$field_args['type'] = 'abrs_toggle';
+			}
+
+			$section->add_field( $field_args );
 		}
 
-		do_action( 'awebooking/after_register_gateway_settings', $gateway, $section );
+		do_action( 'awebooking/register_gateway_settings', $gateway, $section );
 	}
 }

@@ -2,11 +2,11 @@
 namespace AweBooking\Calendar\Finder;
 
 use AweBooking\Calendar\Calendar;
-use AweBooking\Calendar\Period\Period;
 use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Provider\Provider_Interface;
 use AweBooking\Calendar\Traits\With_Constraints;
 use AweBooking\Support\Collection;
+use AweBooking\Support\Period;
 
 class Finder {
 	use With_Constraints;
@@ -32,9 +32,9 @@ class Finder {
 	/**
 	 * The list of states to compare.
 	 *
-	 * @var array
+	 * @var array|null
 	 */
-	protected $states = [];
+	protected $states = null;
 
 	/**
 	 * The comparison mode (diff or intersect).
@@ -94,23 +94,23 @@ class Finder {
 	/**
 	 * Finder resources in a period.
 	 *
-	 * @param  \AweBooking\Calendar\Period\Period $period The period.
+	 * @param  \AweBooking\Support\Period $period The period.
 	 * @return \AweBooking\Calendar\Finder\Response
 	 */
 	public function find( Period $period ) {
-		// Get all states of each resources.
-		$states = $this->get_states( $period );
+		// Get all events of each resources.
+		$events = $this->get_events( $period );
 
 		// Create the response.
 		$response = new Response( $period, $this->resources );
 
-		foreach ( $states as $resource_id => $resource_states ) {
+		foreach ( $events as $resource_id => $resource_events ) {
 			$resource = $this->resources->get( $resource_id );
 
-			if ( $this->remaining_states( $resource_states ) ) {
-				$response->add_match( $resource, Response::VALID_STATE );
-			} else {
+			if ( $this->states && ! $this->remaining_states( $resource_events ) ) {
 				$response->add_miss( $resource, Response::INVALID_STATE );
+			} else {
+				$response->add_match( $resource, Response::VALID_STATE, $resource_events );
 			}
 
 			// Applly the resource constraints.
@@ -124,21 +124,20 @@ class Finder {
 	}
 
 	/**
-	 * Determines if still remaining states.
+	 * Determines if valid states in events.
 	 *
-	 * @param  array $resource_states The resources states.
+	 * @param  \AweBooking\Calendar\Event\Events $events The resources events.
 	 * @return bool
 	 */
-	protected function remaining_states( array $resource_states ) {
-		// No states to check, leave and return true.
-		if ( is_null( $this->states ) || empty( $this->states ) ) {
-			return true;
-		}
+	protected function remaining_states( $events ) {
+		$current_states = $events->transform( function( $e ) {
+			return $e->get_value();
+		})->all();
 
 		if ( static::COMPARISON_DIFF === $this->comparison ) {
-			$remaining = array_diff( $resource_states, $this->states );
+			$remaining = array_diff( $current_states, $this->states );
 		} else {
-			$remaining = array_intersect( $resource_states, $this->states );
+			$remaining = array_intersect( $current_states, $this->states );
 		}
 
 		return ( static::COMPARISON_INTERSECT === $this->comparison )
@@ -147,25 +146,9 @@ class Finder {
 	}
 
 	/**
-	 * Get all resources states in a period.
-	 *
-	 * @param  \AweBooking\Calendar\Period\Period $period The period.
-	 * @return \AweBooking\Support\Collection
-	 */
-	protected function get_states( Period $period ) {
-		return $this->get_events( $period )->map( function( $events ) {
-
-			return $events->transform( function( $e ) {
-				return $e->get_value();
-			})->all();
-
-		});
-	}
-
-	/**
 	 * Get all events in a period.
 	 *
-	 * @param  \AweBooking\Calendar\Period\Period $period The period.
+	 * @param  \AweBooking\Support\Period $period The period.
 	 * @return \AweBooking\Support\Collection
 	 */
 	protected function get_events( Period $period ) {

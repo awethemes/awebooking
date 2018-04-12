@@ -1,185 +1,193 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\Dropdown;
-use AweBooking\Constants;
-use AweBooking\Admin\Admin_Settings;
-
 class General_Setting extends Abstract_Setting {
 	/**
-	 * {@inheritdoc}
+	 * The setting ID.
+	 *
+	 * @var string
 	 */
-	public function registers( Admin_Settings $settings ) {
-		$section = $settings->add_section( 'general', [
-			'title'      => esc_html__( 'General', 'awebooking' ),
-			'priority'   => 5,
-			'capability' => 'manage_awebooking',
+	protected $form_id = 'general';
+
+	/**
+	 * Get the setting label.
+	 *
+	 * @return string
+	 */
+	public function get_label() {
+		return esc_html__( 'General', 'awebooking' );
+	}
+
+	/**
+	 * Setup the fields.
+	 *
+	 * @return void
+	 */
+	public function setup_fields() {
+		$this->add_field([
+			'id'       => '__title_general',
+			'type'     => 'title',
+			'name'     => esc_html__( 'General', 'awebooking' ),
 		]);
 
-		$section->add_field( array(
-			'id'   => '__general_system__',
-			'type' => 'title',
-			'name' => esc_html__( 'AweBooking General', 'awebooking' ),
-		) );
 
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'enable_location',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Multi hotel location?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'enable_location' ),
-		) );
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Multiple Hotels?', 'awebooking' ),
+			'default'  => 'off',
+		]);
 
-		$section->add_field( array(
-			'id'       => 'location_default',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Default location', 'awebooking' ),
-			'description' => esc_html__( 'Select a default location.', 'awebooking' ),
-			'options_cb'  => wp_data_callback( 'terms', array(
-				'taxonomy'   => Constants::HOTEL_LOCATION,
-				'hide_empty' => false,
-			)),
-			'validate' => 'integer',
-			'deps'     => array( 'enable_location', '==', true ),
-		) );
-
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'children_bookable',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'children_bookable' ),
-			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
-		));
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Children Bookable?', 'awebooking' ),
+			'default'  => 'on',
+		]);
 
-		$section->add_field( array(
-			'type'     => 'text',
-			'id'       => 'children_bookable_description',
-			'name'     => esc_html__( 'Description', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'children_bookable_description' ),
-			'attributes' => [
-				'placeholder' => esc_html__( 'Description', 'awebooking' ),
+		$this->add_field([
+			'id'        => 'infants_bookable',
+			'type'      => 'abrs_toggle',
+			'name'      => esc_html__( 'Infants Bookable?', 'awebooking' ),
+			'default'   => 'on',
+		]);
+
+		// Address.
+		$this->add_field([
+			'id'       => '__hotel_address',
+			'type'     => 'title',
+			'name'     => esc_html__( 'Hotel & Address', 'awebooking' ),
+			'desc'     => esc_html__( 'This is where your hotel is located. Tax rates will use this address.', 'awebooking' ),
+		]);
+
+		$this->add_field([
+			'id'              => 'hotel_name',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Name', 'awebooking' ),
+			'default'         => get_bloginfo( 'name' ),
+			'required'        => true,
+			'sanitization_cb' => 'abrs_sanitize_text',
+		]);
+
+		$this->add_field([
+			'id'              => 'star_rating',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Star Rating', 'awebooking' ),
+			'classes'         => 'with-selectize',
+			'options'         => [
+				''  => esc_html__( 'N/A', 'awebooking' ),
+				'1' => '1&nbsp;&#9733;',
+				'2' => '2&nbsp;&#9733;&#9733;',
+				'3' => '3&nbsp;&#9733;&#9733;&#9733;',
+				'4' => '4&nbsp;&#9733;&#9733;&#9733;&#9733;',
+				'5' => '5&nbsp;&#9733;&#9733;&#9733;&#9733;&#9733;',
 			],
-			'deps'     => array( 'children_bookable', '==', true ),
-			'show_on_cb' => '__return_false',
-		) );
+		]);
 
-		$section->add_field( array(
-			'id'       => 'infants_bookable',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable' ),
-			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
-		) );
+		$this->add_field([
+			'id'              => 'hotel_address',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Address Line', 'awebooking' ),
+			'desc'            => esc_html__( 'The street address for your hotel location.', 'awebooking' ),
+			'sanitization_cb' => 'abrs_sanitize_text',
+			'tooltip'         => true,
+		]);
 
-		$section->add_field( array(
-			'type'     => 'text',
-			'id'       => 'infants_bookable_description',
-			'name'     => esc_html__( 'Description', 'awebooking' ),
-			'deps'     => array( 'infants_bookable', '==', true ),
-			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable_description' ),
-			'attributes' => [
-				'placeholder' => esc_html__( 'Description', 'awebooking' ),
-			],
-			'show_on_cb' => '__return_false',
-		) );
+		$this->add_field([
+			'id'              => 'hotel_address_2',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Address line 2', 'awebooking' ),
+			'desc'            => esc_html__( 'An additional, optional address line for your hotel location.', 'awebooking' ),
+			'sanitization_cb' => 'abrs_sanitize_text',
+			'tooltip'         => true,
+		]);
 
-		$section->add_field( array(
-			'id'   => '__general_currency__',
+		$this->add_field([
+			'id'              => 'hotel_city',
+			'type'            => 'text',
+			'name'            => esc_html__( 'City', 'awebooking' ),
+			'desc'            => esc_html__( 'The city in which your hotel is located.', 'awebooking' ),
+			'sanitization_cb' => 'abrs_sanitize_text',
+			'tooltip'         => true,
+		]);
+
+		$this->add_field([
+			'id'               => 'hotel_country',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Country', 'awebooking' ),
+			'desc'             => esc_html__( 'The country in which your hotel is located.', 'awebooking' ),
+			'options_cb'       => 'abrs_list_countries',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+			'tooltip'          => true,
+		]);
+
+		$this->add_field([
+			'name'            => esc_html__( 'Postcode / ZIP', 'awebooking' ),
+			'desc'            => esc_html__( 'The postal code, if any, in which your hotel is located.', 'awebooking' ),
+			'id'              => 'hotel_postcode',
+			'type'            => 'text',
+			'sanitization_cb' => 'abrs_sanitize_text',
+			'tooltip'         => true,
+		]);
+
+		// Currency options.
+		$this->add_field([
+			'id'   => '__title_currency',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
-		) );
+		]);
 
-		$section->add_field( array(
-			'id'       => 'currency',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Currency', 'awebooking' ),
-			'default' => awebooking( 'setting' )->get_default( 'currency' ),
-			'options_cb'  => function() {
-				return awebooking( 'currencies' )->get_for_dropdown( '%name (%symbol)' );
-			},
-		) );
+		$this->add_field([
+			'id'          => 'currency',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Currency', 'awebooking' ),
+			'default'     => 'USD',
+			'options_cb'  => 'abrs_list_dropdown_currencies',
+			'classes'     => 'with-selectize',
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'currency_position',
 			'type'     => 'select',
-			'name'     => esc_html__( 'Currency position', 'awebooking' ),
-			// 'desc'     => esc_html__( 'Controls the position of the currency symbol.', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'currency_position' ),
-			'validate' => 'required',
-			'options'  => Dropdown::get_currency_positions(),
-		) );
+			'name'     => esc_html__( 'Currency Position', 'awebooking' ),
+			'default'  => 'left',
+			'classes'  => 'with-selectize',
+			'options'  => [
+				'left'        => esc_html__( 'Left', 'awebooking' ),
+				'right'       => esc_html__( 'Right', 'awebooking' ),
+				'left_space'  => esc_html__( 'Left with space', 'awebooking' ),
+				'right_space' => esc_html__( 'Right with space', 'awebooking' ),
+			],
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'type'            => 'text_small',
 			'id'              => 'price_thousand_separator',
-			'name'            => esc_html__( 'Thousand separator', 'awebooking' ),
-			// 'desc'            => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
-			'default'         => awebooking( 'setting' )->get_default( 'price_thousand_separator' ),
-			'validate'        => 'required',
-			'sanitization_cb' => function( $value ) {
-				return sanitize_text_field( wp_unslash( $value ) );
-			},
-		) );
+			'name'            => esc_html__( 'Thousand Separator', 'awebooking' ),
+			'default'         => ',',
+			'sanitization_cb' => 'abrs_sanitize_text',
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'type'            => 'text_small',
 			'id'              => 'price_decimal_separator',
-			'name'            => esc_html__( 'Decimal separator', 'awebooking' ),
-			// 'desc'            => '<div>' . esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ) . '</div>',
-			'default'         => awebooking( 'setting' )->get_default( 'price_decimal_separator' ),
-			'validate'        => 'required',
-			'sanitization_cb' => function( $value ) {
-				return sanitize_text_field( wp_unslash( $value ) );
-			},
-		) );
+			'name'            => esc_html__( 'Decimal Separator', 'awebooking' ),
+			'default'         => '.',
+			'sanitization_cb' => 'abrs_sanitize_text',
+		]);
 
-		$section->add_field( array(
-			'type'       => 'text_small',
-			'id'         => 'price_number_decimals',
-			'name'       => esc_html__( 'Number of decimals', 'awebooking' ),
-			'default'    => awebooking( 'setting' )->get_default( 'price_number_decimals' ),
-			'validate'   => 'required|integer|min:0',
-			'attributes' => array(
+		$this->add_field([
+			'type'            => 'text_small',
+			'id'              => 'price_number_decimals',
+			'name'            => esc_html__( 'Number of Decimals', 'awebooking' ),
+			'default'         => '2',
+			'sanitization_cb' => 'absint',
+			'attributes'      => [
 				'min'  => 0,
+				'step' => 1,
 				'type' => 'number',
-			),
-		) );
-	}
-
-	/**
-	 * Children bookable callback.
-	 *
-	 * @return void
-	 */
-	public function _children_able_field_callback( $field_args, $field ) {
-		$cmb2 = $field->get_cmb();
-		$children_description = $cmb2->get_field( 'children_bookable_description' );
-
-		skeleton_render_field( $field );
-
-		echo '<div data-fieldtype="input" data-deps="children_bookable" data-deps-condition="==" data-deps-value="1" style="display: none">';
-		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Ages 2 - 12.', 'awebooking' ), '</p>';
-		$children_description->render();
-		echo '</div>';
-
-		$children_description->errors();
-	}
-
-	/**
-	 * Infants bookable callback.
-	 *
-	 * @return void
-	 */
-	public function _infants_able_field_callback( $field_args, $field ) {
-		$cmb2 = $field->get_cmb();
-		$infants_description = $cmb2->get_field( 'infants_bookable_description' );
-
-		skeleton_render_field( $field );
-
-		echo '<div data-fieldtype="input" data-deps="infants_bookable" data-deps-condition="==" data-deps-value="1" style="display: none">';
-		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Under 2.', 'awebooking' ), '</p>';
-		$infants_description->render();
-		echo '</div>';
-
-		$infants_description->errors();
+			],
+		]);
 	}
 }

@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <phpunit
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
@@ -8,8 +9,7 @@
 	>
 	<testsuites>
 		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
-			<directory>./tests/*</directory>
+			<directory suffix="_Test.php">./tests/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

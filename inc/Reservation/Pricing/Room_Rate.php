@@ -1,45 +1,106 @@
 <?php
 namespace AweBooking\Reservation\Pricing;
 
-use AweBooking\Support\Collection;
+use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Rate;
+use AweBooking\Model\Common\Timespan;
+use AweBooking\Support\Decimal;
+use AweBooking\Support\Collection;
 
 class Room_Rate {
 	/**
-	 * The room rate.
+	 * The price apply for room-type.
 	 *
-	 * @var \AweBooking\Model\Pricing\Rate
+	 * @var \AweBooking\Model\Room_Type
 	 */
-	protected $rate;
+	protected $room_type;
 
 	/**
-	 * The addition rates.
+	 * The timespan.
+	 *
+	 * @var \AweBooking\Model\Common\Timespan
+	 */
+	protected $timespan;
+
+	/**
+	 * The list rates.
 	 *
 	 * @var \AweBooking\Support\Collection
 	 */
-	protected $addition_rates;
+	protected $rates;
+
+	/**
+	 * The total amount.
+	 *
+	 * @var \AweBooking\Support\Decimal
+	 */
+	protected $amount;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Model\Pricing\Rate|null $rate           The rate.
-	 * @param array                               $addition_rates The addition_rates.
+	 * @param \AweBooking\Model\Room_Type       $room_type The room type.
+	 * @param \AweBooking\Model\Common\Timespan $timespan  The timespan.
 	 */
-	public function __construct( Rate $rate = null, $addition_rates = [] ) {
-		$this->rate = $rate;
-		$this->addition_rates = Collection::make( $addition_rates );
+	public function __construct( Room_Type $room_type, Timespan $timespan ) {
+		$this->room_type = $room_type;
+		$this->timespan = $timespan;
 	}
 
 	/**
-	 * Sets the room rate.
+	 * Get the room-type.
+	 *
+	 * @return \AweBooking\Model\Room_Type
+	 */
+	public function get_room_type() {
+		return $this->room_type;
+	}
+
+	/**
+	 * Get the stay.
+	 *
+	 * @return \AweBooking\Model\Common\Timespan
+	 */
+	public function get_timespan() {
+		return $this->timespan;
+	}
+
+	/**
+	 * Gets the total amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_amount() {
+		if ( is_null( $this->amount ) ) {
+			$this->amount = $this->calculate_amount();
+		}
+
+		return $this->amount;
+	}
+
+	/**
+	 * Sets the total amount.
+	 *
+	 * @param \AweBooking\Support\Decimal $amount The amount.
+	 */
+	public function custom_amount( $amount ) {
+		$this->flush_rates( true );
+
+		$this->amount = Decimal::create( $amount );
+
+		return $this;
+	}
+
+	/**
+	 * Select a rate.
 	 *
 	 * @param  \AweBooking\Model\Pricing\Rate $rate The rate.
 	 * @return $this
 	 */
 	public function select( Rate $rate ) {
-		$this->rate = $rate;
+		$this->flush_rates( true );
 
-		return $this;
+		return $this->add_rate( $rate, true );
 	}
 
 	/**
@@ -49,35 +110,66 @@ class Room_Rate {
 	 * @return $this
 	 */
 	public function addition( Rate $rate ) {
-		$this->addition_rates->push( $rate );
+		// Need a primary rate before call this action.
+		if ( is_null( $this->rates ) ) {
+			return $this;
+		}
+
+		return $this->add_rate( $rate );
+	}
+
+	/**
+	 * Flush the selected rates.
+	 *
+	 * @param  boolean $reset_amount The reset total amount.
+	 * @return $this
+	 */
+	public function flush_rates( $reset_amount = true ) {
+		$this->rates = new Collection;
+
+		if ( $reset_amount ) {
+			$this->amount = null;
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Gets the room rate.
+	 * Add a rate into the list.
 	 *
-	 * @return \AweBooking\Model\Pricing\Rate
+	 * @param  \AweBooking\Model\Pricing\Rate $rate    The rate.
+	 * @param  boolean                        $primary Is this is primary rate.
+	 * @return $this
 	 */
-	public function get_rate() {
-		return $this->rate;
+	protected function add_rate( Rate $rate, $primary = false ) {
+		// Get the price amount & breakdown.
+		list( $amount, $breakdown ) = ( new Pricing )->get( $rate, $this->timespan );
+
+		if ( $primary ) {
+			$this->rates->prepend( compact( 'primary', 'rate', 'amount', 'breakdown' ) );
+		} else {
+			$this->rates->push( compact( 'primary', 'rate', 'amount', 'breakdown' ) );
+		}
+
+		return $this;
 	}
 
 	/**
-	 * Gets the addition rates.
+	 * Calculate the room rate total.
 	 *
-	 * @return \AweBooking\Support\Collection
+	 * @return \AweBooking\Support\Decimal
 	 */
-	public function get_addition_rates() {
-		return $this->addition_rates;
-	}
+	protected function calculate_amount() {
+		$zero = Decimal::zero();
 
-	/**
-	 * Empty the addition_rates.
-	 *
-	 * @return void
-	 */
-	public function flush_addition_rates() {
-		$this->addition_rates = new Collection;
+		if ( is_null( $this->rates ) || $this->rates->isEmpty() ) {
+			return $zero;
+		}
+
+		$total = $this->rates->reduce( function ( $total, $item ) {
+			return $total->add( $item['amount'] );
+		}, $zero );
+
+		return apply_filters( 'awebooking/pricing/calculate_room_rate', $total, $this );
 	}
 }

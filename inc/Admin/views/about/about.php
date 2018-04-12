@@ -1,6 +1,6 @@
 <?php
 
-$awebooking_available_addons = [
+$available_addons = [
 	[
 		'id'          => 'awethemes.awebooking-rules',
 		'label'       => 'Rules',
@@ -31,11 +31,6 @@ $awebooking_available_addons = [
 		'description' => 'Build and add your own custom fields in the booking check-out form to collect any information you need for each reservation.',
 		'thumbnail'   => 'https://awethemes.com/files/awebooking/form-builder.png',
 	],
-	// [
-	// 	'id'          => 'awethemes.awebooking-user-profile',
-	// 	'label'       => 'User Profile',
-	// 	'description' => 'Customers can manage log-in credentials, personal information and more in their own profile page. Even more, they can check and manage their bookings quickly and easily',
-	// ],
 	[
 		'id'          => 'awethemes.awebooking-simple-reservation',
 		'label'       => 'Simple Reservation',
@@ -102,8 +97,7 @@ $awebooking_available_addons = [
 	<p><?php esc_html_e( 'The PRO version will never fail to impress you. With a bunch of premium features added, your online booking system will be pushed to the next level', 'awebooking' ); ?></p>
 
 	<div class="under-the-hood three-col">
-		<?php foreach ( $awebooking_available_addons as $_addon ) :
-			$installed_addon = awebooking()->get_addon( $_addon['id'] ); ?>
+		<?php foreach ( $available_addons as $_addon ) : ?>
 
 			<div class="col">
 				<a class="awebooking-plugin-cover" href="<?php echo esc_url( 'https://awethemes.com/plugins/awebooking?ref=plugin-core' ); ?>" target="_blank">
@@ -111,10 +105,6 @@ $awebooking_available_addons = [
 
 					<h3>
 						<?php echo esc_html( $_addon['label'] ); ?>
-
-						<?php if ( $installed_addon && ! $installed_addon->has_errors() ) : ?>
-							<span class="awebooking-addon-installed"><?php echo esc_html__( 'Installed', 'awebooking' ); ?></span>
-						<?php endif ?>
 					</h3>
 				</a>
 
@@ -126,6 +116,6 @@ $awebooking_available_addons = [
 	<hr>
 
 	<div class="return-to-dashboard">
-		<a href="<?php echo esc_url( self_admin_url( 'admin.php?page=awebooking-settings' ) ); ?>"><?php esc_html_e( 'Go to Settings &rarr;', 'awebooking' ); ?></a>
+		<a href="<?php echo esc_url( self_admin_url( 'admin.php?awebooking=/settings' ) ); ?>"><?php esc_html_e( 'Go to Settings &rarr;', 'awebooking' ); ?></a>
 	</div>
 </div>

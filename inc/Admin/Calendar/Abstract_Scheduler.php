@@ -1,56 +1,56 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
-use AweBooking\Support\Carbonate;
-use AweBooking\Support\Collection;
-use AweBooking\Support\Utils as U;
+use WP_Query;
+use AweBooking\Plugin;
+use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
-
-use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Scheduler;
-use AweBooking\Calendar\Period\Period;
-use AweBooking\Calendar\Event\State_Event;
-use AweBooking\Calendar\Event\Pricing_Event;
-use AweBooking\Calendar\Event\Booking_Event;
+use AweBooking\Calendar\Period\Iterator_Period;
+use AweBooking\Support\Carbonate;
+use Awethemes\Http\Request;
+use Illuminate\Support\Arr;
 
 abstract class Abstract_Scheduler {
+	use Concerns\Calendar_Creator;
+
 	/**
 	 * The datepoint to begin the scheduler.
 	 *
-	 * @var \AweBooking\Support\Carbonate
+	 * @var string
 	 */
 	protected $datepoint;
 
 	/**
-	 * The period from datepoint.
+	 * The period of the datepoint.
 	 *
-	 * @var \AweBooking\Calendar\Period\Period
+	 * @var \AweBooking\Support\Period
 	 */
 	protected $period;
 
 	/**
-	 * Cache the scheduler.
+	 * Cache the main scheduler.
 	 *
 	 * @var \AweBooking\Calendar\Scheduler
 	 */
 	protected $scheduler;
 
 	/**
-	 * The matrices of the scheduler.
+	 * The matrix of the scheduler.
 	 *
 	 * @var array
 	 */
-	protected $matrices;
+	protected $matrix;
 
 	/**
-	 * List of room-types to display.
+	 * The events of the scheduler.
 	 *
-	 * @var \AweBooking\Support\Collection
+	 * @var array
 	 */
-	protected $room_types;
+	protected $events;
 
 	/**
-	 * [$conext description]
+	 * The scheduler context.
 	 *
 	 * @var string
 	 */
@@ -61,81 +61,57 @@ abstract class Abstract_Scheduler {
 	 *
 	 * @var string
 	 */
-	protected $main_layout = 'scheduler/scheduler.php';
+	protected $main_layout = 'scheduler.php';
 
 	/**
-	 * [$frozen description]
-	 *
-	 * @var boolean
-	 */
-	protected $frozen = false;
-
-	/**
-	 * [__construct description]
-	 *
-	 * @param [type] $datepoint [description]
-	 */
-	public function __construct( $datepoint = null ) {
-		$this->set_datepoint( $datepoint );
-	}
-
-	/**
-	 * Display the Calendar.
+	 * Display the Scheduler.
 	 *
 	 * @return void
 	 */
 	public function display() {
-		// Create the scheduler.
-		$this->scheduler = $this->create_scheduler();
-		$this->matrices  = $this->generate_matrices();
-
-		// Ensure enqueue the schedule-calendar.
-		wp_enqueue_script( 'awebooking-scheduler' );
-
-		// Output the HTML.
-		awebooking( 'admin_template' )->partial( $this->main_layout, [ 'calendar' => $this ] );
-	}
-
-	/**
-	 * Set the datepoint, fallback to today.
-	 *
-	 * @param mixed $datepoint The datepoint.
-	 */
-	public function set_datepoint( $datepoint ) {
-		$today = Carbonate::today();
-
-		if ( is_null( $datepoint ) || empty( $datepoint ) ) {
-			$this->datepoint = $today;
-		} else {
-			$this->datepoint = U::rescue( function () use ( $datepoint ) {
-				return Carbonate::create_date( $datepoint );
-			}, $today );
+		if ( is_null( $this->period ) || is_null( $this->scheduler ) ) {
+			return;
 		}
 
-		$this->generate_period( $this->datepoint );
+		// Ensure enqueue the schedule-calendar.
+		if ( ! wp_script_is( 'awebooking-scheduler', 'enqueued' ) ) {
+			wp_enqueue_script( 'awebooking-scheduler' );
+		}
 
-		return $this;
+		// Output the HTML.
+		$this->template( $this->main_layout );
 	}
 
 	/**
-	 * Get the datepoint.
+	 * Get the matrix.
 	 *
-	 * @return \AweBooking\Support\Carbonate
+	 * @param  string|int|null $item Get a special item.
+	 * @return mixed
 	 */
-	public function get_datepoint() {
-		return $this->datepoint;
-	}
+	public function get_matrix( $item = null ) {
+		if ( is_null( $item ) ) {
+			return $this->matrix;
+		}
 
-	public function get_period() {
-		return $this->period;
-	}
-
-	public function get_scheduler() {
-		return $this->scheduler;
+		return Arr::get( $this->matrix, $item );
 	}
 
 	/**
-	 * Get the wrapper_classes.
+	 * Get the events.
+	 *
+	 * @param  string|int|null $item Get a special item.
+	 * @return mixed
+	 */
+	public function get_events( $item = null ) {
+		if ( is_null( $item ) ) {
+			return $this->events;
+		}
+
+		return Arr::get( $this->events, $item );
+	}
+
+	/**
+	 * Get the wrapper classes.
 	 *
 	 * @return string
 	 */
@@ -147,7 +123,7 @@ abstract class Abstract_Scheduler {
 	 * Perform display a private method.
 	 *
 	 * @param  string $method  The call method.
-	 * @param  mixed  ...$args Call method args.
+	 * @param  mixed  ...$args    Call method args.
 	 * @return void
 	 */
 	public function perform_call_method( $method, ...$args ) {
@@ -163,88 +139,180 @@ abstract class Abstract_Scheduler {
 		echo apply_filters( 'awebooking/scheduler/' . $method, $contents, $args, $this );
 	}
 
+	/**
+	 * Load a HTML template.
+	 *
+	 * @param  string $template The template relative path.
+	 * @param  array  $vars     The data inject to template.
+	 * @return void
+	 */
+	protected function template( $template, $vars = [] ) {
+		$calendar = $this;
 
+		extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		include trailingslashit( __DIR__ ) . 'views/' . $template;
+	}
 
 	/**
-	 * Get the list room_types.
+	 * Prepares the Scheduler before it is sent to the client.
 	 *
-	 * @return \AweBooking\Support\Collection
+	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @return void
 	 */
-	protected function get_room_types() {
-		if ( is_null( $this->room_types ) ) {
-			$this->room_types = $this->fetch_room_types();
+	public function prepare( Request $request ) {
+		$this->datepoint = $this->filter_datepoint(
+			$request->filled( 'date' ) ? $request->get( 'date' ) : 'today'
+		);
+
+		// Create the period for the Calendar.
+		$duration = absint( abrs_option( 'scheduler_display_duration', 30 ) );
+
+		// Higher duration can be affected to browser render.
+		if ( $duration > 120 ) { // Limit about 4 months.
+			$duration = 120;
 		}
 
-		return $this->room_types;
+		$this->period = Iterator_Period::createFromDuration(
+			$this->datepoint, "+{$duration} days"
+		)->moveStartDate( '-2 days' );
+
+		// Create the scheduler.
+		$this->scheduler = $this->create_scheduler();
+
+		if ( ! is_null( $this->scheduler ) ) {
+			$this->setup();
+		}
 	}
-
-
-
-
-
 
 	/**
-	 * [filter_period description]
+	 * Create the scheduler.
 	 *
-	 * @param  [type] $datepoint [description]
-	 * @return [type]
+	 * @return \AweBooking\Calendar\Scheduler
 	 */
-	protected function generate_period( $datepoint ) {
-		$this->period = Period::create(
-			$datepoint->copy()->subDays( 2 ),
-			$datepoint->copy()->addDays( 120 )
-		);
+	abstract protected function create_scheduler();
+
+	/**
+	 * Setup the scheduler.
+	 *
+	 * @return void
+	 */
+	protected function setup() {
+		$this->events = $this->setup_events( $this->scheduler );
+		$this->matrix = $this->setup_matrix( $this->scheduler );
 	}
 
-	protected function generate_matrices() {
-		return Collection::make( $this->scheduler )
-			->keyBy( function( $calendar ) {
-				return $calendar->get_uid();
-			})
-			->map( function ( $calendar ) {
-				return $calendar->get_itemized( $this->period );
-			})->all();
+	/**
+	 * Setup the matrix (breakdown events by day) for a scheduler.
+	 *
+	 * @param  \AweBooking\Calendar\Scheduler $scheduler The Scheduler.
+	 * @return array
+	 */
+	protected function setup_matrix( Scheduler $scheduler ) {
+		$matrix = [];
+
+		// Move period back 1 day to avoid duplicate queries.
+		$period = $this->period->moveStartDate( '-1 day' );
+
+		foreach ( $scheduler->all() as $calendar ) {
+			if ( $calendar instanceof Scheduler ) {
+				$matrix[ $calendar->get_uid() ] = $this->setup_matrix( $calendar );
+			} else {
+				$matrix[ $calendar->get_uid() ] = $calendar->get_itemized( $period );
+			}
+		}
+
+		return $matrix;
 	}
 
+	/**
+	 * Setup events for a scheduler.
+	 *
+	 * @param  \AweBooking\Calendar\Scheduler $scheduler The Scheduler.
+	 * @param  array                          $options   The options will pass to Calendar::get_events().
+	 * @return array
+	 */
+	protected function setup_events( Scheduler $scheduler, $options = [] ) {
+		$events = [];
 
-	public function get_calendar_events( Calendar $calendar, Period $period ) {
-		$period = $period
-			->moveStartDate( '-2 DAYS' )
-			->moveEndDate( '+2 DAYS' );
+		// Move period back 1 day.
+		$period = $this->period->moveStartDate( '-1 day' );
 
-		return $calendar->get_events( $period )
-			->reject(function( $e ) {
-				return ( $e instanceof State_Event
-					|| $e instanceof Booking_Event
-					|| $e instanceof Pricing_Event ) && ! $e->get_value();
-			});
+		foreach ( $scheduler->all() as $calendar ) {
+			if ( $calendar instanceof Scheduler ) {
+				$events[ $calendar->get_uid() ] = $this->setup_events( $calendar, $options );
+			} else {
+				$events[ $calendar->get_uid() ] = $this->filter_events( $calendar->get_events( $period, $options ) );
+			}
+		}
+
+		return $events;
 	}
 
-	protected function fetch_room_types( $args = [] ) {
-		$args = apply_filters( 'awebooking/calendar/query_room_types_args', wp_parse_args( $args, [
-			'posts_per_page' => 50, // Limit 50 items.
+	/**
+	 * Perform filter events.
+	 *
+	 * @param  \AweBooking\Calendar\Event\Events $events The events.
+	 * @return \AweBooking\Calendar\Event\Events
+	 */
+	protected function filter_events( $events ) {
+		return $events;
+	}
+
+	/**
+	 * Perform query room_types.
+	 *
+	 * @param  array $query The query.
+	 * @return \AweBooking\Support\Collection
+	 */
+	protected function query_room_types( $query = [] ) {
+		$wp_query_args = apply_filters( 'awebooking/scheduler/query_room_types', wp_parse_args( $query, [
+			'post_type'        => Constants::ROOM_TYPE,
+			'post_status'      => 'publish',
+			'no_found_rows'    => true,
+			'posts_per_page'   => 250,
 		]), $this );
 
-		return Collection::make( Room_Type::query( $args )->posts )
-			->map( function ( $post ) {
-				return new Room_Type( $post );
-			})->reject( function ( $room_type ) {
-				return $room_type->get_total_rooms() <= 0;
-			});
+		// Create the WP_Query room types.
+		$room_types = new WP_Query( $wp_query_args );
+
+		return abrs_collect( $room_types->posts )
+			->map_into( Room_Type::class )
+			->reject( function ( $r ) {
+				return $r->get_total_rooms() === 0;
+			})
+			->values();
+	}
+
+	/**
+	 * Filter the datepoint.
+	 *
+	 * @param string $datepoint The datepoint.
+	 */
+	protected function filter_datepoint( $datepoint ) {
+		$today = Carbonate::today();
+
+		if ( empty( $datepoint ) || 'today' === $datepoint ) {
+			return $today->toDateString();
+		}
+
+		// If given a Carbonate, return the string that represent for it.
+		if ( $datepoint instanceof Carbonate ) {
+			return $datepoint->toDateString();
+		}
+
+		return abrs_rescue( function () use ( $datepoint ) {
+			return Carbonate::create_date( $datepoint );
+		}, $today )->toDateString();
+	}
+
+	/**
+	 * Getter protected property.
+	 *
+	 * @param  string $property The property name.
+	 * @return mixed
+	 */
+	public function __get( $property ) {
+		return $this->{$property};
 	}
 }

@@ -1,0 +1,153 @@
+@mixin pseudoicon($glyph: "\f333", $font-family: 'Dashicons') {
+  content: $glyph;
+  font-family: $font-family;
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  text-align: center;
+}
+
+@mixin in-small() {
+  @media only screen and (max-width: 782px) {
+    @content;
+  }
+}
+
+/* Helpers CSS */
+.abrs-mt0 { margin-top: 0; }
+.abrs-mb0 { margin-bottom: 0; }
+.abrs-mt1 { margin-top: 1em; }
+.abrs-mb1 { margin-bottom: 1em; }
+.abrs-mt2 { margin-top: 2em; }
+.abrs-mb2 { margin-bottom: 2em; }
+
+.abrs-pt0 { padding-top: 0; }
+.abrs-pb0 { padding-bottom: 0; }
+.abrs-pl0 { padding-left: 0; }
+.abrs-pr0 { padding-right: 0; }
+.abrs-pt1 { padding-top: 1em; }
+.abrs-pb1 { padding-bottom: 1em; }
+.abrs-pt2 { padding-top: 2em; }
+.abrs-pb2 { padding-bottom: 2em; }
+
+.abrs-mtb1 { margin-top: 1em; margin-bottom: 1em; }
+.abrs-mlr1 { margin-left: 1em; margin-right: 1em; }
+.abrs-ptb1 { padding-top: 1em; padding-bottom: 1em; }
+.abrs-plr1 { padding-left: 1em; padding-right: 1em; }
+
+.abrs-fleft { float: left !important; }
+.abrs-fright { float: right !important; }
+
+.abrs-text-left { text-align: left !important; }
+.abrs-text-right { text-align: right !important; }
+.abrs-text-center { text-align: center !important; }
+
+/* List sortable */
+.awebooking-rates-sortable {
+  $sortable-background: #fff;
+  $sortable-border-color: #eee;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: solid 1px #eee;
+  @include clearfix;
+
+  .awebooking-rates-sortable__ghost,
+  .awebooking-rates-sortable__item {
+    display: block;
+    margin-bottom: 0;
+
+    border-bottom: solid 1px $sortable-border-color;
+    background-color: $sortable-background;
+    // box-shadow: 0 2px 1px rgba(black, .015);
+
+    z-index: 10;
+    position: relative;
+    padding: 13px 50px;
+    box-sizing: border-box;
+
+    &.ui-sortable-helper {
+      border-top: solid 1px $sortable-border-color;
+    }
+  }
+  .awebooking-rates-sortable__ghost {
+    min-height: 40px;
+    background-color: #fffdf0;
+
+    // border: dashed 1px darken($sortable-border-color, 5%);
+    // box-shadow: none !important;
+  }
+
+  .awebooking-rates-sortable__contents {
+    padding: 0 12px;
+  }
+
+  .awebooking-rates-sortable__actions,
+  .awebooking-rates-sortable__heading {
+    top: 0;
+    z-index: 11;
+    position: absolute;
+
+    width: 50px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .awebooking-rates-sortable__heading {
+    left: 0;
+    border-right: solid 1px $sortable-border-color;
+    background-color: darken($sortable-background, 2%);
+  }
+
+  .awebooking-rates-sortable__handle,
+  .awebooking-rates-sortable__order {
+    height: 100%;
+    float: left;
+    user-select: none;
+    display: inline-block;
+  }
+  .awebooking-rates-sortable__handle {
+    width: 20px;
+    background: url("../img/drag-dots.gif") no-repeat center center transparent;
+    border-right: solid 1px $sortable-border-color;
+    cursor: move;
+  }
+  .awebooking-rates-sortable__order {
+    width: 28px;
+    line-height: 40px;
+    text-align: center;
+    color: #989898;
+  }
+
+  .awebooking-rates-sortable__actions {
+    right: 0;
+    text-align: right;
+    line-height: 40px;
+    padding-right: 12px;
+
+    a {
+      color: #e7e7e7;
+      font-size: 12px;
+      text-decoration: none;
+      transition: color 0.25s ease;
+
+      &:hover,
+      &:focus {
+        outline: 0;
+        color: #989898;
+        box-shadow: none;
+      }
+    }
+
+    .dashicons {
+      font-size: 18px;
+      line-height: inherit;
+    }
+  }
+}
