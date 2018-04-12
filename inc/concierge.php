@@ -1,19 +1,23 @@
 <?php
 
-use AweBooking\Support\Carbonate;
-use AweBooking\Reservation\Request;
+use AweBooking\Constants;
+use AweBooking\Model\Model;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
-use AweBooking\Reservation\Pricing\Pricing;
 use AweBooking\Model\Pricing\Base_Rate;
+use AweBooking\Reservation\Request;
+use AweBooking\Calendar\Calendar;
+use AweBooking\Calendar\Resource\Resource;
+use AweBooking\Reservation\Pricing\Pricing;
+use AweBooking\Support\Carbonate;
 
 /**
  * Create the timespan.
  *
- * @param  string $args The timespan args.
+ * @param  array $args The timespan args.
  * @return \AweBooking\Model\Common\Timespan|WP_Error
  */
-function abrs_timespan( $args ) {
+function abrs_timespan( array $args ) {
 	// Parse the default args.
 	$args = wp_parse_args( $args, [
 		'nights'         => 0,
@@ -44,6 +48,67 @@ function abrs_timespan( $args ) {
 	} catch ( Exception $e ) {
 		return new WP_Error( 'timespan_error', esc_html__( 'The start date and end date is invalid.', 'awebooking' ) );
 	}
+}
+
+/**
+ * Set a room as blocked (unavailable for made reservation).
+ *
+ * @param  array $args The query args.
+ * @return bool
+ */
+function abrs_block_room( array $args ) {
+	$args = wp_parse_args( $args, [
+		'room'       => '',
+		'start_date' => '',
+		'nights'     => 0,
+		'end_date'   => '',
+		'only_days'  => 'all',
+	]);
+
+	// Check the room instance.
+	if ( empty( $args['room'] ) || ! $room = abrs_get_room( $args['room'] ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
+	}
+
+	// Create the timespan.
+	$timespan = abrs_timespan([
+		'start_date'     => $args['start_date'],
+		'nights'         => $args['nights'],
+		'end_date'       => $args['end_date'],
+		'strict'         => false,
+		'minimum_nights' => 1,
+	]);
+
+	// Leave if timespan error.
+	if ( is_wp_error( $timespan ) ) {
+		return $timespan;
+	}
+
+	// Because the Calendar work by daily, but in reservation we work
+	// by nightly, so we need subtract one minute from end date.
+	// This will make the Calendar query events by night instead by day.
+	$timespan->set_end_date( $timespan->get_end_date()->subMinute() );
+
+	// Get all events.
+	$calendar = abrs_create_calendar( $room, 'state' );
+	$events = $calendar->get_events( $timespan->to_period() );
+
+	// Loop all events then apply state.
+	foreach ( $events as $event ) {
+		// Prevent update on non-available state.
+		if ( Constants::STATE_AVAILABLE !== $event->get_state() ) {
+			continue;
+		}
+
+		// Set the "UNAVAILABLE" state.
+		$event->set_state( Constants::STATE_UNAVAILABLE );
+		$event->only_days( $args['only_days'] );
+
+		// Store the event in the Calendar.
+		$calendar->store( $event );
+	}
+
+	return true;
 }
 
 /**
@@ -138,4 +203,36 @@ function abrs_create_reservation_request( array $args ) {
 	}
 
 	return new Request( $timespan, $guest_counts, $args['options'] );
+}
+
+/**
+ * Create the calendar.
+ *
+ * @param  int    $resource The resource ID.
+ * @param  string $provider The provider name.
+ * @return \AweBooking\Calendar\Calendar
+ *
+ * @throws InvalidArgumentException
+ */
+function abrs_create_calendar( $resource, $provider = 'state' ) {
+	// Providers classmap.
+	$providers = apply_filters( 'awebooking/calendar_providers_classmap', [
+		'state'   => AweBooking\Calendar\Provider\Core\State_Provider::class,
+		'booking' => AweBooking\Calendar\Provider\Core\Booking_Provider::class,
+		'pricing' => AweBooking\Calendar\Provider\Core\Pricing_Provider::class,
+	]);
+
+	if ( ! array_key_exists( $provider, $providers ) ) {
+		throw new InvalidArgumentException( esc_html__( 'Invalid calendar provider', 'awebooking' ) );
+	}
+
+	// Create the resource.
+	if ( ! $resource instanceof Resource ) {
+		$resource = new Resource( ( $resource instanceof Model ) ? $resource->get_id() : $resource );
+	}
+
+	// Apply filter allow user can change this provider.
+	$provider = apply_filters( 'awebooking/calendar_provider_class', $providers[ $provider ], $provider, $resource );
+
+	return new Calendar( $resource, new $provider( $resource ) );
 }

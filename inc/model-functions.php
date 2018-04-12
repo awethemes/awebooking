@@ -1,8 +1,35 @@
 <?php
 
-use AweBooking\Model\Booking;
+use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Item;
+
+/**
+ * Returns room object by given ID.
+ *
+ * @param  mixed $room The room ID.
+ * @return \AweBooking\Model\Room|null
+ */
+function abrs_get_room( $room ) {
+	$room = new Room( $room );
+
+	return $room->exists() ? $room : null;
+}
+
+/**
+ * Main function for returning the room type.
+ *
+ * @param  mixed $room_type The post object or post ID of the room type.
+ * @return \AweBooking\Model\Room_Type|false|null
+ */
+function abrs_get_room_type( $room_type ) {
+	return abrs_rescue( function() use ( $room_type ) {
+		$room_type = new Room_Type( $room_type );
+
+		return $room_type->exists() ? $room_type : null;
+	}, false );
+}
 
 /**
  * Main function for returning the booking.
@@ -65,22 +92,8 @@ function abrs_get_booking_item( $item ) {
  * @return array
  */
 function abrs_booking_item_classmap() {
-	return apply_filters( 'awebooking/booking_item_classmap', [
+	return apply_filters( 'awebooking/booking_items_classmap', [
 		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
 		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
 	]);
-}
-
-/**
- * Main function for returning the room type.
- *
- * @param  mixed $room_type The post object or post ID of the room type.
- * @return \AweBooking\Model\Room_Type|false|null
- */
-function abrs_get_room_type( $room_type ) {
-	return abrs_rescue( function() use ( $room_type ) {
-		$room_type = new Room_Type( $room_type );
-
-		return $room_type->exists() ? $room_type : null;
-	}, false );
 }

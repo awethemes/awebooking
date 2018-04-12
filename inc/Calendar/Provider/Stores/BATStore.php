@@ -68,7 +68,7 @@ class BATStore extends Store {
 	 *
 	 * @throws \LogicException
 	 */
-	protected function buildSelectQuery( DateTime $start_date, DateTime $end_date, array $unit_ids = [] ) {
+	public function buildSelectQuery( DateTime $start_date, DateTime $end_date, array $unit_ids = [] ) {
 		global $wpdb;
 
 		// Prepare unit_ids, remove duplicate and invalid ids.

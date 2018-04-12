@@ -139,7 +139,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 		/* translators: Available rooms */
 		$title = sprintf( _nx( '%s room available', '%s rooms available', $available, 'awebooking' ), esc_html( $available ) );
-		echo sprintf( '<div class="scheduler-flex--center"><strong class="tippy" title="' . esc_attr( $title ) . '">%1$s/%2$s</strong></div>', esc_html( $available ), esc_html( $scheduler->count() ) );
+		echo sprintf( '<div class="scheduler-flex--center"><strong title="' . esc_attr( $title ) . '">%1$s/%2$s</strong></div>', esc_html( $available ), esc_html( $scheduler->count() ) );
 	}
 
 	/**

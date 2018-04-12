@@ -14,7 +14,7 @@ class Calendar_Store_BATStore_Test extends WP_UnitTestCase {
 	 */
 	public function testQueryBuilderFaied2() {
 		$store = new BATStore( 'awebooking_booking', 'room_id' );
-		$store->build_the_query( new DateTime( '2017-10-10' ), new DateTime( '2017-10-09' ) );
+		$store->buildSelectQuery( new DateTime( '2017-10-10' ), new DateTime( '2017-10-09' ) );
 	}
 
 	/**
@@ -22,7 +22,7 @@ class Calendar_Store_BATStore_Test extends WP_UnitTestCase {
 	 */
 	public function testQueryBuilderOK( $expected, $params ) {
 		$store = new BATStore( 'awebooking_booking', 'room_id' );
-		$this->assertEquals($expected, $store->build_the_query( ...$params ) );
+		$this->assertEquals($expected, $store->buildSelectQuery( ...$params ) );
 	}
 
 	public function getDataQueryBuilder() {

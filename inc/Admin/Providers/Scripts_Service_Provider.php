@@ -50,7 +50,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
 		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar.css', [ 'awebooking-admin' ], $version );
 
-		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin.js', [ 'jquery', 'wp-util', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
+		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
 		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
 
 		wp_register_script( 'awebooking-edit-booking', ABRS_ASSET_URL . 'js/admin/edit-booking.js', [ 'awebooking-admin' ], $version, true );

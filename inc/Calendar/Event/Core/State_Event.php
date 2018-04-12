@@ -24,6 +24,16 @@ class State_Event extends Event {
 	}
 
 	/**
+	 * Set the event state.
+	 *
+	 * @param  int $state The event state.
+	 * @return $this
+	 */
+	public function set_state( $state ) {
+		return $this->set_value( (int) $state );
+	}
+
+	/**
 	 * Get the event state.
 	 *
 	 * @return int

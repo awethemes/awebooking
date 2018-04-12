@@ -6,6 +6,7 @@ $route->get( '/about', 'About_Controller@index' );
 $route->get(    '/rates',                             'Rate_Controller@index' );
 $route->post(   '/rates',                             'Rate_Controller@update' );
 $route->get(    '/calendar',                          'Calendar_Controller@index' );
+$route->post(   '/calendar',                          'Calendar_Controller@update' );
 
 $route->get(    '/settings',                           'Settings_Controller@index' );
 $route->post(   '/settings',                           'Settings_Controller@store' );
