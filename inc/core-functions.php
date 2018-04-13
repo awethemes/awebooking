@@ -4,6 +4,7 @@ use Awethemes\Http\Request;
 use AweBooking\Multilingual;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Routing\Url_Generator;
+use AweBooking\Component\Form\Form_Builder;
 
 // Requires other core functions.
 require trailingslashit( __DIR__ ) . 'sanitizer.php';
@@ -172,6 +173,17 @@ function abrs_currency_name( $currency = null ) {
 	});
 
 	return apply_filters( 'awebooking/currency_name', (string) $name, $currency );
+}
+
+/**
+ * Create a static form builder.
+ *
+ * @param  string     $form_id The form ID.
+ * @param  Model|null $model   Optional, the model data.
+ * @return \AweBooking\Component\Form\Form_Builder
+ */
+function abrs_create_form( $form_id, $model = null ) {
+	return new Form_Builder( $form_id, $model ?: 0, 'static' );
 }
 
 /**
