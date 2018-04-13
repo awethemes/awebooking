@@ -331,6 +331,10 @@
   text-align: center !important;
 }
 
+.abrs-space {
+  flex-grow: 1;
+}
+
 /* List sortable */
 
 .awebooking-rates-sortable {
@@ -446,18 +450,23 @@
   background-color: #2196F3;
 }
 
+.button-secondary.cmb-multicheck-toggle,
 .abrs-button.button {
-  box-shadow: none;
+  border-color: transparent;
   border-radius: 25px;
 }
 
-.abrs-button.button.no-border {
-  border: none;
-}
-
+.button-secondary.cmb-multicheck-toggle .dashicons,
 .abrs-button.button .dashicons {
   line-height: 1.3;
   margin-right: 3px;
+}
+
+.button-secondary.cmb-multicheck-toggle:focus,
+.button-secondary.cmb-multicheck-toggle:active,
+.abrs-button.button:focus,
+.abrs-button.button:active {
+  border: solid 1px #aaa;
 }
 
 .button.abrs-dashicons-button {
@@ -771,13 +780,13 @@ p.awebooking-no-items {
 }
 
 .awebooking-dialog .awebooking-dialog-contents {
-  padding: 15px;
+  padding: 15px 15px 0 15px;
 }
 
 .awebooking-dialog .awebooking-dialog-buttons {
   margin-left: -15px;
   margin-right: -15px;
-  padding: 15px 15px 0 15px;
+  padding: 15px;
   border-top: solid 1px #ddd;
   text-align: right;
 }
@@ -786,13 +795,15 @@ p.awebooking-no-items {
   width: 550px;
 }
 
-.awebooking-dialog .cmb2-inline-metabox > .cmb-row {
+.awebooking-dialog .cmb2-inline-metabox .cmb-row {
   margin-bottom: 1em;
 }
 
 .awebooking-dialog .cmb-th > label {
   font-weight: 400;
   display: inline-block;
+  padding-top: 0;
+  padding-bottom: 7px;
 }
 
 .awebooking-tabs {
@@ -1302,8 +1313,9 @@ span.flatpickr-weekday {
 }
 
 .tippy-tooltip.abrs-theme {
-  font-size: 13px;
+  color: #444;
   background-color: #fff;
+  font-size: 13px;
   box-shadow: 1px 2px 7px rgba(0, 0, 0, 0.07);
   width: 180px;
   border-radius: 1px;
@@ -1399,6 +1411,10 @@ span.flatpickr-weekday {
 .cmb2-wrap.awebooking-wrap span.cmb2-metabox-description {
   color: inherit;
   font-style: inherit;
+}
+
+.cmb2-wrap.awebooking-wrap .cmb-type-multicheck .cmb-td > p:first-child {
+  margin-top: 0;
 }
 
 .cmb2-wrap.awebooking-wrap .cmb-type-group > .cmb-th {

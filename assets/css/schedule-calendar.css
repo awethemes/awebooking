@@ -511,7 +511,8 @@
   color: #d40e00;
 }
 
-.scheduler__state-event {
+.scheduler__state-event,
+.scheduler__booking-event {
   top: 0;
   left: 0;
   z-index: 150;
@@ -523,27 +524,108 @@
   pointer-events: auto !important;
 }
 
-.scheduler__state-event.booked {
-  background-color: rgba(33, 150, 243, 0.5);
-}
-
-.scheduler__state-event.booked:hover {
-  background-color: rgba(33, 150, 243, 0.3);
-}
-
-.scheduler__state-event.pending {
-  background-color: rgba(255, 193, 7, 0.5);
-}
-
-.scheduler__state-event.pending:hover {
-  background-color: rgba(255, 193, 7, 0.7);
-}
-
 .scheduler__state-event.unavailable {
+  color: #444;
   background: url("../img/blocked-pattern.png") rgba(0, 0, 0, 0.01);
 }
 
 .scheduler__state-event.unavailable:hover {
   background-color: rgba(0, 0, 0, 0.03);
+}
+
+.scheduler__booking-event.pending,
+.scheduler__booking-event.awebooking-pending {
+  color: #876500;
+  background-color: rgba(255, 193, 7, 0.5);
+}
+
+.scheduler__booking-event.pending:hover,
+.scheduler__booking-event.awebooking-pending:hover {
+  background-color: rgba(255, 193, 7, 0.7);
+}
+
+.scheduler__booking-event.inprocess,
+.scheduler__booking-event.awebooking-inprocess {
+  background-color: rgba(96, 125, 139, 0.5);
+}
+
+.scheduler__booking-event.inprocess:hover,
+.scheduler__booking-event.awebooking-inprocess:hover {
+  background-color: rgba(96, 125, 139, 0.4);
+}
+
+.scheduler__booking-event.on-hold,
+.scheduler__booking-event.awebooking-on-hold {
+  background-color: rgba(103, 58, 183, 0.4);
+}
+
+.scheduler__booking-event.on-hold:hover,
+.scheduler__booking-event.awebooking-on-hold:hover {
+  background-color: rgba(103, 58, 183, 0.5);
+}
+
+.scheduler__booking-event.deposit,
+.scheduler__booking-event.awebooking-deposit {
+  background-color: rgba(156, 39, 176, 0.4);
+}
+
+.scheduler__booking-event.deposit:hover,
+.scheduler__booking-event.awebooking-deposit:hover {
+  background-color: rgba(156, 39, 176, 0.4);
+}
+
+.scheduler__booking-event.completed,
+.scheduler__booking-event.awebooking-completed {
+  color: #014b6c;
+  background-color: rgba(3, 169, 244, 0.4);
+}
+
+.scheduler__booking-event.completed:hover,
+.scheduler__booking-event.awebooking-completed:hover {
+  background-color: rgba(3, 169, 244, 0.5);
+}
+
+.scheduler__booking-event.checked-in,
+.scheduler__booking-event.awebooking-checked-in {
+  color: #616913;
+  background-color: rgba(205, 220, 57, 0.4);
+}
+
+.scheduler__booking-event.checked-in:hover,
+.scheduler__booking-event.awebooking-checked-in:hover {
+  background-color: rgba(205, 220, 57, 0.5);
+}
+
+.scheduler__booking-event.checked-out,
+.scheduler__booking-event.awebooking-checked-out {
+  color: #3c571d;
+  background-color: rgba(139, 195, 74, 0.4);
+}
+
+.scheduler__booking-event.checked-out:hover,
+.scheduler__booking-event.awebooking-checked-out:hover {
+  background-color: rgba(139, 195, 74, 0.5);
+}
+
+.scheduler-inline-text {
+  display: block;
+  height: 100%;
+  line-height: 35px;
+  padding: 0 7px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.scheduler-inline-text:hover,
+.scheduler-inline-text:focus {
+  color: inherit;
+  text-decoration: none;
+  box-shadow: none;
 }
 /*# sourceMappingURL=schedule-calendar.css.map */

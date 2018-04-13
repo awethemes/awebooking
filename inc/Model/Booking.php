@@ -29,6 +29,10 @@ class Booking extends Model {
 		return apply_filters( $this->prefix( 'get_booking_number' ), $this->get_id(), $this );
 	}
 
+	public function get_formatted_guest_name() {
+		return $this->get( 'customer_first_name' );
+	}
+
 	/**
 	 * Return an array of items within this booking.
 	 *

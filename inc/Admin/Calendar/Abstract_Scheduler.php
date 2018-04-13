@@ -315,4 +315,14 @@ abstract class Abstract_Scheduler {
 	public function __get( $property ) {
 		return $this->{$property};
 	}
+
+	/**
+	 * Check exists a protected property.
+	 *
+	 * @param  string $property The property name.
+	 * @return mixed
+	 */
+	public function __isset( $property ) {
+		return isset( $this->{$property} );
+	}
 }

@@ -88,12 +88,16 @@ trait Calendar_Creator {
 	 */
 	protected function create_calendar_provider( $provider, $resources ) {
 		// Handle resolve provider by name.
-		if ( 'booking' === $provider ) {
-			$provider = new Booking_Provider( $resources );
-		} elseif ( 'pricing' === $provider ) {
-			$provider = new Pricing_Provider( $resources );
-		} else {
-			$provider = new State_Provider( $resources );
+		switch ( $provider ) {
+			case 'pricing':
+				$provider = new Pricing_Provider( $resources );
+				break;
+			case 'booking':
+				$provider = new Booking_Provider( $resources );
+				break;
+			default:
+				$provider = new State_Provider( $resources );
+				break;
 		}
 
 		// Wrap the provider in Cached_Provider.

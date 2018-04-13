@@ -2,13 +2,9 @@
 	<h1 class="wp-heading-inline"><?php echo esc_html__( 'Pricing', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<div class="abrs-toolbar abrs-search-toolbar cmb2-inline-metabox">
-		<div class="abrow abrs-ptb1">
-			<div class="abcol-1 abcol-sm-12">
-				<a id="bulk-update-button-dialog" class="button abrs-button" href="#">
-					<span><?php esc_html_e( 'Bulk update', 'awebooking' ); ?></span>
-				</a>
-			</div>
+	<div class="abrs-toolbar abrs-search-toolbar dp-flex">
+		<div class="abrs-ptb1 pricing-left-actions">
+			<button class="button abrs-button js-open-bulk-update"><?php esc_html_e( 'Bulk update', 'awebooking' ); ?></button>
 		</div>
 	</div>
 
@@ -21,7 +17,7 @@
 	var _listRoomTypes = <?php echo $scheduler->room_types ? json_encode( $scheduler->room_types ) : '[]'; ?>;
 </script>
 
-<?php $this->partial( 'rates/html-bulk-update.php' ); ?>
+<?php $this->partial( 'rates/html-bulk-update.php', compact( 'bulk_controls' ) ); ?>
 
 <div id="scheduler-form-dialog" class="awebooking-dialog-contents" title="<?php echo esc_html__( 'Adjust Price', 'awebooking' ); ?>" style="display: none;">
 	<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/rates' ) ); ?>">

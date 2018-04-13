@@ -51,6 +51,26 @@
   },
 
   /**
+   * Create the dialog.
+   *
+   * @param  {string} selector
+   * @return {Object}
+   */
+  awebooking.dialog = function(selector) {
+    return $(selector).dialog({
+      modal: true,
+      width: 'auto',
+      height: 'auto',
+      autoOpen: false,
+      draggable: false,
+      resizable: false,
+      closeOnEscape: true,
+      dialogClass: 'wp-dialog awebooking-dialog',
+      position: { my: 'center', at: 'center center-15%', of: window },
+    });
+  },
+
+  /**
    * Create a form then append to body.
    *
    * @param  {string} link   The form action.
@@ -64,6 +84,25 @@
 
     return $form.append(hiddenInput).appendTo('body');
   };
+
+  /**
+   * Retrieves a modified URL query string.
+   *
+   * @param {object} args
+   * @param {string} url
+   */
+  awebooking.utils.addQueryArgs =function(args, url) {
+    const queryString = require('query-string');
+
+    if (typeof url === 'undefined') {
+      url = window.location.href;
+    }
+
+    const parsed = queryString.parseUrl(url);
+    const query  = $.extend({}, parsed.query, args);
+
+    return parsed.url + '?' + queryString.stringify(query, { sort: false });
+  }
 
   /**
    * Init the search customers.

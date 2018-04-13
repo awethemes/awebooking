@@ -5,6 +5,8 @@ use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Event\Core\State_Event;
+use AweBooking\Calendar\Event\Core\Booking_Event;
+use AweBooking\Calendar\Provider\Aggregate_Provider;
 
 class Booking_Scheduler extends Abstract_Scheduler {
 	/**
@@ -13,6 +15,13 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @var string
 	 */
 	protected $room_types;
+
+	/**
+	 * Store the booking data matrix.
+	 *
+	 * @var array
+	 */
+	protected $booking_data;
 
 	/**
 	 * The main HTML layout.
@@ -24,9 +33,57 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function create_scheduler() {
-		$this->room_types = $this->query_room_types();
+	public function prepare( Request $request ) {
+		$rooms_only = null;
+		if ( $request->filled( 'only' ) ) {
+			$rooms_only = wp_parse_id_list( $request['only'] );
+		}
 
+		// Query the list of room type to display.
+		$this->room_types = $this->query_room_types([
+			'post__in' => $rooms_only,
+		]);
+
+		parent::prepare( $request );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function setup() {
+		$this->events = $this->setup_events( $this->scheduler );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function filter_events( $events ) {
+		return $events->reject( function ( $e ) {
+			if ( ( ! $e instanceof State_Event && ! $e instanceof Booking_Event ) || 0 === (int) $e->get_value() ) {
+				return true;
+			}
+
+			// Only get the "UNAVAILABLE" in state events.
+			if ( $e instanceof State_Event && $e->get_state() !== Constants::STATE_UNAVAILABLE ) {
+				return true;
+			}
+
+			return false;
+		})->each( function( $e ) {
+			$end_date = $e->get_end_date();
+
+			if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
+				$e->set_end_date( $end_date->addMinute() );
+			}
+
+			return $e;
+		})->values();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function create_scheduler() {
 		// Get all rooms indexed by room type ID.
 		$all_rooms = $this->room_types
 			->keyBy( 'id' )
@@ -34,16 +91,22 @@ class Booking_Scheduler extends Abstract_Scheduler {
 				return $r->get_rooms();
 			});
 
-		// Create provider with all resources to increase performance.
-		$provider = $this->create_calendar_provider( 'state',
-			$this->create_room_resources( $all_rooms->collapse() )
+		// All resources for the provider.
+		$all_resources = $this->create_room_resources(
+			$all_rooms->collapse()
 		);
+
+		// Create provider with all resources to increase performance.
+		$provider = new Aggregate_Provider([
+			$this->create_calendar_provider( 'state', $all_resources ),
+			$this->create_calendar_provider( 'booking', $all_resources ),
+		]);
 
 		// Build the nested scheduler.
 		$scheduler = new Scheduler;
 		foreach ( $this->room_types as $room_type ) {
-			$resources  = $this->create_room_resources( $all_rooms->get( $room_type->get_id() ) );
-			$_scheduler = $this->create_scheduler_for( $resources, $provider );
+			$_resources = $this->create_room_resources( $all_rooms->get( $room_type->get_id() ) );
+			$_scheduler = $this->create_scheduler_for( $_resources, $provider );
 
 			$_scheduler->set_uid( $room_type->get_id() );
 			$_scheduler->set_name( $room_type->get_title() );
@@ -53,31 +116,6 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		}
 
 		return $scheduler;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function filter_events( $events ) {
-		return $events->reject( function ( $e ) {
-			return ( ! $e instanceof State_Event ) || 0 == $e->get_state();
-		})->each( function( $e ) {
-			$this->correct_event_dates( $e );
-		})->values();
-	}
-
-	/**
-	 * Correct the event dates.
-	 *
-	 * @param  \AweBooking\Calendar\Event\Event $event The event instance.
-	 * @return void
-	 */
-	protected function correct_event_dates( &$event ) {
-		$end_date = $event->get_end_date();
-
-		if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
-			$event->set_end_date( $end_date->addMinute() );
-		}
 	}
 
 	/**
@@ -112,10 +150,8 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @return void
 	 */
 	protected function display_actions() { ?>
-		<ul class="scheduler__actions">
-			<li><a href="#" data-schedule-action="set-unavailable"><i class="afc afc-calendar-times"></i><span><?php echo esc_html__( 'Set as unavailable', 'awebooking' ); ?></span></a></li>
-			<li><a href="#" data-schedule-action="clear-unavailable"><i class="afc afc-calendar"></i><span><?php echo esc_html__( 'Clear Unavailable', 'awebooking' ); ?></span></a></li>
-		</ul>
+		<li><a href="#" data-schedule-action="block"><i class="dashicons dashicons-lock"></i><span><?php echo esc_html__( 'Set as Blocked', 'awebooking' ); ?></span></a></li>
+		<li><a href="#" data-schedule-action="unblock"><i class="dashicons dashicons-unlock"></i><span><?php echo esc_html__( 'Clear Blocked', 'awebooking' ); ?></span></a></li>
 		<?php
 	}
 
@@ -127,12 +163,14 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @return void
 	 */
 	protected function display_divider_column( $day, $scheduler ) {
-		$indexed = $day->format( 'Y-m-d' );
 		$matrix = $this->get_matrix( $scheduler->get_uid() );
+		if ( empty( $matrix ) ) {
+			return;
+		}
 
 		$available = 0;
 		foreach ( $matrix as $item ) {
-			if ( 0 === $item->get( $indexed ) ) {
+			if ( 0 === $item->get( $day->format( 'Y-m-d' ) ) ) {
 				$available++;
 			}
 		}
@@ -168,8 +206,15 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			// Calculate the event attributes.
 			$attributes = $this->calculate_event_attributes( $event );
 
-			// Print the event.
-			print '<div' . abrs_html_attributes( $attributes ) . '></div>'; // WPCS: XSS OK.
+			// Create the template data.
+			$_data = compact( 'event', 'day', 'calendar', 'scheduler', 'attributes' );
+			$_data['calr'] = $this;
+
+			$contents = ( $event instanceof State_Event )
+				? abrs_admin_template( 'calendar/html-blocked-state.php', $_data )
+				: abrs_admin_template( 'calendar/html-booking-state.php', $_data );
+
+			print $contents; // WPCS: XSS OK.
 		}
 	}
 
@@ -181,9 +226,6 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @return \AweBooking\Calendar\Event\Events|null
 	 */
 	protected function find_events_in_date( $date, $events ) {
-		$indexed = $date->format( 'Y-m-d' );
-
-		// Find the first event matching.
 		return $events->filter( function ( $event ) use ( $date ) {
 			$date = $date->get_start_date();
 
@@ -201,15 +243,21 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * Calculate event attributes.
 	 *
-	 * @param  \AweBooking\Calendar\Event\State_Event $event The state event.
+	 * @param  \AweBooking\Calendar\Event\Event $event The state event.
 	 * @return array
 	 */
-	protected function calculate_event_attributes( State_Event $event ) {
+	protected function calculate_event_attributes( $event ) {
 		// Get the period of this event.
 		$period = $event->get_period();
 
 		$classes = [];
 		$total_days = (int) $period->days;
+
+		if ( $event instanceof State_Event ) {
+			$classes[] = 'scheduler__state-event unavailable';
+		} elseif ( $event instanceof Booking_Event ) {
+			$classes[] = 'scheduler__booking-event';
+		}
 
 		// Calculate in the border.
 		if ( $period->start_date->lt( $this->period->start_date ) ) {
@@ -219,26 +267,11 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			$classes[] = 'continues-after';
 		}
 
-		// State classes.
-		switch ( $event->get_state() ) {
-			case Constants::STATE_UNAVAILABLE:
-				$classes[] = 'unavailable';
-				break;
-
-			case Constants::STATE_PENDING:
-				$classes[] = 'pending';
-				break;
-
-			case Constants::STATE_BOOKED:
-				$classes[] = 'booked';
-				break;
-		}
-
 		return [
-			'class'           => 'scheduler__state-event ' . trim( implode( ' ', $classes ) ),
-			'style'           => $this->calculate_event_styles( $total_days, $classes ),
+			'class' => trim( implode( ' ', $classes ) ),
+			'style' => $this->calculate_event_styles( $total_days, $classes ),
 			'data-start-date' => $period->start_date->format( 'Y-m-d' ),
-			'data-end-date'   => $period->end_date->format( 'Y-m-d' ),
+			'data-end-date' => $period->end_date->format( 'Y-m-d' ),
 		];
 	}
 

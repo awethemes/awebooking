@@ -47,6 +47,8 @@
 .abrs-text-right { text-align: right !important; }
 .abrs-text-center { text-align: center !important; }
 
+.abrs-space { flex-grow: 1; }
+
 /* List sortable */
 .awebooking-rates-sortable {
   $sortable-background: #fff;

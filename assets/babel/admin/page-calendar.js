@@ -11,7 +11,7 @@
      * @return {void}
      */
     constructor() {
-      this.flatpickr = null;
+      const self = this;
 
       this.scheduler = new ScheduleCalendar({
         el: '.scheduler',
@@ -19,21 +19,24 @@
         granularity: 'nightly',
       });
 
-      this.$dialog = $('#scheduler-form-dialog').dialog({
-        modal: true,
-        width: 'auto',
-        height: 'auto',
-        autoOpen: false,
-        draggable: false,
-        resizable: false,
-        closeOnEscape: true,
-        dialogClass: 'wp-dialog awebooking-dialog',
-        position: { my: 'center', at: 'center center-15%', of: window },
+      this.scheduler.on('clear', this.handleClearSelected.bind(this));
+      this.scheduler.on('action:block', this.handleBlockRoom.bind(this));
+      this.scheduler.on('action:unblock', this.handleUnblockRoom.bind(this));
+
+      $('.js-unlock-period').on('click', function(e) {
+        e.preventDefault();
+        const $el = $(this);
+
+        self.scheduler.model.set('calendar', $el.data('room'));
+        self.scheduler.model.set('startDate', moment($el.data('startDate')));
+        self.scheduler.model.set('endDate', moment($el.data('endDate')));
+
+        self.scheduler.trigger('action:unblock');
       });
 
-      this.scheduler.on('clear', this.handleClearSelected.bind(this));
-      this.scheduler.on('action:set-unavailable', this.handleBlockRoom.bind(this));
-      this.scheduler.on('action:clear-unavailable', this.handleUnblockRoom.bind(this));
+      $('.scheduler__state-event, .scheduler__booking-event').each(function() {
+        self.setupEventPopper(this);
+      });
     }
 
     /**
@@ -53,11 +56,10 @@
      * @return {void}
      */
     handleBlockRoom(e, model) {
-      window.swal && swal.close();
-
-      this.compileHtmlControls('block_room', 0);
-
-      this.$dialog.dialog('open');
+      plugin.confirm(plugin.i18n.warning, () => {
+        const $controls = this.compileHtmlControls('block', model);
+        $controls.closest('form').submit();
+      });
     }
 
     /**
@@ -69,8 +71,8 @@
      */
     handleUnblockRoom(e, model) {
       plugin.confirm(plugin.i18n.warning, () => {
-        // const $form = this.compileHtmlControls('reset_price', 0);
-        // $form.closest('form').submit();
+        const $controls = this.compileHtmlControls('unblock', model);
+        $controls.closest('form').submit();
       });
     }
 
@@ -78,34 +80,51 @@
      * Compile html form controls.
      *
      * @param  {string} action
-     * @param  {string} state
      * @return {void}
      */
-    compileHtmlControls(action, state) {
-      const model = this.scheduler.model;
+    compileHtmlControls(action, model) {
       const template = wp.template('scheduler-pricing-controls');
 
-      // Destroy flatpickr first.
-      if (this.flatpickr) {
-        // this.flatpickr.destroy();
+      if (! model) {
+        model = this.scheduler.model;
       }
 
-      // Compile the html template.
-      const $form = $('#js-scheduler-form-controls').html(template({
-        state:     state,
+      const data = {
         action:    action,
         endDate:   model.get('endDate').format(DATE_FORMAT),
         startDate: model.get('startDate').format(DATE_FORMAT),
         calendar:  model.get('calendar'),
-      }));
+      };
 
-      // Create the flatpickr after.
-      this.flatpickr = flatpickr('#date_start', {
-        dateFormat: 'Y-m-d',
-        plugins: [ new rangePlugin({ input: '#date_end' }) ],
+      return $('#js-scheduler-form-controls').html(template(data));
+    }
+
+    /**
+     * Setup event popper.
+     *
+     * @param  {Object} el
+     * @return {void}
+     */
+    setupEventPopper(el) {
+      const $html = $(el).find('.js-tippy-html');
+
+      tippy(el, {
+        theme: 'abrs',
+        delay: 150,
+        arrow: true,
+        distance: 0,
+        maxWidth: '500px',
+        placement: 'top',
+        trigger: 'mouseenter focus',
+        interactive: true,
+        performance: true,
+        hideOnClick: false,
+        animation: 'shift-toward',
+        duration: [150, 150],
+        html: $html.length ? $html[0] : false,
       });
 
-      return $form;
+      return el._tippy;
     }
   }
 
@@ -115,7 +134,7 @@
    * @return {void}
    */
   $(function() {
-    new BookingScheduler;
+    (new BookingScheduler);
   });
 
 })(jQuery);

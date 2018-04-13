@@ -29,7 +29,7 @@
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
-        "10up/wp_mock": "0.3.0",
+        "10up/wp_mock": "0.2.0",
         "symfony/debug": "3.3.*",
         "symfony/translation": "3.3.*",
         "symfony/var-dumper": "3.3.*"

@@ -12,8 +12,7 @@ class Constants {
 	const HOTEL_SERVICE     = 'hotel_extra_service';
 
 	// Booking constants.
-	const STATE_BOOKED      = 3;
-	const STATE_PENDING     = 2;
-	const STATE_UNAVAILABLE = 1;
 	const STATE_AVAILABLE   = 0;
+	const STATE_UNAVAILABLE = 1;
+	const STATE_BOOKING     = 2;
 }

@@ -6,7 +6,8 @@ const sass         = require('gulp-sass');
 const gcmq         = require('gulp-group-css-media-queries');
 const sourcemaps   = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
-const babel        = require('gulp-babel');
+const bro          = require('gulp-bro');
+const babelify     = require('babelify');
 const potgen       = require('gulp-wp-pot');
 const browserSync  = require('browser-sync').create();
 const _            = require('lodash');
@@ -28,7 +29,7 @@ gulp.task('babel', function () {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(babel({ presets: ['@babel/env'] }))
+    .pipe(bro({ transform: [ babelify.configure({ presets: ['env'] }) ] }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('assets/js'));
 });

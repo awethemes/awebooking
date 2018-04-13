@@ -187,3 +187,19 @@ function abrs_get_page_id( $page ) {
 
 	return $page ? absint( $page ) : -1;
 }
+
+/**
+ * Retrieve page permalink.
+ *
+ * @see awebooking_get_page_id()
+ *
+ * @param  string $page The retrieve page.
+ * @return string
+ */
+function arbs_get_page_permalink( $page ) {
+	$page_id   = abrs_get_page_id( $page );
+
+	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
+
+	return apply_filters( 'awebooking/get_' . $page . '_page_permalink', $permalink );
+}

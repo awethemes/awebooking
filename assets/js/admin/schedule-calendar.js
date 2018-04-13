@@ -1,18 +1,21 @@
-"use strict";
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+'use strict';
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 (function ($, flatpickr, moment) {
   'use strict';
 
   var COLUMN_WIDTH = 60;
   var DATE_FORMAT = 'YYYY-MM-DD';
+
   var Selection = Backbone.Model.extend({
     defaults: {
       endDate: null,
       startDate: null,
       calendar: null
     },
+
     clear: function clear() {
       this.clearSelectedDate(null);
     },
@@ -24,11 +27,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return this.getNights() >= 0;
     },
     clearSelectedDate: function clearSelectedDate(calendar) {
-      this.set({
-        startDate: null,
-        endDate: null
-      });
+      this.set({ startDate: null, endDate: null });
+
       this.set('calendar', calendar);
+
       this.trigger('clear_dates');
     },
     getNights: function getNights() {
@@ -39,31 +41,35 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return this.get('endDate').diff(this.get('startDate'), 'days');
     }
   });
+
   var ScheduleCalendar = Backbone.View.extend({
     options: {
       debug: false,
       marker: '.scheduler__marker',
       popper: '.scheduler__popper > .scheduler__actions',
       granularity: 'nightly' // 'daily'
-
     },
+
     events: {
       'click      .scheduler__body .scheduler__date': 'setSelectionDate',
       'mouseenter .scheduler__body .scheduler__date': 'drawMarkerOnHover'
     },
+
     initialize: function initialize(options) {
       this.options = _.defaults(options || {}, this.options);
       this.model = new Selection();
-      var testColumnWith = this.$el.find('.scheduler__column').first().outerWidth();
 
+      var testColumnWith = this.$el.find('.scheduler__column').first().outerWidth();
       if (testColumnWith > COLUMN_WIDTH) {
         COLUMN_WIDTH = testColumnWith;
-      } // Handle click action before setup popper.
+      }
 
-
+      // Handle click action before setup popper.
       this.$el.find('.scheduler__actions [data-schedule-action]').on('click', this.handleClickAction.bind(this));
+
       this.$marker = this.$el.find(this.options.marker);
       this.$marker.hide();
+
       this.setupPopper();
       this.popper = this.$marker[0]._tippy;
 
@@ -97,6 +103,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         this.model.clearSelectedDate();
       }
     },
+
+
     handleClickAction: function handleClickAction(e) {
       e.preventDefault();
       var $targetLink = $(e.currentTarget);
@@ -111,9 +119,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       this.trigger('action:' + $targetLink.data('scheduleAction'), e, this.model);
     },
+
     onClearSelectedDates: function onClearSelectedDates() {
       this.popper.hide();
+
       this.$marker.find('span').text(0);
+
       this.trigger('clear');
     },
     setSelectionDate: function setSelectionDate(e) {
@@ -128,17 +139,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (this.model.has('calendar') && setUnit !== this.model.get('calendar') || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), 'day')) {
         this.model.clearSelectedDate(setUnit);
-      } // Set the start date first.
+      }
 
-
+      // Set the start date first.
       if (!this.model.has('startDate') && !this.model.has('endDate')) {
         this.model.set('calendar', setUnit);
         this.model.set('startDate', clickDate.clone());
+
         this.drawMarkerOnHover(e);
         return;
-      } // Require 1 night for granularity by nightly.
+      }
 
-
+      // Require 1 night for granularity by nightly.
       if ('nightly' == this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
         return;
       }
@@ -160,10 +172,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (_.isNull(endDate)) {
         var position = this.getCellPossiton($startDateEl);
-        this.$marker.show().css({
-          top: position.top,
-          left: position.left
-        });
+        this.$marker.show().css({ top: position.top, left: position.left });
       } else {
         var $endDateEl = this.getElementByDate(this.model.get('calendar'), endDate);
         this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * COLUMN_WIDTH);
@@ -183,12 +192,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       if (startDate.isSameOrBefore(hoverDate, 'day')) {
         var $startDateEl = this.getElementByDate(targetUnit, startDate);
         var days = $target.index() - $startDateEl.index() + 1;
+
         this.$marker.css('width', days * COLUMN_WIDTH);
         this.$marker.find('span').text('daily' == this.options.granularity ? days : days - 1);
       }
     },
     getElementByDate: function getElementByDate(calendar, date) {
-      if (_typeof(date) === 'object') {
+      if ((typeof date === 'undefined' ? 'undefined' : _typeof(date)) === 'object') {
         date = date.format(DATE_FORMAT);
       }
 
@@ -207,11 +217,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     getCellPossiton: function getCellPossiton(element) {
       var childPos = element.offset();
       var parentPos = this.$el.find('.scheduler__body').offset();
+
       return {
         top: childPos.top - parentPos.top,
         left: childPos.left - parentPos.left
       };
     },
+
 
     /**
      * Setup the Popper.
@@ -231,18 +243,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         performance: true,
         animation: 'shift-away',
         duration: [150, 150],
-        popperOptions: {
-          modifiers: {
-            hide: {
-              enabled: false
-            },
-            preventOverflow: {
-              enabled: false
-            }
-          }
-        }
+        popperOptions: { modifiers: {
+            hide: { enabled: false },
+            preventOverflow: { enabled: false }
+          } }
       });
     },
+
 
     /**
      * Setup the label animate scroll.
@@ -277,6 +284,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
     }
   });
+
   window.ScheduleCalendar = ScheduleCalendar;
 })(jQuery, window.flatpickr, window.moment);
+
+},{}]},{},[1]);
+
 //# sourceMappingURL=schedule-calendar.js.map

@@ -3,8 +3,9 @@
   font-size: 13px !important;
 }
 .tippy-tooltip.abrs-theme {
-  font-size: 13px;
+  color: #444;
   background-color: #fff;
+  font-size: 13px;
   box-shadow: 1px 2px 7px rgba(0, 0, 0, .07);
   width: 180px;
   border-radius: 1px;
@@ -91,6 +92,10 @@
   span.cmb2-metabox-description {
     color: inherit;
     font-style: inherit;
+  }
+
+  .cmb-type-multicheck .cmb-td > p:first-child {
+    margin-top: 0;
   }
 
   // Group fields.

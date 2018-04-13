@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Request;
 use AweBooking\Admin\Forms\Room_Price_Form;
-use AweBooking\Admin\Forms\Bulk_Update_Price;
+use AweBooking\Admin\Forms\Bulk_Price_Form;
 use AweBooking\Admin\Calendar\Pricing_Scheduler;
 
 class Rate_Controller extends Controller {
@@ -15,11 +15,12 @@ class Rate_Controller extends Controller {
 	 */
 	public function index( Request $request ) {
 		$controls = new Room_Price_Form;
+		$bulk_controls = new Bulk_Price_Form;
 
 		$scheduler = new Pricing_Scheduler;
 		$scheduler->prepare( $request );
 
-		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls' ) );
+		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls', 'bulk_controls' ) );
 	}
 
 	/**
@@ -36,7 +37,7 @@ class Rate_Controller extends Controller {
 
 		if ( $sanitized->count() > 0 && $request->filled( 'calendar', 'check-in', 'check-out' ) ) {
 			// Handle set custom room price.
-			$updated = abrs_set_room_price([
+			$updated = abrs_apply_room_price([
 				'rate'       => $request->get( 'calendar' ),
 				'room_type'  => $request->get( 'calendar' ),
 				'start_date' => $request->get( 'check-in' ),
@@ -64,7 +65,7 @@ class Rate_Controller extends Controller {
 		check_admin_referer( 'awebooking_bulk_update_price', '_wpnonce' );
 
 		// Get the sanitized values.
-		$sanitized = ( new Bulk_Update_Price )->handle( $request );
+		$sanitized = ( new Bulk_Price_Form )->handle( $request );
 
 		$room_types = $request->get( 'bulk_room_types' );
 
@@ -72,7 +73,7 @@ class Rate_Controller extends Controller {
 
 			foreach ( $room_types as $room_type ) {
 				// Handle set custom room price.
-				$updated = abrs_set_room_price([
+				$updated = abrs_apply_room_price([
 					'rate'       => $room_type,
 					'room_type'  => $room_type,
 					'start_date' => $request->get( 'check-in' ),

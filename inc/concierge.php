@@ -44,23 +44,55 @@ function abrs_timespan( array $args ) {
 			return new WP_Error( esc_html__( 'The start date must the greater than or equal today.', 'awebooking' ) );
 		}
 
-		return $timespan;
+		return apply_filters( 'awebooking/timespan', $timespan, $args );
 	} catch ( Exception $e ) {
 		return new WP_Error( 'timespan_error', esc_html__( 'The start date and end date is invalid.', 'awebooking' ) );
 	}
 }
 
 /**
- * Set a room as blocked (unavailable for made reservation).
+ * Set a room as blocked.
  *
- * @param  array $args The query args.
+ * @see abrs_apply_room_state()
+ *
+ * @param  array $args The arguments.
  * @return bool
  */
 function abrs_block_room( array $args ) {
+	return abrs_apply_room_state( Constants::STATE_UNAVAILABLE, $args );
+}
+
+/**
+ * Unblock a room.
+ *
+ * @see abrs_apply_room_state()
+ *
+ * @param  array $args The arguments.
+ * @return bool
+ */
+function abrs_unblock_room( array $args ) {
+	return abrs_apply_room_state( Constants::STATE_AVAILABLE, $args );
+}
+
+/**
+ * Set a room state for a timespan (unavailable or available).
+ *
+ * @param  int   $state The state (only 1 or 0).
+ * @param  array $args  The arguments.
+ * @return bool
+ */
+function abrs_apply_room_state( $state, array $args ) {
+	$valid_states = [ Constants::STATE_AVAILABLE, Constants::STATE_UNAVAILABLE ];
+
+	if ( ! in_array( $state, $valid_states ) ) {
+		return new WP_Error( 'invalid_state', esc_html__( 'Invalid room state', 'awebooking' ) );
+	}
+
+	// Parse the args.
 	$args = wp_parse_args( $args, [
 		'room'       => '',
-		'start_date' => '',
 		'nights'     => 0,
+		'start_date' => '',
 		'end_date'   => '',
 		'only_days'  => 'all',
 	]);
@@ -84,29 +116,45 @@ function abrs_block_room( array $args ) {
 		return $timespan;
 	}
 
+	// Fire action before apply room state.
+	do_action( 'awebooking/prepare_apply_room_state', $state, $args );
+
 	// Because the Calendar work by daily, but in reservation we work
 	// by nightly, so we need subtract one minute from end date.
 	// This will make the Calendar query events by night instead by day.
 	$timespan->set_end_date( $timespan->get_end_date()->subMinute() );
 
-	// Get all events.
+	// Create the calendar and get all events.
 	$calendar = abrs_create_calendar( $room, 'state' );
-	$events = $calendar->get_events( $timespan->to_period() );
 
-	// Loop all events then apply state.
-	foreach ( $events as $event ) {
-		// Prevent update on non-available state.
-		if ( Constants::STATE_AVAILABLE !== $event->get_state() ) {
+	foreach ( $calendar->get_events( $timespan->to_period() ) as $event ) {
+		$original_value = (int) $event->get_value();
+
+		// Prevent update on booking state.
+		if ( ! in_array( $original_value, $valid_states ) ) {
 			continue;
 		}
 
-		// Set the "UNAVAILABLE" state.
-		$event->set_state( Constants::STATE_UNAVAILABLE );
-		$event->only_days( $args['only_days'] );
+		$event->set_state( $state );
+
+		// Set event only days.
+		if ( is_array( $args['only_days'] ) && ! empty( $args['only_days'] ) ) {
+			$event->only_days( $args['only_days'] );
+		}
 
 		// Store the event in the Calendar.
-		$calendar->store( $event );
+		if ( $event->get_value() !== $original_value ) {
+			$calendar->store( $event );
+		}
 	}
+
+	/**
+	 * Fire action after set room state.
+	 *
+	 * @param int   $state    The state.
+	 * @param array $args     The arguments.
+	 */
+	do_action( 'awebooking/after_apply_room_state', $state, $args );
 
 	return true;
 }
@@ -117,7 +165,7 @@ function abrs_block_room( array $args ) {
  * @param  array $args The custom price args.
  * @return bool|WP_Error
  */
-function abrs_set_room_price( array $args ) {
+function abrs_apply_room_price( array $args ) {
 	// Parse the args.
 	$args = wp_parse_args( $args, [
 		'rate'         => '',
@@ -190,7 +238,7 @@ function abrs_create_reservation_request( array $args ) {
 
 	// Create the guest counts.
 	$guest_counts = null;
-	if ( $adults > 0 ) {
+	if ( $args['adults'] > 0 ) {
 		$guest_counts = new Guest_Counts( $args['adults'] );
 
 		if ( abrs_is_children_bookable() && $args['children'] > 0 ) {

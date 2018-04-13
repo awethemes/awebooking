@@ -3,7 +3,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "makeicon": "node bin/make-iconfont.js",
-    "watch": "export DISABLE_NOTIFIER=true && gulp watch"
+    "build": "gulp default",
+    "watch": "gulp watch"
   },
   "copyFiles": {
     "sweetalert2": [
@@ -34,18 +35,20 @@
   "dependencies": {
     "flatpickr": "^4.4.4",
     "moment": "^2.22.0",
+    "query-string": "^6.0.0",
     "selectize": "^0.12.4",
     "sweetalert2": "^7.18.0",
     "tippy.js": "^2.5.0",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.44",
-    "@babel/preset-env": "^7.0.0-beta.44",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
     "browser-sync": "^2.23.6",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
-    "gulp-babel": "^8.0.0-beta",
+    "gulp-bro": "^1.0.3",
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-plumber": "^1.2.0",
     "gulp-sass": "^4.0.1",

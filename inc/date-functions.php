@@ -196,3 +196,32 @@ function abrs_list_hours() {
 		'23' => '23:00 - 00:00',
 	]);
 }
+
+/**
+ * Localizes the flatpickr datepicker.
+ *
+ * @link https://flatpickr.js.org/localization/
+ *
+ * @global WP_Locale $wp_locale The WordPress date and time locale object.
+ */
+function abrs_localize_flatpickr() {
+	global $wp_locale;
+
+	if ( ! wp_script_is( 'flatpickr', 'enqueued' ) ) {
+		return;
+	}
+
+	$datepicker_defaults = wp_json_encode([
+		'firstDayOfWeek' => absint( get_option( 'start_of_week' ) ),
+		'weekdays'       => [
+			'shorthand'  => array_values( $wp_locale->weekday_abbrev ),
+			'longhand'   => array_values( $wp_locale->weekday ),
+		],
+		'months'         => [
+			'shorthand'  => array_values( $wp_locale->month_abbrev ),
+			'longhand'   => array_values( $wp_locale->month ),
+		],
+	]);
+
+	wp_add_inline_script( 'flatpickr', "(function() { flatpickr.localize({$datepicker_defaults}); })();" );
+}

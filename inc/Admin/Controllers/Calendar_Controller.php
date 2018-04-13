@@ -28,18 +28,28 @@ class Calendar_Controller extends Controller {
 	public function update( Request $request ) {
 		check_admin_referer( 'awebooking_update_state', '_wpnonce' );
 
-		// Get the sanitized values.
-		// $sanitized = ( new Room_Price_Form )->handle( $request );
+		if ( $request->filled( 'room', 'end_date', 'start_date' ) ) {
+			$action = $request->get( 'action', 'unblock' );
 
-		if ( $request->filled( 'calendar', 'end_date', 'start_date' ) ) {
-			$updated = abrs_block_room([
-				'room'       => $request->get( 'calendar' ),
-				'start_date' => $request->get( 'start_date' ),
-				'end_date'   => $request->get( 'end_date' ),
-				'only_days'  => $request->get( 'days' ),
-			]);
+			switch ( $action ) {
+				case 'block':
+					$updated = abrs_block_room(
+						$request->only( 'room', 'start_date', 'end_date', 'only_days' )
+					);
+					break;
 
-			if ( $updated && ! is_wp_error( $updated ) ) {
+				case 'unblock':
+					$updated = abrs_unblock_room(
+						$request->only( 'room', 'end_date', 'start_date' )
+					);
+					break;
+
+				default:
+					do_action( 'awebooking/admin_room_action', $action, $request );
+					break;
+			}
+
+			if ( ! empty( $updated ) && ! is_wp_error( $updated ) ) {
 				abrs_admin_notices( esc_html__( 'Update state successfully', 'awebooking' ), 'success' )->dialog();
 			}
 		}

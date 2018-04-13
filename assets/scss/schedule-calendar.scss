@@ -558,31 +558,99 @@ $schedule-border-color2:       #ccc;
   }
 }
 
-.scheduler__state-event {
+.scheduler__state-event,
+.scheduler__booking-event {
   top: 0;
   left: 0;
   z-index: 150;
   position: absolute;
-
   height: 100%;
   background: rgba(#000, 0.1);
   transition: all 0.2s ease;
-
   cursor: pointer;
   pointer-events: auto !important;
+}
 
-  &.booked {
-    background-color: rgba(#2196f3, 0.5);
-    &:hover { background-color: rgba(#2196f3, 0.3); }
-  }
+.scheduler__state-event.unavailable {
+  color: #444;
+  background: url('../img/blocked-pattern.png') rgba(black, .01);
 
-  &.pending {
+  &:hover { background-color: rgba(black, .03); }
+}
+
+.scheduler__booking-event {
+  &.pending,
+  &.awebooking-pending {
+    color: darken(#ffc107, 25%);
     background-color: rgba(#ffc107, 0.5);
+
     &:hover { background-color: rgba(#ffc107, 0.7); }
   }
 
-  &.unavailable {
-    background: url('../img/blocked-pattern.png') rgba(black, .01);
-    &:hover { background-color: rgba(black, .03); }
+  &.inprocess,
+  &.awebooking-inprocess {
+    background-color: rgba(#607d8b, 0.5);
+
+    &:hover { background-color: rgba(#607d8b, 0.4); }
+  }
+
+  &.on-hold,
+  &.awebooking-on-hold {
+    background-color: rgba(#673ab7, 0.4);
+
+    &:hover { background-color: rgba(#673ab7, 0.5); }
+  }
+
+  &.deposit,
+  &.awebooking-deposit {
+    background-color: rgba(#9c27b0, 0.4);
+
+    &:hover { background-color: rgba(#9c27b0, 0.4); }
+  }
+
+  &.completed,
+  &.awebooking-completed {
+    color: darken(#03a9f4, 27%);
+    background-color: rgba(#03a9f4, 0.4);
+
+    &:hover { background-color: rgba(#03a9f4, 0.5); }
+  }
+
+  &.checked-in,
+  &.awebooking-checked-in {
+    color: darken(#cddc39, 30%);
+    background-color: rgba(#cddc39, 0.4);
+
+    &:hover { background-color: rgba(#cddc39, 0.5); }
+  }
+
+  &.checked-out,
+  &.awebooking-checked-out {
+    color: darken(#8bc34a, 30%);
+    background-color: rgba(#8bc34a, 0.4);
+
+    &:hover { background-color: rgba(#8bc34a, 0.5); }
+  }
+}
+
+.scheduler-inline-text {
+  display: block;
+  height: 100%;
+  line-height: 35px;
+  padding: 0 7px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+
+  &:hover,
+  &:focus {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: none;
   }
 }

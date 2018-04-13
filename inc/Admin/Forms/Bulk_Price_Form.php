@@ -3,9 +3,10 @@ namespace AweBooking\Admin\Forms;
 
 use AweBooking\Constants;
 use AweBooking\Support\WP_Data;
+use AweBooking\Support\Carbonate;
 use AweBooking\Component\Form\Form_Builder;
 
-class Bulk_Update_Price extends Form_Builder {
+class Bulk_Price_Form extends Form_Builder {
 
 	/**
 	 * Constructor.
@@ -19,12 +20,16 @@ class Bulk_Update_Price extends Form_Builder {
 	 */
 	protected function setup_fields() {
 		$this->add_field([
-			'id'          => 'bulk_room_types',
-			'type'        => 'multicheck',
-			'name'        => esc_html__( 'Select room type(s)', 'awebooking' ),
-			'options_cb'  => WP_Data::cb( 'posts', array( 'post_type' => Constants::ROOM_TYPE ,'post_status' => 'publish' ) ),
-			'select_all_button' => false,
-			'sanitization_cb' => 'wp_parse_id_list',
+			'id'                => 'bulk_room_types',
+			'type'              => 'multicheck',
+			'name'              => esc_html__( 'Select room type(s)', 'awebooking' ),
+			'select_all_button' => true,
+			'sanitization_cb'   => 'wp_parse_id_list',
+			'options_cb'        => WP_Data::cb( 'posts', [
+				'post_type'      => Constants::ROOM_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+			]),
 		]);
 
 		$this->add_field([
@@ -32,7 +37,7 @@ class Bulk_Update_Price extends Form_Builder {
 			'type'        => 'abrs_dates',
 			'name'        => esc_html__( 'Select dates', 'awebooking' ),
 			'show_js'     => false,
-			'attributes'  => [ 'tabindex' => '-1' ],
+			'default'     => [ Carbonate::today()->format( 'Y-m-d' ), Carbonate::tomorrow()->format( 'Y-m-d' ) ],
 		]);
 
 		$this->add_field([
