@@ -110,11 +110,11 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	protected function display_capacity_column() {
 		$guests = new Guest_Counts( $this->room_type['number_adults'] );
 
-		if ( abrs_is_children_bookable() && $this->room_type['number_children'] ) {
+		if ( abrs_children_bookable() && $this->room_type['number_children'] ) {
 			$guests->set_children( $this->room_type['number_children'] );
 		}
 
-		if ( abrs_is_infants_bookable() && $this->room_type['number_infants'] ) {
+		if ( abrs_infants_bookable() && $this->room_type['number_infants'] ) {
 			$guests->set_infants( $this->room_type['number_infants'] );
 		}
 

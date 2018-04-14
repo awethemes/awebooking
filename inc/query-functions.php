@@ -42,7 +42,7 @@ function abrs_get_rooms( $room_type ) {
 
 	// If current site running on multilanguage, we will get room-units
 	// from original room_type. To avoid the "replication" have own room-units.
-	if ( abrs_is_running_multilanguage() ) {
+	if ( abrs_running_on_multilanguage() ) {
 		$room_type = awebooking( 'multilingual' )->get_original_post( $room_type );
 	}
 

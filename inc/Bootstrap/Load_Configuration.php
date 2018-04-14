@@ -62,7 +62,7 @@ class Load_Configuration {
 	 * @return string
 	 */
 	protected function maybe_modify_options() {
-		if ( ! abrs_is_running_multilanguage() ) {
+		if ( ! abrs_running_on_multilanguage() ) {
 			return;
 		}
 

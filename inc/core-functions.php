@@ -2,27 +2,22 @@
 
 use Awethemes\Http\Request;
 use AweBooking\Multilingual;
+use AweBooking\Component\Mail\Mailer;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Routing\Url_Generator;
+
+/* Constants */
+if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
+	define( 'ABRS_TEMPLATE_DEBUG', false );
+}
 
 // Requires other core functions.
 require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
-require trailingslashit( __DIR__ ) . 'list-functions.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'query-functions.php';
 require trailingslashit( __DIR__ ) . 'model-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
-
-/**
- * Gets the plugin URL.
- *
- * @param  string $path Optional, extra path to added.
- * @return string
- */
-function abrs_plugin_url( $path = null ) {
-	return awebooking()->plugin_url( $path );
-}
 
 /**
  * Report an exception.
@@ -40,6 +35,16 @@ function abrs_report( $e ) {
 	}
 
 	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+}
+
+/**
+ * Gets the plugin URL.
+ *
+ * @param  string $path Optional, extra path to added.
+ * @return string
+ */
+function abrs_plugin_url( $path = null ) {
+	return awebooking()->plugin_url( $path );
 }
 
 /**
@@ -71,6 +76,10 @@ function abrs_admin_route( $path = '/', $parameters = [] ) {
 	return abrs_url()->admin_route( $path, $parameters );
 }
 
+function abrs_mail() {
+	return new Mailer;
+}
+
 /**
  * Retrieves an option by key-name.
  *
@@ -83,11 +92,11 @@ function abrs_option( $key, $default = null ) {
 }
 
 /**
- * Is current WordPress is running in multi-languages.
+ * Is current WordPress is running on multi-languages.
  *
  * @return bool
  */
-function abrs_is_running_multilanguage() {
+function abrs_running_on_multilanguage() {
 	return apply_filters( 'awebooking/is_running_multilanguage', Multilingual::is_polylang() || Multilingual::is_wpml() );
 }
 
@@ -96,7 +105,7 @@ function abrs_is_running_multilanguage() {
  *
  * @return bool
  */
-function abrs_is_multiple_hotels() {
+function abrs_multiple_hotels() {
 	return apply_filters( 'awebooking/is_multiple_hotels', abrs_option( 'enable_location', false ) );
 }
 
@@ -105,7 +114,7 @@ function abrs_is_multiple_hotels() {
  *
  * @return bool
  */
-function abrs_is_children_bookable() {
+function abrs_children_bookable() {
 	return apply_filters( 'awebooking/is_children_bookable', abrs_option( 'children_bookable', true ) );
 }
 
@@ -114,7 +123,7 @@ function abrs_is_children_bookable() {
  *
  * @return bool
  */
-function abrs_is_infants_bookable() {
+function abrs_infants_bookable() {
 	return apply_filters( 'awebooking/is_infants_bookable', abrs_option( 'infants_bookable', true ) );
 }
 
@@ -134,6 +143,17 @@ function abrs_maximum_scaffold_rooms() {
  */
 function abrs_current_currency() {
 	return abrs_option( 'currency', 'USD' );
+}
+
+/**
+ * Returns list of currencies.
+ *
+ * @return array[]
+ */
+function abrs_list_currencies() {
+	return abrs_collect( awebooking( 'currencies' )->all() )
+		->pluck( 'name', 'alpha3' )
+		->all();
 }
 
 /**
@@ -175,15 +195,168 @@ function abrs_currency_name( $currency = null ) {
 }
 
 /**
+ * Returns list of countries indexed by alpha2 code.
+ *
+ * @return array[]
+ */
+function abrs_list_countries() {
+	return abrs_collect( awebooking( 'countries' )->all() )
+		->pluck( 'name', 'alpha2' )
+		->all();
+}
+
+/**
+ * Returns list dropdown of currencies.
+ *
+ * @return array[]
+ */
+function abrs_list_dropdown_currencies() {
+	return abrs_collect( abrs_list_currencies() )
+		->transform( function( $name, $code ) {
+			return $name . ' (' . abrs_currency_symbol( $code ) . ')';
+		})->all();
+}
+
+/**
+ * Get list payment methods.
+ *
+ * @return array
+ */
+function abrs_list_payment_methods() {
+	$methods = apply_filters( 'awebooking/base_payment_methods', [
+		'cash' => esc_html__( 'Cash', 'awebooking' ),
+	]);
+
+	$gateways = awebooking()->make( 'gateways' )->enabled()
+		->map( function( $m ) {
+			return $m->get_method_title();
+		})->all();
+
+	return array_merge( $methods, $gateways );
+}
+
+/**
+ * Returns a list of booking statuses.
+ *
+ * @return array
+ */
+function abrs_list_booking_statuses() {
+	return apply_filters( 'awebooking/list_booking_statuses', [
+		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
+		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
+		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
+		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
+		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
+		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
+		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),
+		'awebooking-cancelled'   => _x( 'Cancelled', 'Booking status', 'awebooking' ),
+	]);
+}
+
+/**
+ * Return a list of common titles.
+ *
+ * @return string
+ */
+function abrs_list_common_titles() {
+	return apply_filters( 'awebooking/list_customer_titles', [
+		'mr'   => esc_html__( 'Mr.', 'awebooking' ),
+		'ms'   => esc_html__( 'Ms.', 'awebooking' ),
+		'mrs'  => esc_html__( 'Mrs.', 'awebooking' ),
+		'miss' => esc_html__( 'Miss.', 'awebooking' ),
+		'dr'   => esc_html__( 'Dr.', 'awebooking' ),
+		'prof' => esc_html__( 'Prof.', 'awebooking' ),
+	]);
+}
+
+/**
+ * Locate a template and return the path for inclusion.
+ *
+ * @param  string $template_name The template name.
+ * @return string
+ */
+function abrs_locate_template( $template_name ) {
+	// Locate in your {theme}/awebooking.
+	$template = locate_template([
+		trailingslashit( awebooking()->template_path() ) . $template_name,
+	]);
+
+	// Fallback to default template in the plugin.
+	if ( ! $template || ABRS_TEMPLATE_DEBUG ) {
+		$template = awebooking()->plugin_path( 'templates/' ) . $template_name;
+	}
+
+	// Return what we found.
+	return apply_filters( 'awebooking/locate_template', $template, $template_name );
+}
+
+/**
+ * Include a template by given template name.
+ *
+ * @param  string $template_name Template name.
+ * @param  array  $vars          Optional, the data send to template.
+ * @return void
+ */
+function abrs_get_template( $template_name, $vars = [] ) {
+	$located = abrs_locate_template( $template_name );
+
+	if ( ! file_exists( $located ) ) {
+		/* translators: %s template */
+		_doing_it_wrong( __FUNCTION__, sprintf( wp_kses_post( __( '%s does not exist.', 'awebooking' ) ), '<code>' . esc_html( $located ) . '</code>' ), '3.1' );
+		return;
+	}
+
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'awebooking/get_template', $located, $template_name, $vars );
+
+	do_action( 'awebooking/before_template_part', $template_name, $located, $vars );
+
+	// Extract $vars to variables.
+	if ( ! empty( $vars ) && is_array( $vars ) ) {
+		extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
+	}
+
+	// Include the located file.
+	include $located;
+
+	do_action( 'awebooking/after_template_part', $template_name, $located, $vars );
+}
+
+/**
+ * Loads a template part into a template.
+ *
+ * @param mixed  $slug The slug name for the generic template.
+ * @param string $name The name of the specialised template.
+ */
+function abrs_get_template_part( $slug, $name = '' ) {
+	$template = '';
+
+	// Try locate {$slug}-{$name}.php first.
+	if ( '' !== $name ) {
+		$template = abrs_locate_template( "{$slug}-{$name}.php" );
+	}
+
+	// Then try locate in {$slug}.php.
+	if ( ! $template ) {
+		$template = abrs_locate_template( "{$slug}.php" );
+	}
+
+	// Allow 3rd party plugins to filter template file from their plugin.
+	$template = apply_filters( 'awebooking/get_template_part', $template, $slug, $name );
+
+	if ( $template && file_exists( $template ) ) {
+		load_template( $template, false );
+	}
+}
+
+/**
  * Retrieve the page ID.
  *
  * @param  string $page The page slug: check_availability, booking, checkout.
  * @return int
  */
 function abrs_get_page_id( $page ) {
-	$page = sanitize_key( $page );
-
-	$page = apply_filters( 'awebooking/get_' . $page . '_page_id', abrs_option( 'page_' . $page ) );
+	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_option( 'page_' . sanitize_key( $page ) ) );
 
 	return $page ? absint( $page ) : -1;
 }
@@ -197,9 +370,9 @@ function abrs_get_page_id( $page ) {
  * @return string
  */
 function arbs_get_page_permalink( $page ) {
-	$page_id   = abrs_get_page_id( $page );
+	$page_id = abrs_get_page_id( $page );
 
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
 
-	return apply_filters( 'awebooking/get_' . $page . '_page_permalink', $permalink );
+	return apply_filters( "awebooking/get_{$page}_page_permalink", $permalink );
 }

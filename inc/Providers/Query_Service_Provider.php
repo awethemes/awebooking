@@ -59,11 +59,11 @@ class Query_Service_Provider extends Service_Provider {
 			$total += (int) $qv['booking_adults'];
 		}
 
-		if ( abrs_is_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
+		if ( abrs_children_bookable() && ! empty( $qv['booking_children'] ) && $qv['booking_children'] > 0 ) {
 			$total += (int) $qv['booking_children'];
 		}
 
-		if ( abrs_is_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
+		if ( abrs_infants_bookable() && ! empty( $qv['booking_infants'] ) && $qv['booking_infants'] > 0 ) {
 			$total += (int) $qv['booking_infants'];
 		}
 

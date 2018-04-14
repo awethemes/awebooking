@@ -30,7 +30,6 @@ class General_Setting extends Abstract_Setting {
 			'name'     => esc_html__( 'General', 'awebooking' ),
 		]);
 
-
 		$this->add_field([
 			'id'       => 'enable_location',
 			'type'     => 'abrs_toggle',
@@ -60,11 +59,17 @@ class General_Setting extends Abstract_Setting {
 			'desc'     => esc_html__( 'This is where your hotel is located. Tax rates will use this address.', 'awebooking' ),
 		]);
 
+		// Prevent in some case we have a value called like: "awebooking".
+		$hotel_name = get_bloginfo( 'name' );
+		if ( function_exists( $hotel_name ) ) {
+			$hotel_name = sprintf( '%s Hotel', $hotel_name );
+		}
+
 		$this->add_field([
 			'id'              => 'hotel_name',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Name', 'awebooking' ),
-			'default'         => get_bloginfo( 'name' ),
+			'default'         => $hotel_name,
 			'required'        => true,
 			'sanitization_cb' => 'abrs_sanitize_text',
 		]);

@@ -241,11 +241,11 @@ function abrs_create_reservation_request( array $args ) {
 	if ( $args['adults'] > 0 ) {
 		$guest_counts = new Guest_Counts( $args['adults'] );
 
-		if ( abrs_is_children_bookable() && $args['children'] > 0 ) {
+		if ( abrs_children_bookable() && $args['children'] > 0 ) {
 			$guest_counts->set_children( $args['children'] );
 		}
 
-		if ( abrs_is_infants_bookable() && $args['infants'] > 0 ) {
+		if ( abrs_infants_bookable() && $args['infants'] > 0 ) {
 			$guest_counts->set_infants( $args['infants'] );
 		}
 	}

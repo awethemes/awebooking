@@ -57,20 +57,20 @@ global $the_room_type;
 			<?php $form->show_field( 'number_adults' ); ?>
 		</div>
 
-		<?php if ( abrs_is_children_bookable() ) : ?>
+		<?php if ( abrs_children_bookable() ) : ?>
 			<div class="abcol-3 abcol-sm-12">
 				<?php $form->show_field( 'number_children' ); ?>
 			</div>
 		<?php endif ?>
 
-		<?php if ( abrs_is_infants_bookable() ) : ?>
+		<?php if ( abrs_infants_bookable() ) : ?>
 			<div class="abcol-3 abcol-sm-12" style="border-right: none;">
 				<?php $form->show_field( 'number_infants' ); ?>
 			</div>
 		<?php endif ?>
 	</div>
 
-	<?php if ( abrs_is_infants_bookable() ) : ?>
+	<?php if ( abrs_infants_bookable() ) : ?>
 		<div class="abrow">
 			<div class="abcol">
 				<?php $form->show_field( '_infants_in_calculations' ); ?>
