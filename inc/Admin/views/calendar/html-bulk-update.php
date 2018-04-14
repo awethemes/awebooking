@@ -8,7 +8,7 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 
 <div id="bulk-update-dialog" class="awebooking-dialog-contents" title="<?php echo esc_html__( 'Bulk Update State', 'awebooking' ); ?>" style="display: none;">
 	<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/calendar/bulk-update' ) ); ?>">
-		<?php wp_nonce_field( 'awebooking_bulk_update_calendar' ); ?>
+		<?php wp_nonce_field( 'awebooking_bulk_update_state' ); ?>
 
 		<div class="cmb2-wrap awebooking-wrap" style="width: 720px;">
 			<div class="cmb2-metabox cmb2-inline-metabox">
@@ -49,16 +49,18 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 						?>
 
 						<div class="cmb-row">
+							<div class="cmb-th">
+								<label for="bulk_room_types"><?php esc_html_e( 'Select state', 'awebooking' ); ?> </label>
+							</div>
 
 							<div class="cmb-td">
 								<div class="abrow no-gutters abrs-radio-group">
-
-
 									<div class="radio-group">
-										<input name="git_repository" type="radio" value="1" class="radio-group__input" id="git-repository" checked="">
-										<label class="radio-group__label" for="git-repository">Git repository</label>
-										<input name="git_repository" type="radio" value="0" class="radio-group__input" id="manual-repository">
-										<label class="radio-group__label" for="manual-repository">Manual repository</label>
+										<input name="bulk_action" type="radio" value="block" class="radio-group__input" id="block" checked="checked">
+										<label class="radio-group__label" for="block"><?php esc_html_e( 'Block', 'awebooking' ); ?></label>
+
+										<input name="bulk_action" type="radio" value="unblock" class="radio-group__input" id="unblock">
+										<label class="radio-group__label" for="unblock"><?php esc_html_e( 'Unblock', 'awebooking' ); ?></label>
 									</div>
 								</div>
 								<div class="abrs-input-addon group-state">

@@ -20,7 +20,7 @@ class Calendar_Controller extends Controller {
 	}
 
 	/**
-	 * Show room_type rate.
+	 * Update state.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
@@ -52,6 +52,53 @@ class Calendar_Controller extends Controller {
 			if ( ! empty( $updated ) && ! is_wp_error( $updated ) ) {
 				abrs_admin_notices( esc_html__( 'Update state successfully', 'awebooking' ), 'success' )->dialog();
 			}
+		}
+
+		return $this->redirect()->back( abrs_admin_route( '/calendar' ) );
+	}
+
+	/**
+	 * Bulk update state.
+	 *
+	 * @param \Awethemes\Http\Request $request The current request.
+	 * @return \Awethemes\Http\Response
+	 */
+	public function bulk_update( Request $request ) {
+		check_admin_referer( 'awebooking_bulk_update_state', '_wpnonce' );
+
+		$rooms = $request->get( 'bulk_rooms' );
+
+		if ( $request->filled( 'bulk_rooms', 'check-in', 'check-out' ) ) {
+
+			foreach ( $rooms as $room ) {
+				$action = $request->get( 'bulk_action', 'unblock' );
+
+				switch ( $action ) {
+					case 'block':
+						$updated = abrs_block_room([
+							'room'        => absint( $room ),
+							'start_date'  => $request->get( 'check-in' ),
+							'end_date'    => $request->get( 'check-out' ),
+							'only_days'   => $request->get( 'bulk_days' ),
+						] );
+						break;
+
+					case 'unblock':
+						$updated = abrs_unblock_room([
+							'room'        => absint( $room ),
+							'start_date'  => $request->get( 'check-in' ),
+							'end_date'    => $request->get( 'check-out' ),
+							'only_days'   => $request->get( 'bulk_days' ),
+						] );
+						break;
+
+					default:
+						do_action( 'awebooking/admin_room_action', $action, $request );
+						break;
+				}
+			}
+
+			abrs_admin_notices( esc_html__( 'Update state successfully', 'awebooking' ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/calendar' ) );

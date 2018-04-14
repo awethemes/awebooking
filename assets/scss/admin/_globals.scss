@@ -332,3 +332,45 @@ p.awebooking-no-items {
     padding-bottom: 7px;
   }
 }
+
+// Radio Group
+// --------------------------------------------------------------
+
+.abrs-radio-group {
+  .radio-group__label {
+    float: left;
+    margin-left: -1px;
+
+    padding: 8px 10px 8px 40px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+
+    &:first-of-type {
+      margin-left: 0;
+      border-top-left-radius: 1px;
+      border-bottom-left-radius: 1px;
+    }
+
+    &:last-of-type {
+      padding-right: 16px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 1px;
+    }
+  }
+
+  :checked + .radio-group__label {
+    z-index: 1;
+    position: relative;
+    border-color: #2196F3;
+  }
+
+  .radio-group__input {
+    z-index: 3;
+    float: left;
+    margin: 10px -26px 0 10px !important;
+  }
+}
+
+.radio-group {
+  @include clearfix;
+}
