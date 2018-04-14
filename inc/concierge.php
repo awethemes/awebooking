@@ -40,7 +40,7 @@ function abrs_timespan( array $args ) {
 		}
 
 		// Validate strict mode.
-		if ( $args['strict'] && $this->get_start_date()->lt( Carbonate::today() ) ) {
+		if ( $args['strict'] && $timespan->get_start_date()->lt( Carbonate::today() ) ) {
 			return new WP_Error( esc_html__( 'The start date must the greater than or equal today.', 'awebooking' ) );
 		}
 
@@ -209,7 +209,7 @@ function abrs_apply_room_price( array $args ) {
  * @param  array $args The query args.
  * @return \AweBooking\Reservation\Request|WP_Error
  */
-function abrs_create_reservation_request( array $args ) {
+function abrs_reservation_request( array $args ) {
 	$args = wp_parse_args( $args, [
 		'check_in'   => '',
 		'check_out'  => '',

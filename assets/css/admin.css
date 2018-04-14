@@ -1171,6 +1171,10 @@ span.flatpickr-weekday {
   box-shadow: -5px 0 0 #e2f2ff, 5px 0 0 #e2f2ff;
 }
 
+.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+1) {
+  box-shadow: 0 0 0 #e2f2ff, 5px 0 0 #e2f2ff;
+}
+
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
 .flatpickr-day.endRange,
@@ -1206,6 +1210,19 @@ span.flatpickr-weekday {
 
 .flatpickr-calendar.open {
   z-index: 999999;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-month:first-of-type {
+  border-top-right-radius: 0;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-month:last-of-type {
+  border-top-left-radius: 0;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-month:not(:first-of-type):not(:last-of-type) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* Labels */

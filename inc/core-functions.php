@@ -11,6 +11,10 @@ if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
 	define( 'ABRS_TEMPLATE_DEBUG', false );
 }
 
+if ( ! defined( 'ABRS_ASSET_URL' ) ) {
+	define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
+}
+
 // Requires other core functions.
 require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
@@ -36,6 +40,11 @@ function abrs_report( $e ) {
 
 	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
 }
+
+function abrs_logger() {
+	return awebooking()->make( 'logger' );
+}
+
 
 /**
  * Gets the plugin URL.
@@ -66,6 +75,18 @@ function abrs_url() {
 }
 
 /**
+ * Retrieves the route URL.
+ *
+ * @param  string $path       Optional, the admin route.
+ * @param  array  $parameters The additional parameters.
+ * @param  bool   $is_ssl     Force the SSL in return URL.
+ * @return string
+ */
+function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
+	return abrs_url()->route( $path, $parameters, $is_ssl );
+}
+
+/**
  * Retrieves the admin route URL.
  *
  * @param  string $path       Optional, the admin route.
@@ -74,10 +95,6 @@ function abrs_url() {
  */
 function abrs_admin_route( $path = '/', $parameters = [] ) {
 	return abrs_url()->admin_route( $path, $parameters );
-}
-
-function abrs_mail() {
-	return new Mailer;
 }
 
 /**
@@ -323,6 +340,31 @@ function abrs_get_template( $template_name, $vars = [] ) {
 }
 
 /**
+ * Returns a template content by given template name.
+ *
+ * @see abrs_get_template()
+ *
+ * @param  string $template_name Template name.
+ * @param  array  $vars          Optional, the data send to template.
+ * @return string
+ */
+function abrs_get_template_content( $template_name, $vars = [] ) {
+	$level = ob_get_level();
+
+	ob_start();
+
+	try {
+		abrs_get_template( $template_name, $vars );
+	} catch ( Exception $e ) {
+		awebooking()->handle_buffering_exception( $e, $level );
+	} catch ( Throwable $e ) {
+		awebooking()->handle_buffering_exception( $e, $level );
+	}
+
+	return trim( ob_get_clean() );
+}
+
+/**
  * Loads a template part into a template.
  *
  * @param mixed  $slug The slug name for the generic template.
@@ -356,7 +398,15 @@ function abrs_get_template_part( $slug, $name = '' ) {
  * @return int
  */
 function abrs_get_page_id( $page ) {
-	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_option( 'page_' . sanitize_key( $page ) ) );
+	$page_alias = [ // Back-compat, we changed name but still keep ID.
+		'search_results' => 'check_availability',
+	];
+
+	if ( array_key_exists( $page, $page_alias ) ) {
+		$page = $page_alias[ $page ];
+	}
+
+	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_option( 'page_' . $page ) );
 
 	return $page ? absint( $page ) : -1;
 }

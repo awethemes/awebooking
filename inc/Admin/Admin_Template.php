@@ -1,10 +1,6 @@
 <?php
 namespace AweBooking\Admin;
 
-use Exception;
-use Throwable;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-
 class Admin_Template {
 	/**
 	 * Returns a template contents.
@@ -71,7 +67,7 @@ class Admin_Template {
 		// Turn on output buffering.
 		ob_start();
 
-		// @codingStandardsIgnoreLine, Okay, just fine!
+		// @codingStandardsIgnoreLine
 		extract( $vars, EXTR_SKIP );
 
 		// We'll evaluate the contents of the view inside a try/catch block so we can
@@ -81,9 +77,7 @@ class Admin_Template {
 			if ( $admin_template ) {
 				// If see the $page_title in $vars, set the admin_title.
 				if ( isset( $page_title ) && ! empty( $page_title ) ) {
-					add_filter( 'admin_title', function( $admin_title ) use ( $page_title ) {
-						return $page_title . $admin_title;
-					});
+					$this->modify_admin_title();
 				}
 
 				require_once ABSPATH . 'wp-admin/admin-header.php';
@@ -95,34 +89,24 @@ class Admin_Template {
 			if ( $admin_template ) {
 				include ABSPATH . 'wp-admin/admin-footer.php';
 			}
-		} catch ( Exception $e ) {
-			$this->handle_view_exception( $e, $ob_level );
-		} catch ( Throwable $e ) {
-			$this->handle_view_exception( $e, $ob_level );
+		} catch ( \Exception $e ) {
+			awebooking()->handle_buffering_exception( $e, $ob_level );
+		} catch ( \Throwable $e ) {
+			awebooking()->handle_buffering_exception( $e, $ob_level );
 		}
 
 		return ltrim( ob_get_clean() );
 	}
 
 	/**
-	 * Handle a view exception.
+	 * Add a filter to modify the admin title.
 	 *
-	 * @param  \Exception $e        The exception.
-	 * @param  int        $ob_level The ob_get_level().
+	 * @param  string $page_title The page title.
 	 * @return void
-	 *
-	 * @throws \Exception
 	 */
-	protected function handle_view_exception( $e, $ob_level ) {
-		// In PHP7+, throw a FatalThrowableError when we catch an Error.
-		if ( $e instanceof \Error && class_exists( FatalThrowableError::class ) ) {
-			$e = new FatalThrowableError( $e );
-		}
-
-		while ( ob_get_level() > $ob_level ) {
-			ob_end_clean();
-		}
-
-		throw $e;
+	protected function modify_admin_title( $page_title ) {
+		add_filter( 'admin_title', function( $admin_title ) use ( $page_title ) {
+			return $page_title . $admin_title;
+		});
 	}
 }

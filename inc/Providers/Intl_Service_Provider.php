@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Providers;
 
+use AweBooking\Support\Service_Provider;
 use AweBooking\Component\Country\ISO3166;
 use AweBooking\Component\Currency\ISO4217;
-use AweBooking\Support\Service_Provider;
 
 class Intl_Service_Provider extends Service_Provider {
 	/**

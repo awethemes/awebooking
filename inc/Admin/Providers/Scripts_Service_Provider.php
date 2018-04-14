@@ -26,16 +26,12 @@ class Scripts_Service_Provider extends Service_Provider {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$version = $this->plugin->version();
 
-		if ( ! defined( 'ABRS_ASSET_URL' ) ) {
-			define( 'ABRS_ASSET_URL', $this->plugin->plugin_url( 'assets/' ) );
-		}
-
 		wp_register_script( 'moment', ABRS_ASSET_URL . 'vendor/moment/moment' . $min . '.js', [], '2.0.21', false );
 		wp_register_script( 'jquery.waypoints', ABRS_ASSET_URL . 'vendor/waypoints/jquery.waypoints' . $min . '.js', [ 'jquery' ], '4.0.1', true );
 
-		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/confetti.css', [], '4.4.3' );
-		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [], '4.4.3', true );
-		wp_register_script( 'flatpickr-range-plugin', ABRS_ASSET_URL . 'vendor/flatpickr/rangePlugin.js', [ 'flatpickr' ], '4.4.3', true );
+		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/confetti.css', [], '4.4.4' );
+		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [], '4.4.4', true );
+		wp_register_script( 'flatpickr-range-plugin', ABRS_ASSET_URL . 'vendor/flatpickr/rangePlugin.js', [ 'flatpickr' ], '4.4.4', true );
 
 		wp_register_style( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy.css', [], '2.4.1' );
 		wp_register_script( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy' . $min . '.js', [], '2.4.1', true );

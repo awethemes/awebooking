@@ -5,6 +5,7 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Illuminate\Container\Container;
 use AweBooking\Support\Fluent;
 
@@ -81,7 +82,10 @@ final class Plugin extends Container {
 			\AweBooking\Admin\Providers\Taxonomies_Service_Provider::class,
 		],
 		'frontend' => [
-			// ...
+			\AweBooking\Frontend\Providers\Frontend_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Scripts_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Shortcodes_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Template_Loader_Service_Provider::class,
 		],
 	];
 
@@ -125,6 +129,10 @@ final class Plugin extends Container {
 		$this->instance( 'plugin_url', $this->plugin_url() );
 		$this->instance( 'plugin_path', $this->plugin_path() );
 		$this->instance( 'plugin_basename', $this->plugin_basename() );
+
+		if ( ! defined( 'ABRS_ABSPATH' ) ) {
+			define( 'ABRS_ABSPATH', $this->plugin_path() );
+		}
 	}
 
 	/**
@@ -170,27 +178,6 @@ final class Plugin extends Container {
 	 */
 	public function get_logger() {
 		return $this->make( LoggerInterface::class );
-	}
-
-	/**
-	 * Catch an exception during running the plugin.
-	 *
-	 * @param  mixed $e The Exception or Throwable.
-	 * @throws \Exception
-	 */
-	public function catch_exception( $e ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			throw $e;
-		}
-
-		// Log the exception.
-		$this->get_logger()->error(
-			$e->getMessage(), [ 'exception' => $e ]
-		);
-
-		add_action( 'admin_notices', function() use ( $e ) {
-			awebooking_print_fatal_error( $e );
-		});
 	}
 
 	/**
@@ -480,5 +467,59 @@ final class Plugin extends Container {
 		 * @var   mixed
 		 */
 		return apply_filters( 'awebooking/sanitize_option', $value, $key );
+	}
+
+	/**
+	 * Catch an exception during running the plugin.
+	 *
+	 * @param  mixed $e The Exception or Throwable.
+	 * @throws \Exception
+	 */
+	public function catch_exception( $e ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			throw $e;
+		}
+
+		// Log the exception.
+		$this->get_logger()->error(
+			$e->getMessage(), [ 'exception' => $e ]
+		);
+
+		add_action( 'admin_notices', function() use ( $e ) {
+			awebooking_print_fatal_error( $e );
+		});
+	}
+
+	/**
+	 * Handle output buffering exception.
+	 *
+	 * @see http://php.net/manual/en/function.ob-get-level.php#117325
+	 *
+	 * @param  Exception $e        The exception.
+	 * @param  int       $ob_level The ob_get_level().
+	 * @param  callable  $callback Optional, run callback after.
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function handle_buffering_exception( $e, $ob_level, $callback = null ) {
+		// In PHP7+, throw a FatalThrowableError when we catch an Error.
+		if ( $e instanceof \Error && class_exists( FatalThrowableError::class ) ) {
+			$e = new FatalThrowableError( $e );
+		}
+
+		while ( ob_get_level() > $ob_level ) {
+			ob_end_clean();
+		}
+
+		// When current site in DEBUG mode, just throw that exception.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			throw $e;
+		}
+
+		// Call the callback.
+		if ( is_callable( $callback ) ) {
+			call_user_func( $callback, $e );
+		}
 	}
 }

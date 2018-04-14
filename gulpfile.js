@@ -2,6 +2,7 @@
 
 const gulp         = require('gulp');
 const plumber      = require('gulp-plumber');
+const changed      = require('gulp-changed-in-place');
 const sass         = require('gulp-sass');
 const gcmq         = require('gulp-group-css-media-queries');
 const sourcemaps   = require('gulp-sourcemaps');
@@ -15,6 +16,7 @@ const pkg          = require('./package.json');
 
 gulp.task('scss', function() {
   return gulp.src('assets/scss/*.scss')
+    .pipe(changed())
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
@@ -27,6 +29,7 @@ gulp.task('scss', function() {
 
 gulp.task('babel', function () {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
+    .pipe(changed())
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(bro({ transform: [ babelify.configure({ presets: ['env'] }) ] }))

@@ -166,6 +166,24 @@ if ( ! function_exists( 'abrs_html_attributes' ) ) {
 	}
 }
 
+if ( ! function_exists( 'abrs_html_class' ) ) {
+	/**
+	 * Returns class string by given an array of classes.
+	 *
+	 * @param  array $classes The array of class
+	 * @return string
+	 */
+	function abrs_html_class( $classes ) {
+		$classes = array_filter( array_unique( (array) $classes ) );
+
+		if ( empty( $classes ) ) {
+			return '';
+		}
+
+		return implode( ' ', array_map( 'sanitize_html_class', $classes ) );
+	}
+}
+
 if ( ! function_exists( 'abrs_optional' ) ) {
 	/**
 	 * Provide access to optional objects.

@@ -46,7 +46,7 @@ class Booking_Room_Controller extends Controller {
 			$controls['date']->set_value( array_values( $request->only( 'check-in', 'check-out' ) ) );
 
 			// Perform search the reservation.
-			$results = abrs_create_reservation_request([
+			$results = abrs_reservation_request([
 				'check_in'  => $request->get( 'check-in' ),
 				'check_out' => $request->get( 'check-out' ),
 			]);

@@ -4,6 +4,25 @@ use AweBooking\Support\Decimal;
 use AweBooking\Model\Common\Money;
 
 /**
+ * Escaping for text with few html allowed.
+ *
+ * @param  string $text Input text.
+ * @return string
+ */
+function abrs_esc_text( $text ) {
+	static $allowed_html = [
+		'a'       => [ 'href' => true, 'title' => true ],
+		'abbr'    => [ 'title' => true ],
+		'acronym' => [ 'title' => true ],
+		'code'    => true,
+		'em'      => true,
+		'strong'  => true,
+	];
+
+	return wp_kses( $text, $allowed_html );
+}
+
+/**
  * Returns the date format.
  *
  * @return string

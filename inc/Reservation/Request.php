@@ -134,7 +134,19 @@ class Request {
 			return $this->{$method}();
 		}
 
-		// Fallback get options instead.
-		return $this->options->get( $property );
+		switch ( $property ) {
+			case 'nights':
+				return $this->timespan->nights();
+			case 'check_in':
+				return $this->timespan->get_start_date()->format( 'Y-m-d' );
+			case 'check_out':
+				return $this->timespan->get_end_date()->format( 'Y-m-d' );
+			case 'adults':
+			case 'children':
+			case 'infants':
+				return $this->guest_counts ? abrs_optional( $this->guest_counts->get( $property ) )->get_count() : null;
+			default:
+				return $this->options->get( $property );
+		}
 	}
 }

@@ -45,17 +45,18 @@ class Url_Generator {
 	/**
 	 * Retrieves the site route URL.
 	 *
-	 * @param  string $path    Optional. The route. Default '/'.
-	 * @param  string $scheme  Optional. Sanitization scheme. Default 'null depend on is_ssl()'.
+	 * @param  string $path       Optional. The route. Default '/'.
+	 * @param  array  $parameters The additional parameters.
+	 * @param  bool   $is_ssl     Force the SSL in return URL.
 	 * @return string
 	 */
-	public function route( $path = '/', $scheme = null ) {
+	public function route( $path = '/', $parameters, $is_ssl = false ) {
 		if ( empty( $path ) ) {
 			$path = '/';
 		}
 
 		// If scheme not provide, guest by is_ssl().
-		$scheme = $scheme ? $scheme : ( is_ssl() ? 'https' : 'http' );
+		$scheme = $is_ssl ? $is_ssl : ( is_ssl() ? 'https' : 'http' );
 
 		if ( get_option( 'permalink_structure' ) ) {
 			global $wp_rewrite;
@@ -81,7 +82,12 @@ class Url_Generator {
 			$url = add_query_arg( 'awebooking_route', $path, $url );
 		}
 
-		return apply_filters( 'awebooking/route_url', rawurldecode( $url ), $path, $scheme );
+		// Add the additional parameters.
+		if ( $parameters ) {
+			$url = add_query_arg( $parameters, $url );
+		}
+
+		return apply_filters( 'awebooking/route_url', rawurldecode( $url ), $path, $parameters, $scheme );
 	}
 
 	/**

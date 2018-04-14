@@ -113,6 +113,9 @@ span.flatpickr-weekday {
   border-radius: 0;
   box-shadow: -5px 0 0 $datepicker-range-background, 5px 0 0 $datepicker-range-background;
 }
+.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+1) {
+  box-shadow: 0 0 0 $datepicker-range-background, 5px 0 0 $datepicker-range-background;
+}
 
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
@@ -148,4 +151,20 @@ span.flatpickr-weekday {
 // Fixed when jquery-ui-dialog have higher z-index.
 .flatpickr-calendar.open {
   z-index: 999999;
+}
+
+// Multi month
+.flatpickr-calendar.multiMonth {
+  .flatpickr-month:first-of-type {
+    border-top-right-radius: 0;
+  }
+
+  .flatpickr-month:last-of-type {
+    border-top-left-radius: 0;
+  }
+
+  .flatpickr-month:not(:first-of-type):not(:last-of-type) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }

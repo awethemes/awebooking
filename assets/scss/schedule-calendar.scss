@@ -217,12 +217,12 @@ $schedule-border-color2:       #ccc;
     border-right-color: $schedule-border-color2;
   }
 
-  &.today {
-    background-color: #fffded;
-  }
-
   &.weekend {
     background-color: #fafafa;
+  }
+
+  &.today {
+    background-color: #fffded;
   }
 }
 

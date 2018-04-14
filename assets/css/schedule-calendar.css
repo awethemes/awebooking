@@ -196,14 +196,14 @@
   border-right-color: #ccc;
 }
 
-.scheduler__days .scheduler__column.today,
-.scheduler__heading .scheduler__column.today {
-  background-color: #fffded;
-}
-
 .scheduler__days .scheduler__column.weekend,
 .scheduler__heading .scheduler__column.weekend {
   background-color: #fafafa;
+}
+
+.scheduler__days .scheduler__column.today,
+.scheduler__heading .scheduler__column.today {
+  background-color: #fffded;
 }
 
 .scheduler__heading .scheduler__column {

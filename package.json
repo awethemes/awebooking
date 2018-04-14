@@ -49,6 +49,7 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-bro": "^1.0.3",
+    "gulp-changed-in-place": "^2.3.0",
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-plumber": "^1.2.0",
     "gulp-sass": "^4.0.1",

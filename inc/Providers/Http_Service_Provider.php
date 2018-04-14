@@ -135,7 +135,7 @@ class Http_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_routes( $route ) {
-		require trailingslashit( __DIR__ ) . '/../Fontend/routes.php';
+		require trailingslashit( __DIR__ ) . '/../Frontend/routes.php';
 	}
 
 

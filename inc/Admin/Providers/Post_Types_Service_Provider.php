@@ -174,7 +174,7 @@ class Post_Types_Service_Provider extends Service_Provider {
 	 */
 	public function display_post_states( $post_states, $post ) {
 		switch ( true ) {
-			case ( abrs_get_page_id( 'check_availability' ) === $post->ID ):
+			case ( abrs_get_page_id( 'search_results' ) === $post->ID ):
 				$post_states['abrs_page_check_availability'] = esc_html_x( 'Search Results', 'Page states', 'awebooking' );
 				break;
 

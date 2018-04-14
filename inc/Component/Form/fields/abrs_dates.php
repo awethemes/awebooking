@@ -46,8 +46,15 @@ wp_enqueue_script( 'flatpickr-range-plugin' );
 
 	$(function() {
 		flatpickr('#<?php echo esc_attr( $types->_id( '_start' ) ); ?>', {
+			mode: 'range',
+			altInput: true,
+			altFormat: 'F j d',
 			dateFormat: 'Y-m-d',
+			showMonths: 2,
 			plugins: [ new rangePlugin({ input: '#<?php echo esc_attr( $types->_id( '_end' ) ); ?>' }) ],
+			onValueUpdate: function(dates, formatted, instance) {
+				instance.input.value = instance.formatDate(dates[0], instance.config.dateFormat);
+			},
 		});
 	});
 

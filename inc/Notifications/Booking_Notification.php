@@ -114,8 +114,7 @@ abstract class Booking_Notification extends Mailable {
 	protected function get_mail_contents() {
 		$contents = Markdown::parse( $this->get_markdown_contents() );
 
-		$contents = apply_filters( 'the_content', $contents );
-		$contents = str_replace( ']]>', ']]&gt;', $contents );
+		$contents = do_shortcode( $contents );
 
 		return $this->format_string( $contents );
 	}
