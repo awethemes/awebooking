@@ -374,3 +374,8 @@ p.awebooking-no-items {
 .radio-group {
   @include clearfix;
 }
+
+.cmb2-id-bulk-rooms .cmb2-checkbox-list {
+  max-height: 325px;
+  overflow: auto;
+}

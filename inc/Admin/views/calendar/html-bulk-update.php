@@ -15,9 +15,9 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 
 				<div class="abrow abrs-pb1">
 					<div class="abcol-4 abcol-sm-12">
-						<div class="cmb-row cmb-type-multicheck cmb2-id-bulk-room-types" data-fieldtype="multicheck">
+						<div class="cmb-row cmb-type-multicheck cmb2-id-bulk-rooms" data-fieldtype="multicheck">
 							<div class="cmb-th">
-								<label for="bulk_room_types"><?php esc_html_e( 'Select room(s)', 'awebooking' ); ?> </label>
+								<label for="bulk_rooms"><?php esc_html_e( 'Select room(s)', 'awebooking' ); ?> </label>
 							</div>
 
 							<div class="cmb-td">
@@ -50,7 +50,7 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 
 						<div class="cmb-row">
 							<div class="cmb-th">
-								<label for="bulk_room_types"><?php esc_html_e( 'Select state', 'awebooking' ); ?> </label>
+								<label for="bulk_state"><?php esc_html_e( 'Select state', 'awebooking' ); ?> </label>
 							</div>
 
 							<div class="cmb-td">
