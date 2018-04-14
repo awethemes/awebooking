@@ -93,6 +93,7 @@ class Form_Builder extends \CMB2 implements \ArrayAccess {
 		// Try add field before render.
 		if ( is_array( $field ) && $this->add_field( $field ) ) {
 			$this->render_field( $field );
+			return;
 		}
 
 		// @codingStandardsIgnoreLine

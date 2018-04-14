@@ -37,6 +37,8 @@
       $('.scheduler__state-event, .scheduler__booking-event').each(function() {
         self.setupEventPopper(this);
       });
+
+      this.initBulkUpdate();
     }
 
     /**
@@ -125,6 +127,23 @@
       });
 
       return el._tippy;
+    }
+
+    /**
+     * Handle bulk update action.
+     */
+    initBulkUpdate() {
+      const $dialog = plugin.dialog('#bulk-update-dialog');
+
+      $('.js-open-bulk-update').on('click', function(e) {
+        e.preventDefault();
+        $dialog.dialog('open');
+      });
+
+      flatpickr('#bulk_date_start', {
+        dateFormat: 'Y-m-d',
+        plugins: [ new rangePlugin({ input: '#bulk_date_end' }) ],
+      });
     }
   }
 

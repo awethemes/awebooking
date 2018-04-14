@@ -5,6 +5,7 @@ use AweBooking\Multilingual;
 use AweBooking\Component\Mail\Mailer;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Routing\Url_Generator;
+use AweBooking\Component\Form\Form_Builder;
 
 /* Constants */
 if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
