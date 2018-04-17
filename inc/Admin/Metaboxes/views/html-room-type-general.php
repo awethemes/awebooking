@@ -6,29 +6,32 @@ global $the_room_type;
 
 	<div class="abrow">
 		<div class="abcol-6">
+			<label for="">Rooms</label>
 
-			<ul class="awebooking-rates-sortable clear">
-				<?php foreach ( $the_room_type->get_rooms() as $index => $rate ) : ?>
-					<li class="awebooking-rates-sortable__item">
-						<div class="awebooking-rates-sortable__heading">
-							<span class="awebooking-rates-sortable__handle"></span>
+			<ul class="abrs-sortable" id="js-sorting-rooms">
+				<?php foreach ( $the_room_type->get_rooms() as $i => $room ) : ?>
+					<li class="abrs-sortable__item">
+						<div class="abrs-sortable__head">
+							<span class="abrs-sortable__handle"></span>
+							<span class="abrs-sortable__order"><?php echo esc_html( $i + 1 ); ?></span>
 						</div>
 
-						<div class="awebooking-rates-sortable__contents">
-							<strong><?php echo esc_html( $rate['name'] ); ?></strong>
+						<div class="abrs-sortable__body">
+							<strong class="screen-reader-text"><?php echo esc_html( $room['name'] ); ?></strong>
+							<input type="text" name="_rooms[<?php echo esc_attr( $room->get_id() ); ?>][name]" value="<?php echo esc_attr( $room['name'] ); ?>" class="transparent">
 						</div>
 
-						<div class="awebooking-rates-sortable__actions">
-							<a href="<?php echo esc_url( get_edit_post_link( $rate->get_id() ) ); ?>" target="_blank" title="<?php printf( esc_html__( 'Edit rate: %s', 'awebooking-rules' ), esc_html( $rate->name ) ); ?>">
-								<span class="screen-reader-text"><?php echo esc_html__( 'Edit rate', 'awebooking-rules' ); ?></span>
-								<span class="dashicons dashicons-admin-links"></span>
+						<div class="abrs-sortable__actions hidden">
+							<a href="#" target="_blank" title="<?php printf( esc_html__( 'Delete: %s', 'awebooking' ), esc_html( $room['name'] ) ); ?>">
+								<span class="screen-reader-text"><?php echo esc_html__( 'Delete', 'awebooking' ); ?></span>
+								<span class="dashicons dashicons-no-alt"></span>
 							</a>
 						</div>
 					</li>
 				<?php endforeach ?>
 			</ul>
 
-			<div class="abrs-input-addon" style="width: 150px;">
+			<div class="abrs-input-addon" style="width: 150px; display: none;">
 				<select name="">
 					<?php for ( $i = 1; $i <= abrs_maximum_scaffold_rooms(); $i++ ) : ?>
 						<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>

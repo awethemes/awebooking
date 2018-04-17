@@ -1,11 +1,10 @@
 <?php
 
 // @codingStandardsIgnoreStart
-$route->get( '/about', 'About_Controller@index' );
-
 $route->get(    '/rates',                              'Rate_Controller@index' );
 $route->post(   '/rates',                              'Rate_Controller@update' );
 $route->post(   '/rates/bulk-update',                  'Rate_Controller@bulk_update' );
+
 $route->get(    '/calendar',                           'Calendar_Controller@index' );
 $route->post(   '/calendar',                           'Calendar_Controller@update' );
 $route->post(   '/calendar/bulk-update',               'Calendar_Controller@bulk_update' );
@@ -25,5 +24,6 @@ $route->get(    '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controll
 $route->put(    '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controller@update' );
 $route->delete( '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controller@destroy' );
 
+$route->get(    '/about',                              'About_Controller@index' );
 $route->get(    '/search/customers',                   'Ajax_Controller@search_customers' );
 // @codingStandardsIgnoreEnd

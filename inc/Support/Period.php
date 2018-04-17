@@ -47,49 +47,9 @@ class Period extends League_Period {
 	}
 
 	/**
-	 * Tells whether the specified index is fully contained within
-	 * the current Period object.
+	 * Format the period at the start datepoint.
 	 *
-	 * @param  DateTimeInterface|string $index The datetime index.
-	 * @return bool
-	 */
-	public function contains( $index ) {
-		return parent::contains( $index );
-	}
-
-	/**
-	 * Returns true if the period include the other period
-	 * given as argument.
-	 *
-	 * @param  PeriodInterface $period The period instance.
-	 * @return bool
-	 */
-	public function includes( PeriodInterface $period ) {
-		return $this->containsPeriod( $period );
-	}
-
-	/**
-	 * Split period only days.
-	 *
-	 * @param  array $days Split only their days.
-	 * @return \AweBooking\Support\Period_Collection
-	 */
-	public function split_only_days( $days = [] ) {
-		$periods = Period_Collection::make( $this->getIterator() );
-
-		if ( ! empty( $periods ) ) {
-			$periods = $periods->reject( function( $date ) use ( $days ) {
-				return ! in_array( $date->dayOfWeek, (array) $days ); // @codingStandardsIgnoreLine
-			});
-		}
-
-		return $periods;
-	}
-
-	/**
-	 * Format the period at start date point.
-	 *
-	 * @param  string $format The format string.
+	 * @param  string $format The date format string.
 	 * @return string
 	 */
 	public function format( $format ) {

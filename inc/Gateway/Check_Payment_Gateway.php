@@ -33,7 +33,7 @@ class Check_Payment_Gateway extends Gateway {
 	public function setup() {
 		$this->setting_fields();
 
-		$this->enabled     = (bool) $this->get_option( 'enabled' );
+		$this->enabled     = 'on' === $this->get_option( 'enabled', 'off' );
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
 	}
@@ -49,7 +49,7 @@ class Check_Payment_Gateway extends Gateway {
 				'name'    => esc_html__( 'Enable / Disable', 'awebooking' ),
 				'type'    => 'toggle',
 				'label'   => esc_html__( 'Enable check payments', 'awebooking' ),
-				'default' => true,
+				'default' => 'off',
 			],
 			'title' => [
 				'name'        => esc_html__( 'Title', 'awebooking' ),

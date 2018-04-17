@@ -98,10 +98,33 @@ class Room_Type_Metabox {
 		do_action( 'awebooking/process_room_type_data', $room_type, $values, $request );
 
 		// Save the data.
-		$room_type->save();
+		$saved = $room_type->save();
+
+		// Handle update rooms data.
+		if ( $request->filled( '_rooms' ) ) {
+			$i = 0;
+
+			foreach ( (array) $request->input( '_rooms', [] ) as $id => $data ) {
+				if ( ! $room = abrs_get_room( $id ) ) {
+					continue;
+				}
+
+				$room->order = $i;
+				$room->name  = ! empty( $data['name'] )
+					? sanitize_text_field( wp_unslash( $data['name'] ) )
+					/* translators: 1: Room type name, 2: Room item order */
+					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type['title'], ( $i + 1 ) );
+
+				$room->save();
+
+				$i++;
+			}
+		}
 
 		// Add successfully notice.
-		abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+		if ( $saved ) {
+			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+		}
 	}
 
 	/**

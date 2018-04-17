@@ -1,33 +1,16 @@
 <div>
-<!-- 	<input type="text" id="check-in">
-	<input type="text" id="check-out"> -->
 
-	<form method="GET" action="<?php echo esc_url( arbs_get_page_permalink( 'search_results' ) ); ?>" role="search">
-		<div id="select-dates"></div>
-		<button type="submit" class="">Search</button>
+	<form method="GET" action="<?php echo esc_url( arbs_page_permalink( 'search_results' ) ); ?>" role="search">
+		<input type="hidden" name="check-in">
+		<input type="hidden" name="check-out">
+
+		<div class="abrs-inline-datepicker">
+			<div id="js-inline-dates"></div><!-- JS: Inline datepicker -->
+		</div>
+
+		<p style="margin-top: 15px;">
+			<button type="submit" class="abrs-button"><?php echo esc_html_x( 'Search', 'search availability', 'awebooking' ); ?></button>
+		</p>
 	</form>
 
 </div>
-
-<script>
-(function($) {
-
-	$(function() {
-		/*flatpickr('#check-in', {
-			mode: 'range',
-			showMonths: 2,
-			plugins: [new rangePlugin({ input: "#check-out"})]
-		});*/
-
-		flatpickr("#select-dates", {
-			mode: 'range',
-			inline: true,
-			showMonths: 2,
-			// appendTo: null,
-			minDate: 'today',
-		});
-
-	});
-
-})(jQuery);
-</script>

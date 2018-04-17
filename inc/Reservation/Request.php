@@ -138,9 +138,9 @@ class Request {
 			case 'nights':
 				return $this->timespan->nights();
 			case 'check_in':
-				return $this->timespan->get_start_date()->format( 'Y-m-d' );
+				return $this->timespan->get_start_date();
 			case 'check_out':
-				return $this->timespan->get_end_date()->format( 'Y-m-d' );
+				return $this->timespan->get_end_date();
 			case 'adults':
 			case 'children':
 			case 'infants':

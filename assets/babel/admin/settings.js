@@ -1,7 +1,6 @@
-(function($) {
+(function($, plugin) {
   'use strict';
 
-  const awebooking = window.awebooking || {};
   const settings = window._awebookingSettings || {};
 
   class MainSetting {
@@ -41,4 +40,4 @@
     main.handleLeaving();
   });
 
-})(jQuery);
+})(jQuery, window.awebooking);

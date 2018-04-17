@@ -24,14 +24,6 @@ class Checker {
 	public function check( Room_Type $room_type, Timespan $timespan, $constraints = [] ) {
 		$rooms = $room_type->get_rooms()->keyBy( 'id' );
 
-		$timespan = new Timespan( $timespan->get_start_date(), $timespan->get_end_date() );
-
-		// Because the Calendar work by daily, but in reservation we work
-		// by nightly, so we need subtract one minute from end date.
-		// This will make the Calendar query events by night instead by day.
-		$timespan->set_end_date( $timespan->get_end_date()->subMinute() );
-
-		// Finding the "available" rooms only.
 		$rooms_response = $this->do_find_rooms( $rooms, $timespan, [ Constants::STATE_AVAILABLE ], $constraints );
 
 		return new Availability( $timespan, $room_type, $rooms_response );
@@ -64,6 +56,6 @@ class Checker {
 		return ( new Finder( $resources, $provider ) )
 			->only( $states )
 			->using( $constraints )
-			->find( $timespan->to_period() );
+			->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 	}
 }

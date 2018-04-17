@@ -1,7 +1,6 @@
-(function($) {
+(function($, plugin) {
   'use strict';
 
-  const plugin = window.awebooking || {};
   const DATE_FORMAT  = 'YYYY-MM-DD';
 
   class PricingScheduler {
@@ -140,4 +139,4 @@
     new PricingScheduler;
   });
 
-})(jQuery);
+})(jQuery, window.awebooking);

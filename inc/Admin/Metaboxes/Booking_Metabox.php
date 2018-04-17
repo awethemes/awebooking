@@ -153,81 +153,79 @@ class Booking_Metabox {
 			'show_option_none' => esc_html__( 'I don\'t know', 'awebooking' ),
 		]);
 
-		$booking->add_field( array(
+		$booking->add_field([
 			'id'              => 'excerpt',
 			'type'            => 'textarea',
 			'name'            => esc_html__( 'Special requests', 'awebooking' ),
 			'save_field'      => false, // Let wp handle save this.
 			'escape_cb'       => false,
+			'attributes'      => [ 'rows' => 5 ],
 			'default_cb'      => function() {
 				return get_post_field( 'post_excerpt', get_the_ID() );
 			},
-			'attributes'      => [
-				'rows'        => 5,
-			],
-		));
+		]);
 
 		// Customer.
 		$customer = $form->add_section( 'customer' );
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'               => '_customer_title',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Title', 'awebooking' ),
 			'options_cb'       => 'abrs_list_common_titles',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_first_name',
 			'type'     => 'text',
 			'name'     => esc_html__( 'First name', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_last_name',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Last name', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_company',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Company', 'awebooking' ),
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_address',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Address', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_address_2',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Address 2', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_city',
 			'type'     => 'text',
 			'name'     => esc_html__( 'City', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_state',
 			'type'     => 'text',
 			'name'     => esc_html__( 'State', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'               => '_customer_country',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Country', 'awebooking' ),
@@ -235,28 +233,28 @@ class Booking_Metabox {
 			'options_cb'       => 'abrs_list_countries',
 			'show_option_none' => '---',
 			'col-half'         => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_postal_code',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Postal code', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_phone',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Phone number', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 
-		$customer->add_field( array(
+		$customer->add_field([
 			'id'       => '_customer_email',
 			'type'     => 'text',
 			'name'     => esc_html__( 'Email address', 'awebooking' ),
 			'col-half' => true,
-		));
+		]);
 	}
 
 	/**

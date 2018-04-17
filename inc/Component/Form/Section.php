@@ -46,7 +46,7 @@ class Section implements \ArrayAccess {
 	 * @param string $id   An specific ID of the section.
 	 * @param array  $args Section arguments.
 	 */
-	public function __construct( $cmb2, $id, $args = array() ) {
+	public function __construct( $cmb2, $id, $args = [] ) {
 		$this->id = $id;
 		$this->cmb2 = $cmb2;
 

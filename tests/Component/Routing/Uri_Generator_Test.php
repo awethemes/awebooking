@@ -56,8 +56,9 @@ class Component_Routing_Uri_Generator_Test extends WP_UnitTestCase {
 
 	public function testRouterUrlWithScheme() {
 		$url = $this->create_url_generator( Request::create(WP_TESTS_DOMAIN, 'GET' ) );
-		$this->assertSame( 'http', parse_url( $url->route('/', 'http' ), PHP_URL_SCHEME ) );
-		$this->assertSame( 'https', parse_url( $url->route('/', 'https' ), PHP_URL_SCHEME ) );
+		$this->assertSame( 'http', parse_url( $url->route('/', [] ), PHP_URL_SCHEME ) );
+		$this->assertSame( 'http', parse_url( $url->route('/', [], false ), PHP_URL_SCHEME ) );
+		$this->assertSame( 'https', parse_url( $url->route('/', [], true ), PHP_URL_SCHEME ) );
 	}
 
 	public function testAdminRouteUrl() {

@@ -1,0 +1,22 @@
+/* Button */
+.abrs-button {
+  margin: 0;
+  border-radius: 0;
+  display: inline-block;
+  background-image: none;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    box-shadow: none;
+  }
+}

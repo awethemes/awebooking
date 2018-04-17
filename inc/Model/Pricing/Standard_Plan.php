@@ -1,11 +1,6 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
-use AweBooking\Model\Factory;
-use AweBooking\Constants;
-use AweBooking\Support\Fluent;
-use AweBooking\Support\Collection;
-
 class Standard_Plan implements Rate_Plan {
 	/**
 	 * The room-type instance.
@@ -27,7 +22,7 @@ class Standard_Plan implements Rate_Plan {
 	 * @param mixed $instance The room-type ID or instance.
 	 */
 	public function __construct( $instance ) {
-		$this->instance = Factory::get_room_type( $instance );
+		$this->instance = abrs_get_room_type( $instance );
 	}
 
 	/**

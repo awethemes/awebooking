@@ -1,23 +1,19 @@
 <?php
 namespace AweBooking\Model\Common;
 
-use AweBooking\Support\Decimal;
-use AweBooking\Formatting as F;
-use AweBooking\Support\Contracts\Stringable;
-
-class Deposit implements Stringable {
+class Amount {
 	const FIXED = 'fixed';
 	const PERCENTAGE = 'percentage';
 
 	/**
-	 * The deposit type (fixed or percentage).
+	 * The type (fixed or percentage).
 	 *
 	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * The deposit amount.
+	 * The amount.
 	 *
 	 * @var \AweBooking\Support\Decimal
 	 */
@@ -26,8 +22,8 @@ class Deposit implements Stringable {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Support\Decimal $amount The deposit amount.
-	 * @param string                      $type   The deposit type, default: 'percentage'.
+	 * @param mixed  $amount The amount.
+	 * @param string $type   The amount type, default: 'percentage'.
 	 */
 	public function __construct( $amount, $type = 'percentage' ) {
 		$this->set_type( $type );
@@ -36,7 +32,7 @@ class Deposit implements Stringable {
 	}
 
 	/**
-	 * Calculate deposit amount by given a total amount.
+	 * Calculate amount by given a total amount.
 	 *
 	 * @param  \AweBooking\Support\Decimal $total The total amount.
 	 * @return \AweBooking\Support\Decimal
@@ -52,7 +48,7 @@ class Deposit implements Stringable {
 	}
 
 	/**
-	 * Get the deposit type.
+	 * Get the amount type.
 	 *
 	 * @return \AweBooking\Support\Decimal
 	 */
@@ -61,9 +57,9 @@ class Deposit implements Stringable {
 	}
 
 	/**
-	 * Set the deposit type.
+	 * Set the amount type.
 	 *
-	 * @param string $type The deposit type.
+	 * @param string $type The amount type.
 	 */
 	public function set_type( $type ) {
 		$this->type = ( static::FIXED === strtolower( $type ) ) ? static::FIXED : static::PERCENTAGE;
@@ -81,7 +77,7 @@ class Deposit implements Stringable {
 	/**
 	 * Set the new amount.
 	 *
-	 * @param \AweBooking\Support\Decimal $amount The deposit amount.
+	 * @param \AweBooking\Support\Decimal $amount The amount.
 	 */
 	public function set_amount( $amount ) {
 		$this->amount = Decimal::create( $amount );

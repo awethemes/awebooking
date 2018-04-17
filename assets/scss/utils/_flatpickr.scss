@@ -1,7 +1,7 @@
-$datepicker-main-color:        #fff;
-$datepicker-main-background:   #2196F3;
-$datepicker-hover-background:  #eee;
-$datepicker-range-background:  #e2f2ff;
+$datepicker-main-color:        #fff !default;
+$datepicker-main-background:   #2196F3 !default;
+$datepicker-hover-background:  #eee !default;
+$datepicker-range-background:  #e2f2ff !default;
 
 /* Flatpickr CSS */
 .flatpickr-calendar {
@@ -36,6 +36,10 @@ $datepicker-range-background:  #e2f2ff;
 }
 
 .flatpickr-months {
+  .flatpickr-month {
+    color: $datepicker-main-color;
+  }
+
   .flatpickr-prev-month,
   .flatpickr-next-month,
   .flatpickr-month {
@@ -155,6 +159,14 @@ span.flatpickr-weekday {
 
 // Multi month
 .flatpickr-calendar.multiMonth {
+  .dayContainer:not(:last-child) {
+    border-right: solid 1px #eee;
+  }
+
+  .dayContainer + .dayContainer {
+    box-shadow: -1px 0 0 #eee;
+  }
+
   .flatpickr-month:first-of-type {
     border-top-right-radius: 0;
   }

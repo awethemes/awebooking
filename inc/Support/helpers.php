@@ -298,14 +298,14 @@ if ( ! function_exists( 'abrs_valid_url' ) ) {
 	}
 }
 
-if ( ! function_exists( 'abrs_request_is' ) ) {
+if ( ! function_exists( 'abrs_is_request' ) ) {
 	/**
 	 * What type of request is this?
 	 *
 	 * @param  string $type admin, ajax, cron or frontend.
 	 * @return bool
 	 */
-	function abrs_request_is( $type ) {
+	function abrs_is_request( $type ) {
 		switch ( $type ) {
 			case 'admin':
 				return is_admin();

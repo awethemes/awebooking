@@ -122,11 +122,7 @@ class Redirector {
 	 * @return \AweBooking\Http\Redirect_Response
 	 */
 	public function route( $path = '/', $parameters = [], $status = 302, $headers = [] ) {
-		$to_url = $this->generator->route( $path );
-
-		if ( $parameters ) {
-			$to_url = add_query_arg( $parameters, $to_url );
-		}
+		$to_url = $this->generator->route( $path, $parameters );
 
 		return $this->create_redirect( $to_url, $status, $headers, true );
 	}

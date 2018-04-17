@@ -32,7 +32,7 @@ if ( isset( $field_args['pips'] ) && false === $field_args['pips'] ) {
 	 *                                  or array( 'first' => 'Monday', 'last' => 'Sunday' )
 	 * )
 	 */
-	$pips_args = json_encode( wp_parse_args( $field->args( 'pips' ), array(
+	$pips_args = json_encode( wp_parse_args( $field->args( 'pips' ), [
 		'last'   => 'label',
 		'first'  => 'label',
 		'rest'   => 'pip',
@@ -40,7 +40,7 @@ if ( isset( $field_args['pips'] ) && false === $field_args['pips'] ) {
 		'prefix' => '',
 		'suffix' => '',
 		'labels' => false,
-	)));
+	]));
 }
 
 if ( isset( $field_args['float'] ) && false === $field_args['float'] ) {
@@ -59,14 +59,14 @@ if ( isset( $field_args['float'] ) && false === $field_args['float'] ) {
 	 *                                  or array( 'first' => 'Monday', 'last' => 'Sunday' )
 	 * )
 	 */
-	$float_args = json_encode( wp_parse_args( $field->args( 'float' ), array(
+	$float_args = json_encode( wp_parse_args( $field->args( 'float' ), [
 		'prefix' => '',
 		'suffix' => '',
 		'labels' => false,
-	)));
+	]));
 }
 
-$ranger_input = $types->input( array(
+$ranger_input = $types->input([
 	'type'       => 'hidden',
 	'class'      => 'cmb2-ui-slider-input',
 	'desc'       => '',
@@ -76,8 +76,8 @@ $ranger_input = $types->input( array(
 	'data-value' => is_numeric( $escaped_value ) ? $escaped_value : 0,
 	'data-pips'  => esc_attr( $pips_args ),
 	'data-float' => esc_attr( $float_args ),
-	'js_dependencies' => array( 'jquery-ui-slider-pips' ),
-));
+	'js_dependencies' => [ 'jquery-ui-slider-pips' ],
+]);
 
 // Enqueue jquery-ui-slider-pips before.
 wp_enqueue_style( 'jquery-ui-slider-pips' ); ?>

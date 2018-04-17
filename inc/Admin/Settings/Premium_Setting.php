@@ -14,16 +14,16 @@ class Premium_Setting extends Abstract_Setting {
 			'priority'   => 100,
 		]);
 
-		$premium->add_field( array(
+		$premium->add_field([
 			'id'   => '__premium___',
 			'type' => 'title',
 			'name' => esc_html__( 'Premium', 'awebooking' ),
-		));
+		]);
 
-		$premium->add_field( array(
+		$premium->add_field([
 			'id'         => 'purchase_code',
 			'type'       => 'text',
 			'name'       => esc_html__( 'Purchase code', 'awebooking' ),
-		));
+		]);
 	}
 }

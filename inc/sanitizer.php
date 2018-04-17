@@ -71,7 +71,7 @@ if ( ! function_exists( 'abrs_sanitize_checkbox' ) ) {
 	 * @return string
 	 */
 	function abrs_sanitize_checkbox( $value ) {
-		return in_array( $value, [ 'on', '1', 1, true ], true ) ? 'on' : 'off';
+		return in_array( $value, [ 'on', 'yes', '1', 1, true ], true ) ? 'on' : 'off';
 	}
 }
 
@@ -84,7 +84,7 @@ if ( ! function_exists( 'abrs_sanitize_decimal' ) ) {
 	 */
 	function abrs_sanitize_decimal( $number ) {
 		$locale = localeconv();
-		$decimals = array( abrs_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] );
+		$decimals = [ abrs_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] ];
 
 		// If not float number, clean input number and remove locale decimals.
 		// Then keep only numeric, '-', comma and dot character.

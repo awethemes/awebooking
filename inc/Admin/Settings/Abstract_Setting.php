@@ -137,22 +137,14 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 			$key = $args['id'];
 
 			// Ignore some non-savable fields.
-			if ( in_array( $args['type'], [ 'title', 'include' ] ) || 0 === strpos( '__', $key ) ) {
+			if ( 'title' === $args['type'] || 0 === strpos( '__', $key ) ) {
 				continue;
 			}
 
 			$raw_value = array_key_exists( $key, $raw_values ) ? $raw_values[ $key ] : '';
 
-			// Sanitize field value based on field type..
-			$value = $this->sanitize_field_value( $args['type'], $raw_value );
-
-			// Filter to sanitize the field value.
-			$value = apply_filters( 'awebooking/sanitize_admin_settings_field', $value, $key, $raw_value );
-
-			// Ignore update NULL value.
-			if ( is_null( $value ) ) {
-				continue;
-			}
+			// Re-sanitize value based on the ID.
+			$value = abrs_sanitize_option( $key, $raw_value );
 
 			// Update the field value.
 			$options->update( $key, $value, false, true );
@@ -160,24 +152,5 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 
 		// Save the options.
 		return $options->set();
-	}
-
-	/**
-	 * Re-sanitize field value by based on field type.
-	 *
-	 * @param  string $type  The field type.
-	 * @param  mixed  $value The mixed field value.
-	 * @return mixed
-	 */
-	protected function sanitize_field_value( $type, $value ) {
-		switch ( $type ) {
-			case 'toggle':
-			case 'checkbox':
-				return abrs_sanitize_checkbox( $value );
-			case 'texarea':
-				return wp_kses_post( trim( $value ) );
-			default:
-				return abrs_recursive_sanitizer( $value, 'sanitize_text_field' );
-		}
 	}
 }

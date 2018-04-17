@@ -5,7 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-(function ($, awebooking) {
+(function ($, plugin) {
   'use strict';
 
   var EditBooking = function () {
@@ -44,7 +44,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
   $(function () {
-    awebooking.instances.editBooking = new EditBooking();
+    plugin.instances.editBooking = new EditBooking();
   });
 })(jQuery, window.awebooking || {});
 

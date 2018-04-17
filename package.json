@@ -7,11 +7,14 @@
     "watch": "gulp watch"
   },
   "copyFiles": {
-    "sweetalert2": [
-      "node_modules/sweetalert2/dist/sweetalert2*.{js,css}"
+    "sortable": [
+      "node_modules/sortablejs/Sortable*.js"
     ],
     "waypoints": [
       "node_modules/waypoints/lib/jquery.waypoints*.js"
+    ],
+    "sweetalert2": [
+      "node_modules/sweetalert2/dist/sweetalert2*.{js,css}"
     ],
     "flatpickr": [
       "node_modules/flatpickr/dist/flatpickr*.{js,css}",
@@ -33,12 +36,19 @@
     ]
   },
   "dependencies": {
+    "debounce": "^1.1.0",
     "flatpickr": "^4.4.4",
-    "moment": "^2.22.0",
+    "gulp-uglify": "^3.0.0",
+    "js-cookie": "^2.2.0",
+    "lodash.defaults": "^4.2.0",
+    "lodash.map": "^4.6.0",
+    "lodash.merge": "^4.6.1",
+    "moment": "^2.22.1",
     "query-string": "^6.0.0",
     "selectize": "^0.12.4",
+    "sortablejs": "^1.7.0",
     "sweetalert2": "^7.18.0",
-    "tippy.js": "^2.5.0",
+    "tippy.js": "^2.5.1",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
@@ -49,8 +59,8 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-bro": "^1.0.3",
-    "gulp-changed-in-place": "^2.3.0",
     "gulp-group-css-media-queries": "^1.2.2",
+    "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",

@@ -96,9 +96,9 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	 */
 	protected function display_rate_column() {
 		if ( 0 == $this->room_type['rack_rate'] ) {
-			echo '<span class="abrs-badge abrs-badge--negative">' . abrs_price( 0 ) . '</span>'; // WPCS: XSS OK.
+			echo '<span class="abrs-badge abrs-badge--negative">' . abrs_format_price( 0 ) . '</span>'; // WPCS: XSS OK.
 		} else {
-			echo '<span class="abrs-badge abrs-badge--primary">' . abrs_price( $this->room_type['rack_rate'] ) . '</span>'; // WPCS: XSS OK.
+			echo '<span class="abrs-badge abrs-badge--primary">' . abrs_format_price( $this->room_type['rack_rate'] ) . '</span>'; // WPCS: XSS OK.
 		}
 	}
 

@@ -94,6 +94,6 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 		}
 
 		// @codingStandardsIgnoreLine
-		echo '<span class="scheduler__rate-amount ' . $state_class . '">' . abrs_price( $amount ) . '</span>';
+		echo '<span class="scheduler__rate-amount ' . $state_class . '">' . abrs_format_price( $amount ) . '</span>';
 	}
 }

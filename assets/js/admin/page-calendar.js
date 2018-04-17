@@ -5,10 +5,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-(function ($) {
+(function ($, plugin) {
   'use strict';
 
-  var plugin = window.awebooking || {};
   var DATE_FORMAT = 'YYYY-MM-DD';
 
   var BookingScheduler = function () {
@@ -21,6 +20,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, BookingScheduler);
 
       var self = this;
+
+      this.initBulkUpdate();
 
       this.scheduler = new ScheduleCalendar({
         el: '.scheduler',
@@ -155,6 +156,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         return el._tippy;
       }
+
+      /**
+       * Handle bulk update action.
+       */
+
+    }, {
+      key: 'initBulkUpdate',
+      value: function initBulkUpdate() {
+        var $dialog = plugin.dialog('#bulk-update-dialog');
+
+        $('.js-open-bulk-update').on('click', function (e) {
+          e.preventDefault();
+          $dialog.dialog('open');
+        });
+
+        flatpickr('#bulk_date_start', {
+          dateFormat: 'Y-m-d',
+          plugins: [new rangePlugin({ input: '#bulk_date_end' })]
+        });
+      }
     }]);
 
     return BookingScheduler;
@@ -170,7 +191,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   $(function () {
     new BookingScheduler();
   });
-})(jQuery);
+})(jQuery, window.awebooking);
 
 },{}]},{},[1]);
 

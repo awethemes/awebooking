@@ -11,7 +11,7 @@ class Frontend_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
-		add_action( 'after_setup_theme', [ $this, 'include_template_functions' ], 11 );
+		add_action( 'after_setup_theme', [ $this, 'include_functions' ], 11 );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Frontend_Service_Provider extends Service_Provider {
 	 *
 	 * @access private
 	 */
-	public function include_template_functions() {
-		include_once dirname( __DIR__ ) . '/template-functions.php';
+	public function include_functions() {
+		include_once dirname( __DIR__ ) . '/functions.php';
 	}
 }

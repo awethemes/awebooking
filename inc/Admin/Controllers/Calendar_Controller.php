@@ -48,10 +48,6 @@ class Calendar_Controller extends Controller {
 					do_action( 'awebooking/admin_room_action', $action, $request );
 					break;
 			}
-
-			if ( ! empty( $updated ) && ! is_wp_error( $updated ) ) {
-				abrs_admin_notices( esc_html__( 'Update state successfully', 'awebooking' ), 'success' )->dialog();
-			}
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/calendar' ) );
@@ -66,11 +62,9 @@ class Calendar_Controller extends Controller {
 	public function bulk_update( Request $request ) {
 		check_admin_referer( 'awebooking_bulk_update_state', '_wpnonce' );
 
-		$rooms = $request->get( 'bulk_rooms' );
-
 		if ( $request->filled( 'bulk_rooms', 'check-in', 'check-out' ) ) {
 
-			foreach ( $rooms as $room ) {
+			foreach ( (array) $request->get( 'bulk_rooms' ) as $room ) {
 				$action = $request->get( 'bulk_action', 'unblock' );
 
 				switch ( $action ) {
@@ -80,7 +74,7 @@ class Calendar_Controller extends Controller {
 							'start_date'  => $request->get( 'check-in' ),
 							'end_date'    => $request->get( 'check-out' ),
 							'only_days'   => $request->get( 'bulk_days' ),
-						] );
+						]);
 						break;
 
 					case 'unblock':
@@ -89,7 +83,7 @@ class Calendar_Controller extends Controller {
 							'start_date'  => $request->get( 'check-in' ),
 							'end_date'    => $request->get( 'check-out' ),
 							'only_days'   => $request->get( 'bulk_days' ),
-						] );
+						]);
 						break;
 
 					default:
@@ -97,8 +91,6 @@ class Calendar_Controller extends Controller {
 						break;
 				}
 			}
-
-			abrs_admin_notices( esc_html__( 'Update state successfully', 'awebooking' ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/calendar' ) );

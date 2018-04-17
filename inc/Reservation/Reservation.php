@@ -2,16 +2,12 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\Support\Collection;
-use AweBooking\Model\Source;
-use AweBooking\Model\Common\Deposit;
-use AweBooking\Model\Common\Timespan;
-use AweBooking\Model\Common\Guest_Counts;
 
 class Reservation {
 	/**
 	 * The reservation source.
 	 *
-	 * @var \AweBooking\Model\Source
+	 * @var string
 	 */
 	protected $source;
 
@@ -25,37 +21,9 @@ class Reservation {
 	/**
 	 * The list of room stays.
 	 *
-	 * @var \AweBooking\Reservation\Room_Stays
-	 */
-	protected $room_stays;
-
-	/**
-	 * The list of services.
-	 *
 	 * @var \AweBooking\Support\Collection
 	 */
-	protected $services;
-
-	/**
-	 * The deposit amount.
-	 *
-	 * @var \AweBooking\Model\Deposit
-	 */
-	protected $deposit;
-
-	/**
-	 * The totals.
-	 *
-	 * @var \AweBooking\Reservation\Totals
-	 */
-	protected $totals;
-
-	/**
-	 * The reservation session ID.
-	 *
-	 * @var string|null
-	 */
-	protected $session_id;
+	protected $room_stays;
 
 	/**
 	 * The current request.
@@ -67,21 +35,21 @@ class Reservation {
 	/**
 	 * Create new reservation.
 	 *
-	 * @param \AweBooking\Model\Source $source The source implementation.
+	 * @param string   $source   The source implementation.
+	 * @param currency $currency The currency code.
 	 */
-	public function __construct( Source $source, $currency = null ) {
+	public function __construct( $source = 'website', $currency = null ) {
 		$this->source = $source;
 
-		$this->set_currency( $currency );
-		// $this->set_language( $language );
+		$this->currency = is_null( $currency ) ? abrs_current_currency() : $currency;
 
-		$this->room_stays = new Room_Stays;
+		$this->room_stays = new Collection;
 	}
 
 	/**
 	 * Get the source.
 	 *
-	 * @return \AweBooking\Model\Source
+	 * @return string
 	 */
 	public function get_source() {
 		return $this->source;
@@ -99,14 +67,13 @@ class Reservation {
 	/**
 	 * Sets the ISO currency code.
 	 *
-	 * @param string $currency The ISO code currency.
+	 * @param  string $currency The ISO code currency.
+	 * @return $this
 	 */
 	public function set_currency( $currency ) {
-		if ( empty( $currency ) ) {
-			$this->currency = awebooking()->get_current_currency();
-		} else {
-			$this->currency = ( $currency instanceof Currency ) ? $currency->get_code() : $currency;
-		}
+		$this->currency = $currency;
+
+		return $this;
 	}
 
 	/**
@@ -128,55 +95,5 @@ class Reservation {
 		$this->current_request = $current_request;
 
 		return $this;
-	}
-
-	/**
-	 * Get the deposit.
-	 *
-	 * @return \AweBooking\Model\Deposit|null
-	 */
-	public function get_deposit() {
-		return $this->deposit;
-	}
-
-	/**
-	 * Set the deposit.
-	 *
-	 * @param  \AweBooking\Model\Deposit $deposit The deposit instance.
-	 * @return $this
-	 */
-	public function set_deposit( Deposit $deposit ) {
-		$this->deposit = $deposit;
-
-		return $this;
-	}
-
-	/**
-	 * Return the totals.
-	 *
-	 * @return \AweBooking\Reservation\Totals
-	 */
-	public function totals() {
-		return $this->get_totals();
-	}
-
-	/**
-	 * Get the totals.
-	 *
-	 * @return \AweBooking\Reservation\Totals
-	 */
-	public function get_totals() {
-		if ( is_null( $this->totals ) ) {
-			$this->totals = new Totals( $this );
-		}
-
-		return $this->totals;
-	}
-
-	public function get_room_stays() {
-		return $this->room_stays;
-	}
-
-	public function get_room_stay( $room ) {
 	}
 }

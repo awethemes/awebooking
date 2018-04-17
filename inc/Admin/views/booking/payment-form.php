@@ -11,58 +11,65 @@ $action_link = $payment_item->exists()
 	: abrs_admin_route( 'booking-payment' );
 
 ?><div class="wrap">
-	<h1 class="wp-heading-inline"><?php $payment_item->exists() ? esc_html_e( 'Update Payment', 'awebooking' ) : esc_html_e( 'Register Payment', 'awebooking' ); ?></h1>
-	<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
+	<h1 class="wp-heading-inline screen-reader-text"><?php $payment_item->exists() ? esc_html_e( 'Update Payment', 'awebooking' ) : esc_html_e( 'Add Payment', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
-		<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
+	<div class="abrs-card abrs-card--page">
+		<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
+			<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
 
-		<div class="cmb2-wrap awebooking-wrap">
-			<div class="cmb2-metabox">
-				<div class="cmb-row">
-					<div class="cmb-th"><?php echo esc_html__( 'Total charge', 'awebooking' ); ?></div>
+			<?php if ( $payment_item->exists() ) : ?>
+				<input type="hidden" name="_method" value="PUT">
+				<?php wp_nonce_field( 'update_payment_' . $payment_item->get_id() ); ?>
+			<?php else : ?>
+				<?php wp_nonce_field( 'create_booking_payment' ); ?>
+			<?php endif ?>
 
-					<div class="cmb-td">
-						<span class="abrs-label"><?php echo abrs_price( $booking->get_total() ); // WPCS: XSS OK. ?></span>
-					</div>
-				</div>
-
-				<div class="cmb-row">
-					<div class="cmb-th"><?php echo esc_html__( 'Already paid', 'awebooking' ); ?></div>
-
-					<div class="cmb-td">
-						<span class="abrs-label abrs-label--success"><?php echo abrs_price( $booking->get_paid() ); // WPCS: XSS OK. ?></span>
-					</div>
-				</div>
-
-				<div class="cmb-row">
-					<div class="cmb-th"><?php echo esc_html__( 'Balance Due', 'awebooking' ); ?></div>
-
-					<div class="cmb-td">
-						<span class="abrs-label abrs-label--warning"><?php echo abrs_price( $booking->get_balance_due() ); // WPCS: XSS OK. ?></span>
-					</div>
-				</div>
-
-				<?php
-				// Print the fields.
-				foreach ( $form_builder->prop( 'fields' ) as $field ) {
-					$form_builder->render_field( $field );
-				}
-				?>
+			<div class="abrs-card__header">
+				<h2 class=""><?php $payment_item->exists() ? esc_html_e( 'Update Payment', 'awebooking' ) : esc_html_e( 'Add Payment', 'awebooking' ); ?></h2>
+				<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
 			</div>
-		</div>
 
-		<div class="awebooking-form-actions submit">
-			<button type="submit" class="button button-primary"><?php echo esc_html__( 'Save', 'awebooking' ); ?></button>
-			<a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>" class="button"><?php echo esc_html__( 'Cancel', 'awebooking' ); ?></a>
-		</div>
+			<div class="cmb2-wrap awebooking-wrap abrs-card__body">
+				<div class="cmb2-metabox">
+					<div class="cmb-row">
+						<div class="cmb-th"><label><?php echo esc_html__( 'Total charge', 'awebooking' ); ?></label></div>
 
-		<?php if ( $payment_item->exists() ) : ?>
-			<input type="hidden" name="_method" value="PUT">
-			<?php wp_nonce_field( 'update_payment_' . $payment_item->get_id() ); ?>
-		<?php else : ?>
-			<?php wp_nonce_field( 'create_booking_payment' ); ?>
-		<?php endif ?>
-	</form>
+						<div class="cmb-td">
+							<span class="abrs-label"><?php abrs_price( $booking->get_total() ); // WPCS: XSS OK. ?></span>
+						</div>
+					</div>
+
+					<div class="cmb-row">
+						<div class="cmb-th"><label><?php echo esc_html__( 'Already paid', 'awebooking' ); ?></label></div>
+
+						<div class="cmb-td">
+							<span class="abrs-label abrs-label--success"><?php abrs_price( $booking->get_paid() ); // WPCS: XSS OK. ?></span>
+						</div>
+					</div>
+
+					<div class="cmb-row">
+						<div class="cmb-th"><label><?php echo esc_html__( 'Balance Due', 'awebooking' ); ?></label></div>
+
+						<div class="cmb-td">
+							<span class="abrs-label abrs-label--warning"><?php abrs_price( $booking->get_balance_due() ); // WPCS: XSS OK. ?></span>
+						</div>
+					</div>
+
+					<?php
+					// Print the fields.
+					foreach ( $form_builder->prop( 'fields' ) as $field ) {
+						$form_builder->render_field( $field );
+					}
+					?>
+				</div>
+			</div>
+
+			<div class="abrs-card__footer submit">
+				<button type="submit" class="button abrs-button"><?php echo esc_html__( 'Save', 'awebooking' ); ?></button>
+				<a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>" class="button-link abrs-fright"><?php echo esc_html__( 'Cancel', 'awebooking' ); ?></a>
+			</div>
+		</form>
+
+	</div>
 </div><!-- /.wrap -->

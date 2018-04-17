@@ -80,7 +80,7 @@ class Load_Configuration {
 		);
 
 		// Perform copy options only in admin.
-		if ( abrs_request_is( 'admin' ) ) {
+		if ( abrs_is_request( 'admin' ) ) {
 			$this->perform_copy_options( $current_key, $new_key );
 		}
 	}

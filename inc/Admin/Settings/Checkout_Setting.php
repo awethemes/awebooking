@@ -33,18 +33,24 @@ class Checkout_Setting extends Abstract_Setting {
 		]);
 
 		$options->add_field([
-			'id'         => 'gateway_order',
-			'type'       => 'gateway_display_order',
-			'name'       => esc_html__( 'Gateway display order', 'awebooking' ),
+			'id'         => '__payments_title',
+			'type'       => 'title',
+			'name'       => esc_html__( 'Payment Gateways', 'awebooking' ),
+			'desc'       => esc_html__( 'Installed gateways are listed below. Drag and drop gateways to control their display order on the frontend.', 'awebooking' ),
+		]);
+
+		$options->add_field([
+			'id'         => 'list_gateway_order',
+			'type'       => 'include',
+			'name'       => esc_html__( 'Gateway Display Order', 'awebooking' ),
+			'include'    => trailingslashit( __DIR__ ) . 'views/html-gateways-sorter.php',
 		]);
 
 		// Register the gateways custom fields.
 		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
-			if ( ! $gateway->has_settings() ) {
-				continue;
+			if ( $gateway->has_settings() ) {
+				$this->register_gateway_settings( $gateway );
 			}
-
-			$this->register_gateway_settings( $gateway );
 		}
 	}
 
@@ -62,7 +68,7 @@ class Checkout_Setting extends Abstract_Setting {
 		]);
 
 		$section->add_field([
-			'id'    => $prefix . '__title',
+			'id'    => '__title_' . $prefix,
 			'type'  => 'title',
 			'name'  => $gateway->get_method_title(),
 			'desc'  => $gateway->get_method_description(),

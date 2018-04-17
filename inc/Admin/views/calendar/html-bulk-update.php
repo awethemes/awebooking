@@ -13,23 +13,26 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 		<div class="cmb2-wrap awebooking-wrap" style="width: 720px;">
 			<div class="cmb2-metabox cmb2-inline-metabox">
 
-				<div class="abrow abrs-pb1">
+				<div class="abrow">
 					<div class="abcol-4 abcol-sm-12">
-						<div class="cmb-row cmb-type-multicheck cmb2-id-bulk-rooms" data-fieldtype="multicheck">
-							<div class="cmb-th">
-								<label for="bulk_rooms"><?php esc_html_e( 'Select room(s)', 'awebooking' ); ?> </label>
-							</div>
-
+						<div class="cmb-row">
 							<div class="cmb-td">
-								<ul class="cmb2-checkbox-list cmb2-list">
+								<label for="bulk_rooms"><?php esc_html_e( 'Select rooms', 'awebooking' ); ?> </label>
+
+								<ul>
 									<?php foreach ( $scheduler->room_types as $room_type ) : ?>
-										<li class="group-label abrs-pt1"><strong><?php echo esc_html( $room_type['title'] ); ?></strong></li>
-										<?php foreach ( $room_type->get_rooms() as $room ) : ?>
-											<li>
-												<input type="checkbox" class="cmb2-option" name="bulk_rooms[]" id="bulk_rooms<?php echo intval( $room['id'] ); ?>" value="<?php echo intval( $room['id'] ); ?>">
-												<label for="bulk_rooms<?php echo intval( $room['id'] ); ?>"><?php echo esc_html( $room['name'] ); ?></label>
-											</li>
-										<?php endforeach ?>
+										<li>
+											<strong><?php echo esc_html( $room_type['title'] ); ?></strong>
+
+											<ul>
+											<?php foreach ( $room_type->get_rooms() as $room ) : ?>
+												<li>
+													<input type="checkbox" class="cmb2-option" name="bulk_rooms[]" id="bulk_rooms<?php echo intval( $room['id'] ); ?>" value="<?php echo intval( $room['id'] ); ?>">
+													<label for="bulk_rooms<?php echo intval( $room['id'] ); ?>"><?php echo esc_html( $room['name'] ); ?></label>
+												</li>
+											<?php endforeach ?>
+											</ul>
+										</li>
 									<?php endforeach ?>
 								</ul>
 							</div>

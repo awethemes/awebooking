@@ -97,10 +97,10 @@ class WP_Data {
 			case 'post_types':
 				global $wp_post_types;
 
-				$args = wp_parse_args( $args, array(
+				$args = wp_parse_args( $args, [
 					'public' => true,
 					'exclude_from_search' => false,
-				) );
+				]);
 
 				$post_types = get_post_types( $args, 'names', 'and' );
 				ksort( $post_types );

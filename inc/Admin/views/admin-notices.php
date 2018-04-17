@@ -52,7 +52,7 @@ if ( ! wp_script_is( 'sweetalert2', 'enqueued' ) ) {
 	var _notices = <?php print $dialog_messages ? json_encode( $dialog_messages ) : '[]'; ?>;
 
 	function alertWithSwal(items) {
-		swal.setDefaults({ toast: true, buttonsStyling: false, showCancelButton: false, showConfirmButton: true, confirmButtonClass: 'button button-primary' });
+		swal.setDefaults({ toast: true, buttonsStyling: false, showCancelButton: false, showConfirmButton: true, confirmButtonClass: 'button' });
 		swal.queue(items).then(function() { swal.resetDefaults(); })
 	}
 

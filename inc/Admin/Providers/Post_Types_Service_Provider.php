@@ -103,7 +103,7 @@ class Post_Types_Service_Provider extends Service_Provider {
 	 * @return array
 	 */
 	public function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
-		$bulk_messages[ Constants::ROOM_TYPE ] = array(
+		$bulk_messages[ Constants::ROOM_TYPE ] = [
 			/* translators: %s: The room type count */
 			'updated'   => _n( '%s room type updated.', '%s room types updated.', $bulk_counts['updated'], 'awebooking' ),
 			/* translators: %s: The room type count */
@@ -114,9 +114,9 @@ class Post_Types_Service_Provider extends Service_Provider {
 			'trashed'   => _n( '%s room type moved to the Trash.', '%s room types moved to the Trash.', $bulk_counts['trashed'], 'awebooking' ),
 			/* translators: %s: The room type count */
 			'untrashed' => _n( '%s room type restored from the Trash.', '%s room types restored from the Trash.', $bulk_counts['untrashed'], 'awebooking' ),
-		);
+		];
 
-		$bulk_messages[ Constants::BOOKING ] = array(
+		$bulk_messages[ Constants::BOOKING ] = [
 			/* translators: %s: The booking count */
 			'updated'   => _n( '%s booking updated.', '%s bookings updated.', $bulk_counts['updated'], 'awebooking' ),
 			/* translators: %s: The booking count */
@@ -127,7 +127,7 @@ class Post_Types_Service_Provider extends Service_Provider {
 			'trashed'   => _n( '%s booking moved to the Trash.', '%s bookings moved to the Trash.', $bulk_counts['trashed'], 'awebooking' ),
 			/* translators: %s: The booking count */
 			'untrashed' => _n( '%s booking restored from the Trash.', '%s bookings restored from the Trash.', $bulk_counts['untrashed'], 'awebooking' ),
-		);
+		];
 
 		return $bulk_messages;
 	}
@@ -174,15 +174,15 @@ class Post_Types_Service_Provider extends Service_Provider {
 	 */
 	public function display_post_states( $post_states, $post ) {
 		switch ( true ) {
-			case ( abrs_get_page_id( 'search_results' ) === $post->ID ):
+			case ( abrs_page_id( 'search_results' ) === $post->ID ):
 				$post_states['abrs_page_check_availability'] = esc_html_x( 'Search Results', 'Page states', 'awebooking' );
 				break;
 
-			case ( abrs_get_page_id( 'checkout' ) === $post->ID ):
+			case ( abrs_page_id( 'checkout' ) === $post->ID ):
 				$post_states['abrs_page_checkout'] = esc_html_x( 'Checkout', 'Page states', 'awebooking' );
 				break;
 
-			case ( abrs_get_page_id( 'booking' ) === $post->ID ):
+			case ( abrs_page_id( 'booking' ) === $post->ID ):
 				$post_states['abrs_page_booking'] = esc_html_x( 'Booking Confirmation', 'Page states', 'awebooking' );
 				break;
 		}

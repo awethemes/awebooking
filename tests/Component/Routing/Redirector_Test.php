@@ -82,7 +82,7 @@ class Component_Routing_Redirector_Test extends WP_UnitTestCase {
 		$this->assertEquals('http://' . WP_TESTS_DOMAIN . '/index.php?awebooking_route=/', $response->getTargetUrl());
 
 		$response = $this->redirect->route( '/', [ 'foo' => 'bar' ]);
-		$this->assertEquals('http://' . WP_TESTS_DOMAIN . '/index.php?awebooking_route=%2F&foo=bar', $response->getTargetUrl());
+		$this->assertEquals('http://' . WP_TESTS_DOMAIN . '/index.php?awebooking_route=/&foo=bar', $response->getTargetUrl());
 
 		// ===========
 		$this->set_permalink_structure( '/%year%/%monthnum%/%day%/%postname%/' );

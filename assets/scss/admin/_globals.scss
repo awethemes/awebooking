@@ -4,6 +4,7 @@
   background-color: #2196F3;
 }
 
+/* Button */
 .button-secondary.cmb-multicheck-toggle,
 .abrs-button.button {
   border-color: transparent;
@@ -37,6 +38,12 @@
   border-radius: 50px;
 }
 
+p.awebooking-no-items {
+  color: #676767 !important;
+  text-align: center;
+  margin: 1em 0 !important;
+}
+
 /* CSS Note */
 .abrs-note {
   display: block;
@@ -62,121 +69,7 @@
   }
 }
 
-/* Input addon */
-.abrs-input-addon {
-  display: flex;
-  box-sizing: border-box;
-
-  > *,
-  > *:after,
-  > *:before  {
-    box-sizing: border-box;
-  }
-
-  > select {
-    margin: 0;
-
-    &:focus {
-      z-index: 1;
-      position: relative;
-    }
-  }
-
-  > input[type="text"],
-  > input[type="email"],
-  > input[type="password"] {
-    flex-grow: 0;
-
-    margin: 0;
-    padding: 3px 5px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-
-    &:focus {
-      z-index: 1;
-      position: relative;
-    }
-  }
-
-  > label,
-  > button,
-  > .button,
-  > input[type="button"],
-  > input[type="submit"] {
-    margin-left: -1px !important;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    box-shadow: none;
-  }
-
-  > label {
-    padding: 0px 10px;
-    border: solid 1px #ddd;
-    background-color: #f7f7f7;
-    line-height: 28px;
-    min-width: 35px;
-    text-align: center;
-  }
-
-  > select + input {
-    margin-left: -1px !important;
-  }
-}
-
-/* Inline colorpicker */
-.abrs-inline-colorpicker {
-  @include clearfix;
-  margin-bottom: 1em;
-
-  .wp-picker-container {
-    float: left;
-  }
-
-  .wp-color-result.button {
-    margin: 0;
-  }
-}
-
-/* Dates */
-.abrs-input-dates.abrow {
-  width: 320px;
-
- .abcol-6 > .afc,
- .abcol-6 > .dashicons, {
-    top: 6px;
-    left: 12px;
-    z-index: 2;
-    position: absolute;
-    pointer-events: none;
-    font-size: 14px;
-    color: #03a9f4;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    margin: 0;
-    padding: 3px 10px !important;
-
-    &:focus {
-      z-index: 1;
-      position: relative;
-    }
-  }
-
-  input[name="check-in"] {
-    padding-left: 32px !important;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
-  }
-
-  input[name="check-out"] {
-    margin-left: -1px !important;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-  }
-}
-
-/* CSS */
+/* Global */
 .actions > .awebooking-search-customer {
   width: 180px;
   min-width: 180px;
@@ -184,198 +77,78 @@
   display: inline-block;
 }
 
-// Select booking status with colors.
-.cmb2-id--status .selectize-input > .item,
-.cmb2-id--status .selectize-dropdown-content > .option,
-.cmb2-id-booking-status .selectize-input > .item,
-.cmb2-id-booking-status .selectize-dropdown-content > .option {
-  &:before {
-    content: '';
-    background-color: #898989;
-    display: inline-block;
-    margin-right: 5px;
-    border-radius: 50%;
-    @include size(10px, 10px);
+.cmb-type-abrs-amount .abrs-input-addon > input {
+  max-width: 100px;
+}
+
+.abrs-input-addon.group-operator-amount {
+  select { width: 100px; }
+  input { width: 150px; }
+}
+
+/* State Indicator */
+.abrs-state-indicator {
+  background-color: #ddd;
+  display: inline-block;
+  vertical-align: middle;
+
+  border-radius: 8px;
+  @include size(8px);
+
+  &--on {
+    background-color: #71c539;
   }
+}
+
+// Select booking status with colors.
+.cmb2-id--status .selectize-input > .item:before,
+.cmb2-id--status .selectize-dropdown-content > .option:before,
+.cmb2-id-booking-status .selectize-input > .item:before,
+.cmb2-id-booking-status .selectize-dropdown-content > .option:before {
+  content: '';
+  margin-right: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #898989;
+  @include size(10px, 10px);
 }
 
 .awebooking-pending-color,
 [data-value="awebooking-pending"]:before {
   background-color: #FFC107 !important;
 }
+
 .awebooking-inprocess-color,
 [data-value="awebooking-inprocess"]:before {
   background-color: #607d8b !important;
 }
+
 .awebooking-on-hold-color,
 [data-value="awebooking-on-hold"]:before {
   background-color: #673ab7 !important;
 }
+
 .awebooking-deposit-color,
 [data-value="awebooking-deposit"]:before {
   background-color: #9c27b0 !important;
 }
+
 .awebooking-completed-color,
 [data-value="awebooking-completed"]:before {
   background-color: #03a9f4 !important;
 }
+
 .awebooking-checked-in-color,
 [data-value="checked-in"]:before {
   background-color: #cddc39 !important;
 }
+
 .awebooking-checked-out-color,
 [data-value="checked-out"]:before {
   background-color: #8bc34a !important;
 }
+
 .awebooking-cancelled-color,
 [data-value="awebooking-cancelled"]:before {
- background-color: #9e9e9e !important;
-}
-
-/* Tables */
-table.awebooking-table {
-  font-size: 13px;
-
-  th,
-  thead td,
-  tfoot td {
-    font-size: inherit;
-  }
-}
-
-p.awebooking-no-items {
-  color: #676767 !important;
-  text-align: center;
-  margin: 1em 0 !important;
-}
-
-/* Toolbars */
-.abrs-toolbar {
-  @include clearfix;
-
-  margin: 12px 0 25px;
-  padding: 0 1em;
-  position: relative;
-  box-sizing: border-box;
-  display: block;
-
-  color: #555;
-  font-size: 13px;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-
-  a {
-    text-decoration: none;
-  }
-}
-
-.abrs-search-toolbar {
-  .cmb-th label { display: none; }
-  .abrs-input-dates.abrow { width: 100%; }
-}
-
-/* Dialog */
-.awebooking-dialog {
-  padding: 0;
-
-  .ui-dialog-titlebar {
-    height: 48px;
-    line-height: 48px;
-    font-weight: 400;
-  }
-
-  .ui-button.ui-dialog-titlebar-close {
-    width: 48px;
-    height: 48px;
-    transition: all .3s ease;
-    border-left: solid 1px #ddd;
-
-    &:before {
-      font-size: 24px;
-      content: '\f335';
-      font-weight: 300;
-    }
-
-    &:hover,
-    &:focus {
-      color: #333;
-      transform: none;
-      background-color: #eee;
-    }
-  }
-
-  .awebooking-dialog-contents {
-    padding: 15px 15px 0 15px;
-  }
-
-  .awebooking-dialog-buttons {
-    margin-left: -15px;
-    margin-right: -15px;
-    padding: 15px;
-    border-top: solid 1px #ddd;
-    text-align: right;
-  }
-
-  .awebooking-wrap {
-    width: 550px;
-  }
-
-  .cmb2-inline-metabox .cmb-row {
-    margin-bottom: 1em;
-  }
-
-  .cmb-th > label {
-    font-weight: 400;
-    display: inline-block;
-    padding-top: 0;
-    padding-bottom: 7px;
-  }
-}
-
-// Radio Group
-// --------------------------------------------------------------
-
-.abrs-radio-group {
-  .radio-group__label {
-    float: left;
-    margin-left: -1px;
-
-    padding: 8px 10px 8px 40px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-
-    &:first-of-type {
-      margin-left: 0;
-      border-top-left-radius: 1px;
-      border-bottom-left-radius: 1px;
-    }
-
-    &:last-of-type {
-      padding-right: 16px;
-      border-top-right-radius: 1px;
-      border-bottom-right-radius: 1px;
-    }
-  }
-
-  :checked + .radio-group__label {
-    z-index: 1;
-    position: relative;
-    border-color: #2196F3;
-  }
-
-  .radio-group__input {
-    z-index: 3;
-    float: left;
-    margin: 10px -26px 0 10px !important;
-  }
-}
-
-.radio-group {
-  @include clearfix;
-}
-
-.cmb2-id-bulk-rooms .cmb2-checkbox-list {
-  max-height: 325px;
-  overflow: auto;
+  background-color: #9e9e9e !important;
 }

@@ -4,7 +4,6 @@ namespace AweBooking\Admin\Controllers;
 use WP_Error;
 use AweBooking\Assert;
 use AweBooking\Model\Factory;
-use AweBooking\Model\Common\Timespan;
 use \AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Rate;
 use AweBooking\Model\Booking;

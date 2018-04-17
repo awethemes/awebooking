@@ -1,41 +1,39 @@
 <?php
 namespace AweBooking\Model\Common;
 
+use JsonSerializable;
+use AweBooking\Constants;
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
+use AweBooking\Support\Traits\Fluent_Getter;
 
-class Timespan {
+class Timespan implements JsonSerializable {
+	use Fluent_Getter;
+
 	/**
-	 * The start-date.
+	 * The period.
 	 *
-	 * @var \AweBooking\Support\Carbonate
+	 * @var string
 	 */
-	protected $start_date;
+	protected $period;
 
 	/**
-	 * The end-date.
+	 * Create new instance from a date point with number of nights.
 	 *
-	 * @var \AweBooking\Support\Carbonate
-	 */
-	protected $end_date;
-
-	/**
-	 * Create new timespan from a date-point.
-	 *
-	 * @param  Carbonate|string|int $start_date The start date.
-	 * @param  int                  $nights     The number of nights to the end-date.
+	 * @param  mixed $start_date The start date.
+	 * @param  int   $nights     Number of nights.
 	 * @return static
 	 */
 	public static function from( $start_date, $nights = 1 ) {
-		$start_date = Carbonate::create_date_time( $start_date );
+		$start_date = Carbonate::create_date( $start_date );
 
 		return new static( $start_date, $start_date->copy()->addDays( $nights ) );
 	}
 
 	/**
-	 * Create new instance from period.
+	 * Create new instance from a Period.
 	 *
-	 * @param  \AweBooking\Support\Period $period The period.
+	 * @param  \AweBooking\Support\Period $period The period instance.
 	 * @return static
 	 */
 	public static function from_period( Period $period ) {
@@ -45,113 +43,118 @@ class Timespan {
 	/**
 	 * Constructor.
 	 *
-	 * @param Carbonate|string|int $start_date The start date.
-	 * @param Carbonate|string|int $end_date   The end-date.
+	 * @param mixed $start_date The start date point.
+	 * @param mixed $end_date   The end date point.
 	 */
 	public function __construct( $start_date, $end_date ) {
-		$start_date = Carbonate::create_date_time( $start_date );
-		$end_date = Carbonate::create_date_time( $end_date );
-
-		static::validate_timespan( $start_date, $end_date );
-
-		$this->start_date = $start_date;
-
-		$this->end_date = $end_date;
+		$this->period = new Period(
+			Carbonate::create_date( $start_date ),
+			Carbonate::create_date( $end_date )
+		);
 	}
 
 	/**
-	 * Gets the start-date.
+	 * Returns a new Timespan with a new starting date point.
 	 *
-	 * @return \AweBooking\Support\Carbonate
+	 * @param  mixed $start_date The start date point.
+	 * @return static
+	 */
+	public function starting_on( $start_date ) {
+		return new static( Carbonate::create_date( $start_date ), $this->get_end_date() );
+	}
+
+	/**
+	 * Returns a new Timespan with a new ending date point.
+	 *
+	 * @param  mixed $end_date The end date point.
+	 * @return static
+	 */
+	public function ending_on( $end_date ) {
+		return new static( $this->get_start_date(), Carbonate::create_date( $end_date ) );
+	}
+
+	/**
+	 * Returns the start date as string.
+	 *
+	 * @return string
 	 */
 	public function get_start_date() {
-		return $this->start_date;
+		return $this->period->start_date->format( 'Y-m-d' );
 	}
 
 	/**
-	 * Gets the end-date.
+	 * Returns the end date as string.
 	 *
-	 * @return \AweBooking\Support\Carbonate
+	 * @return string
 	 */
 	public function get_end_date() {
-		return $this->end_date;
+		return $this->period->end_date->format( 'Y-m-d' );
 	}
 
 	/**
-	 * Sets the start-date.
+	 * Gets the number of nights.
 	 *
-	 * @param Carbonate|string|int $start_date The start_date.
-	 * @return $this
+	 * @return int
 	 */
-	public function set_start_date( $start_date ) {
-		static::validate_timespan( $start_date, $this->end_date );
-
-		$this->start_date = Carbonate::create_date_time( $start_date );
-
-		return $this;
+	public function get_nights() {
+		return (int) $this->period->getDateInterval()->format( '%r%a' );
 	}
 
 	/**
-	 * Sets the end-date.
-	 *
-	 * @param Carbonate|string|int $end_date The end_date.
-	 * @return $this
-	 */
-	public function set_end_date( $end_date ) {
-		static::validate_timespan( $this->start_date, $end_date );
-
-		$this->end_date = Carbonate::create_date_time( $end_date );
-
-		return $this;
-	}
-
-	/**
-	 * Get nights stayed.
+	 * Alias of get_nights method.
 	 *
 	 * @return int
 	 */
 	public function nights() {
-		return (int) $this->to_period()->getDateInterval()->format( '%r%a' );
+		return $this->get_nights();
 	}
 
 	/**
 	 * Returns the timespan as a period.
 	 *
+	 * @param  string $granularity The granularity level.
 	 * @return \AweBooking\Support\Period
 	 */
-	public function to_period() {
-		return Period::create( $this->start_date, $this->end_date );
+	public function to_period( $granularity = Constants::GL_DAILY ) {
+		return ( Constants::GL_NIGHTLY === $granularity )
+			? $this->period->moveEndDate( '-1 minute' )
+			: $this->period->moveEndDate( '+23 hours 59 minutes' );
 	}
 
 	/**
-	 * Validate period for require minimum night(s).
+	 * Convert the timespan to an array.
 	 *
-	 * @param  integer $nights Minimum night(s) to required, default 1.
-	 * @return $this
+	 * @return array
+	 */
+	public function to_array() {
+		return [
+			'nights'     => $this->get_nights(),
+			'start_date' => $this->get_start_date(),
+			'end_date'   => $this->get_end_date(),
+		];
+	}
+
+	/**
+	 * Convert the object into something JSON serializable.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return $this->to_array();
+	}
+
+	/**
+	 * Validate period for requires minimum nights.
+	 *
+	 * @param  integer $nights Number of nights requires.
+	 * @return void
 	 *
 	 * @throws \LogicException
 	 */
-	public function minimum_nights( $nights = 1 ) {
+	public function requires_minimum_nights( $nights = 1 ) {
 		if ( $this->nights() < $nights ) {
 			/* translators: %d: Number of nights */
-			throw new \LogicException( sprintf( esc_html__( 'The reservation requires at least minimum %d night(s)', 'awebooking' ), esc_html( $nights ) ) );
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Perform validate the timespan.
-	 *
-	 * @param Carbonate $start_date The start-date.
-	 * @param Carbonate $end_date   The end-date.
-	 *
-	 * @return void
-	 * @throws \LogicException
-	 */
-	protected static function validate_timespan( Carbonate $start_date, Carbonate $end_date ) {
-		if ( $start_date->gt( $end_date ) ) {
-			throw new \LogicException( esc_html__( 'The check-in datepoint must be greater or equal to the check-out datepoint', 'awebooking' ) );
+			throw new \LogicException( sprintf( esc_html__( 'The timespan requires at least %d nights', 'awebooking' ), esc_html( $nights ) ) );
 		}
 	}
 }

@@ -33,7 +33,7 @@ class BACS_Gateway extends Gateway {
 	public function setup() {
 		$this->setting_fields();
 
-		$this->enabled     = (bool) $this->get_option( 'enabled', true );
+		$this->enabled     = 'on' === $this->get_option( 'enabled', 'off' );
 		$this->title       = esc_html( $this->get_option( 'title' ) );
 		$this->description = esc_textarea( $this->get_option( 'description' ) );
 	}
@@ -49,7 +49,7 @@ class BACS_Gateway extends Gateway {
 				'name'        => esc_html__( 'Enable / Disable', 'awebooking' ),
 				'type'        => 'toggle',
 				'label'       => esc_html__( 'Enable check payments', 'awebooking' ),
-				'default'     => true,
+				'default'     => 'on',
 			],
 			'title' => [
 				'name'        => esc_html__( 'Title', 'awebooking' ),

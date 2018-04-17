@@ -15,13 +15,6 @@ class Base_Rate implements Rate {
 	protected $instance;
 
 	/**
-	 * [$restrictions description]
-	 *
-	 * @var [type]
-	 */
-	protected $restrictions;
-
-	/**
 	 * Create base-rate instance from a room-type.
 	 *
 	 * @param mixed $instance The room-type ID or instance.

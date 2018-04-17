@@ -51,9 +51,7 @@
   border-radius: 50px;
 
   .swal2-actions > .button {
-    border: none;
-    box-shadow: none;
-    border-radius: 20px;
+    @extend .abrs-button;
   }
 
   .swal2-actions > .button + .button {
@@ -73,11 +71,22 @@
 .cmb2-wrap.awebooking-wrap {
   font-size: 13px;
 
+  select {
+    margin-top: 1px;
+  }
+
   textarea,
   input[type="text"],
   input[type="email"],
+  input[type="search"],
+  input[type="number"],
   input[type="password"] {
     padding: 3px 5px;
+
+    @include in-small() {
+      font-size: 16px;
+      padding: 6px 10px;
+    }
   }
 
   input:not([type=hidden]) + input,
@@ -186,7 +195,6 @@
     float: left;
   }
 
-
   .cmb-inline li {
    padding-right: 1em;
   }
@@ -206,72 +214,4 @@
     color: inherit;
     vertical-align: middle;
   }
-}
-
-/* CMB2 flex table */
-.cmb2-flex-table {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: solid 1px #eee;
-
-  .cmb2-flex-tr,
-  .cmb-repeatable-grouping {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .cmb2-flex-th,
-  .cmb2-flex-td,
-  .cmb-repeatable-grouping > .cmb-row {
-    flex-grow: 1;
-    flex-basis: 0;
-    white-space: normal;
-    justify-content: center;
-    word-break: break-word;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border-left: solid 1px #eee;
-    border-bottom: solid 1px #eee;
-  }
-
-  .cmb-repeatable-grouping {
-    margin: 0;
-    padding: 0;
-    border: none !important;
-
-    &.cmb-row:after {
-      content: none;
-    }
-
-    > .cmb-row > .cmb-th {
-      display: none;
-    }
-
-    > .cmb-row > .cmb-td {
-      float: none;
-      width: 100%;
-    }
-  }
-
-  select,
-  textarea,
-  input.regular-input,
-  input[type=email],
-  input[type=number],
-  input[type=text] {
-    margin: 0;
-    width: 100% !important;
-    border: none;
-    box-shadow: none;
-  }
-}
-
-/* Misc */
-.abrs-input-addon.group-operator-amount {
-  select { width: 100px; }
-  input { width: 150px; }
 }

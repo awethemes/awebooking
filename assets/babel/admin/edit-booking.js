@@ -1,4 +1,4 @@
-(function($, awebooking) {
+(function($, plugin) {
   'use strict';
 
   class EditBooking {
@@ -28,7 +28,7 @@
    * @return {void}
    */
   $(function() {
-    awebooking.instances.editBooking = new EditBooking;
+    plugin.instances.editBooking = new EditBooking;
   });
 
 })(jQuery, window.awebooking || {});

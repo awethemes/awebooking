@@ -20,8 +20,8 @@ if ( ! defined( 'ABRS_ASSET_URL' ) ) {
 require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
-require trailingslashit( __DIR__ ) . 'query-functions.php';
-require trailingslashit( __DIR__ ) . 'model-functions.php';
+require trailingslashit( __DIR__ ) . 'db-functions.php';
+require trailingslashit( __DIR__ ) . 'models.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 
 /**
@@ -107,6 +107,50 @@ function abrs_admin_route( $path = '/', $parameters = [] ) {
  */
 function abrs_option( $key, $default = null ) {
 	return awebooking()->get_option( $key, $default );
+}
+
+/**
+ * Sanitises various option values based on the nature of the option.
+ *
+ * @param  string $key   The name of the option.
+ * @param  string $value The unsanitised value.
+ * @return string
+ */
+function abrs_sanitize_option( $key, $value ) {
+	// Pre-sanitize option by key name.
+	switch ( $key ) {
+		case 'enable_location':
+		case 'children_bookable':
+		case 'infants_bookable':
+			$value = abrs_sanitize_checkbox( $value );
+			break;
+
+		case 'star_rating':
+		case 'price_number_decimals':
+		case 'page_booking':
+		case 'page_checkout':
+		case 'page_check_availability':
+		case 'scheduler_display_duration':
+			$value = absint( $value );
+			break;
+	}
+
+	/**
+	 * Allow custom sanitize a special option value.
+	 *
+	 * @param mixed $value Mixed option value.
+	 * @var   mixed
+	 */
+	$value = apply_filters( "awebooking/sanitize_option_{$key}", $value );
+
+	/**
+	 * Allow custom sanitize option values.
+	 *
+	 * @param mixed  $value The option value.
+	 * @param string $key   The option key name.
+	 * @var   mixed
+	 */
+	return apply_filters( 'awebooking/sanitize_option', $value, $key );
 }
 
 /**
@@ -233,6 +277,15 @@ function abrs_list_dropdown_currencies() {
 		->transform( function( $name, $code ) {
 			return $name . ' (' . abrs_currency_symbol( $code ) . ')';
 		})->all();
+}
+
+/**
+ * Get list payment gateways.
+ *
+ * @return array
+ */
+function abrs_payment_gateways() {
+	return awebooking()->make( 'gateways' )->enabled();
 }
 
 /**
@@ -398,7 +451,7 @@ function abrs_get_template_part( $slug, $name = '' ) {
  * @param  string $page The page slug: check_availability, booking, checkout.
  * @return int
  */
-function abrs_get_page_id( $page ) {
+function abrs_page_id( $page ) {
 	$page_alias = [ // Back-compat, we changed name but still keep ID.
 		'search_results' => 'check_availability',
 	];
@@ -420,10 +473,21 @@ function abrs_get_page_id( $page ) {
  * @param  string $page The retrieve page.
  * @return string
  */
-function arbs_get_page_permalink( $page ) {
-	$page_id = abrs_get_page_id( $page );
+function arbs_page_permalink( $page ) {
+	$page_id = abrs_page_id( $page );
 
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
 
 	return apply_filters( "awebooking/get_{$page}_page_permalink", $permalink );
+}
+
+/**
+ * Create a static form builder.
+ *
+ * @param  string     $form_id The form ID.
+ * @param  Model|null $model   Optional, the model data.
+ * @return \AweBooking\Component\Form\Form_Builder
+ */
+function abrs_create_form( $form_id, $model = null ) {
+	return new Form_Builder( $form_id, $model ?: 0, 'static' );
 }

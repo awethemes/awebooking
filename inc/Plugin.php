@@ -221,12 +221,12 @@ final class Plugin extends Container {
 		// Build the providers.
 		$providers = $this->service_providers['core'];
 
-		if ( abrs_request_is( 'frontend' ) ) {
+		if ( abrs_is_request( 'frontend' ) ) {
 			$providers = array_merge( $providers, $this->service_providers['frontend'] );
 		}
 
 		// In admin, we will merge admin providers into the list.
-		if ( abrs_request_is( 'admin' ) ) {
+		if ( abrs_is_request( 'admin' ) ) {
 			$providers = array_merge( $providers, $this->service_providers['admin'] );
 		}
 
@@ -417,56 +417,48 @@ final class Plugin extends Container {
 	/**
 	 * Retrieves an option by key-name.
 	 *
-	 * @param  string $key     The key name.
+	 * @param  string $option  Option key name.
 	 * @param  mixed  $default The default value.
 	 * @return mixed
 	 */
-	public function get_option( $key, $default = null ) {
-		$options = $this->get_options();
+	public function get_option( $option, $default = null ) {
+		/**
+		 * Filters the value of an existing option before it is retrieved.
+		 *
+		 * @param mixed  $pre_option The value to return instead of the option value.
+		 * @param string $option     The option name.
+		 * @param mixed  $default    The fallback value to return if the option does not exist.
+		 */
+		$pre = apply_filters( "awebooking/pre_option_{$option}", null, $option, $default );
 
-		return $this->sanitize_option( $key,
-			$options->get( $key, $default )
-		);
-	}
+		if ( null !== $pre ) {
+			return $pre;
+		}
 
-	/**
-	 * Sanitises various option values based on the nature of the option.
-	 *
-	 * @param  string $key   The name of the option.
-	 * @param  string $value The unsanitised value.
-	 * @return string
-	 */
-	protected function sanitize_option( $key, $value ) {
-		// Pre-sanitize option by key name.
-		switch ( $key ) {
+		// Retrieve the option value.
+		$value = $this->get_options()->get( $option, $default );
+
+		// Escape some options before return.
+		switch ( $option ) {
 			case 'enable_location':
 			case 'children_bookable':
 			case 'infants_bookable':
-				$value = ( 'on' === abrs_sanitize_checkbox( $value ) );
+				$value = ( 'on' === $value );
 				break;
 
-			case 'price_number_decimals':
-			case 'scheduler_display_duration':
-				$value = absint( $value );
+			case 'price_decimal_separator':
+			case 'price_thousand_separator':
+				$value = untrailingslashit( $value );
 				break;
 		}
 
 		/**
-		 * Allow custom sanitize a special option value.
+		 * Filters the value of an existing option.
 		 *
-		 * @param mixed $value Mixed option value.
-		 * @var   mixed
+		 * @param mixed  $value  Value of the option.
+		 * @param string $option Option name.
 		 */
-		$value = apply_filters( "awebooking/sanitize_option_{$key}", $value );
-
-		/**
-		 * Allow custom sanitize option values.
-		 *
-		 * @param mixed  $value The option value.
-		 * @param string $key   The option key name.
-		 * @var   mixed
-		 */
-		return apply_filters( 'awebooking/sanitize_option', $value, $key );
+		return apply_filters( "awebooking/option_{$option}", maybe_unserialize( $value ), $option );
 	}
 
 	/**

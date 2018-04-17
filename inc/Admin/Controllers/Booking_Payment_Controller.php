@@ -28,7 +28,11 @@ class Booking_Payment_Controller extends Controller {
 		$balance_due = $booking->get_balance_due();
 		$form_builder['amount']->set_value( $balance_due->is_positive() ? $balance_due : 0 );
 
-		return $this->response( 'booking/payment-form.php', compact( 'booking', 'payment_item', 'form_builder' ) );
+		$page_title = $payment_item->exists()
+			? esc_html__( 'Update Payment', 'awebooking' )
+			: esc_html__( 'Add Payment', 'awebooking' );
+
+		return $this->response( 'booking/payment-form.php', compact( 'page_title', 'booking', 'payment_item', 'form_builder' ) );
 	}
 
 	/**

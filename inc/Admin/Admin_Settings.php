@@ -29,6 +29,7 @@ class Admin_Settings {
 	protected $core_settings = [
 		\AweBooking\Admin\Settings\General_Setting::class,
 		\AweBooking\Admin\Settings\Display_Setting::class,
+		\AweBooking\Admin\Settings\Appearance_Setting::class,
 		\AweBooking\Admin\Settings\Checkout_Setting::class,
 		\AweBooking\Admin\Settings\Email_Setting::class,
 	];

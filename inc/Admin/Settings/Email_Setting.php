@@ -90,53 +90,53 @@ class Email_Setting extends Abstract_Setting {
 		]);
 
 		// ...
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'id'   => '__email__',
 			'type' => 'title',
 			'name' => esc_html__( 'Email Settings', 'awebooking' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Base Color', 'awebooking' ),
 			'id'      => 'email_base_color',
 			'type'    => 'colorpicker',
 			// 'default' => awebooking( 'setting' )->get_default( 'email_base_color' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Body Background Color', 'awebooking' ),
 			'id'      => 'email_bg_color',
 			'type'    => 'colorpicker',
 			// 'default' => awebooking( 'setting' )->get_default( 'email_bg_color' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Background Color', 'awebooking' ),
 			'id'      => 'email_body_bg_color',
 			'type'    => 'colorpicker',
 			// 'default' => awebooking( 'setting' )->get_default( 'email_body_bg_color' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Body Text Color', 'awebooking' ),
 			'id'      => 'email_body_text_color',
 			'type'    => 'colorpicker',
 			// 'default' => awebooking( 'setting' )->get_default( 'email_body_text_color' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Email Copyright', 'awebooking' ),
 			'id'      => 'email_copyright',
 			'type'    => 'text',
 			// 'default' => awebooking( 'setting' )->get_default( 'email_copyright' ),
-		) );
+		]);
 
-		$email_general->add_field( array(
+		$email_general->add_field([
 			'name'    => esc_html__( 'Notifications to other emails', 'awebooking' ),
 			'id'      => 'email_notify_another_emails',
 			'type'    => 'text',
 			'desc'    => esc_html__( 'Enter some emails by "," separating values.', 'awebooking' ),
-		) );
+		]);
 	}
 
 	/**
@@ -187,38 +187,38 @@ class Email_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	protected function register_new_booking_settings( $new_booking ) {
-		$new_booking->add_field( array(
+		$new_booking->add_field([
 			'id'   => '__email_new_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for new booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=new' ) ) . '" target="_blank">here</a>' ),
 			'name' => esc_html__( 'New booking', 'awebooking' ),
-		) );
+		]);
 
-		$new_booking->add_field( array(
+		$new_booking->add_field([
 			'name'    => esc_html__( 'Enable?', 'awebooking' ),
 			'id'      => 'email_new_enable',
 			'type'    => 'toggle',
 			'desc'    => esc_html__( 'Check to turn on email notification for new booking', 'awebooking' ),
 			// 'default' => awebooking( 'setting' )->get_default( 'email_new_enable' ),
-		) );
+		]);
 
-		$new_booking->add_field( array(
+		$new_booking->add_field([
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_new_subject',
 			'type'    => 'text',
 			'default' => '[{site_title}] New customer booking #{order_number} - {order_date}',
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': [{site_title}] New customer booking ({order_number}) - {order_date}',
-		) );
+		]);
 
-		$new_booking->add_field( array(
+		$new_booking->add_field([
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
 			'id'      => 'email_new_header',
 			'type'    => 'text',
 			'default' => esc_html__( 'New customer booking', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed', 'awebooking' ),
-		) );
+		]);
 
-		$new_booking->add_field( array(
+		$new_booking->add_field([
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_new_content',
 			'type'    => 'wysiwyg',
@@ -228,7 +228,7 @@ class Email_Setting extends Abstract_Setting {
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-		) );
+		]);
 	}
 
 	/**
@@ -238,38 +238,38 @@ class Email_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	protected function register_cancelled_booking_settings( $cancelled_booking ) {
-		$cancelled_booking->add_field( array(
+		$cancelled_booking->add_field([
 			'id'   => '__email_cancelled_booking__',
 			'type' => 'title',
 			'desc' => sprintf( esc_html__( 'Email settings for cancelled booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=cancelled' ) ) . '" target="_blank">here</a>' ),
 			'name' => esc_html__( 'Cancelled booking', 'awebooking' ),
-		) );
+		]);
 
-		$cancelled_booking->add_field( array(
+		$cancelled_booking->add_field([
 			'name'    => esc_html__( 'Enable?', 'awebooking' ),
 			'id'      => 'email_cancelled_enable',
 			'type'    => 'toggle',
 			'desc'    => esc_html__( 'Check to turn on email notification for cancelled booking', 'awebooking' ),
 			// 'default' => awebooking( 'setting' )->get_default( 'email_cancelled_enable' ),
-		) );
+		]);
 
-		$cancelled_booking->add_field( array(
+		$cancelled_booking->add_field([
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_cancelled_subject',
 			'type'    => 'text',
 			'default' => 'Your {site_title} booking receipt from {order_date}',
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking receipt from {order_date}',
-		) );
+		]);
 
-		$cancelled_booking->add_field( array(
+		$cancelled_booking->add_field([
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
 			'id'      => 'email_cancelled_header',
 			'type'    => 'text',
 			'default' => esc_html__( 'Your booking is cancelled', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Thank you for your booking.', 'awebooking' ),
-		) );
+		]);
 
-		$cancelled_booking->add_field( array(
+		$cancelled_booking->add_field([
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_cancelled_content',
 			'type'    => 'wysiwyg',
@@ -279,7 +279,7 @@ class Email_Setting extends Abstract_Setting {
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-		) );
+		]);
 	}
 
 	/**
@@ -289,38 +289,38 @@ class Email_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	protected function register_processing_booking_settings( $processing_booking ) {
-		$processing_booking->add_field( array(
+		$processing_booking->add_field([
 			'id'   => '__email_processing_booking__',
 			'type' => 'title',
 			'name' => esc_html__( 'Processing booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for processing booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=processing' ) ) . '" target="_blank">here</a>' ),
-		) );
+		]);
 
-		$processing_booking->add_field( array(
+		$processing_booking->add_field([
 			'name'    => esc_html__( 'Enable', 'awebooking' ),
 			'id'      => 'email_processing_enable',
 			'type'    => 'toggle',
 			'desc'    => esc_html__( 'Check to turn on email notification for processing booking', 'awebooking' ),
 			// 'default' => awebooking( 'setting' )->get_default( 'email_processing_enable' ),
-		) );
+		]);
 
-		$processing_booking->add_field( array(
+		$processing_booking->add_field([
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_processing_subject',
 			'type'    => 'text',
 			'default' => __( '[{site_title}] Processing your booking #{order_number} - {order_date}', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is being processed.',
-		) );
+		]);
 
-		$processing_booking->add_field( array(
+		$processing_booking->add_field([
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
 			'id'      => 'email_processing_header',
 			'type'    => 'text',
 			'default' => esc_html__( 'Your booking is being processed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is being processed.', 'awebooking' ),
-		) );
+		]);
 
-		$processing_booking->add_field( array(
+		$processing_booking->add_field([
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_processing_content',
 			'type'    => 'wysiwyg',
@@ -330,7 +330,7 @@ class Email_Setting extends Abstract_Setting {
 				'media_buttons' => false,
 				'tinymce' => false,
 			),
-		) );
+		]);
 
 	}
 
@@ -341,38 +341,38 @@ class Email_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	protected function register_completed_booking_settings( $completed_booking ) {
-		$completed_booking->add_field( array(
+		$completed_booking->add_field([
 			'id'   => '__email_completed_booking__',
 			'type' => 'title',
 			'name' => esc_html__( 'Completed booking', 'awebooking' ),
 			'desc' => sprintf( esc_html__( 'Email settings for completed booking. Click %s to preview.', 'awebooking' ), '<a href="' . esc_url( admin_url( '?page=awebooking-email-preview&status=completed' ) ) . '" target="_blank">here</a>' ),
-		) );
+		]);
 
-		$completed_booking->add_field( array(
+		$completed_booking->add_field([
 			'name'    => esc_html__( 'Enable', 'awebooking' ),
 			'id'      => 'email_complete_enable',
 			'type'    => 'toggle',
 			'desc'    => esc_html__( 'Check to turn on email notification for completed booking', 'awebooking' ),
 			// 'default' => awebooking( 'setting' )->get_default( 'email_complete_enable' ),
-		) );
+		]);
 
-		$completed_booking->add_field( array(
+		$completed_booking->add_field([
 			'name'    => esc_html__( 'Email subject', 'awebooking' ),
 			'id'      => 'email_complete_subject',
 			'type'    => 'text',
 			'default' => 'Your {site_title} booking from {order_date} is completed',
 			'desc'    => esc_html__( 'This controls the email subject line. Leave blank to use the default subject', 'awebooking' ) . ': Your {site_title} booking from {order_date} is completed.',
-		) );
+		]);
 
-		$completed_booking->add_field( array(
+		$completed_booking->add_field([
 			'name'    => esc_html__( 'Email header', 'awebooking' ),
 			'id'      => 'email_complete_header',
 			'type'    => 'text',
 			'default' => esc_html__( 'Your booking is completed', 'awebooking' ),
 			'desc'    => esc_html__( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: Your booking is completed.', 'awebooking' ),
-		) );
+		]);
 
-		$completed_booking->add_field( array(
+		$completed_booking->add_field([
 			'name'    => esc_html__( 'Email content', 'awebooking' ),
 			'id'      => 'email_complete_content',
 			'type'    => 'wysiwyg',
@@ -383,7 +383,7 @@ class Email_Setting extends Abstract_Setting {
 				'tinymce'       => false,
 				'media_buttons' => false,
 			),
-		) );
+		]);
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 const gulp         = require('gulp');
 const plumber      = require('gulp-plumber');
-const changed      = require('gulp-changed-in-place');
+const notify       = require('gulp-notify');
 const sass         = require('gulp-sass');
 const gcmq         = require('gulp-group-css-media-queries');
 const sourcemaps   = require('gulp-sourcemaps');
@@ -11,13 +11,27 @@ const bro          = require('gulp-bro');
 const babelify     = require('babelify');
 const potgen       = require('gulp-wp-pot');
 const browserSync  = require('browser-sync').create();
-const _            = require('lodash');
+const map          = require('lodash.map');
 const pkg          = require('./package.json');
+
+/**
+ * Handle errors and alert the user.
+ */
+function handleErrors() {
+  var args = Array.prototype.slice.call(arguments);
+
+  notify.onError({
+    title: 'Task Failed! See console.',
+    message: "<%= error.message %>",
+  }).apply(this, args);
+
+  // Prevent the 'watch' task from stopping
+  this.emit('end');
+}
 
 gulp.task('scss', function() {
   return gulp.src('assets/scss/*.scss')
-    .pipe(changed())
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer())
@@ -29,12 +43,12 @@ gulp.task('scss', function() {
 
 gulp.task('babel', function () {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
-    .pipe(changed())
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
-    .pipe(bro({ transform: [ babelify.configure({ presets: ['env'] }) ] }))
+    .pipe(bro({ error: 'emit', transform: [ babelify.configure({ presets: ['env'] }) ] }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('assets/js'));
+    .pipe(gulp.dest('assets/js'))
+    .pipe(browserSync.stream({ match: '**/*.js' }));
 });
 
 gulp.task('i18n', function () {
@@ -45,7 +59,7 @@ gulp.task('i18n', function () {
 });
 
 gulp.task('copy', function () {
-  return _.map(pkg.copyFiles, function(files, vendor) {
+  return map(pkg.copyFiles, function(files, vendor) {
     return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor));
   });
 });
@@ -53,7 +67,6 @@ gulp.task('copy', function () {
 gulp.task('watch', function () {
   browserSync.init({
     proxy: 'awebooking.local',
-    files: ['assets/js/**/*.js'],
   });
 
   gulp.watch('assets/scss/**/*.scss', ['scss']);

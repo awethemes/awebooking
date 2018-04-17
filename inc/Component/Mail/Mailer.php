@@ -99,14 +99,14 @@ class Mailer {
 	 * @return bool
 	 */
 	public function send( Mailable $mail ) {
-		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
+		add_filter( 'wp_mail_from', [ $this, 'get_from_address' ] );
+		add_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );
 
 		$subject = $this->subject ? $this->subject : $mail->get_subject();
 		$return = wp_mail( $this->to, $subject, $mail->message(), $this->headers, $this->attachments );
 
-		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
+		remove_filter( 'wp_mail_from', [ $this, 'get_from_address' ] );
+		remove_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );
 
 		return $return;
 	}

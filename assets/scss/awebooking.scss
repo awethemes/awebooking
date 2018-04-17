@@ -1,2 +1,20 @@
 @import "utils/mixins";
-@import "frontend/datepicker";
+
+/* Inline datepicker */
+.abrs-inline-datepicker .flatpickr-calendar.inline {
+  margin-top: 0;
+
+  &,
+  .flatpickr-days {
+    width: 100% !important;
+  }
+
+  .dayContainer {
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+
+  .flatpickr-day {
+    max-width: 14.2857143%;
+  }
+}

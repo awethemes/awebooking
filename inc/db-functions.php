@@ -53,7 +53,7 @@ function abrs_get_rooms( $room_type ) {
 		global $wpdb;
 
 		$rooms = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE room_type = %d ORDER BY name ASC LIMIT 1000", $room_type ), ARRAY_A
+			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` = %d ORDER BY `order` ASC LIMIT 1000", $room_type ), ARRAY_A
 		);
 
 		// Cache each item in results.

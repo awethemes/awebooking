@@ -79,7 +79,7 @@ $room_items = $the_booking->get_items( 'line_item' );
 
 			<th colspan="2">
 				<strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong>
-				<span class="afloat-right awebooking-label awebooking-label--info"><?php echo abrs_price( $the_booking->get_total(), $the_booking->get_currency() ); // WPCS: XSS OK. ?></span>
+				<span class="afloat-right awebooking-label awebooking-label--info"><?php abrs_price( $the_booking->get_total(), $the_booking->get_currency() ); // WPCS: XSS OK. ?></span>
 			</th>
 		</tr>
 	</tfoot>

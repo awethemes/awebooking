@@ -27,27 +27,95 @@ msgstr ""
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
-#: inc/concierge.php:44
-msgid "The start date must the greater than or equal today."
-msgstr ""
-
 #: inc/concierge.php:49
-msgid "The start date and end date is invalid."
-msgstr ""
-
-#: inc/concierge.php:88
 msgid "Invalid room state"
 msgstr ""
 
-#: inc/concierge.php:102
+#: inc/concierge.php:63
 msgid "Invalid Room ID"
 msgstr ""
 
-#: inc/concierge.php:269
+#: inc/concierge.php:235
 msgid "Invalid calendar provider"
 msgstr ""
 
-#: inc/formatting.php:31
+#: inc/concierge.php:284
+msgid "The start date and end date is invalid."
+msgstr ""
+
+#: inc/core-functions.php:245
+msgid "Cash"
+msgstr ""
+
+#: inc/core-functions.php:263, inc/Bootstrap/Setup_Environment.php:282
+msgctxt "Booking status"
+msgid "Pending"
+msgstr ""
+
+#: inc/core-functions.php:264, inc/Bootstrap/Setup_Environment.php:291
+msgctxt "Booking status"
+msgid "Processing"
+msgstr ""
+
+#: inc/core-functions.php:265, inc/Bootstrap/Setup_Environment.php:300
+msgctxt "Booking status"
+msgid "Reserved"
+msgstr ""
+
+#: inc/core-functions.php:266, inc/Bootstrap/Setup_Environment.php:309
+msgctxt "Booking status"
+msgid "Deposit"
+msgstr ""
+
+#: inc/core-functions.php:267, inc/Bootstrap/Setup_Environment.php:318
+msgctxt "Booking status"
+msgid "Paid"
+msgstr ""
+
+#: inc/core-functions.php:268, inc/Bootstrap/Setup_Environment.php:327
+msgctxt "Booking status"
+msgid "Checked In"
+msgstr ""
+
+#: inc/core-functions.php:269, inc/Bootstrap/Setup_Environment.php:336
+msgctxt "Booking status"
+msgid "Checked Out"
+msgstr ""
+
+#: inc/core-functions.php:270, inc/Bootstrap/Setup_Environment.php:345
+msgctxt "Booking status"
+msgid "Cancelled"
+msgstr ""
+
+#: inc/core-functions.php:281
+msgid "Mr."
+msgstr ""
+
+#: inc/core-functions.php:282
+msgid "Ms."
+msgstr ""
+
+#: inc/core-functions.php:283
+msgid "Mrs."
+msgstr ""
+
+#: inc/core-functions.php:284
+msgid "Miss."
+msgstr ""
+
+#: inc/core-functions.php:285
+msgid "Dr."
+msgstr ""
+
+#: inc/core-functions.php:286
+msgid "Prof."
+msgstr ""
+
+#: inc/core-functions.php:323
+msgid "%s does not exist."
+msgstr ""
+
+#: inc/formatting.php:28
 msgctxt "DateTime Format"
 msgid "%1$s %2$s"
 msgstr ""
@@ -80,79 +148,11 @@ msgstr ""
 msgid "Contribute"
 msgstr ""
 
-#: inc/list-functions.php:44
-msgid "Cash"
-msgstr ""
-
-#: inc/list-functions.php:62, inc/Bootstrap/Setup_Environment.php:282
-msgctxt "Booking status"
-msgid "Pending"
-msgstr ""
-
-#: inc/list-functions.php:63, inc/Bootstrap/Setup_Environment.php:291
-msgctxt "Booking status"
-msgid "Processing"
-msgstr ""
-
-#: inc/list-functions.php:64, inc/Bootstrap/Setup_Environment.php:300
-msgctxt "Booking status"
-msgid "Reserved"
-msgstr ""
-
-#: inc/list-functions.php:65, inc/Bootstrap/Setup_Environment.php:309
-msgctxt "Booking status"
-msgid "Deposit"
-msgstr ""
-
-#: inc/list-functions.php:66, inc/Bootstrap/Setup_Environment.php:318
-msgctxt "Booking status"
-msgid "Paid"
-msgstr ""
-
-#: inc/list-functions.php:67, inc/Bootstrap/Setup_Environment.php:327
-msgctxt "Booking status"
-msgid "Checked In"
-msgstr ""
-
-#: inc/list-functions.php:68, inc/Bootstrap/Setup_Environment.php:336
-msgctxt "Booking status"
-msgid "Checked Out"
-msgstr ""
-
-#: inc/list-functions.php:69, inc/Bootstrap/Setup_Environment.php:345
-msgctxt "Booking status"
-msgid "Cancelled"
-msgstr ""
-
-#: inc/list-functions.php:80
-msgid "Mr."
-msgstr ""
-
-#: inc/list-functions.php:81
-msgid "Ms."
-msgstr ""
-
-#: inc/list-functions.php:82
-msgid "Mrs."
-msgstr ""
-
-#: inc/list-functions.php:83
-msgid "Miss."
-msgstr ""
-
-#: inc/list-functions.php:84
-msgid "Dr."
-msgstr ""
-
-#: inc/list-functions.php:85
-msgid "Prof."
-msgstr ""
-
-#: inc/Plugin.php:418
+#: inc/Plugin.php:405
 msgid "The option is not setup yet."
 msgstr ""
 
-#: inc/Admin/Admin_Settings.php:150
+#: inc/Admin/Admin_Settings.php:151
 msgid "Your settings have been saved."
 msgstr ""
 
@@ -348,7 +348,7 @@ msgstr ""
 msgid "Add new room type"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:197, inc/Bootstrap/Setup_Environment.php:241, inc/Admin/Metaboxes/views/html-booking-main.php:45, inc/Admin/Metaboxes/views/html-booking-main.php:60, inc/Admin/Metaboxes/views/html-booking-main.php:65, inc/Admin/Metaboxes/views/html-booking-main.php:97, inc/Admin/Metaboxes/views/html-booking-payments.php:67, inc/Admin/Metaboxes/views/html-booking-rooms.php:49
+#: inc/Bootstrap/Setup_Environment.php:197, inc/Bootstrap/Setup_Environment.php:241, templates/search/booked.php:39, inc/Admin/Metaboxes/views/html-booking-main.php:45, inc/Admin/Metaboxes/views/html-booking-main.php:60, inc/Admin/Metaboxes/views/html-booking-main.php:65, inc/Admin/Metaboxes/views/html-booking-main.php:97, inc/Admin/Metaboxes/views/html-booking-payments.php:67, inc/Admin/Metaboxes/views/html-booking-rooms.php:49
 msgid "Edit"
 msgstr ""
 
@@ -539,6 +539,10 @@ msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
+#: inc/Frontend/template-functions.php:44, templates/search/result-item.php:53
+msgid "Book Now"
+msgstr ""
+
 #: inc/Gateway/BACS_Gateway.php:26
 msgid "BACS"
 msgstr ""
@@ -649,48 +653,94 @@ msgstr ""
 msgid "Transaction ID:"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:89
+#: templates/search/booked.php:2, inc/Admin/views/calendar/html-booking-state.php:30
+msgid "Booking Summary"
+msgstr ""
+
+#: templates/search/booked.php:39
+msgctxt "awebooking-edit"
+msgid "&#9998;"
+msgstr ""
+
+#: templates/search/booked.php:44
+msgctxt "awebooking-remove"
+msgid "&#x2715;"
+msgstr ""
+
+#: templates/search/booked.php:54, inc/Admin/Forms/Booking_Room_Form.php:87, inc/Admin/Metaboxes/views/html-booking-rooms.php:81
+msgid "Total"
+msgstr ""
+
+#: templates/search/booked.php:58
+msgid "Book"
+msgstr ""
+
+#: templates/search/booked.php:62
+msgid "No Room(s) Selected"
+msgstr ""
+
+#: templates/search/breakdown.php:5
+msgid "Rate Informations"
+msgstr ""
+
+#: templates/search/result-item.php:33
+msgid "What's included"
+msgstr ""
+
+#: templates/search/result-item.php:46
+msgctxt "remain rooms"
+msgid "%s room left"
+msgid_plural "%s rooms left"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/search/search-form.php:10
+msgctxt "search availability"
+msgid "Search"
+msgstr ""
+
+#: inc/Admin/Calendar/Booking_Scheduler.php:127
 msgid "Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:90
+#: inc/Admin/Calendar/Booking_Scheduler.php:128
 msgid "Pending"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:91
+#: inc/Admin/Calendar/Booking_Scheduler.php:129
 msgid "Processing"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:92
+#: inc/Admin/Calendar/Booking_Scheduler.php:130
 msgid "Reserved"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:93, inc/Admin/Forms/Booking_Payment_Form.php:47
+#: inc/Admin/Calendar/Booking_Scheduler.php:131, inc/Admin/Forms/Booking_Payment_Form.php:47
 msgid "Deposit"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:94
+#: inc/Admin/Calendar/Booking_Scheduler.php:132
 msgid "Paid"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:95
+#: inc/Admin/Calendar/Booking_Scheduler.php:133
 msgid "Checked In"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:96
+#: inc/Admin/Calendar/Booking_Scheduler.php:134
 msgid "Checked Out"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:116
+#: inc/Admin/Calendar/Booking_Scheduler.php:153
 msgid "Set as Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:117
+#: inc/Admin/Calendar/Booking_Scheduler.php:154
 msgid "Clear Blocked"
 msgstr ""
 
 #. translators: Available rooms
-#: inc/Admin/Calendar/Booking_Scheduler.php:141
+#: inc/Admin/Calendar/Booking_Scheduler.php:179
 msgctxt "awebooking"
 msgid "%s room available"
 msgid_plural "%s rooms available"
@@ -721,28 +771,32 @@ msgstr ""
 msgid "%1$s (#%2$s - %3$s)"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Payment_Controller.php:56
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:32, inc/Admin/views/booking/payment-form.php:14, inc/Admin/views/booking/payment-form.php:29
+msgid "Update Payment"
+msgstr ""
+
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:33, inc/Admin/views/booking/payment-form.php:14, inc/Admin/views/booking/payment-form.php:29
+msgid "Add Payment"
+msgstr ""
+
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:60
 msgid "Added new payment successfully!"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Payment_Controller.php:58
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:62
 msgid "Error when add payment"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Payment_Controller.php:104, inc/Admin/Controllers/Booking_Payment_Controller.php:122
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:108, inc/Admin/Controllers/Booking_Payment_Controller.php:126
 msgid "Payment item has been updated successfully!"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Payment_Controller.php:134
+#: inc/Admin/Controllers/Booking_Payment_Controller.php:138
 msgid "You attempted to working with a booking that doesn’t exist. Perhaps it was deleted?"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Room_Controller.php:34
+#: inc/Admin/Controllers/Booking_Room_Controller.php:33
 msgid "The booking reference is does not exist."
-msgstr ""
-
-#: inc/Admin/Controllers/Calendar_Controller.php:53
-msgid "Update state successfully"
 msgstr ""
 
 #: inc/Admin/Controllers/Controller.php:45
@@ -761,7 +815,7 @@ msgstr ""
 msgid "Payment method"
 msgstr ""
 
-#: inc/Admin/Forms/Booking_Payment_Form.php:33, inc/Admin/Settings/General_Setting.php:78, inc/Model/Booking/Payment_Item.php:41, inc/Admin/Metaboxes/views/html-booking-main.php:60
+#: inc/Admin/Forms/Booking_Payment_Form.php:33, inc/Admin/Settings/General_Setting.php:83, inc/Model/Booking/Payment_Item.php:41, inc/Admin/Metaboxes/views/html-booking-main.php:60
 msgid "N/A"
 msgstr ""
 
@@ -797,10 +851,6 @@ msgstr ""
 msgid "Number of infants"
 msgstr ""
 
-#: inc/Admin/Forms/Booking_Room_Form.php:87, inc/Admin/Metaboxes/views/html-booking-rooms.php:81
-msgid "Total"
-msgstr ""
-
 #: inc/Admin/Forms/Booking_Room_Form.php:122
 msgid "Room type"
 msgstr ""
@@ -817,11 +867,11 @@ msgstr ""
 msgid "Select room type(s)"
 msgstr ""
 
-#: inc/Admin/Forms/Bulk_Price_Form.php:38, inc/Admin/Forms/Room_Price_Form.php:22
+#: inc/Admin/Forms/Bulk_Price_Form.php:38, inc/Admin/Forms/Room_Price_Form.php:22, inc/Admin/views/calendar/html-bulk-update.php:47
 msgid "Select dates"
 msgstr ""
 
-#: inc/Admin/Forms/Bulk_Price_Form.php:46, inc/Admin/Forms/Room_Price_Form.php:31
+#: inc/Admin/Forms/Bulk_Price_Form.php:46, inc/Admin/Forms/Room_Price_Form.php:31, inc/Admin/views/calendar/html-bulk-update.php:79
 msgid "Apply on days"
 msgstr ""
 
@@ -949,7 +999,7 @@ msgstr ""
 msgid "Address 2"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:219, inc/Admin/Settings/General_Setting.php:108
+#: inc/Admin/Metaboxes/Booking_Metabox.php:219, inc/Admin/Settings/Appearance_Setting.php:39, inc/Admin/Settings/General_Setting.php:113
 msgid "City"
 msgstr ""
 
@@ -957,7 +1007,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Booking_Metabox.php:233, inc/Admin/Settings/General_Setting.php:117
+#: inc/Admin/Metaboxes/Booking_Metabox.php:233, inc/Admin/Settings/General_Setting.php:122
 msgid "Country"
 msgstr ""
 
@@ -1051,15 +1101,6 @@ msgstr ""
 
 #: inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
 msgid "About"
-msgstr ""
-
-#: inc/Admin/Providers/Menu_Service_Provider.php:49, inc/Admin/Settings/Email_Setting.php:38
-msgid "New Booking"
-msgstr ""
-
-#: inc/Admin/Providers/Menu_Service_Provider.php:49
-msgctxt "dashboard menu"
-msgid "New Booking"
 msgstr ""
 
 #: inc/Admin/Providers/Menu_Service_Provider.php:51, inc/Admin/views/calendar/index.php:2
@@ -1247,20 +1288,32 @@ msgctxt "Page states"
 msgid "Booking Confirmation"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:93
+#: inc/Admin/Providers/Scripts_Service_Provider.php:89
 msgid "OK"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:94, inc/Admin/views/booking/edit-room.php:17, inc/Admin/views/booking/payment-form.php:58
+#: inc/Admin/Providers/Scripts_Service_Provider.php:90, inc/Admin/views/booking/edit-room.php:17, inc/Admin/views/booking/payment-form.php:70
 msgid "Cancel"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:95
+#: inc/Admin/Providers/Scripts_Service_Provider.php:91
 msgid "Are you sure you want to do this?"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:126
+#: inc/Admin/Providers/Scripts_Service_Provider.php:122
 msgid "The changes you made will be lost if you navigate away from this page."
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:21
+msgid "Appearance"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:33
+msgid "Date Picker"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:40, inc/Admin/Settings/General_Setting.php:114
+msgid "The city in which your hotel is located."
 msgstr ""
 
 #: inc/Admin/Settings/Checkout_Setting.php:21
@@ -1333,6 +1386,10 @@ msgstr ""
 
 #: inc/Admin/Settings/Email_Setting.php:33
 msgid "New Booking (Admin)"
+msgstr ""
+
+#: inc/Admin/Settings/Email_Setting.php:38
+msgid "New Booking"
 msgstr ""
 
 #: inc/Admin/Settings/Email_Setting.php:43
@@ -1575,103 +1632,99 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:37
+#: inc/Admin/Settings/General_Setting.php:36
 msgid "Multiple Hotels?"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:44
+#: inc/Admin/Settings/General_Setting.php:43
 msgid "Children Bookable?"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:51
+#: inc/Admin/Settings/General_Setting.php:50
 msgid "Infants Bookable?"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:59
+#: inc/Admin/Settings/General_Setting.php:58
 msgid "Hotel & Address"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:60
+#: inc/Admin/Settings/General_Setting.php:59
 msgid "This is where your hotel is located. Tax rates will use this address."
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:66
+#: inc/Admin/Settings/General_Setting.php:71
 msgid "Name"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:75
+#: inc/Admin/Settings/General_Setting.php:80
 msgid "Star Rating"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:90
+#: inc/Admin/Settings/General_Setting.php:95
 msgid "Address Line"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:91
+#: inc/Admin/Settings/General_Setting.php:96
 msgid "The street address for your hotel location."
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:99
+#: inc/Admin/Settings/General_Setting.php:104
 msgid "Address line 2"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:100
+#: inc/Admin/Settings/General_Setting.php:105
 msgid "An additional, optional address line for your hotel location."
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:109
-msgid "The city in which your hotel is located."
-msgstr ""
-
-#: inc/Admin/Settings/General_Setting.php:118
+#: inc/Admin/Settings/General_Setting.php:123
 msgid "The country in which your hotel is located."
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:126
+#: inc/Admin/Settings/General_Setting.php:131
 msgid "Postcode / ZIP"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:127
+#: inc/Admin/Settings/General_Setting.php:132
 msgid "The postal code, if any, in which your hotel is located."
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:138
+#: inc/Admin/Settings/General_Setting.php:143
 msgid "Currency Options"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:144, inc/Admin/Metaboxes/views/html-booking-main.php:51
+#: inc/Admin/Settings/General_Setting.php:149, inc/Admin/Metaboxes/views/html-booking-main.php:51
 msgid "Currency"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:153
+#: inc/Admin/Settings/General_Setting.php:158
 msgid "Currency Position"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:157
+#: inc/Admin/Settings/General_Setting.php:162
 msgid "Left"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:158
+#: inc/Admin/Settings/General_Setting.php:163
 msgid "Right"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:159
+#: inc/Admin/Settings/General_Setting.php:164
 msgid "Left with space"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:160
+#: inc/Admin/Settings/General_Setting.php:165
 msgid "Right with space"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:167
+#: inc/Admin/Settings/General_Setting.php:172
 msgid "Thousand Separator"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:175
+#: inc/Admin/Settings/General_Setting.php:180
 msgid "Decimal Separator"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:183
+#: inc/Admin/Settings/General_Setting.php:188
 msgid "Number of Decimals"
 msgstr ""
 
@@ -1689,6 +1742,10 @@ msgstr ""
 
 #: inc/Component/Http/Kernel.php:82
 msgid "Whoops, looks like something went wrong."
+msgstr ""
+
+#: inc/Frontend/Shortcodes/Shortcode_Abstract.php:131
+msgid "Sorry, a fatal error occurred."
 msgstr ""
 
 #: inc/Model/Common/Guest_Counts.php:154
@@ -1710,12 +1767,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: Number of nights
-#: inc/Model/Common/Timespan.php:137
-msgid "The reservation requires at least minimum %d night(s)"
-msgstr ""
-
-#: inc/Model/Common/Timespan.php:154
-msgid "The check-in datepoint must be greater or equal to the check-out datepoint"
+#: inc/Model/Common/Timespan.php:157
+msgid "The timespan requires at least %d nights"
 msgstr ""
 
 #: inc/Model/Pricing/Standard_Plan.php:51
@@ -1831,7 +1884,7 @@ msgstr ""
 msgid "Register payment"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-payments.php:100, inc/Admin/views/booking/payment-form.php:40
+#: inc/Admin/Metaboxes/views/html-booking-payments.php:100, inc/Admin/views/booking/payment-form.php:52
 msgid "Balance Due"
 msgstr ""
 
@@ -1945,7 +1998,7 @@ msgstr ""
 msgid "Add Room"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:6, inc/Admin/views/booking/payment-form.php:15
+#: inc/Admin/views/booking/add-room.php:6, inc/Admin/views/booking/payment-form.php:30
 msgid "Reference"
 msgstr ""
 
@@ -1961,7 +2014,7 @@ msgstr ""
 msgid "Booking reference:"
 msgstr ""
 
-#: inc/Admin/views/booking/edit-room.php:16, inc/Admin/views/booking/payment-form.php:57
+#: inc/Admin/views/booking/edit-room.php:16, inc/Admin/views/booking/payment-form.php:69
 msgid "Save"
 msgstr ""
 
@@ -1972,44 +2025,52 @@ msgid_plural "%d rooms left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/views/booking/payment-form.php:14
-msgid "Update Payment"
-msgstr ""
-
-#: inc/Admin/views/booking/payment-form.php:14
-msgid "Register Payment"
-msgstr ""
-
-#: inc/Admin/views/booking/payment-form.php:24
+#: inc/Admin/views/booking/payment-form.php:36
 msgid "Total charge"
 msgstr ""
 
-#: inc/Admin/views/booking/payment-form.php:32
+#: inc/Admin/views/booking/payment-form.php:44
 msgid "Already paid"
 msgstr ""
 
-#: inc/Admin/views/calendar/html-blocked-state.php:12
+#: inc/Admin/views/calendar/html-blocked-state.php:14
 msgid "Period is blocked"
 msgstr ""
 
-#: inc/Admin/views/calendar/html-blocked-state.php:13
+#: inc/Admin/views/calendar/html-blocked-state.php:15, inc/Admin/views/calendar/html-bulk-update.php:66
 msgid "Unblock"
+msgstr ""
+
+#: inc/Admin/views/calendar/html-bulk-update.php:9
+msgid "Bulk Update State"
+msgstr ""
+
+#: inc/Admin/views/calendar/html-bulk-update.php:20
+msgid "Select rooms"
+msgstr ""
+
+#: inc/Admin/views/calendar/html-bulk-update.php:56
+msgid "Select state"
+msgstr ""
+
+#: inc/Admin/views/calendar/html-bulk-update.php:63
+msgid "Block"
+msgstr ""
+
+#: inc/Admin/views/calendar/html-bulk-update.php:95, inc/Admin/views/rates/html-bulk-update.php:35, inc/Admin/views/rates/index.php:31
+msgid "Submit"
 msgstr ""
 
 #: inc/Admin/views/calendar/index.php:3
 msgid "New Reservation"
 msgstr ""
 
+#: inc/Admin/views/calendar/index.php:8, inc/Admin/views/rates/index.php:7
+msgid "Bulk update"
+msgstr ""
+
 #: inc/Admin/views/rates/html-bulk-update.php:1
 msgid "Bulk Update Price"
-msgstr ""
-
-#: inc/Admin/views/rates/html-bulk-update.php:35, inc/Admin/views/rates/index.php:31
-msgid "Submit"
-msgstr ""
-
-#: inc/Admin/views/rates/index.php:7
-msgid "Bulk update"
 msgstr ""
 
 #: inc/Admin/views/rates/index.php:26
@@ -2032,20 +2093,24 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: inc/Admin/Calendar/views/toolbar/datepicker.php:25
-msgid "Prev Date"
-msgstr ""
-
 #: inc/Admin/Calendar/views/toolbar/datepicker.php:26
-msgctxt "next month"
-msgid "Next"
+msgid "Today"
 msgstr ""
 
-#: inc/Admin/Calendar/views/toolbar/datepicker.php:32
+#: inc/Admin/Calendar/views/toolbar/datepicker.php:29
+msgid "Previous Date"
+msgstr ""
+
+#: inc/Admin/Calendar/views/toolbar/datepicker.php:30
+msgctxt "prev month"
+msgid "Previous"
+msgstr ""
+
+#: inc/Admin/Calendar/views/toolbar/datepicker.php:36
 msgid "Next Date"
 msgstr ""
 
-#: inc/Admin/Calendar/views/toolbar/datepicker.php:33
-msgctxt "prev month"
-msgid "Prev"
+#: inc/Admin/Calendar/views/toolbar/datepicker.php:37
+msgctxt "next month"
+msgid "Next"
 msgstr ""

@@ -1,7 +1,5 @@
-(function($) {
+(function($, plugin) {
   'use strict';
-
-  const awebooking = window.awebooking || {};
 
   /**
    * Scroll to first checked category.
@@ -39,6 +37,13 @@
     });
 
     $('.awebooking-tabs > li:first > a', $metabox).trigger('click');
+
+    // Sort rooms.
+    new Sortable(document.getElementById('js-sorting-rooms'), {
+      handle: '.abrs-sortable__handle',
+      animation: 150,
+    });
+
   });
 
-})(jQuery);
+})(jQuery, window.awebooking);

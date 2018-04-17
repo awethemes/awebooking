@@ -50,13 +50,18 @@ class Url_Generator {
 	 * @param  bool   $is_ssl     Force the SSL in return URL.
 	 * @return string
 	 */
-	public function route( $path = '/', $parameters, $is_ssl = false ) {
+	public function route( $path = '/', $parameters = [], $is_ssl = null ) {
 		if ( empty( $path ) ) {
 			$path = '/';
 		}
 
 		// If scheme not provide, guest by is_ssl().
-		$scheme = $is_ssl ? $is_ssl : ( is_ssl() ? 'https' : 'http' );
+		$scheme = ( is_null( $is_ssl ) && is_ssl() ) ? 'https' : 'http';
+
+		// Force to https.
+		if ( 'http' === $scheme && true === $is_ssl ) {
+			$scheme = 'https';
+		}
 
 		if ( get_option( 'permalink_structure' ) ) {
 			global $wp_rewrite;

@@ -57,7 +57,9 @@
    * @return {Object}
    */
   awebooking.dialog = function(selector) {
-    return $(selector).dialog({
+    const debounce = require('debounce');
+
+    const $dialog = $(selector).dialog({
       modal: true,
       width: 'auto',
       height: 'auto',
@@ -68,6 +70,12 @@
       dialogClass: 'wp-dialog awebooking-dialog',
       position: { my: 'center', at: 'center center-15%', of: window },
     });
+
+    $(window).resize(debounce(() => {
+      $dialog.dialog('option', 'position', { my: 'center', at: 'center center-15%', of: window });
+    }, 150));
+
+    return $dialog;
   },
 
   /**
@@ -132,12 +140,11 @@
         load: function(query, callback) {
           if (! query.length) {
             return callback();
+          } else {
+            ajaxSearch(query, callback);
           }
-
-          ajaxSearch(query, callback);
         },
       });
-
     });
   }
 

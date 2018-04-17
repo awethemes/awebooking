@@ -6,8 +6,8 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Pricing\Rate_Plan;
+use AweBooking\Model\Pricing\Rate;
 use AweBooking\Support\Traits\Fluent_Getter;
-use AweBooking\Reservation\Pricing\Room_Rate;
 use AweBooking\Support\Collection;
 
 class Room_Stay {
@@ -51,7 +51,7 @@ class Room_Stay {
 	/**
 	 * The room-rate.
 	 *
-	 * @var \AweBooking\Reservation\Pricing\Room_Rate
+	 * @var \AweBooking\Reservation\Pricing\Rate
 	 */
 	protected $room_rate;
 
@@ -73,10 +73,10 @@ class Room_Stay {
 	/**
 	 * Apply a rate price to this room-stay.
 	 *
-	 * @param  \AweBooking\Reservation\Pricing\Room_Rate $room_rate The room rate.
+	 * @param  \AweBooking\Reservation\Pricing\Rate $room_rate The room rate.
 	 * @return $this
 	 */
-	public function apply( Room_Rate $room_rate ) {
+	public function apply( Rate $room_rate ) {
 		$this->room_rate = $room_rate;
 
 		return $this;
@@ -142,9 +142,13 @@ class Room_Stay {
 	/**
 	 * Get the room_rate.
 	 *
-	 * @return \AweBooking\Reservation\Pricing\Room_Rate|null
+	 * @return \AweBooking\Reservation\Pricing\Rate|null
 	 */
 	public function get_room_rate() {
 		return $this->assigned_room;
+	}
+
+	public function get_price() {
+		return abrs_get_room_price();
 	}
 }

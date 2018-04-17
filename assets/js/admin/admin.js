@@ -60,7 +60,9 @@
    * @return {Object}
    */
   awebooking.dialog = function (selector) {
-    return $(selector).dialog({
+    var debounce = require('debounce');
+
+    var $dialog = $(selector).dialog({
       modal: true,
       width: 'auto',
       height: 'auto',
@@ -71,6 +73,12 @@
       dialogClass: 'wp-dialog awebooking-dialog',
       position: { my: 'center', at: 'center center-15%', of: window }
     });
+
+    $(window).resize(debounce(function () {
+      $dialog.dialog('option', 'position', { my: 'center', at: 'center center-15%', of: window });
+    }, 150));
+
+    return $dialog;
   },
 
   /**
@@ -139,9 +147,9 @@
         load: function load(query, callback) {
           if (!query.length) {
             return callback();
+          } else {
+            ajaxSearch(query, callback);
           }
-
-          ajaxSearch(query, callback);
         }
       });
     });
@@ -181,7 +189,75 @@
   });
 })(jQuery);
 
-},{"query-string":3}],2:[function(require,module,exports){
+},{"debounce":2,"query-string":4}],2:[function(require,module,exports){
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+},{}],3:[function(require,module,exports){
 'use strict';
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
@@ -277,7 +353,7 @@ module.exports = function (encodedURI) {
 	}
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 const strictUriEncode = require('strict-uri-encode');
 const decodeComponent = require('decode-uri-component');
@@ -493,7 +569,7 @@ exports.parseUrl = (input, options) => {
 	};
 };
 
-},{"decode-uri-component":2,"strict-uri-encode":4}],4:[function(require,module,exports){
+},{"decode-uri-component":3,"strict-uri-encode":5}],5:[function(require,module,exports){
 'use strict';
 module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
 

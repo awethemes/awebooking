@@ -1,7 +1,6 @@
-(function($) {
+(function($, plugin) {
   'use strict';
 
-  const plugin = window.awebooking || {};
   const DATE_FORMAT  = 'YYYY-MM-DD';
 
   class BookingScheduler {
@@ -12,6 +11,8 @@
      */
     constructor() {
       const self = this;
+
+      this.initBulkUpdate();
 
       this.scheduler = new ScheduleCalendar({
         el: '.scheduler',
@@ -37,8 +38,6 @@
       $('.scheduler__state-event, .scheduler__booking-event').each(function() {
         self.setupEventPopper(this);
       });
-
-      this.initBulkUpdate();
     }
 
     /**
@@ -156,4 +155,4 @@
     (new BookingScheduler);
   });
 
-})(jQuery);
+})(jQuery, window.awebooking);
