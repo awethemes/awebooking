@@ -12,6 +12,8 @@ $route->post(   '/calendar/bulk-update',               'Calendar_Controller@bulk
 $route->get(    '/settings',                           'Settings_Controller@index' );
 $route->post(   '/settings',                           'Settings_Controller@store' );
 
+$route->delete( '/room/{room:\d+}',                    'Room_Controller@destroy' );
+
 $route->get(    '/booking-room',                       'Booking_Room_Controller@create' );
 $route->post(   '/booking-room',                       'Booking_Room_Controller@store' );
 $route->get(    '/booking-room/{room_item:\d+}',       'Booking_Room_Controller@edit' );
