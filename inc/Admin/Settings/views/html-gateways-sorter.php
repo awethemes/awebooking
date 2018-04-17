@@ -8,15 +8,22 @@
 
 				<span class="abrs-sortable__order">
 					<?php if ( $gateway->is_enabled() ) : ?>
-						<span class="abrs-state-indicator abrs-state-indicator--on" title="<?php esc_html_e( 'Enabled', 'awebooking' ); ?>"></span>
+						<span class="abrs-state-indicator abrs-state-indicator--on tippy" title="<?php esc_html_e( 'Enabled', 'awebooking' ); ?>"></span>
 					<?php else : ?>
-						<span class="abrs-state-indicator" title="<?php esc_html_e( 'Disabled', 'awebooking' ); ?>"></span>
+						<span class="abrs-state-indicator tippy" title="<?php esc_html_e( 'Disabled', 'awebooking' ); ?>"></span>
 					<?php endif ?>
 				</span>
 			</div>
 
 			<div class="abrs-sortable__body">
 				<strong><?php echo esc_html( $gateway->get_method_title() ); ?></strong>
+			</div>
+
+			<div class="abrs-sortable__actions hidden">
+				<a href="<?php echo esc_url( abrs_admin_route( '/settings', [ 'setting' => 'checkout', 'section' => 'gateway_' . $gateway->get_method() ] ) ); // @codingStandardsIgnoreLine ?>">
+					<span class="screen-reader-text"><?php esc_html_e( 'Gateway Setting', 'awebooking' ); ?></span>
+					<span class="dashicons dashicons-admin-generic"></span>
+				</a>
 			</div>
 		</li>
 	<?php endforeach ?>

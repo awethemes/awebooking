@@ -33,7 +33,7 @@ class BACS_Gateway extends Gateway {
 	public function setup() {
 		$this->setting_fields();
 
-		$this->enabled     = 'on' === $this->get_option( 'enabled', 'off' );
+		$this->enabled     = $this->get_option( 'enabled' );
 		$this->title       = esc_html( $this->get_option( 'title' ) );
 		$this->description = esc_textarea( $this->get_option( 'description' ) );
 	}

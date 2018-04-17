@@ -6,6 +6,7 @@ use AweBooking\Component\Mail\Mailer;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Routing\Url_Generator;
 use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Gateway\Manager as Gateway_Manager;
 
 /* Constants */
 if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
@@ -45,7 +46,6 @@ function abrs_report( $e ) {
 function abrs_logger() {
 	return awebooking()->make( 'logger' );
 }
-
 
 /**
  * Gets the plugin URL.
@@ -96,6 +96,114 @@ function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
  */
 function abrs_admin_route( $path = '/', $parameters = [] ) {
 	return abrs_url()->admin_route( $path, $parameters );
+}
+
+/**
+ * Gets the gateway manager.
+ *
+ * @return array
+ */
+function abrs_payment_gateways() {
+	return awebooking()->make( Gateway_Manager::class );
+}
+
+/**
+ * Get list payment methods.
+ *
+ * @return array
+ */
+function abrs_list_payment_methods() {
+	$methods = apply_filters( 'awebooking/base_payment_methods', [
+		'cash' => esc_html__( 'Cash', 'awebooking' ),
+	]);
+
+	$gateways = awebooking()->make( 'gateways' )->enabled()
+		->map( function( $m ) {
+			return $m->get_method_title();
+		})->all();
+
+	return array_merge( $methods, $gateways );
+}
+
+/**
+ * Returns plugin current currency.
+ *
+ * @return string
+ */
+function abrs_current_currency() {
+	return abrs_option( 'currency', 'USD' );
+}
+
+/**
+ * Returns list of currencies.
+ *
+ * @return array[]
+ */
+function abrs_list_currencies() {
+	return abrs_collect( awebooking( 'currencies' )->all() )
+		->pluck( 'name', 'alpha3' )
+		->all();
+}
+
+/**
+ * Get the currency symbol by code.
+ *
+ * @param  string $currency The currency code.
+ * @return string
+ */
+function abrs_currency_symbol( $currency = null ) {
+	if ( is_null( $currency ) ) {
+		$currency = abrs_current_currency();
+	}
+
+	$symbols = apply_filters( 'awebooking/currency_symbols', Symbol::$symbols );
+
+	$symbol = array_key_exists( $currency, $symbols )
+		? $symbols[ $currency ]
+		: '';
+
+	return apply_filters( 'awebooking/currency_symbol', $symbol, $currency );
+}
+
+/**
+ * Get the currency name by code.
+ *
+ * @param  string $currency The currency code.
+ * @return string
+ */
+function abrs_currency_name( $currency = null ) {
+	if ( is_null( $currency ) ) {
+		$currency = abrs_current_currency();
+	}
+
+	$name = abrs_rescue( function() use ( $currency ) {
+		return awebooking( 'currencies' )->find( $currency )['name'];
+	});
+
+	return apply_filters( 'awebooking/currency_name', (string) $name, $currency );
+}
+
+/**
+ * Returns list of countries indexed by alpha2 code.
+ *
+ * @return array[]
+ */
+function abrs_list_countries() {
+	return abrs_collect( awebooking( 'countries' )->all() )
+		->pluck( 'name', 'alpha2' )
+		->all();
+}
+
+/**
+ * Returns list dropdown of currencies.
+ *
+ * @return array[]
+ */
+function abrs_list_dropdown_currencies() {
+	return abrs_collect( abrs_list_currencies() )
+		->transform( function( $name, $code ) {
+			return $name . ' (' . abrs_currency_symbol( $code ) . ')';
+		})->all();
 }
 
 /**
@@ -196,114 +304,6 @@ function abrs_infants_bookable() {
  */
 function abrs_maximum_scaffold_rooms() {
 	return (int) apply_filters( 'awebooking/maximum_scaffold_rooms', 25 );
-}
-
-/**
- * Returns plugin current currency.
- *
- * @return string
- */
-function abrs_current_currency() {
-	return abrs_option( 'currency', 'USD' );
-}
-
-/**
- * Returns list of currencies.
- *
- * @return array[]
- */
-function abrs_list_currencies() {
-	return abrs_collect( awebooking( 'currencies' )->all() )
-		->pluck( 'name', 'alpha3' )
-		->all();
-}
-
-/**
- * Get the currency symbol by code.
- *
- * @param  string $currency The currency code.
- * @return string
- */
-function abrs_currency_symbol( $currency = null ) {
-	if ( is_null( $currency ) ) {
-		$currency = abrs_current_currency();
-	}
-
-	$symbols = apply_filters( 'awebooking/currency_symbols', Symbol::$symbols );
-
-	$symbol = array_key_exists( $currency, $symbols )
-		? $symbols[ $currency ]
-		: '';
-
-	return apply_filters( 'awebooking/currency_symbol', $symbol, $currency );
-}
-
-/**
- * Get the currency name by code.
- *
- * @param  string $currency The currency code.
- * @return string
- */
-function abrs_currency_name( $currency = null ) {
-	if ( is_null( $currency ) ) {
-		$currency = abrs_current_currency();
-	}
-
-	$name = abrs_rescue( function() use ( $currency ) {
-		return awebooking( 'currencies' )->find( $currency )['name'];
-	});
-
-	return apply_filters( 'awebooking/currency_name', (string) $name, $currency );
-}
-
-/**
- * Returns list of countries indexed by alpha2 code.
- *
- * @return array[]
- */
-function abrs_list_countries() {
-	return abrs_collect( awebooking( 'countries' )->all() )
-		->pluck( 'name', 'alpha2' )
-		->all();
-}
-
-/**
- * Returns list dropdown of currencies.
- *
- * @return array[]
- */
-function abrs_list_dropdown_currencies() {
-	return abrs_collect( abrs_list_currencies() )
-		->transform( function( $name, $code ) {
-			return $name . ' (' . abrs_currency_symbol( $code ) . ')';
-		})->all();
-}
-
-/**
- * Get list payment gateways.
- *
- * @return array
- */
-function abrs_payment_gateways() {
-	return awebooking()->make( 'gateways' )->enabled();
-}
-
-/**
- * Get list payment methods.
- *
- * @return array
- */
-function abrs_list_payment_methods() {
-	$methods = apply_filters( 'awebooking/base_payment_methods', [
-		'cash' => esc_html__( 'Cash', 'awebooking' ),
-	]);
-
-	$gateways = awebooking()->make( 'gateways' )->enabled()
-		->map( function( $m ) {
-			return $m->get_method_title();
-		})->all();
-
-	return array_merge( $methods, $gateways );
 }
 
 /**
@@ -482,12 +482,12 @@ function arbs_page_permalink( $page ) {
 }
 
 /**
- * Create a static form builder.
+ * Create a new form builder.
  *
  * @param  string     $form_id The form ID.
  * @param  Model|null $model   Optional, the model data.
  * @return \AweBooking\Component\Form\Form_Builder
  */
-function abrs_create_form( $form_id, $model = null ) {
+function abrs_form_builder( $form_id, $model = null ) {
 	return new Form_Builder( $form_id, $model ?: 0, 'static' );
 }

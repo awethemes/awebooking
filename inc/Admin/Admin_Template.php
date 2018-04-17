@@ -77,7 +77,7 @@ class Admin_Template {
 			if ( $admin_template ) {
 				// If see the $page_title in $vars, set the admin_title.
 				if ( isset( $page_title ) && ! empty( $page_title ) ) {
-					$this->modify_admin_title();
+					$this->modify_admin_title( $page_title );
 				}
 
 				require_once ABSPATH . 'wp-admin/admin-header.php';

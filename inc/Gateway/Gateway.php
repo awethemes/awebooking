@@ -79,7 +79,7 @@ abstract class Gateway {
 	 * @return boolean
 	 */
 	public function is_enabled() {
-		return (bool) $this->enabled;
+		return 'on' === abrs_sanitize_checkbox( $this->enabled );
 	}
 
 	/**

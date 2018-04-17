@@ -30,7 +30,7 @@ class Manager {
 		$this->gateways = new Collection;
 
 		foreach ( $gateways as $gateway ) {
-			$this->register( $this->plugin->make( $gateway ) );
+			$this->register( is_string( $gateway ) ? $this->plugin->make( $gateway ) : $gateway );
 		}
 	}
 
