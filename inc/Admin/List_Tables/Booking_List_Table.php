@@ -67,6 +67,15 @@ class Booking_List_Table extends Abstract_List_Table {
 			];
 		}
 
+		// Filter the bookings by the booking id.
+		if ( ! empty( $_GET['_room'] ) ) {
+			$room_id = absint( $_GET['_room'] );
+
+			$bookings = abrs_get_bookings_by_room( $room_id );
+
+			$query_vars['post__in'] = array_merge( (array) $bookings, [ 0 ] );
+		}
+
 		// Merge booking statuses on "All".
 		if ( ! isset( $query_vars['post_status'] ) ) {
 			$post_statuses = abrs_list_booking_statuses();

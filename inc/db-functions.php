@@ -174,6 +174,31 @@ function abrs_clean_booking_item_cache( $item ) {
 }
 
 /**
+ * Get all bookings have room id.
+ *
+ * @param  int $room_id Room id
+ * @return array
+ */
+function abrs_get_bookings_by_room( $room_id, $booking_status = [] ) {
+	global $wpdb;
+
+	$query =  "SELECT `posts`.`ID` FROM {$wpdb->posts} AS posts ";
+	$query .= "INNER JOIN `{$wpdb->prefix}awebooking_booking_items` AS `booking_item` ON (posts.post_type = 'awebooking' AND `posts`.`ID` = `booking_item`.`booking_id`) ";
+
+	if ( $booking_status ) {
+		$query .= "AND posts.post_status IN ( '" . implode( "', '", $booking_status ) . "') ";
+	}
+
+	$query .= "INNER JOIN {$wpdb->prefix}awebooking_booking_itemmeta AS itemmeta ON (`booking_item`.`booking_item_id` = `itemmeta`.`booking_item_id` AND `itemmeta`.`meta_key` = '_room_id' ) ";
+	$query .= "WHERE `itemmeta`.`meta_value` = '{$room_id}' ";
+	$query .= "ORDER BY `posts`.`post_date` DESC";
+
+	$results = $wpdb->get_results( $query );
+
+	return array_map( 'absint', wp_list_pluck( $results, 'ID' ) );
+}
+
+/**
  * Search customers and return customer IDs.
  *
  * @param  string $term  The search term.

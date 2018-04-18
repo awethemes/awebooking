@@ -4,9 +4,11 @@ global $the_room_type;
 
 ?><div class="awebooking-panel abwrap" id="room-type-general" style="display: block;">
 
+	<div class="abrow arbs-postbox-title">
+		<div class="abcol"><h3><?php esc_html_e( 'Rooms', 'awebooking' ); ?></h3></div>
+	</div>
 	<div class="abrow">
 		<div class="abcol-6">
-			<label for="">Rooms</label>
 
 			<ul class="abrs-sortable" id="js-sorting-rooms">
 				<?php foreach ( $the_room_type->get_rooms() as $i => $room ) : ?>
@@ -22,7 +24,7 @@ global $the_room_type;
 						</div>
 
 						<div class="abrs-sortable__actions hidden">
-							<a href="#" target="_blank" title="<?php printf( esc_html__( 'Delete: %s', 'awebooking' ), esc_html( $room['name'] ) ); ?>">
+							<a href="<?php echo esc_url( wp_nonce_url( abrs_admin_route( "/room/{$room->get_id()}" ), 'delete_room_' . $room->get_id() ) ); ?>" data-method="abrs-delete" title="<?php printf( esc_html__( 'Delete: %s', 'awebooking' ), esc_html( $room['name'] ) ); ?>">
 								<span class="screen-reader-text"><?php echo esc_html__( 'Delete', 'awebooking' ); ?></span>
 								<span class="dashicons dashicons-no-alt"></span>
 							</a>
