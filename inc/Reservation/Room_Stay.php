@@ -149,6 +149,11 @@ class Room_Stay {
 	}
 
 	public function get_price() {
-		return abrs_get_room_price();
+		return abrs_retrieve_price([
+			'rate'         => $this->room_rate->get_id(),
+			'room_type'    => $this->room_type->get_id(),
+			'start_date'   => $this->timespan->get_start_date(),
+			'end_date'     => $this->timespan->get_end_date(),
+		]);
 	}
 }

@@ -491,3 +491,43 @@ function arbs_page_permalink( $page ) {
 function abrs_form_builder( $form_id, $model = null ) {
 	return new Form_Builder( $form_id, $model ?: 0, 'static' );
 }
+
+/**
+ * Define a constant if not defined.
+ *
+ * @param  string $constant The constant name.
+ * @param  mixed  $value    The constant value.
+ * @return void
+ */
+function abrs_maybe_define( $constant, $value ) {
+	if ( ! defined( $constant ) ) {
+		define( $constant, $value );
+	}
+}
+
+/**
+ * Sets time_limit if it is enabled.
+ *
+ * @param  int $limit Time limit.
+ * @return void
+ */
+function abrs_set_time_limit( $limit = 0 ) {
+	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
+	}
+}
+
+/**
+ * Sets nocache_headers which also disables page caching.
+ *
+ * @return void
+ */
+function abrs_nocache_headers() {
+	// Do not cache.
+	abrs_maybe_define( 'DONOTCACHEPAGE', true );
+	abrs_maybe_define( 'DONOTCACHEOBJECT', true );
+	abrs_maybe_define( 'DONOTCACHEDB', true );
+
+	// Set the headers to prevent caching for the different browsers.
+	nocache_headers();
+}

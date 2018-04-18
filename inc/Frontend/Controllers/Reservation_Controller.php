@@ -26,7 +26,7 @@ class Reservation_Controller {
 		$reservation = new Reservation( 'website' );
 
 		$reservation->set_currency( abrs_current_currency() );
-		$reservation->set_current_request( $res_request );
+		$reservation->set_last_request( $res_request );
 
 		if ( $request->has( 'book_room' ) ) {
 			$room = abrs_get_room( $request->get( 'book_room' ) );

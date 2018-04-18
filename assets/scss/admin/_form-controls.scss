@@ -100,13 +100,16 @@
   width: 320px;
 
   &:after {
-    left: 40%;
-    margin-left: -12px;
-    position: absolute;
-    z-index: 2;
-    font-size: 16px;
-    @include size(25px);
+    @include size(27px);
     @include pseudoicon("\f345");
+
+    left: 40%;
+    z-index: 2;
+    position: absolute;
+    margin-left: -12px;
+    font-size: 16px;
+    line-height: 27px;
+    vertical-align: middle;
   }
 
  .abcol-6 > .afc,
@@ -134,15 +137,15 @@
   input[name="check-in"] {
     border-right: none;
     padding-left: 32px !important;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   input[name="check-out"] {
     border-left: none;
     margin-left: -1px !important;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
 

@@ -220,11 +220,9 @@ class Installer {
 	 * @return array
 	 */
 	public function plugin_action_links( $links ) {
-		$action_links = [
-			'settings' => '<a href="' . admin_url( 'admin.php?page=awebooking-settings' ) . '" aria-label="' . esc_attr__( 'View AweBooking Settings', 'awebooking' ) . '">' . esc_html__( 'Settings', 'awebooking' ) . '</a>',
-		];
-
-		return array_merge( $action_links, $links );
+		return array_merge([
+			'settings' => '<a href="' . esc_url( admin_url( 'admin.php?awebooking=/settings' ) ) . '" aria-label="' . esc_attr__( 'View settings', 'awebooking' ) . '">' . esc_html__( 'Settings', 'awebooking' ) . '</a>',
+		], $links );
 	}
 
 	/**
@@ -241,13 +239,11 @@ class Installer {
 			return (array) $links;
 		}
 
-		$row_meta = [
+		return array_merge( (array) $links, [
 			'docs'       => '<a href="' . esc_url( 'http://docs.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'View documentation', 'awebooking' ) . '">' . esc_html__( 'Docs', 'awebooking' ) . '</a>',
 			'demo'       => '<a href="' . esc_url( 'http://demo.awethemes.com/awebooking' ) . '" aria-label="' . esc_attr__( 'Visit demo', 'awebooking' ) . '">' . esc_html__( 'Demo', 'awebooking' ) . '</a>',
 			'contribute' => '<a href="' . esc_url( 'https://github.com/awethemes/awebooking' ) . '" aria-label="' . esc_attr__( 'Contribute', 'awebooking' ) . '">' . esc_html__( 'Contribute', 'awebooking' ) . '</a>',
-		];
-
-		return array_merge( (array) $links, $row_meta );
+		]);
 	}
 
 	/**

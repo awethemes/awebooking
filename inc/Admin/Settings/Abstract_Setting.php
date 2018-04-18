@@ -51,59 +51,6 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 	}
 
 	/**
-	 * Output this setting.
-	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
-	 * @return void
-	 */
-	public function output( Request $request ) {
-		$this->prepare_fields();
-
-		// Get fields to prepare display.
-		$fields = $this->prop( 'fields' );
-
-		// Setup and print the sections.
-		if ( ! empty( $this->sections ) ) {
-			$this->current_section = $request->get( 'section',
-				Arr::first( array_keys( $this->sections ) )
-			);
-
-			// Get only fields in current section to display.
-			if ( array_key_exists( $this->current_section, $this->sections ) ) {
-				$fields = $this->sections[ $this->current_section ]['fields'];
-			}
-
-			$this->output_sections();
-		}
-
-		// Print the fields.
-		echo '<div class="cmb2-wrap awebooking-wrap"><div class="cmb2-metabox">';
-		foreach ( $fields as $field_args ) {
-			$this->render_field( $field_args );
-		}
-
-		echo '</div></div>';
-	}
-
-	/**
-	 * Output sections.
-	 *
-	 * @return void
-	 */
-	protected function output_sections() {
-		echo '<ul class="subsubsub">';
-
-		foreach ( $this->sections as $id => $section ) {
-			$id = sanitize_title( $id );
-			// @codingStandardsIgnoreLine
-			echo '<li><a href="' . esc_url( abrs_admin_route( '/settings', [ 'setting' => $this->get_id(), 'section' => $id ] ) ) . '" class="' . ( $this->current_section == $id ? 'current' : '' ) . '">' . esc_html( $section['title'] ) . '</a></li>';
-		}
-
-		echo '</ul><div class="clear"></div>';
-		echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
-	}
-
-	/**
 	 * Perform save setting.
 	 *
 	 * @param  \Awethemes\Http\Request $request The HTTP request.
@@ -152,5 +99,69 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 
 		// Save the options.
 		return $options->set();
+	}
+
+	/**
+	 * Output this setting.
+	 *
+	 * @param  \Awethemes\Http\Request $request The HTTP request.
+	 * @return void
+	 */
+	public function output( Request $request ) {
+		$this->prepare_fields();
+
+		// Get fields to prepare display.
+		$fields = $this->prop( 'fields' );
+
+		// Setup and print the sections.
+		if ( $this->sections && $this->current_section ) {
+			// Get only fields in current section to display.
+			if ( array_key_exists( $this->current_section, $this->sections ) ) {
+				$fields = $this->sections[ $this->current_section ]['fields'];
+			}
+
+			$this->output_sections();
+		}
+
+		// Print the fields.
+		echo '<div class="cmb2-wrap awebooking-wrap"><div class="cmb2-metabox">';
+		foreach ( $fields as $field_args ) {
+			$this->render_field( $field_args );
+		}
+
+		echo '</div></div>';
+	}
+
+	/**
+	 * Output sections.
+	 *
+	 * @return void
+	 */
+	protected function output_sections() {
+		echo '<ul class="subsubsub">';
+
+		foreach ( $this->sections as $id => $section ) {
+			$id = sanitize_title( $id );
+			// @codingStandardsIgnoreLine
+			echo '<li><a href="' . esc_url( abrs_admin_route( '/settings', [ 'setting' => $this->get_id(), 'section' => $id ] ) ) . '" class="' . ( $this->current_section == $id ? 'current' : '' ) . '">' . esc_html( $section['title'] ) . '</a></li>';
+		}
+
+		echo '</ul><div class="clear"></div>';
+		echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function prepare_fields() {
+		parent::prepare_fields();
+
+		if ( empty( $this->sections ) ) {
+			return;
+		}
+
+		$this->current_section = abrs_request()->get( 'section',
+			Arr::first( array_keys( $this->sections ) )
+		);
 	}
 }

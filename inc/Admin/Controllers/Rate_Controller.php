@@ -37,7 +37,7 @@ class Rate_Controller extends Controller {
 
 		if ( $sanitized->count() > 0 && $request->filled( 'calendar', 'check-in', 'check-out' ) ) {
 			// Handle set custom room price.
-			$updated = abrs_apply_room_price([
+			$updated = abrs_apply_price([
 				'rate'       => $request->get( 'calendar' ),
 				'room_type'  => $request->get( 'calendar' ),
 				'start_date' => $request->get( 'check-in' ),
@@ -73,7 +73,7 @@ class Rate_Controller extends Controller {
 
 			foreach ( $room_types as $room_type ) {
 				// Handle set custom room price.
-				$updated = abrs_apply_room_price([
+				$updated = abrs_apply_price([
 					'rate'       => $room_type,
 					'room_type'  => $room_type,
 					'start_date' => $request->get( 'check-in' ),

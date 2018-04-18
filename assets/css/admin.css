@@ -1044,13 +1044,8 @@ table.awebooking-table tfoot td {
 }
 
 .abrs-input-dates.abrow:after {
-  left: 40%;
-  margin-left: -12px;
-  position: absolute;
-  z-index: 2;
-  font-size: 16px;
-  width: 25px;
-  height: 25px;
+  width: 27px;
+  height: 27px;
   content: "";
   font-family: "Dashicons";
   speak: none;
@@ -1062,6 +1057,13 @@ table.awebooking-table tfoot td {
   margin: 0;
   text-indent: 0;
   text-align: center;
+  left: 40%;
+  z-index: 2;
+  position: absolute;
+  margin-left: -12px;
+  font-size: 16px;
+  line-height: 27px;
+  vertical-align: middle;
 }
 
 .abrs-input-dates.abrow .abcol-6 > .afc,
@@ -1089,15 +1091,15 @@ table.awebooking-table tfoot td {
 .abrs-input-dates.abrow input[name="check-in"] {
   border-right: none;
   padding-left: 32px !important;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .abrs-input-dates.abrow input[name="check-out"] {
   border-left: none;
   margin-left: -1px !important;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 /* Inline colorpicker */
@@ -1673,6 +1675,11 @@ span.flatpickr-weekday {
 
 .cmb2-wrap.awebooking-wrap select {
   margin-top: 1px;
+}
+
+.cmb2-wrap.awebooking-wrap textarea {
+  width: 100%;
+  height: 150px;
 }
 
 .cmb2-wrap.awebooking-wrap textarea,

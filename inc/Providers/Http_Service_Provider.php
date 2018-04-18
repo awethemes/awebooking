@@ -32,8 +32,6 @@ class Http_Service_Provider extends Service_Provider {
 
 		add_action( 'parse_request', [ $this, 'dispatch' ], 1 );
 		add_action( 'current_screen', [ $this, 'admin_dispatch' ], 1 );
-
-		add_action( 'awebooking/register_routes', [ $this, 'register_routes' ], 1 );
 	}
 
 	/**
@@ -127,17 +125,6 @@ class Http_Service_Provider extends Service_Provider {
 		 */
 		do_action( 'awebooking/route_binding', $binder );
 	}
-
-	/**
-	 * Register font-end routes.
-	 *
-	 * @param \FastRoute\RouteCollector $route The route collector.
-	 * @access private
-	 */
-	public function register_routes( $route ) {
-		require trailingslashit( __DIR__ ) . '/../Frontend/routes.php';
-	}
-
 
 	/**
 	 * Dispatch the incoming request (on front-end).

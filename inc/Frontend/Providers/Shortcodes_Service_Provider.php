@@ -12,6 +12,7 @@ class Shortcodes_Service_Provider extends Service_Provider {
 	 */
 	public function init() {
 		$shortcodes = apply_filters( 'awebooking/shortcodes', [
+			'awebooking_checkout'           => \AweBooking\Frontend\Shortcodes\Checkout_Shortcode::class,
 			'awebooking_search_form'        => \AweBooking\Frontend\Shortcodes\Search_Form_Shortcode::class,
 			'awebooking_search_results'     => \AweBooking\Frontend\Shortcodes\Search_Results_Shortcode::class,
 			'awebooking_check_availability' => \AweBooking\Frontend\Shortcodes\Search_Results_Shortcode::class, // Deprecated.

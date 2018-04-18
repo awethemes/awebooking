@@ -30,7 +30,7 @@ class Reservation {
 	 *
 	 * @var \AweBooking\Reservation\Request
 	 */
-	protected $current_request;
+	protected $last_request;
 
 	/**
 	 * Create new reservation.
@@ -81,18 +81,18 @@ class Reservation {
 	 *
 	 * @return \AweBooking\Reservation\Request
 	 */
-	public function get_current_request() {
-		return $this->current_request;
+	public function get_last_request() {
+		return $this->last_request;
 	}
 
 	/**
 	 * Sets the current request.
 	 *
-	 * @param  \AweBooking\Reservation\Request $current_request The request instance.
+	 * @param  \AweBooking\Reservation\Request $last_request The request instance.
 	 * @return $this
 	 */
-	public function set_current_request( Request $current_request ) {
-		$this->current_request = $current_request;
+	public function set_last_request( Request $last_request ) {
+		$this->last_request = $last_request;
 
 		return $this;
 	}

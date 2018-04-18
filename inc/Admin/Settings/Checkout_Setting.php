@@ -43,7 +43,7 @@ class Checkout_Setting extends Abstract_Setting {
 			'id'         => 'list_gateway_order',
 			'type'       => 'include',
 			'name'       => esc_html__( 'Gateway Display Order', 'awebooking' ),
-			'include'    => trailingslashit( __DIR__ ) . 'views/html-gateways-sorter.php',
+			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-gateways-sorter.php',
 		]);
 
 		// Register the gateways custom fields.
