@@ -6,18 +6,18 @@ use AweBooking\Model\Common\Guest_Counts;
 
 class Room_Type_List_Table extends Abstract_List_Table {
 	/**
+	 * The room type instance in current loop.
+	 *
+	 * @var \AweBooking\Model\Room_Type
+	 */
+	protected $room_type;
+
+	/**
 	 * The post type name.
 	 *
 	 * @var string
 	 */
 	protected $list_table = Constants::ROOM_TYPE;
-
-	/**
-	 * The current loop room type.
-	 *
-	 * @var \AweBooking\Model\Room_Type
-	 */
-	protected $room_type;
 
 	/**
 	 * {@inheritdoc}

@@ -253,3 +253,48 @@ function abrs_search_customers( $term, $limit = 0 ) {
 
 	return $results;
 }
+
+/**
+ * Search booking data for a term and return IDs.
+ *
+ * Use for 'post__in' in WP_Query.
+ *
+ * @param  string $term The term to search.
+ * @return array
+ */
+function abrs_search_booking( $term ) {
+	global $wpdb;
+
+	// Filters the search fields.
+	$search_fields = array_map( 'abrs_clean', apply_filters( 'awebooking/search_booking_fields', [
+		'_customer_first_name',
+		'_customer_last_name',
+		'_customer_address',
+		'_customer_company',
+		'_customer_email',
+		'_customer_phone',
+	]));
+
+	// Prepare search bookings.
+	$booking_ids = [];
+
+	if ( is_numeric( $term ) ) {
+		$booking_ids[] = absint( $term );
+	}
+
+	if ( ! empty( $search_fields ) ) {
+		$search1 = $wpdb->get_col($wpdb->prepare(
+			"SELECT DISTINCT `p1`.`post_id` FROM {$wpdb->postmeta} AS `p1` WHERE `p1`.`meta_value` LIKE %s AND `p1`.`meta_key` IN ('" . implode( "','", array_map( 'esc_sql', $search_fields ) ) . "')", // @codingStandardsIgnoreLine
+			'%' . $wpdb->esc_like( abrs_clean( $term ) ) . '%'
+		));
+
+		$search2 = $wpdb->get_col( $wpdb->prepare(
+			"SELECT `booking_id` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_name` LIKE %s",
+			'%' . $wpdb->esc_like( abrs_clean( $term ) ) . '%'
+		));
+
+		$booking_ids = array_unique( array_merge( $booking_ids, $search1, $search2 ) );
+	}
+
+	return apply_filters( 'awebooking/search_booking_results', $booking_ids, $term, $search_fields );
+}

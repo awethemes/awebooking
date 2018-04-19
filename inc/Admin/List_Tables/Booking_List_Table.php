@@ -5,6 +5,13 @@ use AweBooking\Constants;
 
 class Booking_List_Table extends Abstract_List_Table {
 	/**
+	 * The booking in the current loop.
+	 *
+	 * @var \AweBooking\Model\Booking
+	 */
+	protected $booking;
+
+	/**
 	 * The post type name.
 	 *
 	 * @var string
@@ -12,10 +19,81 @@ class Booking_List_Table extends Abstract_List_Table {
 	protected $list_table = Constants::BOOKING;
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		add_action( 'parse_query', [ $this, 'search_custom_fields' ] );
+		add_filter( 'get_search_query', [ $this, 'correct_search_label' ] );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function get_row_actions( $actions, $post ) {
 		return []; // No row actions.
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function define_columns( $columns ) {
+		if ( empty( $columns ) && ! is_array( $columns ) ) {
+			$columns = [];
+		}
+
+		// Temporary remove columns, we will rebuild late.
+		unset( $columns['title'], $columns['comments'], $columns['date'] );
+
+		$show_columns                  = [];
+		$show_columns['booking_title'] = esc_html__( 'Title', 'awebooking' );
+		$show_columns['date']          = esc_html__( 'Date', 'awebooking' );
+
+		return array_merge( $columns, $show_columns );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function prepare_row_data( $post_id ) {
+		global $the_booking;
+
+		if ( is_null( $this->booking ) || $this->booking->get_id() !== (int) $post_id ) {
+			$the_booking   = abrs_get_booking( $post_id );
+			$this->booking = $the_booking;
+		}
+	}
+
+	/**
+	 * Display the title.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_title_column() {
+		global $the_booking;
+
+		if ( $the_booking['customer_id'] ) {
+			$userdata = get_userdata( $the_booking['customer_id'] );
+			$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $the_booking['customer_id'] ), esc_html( $userdata->display_name ) ) : '';
+		} elseif ( $customber_name = $the_booking->get_customer_name() ) {
+			$username = $customber_name;
+		} elseif ( $the_booking['customer_company'] ) {
+			$username = trim( $the_booking->get_customer_company() );
+		} else {
+			$username = esc_html__( 'Guest', 'awebooking' );
+		}
+
+		printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
+			'<a href="' . admin_url( 'post.php?post=' . absint( $the_booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $the_booking->get_id() ) . '</strong></a>',
+			$username
+		);
+
+		if ( $the_booking['customer_email'] ) {
+			echo '<small class="meta email"><a href="' . esc_url( 'mailto:' . $the_booking->get_customer_email() ) . '">' . esc_html( $the_booking->get_customer_email() ) . '</a></small>';
+		}
+
+		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
 	}
 
 	/**
@@ -90,5 +168,53 @@ class Booking_List_Table extends Abstract_List_Table {
 		}
 
 		return $query_vars;
+	}
+
+	/**
+	 * Correct the label when searching bookings.
+	 *
+	 * @param  mixed $query Current search query.
+	 * @return string
+	 */
+	public function correct_search_label( $query ) {
+		global $pagenow, $typenow, $wp;
+
+		if ( 'edit.php' !== $pagenow || 'awebooking' !== $typenow
+			|| ! get_query_var( 'perform_booking_search' )
+			|| ! isset( $_GET['s'] ) ) {
+			return $query;
+		}
+
+		return abrs_clean( wp_unslash( $_GET['s'] ) ); // WPCS: input var ok, sanitization ok.
+	}
+
+	/**
+	 * Search custom fields as well as content.
+	 *
+	 * @param WP_Query $wp The WP_Query object.
+	 *
+	 * @access private
+	 */
+	public function search_custom_fields( $wp ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow
+			|| empty( $wp->query_vars['s'] )
+			|| 'awebooking' !== $wp->query_vars['post_type']
+			|| ! isset( $_GET['s'] ) ) {
+			return;
+		}
+
+		$post_ids = abrs_search_booking( abrs_clean( wp_unslash( $_GET['s'] ) ) ); // WPCS: input var ok, sanitization ok.
+
+		if ( ! empty( $post_ids ) ) {
+			// Remove "s" - we don't want to search order name.
+			unset( $wp->query_vars['s'] );
+
+			$wp->query_vars['perform_booking_search'] = true;
+
+			// Search by found posts.
+			$wp->query_vars['post__in'] = array_merge( $post_ids, [ 0 ] );
+		}
 	}
 }

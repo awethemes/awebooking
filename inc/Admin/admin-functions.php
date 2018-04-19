@@ -105,7 +105,7 @@ function abrs_create_page( $slug, $option = '', $page_title = '', $page_content 
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' )  AND post_name = %s LIMIT 1;", $slug ) );
 	}
 
-	$valid_page_found = apply_filters( 'woocommerce_create_page_id', $valid_page_found, $slug, $page_content );
+	$valid_page_found = apply_filters( 'awebooking/create_page_id', $valid_page_found, $slug, $page_content );
 
 	if ( $valid_page_found ) {
 		if ( $option ) {
