@@ -15,7 +15,7 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 	<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
 	<hr class="wp-header-end">
 
-	<div class="abrs-card abrs-card--page" style="width: 850px;">
+	<div class="abrs-card abrs-card--page" style="width: 910px;">
 		<div class="abrs-card__header">
 			<form method="GET" action="<?php echo esc_url( abrs_admin_route( '/booking-room' ) ); ?>">
 				<input type="hidden" name="awebooking" value="/booking-room">
@@ -41,12 +41,17 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 			<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/booking-room' ) ); ?>">
 				<?php wp_nonce_field( 'add_booking_room', '_wpnonce' ); ?>
 
+				<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
+				<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>">
+				<input type="hidden" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>">
+
 				<?php if ( isset( $results ) ) : ?>
 					<table class="widefat fixed striped availability-table">
 						<thead>
 							<tr>
 								<th style="width: 38px;"><span class="screen-reader-text"><?php echo esc_html__( 'Image', 'awebooking' ); ?></span></th>
-								<th style="width: 25%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
+								<th style="width: 20%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
+								<th style="width: 15%;"><?php echo esc_html__( 'Room', 'awebooking' ); ?></th>
 								<th style="width: 30%;"><?php echo esc_html__( 'Occupancy', 'awebooking' ); ?></th>
 								<th><?php echo esc_html__( 'Price', 'awebooking' ); ?></th>
 							</tr>

@@ -6,14 +6,14 @@ class Booking_Cancelled extends Booking_Notification {
 	 * {@inheritdoc}
 	 */
 	public function get_markdown_contents() {
-		return abrs_option( 'email_cancelled_content' );
+		return abrs_get_option( 'email_cancelled_content' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_subject() {
-		return $this->format_string( abrs_option( 'email_cancelled_subject' ) );
+		return $this->format_string( abrs_get_option( 'email_cancelled_subject' ) );
 	}
 
 	/**

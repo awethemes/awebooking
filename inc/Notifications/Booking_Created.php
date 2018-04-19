@@ -6,14 +6,14 @@ class Booking_Created extends Booking_Notification {
 	 * {@inheritdoc}
 	 */
 	public function get_markdown_contents() {
-		return abrs_option( 'email_new_content' );
+		return abrs_get_option( 'email_new_content' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_subject() {
-		return $this->format_string( abrs_option( 'email_new_subject' ) );
+		return $this->format_string( abrs_get_option( 'email_new_subject' ) );
 	}
 
 	/**

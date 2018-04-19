@@ -147,8 +147,10 @@ class Request implements \ArrayAccess, \JsonSerializable {
 			case 'nights':
 				return $this->timespan->nights();
 			case 'check_in':
+			case 'start_date':
 				return $this->timespan->get_start_date();
 			case 'check_out':
+			case 'end_date':
 				return $this->timespan->get_end_date();
 			case 'adults':
 			case 'children':

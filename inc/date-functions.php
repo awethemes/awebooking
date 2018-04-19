@@ -106,7 +106,7 @@ function abrs_weekday_name( $weekday, $type = 'full' ) {
  * @param  string $day_label The day_label, "abbrev", "initial", "full".
  * @return array
  */
-function abrs_week_days( $day_label = 'full' ) {
+function abrs_days_of_week( $day_label = 'full' ) {
 	global $wp_locale;
 
 	$week_days = [];

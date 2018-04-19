@@ -131,7 +131,7 @@ function abrs_list_payment_methods() {
  * @return string
  */
 function abrs_current_currency() {
-	return abrs_option( 'currency', 'USD' );
+	return abrs_get_option( 'currency', 'USD' );
 }
 
 /**
@@ -213,7 +213,7 @@ function abrs_list_dropdown_currencies() {
  * @param  mixed  $default The default value.
  * @return mixed
  */
-function abrs_option( $key, $default = null ) {
+function abrs_get_option( $key, $default = null ) {
 	return awebooking()->get_option( $key, $default );
 }
 
@@ -276,7 +276,7 @@ function abrs_running_on_multilanguage() {
  * @return bool
  */
 function abrs_multiple_hotels() {
-	return apply_filters( 'awebooking/is_multiple_hotels', abrs_option( 'enable_location', false ) );
+	return apply_filters( 'awebooking/is_multiple_hotels', abrs_get_option( 'enable_location', false ) );
 }
 
 /**
@@ -285,7 +285,7 @@ function abrs_multiple_hotels() {
  * @return bool
  */
 function abrs_children_bookable() {
-	return apply_filters( 'awebooking/is_children_bookable', abrs_option( 'children_bookable', true ) );
+	return apply_filters( 'awebooking/is_children_bookable', abrs_get_option( 'children_bookable', true ) );
 }
 
 /**
@@ -294,7 +294,7 @@ function abrs_children_bookable() {
  * @return bool
  */
 function abrs_infants_bookable() {
-	return apply_filters( 'awebooking/is_infants_bookable', abrs_option( 'infants_bookable', true ) );
+	return apply_filters( 'awebooking/is_infants_bookable', abrs_get_option( 'infants_bookable', true ) );
 }
 
 /**
@@ -460,7 +460,7 @@ function abrs_page_id( $page ) {
 		$page = $page_alias[ $page ];
 	}
 
-	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_option( 'page_' . $page ) );
+	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_get_option( 'page_' . $page ) );
 
 	return $page ? absint( $page ) : -1;
 }

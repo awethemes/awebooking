@@ -44,10 +44,12 @@ $room_items = $the_booking->get_items( 'line_item' );
 					<td><?php print abrs_optional( $room_item->get_guest() )->as_string(); // WPCS: XSS OK. ?></td>
 
 					<td style="text-align: right;">
-						<?php if ( $the_booking ) : ?>
+						<?php if ( $the_booking->is_editable() ) : ?>
+							<?php $action_link = abrs_admin_route( '/booking-room/' . $room_item->get_id() ); ?>
+
 							<div class="row-actions">
 								<span class="edit"><a href="<?php echo esc_url( $room_item->get_edit_link() ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> | </span>
-								<span class="trash"><a href="<?php echo esc_url( $room_item->get_delete_link() ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
+								<span class="trash"><a href="<?php echo esc_url( wp_nonce_url( $action_link, 'delete_room_' . $room_item->get_id() ) ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
 							</div>
 						<?php endif; ?>
 					</td>
@@ -64,7 +66,7 @@ $room_items = $the_booking->get_items( 'line_item' );
 	<tfoot>
 		<tr>
 			<td colspan="4">
-				<?php if ( $the_booking ) : ?>
+				<?php if ( $the_booking->is_editable() ) : ?>
 
 					<a class="button abrs-button" href="<?php echo esc_url( abrs_admin_route( '/booking-room', [ 'refer' => $the_booking->get_id() ] ) ); ?>">
 						<span><?php esc_html_e( 'Add room', 'awebooking' ); ?></span>

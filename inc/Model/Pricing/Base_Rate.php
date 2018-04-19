@@ -1,11 +1,6 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
-use AweBooking\Ruler\Rule;
-use AweBooking\Support\Fluent;
-use AweBooking\Support\Decimal;
-use AweBooking\Reservation\Request;
-
 class Base_Rate implements Rate {
 	/**
 	 * The room-type instance.
@@ -79,7 +74,10 @@ class Base_Rate implements Rate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function apply( Request $request ) {
-		return true;
+	public function get_restrictions() {
+		return apply_filters( 'awebooking/rate/get_restrictions', [
+			'min_los' => $this->instance->get( 'rate_min_los' ),
+			'max_los' => $this->instance->get( 'rate_max_los' ),
+		], $this );
 	}
 }

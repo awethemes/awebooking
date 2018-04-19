@@ -1,6 +1,9 @@
 <?php
 namespace AweBooking\Model\Booking;
 
+use AweBooking\Constants;
+use AweBooking\Calendar\Event\Event;
+use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 
 class Room_Item extends Item {
@@ -17,6 +20,26 @@ class Room_Item extends Item {
 	 * @var string
 	 */
 	protected $type = 'line_item';
+
+	public function set_timespan( Timespan $timespan ) {
+		$state_calendar = abrs_create_calendar( $this->attributes['room_id'], 'state' );
+		$booking_calendar = abrs_create_calendar( $this->attributes['room_id'], 'booking' );
+
+		$period = $timespan->to_period( Constants::GL_NIGHTLY );
+
+		$state_calendar->store(
+			new Event( $state_calendar->get_resource(), $period->start_date, $period->end_date, Constants::STATE_BOOKING )
+		);
+
+		$booking_calendar->store(
+			new Event( $state_calendar->get_resource(), $period->start_date, $period->end_date, $this->attributes['booking_id'] )
+		);
+
+		$this->attributes['check_in']  = $timespan->get_start_date();
+		$this->attributes['check_out'] = $timespan->get_end_date();
+
+		$this->save();
+	}
 
 	/**
 	 * Get the Timespan of check-in, check-out.

@@ -179,7 +179,7 @@ abstract class Gateway {
 			$default = $this->setting_fields[ $key ]['default'];
 		}
 
-		return abrs_option( $prefix . '_' . $key, $default );
+		return abrs_get_option( $prefix . '_' . $key, $default );
 	}
 
 	/**

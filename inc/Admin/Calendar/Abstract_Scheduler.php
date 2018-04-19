@@ -166,7 +166,7 @@ abstract class Abstract_Scheduler {
 		);
 
 		// Create the period for the Calendar.
-		$duration = absint( abrs_option( 'scheduler_display_duration', 30 ) );
+		$duration = absint( abrs_get_option( 'scheduler_display_duration', 30 ) );
 
 		// Higher duration can be affected to browser render.
 		if ( $duration > 120 ) { // Limit about 4 months.

@@ -4,17 +4,15 @@ namespace AweBooking\Reservation\Search;
 use WP_Query;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
-use AweBooking\Model\Pricing\Rate_Plan;
-use AweBooking\Reservation\Request;
-
-use AweBooking\Model\Room;
 use AweBooking\Model\Common\Timespan;
-
+use AweBooking\Model\Pricing\Rate_Plan;
+use AweBooking\Model\Pricing\Standard_Plan;
 use AweBooking\Calendar\Finder\Finder;
 use AweBooking\Calendar\Finder\State_Finder;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Calendar\Provider\Core\State_Provider;
 use AweBooking\Calendar\Provider\Cached_Provider;
+use AweBooking\Calendar\Provider\Core\State_Provider;
+use AweBooking\Reservation\Request;
 use AweBooking\Reservation\Constraints\MinMax_Nights_Constraint;
 
 class Search {
@@ -78,32 +76,36 @@ class Search {
 
 		// Prepare the results.
 		$results = new Results;
+		$request = $this->request;
 
 		foreach ( $room_types as $room_type ) {
-			// Create the availability for each room type.
-			$availability = new Availability( $this->request, $room_type,
-				$this->perform_filter_rooms( $room_type ),
-				$this->perform_filter_plans( $room_type )
+			// Check the availability of rooms.
+			$rooms = new Availability( $room_type, $request,
+				$this->perform_find_rooms( $room_type )
 			);
 
 			// No rooms left, ignore this from the results.
-			if ( count( $availability->remain_rooms() ) == 0 ) {
+			if ( count( $rooms->remains() ) == 0 ) {
 				continue;
 			}
 
-			$results->push( $availability );
+			// Check the availability of rate plans.
+			$plans = $this->check_rate_plans( $room_type );
+
+			// Push to the results.
+			$results->push( compact( 'request', 'room_type', 'rooms', 'plans' ) );
 		}
 
 		return $results;
 	}
 
 	/**
-	 * Perform filter the rooms available.
+	 * Perform find the rooms available.
 	 *
 	 * @param  \AweBooking\Model\Room_Type $room_type The room type.
 	 * @return \AweBooking\Calendar\Finder\Response
 	 */
-	protected function perform_filter_rooms( Room_Type $room_type ) {
+	protected function perform_find_rooms( $room_type ) {
 		// Requires at least 1 night.
 		$timespan = $this->request->get_timespan();
 		$timespan->requires_minimum_nights( 1 );
@@ -129,46 +131,96 @@ class Search {
 	}
 
 	/**
-	 * Perform filter the rate plans.
+	 * Perform check the available of rate_plans.
 	 *
 	 * @param  \AweBooking\Model\Room_Type $room_type The room type.
+	 * @return \AweBooking\Support\Collection
+	 */
+	protected function check_rate_plans( $room_type ) {
+		$rate_plans = $room_type
+			->get_rate_plans()
+			->filter( $this->filter_rate_plans() )
+			->reject( function ( $plan ) {
+				return count( $plan->get_rates() ) === 0;
+			})->values();
+
+		// Prepare response.
+		$plans = abrs_collect();
+
+		foreach ( $rate_plans as $plan ) {
+			$rates = new Availability( $plan, $this->request,
+				$this->perform_find_rates( $plan )
+			);
+
+			$pricing = new Pricing( $room_type, $rates );
+
+			$plans->put( $plan->get_id(), compact( 'plan', 'rates', 'pricing' ) );
+		}
+
+		return $plans;
+	}
+
+	/**
+	 * Filter rate_plans by request.
+	 *
+	 * @return Clousure
+	 */
+	protected function filter_rate_plans() {
+		return function( $plan ) {
+			if ( empty( $this->request['rate_plans'] ) ) {
+				return $plan;
+			}
+
+			// Special filter for 'standard' plan.
+			if ( 'standard' === $this->request['rate_plans'] ) {
+				return $plan instanceof Standard_Plan;
+			}
+
+			return in_array( $plan->get_id(), wp_parse_id_list( $this->request['rate_plans'] ) );
+		};
+	}
+
+	/**
+	 * Perform filter the rate plans.
+	 *
+	 * @param  \AweBooking\Model\Pricing\Rate_Plan $rate_plan The room type.
 	 * @return \AweBooking\Calendar\Finder\Response
 	 */
-	protected function perform_filter_plans( Room_Type $room_type ) {
-		// Requires at least 1 night.
+	protected function perform_find_rates( $rate_plan ) {
 		$timespan = $this->request->get_timespan();
-		$timespan->requires_minimum_nights( 1 );
 
 		// Transform the rate plans into resources.
-		$resources = $room_type->get_rate_plans()->map( function( $rate_plan ) use ( $room_type ) {
-			$resource = new Resource( $rate_plan->get_id() );
+		$resources = $rate_plan->get_rates()
+			->map( function( $rate ) use ( $rate_plan ) {
+				$resource = new Resource( $rate->get_id() );
 
-			$resource->set_reference( $rate_plan );
-			$resource->with_constraints( $this->get_rate_plans_constraints( $rate_plan, $room_type ) );
+				$resource->set_reference( $rate );
+				$resource->with_constraints( $this->get_rate_constraints( $rate, $rate_plan ) );
 
-			return $resource;
-		});
+				return $resource;
+			});
 
 		return ( new Finder( $resources ) )
-			->using( $this->constraints )
+			// ->using( $this->constraints )
 			->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 	}
 
 	/**
-	 * [get_rate_plans_constraints description]
+	 * Returns the rate constraints based on a rate.
 	 *
-	 * @param  Rate_Plan $rate_plan [description]
-	 * @param  \AweBooking\Model\Room_Type $room_type The room type.
+	 * @param  \AweBooking\Model\Pricing\Rate      $rate      The rate instance.
+	 * @param  \AweBooking\Model\Pricing\Rate_Plan $rate_plan The rate plan instance.
 	 * @return array
 	 */
-	protected function get_rate_plans_constraints( Rate_Plan $rate_plan, Room_Type $room_type ) {
-		$restrictions = $rate_plan->get_restrictions();
+	protected function get_rate_constraints( $rate, $rate_plan ) {
+		$restrictions = $rate->get_restrictions();
 
-		$constraints = [
-			new MinMax_Nights_Constraint( $this->request, $rate_plan->get_id(), $restrictions['min_los'], $restrictions['max_los'] ),
-		];
+		$constraints = [];
+		if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
+			$constraints[] = new MinMax_Nights_Constraint( $this->request, $rate->get_id(), $restrictions['min_los'], $restrictions['max_los'] );
+		}
 
-		return apply_filters( 'awebooking/reservation/rate_plans_constraints', $constraints, $rate_plan, $room_type );
+		return apply_filters( 'awebooking/reservation/rate_plans_constraints', $constraints, $rate_plan );
 	}
 
 	/**
@@ -190,7 +242,7 @@ class Search {
 			'booking_infants'  => ( $guestcounts && $guestcounts->get_infants() ) ? $guestcounts->get_infants()->get_count() : -1,
 		];
 
-		// Get only room type if requested.
+		// Filter get only room types.
 		if ( ! empty( $this->request['only'] ) ) {
 			$wp_query_args['post__in'] = wp_parse_id_list( $this->request['only'] );
 		}

@@ -52,7 +52,7 @@ function abrs_format_datetime( $date, $format = null ) {
  * @return string
  */
 function abrs_get_price_format() {
-	$position = abrs_option( 'currency_position' );
+	$position = abrs_get_option( 'currency_position' );
 
 	switch ( $position ) {
 		case 'left':
@@ -101,9 +101,9 @@ function abrs_format_price( $amount, $currency = null ) {
 	$args = apply_filters( 'awebooking/format_price_args', [
 		'currency'           => $currency ?: abrs_current_currency(), // Fallback use default currency.
 		'price_format'       => abrs_get_price_format(),
-		'decimals'           => abrs_option( 'price_number_decimals', 2 ),
-		'decimal_separator'  => abrs_option( 'price_decimal_separator', '.' ),
-		'thousand_separator' => abrs_option( 'price_thousand_separator', ',' ),
+		'decimals'           => abrs_get_option( 'price_number_decimals', 2 ),
+		'decimal_separator'  => abrs_get_option( 'price_decimal_separator', '.' ),
+		'thousand_separator' => abrs_get_option( 'price_thousand_separator', ',' ),
 	]);
 
 	// Format amount use number_format().

@@ -56,6 +56,10 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_metaboxes() {
+		if ( ! function_exists( 'post_categories_meta_box' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
+		}
+
 		// Booking meta-boxes.
 		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->output_metabox( 'metabox.booking' ), Constants::BOOKING, 'normal', 'high' );
 		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->output_metabox( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );

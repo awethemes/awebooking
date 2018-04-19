@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
-use AweBooking\Reservation\Constraints\Minmax_Days_Constraint;
-
 class Standard_Plan implements Rate_Plan {
 	/**
 	 * The room-type instance.
@@ -72,10 +70,20 @@ class Standard_Plan implements Rate_Plan {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_restrictions() {
-		return apply_filters( 'awebooking/standard_plan/get_restrictions', [
-			'min_los' => $this->instance->get( 'rate_min_los' ),
-			'max_los' => $this->instance->get( 'rate_max_los' ),
-		], $this );
+	public function get_rates() {
+		if ( is_null( $this->rates ) ) {
+			// Multi rates only available in pro version, please upgrade :).
+			$rates = apply_filters( 'awebooking/standard_plan/setup_rates', [], $this );
+
+			$this->rates = abrs_collect( $rates )
+				->prepend( new Base_Rate( $this->instance ) )
+				->filter( function ( $plan ) {
+					return $plan instanceof Rate;
+				})->sortBy( function( $plan ) {
+					return $plan->get_priority();
+				})->values();
+		}
+
+		return $this->rates;
 	}
 }

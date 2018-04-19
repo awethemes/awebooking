@@ -33,7 +33,7 @@ class Room_Price_Form extends Form_Builder {
 			'attributes'        => [ 'tabindex' => '-1' ],
 			'select_all_button' => false,
 			'options_cb'        => function() {
-				return abrs_week_days( 'abbrev' );
+				return abrs_days_of_week( 'abbrev' );
 			},
 		]);
 

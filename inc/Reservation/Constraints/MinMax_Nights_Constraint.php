@@ -20,14 +20,27 @@ class MinMax_Nights_Constraint implements Constraint {
 	 */
 	protected $resources;
 
+	/**
+	 * Minimum nights stay.
+	 *
+	 * @var int
+	 */
 	protected $min_nights;
+
+	/**
+	 * Maximum nights stay.
+	 *
+	 * @var int
+	 */
 	protected $max_nights;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Request $request   The reservation request.
-	 * @param array                           $resources Array of resources as ID.
+	 * @param \AweBooking\Reservation\Request $request    The reservation request.
+	 * @param array                           $resources  Array of resources as ID.
+	 * @param int                             $min_nights Minimum nights stay.
+	 * @param int                             $max_nights Maximum nights stay.
 	 */
 	public function __construct( Request $request, $resources = [], $min_nights = 0, $max_nights = 0 ) {
 		$this->request    = $request;
@@ -40,9 +53,12 @@ class MinMax_Nights_Constraint implements Constraint {
 	 * {@inheritdoc}
 	 */
 	public function apply( Response $response ) {
-		$resources = $response->get_resources();
+		$timespan = $this->request->timespan;
 
-		$nights = $this->request->timespan->nights();
+		// Outside the period, just leave.
+		if ( ! $timespan->to_period()->contains( $response->get_period() ) ) {
+			return;
+		}
 
 		foreach ( $response->get_included() as $resource => $include ) {
 			// In case we provided a resources but not found in current loop just ignore them.
@@ -50,11 +66,38 @@ class MinMax_Nights_Constraint implements Constraint {
 				continue;
 			}
 
-			if ( $this->min_nights && $nights < $this->min_nights ) {
-				$response->reject( $include['resource'], Response::CONSTRAINT, $this );
-			} elseif ( $this->max_nights && $nights > $this->max_nights ) {
+			if ( ( $this->min_nights && $timespan->nights() < $this->min_nights ) ||
+				 ( $this->max_nights && $timespan->nights() > $this->max_nights ) ) {
 				$response->reject( $include['resource'], Response::CONSTRAINT, $this );
 			}
+		}
+	}
+
+	/**
+	 * Returns a text describing for this constraint.
+	 *
+	 * @return string
+	 */
+	public function as_string() {
+		/* translators: %s Number of nights */
+		$minimum_stay = $this->min_nights ? sprintf( _n( '%s night', '%s nights', $this->min_nights, 'awebooking' ), number_format_i18n( $this->min_nights ) ) : '';
+
+		/* translators: %s Number of nights */
+		$maximum_stay = $this->max_nights ? sprintf( _n( '%s night', '%s nights', $this->max_nights, 'awebooking' ), number_format( $this->max_nights ) ) : '';
+
+		switch ( true ) {
+			case ( $this->min_nights && $this->max_nights ):
+				return ( $this->min_nights == $this->max_nights )
+					/* translators: %s Minimum nights stay (1 day, 2 days, etc.) */
+					? sprintf( esc_html__( 'The stay must be for %s', 'awebooking' ), $minimum_stay )
+					/* translators: %1$s Minimum nights stay, %$2s Maximum nights stay */
+					: sprintf( esc_html__( 'The stay must be at least %1$s and at most %2$s', 'awebooking' ), $minimum_stay, $maximum_stay );
+			case ( $this->min_nights ):
+				/* translators: %s Minimum nights stay (1 day, 2 days, etc.) */
+				return sprintf( esc_html__( 'The stay must be for at least %s', 'awebooking' ), $minimum_stay );
+			case ( $this->max_nights ):
+				/* translators: %s Maximum nights stay (1 day, 2 days, etc.) */
+				return sprintf( esc_html__( 'The stay cannot be more than %s', 'awebooking' ), $maximum_stay );
 		}
 	}
 }

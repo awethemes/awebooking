@@ -84,7 +84,7 @@ if ( ! function_exists( 'abrs_sanitize_decimal' ) ) {
 	 */
 	function abrs_sanitize_decimal( $number ) {
 		$locale = localeconv();
-		$decimals = [ abrs_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] ];
+		$decimals = [ abrs_get_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] ];
 
 		// If not float number, clean input number and remove locale decimals.
 		// Then keep only numeric, '-', comma and dot character.

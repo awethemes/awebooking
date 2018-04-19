@@ -10,6 +10,22 @@ table.awebooking-table {
 }
 
 table.availability-table {
+  td {
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .book-actions {
+    top: 1em;
+    right: 1em;
+    position: absolute;
+    display: none;
+  }
+
+  tr:hover .book-actions {
+    display: block;
+  }
+
   .select-occupancy {
     display: flex;
     margin-left: -2px;
@@ -32,7 +48,6 @@ table.availability-table {
     }
 
     select {
-      margin: 0;
       width: 100%;
     }
   }

@@ -1,10 +1,10 @@
 <?php
 namespace AweBooking\Reservation\Search;
 
-use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Reservation\Request;
 use AweBooking\Calendar\Finder\Response;
+use AweBooking\Calendar\Finder\Constraint;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Availability {
@@ -18,39 +18,30 @@ class Availability {
 	protected $request;
 
 	/**
-	 * The Room_Type model.
+	 * The resource model (Room_Type or Rate_Plan).
 	 *
-	 * @var \AweBooking\Model\Room_Type
+	 * @var mixed
 	 */
-	protected $room_type;
+	protected $resource;
 
 	/**
-	 * The response of rooms.
+	 * The finder response items (rooms or rate plans).
 	 *
 	 * @var \AweBooking\Calendar\Finder\Response
 	 */
-	protected $response_rooms;
-
-	/**
-	 * The response of rate plans.
-	 *
-	 * @var \AweBooking\Calendar\Finder\Response
-	 */
-	protected $response_plans;
+	protected $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Request      $request The reservation request.
-	 * @param \AweBooking\Model\Room_Type          $room_type      The room_type.
-	 * @param \AweBooking\Calendar\Finder\Response $response_rooms The response_rooms.
-	 * @param \AweBooking\Calendar\Finder\Response $response_plans The response_plans.
+	 * @param mixed                                $resource The resource instance.
+	 * @param \AweBooking\Reservation\Request      $request  The reservation request.
+	 * @param \AweBooking\Calendar\Finder\Response $response The finder response.
 	 */
-	public function __construct( Request $request, Room_Type $room_type, Response $response_rooms, Response $response_plans ) {
-		$this->request        = $request;
-		$this->room_type      = $room_type;
-		$this->response_rooms = $response_rooms;
-		$this->response_plans = $response_plans;
+	public function __construct( $resource, Request $request, Response $response ) {
+		$this->resource = $resource;
+		$this->request  = $request;
+		$this->response = $response;
 	}
 
 	/**
@@ -63,62 +54,69 @@ class Availability {
 	}
 
 	/**
-	 * Gets the room_type.
+	 * Gets the resource.
 	 *
-	 * @return \AweBooking\Model\Room_Type
+	 * @return mixed
 	 */
-	public function get_room_type() {
-		return $this->room_type;
+	public function get_resource() {
+		return $this->resource;
 	}
 
 	/**
-	 * Get the response of rooms.
+	 * Get the response.
 	 *
 	 * @return \AweBooking\Calendar\Finder\Response
 	 */
-	public function get_response_rooms() {
-		return $this->response_rooms;
+	public function get_response() {
+		return $this->response;
 	}
 
 	/**
-	 * Get the response of rate plans.
+	 * Select first (or last) remain item.
 	 *
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @param  string $possiton The possiton to select, first or last.
+	 * @return mixed|null
 	 */
-	public function get_response_plans() {
-		return $this->response_plans;
+	public function select( $possiton = 'first' ) {
+		$remains = $this->remains();
+
+		if ( count( $remains ) === 0 ) {
+			return;
+		}
+
+		return ( 'first' === $possiton )
+			? $remains->first()['item']
+			: $remains->last()['item'];
 	}
 
 	/**
-	 * Determines if room still remain.
+	 * Determines if a item still remain.
 	 *
-	 * @param  \AweBooking\Model\Room $room The room_unit instance.
+	 * @param  int $item The item ID.
 	 * @return bool
 	 */
-	public function remain( $room ) {
-		$room_id = ( $room instanceof Room ) ? $room->get_id() : absint( $room );
-
-		return $this->response_rooms->remain( $room_id );
+	public function remain( $item ) {
+		return $this->response->remain( $item );
 	}
 
 	/**
-	 * Returns the remain rooms left.
+	 * Returns the remains left.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	public function remain_rooms() {
-		return abrs_collect( $this->response_rooms->get_included() )
-			->transform( $this->transform_callback() );
+	public function remains() {
+		return abrs_collect( $this->response->get_included() )
+			->transform( $this->transform_item_callback() );
 	}
 
 	/**
-	 * Returns the excluded rooms.
+	 * Returns the excludes items.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	public function excluded_rooms() {
-		return abrs_collect( $this->response_rooms->get_excluded() )
-			->transform( $this->transform_callback() );
+	public function excludes() {
+		return abrs_collect( $this->response->get_excluded() )
+			->transform( $this->transform_item_callback() );
 	}
 
 	/**
@@ -126,12 +124,25 @@ class Availability {
 	 *
 	 * @return \Closure
 	 */
-	protected function transform_callback() {
+	protected function transform_item_callback() {
 		return function ( $matching ) {
+			if ( ! $reference = $matching['resource']->get_reference() ) {
+				throw new \RuntimeException( 'Invalid resource.' );
+			}
+
+			// Build the message.
+			$message = Reason::get_message( $matching['reason'] );
+
+			if ( isset( $matching['constraint'] )
+				&& $matching['constraint'] instanceof Constraint
+				&& method_exists( $matching['constraint'], 'as_string' ) ) {
+				$message = $matching['constraint']->as_string();
+			}
+
 			return [
-				'room'           => abrs_get_room( $matching['resource']->get_id() ),
-				'reason'         => $matching['reason'],
-				'reason_message' => Reason::get_message( $matching['reason'] ),
+				'item'    => $reference,
+				'reason'  => $matching['reason'],
+				'message' => $message,
 			];
 		};
 	}

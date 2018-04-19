@@ -136,7 +136,7 @@ class Setup_Environment {
 			'capabilities'        => $capabilities,
 		]));
 
-		if ( abrs_option( 'enable_location', false ) ) {
+		if ( abrs_get_option( 'enable_location', false ) ) {
 			register_taxonomy( Constants::HOTEL_LOCATION, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_location_args', [
 				'labels'              => [
 					'name'                  => esc_html_x( 'Locations', 'Location plural name', 'awebooking' ),

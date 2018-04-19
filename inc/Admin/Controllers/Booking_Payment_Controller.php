@@ -123,7 +123,7 @@ class Booking_Payment_Controller extends Controller {
 		// Delete the payment item.
 		$payment_item->delete();
 
-		abrs_admin_notices( esc_html__( 'Payment item has been updated successfully!', 'awebooking' ), 'info' )->dialog();
+		abrs_admin_notices( esc_html__( 'The payment has been destroyed!', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $payment_item['booking_id'], 'raw' ) );
 	}

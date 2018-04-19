@@ -57,7 +57,7 @@ class Guest_Counts {
 	 *
 	 * @return int
 	 */
-	public function total() {
+	public function get_totals() {
 		return array_reduce( $this->guest_counts, function( $total, $guest_count ) {
 			return $total + $guest_count->get_count();
 		}, 0 );

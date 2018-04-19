@@ -7,7 +7,7 @@ class Reason {
 	const INVALID_STATE = 'invalid_state';
 	const SELECTED_ROOM = 'selected_room';
 	const BOOKED_ROOM   = 'booked_room';
-	const UNKNOWN       = 'unknown';
+	const UNKNOWN       = 'no_reason';
 
 	/**
 	 * Get the reason message.

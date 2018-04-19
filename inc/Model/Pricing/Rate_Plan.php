@@ -3,44 +3,44 @@ namespace AweBooking\Model\Pricing;
 
 interface Rate_Plan {
 	/**
-	 * Get the ID.
+	 * Gets the ID.
 	 *
 	 * @return int
 	 */
 	public function get_id();
 
 	/**
-	 * Get the name.
+	 * Gets the rates.
+	 *
+	 * @return array \AweBooking\Model\Pricing[]
+	 */
+	public function get_rates();
+
+	/**
+	 * Gets the name.
 	 *
 	 * @return string
 	 */
 	public function get_name();
 
 	/**
-	 * Get the policies.
+	 * Gets the policies.
 	 *
 	 * @return string
 	 */
 	public function get_policies();
 
 	/**
-	 * Get the inclusions.
+	 * Gets the inclusions.
 	 *
 	 * @return string
 	 */
 	public function get_inclusions();
 
 	/**
-	 * Get the priority.
+	 * Gets the priority.
 	 *
 	 * @return int
 	 */
 	public function get_priority();
-
-	/**
-	 * Get all restrictions.
-	 *
-	 * @return array
-	 */
-	public function get_restrictions();
 }

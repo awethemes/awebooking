@@ -210,31 +210,31 @@ function abrs_retrieve_price( array $args ) {
 		'rate'         => '',
 		'room_type'    => '',
 		'start_date'   => '',
+		'timespan'     => '',
 		'end_date'     => '',
 		'granularity'  => Constants::GL_NIGHTLY,
 	]);
 
-	// Create the timespan.
-	$timespan = abrs_create_timespan([
-		'start_date'  => $args['start_date'],
-		'end_date'    => $args['end_date'],
-		'min_nights'  => ( Constants::GL_NIGHTLY === $args['granularity'] ) ? 1 : 0,
-		'strict'      => false,
-	]);
+	if ( ! $args['timespan'] instanceof Timespan ) {
+		// Create the timespan.
+		$timespan = abrs_create_timespan([
+			'start_date'  => $args['start_date'],
+			'end_date'    => $args['end_date'],
+			'min_nights'  => ( Constants::GL_NIGHTLY === $args['granularity'] ) ? 1 : 0,
+			'strict'      => false,
+		]);
 
-	// Leave if timespan error.
-	if ( is_wp_error( $timespan ) ) {
-		return $timespan;
-	}
-
-	// Check the room type exists.
-	if ( empty( $args['room_type'] ) || ! $room_type = abrs_get_room_type( $args['room_type'] ) ) {
-		return new WP_Error( 'invalid_room_type', esc_html__( 'Invalid Room Type ID', 'awebooking' ) );
+		// Leave if timespan error.
+		if ( is_wp_error( $timespan ) ) {
+			return $timespan;
+		}
 	}
 
 	// Resolve the room rate.
-	if ( empty( $args['rate'] ) || $args['rate'] == $room_type->get_id() ) {
+	if ( empty( $args['rate'] ) ) {
 		$rate = new Base_Rate( $room_type->get_id() );
+	} else {
+		$rate = $args['rate'];
 	}
 
 	// Create the calendar and get all events.
@@ -242,7 +242,7 @@ function abrs_retrieve_price( array $args ) {
 
 	// Get the events itemized.
 	$itemized = abrs_create_calendar( $resource, 'pricing' )
-		->get_events( $timespan->to_period( $args['granularity'] ) )
+		->get_events( $args['timespan']->to_period( $args['granularity'] ) )
 		->itemize();
 
 	// Calcuate price & breakdown.
