@@ -9,6 +9,53 @@ table.awebooking-table {
   }
 }
 
+table.availability-table {
+  .select-occupancy {
+    display: flex;
+    margin-left: -2px;
+    margin-right: -2px;
+
+    > p,
+    > div {
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      flex-basis: 0;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    label {
+      display: block;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    select {
+      margin: 0;
+      width: 100%;
+    }
+  }
+}
+
+table.debug-rooms__table {
+  width: 350px;
+  max-width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: solid 1px #eee;
+  }
+
+  th {
+    width: 100px;
+  }
+}
+
 /* CMB2 flex table */
 .cmb2-flex-table {
   display: flex;

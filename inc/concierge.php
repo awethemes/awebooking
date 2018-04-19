@@ -21,7 +21,7 @@ use AweBooking\Support\Carbonate;
  * @param  array $args The arguments.
  * @return bool|WP_Error
  */
-function abrs_block_room( array $args ) {
+function abrs_block_room( $args ) {
 	return abrs_apply_state( Constants::STATE_UNAVAILABLE, $args );
 }
 
@@ -33,7 +33,7 @@ function abrs_block_room( array $args ) {
  * @param  array $args The arguments.
  * @return bool|WP_Error
  */
-function abrs_unblock_room( array $args ) {
+function abrs_unblock_room( $args ) {
 	return abrs_apply_state( Constants::STATE_AVAILABLE, $args );
 }
 
@@ -44,7 +44,7 @@ function abrs_unblock_room( array $args ) {
  * @param  array $args  The arguments.
  * @return bool|WP_Error
  */
-function abrs_apply_state( $state, array $args ) {
+function abrs_apply_state( $state, $args ) {
 	$args = wp_parse_args( $args, [
 		'room'        => 0,
 		'start_date'  => '',
@@ -53,31 +53,16 @@ function abrs_apply_state( $state, array $args ) {
 		'granularity' => Constants::GL_NIGHTLY,
 	]);
 
-	// Create the timespan.
-	$timespan = abrs_create_timespan([
-		'strict'     => false,
-		'start_date' => $args['start_date'],
-		'end_date'   => $args['end_date'],
-		'min_nights' => ( Constants::GL_NIGHTLY === $args['granularity'] ) ? 1 : 0,
-	]);
+	$prepared = _abrs_prepare_room_state( $args );
 
-	// Leave if timespan error.
-	if ( is_wp_error( $timespan ) ) {
-		return $timespan;
+	if ( is_wp_error( $prepared ) ) {
+		return $prepared;
 	}
 
-	// Check the room exists.
-	if ( empty( $args['room'] ) || ! $room = abrs_get_room( $args['room'] ) ) {
-		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
-	}
+	list( $calendar, $events ) = $prepared;
 
 	// Fire action before apply room state.
 	do_action( 'awebooking/prepare_apply_room_state', $state, $args );
-
-	// Create the calendar and get all events.
-	$calendar = abrs_create_calendar( $room, 'state' );
-
-	$events = $calendar->get_events( $timespan->to_period( $args['granularity'] ) );
 
 	foreach ( $events as $event ) {
 		if ( $event->get_value() == $state ) {
@@ -106,7 +91,38 @@ function abrs_apply_state( $state, array $args ) {
 	return true;
 }
 
-function abrs_retrieve_state( array $args ) {
+function abrs_retrieve_state( $args ) {
+}
+
+/**
+ * [_abrs_prepare_room_state description]
+ *
+ * @param  [type] $args [description]
+ * @return [type]
+ */
+function _abrs_prepare_room_state( $args ) {
+	$timespan = abrs_create_timespan([
+		'strict'     => false,
+		'start_date' => $args['start_date'],
+		'end_date'   => $args['end_date'],
+		'min_nights' => ( Constants::GL_NIGHTLY === $args['granularity'] ) ? 1 : 0,
+	]);
+
+	// Leave if timespan error.
+	if ( is_wp_error( $timespan ) ) {
+		return $timespan;
+	}
+
+	// Check the room exists.
+	if ( empty( $args['room'] ) || ! $room = abrs_get_room( $args['room'] ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
+	}
+
+	// Create the calendar and get all events.
+	$calendar = abrs_create_calendar( $room, 'state' );
+	$events   = $calendar->get_events( $timespan->to_period( $args['granularity'] ) );
+
+	return [ $calendar, $events ];
 }
 
 /**

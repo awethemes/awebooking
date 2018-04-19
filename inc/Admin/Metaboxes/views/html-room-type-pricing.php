@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	<div class="abrow arbs-postbox-title">
+	<div class="abrow abrs-postbox-title">
 		<div class="abcol">
 			<h3><?php esc_html_e( 'Restrictions', 'awebooking' ); ?></h3>
 			<p><?php esc_html_e( 'Limit the availability of the rate.', 'awebooking' ); ?></p>

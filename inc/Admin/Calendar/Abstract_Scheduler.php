@@ -279,9 +279,8 @@ abstract class Abstract_Scheduler {
 		return abrs_collect( $room_types->posts )
 			->map_into( Room_Type::class )
 			->reject( function ( $r ) {
-				return $r->get_total_rooms() === 0;
-			})
-			->values();
+				return count( $r->get_rooms() ) === 0;
+			})->values();
 	}
 
 	/**

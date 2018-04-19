@@ -2,9 +2,9 @@
 namespace AweBooking\Reservation\Constraints;
 
 use AweBooking\Reservation\Reservation;
-use AweBooking\Reservation\Searcher\Reason;
-use AweBooking\Reservation\Searcher\Constraint;
-use AweBooking\Reservation\Searcher\Availability;
+use AweBooking\Reservation\Search\Reason;
+use AweBooking\Reservation\Search\Constraint;
+use AweBooking\Reservation\Search\Availability;
 
 class Session_Reservation_Constraint implements Constraint {
 	/**

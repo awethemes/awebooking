@@ -330,14 +330,23 @@
 
 /* No image */
 
-.abrs-no-image {
-  display: inline-block;
-  box-sizing: border-box;
+.abrs-no-image,
+.abrs-thumb-image {
   width: 38px;
   height: 38px;
-  background-color: #f7f7f7;
-  border: solid 1px #eee;
+  display: inline-block;
+  box-sizing: border-box;
   border-radius: 50px;
+  border: solid 1px #eee;
+  background-color: #f7f7f7;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.abrs-no-image > img,
+.abrs-thumb-image > img {
+  width: 100%;
+  height: auto;
 }
 
 p.awebooking-no-items {
@@ -470,6 +479,51 @@ table.awebooking-table th,
 table.awebooking-table thead td,
 table.awebooking-table tfoot td {
   font-size: inherit;
+}
+
+table.availability-table .select-occupancy {
+  display: flex;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+table.availability-table .select-occupancy > p,
+table.availability-table .select-occupancy > div {
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  flex-basis: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+table.availability-table .select-occupancy label {
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+table.availability-table .select-occupancy select {
+  margin: 0;
+  width: 100%;
+}
+
+table.debug-rooms__table {
+  width: 350px;
+  max-width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+}
+
+table.debug-rooms__table th,
+table.debug-rooms__table td {
+  padding: 5px;
+  text-align: left;
+  border-bottom: solid 1px #eee;
+}
+
+table.debug-rooms__table th {
+  width: 100px;
 }
 
 /* CMB2 flex table */
@@ -685,7 +739,15 @@ table.awebooking-table tfoot td {
   margin-left: auto;
   margin-right: auto;
   background-color: #fff;
-  box-shadow: 1px 2px 20px #ddd;
+  border: solid 1px #ddd;
+}
+
+.abrs-card--page {
+  width: 780px;
+  max-width: 100%;
+  border-color: #ccc;
+  box-shadow: 1px 2px 30px rgba(0, 0, 0, 0.25);
+  margin-top: 1em;
 }
 
 .abrs-card__body,
@@ -700,7 +762,6 @@ table.awebooking-table tfoot td {
 }
 
 .abrs-card__header {
-  margin-top: 1em;
   background-color: #fbfbfb;
   border-bottom: solid 1px #eee;
 }
@@ -727,22 +788,17 @@ table.awebooking-table tfoot td {
   color: #333;
 }
 
-.abrs-card--page {
-  width: 780px;
-  max-width: 100%;
-}
-
-.abrs-card--page select {
+.abrs-card__body select {
   width: 25em;
   max-width: 100%;
 }
 
-.abrs-card--page textarea {
+.abrs-card__body textarea {
   width: 100%;
   max-width: 100%;
 }
 
-.abrs-card--page .cmb-row {
+.abrs-card__body .cmb-row {
   padding: 1em 0;
   box-sizing: border-box;
   display: flex;
@@ -751,8 +807,8 @@ table.awebooking-table tfoot td {
   margin-left: -1em;
 }
 
-.abrs-card--page .cmb-th,
-.abrs-card--page .cmb-td {
+.abrs-card__body .cmb-th,
+.abrs-card__body .cmb-td {
   padding: 0;
   float: none !important;
   box-sizing: border-box;
@@ -763,7 +819,7 @@ table.awebooking-table tfoot td {
   padding-left: 1em;
 }
 
-.abrs-card--page .cmb-th {
+.abrs-card__body .cmb-th {
   color: #444;
   font-weight: normal;
   vertical-align: middle;
@@ -771,22 +827,27 @@ table.awebooking-table tfoot td {
   max-width: 25%;
 }
 
-.abrs-card--page .cmb-th + .cmb-td {
+.abrs-card__body .cmb-th + .cmb-td {
   flex: 0 0 75%;
   max-width: 75%;
 }
 
-.abrs-card--page .cmb-th > label {
+.abrs-card__body .cmb-th > label {
   padding: 0;
 }
 
-.abrs-card--page .submit > .button,
-.abrs-card--page .submit > .button-link {
+.abrs-card__body .submit > .button,
+.abrs-card__body .submit > .button-link {
   vertical-align: middle;
 }
 
-.abrs-card--page .submit > .button-link.abrs-fright {
+.abrs-card__body .submit > .button-link.abrs-fright {
   margin-top: 4px;
+}
+
+.abrs-card__body table {
+  border: none;
+  box-shadow: none;
 }
 
 .cmb2-onoffswitch {
@@ -1039,14 +1100,17 @@ table.awebooking-table tfoot td {
 
 /* Dates */
 
-.abrs-input-dates.abrow {
-  width: 320px;
+.abrs-input-dates {
+  width: 280px;
+  display: flex;
+  position: relative;
 }
 
-.abrs-input-dates.abrow:after {
+.abrs-input-dates:after,
+.abrs-input-dates:before {
   width: 27px;
   height: 27px;
-  content: "";
+  content: "";
   font-family: "Dashicons";
   speak: none;
   font-weight: normal;
@@ -1057,46 +1121,54 @@ table.awebooking-table tfoot td {
   margin: 0;
   text-indent: 0;
   text-align: center;
-  left: 40%;
+  top: 0;
   z-index: 2;
   position: absolute;
-  margin-left: -12px;
   font-size: 16px;
   line-height: 27px;
   vertical-align: middle;
-}
-
-.abrs-input-dates.abrow .abcol-6 > .afc,
-.abrs-input-dates.abrow .abcol-6 > .dashicons {
-  top: 6px;
-  left: 12px;
-  z-index: 2;
-  position: absolute;
   pointer-events: none;
-  font-size: 14px;
+}
+
+.abrs-input-dates:after {
+  left: 50%;
+  margin-left: -13px;
+  content: "\f345";
+}
+
+.abrs-input-dates:before {
+  left: 3px;
   color: #03a9f4;
+  content: "\e005";
+  font-family: awebooking-webfont;
 }
 
-.abrs-input-dates.abrow input[type="text"] {
-  width: 100%;
+.abrs-input-dates input {
+  width: 50%;
   margin: 0;
-  padding: 3px 10px !important;
+  box-shadow: none;
+  cursor: default;
+  padding-left: 32px !important;
 }
 
-.abrs-input-dates.abrow input[type="text"]:focus {
+.abrs-input-dates input:focus,
+.abrs-input-dates input.active,
+.abrs-input-dates input:focus + input,
+.abrs-input-dates input.active + input {
   z-index: 1;
   position: relative;
+  box-shadow: none;
+  border-color: #03a9f4;
 }
 
-.abrs-input-dates.abrow input[name="check-in"] {
-  border-right: none;
-  padding-left: 32px !important;
+.abrs-input-dates input:first-child {
+  border-right: none !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.abrs-input-dates.abrow input[name="check-out"] {
-  border-left: none;
+.abrs-input-dates input:last-child {
+  border-left: none !important;
   margin-left: -1px !important;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -1598,23 +1670,23 @@ span.flatpickr-weekday {
   font-size: 13px !important;
 }
 
-.tippy-tooltip.abrs-theme {
+.tippy-tooltip.abrs-tippy-theme {
   color: #444;
   background-color: #fff;
   font-size: 13px;
-  box-shadow: 1px 2px 7px rgba(0, 0, 0, 0.07);
   width: 180px;
   border-radius: 1px;
   padding: 0;
+  box-shadow: 1px 2px 7px rgba(0, 0, 0, 0.07);
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.abrs-theme .tippy-arrow {
+.tippy-popper[x-placement^=top] .tippy-tooltip.abrs-tippy-theme .tippy-arrow {
   border-top-color: #fff;
   -webkit-transform: scale(1.3);
   transform: scale(1.3);
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.abrs-theme .tippy-arrow {
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.abrs-tippy-theme .tippy-arrow {
   border-bottom-color: #fff;
   -webkit-transform: scale(1.3);
   transform: scale(1.3);
@@ -1823,20 +1895,20 @@ span.flatpickr-weekday {
   vertical-align: middle;
 }
 
-.arbs-postbox-title {
+.abrs-postbox-title {
   padding: 0.6em 1em;
   background-color: #fafafa;
 }
 
-.arbs-postbox-title h3,
-.arbs-postbox-title h4 {
+.abrs-postbox-title h3,
+.abrs-postbox-title h4 {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 12px;
   text-transform: uppercase;
 }
 
-.arbs-postbox-title p {
+.abrs-postbox-title p {
   margin-top: 5px;
   margin-bottom: 0;
 }
@@ -2282,18 +2354,18 @@ table.wp-list-table .column-thumb > a > img {
 }
 
 @media only screen and (max-width: 782px) {
-  .abrs-card--page .cmb-row {
+  .abrs-card__body .cmb-row {
     padding: 0;
     margin-bottom: 1em;
   }
 
-  .abrs-card--page .cmb-th,
-  .abrs-card--page .cmb-th + .cmb-td {
+  .abrs-card__body .cmb-th,
+  .abrs-card__body .cmb-th + .cmb-td {
     flex: 0 0 100%;
     max-width: 100%;
   }
 
-  .abrs-card--page .cmb-th > label {
+  .abrs-card__body .cmb-th > label {
     margin-bottom: 7px;
   }
 

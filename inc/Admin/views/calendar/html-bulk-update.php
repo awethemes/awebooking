@@ -2,7 +2,7 @@
 
 use AweBooking\Support\Carbonate;
 
-$bulk_controls = abrs_form_builder( 'bulk_state_form' );
+$bulk_controls = abrs_create_form( 'bulk_state_form' );
 
 ?>
 

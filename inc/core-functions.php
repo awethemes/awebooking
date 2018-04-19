@@ -314,9 +314,9 @@ function abrs_maximum_scaffold_rooms() {
 function abrs_list_booking_statuses() {
 	return apply_filters( 'awebooking/list_booking_statuses', [
 		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
-		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
 		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
 		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
+		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
 		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
 		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
 		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),
@@ -473,7 +473,7 @@ function abrs_page_id( $page ) {
  * @param  string $page The retrieve page.
  * @return string
  */
-function arbs_page_permalink( $page ) {
+function abrs_page_permalink( $page ) {
 	$page_id = abrs_page_id( $page );
 
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
@@ -488,21 +488,8 @@ function arbs_page_permalink( $page ) {
  * @param  Model|null $model   Optional, the model data.
  * @return \AweBooking\Component\Form\Form_Builder
  */
-function abrs_form_builder( $form_id, $model = null ) {
+function abrs_create_form( $form_id, $model = null ) {
 	return new Form_Builder( $form_id, $model ?: 0, 'static' );
-}
-
-/**
- * Define a constant if not defined.
- *
- * @param  string $constant The constant name.
- * @param  mixed  $value    The constant value.
- * @return void
- */
-function abrs_maybe_define( $constant, $value ) {
-	if ( ! defined( $constant ) ) {
-		define( $constant, $value );
-	}
 }
 
 /**
@@ -524,9 +511,17 @@ function abrs_set_time_limit( $limit = 0 ) {
  */
 function abrs_nocache_headers() {
 	// Do not cache.
-	abrs_maybe_define( 'DONOTCACHEPAGE', true );
-	abrs_maybe_define( 'DONOTCACHEOBJECT', true );
-	abrs_maybe_define( 'DONOTCACHEDB', true );
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
+		define( 'DONOTCACHEOBJECT', true );
+	}
+
+	if ( ! defined( 'DONOTCACHEDB' ) ) {
+		define( 'DONOTCACHEDB', true );
+	}
 
 	// Set the headers to prevent caching for the different browsers.
 	nocache_headers();

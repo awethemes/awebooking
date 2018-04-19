@@ -36,4 +36,11 @@ interface Rate_Plan {
 	 * @return int
 	 */
 	public function get_priority();
+
+	/**
+	 * Get all restrictions.
+	 *
+	 * @return array
+	 */
+	public function get_restrictions();
 }

@@ -2,7 +2,6 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Support\Utils as U;
 
 class Tax extends WP_Object {
 	/**

@@ -35,7 +35,7 @@ class Room_Type_List_Table extends Abstract_List_Table {
 		$show_columns['title']     = esc_html__( 'Title', 'awebooking' );
 		$show_columns['rooms']     = esc_html__( 'Rooms', 'awebooking' );
 		$show_columns['rate']      = esc_html__( 'Rack Rate', 'awebooking' );
-		$show_columns['capacity']  = esc_html__( 'Capacity', 'awebooking' );
+		$show_columns['occupancy'] = esc_html__( 'Occupancy', 'awebooking' );
 		$show_columns['date']      = esc_html__( 'Date', 'awebooking' );
 
 		return array_merge( $columns, $show_columns );
@@ -47,8 +47,8 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	public function define_sortable_columns( $columns ) {
 		return array_merge( $columns, [
 			// 'rooms'    => 'rooms',
-			'rate'     => 'rack_rate',
-			'capacity' => 'capacity',
+			'rate'      => 'rack_rate',
+			'occupancy' => 'occupancy',
 		]);
 	}
 
@@ -103,11 +103,11 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	}
 
 	/**
-	 * Display the capacity column.
+	 * Display the occupancy column.
 	 *
 	 * @return void
 	 */
-	protected function display_capacity_column() {
+	protected function display_occupancy_column() {
 		$guests = new Guest_Counts( $this->room_type['number_adults'] );
 
 		if ( abrs_children_bookable() && $this->room_type['number_children'] ) {
@@ -147,7 +147,7 @@ class Room_Type_List_Table extends Abstract_List_Table {
 					]);
 					break;
 
-				case 'capacity':
+				case 'occupancy':
 					$query_vars = array_merge( $query_vars, [
 						'meta_key'  => '_maximum_occupancy',
 						'orderby'   => 'meta_value_num',

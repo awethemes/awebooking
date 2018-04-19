@@ -3,7 +3,7 @@
 $form_classes = [];
 
 ?>
-<form method="GET" action="<?php echo esc_url( arbs_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
+<form method="GET" action="<?php echo esc_url( abrs_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
 	<div class="searchbox">
 		<div class="searchbox__wrapper">

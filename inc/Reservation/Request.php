@@ -5,7 +5,7 @@ use AweBooking\Support\Fluent;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 
-class Request {
+class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * The Timespan instance.
 	 *
@@ -44,10 +44,10 @@ class Request {
 	 * Search the available rooms and rates.
 	 *
 	 * @param  array $constraints The search constraints.
-	 * @return \AweBooking\Reservation\Searcher\Results
+	 * @return \AweBooking\Reservation\Search\Results
 	 */
 	public function search( $constraints = [] ) {
-		return ( new Searcher\Query( $this, $constraints ) )->get();
+		return ( new Search\Search( $this, $constraints ) )->get();
 	}
 
 	/**
@@ -114,6 +114,15 @@ class Request {
 	}
 
 	/**
+	 * Convert the timespan to an array.
+	 *
+	 * @return array
+	 */
+	public function to_array() {
+		return [ /* TODO */ ];
+	}
+
+	/**
 	 * Magic isset method.
 	 *
 	 * @param  string $property The property name.
@@ -130,11 +139,11 @@ class Request {
 	 * @return mixed
 	 */
 	public function __get( $property ) {
-		if ( method_exists( $this, $method = "get_{$property}" ) ) {
-			return $this->{$method}();
-		}
-
 		switch ( $property ) {
+			case 'timespan':
+			case 'guest_counts':
+			case 'options':
+				return call_user_func( [ $this, "get_{$property}" ] );
 			case 'nights':
 				return $this->timespan->nights();
 			case 'check_in':
@@ -145,8 +154,58 @@ class Request {
 			case 'children':
 			case 'infants':
 				return $this->guest_counts ? abrs_optional( $this->guest_counts->get( $property ) )->get_count() : null;
-			default:
-				return $this->options->get( $property );
 		}
+
+		return $this->options->get( $property );
+	}
+
+	/**
+	 * Convert the object into something JSON serializable.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return $this->to_array();
+	}
+
+	/**
+	 * Whether the given offset exists.
+	 *
+	 * @param  string $offset The offset name.
+	 * @return bool
+	 */
+	public function offsetExists( $offset ) {
+		return $this->__isset( $offset );
+	}
+
+	/**
+	 * Fetch the offset.
+	 *
+	 * @param  string $offset The offset name.
+	 * @return mixed
+	 */
+	public function offsetGet( $offset ) {
+		return $this->__get( $offset );
+	}
+
+	/**
+	 * Assign the offset.
+	 *
+	 * @param  string $offset The offset name.
+	 * @param  mixed  $value  The offset value.
+	 * @return void
+	 */
+	public function offsetSet( $offset, $value ) {
+		$this->options[ $offset ] = $value;
+	}
+
+	/**
+	 * Unset the offset.
+	 *
+	 * @param  mixed $offset The offset name.
+	 * @return void
+	 */
+	public function offsetUnset( $offset ) {
+		unset( $this->options[ $offset ] );
 	}
 }

@@ -12,7 +12,7 @@ trait With_Constraints {
 	/**
 	 * Get the constraints.
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function get_constraints() {
 		return $this->constraints;

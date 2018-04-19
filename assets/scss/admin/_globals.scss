@@ -26,16 +26,22 @@
 }
 
 /* No image */
-.abrs-no-image {
+.abrs-no-image,
+.abrs-thumb-image {
+  @include size(38px);
   display: inline-block;
   box-sizing: border-box;
-
-  width: 38px;
-  height: 38px;
-
-  background-color: #f7f7f7;
-  border: solid 1px #eee;
   border-radius: 50px;
+  border: solid 1px #eee;
+  background-color: #f7f7f7;
+
+  overflow: hidden;
+  vertical-align: middle;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 p.awebooking-no-items {

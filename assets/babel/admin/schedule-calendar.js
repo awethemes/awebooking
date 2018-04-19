@@ -245,7 +245,7 @@
     setupPopper() {
       tippy(this.$marker[0], {
         html: this.$el.find(this.options.popper)[0],
-        theme: 'abrs',
+        theme: 'abrs-tippy',
         arrow: true,
         distance: 0,
         trigger: 'manual',

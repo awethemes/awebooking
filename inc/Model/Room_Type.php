@@ -2,6 +2,8 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Model\Pricing\Rate_Plan;
+use AweBooking\Model\Pricing\Standard_Plan;
 
 class Room_Type extends Model {
 	/**
@@ -19,13 +21,6 @@ class Room_Type extends Model {
 	protected $rooms;
 
 	/**
-	 * The room type base rate.
-	 *
-	 * @var \AweBooking\Model\Pricing\Base_Rate
-	 */
-	protected $base_rate;
-
-	/**
 	 * List the rate plans.
 	 *
 	 * @var \AweBooking\Support\Collection
@@ -33,46 +28,52 @@ class Room_Type extends Model {
 	protected $rate_plans;
 
 	/**
-	 * Get rooms belongs to this room type.
+	 * Gets rooms belongs to this room type.
 	 *
-	 * @return array \AweBooking\Support\Collection
+	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_rooms() {
-		$this->maybe_setup_rooms();
+		if ( is_null( $this->rooms ) ) {
+			// If working on non-exists room type, just create an empty rooms.
+			$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
+
+			$this->rooms = abrs_collect( $rooms )->map_into( Room::class );
+		}
 
 		return apply_filters( $this->prefix( 'get_rooms' ), $this->rooms, $this );
 	}
 
 	/**
-	 * Get list IDs of rooms.
+	 * Gets rate plans available for this room type.
 	 *
-	 * @return array
+	 * @return \AweBooking\Support\Collection
 	 */
-	public function get_room_ids() {
-		return $this->get_rooms()->pluck( 'id' )->all();
-	}
+	public function get_rate_plans() {
+		if ( is_null( $this->rate_plans ) ) {
+			// Multi rate-plans only available in pro version, please upgrade :).
+			$rate_plans = $this->exists()
+				? apply_filters( $this->prefix( 'setup_rate_plans' ), [], $this )
+				: [];
 
-	/**
-	 * Get the total rooms.
-	 *
-	 * @return int
-	 */
-	public function get_total_rooms() {
-		return count( $this->get_rooms() );
-	}
-
-	/**
-	 * Maybe setup room units.
-	 *
-	 * @return void
-	 */
-	protected function maybe_setup_rooms() {
-		if ( is_null( $this->rooms ) ) {
-			// If working on non-exists room type, just create an empty rooms.
-			$rooms = ! $this->exists() ? [] : abrs_get_rooms( $this->id );
-
-			$this->rooms = abrs_collect( $rooms )->map_into( Room::class );
+			$this->rate_plans = abrs_collect( $rate_plans )
+				->prepend( $this->get_standard_plan() )
+				->filter( function ( $plan ) {
+					return $plan instanceof Rate_Plan;
+				})->sortBy( function( $plan ) {
+					return $plan->get_priority();
+				})->values();
 		}
+
+		return $this->rate_plans;
+	}
+
+	/**
+	 * Returns the standard rate plan of this room type.
+	 *
+	 * @return \AweBooking\Model\Pricing\Standard_Plan
+	 */
+	public function get_standard_plan() {
+		return apply_filters( $this->prefix( 'get_standard_plan' ), new Standard_Plan( $this ), $this );
 	}
 
 	/**
@@ -80,6 +81,9 @@ class Room_Type extends Model {
 	 */
 	protected function clean_cache() {
 		parent::clean_cache();
+
+		$this->rooms = null;
+		$this->rate_plans = null;
 
 		wp_cache_delete( $this->get_id(), 'awebooking_rooms' );
 	}

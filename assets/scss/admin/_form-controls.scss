@@ -96,53 +96,65 @@
 }
 
 /* Dates */
-.abrs-input-dates.abrow {
-  width: 320px;
+.abrs-input-dates {
+  width: 280px;
+  display: flex;
+  position: relative;
 
-  &:after {
+  &:after,
+  &:before {
     @include size(27px);
-    @include pseudoicon("\f345");
+    @include pseudoicon('');
 
-    left: 40%;
+    top: 0;
     z-index: 2;
     position: absolute;
-    margin-left: -12px;
+
     font-size: 16px;
     line-height: 27px;
     vertical-align: middle;
-  }
-
- .abcol-6 > .afc,
- .abcol-6 > .dashicons, {
-    top: 6px;
-    left: 12px;
-    z-index: 2;
-    position: absolute;
     pointer-events: none;
-    font-size: 14px;
-    color: #03a9f4;
   }
 
-  input[type="text"] {
-    width: 100%;
-    margin: 0;
-    padding: 3px 10px !important;
+  &:after {
+    left: 50%;
+    margin-left: -13px;
+    content: "\f345";
+  }
 
-    &:focus {
+  &:before {
+    left: 3px;
+    color: #03a9f4;
+    content: "\e005";
+    font-family: awebooking-webfont;
+  }
+
+  input {
+    width: 50%;
+    margin: 0;
+    box-shadow: none;
+    cursor: default;
+    padding-left: 32px !important;
+
+    &:focus,
+    &.active,
+    &:focus + input,
+    &.active + input {
       z-index: 1;
       position: relative;
+      box-shadow: none;
+      border-color: #03a9f4;
     }
   }
 
-  input[name="check-in"] {
-    border-right: none;
-    padding-left: 32px !important;
+  input:first-child {
+    border-right: none !important;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  input[name="check-out"] {
-    border-left: none;
+  input:last-child {
+    border-left: none !important;
     margin-left: -1px !important;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

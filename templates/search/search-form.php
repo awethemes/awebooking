@@ -1,6 +1,6 @@
 <div>
 
-	<form method="GET" action="<?php echo esc_url( arbs_page_permalink( 'search_results' ) ); ?>" role="search">
+	<form method="GET" action="<?php echo esc_url( abrs_page_permalink( 'search_results' ) ); ?>" role="search">
 		<input type="hidden" name="check-in">
 		<input type="hidden" name="check-out">
 

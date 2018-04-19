@@ -13,7 +13,7 @@ class Checkout {
 	 *
 	 * @throws NonceMismatchException
 	 */
-	public function process_checkout( Request $request ) {
+	public function process( Request $request ) {
 		if ( ! $request->filled( '_wpnonce' ) || ! wp_verify_nonce( $request->get( '_wpnonce' ), 'awebooking_process_checkout' ) ) {
 			throw new NonceMismatchException( esc_html__( 'We were unable to process your booking, please try again.', 'awebooking' ) );
 		}

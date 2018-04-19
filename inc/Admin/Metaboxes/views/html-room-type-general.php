@@ -4,9 +4,10 @@ global $the_room_type;
 
 ?><div class="awebooking-panel abwrap" id="room-type-general" style="display: block;">
 
-	<div class="abrow arbs-postbox-title">
+	<div class="abrow abrs-postbox-title">
 		<div class="abcol"><h3><?php esc_html_e( 'Rooms', 'awebooking' ); ?></h3></div>
 	</div>
+
 	<div class="abrow">
 		<div class="abcol-6">
 
@@ -49,7 +50,7 @@ global $the_room_type;
 		</div>
 	</div>
 
-	<div class="abrow arbs-postbox-title">
+	<div class="abrow abrs-postbox-title">
 		<div class="abcol"><h3><?php esc_html_e( 'Occupancy', 'awebooking' ); ?></h3></div>
 	</div>
 

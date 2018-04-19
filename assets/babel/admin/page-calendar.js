@@ -110,7 +110,7 @@
       const $html = $(el).find('.js-tippy-html');
 
       tippy(el, {
-        theme: 'abrs',
+        theme: 'abrs-tippy',
         delay: 150,
         arrow: true,
         distance: 0,

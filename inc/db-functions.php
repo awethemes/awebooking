@@ -31,7 +31,7 @@ function abrs_db_room( $room ) {
  * @param  int $room_type The room type ID.
  * @return array
  */
-function abrs_get_rooms( $room_type ) {
+function abrs_db_rooms_in( $room_type ) {
 	$room_type = Model::parse_object_id( $room_type );
 
 	// Because room type is just is a post type, so
@@ -174,28 +174,30 @@ function abrs_clean_booking_item_cache( $item ) {
 }
 
 /**
- * Get all bookings have room id.
+ * Get all bookings by given a room ID.
  *
- * @param  int $room_id Room id
+ * @param  int   $room_id  The Room ID.
+ * @param  array $statuses Optional, filter by booking statuses.
  * @return array
  */
-function abrs_get_bookings_by_room( $room_id, $booking_status = [] ) {
+function abrs_get_bookings_by_room( $room_id, $statuses = [] ) {
 	global $wpdb;
 
-	$query =  "SELECT `posts`.`ID` FROM {$wpdb->posts} AS posts ";
-	$query .= "INNER JOIN `{$wpdb->prefix}awebooking_booking_items` AS `booking_item` ON (posts.post_type = 'awebooking' AND `posts`.`ID` = `booking_item`.`booking_id`) ";
+	$where_clause = ! empty( $statuses )
+		? "AND `booking`.`post_status` IN ('" . esc_sql( implode( "', '", $statuses ) ) . "')"
+		: '';
 
-	if ( $booking_status ) {
-		$query .= "AND posts.post_status IN ( '" . implode( "', '", $booking_status ) . "') ";
-	}
+	$results = $wpdb->get_results( $wpdb->prepare( // @codingStandardsIgnoreStart
+		"SELECT `booking`.`ID` FROM `{$wpdb->posts}` AS `booking`
+		INNER JOIN `{$wpdb->prefix}awebooking_booking_items` AS `item` ON (`booking`.`ID` = `item`.`booking_id` AND `booking`.`post_type` = 'awebooking')
+		INNER JOIN `{$wpdb->prefix}awebooking_booking_itemmeta` AS itemmeta ON (`item`.`booking_item_id` = `itemmeta`.`booking_item_id` AND `itemmeta`.`meta_key` = '_room_id' )
+		WHERE CAST(`itemmeta`.`meta_value` AS SIGNED) = %d {$where_clause}",
+		$room_id
+	)); // @codingStandardsIgnoreEnd
 
-	$query .= "INNER JOIN {$wpdb->prefix}awebooking_booking_itemmeta AS itemmeta ON (`booking_item`.`booking_item_id` = `itemmeta`.`booking_item_id` AND `itemmeta`.`meta_key` = '_room_id' ) ";
-	$query .= "WHERE `itemmeta`.`meta_value` = '{$room_id}' ";
-	$query .= "ORDER BY `posts`.`post_date` DESC";
-
-	$results = $wpdb->get_results( $query );
-
-	return array_map( 'absint', wp_list_pluck( $results, 'ID' ) );
+	return $results
+		? array_map( 'absint', wp_list_pluck( $results, 'ID' ) )
+		: [];
 }
 
 /**

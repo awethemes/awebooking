@@ -1,9 +1,9 @@
 <?php
-namespace AweBooking\Reservation\Searcher;
+namespace AweBooking\Reservation\Search;
 
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
-use AweBooking\Model\Common\Timespan;
+use AweBooking\Reservation\Request;
 use AweBooking\Calendar\Finder\Response;
 use AweBooking\Support\Traits\Fluent_Getter;
 
@@ -11,18 +11,18 @@ class Availability {
 	use Fluent_Getter;
 
 	/**
+	 * The request instance.
+	 *
+	 * @var \AweBooking\Reservation\Request
+	 */
+	protected $request;
+
+	/**
 	 * The Room_Type model.
 	 *
 	 * @var \AweBooking\Model\Room_Type
 	 */
 	protected $room_type;
-
-	/**
-	 * The Timespan model.
-	 *
-	 * @var \AweBooking\Model\Common\Timespan
-	 */
-	protected $timespan;
 
 	/**
 	 * The response of rooms.
@@ -36,28 +36,30 @@ class Availability {
 	 *
 	 * @var \AweBooking\Calendar\Finder\Response
 	 */
-	protected $rate_plans;
+	protected $response_plans;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Model\Common\Timespan    $timespan       The timespan.
+	 * @param \AweBooking\Reservation\Request      $request The reservation request.
 	 * @param \AweBooking\Model\Room_Type          $room_type      The room_type.
 	 * @param \AweBooking\Calendar\Finder\Response $response_rooms The response_rooms.
+	 * @param \AweBooking\Calendar\Finder\Response $response_plans The response_plans.
 	 */
-	public function __construct( Timespan $timespan, Room_Type $room_type, Response $response_rooms ) {
-		$this->timespan = $timespan;
-		$this->room_type = $room_type;
+	public function __construct( Request $request, Room_Type $room_type, Response $response_rooms, Response $response_plans ) {
+		$this->request        = $request;
+		$this->room_type      = $room_type;
 		$this->response_rooms = $response_rooms;
+		$this->response_plans = $response_plans;
 	}
 
 	/**
-	 * Gets the timespan.
+	 * Get back the reservation request.
 	 *
-	 * @return \AweBooking\Model\Common\Timespan
+	 * @return \AweBooking\Reservation\Request
 	 */
-	public function get_timespan() {
-		return $this->timespan;
+	public function get_request() {
+		return $this->request;
 	}
 
 	/**
@@ -76,6 +78,15 @@ class Availability {
 	 */
 	public function get_response_rooms() {
 		return $this->response_rooms;
+	}
+
+	/**
+	 * Get the response of rate plans.
+	 *
+	 * @return \AweBooking\Calendar\Finder\Response
+	 */
+	public function get_response_plans() {
+		return $this->response_plans;
 	}
 
 	/**
@@ -118,7 +129,7 @@ class Availability {
 	protected function transform_callback() {
 		return function ( $matching ) {
 			return [
-				'room'           => $matching['resource']->get_reference(),
+				'room'           => abrs_get_room( $matching['resource']->get_id() ),
 				'reason'         => $matching['reason'],
 				'reason_message' => Reason::get_message( $matching['reason'] ),
 			];

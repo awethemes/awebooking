@@ -87,6 +87,32 @@ class Booking extends Model {
 	}
 
 	/**
+	 * Get the booking status withput 'awebooking-' prefix.
+	 *
+	 * @return string
+	 */
+	public function get_status() {
+		$status = $this->get( 'status' );
+
+		if ( 0 === strpos( $status, 'awebooking-', 0 ) ) {
+			$status = substr( $status, 11 );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Determines if booking can be edited.
+	 *
+	 * @return bool
+	 */
+	public function is_editable() {
+		return apply_filters( $this->prefix( 'is_editable' ),
+			in_array( $this->get_status(), [ 'pending', 'on-hold', 'deposit', 'auto-draft' ], true ), $this
+		);
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup() {

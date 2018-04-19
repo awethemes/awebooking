@@ -12,31 +12,26 @@ $escaped_value = is_array( $escaped_value ) ? $escaped_value : [];
 wp_enqueue_script( 'flatpickr' );
 wp_enqueue_script( 'flatpickr-range-plugin' );
 
-?><div class="abrs-input-dates abrow no-gutters">
-	<div class="abcol-6">
-		<i class="afc afc-calendar"></i>
-		<?php
-		print $types->input([ // WPCS: XSS OK.
-			'type'        => 'text',
-			'id'          => $types->_id( '_start' ),
-			'name'        => 'check-in',
-			'value'       => isset( $escaped_value[0] ) ? $escaped_value[0] : '',
-			'placeholder' => esc_html__( 'Check In', 'awebooking' ),
-		]);
-		?>
-	</div>
+?><div class="abrs-input-dates">
+	<?php
+	print $types->input([ // WPCS: XSS OK.
+		'type'         => 'text',
+		'id'           => $types->_id( '_start' ),
+		'name'         => 'check-in',
+		'value'        => isset( $escaped_value[0] ) ? $escaped_value[0] : '',
+		'placeholder'  => esc_html__( 'Check In', 'awebooking' ),
+		'autocomplete' => 'off',
+	]);
 
-	<div class="abcol-6">
-		<?php
-		print $types->input([ // WPCS: XSS OK.
-			'type'        => 'text',
-			'id'          => $types->_id( '_end' ),
-			'name'        => 'check-out',
-			'value'       => isset( $escaped_value[1] ) ? $escaped_value[1] : '',
-			'placeholder' => esc_html__( 'Check Out', 'awebooking' ),
-		]);
-		?>
-	</div>
+	print $types->input([ // WPCS: XSS OK.
+		'type'         => 'text',
+		'id'           => $types->_id( '_end' ),
+		'name'         => 'check-out',
+		'value'        => isset( $escaped_value[1] ) ? $escaped_value[1] : '',
+		'placeholder'  => esc_html__( 'Check Out', 'awebooking' ),
+		'autocomplete' => 'off',
+	]);
+	?>
 </div>
 
 <?php if ( false !== $field->prop( 'show_js' ) ) : ?>

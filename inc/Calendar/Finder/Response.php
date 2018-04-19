@@ -7,6 +7,7 @@ use AweBooking\Calendar\Resource\Resource_Interface;
 
 class Response {
 	/* Constants */
+	const CONSTRAINT    = 'constraint';
 	const VALID_STATE   = 'valid_state';
 	const INVALID_STATE = 'invalid_state';
 
