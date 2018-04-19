@@ -38,33 +38,43 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 		</div>
 
 		<div class="abrs-card__body" style="padding: 0;">
-			<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/booking-room' ) ); ?>">
-				<?php wp_nonce_field( 'add_booking_room', '_wpnonce' ); ?>
+			<?php if ( ! isset( $res_request ) ) : ?>
 
-				<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
-				<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>">
-				<input type="hidden" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>">
+				<p class="awebooking-no-items"><?php esc_html_e( 'Enter dates to search rooms', 'awebooking' ); ?></p>
 
-				<?php if ( isset( $results ) ) : ?>
-					<table class="widefat fixed striped availability-table">
-						<thead>
-							<tr>
-								<th style="width: 38px;"><span class="screen-reader-text"><?php echo esc_html__( 'Image', 'awebooking' ); ?></span></th>
-								<th style="width: 20%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
-								<th style="width: 15%;"><?php echo esc_html__( 'Room', 'awebooking' ); ?></th>
-								<th style="width: 30%;"><?php echo esc_html__( 'Occupancy', 'awebooking' ); ?></th>
-								<th><?php echo esc_html__( 'Price', 'awebooking' ); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $results as $avai ) : ?>
-								<?php $this->partial( 'booking/html-avai-row.php', compact( 'avai' ) ); ?>
-							<?php endforeach ?>
-						</tbody>
-					</table>
-				<?php endif ?>
+			<?php elseif ( isset( $res_request ) && $results->isEmpty() ) : ?>
 
-			</form>
+				<p class="awebooking-no-items"><?php esc_html_e( 'Sorry, no room found', 'awebooking' ); ?></p>
+
+			<?php else : ?>
+				<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/booking-room' ) ); ?>">
+					<?php wp_nonce_field( 'add_booking_room', '_wpnonce' ); ?>
+
+					<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
+					<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>">
+					<input type="hidden" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>">
+
+					<?php if ( isset( $results ) ) : ?>
+						<table class="widefat fixed striped availability-table">
+							<thead>
+								<tr>
+									<th style="width: 38px;"><span class="screen-reader-text"><?php echo esc_html__( 'Image', 'awebooking' ); ?></span></th>
+									<th style="width: 20%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
+									<th style="width: 15%;"><?php echo esc_html__( 'Room', 'awebooking' ); ?></th>
+									<th style="width: 30%;"><?php echo esc_html__( 'Occupancy', 'awebooking' ); ?></th>
+									<th><?php echo esc_html__( 'Price', 'awebooking' ); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ( $results as $avai ) : ?>
+									<?php $this->partial( 'booking/html-avai-row.php', compact( 'avai' ) ); ?>
+								<?php endforeach ?>
+							</tbody>
+						</table>
+					<?php endif ?>
+
+				</form>
+			<?php endif ?>
 		</div>
 
 	</div>

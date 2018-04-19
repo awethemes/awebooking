@@ -481,48 +481,6 @@ table.awebooking-table tfoot td {
   font-size: inherit;
 }
 
-table.availability-table td {
-  position: relative;
-  vertical-align: middle;
-}
-
-table.availability-table .book-actions {
-  top: 1em;
-  right: 1em;
-  position: absolute;
-  display: none;
-}
-
-table.availability-table tr:hover .book-actions {
-  display: block;
-}
-
-table.availability-table .select-occupancy {
-  display: flex;
-  margin-left: -2px;
-  margin-right: -2px;
-}
-
-table.availability-table .select-occupancy > p,
-table.availability-table .select-occupancy > div {
-  margin: 0;
-  padding: 0;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
-table.availability-table .select-occupancy label {
-  display: block;
-  line-height: 1;
-  margin-bottom: 3px;
-}
-
-table.availability-table .select-occupancy select {
-  width: 100%;
-}
-
 table.debug-rooms__table {
   width: 350px;
   max-width: 100%;
@@ -539,6 +497,61 @@ table.debug-rooms__table td {
 
 table.debug-rooms__table th {
   width: 100px;
+}
+
+table.availability-table td {
+  position: relative;
+  vertical-align: middle;
+}
+
+table.availability-table .book-actions {
+  top: 1em;
+  right: 1em;
+  position: absolute;
+  display: none;
+}
+
+table.availability-table tr:hover .book-actions {
+  display: block;
+}
+
+table.availability-table .wrap-select-occupancy {
+  display: flex;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+table.availability-table .wrap-select-occupancy > p,
+table.availability-table .wrap-select-occupancy > div {
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  flex-basis: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+table.availability-table .wrap-select-occupancy label {
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+table.availability-table .wrap-select-occupancy select {
+  width: 100%;
+}
+
+table.availability-table .text-remain-rooms {
+  line-height: 1;
+  font-size: 13px;
+  display: block;
+}
+
+table.availability-table .text-remain-rooms .dashicons {
+  color: #666;
+  width: auto;
+  height: auto;
+  font-size: 14px;
 }
 
 /* CMB2 flex table */

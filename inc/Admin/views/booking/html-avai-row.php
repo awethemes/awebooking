@@ -35,16 +35,16 @@ $input_prefix = 'reservation[' . $room_type->get_id() . ']';
 	<td>
 		<a class="row-title" href="<?php echo esc_url( get_edit_post_link( $room_type->get_id() ) ); ?>" target="_blank"><?php echo esc_html( $room_type->get_title() ); ?></a>
 
-		<div class="">
-			<span class="tippy" data-tippy-html="#js-debug-room-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-delay="[100, 100000]" data-tippy-theme="abrs-tippy" data-tippy-interactive="true" data-tippy-arrow="true">
-				<span class="dashicons dashicons-info"></span>
-			</span>
-
+		<span class="text-remain-rooms">
 			<?php
+
 			/* translators: %d Number of rooms left */
 			echo esc_html( sprintf( _n( '%d room left', '%d rooms left', count( $remain_rooms ), 'awebooking' ), count( $remain_rooms ) ) );
 			?>
-		</div>
+			<span class="tippy" data-tippy-html="#js-debug-room-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-delay="[100, 100000]" data-tippy-theme="abrs-tippy" data-tippy-interactive="true" data-tippy-arrow="true">
+				<span class="dashicons dashicons-info"></span>
+			</span>
+		</span>
 
 		<div id="js-debug-room-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
 			<?php abrs_admin_template_part( 'booking/html-debug-rooms.php', compact( 'rooms' ) ); ?>
@@ -60,7 +60,7 @@ $input_prefix = 'reservation[' . $room_type->get_id() . ']';
 	</td>
 
 	<td>
-		<div class="select-occupancy">
+		<div class="wrap-select-occupancy">
 			<p>
 				<label class="screen-reader-text"><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
 				<select name="<?php echo esc_attr( $input_prefix . '[adults]' ); ?>" title="<?php esc_html_e( 'Select Adults', 'awebooking' ); ?>">

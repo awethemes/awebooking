@@ -9,6 +9,24 @@ table.awebooking-table {
   }
 }
 
+table.debug-rooms__table {
+  width: 350px;
+  max-width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: solid 1px #eee;
+  }
+
+  th {
+    width: 100px;
+  }
+}
+
 table.availability-table {
   td {
     position: relative;
@@ -26,7 +44,7 @@ table.availability-table {
     display: block;
   }
 
-  .select-occupancy {
+  .wrap-select-occupancy {
     display: flex;
     margin-left: -2px;
     margin-right: -2px;
@@ -51,23 +69,18 @@ table.availability-table {
       width: 100%;
     }
   }
-}
 
-table.debug-rooms__table {
-  width: 350px;
-  max-width: 100%;
-  background: #fff;
-  border-collapse: collapse;
+  .text-remain-rooms {
+    line-height: 1;
+    font-size: 13px;
+    display: block;
 
-  th,
-  td {
-    padding: 5px;
-    text-align: left;
-    border-bottom: solid 1px #eee;
-  }
-
-  th {
-    width: 100px;
+    .dashicons {
+      color: #666;
+      width: auto;
+      height: auto;
+      font-size: 14px;
+    }
   }
 }
 
