@@ -34,30 +34,6 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
-			'id'              => 'display_datepicker_mindates',
-			'type'            => 'text',
-			'name'            => esc_html__( 'Minimum dates', 'awebooking' ),
-			'desc'            => esc_html__( 'The minimum selectable date. When set to null, there is no minimum. A number of days from today. For example 2 represents two days from today. All the dates before the additional date will be disabled.', 'awebooking' ),
-			'sanitization_cb' => 'absint',
-			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
-			],
-		]);
-
-		$this->add_field([
-			'id'              => 'display_datepicker_maxdates',
-			'type'            => 'text',
-			'name'            => esc_html__( 'Maximum dates', 'awebooking' ),
-			'desc'         => esc_html__( 'The maximum selectable date. When set to null, there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled.', 'awebooking' ),
-			'sanitization_cb' => 'absint',
-			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
-			],
-		]);
-
-		$this->add_field([
 			'id'              => 'display_datepicker_minnights',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Minimum nights', 'awebooking' ),
@@ -82,10 +58,34 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
+			'id'              => 'display_datepicker_mindate',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Minimum dates', 'awebooking' ),
+			'desc'            => esc_html__( 'The minimum selectable date. When set to "0", there is no minimum. A number of days from today. For example 2 represents two days from today. All the dates before the additional date will be disabled.', 'awebooking' ),
+			'sanitization_cb' => 'absint',
+			'attributes'      => [
+				'type' => 'number',
+				'step' => 1,
+			],
+		]);
+
+		$this->add_field([
+			'id'              => 'display_datepicker_maxdate',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Maximum dates', 'awebooking' ),
+			'desc'            => esc_html__( 'The maximum selectable date. When set to "0", there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled.', 'awebooking' ),
+			'sanitization_cb' => 'absint',
+			'attributes'      => [
+				'type' => 'number',
+				'step' => 1,
+			],
+		]);
+
+		$this->add_field([
 			'id'              => 'display_datepicker_disabledates',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Disabled dates', 'awebooking' ),
-			'desc'            => esc_html__( 'Enter dates by "," separating values in this format: `YYYY-MM-DD`. All the dates passed to the list will be disabled.', 'awebooking' ),
+			'desc'            => esc_html__( 'Enter dates by ", " separating values in this format: `Y-m-d`. All the dates passed to the list will be disabled.', 'awebooking' ),
 		]);
 
 		$this->add_field([
@@ -98,11 +98,15 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
-			'id'              => 'display_datepicker_months',
+			'id'              => 'display_datepicker_showmonths',
 			'type'            => 'select',
 			'name'            => esc_html__( 'The number of months displayed', 'awebooking' ),
 			'desc'            => esc_html__( 'Display on month or two months.', 'awebooking' ),
-			'options'         => [ 1, 2 ],
+			'options'         => [
+				1 => 1,
+				2 => 2,
+			],
+			'sanitization_cb' => 'absint',
 		]);
 	}
 }
