@@ -79,12 +79,12 @@ function abrs_admin_template_part( $template = null, array $vars = [] ) {
 /**
  * Create a page and store the ID in an option.
  *
- * @param mixed $slug Slug for the new page
- * @param string $option Option name to store the page's ID
- * @param string $page_title (default: '') Title for the new page
- * @param string $page_content (default: '') Content for the new page
- * @param int $post_parent (default: 0) Parent for the new page
- * @return int page ID
+ * @param  mixed  $slug         Slug for the new page.
+ * @param  string $option       Option name to store the page's ID.
+ * @param  string $page_title   Title for the new page.
+ * @param  string $page_content Content for the new page.
+ * @param  int    $post_parent  Parent for the new page.
+ * @return int
  */
 function abrs_create_page( $slug, $option = '', $page_title = '', $page_content = '', $post_parent = 0 ) {
 	global $wpdb;
@@ -124,14 +124,14 @@ function abrs_create_page( $slug, $option = '', $page_title = '', $page_content 
 	}
 
 	if ( $trashed_page_found ) {
-		$page_id   = $trashed_page_found;
-		$page_data = array(
-			'ID'             => $page_id,
-			'post_status'    => 'publish',
-		);
-	 	wp_update_post( $page_data );
+		$page_id = $trashed_page_found;
+
+		wp_update_post([
+			'ID'          => $page_id,
+			'post_status' => 'publish',
+		]);
 	} else {
-		$page_data = array(
+		$page_id = wp_insert_post([
 			'post_status'    => 'publish',
 			'post_type'      => 'page',
 			'post_author'    => 1,
@@ -140,8 +140,7 @@ function abrs_create_page( $slug, $option = '', $page_title = '', $page_content 
 			'post_content'   => $page_content,
 			'post_parent'    => $post_parent,
 			'comment_status' => 'closed',
-		);
-		$page_id = wp_insert_post( $page_data );
+		]);
 	}
 
 	if ( $option ) {

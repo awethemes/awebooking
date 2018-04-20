@@ -12,6 +12,7 @@ use AweBooking\Calendar\Event\Core\Pricing_Event;
 
 use AweBooking\Reservation\Request;
 use AweBooking\Support\Carbonate;
+use  AweBooking\Calendar\Finder\State_Finder;
 
 /**
  * Set a room as blocked.
@@ -91,7 +92,21 @@ function abrs_apply_state( $state, $args ) {
 	return true;
 }
 
-function abrs_retrieve_state( $args ) {
+/**
+ * Determines if given rooms is available or not.
+ *
+ * @param  array                                   $rooms    The list room to check.
+ * @param  \AweBooking\Model\Common\Timespan|array $timespan The timespan instance of array of timespan.
+ * @return bool
+ */
+function abrs_is_room_available( $rooms, $timespan ) {
+	$provider = abrs_calendar_provider( 'state', $resources );
+
+	$response = ( new State_Finder( $resources, $provider ) )
+		->only( Constants::STATE_AVAILABLE )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+
+	return count( $response->get_included() ) > 0;
 }
 
 /**
@@ -119,7 +134,7 @@ function _abrs_prepare_room_state( $args ) {
 	}
 
 	// Create the calendar and get all events.
-	$calendar = abrs_create_calendar( $room, 'state' );
+	$calendar = abrs_calendar( $room, 'state' );
 	$events   = $calendar->get_events( $timespan->to_period( $args['granularity'] ) );
 
 	return [ $calendar, $events ];
@@ -172,7 +187,7 @@ function abrs_apply_price( array $args ) {
 	// Create the calendar and get all events.
 	$resource = new Resource( $rate->get_id(), $rate->get_rack_rate()->as_raw_value() );
 
-	$calendar = abrs_create_calendar( $resource, 'pricing' );
+	$calendar = abrs_calendar( $resource, 'pricing' );
 
 	$period = $timespan->to_period( $args['granularity'] );
 
@@ -241,7 +256,7 @@ function abrs_retrieve_price( array $args ) {
 	$resource = new Resource( $rate->get_id(), $rate->get_rack_rate()->as_raw_value() );
 
 	// Get the events itemized.
-	$itemized = abrs_create_calendar( $resource, 'pricing' )
+	$itemized = abrs_calendar( $resource, 'pricing' )
 		->get_events( $args['timespan']->to_period( $args['granularity'] ) )
 		->itemize();
 
@@ -253,77 +268,6 @@ function abrs_retrieve_price( array $args ) {
 	});
 
 	return [ $total, $breakdown ];
-}
-
-/**
- * Create the timespan.
- *
- * @param  array $args The timespan args.
- * @return \AweBooking\Model\Common\Timespan|WP_Error
- */
-function abrs_create_timespan( array $args ) {
-	// Parse the default args.
-	$args = wp_parse_args( $args, [
-		'nights'     => 0,
-		'start_date' => isset( $args['check_in'] ) ? $args['check_in'] : '',
-		'end_date'   => isset( $args['check_out'] ) ? $args['check_out'] : '',
-		'min_nights' => 1,
-		'strict'     => false,
-	]);
-
-	try {
-		if ( $args['nights'] > 0 ) {
-			$timespan = Timespan::from( $args['start_date'], $args['nights'] );
-		} else {
-			$timespan = new Timespan( $args['start_date'], $args['end_date'] );
-		}
-
-		// Requires minimum 1 nights to works.
-		if ( $args['min_nights'] > 0 ) {
-			$timespan->requires_minimum_nights( $args['min_nights'] );
-		}
-
-		// Validate strict mode.
-		/*if ( $args['strict'] && $timespan->get_start_date()->lt( Carbonate::today() ) ) {
-			return new WP_Error( esc_html__( 'The start date must the greater than or equal today.', 'awebooking' ) );
-		}*/
-
-		return apply_filters( 'awebooking/timespan', $timespan, $args );
-	} catch ( Exception $e ) {
-		return new WP_Error( 'timespan_error', esc_html__( 'The start date and end date is invalid.', 'awebooking' ) );
-	}
-}
-
-/**
- * Create the calendar.
- *
- * @param  int    $resource The resource ID.
- * @param  string $provider The provider name.
- * @return \AweBooking\Calendar\Calendar
- *
- * @throws InvalidArgumentException
- */
-function abrs_create_calendar( $resource, $provider = 'state' ) {
-	// Providers classmap.
-	$providers = apply_filters( 'awebooking/calendar_providers_classmap', [
-		'state'   => AweBooking\Calendar\Provider\Core\State_Provider::class,
-		'booking' => AweBooking\Calendar\Provider\Core\Booking_Provider::class,
-		'pricing' => AweBooking\Calendar\Provider\Core\Pricing_Provider::class,
-	]);
-
-	if ( ! array_key_exists( $provider, $providers ) ) {
-		throw new InvalidArgumentException( esc_html__( 'Invalid calendar provider', 'awebooking' ) );
-	}
-
-	// Create the resource.
-	if ( ! $resource instanceof Resource ) {
-		$resource = new Resource( ( $resource instanceof Model ) ? $resource->get_id() : $resource );
-	}
-
-	// Apply filter allow user can change this provider.
-	$provider = apply_filters( 'awebooking/calendar_provider_class', $providers[ $provider ], $provider, $resource );
-
-	return new Calendar( $resource, new $provider( $resource ) );
 }
 
 /**
@@ -372,4 +316,45 @@ function abrs_reservation_request( array $args ) {
 	}
 
 	return new Request( $timespan, $guest_counts, $args['options'] );
+}
+
+
+
+/**
+ * Create the timespan.
+ *
+ * @param  array $args The timespan args.
+ * @return \AweBooking\Model\Common\Timespan|WP_Error
+ */
+function abrs_create_timespan( array $args ) {
+	// Parse the default args.
+	$args = wp_parse_args( $args, [
+		'nights'     => 0,
+		'start_date' => isset( $args['check_in'] ) ? $args['check_in'] : '',
+		'end_date'   => isset( $args['check_out'] ) ? $args['check_out'] : '',
+		'min_nights' => 1,
+		'strict'     => false,
+	]);
+
+	try {
+		if ( $args['nights'] > 0 ) {
+			$timespan = Timespan::from( $args['start_date'], $args['nights'] );
+		} else {
+			$timespan = new Timespan( $args['start_date'], $args['end_date'] );
+		}
+
+		// Requires minimum 1 nights to works.
+		if ( $args['min_nights'] > 0 ) {
+			$timespan->requires_minimum_nights( $args['min_nights'] );
+		}
+
+		// Validate strict mode.
+		/*if ( $args['strict'] && $timespan->get_start_date()->lt( Carbonate::today() ) ) {
+			return new WP_Error( esc_html__( 'The start date must the greater than or equal today.', 'awebooking' ) );
+		}*/
+
+		return apply_filters( 'awebooking/timespan', $timespan, $args );
+	} catch ( Exception $e ) {
+		return new WP_Error( 'timespan_error', esc_html__( 'The start date and end date is invalid.', 'awebooking' ) );
+	}
 }

@@ -31,7 +31,11 @@ abstract class Model extends WP_Object {
 	 * @return mixed|null
 	 */
 	public function get( $key ) {
-		return $this->get_attribute( $key );
+		if ( array_key_exists( $key, $this->attributes ) ) {
+			return apply_filters( $this->prefix( "get_{$key}" ), $this->get_attribute( $key ), $this );
+		}
+
+		trigger_error( sprintf( "Unknown attribute '%s' of %s", esc_html( $key ), esc_html( static::class ) ), E_USER_WARNING );
 	}
 
 	/**
@@ -118,7 +122,7 @@ abstract class Model extends WP_Object {
 	 */
 	public function __call( $method, $parameters ) {
 		if ( 0 === strpos( $method, 'get_' ) ) {
-			return $this->get_attribute( substr( $method, 4 ) );
+			return $this->get( substr( $method, 4 ) );
 		}
 
 		throw new \BadMethodCallException( sprintf( 'Method %s::%s does not exist.', static::class, $method ) );

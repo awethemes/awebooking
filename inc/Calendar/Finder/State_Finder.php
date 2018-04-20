@@ -41,8 +41,9 @@ class State_Finder extends Finder {
 	 * @param \AweBooking\Calendar\Provider\Provider_Interface $provider  The provider implementation.
 	 */
 	public function __construct( $resources, Provider_Interface $provider ) {
-		$this->provider  = $provider;
-		$this->resources = ( new Resources( $resources ) )->keyBy( 'id' );
+		$this->provider = $provider;
+
+		parent::__construct( $resources );
 	}
 
 	/**

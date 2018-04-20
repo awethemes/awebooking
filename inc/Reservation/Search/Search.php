@@ -111,17 +111,18 @@ class Search {
 		$timespan->requires_minimum_nights( 1 );
 
 		// Transform the rooms into resources.
-		$resources = $room_type->get_rooms()->map( function( $room_unit ) use ( $room_type ) {
-			$resource = new Resource( $room_unit->get_id(), Constants::STATE_AVAILABLE );
+		$resources = $room_type->get_rooms()
+			->map( function( $room_unit ) use ( $room_type ) {
+				$resource = new Resource( $room_unit->get_id(), Constants::STATE_AVAILABLE );
 
-			$resource->set_reference( $room_unit );
-			$resource->with_constraints( apply_filters( 'awebooking/reservation/room_constraints', [], $room_unit, $room_type ) );
+				$resource->set_reference( $room_unit );
+				$resource->with_constraints( apply_filters( 'awebooking/reservation/room_constraints', [], $room_unit, $room_type ) );
 
-			return $resource;
-		});
+				return $resource;
+			});
 
 		// Create the provider.
-		$provider = new Cached_Provider( new State_Provider( $resources ) );
+		$provider = abrs_calendar_provider( 'state', $resources, true );
 		$provider = apply_filters( 'awebooking/reservation/room_state_provider', $provider, $resources );
 
 		return ( new State_Finder( $resources, $provider ) )

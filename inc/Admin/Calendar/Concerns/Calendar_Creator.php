@@ -7,35 +7,25 @@ use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
-use AweBooking\Calendar\Provider\Core\State_Provider;
-use AweBooking\Calendar\Provider\Core\Pricing_Provider;
-use AweBooking\Calendar\Provider\Core\Booking_Provider;
 
 trait Calendar_Creator {
 	/**
-	 * Create scheduler by given a resources.
+	 * Create room resources.
 	 *
-	 * @param  \AweBooking\Calendar\Resource\Resources          $resources The resources.
-	 * @param  \AweBooking\Calendar\Provider\Provider_Interface $provider  The calendar provider.
-	 * @return \AweBooking\Calendar\Scheduler
+	 * @param  array|Collection $rooms The rooms.
+	 * @param  int              $state Default resource state.
+	 * @return \AweBooking\Calendar\Resource\Resources
 	 */
-	protected function create_scheduler_for( Resources $resources, Provider_Interface $provider ) {
-		if ( ! $provider instanceof Cached_Provider ) {
-			$provider = new Cached_Provider( $provider );
+	protected function create_room_resources( $rooms, $state = 0 ) {
+		$resources = [];
+
+		foreach ( $rooms as $room ) {
+			$resources[ $room->get_id() ] = ( new Resource( $room->get_id(), $state ) )
+				->set_title( $room->get_name() )
+				->set_reference( $room );
 		}
 
-		$calendars = [];
-
-		foreach ( $resources as $resource ) {
-			$calendar = new Calendar( $resource, $provider );
-
-			$calendar->set_name( $resource->get_title() );
-			$calendar->set_description( $resource->get_description() );
-
-			$calendars[] = $calendar;
-		}
-
-		return Scheduler::make( $calendars );
+		return Resources::make( $resources );
 	}
 
 	/**
@@ -61,46 +51,28 @@ trait Calendar_Creator {
 	}
 
 	/**
-	 * Create room resources.
+	 * Create scheduler by given a resources.
 	 *
-	 * @param  array|Collection $rooms The rooms.
-	 * @param  int              $state Default resource state.
-	 * @return \AweBooking\Calendar\Resource\Resources
+	 * @param  \AweBooking\Calendar\Resource\Resources          $resources The resources.
+	 * @param  \AweBooking\Calendar\Provider\Provider_Interface $provider  The calendar provider.
+	 * @return \AweBooking\Calendar\Scheduler
 	 */
-	protected function create_room_resources( $rooms, $state = 0 ) {
-		$resources = [];
-
-		foreach ( $rooms as $room ) {
-			$resources[ $room->get_id() ] = ( new Resource( $room->get_id(), $state ) )
-				->set_title( $room->get_name() )
-				->set_reference( $room );
+	protected function create_scheduler_for( Resources $resources, Provider_Interface $provider ) {
+		if ( ! $provider instanceof Cached_Provider ) {
+			$provider = new Cached_Provider( $provider );
 		}
 
-		return Resources::make( $resources );
-	}
+		$calendars = [];
 
-	/**
-	 * Create the calendar provider.
-	 *
-	 * @param  string $provider  The provider name ['booking', 'pricing', 'state'].
-	 * @param  mixed  $resources The resources.
-	 * @return \AweBooking\Calendar\Provider\Provider_Interface
-	 */
-	protected function create_calendar_provider( $provider, $resources ) {
-		// Handle resolve provider by name.
-		switch ( $provider ) {
-			case 'pricing':
-				$provider = new Pricing_Provider( $resources );
-				break;
-			case 'booking':
-				$provider = new Booking_Provider( $resources );
-				break;
-			default:
-				$provider = new State_Provider( $resources );
-				break;
+		foreach ( $resources as $resource ) {
+			$calendar = new Calendar( $resource, $provider );
+
+			$calendar->set_name( $resource->get_title() );
+			$calendar->set_description( $resource->get_description() );
+
+			$calendars[] = $calendar;
 		}
 
-		// Wrap the provider in Cached_Provider.
-		return new Cached_Provider( $provider );
+		return Scheduler::make( $calendars );
 	}
 }

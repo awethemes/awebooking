@@ -40,8 +40,9 @@ class Appearance_Setting extends Abstract_Setting {
 			'desc'            => esc_html__( 'The minimum selectable date. When set to null, there is no minimum. A number of days from today. For example 2 represents two days from today. All the dates before the additional date will be disabled.', 'awebooking' ),
 			'sanitization_cb' => 'absint',
 			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
+				'type'  => 'number',
+				'step'  => 1,
+				'style' => 'width: 100px;',
 			],
 		]);
 
@@ -49,11 +50,12 @@ class Appearance_Setting extends Abstract_Setting {
 			'id'              => 'display_datepicker_maxdates',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Maximum dates', 'awebooking' ),
-			'desc'         => esc_html__( 'The maximum selectable date. When set to null, there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled.', 'awebooking' ),
+			'desc'            => esc_html__( 'The maximum selectable date. When set to null, there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled.', 'awebooking' ),
 			'sanitization_cb' => 'absint',
 			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
+				'type'  => 'number',
+				'step'  => 1,
+				'style' => 'width: 100px;',
 			],
 		]);
 
@@ -64,8 +66,9 @@ class Appearance_Setting extends Abstract_Setting {
 			'desc'            => esc_html__( 'Minimum nights required to select a range of dates.', 'awebooking' ),
 			'sanitization_cb' => 'absint',
 			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
+				'type'  => 'number',
+				'step'  => 1,
+				'style' => 'width: 100px;',
 			],
 		]);
 
@@ -76,8 +79,9 @@ class Appearance_Setting extends Abstract_Setting {
 			'desc'            => esc_html__( 'Maximum nights required to select a range of dates.', 'awebooking' ),
 			'sanitization_cb' => 'absint',
 			'attributes'      => [
-				'type' => 'number',
-				'step' => 1,
+				'type'  => 'number',
+				'step'  => 1,
+				'style' => 'width: 100px;',
 			],
 		]);
 
@@ -93,7 +97,7 @@ class Appearance_Setting extends Abstract_Setting {
 			'type'              => 'multicheck_inline',
 			'name'              => esc_html__( 'Disabled days', 'awebooking' ),
 			'desc'              => esc_html__( 'All the days passed to the list will be disabled.', 'awebooking' ),
-			'options_cb'        => 'abrs_week_days',
+			'options_cb'        => 'abrs_days_of_week',
 			'select_all_button' => false,
 		]);
 

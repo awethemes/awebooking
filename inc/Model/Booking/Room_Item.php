@@ -22,8 +22,8 @@ class Room_Item extends Item {
 	protected $type = 'line_item';
 
 	public function set_timespan( Timespan $timespan ) {
-		$state_calendar = abrs_create_calendar( $this->attributes['room_id'], 'state' );
-		$booking_calendar = abrs_create_calendar( $this->attributes['room_id'], 'booking' );
+		$state_calendar = abrs_calendar( $this->attributes['room_id'], 'state' );
+		$booking_calendar = abrs_calendar( $this->attributes['room_id'], 'booking' );
 
 		$period = $timespan->to_period( Constants::GL_NIGHTLY );
 

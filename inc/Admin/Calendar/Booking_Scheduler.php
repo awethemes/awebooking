@@ -98,8 +98,8 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 		// Create provider with all resources to increase performance.
 		$provider = new Aggregate_Provider([
-			$this->create_calendar_provider( 'state', $all_resources ),
-			$this->create_calendar_provider( 'booking', $all_resources ),
+			abrs_calendar_provider( 'state', $all_resources, true ),
+			abrs_calendar_provider( 'booking', $all_resources, true ),
 		]);
 
 		// Build the nested scheduler.

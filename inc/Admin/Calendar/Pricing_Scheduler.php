@@ -23,7 +23,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 
 		return $this->create_scheduler_for(
 			$resources = $this->create_rate_resources( $rates ),
-			$this->create_calendar_provider( 'pricing', $resources )
+			abrs_calendar_provider( 'pricing', $resources, true )
 		);
 	}
 

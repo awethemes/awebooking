@@ -46,9 +46,9 @@ class Booking_List_Table extends Abstract_List_Table {
 		// Temporary remove columns, we will rebuild late.
 		unset( $columns['title'], $columns['comments'], $columns['date'] );
 
-		$show_columns                  = [];
-		$show_columns['booking_title'] = esc_html__( 'Title', 'awebooking' );
-		$show_columns['date']          = esc_html__( 'Date', 'awebooking' );
+		$show_columns                   = [];
+		$show_columns['booking_number'] = esc_html__( 'ID', 'awebooking' );
+		$show_columns['date']           = esc_html__( 'Date', 'awebooking' );
 
 		return array_merge( $columns, $show_columns );
 	}
@@ -70,27 +70,33 @@ class Booking_List_Table extends Abstract_List_Table {
 	 *
 	 * @return void
 	 */
-	protected function display_booking_title_column() {
+	protected function display_booking_number_column() {
 		global $the_booking;
 
-		if ( $the_booking['customer_id'] ) {
-			$userdata = get_userdata( $the_booking['customer_id'] );
-			$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $the_booking['customer_id'] ), esc_html( $userdata->display_name ) ) : '';
-		} elseif ( $customber_name = $the_booking->get_customer_name() ) {
-			$username = $customber_name;
-		} elseif ( $the_booking['customer_company'] ) {
-			$username = trim( $the_booking->get_customer_company() );
+		if ( $the_booking->get_status() === 'trash' ) {
+
+			echo '<strong>#' . esc_attr( $the_booking->get_booking_number() ) . '</strong>';
+
 		} else {
-			$username = esc_html__( 'Guest', 'awebooking' );
-		}
+			$username = '';
 
-		printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
-			'<a href="' . admin_url( 'post.php?post=' . absint( $the_booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $the_booking->get_id() ) . '</strong></a>',
-			$username
-		);
+			if ( $the_booking['customer_id'] ) {
+				$userdata = get_userdata( $the_booking['customer_id'] );
+				$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $userdata->ID ), ucwords( $userdata->display_name ) ) : '';
+			} elseif ( $the_booking['customer_first_name'] || $the_booking['customer_last_name'] ) {
+				/* translators: 1 First Name, 2 Last Name */
+				$username = trim( sprintf( _x( '%1$s %2$s', 'full name', 'awebooking' ), $the_booking->get( 'customer_first_name' ), $the_booking->get( 'customer_last_name' ) ) );
+			} elseif ( $the_booking['customer_company'] ) {
+				$username = trim( $the_booking->get( 'customer_company' ) );
+			} else {
+				$username = esc_html__( 'Guest', 'awebooking' );
+			}
 
-		if ( $the_booking['customer_email'] ) {
-			echo '<small class="meta email"><a href="' . esc_url( 'mailto:' . $the_booking->get_customer_email() ) . '">' . esc_html( $the_booking->get_customer_email() ) . '</a></small>';
+			/* translators: 1 Booking ID, 2 by user */
+			printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
+				'<a href="' . esc_url( admin_url( 'post.php?post=' . absint( $the_booking['id'] ) . '&action=edit' ) ) . '" class="row-title"><strong>#' . esc_html( $the_booking->get_booking_number() ) . '</strong></a>',
+				wp_kses_post( $username )
+			);
 		}
 
 		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';

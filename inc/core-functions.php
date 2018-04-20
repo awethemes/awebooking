@@ -23,6 +23,7 @@ require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
 require trailingslashit( __DIR__ ) . 'models.php';
+require trailingslashit( __DIR__ ) . 'calendar.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 
 /**
