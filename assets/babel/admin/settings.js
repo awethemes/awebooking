@@ -31,6 +31,13 @@
           window.onbeforeunload = null;
         });
     }
+
+    createDatepicker() {
+      $('#display_datepicker_disabledates').flatpickr({
+        mode: 'multiple',
+        dateFormat: 'Y-m-d'
+      });
+    }
   }
 
   /** Document ready */
@@ -38,6 +45,7 @@
     const main = new MainSetting;
 
     main.handleLeaving();
+    main.createDatepicker();
   });
 
 })(jQuery, window.awebooking);

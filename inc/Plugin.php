@@ -450,6 +450,15 @@ final class Plugin extends Container {
 			case 'price_thousand_separator':
 				$value = untrailingslashit( $value );
 				break;
+
+			case 'display_datepicker_disabledays':
+				$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
+				break;
+
+			case 'display_datepicker_disabledates':
+				$value = wp_parse_slug_list( $value );
+				$value = array_filter( $value, 'abrs_is_standard_date' );
+				break;
 		}
 
 		/**
