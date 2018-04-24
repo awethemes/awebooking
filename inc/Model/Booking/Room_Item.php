@@ -48,7 +48,7 @@ class Room_Item extends Item {
 	 */
 	public function get_timespan() {
 		return abrs_rescue( function () {
-			return new Timespan( $this->get_start_date(), $this->get_end_date() );
+			return new Timespan( $this->get( 'check_in' ), $this->get( 'check_out' ) );
 		});
 	}
 
@@ -89,14 +89,23 @@ class Room_Item extends Item {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), array_merge( $this->attributes, [
-			'room_id'      => 0,
-			'check_in'     => null,
-			'check_out'    => null,
-			'adults'       => 0,
-			'children'     => 0,
-			'infants'      => 0,
-			'subtotal'     => 0, // Pre-discount.
-			'total'        => 0,
+			'room_id'        => 0,
+			'room_type'      => 0,
+			'rate_plan'      => 0,
+			'room_type_name' => '',
+			'rate_plan_name' => '',
+
+			'check_in'       => null,
+			'check_out'      => null,
+
+			'adults'         => 0,
+			'children'       => 0,
+			'infants'        => 0,
+
+			'subtotal'       => 0, // Pre-discount.
+			'subtotal_tax'   => 0,
+			'total'          => 0,
+			'total_tax'      => 0,
 		]));
 	}
 
@@ -105,14 +114,22 @@ class Room_Item extends Item {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'room_id'   => '_room_id',
-			'adults'    => '_adults',
-			'children'  => '_children',
-			'infants'   => '_infants',
-			'check_in'  => '_check_in',
-			'check_out' => '_check_out',
-			'subtotal'  => '_line_subtotal',
-			'total'     => '_line_total',
+			'room_id'        => '_room_id',
+			'room_type'      => '_room_type_id',
+			'rate_plan'      => '_rate_plan_id',
+			'room_type_name' => '_room_type_name',
+			'rate_plan_name' => '_rate_plan_name',
+
+			'check_in'     => '_check_in',
+			'check_out'    => '_check_out',
+			'adults'       => '_adults',
+			'children'     => '_children',
+			'infants'      => '_infants',
+
+			'subtotal'     => '_line_subtotal',
+			'subtotal_tax' => '_line_subtotal_tax',
+			'total'        => '_line_total',
+			'total_tax'    => '_line_total_tax',
 		]);
 	}
 
@@ -122,6 +139,8 @@ class Room_Item extends Item {
 	protected function sanitize_attribute( $key, $value ) {
 		switch ( $key ) {
 			case 'room_id':
+			case 'room_type':
+			case 'rate_plan':
 			case 'adults':
 			case 'infants':
 			case 'children':
@@ -129,7 +148,9 @@ class Room_Item extends Item {
 				break;
 
 			case 'total':
+			case 'total_tax':
 			case 'subtotal':
+			case 'subtotal_tax':
 				$value = abrs_sanitize_decimal( $value );
 				break;
 		}

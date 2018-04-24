@@ -113,7 +113,7 @@ class State_Finder extends Finder {
 	 * @return bool
 	 */
 	protected function remaining_states( $events ) {
-		$current_states = $events->transform( function( $e ) {
+		$current_states = $events->map( function( $e ) {
 			return $e->get_value();
 		})->all();
 

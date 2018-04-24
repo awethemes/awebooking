@@ -630,8 +630,10 @@ table.availability-table .text-remain-rooms .dashicons {
 }
 
 .abrs-label.square,
-.awebooking-label.square {
-  border-radius: 2px;
+.abrs-label.squared,
+.awebooking-label.square,
+.awebooking-label.squared {
+  border-radius: 1px;
 }
 
 .abrs-label--info,
@@ -1043,7 +1045,7 @@ table.availability-table .text-remain-rooms .dashicons {
 }
 
 .abrs-input-addon > select {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .abrs-input-addon > select:focus {
@@ -1774,7 +1776,7 @@ span.flatpickr-weekday {
 }
 
 .cmb2-wrap.awebooking-wrap select {
-  margin-top: 1px;
+  margin: 1px;
 }
 
 .cmb2-wrap.awebooking-wrap textarea {
@@ -1926,6 +1928,14 @@ span.flatpickr-weekday {
 .abrs-postbox-title {
   padding: 0.6em 1em;
   background-color: #fafafa;
+  border-bottom: solid 1px #eee;
+  box-sizing: border-box;
+}
+
+.abrs-postbox-title::after {
+  display: block;
+  clear: both;
+  content: "";
 }
 
 .abrs-postbox-title h3,
@@ -1998,7 +2008,7 @@ span.flatpickr-weekday {
 }
 
 #awebooking-room-type-data .awebooking-panel {
-  padding: 0 10px 10px;
+  padding: 0 1em 1em;
   min-height: 510px;
 }
 
@@ -2024,11 +2034,6 @@ span.flatpickr-weekday {
   height: auto;
 }
 
-#awebooking-room-type-data .awebooking-panel > .abrow {
-  margin-left: -10px;
-  margin-right: -10px;
-}
-
 #awebooking-room-type-data .awebooking-panel > .abrow,
 #awebooking-room-type-data .awebooking-panel > .cmb-row {
   padding: 0;
@@ -2038,12 +2043,32 @@ span.flatpickr-weekday {
 
 #awebooking-room-type-data .awebooking-panel > .abrow > [class*="abcol"],
 #awebooking-room-type-data .awebooking-panel > .abrow > [class*="abcol-"] {
-  padding: 10px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+#awebooking-room-type-data .awebooking-panel > .abrow > [class*="abcol"]:not(:last-child),
+#awebooking-room-type-data .awebooking-panel > .abrow > [class*="abcol-"]:not(:last-child) {
   border-right: solid 1px #eee;
+}
+
+#awebooking-room-type-data .abrs-postbox-title {
+  margin-left: -1em;
+  margin-right: -1em;
+}
+
+#awebooking-room-type-data .block-label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 7px;
 }
 
 #awebooking-room-type-data .category-tabs {
   margin: 12px 0 5px;
+}
+
+#awebooking-room-type-data .categorychecklist {
+  margin-bottom: 7px;
 }
 
 #awebooking-booking-data h3 {
@@ -2213,6 +2238,32 @@ table.wp-list-table .column-thumb > a > img {
   width: 100%;
   height: auto;
 }
+
+/* body.edit-php.post-type-awebooking {
+  ul.subsubsub {
+    display: block;
+    width: 100%;
+    background: #fff;
+    padding: 10px 1em;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+    box-sizing: border-box;
+    float: none;
+    margin-bottom: 1em;
+  }
+
+  #posts-filter {
+    z-index: 1;
+    position: relative;
+
+    p.search-box {
+      top: -50px;
+      right: 0;
+      z-index: 2;
+      position: absolute;
+      padding-right: 1em;
+    }
+  }
+}*/
 
 .wrap.awebooking-settings .subsubsub {
   float: none;

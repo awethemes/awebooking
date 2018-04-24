@@ -60,4 +60,7 @@ if ( ! class_exists( 'AweBooking\Plugin', false ) ) {
 			? AweBooking::get_instance()
 			: AweBooking::get_instance()->make( $make );
 	}
+
+	// Deprecated classes & functions.
+	require_once dirname( __FILE__ ) . '/deprecated/deprecated.php';
 }

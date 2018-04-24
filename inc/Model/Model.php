@@ -16,7 +16,7 @@ abstract class Model extends WP_Object {
 	 *
 	 * @param mixed $object The room-type based object or ID.
 	 */
-	public function __construct( $object ) {
+	public function __construct( $object = null ) {
 		$this->setup_attributes();
 
 		$this->map_attributes();
@@ -44,6 +44,10 @@ abstract class Model extends WP_Object {
 	 * @return void
 	 */
 	protected function before_save() {
+		if ( method_exists( $this, 'saving' ) ) {
+			$this->saving();
+		}
+
 		$call_method = $this->exists() ? 'updating' : 'inserting';
 
 		if ( method_exists( $this, $call_method ) ) {

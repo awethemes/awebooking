@@ -147,4 +147,12 @@ class Room_Stay {
 	public function get_room_rate() {
 		return $this->assigned_room;
 	}
+
+	public function is_bookable() {
+
+	}
+
+	public function calculate_cost() {
+
+	}
 }

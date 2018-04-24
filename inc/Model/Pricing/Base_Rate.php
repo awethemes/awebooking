@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
+use AweBooking\Model\Room_Type;
+
 class Base_Rate implements Rate {
 	/**
 	 * The room-type instance.
@@ -12,10 +14,10 @@ class Base_Rate implements Rate {
 	/**
 	 * Create base-rate instance from a room-type.
 	 *
-	 * @param mixed $instance The room-type ID or instance.
+	 * @param \AweBooking\Model\Room_Type $room_type The room type instance.
 	 */
-	public function __construct( $instance ) {
-		$this->instance = abrs_get_room_type( $instance );
+	public function __construct( Room_Type $room_type ) {
+		$this->instance = $room_type;
 	}
 
 	/**

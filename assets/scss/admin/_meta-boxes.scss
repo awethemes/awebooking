@@ -1,6 +1,9 @@
 .abrs-postbox-title {
   padding: 0.6em 1em;
   background-color: #fafafa;
+  border-bottom: solid 1px #eee;
+  box-sizing: border-box;
+  @include clearfix;
 
   h3,
   h4 {
@@ -62,7 +65,7 @@
   }
 
   .awebooking-panel {
-    padding: 0 10px 10px;
+    padding: 0 1em 1em;
     min-height: 510px;
 
     select,
@@ -87,11 +90,6 @@
       }
     }
 
-    > .abrow {
-      margin-left: -10px;
-      margin-right: -10px;
-    }
-
     > .abrow,
     > .cmb-row {
       padding: 0;
@@ -101,13 +99,32 @@
 
     > .abrow > [class*="abcol"],
     > .abrow > [class*="abcol-"] {
-      padding: 10px;
-      border-right: solid 1px #eee;
+      padding-top: 1em;
+      padding-bottom: 1em;
     }
+
+    > .abrow > [class*="abcol"]:not(:last-child),
+    > .abrow > [class*="abcol-"]:not(:last-child) {
+       border-right: solid 1px #eee;
+    }
+  }
+
+  .abrs-postbox-title {
+    margin-left: -1em;
+    margin-right: -1em;
+  }
+
+  .block-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 7px;
   }
 
   .category-tabs {
     margin: 12px 0 5px;
+  }
+  .categorychecklist {
+    margin-bottom: 7px;
   }
 }
 

@@ -36,7 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "AweBooking\\": "inc/"
+            "AweBooking\\": "inc/",
+            "AweBooking\\Deprecated\\": "deprecated/"
         }
     },
     "config": {

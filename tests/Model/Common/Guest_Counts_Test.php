@@ -35,10 +35,10 @@ class Model_Guest_Counts_Test extends WP_UnitTestCase {
 
 	public function testGetTotal() {
 		$guests = new Guest_Counts( 5, 2, 1 );
-		$this->assertEquals(8, $guests->total());
+		$this->assertEquals(8, $guests->get_totals());
 
 		$guests->set_adults( 1 );
-		$this->assertEquals(4, $guests->total());
+		$this->assertEquals(4, $guests->get_totals());
 	}
 
 	public function testToString() {

@@ -2,6 +2,7 @@
 
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
+use AweBooking\Model\Common\Timespan;
 
 /**
  * Create a Carbonate by given a date format.
@@ -25,6 +26,34 @@ function abrs_date_time( $datetime ) {
 	return abrs_rescue( function() use ( $datetime ) {
 		return Carbonate::create_date_time( $datetime );
 	});
+}
+
+/**
+ * Create a timespan.
+ *
+ * @param  string  $start_date The start date.
+ * @param  string  $end_date   The end date.
+ * @param  integer $min_nights Optional, requires minimum of nights.
+ * @param  boolean $strict     Optional, if true the start date must be greater than or equal to today.
+ * @return \AweBooking\Model\Common\Timespan|WP_Error
+ */
+function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false ) {
+	try {
+		$timespan = new Timespan( $start_date, $end_date );
+
+		if ( is_int( $min_nights ) && $min_nights > 0 ) {
+			$timespan->requires_minimum_nights( $min_nights );
+		}
+
+		// Validate when strict mode.
+		if ( $strict && Carbonate::parse( $timespan->get_start_date() )->lt( Carbonate::today() ) ) {
+			return new WP_Error( esc_html__( 'The start date must the greater than or equal to today', 'awebooking' ) );
+		}
+
+		return $timespan;
+	} catch ( Exception $e ) {
+		return new WP_Error( 'timespan_error', esc_html__( 'The dates are invalid', 'awebooking' ) );
+	}
 }
 
 /**

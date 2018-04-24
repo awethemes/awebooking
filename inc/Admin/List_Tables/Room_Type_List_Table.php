@@ -46,7 +46,7 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	 */
 	public function define_sortable_columns( $columns ) {
 		return array_merge( $columns, [
-			// 'rooms'    => 'rooms',
+			'rooms'     => 'rooms',
 			'rate'      => 'rack_rate',
 			'occupancy' => 'occupancy',
 		]);
@@ -86,7 +86,13 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	 * @return void
 	 */
 	protected function display_rooms_column() {
-		echo '<span class="abrs-label abrs-label--info">' . esc_html( $this->room_type->get_total_rooms() ) . '</span>'; // WPCS: XSS OK.
+		$total_rooms = $this->room_type->get_meta( '_cache_total_rooms' );
+
+		if ( ! is_numeric( $total_rooms ) ) {
+			$total_rooms = count( $this->room_type->get_rooms() );
+		}
+
+		echo '<span class="abrs-label abrs-label--info">' . esc_html( $total_rooms ) . '</span>'; // WPCS: XSS OK.
 	}
 
 	/**

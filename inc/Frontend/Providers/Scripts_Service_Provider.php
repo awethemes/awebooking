@@ -66,13 +66,13 @@ class Scripts_Service_Provider extends Service_Provider {
 				'time_format' => abrs_time_format(),
 			],
 			'datepicker' => [
-				'min_nights'   => abrs_option( 'display_datepicker_minnights' ),
-				'max_nights'   => abrs_option( 'display_datepicker_maxnights' ),
-				'min_date'     => abrs_option( 'display_datepicker_mindate' ),
-				'max_date'     => abrs_option( 'display_datepicker_maxdate' ),
-				'disable'      => abrs_option( 'display_datepicker_disabledates' ),
-				'disable_days' => abrs_option( 'display_datepicker_disabledays' ),
-				'show_months'  => abrs_option( 'display_datepicker_showmonths' ),
+				'min_nights'   => abrs_get_option( 'display_datepicker_minnights' ),
+				'max_nights'   => abrs_get_option( 'display_datepicker_maxnights' ),
+				'min_date'     => abrs_get_option( 'display_datepicker_mindate' ),
+				'max_date'     => abrs_get_option( 'display_datepicker_maxdate' ),
+				'disable'      => abrs_get_option( 'display_datepicker_disabledates' ),
+				'disable_days' => abrs_get_option( 'display_datepicker_disabledays' ),
+				'show_months'  => abrs_get_option( 'display_datepicker_showmonths' ),
 			],
 		]);
 

@@ -7,7 +7,7 @@ class Room extends Model {
 	 *
 	 * @var string
 	 */
-	protected $object_type = 'awebooking_rooms';
+	protected $object_type = 'room';
 
 	/**
 	 * WordPress type for object.

@@ -1,13 +1,12 @@
 <?php
 namespace AweBooking\Model\Common;
 
-use JsonSerializable;
 use AweBooking\Constants;
 use AweBooking\Support\Period;
 use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\Fluent_Getter;
 
-class Timespan implements JsonSerializable {
+class Timespan implements \JsonSerializable {
 	use Fluent_Getter;
 
 	/**
@@ -16,19 +15,6 @@ class Timespan implements JsonSerializable {
 	 * @var string
 	 */
 	protected $period;
-
-	/**
-	 * Create new instance from a date point with number of nights.
-	 *
-	 * @param  mixed $start_date The start date.
-	 * @param  int   $nights     Number of nights.
-	 * @return static
-	 */
-	public static function from( $start_date, $nights = 1 ) {
-		$start_date = Carbonate::create_date( $start_date );
-
-		return new static( $start_date, $start_date->copy()->addDays( $nights ) );
-	}
 
 	/**
 	 * Create new instance from a Period.

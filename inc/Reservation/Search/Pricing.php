@@ -94,11 +94,7 @@ class Pricing {
 		);
 
 		// Retrieve the pricing.
-		$pricing = abrs_retrieve_price([
-			'rate'        => $rate,
-			'timespan'    => $request->get_timespan(),
-			'granularity' => Constants::GL_NIGHTLY,
-		]);
+		$pricing = abrs_retrieve_price( $rate, $request->get_timespan() );
 
 		if ( ! is_wp_error( $pricing ) ) {
 			$this->pricing = $pricing;

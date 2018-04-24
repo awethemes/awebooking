@@ -2,7 +2,7 @@
 
 $balance_due = $the_booking->get_balance_due();
 
-$payment_items = $the_booking->get_payments()
+$payment_items = $the_booking->get_payment_items()
 	->sortByDesc( function ( $e ) {
 		return $e->is_deposit();
 	});
@@ -11,6 +11,7 @@ $payment_items = $the_booking->get_payments()
 <style type="text/css">
 	#awebooking-booking-payments .hndle,
 	#awebooking-booking-payments .handlediv { display:none }
+	#awebooking-booking-payments.closed .inside { display: block !important; }
 </style>
 
 <table class="awebooking-table widefat fixed striped">

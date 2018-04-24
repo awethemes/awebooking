@@ -97,7 +97,7 @@ if ( ! function_exists( 'abrs_decimal' ) ) {
 	 * @param  int|null $scale  Optional, custom scale.
 	 * @return \AweBooking\Support\Decimal
 	 */
-	function abrs_decimal( $amount, $scale = null ) {
+	function abrs_decimal( $amount = 0, $scale = null ) {
 		return abrs_rescue( function() use ( $amount, $scale ) {
 			return Decimal::create( $amount, $scale );
 		}, function () { // @codingStandardsIgnoreLine

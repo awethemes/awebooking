@@ -1,31 +1,20 @@
 <?php
 
 /**
- * Returns the date format.
+ * Format a date time for output.
  *
+ * @param  mixed  $date_time The date string or DateTimeInterface.
+ * @param  string $format    Data format.
  * @return string
  */
-function abrs_date_format() {
-	return apply_filters( 'awebooking/date_format', get_option( 'date_format' ) );
-}
+function abrs_format_datetime( $date_time, $format = null ) {
+	$format = $format ?: abrs_datetime_format();
 
-/**
- * Returns the time format.
- *
- * @return string
- */
-function abrs_time_format() {
-	return apply_filters( 'awebooking/time_format', get_option( 'time_format' ) );
-}
+	$date_time = abrs_date_time( $date_time );
 
-/**
- * Returns the date time format.
- *
- * @return string
- */
-function abrs_datetime_format() {
-	/* translators: 1 -Date format, 2 - Time format */
-	return apply_filters( 'awebooking/date_time_format', sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() ) );
+	return ! is_null( $date_time )
+		? $date_time->date_i18n( $format )
+		: '';
 }
 
 /**
@@ -35,15 +24,8 @@ function abrs_datetime_format() {
  * @param  string $format Data format.
  * @return string
  */
-function abrs_format_datetime( $date, $format = null ) {
-	$format = $format ?: abrs_datetime_format();
-
-	$date = abrs_date_time( $date );
-	if ( is_null( $date ) ) {
-		return '';
-	}
-
-	return $date->date_i18n( $format );
+function abrs_format_date( $date, $format = null ) {
+	return abrs_format_datetime( $date, $format ?: abrs_date_format() );
 }
 
 /**
@@ -73,17 +55,6 @@ function abrs_get_price_format() {
 	}
 
 	return apply_filters( 'awebooking/get_price_format', $format, $position );
-}
-
-/**
- * Same as abrs_format_price() but echo the price instead.
- *
- * @param  int|float $amount   The amount.
- * @param  string    $currency The currency, default is current currency.
- * @return void
- */
-function abrs_price( $amount, $currency = null ) {
-	echo abrs_format_price( $amount, $currency ); // WPCS: XSS OK.
 }
 
 /**
@@ -130,6 +101,17 @@ function abrs_format_price( $amount, $currency = null ) {
 	 * @param array                       $args   Price format args.
 	 */
 	return apply_filters( 'awebooking/price_formatted_markup', $return, $amount, $args );
+}
+
+/**
+ * Same as abrs_format_price() but echo the price instead.
+ *
+ * @param  int|float $amount   The amount.
+ * @param  string    $currency The currency, default is current currency.
+ * @return void
+ */
+function abrs_price( $amount, $currency = null ) {
+	echo abrs_format_price( $amount, $currency ); // WPCS: XSS OK.
 }
 
 /**

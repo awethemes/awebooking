@@ -71,6 +71,7 @@ final class Plugin extends Container {
 			\AweBooking\Providers\Http_Service_Provider::class,
 			\AweBooking\Providers\Payment_Service_Provider::class,
 			\AweBooking\Providers\Query_Service_Provider::class,
+			\AweBooking\Providers\Logic_Service_Provider::class,
 		],
 		'admin' => [
 			\AweBooking\Admin\Providers\Admin_Service_Provider::class,

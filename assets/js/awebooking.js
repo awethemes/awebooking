@@ -58,6 +58,17 @@
    */
   awebooking.datepicker = function (instance, options) {
     var i18n = self.config.i18n;
+    var defaults = self.config.datepicker;
+    var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
+
+    if (Array.isArray(defaults.disable_days)) {
+      disable.push(function (date) {
+        return defaults.disable_days.indexOf(date.getDay()) !== -1;
+      });
+    }
+
+    var min_date = new Date().fp_incr(defaults.min_date);
+    var max_date = defaults.max_date && defaults.max_date !== 0 ? new Date().fp_incr(defaults.max_date) : '';
 
     var fp = flatpickr(instance, _defaults(options, {
       mode: 'range',
@@ -65,10 +76,12 @@
       altFormat: i18n.date_format,
       ariaDateFormat: i18n.date_format,
       dateFormat: 'Y-m-d',
-      minDate: 'today',
-      showMonths: 2,
+      minDate: min_date,
+      maxDate: max_date,
+      showMonths: defaults.show_months,
       enableTime: false,
-      enableSeconds: false
+      enableSeconds: false,
+      disable: disable
     }));
 
     return fp;
@@ -79,7 +92,9 @@
    *
    * @return {void}
    */
-  $(function () {});
+  $(function () {
+    awebooking.datepicker('.js-abrs-datepicker');
+  });
 })(jQuery);
 
 },{"lodash.defaults":2}],2:[function(require,module,exports){

@@ -8,11 +8,6 @@ class Model_Timespan_Test extends WP_UnitTestCase {
 		$timespan = new Timespan( '2017-04-15', '2017-04-16' );
 		$this->assertInstanceOf('JsonSerializable', $timespan);
 		$this->assertInstanceOf(Period::class, $timespan->to_period());
-
-		$timespan = Timespan::from( '2017-04-15', 5 );
-		$this->assertEquals('2017-04-15', $timespan->get_start_date());
-		$this->assertEquals('2017-04-20', $timespan->get_end_date());
-		$this->assertEquals(5, $timespan->get_nights());
 	}
 
 	public function testGetter() {

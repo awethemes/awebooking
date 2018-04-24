@@ -45,8 +45,8 @@ class Carbonate extends Carbon {
 			return static::createFromFormat( 'Y-m-d', $datetime )->startOfDay();
 		}
 
-		// Finally, create datetime based on standard ISO-8601 date format.
-		return static::createFromFormat( 'Y-m-d H:i:s', $datetime );
+		// Finally, try to parse the datetime.
+		return static::parse( $datetime );
 	}
 
 	/**

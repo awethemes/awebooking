@@ -2,6 +2,7 @@
 namespace AweBooking\Providers;
 
 use AweBooking\Constants;
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\Service_Provider;
 
 class Logic_Service_Provider extends Service_Provider {
@@ -13,6 +14,27 @@ class Logic_Service_Provider extends Service_Provider {
 	public function init( $awebooking ) {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
+
+		add_action( 'awebooking/room/saved', [ $this, 'update_total_rooms' ] );
+		add_action( 'awebooking/room_type/saved', [ $this, 'update_total_rooms' ] );
+	}
+
+	/**
+	 * Perform update total rooms of room type.
+	 *
+	 * @param  mixed $object The object model.
+	 * @access private
+	 */
+	public function update_total_rooms( $object ) {
+		if ( $object instanceof Room_Type ) {
+			$room_type = $object;
+		} else {
+			$room_type = abrs_get_room_type( $object['room_type'] );
+		}
+
+		if ( $room_type && $room_type->exists() ) {
+			$room_type->update_meta( '_cache_total_rooms', count( $room_type->get_rooms() ) );
+		}
 	}
 
 	/**
@@ -23,6 +45,8 @@ class Logic_Service_Provider extends Service_Provider {
 	 *
 	 * @param  string $postid The booking ID will be delete.
 	 * @return void
+	 *
+	 * @access private
 	 */
 	public function delete_booking_items( $postid ) {
 		global $wpdb;

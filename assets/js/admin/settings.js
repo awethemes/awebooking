@@ -43,6 +43,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           window.onbeforeunload = null;
         });
       }
+    }, {
+      key: 'createDatepicker',
+      value: function createDatepicker() {
+        $('#display_datepicker_disabledates').flatpickr({
+          mode: 'multiple',
+          dateFormat: 'Y-m-d'
+        });
+      }
     }]);
 
     return MainSetting;
@@ -55,6 +63,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var main = new MainSetting();
 
     main.handleLeaving();
+    main.createDatepicker();
   });
 })(jQuery, window.awebooking);
 

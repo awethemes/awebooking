@@ -3,12 +3,6 @@ namespace AweBooking\Admin\Providers;
 
 use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
-use AweBooking\Admin\Metaboxes\Booking_Metabox;
-use AweBooking\Admin\Metaboxes\Booking_Actions_Metabox;
-use AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox;
-use AweBooking\Admin\Metaboxes\Booking_Payments_Metabox;
-use AweBooking\Admin\Metaboxes\Room_Type_Metabox;
-use Awethemes\Http\Request;
 
 class Metaboxes_Service_Provider extends Service_Provider {
 	/**
@@ -17,11 +11,16 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register() {
-		$this->plugin->bind( 'metabox.booking', Booking_Metabox::class );
-		$this->plugin->bind( 'metabox.booking_rooms', Booking_Rooms_Metabox::class );
-		$this->plugin->bind( 'metabox.booking_payments', Booking_Payments_Metabox::class );
-		$this->plugin->bind( 'metabox.booking_actions', Booking_Actions_Metabox::class );
-		$this->plugin->bind( 'metabox.room_type', Room_Type_Metabox::class );
+		foreach ( [
+			'metabox.room_type'        => \AweBooking\Admin\Metaboxes\Room_Type_Metabox::class,
+			'metabox.booking'          => \AweBooking\Admin\Metaboxes\Booking_Metabox::class,
+			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
+			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
+			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
+			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
+		] as $abstract => $concrete ) {
+			$this->plugin->bind( $abstract, $concrete );
+		}
 	}
 
 	/**
@@ -65,6 +64,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->output_metabox( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->output_metabox( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->output_metabox( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
+		// add_meta_box( 'awebooking-booking-calendar', esc_html__( 'Calendar', 'awebooking' ), $this->output_metabox( 'metabox.booking_calendar' ), Constants::BOOKING, 'side' );
 
 		// Room Type meta-boxes.
 		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->output_metabox( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
@@ -123,7 +123,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		$is_saving = true;
 
 		// Make the HTTP request.
-		$request = $this->plugin->make( Request::class );
+		$request = $this->plugin->make( 'request' );
 
 		// Call the proccess based on post_type.
 		switch ( $post->post_type ) {

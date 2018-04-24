@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use Awethemes\Http\Request;
+use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Component\Form\Form_Builder;
 
@@ -101,29 +102,78 @@ class Room_Type_Metabox {
 		$saved = $room_type->save();
 
 		// Handle update rooms data.
-		if ( $request->filled( '_rooms' ) ) {
-			$i = 0;
-
-			foreach ( (array) $request->input( '_rooms', [] ) as $id => $data ) {
-				if ( ! $room = abrs_get_room( $id ) ) {
-					continue;
-				}
-
-				$room->order = $i;
-				$room->name  = ! empty( $data['name'] )
-					? sanitize_text_field( wp_unslash( $data['name'] ) )
-					/* translators: 1: Room type name, 2: Room item order */
-					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type['title'], ( $i + 1 ) );
-
-				$room->save();
-
-				$i++;
-			}
+		if ( 0 === count( $room_type->get_rooms() ) ) {
+			$this->perform_scaffold_rooms( $room_type, $request->input( '_scaffold_rooms', [] ) );
+		} elseif ( $request->filled( '_rooms' ) ) {
+			$this->perform_update_rooms( $room_type, $request->input( '_rooms', [] ) );
 		}
 
 		// Add successfully notice.
 		if ( $saved ) {
 			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+		}
+	}
+
+	/**
+	 * Perform scaffold rooms.
+	 *
+	 * @param  \AweBooking\Model\Room_Type $room_type      The room type instance.
+	 * @param  array                       $scaffold_rooms The rooms data.
+	 * @return void
+	 */
+	protected function perform_scaffold_rooms( $room_type, $scaffold_rooms ) {
+		$scaffold_rooms = array_filter( (array) $scaffold_rooms );
+
+		if ( empty( $scaffold_rooms ) ) {
+			return;
+		}
+
+		foreach ( array_values( $scaffold_rooms ) as $index => $data ) {
+			if ( empty( $data['id'] ) || -1 != $data['id'] ) {
+				continue;
+			}
+
+			$room = ( new Room )->fill([
+				'order'     => $index,
+				'name'      => ! empty( $data['name'] )
+					? sanitize_text_field( wp_unslash( $data['name'] ) )
+					/* translators: 1: Room type name, 2: Room item order */
+					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), ( $index + 1 ) ),
+				'room_type' => $room_type->get_id(),
+			]);
+
+			$room->save();
+		}
+	}
+
+	/**
+	 * Perform update rooms.
+	 *
+	 * @param  \AweBooking\Model\Room_Type $room_type The room type instance.
+	 * @param  array                       $rooms     The rooms data.
+	 * @return void
+	 */
+	protected function perform_update_rooms( $room_type, $rooms ) {
+		$index = 0;
+
+		foreach ( (array) $rooms as $id => $data ) {
+			if ( empty( $data['id'] ) || $id != $data['id'] ) {
+				continue;
+			}
+
+			if ( ! $room = abrs_get_room( $id ) ) {
+				continue;
+			}
+
+			$room->order = $index;
+			$room->name  = ! empty( $data['name'] )
+				? sanitize_text_field( wp_unslash( $data['name'] ) )
+				/* translators: 1: Room type name, 2: Room item order */
+				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), $index + 1 );
+
+			$room->save();
+
+			$index++;
 		}
 	}
 
@@ -180,6 +230,7 @@ class Room_Type_Metabox {
 			'type'            => 'abrs_toggle',
 			'desc'            => esc_html__( 'Include infants in max calculations?', 'awebooking' ),
 			'default'         => false,
+			'show_names'      => false,
 		]);
 
 		// Pricing.

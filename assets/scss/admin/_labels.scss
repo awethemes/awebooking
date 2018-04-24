@@ -8,8 +8,9 @@
   color: #343434;
   background-color: #f7f7f7;
 
-  &.square {
-    border-radius: 2px;
+  &.square,
+  &.squared {
+    border-radius: 1px;
   }
 
   &--info {

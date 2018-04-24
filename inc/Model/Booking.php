@@ -58,11 +58,20 @@ class Booking extends Model {
 	}
 
 	/**
+	 * Get rooms of this booking.
+	 *
+	 * @return array \AweBooking\Support\Collection
+	 */
+	public function get_room_items() {
+		return $this->get_items( 'line_item' );
+	}
+
+	/**
 	 * Get payments of this booking.
 	 *
 	 * @return array \AweBooking\Support\Collection
 	 */
-	public function get_payments() {
+	public function get_payment_items() {
 		return $this->get_items( 'payment_item' );
 	}
 
@@ -72,7 +81,7 @@ class Booking extends Model {
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_paid() {
-		return $this->get_payments()->reduce( function( $total, $item ) {
+		return $this->get_payment_items()->reduce( function( $total, $item ) {
 			return $total->add( 0 );
 		}, abrs_decimal( 0 ) );
 	}
