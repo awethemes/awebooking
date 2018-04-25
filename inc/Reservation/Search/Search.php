@@ -15,6 +15,8 @@ use AweBooking\Calendar\Provider\Core\State_Provider;
 use AweBooking\Reservation\Request;
 use AweBooking\Reservation\Constraints\MinMax_Nights_Constraint;
 
+use AweBooking\Reservation\Room_Stay;
+
 class Search {
 	/**
 	 * The request instance.
@@ -71,6 +73,9 @@ class Search {
 	 * @return \AweBooking\Reservation\Search\Results
 	 */
 	public function get() {
+		$room_stay = new Room_Stay( $this->request, abrs_get_room_type( 83 ) );
+		dd( $room_stay->calculate_price() );
+
 		// First, get all room types.
 		$room_types = $this->list_room_types();
 
@@ -95,6 +100,8 @@ class Search {
 			// Push to the results.
 			$results->push( compact( 'request', 'room_type', 'rooms', 'plans' ) );
 		}
+
+		dd( $results );
 
 		return $results;
 	}
@@ -153,9 +160,7 @@ class Search {
 				$this->perform_find_rates( $plan )
 			);
 
-			$pricing = new Pricing( $room_type, $rates );
-
-			$plans->put( $plan->get_id(), compact( 'plan', 'rates', 'pricing' ) );
+			$plans->put( $plan->get_id(), compact( 'plan', 'rates' ) );
 		}
 
 		return $plans;

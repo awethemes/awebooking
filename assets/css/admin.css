@@ -193,59 +193,59 @@
 /* Helpers CSS */
 
 .abrs-mt0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .abrs-mb0 {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 .abrs-mt1 {
-  margin-top: 1em;
+  margin-top: 1em !important;
 }
 
 .abrs-mb1 {
-  margin-bottom: 1em;
+  margin-bottom: 1em !important;
 }
 
 .abrs-mt2 {
-  margin-top: 2em;
+  margin-top: 2em !important;
 }
 
 .abrs-mb2 {
-  margin-bottom: 2em;
+  margin-bottom: 2em !important;
 }
 
 .abrs-pt0 {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 
 .abrs-pb0 {
-  padding-bottom: 0;
+  padding-bottom: 0 !important;
 }
 
 .abrs-pl0 {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 
 .abrs-pr0 {
-  padding-right: 0;
+  padding-right: 0 !important;
 }
 
 .abrs-pt1 {
-  padding-top: 1em;
+  padding-top: 1em !important;
 }
 
 .abrs-pb1 {
-  padding-bottom: 1em;
+  padding-bottom: 1em !important;
 }
 
 .abrs-pt2 {
-  padding-top: 2em;
+  padding-top: 2em !important;
 }
 
 .abrs-pb2 {
-  padding-bottom: 2em;
+  padding-bottom: 2em !important;
 }
 
 .abrs-mtb1 {
@@ -454,12 +454,12 @@ p.awebooking-no-items {
   background-color: #03a9f4 !important;
 }
 
-.awebooking-checked-in-color,
+.checked-in-color,
 [data-value="checked-in"]:before {
   background-color: #cddc39 !important;
 }
 
-.awebooking-checked-out-color,
+.checked-out-color,
 [data-value="checked-out"]:before {
   background-color: #8bc34a !important;
 }

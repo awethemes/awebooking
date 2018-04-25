@@ -28,6 +28,13 @@ class Room_Type extends Model {
 	protected $rate_plans;
 
 	/**
+	 * [$services description]
+	 *
+	 * @var [type]
+	 */
+	protected $services;
+
+	/**
 	 * Gets rooms belongs to this room type.
 	 *
 	 * @return \AweBooking\Support\Collection
@@ -74,6 +81,10 @@ class Room_Type extends Model {
 	 */
 	public function get_standard_plan() {
 		return apply_filters( $this->prefix( 'get_standard_plan' ), new Standard_Plan( $this ), $this );
+	}
+
+	public function get_services() {
+		dd( $this->get_term_ids( Constants::HOTEL_SERVICE ) );
 	}
 
 	/**

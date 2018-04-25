@@ -4,10 +4,11 @@
 $route->get(    '/rates',                              'Rate_Controller@index' );
 $route->post(   '/rates',                              'Rate_Controller@update' );
 $route->post(   '/rates/bulk-update',                  'Rate_Controller@bulk_update' );
-
 $route->get(    '/calendar',                           'Calendar_Controller@index' );
 $route->post(   '/calendar',                           'Calendar_Controller@update' );
 $route->post(   '/calendar/bulk-update',               'Calendar_Controller@bulk_update' );
+$route->get(   '/export/rates',                        'Export_Controller@rates' );
+$route->get(   '/export/calendar',                     'Export_Controller@calendar' );
 
 $route->get(    '/settings',                           'Settings_Controller@index' );
 $route->post(   '/settings',                           'Settings_Controller@store' );

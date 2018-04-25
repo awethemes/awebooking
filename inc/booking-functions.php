@@ -1,59 +1,8 @@
 <?php
 
-use AweBooking\Model\Room;
-use AweBooking\Model\Room_Type;
+use Illuminate\Support\Arr;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Item;
-use AweBooking\Model\Pricing\Base_Rate;
-use AweBooking\Model\Model;
-
-/**
- * Retrieves the room object.
- *
- * @param  mixed $room The room ID.
- * @return \AweBooking\Model\Room|false|null
- */
-function abrs_get_room( $room ) {
-	return abrs_rescue( function() use ( $room ) {
-		$room = new Room( $room );
-
-		return $room->exists() ? $room : null;
-	}, false );
-}
-
-/**
- * Retrieves the room type object.
- *
- * @param  mixed $room_type The post object or post ID of the room type.
- * @return \AweBooking\Model\Room_Type|false|null
- */
-function abrs_get_room_type( $room_type ) {
-	return abrs_rescue( function() use ( $room_type ) {
-		$room_type = new Room_Type( $room_type );
-
-		return $room_type->exists() ? $room_type : null;
-	}, false );
-}
-
-/**
- * Retrieves the rate object.
- *
- * In awebooking, we merge rate & rate plan along with room type.
- * So each room type alway have a "Base Rate" that same ID with room type.
- *
- * @param  mixed $rate The rate ID.
- * @return \AweBooking\Model\Pricing\Rate|null
- */
-function abrs_get_rate( $rate ) {
-	$rate = Model::parse_object_id( $rate );
-
-	// Let's check given rate if it is base rate or not.
-	$base_rate = abrs_get_room_type( $rate );
-
-	return ( $base_rate instanceof Room_Type )
-		? new Base_Rate( $base_rate )
-		: apply_filters( 'awebooking/get_rate_object', null, $rate );
-}
 
 /**
  * Retrieves the booking object.
@@ -120,4 +69,40 @@ function abrs_booking_item_classmap() {
 		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
 		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
 	]);
+}
+
+/**
+ * Returns a list of booking statuses.
+ *
+ * @return array
+ */
+function abrs_list_booking_statuses() {
+	return apply_filters( 'awebooking/list_booking_statuses', [
+		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
+		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
+		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
+		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
+		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
+		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
+		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),
+		'awebooking-cancelled'   => _x( 'Cancelled', 'Booking status', 'awebooking' ),
+	]);
+}
+
+/**
+ * Get the nice name for an booking status.
+ *
+ * @param  string $status The status name.
+ * @return string
+ */
+function abrs_get_booking_status_name( $status ) {
+	$statuses = abrs_list_booking_statuses();
+
+	$status = ( 0 === strpos( $status, 'awebooking-' ) ) ? substr( $status, 11 ) : $status;
+
+	if ( array_key_exists( $status, $statuses ) ) {
+		return $statuses[ $status ];
+	}
+
+	return Arr::get( $statuses, 'awebooking-' . $status, $status );
 }

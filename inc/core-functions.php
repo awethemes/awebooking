@@ -22,32 +22,11 @@ require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
-require trailingslashit( __DIR__ ) . 'models.php';
+require trailingslashit( __DIR__ ) . 'room-functions.php';
+require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'calendar.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 require trailingslashit( __DIR__ ) . 'reservation.php';
-
-/**
- * Report an exception.
- *
- * @param  Exception $e Report the exception.
- * @return void
- *
- * @throws Exception
- */
-function abrs_report( $e ) {
-	try {
-		$logger = awebooking()->make( 'logger' );
-	} catch ( \Exception $ex ) {
-		throw $e; // Throw the original exception.
-	}
-
-	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
-}
-
-function abrs_logger() {
-	return awebooking()->make( 'logger' );
-}
 
 /**
  * Gets the plugin URL.
@@ -57,6 +36,15 @@ function abrs_logger() {
  */
 function abrs_plugin_url( $path = null ) {
 	return awebooking()->plugin_url( $path );
+}
+
+/**
+ * Returns the logger.
+ *
+ * @return \Psr\Log\LoggerInterface
+ */
+function abrs_logger() {
+	return awebooking()->make( 'logger' );
 }
 
 /**
@@ -98,6 +86,24 @@ function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
  */
 function abrs_admin_route( $path = '/', $parameters = [] ) {
 	return abrs_url()->admin_route( $path, $parameters );
+}
+
+/**
+ * Report an exception.
+ *
+ * @param  Exception $e Report the exception.
+ * @return void
+ *
+ * @throws Exception
+ */
+function abrs_report( $e ) {
+	try {
+		$logger = awebooking()->make( 'logger' );
+	} catch ( \Exception $ex ) {
+		throw $e; // Throw the original exception.
+	}
+
+	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
 }
 
 /**
@@ -309,24 +315,6 @@ function abrs_maximum_scaffold_rooms() {
 }
 
 /**
- * Returns a list of booking statuses.
- *
- * @return array
- */
-function abrs_list_booking_statuses() {
-	return apply_filters( 'awebooking/list_booking_statuses', [
-		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
-		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
-		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
-		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
-		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
-		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
-		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),
-		'awebooking-cancelled'   => _x( 'Cancelled', 'Booking status', 'awebooking' ),
-	]);
-}
-
-/**
  * Return a list of common titles.
  *
  * @return string
@@ -490,7 +478,7 @@ function abrs_page_permalink( $page ) {
  * @param  Model|null $model   Optional, the model data.
  * @return \AweBooking\Component\Form\Form_Builder
  */
-function abrs_create_form( $form_id, $model = null ) {
+function abrs_create_form( $form_id = '', $model = null ) {
 	return new Form_Builder( $form_id, $model ?: 0, 'static' );
 }
 

@@ -159,8 +159,8 @@ abstract class Abstract_List_Table {
 	 * @access private
 	 */
 	public function list_table_primary_column( $default, $screen_id ) {
-		if ( 'edit-' . $this->list_table === $screen_id && $this->get_primary_column() ) {
-			return $this->get_primary_column();
+		if ( 'edit-' . $this->list_table === $screen_id && $primary_column = $this->get_primary_column() ) {
+			return $primary_column;
 		}
 
 		return $default;

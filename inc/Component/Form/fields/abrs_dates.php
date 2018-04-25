@@ -9,6 +9,8 @@
 
 $escaped_value = is_array( $escaped_value ) ? $escaped_value : [];
 
+$input_names = is_array( $field->args( 'input_names' ) ) ? $field->args( 'input_names' ) : [];
+
 wp_enqueue_script( 'flatpickr' );
 wp_enqueue_script( 'flatpickr-range-plugin' );
 
@@ -17,7 +19,7 @@ wp_enqueue_script( 'flatpickr-range-plugin' );
 	print $types->input([ // WPCS: XSS OK.
 		'type'         => 'text',
 		'id'           => $types->_id( '_start' ),
-		'name'         => 'check-in',
+		'name'         => isset( $input_names[0] ) ? $input_names[0] : 'check-in',
 		'value'        => isset( $escaped_value[0] ) ? $escaped_value[0] : '',
 		'placeholder'  => esc_html__( 'Check In', 'awebooking' ),
 		'autocomplete' => 'off',
@@ -26,7 +28,7 @@ wp_enqueue_script( 'flatpickr-range-plugin' );
 	print $types->input([ // WPCS: XSS OK.
 		'type'         => 'text',
 		'id'           => $types->_id( '_end' ),
-		'name'         => 'check-out',
+		'name'         => isset( $input_names[1] ) ? $input_names[1] : 'check-out',
 		'value'        => isset( $escaped_value[1] ) ? $escaped_value[1] : '',
 		'placeholder'  => esc_html__( 'Check Out', 'awebooking' ),
 		'autocomplete' => 'off',

@@ -163,7 +163,7 @@ class Http_Service_Provider extends Service_Provider {
 		$current_screen->base = 'awebooking_route';
 		$current_screen->id   = 'awebooking' . $request_uri;
 
-		// Thos action is not needed.
+		// Ths action is not needed.
 		remove_action( 'admin_head', 'wp_admin_canonical_url' );
 
 		// Handle the route.

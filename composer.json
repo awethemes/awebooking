@@ -25,6 +25,7 @@
         "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.25",
         "pelago/emogrifier": "^2.0",
+        "phpoffice/phpspreadsheet": "^1.2",
         "roomify/bat": "^1.2",
         "webdevstudios/cmb2": "^2.3"
     },

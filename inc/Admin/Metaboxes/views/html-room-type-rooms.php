@@ -24,11 +24,11 @@ $rooms = $the_room_type->get_rooms();
 	</div>
 
 	<!-- Content will be generate via JS -->
-	<div class="abrs-sortable js-generated-rooms js-sorting-rooms" style="margin-top: 1em; display: none;"></div>
+	<div class="abrs-sortable js-list-rooms js-sorting-rooms" style="margin-top: 1em; display: none;"></div>
 
 <?php else : ?>
 
-	<ul class="abrs-sortable js-sorting-rooms">
+	<ul class="abrs-sortable js-list-rooms js-sorting-rooms abrs-mb1">
 		<?php foreach ( $rooms as $i => $room ) : ?>
 			<li class="abrs-sortable__item">
 				<div class="abrs-sortable__head">
@@ -54,6 +54,7 @@ $rooms = $the_room_type->get_rooms();
 		<?php endforeach ?>
 	</ul>
 
+	<button type="button" class="button js-add-room"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
 <?php endif ?>
 
 <script type="text/template" id="tmpl-template-room-item">

@@ -23,6 +23,7 @@
         animation: 150,
       });
 
+      this.$metabox.on('click', '.js-add-room', this.handleAddRoom.bind(this));
       this.$metabox.on('click', '.js-scaffold-rooms', this.handleScaffoldRooms.bind(this));
     }
 
@@ -42,6 +43,21 @@
 
       $('.awebooking-tabs-panels > div', this.$metabox).hide();
       $($target.attr('href'), this.$metabox).show();
+    }
+
+    handleAddRoom(e) {
+      e.preventDefault();
+
+      const title = (new String($('#title').val())).trim();
+      const template = wp.template('template-room-item');
+
+      const i = -1;
+      $('.js-list-rooms').append(template({
+        index:   i,
+        id:      -1,
+        name:   `${title} ${i+1}`,
+        prefix: `_rooms[${i}]`,
+      }));
     }
 
     /**
@@ -70,7 +86,7 @@
         });
       }
 
-      $('.js-generated-rooms').show().html(htmlRooms);
+      $('.js-list-rooms').show().html(htmlRooms);
     }
   }
 

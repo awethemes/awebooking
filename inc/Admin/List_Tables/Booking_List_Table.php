@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
+use AweBooking\Support\Carbonate;
 
 class Booking_List_Table extends Abstract_List_Table {
 	/**
@@ -38,6 +39,13 @@ class Booking_List_Table extends Abstract_List_Table {
 	/**
 	 * {@inheritdoc}
 	 */
+	protected function get_primary_column() {
+		return 'booking_number';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function define_columns( $columns ) {
 		if ( empty( $columns ) && ! is_array( $columns ) ) {
 			$columns = [];
@@ -47,10 +55,22 @@ class Booking_List_Table extends Abstract_List_Table {
 		unset( $columns['title'], $columns['comments'], $columns['date'] );
 
 		$show_columns                   = [];
-		$show_columns['booking_number'] = esc_html__( 'ID', 'awebooking' );
-		$show_columns['date']           = esc_html__( 'Date', 'awebooking' );
+		$show_columns['booking_number'] = esc_html__( 'Booking', 'awebooking' );
+		$show_columns['booking_status'] = esc_html__( 'Status', 'awebooking' );
+		$show_columns['booking_date']   = esc_html__( 'Date', 'awebooking' );
 
 		return array_merge( $columns, $show_columns );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function define_sortable_columns( $columns ) {
+		return array_merge( $columns, [
+			'booking_number' => 'ID',
+			'booking_total'  => '_total',
+			'booking_date'   => 'date',
+		]);
 	}
 
 	/**
@@ -66,7 +86,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	}
 
 	/**
-	 * Display the title.
+	 * Display column: booking_number.
 	 *
 	 * @return void
 	 */
@@ -100,6 +120,47 @@ class Booking_List_Table extends Abstract_List_Table {
 		}
 
 		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
+	}
+
+	/**
+	 * Display columm: booking_status.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_status_column() {
+		$status = $this->booking->get( 'status' );
+		printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) );
+	}
+
+	/**
+	 * Display columm: booking_date.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_date_column() {
+		$date_created = abrs_date_time( $this->booking->get( 'date_created' ) );
+
+		if ( is_null( $date_created ) ) {
+			return;
+		}
+
+		// Check if the booking was created within the last 24 hours, and not in the future.
+		// We will show the date as human readable date time by using human_time_diff.
+		if ( ! $date_created->isFuture() && $date_created->gt( Carbonate::now()->subDay() ) ) {
+			/* translators: %s: human-readable time difference */
+			$show_date = sprintf( _x( '%s ago', '%s = human-readable time difference', 'awebooking' ),
+				human_time_diff( $date_created->getTimestamp(), current_time( 'timestamp', true ) )
+			);
+		} else {
+			$show_date = abrs_format_date( $date_created );
+		}
+
+		printf(
+			'<time datetime="%1$s" title="%2$s">%3$s</time>',
+			esc_attr( $date_created->toDateTimeString() ),
+			esc_html( abrs_format_datetime( $date_created ) ),
+			esc_html( $show_date )
+		);
 	}
 
 	/**
@@ -151,7 +212,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			];
 		}
 
-		// Filter the bookings by the booking id.
+		// Filter the bookings by special room ID.
 		if ( ! empty( $_GET['_room'] ) ) {
 			$room_id = absint( $_GET['_room'] );
 

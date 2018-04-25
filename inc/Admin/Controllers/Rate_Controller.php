@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Admin\Controllers;
 
+use WP_Error;
+use AweBooking\Constants;
 use Awethemes\Http\Request;
-use AweBooking\Admin\Forms\Room_Price_Form;
-use AweBooking\Admin\Forms\Bulk_Price_Form;
 use AweBooking\Admin\Calendar\Pricing_Scheduler;
 
 class Rate_Controller extends Controller {
@@ -14,10 +14,8 @@ class Rate_Controller extends Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function index( Request $request ) {
-		$controls = new Room_Price_Form;
-		$bulk_controls = new Bulk_Price_Form;
-
 		$scheduler = new Pricing_Scheduler;
+
 		$scheduler->prepare( $request );
 
 		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls', 'bulk_controls' ) );
@@ -32,24 +30,22 @@ class Rate_Controller extends Controller {
 	public function update( Request $request ) {
 		check_admin_referer( 'awebooking_update_price', '_wpnonce' );
 
-		// Get the sanitized values.
-		$sanitized = ( new Room_Price_Form )->handle( $request );
+		if ( ! $request->filled( 'rate', 'start_date', 'end_date', 'amount' ) ) {
+			return $this->redirect()->back( abrs_admin_route( '/rates' ) );
+		}
 
-		if ( $sanitized->count() > 0 && $request->filled( 'calendar', 'check-in', 'check-out' ) ) {
-			// Handle set custom room price.
-			$updated = abrs_apply_price([
-				'rate'       => $request->get( 'calendar' ),
-				'room_type'  => $request->get( 'calendar' ),
-				'start_date' => $request->get( 'check-in' ),
-				'end_date'   => $request->get( 'check-out' ),
-				'amount'     => $sanitized->get( 'amount', 0 ),
-				'operation'  => $sanitized->get( 'operator', 'replace' ),
-				'only_days'  => $sanitized->get( 'days' ),
-			]);
+		$timespan = abrs_timespan( $request->get( 'start_date' ), $request->get( 'end_date' ) );
+		if ( is_wp_error( $timespan ) ) {
+			return $timespan;
+		}
 
-			if ( $updated && ! is_wp_error( $updated ) ) {
-				abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
-			}
+		$updated = abrs_apply_price( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
+			'granularity' => Constants::GL_DAILY,
+			'only_days'   => $request->get( 'days' ),
+		]);
+
+		if ( $updated && ! is_wp_error( $updated ) ) {
+			abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );
@@ -64,27 +60,34 @@ class Rate_Controller extends Controller {
 	public function bulk_update( Request $request ) {
 		check_admin_referer( 'awebooking_bulk_update_price', '_wpnonce' );
 
-		// Get the sanitized values.
-		$sanitized = ( new Bulk_Price_Form )->handle( $request );
+		if ( ! $request->filled( 'bulk_rates', 'bulk_start_date', 'bulk_end_date', 'bulk_amount' ) ) {
+			return $this->redirect()->back( abrs_admin_route( '/rates' ) );
+		}
 
-		$room_types = $request->get( 'bulk_room_types' );
+		$timespan = abrs_timespan( $request->get( 'bulk_start_date' ), $request->get( 'bulk_end_date' ) );
+		if ( is_wp_error( $timespan ) ) {
+			return $timespan;
+		}
 
-		if ( $sanitized->count() > 0 && $request->filled( 'bulk_room_types', 'check-in', 'check-out' ) ) {
+		// Parse request params.
+		$rates  = wp_parse_id_list( $request->bulk_rates );
+		$amount = abrs_sanitize_decimal( $request->bulk_amount );
 
-			foreach ( $room_types as $room_type ) {
-				// Handle set custom room price.
-				$updated = abrs_apply_price([
-					'rate'       => $room_type,
-					'room_type'  => $room_type,
-					'start_date' => $request->get( 'check-in' ),
-					'end_date'   => $request->get( 'check-out' ),
-					'amount'     => $sanitized->get( 'bulk_amount', 0 ),
-					'operation'  => $sanitized->get( 'bulk_operator', 'replace' ),
-					'only_days'  => $sanitized->get( 'bulk_days' ),
-				]);
+		$bulk_counts = 0;
+		foreach ( $rates as $rate ) {
+			$updated = abrs_apply_price( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
+				'granularity' => Constants::GL_DAILY,
+				'only_days'   => $request->get( 'bulk_days' ),
+			]);
+
+			if ( $updated && ! is_wp_error( $updated ) ) {
+				$bulk_counts++;
 			}
+		}
 
-			abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
+		if ( $bulk_counts > 0 ) {
+			/* translators: %s: The rates count */
+			abrs_admin_notices( sprintf( _n( '%s rate updated.', '%s rates updated.', $bulk_counts, 'awebooking' ), $bulk_controls ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );

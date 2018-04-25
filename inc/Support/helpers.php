@@ -170,7 +170,7 @@ if ( ! function_exists( 'abrs_html_class' ) ) {
 	/**
 	 * Returns class string by given an array of classes.
 	 *
-	 * @param  array $classes The array of class
+	 * @param  array $classes The array of class.
 	 * @return string
 	 */
 	function abrs_html_class( $classes ) {

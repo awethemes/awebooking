@@ -234,7 +234,7 @@ function abrs_retrieve_price( $rate, Timespan $timespan ) {
  * @param int      $rate      The rate ID to retrieve.
  * @param Timespan $timespan  The timespan.
  * @param mixed    $amount    The amount to apply.
- * @param mixed    $operation The operation apply amount (replace, add, sub, mul, div, increase, decrease).
+ * @param mixed    $operation The operation apply amount @see abrs_get_rate_operations().
  * @param array    $options {
  *     Optional. Options to apply the state.
  *
@@ -293,8 +293,8 @@ function abrs_apply_price( $rate, Timespan $timespan, $amount, $operation = 'rep
 		}
 
 		// Apply changes only special days.
-		if ( ! empty( $only_days ) ) {
-			$event->only_days( $only_days );
+		if ( ! empty( $options['only_days'] ) ) {
+			$event->only_days( $options['only_days'] );
 		}
 
 		// Store the price in the Calendar.
@@ -313,4 +313,21 @@ function abrs_apply_price( $rate, Timespan $timespan, $amount, $operation = 'rep
 	do_action( 'awebooking/after_apply_price', $stored, $rate, $timespan, $amount, $operation, $options );
 
 	return $stored;
+}
+
+/**
+ * Returns the rate operations.
+ *
+ * @return array
+ */
+function abrs_get_rate_operations() {
+	return apply_filters( 'awebooking/rate_operations', [
+		'replace'  => esc_html__( 'Replace', 'awebooking' ),
+		'add'      => esc_html__( 'Add', 'awebooking' ),
+		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
+		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
+		'divide'   => esc_html__( 'Divide', 'awebooking' ),
+		'increase' => esc_html__( 'Increase', 'awebooking' ),
+		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
+	]);
 }

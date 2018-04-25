@@ -33,6 +33,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         animation: 150
       });
 
+      this.$metabox.on('click', '.js-add-room', this.handleAddRoom.bind(this));
       this.$metabox.on('click', '.js-scaffold-rooms', this.handleScaffoldRooms.bind(this));
     }
 
@@ -56,6 +57,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         $('.awebooking-tabs-panels > div', this.$metabox).hide();
         $($target.attr('href'), this.$metabox).show();
+      }
+    }, {
+      key: 'handleAddRoom',
+      value: function handleAddRoom(e) {
+        e.preventDefault();
+
+        var title = new String($('#title').val()).trim();
+        var template = wp.template('template-room-item');
+
+        var i = -1;
+        $('.js-list-rooms').append(template({
+          index: i,
+          id: -1,
+          name: title + ' ' + (i + 1),
+          prefix: '_rooms[' + i + ']'
+        }));
       }
 
       /**
@@ -87,7 +104,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
 
-        $('.js-generated-rooms').show().html(htmlRooms);
+        $('.js-list-rooms').show().html(htmlRooms);
       }
     }]);
 

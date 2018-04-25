@@ -45,17 +45,17 @@ class Scripts_Service_Provider extends Service_Provider {
 
 		// Core styles & scripts.
 		wp_register_style( 'awebooking-iconfont', ABRS_ASSET_URL . 'fonts/awebooking-webfont.css', [], $version );
-		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
-		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar.css', [ 'awebooking-admin' ], $version );
+		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin' . $min . '.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
+		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar' . $min . '.css', [ 'awebooking-admin' ], $version );
 
-		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
-		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
+		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
+		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar' . $min . '.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
 
-		wp_register_script( 'awebooking-edit-booking', ABRS_ASSET_URL . 'js/admin/edit-booking.js', [ 'awebooking-admin' ], $version, true );
-		wp_register_script( 'awebooking-edit-room-type', ABRS_ASSET_URL . 'js/admin/edit-room-type.js', [ 'awebooking-admin', 'sortable' ], $version, true );
-		wp_register_script( 'awebooking-settings', ABRS_ASSET_URL . 'js/admin/settings.js', [ 'awebooking-admin', 'sortable' ], $version, true );
-		wp_register_script( 'awebooking-page-rates', ABRS_ASSET_URL . 'js/admin/page-pricing.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
-		wp_register_script( 'awebooking-page-calendar', ABRS_ASSET_URL . 'js/admin/page-calendar.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
+		wp_register_script( 'awebooking-edit-booking', ABRS_ASSET_URL . 'js/admin/edit-booking' . $min . '.js', [ 'awebooking-admin' ], $version, true );
+		wp_register_script( 'awebooking-edit-room-type', ABRS_ASSET_URL . 'js/admin/edit-room-type' . $min . '.js', [ 'awebooking-admin', 'sortable' ], $version, true );
+		wp_register_script( 'awebooking-settings', ABRS_ASSET_URL . 'js/admin/settings' . $min . '.js', [ 'awebooking-admin', 'sortable' ], $version, true );
+		wp_register_script( 'awebooking-page-rates', ABRS_ASSET_URL . 'js/admin/page-pricing' . $min . '.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
+		wp_register_script( 'awebooking-page-calendar', ABRS_ASSET_URL . 'js/admin/page-calendar' . $min . '.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
 	}
 
 	/**

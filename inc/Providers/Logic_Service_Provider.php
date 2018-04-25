@@ -56,12 +56,12 @@ class Logic_Service_Provider extends Service_Provider {
 		}
 
 		// Get booking object.
-		$booking = Factory::get_booking( $postid );
+		$booking = abrs_get_booking( $postid );
 
 		do_action( 'awebooking/delete_booking_items', $postid );
 
 		// Loop all item and run delete.
-		foreach ( $booking->get_all_items() as $item ) {
+		foreach ( $booking->get_items() as $item ) {
 			$item->delete();
 		}
 
@@ -91,7 +91,6 @@ class Logic_Service_Provider extends Service_Provider {
 			ARRAY_A
 		);
 
-		// Make sure we don't get query error.
 		if ( ! is_null( $rooms ) && ! empty( $rooms ) ) {
 			$unit_ids = implode( ',', wp_list_pluck( $rooms, 'id' ) );
 
