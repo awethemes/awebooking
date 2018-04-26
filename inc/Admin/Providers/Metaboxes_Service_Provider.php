@@ -13,7 +13,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	public function register() {
 		foreach ([ // @codingStandardsIgnoreLine
 			'metabox.room_type'        => \AweBooking\Admin\Metaboxes\Room_Type_Metabox::class,
-			'metabox.booking'          => \AweBooking\Admin\Metaboxes\Booking_Metabox::class,
+			'metabox.booking_main'     => \AweBooking\Admin\Metaboxes\Booking_Main_Metabox::class,
 			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
 			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
@@ -61,7 +61,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		}
 
 		// Booking meta-boxes.
-		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->output_metabox( 'metabox.booking' ), Constants::BOOKING, 'normal', 'high' );
+		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->output_metabox( 'metabox.booking_main' ), Constants::BOOKING, 'normal', 'high' );
 		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->output_metabox( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->output_metabox( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->output_metabox( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
@@ -124,7 +124,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 				break;
 
 			case 'awebooking':
-				$this->plugin->make( 'metabox.booking' )->save( $post, $request );
+				$this->plugin->make( 'metabox.booking_main' )->save( $post, $request );
 				$this->plugin->make( 'metabox.booking_actions' )->save( $post, $request );
 				break;
 		}

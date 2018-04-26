@@ -82,7 +82,7 @@ function abrs_booking_item_classmap() {
  *
  * @return array
  */
-function abrs_list_booking_statuses() {
+function abrs_get_booking_statuses() {
 	return apply_filters( 'awebooking/list_booking_statuses', [
 		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
 		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
@@ -102,7 +102,7 @@ function abrs_list_booking_statuses() {
  * @return string
  */
 function abrs_get_booking_status_name( $status ) {
-	$statuses = abrs_list_booking_statuses();
+	$statuses = abrs_get_booking_statuses();
 
 	$status = ( 0 === strpos( $status, 'awebooking-' ) ) ? substr( $status, 11 ) : $status;
 
@@ -111,6 +111,23 @@ function abrs_get_booking_status_name( $status ) {
 	}
 
 	return Arr::get( $statuses, 'awebooking-' . $status, $status );
+}
+
+/**
+ * Apply prefix 'awebooking-' into given booking status.
+ *
+ * @param  string $status The booking  status.
+ * @return string
+ */
+function abrs_prefix_booking_status( $status ) {
+	// No need to prefix.
+	if ( in_array( $status, [ 'checked-in', 'checked-out', 'trash' ] ) ) {
+		return $status;
+	}
+
+	return ( false === strpos( $status, 'awebooking-' ) )
+		? 'awebooking-' . $status
+		: $status;
 }
 
 /**
@@ -147,25 +164,25 @@ function abrs_get_booking_note( $data ) {
  * @param  array $args {
  *     Array of query parameters.
  *
- *     @type string $limit         Maximum number of notes to retrieve.
- *                                 Default empty (no limit).
- *     @type int    $booking_id    Limit results to those affiliated with a given booking ID.
- *                                 Default 0.
- *     @type array  $booking__in   Array of booking IDs to include affiliated notes for.
- *                                 Default empty.
+ *     @type string $limit           Maximum number of notes to retrieve.
+ *                                   Default empty (no limit).
+ *     @type int    $booking_id      Limit results to those affiliated with a given booking ID.
+ *                                   Default 0.
+ *     @type array  $booking__in     Array of booking IDs to include affiliated notes for.
+ *                                   Default empty.
  *     @type array  $booking__not_in Array of booking IDs to exclude affiliated notes for.
- *                                 Default empty.
- *     @type string $bookingby     Define how should sort notes.
- *                                 Accepts 'date_created', 'date_created_gmt' or 'id'.
- *                                 Default: 'id'.
- *     @type string $booking       How to booking retrieved notes.
- *                                 Accepts 'ASC' or 'DESC'.
- *                                 Default: 'DESC'.
- *     @type string $type          Define what type of note should retrieve.
- *                                 Accepts 'customer', 'internal' or empty for both.
- *                                 Default empty.
+ *                                   Default empty.
+ *     @type string $bookingby       Define how should sort notes.
+ *                                   Accepts 'date_created', 'date_created_gmt' or 'id'.
+ *                                   Default: 'id'.
+ *     @type string $booking         How to booking retrieved notes.
+ *                                   Accepts 'ASC' or 'DESC'.
+ *                                   Default: 'DESC'.
+ *     @type string $type            Define what type of note should retrieve.
+ *                                   Accepts 'customer', 'internal' or empty for both.
+ *                                   Default empty.
  * }
- * @return stdClass[]              Array of stdClass objects with booking notes details.
+ * @return stdClass[]                Array of stdClass objects with booking notes details.
  */
 function abrs_get_booking_notes( $args ) {
 	$key_mapping = [
@@ -217,11 +234,11 @@ function abrs_get_booking_notes( $args ) {
 	// Does not support 'count' or 'fields'.
 	unset( $args['count'], $args['fields'] );
 
-	// remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+	remove_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
 
 	$notes = get_comments( $args );
 
-	// add_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+	add_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
 
 	return abrs_collect( array_filter( $notes ) )
 		->transform( 'abrs_get_booking_note' );
@@ -296,3 +313,19 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 function abrs_delete_booking_note( $note_id ) {
 	return wp_delete_comment( $note_id, true );
 }
+
+/**
+ * Exclude booking comments from queries and RSS.
+ *
+ * This code should exclude 'booking_note' comments from queries.
+ * Some queries (like the recent comments widget on the dashboard) are hardcoded.
+ *
+ * @param  array $clauses The query clauses.
+ * @return array
+ */
+function _abrs_exclude_booking_comments( $clauses ) {
+	$clauses['where'] .= ( $clauses['where'] ? ' AND ' : '' ) . " comment_type != 'booking_note' ";
+
+	return $clauses;
+}
+add_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );

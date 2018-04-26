@@ -19,6 +19,13 @@ class Booking extends Model {
 	protected $items = [];
 
 	/**
+	 * Stores data about status changes so relevant hooks can be fired.
+	 *
+	 * @var array|null
+	 */
+	protected $status_transition;
+
+	/**
 	 * Returns the booking number.
 	 *
 	 * Apply filters allow users can be change this.
@@ -189,21 +196,6 @@ class Booking extends Model {
 	}
 
 	/**
-	 * Get the booking status withput 'awebooking-' prefix.
-	 *
-	 * @return string
-	 */
-	public function get_status() {
-		$status = $this->get( 'status' );
-
-		if ( 0 === strpos( $status, 'awebooking-', 0 ) ) {
-			$status = substr( $status, 11 );
-		}
-
-		return $status;
-	}
-
-	/**
 	 * Determines if booking can be edited.
 	 *
 	 * @return bool
@@ -212,6 +204,87 @@ class Booking extends Model {
 		return apply_filters( $this->prefix( 'is_editable' ),
 			in_array( $this->get_status(), [ 'pending', 'on-hold', 'deposit', 'auto-draft' ], true ), $this
 		);
+	}
+
+	/**
+	 * Get the booking status without 'awebooking-' prefix.
+	 *
+	 * @return string
+	 */
+	public function get_status() {
+		$status = $this->get( 'status' );
+
+		if ( 0 === strpos( $status, 'awebooking-' ) ) {
+			$status = substr( $status, 11 );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Sets the booking status.
+	 *
+	 * @param  string $new_status Status to change the booking to.
+	 * @return array
+	 */
+	public function set_status( $new_status ) {
+		$old_status = $this->get( 'status' );
+		$new_status = abrs_prefix_booking_status( $new_status );
+
+		// If setting the status, ensure it's set to a valid status.
+		if ( $this->exists() ) {
+			$valid_statuses = array_keys( abrs_get_booking_statuses() );
+
+			if ( 'trash' !== $new_status && ! in_array( $new_status, $valid_statuses ) ) {
+				$new_status = 'pending';
+			}
+
+			// If the old status is set but unknown (e.g. draft) assume its pending for action usage.
+			if ( $old_status && 'trash' !== $old_status && ! in_array( $old_status, $valid_statuses ) ) {
+				$old_status = 'pending';
+			}
+
+			// Set the status transition.
+			if ( $old_status && $old_status !== $new_status ) {
+				$this->status_transition = [ $old_status, $new_status ];
+			}
+		}
+
+		// Set the new status.
+		$this->set_attribute( 'status', $new_status );
+
+		return $this->status_transition;
+	}
+
+	/**
+	 * Handle the status transition.
+	 *
+	 * @return void
+	 */
+	protected function apply_status_transition() {
+		if ( is_null( $this->status_transition ) ) {
+			return;
+		}
+
+		// Retrive the status transition then flush it.
+		list( $old_status, $new_status ) = $this->status_transition;
+
+		$this->status_transition = null;
+
+		do_action( $this->prefix( 'status_change' ), $new_status, $old_status, $this );
+
+		if ( ! empty( $old_status ) ) {
+			/* translators: 1: Old booking status 2: New booking status */
+			$transition_note = sprintf( __( 'Booking status changed from %1$s to %2$s.', 'awebooking' ), abrs_get_booking_status_name( $old_status ), abrs_get_booking_status_name( $new_status ) );
+
+			do_action( $this->prefix( 'status_changed' ), $new_status, $old_status, $this );
+		} else {
+			/* translators: %s: new booking status */
+			$transition_note = sprintf( __( 'Booking status set to %s.', 'awebooking' ), abrs_get_booking_status_name( $new_status ) );
+		}
+
+		// Log the transition occurred in the notes.
+		abrs_add_booking_note( $this, $transition_note, false, false );
 	}
 
 	/**
@@ -232,7 +305,7 @@ class Booking extends Model {
 	 */
 	protected function perform_update( array $dirty ) {
 		$this->update_the_post([
-			'post_status'   => $this['status'] ?: 'awebooking-pending',
+			'post_status'   => $this['status'] ? abrs_prefix_booking_status( $this['status'] ) : 'awebooking-pending',
 			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
 			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
 			'post_excerpt'  => $this['customer_note'],
@@ -240,6 +313,15 @@ class Booking extends Model {
 
 		// Allow continue save meta-data if nothing to update post.
 		return true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function finish_save() {
+		parent::finish_save();
+
+		$this->apply_status_transition();
 	}
 
 	/**

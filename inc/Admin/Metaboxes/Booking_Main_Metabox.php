@@ -5,7 +5,7 @@ use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 use AweBooking\Component\Form\Form_Builder;
 
-class Booking_Metabox {
+class Booking_Main_Metabox {
 	/**
 	 * The form builder.
 	 *
@@ -60,7 +60,6 @@ class Booking_Metabox {
 		$booking->fill([
 			'date_created'            => $values->get( '_date_created', current_time( 'timestamp' ) ),
 			'source'                  => $values->get( '_source', 'website' ),
-			'status'                  => $values->get( '_status', 'awebooking-pending' ),
 			'customer_id'             => absint( $values->get( '_customer_id', 0 ) ),
 			'arrival_time'            => $values->get( '_arrival_time', '' ),
 			'customer_title'          => $values->get( '_customer_title', '' ),
@@ -76,6 +75,9 @@ class Booking_Metabox {
 			'customer_phone'          => $values->get( '_customer_phone', '' ),
 			'customer_email'          => $values->get( '_customer_email', '' ),
 		]);
+
+		// Manually set the status.
+		$booking->set_status( $values->get( '_status' ) );
 
 		// Fire action before save.
 		do_action( 'awebooking/process_booking_data', $booking, $values, $request );
@@ -126,7 +128,7 @@ class Booking_Metabox {
 			'type'        => 'select',
 			'name'        => esc_html__( 'Status', 'awebooking' ),
 			'classes'     => 'with-selectize',
-			'options_cb'  => 'abrs_list_booking_statuses',
+			'options_cb'  => 'abrs_get_booking_statuses',
 			'escape_cb'   => false,
 			'default_cb'  => function() {
 				return get_post_status( get_the_ID() );

@@ -223,7 +223,7 @@ class Booking_List_Table extends Abstract_List_Table {
 
 		// Merge booking statuses on "All".
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$post_statuses = abrs_list_booking_statuses();
+			$post_statuses = abrs_get_booking_statuses();
 
 			foreach ( $post_statuses as $status => $value ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {

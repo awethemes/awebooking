@@ -17,9 +17,6 @@ class Logic_Service_Provider extends Service_Provider {
 
 		add_action( 'awebooking/room/saved', [ $this, 'update_total_rooms' ] );
 		add_action( 'awebooking/room_type/saved', [ $this, 'update_total_rooms' ] );
-
-		// Booking notes.
-		// add_filter( 'comments_clauses', array( __CLASS__, 'exclude_order_comments' ), 10, 1 );
 	}
 
 	/**
