@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABRS_ADMIN_PATH' ) ) {
+	define( 'ABRS_ADMIN_PATH', awebooking()->plugin_path( 'inc/Admin/' ) );
+}
+
 /**
  * List all screens by awebooking.
  *

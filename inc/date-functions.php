@@ -12,7 +12,7 @@ use AweBooking\Model\Common\Timespan;
  */
 function abrs_date( $date ) {
 	return abrs_rescue( function() use ( $date ) {
-		return Carbonate::create_date( $date );
+		return Carbonate::create_date( $date, abrs_timezone_string() );
 	});
 }
 
@@ -24,8 +24,47 @@ function abrs_date( $date ) {
  */
 function abrs_date_time( $datetime ) {
 	return abrs_rescue( function() use ( $datetime ) {
-		return Carbonate::create_date_time( $datetime );
+		return Carbonate::create_date_time( $datetime, abrs_timezone_string() );
 	});
+}
+
+/**
+ * Retrieve the timezone string.
+ *
+ * Adapted from wc_timezone_string().
+ *
+ * @return string PHP timezone string for the site
+ */
+function abrs_timezone_string() {
+	// If site timezone string exists, return it.
+	if ( $timezone = get_option( 'timezone_string' ) ) {
+		return $timezone;
+	}
+
+	// Get UTC offset, if it isn't set then return UTC.
+	if ( 0 === ( $utc_offset = intval( get_option( 'gmt_offset', 0 ) ) ) ) {
+		return 'UTC';
+	}
+
+	// Adjust UTC offset from hours to seconds.
+	$utc_offset *= 3600;
+
+	// Attempt to guess the timezone string from the UTC offset.
+	if ( $timezone = timezone_name_from_abbr( '', $utc_offset ) ) {
+		return $timezone;
+	}
+
+	// Last try, guess timezone string manually.
+	foreach ( timezone_abbreviations_list() as $abbr ) {
+		foreach ( $abbr as $city ) {
+			if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
+				return $city['timezone_id'];
+			}
+		}
+	}
+
+	// Fallback to UTC.
+	return 'UTC';
 }
 
 /**

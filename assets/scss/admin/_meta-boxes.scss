@@ -20,6 +20,7 @@
 }
 
 #awebooking-booking-data .inside,
+#awebooking-booking-notes .inside,
 #awebooking-booking-actions .inside,
 #awebooking-booking-payments .inside,
 #awebooking-booking-rooms .inside,
@@ -214,6 +215,7 @@
   border: none;
 }
 
+/* Reservation summary */
 .reservation-summary-block {
   color: #898989;
   font-size: 13px;
@@ -254,5 +256,98 @@
 
   .abrow > [class*="abcol-"]:first-child {
     border-right: solid 1px #ececec;
+  }
+}
+
+/* Booking Notes */
+.form-booking-note {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.booking-notes {
+  margin: 0;
+  padding: 1em 0 0;
+  max-height: 400px;
+  list-style: none;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.booking-note {
+  z-index: 1;
+  padding: 0 10px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+  position: relative;
+
+  &__content {
+    padding: 10px;
+    position: relative;
+    background: #f7f7f7;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(96, 125, 139, 0.15);
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      width: 0;
+      height: 0;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: #f7f7f7 transparent;
+    }
+
+    .system-note & {
+      color: #fff;
+      background: #607D8B;
+    }
+    .system-note &::after {
+      border-color: #607D8B transparent;
+    }
+
+    .customer-note & {
+      color: #756c1e;
+      background: #fffad1;
+    }
+    .customer-note &::after {
+      border-color: #fffad1 transparent;
+    }
+
+    p {
+      padding: 0;
+      margin: 0 0 7px;
+      word-wrap: break-word;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__meta {
+    color: #999;
+    margin: 0;
+    padding: 10px;
+    font-size: 11px;
+    text-align: right;
+  }
+
+  .abrs-delete-button {
+    top: -7px;
+    right: 7px;
+    z-index: 2;
+    position: absolute;
+    border-radius: 15px;
+    display: none;
+  }
+
+  &:hover .abrs-delete-button {
+    display: block;
   }
 }

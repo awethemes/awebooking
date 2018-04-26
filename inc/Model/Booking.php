@@ -60,10 +60,28 @@ class Booking extends Model {
 	/**
 	 * Get rooms of this booking.
 	 *
-	 * @return array \AweBooking\Support\Collection
+	 * @return \AweBooking\Support\Collection
 	 */
-	public function get_room_items() {
+	public function get_rooms() {
 		return $this->get_items( 'line_item' );
+	}
+
+	/**
+	 * Returns a list of fees within this booking.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_fees() {
+		return $this->get_items( 'fee' );
+	}
+
+	/**
+	 * Returns a list of taxes within this booking.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_taxes() {
+		return $this->get_items( 'tax' );
 	}
 
 	/**
@@ -71,8 +89,18 @@ class Booking extends Model {
 	 *
 	 * @return array \AweBooking\Support\Collection
 	 */
-	public function get_payment_items() {
+	public function get_payments() {
 		return $this->get_items( 'payment_item' );
+	}
+
+	/**
+	 * Returns the last payment item.
+	 *
+	 * @param  string $state Optional, filter payment matching with a state.
+	 * @return \AweBooking\Model\Booking\Payment_Item|null
+	 */
+	public function get_last_payment( $state = null ) {
+		return $this->get_payments()->last();
 	}
 
 	/**
@@ -81,7 +109,7 @@ class Booking extends Model {
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_paid() {
-		return $this->get_payment_items()->reduce( function( $total, $item ) {
+		return $this->get_payments()->reduce( function( $total, $item ) {
 			return $total->add( 0 );
 		}, abrs_decimal( 0 ) );
 	}
@@ -93,6 +121,71 @@ class Booking extends Model {
 	 */
 	public function get_balance_due() {
 		return abrs_decimal( $this->get_total() )->sub( $this->get_paid() );
+	}
+
+	/**
+	 * Calculate totals by looking at the contents of the booking.
+	 *
+	 * @param  bool $and_taxes Calc taxes if true.
+	 * @return float calculated grand total.
+	 */
+	public function calculate_totals( $with_taxes = true ) {
+		$room_subtotal      = 0;
+		$room_total         = 0;
+		$room_subtotal_tax  = 0;
+		$room_total_tax     = 0;
+		$service_total      = 0;
+		$fee_total          = 0;
+
+		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
+
+		// Sum the room costs.
+		foreach ( $this->get_rooms() as $room ) {
+			$room_subtotal = $room_subtotal->add( $room->get_subtotal() );
+			$room_total    = $room_total->add( $room->get_total() );
+		}
+
+		// Sum the service costs.
+		// ...
+
+		// Sum fee costs.
+		foreach ( $this->get_fees() as $item ) {
+			$amount = $item->get_amount();
+
+			if ( 0 > $amount ) {
+				$item->set_total( $amount );
+				$max_discount = round( $room_total + $fee_total, wc_get_price_decimals() ) * -1;
+
+				if ( $item->get_total() < $max_discount ) {
+					$item->set_total( $max_discount );
+				}
+			}
+
+			$fee_total += $item->get_total();
+		}
+
+		// Calculate taxes for rooms, discounts.
+		// Note: This also triggers save().
+		if ( $with_taxes ) {
+			$this->calculate_taxes();
+		}
+
+		// Sum the taxes.
+		foreach ( $this->get_rooms() as $room ) {
+			$room_subtotal_tax = $room_subtotal_tax->add( $room->get_subtotal_tax() );
+			$room_total_tax    = $room_total_tax->add( $room->get_total_tax() );
+		}
+
+		$this->set_discount_total( $cart_subtotal - $room_total );
+		$this->set_discount_tax( $room_subtotal_tax - $room_total_tax );
+
+		$this->set_total( $room_total + $fee_total + $this->get_cart_tax() );
+
+		do_action( $this->prefix( 'after_calculate_totals' ), $with_taxes, $this );
+
+		$this->save();
+
+		return $this->get_total();
 	}
 
 	/**

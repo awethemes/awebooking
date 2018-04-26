@@ -18,6 +18,23 @@
   }
 
   /**
+   * Show the alert dialog.
+   *
+   * @return {SweetAlert}
+   */
+  awebooking.alert = function(message, type = 'error') {
+    return swal({
+      text: message,
+      type: type,
+      toast: true,
+      buttonsStyling: false,
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonClass: 'button'
+    });
+  }
+
+  /**
    * Show the confirm message.
    *
    * @return {SweetAlert}

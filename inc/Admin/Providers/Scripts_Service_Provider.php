@@ -48,7 +48,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin' . $min . '.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
 		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar' . $min . '.css', [ 'awebooking-admin' ], $version );
 
-		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
+		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2', 'jquery-effects-highlight' ], $version, true );
 		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar' . $min . '.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
 
 		wp_register_script( 'awebooking-edit-booking', ABRS_ASSET_URL . 'js/admin/edit-booking' . $min . '.js', [ 'awebooking-admin' ], $version, true );
@@ -102,6 +102,14 @@ class Scripts_Service_Provider extends Service_Provider {
 
 			case ( 'awebooking' === $screen->id ):
 				wp_enqueue_script( 'awebooking-edit-booking' );
+				wp_localize_script( 'awebooking-edit-booking', '_awebookingEditBooking', [
+					'add_note_nonce'    => wp_create_nonce( 'awebooking_add_note' ),
+					'delete_note_nonce' => wp_create_nonce( 'awebooking_delete_note' ),
+					'i18n'              => [
+						'delete_note_warning' => esc_html__( 'Are you sure you wish to delete this note?', 'awebooking' ),
+						'empty_note_warning'  => esc_html__( 'Please enter some content into note', 'awebooking' ),
+					],
+				]);
 				break;
 
 			case abrs_admin_route_is( '/rates' ):

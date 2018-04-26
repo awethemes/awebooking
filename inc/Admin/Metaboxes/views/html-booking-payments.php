@@ -2,7 +2,7 @@
 
 $balance_due = $the_booking->get_balance_due();
 
-$payment_items = $the_booking->get_payment_items()
+$payment_items = $the_booking->get_payments()
 	->sortByDesc( function ( $e ) {
 		return $e->is_deposit();
 	});

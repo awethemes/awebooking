@@ -2,7 +2,7 @@
 /* @var $the_booking */
 
 // List the room items.
-$room_items = $the_booking->get_room_items();
+$room_items = $the_booking->get_rooms();
 
 ?><style type="text/css">
 	#awebooking-booking-rooms .hndle,

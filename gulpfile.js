@@ -45,7 +45,7 @@ gulp.task('babel', function () {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
-    .pipe(bro({ error: 'emit', transform: [ babelify.configure({ presets: ['env'] }) ] }))
+    .pipe(bro({ error: 'emit', transform: [ babelify.configure({ presets: ['es2015'] }) ] }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('assets/js'))
     .pipe(browserSync.stream({ match: '**/*.js' }));

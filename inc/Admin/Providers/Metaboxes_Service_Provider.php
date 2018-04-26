@@ -11,12 +11,13 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register() {
-		foreach ( [
+		foreach ([ // @codingStandardsIgnoreLine
 			'metabox.room_type'        => \AweBooking\Admin\Metaboxes\Room_Type_Metabox::class,
 			'metabox.booking'          => \AweBooking\Admin\Metaboxes\Booking_Metabox::class,
 			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
 			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
+			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
 			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
@@ -64,20 +65,11 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->output_metabox( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->output_metabox( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->output_metabox( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
+		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->output_metabox( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
 		// add_meta_box( 'awebooking-booking-calendar', esc_html__( 'Calendar', 'awebooking' ), $this->output_metabox( 'metabox.booking_calendar' ), Constants::BOOKING, 'side' );
 
 		// Room Type meta-boxes.
 		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->output_metabox( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
-	}
-
-	/**
-	 * Make a callable for metabox output.
-	 *
-	 * @param  string $binding The binding in the plugin.
-	 * @return array
-	 */
-	protected function output_metabox( $binding ) {
-		return [ $this->plugin->make( $binding ), 'output' ];
 	}
 
 	/**
@@ -144,5 +136,15 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		 * @param \Awethemes\Http\Request $request The HTTP Request.
 		 */
 		do_action( "awebooking/process_{$post->post_type}_meta", $post, $request );
+	}
+
+	/**
+	 * Make a callable for metabox output.
+	 *
+	 * @param  string $binding The binding in the plugin.
+	 * @return array
+	 */
+	protected function output_metabox( $binding ) {
+		return [ $this->plugin->make( $binding ), 'output' ];
 	}
 }

@@ -21,6 +21,25 @@
   };
 
   /**
+   * Show the alert dialog.
+   *
+   * @return {SweetAlert}
+   */
+  awebooking.alert = function (message) {
+    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'error';
+
+    return swal({
+      text: message,
+      type: type,
+      toast: true,
+      buttonsStyling: false,
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonClass: 'button'
+    });
+  };
+
+  /**
    * Show the confirm message.
    *
    * @return {SweetAlert}
@@ -190,8 +209,6 @@
 })(jQuery);
 
 },{"debounce":2,"query-string":4}],2:[function(require,module,exports){
-"use strict";
-
 /**
  * Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -207,7 +224,7 @@
  * @api public
  */
 
-module.exports = function debounce(func, wait, immediate) {
+module.exports = function debounce(func, wait, immediate){
   var timeout, args, context, timestamp, result;
   if (null == wait) wait = 100;
 
@@ -225,7 +242,7 @@ module.exports = function debounce(func, wait, immediate) {
     }
   };
 
-  var debounced = function debounced() {
+  var debounced = function(){
     context = this;
     args = arguments;
     timestamp = Date.now();
@@ -239,18 +256,18 @@ module.exports = function debounce(func, wait, immediate) {
     return result;
   };
 
-  debounced.clear = function () {
+  debounced.clear = function() {
     if (timeout) {
       clearTimeout(timeout);
       timeout = null;
     }
   };
-
-  debounced.flush = function () {
+  
+  debounced.flush = function() {
     if (timeout) {
       result = func.apply(context, args);
       context = args = null;
-
+      
       clearTimeout(timeout);
       timeout = null;
     }
@@ -261,9 +278,6 @@ module.exports = function debounce(func, wait, immediate) {
 
 },{}],3:[function(require,module,exports){
 'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
 var multiMatcher = new RegExp('(' + token + ')+', 'gi');
@@ -344,7 +358,7 @@ function customDecodeURIComponent(input) {
 
 module.exports = function (encodedURI) {
 	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + (typeof encodedURI === 'undefined' ? 'undefined' : _typeof(encodedURI)) + '`');
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
 	}
 
 	try {
@@ -360,37 +374,51 @@ module.exports = function (encodedURI) {
 
 },{}],4:[function(require,module,exports){
 'use strict';
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var strictUriEncode = require('strict-uri-encode');
-var decodeComponent = require('decode-uri-component');
+const strictUriEncode = require('strict-uri-encode');
+const decodeComponent = require('decode-uri-component');
 
 function encoderForArrayFormat(options) {
 	switch (options.arrayFormat) {
 		case 'index':
-			return function (key, value, index) {
-				return value === null ? [encode(key, options), '[', index, ']'].join('') : [encode(key, options), '[', encode(index, options), ']=', encode(value, options)].join('');
+			return (key, value, index) => {
+				return value === null ? [
+					encode(key, options),
+					'[',
+					index,
+					']'
+				].join('') : [
+					encode(key, options),
+					'[',
+					encode(index, options),
+					']=',
+					encode(value, options)
+				].join('');
 			};
 		case 'bracket':
-			return function (key, value) {
-				return value === null ? encode(key, options) : [encode(key, options), '[]=', encode(value, options)].join('');
+			return (key, value) => {
+				return value === null ? encode(key, options) : [
+					encode(key, options),
+					'[]=',
+					encode(value, options)
+				].join('');
 			};
 		default:
-			return function (key, value) {
-				return value === null ? encode(key, options) : [encode(key, options), '=', encode(value, options)].join('');
+			return (key, value) => {
+				return value === null ? encode(key, options) : [
+					encode(key, options),
+					'=',
+					encode(value, options)
+				].join('');
 			};
 	}
 }
 
 function parserForArrayFormat(options) {
-	var result = void 0;
+	let result;
 
 	switch (options.arrayFormat) {
 		case 'index':
-			return function (key, value, accumulator) {
+			return (key, value, accumulator) => {
 				result = /\[(\d*)\]$/.exec(key);
 
 				key = key.replace(/\[\d*\]$/, '');
@@ -407,7 +435,7 @@ function parserForArrayFormat(options) {
 				accumulator[key][result[1]] = value;
 			};
 		case 'bracket':
-			return function (key, value, accumulator) {
+			return (key, value, accumulator) => {
 				result = /(\[\])$/.exec(key);
 				key = key.replace(/\[\]$/, '');
 
@@ -424,7 +452,7 @@ function parserForArrayFormat(options) {
 				accumulator[key] = [].concat(accumulator[key], value);
 			};
 		default:
-			return function (key, value, accumulator) {
+			return (key, value, accumulator) => {
 				if (accumulator[key] === undefined) {
 					accumulator[key] = value;
 					return;
@@ -448,19 +476,17 @@ function keysSorter(input) {
 		return input.sort();
 	}
 
-	if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object') {
-		return keysSorter(Object.keys(input)).sort(function (a, b) {
-			return Number(a) - Number(b);
-		}).map(function (key) {
-			return input[key];
-		});
+	if (typeof input === 'object') {
+		return keysSorter(Object.keys(input))
+			.sort((a, b) => Number(a) - Number(b))
+			.map(key => input[key]);
 	}
 
 	return input;
 }
 
 function extract(input) {
-	var queryStart = input.indexOf('?');
+	const queryStart = input.indexOf('?');
 	if (queryStart === -1) {
 		return '';
 	}
@@ -468,12 +494,12 @@ function extract(input) {
 }
 
 function parse(input, options) {
-	options = Object.assign({ arrayFormat: 'none' }, options);
+	options = Object.assign({arrayFormat: 'none'}, options);
 
-	var formatter = parserForArrayFormat(options);
+	const formatter = parserForArrayFormat(options);
 
 	// Create an object with no prototype
-	var ret = Object.create(null);
+	const ret = Object.create(null);
 
 	if (typeof input !== 'string') {
 		return ret;
@@ -485,45 +511,19 @@ function parse(input, options) {
 		return ret;
 	}
 
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
+	for (const param of input.split('&')) {
+		let [key, value] = param.replace(/\+/g, ' ').split('=');
 
-	try {
-		for (var _iterator = input.split('&')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var param = _step.value;
+		// Missing `=` should be `null`:
+		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+		value = value === undefined ? null : decodeComponent(value);
 
-			var _param$replace$split = param.replace(/\+/g, ' ').split('='),
-			    _param$replace$split2 = _slicedToArray(_param$replace$split, 2),
-			    key = _param$replace$split2[0],
-			    value = _param$replace$split2[1];
-
-			// Missing `=` should be `null`:
-			// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-
-
-			value = value === undefined ? null : decodeComponent(value);
-
-			formatter(decodeComponent(key), value, ret);
-		}
-	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
-	} finally {
-		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
-			}
-		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
-			}
-		}
+		formatter(decodeComponent(key), value, ret);
 	}
 
-	return Object.keys(ret).sort().reduce(function (result, key) {
-		var value = ret[key];
-		if (Boolean(value) && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && !Array.isArray(value)) {
+	return Object.keys(ret).sort().reduce((result, key) => {
+		const value = ret[key];
+		if (Boolean(value) && typeof value === 'object' && !Array.isArray(value)) {
 			// Sort object keys, not values
 			result[key] = keysSorter(value);
 		} else {
@@ -537,8 +537,8 @@ function parse(input, options) {
 exports.extract = extract;
 exports.parse = parse;
 
-exports.stringify = function (obj, options) {
-	var defaults = {
+exports.stringify = (obj, options) => {
+	const defaults = {
 		encode: true,
 		strict: true,
 		arrayFormat: 'none'
@@ -547,13 +547,13 @@ exports.stringify = function (obj, options) {
 	options = Object.assign(defaults, options);
 
 	if (options.sort === false) {
-		options.sort = function () {};
+		options.sort = () => {};
 	}
 
-	var formatter = encoderForArrayFormat(options);
+	const formatter = encoderForArrayFormat(options);
 
-	return obj ? Object.keys(obj).sort(options.sort).map(function (key) {
-		var value = obj[key];
+	return obj ? Object.keys(obj).sort(options.sort).map(key => {
+		const value = obj[key];
 
 		if (value === undefined) {
 			return '';
@@ -564,47 +564,24 @@ exports.stringify = function (obj, options) {
 		}
 
 		if (Array.isArray(value)) {
-			var result = [];
+			const result = [];
 
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
-
-			try {
-				for (var _iterator2 = value.slice()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var value2 = _step2.value;
-
-					if (value2 === undefined) {
-						continue;
-					}
-
-					result.push(formatter(key, value2, result.length));
+			for (const value2 of value.slice()) {
+				if (value2 === undefined) {
+					continue;
 				}
-			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
-					}
-				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
-					}
-				}
+
+				result.push(formatter(key, value2, result.length));
 			}
 
 			return result.join('&');
 		}
 
 		return encode(key, options) + '=' + encode(value, options);
-	}).filter(function (x) {
-		return x.length > 0;
-	}).join('&') : '';
+	}).filter(x => x.length > 0).join('&') : '';
 };
 
-exports.parseUrl = function (input, options) {
+exports.parseUrl = (input, options) => {
 	return {
 		url: input.split('?')[0] || '',
 		query: parse(extract(input), options)
@@ -613,12 +590,7 @@ exports.parseUrl = function (input, options) {
 
 },{"decode-uri-component":3,"strict-uri-encode":5}],5:[function(require,module,exports){
 'use strict';
-
-module.exports = function (str) {
-  return encodeURIComponent(str).replace(/[!'()*]/g, function (x) {
-    return '%' + x.charCodeAt(0).toString(16).toUpperCase();
-  });
-};
+module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
 
 },{}]},{},[1]);
 

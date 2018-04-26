@@ -25,6 +25,14 @@
   line-height: 1;
 }
 
+.button.abrs-delete-button {
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
 /* No image */
 .abrs-no-image,
 .abrs-thumb-image {
