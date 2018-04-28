@@ -1,114 +1,281 @@
-=== Awebooking ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
-Tags: comments, spam
-Requires at least: 4.4
-Tested up to: 4.9.4
-Stable tag: 0.1.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+=== AweBooking - Hotel Booking System ===
+Contributors:      awethemes, anhskohbo, ndoublehwp
+Donate link:       http://awethemes.com
+Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
+Requires at least: 4.6
+Tested up to:      4.9
+Requires PHP:      5.6
+Stable tag:        3.0.6
+License:           GPLv2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Awebooking helps you to setup hotel booking system quickly, pleasantly and easily.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+> Get all Awebooking's [premium add-ons](https://awethemes.com/plugins/awebooking#premiumaddons) and a lot of [extras](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Awebooking is a well-coded plugin with an excellent user interface, perfect for any hotel, hostel, motel, BnB or any kind of accommodation website. Awebooking brings you easiest way to setup any reservations quickly, pleasantly and easily, rent accommodations with detail services, receive online reservations.
 
-A few notes about the sections above:
+Your customers will be impressed by how easy-to-use, fast and clear to check availability and send a booking request. However, it is not harder to use than any other hotel booking WordPress plugins. Moreover, we believe that it's even much easier! And there's a good reason for that: amount of time and effort that we invested in Awebooking to bring you the best hotel booking Wordpress plugin ever.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also provide WordPress admin demo if you want to take a look.
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+== Plugin features ==
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+* Room type and rooms
+* Multi locations
+* Extra services
+* Pricing management
+* Room availablity management
+* By request booking
+* Check available widget
+* Email notification
+* Shortcodes
 
-== Installation ==
-
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
+You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Room type list
+2. Room type detail settings
+3. Services list
+4. Availablity rooms management
+5. Pricing management
+6. Booking list
+7. Plugin settings
 
-== Changelog ==
+== Installation ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+* From your WordPress dashboard, Visit `Plugins > Add New`
+* Search for `awebooking`
+* Activate AweBooking from your Plugins page. (You'll be greeted with a Setup page.)
+* Visit `Room type > Add new room type` and create some room types. (You can always delete these later.)
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+If you have 2.x version, please do not upgrade to this version.
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+## Video
 
-== Arbitrary section ==
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
+== Changelog ==
+### [3.0.6] - [2018-02-27]
+#### Fixed
+- Fixed wrong subject on the cancelled email.
 
-== A brief Markdown Example ==
+### [3.0.5] - [2018-02-12]
+#### Added
+- Added partial payments (for now, it's works only in admin)
 
-Ordered list:
+#### Fixed
+- Minor bugs fixed
 
-1. Some feature
-1. Another feature
-1. Something else about the plugin
+### [3.0.4] - [2018-01-30]
+#### Fixed
+- Fixed booking state not update when change booking status
+- Minor bugs fixed
 
-Unordered list:
+### [3.0.3] - [2018-01-17]
+#### Added
+- Added filter and search by customer.
 
-* something
-* something else
-* third thing
+#### Fixed
+- Fixed check-availability issue with WPML.
+- Fixed email issues.
 
-Here's a link to [WordPress](https://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
+### [3.0.0] - [2018-01-16]
+- AweBooking v3.0.0
 
-[markdown syntax]: https://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
+### [3.0.0-rc2] - [2018-01-15]
+- AweBooking 3.0-rc2
 
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
+### [3.0.0-rc1] - [2018-01-12]
+- AweBooking 3.0-rc1
 
-`<?php code(); // goes in backticks ?>`
+### [3.0.0-beta15] - [2018-01-10]
+#### Fixed
+- Change availability management.
+- Change Maximum occupancy for room type data.
+- Fixed date format for templates.
+
+### [3.0.0-beta14] - [2018-01-08]
+#### Fixed
+- Fixed search booking by ID.
+- Fixed display wrong customer name.
+
+#### Changes
+- Email body contents in settings.
+- Code refactoring, prepare for next changes.
+
+### [3.0.0-beta13] - [2017-11-23]
+#### Changes
+- Update Skeleton v1.1
+
+#### Fixed
+- Fixed datepicker not work in some case.
+
+### [3.0.0-beta12] - [2017-11-16]
+#### Changes
+- Compatibility WordPress 4.9
+
+#### Fixed
+- Minor bugs fixed
+
+### [3.0.0-beta11] - [2017-11-11]
+#### Added
+- Added "Infants" in guest booking.
+- Added Roles: "Hotel Customer", "Hotel Receptionist", "Hotel Manager".
+- Compatibility with WP Simple Iconfonts.
+
+#### Changes
+- Now your hotel can be able on/off "Adults", "Children" and "Infants" in guest booking.
+
+#### Fixed
+- Fixed "Availability Bulk Update" not work from beta9.
+- Fixed setting not updated when hit save button.
+- Minor bugs fixed
+
+### [3.0.0-beta10] - [2017-10-31]
+#### Fixed
+- Minor bugs fixed
+
+### [3.0.0-beta9] - [2017-10-19]
+#### Added
+- Added Spanish (Argentina) language, thanks @bicho44.
+- Added missing "processing" email template, fixed [#43](https://github.com/awethemes/awebooking/issues/43)
+- API: Added logger API.
+- API: Added `AweBooking\Support\Utils` class.
+
+#### Changes
+- Rename "awebooking/after_register_post_type" to "awebooking/register_post_type"
+- API: Class `Period_Collection` now extends the `Collection`, rename `Period_Collection::merge()` to `Period_Collection::collapse()`.
+- API: Improve `AweBooking\Support\Abstract_Calendar` API.
+
+#### Fixed
+- Fixed issues when create new tables in some server.
+- Fixed some strings missing to translate.
+- Minor bugs fixed
+
+### [3.0.0-beta8] - 2017-10-05
+#### Added
+- Initial "cart", allow booking multi-rooms in session time.
+- API: Added `Period_Collection::adjacents()` alias of `Period_Collection::is_continuous` method.
+
+#### Changes
+- Bump Skeleton to version 1.0.0
+- API: Main `AweBooking` now extends `Illuminate\Container\Container`, the `Skeleton\Container\Container` has been removed by Skeleton 1.0.0.
+- API: Split WP_Object to standalone package "awethemes/wp-object".
+- API: Moving `AweBooking\Model\WP_Object` to `AweBooking\Support\WP_Object`, a old class name still available until next version for compatibility.
+- API: Use "awethemes/session" package instead "ericmann/wp-session-manager", `awebooking( 'session' )` now implements of `Awethemes\WP_Session\WP_Session` instead old `WP_Session`.
+- API: Code refactoring the Price, rename `to_amount()` to `to_integer()` and `from_amount()` to `from_integer` method, use "bcmath" for calculator if available, unit-tests...
+- Templates changes.
+
+#### Fixed
+- Fixed "parser error" with :class in old PHP version.
+- Minor bugs fixed
+
+### [3.0.0-beta7] - 2017-09-22
+#### Changes
+- Improve multilanguage support
+
+#### Fixed
+- Fixed check availability bugs with multilanguage
+- Fixed some issues about email templates
+- Fixed loading wrong textdomain directory
+- Minor bugs fixed
+
+### [3.0.0-beta6] - 2017-09-14
+#### Added
+- Added SSP currency.
+- Change price after update item in booking.
+- API: Added `AWEBOOKING_PLUGIN_FILE_PATH` and `AWEBOOKING_VERSION` constants.
+
+#### Changes
+- Refactor code API in admin
+- Bootstrap file changes
+
+#### Fixed
+- Fixed booking cost not updated after add/change or remove a booking item
+- Minor bugs fixed
+
+### [3.0.0-beta5] - 2017-09-06
+#### Fixed
+- Hotfix: Fixed wrong place `deactivate_plugins` is called
+- Hotfix: Fixed crash on admin wizard [@see](https://wordpress.org/support/topic/error-after-activation-15/)
+- Fixed missing the localisation files
+
+### [3.0.0-beta4] - 2017-09-01
+#### Changes
+- Refactor code API, a huge classes has changed
+- A room when book will be stored as **booking-item**, prepare for multi booking rooms feature.
+- Improve stability.
+
+#### Fixed
+- Fixed the session cannot stored sometimes.
+- Fixed room-units with multilang.
+- Minor bugs fixed
+
+### [3.0.0-beta3] - 2017-08-10
+#### Changes
+- Improve calendar locale
+
+#### Fixed
+- Fixed "Bulk Update" not work on multi language
+- Fixed awebooking setup page not show
+- Minor bugs fixed
+
+### [3.0.0-beta2] - 2017-08-07
+#### Changes
+- Booking action now worked
+- Polylang support
+
+#### Fixed
+- Fixed extra service percent calculator
+- Fixed hotel location cannot be deleted
+- Minor bugs fixed
+
+### [3.0.0-beta] - 2017-07-20
+- Release AweBooking first beta version.
+
+### [3.0.0-alpha-307] - 2017-07-18
+#### Changes
+- Continue working with multilingual support.
+
+### [3.0.0-alpha-306] - 2017-07-18
+#### Added
+- WPML compatibility.
+
+### [3.0.0-alpha-305] - 2017-07-13
+#### Changes
+- Template changes.
+
+#### Fixed
+- Fixed email not work.
+- Fixed can't set "Available" state in Rooms Management.
+- After delete a room-type, AweBooking data related to this room-type will be removed too.
+- After delete a booking, room state now restore to "available" and booking event will be clear.
+
+### [3.0.0-alpha-301] - 2017-07-09
+#### Fixed
+- Fixed the migration notice always show.
+
+### [3.0.0-alpha-300] - 2017-07-09
+#### Added
+- Added tool allow migration from awebooking v2.
+
+### [3.0.0-alpha-230] - 2017-07-07
+#### Added
+- Add more core hooks.
+
+#### Changes
+- Update latest Skeleton v0.3.
+- Widget now using Skeleton Widget.
+- Some template changes.
+
+#### Fixed
+- Fixed start-day not clear in Calendar.
+- Fixed check availability in single room not working.
+- Fixed memory and queries issues.
+- Minor bugs fixed.

@@ -3,6 +3,8 @@ namespace AweBooking\Admin\Metaboxes;
 
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
+use AweBooking\Email\Mailer;
+use AweBooking\Email\Templates\Invoice;
 
 class Booking_Actions_Metabox {
 	/**
@@ -19,7 +21,6 @@ class Booking_Actions_Metabox {
 
 		$booking_actions = apply_filters( 'awebooking/admin_booking_actions', [
 			'send_booking_details'       => esc_html__( 'Email invoice to customer', 'awebooking' ),
-			'send_booking_status'        => esc_html__( 'Email current status to customer', 'awebooking' ),
 			'send_booking_details_admin' => esc_html__( 'Resend new booking notification (admin)', 'awebooking' ),
 		]);
 
@@ -33,8 +34,28 @@ class Booking_Actions_Metabox {
 	 * @param \Awethemes\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
-		$booking = abrs_get_booking( $post );
+		$action = sanitize_text_field( $request['awebooking_action'] );
 
-		// TODO: ...
+		// Nothing to work.
+		if ( empty( $action ) ) {
+			return;
+		}
+
+		// Resolve the booking object.
+		$the_booking = abrs_get_booking( $post );
+
+		switch ( $action ) {
+			case 'send_booking_details':
+				$sended = Mailer::to( 'anhskohbo@gmail.com' )->send( new Invoice );
+
+				if ( $sended ) {
+					abrs_add_booking_note( $the_booking, esc_html__( 'Invoice manually sent to customer.', 'awebooking' ), false, true );
+				}
+				break;
+
+			default:
+				do_action( 'awebooking/booking_action_' . sanitize_title( $action ), $the_booking );
+				break;
+		}
 	}
 }

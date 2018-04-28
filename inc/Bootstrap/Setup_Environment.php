@@ -136,7 +136,7 @@ class Setup_Environment {
 			'capabilities'        => $capabilities,
 		]));
 
-		if ( abrs_get_option( 'enable_location', false ) ) {
+		if ( $this->plugin->get_option( 'enable_location', false ) ) {
 			register_taxonomy( Constants::HOTEL_LOCATION, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_location_args', [
 				'labels'              => [
 					'name'                  => esc_html_x( 'Locations', 'Location plural name', 'awebooking' ),
@@ -186,6 +186,11 @@ class Setup_Environment {
 		 */
 		do_action( 'awebooking/register_post_type' );
 
+		// Get the room type slug.
+		$room_type_slug = apply_filters( 'awebooking/room_type_slug',
+			get_option( 'awebooking_room_type_permalink', 'room_type' )
+		);
+
 		register_post_type( Constants::ROOM_TYPE, apply_filters( 'awebooking/register_room_type_args', [
 			'labels'              => [
 				'name'                  => esc_html_x( 'Room Types', 'Room type plural name', 'awebooking' ),
@@ -227,8 +232,12 @@ class Setup_Environment {
 			'menu_icon'           => 'dashicons-building',
 			// 'capability_type'     => Constants::ROOM_TYPE,
 			'supports'            => [ 'title', 'editor', 'thumbnail' ],
-			'rewrite'             => true,
 			'has_archive'         => false,
+			'rewrite'             => [
+				'slug'       => $room_type_slug,
+				'feeds'      => true,
+				'with_front' => false,
+			],
 		]));
 
 		register_post_type( Constants::BOOKING, apply_filters( 'awebooking/register_booking_args', [

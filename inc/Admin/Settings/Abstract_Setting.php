@@ -5,7 +5,7 @@ use Illuminate\Support\Arr;
 use Awethemes\Http\Request;
 use AweBooking\Component\Form\Form_Builder;
 
-abstract class Abstract_Setting extends Form_Builder implements Setting_Interface {
+abstract class Abstract_Setting extends Form_Builder implements Setting {
 	/**
 	 * The name for option key storing setting.
 	 *
@@ -121,6 +121,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 			}
 
 			$this->output_sections();
+			echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
 		}
 
 		// Print the fields.
@@ -147,7 +148,6 @@ abstract class Abstract_Setting extends Form_Builder implements Setting_Interfac
 		}
 
 		echo '</ul><div class="clear"></div>';
-		echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
 	}
 
 	/**

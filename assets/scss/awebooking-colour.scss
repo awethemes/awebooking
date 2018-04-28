@@ -1,8 +1,4 @@
-$datepicker-main-color:        #fff;
-$datepicker-main-background:   #2196F3;
-$datepicker-hover-background:  #eee;
-$datepicker-range-background:  #e2f2ff;
-
 @import "utils/mixins";
 @import "frontend/buttons";
 @import "frontend/datepicker";
+@import "frontend/searchbox";

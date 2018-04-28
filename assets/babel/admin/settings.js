@@ -32,6 +32,11 @@
         });
     }
 
+    /**
+     * Create the datepicker.
+     *
+     * @return {void}
+     */
     createDatepicker() {
       $('#display_datepicker_disabledates').flatpickr({
         mode: 'multiple',

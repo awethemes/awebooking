@@ -67,7 +67,7 @@
 					</p>
 
 					<?php if ( $the_booking['customer_note'] ) : ?>
-						<div class="customer_note"><?php echo wp_kses_post( wpautop( $the_booking['customer_note'] ) ); ?></div>
+						<div class="customer_note"><?php echo wp_kses_post( wptexturize( wpautop( $the_booking->get( 'customer_note' ) ) ) ); ?></div>
 					<?php endif ?>
 				</div>
 

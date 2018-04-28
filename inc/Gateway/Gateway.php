@@ -18,42 +18,42 @@ abstract class Gateway {
 	 *
 	 * @var string
 	 */
-	protected $enabled = true;
+	public $enabled = true;
 
 	/**
 	 * Gateway method title.
 	 *
 	 * @var string
 	 */
-	protected $method_title = '';
+	public $method_title = '';
 
 	/**
 	 * Gateway method description.
 	 *
 	 * @var string
 	 */
-	protected $method_description = '';
+	public $method_description = '';
 
 	/**
 	 * Name of gateway (front-end).
 	 *
 	 * @var string
 	 */
-	protected $title = '';
+	public $title = '';
 
 	/**
 	 * Gateway description (front-end).
 	 *
 	 * @var string
 	 */
-	protected $description = '';
+	public $description = '';
 
 	/**
 	 * The admin setting fields.
 	 *
 	 * @var array
 	 */
-	protected $setting_fields;
+	public $setting_fields = [];
 
 	/**
 	 * The extra metadata this gateway support.
@@ -62,7 +62,7 @@ abstract class Gateway {
 	 *
 	 * @var array
 	 */
-	protected $supports = [];
+	public $supports = [];
 
 	/**
 	 * Get method name.
@@ -162,7 +162,7 @@ abstract class Gateway {
 	 * @return boolean
 	 */
 	public function has_settings() {
-		return ! empty( $this->get_setting_fields() );
+		return ! empty( $this->setting_fields );
 	}
 
 	/**

@@ -3,7 +3,7 @@ namespace AweBooking\Admin;
 
 use AweBooking\Plugin;
 use AweBooking\Support\Collection;
-use AweBooking\Admin\Settings\Setting_Interface;
+use AweBooking\Admin\Settings\Setting;
 use Awethemes\Http\Request;
 
 class Admin_Settings {
@@ -28,8 +28,8 @@ class Admin_Settings {
 	 */
 	protected $core_settings = [
 		\AweBooking\Admin\Settings\General_Setting::class,
-		\AweBooking\Admin\Settings\Display_Setting::class,
-		\AweBooking\Admin\Settings\Reservation_Setting::class,
+		\AweBooking\Admin\Settings\Hotel_Setting::class,
+		\AweBooking\Admin\Settings\Taxes_Setting::class,
 		\AweBooking\Admin\Settings\Checkout_Setting::class,
 		\AweBooking\Admin\Settings\Appearance_Setting::class,
 		\AweBooking\Admin\Settings\Email_Setting::class,
@@ -59,7 +59,7 @@ class Admin_Settings {
 	 * Get a registered setting.
 	 *
 	 * @param  string $setting The setting ID.
-	 * @return \AweBooking\Admin\Settings\Setting_Interface|null
+	 * @return \AweBooking\Admin\Settings\Setting|null
 	 */
 	public function get( $setting ) {
 		return $this->settings->get( $setting );
@@ -73,18 +73,18 @@ class Admin_Settings {
 	 */
 	public function registered( $setting ) {
 		return $this->settings->has(
-			$setting instanceof Setting_Interface ? $setting->get_id() : $setting
+			$setting instanceof Setting ? $setting->get_id() : $setting
 		);
 	}
 
 	/**
 	 * Register a setting.
 	 *
-	 * @param  \AweBooking\Admin\Settings\Setting_Interface $setting The setting instance.
-	 * @param  boolean                                      $force   Force to register.
-	 * @return \AweBooking\Admin\Settings\Setting_Interface|false
+	 * @param  \AweBooking\Admin\Settings\Setting $setting The setting instance.
+	 * @param  boolean                            $force   Force to register.
+	 * @return \AweBooking\Admin\Settings\Setting|false
 	 */
-	public function register( Setting_Interface $setting, $force = false ) {
+	public function register( Setting $setting, $force = false ) {
 		if ( ! $setting->get_id() ) {
 			return false;
 		}

@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Support\Period_Collection;
 
 class Booking extends Model {
 	/**
@@ -24,6 +25,13 @@ class Booking extends Model {
 	 * @var array|null
 	 */
 	protected $status_transition;
+
+	/**
+	 * Mark true to force calculate_totals.
+	 *
+	 * @var boolean
+	 */
+	protected $force_calculate_totals = false;
 
 	/**
 	 * Returns the booking number.
@@ -69,8 +77,26 @@ class Booking extends Model {
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
+	public function get_line_items() {
+		return $this->get_rooms();
+	}
+
+	/**
+	 * Get rooms of this booking.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
 	public function get_rooms() {
 		return $this->get_items( 'line_item' );
+	}
+
+	/**
+	 * Get payments of this booking.
+	 *
+	 * @return array \AweBooking\Support\Collection
+	 */
+	public function get_payments() {
+		return $this->get_items( 'payment_item' );
 	}
 
 	/**
@@ -92,15 +118,6 @@ class Booking extends Model {
 	}
 
 	/**
-	 * Get payments of this booking.
-	 *
-	 * @return array \AweBooking\Support\Collection
-	 */
-	public function get_payments() {
-		return $this->get_items( 'payment_item' );
-	}
-
-	/**
 	 * Returns the last payment item.
 	 *
 	 * @param  string $state Optional, filter payment matching with a state.
@@ -111,52 +128,46 @@ class Booking extends Model {
 	}
 
 	/**
-	 * Get the amount of total paid.
+	 * [force_calculate_totals description]
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @param  boolean $force [description]
+	 * @return [type]
 	 */
-	public function get_paid() {
-		return $this->get_payments()->reduce( function( $total, $item ) {
-			return $total->add( 0 );
-		}, abrs_decimal( 0 ) );
-	}
+	public function force_calculate_totals( $force = true ) {
+		$this->force_calculate_totals = $force;
 
-	/**
-	 * Get the amount of balance_due.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_balance_due() {
-		return abrs_decimal( $this->get_total() )->sub( $this->get_paid() );
+		return $this;
 	}
 
 	/**
 	 * Calculate totals by looking at the contents of the booking.
 	 *
 	 * @param  bool $and_taxes Calc taxes if true.
-	 * @return float calculated grand total.
+	 * @return bool
 	 */
 	public function calculate_totals( $with_taxes = true ) {
+		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
+
 		$room_subtotal      = 0;
 		$room_total         = 0;
+
 		$room_subtotal_tax  = 0;
 		$room_total_tax     = 0;
 		$service_total      = 0;
-		$fee_total          = 0;
 
-		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
+		$fee_total          = 0;
 
 		// Sum the room costs.
 		foreach ( $this->get_rooms() as $room ) {
-			$room_subtotal = $room_subtotal->add( $room->get_subtotal() );
-			$room_total    = $room_total->add( $room->get_total() );
+			$room_subtotal += $room->get( 'subtotal' );
+			$room_total    += $room->get( 'total' );
 		}
 
 		// Sum the service costs.
 		// ...
 
 		// Sum fee costs.
-		foreach ( $this->get_fees() as $item ) {
+		/*foreach ( $this->get_fees() as $item ) {
 			$amount = $item->get_amount();
 
 			if ( 0 > $amount ) {
@@ -169,30 +180,71 @@ class Booking extends Model {
 			}
 
 			$fee_total += $item->get_total();
-		}
+		}*/
 
 		// Calculate taxes for rooms, discounts.
 		// Note: This also triggers save().
 		if ( $with_taxes ) {
-			$this->calculate_taxes();
+			// $this->calculate_taxes();
 		}
 
 		// Sum the taxes.
-		foreach ( $this->get_rooms() as $room ) {
+		/*foreach ( $this->get_rooms() as $room ) {
 			$room_subtotal_tax = $room_subtotal_tax->add( $room->get_subtotal_tax() );
 			$room_total_tax    = $room_total_tax->add( $room->get_total_tax() );
-		}
+		}*/
 
-		$this->set_discount_total( $cart_subtotal - $room_total );
-		$this->set_discount_tax( $room_subtotal_tax - $room_total_tax );
+		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
+		$this->set_attribute( 'total', $room_total + $fee_total );
+		// $this->set_discount_tax( $room_subtotal_tax - $room_total_tax );
 
-		$this->set_total( $room_total + $fee_total + $this->get_cart_tax() );
+		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
+		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );
 
 		do_action( $this->prefix( 'after_calculate_totals' ), $with_taxes, $this );
 
 		$this->save();
+	}
 
-		return $this->get_total();
+	/**
+	 * [calculate_nights_stay description]
+	 *
+	 * @return [type]
+	 */
+	public function calculate_nights_stay() {
+		$room_items = $this->get_rooms();
+
+		// In case no room items in booking, just clear the dates.
+		if ( count( $room_items ) === 0 ) {
+
+			$this->set_attribute( 'check_in_date', '' );
+			$this->set_attribute( 'check_out_date', '' );
+
+		} elseif ( count( $room_items ) === 1 ) {
+			$timespan = $room_items->first()->get_timespan();
+
+			$this->set_attribute( 'check_in_date', $timespan ? $timespan->get_start_date() : '' );
+			$this->set_attribute( 'check_out_date', $timespan ? $timespan->get_end_date() : '' );
+
+		} else {
+
+			// ...
+
+		}
+
+		/*$periods = [];
+
+		foreach ( $this->get_rooms() as $item ) {
+			if ( ! $timespan = $item->get_timespan() ) {
+				continue;
+			}
+
+			$periods[] = $timespan->get_period();
+		}
+
+		$periods = new Period_Collection( $periods );
+
+		dd($periods->is_continuous());*/
 	}
 
 	/**
@@ -204,6 +256,15 @@ class Booking extends Model {
 		return apply_filters( $this->prefix( 'is_editable' ),
 			in_array( $this->get_status(), [ 'pending', 'on-hold', 'deposit', 'auto-draft' ], true ), $this
 		);
+	}
+
+	/**
+	 * Determines if this booking have multiple rooms.
+	 *
+	 * @return boolean
+	 */
+	public function is_multiple_rooms() {
+		return count( $this->get_rooms() ) > 1;
 	}
 
 	/**
@@ -284,7 +345,7 @@ class Booking extends Model {
 		}
 
 		// Log the transition occurred in the notes.
-		abrs_add_booking_note( $this, $transition_note, false, false );
+		abrs_add_booking_note( $this, $transition_note, false, true );
 	}
 
 	/**
@@ -322,6 +383,10 @@ class Booking extends Model {
 		parent::finish_save();
 
 		$this->apply_status_transition();
+
+		if ( true === $this->force_calculate_totals ) {
+			$this->calculate_totals();
+		}
 	}
 
 	/**
@@ -339,10 +404,11 @@ class Booking extends Model {
 			'customer_note'           => '',
 
 			'discount_tax'            => 0,
+			'total_tax'               => 0,
 			'discount_total'          => 0,
 			'total'                   => 0,
-			'total_tax'               => 0,
 			'paid'                    => 0,
+			'balance_due'             => 0,
 
 			// Customer attributes.
 			'customer_id'             => 0,
@@ -378,11 +444,12 @@ class Booking extends Model {
 			'check_out_date'          => '_check_out_date',
 			'arrival_time'            => '_arrival_time',
 
-			'discount_tax'            => '_discount_tax',
 			'discount_total'          => '_discount_total',
+			'discount_tax'            => '_discount_tax',
 			'total'                   => '_total',
 			'total_tax'               => '_total_tax',
 			'paid'                    => '_paid',
+			'balance_due'             => '_balance_due',
 
 			'customer_id'             => '_customer_id',
 			'customer_title'          => '_customer_title',

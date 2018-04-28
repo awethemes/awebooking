@@ -129,40 +129,49 @@ p.awebooking-no-items {
 
 .awebooking-pending-color,
 [data-value="awebooking-pending"]:before {
+  color: #634f12 !important;
   background-color: #FFC107 !important;
 }
 
 .awebooking-inprocess-color,
 [data-value="awebooking-inprocess"]:before {
+  color: #fff !important;
   background-color: #607d8b !important;
 }
 
 .awebooking-on-hold-color,
 [data-value="awebooking-on-hold"]:before {
+  color: #fff !important;
   background-color: #673ab7 !important;
 }
 
 .awebooking-deposit-color,
 [data-value="awebooking-deposit"]:before {
-  background-color: #9c27b0 !important;
+  color: #fff !important;
+  background-color: #cf2eea !important;
 }
 
 .awebooking-completed-color,
 [data-value="awebooking-completed"]:before {
+  color: #fff !important;
   background-color: #03a9f4 !important;
 }
 
 .checked-in-color,
+.awebooking-checked-in-color,
 [data-value="checked-in"]:before {
+  color: #33481a !important;
   background-color: #cddc39 !important;
 }
 
 .checked-out-color,
+.awebooking-checked-out-color,
 [data-value="checked-out"]:before {
   background-color: #8bc34a !important;
 }
 
 .awebooking-cancelled-color,
 [data-value="awebooking-cancelled"]:before {
-  background-color: #9e9e9e !important;
+  color: #222 !important;
+  background-color: #aaa !important;
 }

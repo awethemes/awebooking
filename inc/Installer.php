@@ -35,6 +35,7 @@ class Installer {
 	 */
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
+
 		// $this->background_updater = $plugin->make( Background_Updater::class );
 
 		$this->init();
@@ -316,17 +317,23 @@ class Installer {
 
 	/**
 	 * Setup AweBooking environment - post-types, taxonomies, endpoints.
+	 *
+	 * @return void
 	 */
 	protected function setup_environment() {
 		$environment = new Setup_Environment( $this->plugin );
 
 		$environment->register_taxonomies();
 		$environment->register_post_types();
+		$environment->register_post_status();
+
 		$environment->register_endpoints();
 	}
 
 	/**
 	 * Create cron jobs.
+	 *
+	 * @return void
 	 */
 	protected function create_cron_jobs() {
 		// TODO: ...
@@ -336,6 +343,8 @@ class Installer {
 	 * Default options.
 	 *
 	 * Sets up the default options used on the settings page.
+	 *
+	 * @return void
 	 */
 	protected function create_options() {
 		// TODO: ...
@@ -345,6 +354,8 @@ class Installer {
 	 * Set up the database tables.
 	 *
 	 * @see https://codex.wordpress.org/Creating_Tables_with_Plugins
+	 *
+	 * @return void
 	 */
 	protected function create_tables() {
 		global $wpdb;
@@ -435,18 +446,14 @@ class Installer {
 
 		CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
 		  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		  name varchar(191) NOT NULL,
-		  code varchar(191) NOT NULL,
-		  type varchar(191) NOT NULL,
-		  category varchar(191) NOT NULL,
-		  amount_type varchar(191) NOT NULL,
-		  amount varchar(191) NOT NULL,
-		  created_date DATETIME NOT NULL,
-		  modified_date DATETIME NOT NULL,
+		  rate varchar(8) NOT NULL DEFAULT '',
+		  name varchar(191) NOT NULL DEFAULT '',
+		  priority BIGINT UNSIGNED NOT NULL,
+		  compound int(1) NOT NULL DEFAULT 0,
 		  PRIMARY KEY (id),
-		  KEY code (code)
-		) $collate;
-				";
+		  KEY name (name),
+		  KEY priority (priority)
+		) $collate;";
 
 		return $tables;
 	}

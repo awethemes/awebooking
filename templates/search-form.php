@@ -3,34 +3,49 @@
 $form_classes = [];
 
 ?>
+
 <form method="GET" action="<?php echo esc_url( abrs_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
-	<div class="searchbox">
+	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
+		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">
+	<?php endif ?>
+
+	<?php if ( abrs_running_on_multilanguage() ) : ?>
+		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_current_language() ); ?>">
+	<?php endif ?>
+
+	<div class="searchbox searchbox--horizontal">
 		<div class="searchbox__wrapper">
-
-			<div tabindex="0" class="IconBox IconBox--checkIn">
-				<div class="IconBox__wrapper"><i class="ficon IconBox__icon ficon-20 ficon-check-in"></i>
-					<div class="IconBox__child">
-						<div data-selenium="checkInBox" data-date="2018-04-23" class="SearchBoxTextDescription SearchBoxTextDescription--checkIn">
-							<div class="SearchBoxTextDescription__title" data-selenium="textInput">23 Apr 2018</div>
-							<div class="SearchBoxTextDescription__desc">Monday</div>
-						</div>
-					</div>
-				</div>
+			<div tabindex="0" class="searchbox__box searchbox__box--hotel">
+				<input type="text" name="hotel" class="">
 			</div>
 
-			<div tabindex="0" class="IconBox IconBox--checkOut">
-				<div class="IconBox__wrapper"><i class="ficon IconBox__icon ficon-20 ficon-check-out"></i>
-					<div class="IconBox__child">
-						<div data-selenium="checkOutBox" data-date="2018-04-24" class="SearchBoxTextDescription SearchBoxTextDescription--checkOut">
-							<div class="SearchBoxTextDescription__title" data-selenium="textInput">24 Apr 2018</div>
-							<div class="SearchBoxTextDescription__desc">Tuesday</div>
-						</div>
-					</div>
-				</div>
+			<div tabindex="0" class="searchbox__box searchbox__box--checkin">
+				<input type="text" name="check-in" class="js-datepicker">
 			</div>
+
+			<div tabindex="0" class="searchbox__box searchbox__box--checkout">
+				<input type="text" name="check-out" class="js-datepicker">
+			</div>
+
+			<div tabindex="0" class="searchbox__box searchbox__box--occupancy">
+			</div>
+
+			<button>
+				<?php esc_html_e( 'Search', 'awebooking' ); ?>
+			</button>
 
 		</div>
 	</div>
 
 </form>
+
+<script>
+jQuery(function($) {
+
+	awebooking.datepicker('.js-datepicker', {
+
+	});
+
+});
+</script>

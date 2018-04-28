@@ -43,6 +43,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           window.onbeforeunload = null;
         });
       }
+
+      /**
+       * Create the datepicker.
+       *
+       * @return {void}
+       */
+
     }, {
       key: 'createDatepicker',
       value: function createDatepicker() {

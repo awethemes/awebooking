@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\Admin\Admin_Settings;
-
 class Premium_Setting extends Abstract_Setting {
 	/**
 	 * The setting ID.
@@ -28,7 +26,6 @@ class Premium_Setting extends Abstract_Setting {
 			'id'   => '__premium_title',
 			'type' => 'title',
 			'name' => esc_html__( 'Premium', 'awebooking' ),
-			'desc' => esc_html__( 'Here you can manager premium', 'awebooking' ),
 		]);
 
 		$this->add_field([

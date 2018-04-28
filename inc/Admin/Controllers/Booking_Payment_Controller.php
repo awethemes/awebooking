@@ -25,7 +25,7 @@ class Booking_Payment_Controller extends Controller {
 		);
 
 		// Set the default amount.
-		$balance_due = $booking->get_balance_due();
+		$balance_due = abrs_decimal( $booking->get( 'balance_due' ) );
 		$form_builder['amount']->set_value( $balance_due->is_positive() ? $balance_due : 0 );
 
 		$page_title = $payment_item->exists()

@@ -1,0 +1,48 @@
+.searchbox {
+  width: 100%;
+  padding: 13px 0;
+  background-color: rgba(#fff, 0.8);
+  box-sizing: border-box;
+  // box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+}
+
+.searchbox__spacer {
+  flex-grow: 1;
+}
+
+.searchbox__wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+.searchbox__box {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 5px 0 0;
+  background-color: #fff;
+  cursor: pointer;
+  padding: 10px 5px;
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+  box-sizing: border-box;
+}
+
+.searchbox__box--checkin,
+.searchbox__box--checkout {
+  width: 164px;
+}
+
+/* Horizontal layout */
+.searchbox--horizontal {
+  padding: 13px;
+
+  .searchbox__wrapper {
+    flex-direction: row;
+  }
+}
+
+.searchbox--vertical {
+  .searchbox__wrapper {
+    flex-direction: column;
+  }
+}

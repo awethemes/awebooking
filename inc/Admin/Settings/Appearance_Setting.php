@@ -1,9 +1,6 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\Support\WP_Data;
-use AweBooking\Admin\Admin_Settings;
-
 class Appearance_Setting extends Abstract_Setting {
 	/**
 	 * The setting ID.

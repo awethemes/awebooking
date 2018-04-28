@@ -50,7 +50,7 @@ if ( ! function_exists( 'is_awebooking_search' ) ) {
 	 * @return bool
 	 */
 	function is_awebooking_search() {
-		return is_page( abrs_page_id( 'cart' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
+		return is_page( abrs_get_page_id( 'cart' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
 	}
 }
 

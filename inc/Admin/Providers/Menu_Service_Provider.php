@@ -83,7 +83,7 @@ class Menu_Service_Provider extends Service_Provider {
 
 				unset( $menu_order[ $room_type_index ] );
 				unset( $menu_order[ $separator_index ] );
-			} elseif ( ! in_array( $item, array( 'separator-awebooking' ) ) ) {
+			} elseif ( ! in_array( $item, [ 'separator-awebooking' ] ) ) {
 				$new_menu[] = $item;
 			}
 		}

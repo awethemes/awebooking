@@ -107,7 +107,7 @@ class Tax extends WP_Object {
 			}
 		}
 
-		$ids = array_diff( array_filter( array_map( 'absint', (array) $ids ) ), array( $exclude ) );
+		$ids = array_diff( array_filter( array_map( 'absint', (array) $ids ) ), [ $exclude ] );
 		$id = apply_filters( 'awebooking/get_tax_id_from_code', absint( current( $ids ) ), $code, $exclude );
 
 		return new static( $id );

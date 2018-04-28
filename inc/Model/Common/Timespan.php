@@ -96,6 +96,15 @@ class Timespan implements \JsonSerializable {
 	}
 
 	/**
+	 * Returns the period instance.
+	 *
+	 * @return \AweBooking\Support\Period
+	 */
+	public function get_period() {
+		return $this->period;
+	}
+
+	/**
 	 * Returns the timespan as a period.
 	 *
 	 * @param  string $granularity The granularity level.

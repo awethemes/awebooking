@@ -13,7 +13,7 @@ use AweBooking\Support\Service_Provider;
 
 class Reservation_Service_Provider extends Service_Provider {
 	/**
-	 * Registers services on the AweBooking.
+	 * Registers services on the plugin.
 	 *
 	 * @return void
 	 */

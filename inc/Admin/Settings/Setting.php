@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Settings;
 
 use Awethemes\Http\Request;
 
-interface Setting_Interface {
+interface Setting {
 	/**
 	 * Get the setting ID.
 	 *

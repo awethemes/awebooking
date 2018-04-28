@@ -38,7 +38,7 @@ final class Plugin extends Container {
 	 *
 	 * @var string
 	 */
-	protected $option_key;
+	protected $option_key = 'awebooking_settings';
 
 	/**
 	 * Indicates if the plugin has "booted".
@@ -69,18 +69,20 @@ final class Plugin extends Container {
 		'core' => [
 			\AweBooking\Providers\Intl_Service_Provider::class,
 			\AweBooking\Providers\Http_Service_Provider::class,
-			\AweBooking\Providers\Payment_Service_Provider::class,
 			\AweBooking\Providers\Query_Service_Provider::class,
 			\AweBooking\Providers\Logic_Service_Provider::class,
+			\AweBooking\Providers\Payment_Service_Provider::class,
+			\AweBooking\Providers\Email_Service_Provider::class,
 		],
 		'admin' => [
 			\AweBooking\Admin\Providers\Admin_Service_Provider::class,
-			\AweBooking\Admin\Providers\Notices_Service_Provider::class,
 			\AweBooking\Admin\Providers\Menu_Service_Provider::class,
+			\AweBooking\Admin\Providers\Permalink_Service_Provider::class,
 			\AweBooking\Admin\Providers\Scripts_Service_Provider::class,
 			\AweBooking\Admin\Providers\Metaboxes_Service_Provider::class,
 			\AweBooking\Admin\Providers\Post_Types_Service_Provider::class,
 			\AweBooking\Admin\Providers\Taxonomies_Service_Provider::class,
+			\AweBooking\Admin\Providers\Notices_Service_Provider::class,
 		],
 		'frontend' => [
 			\AweBooking\Frontend\Providers\Frontend_Service_Provider::class,
@@ -222,13 +224,10 @@ final class Plugin extends Container {
 		// Build the providers.
 		$providers = $this->service_providers['core'];
 
-		if ( abrs_is_request( 'frontend' ) ) {
-			$providers = array_merge( $providers, $this->service_providers['frontend'] );
-		}
-
-		// In admin, we will merge admin providers into the list.
-		if ( abrs_is_request( 'admin' ) ) {
+		if ( is_admin() ) {
 			$providers = array_merge( $providers, $this->service_providers['admin'] );
+		} elseif ( ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) ) {
+			$providers = array_merge( $providers, $this->service_providers['frontend'] );
 		}
 
 		// Filter the service_providers.
@@ -400,13 +399,6 @@ final class Plugin extends Container {
 	 * @return array
 	 */
 	public function get_options() {
-		// Call this when option_key is not setup yet,
-		// trigger an error and create a mock for options.
-		if ( empty( $this->option_key ) ) {
-			trigger_error( esc_html__( 'The option is not setup yet.', 'awebooking' ) );
-			$this->options = new Fluent( [] );
-		}
-
 		// Load the option in the database.
 		if ( is_null( $this->options ) ) {
 			$this->options = new Fluent( get_option( $this->get_option_key(), [] ) );
@@ -437,7 +429,9 @@ final class Plugin extends Container {
 		}
 
 		// Retrieve the option value.
-		$value = $this->get_options()->get( $option, $default );
+		$value = maybe_unserialize(
+			$this->get_options()->get( $option, $default )
+		);
 
 		// Escape some options before return.
 		switch ( $option ) {
@@ -468,7 +462,7 @@ final class Plugin extends Container {
 		 * @param mixed  $value  Value of the option.
 		 * @param string $option Option name.
 		 */
-		return apply_filters( "awebooking/option_{$option}", maybe_unserialize( $value ), $option );
+		return apply_filters( "awebooking/option_{$option}", $value, $option );
 	}
 
 	/**

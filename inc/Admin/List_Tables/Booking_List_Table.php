@@ -51,15 +51,18 @@ class Booking_List_Table extends Abstract_List_Table {
 			$columns = [];
 		}
 
-		// Temporary remove columns, we will rebuild late.
 		unset( $columns['title'], $columns['comments'], $columns['date'] );
 
-		$show_columns                   = [];
-		$show_columns['booking_number'] = esc_html__( 'Booking', 'awebooking' );
-		$show_columns['booking_status'] = esc_html__( 'Status', 'awebooking' );
-		$show_columns['booking_date']   = esc_html__( 'Date', 'awebooking' );
-
-		return array_merge( $columns, $show_columns );
+		return array_merge( $columns, [
+			'booking_number'    => esc_html__( 'Booking', 'awebooking' ),
+			'booking_status'    => esc_html__( 'Status', 'awebooking' ),
+			'booking_nights'    => '<span class="tippy" title="' . esc_html__( 'Nights', 'awebooking' ) . '"><i class="afc afc-moon"></i><span class="screen-reader-text">' . esc_html__( 'Nights', 'awebooking' ) . '</span></span>',
+			'booking_check_in'  => esc_html__( 'Check-In', 'awebooking' ),
+			'booking_check_out' => esc_html__( 'Check-Out', 'awebooking' ),
+			'booking_summary'   => esc_html__( 'Summary', 'awebooking' ),
+			'booking_total'     => esc_html__( 'Total', 'awebooking' ),
+			'booking_date'      => esc_html__( 'Date', 'awebooking' ),
+		]);
 	}
 
 	/**
@@ -119,6 +122,17 @@ class Booking_List_Table extends Abstract_List_Table {
 			);
 		}
 
+		if ( $customer_note = $the_booking['customer_note'] ) : ?>
+			<span class="tippy abrs-fright" data-tippy-interactive="true" data-tippy-html="#private_customer_note_<?php echo esc_attr( $the_booking['id'] ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Customer note', 'awebooking' ); ?></span>
+				<span class="dashicons dashicons-admin-comments"></span>
+			</span>
+
+			<div id="private_customer_note_<?php echo esc_attr( $the_booking['id'] ); ?>" style="display: none;">
+				<div class="abrs-tooltip-note"><?php echo wp_kses_post( wptexturize( wpautop( $customer_note ) ) ); ?></div>
+			</div>
+		<?php endif; // @codingStandardsIgnoreLine
+
 		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
 	}
 
@@ -129,6 +143,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 */
 	protected function display_booking_status_column() {
 		$status = $this->booking->get( 'status' );
+
 		printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) );
 	}
 
@@ -146,7 +161,7 @@ class Booking_List_Table extends Abstract_List_Table {
 
 		// Check if the booking was created within the last 24 hours, and not in the future.
 		// We will show the date as human readable date time by using human_time_diff.
-		if ( ! $date_created->isFuture() && $date_created->gt( Carbonate::now()->subDay() ) ) {
+		if ( ! $date_created->isFuture() && $date_created->gt( abrs_date_time( 'now' )->subDay() ) ) {
 			/* translators: %s: human-readable time difference */
 			$show_date = sprintf( _x( '%s ago', '%s = human-readable time difference', 'awebooking' ),
 				human_time_diff( $date_created->getTimestamp(), current_time( 'timestamp', true ) )
@@ -156,11 +171,38 @@ class Booking_List_Table extends Abstract_List_Table {
 		}
 
 		printf(
-			'<time datetime="%1$s" title="%2$s">%3$s</time>',
+			'<abbr datetime="%1$s" title="%2$s">%3$s</abbr>',
 			esc_attr( $date_created->toDateTimeString() ),
 			esc_html( abrs_format_datetime( $date_created ) ),
 			esc_html( $show_date )
 		);
+	}
+
+	/**
+	 * Display columm: booking_total.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_total_column() {
+		// @codingStandardsIgnoreLine
+		echo '<span class="abrs-badge">' . abrs_format_price( $this->booking->get( 'total' ), $this->booking->get( 'currency' ) ) . '</span>';
+	}
+
+	/**
+	 * Display columm: booking_summary.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_summary_column() {
+		// Length of stay varies, see each room.
+
+		$booked_rooms = $this->booking->get_rooms();
+
+		if ( count( $booked_rooms ) === 0 ) {
+			echo '-';
+		}
+
+		echo "<br>more 5 rooms";
 	}
 
 	/**
@@ -223,15 +265,16 @@ class Booking_List_Table extends Abstract_List_Table {
 
 		// Merge booking statuses on "All".
 		if ( ! isset( $query_vars['post_status'] ) ) {
-			$post_statuses = abrs_get_booking_statuses();
+			$statuses = abrs_get_booking_statuses();
+			unset( $statuses['awebooking-cancelled'] );
 
-			foreach ( $post_statuses as $status => $value ) {
+			foreach ( $statuses as $status => $value ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {
-					unset( $post_statuses[ $status ] );
+					unset( $statuses[ $status ] );
 				}
 			}
 
-			$query_vars['post_status'] = array_keys( $post_statuses );
+			$query_vars['post_status'] = array_keys( $statuses );
 		}
 
 		return $query_vars;

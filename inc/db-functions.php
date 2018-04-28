@@ -5,6 +5,31 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Model;
 
 /**
+ * Run a MySQL transaction query, if supported.
+ *
+ * @param  string $type The transaction type, start (default), commit, rollback.
+ * @return void
+ */
+function abrs_db_transaction( $type = 'start' ) {
+	global $wpdb;
+
+	// Hide the errros before perform the action.
+	$wpdb->hide_errors();
+
+	switch ( $type ) {
+		case 'commit':
+			$wpdb->query( 'COMMIT' );
+			break;
+		case 'rollback':
+			$wpdb->query( 'ROLLBACK' );
+			break;
+		default:
+			$wpdb->query( 'START TRANSACTION' );
+			break;
+	}
+}
+
+/**
  * Get a room data by ID in database.
  *
  * @param  int $room The room ID.

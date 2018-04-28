@@ -76,12 +76,15 @@
       altFormat: i18n.date_format,
       ariaDateFormat: i18n.date_format,
       dateFormat: 'Y-m-d',
-      minDate: min_date,
-      maxDate: max_date,
+      minDate: 'today',
+      // maxDate: max_date,
       showMonths: defaults.show_months,
       enableTime: false,
       enableSeconds: false,
-      disable: disable
+      // disable: disable,
+      onReady: function onReady(_, __, fp) {
+        fp.calendarContainer.classList.add('awebooking-datepicker');
+      }
     }));
 
     return fp;
@@ -92,9 +95,7 @@
    *
    * @return {void}
    */
-  $(function () {
-    awebooking.datepicker('.js-abrs-datepicker');
-  });
+  $(function () {});
 })(jQuery);
 
 },{"lodash.defaults":2}],2:[function(require,module,exports){

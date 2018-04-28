@@ -44,7 +44,8 @@ if ( ! class_exists( 'AweBooking\Plugin', false ) ) {
 	$awebooking = new AweBooking( __FILE__ );
 
 	// Install the awebooking.
-	$awebooking->make( 'installer' );
+	$installer = $awebooking->make( 'installer' );
+	register_activation_hook( __FILE__, array( $installer, 'activation' ) );
 
 	// Initialize under 'plugins_loaded'.
 	add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );

@@ -1,7 +1,5 @@
 <?php
 
-$balance_due = $the_booking->get_balance_due();
-
 $payment_items = $the_booking->get_payments()
 	->sortByDesc( function ( $e ) {
 		return $e->is_deposit();
@@ -47,7 +45,7 @@ $payment_items = $the_booking->get_payments()
 							</span>
 
 							<div id="private_payment_comment_<?php echo esc_attr( $payment_item->get_id() ); ?>" style="display: none;">
-								<div class="" style="min-width: 250px;"><?php echo wp_kses_post( wptexturize( wpautop( $payment_item['comment'] ) ) ); ?></div>
+								<div class="" style="min-width: 250px;"><?php echo wp_kses_post( wptexturize( wpautop( $payment_item->get( 'comment' ) ) ) ); ?></div>
 							</div>
 						<?php endif ?>
 					</td>
@@ -55,7 +53,7 @@ $payment_items = $the_booking->get_payments()
 					<td>
 						<div class="awebooking-contents">
 							<?php
-							do_action( "awebooking/booking/display_payment_{$payment_item['method']}", $payment_item, $the_booking );
+							do_action( "awebooking/booking/display_payment_{$payment_item->get( 'method' )}", $payment_item, $the_booking );
 
 							do_action( 'awebooking/booking/display_payment', $payment_item, $the_booking );
 							?>
@@ -74,15 +72,15 @@ $payment_items = $the_booking->get_payments()
 						<?php
 						if ( $payment_item['date_paid'] ) {
 							printf( '<abbr title="%1$s" class="tippy">%2$s</abbr>',
-								esc_html( abrs_format_datetime( $payment_item['date_paid'] ) ),
-								esc_html( abrs_format_datetime( $payment_item['date_paid'], abrs_date_format() ) )
+								esc_html( abrs_format_datetime( $payment_item->get( 'date_paid' ) ) ),
+								esc_html( abrs_format_datetime( $payment_item->get( 'date_paid' ), abrs_date_format() ) )
 							);
 						}
 						?>
 					</td>
 
 					<td class="abrs-text-right">
-						<span class="abrs-label"><?php abrs_price( $payment_item['amount'] ); // WPCS: XSS OK. ?></span>
+						<span class="abrs-label"><?php abrs_price( $payment_item->get( 'amount' ) ); // WPCS: XSS OK. ?></span>
 					</td>
 				</tr>
 			<?php endforeach ?>
@@ -99,7 +97,7 @@ $payment_items = $the_booking->get_payments()
 
 			<th colspan="2">
 				<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
-				<span class="abrs-fright awebooking-label awebooking-label--<?php echo $balance_due->is_zero() ? 'success' : 'danger'; ?>"><?php abrs_price( $balance_due ); // WPCS: XSS OK. ?></span>
+				<span class="abrs-fright awebooking-label awebooking-label--<?php echo empty( $the_booking['balance_due'] ) ? 'success' : 'danger'; ?>"><?php abrs_price( $the_booking->get( 'balance_due' ) ); // WPCS: XSS OK. ?></span>
 			</th>
 		</tr>
 	</tfoot>

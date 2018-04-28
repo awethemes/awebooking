@@ -21,25 +21,58 @@ class Room_Item extends Item {
 	 */
 	protected $type = 'line_item';
 
-	public function set_timespan( Timespan $timespan ) {
-		$state_calendar = abrs_calendar( $this->attributes['room_id'], 'state' );
-		$booking_calendar = abrs_calendar( $this->attributes['room_id'], 'booking' );
+	/*
+	|--------------------------------------------------------------------------
+	| Setters
+	|--------------------------------------------------------------------------
+	*/
 
-		$period = $timespan->to_period( Constants::GL_NIGHTLY );
+	/**
+	 * Sets the room subtotal (before discounts).
+	 *
+	 * @param  mixed $amount The amount.
+	 * @return $this
+	 */
+	public function set_subtotal( $amount ) {
+		$amount = abrs_sanitize_decimal( $amount );
 
-		$state_calendar->store(
-			new Event( $state_calendar->get_resource(), $period->start_date, $period->end_date, Constants::STATE_BOOKING )
-		);
+		if ( ! is_numeric( $amount ) ) {
+			$amount = 0;
+		}
 
-		$booking_calendar->store(
-			new Event( $state_calendar->get_resource(), $period->start_date, $period->end_date, $this->attributes['booking_id'] )
-		);
-
-		$this->attributes['check_in']  = $timespan->get_start_date();
-		$this->attributes['check_out'] = $timespan->get_end_date();
-
-		$this->save();
+		return $this->set_attribute( 'subtotal', $amount );
 	}
+
+	/**
+	 * Sets the room total (after discounts).
+	 *
+	 * @param  string $amount The amount.
+	 * @return $this
+	 */
+	public function set_total( $amount ) {
+		$amount = abrs_sanitize_decimal( $amount );
+
+		if ( ! is_numeric( $amount ) ) {
+			$amount = 0;
+		}
+
+		$this->set_attribute( 'total', $amount );
+
+		// Subtotal cannot be less than total.
+		$subtotal = $this->get_subtotal();
+
+		if ( '' === $subtotal || $subtotal < $amount ) {
+			$this->set_subtotal( $amount );
+		}
+
+		return $this;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Getters
+	|--------------------------------------------------------------------------
+	*/
 
 	/**
 	 * Get the Timespan of check-in, check-out.
@@ -47,9 +80,9 @@ class Room_Item extends Item {
 	 * @return \AweBooking\Model\Common\Timespan|null
 	 */
 	public function get_timespan() {
-		return abrs_rescue( function () {
-			return new Timespan( $this->get( 'check_in' ), $this->get( 'check_out' ) );
-		});
+		$timespan = abrs_timespan( $this->get( 'check_in' ), $this->get( 'check_out' ) );
+
+		return ! is_wp_error( $timespan ) ? $timespan : null;
 	}
 
 	/**
@@ -74,6 +107,12 @@ class Room_Item extends Item {
 		});
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Private area
+	|--------------------------------------------------------------------------
+	*/
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -97,7 +136,6 @@ class Room_Item extends Item {
 
 			'check_in'       => null,
 			'check_out'      => null,
-
 			'adults'         => 0,
 			'children'       => 0,
 			'infants'        => 0,

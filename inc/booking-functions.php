@@ -272,7 +272,7 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 	}
 
 	// Prepare comment data.
-	$commentdata = apply_filters( 'awebooking/add_booking_note_data', array(
+	$commentdata = apply_filters( 'awebooking/add_booking_note_data', [
 		'comment_post_ID'      => $booking->get_id(),
 		'comment_author'       => $comment_author,
 		'comment_author_email' => $comment_author_email,
@@ -282,7 +282,7 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 		'comment_type'         => Constants::BOOKING_NOTE,
 		'comment_parent'       => 0,
 		'comment_approved'     => 1,
-	), $is_customer_note, $added_by_user );
+	], $is_customer_note, $added_by_user );
 
 	// Inserts comment into the database.
 	$comment_id = wp_insert_comment( $commentdata );

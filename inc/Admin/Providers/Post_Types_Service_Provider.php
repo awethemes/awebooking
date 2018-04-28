@@ -174,15 +174,15 @@ class Post_Types_Service_Provider extends Service_Provider {
 	 */
 	public function display_post_states( $post_states, $post ) {
 		switch ( true ) {
-			case ( abrs_page_id( 'search_results' ) === $post->ID ):
+			case ( abrs_get_page_id( 'search_results' ) === $post->ID ):
 				$post_states['abrs_page_check_availability'] = esc_html_x( 'Search Results', 'Page states', 'awebooking' );
 				break;
 
-			case ( abrs_page_id( 'checkout' ) === $post->ID ):
+			case ( abrs_get_page_id( 'checkout' ) === $post->ID ):
 				$post_states['abrs_page_checkout'] = esc_html_x( 'Checkout', 'Page states', 'awebooking' );
 				break;
 
-			case ( abrs_page_id( 'booking' ) === $post->ID ):
+			case ( abrs_get_page_id( 'booking' ) === $post->ID ):
 				$post_states['abrs_page_booking'] = esc_html_x( 'Booking Confirmation', 'Page states', 'awebooking' );
 				break;
 		}

@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Component\Mail;
+namespace AweBooking\Email;
 
 class Mailer {
 	/**
@@ -103,7 +103,7 @@ class Mailer {
 		add_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );
 
 		$subject = $this->subject ? $this->subject : $mail->get_subject();
-		$return = wp_mail( $this->to, $subject, $mail->message(), $this->headers, $this->attachments );
+		$return = wp_mail( $this->to, $subject, $mail->get_body(), $this->headers, $this->attachments );
 
 		remove_filter( 'wp_mail_from', [ $this, 'get_from_address' ] );
 		remove_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );
@@ -114,22 +114,24 @@ class Mailer {
 	/**
 	 * Get the from name for outgoing emails.
 	 *
+	 * @param  string $from_name Name associated with the "from" email address.
 	 * @return string
 	 */
-	public function get_from_name() {
-		$from_name = apply_filters( 'awebooking/email_from_name', abrs_get_option( 'email_from_name' ), $this );
+	public function get_from_name( $from_name ) {
+		$name = apply_filters( 'awebooking/email_from_name', abrs_get_option( 'email_from_name' ), $this );
 
-		return wp_specialchars_decode( esc_html( $from_name ), ENT_QUOTES );
+		return $name ? wp_specialchars_decode( esc_html( $name ), ENT_QUOTES ) : $from_name;
 	}
 
 	/**
 	 * Get the from address for outgoing emails.
 	 *
+	 * @param  string $from_email Email address to send from.
 	 * @return string
 	 */
-	public function get_from_address() {
+	public function get_from_address( $from_email ) {
 		$from_address = apply_filters( 'awebooking/email_from_address', abrs_get_option( 'email_from_address' ), $this );
 
-		return sanitize_email( $from_address );
+		return $from_address ? sanitize_email( $from_address ) : $from_email;
 	}
 }

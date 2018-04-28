@@ -72,7 +72,7 @@ class Scripts_Service_Provider extends Service_Provider {
 				'max_date'     => abrs_get_option( 'display_datepicker_maxdate' ),
 				'disable'      => abrs_get_option( 'display_datepicker_disabledates' ),
 				'disable_days' => abrs_get_option( 'display_datepicker_disabledays' ),
-				'show_months'  => abrs_get_option( 'display_datepicker_showmonths' ),
+				'show_months'  => abrs_get_option( 'display_datepicker_showmonths', 2 ),
 			],
 		]);
 

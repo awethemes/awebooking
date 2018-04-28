@@ -3,33 +3,6 @@ $datepicker-main-background:   #2196F3 !default;
 $datepicker-hover-background:  #eee !default;
 $datepicker-range-background:  #e2f2ff !default;
 
-/* Flatpickr CSS */
-.flatpickr-calendar {
-  margin-top: 9px;
-
-  * {
-    box-sizing: border-box;
-  }
-
-  &:after {
-    margin: 0 -9px;
-    border-width: 9px;
-  }
-
-  &:before {
-    border-width: 10px;
-    margin: 0 -10px;
-  }
-
-  &.arrowTop:after {
-    border-bottom-color: $datepicker-main-background;
-  }
-
-  &.arrowBottom:after {
-    border-top-color: $datepicker-main-background;
-  }
-}
-
 .flatpickr-days,
 .flatpickr-innerContainer {
   border: none;

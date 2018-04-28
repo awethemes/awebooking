@@ -17,7 +17,7 @@ class Check_Payment_Gateway extends Gateway {
 	 *
 	 * @var array
 	 */
-	protected $supports = [ 'transaction_id' ];
+	public $supports = [ 'transaction_id' ];
 
 	/**
 	 * Constructor.

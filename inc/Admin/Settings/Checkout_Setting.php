@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Gateway\Gateway;
-use AweBooking\Admin\Admin_Settings;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**
@@ -29,7 +28,7 @@ class Checkout_Setting extends Abstract_Setting {
 	public function setup_fields() {
 		$options = $this->add_section( 'checkout-options', [
 			'title'      => esc_html__( 'Checkout Options', 'awebooking' ),
-			'capability' => 'manage_awebooking',
+			'priority'   => 0,
 		]);
 
 		$options->add_field([

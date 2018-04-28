@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
+use AweBooking\Support\WP_Data;
+
 class General_Setting extends Abstract_Setting {
 	/**
 	 * The setting ID.
@@ -51,89 +53,43 @@ class General_Setting extends Abstract_Setting {
 			'default'   => 'on',
 		]);
 
-		// Address.
-		$this->add_field([
-			'id'       => '__hotel_address',
-			'type'     => 'title',
-			'name'     => esc_html__( 'Hotel & Address', 'awebooking' ),
-			'desc'     => esc_html__( 'This is where your hotel is located. Tax rates will use this address.', 'awebooking' ),
-		]);
-
-		// Prevent in some case we have a value called like: "awebooking".
-		$hotel_name = get_bloginfo( 'name' );
-		if ( function_exists( $hotel_name ) ) {
-			$hotel_name = sprintf( '%s Hotel', $hotel_name );
-		}
+		// Pages settings.
+		$all_pages_cb = WP_Data::cb( 'pages', [ 'post_status' => 'publish' ] );
 
 		$this->add_field([
-			'id'              => 'hotel_name',
-			'type'            => 'text',
-			'name'            => esc_html__( 'Name', 'awebooking' ),
-			'default'         => $hotel_name,
-			'required'        => true,
-			'sanitization_cb' => 'abrs_sanitize_text',
+			'id'    => '__display_title',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Pages', 'awebooking' ),
 		]);
 
 		$this->add_field([
-			'id'              => 'star_rating',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Star Rating', 'awebooking' ),
-			'classes'         => 'with-selectize',
-			'options'         => [
-				''  => esc_html__( 'N/A', 'awebooking' ),
-				'1' => '1&nbsp;&#9733;',
-				'2' => '2&nbsp;&#9733;&#9733;',
-				'3' => '3&nbsp;&#9733;&#9733;&#9733;',
-				'4' => '4&nbsp;&#9733;&#9733;&#9733;&#9733;',
-				'5' => '5&nbsp;&#9733;&#9733;&#9733;&#9733;&#9733;',
-			],
-		]);
-
-		$this->add_field([
-			'id'              => 'hotel_address',
-			'type'            => 'text',
-			'name'            => esc_html__( 'Address Line', 'awebooking' ),
-			'desc'            => esc_html__( 'The street address for your hotel location.', 'awebooking' ),
-			'sanitization_cb' => 'abrs_sanitize_text',
-			'tooltip'         => true,
-		]);
-
-		$this->add_field([
-			'id'              => 'hotel_address_2',
-			'type'            => 'text',
-			'name'            => esc_html__( 'Address line 2', 'awebooking' ),
-			'desc'            => esc_html__( 'An additional, optional address line for your hotel location.', 'awebooking' ),
-			'sanitization_cb' => 'abrs_sanitize_text',
-			'tooltip'         => true,
-		]);
-
-		$this->add_field([
-			'id'              => 'hotel_city',
-			'type'            => 'text',
-			'name'            => esc_html__( 'City', 'awebooking' ),
-			'desc'            => esc_html__( 'The city in which your hotel is located.', 'awebooking' ),
-			'sanitization_cb' => 'abrs_sanitize_text',
-			'tooltip'         => true,
-		]);
-
-		$this->add_field([
-			'id'               => 'hotel_country',
+			'id'               => 'page_check_availability',
 			'type'             => 'select',
-			'name'             => esc_html__( 'Country', 'awebooking' ),
-			'desc'             => esc_html__( 'The country in which your hotel is located.', 'awebooking' ),
-			'options_cb'       => 'abrs_list_countries',
+			'name'             => esc_html__( 'Availability Results', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
-			'tooltip'          => true,
 		]);
 
 		$this->add_field([
-			'name'            => esc_html__( 'Postcode / ZIP', 'awebooking' ),
-			'desc'            => esc_html__( 'The postal code, if any, in which your hotel is located.', 'awebooking' ),
-			'id'              => 'hotel_postcode',
-			'type'            => 'text',
-			'sanitization_cb' => 'abrs_sanitize_text',
-			'tooltip'         => true,
+			'id'               => 'page_booking',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Confirm Booking', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+		]);
+
+		$this->add_field([
+			'id'               => 'page_checkout',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Checkout Page', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
 		]);
 
 		// Currency options.
@@ -192,6 +148,28 @@ class General_Setting extends Abstract_Setting {
 				'min'  => 0,
 				'step' => 1,
 				'type' => 'number',
+			],
+		]);
+
+		$this->add_field([
+			'id'    => '__admin_calendar',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Admin Calendar', 'awebooking' ),
+		]);
+
+		$this->add_field([
+			'id'              => 'scheduler_display_duration',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Calendar Duration', 'awebooking' ),
+			'classes'         => 'with-selectize',
+			'default'         => 30,
+			'sanitization_cb' => 'absint',
+			'options'         => [
+				14  => esc_html__( '2 Weeks', 'awebooking' ),
+				30  => esc_html__( '1 Month', 'awebooking' ),
+				60  => esc_html__( '2 Months', 'awebooking' ),
+				90  => esc_html__( '3 Months', 'awebooking' ),
+				120 => esc_html__( '4 Months', 'awebooking' ),
 			],
 		]);
 	}

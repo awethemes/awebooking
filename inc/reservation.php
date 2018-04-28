@@ -1,10 +1,20 @@
 <?php
 
 use AweBooking\Reservation\Request;
+use AweBooking\Reservation\Room_Stay;
 use AweBooking\Model\Common\Guest_Counts;
 
+function abrs_create_room_stay() {
+}
+
+/*add_action( 'wp_loaded', function () {
+	$room_stay = abrs_create_room_stay();
+
+	dd( $room_stay );
+});*/
+
 /**
- * Create a reservation request.
+ * Create new reservation request.
  *
  * @param  array $args The query args.
  * @return \AweBooking\Reservation\Request|WP_Error

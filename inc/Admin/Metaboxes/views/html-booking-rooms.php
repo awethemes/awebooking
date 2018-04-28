@@ -19,19 +19,28 @@ $room_items = $the_booking->get_rooms();
 			<th style="width: 10%;"><?php echo esc_html__( 'Check In', 'awebooking' ); ?></th>
 			<th style="width: 10%;"><?php echo esc_html__( 'Check Out', 'awebooking' ); ?></th>
 			<th style="width: 7%;"><?php echo esc_html__( 'Adults', 'awebooking' ); ?></th>
-			<th style="width: 7%;"><?php echo esc_html__( 'Children', 'awebooking' ); ?></th>
-			<th style="width: 7%;"><?php echo esc_html__( 'Infants', 'awebooking' ); ?></th>
+
+			<?php if ( abrs_children_bookable() ) : ?>
+				<th style="width: 7%;"><?php echo esc_html__( 'Children', 'awebooking' ); ?></th>
+			<?php endif ?>
+
+			<?php if ( abrs_infants_bookable() ) : ?>
+				<th style="width: 7%;"><?php echo esc_html__( 'Infants', 'awebooking' ); ?></th>
+			<?php endif ?>
+
 			<th><span><?php esc_html_e( 'Price', 'awebooking' ); ?></span></th>
 		</tr>
 	</thead>
 
 	<tbody>
 		<?php if ( abrs_blank( $room_items ) ) : ?>
+
 			<tr>
 				<td colspan="9">
 					<p class="awebooking-no-items"><?php esc_html_e( 'No rooms found', 'awebooking' ); ?></p>
 				</td>
 			</tr>
+
 		<?php else : ?>
 			<?php foreach ( $room_items as $item ) : ?>
 				<?php
@@ -52,8 +61,8 @@ $room_items = $the_booking->get_rooms();
 						printf( '<div class="abrs-thumb-image abrs-fleft" style="margin-right: 10px;">%2$s</div>', esc_url( '#' ), $thumbnail ); // @wpcs: XSS OK.
 						?>
 
-						<strong class="row-title">sdasdsad</strong>
-						<strong class="dp-block"><?php echo esc_html( $item->get_name() ); ?></strong>
+						<strong class="row-title">Room Type</strong>
+						<span class="dp-block"><?php echo esc_html( $item->get_name() ); ?></span>
 					</td>
 
 					<td>
@@ -107,9 +116,20 @@ $room_items = $the_booking->get_rooms();
 		<?php endif ?>
 	</tbody>
 
+	<tbody>
+		<tr>
+			<td colspan="9">
+
+				<strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong>
+				<span class="abrs-fright abrs-label abrs-label--info"><?php abrs_price( $the_booking->get_total(), $the_booking->get( 'currency' ) ); // WPCS: XSS OK. ?></span>
+
+			</td>
+		</tr>
+	</tbody>
+
 	<tfoot>
 		<tr>
-			<td colspan="8">
+			<td colspan="9">
 				<?php if ( $the_booking->is_editable() ) : ?>
 
 					<a class="button abrs-button" href="<?php echo esc_url( abrs_admin_route( '/booking-room', [ 'refer' => $the_booking->get_id() ] ) ); ?>">
@@ -122,11 +142,6 @@ $room_items = $the_booking->get_rooms();
 
 				<?php endif ?>
 			</td>
-
-			<th colspan="1">
-				<strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong>
-				<span class="abrs-fright abrs-label abrs-label--info"><?php abrs_price( $the_booking->get_total(), $the_booking->get( 'currency' ) ); // WPCS: XSS OK. ?></span>
-			</th>
 		</tr>
 	</tfoot>
 </table><!-- /.awebooking-table -->

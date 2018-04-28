@@ -1,14 +1,8 @@
-table.wp-list-table {
-  .column-rate {
-    width: 10%;
-  }
-  .column-rooms {
-    width: 15%;
-  }
-  .column-capacity {
-    width: 20%;
-  }
+.abrs-tooltip-note {
+  width: 350px;
+}
 
+table.wp-list-table {
   .column-thumb {
     width: 52px;
     text-align: center;
@@ -35,6 +29,30 @@ table.wp-list-table {
       height: auto;
     }
   }
+
+  // Room type
+  .column-rate { width: 10%; }
+  .column-rooms { width: 15%; }
+  .column-capacity { width: 20%; }
+
+  // Booking
+  .column-booking_number { width: 15%; }
+  .column-booking_total,
+  .column-booking_date,
+  .column-booking_status { width: 10%; }
+  .column-booking_check_in,
+  .column-booking_check_out { width: 8%; }
+  .column-booking_nights { width: 3%; }
+  .booking_summary { width: auto; }
+}
+
+.post-type-awebooking .wp-list-table {
+  td,
+  th {
+    vertical-align: middle;
+  }
+
+  tbody .check-column { padding: 8px 3px; }
 }
 
 /* body.edit-php.post-type-awebooking {

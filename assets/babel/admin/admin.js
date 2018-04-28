@@ -129,42 +129,6 @@
     return parsed.url + '?' + queryString.stringify(query, { sort: false });
   }
 
-  /**
-   * Init the search customers.
-   *
-   * @return {void}
-   */
-  awebooking.utils.initSearchCustomer = function() {
-    const $selectors = $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select');
-
-    const ajaxSearch = function(query, callback) {
-      $.ajax({
-        type: 'GET',
-        url: awebooking.route( '/search/customers' ),
-        data: { term: encodeURIComponent(query) },
-        error: function() { callback(); },
-        success: function(res) { callback(res); }
-      });
-    };
-
-    $selectors.each(function() {
-      $(this).selectize({
-        valueField: 'id',
-        labelField: 'display',
-        searchField: 'display',
-        dropdownParent: 'body',
-        placeholder: $(this).data('placeholder'),
-        load: function(query, callback) {
-          if (! query.length) {
-            return callback();
-          } else {
-            ajaxSearch(query, callback);
-          }
-        },
-      });
-    });
-  }
-
   $(function() {
     // Init tippy.
     if (window.tippy) {
@@ -177,12 +141,12 @@
 
     // Init the selectize.
     if ($.fn.selectize) {
+      require('./utils/search-customer.js')();
+
       $('select.selectize, .with-selectize .cmb2_select').selectize({
         allowEmptyOption: true,
         searchField: ['value', 'text'],
       });
-
-      awebooking.utils.initSearchCustomer();
     }
 
     // Init warning before delete.
@@ -196,6 +160,7 @@
         awebooking.createForm(link, 'DELETE').submit();
       });
     });
+
   });
 
 })(jQuery);

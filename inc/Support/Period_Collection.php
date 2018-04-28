@@ -29,37 +29,6 @@ class Period_Collection extends Collection {
 		return $period->merge( ...$periods );
 	}
 
-	public function merge_continuous() {
-		$periods = array_values( $this->items );
-
-		$return = [];
-		$continue = false;
-
-		for ( $i = 0; $i < $this->count(); $i++ ) {
-			$current = $periods[ $i ];
-
-			if ( $continue && ! isset( $periods[ $i + 1 ] ) ) {
-				continue;
-			}
-
-			$next = $periods[ $i + 1 ];
-
-			if ( $current->abuts( $next ) ) {
-				$return[] = Period::create( $current->getStartDate(), $next->getEndDate() );
-
-				$continue = true;
-
-				continue;
-			}
-
-			$return[] = $next;
-
-			$continuous = false;
-		}
-
-		return new static( $return );
-	}
-
 	/**
 	 * Sort periods from earliest to latest.
 	 *

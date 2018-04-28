@@ -40,11 +40,6 @@ class Load_Configuration {
 	public function load_configuration() {
 		$this->plugin->make( Multilingual::class );
 
-		// Set the option key name.
-		$this->plugin->set_option_key(
-			apply_filters( 'awebooking/option_key_name', 'awebooking_settings' )
-		);
-
 		// Maybe set the option name on multi-language.
 		$this->maybe_modify_options();
 
@@ -80,7 +75,7 @@ class Load_Configuration {
 		);
 
 		// Perform copy options only in admin.
-		if ( abrs_is_request( 'admin' ) ) {
+		if ( is_admin() ) {
 			$this->perform_copy_options( $current_key, $new_key );
 		}
 	}

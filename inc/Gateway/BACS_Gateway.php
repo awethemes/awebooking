@@ -17,7 +17,7 @@ class BACS_Gateway extends Gateway {
 	 *
 	 * @var array
 	 */
-	protected $supports = [ 'transaction_id' ];
+	public $supports = [ 'transaction_id' ];
 
 	/**
 	 * Constructor.
@@ -70,47 +70,10 @@ class BACS_Gateway extends Gateway {
 				'default'     => '',
 			],
 			'accounts' => [
-				'name'         => esc_html__( 'Account detail', 'awebooking' ),
-				'type'         => 'group',
-				'options'      => [
-					'sortable'      => true,
-					'table_layout'  => true,
-					'add_button'    => esc_html__( 'Add', 'awebooking' ),
-					'remove_button' => esc_html__( 'Remove', 'awebooking' ),
-					'group_title'   => esc_html__( 'Account {#}', 'awebooking' ),
-				],
-				'fields'      => [
-					[
-						'id'          => 'account_name',
-						'type'        => 'text',
-						'name'        => esc_html__( 'Account name', 'awebooking' ),
-					],
-					[
-						'id'          => 'account_number',
-						'type'        => 'text',
-						'name'        => esc_html__( 'Account number', 'awebooking' ),
-					],
-					[
-						'id'          => 'bank_name',
-						'type'        => 'text',
-						'name'        => esc_html__( 'Bank name', 'awebooking' ),
-					],
-					[
-						'id'          => 'sort_code',
-						'type'        => 'text',
-						'name'        => esc_html__( 'Sort code', 'awebooking' ),
-					],
-					[
-						'id'          => 'iban',
-						'type'        => 'text',
-						'name'        => esc_html__( 'IBAN', 'awebooking' ),
-					],
-					[
-						'id'          => 'bic_swift',
-						'type'        => 'text',
-						'name'        => esc_html__( 'BIC / Swift', 'awebooking' ),
-					],
-				],
+				'name'        => esc_html__( 'Account Details', 'awebooking' ),
+				'description' => esc_html__( 'Add account details that will be added to the thank you page.', 'awebooking' ),
+				'type'        => 'textarea',
+				'default'     => '',
 			],
 		];
 	}

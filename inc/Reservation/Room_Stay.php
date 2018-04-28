@@ -45,11 +45,10 @@ class Room_Stay {
 	/**
 	 * Create new room-stay.
 	 *
-	 * @param \AweBooking\Reservation\Request     $request   The reservation request.
 	 * @param \AweBooking\Model\Room_Type         $room_type The room_type.
 	 * @param \AweBooking\Model\Pricing\Rate_Plan $rate_plan The rate_plan.
 	 */
-	public function __construct( Request $request, Room_Type $room_type, Rate_Plan $rate_plan = null ) {
+	public function __construct( Timespan $timespan, Guest_Counts $guests, Room_Type $room_type, Rate_Plan $rate_plan = null ) {
 		$this->request   = $request;
 		$this->room_type = $room_type;
 		$this->rate_plan = ! is_null( $rate_plan ) ? $rate_plan : $room_type->get_standard_plan();
@@ -62,9 +61,13 @@ class Room_Stay {
 	 * @return $this
 	 */
 	public function assign( Room $room ) {
+		if ( (int) $room->get( 'room_type' ) !== $this->room_type->get_id() ) {
+			return false;
+		}
+
 		$this->assigned_room = $room;
 
-		return $this;
+		return true;
 	}
 
 	/**

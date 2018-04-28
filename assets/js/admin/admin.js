@@ -134,46 +134,6 @@
     return parsed.url + '?' + queryString.stringify(query, { sort: false });
   };
 
-  /**
-   * Init the search customers.
-   *
-   * @return {void}
-   */
-  awebooking.utils.initSearchCustomer = function () {
-    var $selectors = $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select');
-
-    var ajaxSearch = function ajaxSearch(query, callback) {
-      $.ajax({
-        type: 'GET',
-        url: awebooking.route('/search/customers'),
-        data: { term: encodeURIComponent(query) },
-        error: function error() {
-          callback();
-        },
-        success: function success(res) {
-          callback(res);
-        }
-      });
-    };
-
-    $selectors.each(function () {
-      $(this).selectize({
-        valueField: 'id',
-        labelField: 'display',
-        searchField: 'display',
-        dropdownParent: 'body',
-        placeholder: $(this).data('placeholder'),
-        load: function load(query, callback) {
-          if (!query.length) {
-            return callback();
-          } else {
-            ajaxSearch(query, callback);
-          }
-        }
-      });
-    });
-  };
-
   $(function () {
     // Init tippy.
     if (window.tippy) {
@@ -186,12 +146,12 @@
 
     // Init the selectize.
     if ($.fn.selectize) {
+      require('./utils/search-customer.js')();
+
       $('select.selectize, .with-selectize .cmb2_select').selectize({
         allowEmptyOption: true,
         searchField: ['value', 'text']
       });
-
-      awebooking.utils.initSearchCustomer();
     }
 
     // Init warning before delete.
@@ -208,7 +168,50 @@
   });
 })(jQuery);
 
-},{"debounce":2,"query-string":4}],2:[function(require,module,exports){
+},{"./utils/search-customer.js":2,"debounce":3,"query-string":5}],2:[function(require,module,exports){
+'use strict';
+
+var $ = jQuery;
+var plugin = window.awebooking;
+
+var ajaxSearch = function ajaxSearch(query, callback) {
+  $.ajax({
+    type: 'GET',
+    url: plugin.route('/search/customers'),
+    data: { term: encodeURIComponent(query) },
+    error: function error() {
+      callback();
+    },
+    success: function success(res) {
+      callback(res);
+    }
+  });
+};
+
+var initSelectize = function initSelectize(select) {
+  $(select).selectize({
+    valueField: 'id',
+    labelField: 'display',
+    searchField: 'display',
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch(query, callback);
+      }
+    }
+  });
+};
+
+module.exports = function () {
+  $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select').each(function () {
+    initSelectize(this);
+  });
+};
+
+},{}],3:[function(require,module,exports){
 /**
  * Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -276,7 +279,7 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
@@ -372,7 +375,7 @@ module.exports = function (encodedURI) {
 	}
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 const strictUriEncode = require('strict-uri-encode');
 const decodeComponent = require('decode-uri-component');
@@ -588,7 +591,7 @@ exports.parseUrl = (input, options) => {
 	};
 };
 
-},{"decode-uri-component":3,"strict-uri-encode":5}],5:[function(require,module,exports){
+},{"decode-uri-component":4,"strict-uri-encode":6}],6:[function(require,module,exports){
 'use strict';
 module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
 

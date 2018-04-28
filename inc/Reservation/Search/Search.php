@@ -74,7 +74,6 @@ class Search {
 	 */
 	public function get() {
 		$room_stay = new Room_Stay( $this->request, abrs_get_room_type( 83 ) );
-		dd( $room_stay->calculate_price() );
 
 		// First, get all room types.
 		$room_types = $this->list_room_types();
@@ -100,8 +99,6 @@ class Search {
 			// Push to the results.
 			$results->push( compact( 'request', 'room_type', 'rooms', 'plans' ) );
 		}
-
-		dd( $results );
 
 		return $results;
 	}

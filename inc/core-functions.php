@@ -1,10 +1,7 @@
 <?php
 
-use Awethemes\Http\Request;
 use AweBooking\Multilingual;
-use AweBooking\Component\Mail\Mailer;
 use AweBooking\Component\Currency\Symbol;
-use AweBooking\Component\Routing\Url_Generator;
 use AweBooking\Component\Form\Form_Builder;
 use AweBooking\Gateway\Manager as Gateway_Manager;
 
@@ -53,7 +50,7 @@ function abrs_logger() {
  * @return \Awethemes\Http\Request
  */
 function abrs_request() {
-	return awebooking()->make( Request::class );
+	return awebooking()->make( 'request' );
 }
 
 /**
@@ -62,7 +59,7 @@ function abrs_request() {
  * @return \AweBooking\Http\Routing\Url_Generator
  */
 function abrs_url() {
-	return awebooking()->make( Url_Generator::class );
+	return awebooking()->make( 'url' );
 }
 
 /**
@@ -441,7 +438,7 @@ function abrs_get_template_part( $slug, $name = '' ) {
  * @param  string $page The page slug: check_availability, booking, checkout.
  * @return int
  */
-function abrs_page_id( $page ) {
+function abrs_get_page_id( $page ) {
 	$page_alias = [ // Back-compat, we changed name but still keep ID.
 		'search_results' => 'check_availability',
 	];
@@ -464,7 +461,7 @@ function abrs_page_id( $page ) {
  * @return string
  */
 function abrs_page_permalink( $page ) {
-	$page_id = abrs_page_id( $page );
+	$page_id = abrs_get_page_id( $page );
 
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
 
@@ -480,41 +477,6 @@ function abrs_page_permalink( $page ) {
  */
 function abrs_create_form( $form_id = '', $model = null ) {
 	return new Form_Builder( $form_id, $model ?: 0, 'static' );
-}
-
-/**
- * Sets time_limit if it is enabled.
- *
- * @param  int $limit Time limit.
- * @return void
- */
-function abrs_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
-	}
-}
-
-/**
- * Sets nocache_headers which also disables page caching.
- *
- * @return void
- */
-function abrs_nocache_headers() {
-	// Do not cache.
-	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-		define( 'DONOTCACHEPAGE', true );
-	}
-
-	if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
-		define( 'DONOTCACHEOBJECT', true );
-	}
-
-	if ( ! defined( 'DONOTCACHEDB' ) ) {
-		define( 'DONOTCACHEDB', true );
-	}
-
-	// Set the headers to prevent caching for the different browsers.
-	nocache_headers();
 }
 
 /**
