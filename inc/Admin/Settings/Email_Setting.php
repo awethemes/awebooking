@@ -15,7 +15,7 @@ class Email_Setting extends Abstract_Setting {
 	 * @return string
 	 */
 	public function get_label() {
-		return esc_html__( 'Email', 'awebooking' );
+		return esc_html__( 'Emails', 'awebooking' );
 	}
 
 	/**
@@ -82,6 +82,8 @@ class Email_Setting extends Abstract_Setting {
 			'id'   => '__email__',
 			'type' => 'title',
 			'name' => esc_html__( 'Email Template', 'awebooking' ),
+			/* translators: %s Preview Email Link */
+			'desc' => esc_html__( 'This section lets you customize the AweBooking emails.', 'awebooking' ) . ' ' . sprintf( abrs_esc_text( __( 'Click <a href="%s" target="_blank">here</a> to preview your email template.', 'awebooking' ) ), esc_url( abrs_admin_route( '/preview-email' ) ) ),
 		]);
 
 		$options->add_field([
@@ -102,37 +104,31 @@ class Email_Setting extends Abstract_Setting {
 		]);
 
 		$options->add_field([
-			'id'   => '__email_colors__',
-			'type' => 'title',
-			'name' => esc_html__( 'Colors', 'awebooking' ),
-		]);
-
-		$options->add_field([
 			'name'    => esc_html__( 'Main Color', 'awebooking' ),
 			'id'      => 'email_base_color',
 			'type'    => 'colorpicker',
-			'default' => '',
+			'default' => '#2196f3',
 		]);
 
 		$options->add_field([
-			'name'    => esc_html__( 'Body Background Color', 'awebooking' ),
-			'id'      => 'email_bg_color',
-			'type'    => 'colorpicker',
-			'default' => '',
-		]);
-
-		$options->add_field([
-			'name'    => esc_html__( 'Background Color', 'awebooking' ),
-			'id'      => 'email_body_bg_color',
-			'type'    => 'colorpicker',
-			'default' => '',
-		]);
-
-		$options->add_field([
-			'name'    => esc_html__( 'Body Text Color', 'awebooking' ),
+			'name'    => esc_html__( 'Text Color', 'awebooking' ),
 			'id'      => 'email_body_text_color',
 			'type'    => 'colorpicker',
-			'default' => '',
+			'default' => '#74787E',
+		]);
+
+		$options->add_field([
+			'name'    => esc_html__( 'Content Background', 'awebooking' ),
+			'id'      => 'email_bg_color',
+			'type'    => 'colorpicker',
+			'default' => '#ffffff',
+		]);
+
+		$options->add_field([
+			'name'    => esc_html__( 'Body Background', 'awebooking' ),
+			'id'      => 'email_body_bg_color',
+			'type'    => 'colorpicker',
+			'default' => '#f7f7f7',
 		]);
 	}
 

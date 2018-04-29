@@ -3,7 +3,6 @@
 use AweBooking\Multilingual;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
-use AweBooking\Gateway\Manager as Gateway_Manager;
 
 /* Constants */
 if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
@@ -42,6 +41,24 @@ function abrs_plugin_url( $path = null ) {
  */
 function abrs_logger() {
 	return awebooking()->make( 'logger' );
+}
+
+/**
+ * Report an exception.
+ *
+ * @param  Exception $e Report the exception.
+ * @return void
+ *
+ * @throws Exception
+ */
+function abrs_report( $e ) {
+	try {
+		$logger = awebooking()->make( 'logger' );
+	} catch ( \Exception $ex ) {
+		throw $e; // Throw the original exception.
+	}
+
+	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
 }
 
 /**
@@ -86,21 +103,15 @@ function abrs_admin_route( $path = '/', $parameters = [] ) {
 }
 
 /**
- * Report an exception.
+ * Returns the Mailer.
  *
- * @param  Exception $e Report the exception.
- * @return void
- *
- * @throws Exception
+ * @param  string $email Get special email.
+ * @return \AweBooking\Email\Mailer|\AweBooking\Email\Mailable
  */
-function abrs_report( $e ) {
-	try {
-		$logger = awebooking()->make( 'logger' );
-	} catch ( \Exception $ex ) {
-		throw $e; // Throw the original exception.
-	}
-
-	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+function abrs_mailer( $email = null ) {
+	return is_null( $email )
+		? awebooking()->make( 'mailer' )
+		: awebooking( 'mailer' )->driver( $email );
 }
 
 /**
@@ -109,7 +120,7 @@ function abrs_report( $e ) {
  * @return array
  */
 function abrs_payment_gateways() {
-	return awebooking()->make( Gateway_Manager::class );
+	return awebooking()->make( 'gateways' );
 }
 
 /**

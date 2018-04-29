@@ -19,14 +19,14 @@ function abrs_clean( $var ) {
  * @return string
  */
 function abrs_esc_text( $text ) {
-	static $allowed_html = [
-		'a'       => [ 'href' => true, 'title' => true ], // @codingStandardsIgnoreLine
+	static $allowed_html = [  // @codingStandardsIgnoreStart
+		'a'       => [ 'href' => true, 'target' => true, 'title' => true ],
 		'abbr'    => [ 'title' => true ],
 		'acronym' => [ 'title' => true ],
 		'code'    => true,
 		'em'      => true,
 		'strong'  => true,
-	];
+	]; // @codingStandardsIgnoreEnd
 
 	return wp_kses( $text, $allowed_html );
 }

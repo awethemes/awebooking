@@ -27,7 +27,8 @@ $route->get(    '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controll
 $route->put(    '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controller@update' );
 $route->delete( '/booking-payment/{payment_item:\d+}', 'Booking_Payment_Controller@destroy' );
 
-$route->get(    '/about',                              'About_Controller@index' );
+$route->get(    '/about',                              'Misc_Controller@index' );
+$route->get(    '/preview-email',                      'Misc_Controller@preview_email' );
 $route->get(    '/search/customers',                   'Ajax_Controller@search_customers' );
 $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_booking_note' );
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );

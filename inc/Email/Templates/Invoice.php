@@ -21,9 +21,4 @@ class Invoice extends Mailable {
 	public function get_subject() {
 		return $this->format_string( abrs_get_option( 'email_new_subject' ) );
 	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_heading() {}
 }

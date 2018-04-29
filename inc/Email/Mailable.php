@@ -79,12 +79,14 @@ abstract class Mailable {
 		]);
 
 		// Setup fields and settings.
-		$this->setup_fields();
+		if ( ! empty( $this->id ) ) {
+			$this->setup_fields();
 
-		$this->enabled = $this->get_option( 'enabled' );
+			$this->enabled = $this->get_option( 'enabled' );
 
-		if ( isset( $this->setting_fields['recipient'] ) ) {
-			$this->recipient = $this->get_option( 'recipient' );
+			if ( isset( $this->setting_fields['recipient'] ) ) {
+				$this->recipient = $this->get_option( 'recipient' );
+			}
 		}
 	}
 
@@ -242,7 +244,7 @@ abstract class Mailable {
 
 		// Make sure we only inline CSS for html emails.
 		if ( in_array( $this->get_content_type(), [ 'text/html' ] ) && class_exists( 'DOMDocument' ) ) {
-			$stylesheet = apply_filters( 'awebooking/email/stylesheets', abrs_get_template_content( 'emails/email-styles.php' ) );
+			$stylesheet = apply_filters( 'awebooking/email/stylesheets', abrs_get_template_content( 'emails/styles.php' ) );
 
 			// Apply CSS styles inline for picky email clients.
 			$emogrifier = new Emogrifier( $content, $stylesheet );
@@ -347,14 +349,6 @@ abstract class Mailable {
 			/* translators: %s: list of placeholders */
 			'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->get_placeholders() ) ) . '</code>' ),
 			'default'     => $this->get_default_subject(),
-		];
-
-		$this->setting_fields['heading'] = [
-			'type'        => 'text',
-			'name'        => esc_html__( 'Email heading', 'awebooking' ),
-			/* translators: %s: list of placeholders */
-			'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->get_placeholders() ) ) . '</code>' ),
-			'default'     => $this->get_default_heading(),
 		];
 
 		$this->setting_fields['content'] = [

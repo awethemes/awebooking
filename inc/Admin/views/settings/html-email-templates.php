@@ -26,9 +26,9 @@ $email_templates = awebooking( 'mailer' )->all();
 
 			<div class="abrs-sortable__actions">
 				<?php if ( $email->is_customer_email() ) : ?>
-					<span class="abrs-badge abrs-badge--primary"><?php echo esc_html__( 'Customer', 'awebooking' ); ?></span>
+					<span class="abrs-badge"><?php echo esc_html__( 'Customer', 'awebooking' ); ?></span>
 				<?php else : ?>
-					<span class="tippy" title="<?php echo esc_attr( $email->get_recipient() ); ?>"><span class="dashicons dashicons-email"></span></span>
+					<span class="tippy" title="<?php echo esc_attr( $email->get_recipient() ); ?>" style="color: #999;"><span class="dashicons dashicons-email"></span></span>
 				<?php endif ?>
 
 				<span class="tippy" style="color: #999;" title="<?php echo esc_html( $email->get_description() ); ?>"><i class="dashicons dashicons-editor-help"></i></span>

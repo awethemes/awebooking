@@ -5,6 +5,20 @@ use AweBooking\Email\Mailable;
 
 class Customer_Note extends Mailable {
 	/**
+	 * The booking instance.
+	 *
+	 * @var \AweBooking\Model\Booking
+	 */
+	protected $booking;
+
+	/**
+	 * The customer note.
+	 *
+	 * @var string
+	 */
+	protected $customer_note = '';
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setup() {
@@ -20,14 +34,16 @@ class Customer_Note extends Mailable {
 	/**
 	 * Prepare data for sending.
 	 *
-	 * @param  \AweBooking\Model\Booking $booking The booking instance.
-	 * @param  string                    $note    The note to customer.
+	 * @param  \AweBooking\Model\Booking $booking       The booking instance.
+	 * @param  string                    $customer_note The note to customer.
 	 * @return void
 	 */
-	protected function prepare_data( $booking, $note = '' ) {
-		$this->recipient = $booking->get( 'customer_email' );
+	protected function prepare_data( $booking, $customer_note = '' ) {
+		$this->booking = $booking;
+		$this->customer_note = $customer_note;
 
-		$this->placeholders['{customer_note}'] = $note;
+		$this->recipient = $booking->get( 'customer_email' );
+		$this->placeholders['{customer_note}'] = '<blockquote>' . wpautop( wptexturize( $customer_note ) ) . '</blockquote>';
 	}
 
 	/**
@@ -63,8 +79,10 @@ class Customer_Note extends Mailable {
 	 */
 	public function get_content_html() {
 		return abrs_get_template_content( 'emails/customer-note.php', [
-			'mail'    => $this,
-			'content' => $this->format_string( $this->get_option( 'content' ) ),
+			'email'         => $this,
+			'booking'       => $this->booking,
+			'customer_note' => $this->customer_note,
+			'content'       => $this->format_string( $this->get_option( 'content' ) ),
 		]);
 	}
 }

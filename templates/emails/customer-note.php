@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/* @layout main.php */
+abrs_mailer()->header( $email );
 
-$mail->component( 'button', esc_html__( 'Edit Me', 'awebooking' ) );
+echo wp_kses_post( wpautop( wptexturize( $content ) ) );
+
+abrs_mailer()->footer( $email );
