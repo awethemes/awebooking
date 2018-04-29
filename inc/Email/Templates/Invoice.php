@@ -5,28 +5,14 @@ use AweBooking\Email\Mailable;
 
 class Invoice extends Mailable {
 	/**
-	 * Email template ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	public $id = 'invoice';
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->title = esc_html__( 'Invoice', 'awebooking' );
-		$this->description = esc_html__( 'Sent to customers containing their booking information and payment links.', 'awebooking' );
-
-		parent::__construct();
-	}
-
-	/**
-	 * Build the message.
-	 *
-	 * @return string
-	 */
-	protected function build() {
+	public function setup() {
+		$this->id             = 'invoice';
+		$this->title          = esc_html__( 'Invoice', 'awebooking' );
+		$this->description    = esc_html__( 'Sent to customers containing their booking information and payment links.', 'awebooking' );
+		$this->manually       = true;
+		$this->customer_email = false;
 	}
 
 	/**

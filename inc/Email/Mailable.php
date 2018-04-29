@@ -40,6 +40,20 @@ abstract class Mailable {
 	public $recipient = '';
 
 	/**
+	 * Manually send this email.
+	 *
+	 * @var boolean
+	 */
+	protected $manually = false;
+
+	/**
+	 * Is this is a customer_email.
+	 *
+	 * @var boolean
+	 */
+	protected $customer_email = false;
+
+	/**
 	 * An array to find/replace in subjects or body.
 	 *
 	 * @var array
@@ -54,29 +68,35 @@ abstract class Mailable {
 	protected $setting_fields = [];
 
 	/**
-	 * Styling for mailable.
-	 *
-	 * @var string
-	 */
-	protected $style = 'default.css';
-
-	/**
-	 * Default layout for
-	 *
-	 * @var string
-	 */
-	protected $layout = 'layout.php';
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		// $this->setup();
+		$this->setup();
+
+		// Default placeholders.
+		$this->placeholders = array_merge( $this->placeholders, [
+			'{site_title}' => $this->get_blogname(),
+		]);
+
+		// Setup fields and settings.
 		$this->setup_fields();
+
+		$this->enabled = $this->get_option( 'enabled' );
+
+		if ( isset( $this->setting_fields['recipient'] ) ) {
+			$this->recipient = $this->get_option( 'recipient' );
+		}
 	}
 
 	/**
-	 * Get template ID.
+	 * Setup the email template.
+	 *
+	 * @return void
+	 */
+	abstract public function setup();
+
+	/**
+	 * Gets template ID.
 	 *
 	 * @return string
 	 */
@@ -103,26 +123,6 @@ abstract class Mailable {
 	}
 
 	/**
-	 * Get the setting fields.
-	 *
-	 * @return array|null
-	 */
-	public function get_setting_fields() {
-		return apply_filters( 'awebooking/email/setting_fields', $this->setting_fields, $this );
-	}
-
-	public function get_content_type() {
-		switch ( '' ) {
-			case 'html' :
-				return 'text/html';
-			case 'multipart' :
-				return 'multipart/alternative';
-			default :
-				return 'text/plain';
-		}
-	}
-
-	/**
 	 * Determines if this email template enable for using.
 	 *
 	 * @return boolean
@@ -131,55 +131,127 @@ abstract class Mailable {
 		return 'on' === abrs_sanitize_checkbox( $this->enabled );
 	}
 
+	/**
+	 * Determines if this email is manually sent.
+	 *
+	 * @return bool
+	 */
 	public function is_manually() {
+		return $this->manually;
 	}
 
 	/**
-	 * Checks if this email is customer focussed.
+	 * Determines if this email is customer focussed.
+	 *
 	 * @return bool
 	 */
 	public function is_customer_email() {
-		return;
+		return $this->customer_email;
 	}
 
 	/**
-	 * Get the recipients.
+	 * Gets email content type.
+	 *
+	 * @return string
+	 */
+	public function get_content_type() {
+		return ( 'html' === $this->get_option( 'email_type' ) && class_exists( 'DOMDocument' ) ) ? 'text/html' : 'text/plain';
+	}
+
+	/**
+	 * Gets the recipients.
 	 *
 	 * @return string
 	 */
 	public function get_recipient() {
-		return abrs_sanitize_email(
-			apply_filters( "awebooking/email/recipient_{$this->id}", $this->recipient, $this )
-		);
+		return abrs_sanitize_email( apply_filters( "awebooking/email/recipient_{$this->id}", $this->recipient, $this ) );
 	}
 
 	/**
-	 * Get email subject.
+	 * Gets email subject.
 	 *
 	 * @return string
 	 */
 	public function get_subject() {
+		return apply_filters( "awebooking/email/subject_{$this->id}", $this->format_string( $this->get_option( 'subject' ) ), $this );
 	}
 
 	/**
-	 * Get mail message.
+	 * Gets email attachments.
+	 *
+	 * @return array
+	 */
+	public function get_attachments() {
+		return apply_filters( 'awebooking/email/attachments', [], $this );
+	}
+
+	/**
+	 * Gets email headers.
 	 *
 	 * @return string
 	 */
-	public function get_body() {
-		$mailer    = $this;
-		$content   = $mailer->build();
+	public function get_headers() {
+		$header = "Content-Type: {$this->get_content_type()}\r\n";
 
-		$content   = abrs_get_template_content( 'emails/layouts/' . $this->layout, compact( 'content', 'mailer' ) );
-		$styleshee = abrs_get_template_content( sprintf( 'emails/themes/%s.css', rtrim( $this->style, '.css' ) ) );
+		return apply_filters( 'awebooking/email/headers', $header, $this );
+	}
 
-		// Apply CSS styles inline for picky email clients.
-		$emogrifier = new Emogrifier( $content, $styleshee );
+	/**
+	 * Get the email content in plain text format.
+	 *
+	 * @return string
+	 */
+	public function get_content_plain() {
+		return '';
+	}
 
-		try {
-			$content = $emogrifier->emogrify();
-		} catch ( \Exception $e ) {
-			$content = '';
+	/**
+	 * Get the email content in HTML format.
+	 *
+	 * @return string
+	 */
+	public function get_content_html() {
+		return '';
+	}
+
+	/**
+	 * Gets the email content.
+	 *
+	 * @return string
+	 */
+	public function get_content() {
+		if ( 'text/plain' === $this->get_content_type() ) {
+			$body = abrs_esc_plan_text( $this->get_content_plain() );
+		} else {
+			$body = $this->apply_inline_style( $this->get_content_html() );
+		}
+
+		return apply_filters( 'awebooking/email/body', wordwrap( $body, 70 ), $this );
+	}
+
+	/**
+	 * Apply inline styles to dynamic content.
+	 *
+	 * @param  string $content The email content.
+	 * @return string
+	 */
+	public function apply_inline_style( $content ) {
+		if ( empty( $content ) ) {
+			return '';
+		}
+
+		// Make sure we only inline CSS for html emails.
+		if ( in_array( $this->get_content_type(), [ 'text/html' ] ) && class_exists( 'DOMDocument' ) ) {
+			$stylesheet = apply_filters( 'awebooking/email/stylesheets', abrs_get_template_content( 'emails/email-styles.php' ) );
+
+			// Apply CSS styles inline for picky email clients.
+			$emogrifier = new Emogrifier( $content, $stylesheet );
+
+			try {
+				$content = $emogrifier->emogrify();
+			} catch ( \Exception $e ) {
+				abrs_logger()->error( $e->getMessage(), [ 'exception' => $e ] );
+			}
 		}
 
 		return $content;
@@ -188,9 +260,50 @@ abstract class Mailable {
 	/**
 	 * Build the message.
 	 *
+	 * @param  mixed $data The data.
 	 * @return string
 	 */
-	abstract protected function build();
+	public function build( $data ) {
+		if ( method_exists( $this, 'prepare_data' ) ) {
+			$this->prepare_data( ...func_get_args() );
+		}
+
+		return ( new Message( $this->get_recipient() ) )
+			->content( $this->get_content() )
+			->subject( $this->get_subject() )
+			->attachments( $this->get_attachments() )
+			->headers( $this->get_headers() );
+	}
+
+	/**
+	 * Load a components template.
+	 *
+	 * @param  string $component Conponent name (in emails/components).
+	 * @param  string $slot      Conponent slot.
+	 * @param  array  $vars      Send variables to component.
+	 * @return void
+	 */
+	public function component( $component, $slot = '', $vars = [] ) {
+		$template = sprintf( 'emails/components/%s.php', rtrim( str_replace( '.', '/', $component ), '.php' ) );
+
+		if ( is_array( $slot ) && empty( $vars ) ) {
+			$vars = $slot;
+		}
+
+		$vars['mail'] = $this;
+		$vars['slot'] = is_string( $slot ) ? $slot : '';
+
+		abrs_get_template( $template, $vars );
+	}
+
+	/**
+	 * Gets the setting fields.
+	 *
+	 * @return array|null
+	 */
+	public function get_setting_fields() {
+		return apply_filters( 'awebooking/email/setting_fields', $this->setting_fields, $this );
+	}
 
 	/**
 	 * Initialise settings fields.
@@ -198,49 +311,88 @@ abstract class Mailable {
 	 * @return void
 	 */
 	protected function setup_fields() {
-		$this->setting_fields = [
-			'enable'          => [
-				'name'        => esc_html__( 'Enable / Disable', 'awebooking' ),
+		if ( ! $this->is_manually() ) {
+			$this->setting_fields['enabled'] = [
 				'type'        => 'toggle',
+				'name'        => esc_html__( 'Enable / Disable', 'awebooking' ),
 				'label'       => esc_html__( 'Enable this email notification', 'awebooking' ),
 				'default'     => 'on',
-			],
-			'email_type'      => [
-				'name'        => esc_html__( 'Email Type', 'awebooking' ),
-				'type'        => 'select',
-				'description' => esc_html__( 'Choose which format of email to send.', 'awebooking' ),
-				'default'     => 'html',
-				// 'options'     => $this->get_email_type_options(),
-				'tooltip'     => true,
-			],
-			'subject'         => [
-				'name'        => esc_html__( 'Subject', 'awebooking' ),
-				'type'        => 'text',
-				'tooltip'     => true,
-				/* translators: %s: list of placeholders */
-				'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->placeholders ) ) . '</code>' ),
-				// 'default'     => $this->get_default_subject(),
-			],
-			'heading'         => [
-				'name'        => esc_html__( 'Email heading', 'awebooking' ),
-				'type'        => 'text',
-				'tooltip'     => true,
-				/* translators: %s: list of placeholders */
-				'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->placeholders ) ) . '</code>' ),
-				// 'default'     => $this->get_default_heading(),
-			],
-			'content'         => [
-				'name'        => esc_html__( 'Email content', 'awebooking' ),
-				'id'          => 'email_cancelled_content',
-				'type'        => 'wysiwyg',
-				// 'default'     => awebooking( 'setting' )->get_default( 'email_cancelled_content' ),
-				// 'after'       => $this->get_shortcodes_notes(),
-				'options'     => [
-					'tinymce'       => false,
-					'media_buttons' => false,
-				],
+			];
+		}
+
+		$this->setting_fields['email_type'] = [
+			'type'        => 'select',
+			'name'        => esc_html__( 'Type', 'awebooking' ),
+			'description' => esc_html__( 'Choose which format of email to send.', 'awebooking' ),
+			'options'     => $this->get_email_type_options(),
+			'default'     => 'html',
+			'tooltip'     => true,
+		];
+
+		if ( ! $this->is_customer_email() ) {
+			$this->setting_fields['recipient'] = [
+				'type'            => 'text',
+				'name'            => esc_html__( 'Recipient(s)', 'awebooking' ),
+				/* translators: %s: Default admin email */
+				'description'     => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'awebooking' ), '<code>' . esc_attr( get_option( 'admin_email' ) ) . '</code>' ),
+				'default'         => esc_attr( get_option( 'admin_email' ) ),
+				'tooltip'         => true,
+				'sanitization_cb' => 'abrs_sanitize_email',
+			];
+		}
+
+		$this->setting_fields['subject'] = [
+			'type'        => 'text',
+			'name'        => esc_html__( 'Subject', 'awebooking' ),
+			/* translators: %s: list of placeholders */
+			'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->get_placeholders() ) ) . '</code>' ),
+			'default'     => $this->get_default_subject(),
+		];
+
+		$this->setting_fields['heading'] = [
+			'type'        => 'text',
+			'name'        => esc_html__( 'Email heading', 'awebooking' ),
+			/* translators: %s: list of placeholders */
+			'description' => sprintf( __( 'Available placeholders: %s', 'awebooking' ), '<code>' . implode( '</code>, <code>', array_keys( $this->get_placeholders() ) ) . '</code>' ),
+			'default'     => $this->get_default_heading(),
+		];
+
+		$this->setting_fields['content'] = [
+			'type'        => 'wysiwyg',
+			'name'        => esc_html__( 'Email content', 'awebooking' ),
+			'default'     => $this->get_default_content(),
+			'options'     => [
+				'tinymce'       => false,
+				'media_buttons' => false,
 			],
 		];
+	}
+
+	/**
+	 * Gets default email subject.
+	 *
+	 * @return string
+	 */
+	public function get_default_subject() {
+		return '';
+	}
+
+	/**
+	 * Gets default email heading.
+	 *
+	 * @return string
+	 */
+	public function get_default_heading() {
+		return '';
+	}
+
+	/**
+	 * Gets default email content.
+	 *
+	 * @return string
+	 */
+	public function get_default_content() {
+		return '';
 	}
 
 	/**
@@ -249,13 +401,22 @@ abstract class Mailable {
 	 * @return array
 	 */
 	public function get_email_type_options() {
-		$types = array( 'plain' => esc_html__( 'Plain text', 'awebooking' ) );
+		$types = [ 'plain' => esc_html__( 'Plain text', 'awebooking' ) ];
 
 		if ( class_exists( 'DOMDocument' ) ) {
-			$types['html']      = esc_html__( 'HTML', 'awebooking' );
+			$types['html'] = esc_html__( 'HTML', 'awebooking' );
 		}
 
 		return $types;
+	}
+
+	/**
+	 * Gets the placeholders.
+	 *
+	 * @return array
+	 */
+	public function get_placeholders() {
+		return apply_filters( 'awebooking/mail/placeholders', $this->placeholders, $this );
 	}
 
 	/**
@@ -265,61 +426,32 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function format_string( $string ) {
-		$placeholders = apply_filters( 'awebooking/mail/placeholders', $this->get_placeholders(), $this );
+		$placeholders = $this->get_placeholders();
 
-		return str_replace( array_keys( $placeholders ), array_keys( $placeholders ), $string );
+		return str_replace( array_keys( $placeholders ), array_values( $placeholders ), $string );
 	}
 
 	/**
-	 * Set the placeholders.
+	 * Gets the option by key.
 	 *
-	 * @return array
+	 * @param  string $key     The key.
+	 * @param  mixed  $default The default value.
+	 * @return mixed
 	 */
-	public function get_placeholders() {
-		return wp_parse_args( $this->placeholders, [
-			'{blogname}'   => $this->get_blogname(),
-			'{site_title}' => $this->get_blogname(),
-		]);
+	public function get_option( $key, $default = null ) {
+		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
+			$default = $this->setting_fields[ $key ]['default'];
+		}
+
+		return abrs_get_option( "email_{$this->id}_{$key}", $default );
 	}
 
 	/**
-	 * Get blog name formatted for emails.
+	 * Gets blog name formatted for emails.
 	 *
 	 * @return string
 	 */
 	public function get_blogname() {
 		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-	}
-
-	/**
-	 * Load a partial template.
-	 *
-	 * @param  string $template Template name.
-	 * @param  array  $args     Send variables to template.
-	 * @return void
-	 */
-	public function template( $template, $args = [] ) {
-		$template = sprintf( 'emails/%s.php', rtrim( $template, '.php' ) );
-
-		// Pass this object as 'mailer' instance.
-		$args['mailer'] = $this;
-
-		abrs_get_template( $template, $args );
-	}
-
-	/**
-	 * Load a partial template.
-	 *
-	 * @param  string $partial Partial template name (emails/partials).
-	 * @param  array  $args    Send variables to partial template.
-	 * @return void
-	 */
-	public function partial( $partial, array $args = [] ) {
-		$template = sprintf( 'emails/partials/%s.php', rtrim( $partial, '.php' ) );
-
-		// Pass this object as 'mailer' instance.
-		$args['mailer'] = $this;
-
-		abrs_get_template( $template, $args );
 	}
 }

@@ -203,6 +203,10 @@
   .cmb-inline li {
    padding-right: 1em;
   }
+
+  .wp-editor-wrap {
+    overflow: hidden;
+  }
 }
 
 // Inline form.
@@ -218,5 +222,14 @@
   .cmb-th {
     color: inherit;
     vertical-align: middle;
+  }
+}
+
+.abrs-email-templates {
+  .sup-placeholder {
+    color: #666;
+    font-size: 11px;
+    position: relative;
+    top: -5px;
   }
 }

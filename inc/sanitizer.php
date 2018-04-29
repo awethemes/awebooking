@@ -1,18 +1,6 @@
 <?php
 
 /**
- * Clean variables using sanitize_text_field.
- *
- * Arrays are cleaned recursively.
- *
- * @param  string|array $var Data to sanitize.
- * @return string|array
- */
-function abrs_clean( $var ) {
-	return abrs_recursive_sanitizer( $var, 'sanitize_text_field' );
-}
-
-/**
  * Recursive sanitize a given values.
  *
  * @param  mixed  $values    The values.

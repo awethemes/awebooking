@@ -288,7 +288,8 @@
   text-align: center !important;
 }
 
-.abrs-space {
+.abrs-space,
+.abrs-spacer {
   flex-grow: 1;
 }
 
@@ -681,27 +682,20 @@ table.availability-table .text-remain-rooms .dashicons {
 /* Badges */
 
 .abrs-badge {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   font-size: 10px;
   text-transform: uppercase;
-  padding: 0 10px;
+  padding: 4px 10px 3px;
   background-color: transparent;
   box-shadow: inset 0 0 0 1px #bbc9d3;
   color: #657886;
   font-weight: 600;
-  border-radius: 9999px;
+  border-radius: 15px;
   letter-spacing: 1px;
   white-space: nowrap;
   vertical-align: middle;
-  /* Sizes */
+  line-height: 1.1;
   /* Styles */
-}
-
-.abrs-badge--size2 {
-  font-size: 13px;
-  padding: 5px 15px;
-  line-height: 1;
 }
 
 .abrs-badge--primary {
@@ -1905,6 +1899,10 @@ span.flatpickr-weekday {
   padding-right: 1em;
 }
 
+.cmb2-wrap.awebooking-wrap .wp-editor-wrap {
+  overflow: hidden;
+}
+
 .cmb2-inline-metabox .cmb-th,
 .cmb2-inline-metabox .cmb-td,
 .cmb2-inline-metabox .cmb-th + .cmb-td {
@@ -1916,6 +1914,13 @@ span.flatpickr-weekday {
 .cmb2-inline-metabox .cmb-th {
   color: inherit;
   vertical-align: middle;
+}
+
+.abrs-email-templates .sup-placeholder {
+  color: #666;
+  font-size: 11px;
+  position: relative;
+  top: -5px;
 }
 
 .abrs-postbox-title {

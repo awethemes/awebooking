@@ -2,14 +2,16 @@
 
 $email_templates = awebooking( 'mailer' )->all();
 
-?><ul class="abrs-sortable">
-	<?php foreach ( $email_templates as $template ) : ?>
+?><ul class="abrs-sortable abrs-email-templates">
+	<?php foreach ( $email_templates as $email ) : ?>
 		<li class="abrs-sortable__item">
-			<?php $_link = abrs_admin_route( '/settings', [ 'setting' => 'email', 'section' =>  $template->get_id() ] );  // @codingStandardsIgnoreLine ?>
+			<?php $_link = abrs_admin_route( '/settings', [ 'setting' => 'email', 'section' =>  $email->get_id() ] );  // @codingStandardsIgnoreLine ?>
 
 			<div class="abrs-sortable__head">
 				<span class="abrs-sortable__order">
-					<?php if ( $template->is_enabled() ) : ?>
+					<?php if ( $email->is_manually() ) : ?>
+						<span class="abrs-state-indicator tippy" style="background-color: #607d8b;" title="<?php esc_html_e( 'Manually Sent', 'awebooking' ); ?>"></span>
+					<?php elseif ( $email->is_enabled() ) : ?>
 						<span class="abrs-state-indicator abrs-state-indicator--on tippy" title="<?php esc_html_e( 'Enabled', 'awebooking' ); ?>"></span>
 					<?php else : ?>
 						<span class="abrs-state-indicator tippy" title="<?php esc_html_e( 'Disabled', 'awebooking' ); ?>"></span>
@@ -18,21 +20,19 @@ $email_templates = awebooking( 'mailer' )->all();
 			</div>
 
 			<div class="abrs-sortable__body">
-				<div class="abrow">
-					<div class="abcol-6">
-						<a href="<?php echo esc_url( $_link ); ?>"><strong><?php echo esc_html( $template->get_title() ); ?></strong></a>
-					</div>
-					<div class="abcol-6"></div>
-				</div>
+				<a href="<?php echo esc_url( $_link ); ?>"><strong><?php echo esc_html( $email->get_title() ); ?></strong></a>
+				<span class="sup-placeholder"><?php echo esc_html( $email->get_content_type() ); ?></span>
 			</div>
 
 			<div class="abrs-sortable__actions">
-				<span class="tippy" style="color: #999;" title="<?php echo esc_html( $template->get_description() ); ?>"><i class="dashicons dashicons-editor-help"></i></span>
+				<?php if ( $email->is_customer_email() ) : ?>
+					<span class="abrs-badge abrs-badge--primary"><?php echo esc_html__( 'Customer', 'awebooking' ); ?></span>
+				<?php else : ?>
+					<span class="tippy" title="<?php echo esc_attr( $email->get_recipient() ); ?>"><span class="dashicons dashicons-email"></span></span>
+				<?php endif ?>
 
-				<a href="<?php echo esc_url( $_link ); ?>" title="<?php echo esc_html__( 'Configure Template', 'awebooking' ); ?>">
-					<span class="screen-reader-text"><?php esc_html_e( 'Gateway Setting', 'awebooking' ); ?></span>
-					<span class="dashicons dashicons-admin-generic"></span>
-				</a>
+				<span class="tippy" style="color: #999;" title="<?php echo esc_html( $email->get_description() ); ?>"><i class="dashicons dashicons-editor-help"></i></span>
+				<a href="<?php echo esc_url( $_link ); ?>" title="<?php echo esc_html__( 'Configure email template', 'awebooking' ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
 			</div>
 		</li>
 	<?php endforeach ?>

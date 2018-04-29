@@ -4,7 +4,7 @@
 			<table width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="panel-item">
-						<?php echo AweBooking\Support\Markdown::parse( $slot ); ?>
+						<?php echo $slot; // WPCS: XSS OK. ?>
 					</td>
 				</tr>
 			</table>
