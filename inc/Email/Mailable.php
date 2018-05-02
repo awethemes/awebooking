@@ -88,6 +88,8 @@ abstract class Mailable {
 				$this->recipient = $this->get_option( 'recipient' );
 			}
 		}
+
+		$this->init();
 	}
 
 	/**
@@ -96,6 +98,13 @@ abstract class Mailable {
 	 * @return void
 	 */
 	abstract public function setup();
+
+	/**
+	 * Init hook to trigger email sent.
+	 *
+	 * @return void
+	 */
+	public function init() {}
 
 	/**
 	 * Gets template ID.
