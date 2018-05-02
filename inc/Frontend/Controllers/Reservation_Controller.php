@@ -15,7 +15,7 @@ class Reservation_Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function book( Request $request ) {
-		$res_request = abrs_reservation_request([
+		$res_request = abrs_create_res_request([
 			'check_in'   => $request->get( 'check_in' ),
 			'check_out'  => $request->get( 'check_out' ),
 			'adults'     => $request->get( 'adults' ),

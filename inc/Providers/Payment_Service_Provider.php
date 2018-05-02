@@ -11,7 +11,7 @@ class Payment_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $core_gateways = [
-		\AweBooking\Gateway\Check_Payment_Gateway::class,
+		\AweBooking\Gateway\Direct_Payment_Gateway::class,
 		\AweBooking\Gateway\BACS_Gateway::class,
 	];
 

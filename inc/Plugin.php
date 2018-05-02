@@ -86,9 +86,10 @@ final class Plugin extends Container {
 		],
 		'frontend' => [
 			\AweBooking\Frontend\Providers\Frontend_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Scripts_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Shortcodes_Service_Provider::class,
 			\AweBooking\Frontend\Providers\Template_Loader_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Scripts_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Reservation_Service_Provider::class,
+			\AweBooking\Frontend\Providers\Shortcode_Service_Provider::class,
 		],
 	];
 
@@ -110,8 +111,9 @@ final class Plugin extends Container {
 		$this->plugin_file = $plugin_file;
 
 		$this->binding_paths();
-
 		$this->register_base_bindings();
+
+		Constants::defines();
 	}
 
 	/**
@@ -132,10 +134,6 @@ final class Plugin extends Container {
 		$this->instance( 'plugin_url', $this->plugin_url() );
 		$this->instance( 'plugin_path', $this->plugin_path() );
 		$this->instance( 'plugin_basename', $this->plugin_basename() );
-
-		if ( ! defined( 'ABRS_ABSPATH' ) ) {
-			define( 'ABRS_ABSPATH', $this->plugin_path() );
-		}
 	}
 
 	/**

@@ -19,6 +19,9 @@ require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
 // Require helpers & functions.
 require trailingslashit( __DIR__ ) . 'inc/Support/helpers.php';
 
+// Deprecated classes & functions.
+require_once dirname( __FILE__ ) . '/deprecated/deprecated.php';
+
 /**
  * Alias the class "AweBooking\Plugin" to "AweBooking".
  */

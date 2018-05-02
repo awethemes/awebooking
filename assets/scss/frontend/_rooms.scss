@@ -1,0 +1,64 @@
+.abrs-rooms {
+
+}
+
+$room-item-bgcolor:           #fff;
+$room-item-details-bgcolor:   #fff;
+
+/* Room Item */
+.abroom {
+  margin-bottom: 30px;
+  border: 1px solid #eee;
+  box-shadow: 1px 2px 3px rgba(#000, .05);
+  transition: border-color .3s ease, box-shadow .3s ease, margin .3s ease;
+  will-change: height, margin;
+}
+
+.abroom__data {
+  padding: 0;
+  position: relative;
+  background-color: $room-item-bgcolor;
+  min-height: 140px;
+}
+
+.abroom__details {
+  height: 0;
+  overflow: hidden;
+  background-color: $room-item-details-bgcolor;
+
+  transition: border-radius .45s cubic-bezier(.2,.885,.32,1),height .45s cubic-bezier(.2,.885,.32,1);
+  will-change: height;
+
+  .expanded & {
+    height: inherit !important;
+  }
+}
+
+//
+.abroom__image {
+  width: 180px;
+  display: block;
+  float: left;
+
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+}
+
+.abroom__room {
+  margin-left: 180px;
+  overflow: hidden;
+  padding-left: 15px;
+}
+
+.abroom__inventory {
+  width: 200px;
+  margin-right: 30px;
+  text-align: right;
+}
+
+.abroom__remaining-rooms {
+  display: block;
+  text-align: center;
+}

@@ -5,7 +5,7 @@ if ( wp_script_is( 'flatpickr', 'enqueued' ) ) {
 }
 
 // Get current full URL.
-$current_url = abrs_request()->full_url();
+$current_url = abrs_http_request()->full_url();
 
 // Create prev & next date, alway +2 days in
 // start date because we display the scheduler

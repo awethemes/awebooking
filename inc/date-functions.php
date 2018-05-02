@@ -86,12 +86,12 @@ function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false
 
 		// Validate when strict mode.
 		if ( $strict && Carbonate::parse( $timespan->get_start_date() )->lt( Carbonate::today() ) ) {
-			return new WP_Error( esc_html__( 'The start date must the greater than or equal to today', 'awebooking' ) );
+			return new WP_Error( esc_html__( 'Specified arrival date is prior to today\'s date.', 'awebooking' ) );
 		}
 
 		return $timespan;
 	} catch ( Exception $e ) {
-		return new WP_Error( 'timespan_error', esc_html__( 'The dates are invalid', 'awebooking' ) );
+		return new WP_Error( 'timespan_error', esc_html__( 'Please enter a valid period.', 'awebooking' ) );
 	}
 }
 
@@ -177,7 +177,7 @@ function abrs_weekday_name( $weekday, $type = 'full' ) {
 function abrs_days_of_week( $day_label = 'full' ) {
 	global $wp_locale;
 
-	$week_days = [];
+	$week_days   = [];
 	$week_begins = (int) get_option( 'start_of_week' );
 
 	for ( $i = 0; $i <= 6; $i++ ) {

@@ -24,7 +24,7 @@ class Booking_Room_Controller extends Controller {
 		}
 
 		if ( $request->filled( 'check-in', 'check-out' ) ) {
-			$res_request = abrs_reservation_request([
+			$res_request = abrs_create_res_request([
 				'check_in'  => $request->get( 'check-in' ),
 				'check_out' => $request->get( 'check-out' ),
 			]);
@@ -65,7 +65,7 @@ class Booking_Room_Controller extends Controller {
 		$room_unit = abrs_get_room( $submit_data['room'] );
 
 		// Create the reservation request.
-		$res_request = abrs_reservation_request([
+		$res_request = abrs_create_res_request([
 			'check_in'  => $request->get( 'check_in' ),
 			'check_out' => $request->get( 'check_out' ),
 			'adults'    => absint( $submit_data['adults'] ),

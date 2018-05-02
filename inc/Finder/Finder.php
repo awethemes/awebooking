@@ -1,12 +1,11 @@
 <?php
-namespace AweBooking\Calendar\Finder;
+namespace AweBooking\Finder;
 
 use AweBooking\Support\Period;
-use AweBooking\Support\Collection;
 use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Traits\With_Constraints;
 
-class Finder {
+abstract class Finder {
 	use With_Constraints;
 
 	/**
@@ -38,22 +37,7 @@ class Finder {
 	 * Finder resources in a period.
 	 *
 	 * @param  \AweBooking\Support\Period $period The period.
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
-	public function find( Period $period ) {
-		$response = new Response( $period, $this->resources );
-
-		foreach ( $this->resources as $resource ) {
-			// Add match by default, we'll use constraints to perform the rejection.
-			$response->add_match( $resource, 'no_reason' );
-
-			// Applly the resource constraints.
-			$response->apply_constraints( $resource->get_constraints() );
-		}
-
-		// Apply the global finder constraints.
-		$response->apply_constraints( $this->constraints );
-
-		return $response;
-	}
+	abstract public function find( Period $period );
 }

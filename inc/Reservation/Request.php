@@ -34,7 +34,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @param \AweBooking\Model\Common\Guest_Counts|null $guest_counts The request guests.
 	 * @param array                                      $options      Optional, the request options.
 	 */
-	public function __construct( Timespan $timespan, Guest_Counts $guest_counts = null, $options = [] ) {
+	public function __construct( Timespan $timespan, Guest_Counts $guest_counts, $options = [] ) {
 		$this->timespan     = $timespan;
 		$this->guest_counts = $guest_counts;
 		$this->options      = new Fluent( $options );
@@ -123,45 +123,6 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
-	 * Magic isset method.
-	 *
-	 * @param  string $property The property name.
-	 * @return bool
-	 */
-	public function __isset( $property ) {
-		return null !== $this->__get( $property );
-	}
-
-	/**
-	 * Magic getter method.
-	 *
-	 * @param  string $property The property name.
-	 * @return mixed
-	 */
-	public function __get( $property ) {
-		switch ( $property ) {
-			case 'timespan':
-			case 'guest_counts':
-			case 'options':
-				return call_user_func( [ $this, "get_{$property}" ] );
-			case 'nights':
-				return $this->timespan->nights();
-			case 'check_in':
-			case 'start_date':
-				return $this->timespan->get_start_date();
-			case 'check_out':
-			case 'end_date':
-				return $this->timespan->get_end_date();
-			case 'adults':
-			case 'children':
-			case 'infants':
-				return $this->guest_counts ? abrs_optional( $this->guest_counts->get( $property ) )->get_count() : null;
-		}
-
-		return $this->options->get( $property );
-	}
-
-	/**
 	 * Convert the object into something JSON serializable.
 	 *
 	 * @return array
@@ -209,5 +170,44 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function offsetUnset( $offset ) {
 		unset( $this->options[ $offset ] );
+	}
+
+	/**
+	 * Magic isset method.
+	 *
+	 * @param  string $property The property name.
+	 * @return bool
+	 */
+	public function __isset( $property ) {
+		return null !== $this->__get( $property );
+	}
+
+	/**
+	 * Magic getter method.
+	 *
+	 * @param  string $property The property name.
+	 * @return mixed
+	 */
+	public function __get( $property ) {
+		switch ( $property ) {
+			case 'timespan':
+			case 'guest_counts':
+			case 'options':
+				return call_user_func( [ $this, "get_{$property}" ] );
+			case 'nights':
+				return $this->timespan->nights();
+			case 'check_in':
+			case 'start_date':
+				return $this->timespan->get_start_date();
+			case 'check_out':
+			case 'end_date':
+				return $this->timespan->get_end_date();
+			case 'adults':
+			case 'children':
+			case 'infants':
+				return $this->guest_counts ? abrs_optional( $this->guest_counts->get( $property ) )->get_count() : null;
+		}
+
+		return $this->options->get( $property );
 	}
 }

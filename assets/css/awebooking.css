@@ -1,3 +1,9 @@
+.clearfix::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
 /* Inline datepicker */
 
 .abrs-inline-datepicker .flatpickr-calendar.inline {
@@ -16,5 +22,37 @@
 
 .abrs-inline-datepicker .flatpickr-calendar.inline .flatpickr-day {
   max-width: 14.2857143%;
+}
+
+/* List room data table */
+
+.abroom__table {
+  table-layout: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+  border: none;
+}
+
+.abroom__table td,
+.abroom__table th {
+  padding: 0;
+  border: none;
+}
+
+.abroom__table .column-room-info {
+  width: auto;
+  vertical-align: top;
+}
+
+.abroom__table .column-room-button,
+.abroom__table .column-room-inventory {
+  width: 1%;
+  vertical-align: middle;
+}
+
+.abroom__table .column-room-button {
+  white-space: nowrap;
 }
 /*# sourceMappingURL=awebooking.css.map */

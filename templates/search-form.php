@@ -4,7 +4,7 @@ $form_classes = [];
 
 ?>
 
-<form method="GET" action="<?php echo esc_url( abrs_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
+<form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">

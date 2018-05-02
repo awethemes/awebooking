@@ -1,5 +1,9 @@
 @import "utils/mixins";
 
+.clearfix {
+  @include clearfix;
+}
+
 /* Inline datepicker */
 .abrs-inline-datepicker .flatpickr-calendar.inline {
   margin-top: 0;
@@ -16,5 +20,36 @@
 
   .flatpickr-day {
     max-width: 14.2857143%;
+  }
+}
+
+/* List room data table */
+.abroom__table {
+  table-layout: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+  border: none;
+
+  td,
+  th {
+    padding: 0;
+    border: none;
+  }
+
+  .column-room-info {
+    width: auto;
+    vertical-align: top;
+  }
+
+  .column-room-button,
+  .column-room-inventory {
+    width: 1%;
+    vertical-align: middle;
+  }
+
+  .column-room-button {
+    white-space: nowrap;
   }
 }

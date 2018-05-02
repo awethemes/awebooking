@@ -160,7 +160,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 			return;
 		}
 
-		$this->current_section = abrs_request()->get( 'section',
+		$this->current_section = abrs_http_request()->get( 'section',
 			Arr::first( array_keys( $this->sections ) )
 		);
 	}

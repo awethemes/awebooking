@@ -78,15 +78,21 @@
 				</div>
 
 				<div class="reservation-details">
-					<p class="night-stay"><strong>1-night stay</strong></p>
+					<p class="night-stay"><strong><span class="afc afc-moon" style="vertical-align: middle;"></span> 1 night stay</strong></p>
 
 					<div class="abrow no-gutters">
 						<div class="abcol-6">
-							<p><strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong> January 11, 2018 </p>
+							<p>
+								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
+								<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
+							</p>
 						</div>
 
 						<div class="abcol-6">
-							<p><strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong> January 12, 2018 </p>
+							<p>
+								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
+								<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+							</p>
 						</div>
 					</div>
 				</div>

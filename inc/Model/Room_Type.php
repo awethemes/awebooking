@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Rate_Plan;
 use AweBooking\Model\Pricing\Standard_Plan;
 
@@ -81,6 +82,15 @@ class Room_Type extends Model {
 	 */
 	public function get_standard_plan() {
 		return apply_filters( $this->prefix( 'get_standard_plan' ), new Standard_Plan( $this ), $this );
+	}
+
+	/**
+	 * Returns the base rate of this room type.
+	 *
+	 * @return \AweBooking\Model\Pricing\Standard_Plan
+	 */
+	public function get_base_rate() {
+		return apply_filters( $this->prefix( 'get_base_rate' ), new Base_Rate( $this ), $this );
 	}
 
 	public function get_services() {

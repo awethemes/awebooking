@@ -1,12 +1,10 @@
 <?php
-namespace AweBooking\Calendar\Finder;
+namespace AweBooking\Finder;
 
 use AweBooking\Support\Period;
 use AweBooking\Support\Collection;
 use AweBooking\Calendar\Calendar;
-use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Provider\Provider_Interface;
-use AweBooking\Calendar\Traits\With_Constraints;
 
 class State_Finder extends Finder {
 	/* The comparison mode */
@@ -78,7 +76,7 @@ class State_Finder extends Finder {
 	 * Finder resources in a period.
 	 *
 	 * @param  \AweBooking\Support\Period $period The period.
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
 	public function find( Period $period ) {
 		// Get all events of each resources.

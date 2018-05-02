@@ -20,4 +20,27 @@ class Constants {
 	// Granularity levels.
 	const GL_DAILY          = 'daily';
 	const GL_NIGHTLY        = 'nightly';
+
+	/**
+	 * Defines constants.
+	 *
+	 * @return void
+	 */
+	public static function defines() {
+		static::define( 'ABRS_ABSPATH', awebooking()->plugin_path() );
+		static::define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
+		static::define( 'ABRS_TEMPLATE_DEBUG', false );
+	}
+
+	/**
+	 * Define constant if not already set.
+	 *
+	 * @param string      $name  Constant name.
+	 * @param string|bool $value Constant value.
+	 */
+	public static function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
 }

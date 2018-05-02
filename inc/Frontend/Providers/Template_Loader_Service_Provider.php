@@ -28,7 +28,7 @@ class Template_Loader_Service_Provider extends Service_Provider {
 		}
 
 		if ( $overwrite_template = $this->find_overwrite_template() ) {
-			$template = awebooking_locate_template( $overwrite_template );
+			$template = abrs_locate_template( $overwrite_template );
 		}
 
 		return $template;

@@ -61,3 +61,34 @@ function abrs_book_room_button( $request = null, $args, $echo = true ) {
 		return $button;
 	}
 }
+
+/**
+ * Show the payment methods on the checkout.
+ *
+ * @access private
+ */
+function awebooking_checkout_payments() {
+	abrs_get_template( 'checkout/payments.php', [
+		'checkout'    => abrs_checkout(),
+		'gateways'    => awebooking( 'gateways' )->enabled(),
+		'button_text' => apply_filters( 'awebooking/booking_button_text', esc_html__( 'Book Now', 'awebooking' ) ),
+	]);
+}
+
+/**
+ * Show the checkout guest controls.
+ *
+ * @access private
+ */
+function awebooking_checkout_guest_details() {
+	abrs_get_template( 'checkout/form-guest-details.php', [ 'controls' => abrs_checkout()->get_controls() ] );
+}
+
+/**
+ * Show the checkout additionals controls.
+ *
+ * @access private
+ */
+function awebooking_checkout_additionals() {
+	abrs_get_template( 'checkout/form-additionals.php', [ 'controls' => abrs_checkout()->get_controls() ] );
+}

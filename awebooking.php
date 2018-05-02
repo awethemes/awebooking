@@ -36,32 +36,31 @@ if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
 	return;
 }
 
-if ( ! class_exists( 'AweBooking\Plugin', false ) ) {
-	// Include the loader.
-	require_once dirname( __FILE__ ) . '/loader.php';
+// Include the loader.
+require_once dirname( __FILE__ ) . '/loader.php';
 
-	// Create the AweBooking.
-	$awebooking = new AweBooking( __FILE__ );
+// Create the AweBooking.
+$awebooking = new AweBooking( __FILE__ );
 
-	// Install the awebooking.
-	$installer = $awebooking->make( 'installer' );
-	register_activation_hook( __FILE__, array( $installer, 'activation' ) );
+// Install the awebooking.
+$installer = $awebooking->make( 'installer' );
+register_activation_hook( __FILE__, array( $installer, 'activation' ) );
 
-	// Initialize under 'plugins_loaded'.
-	add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );
+// Initialize under 'plugins_loaded'.
+add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );
 
-	/**
-	 * Main instance of AweBooking.
-	 *
-	 * @param  string|null $make Optional, get special binding in the container.
-	 * @return AweBooking\Plugin
-	 */
-	function awebooking( $make = null ) {
-		return is_null( $make )
-			? AweBooking::get_instance()
-			: AweBooking::get_instance()->make( $make );
+/**
+ * Main instance of AweBooking.
+ *
+ * @param  string|null $make Optional, get special binding in the container.
+ * @return AweBooking\Plugin
+ */
+function awebooking( $make = null ) {
+	$plugin = AweBooking::get_instance();
+
+	if ( ! is_null( $make ) ) {
+		return $plugin->make( $make );
 	}
 
-	// Deprecated classes & functions.
-	require_once dirname( __FILE__ ) . '/deprecated/deprecated.php';
+	return $plugin;
 }

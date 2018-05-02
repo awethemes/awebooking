@@ -2,6 +2,7 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\Support\Collection;
+use Awethemes\WP_Session\WP_Session;
 
 class Reservation {
 	/**
@@ -9,14 +10,21 @@ class Reservation {
 	 *
 	 * @var string
 	 */
-	protected $source;
+	public $source;
 
 	/**
 	 * ISO currency code.
 	 *
 	 * @var string
 	 */
-	protected $currency;
+	public $currency;
+
+	/**
+	 * The session instance.
+	 *
+	 * @var \Awethemes\WP_Session\WP_Session
+	 */
+	protected $session;
 
 	/**
 	 * The list of room stays.
@@ -30,20 +38,19 @@ class Reservation {
 	 *
 	 * @var \AweBooking\Reservation\Request
 	 */
-	protected $last_request;
+	protected $current_request;
 
 	/**
-	 * Create new reservation.
+	 * Constructor.
 	 *
-	 * @param string   $source   The source implementation.
-	 * @param currency $currency The currency code.
+	 * @param \Awethemes\WP_Session\WP_Session $session The WP_Session class instance.
 	 */
-	public function __construct( $source = 'website', $currency = null ) {
-		$this->source = $source;
-
-		$this->currency = is_null( $currency ) ? abrs_current_currency() : $currency;
-
+	public function __construct( WP_Session $session ) {
+		$this->session    = $session;
 		$this->room_stays = new Collection;
+
+		$this->source     = apply_filters( 'awebooking/default_reservation_source', 'website' );
+		$this->currency   = abrs_current_currency();
 	}
 
 	/**
@@ -53,6 +60,18 @@ class Reservation {
 	 */
 	public function get_source() {
 		return $this->source;
+	}
+
+	/**
+	 * Sets the source.
+	 *
+	 * @param  string $source The reservation source.
+	 * @return $this
+	 */
+	public function set_source( $source ) {
+		$this->source = $source;
+
+		return $this;
 	}
 
 	/**
@@ -81,19 +100,28 @@ class Reservation {
 	 *
 	 * @return \AweBooking\Reservation\Request
 	 */
-	public function get_last_request() {
-		return $this->last_request;
+	public function get_current_request() {
+		return $this->current_request;
 	}
 
 	/**
 	 * Sets the current request.
 	 *
-	 * @param  \AweBooking\Reservation\Request $last_request The request instance.
+	 * @param  \AweBooking\Reservation\Request $current_request The request instance.
 	 * @return $this
 	 */
-	public function set_last_request( Request $last_request ) {
-		$this->last_request = $last_request;
+	public function set_current_request( Request $current_request ) {
+		$this->current_request = $current_request;
 
 		return $this;
+	}
+
+	/**
+	 * Add a room_stay into the reservation.
+	 *
+	 * @param \AweBooking\Reservation\Room_Stay $room_stay The room_stay implementation.
+	 */
+	public function add_room_stay( Room_Stay $room_stay ) {
+		$this->room_stays->put( $room_stay );
 	}
 }

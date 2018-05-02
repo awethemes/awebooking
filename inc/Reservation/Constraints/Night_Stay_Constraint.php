@@ -1,11 +1,11 @@
 <?php
 namespace AweBooking\Reservation\Constraints;
 
+use AweBooking\Finder\Response;
+use AweBooking\Finder\Constraint;
 use AweBooking\Reservation\Request;
-use AweBooking\Calendar\Finder\Response;
-use AweBooking\Calendar\Finder\Constraint;
 
-class MinMax_Nights_Constraint implements Constraint {
+class Night_Stay_Constraint implements Constraint {
 	/**
 	 * The reservation request.
 	 *

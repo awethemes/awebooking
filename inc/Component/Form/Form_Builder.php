@@ -129,7 +129,9 @@ class Form_Builder extends \CMB2 implements \ArrayAccess {
 	 * @return boolean
 	 */
 	public function is_static_mb() {
-		return ( $this->object_id instanceof Model || in_array( 'static', $this->box_types() ) );
+		return ( in_array( 'static', $this->box_types() )
+			|| $this->object_id instanceof Request
+			|| $this->object_id instanceof Model );
 	}
 
 	/**
@@ -142,7 +144,7 @@ class Form_Builder extends \CMB2 implements \ArrayAccess {
 
 		// Overwrite the get meta value.
 		add_action( 'cmb2_override_meta_value', function( $check, $object, $args, $field ) {
-			return ( $object instanceof Model )
+			return ( $object instanceof Model || $object instanceof Request )
 				? $object->get( $args['field_id'] )
 				: $check;
 		}, 10, 4 );

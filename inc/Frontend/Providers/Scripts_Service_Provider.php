@@ -77,7 +77,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		]);
 
 		switch ( true ) {
-			case is_awebooking_search():
+			case abrs_is_search_page():
 				wp_enqueue_script( 'awebooking-search' );
 				break;
 		}

@@ -4,15 +4,6 @@ use AweBooking\Multilingual;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
 
-/* Constants */
-if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
-	define( 'ABRS_TEMPLATE_DEBUG', false );
-}
-
-if ( ! defined( 'ABRS_ASSET_URL' ) ) {
-	define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
-}
-
 // Requires other core functions.
 require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
@@ -20,7 +11,6 @@ require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
 require trailingslashit( __DIR__ ) . 'room-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
-require trailingslashit( __DIR__ ) . 'calendar.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 require trailingslashit( __DIR__ ) . 'reservation.php';
 
@@ -66,7 +56,7 @@ function abrs_report( $e ) {
  *
  * @return \Awethemes\Http\Request
  */
-function abrs_request() {
+function abrs_http_request() {
 	return awebooking()->make( 'request' );
 }
 
@@ -446,7 +436,7 @@ function abrs_get_template_part( $slug, $name = '' ) {
 /**
  * Retrieve the page ID.
  *
- * @param  string $page The page slug: check_availability, booking, checkout.
+ * @param  string $page The page slug: search_results, booking, checkout.
  * @return int
  */
 function abrs_get_page_id( $page ) {
@@ -466,12 +456,10 @@ function abrs_get_page_id( $page ) {
 /**
  * Retrieve page permalink.
  *
- * @see awebooking_get_page_id()
- *
  * @param  string $page The retrieve page.
  * @return string
  */
-function abrs_page_permalink( $page ) {
+function abrs_get_page_permalink( $page ) {
 	$page_id = abrs_get_page_id( $page );
 
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
@@ -483,11 +471,11 @@ function abrs_page_permalink( $page ) {
  * Create a new form builder.
  *
  * @param  string     $form_id The form ID.
- * @param  Model|null $model   Optional, the model data.
+ * @param  Model|null $data    Optional, form data.
  * @return \AweBooking\Component\Form\Form_Builder
  */
-function abrs_create_form( $form_id = '', $model = null ) {
-	return new Form_Builder( $form_id, $model ?: 0, 'static' );
+function abrs_create_form( $form_id = '', $data = null ) {
+	return new Form_Builder( $form_id, $data ?: 0, 'static' );
 }
 
 /**
@@ -514,6 +502,8 @@ function abrs_time_format() {
  * @return string
  */
 function abrs_datetime_format() {
-	/* translators: 1 -Date format, 2 - Time format */
-	return apply_filters( 'awebooking/date_time_format', sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() ) );
+	return apply_filters( 'awebooking/date_time_format',
+		/* translators: 1 -Date format, 2 - Time format */
+		sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() )
+	);
 }

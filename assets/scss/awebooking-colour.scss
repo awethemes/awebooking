@@ -1,4 +1,9 @@
+.awebooking-page .entry-content {
+  max-width: 1200px;
+}
+
 @import "utils/mixins";
 @import "frontend/buttons";
 @import "frontend/datepicker";
 @import "frontend/searchbox";
+@import "frontend/rooms";

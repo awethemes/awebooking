@@ -198,13 +198,28 @@ abstract class Gateway {
 	abstract public function process( Booking $booking );
 
 	/**
-	 * Get the return url (thank you page).
+	 * Get the return URL (thank you page).
 	 *
 	 * @param  \AweBooking\Model\Booking|int|null $booking Optional, the booking instance or booking ID.
 	 * @return string
 	 */
 	public function get_return_url( $booking = null ) {
-		return '';
+		$return_url = add_query_arg( 'completed', 'true', abrs_get_page_permalink( 'checkout' ) );
+
+		if ( is_ssl() || 'on' === abrs_get_option( 'force_ssl_checkout' ) ) {
+			$return_url = str_replace( 'http:', 'https:', $return_url, 1 );
+		}
+
+		return apply_filters( 'awebooking/checkout/get_return_url', $return_url, $booking );
+	}
+
+	/**
+	 * Determines if the gateway has fields on the checkout.
+	 *
+	 * @return bool
+	 */
+	public function has_fields() {
+		return false;
 	}
 
 	/**
@@ -212,7 +227,11 @@ abstract class Gateway {
 	 *
 	 * @return void
 	 */
-	public function print_payment_fields() {}
+	public function display_payment_fields() {
+		if ( $description = $this->get_description() ) {
+			echo wp_kses_post( wpautop( wptexturize( $description ) ) );
+		}
+	}
 
 	/**
 	 * Validate frontend payment fields.

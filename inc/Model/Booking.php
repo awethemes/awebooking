@@ -34,6 +34,52 @@ class Booking extends Model {
 	protected $force_calculate_totals = false;
 
 	/**
+	 * When a payment is complete this function is called.
+	 *
+	 * @param string $transaction_id Optional transaction id to store in post meta.
+	 * @return bool success
+	 */
+	public function payment_complete( $transaction_id = '' ) {
+		try {
+			if ( ! $this->get_id() ) {
+				return false;
+			}
+
+			do_action( 'woocommerce_pre_payment_complete', $this->get_id() );
+
+			if ( WC()->session ) {
+				WC()->session->set( 'booking_awaiting_payment', false );
+			}
+
+			if ( $this->has_status( apply_filters( 'woocommerce_valid_booking_statuses_for_payment_complete', array( 'on-hold', 'pending', 'failed', 'cancelled' ), $this ) ) ) {
+				if ( ! empty( $transaction_id ) ) {
+					$this->set_transaction_id( $transaction_id );
+				}
+
+				if ( ! $this->get_date_paid( 'edit' ) ) {
+					$this->set_date_paid( current_time( 'timestamp', true ) );
+				}
+
+				$this->set_status( apply_filters( 'woocommerce_payment_complete_booking_status', $this->needs_processing() ? 'processing' : 'completed', $this->get_id(), $this ) );
+				$this->save();
+
+				do_action( 'woocommerce_payment_complete', $this->get_id() );
+			} else {
+				do_action( 'woocommerce_payment_complete_booking_status_' . $this->get_status(), $this->get_id() );
+			}
+		} catch ( Exception $e ) {
+			$logger = wc_get_logger();
+			$logger->error( sprintf( 'Payment complete of booking #%d failed!', $this->get_id() ), array(
+				'booking' => $this,
+				'error' => $e,
+			) );
+
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Returns the booking number.
 	 *
 	 * Apply filters allow users can be change this.
@@ -207,44 +253,21 @@ class Booking extends Model {
 	}
 
 	/**
-	 * [calculate_nights_stay description]
+	 * Get the Timespan of check-in, check-out.
 	 *
-	 * @return [type]
+	 * @return \AweBooking\Model\Common\Timespan|null
 	 */
-	public function calculate_nights_stay() {
-		$room_items = $this->get_rooms();
+	public function get_timespan() {
+		return abrs_timespan( $this->get( 'check_in_date' ), $this->get( 'check_out_date' ) );
+	}
 
-		// In case no room items in booking, just clear the dates.
-		if ( count( $room_items ) === 0 ) {
-
-			$this->set_attribute( 'check_in_date', '' );
-			$this->set_attribute( 'check_out_date', '' );
-
-		} elseif ( count( $room_items ) === 1 ) {
-			$timespan = $room_items->first()->get_timespan();
-
-			$this->set_attribute( 'check_in_date', $timespan ? $timespan->get_start_date() : '' );
-			$this->set_attribute( 'check_out_date', $timespan ? $timespan->get_end_date() : '' );
-
-		} else {
-
-			// ...
-
-		}
-
-		/*$periods = [];
-
-		foreach ( $this->get_rooms() as $item ) {
-			if ( ! $timespan = $item->get_timespan() ) {
-				continue;
-			}
-
-			$periods[] = $timespan->get_period();
-		}
-
-		$periods = new Period_Collection( $periods );
-
-		dd($periods->is_continuous());*/
+	/**
+	 * Returns nights stayed of this line item.
+	 *
+	 * @return int
+	 */
+	public function get_nights_stayed() {
+		return abrs_optional( $this->get_timespan() )->nights();
 	}
 
 	/**
@@ -315,6 +338,31 @@ class Booking extends Model {
 		$this->set_attribute( 'status', $new_status );
 
 		return $this->status_transition;
+	}
+
+	/**
+	 * Updates status of booking immediately.
+	 *
+	 * @param  string $new_status Status to change the booking to.
+	 * @param  string $note       Optional note to add.
+	 * @return bool
+	 */
+	public function update_status( $new_status, $note = '' ) {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		try {
+			abrs_add_booking_note( $this, $note, false, true );
+
+			$this->set_status( $new_status );
+			$this->save();
+
+			return true;
+		} catch ( \Exception $e ) {
+			abrs_logger()->error( sprintf( 'Update status of booking #%d failed!', $this->get_id() ), [ 'exception' => $e ] );
+			return false;
+		}
 	}
 
 	/**
@@ -396,21 +444,19 @@ class Booking extends Model {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
 			'status'                  => '',
 			'source'                  => '',
+			'created_via'             => '',
 			'date_created'            => null,
 			'date_modified'           => null,
-			'check_in_date'           => '',
-			'check_out_date'          => '',
 			'arrival_time'            => '',
 			'customer_note'           => '',
-
+			'check_in_date'           => '',
+			'check_out_date'          => '',
 			'discount_tax'            => 0,
 			'total_tax'               => 0,
 			'discount_total'          => 0,
 			'total'                   => 0,
 			'paid'                    => 0,
 			'balance_due'             => 0,
-
-			// Customer attributes.
 			'customer_id'             => 0,
 			'customer_title'          => '',
 			'customer_first_name'     => '',
@@ -424,8 +470,6 @@ class Booking extends Model {
 			'customer_company'        => '',
 			'customer_phone'          => '',
 			'customer_email'          => '',
-
-			// Payment logs.
 			'language'                => '',
 			'currency'                => '',
 			'customer_ip_address'     => '',
@@ -440,17 +484,16 @@ class Booking extends Model {
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
 			'source'                  => '_source',
+			'created_via'             => '_created_via',
+			'arrival_time'            => '_arrival_time',
 			'check_in_date'           => '_check_in_date',
 			'check_out_date'          => '_check_out_date',
-			'arrival_time'            => '_arrival_time',
-
 			'discount_total'          => '_discount_total',
 			'discount_tax'            => '_discount_tax',
 			'total'                   => '_total',
 			'total_tax'               => '_total_tax',
 			'paid'                    => '_paid',
 			'balance_due'             => '_balance_due',
-
 			'customer_id'             => '_customer_id',
 			'customer_title'          => '_customer_title',
 			'customer_first_name'     => '_customer_first_name',
@@ -464,7 +507,6 @@ class Booking extends Model {
 			'customer_company'        => '_customer_company',
 			'customer_phone'          => '_customer_phone',
 			'customer_email'          => '_customer_email',
-
 			'version'                 => '_version',
 			'currency'                => '_currency',
 			'customer_ip_address'     => '_customer_ip_address',

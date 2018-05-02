@@ -1,20 +1,33 @@
 <?php
 /**
- * The template for checkout page.
+ * Output the checkout form (used for shortcode).
  *
- * @version 3.0.0
+ * This template can be overridden by copying it to {yourtheme}/awebooking/checkout/checkout.php.
+ *
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit;
 }
 
 do_action( 'awebooking/template_notices' );
 
 ?>
 
-<form method="POST" class="awebooking-checkout-form" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
-	<?php wp_nonce_field( 'awebooking_checkout_process' ); ?>
+<?php do_action( 'awebooking/before_checkout_form' ); ?>
 
-	<button type="sumbit">Checkout</button>
+<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
+	<?php wp_nonce_field( 'awebooking_checkout_process', '_wpnonce', true ); ?>
+
+	<?php do_action( 'awebooking/checkout_booking_details' ); ?>
+
+	<?php do_action( 'awebooking/checkout_guest_details' ); ?>
+
+	<?php do_action( 'awebooking/checkout_payments' ); ?>
 </form>
+
+<?php do_action( 'awebooking/after_checkout_form' ); ?>

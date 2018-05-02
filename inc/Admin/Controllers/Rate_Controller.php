@@ -39,7 +39,7 @@ class Rate_Controller extends Controller {
 			return $timespan;
 		}
 
-		$updated = abrs_apply_price( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
+		$updated = abrs_apply_rate( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
 			'granularity' => Constants::GL_DAILY,
 			'only_days'   => $request->get( 'days' ),
 		]);
@@ -75,7 +75,7 @@ class Rate_Controller extends Controller {
 
 		$bulk_counts = 0;
 		foreach ( $rates as $rate ) {
-			$updated = abrs_apply_price( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
+			$updated = abrs_apply_rate( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
 				'granularity' => Constants::GL_DAILY,
 				'only_days'   => $request->get( 'bulk_days' ),
 			]);

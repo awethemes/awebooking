@@ -21,12 +21,6 @@ class Room_Item extends Item {
 	 */
 	protected $type = 'line_item';
 
-	/*
-	|--------------------------------------------------------------------------
-	| Setters
-	|--------------------------------------------------------------------------
-	*/
-
 	/**
 	 * Sets the room subtotal (before discounts).
 	 *
@@ -68,34 +62,6 @@ class Room_Item extends Item {
 		return $this;
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| Getters
-	|--------------------------------------------------------------------------
-	*/
-
-	/**
-	 * Get the Timespan of check-in, check-out.
-	 *
-	 * @return \AweBooking\Model\Common\Timespan|null
-	 */
-	public function get_timespan() {
-		$timespan = abrs_timespan( $this->get( 'check_in' ), $this->get( 'check_out' ) );
-
-		return ! is_wp_error( $timespan ) ? $timespan : null;
-	}
-
-	/**
-	 * Returns nights stayed of this line item.
-	 *
-	 * @return int
-	 */
-	public function get_nights_stayed() {
-		$timespan = $this->get_timespan();
-
-		return ! is_null( $timespan ) ? $timespan->nights() : 0;
-	}
-
 	/**
 	 * Create the Guest_Counts.
 	 *
@@ -106,12 +72,6 @@ class Room_Item extends Item {
 			return new Guest_Counts( $this['adults'], $this['children'], $this['infants'] );
 		});
 	}
-
-	/*
-	|--------------------------------------------------------------------------
-	| Private area
-	|--------------------------------------------------------------------------
-	*/
 
 	/**
 	 * {@inheritdoc}
@@ -134,8 +94,6 @@ class Room_Item extends Item {
 			'room_type_name' => '',
 			'rate_plan_name' => '',
 
-			'check_in'       => null,
-			'check_out'      => null,
 			'adults'         => 0,
 			'children'       => 0,
 			'infants'        => 0,
@@ -158,8 +116,6 @@ class Room_Item extends Item {
 			'room_type_name' => '_room_type_name',
 			'rate_plan_name' => '_rate_plan_name',
 
-			'check_in'     => '_check_in',
-			'check_out'    => '_check_out',
 			'adults'       => '_adults',
 			'children'     => '_children',
 			'infants'      => '_infants',

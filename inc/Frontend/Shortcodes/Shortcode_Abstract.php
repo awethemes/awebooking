@@ -126,7 +126,7 @@ abstract class Shortcode_Abstract {
 	 * @param  Exception|WP_Error|string $error The error message.
 	 * @return void
 	 */
-	protected function print_fatal_error( $error ) {
+	protected function print_error( $error ) {
 		if ( $error instanceof \Exception ) {
 			$message = esc_html__( 'Sorry, a fatal error occurred.', 'awebooking' );
 		} elseif ( is_wp_error( $error ) ) {
@@ -136,6 +136,6 @@ abstract class Shortcode_Abstract {
 		}
 
 		// Print the error message.
-		printf( '<div class="awebooking-notice awebooking-notice--error">%s</div>', wp_kses_post( wpautop( $message ) ) );
+		printf( '<div class="awebooking-shortcode-error">%s</div>', wp_kses_post( wpautop( $message ) ) );
 	}
 }

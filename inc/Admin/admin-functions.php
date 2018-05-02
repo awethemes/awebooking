@@ -32,7 +32,7 @@ function abrs_admin_route_is( $pattern ) {
 		return false;
 	}
 
-	return abrs_str_is( $pattern, abrs_request()->route_path() );
+	return abrs_str_is( $pattern, abrs_http_request()->route_path() );
 }
 
 /**

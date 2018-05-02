@@ -7,13 +7,13 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Pricing\Rate_Plan;
 use AweBooking\Model\Pricing\Standard_Plan;
-use AweBooking\Calendar\Finder\Finder;
-use AweBooking\Calendar\Finder\State_Finder;
+use AweBooking\Finder\Rate_Finder;
+use AweBooking\Finder\State_Finder;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Core\State_Provider;
 use AweBooking\Reservation\Request;
-use AweBooking\Reservation\Constraints\MinMax_Nights_Constraint;
+use AweBooking\Reservation\Constraints\Night_Stay_Constraint;
 
 use AweBooking\Reservation\Room_Stay;
 
@@ -73,18 +73,14 @@ class Search {
 	 * @return \AweBooking\Reservation\Search\Results
 	 */
 	public function get() {
-		$room_stay = new Room_Stay( $this->request, abrs_get_room_type( 83 ) );
-
 		// First, get all room types.
 		$room_types = $this->list_room_types();
 
-		// Prepare the results.
-		$results = new Results;
-		$request = $this->request;
+		$items = [];
 
 		foreach ( $room_types as $room_type ) {
 			// Check the availability of rooms.
-			$rooms = new Availability( $room_type, $request,
+			$rooms = new Availability( $room_type, $this->request,
 				$this->perform_find_rooms( $room_type )
 			);
 
@@ -97,17 +93,17 @@ class Search {
 			$plans = $this->check_rate_plans( $room_type );
 
 			// Push to the results.
-			$results->push( compact( 'request', 'room_type', 'rooms', 'plans' ) );
+			$items[] = compact( 'room_type', 'rooms', 'plans' );
 		}
 
-		return $results;
+		return new Results( $this->request, $items );
 	}
 
 	/**
 	 * Perform find the rooms available.
 	 *
 	 * @param  \AweBooking\Model\Room_Type $room_type The room type.
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
 	protected function perform_find_rooms( $room_type ) {
 		// Requires at least 1 night.
@@ -187,7 +183,7 @@ class Search {
 	 * Perform filter the rate plans.
 	 *
 	 * @param  \AweBooking\Model\Pricing\Rate_Plan $rate_plan The room type.
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
 	protected function perform_find_rates( $rate_plan ) {
 		$timespan = $this->request->get_timespan();
@@ -203,7 +199,7 @@ class Search {
 				return $resource;
 			});
 
-		return ( new Finder( $resources ) )
+		return ( new Rate_Finder( $resources ) )
 			// ->using( $this->constraints )
 			->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 	}
@@ -220,7 +216,7 @@ class Search {
 
 		$constraints = [];
 		if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
-			$constraints[] = new MinMax_Nights_Constraint( $this->request, $rate->get_id(), $restrictions['min_los'], $restrictions['max_los'] );
+			$constraints[] = new Night_Stay_Constraint( $this->request, $rate->get_id(), $restrictions['min_los'], $restrictions['max_los'] );
 		}
 
 		return apply_filters( 'awebooking/reservation/rate_plans_constraints', $constraints, $rate_plan );

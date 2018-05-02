@@ -7,6 +7,24 @@ require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 require_once trailingslashit( __DIR__ ) . 'hooks.php';
 
 /**
+ * Gets the checkout instance.
+ *
+ * @return \AweBooking\Frontend\Checkout\Checkout
+ */
+function abrs_checkout() {
+	return awebooking()->make( 'checkout' );
+}
+
+/**
+ * Gets the reservation intance.
+ *
+ * @return \AweBooking\Reservation\Reservation
+ */
+function abrs_reservation() {
+	return awebooking()->make( 'reservation' );
+}
+
+/**
  * Determines if current page is in awebooking pages.
  *
  * @return bool
@@ -15,7 +33,7 @@ function is_awebooking() {
 	$is_awebooking = (
 		   is_room_type_list()
 		|| is_room_type()
-		|| is_awebooking_search()
+		|| abrs_is_search_page()
 	) ? true : false;
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
@@ -43,15 +61,13 @@ if ( ! function_exists( 'is_room_type_list' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_awebooking_search' ) ) {
-	/**
-	 * Returns true when viewing a "search results" page.
-	 *
-	 * @return bool
-	 */
-	function is_awebooking_search() {
-		return is_page( abrs_get_page_id( 'cart' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
-	}
+/**
+ * Determines if current viewing on "search_results" page.
+ *
+ * @return bool
+ */
+function abrs_is_search_page() {
+	return is_page( abrs_get_page_id( 'search_results' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
 }
 
 /**

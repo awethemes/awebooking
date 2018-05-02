@@ -3,8 +3,8 @@ namespace AweBooking\Reservation\Search;
 
 use AweBooking\Model\Room_Type;
 use AweBooking\Reservation\Request;
-use AweBooking\Calendar\Finder\Response;
-use AweBooking\Calendar\Finder\Constraint;
+use AweBooking\Finder\Response;
+use AweBooking\Finder\Constraint;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Availability {
@@ -27,16 +27,16 @@ class Availability {
 	/**
 	 * The finder response items (rooms or rate plans).
 	 *
-	 * @var \AweBooking\Calendar\Finder\Response
+	 * @var \AweBooking\Finder\Response
 	 */
 	protected $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param mixed                                $resource The resource instance.
-	 * @param \AweBooking\Reservation\Request      $request  The reservation request.
-	 * @param \AweBooking\Calendar\Finder\Response $response The finder response.
+	 * @param mixed                           $resource The resource instance.
+	 * @param \AweBooking\Reservation\Request $request  The reservation request.
+	 * @param \AweBooking\Finder\Response     $response The finder response.
 	 */
 	public function __construct( $resource, Request $request, Response $response ) {
 		$this->resource = $resource;
@@ -65,7 +65,7 @@ class Availability {
 	/**
 	 * Get the response.
 	 *
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
 	public function get_response() {
 		return $this->response;

@@ -4,22 +4,31 @@ namespace AweBooking\Reservation;
 use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Common\Timespan;
+use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Pricing\Rate_Plan;
 use AweBooking\Support\Traits\Fluent_Getter;
 
-use AweBooking\Calendar\Finder\Finder;
+use AweBooking\Finder\Rate_Finder;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Reservation\Constraints\MinMax_Nights_Constraint;
+use AweBooking\Reservation\Constraints\Night_Stay_Constraint;
 
 class Room_Stay {
 	use Fluent_Getter;
 
 	/**
-	 * The request instance.
+	 * The Timespan instance.
 	 *
-	 * @var \AweBooking\Reservation\Request
+	 * @var \AweBooking\Model\Common\Timespan
 	 */
-	protected $request;
+	protected $timespan;
+
+	/**
+	 * The Guest_Counts instance.
+	 *
+	 * @var \AweBooking\Model\Common\Guest_Counts|null
+	 */
+	protected $guest_counts;
 
 	/**
 	 * The booked room-type.
@@ -42,16 +51,59 @@ class Room_Stay {
 	 */
 	protected $assigned_room;
 
+	protected $using_rate;
+
+	protected $addination_rates;
+
 	/**
-	 * Create new room-stay.
+	 * [__construct description]
 	 *
-	 * @param \AweBooking\Model\Room_Type         $room_type The room_type.
-	 * @param \AweBooking\Model\Pricing\Rate_Plan $rate_plan The rate_plan.
+	 * @param Timespan       $timespan     [description]
+	 * @param Guest_Counts   $guest_counts [description]
+	 * @param Room_Type      $room_type    [description]
+	 * @param Rate_Plan|null $rate_plan    [description]
 	 */
-	public function __construct( Timespan $timespan, Guest_Counts $guests, Room_Type $room_type, Rate_Plan $rate_plan = null ) {
-		$this->request   = $request;
-		$this->room_type = $room_type;
-		$this->rate_plan = ! is_null( $rate_plan ) ? $rate_plan : $room_type->get_standard_plan();
+	public function __construct( Timespan $timespan, Guest_Counts $guest_counts, Room_Type $room_type, Rate_Plan $rate_plan = null ) {
+		$this->timespan     = $timespan;
+		$this->guest_counts = $guest_counts;
+		$this->room_type    = $room_type;
+		$this->rate_plan    = $rate_plan ?: $room_type->get_standard_plan();
+	}
+
+	/**
+	 * Gets the Timespan.
+	 *
+	 * @return \AweBooking\Model\Common\Timespan
+	 */
+	public function get_timespan() {
+		return $this->timespan;
+	}
+
+	/**
+	 * Gets the guest_counts.
+	 *
+	 * @return \AweBooking\Model\Common\Guest_Counts
+	 */
+	public function get_guest_counts() {
+		return $this->guest_counts;
+	}
+
+	/**
+	 * Gets the room_type instance.
+	 *
+	 * @return \AweBooking\Model\Room_Type
+	 */
+	public function get_room_type() {
+		return $this->room_type;
+	}
+
+	/**
+	 * Gets the rate_plan instance.
+	 *
+	 * @return \AweBooking\Model\Pricing\Rate_Plan
+	 */
+	public function get_rate_plan() {
+		return $this->rate_plan;
 	}
 
 	/**
@@ -71,89 +123,56 @@ class Room_Stay {
 	}
 
 	/**
-	 * Get the room-type.
-	 *
-	 * @return \AweBooking\Model\Room_Type
-	 */
-	public function get_room_type() {
-		return $this->room_type;
-	}
-
-	/**
-	 * Get the rate_plan.
-	 *
-	 * @return \AweBooking\Model\Pricing\Rate_Plan
-	 */
-	public function get_rate_plan() {
-		return $this->rate_plan;
-	}
-
-	/**
 	 * Get the assigned_room.
 	 *
 	 * @return \AweBooking\Model\Room|null
 	 */
-	public function get_assigned_room() {
+	public function get_assigned() {
 		return $this->assigned_room;
 	}
 
 	/**
-	 * Determines if current room stay is bookable.
+	 * [get_rates description]
 	 *
-	 * @return boolean
+	 * @return [type]
 	 */
-	public function is_bookable() {
-		return false;
+	public function get_rates() {
+		return $this->rate_plan->get_rates();
+	}
+
+
+	/**
+	 * Gets the total costs.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_total() {
+		$this->calculate_costs();
 	}
 
 	/**
-	 * Perform calculate the price of room based on the request.
+	 * Perform calculate the costs.
 	 *
 	 * @return array
 	 */
-	public function calculate_price() {
-		$applied_rates = [];
-
-		$timespan  = $this->request->get_timespan();
-		$room_type = $this->room_type;
-
-		// First we need get all rates of selected rate plan,
-		// then, perform find one base rate.
-		$all_rates = $this->rate_plan->get_rates();
-
-		// Calculator rate price.
-		$response = $this->perform_find_rates( $all_rates );
-
-		// Begin at zero.
-		$total = abrs_decimal( 0 );
-
-		if ( count( $response->get_included() ) > 0 ) {
-			$rate = $response->get_included()->first()['resource']->get_reference();
-
-			list( $rate_price, $rate_breakdown ) = abrs_retrieve_price( $rate, $timespan );
-
-			$total = $total->add( $rate_price );
+	public function calculate_costs() {
+		if ( is_null( $this->using_rate ) ) {
+			$this->using_rate = $this->filter_rate()->first();
 		}
 
-		// Potentially increase costs if dealing with persons.
-		// TODO: ...
+		$rates = abrs_retrieve_rate( $rate, $this->get_timespan() );
 
-		// Calculate all mandatory services cost.
-		// $room_services = $room_type->get_services();
-
-		return $total;
+		dd( $rates );
 	}
 
 	/**
 	 * Perform find rates.
 	 *
 	 * @param  array $rates The list of rates.
-	 * @return \AweBooking\Calendar\Finder\Response
+	 * @return \AweBooking\Finder\Response
 	 */
-	protected function perform_find_rates( $rates ) {
-		$timespan = $this->request->get_timespan();
-
-		$resources = abrs_collect( $rates )->map( function( $rate ) {
+	protected function filter_rate() {
+		$resources = abrs_collect( $this->get_rates() )->map( function( $rate ) {
 			$resource = new Resource( $rate->get_id() );
 
 			$resource->set_reference( $rate );
@@ -162,9 +181,9 @@ class Room_Stay {
 			return $resource;
 		});
 
-		return ( new Finder( $resources ) )
+		return ( new Rate_Finder( $resources ) )
 			// ->using( $this->constraints )
-			->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+			->find( $this->timespan->to_period( Constants::GL_NIGHTLY ) );
 	}
 
 	/**
@@ -178,7 +197,7 @@ class Room_Stay {
 
 		$constraints = [];
 		if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
-			$constraints[] = new MinMax_Nights_Constraint( $this->request, $rate->get_id(), $restrictions['min_los'], $restrictions['max_los'] );
+			$constraints[] = new Night_Stay_Constraint( $this->request, $rate->get_id(), $restrictions['min_los'], $restrictions['max_los'] );
 		}
 
 		return apply_filters( 'awebooking/reservation/rate_constraints', $constraints );

@@ -24,6 +24,17 @@ class Frontend_Service_Provider extends Service_Provider {
 	}
 
 	/**
+	 * Function used to init AwweBooking template functions.
+	 *
+	 * This makes them pluggable by plugins and themes.
+	 *
+	 * @access private
+	 */
+	public function include_functions() {
+		include_once dirname( __DIR__ ) . '/functions.php';
+	}
+
+	/**
 	 * Register admin routes.
 	 *
 	 * @param \FastRoute\RouteCollector $route The route collector.
@@ -33,16 +44,5 @@ class Frontend_Service_Provider extends Service_Provider {
 		$route = new Namespace_Route( $route, 'AweBooking\\Frontend\\Controllers' );
 
 		require dirname( __DIR__ ) . '/routes.php';
-	}
-
-	/**
-	 * Function used to init AwweBooking template functions.
-	 *
-	 * This makes them pluggable by plugins and themes.
-	 *
-	 * @access private
-	 */
-	public function include_functions() {
-		include_once dirname( __DIR__ ) . '/functions.php';
 	}
 }

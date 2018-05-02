@@ -1,20 +1,17 @@
 <?php
 
 use AweBooking\Constants;
+use AweBooking\Model\Room;
+use AweBooking\Model\Pricing\Rate;
 use AweBooking\Model\Common\Timespan;
-use AweBooking\Calendar\Finder\State_Finder;
-use AweBooking\Calendar\Event\Core\Pricing_Event;
-
-/**
- * Determines if given room is available or not in a timespan.
- *
- * @param  int|array $room     The room ID to check.
- * @param  Timespan  $timespan The timespan instance of array of timespan.
- * @return bool
- */
-function abrs_is_room_available( $room, Timespan $timespan ) {
-	return abrs_check_room_state( $room, $timespan, Constants::STATE_AVAILABLE );
-}
+use AweBooking\Finder\State_Finder;
+use AweBooking\Calendar\Calendar;
+use AweBooking\Calendar\Resource\Resource;
+use AweBooking\Calendar\Resource\Resources;
+use AweBooking\Calendar\Resource\Resource_Interface;
+use AweBooking\Calendar\Provider\Cached_Provider;
+use AweBooking\Calendar\Provider\Provider_Interface;
+use AweBooking\Support\Collection;
 
 /**
  * Set a room as blocked in a timespan.
@@ -92,10 +89,10 @@ function abrs_check_room_state( $room, Timespan $timespan, $states = Constants::
 	/**
 	 * Apply filters after complete the check.
 	 *
-	 * @param \AweBooking\Calendar\Finder\Response $response The finder response.
-	 * @param mixed                                $room     The given room(s) to check.
-	 * @param \AweBooking\Model\Common\Timespan    $timespan The timespan instance.
-	 * @param array                                $states   The states.
+	 * @param \AweBooking\Finder\Response       $response The finder response.
+	 * @param mixed                             $room     The given room(s) to check.
+	 * @param \AweBooking\Model\Common\Timespan $timespan The timespan instance.
+	 * @param array                             $states   The states.
 	 * @var array
 	 */
 	$response = apply_filters( 'awebooking/check_room_state_response', $response, $room, $timespan, $states );
@@ -203,7 +200,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
  * @param  Timespan $timespan The timespan.
  * @return array|WP_Error
  */
-function abrs_retrieve_price( $rate, Timespan $timespan ) {
+function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -211,7 +208,7 @@ function abrs_retrieve_price( $rate, Timespan $timespan ) {
 	}
 
 	// Leave if given invalid rate ID.
-	if ( $rate instanceof Rate && ! $rate = abrs_get_rate( $rate ) ) {
+	if ( ! $rate instanceof Rate && ! $rate = abrs_get_rate( $rate ) ) {
 		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid Rate ID', 'awebooking' ) );
 	}
 
@@ -243,7 +240,7 @@ function abrs_retrieve_price( $rate, Timespan $timespan ) {
  * }
  * @return bool|WP_Error
  */
-function abrs_apply_price( $rate, Timespan $timespan, $amount, $operation = 'replace', $options = [] ) {
+function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'replace', $options = [] ) {
 	$options = wp_parse_args( $options, [
 		'only_days'   => null,
 		'granularity' => Constants::GL_NIGHTLY,
@@ -330,4 +327,101 @@ function abrs_get_rate_operations() {
 		'increase' => esc_html__( 'Increase', 'awebooking' ),
 		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
 	]);
+}
+
+/**
+ * Create a Calendar.
+ *
+ * @param  mixed   $resource The resource.
+ * @param  string  $provider The provider name.
+ * @param  boolean $cached   If true, wrap the provider in Cached_Provider.
+ * @return \AweBooking\Calendar\Calendar
+ */
+function abrs_calendar( $resource, $provider, $cached = false ) {
+	$resource = abrs_filter_resource( $resource );
+
+	if ( ! $provider instanceof Provider_Interface ) {
+		$provider = abrs_calendar_provider( $provider, $resource, $cached );
+	}
+
+	return new Calendar( $resource, $provider );
+}
+
+/**
+ * Create a calendar provider.
+ *
+ * @param  string  $provider The provider name.
+ * @param  mixed   $resource The resource.
+ * @param  boolean $cached   If true, wrap the provider in Cached_Provider.
+ * @return \AweBooking\Calendar\Provider\Provider_Interface
+ *
+ * @throws OutOfBoundsException
+ */
+function abrs_calendar_provider( $provider, $resource, $cached = false ) {
+	static $providers;
+
+	if ( is_null( $providers ) ) {
+		$providers = apply_filters( 'awebooking/calendar_providers_classmap', [
+			'state'   => \AweBooking\Calendar\Provider\Core\State_Provider::class,
+			'booking' => \AweBooking\Calendar\Provider\Core\Booking_Provider::class,
+			'pricing' => \AweBooking\Calendar\Provider\Core\Pricing_Provider::class,
+		]);
+	}
+
+	if ( ! array_key_exists( $provider, $providers ) ) {
+		throw new OutOfBoundsException( 'Invalid calendar provider' );
+	}
+
+	// Filter the resources.
+	if ( $resource instanceof Collection ) {
+		$resource = $resource->all();
+	}
+
+	$resource = ( is_array( $resource ) )
+		? array_map( 'abrs_filter_resource', $resource )
+		: [ abrs_filter_resource( $resource ) ];
+
+	// Create the provider instance.
+	$instance = new $providers[ $provider ]( $resource );
+
+	// Wrap in cached provider.
+	if ( $cached ) {
+		$instance = new Cached_Provider( $instance );
+	}
+
+	return apply_filters( 'awebooking/calendar_provider', $instance, $provider, $resource, $cached );
+}
+
+/**
+ * Returns a resource instance by given ID or a model.
+ *
+ * @param  mixed $resource The resource ID or model represent of resource (Room, Rate, etc.).
+ * @param  mixed $value    The resource value.
+ * @return \AweBooking\Calendar\Resource\Resource_Interface
+ */
+function abrs_filter_resource( $resource, $value = null ) {
+	// Leave if $resource already instance of Resource_Interface.
+	if ( $resource instanceof Resource_Interface ) {
+		return $resource;
+	}
+
+	// Correct the resource ID & value.
+	switch ( true ) {
+		case ( $resource instanceof Room ):
+			$id    = $resource->get_id();
+			$value = Constants::STATE_AVAILABLE;
+			break;
+
+		case ( $resource instanceof Rate ):
+			$id    = $resource->get_id();
+			$value = abrs_decimal( $resource->get_rack_rate() )->as_raw_value();
+			break;
+
+		default:
+			$id    = (int) $resource;
+			$value = (int) $value;
+			break;
+	}
+
+	return apply_filters( 'awebooking/calendar_resource', new Resource( $id, $value ), $resource, $value );
 }

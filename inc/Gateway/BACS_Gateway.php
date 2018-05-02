@@ -61,7 +61,7 @@ class BACS_Gateway extends Gateway {
 				'name'        => esc_html__( 'Description', 'awebooking' ),
 				'type'        => 'textarea',
 				'description' => esc_html__( 'Payment method description that the customer will see on your checkout.', 'awebooking' ),
-				'default'     => esc_html__( 'Make your payment directly into our bank account. Please use your Booking ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.', 'awebooking' ),
+				'default'     => esc_html__( 'Make your payment directly into our bank account. Please use your Booking ID as the payment reference.', 'awebooking' ),
 			],
 			'instructions' => [
 				'name'        => esc_html__( 'Instructions', 'awebooking' ),
@@ -82,6 +82,15 @@ class BACS_Gateway extends Gateway {
 	 * {@inheritdoc}
 	 */
 	public function process( Booking $booking ) {
-		//...
+		// Mark as on-hold (we're awaiting the payment),
+		// otherwise just mark payment is complete.
+		if ( $order->get( 'total' ) > 0 ) {
+			$order->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
+		} else {
+			$order->payment_complete();
+		}
+
+		// Return thankyou redirect.
+		return new Response( 'success', $this->get_return_url( $booking ) );
 	}
 }
