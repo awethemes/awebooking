@@ -68,6 +68,7 @@ final class Plugin extends Container {
 	protected $service_providers = [
 		'core' => [
 			\AweBooking\Providers\Intl_Service_Provider::class,
+			\AweBooking\Providers\Form_Service_Provider::class,
 			\AweBooking\Providers\Http_Service_Provider::class,
 			\AweBooking\Providers\Query_Service_Provider::class,
 			\AweBooking\Providers\Logic_Service_Provider::class,

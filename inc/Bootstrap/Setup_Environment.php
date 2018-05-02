@@ -3,7 +3,6 @@ namespace AweBooking\Bootstrap;
 
 use AweBooking\Plugin;
 use AweBooking\Constants;
-use AweBooking\Component\Form\Custom_Fields;
 
 class Setup_Environment {
 	/**
@@ -33,9 +32,6 @@ class Setup_Environment {
 		add_action( 'init', [ $this, 'register_taxonomies' ], 5 );
 		add_action( 'init', [ $this, 'register_post_types' ], 5 );
 		add_action( 'init', [ $this, 'register_post_status' ], 10 );
-
-		// Setup the custom fields.
-		add_action( 'cmb2_init', [ new Custom_Fields, 'init' ] );
 	}
 
 	/**

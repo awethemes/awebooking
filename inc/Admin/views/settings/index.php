@@ -19,12 +19,15 @@ $tabs = $settings->all()
 		<?php wp_nonce_field( 'awebooking-settings' ); ?>
 
 		<nav class="nav-tab-wrapper abrs-nav-tab-wrapper">
-
 			<?php foreach ( $tabs as $key => $label ) : ?>
 				<a class="nav-tab <?php echo ( $key === $current_setting ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( abrs_admin_route( '/settings', [ 'setting' => $key ] ) ); ?>"><?php echo esc_html( $label ); ?></a>
 			<?php endforeach; ?>
 
 			<?php do_action( 'awebooking/admin_settings_tabs' ); ?>
+
+			<?php if ( abrs_running_on_multilanguage() && 'awebooking_settings' !== awebooking()->get_option_key() ) : ?>
+				<span class="abrs-badge abrs-fright" style="margin-top: 8px;"><?php echo esc_html( awebooking( 'multilingual' )->get_current_language() ); ?></span>
+			<?php endif ?>
 		</nav>
 
 		<?php

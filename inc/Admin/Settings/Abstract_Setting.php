@@ -7,13 +7,6 @@ use AweBooking\Component\Form\Form_Builder;
 
 abstract class Abstract_Setting extends Form_Builder implements Setting {
 	/**
-	 * The name for option key storing setting.
-	 *
-	 * @var string
-	 */
-	protected $option_key;
-
-	/**
 	 * Current section name in current request.
 	 *
 	 * @var string
@@ -24,12 +17,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->option_key = awebooking()->get_option_key();
-
-		parent::__construct( $this->form_id, $this->option_key, 'options-page' );
-
-		// Force the CMB2 on 'options-page'.
-		$this->object_type( 'options-page' );
+		parent::__construct( $this->form_id, awebooking()->get_options(), 'static' );
 	}
 
 	/**
@@ -58,7 +46,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 */
 	public function save( Request $request ) {
 		// Get the options.
-		$options = cmb2_options( $this->option_key );
+		$options = cmb2_options( awebooking()->get_option_key() );
 
 		// Get the sanitized_values from request.
 		$raw_values = $this->get_sanitized_values( $request->post() );

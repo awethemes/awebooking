@@ -1,6 +1,7 @@
 <?php
 
 use AweBooking\Multilingual;
+use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
 
@@ -326,6 +327,40 @@ function abrs_list_common_titles() {
 		'dr'   => esc_html__( 'Dr.', 'awebooking' ),
 		'prof' => esc_html__( 'Prof.', 'awebooking' ),
 	]);
+}
+
+/**
+ * Switch AweBooking to site language.
+ *
+ * @return void
+ */
+function abrs_switch_to_site_locale() {
+	if ( function_exists( 'switch_to_locale' ) ) {
+		switch_to_locale( get_locale() );
+
+		// Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
+		add_filter( 'plugin_locale', 'get_locale' );
+
+		// Init AweBooking locale.
+		( new Load_Textdomain )->bootstrap( awebooking() );
+	}
+}
+
+/**
+ * Switch AweBooking language to original.
+ *
+ * @return void
+ */
+function abrs_restore_locale() {
+	if ( function_exists( 'restore_previous_locale' ) ) {
+		restore_previous_locale();
+
+		// Remove filter.
+		remove_filter( 'plugin_locale', 'get_locale' );
+
+		// Init AweBooking locale.
+		( new Load_Textdomain )->bootstrap( awebooking() );
+	}
 }
 
 /**
