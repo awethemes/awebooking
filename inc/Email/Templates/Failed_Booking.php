@@ -3,7 +3,7 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Customer_Processing_Booking extends Mailable {
+class Failed_Booking extends Mailable {
 	/**
 	 * The booking instance.
 	 *
@@ -15,10 +15,10 @@ class Customer_Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'customer_processing_booking';
-		$this->title          = esc_html__( 'Processing booking', 'awebooking' );
-		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after payment.', 'awebooking' );
-		$this->customer_email = true;
+		$this->id             = 'failed_booking';
+		$this->title          = esc_html__( 'Failed booking', 'awebooking' );
+		$this->description    = esc_html__( 'Failed booking emails are sent to chosen recipient(s) when bookings have been marked failed.', 'awebooking' );
+		$this->customer_email = false;
 		$this->placeholders   = [];
 	}
 
@@ -26,7 +26,6 @@ class Customer_Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function init() {
-		// TODO: change hook
 		// add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
 	}
 
@@ -36,7 +35,9 @@ class Customer_Processing_Booking extends Mailable {
 	 * @return void
 	 */
 	public function trigger( $new_status, $old_status, $booking ) {
-		$this->build( $booking )->send();
+		// if ( 'awebooking-cancelled' === $new_status ) {
+		// 	$this->build( $booking )->send();
+		// }
 	}
 
 	/**
@@ -47,29 +48,22 @@ class Customer_Processing_Booking extends Mailable {
 	 */
 	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
-		$this->recipient = $booking->get( 'customer_email' );
 
-		// $this->placeholders = $this->set_replacements( $booking );
+		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( "Your {site_title} booking receipt from {created_date}", "awebooking" );
+		return esc_html__( 'Failed booking (#{booking_id})', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		ob_start();
-		?>
-		<p><?php echo esc_html__( "Your booking has been received and is now being processed. Your booking details are shown below for your reference:", 'awebooking' ); ?></p>
-		{contents}
-		{customer_details}
-		<?php
-		return ob_get_clean();
+		return "Payment for booking #{booking_id} from {customer_first_name} has failed. The booking was as follows:\n\n{contents}\n\n{customer_details}";
 	}
 
 	/**
@@ -83,7 +77,7 @@ class Customer_Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/customer-processing-booking.php', [
+		return abrs_get_template_content( 'emails/failed-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),

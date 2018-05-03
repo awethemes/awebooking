@@ -3,7 +3,7 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Customer_Reserved_Booking extends Mailable {
+class Reserved_Booking extends Mailable {
 	/**
 	 * The booking instance.
 	 *
@@ -15,7 +15,7 @@ class Customer_Reserved_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'customer_reserved_booking';
+		$this->id             = 'reserved_booking';
 		$this->title          = esc_html__( 'Reserved booking', 'awebooking' );
 		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after a booking is reserved.', 'awebooking' );
 		$this->customer_email = true;
@@ -49,27 +49,21 @@ class Customer_Reserved_Booking extends Mailable {
 		$this->booking = $booking;
 		$this->recipient = $booking->get( 'customer_email' );
 
-		// $this->placeholders = $this->set_replacements( $booking );
+		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( "Your {site_title} booking receipt from {created_date}", "awebooking" );
+		return esc_html__( 'Your {site_title} booking receipt from {date_created}', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		ob_start();
-		?>
-		<p><?php echo esc_html__( "Your booking is reserved until we confirm payment has been received. Your booking details are shown below for your reference:", 'awebooking' ); ?></p>
-		{contents}
-		{customer_details}
-		<?php
-		return ob_get_clean();
+		return "Your booking is reserved until we confirm payment has been received. Your booking details are shown below for your reference:\n\n{contents}\n\n{customer_details}";
 	}
 
 	/**
@@ -83,7 +77,7 @@ class Customer_Reserved_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/customer-reserved-booking.php', [
+		return abrs_get_template_content( 'emails/reserved-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),

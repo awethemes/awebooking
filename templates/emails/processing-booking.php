@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin cancelled booking email.
+ * Processing booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/admin-cancelled-booking.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/emails/processing-booking.php.
  *
  * HOWEVER, on occasion AweBooking will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

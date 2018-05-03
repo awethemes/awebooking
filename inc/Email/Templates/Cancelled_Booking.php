@@ -3,7 +3,8 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Admin_New_Booking extends Mailable {
+class Cancelled_Booking extends Mailable {
+
 	/**
 	 * The booking instance.
 	 *
@@ -15,19 +16,20 @@ class Admin_New_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'admin_new_booking';
-		$this->title          = esc_html__( 'New booking', 'awebooking' );
-		$this->description    = esc_html__( 'New booking emails are sent to chosen recipient(s) when a new booking is received.', 'awebooking' );
+		$this->id             = 'cancelled_booking';
+		$this->title          = esc_html__( 'Cancelled booking', 'awebooking' );
+		$this->description    = esc_html__( 'Cancelled booking emails are sent to chosen recipient(s) when bookings have been marked cancelled.', 'awebooking' );
 		$this->customer_email = false;
-		$this->placeholders   = [];
+		$this->placeholders   = [
+			'{booking_id}' => '',
+		];
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function init() {
-		// TODO: change hook
-		// add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
+		add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
 	}
 
 	/**
@@ -36,7 +38,13 @@ class Admin_New_Booking extends Mailable {
 	 * @return void
 	 */
 	public function trigger( $new_status, $old_status, $booking ) {
-		$this->build( $booking )->send();
+		if ( 'awebooking-cancelled' !== $new_status ) {
+			return;
+		}
+
+		if ( $this->is_enabled() && $this->get_recipient() ) {
+			$this->build( $booking )->send();
+		}
 	}
 
 	/**
@@ -48,28 +56,21 @@ class Admin_New_Booking extends Mailable {
 	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
 
-		// $this->placeholders = $this->set_replacements( $booking );
+		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( "[{site_title}] New customer booking ({booking_id}) - {created_date}", "awebooking" );
+		return esc_html__( 'Cancelled booking (#{booking_id})', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		ob_start();
-		?>
-		<p><?php echo esc_html__( "You have received a booking from {customer_name}. The booking is as follows:", 'awebooking' ); ?></p>
-		<h2><a class="link" href="<?php echo esc_url( get_edit_post_link( "{booking_id}" ) ); ?>"><?php echo esc_html__( "Booking #{booking_id}", 'awebooking' ); ?></a></h2>
-		{contents}
-		{customer_details}
-		<?php
-		return ob_get_clean();
+		return "The booking #{booking_id} from {customer_first_name} has been cancelled. The booking was as follows:\n\n{contents}\n\n{customer_details}";
 	}
 
 	/**
@@ -83,12 +84,10 @@ class Admin_New_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/admin-new-booking.php', [
+		return abrs_get_template_content( 'emails/cancelled-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),
 		]);
 	}
-
-
 }

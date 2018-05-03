@@ -19,6 +19,15 @@
 $booking_id           = $booking->get_id();
 $total_price          = (string) $booking->get_total();
 ?>
+<h2>
+	<a class="link" href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">
+		<?php
+			/* translators: Booking ID */
+			printf( esc_html__( 'Booking #%s', 'awebooking' ), absint( $booking_id ) );
+		?>
+	</a>
+</h2>
+<?php /**
 <div class="table">
 	<table>
 		<thead>
@@ -69,3 +78,5 @@ $total_price          = (string) $booking->get_total();
 		</thead>
 	</table>
 </div>
+
+**/ ?>
