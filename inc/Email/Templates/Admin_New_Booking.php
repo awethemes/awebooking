@@ -16,8 +16,8 @@ class Admin_New_Booking extends Mailable {
 	 */
 	public function setup() {
 		$this->id             = 'admin_new_booking';
-		$this->title          = esc_html__( 'New Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is created.', 'awebooking' );
+		$this->title          = esc_html__( 'New booking', 'awebooking' );
+		$this->description    = esc_html__( 'New booking emails are sent to chosen recipient(s) when a new booking is received.', 'awebooking' );
 		$this->customer_email = false;
 		$this->placeholders   = [];
 	}

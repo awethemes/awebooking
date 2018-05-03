@@ -14,9 +14,9 @@ class Mailer extends Manager {
 		\AweBooking\Email\Templates\Admin_New_Booking::class,
 		\AweBooking\Email\Templates\Admin_Cancelled_Booking::class,
 		\AweBooking\Email\Templates\Admin_Failed_Booking::class,
-		\AweBooking\Email\Templates\Reserved_Booking::class,
-		\AweBooking\Email\Templates\Processing_Booking::class,
-		\AweBooking\Email\Templates\Completed_Booking::class,
+		\AweBooking\Email\Templates\Customer_Reserved_Booking::class,
+		\AweBooking\Email\Templates\Customer_Processing_Booking::class,
+		\AweBooking\Email\Templates\Customer_Completed_Booking::class,
 		\AweBooking\Email\Templates\Customer_Note::class,
 	];
 

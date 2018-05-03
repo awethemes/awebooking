@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin new booking email.
+ * Customer completed booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/admin-new-booking.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/emails/customer-completed-booking.php.
  *
  * HOWEVER, on occasion AweBooking will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

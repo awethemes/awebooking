@@ -3,7 +3,7 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Processing_Booking extends Mailable {
+class Customer_Processing_Booking extends Mailable {
 	/**
 	 * The booking instance.
 	 *
@@ -15,9 +15,9 @@ class Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'processing_booking';
-		$this->title          = esc_html__( 'Processing Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is being processed.', 'awebooking' );
+		$this->id             = 'customer_processing_booking';
+		$this->title          = esc_html__( 'Processing booking', 'awebooking' );
+		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after payment.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
 	}
@@ -65,7 +65,7 @@ class Processing_Booking extends Mailable {
 	public function get_default_content() {
 		ob_start();
 		?>
-		<p><?php echo esc_html__( "Your order has been received and is now being processed. Your order details are shown below for your reference:", 'awebooking' ); ?></p>
+		<p><?php echo esc_html__( "Your booking has been received and is now being processed. Your booking details are shown below for your reference:", 'awebooking' ); ?></p>
 		{contents}
 		{customer_details}
 		<?php
@@ -83,7 +83,7 @@ class Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/reserved-booking.php', [
+		return abrs_get_template_content( 'emails/customer-processing-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),

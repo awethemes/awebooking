@@ -17,7 +17,7 @@ class Admin_Failed_Booking extends Mailable {
 	public function setup() {
 		$this->id             = 'admin_failed_booking';
 		$this->title          = esc_html__( 'Failed booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is failed.', 'awebooking' );
+		$this->description    = esc_html__( 'Failed booking emails are sent to chosen recipient(s) when bookings have been marked failed (if they were previously processing or on-hold).', 'awebooking' );
 		$this->customer_email = false;
 		$this->placeholders   = [];
 	}

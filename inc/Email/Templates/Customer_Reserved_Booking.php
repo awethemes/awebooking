@@ -3,7 +3,7 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Reserved_Booking extends Mailable {
+class Customer_Reserved_Booking extends Mailable {
 	/**
 	 * The booking instance.
 	 *
@@ -15,9 +15,9 @@ class Reserved_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'reserved_booking';
-		$this->title          = esc_html__( 'Reserved Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is reserved.', 'awebooking' );
+		$this->id             = 'customer_reserved_booking';
+		$this->title          = esc_html__( 'Reserved booking', 'awebooking' );
+		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after a booking is reserved.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
 	}
@@ -83,7 +83,7 @@ class Reserved_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/reserved-booking.php', [
+		return abrs_get_template_content( 'emails/customer-reserved-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),

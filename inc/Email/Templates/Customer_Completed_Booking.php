@@ -3,7 +3,7 @@ namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;
 
-class Completed_Booking extends Mailable {
+class Customer_Completed_Booking extends Mailable {
 	/**
 	 * The booking instance.
 	 *
@@ -15,9 +15,9 @@ class Completed_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'completed_booking';
-		$this->title          = esc_html__( 'Completed Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is completed.', 'awebooking' );
+		$this->id             = 'customer_completed_booking';
+		$this->title          = esc_html__( 'Completed booking', 'awebooking' );
+		$this->description    = esc_html__( 'Booking complete emails are sent to customers when their bookings are marked completed.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
 	}
@@ -66,7 +66,7 @@ class Completed_Booking extends Mailable {
 	public function get_default_content() {
 		ob_start();
 		?>
-		<p><?php echo esc_html__( "Hi there. Your recent order on {site_title} has been completed. Your order details are shown below for your reference:", 'awebooking' ); ?></p>
+		<p><?php echo esc_html__( "Hi there. Your recent booking on {site_title} has been completed. Your booking details are shown below for your reference:", 'awebooking' ); ?></p>
 		{contents}
 		{customer_details}
 		<?php
@@ -84,7 +84,7 @@ class Completed_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/reserved-booking.php', [
+		return abrs_get_template_content( 'emails/customer-completed-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),

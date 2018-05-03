@@ -17,7 +17,7 @@ class Admin_Cancelled_Booking extends Mailable {
 	public function setup() {
 		$this->id             = 'admin_cancelled_booking';
 		$this->title          = esc_html__( 'Cancelled booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is cancelled.', 'awebooking' );
+		$this->description    = esc_html__( 'Cancelled booking emails are sent to chosen recipient(s) when bookings have been marked cancelled (if they were previously processing or on-hold).', 'awebooking' );
 		$this->customer_email = false;
 		$this->placeholders   = [];
 	}
