@@ -1,8 +1,8 @@
 <?php
 /**
- * Reserved booking email.
+ * Cancelled booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/reserved-booking.php.
+ * This template can be overridden by copying it to yourtheme/awebooking/emails/cancelled-booking.php.
  *
  * HOWEVER, on occasion AweBooking will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

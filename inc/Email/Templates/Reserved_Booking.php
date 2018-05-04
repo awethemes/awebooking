@@ -16,8 +16,8 @@ class Reserved_Booking extends Mailable {
 	 */
 	public function setup() {
 		$this->id             = 'reserved_booking';
-		$this->title          = esc_html__( 'Reserved Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is reserved.', 'awebooking' );
+		$this->title          = esc_html__( 'Reserved booking', 'awebooking' );
+		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after a booking is reserved.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
 	}
@@ -49,27 +49,21 @@ class Reserved_Booking extends Mailable {
 		$this->booking = $booking;
 		$this->recipient = $booking->get( 'customer_email' );
 
-		// $this->placeholders = $this->set_replacements( $booking );
+		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( "Your {site_title} booking receipt from {created_date}", "awebooking" );
+		return esc_html__( 'Your {site_title} booking receipt from {date_created}', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		ob_start();
-		?>
-		<p><?php echo esc_html__( "Your booking is reserved until we confirm payment has been received. Your booking details are shown below for your reference:", 'awebooking' ); ?></p>
-		{contents}
-		{customer_details}
-		<?php
-		return ob_get_clean();
+		return "Your booking is reserved until we confirm payment has been received. Your booking details are shown below for your reference:\n\n{contents}\n\n{customer_details}";
 	}
 
 	/**

@@ -16,8 +16,8 @@ class Completed_Booking extends Mailable {
 	 */
 	public function setup() {
 		$this->id             = 'completed_booking';
-		$this->title          = esc_html__( 'Completed Booking', 'awebooking' );
-		$this->description    = esc_html__( 'Sent when a booking is completed.', 'awebooking' );
+		$this->title          = esc_html__( 'Completed booking', 'awebooking' );
+		$this->description    = esc_html__( 'Booking complete emails are sent to customers when their bookings are marked completed.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
 	}
@@ -35,7 +35,11 @@ class Completed_Booking extends Mailable {
 	 * @return void
 	 */
 	public function trigger( $new_status, $old_status, $booking ) {
-		if ( 'awebooking-completed' === $new_status ) {
+		if ( 'awebooking-completed' !== $new_status ) {
+			return;
+		}
+
+		if ( $this->is_enabled() ) {
 			$this->build( $booking )->send();
 		}
 	}
@@ -50,27 +54,21 @@ class Completed_Booking extends Mailable {
 		$this->booking = $booking;
 		$this->recipient = $booking->get( 'customer_email' );
 
-		// $this->placeholders = $this->set_replacements( $booking );
+		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( "Your {site_title} booking receipt from {created_date} is complete", "awebooking" );
+		return esc_html__( 'Your {site_title} booking receipt from {date_created} is complete', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		ob_start();
-		?>
-		<p><?php echo esc_html__( "Hi there. Your recent order on {site_title} has been completed. Your order details are shown below for your reference:", 'awebooking' ); ?></p>
-		{contents}
-		{customer_details}
-		<?php
-		return ob_get_clean();
+		return "Hi there. Your recent booking on {site_title} has been completed. Your booking details are shown below for your reference:\n\n{contents}\n\n{customer_details}";
 	}
 
 	/**
@@ -84,7 +82,7 @@ class Completed_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/reserved-booking.php', [
+		return abrs_get_template_content( 'emails/completed-booking.php', [
 			'email'         => $this,
 			'booking'       => $this->booking,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),
