@@ -83,6 +83,4 @@ class New_Booking extends Mailable {
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),
 		]);
 	}
-
-
 }
