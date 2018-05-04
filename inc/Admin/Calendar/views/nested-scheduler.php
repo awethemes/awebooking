@@ -1,9 +1,6 @@
 <?php
 /* @vars $calendar \AweBooking\Admin\Calendar\Scheduler */
 
-if ( ! isset( $calendar ) ) {
-	return;
-}
 
 ?><div class="scheduler nested-scheduler <?php echo esc_attr( $calendar->get_wrapper_classes() ); ?>">
 

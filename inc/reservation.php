@@ -8,12 +8,6 @@ use Awethemes\Http\Request as Http_Request;
 function abrs_create_room_stay() {
 }
 
-/*add_action( 'wp_loaded', function () {
-	$room_stay = abrs_create_room_stay();
-
-	dd( $room_stay );
-});*/
-
 /**
  * Create new reservation request.
  *

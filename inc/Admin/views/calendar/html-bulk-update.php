@@ -1,7 +1,5 @@
 <?php
 
-use AweBooking\Support\Carbonate;
-
 $bulk_controls = abrs_create_form( 'bulk_state_form' );
 
 ?>
@@ -46,7 +44,7 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 							'type'        => 'abrs_dates',
 							'name'        => esc_html__( 'Select dates', 'awebooking' ),
 							'show_js'     => false,
-							'default'     => [ Carbonate::today()->format( 'Y-m-d' ), Carbonate::tomorrow()->format( 'Y-m-d' ) ],
+							'default'     => [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ],
 							'attributes'  => [ 'tabindex' => '-1' ],
 						]);
 						?>

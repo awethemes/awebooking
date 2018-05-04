@@ -1,22 +1,9 @@
 <?php
-namespace AweBooking\Reservation\Search;
+namespace AweBooking\Reservation\Room_Stay;
 
-use AweBooking\Model\Room_Type;
-use AweBooking\Reservation\Request;
-use AweBooking\Finder\Response;
-use AweBooking\Finder\Constraint;
-use AweBooking\Support\Traits\Fluent_Getter;
+use AweBooking\Calendar\Finder\Response;
 
 class Availability {
-	use Fluent_Getter;
-
-	/**
-	 * The request instance.
-	 *
-	 * @var \AweBooking\Reservation\Request
-	 */
-	protected $request;
-
 	/**
 	 * The resource model (Room_Type or Rate_Plan).
 	 *
@@ -25,32 +12,21 @@ class Availability {
 	protected $resource;
 
 	/**
-	 * The finder response items (rooms or rate plans).
+	 * The finder response items (rooms or rates).
 	 *
-	 * @var \AweBooking\Finder\Response
+	 * @var \AweBooking\Calendar\Finder\Response
 	 */
 	protected $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param mixed                           $resource The resource instance.
-	 * @param \AweBooking\Reservation\Request $request  The reservation request.
-	 * @param \AweBooking\Finder\Response     $response The finder response.
+	 * @param mixed                                $resource The resource instance.
+	 * @param \AweBooking\Calendar\Finder\Response $response The finder response.
 	 */
-	public function __construct( $resource, Request $request, Response $response ) {
+	public function __construct( $resource, Response $response ) {
 		$this->resource = $resource;
-		$this->request  = $request;
 		$this->response = $response;
-	}
-
-	/**
-	 * Get back the reservation request.
-	 *
-	 * @return \AweBooking\Reservation\Request
-	 */
-	public function get_request() {
-		return $this->request;
 	}
 
 	/**
@@ -65,7 +41,7 @@ class Availability {
 	/**
 	 * Get the response.
 	 *
-	 * @return \AweBooking\Finder\Response
+	 * @return \AweBooking\Calendar\Finder\Response
 	 */
 	public function get_response() {
 		return $this->response;
@@ -85,8 +61,8 @@ class Availability {
 		}
 
 		return ( 'first' === $possiton )
-			? $remains->first()['item']
-			: $remains->last()['item'];
+			? $remains->first()['resource']
+			: $remains->last()['resource'];
 	}
 
 	/**
@@ -105,8 +81,7 @@ class Availability {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function remains() {
-		return abrs_collect( $this->response->get_included() )
-			->transform( $this->transform_item_callback() );
+		return $this->response->get_included()->map( $this->transform_item_callback() );
 	}
 
 	/**
@@ -115,8 +90,7 @@ class Availability {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function excludes() {
-		return abrs_collect( $this->response->get_excluded() )
-			->transform( $this->transform_item_callback() );
+		return $this->response->get_excluded()->map( $this->transform_item_callback() );
 	}
 
 	/**
@@ -133,16 +107,14 @@ class Availability {
 			// Build the message.
 			$message = Reason::get_message( $matching['reason'] );
 
-			if ( isset( $matching['constraint'] )
-				&& $matching['constraint'] instanceof Constraint
-				&& method_exists( $matching['constraint'], 'as_string' ) ) {
+			if ( isset( $matching['constraint'] ) && method_exists( $matching['constraint'], 'as_string' ) ) {
 				$message = $matching['constraint']->as_string();
 			}
 
 			return [
-				'item'    => $reference,
-				'reason'  => $matching['reason'],
-				'message' => $message,
+				'resource' => $reference,
+				'reason'   => $matching['reason'],
+				'message'  => $message,
 			];
 		};
 	}

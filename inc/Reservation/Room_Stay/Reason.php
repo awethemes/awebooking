@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Reservation\Search;
+namespace AweBooking\Reservation\Room_Stay;
 
 class Reason {
 	/* Constants */

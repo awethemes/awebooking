@@ -1,17 +1,17 @@
 <?php
 namespace AweBooking\Reservation\Constraints;
 
-use AweBooking\Finder\Response;
-use AweBooking\Finder\Constraint;
-use AweBooking\Reservation\Request;
+use AweBooking\Model\Common\Timespan;
+use AweBooking\Calendar\Finder\Response;
+use AweBooking\Calendar\Finder\Constraint;
 
 class Night_Stay_Constraint implements Constraint {
 	/**
-	 * The reservation request.
+	 * The Timespan instance.
 	 *
-	 * @var \AweBooking\Reservation\Request
+	 * @var \AweBooking\Model\Common\Timespan
 	 */
-	protected $request;
+	protected $timespan;
 
 	/**
 	 * The resources.
@@ -37,14 +37,14 @@ class Night_Stay_Constraint implements Constraint {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Request $request    The reservation request.
-	 * @param array                           $resources  Array of resources as ID.
-	 * @param int                             $min_nights Minimum nights stay.
-	 * @param int                             $max_nights Maximum nights stay.
+	 * @param array    $resources  Array of resources as ID.
+	 * @param Timespan $timespan   The timespan.
+	 * @param int      $min_nights Minimum nights stay.
+	 * @param int      $max_nights Maximum nights stay.
 	 */
-	public function __construct( Request $request, $resources = [], $min_nights = 0, $max_nights = 0 ) {
-		$this->request    = $request;
+	public function __construct( $resources, Timespan $timespan, $min_nights = 0, $max_nights = 0 ) {
 		$this->resources  = ! is_array( $resources ) ? [ $resources ] : $resources;
+		$this->timespan   = $timespan;
 		$this->min_nights = $min_nights;
 		$this->max_nights = $max_nights;
 	}
@@ -53,7 +53,7 @@ class Night_Stay_Constraint implements Constraint {
 	 * {@inheritdoc}
 	 */
 	public function apply( Response $response ) {
-		$timespan = $this->request->timespan;
+		$timespan = $this->timespan;
 
 		// Outside the period, just leave.
 		if ( ! $timespan->to_period()->contains( $response->get_period() ) ) {

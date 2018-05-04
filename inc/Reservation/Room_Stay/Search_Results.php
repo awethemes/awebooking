@@ -1,10 +1,10 @@
 <?php
-namespace AweBooking\Reservation\Search;
+namespace AweBooking\Reservation\Room_Stay;
 
 use AweBooking\Support\Collection;
 use AweBooking\Reservation\Request;
 
-class Results implements \IteratorAggregate {
+class Search_Results implements \IteratorAggregate {
 	/**
 	 * The reservation request.
 	 *

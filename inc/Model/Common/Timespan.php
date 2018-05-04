@@ -3,7 +3,6 @@ namespace AweBooking\Model\Common;
 
 use AweBooking\Constants;
 use AweBooking\Support\Period;
-use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Timespan implements \JsonSerializable {
@@ -33,10 +32,7 @@ class Timespan implements \JsonSerializable {
 	 * @param mixed $end_date   The end date point.
 	 */
 	public function __construct( $start_date, $end_date ) {
-		$this->period = new Period(
-			Carbonate::create_date( $start_date ),
-			Carbonate::create_date( $end_date )
-		);
+		$this->period = new Period( abrs_date( $start_date ), abrs_date( $end_date ) );
 	}
 
 	/**
@@ -46,7 +42,7 @@ class Timespan implements \JsonSerializable {
 	 * @return static
 	 */
 	public function starting_on( $start_date ) {
-		return new static( Carbonate::create_date( $start_date ), $this->get_end_date() );
+		return new static( abrs_date( $start_date ), $this->get_end_date() );
 	}
 
 	/**
@@ -56,7 +52,7 @@ class Timespan implements \JsonSerializable {
 	 * @return static
 	 */
 	public function ending_on( $end_date ) {
-		return new static( $this->get_start_date(), Carbonate::create_date( $end_date ) );
+		return new static( $this->get_start_date(), abrs_date( $end_date ) );
 	}
 
 	/**

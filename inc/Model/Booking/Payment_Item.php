@@ -3,7 +3,6 @@ namespace AweBooking\Model\Booking;
 
 use AweBooking\Dropdown;
 use AweBooking\Gateway\Manager;
-use AweBooking\Support\Carbonate;
 
 class Payment_Item extends Item {
 	/**

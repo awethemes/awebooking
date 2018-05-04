@@ -22,7 +22,7 @@ if ( empty( $additionals->fields ) ) {
 
 ?>
 
-<div id="guest-additional-information" class="booking__section booking__section--guest-additional-information">
+<div id="guest-additional-information" class="checkout__section checkout__section--guest-additional-information">
 	<header class="section-header">
 		<h3 class="section-header__title"><?php esc_html_e( 'Additional information', 'awebooking' ); ?></h3>
 	</header>

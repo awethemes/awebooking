@@ -58,10 +58,10 @@ class Iterator_Period extends Period implements IteratorAggregate {
 	 * @return array
 	 */
 	protected function filter_from_datepoint( $start_date ) {
-		$start_date = static::filterDatePoint( $start_date );
+		$start_date = abrs_date_time( $start_date );
 
 		$interval = static::filterDateInterval( $this->get_interval() );
 
-		return [ $start_date, $start_date->add( $interval ) ];
+		return [ $start_date, $start_date->copy()->add( $interval ) ];
 	}
 }

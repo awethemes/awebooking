@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
-use AweBooking\Support\Carbonate;
 
 class Booking_List_Table extends Abstract_List_Table {
 	/**

@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\Calendar;
 
 use WP_Query;
-use AweBooking\Plugin;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Calendar\Scheduler;
@@ -173,9 +172,9 @@ abstract class Abstract_Scheduler {
 			$duration = 120;
 		}
 
-		$this->period = Iterator_Period::createFromDuration(
-			$this->datepoint, "+{$duration} days"
-		)->moveStartDate( '-2 days' );
+		// Create the period.
+		$this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
+			->moveStartDate( '-2 days' );
 
 		// Create the scheduler.
 		$this->scheduler = $this->create_scheduler();
@@ -289,7 +288,7 @@ abstract class Abstract_Scheduler {
 	 * @param string $datepoint The datepoint.
 	 */
 	protected function filter_datepoint( $datepoint ) {
-		$today = Carbonate::today();
+		$today = Carbonate::today( abrs_get_wp_timezone() );
 
 		if ( empty( $datepoint ) || 'today' === $datepoint ) {
 			return $today->toDateString();
@@ -301,7 +300,7 @@ abstract class Abstract_Scheduler {
 		}
 
 		return abrs_rescue( function () use ( $datepoint ) {
-			return Carbonate::create_date( $datepoint );
+			return Carbonate::create_date( $datepoint, abrs_get_wp_timezone() );
 		}, $today )->toDateString();
 	}
 

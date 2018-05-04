@@ -2,7 +2,6 @@
 namespace AweBooking\Calendar\Event;
 
 use AweBooking\Support\Period;
-use AweBooking\Support\Carbonate;
 use AweBooking\Support\Traits\Fluent_Getter;
 use AweBooking\Calendar\Resource\Resource_Interface;
 
@@ -98,8 +97,8 @@ class Event implements Event_Interface {
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = 0 ) {
 		static::assert_valid_dates(
-			$start_date = Carbonate::create_date_time( $start_date ),
-			$end_date = Carbonate::create_date_time( $end_date )
+			$start_date = abrs_date_time( $start_date ),
+			$end_date   = abrs_date_time( $end_date )
 		);
 
 		$this->start_date = $start_date;
@@ -118,7 +117,7 @@ class Event implements Event_Interface {
 	 *
 	 * @throws \LogicException
 	 */
-	protected static function assert_valid_dates( Carbonate $start_date, Carbonate $end_date ) {
+	protected static function assert_valid_dates( $start_date, $end_date ) {
 		if ( $start_date > $end_date ) {
 			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
 		}
@@ -140,7 +139,7 @@ class Event implements Event_Interface {
 	 * @return void
 	 */
 	public function set_start_date( $start_date ) {
-		$start_date = Carbonate::create_date_time( $start_date );
+		$start_date = abrs_date_time( $start_date );
 
 		static::assert_valid_dates( $start_date, $this->end_date );
 
@@ -163,7 +162,7 @@ class Event implements Event_Interface {
 	 * @return void
 	 */
 	public function set_end_date( $end_date ) {
-		$end_date = Carbonate::create_date_time( $end_date );
+		$end_date = abrs_date_time( $end_date );
 
 		static::assert_valid_dates( $this->start_date, $end_date );
 
@@ -342,7 +341,7 @@ class Event implements Event_Interface {
 	 * @return $this
 	 */
 	public function set_created( $created ) {
-		$this->created = Carbonate::create_date_time( $created );
+		$this->created = abrs_date_time( $created );
 
 		return $this;
 	}
@@ -363,7 +362,7 @@ class Event implements Event_Interface {
 	 * @return $this
 	 */
 	public function set_last_modified( $last_modified ) {
-		$this->last_modified = Carbonate::create_date_time( $last_modified );
+		$this->last_modified = abrs_date_time( $last_modified );
 
 		return $this;
 	}
@@ -384,7 +383,7 @@ class Event implements Event_Interface {
 	 * @return bool
 	 */
 	public function contains( $date ) {
-		return $this->get_period()->contains( Carbonate::create_date_time( $date ) );
+		return $this->get_period()->contains( abrs_date_time( $date ) );
 	}
 
 	/**

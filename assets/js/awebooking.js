@@ -95,7 +95,27 @@
    *
    * @return {void}
    */
-  $(function () {});
+  $(function () {
+
+    $('.searchbox').each(function () {
+      var $checkin = $(this).find('input[name="check-in"]');
+      var $checkout = $(this).find('input[name="check-out"]');
+
+      awebooking.datepicker($checkin[0], {
+        plugins: [new rangePlugin({ input: $checkout[0] })],
+        onChange: function onChange() {
+          var _this = this;
+
+          var dates = this.selectedDates.map(function (d) {
+            return _this.formatDate(d, 'Y-m-d');
+          });
+
+          $checkin.val(dates[0] || '');
+          $checkout.val(dates[1] || '');
+        }
+      });
+    });
+  });
 })(jQuery);
 
 },{"lodash.defaults":2}],2:[function(require,module,exports){

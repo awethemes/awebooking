@@ -20,7 +20,8 @@ class Reservation_Service_Provider extends Service_Provider {
 			return new Checkout( $this->plugin['session'], $this->plugin['reservation'] );
 		});
 
-		$this->plugin->bind( 'checkout', Checkout::class );
+		$this->plugin->alias( 'checkout', Checkout::class );
+		$this->plugin->alias( 'reservation', Reservation::class );
 	}
 
 	/**

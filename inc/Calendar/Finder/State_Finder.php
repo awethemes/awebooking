@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Finder;
+namespace AweBooking\Calendar\Finder;
 
 use AweBooking\Support\Period;
 use AweBooking\Support\Collection;
@@ -76,7 +76,7 @@ class State_Finder extends Finder {
 	 * Finder resources in a period.
 	 *
 	 * @param  \AweBooking\Support\Period $period The period.
-	 * @return \AweBooking\Finder\Response
+	 * @return \AweBooking\Calendar\Finder\Response
 	 */
 	public function find( Period $period ) {
 		// Get all events of each resources.

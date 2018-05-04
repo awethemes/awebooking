@@ -18,6 +18,7 @@ class Reservation {
 	 * @var string
 	 */
 	public $currency;
+	public $language;
 
 	/**
 	 * The session instance.
@@ -51,6 +52,7 @@ class Reservation {
 
 		$this->source     = apply_filters( 'awebooking/default_reservation_source', 'website' );
 		$this->currency   = abrs_current_currency();
+		$this->language   = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 	}
 
 	/**

@@ -5,7 +5,6 @@ use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resources;
-use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
 
 trait Calendar_Creator {
@@ -58,10 +57,6 @@ trait Calendar_Creator {
 	 * @return \AweBooking\Calendar\Scheduler
 	 */
 	protected function create_scheduler_for( Resources $resources, Provider_Interface $provider ) {
-		if ( ! $provider instanceof Cached_Provider ) {
-			$provider = new Cached_Provider( $provider );
-		}
-
 		$calendars = [];
 
 		foreach ( $resources as $resource ) {

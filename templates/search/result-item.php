@@ -20,17 +20,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Leave if we have invalid availability variable.
+if ( empty( $availability['room_type'] ) || empty( $availability['room_rate'] ) ) {
+	return;
+}
 
-// Exports variables.
-list( $room_type, $rooms, $plans ) = array_values( $availability );
+$room_type = $availability['room_type'];
+$room_rate = $availability['room_rate'];
 
-$remain_rooms = $rooms->remains();
-$rate_plan = $plans;
+// $remain_rooms = $rooms->remains();
 
-use AweBooking\Reservation\Room_Stay;
-$room_rate = new Room_Stay( $res_request->timespan, $res_request->get_guest_counts(), $room_type );
-
-dd($room_rate->get_total());
+$price_display = 'total'; // per_night, first_night.
 
 ?>
 
@@ -79,7 +79,17 @@ dd($room_rate->get_total());
 
 					<td class="column-room-inventory">
 						<div class="abroom__inventory">
-							200$
+							<?php
+							switch ( $price_display ) {
+								case 'total':
+									echo $room_rate->get_total();
+									echo 'Cost for % nights for % guests';
+									break;
+
+								case 'first_night':
+									break;
+							}
+							?>
 						</div>
 					</td>
 
@@ -88,15 +98,15 @@ dd($room_rate->get_total());
 
 						<span class="abroom__remaining-rooms">
 							<?php
-							$rooms_left = $remain_rooms->count();
+							// $rooms_left = $remain_rooms->count();
 
-							if ( $rooms_left <= 2 ) {
-								/* translators: %s Number of remain rooms */
-								printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
-							} else {
-								/* translators: %s Number of remain rooms */
-								printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
-							}
+							// if ( $rooms_left <= 2 ) {
+							// 	/* translators: %s Number of remain rooms */
+							// 	printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
+							// } else {
+							// 	/* translators: %s Number of remain rooms */
+							// 	printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
+							// }
 							?>
 						</span>
 					</td>

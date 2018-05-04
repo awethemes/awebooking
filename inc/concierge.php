@@ -4,13 +4,16 @@ use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Pricing\Rate;
 use AweBooking\Model\Common\Timespan;
-use AweBooking\Finder\State_Finder;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Resource\Resource_Interface;
 use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
+use AweBooking\Calendar\Finder\Finder;
+use AweBooking\Calendar\Finder\State_Finder;
+use AweBooking\Reservation\Request;
+use AweBooking\Reservation\Constraints\Night_Stay_Constraint;
 use AweBooking\Support\Collection;
 
 /**
@@ -45,59 +48,6 @@ function abrs_block_room( $room, Timespan $timespan, $options = [] ) {
  */
 function abrs_unblock_room( $room, Timespan $timespan, $options = [] ) {
 	return abrs_apply_room_state( $room, $timespan, Constants::STATE_AVAILABLE, $options );
-}
-
-/**
- * Determines if given room is passed states in a timespan.
- *
- * @param  array|int $room     The room ID to check.
- * @param  Timespan  $timespan The timespan instance.
- * @param  array|int $states   A string or an array of states.
- * @return bool|WP_Error
- */
-function abrs_check_room_state( $room, Timespan $timespan, $states = Constants::STATE_AVAILABLE ) {
-	try {
-		$timespan->requires_minimum_nights( 1 );
-	} catch ( LogicException $e ) {
-		return new WP_Error( 'timespan_error', $e->getMessage() );
-	}
-
-	// Correct the states input.
-	$states = is_array( $states ) ? $states : [ $states ];
-
-	/**
-	 * No constraints by default, but apply filters for another.
-	 *
-	 * @param array                             $constraints An array of constraints.
-	 * @param mixed                             $room        The given room(s) to check.
-	 * @param \AweBooking\Model\Common\Timespan $timespan    The timespan instance.
-	 * @param array                             $states      The states.
-	 * @var array
-	 */
-	$constraints = apply_filters( 'awebooking/check_room_state_constraints', [], $room, $timespan, $states );
-
-	// Transform rooms to resources.
-	$resources = abrs_collect( $room )
-		->map_into( AweBooking\Model\Room::class )
-		->transform( 'abrs_filter_resource' );
-
-	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources ) ) )
-		->only( $states )
-		->using( $constraints )
-		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
-
-	/**
-	 * Apply filters after complete the check.
-	 *
-	 * @param \AweBooking\Finder\Response       $response The finder response.
-	 * @param mixed                             $room     The given room(s) to check.
-	 * @param \AweBooking\Model\Common\Timespan $timespan The timespan instance.
-	 * @param array                             $states   The states.
-	 * @var array
-	 */
-	$response = apply_filters( 'awebooking/check_room_state_response', $response, $room, $timespan, $states );
-
-	return count( $response->get_included() ) > 0;
 }
 
 /**
@@ -217,12 +167,9 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 		->get_events( $timespan->to_period( Constants::GL_NIGHTLY ) )
 		->itemize();
 
-	// Calculate the price from itemized.
-	$price = apply_filters( 'awebooking/valuation',
-		abrs_decimal_raw( $itemized->sum() ), $itemized, $rate, $timespan
-	);
-
-	return [ $price, $itemized->map( 'abrs_decimal_raw' ) ];
+	return abrs_collect( $itemized )->transform( function( $a ) {
+		return abrs_decimal_raw( $a )->as_numeric();
+	});
 }
 
 /**
@@ -313,7 +260,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 }
 
 /**
- * Returns the rate operations.
+ * Returns list of operations.
  *
  * @return array
  */
@@ -327,6 +274,93 @@ function abrs_get_rate_operations() {
 		'increase' => esc_html__( 'Increase', 'awebooking' ),
 		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
 	]);
+}
+
+/**
+ * Filter given rates by request.
+ *
+ * @param  array|int $rates       The rates.
+ * @param  Request   $request      The reservation request.
+ * @param  array     $constraints  Array of constraints.
+ * @return \AweBooking\Calendar\Resource\Resources
+ */
+function abrs_filter_rates( $rates, Request $request, $constraints = [] ) {
+	$resources = abrs_collect( $rates )
+		->transform( 'abrs_resource_rate' )
+		->filter( /* Remove empty items */ )
+		->each(function( $r ) use ( $request ) {
+			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $request ) );
+		})->all();
+
+	$response = ( new Finder( $resources ) )
+		->callback( '_abrs_filter_rates_callback' )
+		->using( apply_filters( 'awebooking/filter_rates_constraints', $constraints, $resources, $request ) )
+		->find( $request->get_timespan()->to_period( Constants::GL_NIGHTLY ) );
+
+	return apply_filters( 'awebooking/filter_rates_response', $response, $request, $resources );
+}
+
+/**
+ * Perform rates filter callback.
+ *
+ * @param  \AweBooking\Calendar\Resource\Resource $resource The resource.
+ * @param  \AweBooking\Calendar\Finder\Response   $response The finder response.
+ * @return void
+ */
+function _abrs_filter_rates_callback( $resource, $response ) {
+	$effective_date = $resource->get_reference()->get_effective_date();
+	$expires_date   = $resource->get_reference()->get_expires_date();
+
+	if ( $effective_date && abrs_date_time( 'today' ) < abrs_date_time( $effective_date ) ) {
+		$response->add_miss( $resource, 'rate_effective_date' );
+	} elseif ( $expires_date && abrs_date_time( 'today' ) > abrs_date_time( $expires_date ) ) {
+		$response->add_miss( $resource, 'rate_expired_date' );
+	} else {
+		$response->add_match( $resource, 'rate_valid_dates' );
+	}
+}
+
+/**
+ * Build the rate constraints based on reservation request.
+ *
+ * @param  \AweBooking\Model\Pricing\Rate  $rate    The rate instance.
+ * @param  \AweBooking\Reservation\Request $request The reservation request.
+ * @return array
+ */
+function abrs_build_rate_constraints( Rate $rate, Request $request ) {
+	$constraints  = [];
+
+	// Get rate restrictions.
+	$restrictions = $rate->get_restrictions();
+
+	if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
+		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $request->get_timespan(), $restrictions['min_los'], $restrictions['max_los'] );
+	}
+
+	return apply_filters( 'awebooking/rate_constraints', $constraints, $rate );
+}
+
+/**
+ * Check given rooms state by request.
+ *
+ * @param  array|int $room        The room ID to check.
+ * @param  Request   $request     The reservation request.
+ * @param  array|int $states      A string or an array of states.
+ * @param  array     $constraints AweBooking\Calendar\Finder\Constraint[].
+ * @return \AweBooking\Calendar\Finder\Response
+ */
+function abrs_check_rooms( $room, Request $request, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
+	$resources = abrs_collect( $room )
+		->transform( 'abrs_resource_room' )
+		->filter()
+		->all();
+
+	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
+		->only( is_array( $states ) ? $states : [ $states ] )
+		->using( apply_filters( 'awebooking/check_rooms_constraints', $constraints, $resources, $request, $states ) )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+
+	return apply_filters( 'awebooking/check_room_state_response', $response, $request, $resources, $states );
 }
 
 /**
@@ -393,7 +427,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 }
 
 /**
- * Returns a resource instance by given ID or a model.
+ * Gets the calendar resource.
  *
  * @param  mixed $resource The resource ID or model represent of resource (Room, Rate, etc.).
  * @param  mixed $value    The resource value.
@@ -405,23 +439,63 @@ function abrs_filter_resource( $resource, $value = null ) {
 		return $resource;
 	}
 
-	// Correct the resource ID & value.
-	switch ( true ) {
-		case ( $resource instanceof Room ):
-			$id    = $resource->get_id();
-			$value = Constants::STATE_AVAILABLE;
-			break;
-
-		case ( $resource instanceof Rate ):
-			$id    = $resource->get_id();
-			$value = abrs_decimal( $resource->get_rack_rate() )->as_raw_value();
-			break;
-
-		default:
-			$id    = (int) $resource;
-			$value = (int) $value;
-			break;
+	if ( $resource instanceof Room ) {
+		return abrs_resource_room( $resource );
+	} elseif ( $resource instanceof Rate ) {
+		return abrs_resource_rate( $resource );
 	}
 
-	return apply_filters( 'awebooking/calendar_resource', new Resource( $id, $value ), $resource, $value );
+	return new Resource( (int) $resource, (int) $value );
+}
+
+/**
+ * Returns a resource of room.
+ *
+ * @param  mixed $room The room ID.
+ * @return \AweBooking\Calendar\Resource\Resource_Interface|null
+ */
+function abrs_resource_room( $room ) {
+	$room = ( ! $room instanceof Room ) ? abrs_get_room( $room ) : $room;
+
+	// Leave if room not found.
+	if ( empty( $room ) ) {
+		return;
+	}
+
+	// By default rooms in awebooking is alway available
+	// but you can apply filters to here to change that.
+	$resource = new Resource( $room->get_id(),
+		apply_filters( 'awebooking/default_room_state', Constants::STATE_AVAILABLE )
+	);
+
+	$resource->set_reference( $room );
+	$resource->set_title( $room->get( 'name' ) );
+
+	return apply_filters( 'awebooking/calendar_room_resource', $resource, $room );
+}
+
+/**
+ * Returns a resource rate.
+ *
+ * @param  mixed $rate The rate ID.
+ * @return \AweBooking\Calendar\Resource\Resource_Interface|null
+ */
+function abrs_resource_rate( $rate ) {
+	$rate = ( ! $rate instanceof Rate ) ? abrs_get_rate( $rate ) : $rate;
+
+	// Leave if rate not found.
+	if ( empty( $rate ) ) {
+		return;
+	}
+
+	// In calendar we store as resource integer,
+	// so we need convert rate amount to int value (e.g 10.9 -> 1090).
+	$resource = new Resource( $rate->get_id(),
+		abrs_decimal( $rate->get_rack_rate() )->as_raw_value()
+	);
+
+	$resource->set_reference( $rate );
+	$resource->set_title( $rate->get_name() );
+
+	return apply_filters( 'awebooking/calendar_rate_resource', $resource, $rate );
 }

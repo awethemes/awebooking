@@ -1,11 +1,9 @@
 <?php
 /* @vars $request, $booking, $controls */
 
-use AweBooking\Support\Carbonate;
-
 $controls = abrs_create_form( 'search-rooms' );
 
-$selected_dates = [ Carbonate::today()->format( 'Y-m-d' ), Carbonate::tomorrow()->format( 'Y-m-d' ) ];
+$selected_dates = [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ];
 if ( $request->filled( 'check-in', 'check-out' ) ) {
 	$selected_dates = array_values( $request->only( 'check-in', 'check-out' ) );
 }
