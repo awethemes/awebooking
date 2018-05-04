@@ -74,7 +74,7 @@ class BATStore extends Store {
 		// Prepare unit_ids, remove duplicate and invalid ids.
 		$unit_ids = array_unique( array_filter( $unit_ids ) );
 
-		// We need ending datepoint must be greater or equal to the starting datepoint.
+		// Ending datepoint must be greater or equal to the starting datepoint.
 		if ( $start_date > $end_date ) {
 			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
 		}
@@ -88,6 +88,7 @@ class BATStore extends Store {
 
 		$year_count = 0;
 		$parameters = '';
+
 
 		foreach ( $itemized[ Event::BAT_DAY ] as $year => $months ) {
 			// If we are dealing with multiple years so add an OR.
@@ -168,7 +169,7 @@ class BATStore extends Store {
 		$return = [];
 
 		foreach ( $days as $tday => $value ) {
-			$date = Carbonate::createFromDate( $year, $month, substr( $tday, 1 ) );
+			$date = Carbonate::createFromDate( $year, $month, substr( $tday, 1 ), abrs_get_wp_timezone() );
 
 			if ( in_array( $date->dayOfWeek, $only_days ) ) { // @codingStandardsIgnoreLine
 				$return[ $tday ] = $value;

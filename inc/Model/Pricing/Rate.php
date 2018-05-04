@@ -38,11 +38,11 @@ interface Rate {
 	public function get_effective_date();
 
 	/**
-	 * Gets the expire_date.
+	 * Gets the get_expires_date.
 	 *
 	 * @return string
 	 */
-	public function get_expire_date();
+	public function get_expires_date();
 
 	/**
 	 * Gets the priority.

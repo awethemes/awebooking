@@ -47,7 +47,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return \AweBooking\Reservation\Search\Results
 	 */
 	public function search( $constraints = [] ) {
-		return ( new Search\Search( $this, $constraints ) )->get();
+		return ( new Room_Stay\Search( $this ) )->get( $constraints );
 	}
 
 	/**
@@ -190,10 +190,10 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function __get( $property ) {
 		switch ( $property ) {
+			case 'options':
 			case 'timespan':
 			case 'guest_counts':
-			case 'options':
-				return call_user_func( [ $this, "get_{$property}" ] );
+				return $this->{$property};
 			case 'nights':
 				return $this->timespan->nights();
 			case 'check_in':
@@ -205,7 +205,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 			case 'adults':
 			case 'children':
 			case 'infants':
-				return $this->guest_counts ? abrs_optional( $this->guest_counts->get( $property ) )->get_count() : null;
+				return abrs_optional( $this->guest_counts->get( $property ) )->get_count();
 		}
 
 		return $this->options->get( $property );

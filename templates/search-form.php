@@ -2,6 +2,8 @@
 
 $form_classes = [];
 
+$max_select = 10;
+
 ?>
 
 <form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
@@ -16,22 +18,61 @@ $form_classes = [];
 
 	<div class="searchbox searchbox--horizontal">
 		<div class="searchbox__wrapper">
-			<div tabindex="0" class="searchbox__box searchbox__box--hotel">
-				<input type="text" name="hotel" class="">
-			</div>
+			<?php if ( abrs_multiple_hotels() ) : ?>
+				<div tabindex="0" class="searchbox__box searchbox__box--hotel">
+					<label>
+						<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
+						<input type="text" name="hotel">
+					</label>
+				</div>
+			<?php endif ?>
 
 			<div tabindex="0" class="searchbox__box searchbox__box--checkin">
-				<input type="text" name="check-in" class="js-datepicker">
+				<label>
+					<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
+					<input type="text" name="check-in">
+				</label>
 			</div>
 
 			<div tabindex="0" class="searchbox__box searchbox__box--checkout">
-				<input type="text" name="check-out" class="js-datepicker">
+				<label>
+					<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
+					<input type="text" name="check-out">
+				</label>
 			</div>
 
 			<div tabindex="0" class="searchbox__box searchbox__box--occupancy">
+				<label>
+					<span><?php esc_html_e( 'Adults', 'awebooking' ); ?></span>
+					<select name="adults">
+						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
+						<?php endfor; ?>
+					</select>
+				</label>
+
+				<label>
+					<span><?php esc_html_e( 'Children', 'awebooking' ); ?></span>
+
+					<select name="children">
+						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
+						<?php endfor; ?>
+					</select>
+				</label>
+
+				<label>
+					<span><?php esc_html_e( 'Infants', 'awebooking' ); ?></span>
+
+					<select name="infants">
+						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
+							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
+						<?php endfor; ?>
+					</select>
+				</label>
 			</div>
 
-			<button>
+			<button class="button button--search">
 				<?php esc_html_e( 'Search', 'awebooking' ); ?>
 			</button>
 
@@ -39,13 +80,3 @@ $form_classes = [];
 	</div>
 
 </form>
-
-<script>
-jQuery(function($) {
-
-	awebooking.datepicker('.js-datepicker', {
-
-	});
-
-});
-</script>

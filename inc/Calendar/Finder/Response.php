@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Finder;
+namespace AweBooking\Calendar\Finder;
 
 use AweBooking\Support\Period;
 use AweBooking\Support\Collection;
@@ -135,7 +135,7 @@ class Response {
 	 *
 	 * @param  \AweBooking\Calendar\Resource\Resource_Interface $resource   The resource to add.
 	 * @param  string                                           $reason     The reason why added into this.
-	 * @param  \AweBooking\Finder\Constraint                    $constraint The constraint for the reason.
+	 * @param  \AweBooking\Calendar\Finder\Constraint           $constraint The constraint for the reason.
 	 * @return bool
 	 */
 	public function add_miss( Resource_Interface $resource, $reason, Constraint $constraint = null ) {
@@ -156,7 +156,7 @@ class Response {
 	 *
 	 * @param  \AweBooking\Calendar\Resource\Resource_Interface $resource   The resource to reject.
 	 * @param  string                                           $reason     The reason why reject this.
-	 * @param  \AweBooking\Finder\Constraint                    $constraint The constraint for the reason.
+	 * @param  \AweBooking\Calendar\Finder\Constraint           $constraint The constraint for the reason.
 	 * @return bool
 	 */
 	public function reject( Resource_Interface $resource, $reason, Constraint $constraint = null ) {
@@ -175,7 +175,7 @@ class Response {
 	/**
 	 * Apply the constraints to this response.
 	 *
-	 * @param  array $constraints \AweBooking\Finder\Constraint[].
+	 * @param  array $constraints \AweBooking\Calendar\Finder\Constraint[].
 	 * @return $this
 	 */
 	public function apply_constraints( $constraints ) {

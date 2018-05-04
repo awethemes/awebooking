@@ -1,10 +1,6 @@
 <?php
 /* @vars $calendar \AweBooking\Admin\Calendar\Scheduler */
 
-if ( ! isset( $calendar ) ) {
-	return;
-}
-
 ?><div class="scheduler <?php echo esc_attr( $calendar->get_wrapper_classes() ); ?>">
 
 	<?php $this->template( 'partials/header.php', compact( 'calendar' ) ); ?>

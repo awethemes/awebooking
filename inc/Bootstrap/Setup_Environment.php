@@ -132,35 +132,6 @@ class Setup_Environment {
 			'capabilities'        => $capabilities,
 		]));
 
-		if ( $this->plugin->get_option( 'enable_location', false ) ) {
-			register_taxonomy( Constants::HOTEL_LOCATION, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_location_args', [
-				'labels'              => [
-					'name'                  => esc_html_x( 'Locations', 'Location plural name', 'awebooking' ),
-					'singular_name'         => esc_html_x( 'Location', 'Location singular name', 'awebooking' ),
-					'menu_name'             => esc_html_x( 'Locations', 'Admin menu name', 'awebooking' ),
-					'search_items'          => esc_html__( 'Search locations', 'awebooking' ),
-					'popular_items'         => esc_html__( 'Popular locations', 'awebooking' ),
-					'all_items'             => esc_html__( 'All locations', 'awebooking' ),
-					'parent_item'           => esc_html__( 'Parent location', 'awebooking' ),
-					'parent_item_colon'     => esc_html__( 'Parent location', 'awebooking' ),
-					'edit_item'             => esc_html__( 'Edit location', 'awebooking' ),
-					'update_item'           => esc_html__( 'Update location', 'awebooking' ),
-					'add_new_item'          => esc_html__( 'Add New Location', 'awebooking' ),
-					'new_item_name'         => esc_html__( 'New Location Name', 'awebooking' ),
-					'add_or_remove_items'   => esc_html__( 'Add or remove locations', 'awebooking' ),
-					'choose_from_most_used' => esc_html__( 'Choose from most used locations', 'awebooking' ),
-				],
-				'hierarchical'        => true,
-				'public'              => true,
-				'publicly_queryable'  => true,
-				'show_ui'             => true,
-				'show_in_nav_menus'   => true,
-				'show_in_quick_edit'  => false,
-				'show_admin_column'   => false,
-				'capabilities'        => $capabilities,
-			]));
-		}
-
 		/**
 		 * Fire action after_register_taxonomy.
 		 */
@@ -270,6 +241,43 @@ class Setup_Environment {
 			'rewrite'             => false,
 			'has_archive'         => false,
 		]));
+
+		// Enable multiple_hotels.
+		if ( $this->plugin->get_option( 'enable_location', false ) ) {
+			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'awebooking/register_location_args', [
+				'labels'              => [
+					'name'                  => esc_html_x( 'Hotels', 'Hotel plural name', 'awebooking' ),
+					'singular_name'         => esc_html_x( 'Hotel', 'Hotel singular name', 'awebooking' ),
+					'menu_name'             => esc_html_x( 'Hotels', 'Admin menu name', 'awebooking' ),
+					'add_new'               => esc_html__( 'Add hotel', 'awebooking' ),
+					'add_new_item'          => esc_html__( 'Add new hotel', 'awebooking' ),
+					'edit'                  => esc_html__( 'Edit', 'awebooking' ),
+					'edit_item'             => esc_html__( 'Edit hotel', 'awebooking' ),
+					'new_item'              => esc_html__( 'New hotel', 'awebooking' ),
+					'view_item'             => esc_html__( 'View hotel', 'awebooking' ),
+					'search_items'          => esc_html__( 'Search hotel', 'awebooking' ),
+					'not_found'             => esc_html__( 'No hotel found', 'awebooking' ),
+					'not_found_in_trash'    => esc_html__( 'No hotel found in trash', 'awebooking' ),
+					'parent'                => esc_html__( 'Parent hotel', 'awebooking' ),
+					'filter_items_list'     => esc_html__( 'Filter hotel', 'awebooking' ),
+					'items_list_navigation' => esc_html__( 'Hotels navigation', 'awebooking' ),
+					'items_list'            => esc_html__( 'Hotels List', 'awebooking' ),
+				],
+				'public'              => false,
+				'hierarchical'        => true,
+				'exclude_from_search' => true,
+				'publicly_queryable'  => false,
+				'show_ui'             => true,
+				'show_in_menu'        => 'edit.php?post_type=room_type',
+				'show_in_nav_menus'   => false,
+				'show_in_admin_bar'   => false,
+				'show_in_rest'        => true,
+				// 'capability_type'     => Constants::HOTEL_LOCATION,
+				'supports'            => [ 'title' ],
+				'rewrite'             => false,
+				'has_archive'         => false,
+			]));
+		}
 
 		/**
 		 * Fire action after_register_post_type.

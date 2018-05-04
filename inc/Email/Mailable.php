@@ -261,7 +261,7 @@ abstract class Mailable {
 			try {
 				$content = $emogrifier->emogrify();
 			} catch ( \Exception $e ) {
-				abrs_logger()->error( $e->getMessage(), [ 'exception' => $e ] );
+				abrs_report( $e );
 			}
 		}
 

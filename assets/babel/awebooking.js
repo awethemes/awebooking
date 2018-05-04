@@ -93,6 +93,25 @@
    * @return {void}
    */
   $(function() {
+
+    $('.searchbox').each(function() {
+      const $checkin  = $(this).find('input[name="check-in"]');
+      const $checkout = $(this).find('input[name="check-out"]');
+
+      awebooking.datepicker($checkin[0], {
+        plugins: [ new rangePlugin({ input: $checkout[0] }) ],
+        onChange: function() {
+          const dates = this.selectedDates.map( (d) => {
+            return this.formatDate(d, 'Y-m-d');
+          });
+
+          $checkin.val(dates[0] || '');
+          $checkout.val(dates[1] || '');
+        },
+      });
+
+    });
+
   });
 
 })(jQuery);

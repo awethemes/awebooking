@@ -1,9 +1,16 @@
 <?php
 
-global $the_room_type;
+global $the_room_type, $post_id;
 
 // List all rooms.
 $rooms = $the_room_type->get_rooms();
+
+// In translation, we can not todo some tasks
+// like edit or delete room unit.
+$is_translation = null;
+if ( abrs_running_on_multilanguage() ) {
+	$is_translation = awebooking( 'multilingual' )->get_original_post( $post_id ) != $post_id;
+}
 
 ?>
 
@@ -53,6 +60,10 @@ $rooms = $the_room_type->get_rooms();
 			</li>
 		<?php endforeach ?>
 	</ul>
+
+	<?php if ( true === $is_translation ) : ?>
+		<p><?php echo esc_html__( 'Note: This is a translation of room type, you can not to perform any action to rooms.', 'awebooking' ); ?></p>
+	<?php endif ?>
 
 	<button type="button" class="button js-add-room"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
 <?php endif ?>

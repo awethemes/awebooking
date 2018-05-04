@@ -22,10 +22,7 @@ class Period extends League_Period {
 	 * @param mixed $end_date   Ending date point.
 	 */
 	public function __construct( $start_date, $end_date ) {
-		parent::__construct(
-			Carbonate::create_date_time( $start_date ),
-			Carbonate::create_date_time( $end_date )
-		);
+		parent::__construct( abrs_date_time( $start_date ), abrs_date_time( $end_date ) );
 	}
 
 	/**
@@ -34,7 +31,7 @@ class Period extends League_Period {
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_start_date() {
-		return Carbonate::create_date_time( $this->getStartDate() );
+		return abrs_date_time( $this->getStartDate() );
 	}
 
 	/**
@@ -43,7 +40,7 @@ class Period extends League_Period {
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date() {
-		return Carbonate::create_date_time( $this->getEndDate() );
+		return abrs_date_time( $this->getEndDate() );
 	}
 
 	/**

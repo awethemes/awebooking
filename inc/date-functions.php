@@ -8,11 +8,12 @@ use AweBooking\Model\Common\Timespan;
  * Create a Carbonate by given a date format.
  *
  * @param  mixed $date The date format.
+ * @param  mixed $tz   The timezone string or DateTimeZone instance.
  * @return \AweBooking\Support\Carbonate|null
  */
-function abrs_date( $date ) {
-	return abrs_rescue( function() use ( $date ) {
-		return Carbonate::create_date( $date, abrs_timezone_string() );
+function abrs_date( $date, $tz = null ) {
+	return abrs_rescue( function() use ( $date, $tz ) {
+		return Carbonate::create_date( $date, $tz ?: abrs_get_wp_timezone() );
 	});
 }
 
@@ -20,11 +21,12 @@ function abrs_date( $date ) {
  * Create a Carbonate by given a date time format.
  *
  * @param  mixed $datetime The date time format.
+ * @param  mixed $tz       The timezone string or DateTimeZone instance.
  * @return \AweBooking\Support\Carbonate|null
  */
-function abrs_date_time( $datetime ) {
-	return abrs_rescue( function() use ( $datetime ) {
-		return Carbonate::create_date_time( $datetime, abrs_timezone_string() );
+function abrs_date_time( $datetime, $tz = null ) {
+	return abrs_rescue( function() use ( $datetime, $tz ) {
+		return Carbonate::create_date_time( $datetime, $tz ?: abrs_get_wp_timezone() );
 	});
 }
 
@@ -35,7 +37,14 @@ function abrs_date_time( $datetime ) {
  *
  * @return string PHP timezone string for the site
  */
-function abrs_timezone_string() {
+function abrs_get_wp_timezone() {
+	static $timezone;
+
+	// For increment performance.
+	if ( ! empty( $timezone ) ) {
+		return $timezone;
+	}
+
 	// If site timezone string exists, return it.
 	if ( $timezone = get_option( 'timezone_string' ) ) {
 		return $timezone;
@@ -43,7 +52,7 @@ function abrs_timezone_string() {
 
 	// Get UTC offset, if it isn't set then return UTC.
 	if ( 0 === ( $utc_offset = intval( get_option( 'gmt_offset', 0 ) ) ) ) {
-		return 'UTC';
+		return $timezone = 'UTC';
 	}
 
 	// Adjust UTC offset from hours to seconds.
@@ -58,13 +67,13 @@ function abrs_timezone_string() {
 	foreach ( timezone_abbreviations_list() as $abbr ) {
 		foreach ( $abbr as $city ) {
 			if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
-				return $city['timezone_id'];
+				return $timezone = $city['timezone_id'];
 			}
 		}
 	}
 
 	// Fallback to UTC.
-	return 'UTC';
+	return $timezone = 'UTC';
 }
 
 /**
@@ -85,7 +94,7 @@ function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false
 		}
 
 		// Validate when strict mode.
-		if ( $strict && Carbonate::parse( $timespan->get_start_date() )->lt( Carbonate::today() ) ) {
+		if ( $strict && abrs_date( $timespan->get_start_date() )->lt( abrs_date( 'today' ) ) ) {
 			return new WP_Error( esc_html__( 'Specified arrival date is prior to today\'s date.', 'awebooking' ) );
 		}
 
@@ -205,7 +214,7 @@ function abrs_days_of_week( $day_label = 'full' ) {
 function abrs_date_classes( $date ) {
 	$date = ( $date instanceof Period )
 		? $date->get_start_date()
-		: Carbonate::create_date( $date );
+		: abrs_date_time( $date );
 
 	$classes = [];
 

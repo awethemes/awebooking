@@ -80,6 +80,10 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 			return [];
 		}
 
+		// Set the timezone same with BAT do.
+		$start_date = new Carbonate( $start_date->format( 'Y-m-d H:i:s' ), date_default_timezone_get() );
+		$end_date   = new Carbonate( $end_date->format( 'Y-m-d H:i:s' ), date_default_timezone_get() );
+
 		$raw_events = abrs_rescue( function() use ( $units, $start_date, $end_date ) {
 			return $this->get_calendar( $units )->getEvents( $start_date, $end_date, true );
 		}, [] );

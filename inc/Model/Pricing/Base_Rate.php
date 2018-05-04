@@ -49,21 +49,17 @@ class Base_Rate implements Rate {
 	}
 
 	/**
-	 * Get the effective_date.
-	 *
-	 * @return \AweBooking\Support\Carbonate
+	 * {@inheritdoc}
 	 */
 	public function get_effective_date() {
-		return;
+		return '';
 	}
 
 	/**
-	 * Get the expire_date.
-	 *
-	 * @return \AweBooking\Support\Carbonate
+	 * {@inheritdoc}
 	 */
-	public function get_expire_date() {
-		return;
+	public function get_expires_date() {
+		return '';
 	}
 
 	/**
