@@ -4,9 +4,10 @@
  *
  * This template can be overridden by copying it to yourtheme/awebooking/archive-room-type.php.
  *
- * @author 		Awethemes
- * @package 	AweBooking/Templates
- * @version     3.0.0
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,12 +27,6 @@ get_header( 'booking' ); ?>
 
 		<div class="awebooking-room-type-filter">
 		<?php
-			/**
-			 * awebooking/before_archive_loop hook.
-			 *
-			 * @hooked awebooking_location_filter - 10
-			 * @hooked awebooking_catalog_ordering - 20
-			 */
 			do_action( 'awebooking/before_archive_loop' );
 		?>
 		</div>
@@ -42,7 +37,7 @@ get_header( 'booking' ); ?>
 
 				<?php while ( have_posts() ) : the_post(); ?>
 
-					<?php awebooking_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
+					<?php abrs_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
 
 				<?php endwhile; // end of the loop. ?>
 
@@ -58,7 +53,7 @@ get_header( 'booking' ); ?>
 			?>
 
 		<?php else : ?>
-			<?php awebooking_get_template( 'loop/no-room-types-found.php' ); ?>
+			<?php abrs_get_template( 'loop/no-room-types-found.php' ); ?>
 
 		<?php endif; ?>
 
