@@ -1,12 +1,8 @@
 <?php
 
 use AweBooking\Reservation\Request;
-use AweBooking\Reservation\Room_Stay;
 use AweBooking\Model\Common\Guest_Counts;
 use Awethemes\Http\Request as Http_Request;
-
-function abrs_create_room_stay() {
-}
 
 /**
  * Create new reservation request.

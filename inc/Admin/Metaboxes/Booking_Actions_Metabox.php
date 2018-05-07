@@ -53,6 +53,10 @@ class Booking_Actions_Metabox {
 				}
 				break;
 
+			case 'send_booking_details_admin':
+				abrs_mailer( 'new_booking' )->build( $the_booking )->send();
+				break;
+
 			default:
 				do_action( 'awebooking/booking_action_' . sanitize_title( $action ), $the_booking );
 				break;

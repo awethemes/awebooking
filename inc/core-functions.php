@@ -6,7 +6,6 @@ use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
 
 // Requires other core functions.
-require trailingslashit( __DIR__ ) . 'sanitizer.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
@@ -103,6 +102,17 @@ function abrs_mailer( $email = null ) {
 	return is_null( $email )
 		? awebooking()->make( 'mailer' )
 		: awebooking( 'mailer' )->driver( $email );
+}
+
+/**
+ * Create a new form builder.
+ *
+ * @param  string     $form_id The form ID.
+ * @param  Model|null $data    Optional, form data.
+ * @return \AweBooking\Component\Form\Form_Builder
+ */
+function abrs_create_form( $form_id = '', $data = null ) {
+	return new Form_Builder( $form_id, $data ?: 0, 'static' );
 }
 
 /**
@@ -500,45 +510,4 @@ function abrs_get_page_permalink( $page ) {
 	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
 
 	return apply_filters( "awebooking/get_{$page}_page_permalink", $permalink );
-}
-
-/**
- * Create a new form builder.
- *
- * @param  string     $form_id The form ID.
- * @param  Model|null $data    Optional, form data.
- * @return \AweBooking\Component\Form\Form_Builder
- */
-function abrs_create_form( $form_id = '', $data = null ) {
-	return new Form_Builder( $form_id, $data ?: 0, 'static' );
-}
-
-/**
- * Returns the date format.
- *
- * @return string
- */
-function abrs_date_format() {
-	return apply_filters( 'awebooking/date_format', get_option( 'date_format' ) );
-}
-
-/**
- * Returns the time format.
- *
- * @return string
- */
-function abrs_time_format() {
-	return apply_filters( 'awebooking/time_format', get_option( 'time_format' ) );
-}
-
-/**
- * Returns the date time format.
- *
- * @return string
- */
-function abrs_datetime_format() {
-	return apply_filters( 'awebooking/date_time_format',
-		/* translators: 1 -Date format, 2 - Time format */
-		sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() )
-	);
 }

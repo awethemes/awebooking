@@ -163,7 +163,7 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 	}
 
 	// Get all events as itemized.
-	$itemized = abrs_calendar( $rate, 'pricing' )
+	$itemized = abrs_calendar( $rate, 'pricing', true )
 		->get_events( $timespan->to_period( Constants::GL_NIGHTLY ) )
 		->itemize();
 
@@ -200,7 +200,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	}
 
 	// Leave if given invalid rate ID.
-	if ( ! $rate = abrs_get_rate( $rate ) ) {
+	if ( ! $rate instanceof Rate && ! $rate = abrs_get_rate( $rate ) ) {
 		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid Rate ID', 'awebooking' ) );
 	}
 
@@ -358,7 +358,7 @@ function abrs_check_rooms( $room, Request $request, $states = Constants::STATE_A
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->only( is_array( $states ) ? $states : [ $states ] )
 		->using( apply_filters( 'awebooking/check_rooms_constraints', $constraints, $resources, $request, $states ) )
-		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+		->find( $request->get_timespan()->to_period( Constants::GL_NIGHTLY ) );
 
 	return apply_filters( 'awebooking/check_room_state_response', $response, $request, $resources, $states );
 }

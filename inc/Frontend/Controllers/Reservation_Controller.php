@@ -3,11 +3,15 @@ namespace AweBooking\Frontend\Controllers;
 
 use Awethemes\Http\Request;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Reservation\Room_Stay;
-use AweBooking\Model\Pricing\Base_Rate;
-use AweBooking\Model\Pricing\Standard_Plan;
+use AweBooking\Reservation\Room_Stay\Room_Rate;
 
 class Reservation_Controller {
+	protected $reservation;
+
+	public function __construct( Reservation $reservation ) {
+		$this->reservation = $reservation;
+	}
+
 	/**
 	 * Handle book a room from request.
 	 *
@@ -15,33 +19,26 @@ class Reservation_Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function book( Request $request ) {
-		$res_request = abrs_create_res_request([
-			'check_in'   => $request->get( 'check_in' ),
-			'check_out'  => $request->get( 'check_out' ),
-			'adults'     => $request->get( 'adults' ),
-			'children'   => $request->get( 'children' ),
-			'infants'    => $request->get( 'infants' ),
-		]);
+		$res = $this->reservation;
 
-		$reservation = new Reservation( 'website' );
-
-		$reservation->set_currency( abrs_current_currency() );
-		$reservation->set_last_request( $res_request );
-
-		if ( $request->has( 'book_room' ) ) {
-			$room = abrs_get_room( $request->get( 'book_room' ) );
-			$room_type = abrs_get_room_type( $room['room_type'] );
-
-			$room_rate = new Base_Rate( $room_type );
-			$rate_plan = new Standard_Plan( $room_type );
-
-			$room_stay = new Room_Stay( $room_type, $rate_plan, $res_request->get_timespan(), $res_request->get_guest_counts() );
-			$room_stay->apply( $room_rate );
-			$room_stay->assign( $room );
-
-			dd( $room_stay->get_price() );
+		if ( ! $request->filled( 'room_type', 'check_in', 'check_out' ) ) {
+			return 0;
 		}
 
-		dd( $request->all() );
+		$room_type = abrs_get_room_type( $request->get( 'room_type' ) );
+		if ( empty( $room_type ) ) {
+			return 1;
+		}
+
+		// Create the reservation request.
+		$res_request = abrs_create_res_request( $request );
+
+		if ( is_wp_error( $res_request ) ) {
+			return $res_request;
+		}
+
+		$added = $res->add_room_stay( $room_type, null, $res_request );
+
+		return awebooking( 'redirector' )->back();
 	}
 }

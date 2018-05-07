@@ -245,7 +245,7 @@ class Room_Type_Metabox {
 		$form->add_field([
 			'id'          => '_rate_inclusions',
 			'type'        => 'text',
-			'name'        => esc_html__( 'Inclusions', 'awebooking' ),
+			'name'        => esc_html__( 'Inclusions (for display)', 'awebooking' ),
 			'desc'        => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
 			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
 			'repeatable'  => true,
@@ -255,7 +255,7 @@ class Room_Type_Metabox {
 		$form->add_field([
 			'id'          => '_rate_policies',
 			'type'        => 'text',
-			'name'        => esc_html__( 'Policies', 'awebooking' ),
+			'name'        => esc_html__( 'Policies (for display)', 'awebooking' ),
 			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
 			'desc'        => esc_html__( 'What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc.', 'awebooking' ),
 			'repeatable'  => true,
@@ -320,10 +320,6 @@ class Room_Type_Metabox {
 				'title'    => esc_html__( 'Pricing' ),
 				'priority' => 20,
 			],
-			'services' => [
-				'title'    => esc_html__( 'Services' ),
-				'priority' => 30,
-			],
 			'amenities' => [
 				'title'    => esc_html__( 'Amenities' ),
 				'priority' => 40,
@@ -344,7 +340,6 @@ class Room_Type_Metabox {
 	protected function output_tabs( $form ) {
 		include trailingslashit( __DIR__ ) . 'views/html-room-type-general.php';
 		include trailingslashit( __DIR__ ) . 'views/html-room-type-pricing.php';
-		include trailingslashit( __DIR__ ) . 'views/html-room-type-services.php';
 		include trailingslashit( __DIR__ ) . 'views/html-room-type-amenities.php';
 		include trailingslashit( __DIR__ ) . 'views/html-room-type-description.php';
 	}

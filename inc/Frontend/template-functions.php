@@ -37,13 +37,17 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	}
 }
 
-function abrs_book_room_button( $request = null, $args, $echo = true ) {
+function abrs_book_room_button( $args, $echo = true ) {
+	global $wp;
+
 	$args = wp_parse_args( $args, [
 		'room'        => 0,
 		'room_type'   => 0,
 		'button_text' => esc_html__( 'Book Now', 'awebooking' ),
 		'button_atts' => [],
 	]);
+
+	$request = $wp->query_vars['res_request'];
 
 	$button = abrs_get_template_content( 'book-button.php', compact( 'args', 'request' ) );
 

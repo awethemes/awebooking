@@ -1,5 +1,4 @@
 <?php
-/* @vars $request, $booking, $controls */
 
 $controls = abrs_create_form( 'search-rooms' );
 
@@ -36,11 +35,11 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 		</div>
 
 		<div class="abrs-card__body" style="padding: 0;">
-			<?php if ( ! isset( $res_request ) ) : ?>
+			<?php if ( ! isset( $results ) ) : ?>
 
 				<p class="awebooking-no-items"><?php esc_html_e( 'Enter dates to search rooms', 'awebooking' ); ?></p>
 
-			<?php elseif ( isset( $res_request ) && $results->isEmpty() ) : ?>
+			<?php elseif ( isset( $results ) && ! $results->has_items() ) : ?>
 
 				<p class="awebooking-no-items"><?php esc_html_e( 'Sorry, no room found', 'awebooking' ); ?></p>
 
@@ -65,7 +64,7 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 							</thead>
 							<tbody>
 								<?php foreach ( $results as $avai ) : ?>
-									<?php $this->partial( 'booking/html-avai-row.php', compact( 'avai' ) ); ?>
+									<?php $this->partial( 'booking/html-avai-row.php', compact( 'avai', 'res_request' ) ); ?>
 								<?php endforeach ?>
 							</tbody>
 						</table>

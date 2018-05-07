@@ -15,7 +15,7 @@ $route->post(   '/settings',                           'Settings_Controller@stor
 
 $route->delete( '/room/{room:\d+}',                    'Room_Controller@destroy' );
 
-$route->get(    '/booking-room',                       'Booking_Room_Controller@create' );
+$route->get(    '/booking-room',                       'Booking_Room_Controller@search' );
 $route->post(   '/booking-room',                       'Booking_Room_Controller@store' );
 $route->get(    '/booking-room/{room_item:\d+}',       'Booking_Room_Controller@edit' );
 $route->put(    '/booking-room/{room_item:\d+}',       'Booking_Room_Controller@update' );
