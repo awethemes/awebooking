@@ -364,6 +364,7 @@ abstract class Mailable {
 			'type'        => 'wysiwyg',
 			'name'        => esc_html__( 'Email content', 'awebooking' ),
 			'default'     => $this->get_default_content(),
+			'after'       => $this->get_shortcodes_notes(),
 			'options'     => [
 				'tinymce'       => false,
 				'media_buttons' => false,
@@ -456,5 +457,61 @@ abstract class Mailable {
 	 */
 	public function get_blogname() {
 		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+	}
+
+	/**
+	 * Get the shortcodes notes.
+	 *
+	 * @return string
+	 */
+	protected function get_shortcodes_notes() {
+		$shortcodes = [
+			'{booking_id}'              => esc_html__( 'The booking ID', 'awebooking' ),
+			'{contents}'                => esc_html__( 'The booking contents', 'awebooking' ),
+			'{customer_details}'        => esc_html__( 'The customer details', 'awebooking' ),
+			'{status}'                  => esc_html__( 'The booking status', 'awebooking' ),
+			'{source}'                  => esc_html__( 'The booking source', 'awebooking' ),
+			'{created_via}'             => esc_html__( 'The booking created via', 'awebooking' ),
+			'{date_created}'            => esc_html__( 'The created date', 'awebooking' ),
+			'{date_modified}'           => esc_html__( 'The modified date', 'awebooking' ),
+			'{arrival_time}'            => esc_html__( 'The arrival time', 'awebooking' ),
+			'{customer_note}'           => esc_html__( 'The customer note', 'awebooking' ),
+			'{check_in_date}'           => esc_html__( 'The booking check-in date', 'awebooking' ),
+			'{check_out_date}'          => esc_html__( 'The booking check-out date', 'awebooking' ),
+			'{discount_tax}'            => esc_html__( 'The discount tax', 'awebooking' ),
+			'{total_tax}'               => esc_html__( 'The total tax', 'awebooking' ),
+			'{discount_total}'          => esc_html__( 'The discount total', 'awebooking' ),
+			'{total}'                   => esc_html__( 'The total amount', 'awebooking' ),
+			'{paid}'                    => esc_html__( 'The paid amount', 'awebooking' ),
+			'{balance_due}'             => esc_html__( 'The balance due', 'awebooking' ),
+			'{customer_id}'             => esc_html__( 'The customer ID', 'awebooking' ),
+			'{customer_title}'          => esc_html__( 'The customer title', 'awebooking' ),
+			'{customer_first_name}'     => esc_html__( 'The customer first name', 'awebooking' ),
+			'{customer_last_name}'      => esc_html__( 'The customer last name', 'awebooking' ),
+			'{customer_address}'        => esc_html__( 'The customer address', 'awebooking' ),
+			'{customer_address_2}'      => esc_html__( 'The customer address 2', 'awebooking' ),
+			'{customer_city}'           => esc_html__( 'The customer city', 'awebooking' ),
+			'{customer_state}'          => esc_html__( 'The customer state', 'awebooking' ),
+			'{customer_postal_code}'    => esc_html__( 'The customer postal code', 'awebooking' ),
+			'{customer_country}'        => esc_html__( 'The customer country', 'awebooking' ),
+			'{customer_company}'        => esc_html__( 'The customer company', 'awebooking' ),
+			'{customer_phone}'          => esc_html__( 'The customer phone', 'awebooking' ),
+			'{customer_email}'          => esc_html__( 'The customer email', 'awebooking' ),
+		];
+
+		$contents = '<div class="awebooking-sweet-alert" style="margin-top: 1em; max-width: 100%;">';
+		$contents .= '<h4>' . esc_html__( 'You can use following shortcodes in content of this template', 'awebooking' ) . '</h4>';
+
+		$contents .= '<table class="awebooking-minimal-table"><tbody>';
+		foreach ( $shortcodes as $key => $value ) {
+			$contents .= '<tr><td><code>' . esc_html( $key ) . '</code></td><td>' . esc_html( $value ) . '</td></tr>';
+		}
+
+		$contents = apply_filters( 'awebooking/after_add_email_notes', $contents );
+
+		$contents .= '</tbody></table>';
+		$contents .= '</div>';
+
+		return $contents;
 	}
 }

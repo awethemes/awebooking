@@ -199,7 +199,7 @@ class Setup_Environment {
 			'menu_icon'           => 'dashicons-building',
 			// 'capability_type'     => Constants::ROOM_TYPE,
 			'supports'            => [ 'title', 'editor', 'thumbnail' ],
-			'has_archive'         => false,
+			'has_archive'         => true,
 			'rewrite'             => [
 				'slug'       => $room_type_slug,
 				'feeds'      => true,

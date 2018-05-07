@@ -4,9 +4,10 @@
  *
  * This template can be overridden by copying it to yourtheme/awebooking/single-room-type.php.
  *
- * @author 		Awethemes
- * @package 	AweBooking/Templates
- * @version     3.0.0
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,11 +25,7 @@ get_header( 'awebooking' ); ?>
 		do_action( 'awebooking/before_main_content' );
 
 		do_action( 'awebooking/template_notices' );
-
-
 	?>
-
-
 
 	<?php while ( have_posts() ) : the_post(); ?>
 

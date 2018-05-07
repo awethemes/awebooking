@@ -3,6 +3,7 @@ namespace AweBooking\Frontend\Providers;
 
 use AweBooking\Support\Service_Provider;
 use AweBooking\Component\Routing\Namespace_Route;
+use AweBooking\Constants;
 
 class Frontend_Service_Provider extends Service_Provider {
 	/**
@@ -21,6 +22,9 @@ class Frontend_Service_Provider extends Service_Provider {
 	 */
 	public function init() {
 		add_action( 'awebooking/register_routes', [ $this, 'register_routes' ], 1 );
+
+		// Setup the awebooking objects into the main query.
+		add_action( 'the_post', [ $this, 'setup_awebooking_objects' ] );
 	}
 
 	/**
@@ -44,5 +48,24 @@ class Frontend_Service_Provider extends Service_Provider {
 		$route = new Namespace_Route( $route, 'AweBooking\\Frontend\\Controllers' );
 
 		require dirname( __DIR__ ) . '/routes.php';
+	}
+
+	/**
+	 * When `the_post()` is called, setup the awebooking objects.
+	 *
+	 * @param  WP_Post $post The WP_Post object (passed by reference).
+	 * @return mixed
+	 */
+	public function setup_awebooking_objects( $post ) {
+		if ( empty( $post->post_type ) ) {
+			return;
+		}
+
+		if ( Constants::ROOM_TYPE == $post->post_type ) {
+			unset( $GLOBALS['room_type'] );
+			$GLOBALS['room_type'] = abrs_get_room_type( $post );
+		}
+
+		do_action( 'awebooking/setup_objects', $post );
 	}
 }
