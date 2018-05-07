@@ -13,7 +13,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+/**
 awebooking( 'flash_message' )->setup_message();
 
 if ( ! awebooking( 'flash_message' )->has() ) {
@@ -27,5 +27,5 @@ foreach ( awebooking( 'flash_message' )->all() as $message ) : ?>
 	</div>
 
 <?php endforeach;
-
+**/
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */

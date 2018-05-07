@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <?php if ( has_post_thumbnail() ) : ?>
-	<div class="awebooking-room-type__image">
+	<div class="room-type__image">
 		<?php the_post_thumbnail( 'awebooking_single' ); ?>
 	</div>
 <?php else : ?>
-	<div class="awebooking-room-type__image">
+	<div class="room-type__image">
 		<img src="<?php echo esc_url( awebooking_placeholder_img_src() ) ?>" alt="<?php echo esc_html__( 'Awaiting room type image', 'awebooking' ) ?>" class="wp-post-image" />
 	</div>
 <?php endif; ?>

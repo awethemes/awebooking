@@ -1,0 +1,86 @@
+// Horizontal, vertical or absolute centering
+@mixin center($width: null, $height: null) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  @if not $width and not $height {
+    transform: translate(-50%, -50%);
+  } @else if $width and $height {
+    width: $width;
+    height: $height;
+    margin: -($width / 2) #{0 0} -($height / 2);
+  } @else if not $height {
+    margin-left: -($width / 2);
+    transform: translateY(-50%);
+    width: $width;
+  } @else {
+    margin-top: -($height / 2);
+    transform: translateX(-50%);
+    height: $height;
+  }
+}
+
+// Helper to clear inner floats
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// Easy @extend %clearfix
+%clearfix {
+  @include clearfix;
+}
+
+// Helper to size an element
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+// Truncates text and adds an ellipsis to represent overflow.
+@mixin text-overflow($width: 100%) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Shorthand mixin for offset positioning
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// Shorthand mixin for absolute positioning
+@mixin absolute($args...) {
+  @include position(absolute, $args...);
+}
+
+// Shorthand mixin for relative positioning
+@mixin relative($args...) {
+  @include position(relative, $args...);
+}
+
+// Shorthand mixin for fixed positioning
+@mixin fixed($args...) {
+  @include position(fixed, $args...);
+}
+
+// Theme-base mixins
+@mixin awebooking-link-color($color: $awebooking-primary, $hover-color: $awebooking-highlight-color) {
+  a {
+    color: $color;
+
+    &:hover,
+    &:focus {
+      color: $hover-color;
+      text-decoration: none;
+    }
+  }
+}

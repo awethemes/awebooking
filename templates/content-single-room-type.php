@@ -19,17 +19,17 @@ if ( post_password_required() ) {
 	return;
 }
 ?>
-<div id="room-type-<?php the_ID(); ?>" <?php post_class( 'awebooking-room-type' ); ?>>
-	<div class="awebooking-room-type__wrapper">
+<div id="room-type-<?php the_ID(); ?>" <?php post_class( 'room-type' ); ?>>
+	<div class="room-type__wrapper">
 
-		<div class="awebooking-room-type__header">
+		<div class="room-type__header">
 			<?php
 				awebooking_template_single_title();
 				awebooking_template_single_price();
 			?>
 		</div>
 
-		<div class="awebooking-room-type__media">
+		<div class="room-type__media">
 
 			<?php
 				/**
@@ -41,7 +41,7 @@ if ( post_password_required() ) {
 			?>
 		</div>
 
-		<div class="awebooking-room-type__check-form summary entry-summary">
+		<div class="room-type__check-form summary">
 
 			<?php
 				/**
@@ -58,37 +58,36 @@ if ( post_password_required() ) {
 
 	</div>
 
-	<div class="awebooking-room-type__sections">
-		<div class="awebooking-sections">
-			<div class="awebooking-section">
-				<h4><?php esc_html_e( 'Description', 'awebooking' ); ?></h4>
+	<div class="room-type__sections">
+		<div class="room-type__section">
+			<h4><?php esc_html_e( 'Description', 'awebooking' ); ?></h4>
 
-				<div class="awebooking-section__content entry-content">
-					<?php the_content(); ?>
-				</div>
+			<div class="room-type__content">
+				<?php the_content(); ?>
 			</div>
+		</div>
 
-			<div class="awebooking-section">
-				<h4><?php esc_html_e( 'Amenities', 'awebooking' ); ?></h4>
+		<div class="room-type__section">
+			<h4><?php esc_html_e( 'Amenities', 'awebooking' ); ?></h4>
 
-				<div class="awebooking-section__content entry-content">
-					<?php $amenities = wp_get_post_terms( get_the_ID(), 'hotel_amenity' ); ?>
-					<?php foreach ( $amenities as $amenity ) : ?>
-						<div class="awebooking-amenities__item">
-							<?php if ( $icon = get_term_meta( $amenity->term_id, '_icon', true ) ) : ?>
-								<span class="awebooking-amenities__icon">
-									<?php if ( 'svg' === $icon['type'] || 'image' === $icon['type'] ) : ?>
-										<?php echo wp_get_attachment_image( $icon['icon'] ); ?>
-									<?php else : ?>
-										<i class="<?php echo esc_attr( $icon['type'] . ' ' . $icon['icon'] ); ?>"></i>
-									<?php endif; ?>
-								</span>
-							<?php endif; ?>
-							<h3 class="awebooking-amenities__title"><?php echo $amenity->name; ?></h3>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
+			<ul class="amenities">
+				<?php $amenities = wp_get_post_terms( get_the_ID(), 'hotel_amenity' ); ?>
+				<?php foreach ( $amenities as $amenity ) : ?>
+					<?php $icon = get_term_meta( $amenity->term_id, '_icon', true ); ?>
+					<li class="amenity <?php echo $icon ? 'has-icon' : ''; ?>">
+						<?php if ( $icon ) : ?>
+							<span class="amenity__icon">
+								<?php if ( 'svg' === $icon['type'] || 'image' === $icon['type'] ) : ?>
+									<?php echo wp_get_attachment_image( $icon['icon'] ); ?>
+								<?php else : ?>
+									<i class="<?php echo esc_attr( $icon['type'] . ' ' . $icon['icon'] ); ?>"></i>
+								<?php endif; ?>
+							</span>
+						<?php endif; ?>
+						<h3 class="amenity__title"><?php echo esc_html( $amenity->name ); ?></h3>
+					</li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 	</div>
 

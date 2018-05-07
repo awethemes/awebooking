@@ -102,6 +102,18 @@ if ( ! function_exists( 'awebooking_output_content_wrapper' ) ) {
 		abrs_get_template( 'global/wrapper-start.php' );
 	}
 }
+
+if ( ! function_exists( 'awebooking_template_notices' ) ) {
+	/**
+	 * AweBooking notices template.
+	 *
+	 * @return void
+	 */
+	function awebooking_template_notices() {
+		abrs_get_template( 'global/notices.php' );
+	}
+}
+
 if ( ! function_exists( 'awebooking_output_content_wrapper_end' ) ) {
 
 	/**

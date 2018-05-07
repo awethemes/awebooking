@@ -20,6 +20,6 @@ if ( ! $room_type->get_description() ) {
 	return;
 }
 ?>
-<div class="awebooking-loop-room-type__desc">
+<div class="list-room__desc">
 	<?php print wp_trim_words( $room_type->get_description(), 25, '...' ); // WPCS: xss ok. ?>
 </div>
