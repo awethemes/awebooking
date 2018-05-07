@@ -21,9 +21,9 @@ if ( empty( $room_type ) ) {
 	return;
 }
 ?>
-<li <?php post_class( 'awebooking-loop-room-type' ); ?>>
+<div <?php post_class( 'list-room' ); ?>>
 
-	<div class="awebooking-loop-room-type__media">
+	<div class="list-room__media">
 
 		<?php
 		/**
@@ -39,11 +39,12 @@ if ( empty( $room_type ) ) {
 		 * @hooked awebooking_template_loop_room_type_thumbnail - 10
 		 * @hooked awebooking_template_loop_room_type_link_close - 20
 		 */
-		do_action( 'awebooking/before_archive_loop_item_title' ); ?>
+		do_action( 'awebooking/before_archive_loop_item_title' );
+		?>
 
 	</div>
 
-	<div class="awebooking-loop-room-type__info">
+	<div class="list-room__info">
 
 		<?php
 		/**
@@ -66,8 +67,9 @@ if ( empty( $room_type ) ) {
 		 *
 		 * @hooked awebooking_template_loop_view_more - 10
 		 */
-		do_action( 'awebooking/after_archive_loop_item' ); ?>
+		do_action( 'awebooking/after_archive_loop_item' );
+		?>
 
 	</div>
-</li>
+</div>
 

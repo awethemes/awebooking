@@ -1,0 +1,20 @@
+.awebooking-pagination {
+  margin: 25px 0;
+  padding-left: 0;
+  border-radius:  0;
+  display: inline-block;
+
+  > li {
+    display: inline;
+
+    > a,
+    > span {
+      float: left;
+      position: relative;
+      padding: 7px 14px;
+      display: inline-block;
+      text-decoration: none;
+      margin-right: 5px;
+    }
+  }
+}

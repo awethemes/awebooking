@@ -1,0 +1,144 @@
+/* Layouts */
+.awebooking-check-availability {
+  margin-left: -($awebooking-gutter-width / 2);
+  margin-right: -($awebooking-gutter-width / 2);
+  @extend %clearfix;
+}
+
+.awebooking-check-availability__sidebar,
+.awebooking-check-availability__content-area {
+  width: 100%;
+  min-height: 1px;
+
+  float: left;
+  position: relative;
+
+  padding-left: ($awebooking-gutter-width / 2);
+  padding-right: ($awebooking-gutter-width / 2);
+}
+
+.awebooking-total-price-wrapper {
+  margin: 10px 0;
+}
+
+.awebooking-single-room {
+  .awebooking-check-availability__content-area {
+    float: left;
+  }
+}
+
+@include media('>=md', '<lg') {
+  .awebooking-check-availability__sidebar {
+    width: 33.33333333%;
+  }
+
+  .awebooking-check-availability__content-area {
+    width: 66.66666667%;
+  }
+
+  .awebooking-sidebar-left {
+    .awebooking-check-availability__sidebar {
+      right: 66.66666667%;
+    }
+
+    .awebooking-check-availability__content-area {
+      left: 33.33333333%;
+    }
+  }
+
+}
+
+@include media('>=lg') {
+  .awebooking-check-availability__sidebar {
+    width: 25%;
+  }
+
+  .awebooking-check-availability__content-area {
+    width: 75%;
+  }
+
+  .awebooking-sidebar-left {
+    .awebooking-check-availability__sidebar {
+      right: 75%;
+    }
+
+    .awebooking-check-availability__content-area {
+      left: 25%;
+    }
+  }
+  .awebooking-check-availability__content-area .awebooking-content {
+    display: block;
+  }
+}
+
+/* Sidebar tweak */
+.awebooking-check-form {
+  select,
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"] {
+    width: 100%;
+  }
+}
+
+/* Reset Field */
+.awebooking-field {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Fix inline calendar width */
+.awebooking-calendar .ui-datepicker-inline {
+  width: 100% !important;
+}
+
+/* Theme Layouts */
+// .twentythirteen .awebooking {
+//   padding-top: 40px;
+//   padding-bottom: 40px;
+// }
+
+// .twentysixteen {
+//   .awebooking-container {
+//     width: 100%;
+//   }
+
+//   .site-content > .awebooking {
+//     margin-bottom: 40px;
+//   }
+// }
+#awe-plugin-booking {
+  margin: 30px 0;
+}
+
+// Customize responsive layout checkout page
+
+.awebooking-checkout-page  {
+  .awebooking-check-availability__sidebar {
+    right: 0;
+    width: 100%;
+  }
+
+  .awebooking-check-availability__content-area {
+    left: 0;
+    width: 100%;
+  }
+}
+
+.awebooking-field-none{
+    display: none;
+    display: none !important;
+}
+
+.awebooking-choose-room-notice {
+    position: fixed;
+    bottom: 3%;
+    right: -30%;
+    z-index: 9999;
+    transition: all 0.5s ease;
+}

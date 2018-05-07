@@ -16,5 +16,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $room_type;
 
 if ( $room_type->get( 'rack_rate' ) ) : ?>
-	<p class="awebooking-room-type__price"><?php printf( esc_html__( 'Start from %s/night', 'awebooking' ), '<span>' . abrs_format_price( $room_type->get( 'rack_rate' ) ) . '</span>' ); ?></p>
+	<p class="room-type__price"><?php printf( esc_html__( 'Start from %s/night', 'awebooking' ), '<span>' . abrs_format_price( $room_type->get( 'rack_rate' ) ) . '</span>' ); ?></p>
 <?php endif; ?>

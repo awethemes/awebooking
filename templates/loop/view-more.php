@@ -15,4 +15,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<a class="awebooking-loop-room-type__button" href="<?php echo esc_url( get_the_permalink() ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />
+<a class="list-room__button" href="<?php echo esc_url( get_the_permalink() ); ?>"><?php esc_html_e( 'View more infomation', 'awebooking' ); ?></a><br />

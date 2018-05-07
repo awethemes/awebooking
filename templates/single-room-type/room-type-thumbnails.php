@@ -22,7 +22,7 @@ if ( empty( $attachment_ids ) ) {
 	return;
 }
 ?>
-<div class="awebooking-room-type-gallery__image">
+<div class="room-type-gallery__image">
 	<?php
 	foreach ( $attachment_ids as $attachment_id ) {
 		$image = wp_get_attachment_image( $attachment_id, 'awebooking_thumbnail' );

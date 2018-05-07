@@ -1,0 +1,60 @@
+.awebooking-informations__title,
+.awebooking-informations__table,
+.awebooking-service__title {
+  margin-bottom: 20px;
+}
+
+.awebooking-informations__media,
+.awebooking-informations__content {
+  padding: 0 15px;
+}
+
+.awebooking-informations__content {
+  float: left;
+  width: 100%;
+}
+
+.awebooking-service__wrapper {
+  overflow: hidden;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+@media (max-width: 480px) {
+  .awebooking-informations__title {
+    font-size: 18px !important;
+  }
+
+  .awebooking-service__item span {
+    display: block;
+    font-size: 16px;
+  }
+
+  .awebooking-service__content {
+    padding: 10px 0;
+  }
+
+  #awebooking-coupon-form .input-text {
+    width: 150px;
+    margin-bottom: 30px;
+  }
+
+  #apply-coupon {
+    margin-bottom: 30px;
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    table-layout: auto;
+
+    th, td {
+      white-space: nowrap;
+    }
+  }
+}

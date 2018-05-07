@@ -10,4 +10,4 @@
  * @version  3.1.0
  */
 ?>
-<ul class="room_types">
+<div class="list-rooms">

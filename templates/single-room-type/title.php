@@ -14,4 +14,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-the_title( '<h1 class="awebooking-room-type__title h2">', '</h1>' );
+the_title( '<h1 class="room-type__title h2">', '</h1>' );

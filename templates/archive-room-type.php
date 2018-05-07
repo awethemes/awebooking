@@ -24,38 +24,31 @@ get_header( 'booking' ); ?>
 		 */
 		do_action( 'awebooking/before_main_content' );
 	?>
+	<?php if ( have_posts() ) : ?>
 
-		<div class="awebooking-room-type-filter">
+		<?php awebooking_room_type_loop_start(); ?>
+
+			<?php while ( have_posts() ) : the_post(); ?>
+
+				<?php abrs_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
+
+			<?php endwhile; // end of the loop. ?>
+
+		<?php awebooking_room_type_loop_end(); ?>
+
 		<?php
-			do_action( 'awebooking/before_archive_loop' );
+			/**
+			 * awebooking/after_archive_loop hook.
+			 *
+			 * @hooked awebooking_pagination - 10
+			 */
+			do_action( 'awebooking/after_archive_loop' );
 		?>
-		</div>
 
-		<?php if ( have_posts() ) : ?>
+	<?php else : ?>
+		<?php abrs_get_template( 'loop/no-room-types-found.php' ); ?>
 
-			<?php awebooking_room_type_loop_start(); ?>
-
-				<?php while ( have_posts() ) : the_post(); ?>
-
-					<?php abrs_get_template_part( 'content', apply_filters( 'awebooking/content_loop_layout', 'room-type' ) ); ?>
-
-				<?php endwhile; // end of the loop. ?>
-
-			<?php awebooking_room_type_loop_end(); ?>
-
-			<?php
-				/**
-				 * awebooking/after_archive_loop hook.
-				 *
-				 * @hooked awebooking_pagination - 10
-				 */
-				do_action( 'awebooking/after_archive_loop' );
-			?>
-
-		<?php else : ?>
-			<?php abrs_get_template( 'loop/no-room-types-found.php' ); ?>
-
-		<?php endif; ?>
+	<?php endif; ?>
 
 	<?php
 		/**
