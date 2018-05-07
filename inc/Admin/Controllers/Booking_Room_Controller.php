@@ -7,38 +7,43 @@ use AweBooking\Model\Booking\Room_Item;
 
 class Booking_Room_Controller extends Controller {
 	/**
-	 * Handle store the settings.
+	 * Handle search rooms.
 	 *
-	 * @param  \Awethemes\Http\Request   $request The current request.
-	 * @param  \AweBooking\Model\Booking $booking The booking reference.
+	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function create( Request $request ) {
+	public function search( Request $request ) {
 		// Get the check the booking reference.
 		if ( ! $booking = abrs_get_booking( $request['refer'] ) ) {
 			return new WP_Error( 404, esc_html__( 'The booking reference is does not exist.', 'awebooking' ) );
 		}
 
 		if ( ! $booking->is_editable() ) {
-			return new WP_Error( 404, esc_html__( 'This booking is no longer editable.', 'awebooking' ) );
+			return new WP_Error( 400, esc_html__( 'This booking is no longer editable.', 'awebooking' ) );
 		}
 
 		if ( $request->filled( 'check-in', 'check-out' ) ) {
-			$res_request = abrs_create_res_request([
-				'check_in'  => $request->get( 'check-in' ),
-				'check_out' => $request->get( 'check-out' ),
-			]);
+			$res_request = abrs_create_res_request( $request );
 
 			if ( is_wp_error( $res_request ) ) {
 				return $res_request;
 			}
 
-			$results = $res_request->search();
+			$results = $res_request->search( [] );
 		}
 
 		return $this->response( 'booking/add-room.php', compact(
 			'request', 'booking', 'res_request', 'results'
 		));
+	}
+
+	/**
+	 * Handle search rooms.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return \Awethemes\Http\Response
+	 */
+	public function select_room( Request $request ) {
 	}
 
 	/**
@@ -78,10 +83,11 @@ class Booking_Room_Controller extends Controller {
 		}
 
 		if ( $res_request->guest_counts->get_totals() > $room_type['maximum_occupancy'] ) {
-			return 'aaaa';
 		}
 
-		$room_item = ( new Room_Item )->fill([
+		dd( $res_request );
+
+		/*$room_item = ( new Room_Item )->fill([
 			'booking_id' => $booking->get_id(),
 			'room_id'    => $room_unit->get_id(),
 			'name'       => $room_unit['name'],
@@ -90,12 +96,12 @@ class Booking_Room_Controller extends Controller {
 			'adults'     => $res_request['adults'],
 			'children'   => $res_request['children'],
 			'infants'    => $res_request['infants'],
-		]);
+		]);*/
 
 		// dd( $room_item );
-		$room_item->save();
+		// $room_item->save();
 
-		$room_item->set_timespan( $res_request->timespan );
+		// $room_item->set_timespan( $res_request->timespan );
 
 		return $this->redirect()->back();
 	}

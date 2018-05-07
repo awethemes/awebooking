@@ -1500,6 +1500,7 @@ table.availability-table .text-remain-rooms .dashicons {
 .flatpickr-months .flatpickr-next-month,
 .flatpickr-months .flatpickr-month {
   height: 35px;
+  box-sizing: border-box;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,
@@ -1679,6 +1680,30 @@ span.flatpickr-weekday {
 
 .embed-responsive-1by1::before {
   padding-top: 100%;
+}
+
+/* Datepicker */
+
+.flatpickr-calendar {
+  margin-top: 9px;
+}
+
+.flatpickr-calendar:after {
+  margin: 0 -9px;
+  border-width: 9px;
+}
+
+.flatpickr-calendar:before {
+  border-width: 10px;
+  margin: 0 -10px;
+}
+
+.flatpickr-calendar.arrowTop:after {
+  border-bottom-color: #2196F3;
+}
+
+.flatpickr-calendar.arrowBottom:after {
+  border-top-color: #fff;
 }
 
 /* Tippy */

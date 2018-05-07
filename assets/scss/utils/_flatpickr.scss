@@ -17,6 +17,7 @@ $datepicker-range-background:  #e2f2ff !default;
   .flatpickr-next-month,
   .flatpickr-month {
     height: 35px;
+    box-sizing: border-box;
   }
 
   .flatpickr-prev-month svg,

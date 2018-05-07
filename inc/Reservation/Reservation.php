@@ -1,8 +1,10 @@
 <?php
 namespace AweBooking\Reservation;
 
+use WP_Error;
 use AweBooking\Support\Collection;
 use Awethemes\WP_Session\WP_Session;
+use AweBooking\Reservation\Room_Stay\Room_Rate;
 
 class Reservation {
 	/**
@@ -18,6 +20,7 @@ class Reservation {
 	 * @var string
 	 */
 	public $currency;
+
 	public $language;
 
 	/**
@@ -118,12 +121,40 @@ class Reservation {
 		return $this;
 	}
 
-	/**
-	 * Add a room_stay into the reservation.
-	 *
-	 * @param \AweBooking\Reservation\Room_Stay $room_stay The room_stay implementation.
-	 */
-	public function add_room_stay( Room_Stay $room_stay ) {
-		$this->room_stays->put( $room_stay );
+	public function add_room_stay( $room_type, $rate_plan = null, Request $request = null ) {
+		if ( is_null( $request ) && is_null( $this->current_request ) ) {
+			throw new \Exception( 'Error Processing Request' );
+		}
+
+		// Resolve the reservation request.
+		if ( is_null( $request ) ) {
+			$request = $this->get_current_request();
+		} else {
+			$this->set_current_request( $request );
+		}
+
+		// Create the room rate.
+		$room_rate = new Room_Rate( $request->get_timespan(), $request->get_guest_counts(), $room_type, $rate_plan );
+		$room_rate->set_request( $request );
+
+		$remain_rooms = $room_rate->get_remain_rooms();
+
+		if ( 0 === count( $remain_rooms ) ) {
+			return new WP_Error( 'no_room_left', esc_html__( 'No room left', 'awebooking' ) );
+		}
+
+		$rate = $room_rate->get_price( 'total' );
+		if ( $rate <= 0 ) {
+			return new WP_Error( 'rate_error', esc_html__( 'Rate Error', 'awebooking' ) );
+		}
+
+		$room = $remain_rooms->first()['resource'];
+		$room_rate->assign( $room );
+
+		$this->room_stays->put( $room->get_id(), $room_rate );
+
+		$this->session->put( 'reservation', $this->room_stays );
+
+		return true;
 	}
 }

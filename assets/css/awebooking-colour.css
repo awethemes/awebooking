@@ -57,6 +57,7 @@
 .awebooking-datepicker .flatpickr-months .flatpickr-next-month,
 .awebooking-datepicker .flatpickr-months .flatpickr-month {
   height: 35px;
+  box-sizing: border-box;
 }
 
 .awebooking-datepicker .flatpickr-months .flatpickr-prev-month svg,

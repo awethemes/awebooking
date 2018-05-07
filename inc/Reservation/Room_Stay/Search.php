@@ -59,7 +59,8 @@ class Search {
 			// Looking for multi rates, please upgrade to pro version :).
 			$room_rate = new Room_Rate( $request->get_timespan(), $request->get_guest_counts(), $room_type, $room_type->get_standard_plan() );
 
-			$room_rate->set_request( $request );
+			$room_rate->set_room_constraints( $constraints );
+			$room_rate->setup();
 
 			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $room_type, $this );
 		}

@@ -63,6 +63,24 @@ class Room_Item extends Item {
 	}
 
 	/**
+	 * Get the Timespan of check-in, check-out.
+	 *
+	 * @return \AweBooking\Model\Common\Timespan|null
+	 */
+	public function get_timespan() {
+		return abrs_timespan( $this->get( 'check_in' ), $this->get( 'check_out' ) );
+	}
+
+	/**
+	 * Returns nights stayed of this line item.
+	 *
+	 * @return int
+	 */
+	public function get_nights_stayed() {
+		return abrs_optional( $this->get_timespan() )->nights();
+	}
+
+	/**
 	 * Create the Guest_Counts.
 	 *
 	 * @return \AweBooking\Model\Common\Guest_Counts|null
@@ -94,6 +112,8 @@ class Room_Item extends Item {
 			'room_type_name' => '',
 			'rate_plan_name' => '',
 
+			'check_in'       => '',
+			'check_out'      => '',
 			'adults'         => 0,
 			'children'       => 0,
 			'infants'        => 0,

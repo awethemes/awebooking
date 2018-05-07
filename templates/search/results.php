@@ -22,6 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 do_action( 'awebooking/template_notices' );
 
+dump( abrs_reservation() );
+
 ?>
 
 <?php do_action( 'awebooking/before_search_results', $results ); ?>
