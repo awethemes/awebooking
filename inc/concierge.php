@@ -4,15 +4,15 @@ use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Pricing\Rate;
 use AweBooking\Model\Common\Timespan;
+use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Resource\Resource_Interface;
-use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
+use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Finder\Finder;
 use AweBooking\Calendar\Finder\State_Finder;
-use AweBooking\Reservation\Request;
 use AweBooking\Reservation\Constraints\Night_Stay_Constraint;
 use AweBooking\Support\Collection;
 
@@ -284,20 +284,20 @@ function abrs_get_rate_operations() {
  * @param  array     $constraints  Array of constraints.
  * @return \AweBooking\Calendar\Resource\Resources
  */
-function abrs_filter_rates( $rates, Request $request, $constraints = [] ) {
+function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $constraints = [] ) {
 	$resources = abrs_collect( $rates )
 		->transform( 'abrs_resource_rate' )
 		->filter( /* Remove empty items */ )
-		->each(function( $r ) use ( $request ) {
-			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $request ) );
+		->each(function( $r ) use ( $timespan, $guests ) {
+			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan, $guests ) );
 		})->all();
 
 	$response = ( new Finder( $resources ) )
 		->callback( '_abrs_filter_rates_callback' )
-		->using( apply_filters( 'awebooking/filter_rates_constraints', $constraints, $resources, $request ) )
-		->find( $request->get_timespan()->to_period( Constants::GL_NIGHTLY ) );
+		->using( apply_filters( 'awebooking/filter_rates_constraints', $constraints, $timespan, $guests, $resources ) )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'awebooking/filter_rates_response', $response, $request, $resources );
+	return apply_filters( 'awebooking/filter_rates_response', $response, $timespan, $guests, $resources );
 }
 
 /**
@@ -327,14 +327,14 @@ function _abrs_filter_rates_callback( $resource, $response ) {
  * @param  \AweBooking\Reservation\Request $request The reservation request.
  * @return array
  */
-function abrs_build_rate_constraints( Rate $rate, Request $request ) {
+function abrs_build_rate_constraints( Rate $rate, Timespan $timespan, Guest_Counts $guests ) {
 	$constraints  = [];
 
 	// Get rate restrictions.
 	$restrictions = $rate->get_restrictions();
 
 	if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
-		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $request->get_timespan(), $restrictions['min_los'], $restrictions['max_los'] );
+		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
 
 	return apply_filters( 'awebooking/rate_constraints', $constraints, $rate );
@@ -349,7 +349,7 @@ function abrs_build_rate_constraints( Rate $rate, Request $request ) {
  * @param  array     $constraints AweBooking\Calendar\Finder\Constraint[].
  * @return \AweBooking\Calendar\Finder\Response
  */
-function abrs_check_rooms( $room, Request $request, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
+function abrs_check_rooms( $room, Timespan $timespan, Guest_Counts $guests, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
 	$resources = abrs_collect( $room )
 		->transform( 'abrs_resource_room' )
 		->filter()
@@ -357,10 +357,10 @@ function abrs_check_rooms( $room, Request $request, $states = Constants::STATE_A
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->only( is_array( $states ) ? $states : [ $states ] )
-		->using( apply_filters( 'awebooking/check_rooms_constraints', $constraints, $resources, $request, $states ) )
-		->find( $request->get_timespan()->to_period( Constants::GL_NIGHTLY ) );
+		->using( apply_filters( 'awebooking/check_rooms_constraints', $constraints, $timespan, $guests, $states, $resources ) )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'awebooking/check_room_state_response', $response, $request, $resources, $states );
+	return apply_filters( 'awebooking/check_room_state_response', $response, $timespan, $guests, $states, $resources );
 }
 
 /**

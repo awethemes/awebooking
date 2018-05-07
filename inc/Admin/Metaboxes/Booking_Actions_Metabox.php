@@ -46,11 +46,7 @@ class Booking_Actions_Metabox {
 
 		switch ( $action ) {
 			case 'send_booking_details':
-				$sended = Mailer::to( 'anhskohbo@gmail.com' )->send( new Invoice );
-
-				if ( $sended ) {
-					abrs_add_booking_note( $the_booking, esc_html__( 'Invoice manually sent to customer.', 'awebooking' ), false, true );
-				}
+				abrs_mailer( 'new_booking' )->build( $the_booking )->send();
 				break;
 
 			case 'send_booking_details_admin':

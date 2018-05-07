@@ -143,7 +143,7 @@ class Room_Rate {
 
 		if ( ! $this->is_error() ) {
 			$this->availability = new Availability( $this->room_type,
-				abrs_check_rooms( $this->room_type->get_rooms(), $this->get_request(), Constants::STATE_AVAILABLE, $this->room_constraints )
+				abrs_check_rooms( $this->room_type->get_rooms(), $this->timespan, $this->guest_counts, Constants::STATE_AVAILABLE, $this->room_constraints )
 			);
 
 			if ( count( $this->availability->remains() ) === 0 ) {
@@ -152,7 +152,7 @@ class Room_Rate {
 			}
 
 			$this->filtered_rates = new Availability( $this->rate_plan,
-				abrs_filter_rates( $this->rate_plan->get_rates(), $this->get_request() )
+				abrs_filter_rates( $this->rate_plan->get_rates(), $this->timespan, $this->guest_counts )
 			);
 
 			if ( count( $this->filtered_rates->remains() ) === 0 ) {
@@ -161,9 +161,9 @@ class Room_Rate {
 			}
 		}
 
-		$this->did_setup = true;
-
 		do_action( 'awebooking/setup_room_rate', $this );
+
+		$this->did_setup = true;
 	}
 
 	/**

@@ -22,37 +22,43 @@ $customer_email       = $booking->get_customer_email();
 $customer_phone       = $booking['customer_phone'];
 $customer_company     = $booking->get_customer_company();
 $customer_note        = $booking['customer_note'];
+
 ?>
+
 <h2><?php esc_html_e( 'Customer details', 'awebooking' ); ?></h2>
-<div class="table">
-	<table>
-		<tbody>
+
+<table class="table table--customer" width="100%" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td><?php esc_html_e( 'First Name', 'awebooking' ); ?></td>
+			<td><?php echo esc_html( $customer_first_name ); ?></td>
+		</tr>
+
+		<tr>
+			<td><?php esc_html_e( 'Last Name', 'awebooking' ); ?></td>
+			<td><?php echo esc_html( $customer_last_name ); ?></td>
+		</tr>
+
+		<?php if ( $booking['customer_address'] ) : ?>
 			<tr>
-				<td><strong><?php esc_html_e( 'First Name', 'awebooking' ); ?>:</strong></td>
-				<td><?php echo esc_html( $customer_first_name ); ?></td>
+				<td><?php esc_html_e( 'Address', 'awebooking' ); ?></td>
+				<td> <?php echo esc_html( $booking->get( 'customer_address' ) ); ?> <?php echo esc_html( $booking->get( 'customer_address_2' ) ); ?></td>
 			</tr>
-			<tr>
-				<td><strong><?php esc_html_e( 'Last Name', 'awebooking' ); ?>:</strong></td>
-				<td><?php echo esc_html( $customer_last_name ); ?></td>
-			</tr>
-			<tr>
-				<td><strong><?php esc_html_e( 'Email', 'awebooking' ); ?>:</strong></td>
-				<td><?php echo esc_html( $customer_email ); ?></td>
-			</tr>
-			<tr>
-				<td><strong><?php esc_html_e( 'Phone', 'awebooking' ); ?>:</strong></td>
-				<td><?php echo esc_html( $customer_phone ); ?></td>
-			</tr>
-			<tr>
-				<td><strong><?php esc_html_e( 'Company', 'awebooking' ); ?>:</strong></td>
-				<td><?php echo esc_html( $customer_company ); ?></td>
-			</tr>
-			<?php if ( $customer_note ) : ?>
-				<tr>
-					<td><strong><?php esc_html_e( 'Note', 'awebooking' ); ?>:</strong></td>
-					<td><?php echo esc_html( $customer_note ); ?></td>
-				</tr>
-			<?php endif; ?>
-		</tbody>
-	</table>
-</div>
+		<?php endif ?>
+
+		<tr>
+			<td><?php esc_html_e( 'Email', 'awebooking' ); ?></td>
+			<td><?php echo esc_html( $customer_email ); ?></td>
+		</tr>
+
+		<tr>
+			<td><?php esc_html_e( 'Phone', 'awebooking' ); ?></td>
+			<td><?php echo esc_html( $customer_phone ); ?></td>
+		</tr>
+
+		<tr>
+			<td><?php esc_html_e( 'Company', 'awebooking' ); ?></td>
+			<td><?php echo esc_html( $customer_company ); ?></td>
+		</tr>
+	</tbody>
+</table>
