@@ -197,21 +197,21 @@ if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
 	 * Get the room type thumbnail, or the placeholder if not set.
 	 *
 	 * @subpackage Loop
-	 * @param string $size (default: 'shop_catalog').
+	 * @param string $size (default: 'awebooking_archive').
 	 * @return string
 	 */
-	function awebooking_get_room_type_thumbnail( $size = 'awebooking_catalog', $post_id = null ) {
+	function awebooking_get_room_type_thumbnail( $size = 'awebooking_archive', $post_id = null ) {
 		global $post;
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
 
-		$image_size = apply_filters( 'single_room_type_archive_thumbnail_size', $size );
+		$size = apply_filters( 'awebooking/archive_thumbnail_size', $size );
 
 		if ( has_post_thumbnail( $post_id ) ) {
-			return get_the_post_thumbnail( $post_id, $image_size );
+			return get_the_post_thumbnail( $post_id, $size );
 		} elseif ( awebooking_placeholder_img_src() ) {
-			return awebooking_placeholder_img( $image_size );
+			return awebooking_placeholder_img( $size );
 		}
 	}
 }

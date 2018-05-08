@@ -15,6 +15,7 @@ class Custom_Fields {
 		$this->register( 'abrs_amount', 'abrs_sanitize_decimal' );
 		$this->register( 'abrs_toggle', 'abrs_sanitize_checkbox' );
 		$this->register( 'abrs_checkbox', 'abrs_sanitize_checkbox' );
+		$this->register( 'abrs_image_size', 'abrs_sanitize_image_size' );
 	}
 
 	/**

@@ -25,6 +25,52 @@ class Appearance_Setting extends Abstract_Setting {
 	 */
 	public function setup_fields() {
 		$this->add_field([
+			'id'    => '__images',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Room images', 'awebooking' ),
+			'desc' 	=> sprintf( __( 'These settings affect the display and dimensions of images in your catalog - the display on the front-end will still be affected by CSS styles. After changing these settings you may need to <a target="_blank" href="%s">regenerate your thumbnails</a>.', 'awebooking' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' ),
+		]);
+
+		$this->add_field([
+			'id'              => 'awebooking_archive_image_size',
+			'type'            => 'abrs_image_size',
+			'name'            => esc_html__( 'Archive images', 'awebooking' ),
+			'desc'            => esc_html__( 'This size is usually used in room type listings. (W x H)', 'awebooking' ),
+			'tooltip'         => true,
+			'default'         => [
+				'width'  => 600,
+				'height' => 400,
+				'crop'   => 'on',
+			],
+		]);
+
+		$this->add_field([
+			'id'              => 'awebooking_single_image_size',
+			'type'            => 'abrs_image_size',
+			'name'            => esc_html__( 'Single room image', 'awebooking' ),
+			'desc'            => esc_html__( 'This is the size used by the main image on the room type page. (W x H)', 'awebooking' ),
+			'tooltip'         => true,
+			'default'         => [
+				'width'  => 600,
+				'height' => 400,
+				'crop'   => 'on',
+			],
+		]);
+
+		$this->add_field([
+			'id'              => 'awebooking_thumbnail_image_size',
+			'type'            => 'abrs_image_size',
+			'name'            => esc_html__( 'Room thumbnails', 'awebooking' ),
+			'desc'            => esc_html__( 'This size is usually used for the gallery of images on the room type page. (W x H)', 'awebooking' ),
+			'tooltip'         => true,
+			'default'         => [
+				'width'  => 300,
+				'height' => 300,
+				'crop'   => 'on',
+			],
+		]);
+
+		$this->add_field([
 			'id'    => '__display_datepicker_title',
 			'type'  => 'title',
 			'name'  => esc_html__( 'Date Picker', 'awebooking' ),

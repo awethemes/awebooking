@@ -376,3 +376,18 @@ function abrs_sanitize_email( $email ) {
 function abrs_sanitize_ids( $list ) {
 	return implode( ', ', wp_parse_id_list( $list ) );
 }
+
+function abrs_sanitize_image_size( $size ) {
+	$atts = shortcode_atts([
+		'width'  => 150,
+		'height' => 150,
+		'crop'   => 'on',
+	], $size );
+
+
+	$atts['width']  = absint( $atts['width'] );
+	$atts['height'] = absint( $atts['height'] );
+	$atts['crop']   = isset( $size['crop'] ) ? 'on' : 'off';
+
+	return $atts;
+}

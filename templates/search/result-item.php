@@ -48,7 +48,7 @@ $room_rate->get_price();
 							<div class="abroom__image">
 								<?php
 								if ( has_post_thumbnail( $room_type->get_id() ) ) {
-									echo get_the_post_thumbnail( $room_type->get_id(), 'awebooking_catalog' );
+									echo get_the_post_thumbnail( $room_type->get_id(), 'awebooking_archive' );
 								}
 								?>
 							</div>
