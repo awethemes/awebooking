@@ -510,3 +510,40 @@ function abrs_get_page_permalink( $page ) {
 
 	return apply_filters( "awebooking/get_{$page}_page_permalink", $permalink );
 }
+
+/**
+ * Get an image size.
+ *
+ * @param array|string $image_size
+ * @return array
+ */
+function abrs_get_image_size( $image_size ) {
+	if ( is_array( $image_size ) ) {
+		$width  = isset( $image_size[0] ) ? $image_size[0] : '300';
+		$height = isset( $image_size[1] ) ? $image_size[1] : '300';
+		$crop   = isset( $image_size[2] ) ? $image_size[2] : 1;
+
+		$size = array(
+			'width'  => $width,
+			'height' => $height,
+			'crop'   => $crop,
+		);
+
+		$image_size = $width . '_' . $height;
+
+	} elseif ( in_array( $image_size, array( 'awebooking_thumbnail', 'awebooking_archive', 'awebooking_single' ) ) ) {
+		$size           = abrs_get_option( $image_size . '_image_size', [] );
+		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
+		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
+		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
+
+	} else {
+		$size = array(
+			'width'  => '300',
+			'height' => '300',
+			'crop'   => 1,
+		);
+	}
+
+	return apply_filters( 'awebooking/get_image_size_' . $image_size, $size );
+}

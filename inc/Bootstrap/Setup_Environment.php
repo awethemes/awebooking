@@ -32,6 +32,20 @@ class Setup_Environment {
 		add_action( 'init', [ $this, 'register_taxonomies' ], 5 );
 		add_action( 'init', [ $this, 'register_post_types' ], 5 );
 		add_action( 'init', [ $this, 'register_post_status' ], 10 );
+		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
+	}
+
+	/**
+	 * Add Awebooking Image sizes to WP.
+	 */
+	public function add_image_sizes() {
+		$thumbnail = abrs_get_image_size( 'awebooking_thumbnail' );
+		$archive   = abrs_get_image_size( 'awebooking_archive' );
+		$single    = abrs_get_image_size( 'awebooking_single' );
+
+		add_image_size( 'awebooking_thumbnail', $thumbnail['width'], $thumbnail['height'], $thumbnail['crop'] );
+		add_image_size( 'awebooking_archive', $archive['width'], $archive['height'], $archive['crop'] );
+		add_image_size( 'awebooking_single', $single['width'], $single['height'], $single['crop'] );
 	}
 
 	/**
