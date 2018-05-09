@@ -57,7 +57,7 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 								<tr>
 									<th style="width: 38px;"><span class="screen-reader-text"><?php echo esc_html__( 'Image', 'awebooking' ); ?></span></th>
 									<th style="width: 20%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
-									<th style="width: 15%;"><?php echo esc_html__( 'Room', 'awebooking' ); ?></th>
+									<th style="width: 15%;"><?php echo esc_html__( 'Assign Room', 'awebooking' ); ?></th>
 									<th style="width: 30%;"><?php echo esc_html__( 'Occupancy', 'awebooking' ); ?></th>
 									<th><?php echo esc_html__( 'Price', 'awebooking' ); ?></th>
 								</tr>

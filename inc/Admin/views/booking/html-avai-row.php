@@ -2,10 +2,7 @@
 
 list ($room_type, $room_rate ) = array_values( $avai );
 
-// Setup the room avai and rates.
-$room_rate->setup();
-
-if ( ! $room_rate->is_bookable() ) {
+if ( $room_rate->has_error( 'zero_rate' ) ) {
 	return;
 }
 
@@ -47,7 +44,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 			/* translators: %d Number of rooms left */
 			echo esc_html( sprintf( _n( '%d room left', '%d rooms left', count( $remain_rooms ), 'awebooking' ), count( $remain_rooms ) ) );
 			?>
-			<span class="tippy" data-tippy-html="#js-debug-room-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-delay="[100, 100000]" data-tippy-theme="abrs-tippy" data-tippy-interactive="true" data-tippy-arrow="true">
+			<span class="tippy" data-tippy-html="#js-debug-room-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
 				<span class="dashicons dashicons-info"></span>
 			</span>
 		</span>
@@ -95,17 +92,42 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 	</td>
 
 	<td>
-		<?php if ( $room_rate->is_error() ) : ?>
+		<?php if ( $room_rate->has_error() ) : ?>
 
-			<?php echo wp_kses_post( $room_rate->get_error_message() ); ?>
+			<?php
+			$reject_rate = $room_rate->filtered_rates->excludes()->first();
+
+			if ( $reject_rate && ! empty( $reject_rate['message'] ) ) {
+				$message = $reject_rate['message'];
+			} else {
+				$message = $room_rate->get_error_message();
+			}
+
+			echo '<span class="tippy" title="' . esc_attr( $message ) . '"><span class="dashicons dashicons-flag"></span></span>';
+			?>
 
 		<?php else : ?>
-			<span class="abrs-badge abrs-badge--primary">
+			<span class="abrs-badge abrs-badge--primary tippy" data-tippy-html="#js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
 				<?php abrs_price( $room_rate->get_price( 'total' ) ); ?>
 			</span>
 
+			<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_price( 'total' )->as_string() ); ?>">
+
 			<div class="book-actions">
 				<button class="button button-primary abrs-button" name="submit" value="<?php echo esc_attr( $room_type->get_id() ); ?>"><?php echo esc_html__( 'Book', 'awebooking' ); ?></button>
+			</div>
+
+			<div id="js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
+				<table class="awebooking-table abrs-breakdown-table">
+					<tbody>
+						<?php foreach ( $room_rate->breakdowns['room_rate'] as $date => $amount ) : ?>
+							<tr>
+								<td class="abrs-text-left"><?php echo abrs_format_date( $date ); // WPCS: XSS OK. ?></td>
+								<td class="abrs-text-right"><?php abrs_price( $amount ); ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
 			</div>
 
 		<?php endif ?>

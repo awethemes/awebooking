@@ -30,7 +30,7 @@ class Calendar_Controller extends Controller {
 	public function update( Request $request ) {
 		check_admin_referer( 'awebooking_update_state', '_wpnonce' );
 
-		if ( $request->filled( 'action', 'room', 'end_date', 'start_date' ) ) {
+		if ( ! $request->filled( 'action', 'room', 'end_date', 'start_date' ) ) {
 			return new WP_Error( 'missing_request', esc_html__( 'Hey, you\'re missing some request parameters.', 'awebooking' ) );
 		}
 
@@ -50,10 +50,6 @@ class Calendar_Controller extends Controller {
 
 			case 'unblock':
 				$updated = abrs_unblock_room( $room, $timespan );
-				break;
-
-			default:
-				// do_action( 'awebooking/admin_room_action', $action, $request );
 				break;
 		}
 
@@ -91,10 +87,6 @@ class Calendar_Controller extends Controller {
 							'end_date'    => $request->get( 'check-out' ),
 							'only_days'   => $request->get( 'bulk_days' ),
 						]);
-						break;
-
-					default:
-						do_action( 'awebooking/admin_room_action', $action, $request );
 						break;
 				}
 			}

@@ -3,6 +3,7 @@
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Base_Rate;
+use AweBooking\Model\Pricing\Standard_Plan;
 use AweBooking\Model\Model;
 
 /**
@@ -51,4 +52,21 @@ function abrs_get_rate( $rate ) {
 	return ( $base_rate instanceof Room_Type )
 		? new Base_Rate( $base_rate )
 		: apply_filters( 'awebooking/get_rate_object', null, $rate );
+}
+
+/**
+ * Retrieves the rate plan object.
+ *
+ * @param  mixed $rate_plan The rate plan ID.
+ * @return \AweBooking\Model\Pricing\Rate_Plan|null
+ */
+function abrs_get_rate_plan( $rate_plan ) {
+	$rate_plan = Model::parse_object_id( $rate_plan );
+
+	// Let's check given rate_plan if it is standard rate or not.
+	$standard_plan = abrs_get_room_type( $rate_plan );
+
+	return ( $standard_plan instanceof Room_Type )
+		? new Standard_Plan( $standard_plan )
+		: apply_filters( 'awebooking/get_rate_plan_object', null, $rate_plan );
 }

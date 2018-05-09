@@ -80,15 +80,14 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 			return [];
 		}
 
-		// Set the timezone same with BAT do.
-		$start_date = new Carbonate( $start_date->format( 'Y-m-d H:i:s' ), date_default_timezone_get() );
-		$end_date   = new Carbonate( $end_date->format( 'Y-m-d H:i:s' ), date_default_timezone_get() );
+		$original_timezone = date_default_timezone_get();
+		date_default_timezone_set( abrs_get_wp_timezone() );
 
 		$raw_events = abrs_rescue( function() use ( $units, $start_date, $end_date ) {
 			return $this->get_calendar( $units )->getEvents( $start_date, $end_date, true );
 		}, [] );
 
-		return abrs_collect( $raw_events )
+		$events = abrs_collect( $raw_events )
 			->flatten( 1 )
 			->map(function( $raw_event ) {
 				$resource = $this->resources->first( function( $r ) use ( $raw_event ) {
@@ -97,6 +96,10 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 
 				return $this->transform_calendar_event( $raw_event, $resource );
 			})->all();
+
+		date_default_timezone_set( $original_timezone );
+
+		return $events;
 	}
 
 	/**
@@ -106,6 +109,9 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 		if ( $event->is_untrusted_resource() ) {
 			throw new UntrustedResourceException( 'Cannot store an event have untrusted source' );
 		}
+
+		$original_timezone = date_default_timezone_get();
+		date_default_timezone_set( abrs_get_wp_timezone() );
 
 		// Transform resource to BATUnit.
 		$resource  = $event->get_resource();
@@ -117,9 +123,13 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 			$only_days = $event->get_only_days();
 		}
 
-		return abrs_rescue( function() use ( $mockevent, $only_days ) {
+		$stored = abrs_rescue( function() use ( $mockevent, $only_days ) {
 			return $this->get_store()->storeEvent( $mockevent, $only_days );
 		}, false );
+
+		date_default_timezone_set( $original_timezone );
+
+		return $stored;
 	}
 
 	/**

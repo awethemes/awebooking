@@ -10,13 +10,6 @@ interface Rate_Plan {
 	public function get_id();
 
 	/**
-	 * Gets the rates.
-	 *
-	 * @return array \AweBooking\Model\Pricing[]
-	 */
-	public function get_rates();
-
-	/**
 	 * Gets the name.
 	 *
 	 * @return string
@@ -43,4 +36,11 @@ interface Rate_Plan {
 	 * @return int
 	 */
 	public function get_priority();
+
+	/**
+	 * Gets the rates.
+	 *
+	 * @return array \AweBooking\Model\Pricing[]
+	 */
+	public function get_rates();
 }

@@ -12,7 +12,6 @@ require trailingslashit( __DIR__ ) . 'db-functions.php';
 require trailingslashit( __DIR__ ) . 'room-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
-require trailingslashit( __DIR__ ) . 'reservation.php';
 
 /**
  * Gets the plugin URL.

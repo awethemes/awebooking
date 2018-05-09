@@ -491,6 +491,9 @@ p.awebooking-no-items {
 
 table.awebooking-table {
   font-size: 13px;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
 }
 
 table.awebooking-table th,
@@ -500,7 +503,6 @@ table.awebooking-table tfoot td {
 }
 
 table.debug-rooms__table {
-  width: 350px;
   max-width: 100%;
   background: #fff;
   border-collapse: collapse;
@@ -515,6 +517,13 @@ table.debug-rooms__table td {
 
 table.debug-rooms__table th {
   width: 100px;
+}
+
+table.abrs-breakdown-table td,
+table.abrs-breakdown-table th {
+  padding: 5px 12px;
+  border-top: solid 1px #eee;
+  border-left: solid 1px #eee;
 }
 
 table.availability-table td {

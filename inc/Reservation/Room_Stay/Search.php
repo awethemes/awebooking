@@ -58,11 +58,14 @@ class Search {
 			// In free version, we just allow user book only one plan.
 			// Looking for multi rates, please upgrade to pro version :).
 			$room_rate = new Room_Rate( $request->get_timespan(), $request->get_guest_counts(), $room_type, $room_type->get_standard_plan() );
+			$room_rate->set_constraints( $constraints );
 
-			$room_rate->set_room_constraints( $constraints );
 			$room_rate->setup();
+			if ( $room_rate->has_error( 'occupancy_error' ) || $room_rate->has_error( 'no_room_left' ) ) {
+				continue;
+			}
 
-			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $room_type, $this );
+			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $room_type, $room_rate, $request );
 		}
 
 		return apply_filters( 'awebooking/search_results', new Search_Results( $this->request, $results ), $this->request );

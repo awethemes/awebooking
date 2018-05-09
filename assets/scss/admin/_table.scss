@@ -1,6 +1,9 @@
 /* Tables */
 table.awebooking-table {
   font-size: 13px;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
 
   th,
   thead td,
@@ -10,7 +13,7 @@ table.awebooking-table {
 }
 
 table.debug-rooms__table {
-  width: 350px;
+  // width: 350px;
   max-width: 100%;
   background: #fff;
   border-collapse: collapse;
@@ -24,6 +27,15 @@ table.debug-rooms__table {
 
   th {
     width: 100px;
+  }
+}
+
+table.abrs-breakdown-table {
+  td,
+  th {
+    padding: 5px 12px;
+    border-top: solid 1px #eee;
+    border-left: solid 1px #eee;
   }
 }
 

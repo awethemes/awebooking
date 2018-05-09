@@ -24,13 +24,6 @@ class Period_Test extends WP_UnitTestCase {
 	/**
 	 * @expectedException LogicException
 	 */
-	function test_wrong_format() {
-		new Period( '10-10-2017', '10-05-2017', true );
-	}
-
-	/**
-	 * @expectedException LogicException
-	 */
 	function _test_same_day() {
 		new Period( '2017-10-05', '2017-10-05', true );
 	}

@@ -4,6 +4,7 @@ namespace AweBooking\Admin\Controllers;
 use WP_Error;
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking\Room_Item;
+use AweBooking\Reservation\Room_Stay\Room_Rate;
 
 class Booking_Room_Controller extends Controller {
 	/**
@@ -38,15 +39,6 @@ class Booking_Room_Controller extends Controller {
 	}
 
 	/**
-	 * Handle search rooms.
-	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
-	 */
-	public function select_room( Request $request ) {
-	}
-
-	/**
 	 * Handle store new booking payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
@@ -56,7 +48,7 @@ class Booking_Room_Controller extends Controller {
 		check_admin_referer( 'add_booking_room', '_wpnonce' );
 
 		if ( ! $request->filled( '_refer' ) || ! $booking = abrs_get_booking( $request['_refer'] ) ) {
-			return $this->whoops();
+			return new WP_Error( 404, esc_html__( 'The booking reference is does not exist.', 'awebooking' ) );
 		}
 
 		if ( empty( $request['reservation'][ $request->submit ] ) ) {
@@ -66,44 +58,35 @@ class Booking_Room_Controller extends Controller {
 		// The summit room & occupancy data.
 		$submit_data = $request['reservation'][ $request->submit ];
 
-		$room_type = abrs_get_room_type( $request->submit );
 		$room_unit = abrs_get_room( $submit_data['room'] );
+		$room_type = abrs_get_room_type( $request->submit );
+		$rate_plan = isset( $request->rate_plan ) ? abrs_get_rate_plan( $request->rate_plan ) : $room_type->get_standard_plan();
 
 		// Create the reservation request.
-		$res_request = abrs_create_res_request([
-			'check_in'  => $request->get( 'check_in' ),
-			'check_out' => $request->get( 'check_out' ),
-			'adults'    => absint( $submit_data['adults'] ),
-			'children'  => isset( $submit_data['children'] ) ? absint( $submit_data['children'] ) : 0,
-			'infants'   => isset( $submit_data['infants'] ) ? absint( $submit_data['infants'] ) : 0,
+		$timespan = abrs_timespan( $request->get( 'check_in' ), $request->get( 'check_out' ), 1 );
+		if ( is_wp_error( $timespan ) ) {
+			return $timespan;
+		}
+
+		$room_item = ( new Room_Item )->fill([
+			'name'           => $room_unit->get( 'name' ),
+			'room_id'        => $room_unit->get_id(),
+			'booking_id'     => $booking->get_id(),
+			'room_type_id'   => $room_type->get_id(),
+			'rate_plan_id'   => $rate_plan->get_id(),
+			'room_type_name' => $room_type->get( 'title' ),
+			'rate_plan_name' => $rate_plan->get_private_name(),
+			'adults'         => absint( $submit_data['adults'] ),
+			'children'       => isset( $submit_data['children'] ) ? absint( $submit_data['children'] ) : 0,
+			'infants'        => isset( $submit_data['infants'] ) ? absint( $submit_data['infants'] ) : 0,
 		]);
 
-		if ( is_wp_error( $res_request ) ) {
-			return $res_request;
-		}
+		$room_item->set_timespan( $timespan );
+		$room_item->set_total( isset( $submit_data['total'] ) ? $submit_data['total'] : 0 );
 
-		if ( $res_request->guest_counts->get_totals() > $room_type['maximum_occupancy'] ) {
-		}
+		$saved = $room_item->save();
 
-		dd( $res_request );
-
-		/*$room_item = ( new Room_Item )->fill([
-			'booking_id' => $booking->get_id(),
-			'room_id'    => $room_unit->get_id(),
-			'name'       => $room_unit['name'],
-			'check_in'   => $res_request['check_in'],
-			'check_out'  => $res_request['check_out'],
-			'adults'     => $res_request['adults'],
-			'children'   => $res_request['children'],
-			'infants'    => $res_request['infants'],
-		]);*/
-
-		// dd( $room_item );
-		// $room_item->save();
-
-		// $room_item->set_timespan( $res_request->timespan );
-
-		return $this->redirect()->back();
+		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 	/**

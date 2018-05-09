@@ -52,18 +52,19 @@ class Concierge_Test extends WP_UnitTestCase {
 			'd16' => Constants::STATE_UNAVAILABLE,
 		]);
 
-		$this->assertTrue( abrs_check_room_state( $room, abrs_timespan( '2017-06-09', '2017-06-10' ), Constants::STATE_AVAILABLE ) );
-		$this->assertTrue( abrs_check_room_state( $room, abrs_timespan( '2017-06-06', '2017-06-17' ), [ Constants::STATE_BOOKING, Constants::STATE_UNAVAILABLE, Constants::STATE_AVAILABLE ] ) );
-		$this->assertFalse( abrs_check_room_state( $room, abrs_timespan( '2017-06-10', '2017-06-17' ), Constants::STATE_BOOKING ) );
+		$this->assertTrue( abrs_room_has_states( $room, abrs_timespan( '2017-06-09', '2017-06-10' ), Constants::STATE_AVAILABLE ) );
+		$this->assertTrue( abrs_room_has_states( $room, abrs_timespan( '2017-06-06', '2017-06-17' ), [ Constants::STATE_BOOKING, Constants::STATE_UNAVAILABLE, Constants::STATE_AVAILABLE ] ) );
+		$this->assertFalse( abrs_room_has_states( $room, abrs_timespan( '2017-06-10', '2017-06-17' ), Constants::STATE_BOOKING ) );
 
-		$this->assertFalse( abrs_is_room_available( $room, abrs_timespan( '2017-06-06', '2017-06-08' ) ) );
-		$this->assertFalse( abrs_is_room_available( $room, abrs_timespan( '2017-06-07', '2017-06-08' ) ) );
-		$this->assertFalse( abrs_is_room_available( $room, abrs_timespan( '2017-06-10', '2017-06-15' ) ) );
-		$this->assertTrue( abrs_is_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-09' ) ) );
-		$this->assertTrue( abrs_is_room_available( $room, abrs_timespan( '2017-06-09', '2017-06-10' ) ) );
+		$this->assertFalse( abrs_room_available( $room, abrs_timespan( '2017-06-06', '2017-06-08' ) ) );
+		$this->assertFalse( abrs_room_available( $room, abrs_timespan( '2017-06-07', '2017-06-08' ) ) );
+		$this->assertFalse( abrs_room_available( $room, abrs_timespan( '2017-06-10', '2017-06-15' ) ) );
+		$this->assertTrue( abrs_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-09' ) ) );
+		$this->assertTrue( abrs_room_available( $room, abrs_timespan( '2017-06-09', '2017-06-10' ) ) );
 
-		$this->assertWPError( abrs_is_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-08' ) ) );
+		$this->assertWPError( abrs_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-08' ) ) );
 	}
+
 
 	public function testApplyRoomState() {
 		$room = $this->rooms[1]->get_id();
