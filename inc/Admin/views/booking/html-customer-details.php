@@ -2,7 +2,7 @@
 use AweBooking\Component\Country\Formatter;
 
 ?>
-<table class="awebooking-table awebooking-table--customer abrs-text-left" width="100%" cellpadding="0" cellspacing="0">
+<table class="awebooking-table awebooking-table--bordered abrs-text-left" width="100%" cellpadding="0" cellspacing="0">
 	<tbody>
 		<tr>
 			<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>
