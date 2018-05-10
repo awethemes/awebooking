@@ -1,7 +1,11 @@
 <?php
 namespace AweBooking\Component\Country;
 
+use AweBooking\Support\Traits\Singleton;
+
 final class ISO3166 implements \Countable, \IteratorAggregate {
+	use Singleton;
+
 	/* Constants */
 	const KEY_NAME    = 'name';
 	const KEY_ALPHA2  = 'alpha2';
@@ -20,6 +24,8 @@ final class ISO3166 implements \Countable, \IteratorAggregate {
 	 * @param array[] $countries Replace default dataset with given array.
 	 */
 	public function __construct( array $countries = [] ) {
+		static::$instance = $this;
+
 		if ( empty( $countries ) ) {
 			$countries = apply_filters( 'awebooking/countries', include( __DIR__ . '/dataset.php' ) );
 		}

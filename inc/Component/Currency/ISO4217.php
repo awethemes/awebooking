@@ -1,7 +1,11 @@
 <?php
 namespace AweBooking\Component\Currency;
 
+use AweBooking\Support\Traits\Singleton;
+
 final class ISO4217 implements \Countable, \IteratorAggregate {
+	use Singleton;
+
 	/* Constants */
 	const KEY_NAME   = 'name';
 	const KEY_CODE   = 'alpha3';
@@ -20,6 +24,8 @@ final class ISO4217 implements \Countable, \IteratorAggregate {
 	 * @param array[] $currencies Replace default dataset with given array.
 	 */
 	public function __construct( array $currencies = [] ) {
+		static::$instance = $this;
+
 		if ( empty( $currencies ) ) {
 			$currencies = apply_filters( 'awebooking/currencies', include( __DIR__ . '/dataset.php' ) );
 		}
