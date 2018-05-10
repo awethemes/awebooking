@@ -66,6 +66,32 @@ function abrs_get_booking_item( $item ) {
 }
 
 /**
+ * Delete a booking item.
+ *
+ * @param  mixed $item The item ID or item array.
+ * @return boolean
+ */
+function abrs_delete_booking_item( $item ) {
+	if ( ! $item = abrs_get_booking_item( $item ) ) {
+		return false;
+	}
+
+	// Get the booking reference.
+	$booking_ref = abrs_get_booking( $item->get( 'booking_id' ) );
+
+	// Delete the booking item.
+	$deleted = $item->delete();
+
+	// Recalculate totals of booking.
+	if ( $booking_ref ) {
+		$booking_ref->flush_items();
+		$booking_ref->calculate_totals();
+	}
+
+	return $deleted;
+}
+
+/**
  * Returns an array of booking item classmap.
  *
  * @return array

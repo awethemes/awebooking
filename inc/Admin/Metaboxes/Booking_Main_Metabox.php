@@ -34,6 +34,10 @@ class Booking_Main_Metabox {
 			$the_booking = abrs_get_booking( $post );
 		}
 
+		if ( 0 == $the_booking->total ) {
+			$the_booking->calculate_totals();
+		}
+
 		// Prepare form builder.
 		$form = $this->form_builder;
 		$form->object_id( $post->ID );

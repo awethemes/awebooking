@@ -10,12 +10,12 @@ class Fee_Item extends Item {
 	 *
 	 * @var string
 	 */
-	protected $object_type = 'payment_item';
+	protected $object_type = 'fee_item';
 
 	/**
 	 * Name of item type.
 	 *
 	 * @var string
 	 */
-	protected $type = 'payment_item';
+	protected $type = 'fee_item';
 }

@@ -190,6 +190,12 @@
   max-width: 100%;
 }
 
+.abrs-clearfix::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
 /* Helpers CSS */
 
 .abrs-mt0 {
@@ -2339,6 +2345,48 @@ span.flatpickr-weekday {
   display: block;
 }
 
+/* Booking Table */
+
+.booking-section--totals {
+  background-color: #f9f9f9;
+}
+
+table.abrs-booking-rooms tbody td {
+  vertical-align: middle;
+  border-bottom: solid 1px #eee;
+}
+
+table.abrs-booking-totals {
+  width: 420px;
+  float: right;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+
+table.abrs-booking-totals th,
+table.abrs-booking-totals td {
+  padding: 8px 10px;
+  vertical-align: top;
+  box-sizing: border-box;
+  border-left: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+}
+
+table.abrs-booking-totals th {
+  width: 70%;
+}
+
+table.abrs-booking-totals td {
+  width: 30%;
+  background: #fff;
+}
+
+table.abrs-booking-totals tr:last-child th,
+table.abrs-booking-totals tr:last-child td {
+  border-bottom: none;
+}
+
 .abrs-tooltip-note {
   width: 350px;
 }
@@ -2623,6 +2671,11 @@ table.wp-list-table .booking_summary {
   .cmb2-wrap.awebooking-wrap input[type="password"] {
     font-size: 16px;
     padding: 6px 10px;
+  }
+
+  table.abrs-booking-totals {
+    float: none !important;
+    width: 100% !important;
   }
 
   table.wp-list-table .column-thumb {

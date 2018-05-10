@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Model\Booking;
 
+use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Calendar\Event\Event;
 use AweBooking\Model\Common\Timespan;
@@ -23,6 +24,67 @@ class Room_Item extends Item {
 	protected $type = 'line_item';
 
 	/**
+	 * Flag mark to force change the timespan.
+	 *
+	 * @var boolean
+	 */
+	protected $force_change_timespan = false;
+
+	/**
+	 * Gets the Guest_Counts.
+	 *
+	 * @return \AweBooking\Model\Common\Guest_Counts
+	 */
+	public function get_guests() {
+		$guests = new Guest_Counts( $this->get( 'adults' ) );
+
+		if ( abrs_children_bookable() ) {
+			$guests->set_children( $this->get( 'children' ) );
+		}
+
+		if ( abrs_infants_bookable() ) {
+			$guests->set_infants( $this->get( 'infants' ) );
+		}
+
+		return $guests;
+	}
+
+	/**
+	 * Sets the Guest_Counts.
+	 *
+	 * @param  \AweBooking\Model\Common\Guest_Counts $guests The Guest_Counts.
+	 * @return bool|WP_Error
+	 */
+	public function set_guests( Guest_Counts $guests ) {
+		$room_type = abrs_get_room_type( $this->get( 'room_type_id' ) );
+
+		if ( $room_type && $guests->get_totals() > $room_type->get( 'maximum_occupancy' ) ) {
+			return new WP_Error( 'out_of_bounds_occupancy', esc_html__( 'Out of bounds occupancy.', 'awebooking' ) );
+		}
+
+		$this->set_attribute( 'adults', $guests->get( 'adults' )->get_count() );
+
+		if ( abrs_children_bookable() && $children = $guests->get( 'children' ) ) {
+			$this->set_attribute( 'children', $children->get_count() );
+		}
+
+		if ( abrs_infants_bookable() && $infants = $guests->get( 'infants' ) ) {
+			$this->set_attribute( 'infants', $infants->get_count() );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Gets nights stayed.
+	 *
+	 * @return int
+	 */
+	public function get_nights_stayed() {
+		return abrs_optional( $this->get_timespan() )->nights();
+	}
+
+	/**
 	 * Get the Timespan of check-in, check-out.
 	 *
 	 * @return \AweBooking\Model\Common\Timespan|null
@@ -34,27 +96,97 @@ class Room_Item extends Item {
 	}
 
 	/**
-	 * Sets the Timespan.
+	 * Sets the Timespan (call when create new item).
 	 *
 	 * @param  \AweBooking\Model\Common\Timespan $timespan The timespan.
-	 * @return void
+	 * @return bool
 	 */
 	public function set_timespan( Timespan $timespan ) {
-		if ( ! $this->exists() ) {
+		// This action works only in create new item.
+		if ( $this->exists() ) {
+			return false;
+		}
+
+		if ( empty( $this->attributes['room_id'] ) ) {
+			return false; // Do it wrong.
+		}
+
+		if ( abrs_room_available( $this->get( 'room_id' ), $timespan ) ) {
 			$this->attributes['check_in']  = $timespan->get_start_date();
 			$this->attributes['check_out'] = $timespan->get_end_date();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Perform change the timespan.
+	 *
+	 * @param  Timespan $timespan The timespan change to.
+	 * @return WP_Error|bool
+	 */
+	public function change_timespan( Timespan $timespan ) {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		try {
+			$timespan->requires_minimum_nights( 1 );
+		} catch ( LogicException $e ) {
+			return new WP_Error( 'timespan_error', $e->getMessage() );
+		}
+
+		if ( ! $this->timespan_changeable( $timespan ) ) {
+			return new WP_Error( 'room_occupied', esc_html__( 'Dates could not be changed because at least one of the rooms is occupied on the selected dates.', 'awebooking' ) );
+		}
+
+		// Force to change the timespan.
+		$this->force_change_timespan   = true;
+		$this->attributes['check_in']  = $timespan->get_start_date();
+		$this->attributes['check_out'] = $timespan->get_end_date();
+
+		return true;
+	}
+
+	/**
+	 * Updates timespan of room stay immediately.
+	 *
+	 * @param  Timespan $timespan The timespan change to.
+	 * @return bool
+	 */
+	public function update_timespan( Timespan $timespan ) {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		$changed = $this->change_timespan( $timespan );
+		if ( is_wp_error( $changed ) || ! $changed ) {
+			return false;
+		}
+
+		try {
+			return $this->save();
+		} catch ( \Exception $e ) {
+			abrs_report( $e );
+			return false;
 		}
 	}
 
 	/**
 	 * Determines whether can be change to new timespan.
 	 *
-	 * @param  Timespan $to_timespan Change to timespan.
+	 * @param  Timespan $to_timespan The timespan change to.
 	 * @return bool
 	 */
-	public function is_timespan_changeable( Timespan $to_timespan ) {
+	public function timespan_changeable( Timespan $to_timespan ) {
 		if ( ! $this->exists() ) {
-			return;
+			return false;
+		}
+
+		try {
+			$to_timespan->requires_minimum_nights( 1 );
+		} catch ( LogicException $e ) {
+			return false;
 		}
 
 		$to_period = $to_timespan->get_period();
@@ -131,44 +263,60 @@ class Room_Item extends Item {
 	}
 
 	/**
-	 * Returns nights stayed of this line item.
-	 *
-	 * @return int
-	 */
-	public function get_nights_stayed() {
-		return abrs_optional( $this->get_timespan() )->nights();
-	}
-
-	/**
-	 * Create the Guest_Counts.
-	 *
-	 * @return \AweBooking\Model\Common\Guest_Counts|null
-	 */
-	public function get_guest_counts() {
-		return abrs_rescue( function () {
-			return new Guest_Counts( $this['adults'], $this['children'], $this['infants'] );
-		});
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	protected function updating() {
-		if ( $this->is_dirty( 'room_id' ) || $this->is_dirty( 'booking_id' ) ) {
-			$this->revert_attribute( 'room_id' );
-			$this->revert_attribute( 'booking_id' );
+		if ( ! $this->force_change_timespan ) {
+			$this->revert_attribute( 'check_in' );
+			$this->revert_attribute( 'check_out' );
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function finish_save() {
-		parent::finish_save();
-
+	protected function saved() {
 		if ( $this->recently_created ) {
 			abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
+		} elseif ( true === $this->force_change_timespan ) {
+			$this->perform_change_timespan( $this->get_timespan() );
 		}
+	}
+
+	/**
+	 * Perfrom change the timespan after saved.
+	 *
+	 * @param  Timespan $to_timespan The timespan change to.
+	 * @return void
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function perform_change_timespan( Timespan $to_timespan ) {
+		$this->force_change_timespan = false;
+
+		$to_timespan->requires_minimum_nights( 1 );
+		$from_timespan = abrs_timespan( $this->original['check_in'], $this->original['check_out'] );
+
+		// Start a mysql transaction.
+		abrs_db_transaction( 'start' );
+
+		$updated1 = abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $from_timespan );
+		$updated2 = abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
+
+		if ( true !== $updated1 || true !== $updated2 ) {
+			awebooking_wpdb_transaction( 'rollback' );
+			throw new \RuntimeException( 'Can not change the timespan.' );
+		}
+
+		// Commit the transaction.
+		abrs_db_transaction( 'commit' );
+
+		// Add the booking note for the change.
+		// translators: 1 Room name, 2 change from date, 3 to date.
+		$transition_note = sprintf( esc_html__( '[%1$s] Timespan change from "%2$s" to "%3$s".', 'awebooking' ), $this->get( 'name' ), esc_html( $from_timespan->as_string() ), esc_html( $to_timespan->as_string() ) );
+		abrs_add_booking_note( $this->get( 'booking_id' ), $transition_note, false, true );
+
+		do_action( $this->prefix( 'timespan_changed' ), $from_timespan, $to_timespan, $this );
 	}
 
 	/**
@@ -177,7 +325,9 @@ class Room_Item extends Item {
 	protected function perform_delete( $force ) {
 		parent::perform_delete( $force );
 
-		abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
+		if ( $timespan = $this->get_timespan() ) {
+			abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
+		}
 	}
 
 	/**
@@ -225,6 +375,7 @@ class Room_Item extends Item {
 			'subtotal_tax'   => '_line_subtotal_tax',
 			'total'          => '_line_total',
 			'total_tax'      => '_line_total_tax',
+			'breakdowns'     => [], // Cache the price breakdowns.
 		]);
 	}
 

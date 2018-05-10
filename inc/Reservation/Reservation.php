@@ -21,6 +21,11 @@ class Reservation {
 	 */
 	public $currency;
 
+	/**
+	 * ISO language code.
+	 *
+	 * @var string
+	 */
 	public $language;
 
 	/**

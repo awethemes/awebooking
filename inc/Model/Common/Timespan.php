@@ -113,6 +113,15 @@ class Timespan implements \JsonSerializable {
 	}
 
 	/**
+	 * Display the object as string.
+	 *
+	 * @return string
+	 */
+	public function as_string() {
+		return $this->get_start_date() . ',' . $this->get_end_date();
+	}
+
+	/**
 	 * Convert the timespan to an array.
 	 *
 	 * @return array

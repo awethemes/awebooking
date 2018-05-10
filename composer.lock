@@ -140,16 +140,16 @@
         },
         {
             "name": "awethemes/wp-object",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awethemes/wp-object.git",
-                "reference": "3d3f9bff3b19cc22ed6194b77c8f41a8ce440be7"
+                "reference": "8d28df6573e9dbbb708bec3fbd3fdcc5f33ed7a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awethemes/wp-object/zipball/3d3f9bff3b19cc22ed6194b77c8f41a8ce440be7",
-                "reference": "3d3f9bff3b19cc22ed6194b77c8f41a8ce440be7",
+                "url": "https://api.github.com/repos/awethemes/wp-object/zipball/8d28df6573e9dbbb708bec3fbd3fdcc5f33ed7a2",
+                "reference": "8d28df6573e9dbbb708bec3fbd3fdcc5f33ed7a2",
                 "shasum": ""
             },
             "require": {
@@ -176,7 +176,7 @@
                 }
             ],
             "description": "Completely OOP for WordPress objects",
-            "time": "2018-04-26T10:31:39+00:00"
+            "time": "2018-05-09T04:59:48+00:00"
         },
         {
             "name": "awethemes/wp-session",

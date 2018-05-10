@@ -40,43 +40,6 @@ class Booking extends Model {
 	 * @return bool success
 	 */
 	public function payment_complete( $transaction_id = '' ) {
-		try {
-			if ( ! $this->get_id() ) {
-				return false;
-			}
-
-			do_action( 'woocommerce_pre_payment_complete', $this->get_id() );
-
-			if ( WC()->session ) {
-				WC()->session->set( 'booking_awaiting_payment', false );
-			}
-
-			if ( $this->has_status( apply_filters( 'woocommerce_valid_booking_statuses_for_payment_complete', array( 'on-hold', 'pending', 'failed', 'cancelled' ), $this ) ) ) {
-				if ( ! empty( $transaction_id ) ) {
-					$this->set_transaction_id( $transaction_id );
-				}
-
-				if ( ! $this->get_date_paid( 'edit' ) ) {
-					$this->set_date_paid( current_time( 'timestamp', true ) );
-				}
-
-				$this->set_status( apply_filters( 'woocommerce_payment_complete_booking_status', $this->needs_processing() ? 'processing' : 'completed', $this->get_id(), $this ) );
-				$this->save();
-
-				do_action( 'woocommerce_payment_complete', $this->get_id() );
-			} else {
-				do_action( 'woocommerce_payment_complete_booking_status_' . $this->get_status(), $this->get_id() );
-			}
-		} catch ( Exception $e ) {
-			$logger = wc_get_logger();
-			$logger->error( sprintf( 'Payment complete of booking #%d failed!', $this->get_id() ), array(
-				'booking' => $this,
-				'error' => $e,
-			) );
-
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -161,6 +124,17 @@ class Booking extends Model {
 	 */
 	public function get_taxes() {
 		return $this->get_items( 'tax' );
+	}
+
+	/**
+	 * Flush the items.
+	 *
+	 * @return void
+	 */
+	public function flush_items() {
+		$this->items = [];
+
+		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
 	}
 
 	/**
@@ -400,9 +374,6 @@ class Booking extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function setup() {
-		// Reset the items after save.
-		$this->items = [];
-
 		$this['status']        = $this->instance->post_status;
 		$this['date_created']  = $this->instance->post_date;
 		$this['date_modified'] = $this->instance->post_modified;
@@ -435,6 +406,17 @@ class Booking extends Model {
 		if ( true === $this->force_calculate_totals ) {
 			$this->calculate_totals();
 		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function clean_cache() {
+		$this->items = [];
+
+		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
+
+		clean_post_cache( $this->get_id() );
 	}
 
 	/**

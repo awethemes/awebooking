@@ -66,6 +66,24 @@ abstract class Item extends Model {
 	}
 
 	/**
+	 * Gets the booking object.
+	 *
+	 * @return \AweBooking\Model\Booking|null
+	 */
+	public function get_booking() {
+		return $this->attributes['booking_id'] ? abrs_get_booking( $this->get( 'booking_id' ) ) : null;
+	}
+
+	/**
+	 * Gets the parent item object.
+	 *
+	 * @return \AweBooking\Model\Booking\Item|null
+	 */
+	public function get_parent() {
+		return $this->attributes['parent_id'] ? abrs_get_booking_item( $this->get( 'parent_id' ) ) : null;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup() {
@@ -81,6 +99,21 @@ abstract class Item extends Model {
 		$booking_item = abrs_db_booking_item( $this->get_id(), $this->get_type() );
 		if ( ! is_null( $booking_item ) ) {
 			$this->set_instance( $booking_item );
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function finish_save() {
+		parent::finish_save();
+
+		if ( method_exists( $this, 'saved' ) ) {
+			$this->saved();
+		}
+
+		if ( $booking = abrs_get_booking( $this->get( 'booking_id' ) ) ) {
+			$booking->calculate_totals();
 		}
 	}
 

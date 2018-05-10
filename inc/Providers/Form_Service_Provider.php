@@ -25,7 +25,7 @@ class Form_Service_Provider extends Service_Provider {
 	public function init() {
 		add_action( 'cmb2_override_meta_value', function( $check, $object, $args, $field ) {
 			return ( $object instanceof Model || $object instanceof Request || $object instanceof Fluent )
-				? $object->get( $args['field_id'] )
+				? @$object->get( $args['field_id'] )
 				: $check;
 		}, 10, 4 );
 	}

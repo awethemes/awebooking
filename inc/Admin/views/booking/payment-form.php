@@ -65,9 +65,9 @@ $action_link = $payment_item->exists()
 				</div>
 			</div>
 
-			<div class="abrs-card__footer submit">
+			<div class="abrs-card__footer submit abrs-text-right">
+				<a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>" class="button button-link"><?php echo esc_html__( 'Cancel', 'awebooking' ); ?></a>
 				<button type="submit" class="button abrs-button"><?php echo esc_html__( 'Save', 'awebooking' ); ?></button>
-				<a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>" class="button-link abrs-fright"><?php echo esc_html__( 'Cancel', 'awebooking' ); ?></a>
 			</div>
 		</form>
 

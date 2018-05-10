@@ -120,8 +120,7 @@ class Booking_Payment_Controller extends Controller {
 	public function destroy( Request $request, Payment_Item $payment_item ) {
 		check_admin_referer( 'delete_payment_' . $payment_item->get_id(), '_wpnonce' );
 
-		// Delete the payment item.
-		$payment_item->delete();
+		abrs_delete_booking_item( $payment_item );
 
 		abrs_admin_notices( esc_html__( 'The payment has been destroyed!', 'awebooking' ), 'info' )->dialog();
 

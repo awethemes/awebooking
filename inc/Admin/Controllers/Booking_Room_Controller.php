@@ -4,7 +4,9 @@ namespace AweBooking\Admin\Controllers;
 use WP_Error;
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking\Room_Item;
+use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Reservation\Room_Stay\Room_Rate;
+use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
 
 class Booking_Room_Controller extends Controller {
 	/**
@@ -90,6 +92,76 @@ class Booking_Room_Controller extends Controller {
 	}
 
 	/**
+	 * Display the edit form.
+	 *
+	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
+	 * @return \Awethemes\Http\Response
+	 */
+	public function edit( Request $request, Room_Item $room_item ) {
+		if ( ! $booking = abrs_get_booking( $room_item->booking_id ) ) {
+		}
+
+		$controls = new Edit_Booking_Room_Form( $room_item );
+
+		return $this->response( 'booking/page-edit-room.php', compact( 'booking', 'room_item', 'controls' ) );
+	}
+
+	/**
+	 * Perform update the room stay.
+	 *
+	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
+	 * @return \Awethemes\Http\Response
+	 */
+	public function update( Request $request, Room_Item $room_item ) {
+		check_admin_referer( 'update_room_stay', '_wpnonce' );
+
+		$data = ( new Edit_Booking_Room_Form( $room_item ) )->handle( $request );
+
+		$redirect_fallback = abrs_admin_route( "/booking-room/{$room_item->get_id()}", $request->only( 'action' ) );
+
+		switch ( $request->get( '_action' ) ) {
+			case 'swap-room':
+				// TODO: ...
+				break;
+
+			case 'change-timespan':
+				if ( $request->filled( 'change_check_in', 'change_check_out' ) ) {
+					$to_timespan = abrs_timespan( $request->get( 'change_check_in' ), $request->get( 'change_check_out' ), 1 );
+
+					if ( is_wp_error( $to_timespan ) ) {
+						abrs_admin_notices( $to_timespan->get_error_message(), 'error' );
+						return $this->redirect()->back( $redirect_fallback );
+					}
+
+					// Change to the new timespan.
+					$changed = $room_item->change_timespan( $to_timespan );
+
+					if ( is_wp_error( $changed ) ) {
+						abrs_admin_notices( $changed->get_error_message(), 'error' );
+						return $this->redirect()->back( $redirect_fallback );
+					}
+				}
+				break;
+
+			default:
+				$room_item->set_guests( new Guest_Counts( $data['adults'], $data['children'], $data['infants'] ) );
+				$room_item->set_subtotal( $data['subtotal'] );
+				$room_item->set_total( $data['total'] );
+				break;
+		}
+
+		try {
+			$room_item->save();
+		} catch ( \Exception $e ) {
+			abrs_report( $e );
+		}
+
+		return $this->redirect()->to( get_edit_post_link( $room_item->get( 'booking_id' ), 'raw' ) );
+	}
+
+	/**
 	 * Perform delete a booking room.
 	 *
 	 * @param  \Awethemes\Http\Request             $request   The current request.
@@ -99,11 +171,10 @@ class Booking_Room_Controller extends Controller {
 	public function destroy( Request $request, Room_Item $room_item ) {
 		check_admin_referer( 'delete_room_' . $room_item->get_id(), '_wpnonce' );
 
-		// Delete the room item.
-		$room_item->delete();
+		abrs_delete_booking_item( $room_item );
 
 		abrs_admin_notices( esc_html__( 'The booking room has been destroyed', 'awebooking' ), 'info' )->dialog();
 
-		return $this->redirect()->back( get_edit_post_link( $room_item['booking_id'], 'raw' ) );
+		return $this->redirect()->back( get_edit_post_link( $room_item->get( 'booking_id' ), 'raw' ) );
 	}
 }

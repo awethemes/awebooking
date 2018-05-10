@@ -100,15 +100,8 @@ function abrs_db_rooms_in( $room_type ) {
  * @return void
  */
 function abrs_clean_room_cache( $room ) {
-	// Leave if given room is not exists.
-	if ( ! $room = abrs_db_room( $room ) ) {
-		return;
-	}
+	wp_cache_delete( $room, 'awebooking_db_room' );
 
-	wp_cache_delete( (int) $room['id'], 'awebooking_db_room' );
-	wp_cache_delete( (int) $room['room_type'], 'awebooking_rooms' );
-
-	// Fire action after cache cleaned.
 	do_action( 'awebooking/clean_room_cache', $room );
 }
 
@@ -185,16 +178,10 @@ function abrs_get_booking_items( $booking, $type = 'all' ) {
  * @return void
  */
 function abrs_clean_booking_item_cache( $item ) {
-	// Leave if given item is not exists.
-	if ( ! $item = abrs_db_booking_item( $item ) ) {
-		return;
-	}
+	wp_cache_delete( $item, 'awebooking_db_booking_item' );
 
-	wp_cache_delete( (int) $item['booking_item_id'], 'awebooking_db_booking_item' );
-	wp_cache_delete( (int) $item['booking_item_id'], 'booking_itemmeta_meta' );
-	wp_cache_delete( (int) $item['booking_id'], 'awebooking_booking_items' );
+	wp_cache_delete( $item, 'booking_itemmeta_meta' );
 
-	// Fire action after cache cleaned.
 	do_action( 'awebooking/clean_booking_item_cache', $item );
 }
 

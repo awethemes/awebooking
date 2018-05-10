@@ -351,3 +351,51 @@
     display: block;
   }
 }
+
+/* Booking Table */
+.booking-section--totals {
+  background-color: #f9f9f9;
+}
+
+table.abrs-booking-rooms {
+  tbody td {
+    vertical-align: middle;
+    border-bottom: solid 1px #eee;
+  }
+}
+
+table.abrs-booking-totals {
+  width: 420px;
+  float: right;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+
+  @include in-small {
+    float: none !important;
+    width: 100% !important;
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+    vertical-align: top;
+    box-sizing: border-box;
+    border-left: solid 1px #eee;
+    border-bottom: solid 1px #eee;
+  }
+
+  th {
+    width: 70%;
+  }
+
+  td {
+    width: 30%;
+    background: #fff;
+  }
+
+  tr:last-child th,
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
