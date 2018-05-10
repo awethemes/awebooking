@@ -105,7 +105,8 @@
 				</h3>
 
 				<div class="js-booking-data">
-					<!-- // -->
+					<?php abrs_admin_template_part( 'booking/html-customer-details.php', [ 'booking' => $the_booking ] ); ?>
+
 				</div>
 
 				<div class="js-edit-booking-data" style="display: none;">
