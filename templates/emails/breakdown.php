@@ -16,17 +16,19 @@
  * @version  3.1.0
  */
 
-$booking_id           = $booking->get_id();
-$total_price          = (string) $booking->get_total();
+$booking_id  = $booking->get_id();
+$total_price = (string) $booking->get_total();
 ?>
-<h2>
-	<a class="link" href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">
-		<?php
-			/* translators: Booking ID */
-			printf( esc_html__( 'Booking #%s', 'awebooking' ), absint( $booking_id ) );
-		?>
-	</a>
-</h2>
+<?php if ( ! $email->is_customer_email() ) : ?>
+	<h2>
+		<a class="link" href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">
+			<?php
+				/* translators: Booking ID */
+				printf( esc_html__( 'Booking #%s', 'awebooking' ), absint( $booking_id ) );
+			?>
+		</a>
+	</h2>
+<?php endif; ?>
 <?php /**
 <div class="table">
 	<table>

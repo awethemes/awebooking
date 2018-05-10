@@ -16,49 +16,57 @@
  * @version  3.1.0
  */
 
-$customer_first_name  = $booking['customer_first_name'];
-$customer_last_name   = $booking['customer_last_name'];
-$customer_email       = $booking->get_customer_email();
-$customer_phone       = $booking['customer_phone'];
-$customer_company     = $booking->get_customer_company();
-$customer_note        = $booking['customer_note'];
+use AweBooking\Component\Country\Formatter;
 
 ?>
 
 <h2><?php esc_html_e( 'Customer details', 'awebooking' ); ?></h2>
 
-<table class="table table--customer" width="100%" cellpadding="0" cellspacing="0">
+<table class="table table--customer" width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
 	<tbody>
 		<tr>
-			<td><?php esc_html_e( 'First Name', 'awebooking' ); ?></td>
-			<td><?php echo esc_html( $customer_first_name ); ?></td>
+			<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>
+			<td><?php echo esc_html( $booking->get_customer_fullname() ); ?></td>
 		</tr>
 
-		<tr>
-			<td><?php esc_html_e( 'Last Name', 'awebooking' ); ?></td>
-			<td><?php echo esc_html( $customer_last_name ); ?></td>
-		</tr>
-
-		<?php if ( $booking['customer_address'] ) : ?>
+		<?php if ( $booking->get( 'customer_company' ) ) : ?>
 			<tr>
-				<td><?php esc_html_e( 'Address', 'awebooking' ); ?></td>
-				<td> <?php echo esc_html( $booking->get( 'customer_address' ) ); ?> <?php echo esc_html( $booking->get( 'customer_address_2' ) ); ?></td>
+				<th><?php esc_html_e( 'Company', 'awebooking' ); ?></th>
+				<td><?php echo esc_html( $booking->get( 'customer_company' ) ); ?></td>
 			</tr>
-		<?php endif ?>
+		<?php endif; ?>
 
 		<tr>
-			<td><?php esc_html_e( 'Email', 'awebooking' ); ?></td>
-			<td><?php echo esc_html( $customer_email ); ?></td>
+			<th><?php esc_html_e( 'Address', 'awebooking' ); ?></th>
+			<td>
+				<?php
+				$formatted = ( new Formatter() )->format([
+					'address_1'  => $booking->get( 'customer_address' ),
+					'address_2'  => $booking->get( 'customer_address_2' ),
+					'city'       => $booking->get( 'customer_city' ),
+					'state'      => $booking->get( 'customer_state' ),
+					'postcode'   => $booking->get( 'customer_postal_code' ),
+					'country'    => $booking->get( 'customer_country' ),
+				]);
+
+				echo wp_kses_post( $formatted );
+				?>
+			</td>
 		</tr>
 
-		<tr>
-			<td><?php esc_html_e( 'Phone', 'awebooking' ); ?></td>
-			<td><?php echo esc_html( $customer_phone ); ?></td>
-		</tr>
+		<?php if ( $booking->get( 'customer_email' ) ) : ?>
+			<tr>
+				<th><?php esc_html_e( 'Email address', 'awebooking' ); ?></th>
+				<td><a href="mailto:<?php echo esc_attr( $booking->get( 'customer_email' ) ) ?>"><?php echo esc_html( $booking->get( 'customer_email' ) ); ?></a></td>
+			</tr>
+		<?php endif; ?>
 
-		<tr>
-			<td><?php esc_html_e( 'Company', 'awebooking' ); ?></td>
-			<td><?php echo esc_html( $customer_company ); ?></td>
-		</tr>
+		<?php if ( $booking->get( 'customer_phone' ) ) : ?>
+			<tr>
+				<th><?php esc_html_e( 'Phone', 'awebooking' ); ?></th>
+				<td><?php echo abrs_make_phone_clickable( $booking->get( 'customer_phone' ) ); ?></td>
+			</tr>
+		<?php endif; ?>
+
 	</tbody>
 </table>

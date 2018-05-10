@@ -49,7 +49,7 @@ class New_Booking extends Mailable {
 	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
 
-		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
+		$this->placeholders = ( new Booking_Placeholder( $booking, $this ) )->apply( $this->placeholders );
 	}
 
 	/**

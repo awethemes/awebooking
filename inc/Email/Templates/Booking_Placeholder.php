@@ -10,14 +10,17 @@ class Booking_Placeholder {
 	 * @var \AweBooking\Model\Booking
 	 */
 	protected $booking;
+	protected $email;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param  Booking $booking Booking.
+	 * @param  boolean $is_customer_email Is customer email.
 	 */
-	public function __construct( Booking $booking ) {
+	public function __construct( Booking $booking, $email ) {
 		$this->booking = $booking;
+		$this->email   = $email;
 	}
 
 	/**
@@ -27,8 +30,6 @@ class Booking_Placeholder {
 	public function apply( $placeholders ) {
 		$new_placeholders = [
 			'{booking_id}'              => $this->booking->get_id(),
-			'{contents}'                => abrs_get_template_content( 'emails/breakdown.php', [ 'booking' => $this->booking ] ),
-			'{customer_details}'        => abrs_get_template_content( 'emails/customer-details.php', [ 'booking' => $this->booking ] ),
 			'{status}'                  => $this->booking->get( 'status' ),
 			'{source}'                  => $this->booking->get( 'source' ),
 			'{created_via}'             => $this->booking->get( 'created_via' ),
@@ -57,6 +58,11 @@ class Booking_Placeholder {
 			'{customer_company}'        => $this->booking->get( 'customer_company' ),
 			'{customer_phone}'          => $this->booking->get( 'customer_phone' ),
 			'{customer_email}'          => $this->booking->get( 'customer_email' ),
+			'{customer_details}'        => abrs_get_template_content( 'emails/customer-details.php', [ 'booking' => $this->booking ] ),
+			'{contents}'                => abrs_get_template_content( 'emails/breakdown.php', [
+				'booking' => $this->booking,
+				'email'   => $this->email,
+			] ),
 		];
 
 		return array_merge( $placeholders, $new_placeholders );

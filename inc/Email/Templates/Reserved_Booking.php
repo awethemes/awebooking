@@ -49,7 +49,7 @@ class Reserved_Booking extends Mailable {
 		$this->booking = $booking;
 		$this->recipient = $booking->get( 'customer_email' );
 
-		$this->placeholders = ( new Booking_Placeholder( $booking ) )->apply( $this->placeholders );
+		$this->placeholders = ( new Booking_Placeholder( $booking, $this ) )->apply( $this->placeholders );
 	}
 
 	/**
