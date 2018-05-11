@@ -60,6 +60,15 @@ function abrs_http_request() {
 }
 
 /**
+ * Returns the redirector.
+ *
+ * @return \AweBooking\Component\Routing\Redirector
+ */
+function abrs_redirector() {
+	return awebooking()->make( 'redirector' );
+}
+
+/**
  * Returns the Url_Generator.
  *
  * @return \AweBooking\Http\Routing\Url_Generator
@@ -101,6 +110,27 @@ function abrs_mailer( $email = null ) {
 	return is_null( $email )
 		? awebooking()->make( 'mailer' )
 		: awebooking( 'mailer' )->driver( $email );
+}
+
+function abrs_session( $key = null, $default = null ) {
+	return awebooking( 'session' );
+}
+
+/**
+ * Returns the Flash_Notifier.
+ *
+ * @param  string $message The notice message.
+ * @param  string $level   The notice level.
+ * @return \AweBooking\Component\Flash\Flash_Notifier
+ */
+function abrs_flash( $message = null, $level = 'info' ) {
+	$flash = awebooking()->make( 'flash' );
+
+	if ( is_null( $message ) ) {
+		return $flash;
+	}
+
+	return $flash->add_message( $message, $level );
 }
 
 /**

@@ -3,25 +3,9 @@ namespace AweBooking\Admin\Metaboxes;
 
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Frontend\Checkout\Form_Controls;
 
 class Booking_Main_Metabox {
-	/**
-	 * The form builder.
-	 *
-	 * @var \AweBooking\Component\Form\Form_Builder
-	 */
-	protected $form_builder;
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->form_builder = new Form_Builder( 'room-type' );
-
-		$this->form_fields( $this->form_builder );
-	}
-
 	/**
 	 * Output the metabox.
 	 *
@@ -38,10 +22,8 @@ class Booking_Main_Metabox {
 			$the_booking->calculate_totals();
 		}
 
-		// Prepare form builder.
-		$form = $this->form_builder;
-		$form->object_id( $post->ID );
-		$form->prepare_fields();
+		$checkout_controls = new Form_Controls( $the_booking );
+		$checkout_controls->prepare_fields();
 
 		// Print the core nonce field.
 		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
@@ -147,121 +129,6 @@ class Booking_Main_Metabox {
 			'name'       => esc_html__( 'Customer', 'awebooking' ),
 			'options_cb' => $this->get_customer_options(),
 			'classes'    => 'selectize-search-customer abrs-mb0',
-		]);
-
-		// Booking.
-		$booking = $form->add_section( 'booking' );
-
-		$booking->add_field([
-			'id'               => '_arrival_time',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Estimated time of arrival', 'awebooking' ),
-			'options_cb'       => 'abrs_list_hours',
-			'classes'          => 'with-selectize',
-			'show_option_none' => esc_html__( 'I don\'t know', 'awebooking' ),
-		]);
-
-		$booking->add_field([
-			'id'              => 'excerpt',
-			'type'            => 'textarea',
-			'name'            => esc_html__( 'Special requests', 'awebooking' ),
-			'save_field'      => false, // Let wp handle save this.
-			'escape_cb'       => false,
-			'attributes'      => [ 'rows' => 5 ],
-			'default_cb'      => function() {
-				return get_post_field( 'post_excerpt', get_the_ID() );
-			},
-		]);
-
-		// Customer.
-		$customer = $form->add_section( 'customer' );
-
-		$customer->add_field([
-			'id'               => '_customer_title',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Title', 'awebooking' ),
-			'options_cb'       => 'abrs_list_common_titles',
-			'classes'          => 'with-selectize',
-			'show_option_none' => '---',
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_first_name',
-			'type'     => 'text',
-			'name'     => esc_html__( 'First name', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_last_name',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Last name', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_company',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Company', 'awebooking' ),
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_address',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Address', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_address_2',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Address 2', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_city',
-			'type'     => 'text',
-			'name'     => esc_html__( 'City', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_state',
-			'type'     => 'text',
-			'name'     => esc_html__( 'State', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'               => '_customer_country',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Country', 'awebooking' ),
-			'classes'          => 'with-selectize',
-			'options_cb'       => 'abrs_list_countries',
-			'show_option_none' => '---',
-			'col-half'         => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_postal_code',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Postal code', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_phone',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Phone number', 'awebooking' ),
-			'col-half' => true,
-		]);
-
-		$customer->add_field([
-			'id'       => '_customer_email',
-			'type'     => 'text',
-			'name'     => esc_html__( 'Email address', 'awebooking' ),
-			'col-half' => true,
 		]);
 	}
 

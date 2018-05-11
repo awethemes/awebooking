@@ -17,7 +17,7 @@ class Reservation_Service_Provider extends Service_Provider {
 		});
 
 		$this->plugin->singleton( 'checkout', function() {
-			return new Checkout( $this->plugin['session'], $this->plugin['reservation'] );
+			return new Checkout( $this->plugin['gateways'], $this->plugin['session'], $this->plugin['reservation'] );
 		});
 
 		$this->plugin->alias( 'checkout', Checkout::class );

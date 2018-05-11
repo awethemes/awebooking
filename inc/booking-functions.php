@@ -111,9 +111,9 @@ function abrs_booking_item_classmap() {
 function abrs_get_booking_statuses() {
 	return apply_filters( 'awebooking/list_booking_statuses', [
 		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
+		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
 		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
 		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
-		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
 		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
 		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
 		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),

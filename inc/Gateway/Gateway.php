@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Gateway;
 
-use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
 
@@ -210,7 +209,7 @@ abstract class Gateway {
 			$return_url = str_replace( 'http:', 'https:', $return_url, 1 );
 		}
 
-		return apply_filters( 'awebooking/checkout/get_return_url', $return_url, $booking );
+		return apply_filters( 'awebooking/get_checkout_return_url', $return_url, $booking );
 	}
 
 	/**
@@ -227,7 +226,7 @@ abstract class Gateway {
 	 *
 	 * @return void
 	 */
-	public function display_payment_fields() {
+	public function display_fields() {
 		if ( $description = $this->get_description() ) {
 			echo wp_kses_post( wpautop( wptexturize( $description ) ) );
 		}
@@ -236,10 +235,10 @@ abstract class Gateway {
 	/**
 	 * Validate frontend payment fields.
 	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @param  mixed $data The posted data.
 	 * @return bool
 	 */
-	public function validate_payment_fields( Request $request ) {
+	public function validate_fields( $data ) {
 		return true;
 	}
 

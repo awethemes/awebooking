@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Providers;
 
-use AweBooking\Gateway\Manager;
+use AweBooking\Gateway\Gateways;
 use AweBooking\Support\Service_Provider;
 
 class Payment_Service_Provider extends Service_Provider {
@@ -22,10 +22,10 @@ class Payment_Service_Provider extends Service_Provider {
 	 */
 	public function register() {
 		$this->plugin->singleton( 'gateways', function() {
-			return new Manager( $this->plugin, $this->get_sorted_gateways() );
+			return new Gateways( $this->plugin, $this->get_sorted_gateways() );
 		});
 
-		$this->plugin->alias( 'gateways', Manager::class );
+		$this->plugin->alias( 'gateways', Gateways::class );
 	}
 
 	/**
@@ -37,6 +37,8 @@ class Payment_Service_Provider extends Service_Provider {
 		$gateways = $this->plugin->make( 'gateways' );
 
 		do_action( 'awebooking/setup_gateways', $gateways );
+
+		$gateways->init();
 	}
 
 	/**

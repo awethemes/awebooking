@@ -2,7 +2,6 @@
 namespace AweBooking\Model\Booking;
 
 use AweBooking\Dropdown;
-use AweBooking\Gateway\Manager;
 
 class Fee_Item extends Item {
 	/**

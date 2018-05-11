@@ -5,6 +5,15 @@
  * @package AweBooking
  */
 
+/**
+ * Prints messages and errors which are stored in the flash.
+ *
+ * @return void
+ */
+function abrs_print_notices() {
+	dump( abrs_flash()->all() );
+}
+
 /* Search functions templates */
 
 /**

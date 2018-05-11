@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( $gateway->has_fields() || $gateway->get_description() ) : ?>
 		<div class="payment-method__description payment_method_<?php echo esc_attr( $gateway->get_method() ); ?>">
-			<?php $gateway->display_payment_fields(); ?>
+			<?php $gateway->display_fields(); ?>
 		</div>
 	<?php endif; ?>
 </li>

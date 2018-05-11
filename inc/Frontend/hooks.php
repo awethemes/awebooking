@@ -3,6 +3,7 @@
 // @codingStandardsIgnoreStart
 add_filter( 'body_class',                            'abrs_body_class' );
 
+add_action( 'awebooking_print_notices',               'abrs_print_notices'                  );
 add_action( 'awebooking/display_search_result_item', 'awebooking_search_result_item', 10, 4 );
 
 

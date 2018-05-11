@@ -1,4 +1,4 @@
 <?php
 namespace AweBooking\Gateway;
 
-class GatewayException extends RuntimeException {}
+class GatewayException extends \RuntimeException {}

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$customer_controls = $controls->get_section( 'billing' );
+$customer_controls = $controls->get_section( 'customer' );
 
 if ( empty( $customer_controls->fields ) ) {
 	return;

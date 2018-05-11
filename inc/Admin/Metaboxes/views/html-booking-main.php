@@ -1,4 +1,6 @@
-<style type="text/css">
+<?php
+
+?><style type="text/css">
 	#awebooking-booking-data .hndle,
 	#awebooking-booking-data .handlediv,
 	#post-body-content, #titlediv { display:none }
@@ -20,13 +22,13 @@
 
 				<?php
 				// Print fields.
-				$form->show_field( '_date_created' );
+				// $form->show_field( '_date_created' );
 
-				$form->show_field( '_source' );
+				// $form->show_field( '_source' );
 
-				$form->show_field( '_status' );
+				// $form->show_field( '_status' );
 
-				$form->show_field( '_customer_id' );
+				// $form->show_field( '_customer_id' );
 
 				if ( $_customer = $the_booking['customer_id'] ) {
 					echo '<div class="clear abrs-profile-links">';
@@ -72,9 +74,9 @@
 				</div>
 
 				<div class="js-edit-booking-data" style="display: none;">
-					<?php $form->show_field( '_arrival_time' ); ?>
+					<?php $checkout_controls->show_field( 'arrival_time' ); ?>
 
-					<?php $form->show_field( 'excerpt' ); ?>
+					<?php $checkout_controls->show_field( 'customer_note' ); ?>
 				</div>
 
 				<div class="reservation-details">
@@ -117,9 +119,9 @@
 
 				<div class="js-edit-booking-data" style="display: none;">
 					<div class="abrow">
-						<?php foreach ( $form->sections['customer']['fields'] as $field => $args ) : ?>
+						<?php foreach ( $checkout_controls->sections['customer']['fields'] as $field => $args ) : ?>
 							<div class="abrs-mb1 abcol-sm-12 <?php echo ( isset( $args['col-half'] ) && $args['col-half'] ) ? 'abcol-6' : 'abcol-12'; ?>">
-								<?php $form->show_field( $field ); ?>
+								<?php $checkout_controls->show_field( $field ); ?>
 							</div>
 						<?php endforeach; ?>
 					</div>

@@ -76,6 +76,11 @@ class Direct_Payment_Gateway extends Gateway {
 	 * {@inheritdoc}
 	 */
 	public function process( Booking $booking ) {
-		// ...
+		$booking->update_status( 'on-hold' );
+
+		// Flush the reservation data.
+		abrs_reservation()->flush();
+
+		return new Response( 'success', $this->get_return_url( $booking ) );
 	}
 }

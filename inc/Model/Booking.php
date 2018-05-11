@@ -380,16 +380,41 @@ class Booking extends Model {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function perform_update( array $dirty ) {
-		$this->update_the_post([
-			'post_status'   => $this['status'] ? abrs_prefix_booking_status( $this['status'] ) : 'awebooking-pending',
-			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
-			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
-			'post_excerpt'  => $this['customer_note'],
-		]);
+	protected function perform_insert() {
+		$this->attributes['version'] = awebooking()->version();
 
-		// Allow continue save meta-data if nothing to update post.
-		return true;
+		if ( empty( $this->attributes['currency'] ) ) {
+			$this->attributes['currency'] = abrs_current_currency();
+		}
+
+		$insert_id = wp_insert_post([
+			'post_type'     => $this->object_type,
+			'post_title'    => sprintf( esc_html__( 'Booking &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) ), // @codingStandardsIgnoreLine
+			'post_excerpt'  => $this->get( 'customer_note' ),
+			'post_status'   => $this['status'] ? $this->get( 'status' ) : 'awebooking-pending',
+			'post_date'     => $this['post_date'] ? (string) abrs_date_time( $this['post_date'] ) : current_time( 'mysql' ),
+			'post_password' => uniqid( 'booking_' ),
+			'ping_status'   => 'closed',
+			'post_author'   => 1,
+		], true );
+
+		if ( ! is_wp_error( $insert_id ) ) {
+			return $insert_id;
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function perform_update( array $dirty ) {
+		if ( $this->get_changes_only( $dirty, [ 'date_created', 'date_modified', 'status', 'customer_note' ] ) ) {
+			$this->update_the_post([
+				'post_excerpt'  => $this->get( 'customer_note' ),
+				'post_status'   => $this['status'] ? $this->get( 'status' ) : 'awebooking-pending',
+				'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this->get( 'date_created' ) ) : '',
+				'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this->get( 'date_modified' ) ) : '',
+			]);
+		}
 	}
 
 	/**

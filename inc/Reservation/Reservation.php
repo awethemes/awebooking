@@ -160,4 +160,7 @@ class Reservation {
 
 		return true;
 	}
+
+	public function flush() {
+	}
 }

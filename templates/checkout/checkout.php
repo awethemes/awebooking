@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'awebooking/template_notices' );
+do_action( 'awebooking_print_notices' );
 
 ?>
 

@@ -15,14 +15,20 @@ class Checkout_Controller {
 	public function checkout( Request $request, Checkout $checkout ) {
 		abrs_nocache_headers();
 
-		try {
-			$response = $checkout->process( $request );
+		// Add error messages to the flash.
+		// foreach ( $errors->get_error_messages() as $message ) {
+		// 	abrs_add_notice( $message, 'error' );
+		// }
 
-			dd( $response );
+		// return abrs_redirector()->back();
+
+		try {
+			return $checkout->process( $request );
 		} catch ( \Exception $e ) {
-			esc_html__( 'We were unable to process your reservation, please try again.', 'awebooking' );
+			abrs_report( $e );
+			abrs_add_notice( $e->getMessage(), 'error' );
 		}
 
-		return awebooking( 'redirector' )->back();
+		return abrs_redirector()->back( abrs_get_page_permalink( 'checkout' ) );
 	}
 }
