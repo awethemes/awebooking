@@ -28,13 +28,23 @@ $attributes['class'] .= ' ' . $status;
 	</a>
 
 	<div style="display: none;">
-		<div class="js-tippy-html abrs-pt1" style="width: 350px;">
-			<div class="abrs-pb1 abrs-pl1 abrs-text-left">
+		<div class="js-tippy-html abrs-pt1" style="width: 380px;">
+			<div class="abrs-pb1 abrs-plr1 abrs-text-left">
+				<a class="" href="<?php echo esc_url( get_edit_post_link( $the_booking->get_id() ) ); ?>" target="_blank">
+					<strong class="">#<?php echo esc_html( $the_booking->get_booking_number() ); ?></strong>
+				</a>&nbsp;
 				<?php printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) )); ?>
 
-				<strong><?php esc_html_e( 'Check-in/ Check-out: ', 'awebooking' ); ?></strong>
-				<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
-				<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+				<div class="abrs-fright">
+					<?php if ( ( $nights_stay = $the_booking->get( 'nights_stay' ) ) == -1 ) : ?>
+						<a class="scheduler-inline-text" href="<?php echo esc_url( get_edit_post_link( $the_booking->get_id() ) ); ?>" title="<?php esc_attr_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>" target="_blank">
+							<span class="dashicons dashicons-info"></span>
+						</a>
+					<?php else : ?>
+						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
+						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+					<?php endif; ?>
+				</div>
 			</div>
 
 			<?php abrs_admin_template_part( 'booking/html-customer-details.php', [ 'booking' => $the_booking ] ); ?>

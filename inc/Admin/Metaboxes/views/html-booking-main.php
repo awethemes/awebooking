@@ -24,8 +24,6 @@
 				// Print fields.
 				// $form->show_field( '_date_created' );
 
-				// $form->show_field( '_source' );
-
 				// $form->show_field( '_status' );
 
 				// $form->show_field( '_customer_id' );
@@ -82,10 +80,10 @@
 				<div class="reservation-details">
 					<p class="night-stay">
 						<?php if ( ( $nights_stay = $the_booking->get( 'nights_stay' ) ) == -1 ) : ?>
-							<?php echo 'Length of stay varies, see each room.'; ?>
+							<?php esc_html_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>
 						<?php else : ?>
-							<strong><span class="afc afc-moon" style="vertical-align: middle;"></span> <?php echo esc_html( $nights_stay ); ?> night stay</strong>
-						<?php endif ?>
+							<strong><span class="afc afc-moon" style="vertical-align: middle;"></span> <?php echo esc_html( $nights_stay ); ?> <?php esc_html_e( 'night stay', 'awebooking' ); ?></strong>
+						<?php endif; ?>
 					</p>
 
 					<div class="abrow no-gutters">
