@@ -100,7 +100,7 @@ function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false
 
 		return $timespan;
 	} catch ( Exception $e ) {
-		return new WP_Error( 'timespan_error', esc_html__( 'Please enter a valid period.', 'awebooking' ) );
+		return new WP_Error( 'timespan_error', esc_html__( 'Please enter a valid timespan.', 'awebooking' ) );
 	}
 }
 

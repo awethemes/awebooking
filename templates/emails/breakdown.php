@@ -19,6 +19,7 @@
 $booking_id           = $booking->get_id();
 $total_price          = (string) $booking->get_total();
 ?>
+
 <h2>
 	<a class="link" href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">
 		<?php

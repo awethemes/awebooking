@@ -77,6 +77,17 @@ class Room extends Model {
 	}
 
 	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		abrs_clean_room_cache( $this->id );
+
+		wp_cache_delete( (int) $this->get( 'room_type' ), 'awebooking_rooms' );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function perform_insert() {

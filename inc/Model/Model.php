@@ -39,6 +39,15 @@ abstract class Model extends WP_Object {
 	}
 
 	/**
+	 * Flush object caches.
+	 *
+	 * @return void
+	 */
+	public function flush_cache() {
+		$this->clean_cache();
+	}
+
+	/**
 	 * Do something before doing save.
 	 *
 	 * @return void
@@ -76,27 +85,6 @@ abstract class Model extends WP_Object {
 
 			default:
 				parent::setup_instance();
-				break;
-		}
-	}
-
-	/**
-	 * Clean object cache after saved.
-	 *
-	 * @return void
-	 */
-	protected function clean_cache() {
-		switch ( $this->wp_type ) {
-			case 'post':
-				clean_post_cache( $this->id );
-				break;
-
-			case 'awebooking_rooms':
-				abrs_clean_room_cache( $this->id );
-				break;
-
-			case 'awebooking_item':
-				abrs_clean_booking_item_cache( $this->id );
 				break;
 		}
 	}

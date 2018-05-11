@@ -535,9 +535,9 @@ span.flatpickr-weekday {
 .flatpickr-day.endRange.endRange {
   border-radius: 0 50px 50px 0;
 }
-.flatpickr-day.selected.startRange + .endRange,
-.flatpickr-day.startRange.startRange + .endRange,
-.flatpickr-day.endRange.startRange + .endRange {
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
   -webkit-box-shadow: -10px 0 0 #ffb866;
           box-shadow: -10px 0 0 #ffb866;
 }

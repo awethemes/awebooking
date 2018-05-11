@@ -93,6 +93,17 @@ abstract class Item extends Model {
 	}
 
 	/**
+	 * Clean object cache after saved.
+	 *
+	 * @return void
+	 */
+	protected function clean_cache() {
+		wp_cache_delete( $this->get( 'booking_id' ), 'awebooking_booking_items' );
+
+		abrs_clean_booking_item_cache( $this->id );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup_instance() {

@@ -8,7 +8,6 @@ use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Calendar\Resource\Resources;
 use AweBooking\Calendar\Resource\Resource_Interface;
 use AweBooking\Calendar\Provider\Provider_Interface;
 use AweBooking\Calendar\Provider\Cached_Provider;
@@ -211,7 +210,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
  *
  * @param  int      $rate     The rate ID to retrieve.
  * @param  Timespan $timespan The timespan.
- * @return array|WP_Error
+ * @return \AweBooking\Support\Collection|WP_Error
  */
 function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 	try {
