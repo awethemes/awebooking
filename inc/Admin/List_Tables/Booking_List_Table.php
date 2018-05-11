@@ -60,6 +60,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			'booking_check_out' => esc_html__( 'Check-Out', 'awebooking' ),
 			'booking_summary'   => esc_html__( 'Summary', 'awebooking' ),
 			'booking_total'     => esc_html__( 'Total', 'awebooking' ),
+			'booking_paid'      => esc_html__( 'Paid', 'awebooking' ),
 			'booking_date'      => esc_html__( 'Date', 'awebooking' ),
 		]);
 	}
@@ -146,10 +147,20 @@ class Booking_List_Table extends Abstract_List_Table {
 		printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) );
 	}
 
+	/**
+	 * Display column: check-in.
+	 *
+	 * @return void
+	 */
 	protected function display_booking_check_in_column() {
 		echo esc_html( abrs_format_date( $this->booking->get( 'check_in_date' ) ) );
 	}
 
+	/**
+	 * Display column: check-out.
+	 *
+	 * @return void
+	 */
 	protected function display_booking_check_out_column() {
 		echo esc_html( abrs_format_date( $this->booking->get( 'check_out_date' ) ) );
 	}
@@ -196,20 +207,96 @@ class Booking_List_Table extends Abstract_List_Table {
 	}
 
 	/**
+	 * Display columm: booking_paid.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_paid_column() {
+		global $the_booking;
+		?>
+			<span class="tippy" data-tippy-interactive="true" data-tippy-html="#private_balance_due_<?php echo esc_attr( $the_booking['id'] ); ?>">
+			<span class="abrs-badge"><?php echo abrs_format_price( $this->booking->get( 'paid' ), $this->booking->get( 'currency' ) ); ?></span>
+			</span>
+
+			<div id="private_balance_due_<?php echo esc_attr( $the_booking['id'] ); ?>" style="display: none;">
+				<div class="abrs-tooltip-note">
+					<?php esc_html_e( 'Balance due: ', 'awebooking' ); ?>
+					<?php echo abrs_format_price( $this->booking->get( 'balance_due' ), $this->booking->get( 'currency' ) ); ?>
+				</div>
+			</div>
+		<?php
+
+	}
+
+	/**
 	 * Display columm: booking_summary.
 	 *
 	 * @return void
 	 */
 	protected function display_booking_summary_column() {
-
-
 		$booked_rooms = $this->booking->get_rooms();
 
-		if ( count( $booked_rooms ) === 0 ) {
-			echo '-';
-		}
+		if ( abrs_blank( $booked_rooms ) ) : ?>
+			<?php esc_html_e( 'No rooms found', 'awebooking' ); ?>
+		<?php else : ?>
+			<?php
+			$fisrt_room = $booked_rooms[0];
+			$rooms_left = absint( count( $booked_rooms ) - 1 );
+			$adults = esc_html( number_format_i18n( $fisrt_room->get( 'adults' ) ) );
 
-		echo "<br>more 5 rooms";
+			$timespan = $fisrt_room->get_timespan();
+			$nights = sprintf(
+				'&comma; <span class="">%1$d %2$s</span>',
+				$timespan->get_nights(),
+				_n( 'night', 'nights', $timespan->get_nights(), 'awebooking' )
+			);
+
+			$guest = '';
+			$guest .= sprintf(
+				'&comma; <span class="">%1$d %2$s</span>',
+				$adults,
+				_n( 'adult', 'adults', $adults, 'awebooking' )
+			);
+
+			if ( abrs_children_bookable() ) {
+				$children = $fisrt_room['children'] ? number_format_i18n( $fisrt_room->get( 'children' ) ) : 0;
+				if ( $children ) {
+					$guest .= sprintf(
+						'&amp; <span class="">%1$d %2$s</span>',
+						$children,
+						_n( 'child', 'children', $children, 'awebooking' )
+					);
+				}
+			}
+
+			if ( abrs_infants_bookable() ) {
+				$infants = $fisrt_room['infants'] ? number_format_i18n( $fisrt_room->get( 'infants' ) ) : 0;
+				if ( $infants ) {
+					$guest .= sprintf(
+						'&amp; <span class="">%1$d %2$s</span>',
+						$infants,
+						_n( 'infant', 'infants', $infants, 'awebooking' )
+					);
+				}
+			}
+
+			$more = '';
+			if ( $rooms_left ) {
+				$more = sprintf(
+					/* translators: 1: number of rooms */
+					_nx(
+						'&comma; more %1$s room',
+						'&comma; more %1$s rooms',
+						$rooms_left,
+						'rooms left',
+						'awebooking'
+					),
+					number_format_i18n( $rooms_left )
+				);
+			}
+
+			printf( esc_html__( '%1$s%2$s%3$s%4$s ', 'awebooking' ), esc_html( $fisrt_room->get_name() ), $nights, $guest, $more );
+		endif;
 	}
 
 	/**

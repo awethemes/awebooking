@@ -14,6 +14,15 @@ class Form_Controls extends Form_Builder {
 	}
 
 	/**
+	 * Gets the mandatory controls.
+	 *
+	 * @return array
+	 */
+	public function get_mandatory() {
+		return apply_filters( 'awebooking/checkout_mandatory_controls', [ 'customer_first_name', 'customer_email' ] );
+	}
+
+	/**
 	 * Setup the fields.
 	 *
 	 * @return void
@@ -126,6 +135,7 @@ class Form_Controls extends Form_Builder {
 			'options_cb'       => 'abrs_list_countries',
 			'show_option_none' => '---',
 			'attributes'       => [ 'autocomplete' => 'country' ],
+			'required'         => true,
 			'col-half'         => true,
 		]);
 
