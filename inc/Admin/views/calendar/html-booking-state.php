@@ -32,9 +32,10 @@ $attributes['class'] .= ' ' . $status;
 			<div class="abrs-pb1 abrs-pl1 abrs-text-left">
 				<?php printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) )); ?>
 
-				<strong><?php esc_html_e( 'Check-in/ Check-out: ', 'awebooking' ); ?></strong>
-				<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
-				<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+				<div class="abrs-fright">
+					<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
+					<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+				</div>
 			</div>
 
 			<?php abrs_admin_template_part( 'booking/html-customer-details.php', [ 'booking' => $the_booking ] ); ?>
