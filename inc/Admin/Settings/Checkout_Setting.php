@@ -45,6 +45,20 @@ class Checkout_Setting extends Abstract_Setting {
 			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-gateways-sorter.php',
 		]);
 
+		$options->add_field([
+			'id'         => '__payments_checkout_fields',
+			'type'       => 'title',
+			'name'       => esc_html__( 'Checkout Fields', 'awebooking' ),
+		]);
+
+		$options->add_field([
+			'id'         => 'list_checkout_fields',
+			'type'       => 'include',
+			'name'       => esc_html__( 'Checkout Fields', 'awebooking' ),
+			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-checkout-fields-sorter.php',
+			'sanitization_cb' => [ $this, 'sanitize_checkout_controls' ],
+		]);
+
 		// Register the gateways custom fields.
 		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
 			if ( $gateway->has_settings() ) {
@@ -87,5 +101,14 @@ class Checkout_Setting extends Abstract_Setting {
 		}
 
 		do_action( 'awebooking/register_gateway_settings', $gateway, $section );
+	}
+
+	/**
+	 * Sanitize checkout controls
+	 * @param  array $controls Controls
+	 * @return array
+	 */
+	public function sanitize_checkout_controls( $controls ) {
+
 	}
 }
