@@ -12,7 +12,7 @@ $note_classes   = apply_filters( 'awebooking/booking_note_class', array_filter( 
 	</button>
 
 	<div class="booking-note__content">
-		<?php echo wp_kses_post( wpautop( wptexturize( $note->content ) ) ); ?>
+		<?php echo wp_kses_post( wpautop( wptexturize( make_clickable( $note->content ) ) ) ); ?>
 	</div>
 
 	<div class="booking-note__meta">

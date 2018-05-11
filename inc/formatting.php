@@ -1,5 +1,7 @@
 <?php
 
+use AweBooking\Component\Country\Formatter as Country_Formatter;
+
 /**
  * Returns the date format.
  *
@@ -59,14 +61,44 @@ function abrs_format_datetime( $date_time, $format = null ) {
 }
 
 /**
- * Same as abrs_format_price() but echo the price instead.
+ * Format the given address.
  *
- * @param  int|float $amount   The amount.
- * @param  string    $currency The currency, default is current currency.
- * @return void
+ * @see AweBooking\Component\Country\Formatter::format()
+ *
+ * @param  array $args An array of address.
+ * @return string
  */
-function abrs_price( $amount, $currency = null ) {
-	echo abrs_format_price( $amount, $currency ); // WPCS: XSS OK.
+function abrs_format_address( $args ) {
+	return ( new Country_Formatter )->format( $args );
+}
+
+/**
+ * Get the price format depending on the currency position.
+ *
+ * @return string
+ */
+function abrs_get_price_format() {
+	$position = abrs_get_option( 'currency_position' );
+
+	switch ( $position ) {
+		case 'left':
+			$format = '%1$s%2$s';
+			break;
+		case 'right':
+			$format = '%2$s%1$s';
+			break;
+		case 'left_space':
+			$format = '%1$s&nbsp;%2$s';
+			break;
+		case 'right_space':
+			$format = '%2$s&nbsp;%1$s';
+			break;
+		default:
+			$format = '%1$s%2$s';
+			break;
+	}
+
+	return apply_filters( 'awebooking/get_price_format', $format, $position );
 }
 
 /**
@@ -116,32 +148,14 @@ function abrs_format_price( $amount, $currency = null ) {
 }
 
 /**
- * Get the price format depending on the currency position.
+ * Same as abrs_format_price() but echo the price instead.
  *
- * @return string
+ * @param  int|float $amount   The amount.
+ * @param  string    $currency The currency, default is current currency.
+ * @return void
  */
-function abrs_get_price_format() {
-	$position = abrs_get_option( 'currency_position' );
-
-	switch ( $position ) {
-		case 'left':
-			$format = '%1$s%2$s';
-			break;
-		case 'right':
-			$format = '%2$s%1$s';
-			break;
-		case 'left_space':
-			$format = '%1$s&nbsp;%2$s';
-			break;
-		case 'right_space':
-			$format = '%2$s&nbsp;%1$s';
-			break;
-		default:
-			$format = '%1$s%2$s';
-			break;
-	}
-
-	return apply_filters( 'awebooking/get_price_format', $format, $position );
+function abrs_price( $amount, $currency = null ) {
+	echo abrs_format_price( $amount, $currency ); // WPCS: XSS OK.
 }
 
 /**
@@ -205,8 +219,8 @@ function abrs_esc_plan_text( $content ) {
  * Remove formatting and allow "+".
  * Example and specs: https://developer.mozilla.org/en/docs/Web/HTML/Element/a#Creating_a_phone_link
  *
- * @param string $phone Content to convert phone number.
- * @return string Content with converted phone number.
+ * @param  string $phone Content to convert phone number.
+ * @return string
  */
 function abrs_make_phone_clickable( $phone ) {
 	$number = trim( preg_replace( '/[^\d|\+]/', '', $phone ) );
@@ -398,7 +412,6 @@ function abrs_sanitize_image_size( $size ) {
 		'height' => 150,
 		'crop'   => 'on',
 	], $size );
-
 
 	$atts['width']  = absint( $atts['width'] );
 	$atts['height'] = absint( $atts['height'] );
