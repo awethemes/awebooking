@@ -508,6 +508,31 @@ table.awebooking-table tfoot td {
   font-size: inherit;
 }
 
+table.awebooking-table--bordered {
+  margin: 0;
+  padding: 0;
+  border: solid 1px #eee;
+  border-spacing: 2px;
+  border-collapse: collapse;
+}
+
+table.awebooking-table--bordered th,
+table.awebooking-table--bordered td {
+  padding: 8px 10px;
+  vertical-align: top;
+  box-sizing: border-box;
+  border: solid 1px #eee;
+}
+
+table.awebooking-table--bordered th {
+  width: 30%;
+}
+
+table.awebooking-table--bordered td {
+  width: 70%;
+  background: #fff;
+}
+
 table.debug-rooms__table {
   max-width: 100%;
   background: #fff;
@@ -1727,7 +1752,8 @@ span.flatpickr-weekday {
   font-size: 13px !important;
 }
 
-.tippy-tooltip.abrs-tippy-theme {
+.tippy-tooltip.abrs-tippy-theme,
+.tippy-tooltip.booking-popup-theme {
   color: #444;
   background-color: #fff;
   font-size: 13px;
@@ -1737,13 +1763,19 @@ span.flatpickr-weekday {
   box-shadow: 1px 2px 7px rgba(0, 0, 0, 0.07);
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.abrs-tippy-theme .tippy-arrow {
+.tippy-tooltip.booking-popup-theme {
+  width: 350px;
+}
+
+.tippy-popper[x-placement^=top] .tippy-tooltip.abrs-tippy-theme .tippy-arrow,
+.tippy-popper[x-placement^=top] .tippy-tooltip.booking-popup-theme .tippy-arrow {
   border-top-color: #fff;
   -webkit-transform: scale(1.3);
   transform: scale(1.3);
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.abrs-tippy-theme .tippy-arrow {
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.abrs-tippy-theme .tippy-arrow,
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.booking-popup-theme .tippy-arrow {
   border-bottom-color: #fff;
   -webkit-transform: scale(1.3);
   transform: scale(1.3);

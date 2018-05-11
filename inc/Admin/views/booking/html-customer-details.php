@@ -1,28 +1,8 @@
 <?php
-/**
- * Customer details.
- *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/customer-details.php.
- *
- * HOWEVER, on occasion AweBooking will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
- * @author   awethemes
- * @package  AweBooking
- * @version  3.1.0
- */
-
 use AweBooking\Component\Country\Formatter;
 
 ?>
-
-<h2><?php esc_html_e( 'Customer details', 'awebooking' ); ?></h2>
-
-<table class="table table--customer" width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
+<table class="awebooking-table awebooking-table--bordered abrs-text-left" width="100%" cellpadding="0" cellspacing="0">
 	<tbody>
 		<tr>
 			<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>

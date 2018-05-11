@@ -53,8 +53,23 @@ class Booking extends Model {
 		return apply_filters( $this->prefix( 'get_booking_number' ), $this->get_id(), $this );
 	}
 
-	public function get_formatted_guest_name() {
-		return $this->get( 'customer_first_name' );
+	/**
+	 * Returns the customer full name.
+	 *
+	 * @return string
+	 */
+	public function get_customer_fullname() {
+		$title = $this->get( 'customer_title' );
+
+		$titles = abrs_list_common_titles();
+
+		$customer_name = trim( sprintf( '%1$s %2$s %3$s',
+			isset( $titles[ $title ] ) ? $titles[ $title ] : '',
+			$this->get( 'customer_first_name' ),
+			$this->get( 'customer_last_name' )
+		));
+
+		return apply_filters( $this->prefix( 'get_customer_fullname' ), $customer_name, $this );
 	}
 
 	/**

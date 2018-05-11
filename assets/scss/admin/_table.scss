@@ -12,6 +12,31 @@ table.awebooking-table {
   }
 }
 
+table.awebooking-table--bordered {
+  margin: 0;
+  padding: 0;
+  border: solid 1px #eee;
+  border-spacing: 2px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 8px 10px;
+    vertical-align: top;
+    box-sizing: border-box;
+    border: solid 1px #eee;
+  }
+
+  th {
+    width: 30%;
+  }
+
+  td {
+    width: 70%;
+    background: #fff;
+  }
+}
+
 table.debug-rooms__table {
   // width: 350px;
   max-width: 100%;

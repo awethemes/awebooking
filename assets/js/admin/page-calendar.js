@@ -139,19 +139,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var $html = $(el).find('.js-tippy-html');
 
         tippy(el, {
-          theme: 'abrs-tippy',
+          theme: 'booking-popup',
           delay: 150,
           arrow: true,
           distance: 0,
           maxWidth: '500px',
-          placement: 'top',
+          placement: 'bottom',
           trigger: 'mouseenter focus',
           interactive: true,
           performance: true,
           hideOnClick: false,
           animation: 'shift-toward',
           duration: [150, 150],
-          html: $html.length ? $html[0] : false
+          html: $html.length ? $html[0] : false,
+          popperOptions: { modifiers: {
+              hide: { enabled: false },
+              preventOverflow: { enabled: false }
+            } }
         });
 
         return el._tippy;
