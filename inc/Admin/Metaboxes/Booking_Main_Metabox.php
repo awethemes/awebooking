@@ -22,11 +22,12 @@ class Booking_Main_Metabox {
 			$the_booking->calculate_totals();
 		}
 
-		$checkout_controls = new Form_Controls( $the_booking );
-		$checkout_controls->prepare_fields();
+		$controls = new Form_Controls( $the_booking );
+		$this->additional_fields( $controls );
 
 		// Print the core nonce field.
 		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
+		$controls->prepare_fields();
 
 		include trailingslashit( __DIR__ ) . 'views/html-booking-main.php';
 	}
@@ -40,26 +41,30 @@ class Booking_Main_Metabox {
 	public function save( $post, Request $request ) {
 		$booking = abrs_get_booking( $post );
 
+		$controls = new Form_Controls( $booking );
+		$this->additional_fields( $controls );
+
 		// Get the sanitized values.
-		$values = $this->form_builder->handle( $request );
+		$values = $controls->handle( $request );
 
 		$booking->fill([
+			// 'source'                  => $values->get( '_source', 'website' ),
 			'date_created'            => $values->get( '_date_created', current_time( 'timestamp' ) ),
-			'source'                  => $values->get( '_source', 'website' ),
 			'customer_id'             => absint( $values->get( '_customer_id', 0 ) ),
-			'arrival_time'            => $values->get( '_arrival_time', '' ),
-			'customer_title'          => $values->get( '_customer_title', '' ),
-			'customer_first_name'     => $values->get( '_customer_first_name', '' ),
-			'customer_last_name'      => $values->get( '_customer_last_name', '' ),
-			'customer_address'        => $values->get( '_customer_address', '' ),
-			'customer_address_2'      => $values->get( '_customer_address_2', '' ),
-			'customer_city'           => $values->get( '_customer_city', '' ),
-			'customer_state'          => $values->get( '_customer_state', '' ),
-			'customer_postal_code'    => $values->get( '_customer_postal_code', '' ),
-			'customer_country'        => $values->get( '_customer_country', '' ),
-			'customer_company'        => $values->get( '_customer_company', '' ),
-			'customer_phone'          => $values->get( '_customer_phone', '' ),
-			'customer_email'          => $values->get( '_customer_email', '' ),
+			'customer_note'           => $values->get( 'customer_note', '' ),
+			'arrival_time'            => $values->get( 'arrival_time', '' ),
+			'customer_title'          => $values->get( 'customer_title', '' ),
+			'customer_first_name'     => $values->get( 'customer_first_name', '' ),
+			'customer_last_name'      => $values->get( 'customer_last_name', '' ),
+			'customer_address'        => $values->get( 'customer_address', '' ),
+			'customer_address_2'      => $values->get( 'customer_address_2', '' ),
+			'customer_city'           => $values->get( 'customer_city', '' ),
+			'customer_state'          => $values->get( 'customer_state', '' ),
+			'customer_postal_code'    => $values->get( 'customer_postal_code', '' ),
+			'customer_country'        => $values->get( 'customer_country', '' ),
+			'customer_company'        => $values->get( 'customer_company', '' ),
+			'customer_phone'          => $values->get( 'customer_phone', '' ),
+			'customer_email'          => $values->get( 'customer_email', '' ),
 		]);
 
 		// Manually set the status.
@@ -79,10 +84,10 @@ class Booking_Main_Metabox {
 	/**
 	 * Register the fields on the form.
 	 *
-	 * @param  \AweBooking\Component\Form\Form_Builder $form The form builder.
+	 * @param  \AweBooking\Frontend\Checkout\Form_Controls $form The form builder.
 	 * @return void
 	 */
-	protected function form_fields( $form ) {
+	protected function additional_fields( $form ) {
 		$general = $form->add_section( 'general' );
 
 		$general->add_field([

@@ -22,11 +22,11 @@
 
 				<?php
 				// Print fields.
-				// $form->show_field( '_date_created' );
+				$controls->show_field( '_date_created' );
 
-				// $form->show_field( '_status' );
+				$controls->show_field( '_status' );
 
-				// $form->show_field( '_customer_id' );
+				$controls->show_field( '_customer_id' );
 
 				if ( $_customer = $the_booking['customer_id'] ) {
 					echo '<div class="clear abrs-profile-links">';
@@ -72,9 +72,9 @@
 				</div>
 
 				<div class="js-edit-booking-data" style="display: none;">
-					<?php $checkout_controls->show_field( 'arrival_time' ); ?>
+					<?php $controls->show_field( 'arrival_time' ); ?>
 
-					<?php $checkout_controls->show_field( 'customer_note' ); ?>
+					<?php $controls->show_field( 'customer_note' ); ?>
 				</div>
 
 				<div class="reservation-details">
@@ -117,9 +117,9 @@
 
 				<div class="js-edit-booking-data" style="display: none;">
 					<div class="abrow">
-						<?php foreach ( $checkout_controls->sections['customer']['fields'] as $field => $args ) : ?>
+						<?php foreach ( $controls->sections['customer']['fields'] as $field => $args ) : ?>
 							<div class="abrs-mb1 abcol-sm-12 <?php echo ( isset( $args['col-half'] ) && $args['col-half'] ) ? 'abcol-6' : 'abcol-12'; ?>">
-								<?php $checkout_controls->show_field( $field ); ?>
+								<?php $controls->show_field( $field ); ?>
 							</div>
 						<?php endforeach; ?>
 					</div>
