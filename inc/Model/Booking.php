@@ -242,24 +242,6 @@ class Booking extends Model {
 	}
 
 	/**
-	 * Get the Timespan of check-in, check-out.
-	 *
-	 * @return \AweBooking\Model\Common\Timespan|null
-	 */
-	public function get_timespan() {
-		return abrs_timespan( $this->get( 'check_in_date' ), $this->get( 'check_out_date' ) );
-	}
-
-	/**
-	 * Returns nights stayed of this line item.
-	 *
-	 * @return int
-	 */
-	public function get_nights_stayed() {
-		return abrs_optional( $this->get_timespan() )->nights();
-	}
-
-	/**
 	 * Determines if booking can be edited.
 	 *
 	 * @return bool
@@ -417,19 +399,40 @@ class Booking extends Model {
 		parent::finish_save();
 
 		$this->apply_status_transition();
+	}
 
-		if ( true === $this->force_calculate_totals ) {
-			$this->calculate_totals();
+	/**
+	 * Returns Period collection of booking items.
+	 *
+	 * @return void
+	 */
+	public function setup_dates() {
+		$periods = $this->get_line_items()->map(function( $item ) {
+			return $item->get_timespan()->get_period();
+		});
+
+		if ( 0 === count( $periods ) ) {
+			$this->attributes['nights_stay']    = 0;
+			$this->attributes['check_in_date']  = '';
+			$this->attributes['check_out_date'] = '';
+		} else {
+			$periods = new Period_Collection( $periods );
+
+			$collapsed = $periods->collapse();
+
+			$this->attributes['nights_stay']    = $periods->is_continuous() ? $collapsed->days : -1;
+			$this->attributes['check_in_date']  = $collapsed->get_start_date()->format( 'Y-m-d' );
+			$this->attributes['check_out_date'] = $collapsed->get_end_date()->format( 'Y-m-d' );
 		}
+
+		$this->save();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function clean_cache() {
-		$this->items = [];
-
-		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
+		$this->flush_items();
 
 		clean_post_cache( $this->get_id() );
 	}
@@ -445,6 +448,7 @@ class Booking extends Model {
 			'date_created'            => null,
 			'date_modified'           => null,
 			'arrival_time'            => '',
+			'nights_stay'             => 0,
 			'customer_note'           => '',
 			'check_in_date'           => '',
 			'check_out_date'          => '',
@@ -483,6 +487,7 @@ class Booking extends Model {
 			'source'                  => '_source',
 			'created_via'             => '_created_via',
 			'arrival_time'            => '_arrival_time',
+			'nights_stay'             => '_nights_stay',
 			'check_in_date'           => '_check_in_date',
 			'check_out_date'          => '_check_out_date',
 			'discount_total'          => '_discount_total',

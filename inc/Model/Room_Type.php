@@ -15,13 +15,6 @@ class Room_Type extends Model {
 	protected $object_type = Constants::ROOM_TYPE;
 
 	/**
-	 * The list rooms.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $rooms;
-
-	/**
 	 * List the rate plans.
 	 *
 	 * @var \AweBooking\Support\Collection
@@ -41,14 +34,12 @@ class Room_Type extends Model {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_rooms() {
-		if ( is_null( $this->rooms ) ) {
-			// If working on non-exists room type, just create an empty rooms.
-			$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
+		// If working on non-exists room type, just create an empty rooms.
+		$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
 
-			$this->rooms = abrs_collect( $rooms )->map_into( Room::class );
-		}
+		$rooms = abrs_collect( $rooms )->map_into( Room::class );
 
-		return apply_filters( $this->prefix( 'get_rooms' ), $this->rooms, $this );
+		return apply_filters( $this->prefix( 'get_rooms' ), $rooms, $this );
 	}
 
 	/**
@@ -101,10 +92,9 @@ class Room_Type extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function clean_cache() {
-		parent::clean_cache();
-
-		$this->rooms = null;
 		$this->rate_plans = null;
+
+		clean_post_cache( $this->get_id() );
 
 		wp_cache_delete( $this->get_id(), 'awebooking_rooms' );
 	}

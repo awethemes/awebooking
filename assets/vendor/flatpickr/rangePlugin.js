@@ -1,4 +1,4 @@
-/* flatpickr v4.4.4, @license MIT */
+/* flatpickr v4.4.6, @license MIT */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -44,20 +44,18 @@
             fp.open(undefined, secondInput);
           });
 
-          fp._bind(secondInput, "keydown", function (e) {
+          if (fp.config.allowInput) fp._bind(secondInput, "keydown", function (e) {
             if (e.key === "Enter") {
               fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
               secondInput.click();
             }
           });
-
           if (!config.input) fp._input.parentNode && fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
         };
 
         var plugin = {
           onParseConfig: function onParseConfig() {
             fp.config.mode = "range";
-            fp.config.allowInput = true;
             dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
           },
           onReady: function onReady() {
@@ -76,10 +74,9 @@
               fp.jumpToDate(fp.selectedDates[0]);
             });
 
-            fp._bind(fp._input, "keydown", function (e) {
+            if (fp.config.allowInput) fp._bind(fp._input, "keydown", function (e) {
               if (e.key === "Enter") fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
             });
-
             fp.setDate(fp.selectedDates, false);
             plugin.onValueUpdate(fp.selectedDates);
           },

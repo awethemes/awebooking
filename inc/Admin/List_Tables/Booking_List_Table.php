@@ -146,6 +146,14 @@ class Booking_List_Table extends Abstract_List_Table {
 		printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) );
 	}
 
+	protected function display_booking_check_in_column() {
+		echo esc_html( abrs_format_date( $this->booking->get( 'check_in_date' ) ) );
+	}
+
+	protected function display_booking_check_out_column() {
+		echo esc_html( abrs_format_date( $this->booking->get( 'check_out_date' ) ) );
+	}
+
 	/**
 	 * Display columm: booking_date.
 	 *
@@ -193,7 +201,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 * @return void
 	 */
 	protected function display_booking_summary_column() {
-		// Length of stay varies, see each room.
+
 
 		$booked_rooms = $this->booking->get_rooms();
 

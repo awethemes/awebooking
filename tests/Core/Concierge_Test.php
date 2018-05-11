@@ -10,7 +10,7 @@ class Concierge_Test extends WP_UnitTestCase {
 
 		$this->luxury = $this->setupLuxuryRoomType();
 
-		$this->rooms  = [];
+		$this->rooms = [];
 		foreach ( $this->luxury->get_rooms() as $i => $room ) {
 			$this->rooms[$i] = $room;
 		}
@@ -194,7 +194,7 @@ class Concierge_Test extends WP_UnitTestCase {
 			$luxury_room->save();
 		}
 
-		return new Room_Type( $luxury->get_id() );
+		return $luxury;
 	}
 
 	protected function assertStateData( $unit_id, $year, $month, $days ) {

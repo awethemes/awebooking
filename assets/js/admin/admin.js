@@ -399,7 +399,7 @@ function encoderForArrayFormat(options) {
 			};
 		case 'bracket':
 			return (key, value) => {
-				return value === null ? encode(key, options) : [
+				return value === null ? [encode(key, options), '[]'].join('') : [
 					encode(key, options),
 					'[]=',
 					encode(value, options)
@@ -474,6 +474,14 @@ function encode(value, options) {
 	return value;
 }
 
+function decode(value, options) {
+	if (options.decode) {
+		return decodeComponent(value);
+	}
+
+	return value;
+}
+
 function keysSorter(input) {
 	if (Array.isArray(input)) {
 		return input.sort();
@@ -497,7 +505,7 @@ function extract(input) {
 }
 
 function parse(input, options) {
-	options = Object.assign({arrayFormat: 'none'}, options);
+	options = Object.assign({decode: true, arrayFormat: 'none'}, options);
 
 	const formatter = parserForArrayFormat(options);
 
@@ -519,9 +527,9 @@ function parse(input, options) {
 
 		// Missing `=` should be `null`:
 		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-		value = value === undefined ? null : decodeComponent(value);
+		value = value === undefined ? null : decode(value, options);
 
-		formatter(decodeComponent(key), value, ret);
+		formatter(decode(key, options), value, ret);
 	}
 
 	return Object.keys(ret).sort().reduce((result, key) => {

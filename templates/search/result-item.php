@@ -4,12 +4,6 @@
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/search/result-item.php.
  *
- * HOWEVER, on occasion AweBooking will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
@@ -20,21 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Leave if we have invalid availability variable.
-if ( empty( $availability['room_type'] ) || empty( $availability['room_rate'] ) ) {
-	return;
-}
-
-$room_type = $availability['room_type'];
-$room_rate = $availability['room_rate'];
-
 $remain_rooms = $room_rate->get_remain_rooms();
-
-// dump($room_rate);
-
-$price_display = 'total'; // per_night, first_night.
-$room_rate->get_price();
-
 
 ?>
 
@@ -66,16 +46,15 @@ $room_rate->get_price();
 								</div>
 
 								<div>
+									<strong><?php esc_html_e( 'What\'s included', 'awebooking' ); ?></strong>
 
-								<strong><?php esc_html_e( 'What\'s included', 'awebooking' ); ?></strong>
+									<?php if ( ! empty( $room_type['rate_inclusions'] ) ) : ?>
+										<?php foreach ( $room_type->get( 'rate_inclusions' ) as $string ) : ?>
 
-								<?php if ( ! empty( $room_type['rate_inclusions'] ) ) : ?>
-									<?php foreach ( $room_type->get( 'rate_inclusions' ) as $string ) : ?>
+											<p><?php echo abrs_esc_text( $string ); // WPCS: XSS OK. ?></p>
 
-										<p><?php echo abrs_esc_text( $string ); // WPCS: XSS OK. ?></p>
-
-									<?php endforeach ?>
-								<?php endif ?>
+										<?php endforeach ?>
+									<?php endif ?>
 								</div>
 
 							</div>
@@ -85,10 +64,10 @@ $room_rate->get_price();
 					<td class="column-room-inventory">
 						<div class="abroom__inventory">
 							<?php
-							switch ( $price_display ) {
+							switch ( abrs_get_option( 'display_price', 'total' ) ) {
 								case 'total':
 									abrs_price( $room_rate->get_price() );
-									echo sprintf( 'Cost for %s nights', $room_rate->get_nights_stay() );
+									echo sprintf( 'Cost for %s nights', $room_rate->timespan->nights() );
 									break;
 
 								case 'first_night':
@@ -99,8 +78,8 @@ $room_rate->get_price();
 					</td>
 
 					<td class="column-room-button">
-						<?php if ( ! $room_rate->is_error() ) : ?>
-							<?php abrs_book_room_button( [ 'room_type' => $room_type->get_id() ] ); ?>
+						<?php if ( ! $room_rate->has_error() ) : ?>
+							<?php abrs_bookroom_button( [ 'room_type' => $room_type->get_id() ] ); ?>
 						<?php endif ?>
 
 						<span class="abroom__remaining-rooms">

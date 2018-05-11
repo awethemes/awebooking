@@ -62,15 +62,25 @@ class Period_Collection extends Collection {
 	 * @return bool
 	 */
 	public function is_continuous( $sort = true ) {
-		$abuts = true;
-		$periods = $sort ? $this->sort() : $this->items;
-
-		// Empty periods found, leave and return false.
-		if ( 0 === count( $periods ) ) {
+		// Empty periods, leave and return false.
+		if ( 0 === count( $this->items ) ) {
 			return false;
 		}
 
+		// In case we have only one item, it's true.
+		if ( 1 === count( $this->items ) ) {
+			return true;
+		}
+
+		$periods = $sort ? $this->sort() : $this->items;
+
+		$periods = $periods->unique( function( $period ) {
+			return $period->get_start_date()->format( 'Y-m-d' ) . '::' . $period->get_end_date()->format( 'Y-m-d' );
+		});
+
+		$abuts = true;
 		$last_period = null;
+
 		foreach ( $periods as $period ) {
 			if ( ! is_null( $last_period ) && ! $last_period->abuts( $period ) ) {
 				$abuts = false;

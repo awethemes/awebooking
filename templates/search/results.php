@@ -4,12 +4,6 @@
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/search/results.php.
  *
- * HOWEVER, on occasion AweBooking will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
@@ -22,18 +16,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 do_action( 'awebooking/template_notices' );
 
-dump( abrs_reservation() );
-
 ?>
 
-<?php do_action( 'awebooking/before_search_results', $results ); ?>
+<?php do_action( 'awebooking/before_search_results', $results, $res_request ); ?>
 
-<div class="abrs-rooms" id="abrs-search-results">
-	<?php foreach ( $results as $availability ) : ?>
+<div class="rooms rooms--search" id="awebooking-search-results">
+	<?php
+	foreach ( $results as $availabilities ) {
+		if ( ! isset( $availabilities['room_type'], $availabilities['room_rate'] ) ) {
+			continue;
+		}
 
-		<?php abrs_get_template( 'search/result-item.php', compact( 'res_request', 'availability' ) ); ?>
+		// Extract the availabilities variables.
+		list( $room_type, $room_rate ) = [ $availabilities['room_type'], $availabilities['room_rate'] ];
 
-	<?php endforeach; ?>
+		/**
+		 * Fire action to display search result item.
+		 *
+		 * @hooked awebooking_search_result_item()
+		 *
+		 * @param \AweBooking\Reservation\Request             $res_request    The current reservation request.
+		 * @param \AweBooking\Model\Room_Type                 $room_type      The room type instance.
+		 * @param \AweBooking\Reservation\Room_Stay\Room_Rate $room_rate      The room rate instance.
+		 * @param array                                       $availabilities An array of availabilities.
+		 */
+		do_action( 'awebooking/display_search_result_item', $res_request, $room_type, $room_rate, $availabilities );
+	}
+	?>
 </div><!-- /.hotel-rooms -->
 
-<?php do_action( 'awebooking/after_search_results', $results ); ?>
+<?php do_action( 'awebooking/after_search_results', $results, $res_request ); ?>

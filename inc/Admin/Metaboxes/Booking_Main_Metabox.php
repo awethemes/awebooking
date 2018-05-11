@@ -91,8 +91,7 @@ class Booking_Main_Metabox {
 			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
 		}
 
-		// $booking->calculate_totals(); //
-		// $booking->calculate_nights_stay(); //
+		$booking->setup_dates();
 	}
 
 	/**
