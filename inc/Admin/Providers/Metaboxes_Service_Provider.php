@@ -19,6 +19,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
 			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
 			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
+			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Info_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
 		}
@@ -70,6 +71,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 
 		// Room Type meta-boxes.
 		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->output_metabox( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
+		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->output_metabox( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
 	}
 
 	/**
@@ -121,6 +123,10 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		switch ( $post->post_type ) {
 			case 'room_type':
 				$this->plugin->make( 'metabox.room_type' )->save( $post, $request );
+				break;
+
+			case 'hotel_location':
+				$this->plugin->make( 'metabox.hotel_info' )->save( $post, $request );
 				break;
 
 			case 'awebooking':

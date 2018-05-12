@@ -2,6 +2,10 @@
   width: 350px;
 }
 
+.abrs-tooltip-booking-paid-column {
+  width: 150px;
+}
+
 table.wp-list-table {
   .column-thumb {
     width: 52px;
@@ -37,11 +41,12 @@ table.wp-list-table {
 
   // Booking
   .column-booking_number { width: 15%; }
-  .column-booking_total,
   .column-booking_date,
   .column-booking_status { width: 10%; }
   .column-booking_check_in,
   .column-booking_check_out { width: 8%; }
+  .column-booking_total,
+  .column-booking_paid { width: 5%; }
   .column-booking_nights { width: 3%; }
   .booking_summary { width: auto; }
 }

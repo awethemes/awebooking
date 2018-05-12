@@ -2,6 +2,7 @@
 
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Hotel;
 use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Standard_Plan;
 use AweBooking\Model\Model;
@@ -31,6 +32,20 @@ function abrs_get_room_type( $room_type ) {
 		$room_type = new Room_Type( $room_type );
 
 		return $room_type->exists() ? $room_type : null;
+	}, false );
+}
+
+/**
+ * Retrieves the hotel object.
+ *
+ * @param  mixed $hotel The post object or post ID of the hotel.
+ * @return \AweBooking\Model\Hotel|false|null
+ */
+function abrs_get_hotel( $hotel ) {
+	return abrs_rescue( function() use ( $hotel ) {
+		$hotel = new Hotel( $hotel );
+
+		return $hotel->exists() ? $hotel : null;
 	}, false );
 }
 
