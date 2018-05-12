@@ -32,12 +32,6 @@
 
 .abrs-pt0 { padding-top: 0 !important; }
 .abrs-pb0 { padding-bottom: 0 !important; }
-.abrs-pl0 { padding-left: 0 !important; }
-.abrs-pl1 { padding-left: 1em !important; }
-.abrs-pl2 { padding-left: 2em !important; }
-.abrs-pr0 { padding-right: 0 !important; }
-.abrs-pr1 { padding-right: 1em !important; }
-.abrs-pr2 { padding-right: 2em !important; }
 .abrs-pt1 { padding-top: 1em !important; }
 .abrs-pb1 { padding-bottom: 1em !important; }
 .abrs-pt2 { padding-top: 2em !important; }
@@ -55,4 +49,5 @@
 .abrs-text-right { text-align: right !important; }
 .abrs-text-center { text-align: center !important; }
 
-.abrs-space, .abrs-spacer { flex-grow: 1; }
+.abrs-space,
+.abrs-spacer { flex-grow: 1; }

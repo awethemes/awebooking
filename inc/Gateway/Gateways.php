@@ -31,7 +31,7 @@ class Gateways extends Manager {
 	}
 
 	/**
-	 * Get a gateway (enabled).
+	 * Get a gateway (enable only).
 	 *
 	 * @param  string $gateway The gateway ID.
 	 * @return \AweBooking\Gateway\Gateway|null
@@ -41,7 +41,7 @@ class Gateways extends Manager {
 	}
 
 	/**
-	 * Returns enabled gateways only.
+	 * Returns gateways enable only.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */

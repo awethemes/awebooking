@@ -275,3 +275,24 @@
     height: 40px;
   }
 }
+
+.abrs-sortable-group,
+.abrs-sortable-group__item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.abrs-sortable-group__item > span,
+.abrs-sortable-group__item > label {
+  display: block;
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+  border: solid 1px #e9e9e9;
+  border-bottom: none;
+  line-height: 35px !important;
+  height: 35px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0 12px;
+}

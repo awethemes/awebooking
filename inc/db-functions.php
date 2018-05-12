@@ -208,7 +208,7 @@ function abrs_get_bookings_by_room( $room_id, $statuses = [] ) {
 	)); // @codingStandardsIgnoreEnd
 
 	return $results
-		? array_map( 'absint', wp_list_pluck( $results, 'ID' ) )
+		? array_map( 'absint', array_column( $results, 'ID' ) )
 		: [];
 }
 

@@ -92,7 +92,7 @@ class Logic_Service_Provider extends Service_Provider {
 		);
 
 		if ( ! is_null( $rooms ) && ! empty( $rooms ) ) {
-			$unit_ids = implode( ',', wp_list_pluck( $rooms, 'id' ) );
+			$unit_ids = implode( ',', array_column( $rooms, 'id' ) );
 
 			// @codingStandardsIgnoreStart
 			$wpdb->query( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` IN ({$unit_ids})" );

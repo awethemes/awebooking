@@ -314,7 +314,7 @@ class Checkout {
 	public function get_controls( $fieldset = '' ) {
 		if ( is_null( $this->controls ) ) {
 			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls );
-			$this->controls->prepare_fields();
+			$this->controls->enabled()->prepare_fields();
 		}
 
 		return $this->controls;

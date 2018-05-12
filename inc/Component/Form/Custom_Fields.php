@@ -10,12 +10,12 @@ class Custom_Fields {
 	 * @return void
 	 */
 	public function init() {
-		$this->register( 'include' );
 		$this->register( 'abrs_dates' );
 		$this->register( 'abrs_amount', 'abrs_sanitize_decimal' );
 		$this->register( 'abrs_toggle', 'abrs_sanitize_checkbox' );
 		$this->register( 'abrs_checkbox', 'abrs_sanitize_checkbox' );
 		$this->register( 'abrs_image_size', 'abrs_sanitize_image_size' );
+		$this->register( 'include', 'abrs_clean', true );
 	}
 
 	/**

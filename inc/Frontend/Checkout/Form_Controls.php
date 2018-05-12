@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Frontend\Checkout;
 
+use AweBooking\Support\Fluent;
 use AweBooking\Component\Form\Form_Builder;
 
 class Form_Controls extends Form_Builder {
@@ -10,7 +11,56 @@ class Form_Controls extends Form_Builder {
 	 * @param mixed $object The object form data.
 	 */
 	public function __construct( $object = null ) {
-		parent::__construct( 'checkout-controls', $object, 'static' );
+		parent::__construct( 'checkout-controls', is_null( $object ) ? new Fluent : $object, 'static' );
+	}
+
+	/**
+	 * Filter enabled controls only.
+	 *
+	 * @return $this
+	 */
+	public function enabled() {
+		foreach ( $this->get_disable_controls() as $key ) {
+			$this->remove_field( $key );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Gets the enable controls.
+	 *
+	 * @return array
+	 */
+	public function get_enable_controls() {
+		$ids = array_column( $this->prop( 'fields' ), 'id' );
+
+		$data_controls = (array) abrs_get_option( 'list_checkout_controls', [] );
+
+		if ( empty( $data_controls ) ) {
+			return $ids;
+		}
+
+		$controls = array_filter( $ids, function( $key ) use ( $data_controls ) {
+			if ( in_array( $key, $this->get_mandatory_controls() ) ) {
+				return true;
+			}
+
+			return array_key_exists( $key, $data_controls ) && $data_controls[ $key ];
+		});
+
+		return apply_filters( 'awebooking/checkout/enable_controls', $controls );
+	}
+
+	/**
+	 * Gets the disable controls.
+	 *
+	 * @return array
+	 */
+	public function get_disable_controls() {
+		$ids = array_column( $this->prop( 'fields' ), 'id' );
+
+		return array_diff( $ids, $this->get_enable_controls() );
 	}
 
 	/**
@@ -18,8 +68,8 @@ class Form_Controls extends Form_Builder {
 	 *
 	 * @return array
 	 */
-	public function get_mandatory() {
-		return apply_filters( 'awebooking/checkout_mandatory_controls', [ 'customer_first_name', 'customer_email' ] );
+	public function get_mandatory_controls() {
+		return apply_filters( 'awebooking/checkout/mandatory_controls', [ 'customer_first_name', 'customer_email' ] );
 	}
 
 	/**
@@ -28,26 +78,10 @@ class Form_Controls extends Form_Builder {
 	 * @return void
 	 */
 	protected function setup_fields() {
-		$additionals = $this->add_section( 'additionals' );
-
-		$additionals->add_field([
-			'id'               => 'arrival_time',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Estimated time of arrival', 'awebooking' ),
-			'options_cb'       => 'abrs_list_hours',
-			'classes'          => 'with-selectize',
-			'show_option_none' => esc_html__( 'I don\'t know', 'awebooking' ),
-			'sanitization_cb'  => 'absint',
+		$customer = $this->add_section( 'customer', [
+			'title'    => esc_html__( 'Customer Details', 'awebooking' ),
+			'priority' => 1,
 		]);
-
-		$additionals->add_field([
-			'id'               => 'customer_note',
-			'type'             => 'textarea',
-			'name'             => esc_html__( 'Special requests', 'awebooking' ),
-			'sanitization_cb'  => 'sanitize_textarea_field',
-		]);
-
-		$customer = $this->add_section( 'customer' );
 
 		$customer->add_field([
 			'id'               => 'customer_title',
@@ -169,5 +203,29 @@ class Form_Controls extends Form_Builder {
 				'autocomplete' => 'email',
 			],
 		]);
+
+		$additionals = $this->add_section( 'additionals', [
+			'title'    => esc_html__( 'Additionals', 'awebooking' ),
+			'priority' => 1,
+		]);
+
+		$additionals->add_field([
+			'id'               => 'arrival_time',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Estimated time of arrival', 'awebooking' ),
+			'options_cb'       => 'abrs_list_hours',
+			'classes'          => 'with-selectize',
+			'show_option_none' => esc_html__( 'I don\'t know', 'awebooking' ),
+			'sanitization_cb'  => 'absint',
+		]);
+
+		$additionals->add_field([
+			'id'               => 'customer_note',
+			'type'             => 'textarea',
+			'name'             => esc_html__( 'Special requests', 'awebooking' ),
+			'sanitization_cb'  => 'sanitize_textarea_field',
+		]);
+
+		do_action( 'awebooking/checkout/setup_controls', $this );
 	}
 }

@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Gateway\Gateway;
+use AweBooking\Frontend\Checkout\Form_Controls;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**
@@ -46,16 +47,16 @@ class Checkout_Setting extends Abstract_Setting {
 		]);
 
 		$options->add_field([
-			'id'         => '__payments_checkout_fields',
+			'id'         => '__checkout_title',
 			'type'       => 'title',
-			'name'       => esc_html__( 'Checkout Fields', 'awebooking' ),
+			'name'       => esc_html__( 'Checkout', 'awebooking' ),
 		]);
 
 		$options->add_field([
-			'id'         => 'list_checkout_fields',
-			'type'       => 'include',
-			'name'       => esc_html__( 'Checkout Fields', 'awebooking' ),
-			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-checkout-fields-sorter.php',
+			'id'              => 'list_checkout_controls',
+			'type'            => 'include',
+			'name'            => esc_html__( 'Checkout Controls', 'awebooking' ),
+			'include'         => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-checkout-controls.php',
 			'sanitization_cb' => [ $this, 'sanitize_checkout_controls' ],
 		]);
 
@@ -104,11 +105,23 @@ class Checkout_Setting extends Abstract_Setting {
 	}
 
 	/**
-	 * Sanitize checkout controls
-	 * @param  array $controls Controls
+	 * Sanitize checkout controls.
+	 *
+	 * @param  array $data The input controls.
 	 * @return array
 	 */
-	public function sanitize_checkout_controls( $controls ) {
+	public function sanitize_checkout_controls( $data ) {
+		$controls = new Form_Controls;
 
+		$controls_ids  = array_column( $controls->prop( 'fields' ), 'id' );
+		$mandatory_ids = $controls->get_mandatory_controls();
+
+		$sanitized = [];
+
+		foreach ( $controls_ids as $key ) {
+			$sanitized[ $key ] = in_array( $key, $mandatory_ids ) || in_array( $key, $data );
+		}
+
+		return $sanitized;
 	}
 }
