@@ -41,6 +41,7 @@ class Hotel_Setting extends Abstract_Setting {
 		if ( function_exists( $hotel_name ) ) {
 			$hotel_name = sprintf( '%s Hotel', $hotel_name );
 		}
+
 		$this->add_field([
 			'id'              => 'hotel_name',
 			'type'            => 'text',
@@ -55,22 +56,24 @@ class Hotel_Setting extends Abstract_Setting {
 		foreach ( ( new Hotel_Information_Form )->prop( 'fields' ) as $args ) {
 			$this->add_field( $args );
 		}
+		// Enable multiple_hotels.
+		if ( abrs_get_option( 'enable_location', false ) ) {
+			$this->add_field([
+				'id'       => '__hotel_listing',
+				'type'     => 'title',
+				'name'     => esc_html__( 'Hotel Listing', 'awebooking' ),
+				'desc'     => esc_html__( 'Hotel listing.', 'awebooking' ),
+			]);
 
-		$this->add_field([
-			'id'       => '__hotel_listing',
-			'type'     => 'title',
-			'name'     => esc_html__( 'Hotel Listing', 'awebooking' ),
-			'desc'     => esc_html__( 'Hotel listing.', 'awebooking' ),
-		]);
 
-
-		$this->add_field([
-			'id'              => 'list_hotels_order',
-			'type'            => 'include',
-			'name'            => esc_html__( 'Hotels', 'awebooking' ),
-			'include'         => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-hotel-listing.php',
-			'save_fields'     => false,
-		]);
+			$this->add_field([
+				'id'              => 'list_hotels_order',
+				'type'            => 'include',
+				'name'            => esc_html__( 'Hotels', 'awebooking' ),
+				'include'         => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-hotel-listing.php',
+				'save_fields'     => false,
+			]);
+		}
 	}
 
 	public function save( Request $request ) {

@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Constants;
 use AweBooking\Multilingual;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
@@ -576,4 +577,22 @@ function abrs_get_image_size( $image_size ) {
 	}
 
 	return apply_filters( 'awebooking/get_image_size_' . $image_size, $size );
+}
+
+/**
+ * Get hotels.
+ *
+ * @param  array  $args args
+ * @return array
+ */
+function abrs_get_hotels( $args = [] ) {
+	$args = wp_parse_args( $args, [
+		'post_type'      => Constants::HOTEL_LOCATION,
+		'post_status'    => 'publish',
+		'order'          => 'ASC',
+		'orderby'        => 'menu_order',
+		'posts_per_page' => 500,
+	]);
+
+	return get_posts( apply_filters( 'awebooking/get_hotels', $args ) );
 }
