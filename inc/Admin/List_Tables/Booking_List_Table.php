@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
+use AweBooking\Model\Common\Guest_Counts;
 
 class Booking_List_Table extends Abstract_List_Table {
 	/**
@@ -148,6 +149,22 @@ class Booking_List_Table extends Abstract_List_Table {
 	}
 
 	/**
+	 * Display column: nights stay.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_nights_column() {
+		$nights_stay = $this->booking->get( 'nights_stay' );
+		if ( $nights_stay == -1 ) : ?>
+			<span title="<?php esc_attr_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>">
+				<span class="dashicons dashicons-info"></span>
+			</span>
+		<?php else : ?>
+			<?php echo absint( $nights_stay ); ?>
+		<?php endif;
+	}
+
+	/**
 	 * Display column: check-in.
 	 *
 	 * @return void
@@ -219,7 +236,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			</span>
 
 			<div id="private_balance_due_<?php echo esc_attr( $the_booking['id'] ); ?>" style="display: none;">
-				<div class="abrs-tooltip-note">
+				<div class="abrs-tooltip-booking-paid-column">
 					<?php esc_html_e( 'Balance due: ', 'awebooking' ); ?>
 					<?php echo abrs_format_price( $this->booking->get( 'balance_due' ), $this->booking->get( 'currency' ) ); ?>
 				</div>
@@ -240,45 +257,18 @@ class Booking_List_Table extends Abstract_List_Table {
 			<?php esc_html_e( 'No rooms found', 'awebooking' ); ?>
 		<?php else : ?>
 			<?php
-			$fisrt_room = $booked_rooms[0];
+			$first_room = $booked_rooms->first();
 			$rooms_left = absint( count( $booked_rooms ) - 1 );
-			$adults = esc_html( number_format_i18n( $fisrt_room->get( 'adults' ) ) );
 
-			$timespan = $fisrt_room->get_timespan();
+			$timespan = $first_room->get_timespan();
+
 			$nights = sprintf(
 				'&comma; <span class="">%1$d %2$s</span>',
 				$timespan->get_nights(),
 				_n( 'night', 'nights', $timespan->get_nights(), 'awebooking' )
 			);
 
-			$guest = '';
-			$guest .= sprintf(
-				'&comma; <span class="">%1$d %2$s</span>',
-				$adults,
-				_n( 'adult', 'adults', $adults, 'awebooking' )
-			);
-
-			if ( abrs_children_bookable() ) {
-				$children = $fisrt_room['children'] ? number_format_i18n( $fisrt_room->get( 'children' ) ) : 0;
-				if ( $children ) {
-					$guest .= sprintf(
-						'&amp; <span class="">%1$d %2$s</span>',
-						$children,
-						_n( 'child', 'children', $children, 'awebooking' )
-					);
-				}
-			}
-
-			if ( abrs_infants_bookable() ) {
-				$infants = $fisrt_room['infants'] ? number_format_i18n( $fisrt_room->get( 'infants' ) ) : 0;
-				if ( $infants ) {
-					$guest .= sprintf(
-						'&amp; <span class="">%1$d %2$s</span>',
-						$infants,
-						_n( 'infant', 'infants', $infants, 'awebooking' )
-					);
-				}
-			}
+			$guest = $first_room->get_guests();
 
 			$more = '';
 			if ( $rooms_left ) {
@@ -295,7 +285,7 @@ class Booking_List_Table extends Abstract_List_Table {
 				);
 			}
 
-			printf( esc_html__( '%1$s%2$s%3$s%4$s ', 'awebooking' ), esc_html( $fisrt_room->get_name() ), $nights, $guest, $more );
+			printf( esc_html__( '%1$s%2$s%3$s%4$s ', 'awebooking' ), esc_html( $first_room->get_name() ), $nights, $guest->as_string(), $more );
 		endif;
 	}
 

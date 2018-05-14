@@ -861,16 +861,19 @@ table.availability-table .text-remain-rooms .dashicons {
   color: #333;
 }
 
+.abrs-cmb2-float select,
 .abrs-card__body select {
   width: 25em;
   max-width: 100%;
 }
 
+.abrs-cmb2-float textarea,
 .abrs-card__body textarea {
   width: 100%;
   max-width: 100%;
 }
 
+.abrs-cmb2-float .cmb-row,
 .abrs-card__body .cmb-row {
   padding: 1em 0;
   box-sizing: border-box;
@@ -880,6 +883,8 @@ table.availability-table .text-remain-rooms .dashicons {
   margin-left: -1em;
 }
 
+.abrs-cmb2-float .cmb-th,
+.abrs-cmb2-float .cmb-td,
 .abrs-card__body .cmb-th,
 .abrs-card__body .cmb-td {
   padding: 0;
@@ -892,6 +897,7 @@ table.availability-table .text-remain-rooms .dashicons {
   padding-left: 1em;
 }
 
+.abrs-cmb2-float .cmb-th,
 .abrs-card__body .cmb-th {
   color: #444;
   font-weight: normal;
@@ -900,24 +906,30 @@ table.availability-table .text-remain-rooms .dashicons {
   max-width: 25%;
 }
 
+.abrs-cmb2-float .cmb-th + .cmb-td,
 .abrs-card__body .cmb-th + .cmb-td {
   flex: 0 0 75%;
   max-width: 75%;
 }
 
+.abrs-cmb2-float .cmb-th > label,
 .abrs-card__body .cmb-th > label {
   padding: 0;
 }
 
+.abrs-cmb2-float .submit > .button,
+.abrs-cmb2-float .submit > .button-link,
 .abrs-card__body .submit > .button,
 .abrs-card__body .submit > .button-link {
   vertical-align: middle;
 }
 
+.abrs-cmb2-float .submit > .button-link.abrs-fright,
 .abrs-card__body .submit > .button-link.abrs-fright {
   margin-top: 4px;
 }
 
+.abrs-cmb2-float table,
 .abrs-card__body table {
   border: none;
   box-shadow: none;
@@ -2467,6 +2479,10 @@ table.abrs-booking-totals tr:last-child td {
   width: 350px;
 }
 
+.abrs-tooltip-booking-paid-column {
+  width: 150px;
+}
+
 table.wp-list-table .column-thumb {
   width: 52px;
   text-align: center;
@@ -2502,7 +2518,6 @@ table.wp-list-table .column-booking_number {
   width: 15%;
 }
 
-table.wp-list-table .column-booking_total,
 table.wp-list-table .column-booking_date,
 table.wp-list-table .column-booking_status {
   width: 10%;
@@ -2511,6 +2526,11 @@ table.wp-list-table .column-booking_status {
 table.wp-list-table .column-booking_check_in,
 table.wp-list-table .column-booking_check_out {
   width: 8%;
+}
+
+table.wp-list-table .column-booking_total,
+table.wp-list-table .column-booking_paid {
+  width: 5%;
 }
 
 table.wp-list-table .column-booking_nights {
@@ -2724,17 +2744,21 @@ table.wp-list-table .booking_summary {
 }
 
 @media only screen and (max-width: 782px) {
+  .abrs-cmb2-float .cmb-row,
   .abrs-card__body .cmb-row {
     padding: 0;
     margin-bottom: 1em;
   }
 
+  .abrs-cmb2-float .cmb-th,
+  .abrs-cmb2-float .cmb-th + .cmb-td,
   .abrs-card__body .cmb-th,
   .abrs-card__body .cmb-th + .cmb-td {
     flex: 0 0 100%;
     max-width: 100%;
   }
 
+  .abrs-cmb2-float .cmb-th > label,
   .abrs-card__body .cmb-th > label {
     margin-bottom: 7px;
   }

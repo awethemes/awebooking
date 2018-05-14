@@ -19,6 +19,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
 			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
 			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
+			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Info_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
 			$this->plugin->tag( $abstract, 'metaboxes' );
@@ -71,23 +72,22 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
 		}
 
-		// Booking meta-boxes.
 		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->metaboxcb( 'metabox.booking_main' ), Constants::BOOKING, 'normal', 'high' );
 		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->metaboxcb( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->metaboxcb( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
 		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->metaboxcb( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->metaboxcb( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
-		// add_meta_box( 'awebooking-booking-calendar', esc_html__( 'Calendar', 'awebooking' ), $this->metaboxcb( 'metabox.booking_calendar' ), Constants::BOOKING, 'side' );
 
-		// Room Type meta-boxes.
 		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->metaboxcb( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
+
+		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->metaboxcb( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
 	}
 
 	/**
 	 * Check if we're saving, the trigger an action based on the post type.
 	 *
-	 * @param int     $post_id The post ID.
-	 * @param WP_Post $post    The WP_Post object instance.
+	 * @param int      $post_id The post ID.
+	 * @param \WP_Post $post    The WP_Post object instance.
 	 *
 	 * @access private
 	 */
@@ -132,6 +132,10 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		switch ( $post->post_type ) {
 			case 'room_type':
 				$this->plugin->make( 'metabox.room_type' )->save( $post, $request );
+				break;
+
+			case 'hotel_location':
+				$this->plugin->make( 'metabox.hotel_info' )->save( $post, $request );
 				break;
 
 			case 'awebooking':

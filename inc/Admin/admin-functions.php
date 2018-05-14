@@ -13,6 +13,7 @@ function abrs_admin_screens() {
 	return apply_filters( 'awebooking/admin_screens', [
 		'room_type',
 		'awebooking',
+		'hotel_location',
 		'edit-room_type',
 		'edit-awebooking',
 		'edit-hotel_extra_service',

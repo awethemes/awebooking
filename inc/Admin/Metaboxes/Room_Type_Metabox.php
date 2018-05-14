@@ -61,7 +61,7 @@ class Room_Type_Metabox {
 	 */
 	public function save( $post, Request $request ) {
 		// Create the new room-type instance.
-		$room_type = new Room_type( $post->ID );
+		$room_type = new Room_Type( $post->ID );
 
 		// Get the sanitized values.
 		$values = $this->form_builder->handle( $request );
