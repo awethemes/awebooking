@@ -63,6 +63,10 @@
     max-width: 100%;
   }
 
+  .cmb2_select.selectize-control {
+    width: 350px;
+  }
+
   .cmb-row {
     padding: 1em 0;
     box-sizing: border-box;
@@ -121,5 +125,15 @@
   table {
     border: none;
     box-shadow: none;
+  }
+}
+
+.abrs-cmb2-float {
+  .cmb-th {
+    @include make-col(2);
+  }
+
+  .cmb-th + .cmb-td {
+    @include make-col(10);
   }
 }
