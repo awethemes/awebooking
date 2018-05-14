@@ -1,28 +1,20 @@
 <?php
 
-use AweBooking\Constants;
 use AweBooking\Support\WP_Data;
 
-$hotels = WP_Data::get( 'posts', [
-	'post_type'      => Constants::HOTEL_LOCATION,
-	'post_status'    => 'publish',
-	'order'          => 'ASC',
-	'orderby'        => 'menu_order',
-	'posts_per_page' => 500,
-]);
-
+$hotels = abrs_get_hotels();
 ?>
 <ul class="abrs-sortable" id="js-sorting-hotels">
-	<?php foreach ( $hotels as $key => $name ) : ?>
+	<?php foreach ( $hotels as $hotel ) : ?>
 		<li class="abrs-sortable__item">
-			<input type="hidden" name="list_hotels_order[]" value="<?php echo esc_attr( $key ); ?>">
+			<input type="hidden" name="list_hotels_order[]" value="<?php echo esc_attr( $hotel->ID ); ?>">
 
 			<div class="abrs-sortable__head">
 				<span class="abrs-sortable__handle"></span>
 			</div>
 
 			<div class="abrs-sortable__body">
-				<span><?php echo esc_html( $name ); ?></span>
+				<span><?php echo esc_html( $hotel->post_title ); ?></span>
 			</div>
 
 			<div class="abrs-sortable__actions">
