@@ -544,7 +544,7 @@ function abrs_get_page_permalink( $page ) {
 /**
  * Get an image size.
  *
- * @param array|string $image_size
+ * @param array|string $image_size Image size.
  * @return array
  */
 function abrs_get_image_size( $image_size ) {
@@ -561,12 +561,11 @@ function abrs_get_image_size( $image_size ) {
 
 		$image_size = $width . '_' . $height;
 
-	} elseif ( in_array( $image_size, array( 'awebooking_thumbnail', 'awebooking_archive', 'awebooking_single' ) ) ) {
+	} elseif ( in_array( $image_size, array( 'thumbnail', 'archive', 'single' ) ) ) {
 		$size           = abrs_get_option( $image_size . '_image_size', [] );
 		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
 		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
 		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
-
 	} else {
 		$size = array(
 			'width'  => '300',

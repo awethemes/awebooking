@@ -119,9 +119,12 @@ function abrs_body_class( $classes ) {
  * @return string|void
  */
 function abrs_get_search_form( $atts = [], $echo = true ) {
+	global $wp;
+
 	// Pairs the input atts.
 	$atts = shortcode_atts([
-		'layout' => '',
+		'layout'      => '',
+		'res_request' => null,
 	], $atts );
 
 	/**
@@ -131,7 +134,16 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 */
 	do_action( 'awebooking/pre_get_search_form', $atts );
 
-	$form = abrs_get_template_content( 'search-form.php', compact( 'atts' ) );
+	if ( is_null( $atts['res_request'] ) && ! empty( $wp->query_vars['res_request'] ) ) {
+		$res_request = $wp->query_vars['res_request'];
+	} else {
+		$res_request = abrs_create_res_request([
+			'check_in'  => 'today',
+			'check_out' => 'tomorrow',
+		]);
+	}
+
+	$form = abrs_get_template_content( 'search-form.php', compact( 'atts', 'res_request' ) );
 
 	/**
 	 * Filters the HTML output of the search form.

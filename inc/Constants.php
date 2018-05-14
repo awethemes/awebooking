@@ -18,8 +18,8 @@ class Constants {
 	const STATE_BOOKING     = 2;
 
 	// Granularity levels.
-	const GL_DAILY          = 'daily';
-	const GL_NIGHTLY        = 'nightly';
+	const GL_DAILY   = 'daily';
+	const GL_NIGHTLY = 'nightly';
 
 	/**
 	 * Defines constants.

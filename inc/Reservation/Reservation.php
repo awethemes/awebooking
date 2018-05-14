@@ -2,8 +2,8 @@
 namespace AweBooking\Reservation;
 
 use WP_Error;
+use Awethemes\WP_Session\Session;
 use AweBooking\Support\Collection;
-use Awethemes\WP_Session\WP_Session;
 use AweBooking\Reservation\Room_Stay\Room_Rate;
 
 class Reservation {
@@ -29,13 +29,6 @@ class Reservation {
 	public $language;
 
 	/**
-	 * The session instance.
-	 *
-	 * @var \Awethemes\WP_Session\WP_Session
-	 */
-	protected $session;
-
-	/**
 	 * The list of room stays.
 	 *
 	 * @var \AweBooking\Support\Collection
@@ -50,17 +43,32 @@ class Reservation {
 	protected $current_request;
 
 	/**
+	 * The session instance.
+	 *
+	 * @var \Awethemes\WP_Session\WP_Session
+	 */
+	protected $session;
+
+	/**
+	 * The session lifetime in minutes.
+	 *
+	 * @var int
+	 */
+	protected $lifetime;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param \Awethemes\WP_Session\WP_Session $session The WP_Session class instance.
+	 * @param \Awethemes\WP_Session\Session $session  The Session class instance.
+	 * @param integer                       $lifetime The session lifetime in minutes.
 	 */
-	public function __construct( WP_Session $session ) {
-		$this->session    = $session;
-		$this->room_stays = new Collection;
-
-		$this->source     = apply_filters( 'awebooking/default_reservation_source', 'website' );
-		$this->currency   = abrs_current_currency();
-		$this->language   = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
+	public function __construct( Session $session, $lifetime = 30 ) {
+		$this->session     = $session;
+		$this->lifetime    = $lifetime;
+		$this->source      = 'website';
+		$this->currency    = abrs_current_currency();
+		$this->language    = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
+		$this->room_stays  = new Collection;
 	}
 
 	/**
@@ -144,8 +152,6 @@ class Reservation {
 
 		// Create the room rate.
 		$room_rate = new Room_Rate( $request->get_timespan(), $request->get_guest_counts(), $room_type, $rate_plan );
-
-		dd( $room_rate );
 
 		$constraints = [];
 

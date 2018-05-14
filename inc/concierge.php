@@ -652,7 +652,7 @@ function abrs_create_res_request( $args ) {
 		'strict'     => is_admin() ? false : true,
 		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
 		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
-		'adults'     => 0,
+		'adults'     => 1,
 		'children'   => 0,
 		'infants'    => 0,
 		'options'    => [],

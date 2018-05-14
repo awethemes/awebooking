@@ -208,7 +208,7 @@ function abrs_get_booking_note( $data ) {
  *                                   Accepts 'customer', 'internal' or empty for both.
  *                                   Default empty.
  * }
- * @return stdClass[]                Array of stdClass objects with booking notes details.
+ * @return \AweBooking\Support\Collection
  */
 function abrs_get_booking_notes( $args ) {
 	$key_mapping = [
@@ -260,7 +260,7 @@ function abrs_get_booking_notes( $args ) {
 	// Does not support 'count' or 'fields'.
 	unset( $args['count'], $args['fields'] );
 
-	remove_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
+	remove_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10 );
 
 	$notes = get_comments( $args );
 
@@ -280,8 +280,11 @@ function abrs_get_booking_notes( $args ) {
  * @return int|false|WP_Error
  */
 function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $added_by_user = false ) {
-	$booking = abrs_get_booking( $booking );
+	if ( empty( $note ) ) {
+		return false;
+	}
 
+	$booking = abrs_get_booking( $booking );
 	if ( ! $booking ) {
 		return new WP_Error( 'invalid_booking_id', esc_html__( 'Invalid Booking ID.', 'awebooking' ), [ 'status' => 400 ] );
 	}
@@ -292,9 +295,9 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 		$comment_author       = $user->display_name;
 		$comment_author_email = $user->user_email;
 	} else {
-		$comment_author        = esc_html__( 'AweBooking', 'awebooking' );
-		$comment_author_email  = strtolower( esc_html__( 'AweBooking', 'awebooking' ) ) . '@' . ( isset( $_SERVER['HTTP_HOST'] ) ? str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) : 'noreply.com' );
-		$comment_author_email  = sanitize_email( $comment_author_email );
+		$comment_author       = esc_html__( 'AweBooking', 'awebooking' );
+		$comment_author_email = strtolower( esc_html__( 'AweBooking', 'awebooking' ) ) . '@' . ( isset( $_SERVER['HTTP_HOST'] ) ? str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) : 'noreply.com' );
+		$comment_author_email = sanitize_email( $comment_author_email );
 	}
 
 	// Prepare comment data.

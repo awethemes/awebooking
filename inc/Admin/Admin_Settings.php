@@ -49,7 +49,7 @@ class Admin_Settings {
 	/**
 	 * Get all registerd settings.
 	 *
-	 * @return \AweBooking\Support\Colletion
+	 * @return \AweBooking\Support\Collection
 	 */
 	public function all() {
 		return $this->settings;

@@ -9,7 +9,7 @@ class Logic_Service_Provider extends Service_Provider {
 	/**
 	 * Init service provider.
 	 *
-	 * @param AweBooking $awebooking AweBooking instance.
+	 * @param \AweBooking\Plugin $awebooking AweBooking instance.
 	 */
 	public function init( $awebooking ) {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );

@@ -19,29 +19,29 @@ $max_select = 10;
 	<div class="searchbox searchbox--horizontal">
 		<div class="searchbox__wrapper">
 			<?php if ( abrs_multiple_hotels() ) : ?>
-				<div tabindex="0" class="searchbox__box searchbox__box--hotel">
-					<label>
+				<div class="searchbox__box searchbox__box--hotel">
+					<label class="searchbox__label searchbox__label--hotel">
 						<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
 						<input type="text" name="hotel">
 					</label>
 				</div>
 			<?php endif ?>
 
-			<div tabindex="0" class="searchbox__box searchbox__box--checkin">
-				<label>
+			<div class="searchbox__box searchbox__box--checkin">
+				<label class="searchbox__label searchbox__label--checkin">
 					<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-					<input type="text" name="check-in">
+					<input type="text" class="hotel-input hotel-input--checkin" name="check-in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 				</label>
 			</div>
 
-			<div tabindex="0" class="searchbox__box searchbox__box--checkout">
-				<label>
+			<div class="searchbox__box searchbox__box--checkout">
+				<label class="searchbox__label searchbox__label--checkout">
 					<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-					<input type="text" name="check-out">
+					<input type="text" class="hotel-input hotel-input--checkout" name="check-out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 				</label>
 			</div>
 
-			<div tabindex="0" class="searchbox__box searchbox__box--occupancy">
+			<div class="searchbox__box searchbox__box--occupancy">
 				<label>
 					<span><?php esc_html_e( 'Adults', 'awebooking' ); ?></span>
 					<select name="adults">
@@ -72,9 +72,9 @@ $max_select = 10;
 				</label>
 			</div>
 
-			<button class="button button--search">
-				<?php esc_html_e( 'Search', 'awebooking' ); ?>
-			</button>
+			<div>
+				<button class="button button--search"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
+			</div>
 
 		</div>
 	</div>

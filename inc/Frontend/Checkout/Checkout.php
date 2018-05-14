@@ -60,13 +60,13 @@ class Checkout {
 	 * Process the checkout request.
 	 *
 	 * @param  \Awethemes\Http\Request $request The http request.
-	 * @return \Awethemes\Http\Response
+	 * @return \AweBooking\Gateway\Response
 	 *
 	 * @throws \RuntimeException
 	 */
 	public function process( Request $request ) {
-		abrs_set_time_limit( 0 );
 		Constants::define( 'AWEBOOKING_CHECKOUT', true );
+		abrs_set_time_limit( 0 );
 
 		$errors = new WP_Error();
 		$data   = $this->get_posted_data( $request );
@@ -105,9 +105,9 @@ class Checkout {
 	/**
 	 * Process a booking that does require payment.
 	 *
-	 * @param  \AweBooking\Support\Booking $booking The booking instance.
-	 * @param  string                      $gateway The payment gateway.
-	 * @return \Awethemes\Http\Response
+	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @param  string                    $gateway The payment gateway.
+	 * @return \AweBooking\Gateway\Response
 	 *
 	 * @throws GatewayException
 	 */
@@ -130,18 +130,18 @@ class Checkout {
 	/**
 	 * Process a booking that doesn't require payment.
 	 *
-	 * @param  \AweBooking\Support\Booking $booking The booking instance.
-	 * @return \Awethemes\Http\Response
+	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @return \AweBooking\Gateway\Response
 	 */
 	protected function process_without_payment( Booking $booking ) {
 		$booking->update_status( apply_filters( 'awebooking/booking_status_without_payment', 'on-hold' ) );
 
 		$booking->payment_complete();
 
-		// Flush the reservation data.
+		// flush the reservation data.
 		$this->reservation->flush();
 
-		return awebooking( 'redirector' )->to();
+		return new Gateway_Response( 'success' );
 	}
 
 	/**
@@ -168,27 +168,27 @@ class Checkout {
 
 		// Fill the booking data.
 		$booking->fill([
-			'created_via'             => 'checkout',
-			'customer_id'             => apply_filters( 'awebooking/checkout/customer_id', get_current_user_id() ),
-			'arrival_time'            => $data['arrival_time'],
-			'customer_note'           => $data['customer_note'],
+			'created_via'   => 'checkout',
+			'customer_id'   => apply_filters( 'awebooking/checkout/customer_id', get_current_user_id() ),
+			'arrival_time'  => $data['arrival_time'],
+			'customer_note' => $data['customer_note'],
 
-			'customer_first_name'     => $data['customer_first_name'],
-			'customer_last_name'      => $data['customer_last_name'],
-			'customer_address'        => $data['customer_address'],
-			'customer_address_2'      => $data['customer_address_2'],
-			'customer_city'           => $data['customer_city'],
-			'customer_state'          => $data['customer_state'],
-			'customer_postal_code'    => $data['customer_postal_code'],
-			'customer_country'        => $data['customer_country'],
-			'customer_company'        => $data['customer_company'],
-			'customer_phone'          => $data['customer_phone'],
-			'customer_email'          => $data['customer_email'],
+			'customer_first_name'  => $data['customer_first_name'],
+			'customer_last_name'   => $data['customer_last_name'],
+			'customer_address'     => $data['customer_address'],
+			'customer_address_2'   => $data['customer_address_2'],
+			'customer_city'        => $data['customer_city'],
+			'customer_state'       => $data['customer_state'],
+			'customer_postal_code' => $data['customer_postal_code'],
+			'customer_country'     => $data['customer_country'],
+			'customer_company'     => $data['customer_company'],
+			'customer_phone'       => $data['customer_phone'],
+			'customer_email'       => $data['customer_email'],
 
-			'language'                => $this->reservation->language,
-			'currency'                => $this->reservation->currency,
-			'customer_ip_address'     => abrs_http_request()->ip(),
-			'customer_user_agent'     => abrs_http_request()->get_user_agent(),
+			'language'            => $this->reservation->language,
+			'currency'            => $this->reservation->currency,
+			'customer_ip_address' => abrs_http_request()->ip(),
+			'customer_user_agent' => abrs_http_request()->get_user_agent(),
 		]);
 
 		// $booking->set_cart_hash( $cart_hash );
@@ -230,7 +230,7 @@ class Checkout {
 	/**
 	 * Update customer and session data from the posted checkout data.
 	 *
-	 * @param array $data An array of posted data.
+	 * @param \AweBooking\Support\Fluent $data An array of posted data.
 	 */
 	protected function update_session( $data ) {
 		$this->session->put( 'selected_payment_method', $data['payment_method'] );
@@ -313,7 +313,7 @@ class Checkout {
 	 */
 	public function get_controls( $fieldset = '' ) {
 		if ( is_null( $this->controls ) ) {
-			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls );
+			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
 			$this->controls->enabled()->prepare_fields();
 		}
 

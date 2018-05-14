@@ -29,6 +29,6 @@ class Checkout_Controller {
 			abrs_add_notice( $e->getMessage(), 'error' );
 		}
 
-		return abrs_redirector()->back( abrs_get_page_permalink( 'checkout' ) );
+		return abrs_redirector()->back( abrs_get_page_permalink( 'checkout' ) )->with_input();
 	}
 }
