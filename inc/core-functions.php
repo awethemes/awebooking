@@ -596,3 +596,74 @@ function abrs_get_hotels( $args = [] ) {
 
 	return get_posts( apply_filters( 'awebooking/get_hotels', $args ) );
 }
+
+function abrs_checkout_shorcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'foo' => 'no foo',
+	), $atts, 'awebooking_checkout_template' );
+	ob_start(); ?>
+
+	<table>
+		<thead>
+			<tr>
+				<th width="20%">Room rate</th>
+				<th width="10%">Nights</th>
+				<th width="15%">Arrival</th>
+				<th width="15%">Depature</th>
+				<th width="20%">Guest</th>
+				<th style="max-width: 100px;">Price</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td><strong>Luxury Room</strong> </br> Brilliant Majestic Villa Hotel</td>
+				<td>3</td>
+				<td>15-05-2018</td>
+				<td>18-05-2018</td>
+				<td style="font-size: 12px;">2 adults, 2 children & 1 infant</td>
+				<td>480$</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan="4">
+					<ul style="list-style: none; font-size: 12px;">
+						<li>
+							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
+							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
+							<p style="width: 10%; float: right; margin: 0;">60$</p>
+						</li>
+
+						<li>
+							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
+							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
+							<p style="width: 10%; float: right; margin: 0;">60$</p>
+						</li>
+					</ul>
+				</td>
+				<td>120$</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<div style="width: 40%; float: right;">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<div style="float: right;">
+							<div>Tax: 60$ (10%)</div>
+							<div>Coupon: -60$</div>
+						</div>
+					</td>
+					<td style="max-width: 100px;"><strong>600$</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'awebooking_checkout_template', 'abrs_checkout_shorcode' );
