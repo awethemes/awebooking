@@ -3,12 +3,12 @@ namespace AweBooking\Reservation\Room_Stay;
 
 use WP_Error;
 use AweBooking\Constants;
+use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Rate;
 use AweBooking\Model\Pricing\Rate_Plan;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
-use AweBooking\Reservation\Request;
 
 class Room_Rate {
 	/**
@@ -59,6 +59,13 @@ class Room_Rate {
 	 * @var \AweBooking\Reservation\Room_Stay\Availability
 	 */
 	protected $availability;
+
+	/**
+	 * The assigned room.
+	 *
+	 * @var \AweBooking\Model\Room
+	 */
+	protected $assigned_room;
 
 	/**
 	 * The rate to retrieve the room price.
@@ -271,7 +278,7 @@ class Room_Rate {
 	/**
 	 * Determines if current room rate is bookable.
 	 *
-	 * @return boolean
+	 * @return boolean|WP_Error
 	 */
 	public function is_bookable() {
 		$this->check_setup();
@@ -304,12 +311,32 @@ class Room_Rate {
 	}
 
 	/**
+	 * Assign a room.
+	 *
+	 * @param  \AweBooking\Model\Room $room
+	 * @return bool
+	 */
+	public function set_assigned_room( Room $room ) {
+		if ( ! $this->get_availability()->remain( $room->get_id() ) ) {
+			return false;
+		}
+
+		$this->assigned_room = $room;
+
+		return true;
+	}
+
+	/**
 	 * Get the assigned_room.
 	 *
 	 * @return \AweBooking\Model\Room|null
 	 */
 	public function get_assigned_room() {
-		return $this->get_availability()->select( 'first' );
+		if ( is_null( $this->assigned_room) ) {
+			$this->assigned_room = $this->get_availability()->select( 'first' );
+		}
+
+		return $this->assigned_room;
 	}
 
 	/**

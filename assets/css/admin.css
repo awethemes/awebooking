@@ -873,6 +873,11 @@ table.availability-table .text-remain-rooms .dashicons {
   max-width: 100%;
 }
 
+.abrs-cmb2-float .cmb2_select.selectize-control,
+.abrs-card__body .cmb2_select.selectize-control {
+  width: 350px;
+}
+
 .abrs-cmb2-float .cmb-row,
 .abrs-card__body .cmb-row {
   padding: 1em 0;
@@ -933,6 +938,16 @@ table.availability-table .text-remain-rooms .dashicons {
 .abrs-card__body table {
   border: none;
   box-shadow: none;
+}
+
+.abrs-cmb2-float .cmb-th {
+  flex: 0 0 16.66667%;
+  max-width: 16.66667%;
+}
+
+.abrs-cmb2-float .cmb-th + .cmb-td {
+  flex: 0 0 83.33333%;
+  max-width: 83.33333%;
 }
 
 .cmb2-onoffswitch {
@@ -2592,18 +2607,6 @@ table.wp-list-table .booking_summary {
   position: relative;
 }
 
-.wrap.awebooking-settings .cmb2-tooltip {
-  top: 0;
-  right: 0;
-  cursor: help;
-  position: absolute;
-  color: #585858;
-}
-
-.wrap.awebooking-settings .cmb2-tooltip .dashicons {
-  font-size: 18px;
-}
-
 .wrap.awebooking-settings select.cmb2_select,
 .wrap.awebooking-settings input.regular-text,
 .wrap.awebooking-settings .selectize-control {
@@ -2615,6 +2618,20 @@ table.wp-list-table .booking_summary {
   color: #666;
   padding-top: 5px;
   font-style: inherit;
+}
+
+.abrs-cmb2-float .cmb2-tooltip,
+.wrap.awebooking-settings .cmb2-tooltip {
+  top: 0;
+  right: 0;
+  cursor: help;
+  position: absolute;
+  color: #585858;
+}
+
+.abrs-cmb2-float .cmb2-tooltip .dashicons,
+.wrap.awebooking-settings .cmb2-tooltip .dashicons {
+  font-size: 18px;
 }
 
 @media (max-width: 782.98px) {

@@ -143,6 +143,10 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		]);
 	}
 
+	if ( is_wp_error( $res_request ) ) {
+		$res_request = null;
+	}
+
 	$form = abrs_get_template_content( 'search-form.php', compact( 'atts', 'res_request' ) );
 
 	/**

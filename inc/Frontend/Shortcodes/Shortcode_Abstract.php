@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking\Frontend\Shortcodes;
 
+use Illuminate\Support\Arr;
+
 abstract class Shortcode_Abstract {
 	/**
 	 * The shortcode attributes.
@@ -30,7 +32,7 @@ abstract class Shortcode_Abstract {
 	 * @param string $contents The shortcode content (if any).
 	 */
 	public function __construct( $atts, $contents = '' ) {
-		$this->atts = $this->parse_atts( $atts );
+		$this->atts     = $this->parse_atts( $atts );
 		$this->contents = $contents;
 	}
 
@@ -123,7 +125,7 @@ abstract class Shortcode_Abstract {
 	/**
 	 * Print the error message.
 	 *
-	 * @param  Exception|WP_Error|string $error The error message.
+	 * @param  \Exception|\WP_Error|string $error The error message.
 	 * @return void
 	 */
 	protected function print_error( $error ) {
@@ -136,6 +138,6 @@ abstract class Shortcode_Abstract {
 		}
 
 		// Print the error message.
-		printf( '<div class="awebooking-shortcode-error">%s</div>', wp_kses_post( wpautop( $message ) ) );
+		printf( '<div class="awebooking-user-error">%s</div>', wp_kses_post( wpautop( $message ) ) );
 	}
 }

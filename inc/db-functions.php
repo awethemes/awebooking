@@ -54,7 +54,7 @@ function abrs_db_room( $room ) {
  * Get all room items in a room type.
  *
  * @param  int $room_type The room type ID.
- * @return array
+ * @return array|null
  */
 function abrs_db_rooms_in( $room_type ) {
 	$room_type = Model::parse_object_id( $room_type );
@@ -62,7 +62,7 @@ function abrs_db_rooms_in( $room_type ) {
 	// Because room type is just is a post type, so
 	// ensure this post exists before doing anything.
 	if ( ! get_post( $room_type ) ) {
-		return;
+		return null;
 	}
 
 	// If current site running on multilanguage, we will get room-units
@@ -134,14 +134,14 @@ function abrs_db_booking_item( $item, $type = null ) {
  *
  * @param  int    $booking The booking ID.
  * @param  string $type    Optional, filter only item type.
- * @return array
+ * @return array|null
  */
 function abrs_get_booking_items( $booking, $type = 'all' ) {
 	$booking = Model::parse_object_id( $booking );
 
 	// Ensure this booking exists before doing anything.
 	if ( ! get_post( $booking ) ) {
-		return;
+		return null;
 	}
 
 	// Try to get the items in cache first, otherwise load from database.

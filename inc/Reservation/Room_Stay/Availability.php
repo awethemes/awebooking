@@ -57,7 +57,7 @@ class Availability {
 		$remains = $this->remains();
 
 		if ( count( $remains ) === 0 ) {
-			return;
+			return null;
 		}
 
 		return ( 'first' === $possiton )

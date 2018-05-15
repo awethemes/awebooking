@@ -2,12 +2,14 @@
 <ruleset name="WordPress Coding Standards for Plugins">
 	<description>Generally-applicable sniffs for WordPress plugins</description>
 
-	<config name="testVersion" value="5.6-7.1" />
+	<arg name="colors"/>
+	<arg value="n"/>
 
 	<exclude-pattern>*/tests/**</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 
+	<config name="testVersion" value="5.6-7.1" />
 	<rule ref="PHPCompatibility" />
 
 	<rule ref="WordPress-Extra">

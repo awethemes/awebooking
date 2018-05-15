@@ -30,8 +30,7 @@ class Reservation_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		$this->plugin->make( 'reservation' );
-
+		$this->plugin['reservation']->init();
 		add_action( 'template_redirect', [ $this, 'setup_res_request' ] );
 	}
 

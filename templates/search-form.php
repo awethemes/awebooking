@@ -1,8 +1,9 @@
 <?php
 
 $form_classes = [];
-
 $max_select = 10;
+
+$hotels = abrs_list_hotels();
 
 ?>
 
@@ -22,7 +23,9 @@ $max_select = 10;
 				<div class="searchbox__box searchbox__box--hotel">
 					<label class="searchbox__label searchbox__label--hotel">
 						<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
-						<input type="text" name="hotel">
+						<select name="hotel" id="">
+							<option value=""></option>
+						</select>
 					</label>
 				</div>
 			<?php endif ?>

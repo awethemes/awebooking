@@ -1,6 +1,7 @@
 <?php
 
 use AweBooking\Constants;
+use AweBooking\Model\Hotel;
 use AweBooking\Multilingual;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
@@ -10,7 +11,7 @@ use AweBooking\Component\Form\Form_Builder;
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
-require trailingslashit( __DIR__ ) . 'room-functions.php';
+require trailingslashit( __DIR__ ) . 'hotel-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 
@@ -576,22 +577,4 @@ function abrs_get_image_size( $image_size ) {
 	}
 
 	return apply_filters( 'awebooking/get_image_size_' . $image_size, $size );
-}
-
-/**
- * Get hotels.
- *
- * @param  array  $args args
- * @return array
- */
-function abrs_get_hotels( $args = [] ) {
-	$args = wp_parse_args( $args, [
-		'post_type'      => Constants::HOTEL_LOCATION,
-		'post_status'    => 'publish',
-		'order'          => 'ASC',
-		'orderby'        => 'menu_order',
-		'posts_per_page' => 500,
-	]);
-
-	return get_posts( apply_filters( 'awebooking/get_hotels', $args ) );
 }

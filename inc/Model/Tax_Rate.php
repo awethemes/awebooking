@@ -71,7 +71,7 @@ class Tax extends WP_Object {
 	 * The tax rates query.
 	 *
 	 * @param  array $args args.
-	 * @return WP_Query
+	 * @return \WP_Query
 	 */
 	public static function query() {
 		global $wpdb;
