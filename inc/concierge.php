@@ -639,12 +639,14 @@ function abrs_resource_rate( $rate ) {
 
 /**
  * Create new reservation request.
+ * TODO: ...
  *
  * @param  array $args The query args.
  * @return \AweBooking\Reservation\Request|WP_Error
  */
-function abrs_create_res_request( $args ) {
+function abrs_create_res_request( $args, $options = [] ) {
 	if ( $args instanceof Http_Request ) {
+		$options = $args->only( 'hotel', 'only' );
 		$args = $args->all();
 	}
 
@@ -655,7 +657,7 @@ function abrs_create_res_request( $args ) {
 		'adults'     => 1,
 		'children'   => 0,
 		'infants'    => 0,
-		'options'    => [],
+		'options'    => $options,
 	]);
 
 	// Create the timespan.

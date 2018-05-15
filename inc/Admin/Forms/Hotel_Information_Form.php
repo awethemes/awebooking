@@ -19,7 +19,7 @@ class Hotel_Information_Form extends Form_Builder {
 	 */
 	protected function setup_fields() {
 		$this->add_field([
-			'id'              => 'star_rating',
+			'id'              => 'hotel_star_rating',
 			'type'            => 'select',
 			'name'            => esc_html__( 'Star Rating', 'awebooking' ),
 			'classes'         => 'with-selectize',

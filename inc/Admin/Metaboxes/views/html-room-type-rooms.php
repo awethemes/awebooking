@@ -5,7 +5,7 @@ global $the_room_type, $post_id;
 // List all rooms.
 $rooms = $the_room_type->get_rooms();
 
-// In translation, we can not todo some tasks
+// In translation, we can not do some tasks
 // like edit or delete room unit.
 $is_translation = null;
 if ( abrs_running_on_multilanguage() ) {

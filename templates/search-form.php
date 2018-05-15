@@ -5,9 +5,7 @@ $max_select = 10;
 
 $hotels = abrs_list_hotels();
 
-?>
-
-<form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
+?><form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">
@@ -19,12 +17,14 @@ $hotels = abrs_list_hotels();
 
 	<div class="searchbox searchbox--horizontal">
 		<div class="searchbox__wrapper">
-			<?php if ( abrs_multiple_hotels() ) : ?>
+			<?php if ( abrs_multiple_hotels() && count( $hotels ) > 1 ) : ?>
 				<div class="searchbox__box searchbox__box--hotel">
 					<label class="searchbox__label searchbox__label--hotel">
 						<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
 						<select name="hotel" id="">
-							<option value=""></option>
+							<?php foreach ( $hotels as $hotel ) : ?>
+								<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
+							<?php endforeach; ?>
 						</select>
 					</label>
 				</div>

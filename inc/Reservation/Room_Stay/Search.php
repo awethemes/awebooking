@@ -95,6 +95,10 @@ class Search {
 			$wp_query_args['post__in'] = wp_parse_id_list( $this->request['only'] );
 		}
 
+		if ( ! empty( $this->request['hotel'] ) ) {
+			$wp_query_args['post_parent'] = absint( $this->request['hotel'] );
+		}
+
 		// Perform query room types.
 		$room_types = new WP_Query(
 			apply_filters( 'awebooking/reservation/query_room_types', $wp_query_args, $this )

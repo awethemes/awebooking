@@ -12,6 +12,13 @@ abstract class Model extends WP_Object {
 	protected $prefix = 'awebooking';
 
 	/**
+	 * Mark the object readonly.
+	 *
+	 * @var bool
+	 */
+	protected $readonly = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param mixed $object The room-type based object or ID.
@@ -51,8 +58,13 @@ abstract class Model extends WP_Object {
 	 * Do something before doing save.
 	 *
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	protected function before_save() {
+		if ( true === $this->readonly ) {
+			throw new \RuntimeException( sprintf( 'Can\'t save a read-only object [%s]', static::class ) );
+		}
+
 		if ( method_exists( $this, 'saving' ) ) {
 			$this->saving();
 		}

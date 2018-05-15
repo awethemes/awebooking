@@ -395,7 +395,7 @@ final class Plugin extends Container {
 	/**
 	 * Get all stored options.
 	 *
-	 * @return array
+	 * @return \AweBooking\Support\Fluent
 	 */
 	public function get_options() {
 		// Load the option in the database.

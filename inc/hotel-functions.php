@@ -88,6 +88,21 @@ function abrs_get_hotel( $hotel ) {
 }
 
 /**
+ * Returns the default hotel.
+ *
+ * @return \AweBooking\Model\Hotel
+ */
+function abrs_get_default_hotel() {
+	if ( ! awebooking()->bound( 'default_hotel' ) ) {
+		awebooking()->singleton( 'default_hotel', function () {
+			return new Hotel( 'default' );
+		});
+	}
+
+	return awebooking()->make( 'default_hotel' );
+}
+
+/**
  * Gets all hotels.
  *
  * @param  array $args Optional, the WP_Query args.
@@ -105,5 +120,6 @@ function abrs_list_hotels( $args = [] ) {
 	$wp_query = new WP_Query( $args );
 
 	return abrs_collect( $wp_query->posts )
-		->map_into( Hotel::class );
+		->map_into( Hotel::class )
+		->prepend( abrs_get_default_hotel() );
 }

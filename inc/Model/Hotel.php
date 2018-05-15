@@ -12,6 +12,19 @@ class Hotel extends Model {
 	protected $object_type = Constants::HOTEL_LOCATION;
 
 	/**
+	 * Constructor.
+	 *
+	 * @param string $object_type
+	 */
+	public function __construct( $object = null ) {
+		if ( 'default' === $object ) {
+			$this->setup_default_hotel();
+		} else {
+			parent::__construct( $object );
+		}
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function clean_cache() {
@@ -34,21 +47,52 @@ class Hotel extends Model {
 	}
 
 	/**
+	 * Setup default hotel attributes.
+	 */
+	protected function setup_default_hotel() {
+		$this->id       = 0;
+		$this->exists   = true;
+		$this->readonly = true;
+
+		$this->setup_attributes();
+
+		$this->fill([
+			'name'            => abrs_get_option( 'hotel_name' ),
+			'order'           => 0,
+			'description'     => '',
+			'star_rating'     => abrs_get_option( 'hotel_star_rating' ),
+			'hotel_address'   => abrs_get_option( 'hotel_address' ),
+			'hotel_address_2' => abrs_get_option( 'hotel_address_2' ),
+			'hotel_state'     => abrs_get_option( 'hotel_state' ),
+			'hotel_city'      => abrs_get_option( 'hotel_city' ),
+			'hotel_country'   => abrs_get_option( 'hotel_country' ),
+			'hotel_postcode'  => abrs_get_option( 'hotel_postcode' ),
+			'hotel_phone'     => abrs_get_option( 'hotel_phone' ),
+		]);
+
+		do_action( $this->prefix( 'setup_default_hotel' ), $this );
+
+		$this->sync_original();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function perform_insert() {
 		$insert_id = wp_insert_post([
 			'post_type'    => $this->object_type,
-			'post_title'   => $this['name'],
+			'post_title'   => $this->get( 'name' ),
 			'menu_order'   => $this->get( 'order' ),
-			'post_content' => $this['description'],
-			'post_status'  => $this['status'] ? $this['status'] : 'publish',
-			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
+			'post_content' => $this->get( 'description' ),
+			'post_status'  => $this->get( 'status' ) ?: 'publish',
+			'post_date'    => $this->get( 'post_date' ) ?: current_time( 'mysql' ),
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
 			return $insert_id;
 		}
+
+		return 0;
 	}
 
 	/**
@@ -57,12 +101,12 @@ class Hotel extends Model {
 	protected function perform_update( array $dirty ) {
 		if ( $this->get_changes_only( $dirty, [ 'name', 'status', 'order', 'description', 'date_created', 'date_modified' ] ) ) {
 			$this->update_the_post([
-				'post_title'    => $this['name'],
-				'post_status'   => $this['status'],
-				'menu_order'    => $this['order'],
-				'post_content'  => $this['description'],
-				'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
-				'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
+				'post_title'    => $this->get( 'name' ),
+				'post_status'   => $this->get( 'status' ),
+				'menu_order'    => $this->get( 'order' ),
+				'post_content'  => $this->get( 'description' ),
+				'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this->get( 'date_created ' ) ) : '',
+				'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this->get( 'date_modified' ) ) : '',
 			]);
 		}
 	}
@@ -104,12 +148,5 @@ class Hotel extends Model {
 			'hotel_postcode'  => '_hotel_postcode',
 			'hotel_phone'     => '_hotel_phone',
 		]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function sanitize_attribute( $key, $value ) {
-		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );
 	}
 }
