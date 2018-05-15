@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Hotel;
@@ -32,20 +33,6 @@ function abrs_get_room_type( $room_type ) {
 		$room_type = new Room_Type( $room_type );
 
 		return $room_type->exists() ? $room_type : null;
-	}, false );
-}
-
-/**
- * Retrieves the hotel object.
- *
- * @param  mixed $hotel The post object or post ID of the hotel.
- * @return \AweBooking\Model\Hotel|false|null
- */
-function abrs_get_hotel( $hotel ) {
-	return abrs_rescue( function() use ( $hotel ) {
-		$hotel = new Hotel( $hotel );
-
-		return $hotel->exists() ? $hotel : null;
 	}, false );
 }
 
@@ -84,4 +71,39 @@ function abrs_get_rate_plan( $rate_plan ) {
 	return ( $standard_plan instanceof Room_Type )
 		? new Standard_Plan( $standard_plan )
 		: apply_filters( 'awebooking/get_rate_plan_object', null, $rate_plan );
+}
+
+/**
+ * Retrieves the hotel object.
+ *
+ * @param  mixed $hotel The post object or post ID of the hotel.
+ * @return \AweBooking\Model\Hotel|false|null
+ */
+function abrs_get_hotel( $hotel ) {
+	return abrs_rescue( function() use ( $hotel ) {
+		$hotel = new Hotel( $hotel );
+
+		return $hotel->exists() ? $hotel : null;
+	}, false );
+}
+
+/**
+ * Gets all hotels.
+ *
+ * @param  array $args Optional, the WP_Query args.
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_list_hotels( $args = [] ) {
+	$args = wp_parse_args( $args, apply_filters( 'awebooking/query_hotels_args', [
+		'post_type'      => Constants::HOTEL_LOCATION,
+		'post_status'    => 'publish',
+		'posts_per_page' => 500, // Limit max 500.
+		'order'          => 'ASC',
+		'orderby'        => 'menu_order',
+	]));
+
+	$wp_query = new WP_Query( $args );
+
+	return abrs_collect( $wp_query->posts )
+		->map_into( Hotel::class );
 }

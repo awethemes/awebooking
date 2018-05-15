@@ -13,7 +13,7 @@ class Reservation_Service_Provider extends Service_Provider {
 	 */
 	public function register() {
 		$this->plugin->singleton( 'reservation', function() {
-			return new Reservation( $this->plugin['session'] );
+			return new Reservation( $this->plugin['session.store'] );
 		});
 
 		$this->plugin->singleton( 'checkout', function() {
@@ -30,8 +30,7 @@ class Reservation_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		$this->plugin->make( 'reservation' );
-
+		$this->plugin['reservation']->init();
 		add_action( 'template_redirect', [ $this, 'setup_res_request' ] );
 	}
 

@@ -72,7 +72,7 @@ class Period_Collection extends Collection {
 			return true;
 		}
 
-		$periods = $sort ? $this->sort() : $this->items;
+		$periods = $sort ? $this->sort() : new static( $this->items );
 
 		$periods = $periods->unique( function( $period ) {
 			return $period->get_start_date()->format( 'Y-m-d' ) . '::' . $period->get_end_date()->format( 'Y-m-d' );

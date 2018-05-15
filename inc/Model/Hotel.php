@@ -22,13 +22,13 @@ class Hotel extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function setup() {
-		$this['name']              = $this->instance->post_title;
-		$this['slug']              = $this->instance->post_name;
-		$this['status']            = $this->instance->post_status;
-		$this['order']             = $this->instance->menu_order;
-		$this['description']       = $this->instance->post_content;
-		$this['date_created']      = $this->instance->post_date;
-		$this['date_modified']     = $this->instance->post_modified;
+		$this['name']          = $this->instance->post_title;
+		$this['slug']          = $this->instance->post_name;
+		$this['status']        = $this->instance->post_status;
+		$this['order']         = $this->instance->menu_order;
+		$this['description']   = $this->instance->post_content;
+		$this['date_created']  = $this->instance->post_date;
+		$this['date_modified'] = $this->instance->post_modified;
 
 		do_action( $this->prefix( 'after_setup' ), $this );
 	}
@@ -72,21 +72,21 @@ class Hotel extends Model {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
-			'name'              => '',
-			'slug'              => '',
-			'status'            => '',
-			'order'             => 0,
-			'date_created'      => null,
-			'date_modified'     => null,
-			'description'       => '',
-			'star_rating'       => '',
-			'hotel_address'     => '',
-			'hotel_address_2'   => '',
-			'hotel_state'       => '',
-			'hotel_city'        => '',
-			'hotel_country'     => '',
-			'hotel_postcode'    => '',
-			'hotel_phone'       => '',
+			'name'            => '',
+			'slug'            => '',
+			'status'          => '',
+			'order'           => 0,
+			'date_created'    => null,
+			'date_modified'   => null,
+			'description'     => '',
+			'star_rating'     => '',
+			'hotel_address'   => '',
+			'hotel_address_2' => '',
+			'hotel_state'     => '',
+			'hotel_city'      => '',
+			'hotel_country'   => '',
+			'hotel_postcode'  => '',
+			'hotel_phone'     => '',
 		]);
 	}
 
@@ -95,14 +95,14 @@ class Hotel extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'star_rating'       => '_star_rating',
-			'hotel_address'     => '_hotel_address',
-			'hotel_address_2'   => '_hotel_address_2',
-			'hotel_state'       => '_hotel_state',
-			'hotel_city'        => '_hotel_city',
-			'hotel_country'     => '_hotel_country',
-			'hotel_postcode'    => '_hotel_postcode',
-			'hotel_phone'       => '_hotel_phone',
+			'star_rating'     => '_star_rating',
+			'hotel_address'   => '_hotel_address',
+			'hotel_address_2' => '_hotel_address_2',
+			'hotel_state'     => '_hotel_state',
+			'hotel_city'      => '_hotel_city',
+			'hotel_country'   => '_hotel_country',
+			'hotel_postcode'  => '_hotel_postcode',
+			'hotel_phone'     => '_hotel_phone',
 		]);
 	}
 

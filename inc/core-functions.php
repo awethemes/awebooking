@@ -1,6 +1,7 @@
 <?php
 
 use AweBooking\Constants;
+use AweBooking\Model\Hotel;
 use AweBooking\Multilingual;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
@@ -10,7 +11,7 @@ use AweBooking\Component\Form\Form_Builder;
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
-require trailingslashit( __DIR__ ) . 'room-functions.php';
+require trailingslashit( __DIR__ ) . 'hotel-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 
@@ -545,7 +546,7 @@ function abrs_get_page_permalink( $page ) {
 /**
  * Get an image size.
  *
- * @param array|string $image_size
+ * @param array|string $image_size Image size.
  * @return array
  */
 function abrs_get_image_size( $image_size ) {
@@ -562,12 +563,11 @@ function abrs_get_image_size( $image_size ) {
 
 		$image_size = $width . '_' . $height;
 
-	} elseif ( in_array( $image_size, array( 'awebooking_thumbnail', 'awebooking_archive', 'awebooking_single' ) ) ) {
+	} elseif ( in_array( $image_size, array( 'thumbnail', 'archive', 'single' ) ) ) {
 		$size           = abrs_get_option( $image_size . '_image_size', [] );
 		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
 		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
 		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
-
 	} else {
 		$size = array(
 			'width'  => '300',

@@ -15,18 +15,6 @@
     position: relative;
   }
 
-  .cmb2-tooltip {
-    top: 0;
-    right: 0;
-    cursor: help;
-    position: absolute;
-    color: #585858;
-
-    .dashicons {
-      font-size: 18px;
-    }
-  }
-
   select.cmb2_select,
   input.regular-text,
   .selectize-control {
@@ -38,5 +26,20 @@
     color: #666;
     padding-top: 5px;
     font-style: inherit;
+  }
+}
+
+.abrs-cmb2-float,
+.wrap.awebooking-settings {
+  .cmb2-tooltip {
+    top: 0;
+    right: 0;
+    cursor: help;
+    position: absolute;
+    color: #585858;
+
+    .dashicons {
+      font-size: 18px;
+    }
   }
 }

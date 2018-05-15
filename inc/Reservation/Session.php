@@ -2,7 +2,7 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\Model\Common\Timespan;
-use Awethemes\WP_Session\WP_Session;
+use Awethemes\WP_Session\Session as WP_Session;
 
 class Session {
 	/* constants */
@@ -49,6 +49,22 @@ class Session {
 		$this->session_name = $session_name;
 		$this->lifetime     = $lifetime;
 	}
+
+	/**
+	 * Init the hooks.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		add_action( 'wp_loaded', [ $this, 'get_room_stays' ] );
+	}
+
+	public function get_room_stays() {
+		$room_stay = $this->wp_session->get( 'room_stays' );
+
+//		dump( $room_stay );
+	}
+
 
 	/**
 	 * Resolve the reservation from session.

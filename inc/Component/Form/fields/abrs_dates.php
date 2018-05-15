@@ -12,7 +12,6 @@ $escaped_value = is_array( $escaped_value ) ? $escaped_value : [];
 $input_names = is_array( $field->args( 'input_names' ) ) ? $field->args( 'input_names' ) : [];
 
 wp_enqueue_script( 'flatpickr' );
-wp_enqueue_script( 'flatpickr-range-plugin' );
 
 ?><div class="abrs-input-dates">
 	<?php

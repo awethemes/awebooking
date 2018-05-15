@@ -490,12 +490,12 @@ final class Plugin extends Container {
 	 *
 	 * @see http://php.net/manual/en/function.ob-get-level.php#117325
 	 *
-	 * @param  Exception $e        The exception.
-	 * @param  int       $ob_level The ob_get_level().
-	 * @param  callable  $callback Optional, run callback after.
+	 * @param  \Exception $e        The exception.
+	 * @param  int        $ob_level The ob_get_level().
+	 * @param  callable   $callback Optional, run callback after.
 	 * @return void
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function handle_buffering_exception( $e, $ob_level, $callback = null ) {
 		// In PHP7+, throw a FatalThrowableError when we catch an Error.

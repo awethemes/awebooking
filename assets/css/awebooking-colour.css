@@ -87,6 +87,18 @@
   background-color: transparent;
 }
 
+.awebooking-datepicker .numInputWrapper:hover {
+  background-color: transparent;
+}
+
+.awebooking-datepicker .flatpickr-current-month .numInputWrapper span.arrowUp:after {
+  border-bottom-color: rgba(255, 255, 255, 0.9);
+}
+
+.awebooking-datepicker .flatpickr-current-month .numInputWrapper span.arrowDown:after {
+  border-top-color: rgba(255, 255, 255, 0.9);
+}
+
 .awebooking-datepicker span.flatpickr-weekday {
   font-weight: 400;
   color: #fff;
@@ -158,7 +170,13 @@
 .awebooking-datepicker .flatpickr-day.endRange.nextMonthDay {
   color: #fff;
   border-color: #2196F3;
-  background-color: #2196F3;
+  background: #2196F3;
+}
+
+.awebooking-datepicker .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+.awebooking-datepicker .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+.awebooking-datepicker .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+  box-shadow: -10px 0 0 #2196F3;
 }
 
 .awebooking-datepicker .flatpickr-day.selected.startRange + .endRange,
@@ -173,6 +191,18 @@
 
 .awebooking-datepicker .flatpickr-calendar.open {
   z-index: 999999;
+}
+
+.awebooking-datepicker .flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+1) .flatpickr-day.inRange:nth-child(7n+7) {
+  box-shadow: -5px 0 0 #e2f2ff, 2px 0 0 #e2f2ff !important;
+}
+
+.awebooking-datepicker .flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+7) {
+  box-shadow: -5px 0 0 #e2f2ff, 5px 0 0 #e2f2ff !important;
+}
+
+.awebooking-datepicker .flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+1) {
+  box-shadow: -2px 0 0 #e2f2ff, 5px 0 0 #e2f2ff !important;
 }
 
 .awebooking-datepicker .flatpickr-calendar.multiMonth .dayContainer:not(:last-child) {

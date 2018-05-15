@@ -8,7 +8,7 @@ class Field_Proxy {
 	/**
 	 * The Form_Builder instance.
 	 *
-	 * @var \AweBooking\CMB2\Form_Builder
+	 * @var \AweBooking\Component\Form\Form_Builder
 	 */
 	protected $form;
 
@@ -26,7 +26,7 @@ class Field_Proxy {
 	 * @param CMB2_Field   $field The CMB2_Field instance.
 	 */
 	public function __construct( Form_Builder $form, CMB2_Field $field ) {
-		$this->form = $form;
+		$this->form  = $form;
 		$this->field = $field;
 	}
 
@@ -62,7 +62,8 @@ class Field_Proxy {
 	/**
 	 * Set the field value.
 	 *
-	 * @param mixed $value Field value.
+	 * @param  mixed $value Field value.
+	 * @return $this
 	 */
 	public function set_value( $value ) {
 		$this->field->value = $value;
@@ -110,12 +111,13 @@ class Field_Proxy {
 	/**
 	 * Set the field attribute property.
 	 *
-	 * @param string $attribute Attribute key name.
-	 * @param string $value     Attribute value.
+	 * @param  string $attribute Attribute key name.
+	 * @param  string $value     Attribute value.
+	 * @return $this
 	 */
 	public function set_attribute( $attribute, $value = '' ) {
 		$attribute  = is_array( $attribute ) ? $attribute : [ $attribute => $value ];
-		$attributes = $this->prop( 'attributes' ) ?: [];
+		$attributes = $this->field->prop( 'attributes' ) ?: [];
 
 		$this->set_prop( 'attributes',
 			array_merge( $attributes, $attribute )

@@ -861,16 +861,24 @@ table.availability-table .text-remain-rooms .dashicons {
   color: #333;
 }
 
+.abrs-cmb2-float select,
 .abrs-card__body select {
   width: 25em;
   max-width: 100%;
 }
 
+.abrs-cmb2-float textarea,
 .abrs-card__body textarea {
   width: 100%;
   max-width: 100%;
 }
 
+.abrs-cmb2-float .cmb2_select.selectize-control,
+.abrs-card__body .cmb2_select.selectize-control {
+  width: 350px;
+}
+
+.abrs-cmb2-float .cmb-row,
 .abrs-card__body .cmb-row {
   padding: 1em 0;
   box-sizing: border-box;
@@ -880,6 +888,8 @@ table.availability-table .text-remain-rooms .dashicons {
   margin-left: -1em;
 }
 
+.abrs-cmb2-float .cmb-th,
+.abrs-cmb2-float .cmb-td,
 .abrs-card__body .cmb-th,
 .abrs-card__body .cmb-td {
   padding: 0;
@@ -892,6 +902,7 @@ table.availability-table .text-remain-rooms .dashicons {
   padding-left: 1em;
 }
 
+.abrs-cmb2-float .cmb-th,
 .abrs-card__body .cmb-th {
   color: #444;
   font-weight: normal;
@@ -900,27 +911,43 @@ table.availability-table .text-remain-rooms .dashicons {
   max-width: 25%;
 }
 
+.abrs-cmb2-float .cmb-th + .cmb-td,
 .abrs-card__body .cmb-th + .cmb-td {
   flex: 0 0 75%;
   max-width: 75%;
 }
 
+.abrs-cmb2-float .cmb-th > label,
 .abrs-card__body .cmb-th > label {
   padding: 0;
 }
 
+.abrs-cmb2-float .submit > .button,
+.abrs-cmb2-float .submit > .button-link,
 .abrs-card__body .submit > .button,
 .abrs-card__body .submit > .button-link {
   vertical-align: middle;
 }
 
+.abrs-cmb2-float .submit > .button-link.abrs-fright,
 .abrs-card__body .submit > .button-link.abrs-fright {
   margin-top: 4px;
 }
 
+.abrs-cmb2-float table,
 .abrs-card__body table {
   border: none;
   box-shadow: none;
+}
+
+.abrs-cmb2-float .cmb-th {
+  flex: 0 0 16.66667%;
+  max-width: 16.66667%;
+}
+
+.abrs-cmb2-float .cmb-th + .cmb-td {
+  flex: 0 0 83.33333%;
+  max-width: 83.33333%;
 }
 
 .cmb2-onoffswitch {
@@ -1583,6 +1610,18 @@ table.availability-table .text-remain-rooms .dashicons {
   background-color: transparent;
 }
 
+.numInputWrapper:hover {
+  background-color: transparent;
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowUp:after {
+  border-bottom-color: rgba(255, 255, 255, 0.9);
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowDown:after {
+  border-top-color: rgba(255, 255, 255, 0.9);
+}
+
 span.flatpickr-weekday {
   font-weight: 400;
   color: #fff;
@@ -1654,7 +1693,13 @@ span.flatpickr-weekday {
 .flatpickr-day.endRange.nextMonthDay {
   color: #fff;
   border-color: #2196F3;
-  background-color: #2196F3;
+  background: #2196F3;
+}
+
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+  box-shadow: -10px 0 0 #2196F3;
 }
 
 .flatpickr-day.selected.startRange + .endRange,
@@ -1669,6 +1714,18 @@ span.flatpickr-weekday {
 
 .flatpickr-calendar.open {
   z-index: 999999;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+1) .flatpickr-day.inRange:nth-child(7n+7) {
+  box-shadow: -5px 0 0 #e2f2ff, 2px 0 0 #e2f2ff !important;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+7) {
+  box-shadow: -5px 0 0 #e2f2ff, 5px 0 0 #e2f2ff !important;
+}
+
+.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+1) {
+  box-shadow: -2px 0 0 #e2f2ff, 5px 0 0 #e2f2ff !important;
 }
 
 .flatpickr-calendar.multiMonth .dayContainer:not(:last-child) {
@@ -1739,6 +1796,7 @@ span.flatpickr-weekday {
 
 .flatpickr-calendar {
   margin-top: 9px;
+  box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
 .flatpickr-calendar:after {
@@ -2436,6 +2494,10 @@ table.abrs-booking-totals tr:last-child td {
   width: 350px;
 }
 
+.abrs-tooltip-booking-paid-column {
+  width: 150px;
+}
+
 table.wp-list-table .column-thumb {
   width: 52px;
   text-align: center;
@@ -2471,7 +2533,6 @@ table.wp-list-table .column-booking_number {
   width: 15%;
 }
 
-table.wp-list-table .column-booking_total,
 table.wp-list-table .column-booking_date,
 table.wp-list-table .column-booking_status {
   width: 10%;
@@ -2480,6 +2541,11 @@ table.wp-list-table .column-booking_status {
 table.wp-list-table .column-booking_check_in,
 table.wp-list-table .column-booking_check_out {
   width: 8%;
+}
+
+table.wp-list-table .column-booking_total,
+table.wp-list-table .column-booking_paid {
+  width: 5%;
 }
 
 table.wp-list-table .column-booking_nights {
@@ -2541,18 +2607,6 @@ table.wp-list-table .booking_summary {
   position: relative;
 }
 
-.wrap.awebooking-settings .cmb2-tooltip {
-  top: 0;
-  right: 0;
-  cursor: help;
-  position: absolute;
-  color: #585858;
-}
-
-.wrap.awebooking-settings .cmb2-tooltip .dashicons {
-  font-size: 18px;
-}
-
 .wrap.awebooking-settings select.cmb2_select,
 .wrap.awebooking-settings input.regular-text,
 .wrap.awebooking-settings .selectize-control {
@@ -2564,6 +2618,20 @@ table.wp-list-table .booking_summary {
   color: #666;
   padding-top: 5px;
   font-style: inherit;
+}
+
+.abrs-cmb2-float .cmb2-tooltip,
+.wrap.awebooking-settings .cmb2-tooltip {
+  top: 0;
+  right: 0;
+  cursor: help;
+  position: absolute;
+  color: #585858;
+}
+
+.abrs-cmb2-float .cmb2-tooltip .dashicons,
+.wrap.awebooking-settings .cmb2-tooltip .dashicons {
+  font-size: 18px;
 }
 
 @media (max-width: 782.98px) {
@@ -2693,17 +2761,21 @@ table.wp-list-table .booking_summary {
 }
 
 @media only screen and (max-width: 782px) {
+  .abrs-cmb2-float .cmb-row,
   .abrs-card__body .cmb-row {
     padding: 0;
     margin-bottom: 1em;
   }
 
+  .abrs-cmb2-float .cmb-th,
+  .abrs-cmb2-float .cmb-th + .cmb-td,
   .abrs-card__body .cmb-th,
   .abrs-card__body .cmb-th + .cmb-td {
     flex: 0 0 100%;
     max-width: 100%;
   }
 
+  .abrs-cmb2-float .cmb-th > label,
   .abrs-card__body .cmb-th > label {
     margin-bottom: 7px;
   }

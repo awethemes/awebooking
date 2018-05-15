@@ -24,15 +24,20 @@ class Appearance_Setting extends Abstract_Setting {
 	 * @return void
 	 */
 	public function setup_fields() {
-		$this->add_field([
+		$general = $this->add_section( 'general', [
+			'title' => esc_html__( 'General', 'awebooking' ),
+		]);
+
+		$general->add_field([
 			'id'    => '__images',
 			'type'  => 'title',
 			'name'  => esc_html__( 'Room images', 'awebooking' ),
-			'desc' 	=> sprintf( __( 'These settings affect the display and dimensions of images - the display on the front-end will still be affected by CSS styles. After changing these settings you may need to <a target="_blank" href="%s">regenerate your thumbnails</a>.', 'awebooking' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' ),
+			/* translators: Link */
+			'desc'  => sprintf( wp_kses_post( __( 'These settings affect the display and dimensions of images. After changing these settings you may need to <a target="_blank" href="%s">regenerate your thumbnails</a>.', 'awebooking' ) ), esc_url( 'https://wordpress.org/plugins/regenerate-thumbnails' ) ),
 		]);
 
-		$this->add_field([
-			'id'              => 'awebooking_archive_image_size',
+		$general->add_field([
+			'id'              => 'archive_image_size',
 			'type'            => 'abrs_image_size',
 			'name'            => esc_html__( 'Archive images', 'awebooking' ),
 			'desc'            => esc_html__( 'This size is usually used in room type listings. (W x H)', 'awebooking' ),
@@ -44,8 +49,8 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
-			'id'              => 'awebooking_single_image_size',
+		$general->add_field([
+			'id'              => 'single_image_size',
 			'type'            => 'abrs_image_size',
 			'name'            => esc_html__( 'Single room image', 'awebooking' ),
 			'desc'            => esc_html__( 'This is the size used by the main image on the room type page. (W x H)', 'awebooking' ),
@@ -57,8 +62,8 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
-			'id'              => 'awebooking_thumbnail_image_size',
+		$general->add_field([
+			'id'              => 'thumbnail_image_size',
 			'type'            => 'abrs_image_size',
 			'name'            => esc_html__( 'Room thumbnails', 'awebooking' ),
 			'desc'            => esc_html__( 'This size is usually used for the gallery of images on the room type page. (W x H)', 'awebooking' ),
@@ -70,13 +75,17 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
+		$datepicker = $this->add_section( 'datepicker', [
+			'title' => esc_html__( 'Datepicker', 'awebooking' ),
+		]);
+
+		$datepicker->add_field([
 			'id'    => '__display_datepicker_title',
 			'type'  => 'title',
 			'name'  => esc_html__( 'Date Picker', 'awebooking' ),
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_minnights',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Minimum nights', 'awebooking' ),
@@ -89,7 +98,7 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_maxnights',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Maximum dates', 'awebooking' ),
@@ -102,7 +111,7 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_mindate',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Minimum dates', 'awebooking' ),
@@ -115,7 +124,7 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_maxdate',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Maximum dates', 'awebooking' ),
@@ -128,14 +137,14 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_disabledates',
 			'type'            => 'text',
 			'name'            => esc_html__( 'Disabled dates', 'awebooking' ),
 			'desc'            => esc_html__( 'Enter dates by ", " separating values in this format: `Y-m-d`. All the dates passed to the list will be disabled.', 'awebooking' ),
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'                => 'display_datepicker_disabledays',
 			'type'              => 'multicheck_inline',
 			'name'              => esc_html__( 'Disabled days', 'awebooking' ),
@@ -144,15 +153,12 @@ class Appearance_Setting extends Abstract_Setting {
 			'select_all_button' => false,
 		]);
 
-		$this->add_field([
+		$datepicker->add_field([
 			'id'              => 'display_datepicker_showmonths',
 			'type'            => 'select',
 			'name'            => esc_html__( 'The number of months displayed', 'awebooking' ),
 			'desc'            => esc_html__( 'Display on month or two months.', 'awebooking' ),
-			'options'         => [
-				1 => 1,
-				2 => 2,
-			],
+			'options'         => [ '1' => 1, '2' => 2 ],
 			'sanitization_cb' => 'absint',
 		]);
 	}

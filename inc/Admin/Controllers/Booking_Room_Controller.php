@@ -165,7 +165,7 @@ class Booking_Room_Controller extends Controller {
 	 * Perform delete a booking room.
 	 *
 	 * @param  \Awethemes\Http\Request             $request   The current request.
-	 * @param  \AweBooking\Model\Booking_Room_Item $room_item The room item instance.
+	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The room item instance.
 	 * @return \Awethemes\Http\Response
 	 */
 	public function destroy( Request $request, Room_Item $room_item ) {

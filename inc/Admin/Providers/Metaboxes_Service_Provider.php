@@ -22,6 +22,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Info_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
+			$this->plugin->tag( $abstract, 'metaboxes' );
 		}
 	}
 
@@ -34,6 +35,16 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		add_action( 'save_post', [ $this, 'save_metaboxes' ], 1, 2 );
 		add_action( 'add_meta_boxes', [ $this, 'remove_metaboxes' ], 5 );
 		add_action( 'add_meta_boxes', [ $this, 'register_metaboxes' ], 10 );
+	}
+
+	/**
+	 * Make a callable for metabox output.
+	 *
+	 * @param  string $binding The binding in the plugin.
+	 * @return array
+	 */
+	protected function metaboxcb( $binding ) {
+		return [ $this->plugin->make( $binding ), 'output' ];
 	}
 
 	/**
@@ -61,24 +72,22 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
 		}
 
-		// Booking meta-boxes.
-		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->output_metabox( 'metabox.booking_main' ), Constants::BOOKING, 'normal', 'high' );
-		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->output_metabox( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
-		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->output_metabox( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
-		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->output_metabox( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
-		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->output_metabox( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
-		// add_meta_box( 'awebooking-booking-calendar', esc_html__( 'Calendar', 'awebooking' ), $this->output_metabox( 'metabox.booking_calendar' ), Constants::BOOKING, 'side' );
+		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->metaboxcb( 'metabox.booking_main' ), Constants::BOOKING, 'normal', 'high' );
+		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->metaboxcb( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
+		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->metaboxcb( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
+		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->metaboxcb( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
+		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->metaboxcb( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
 
-		// Room Type meta-boxes.
-		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->output_metabox( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
-		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->output_metabox( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
+		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->metaboxcb( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
+
+		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->metaboxcb( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
 	}
 
 	/**
 	 * Check if we're saving, the trigger an action based on the post type.
 	 *
-	 * @param int     $post_id The post ID.
-	 * @param WP_Post $post    The WP_Post object instance.
+	 * @param int      $post_id The post ID.
+	 * @param \WP_Post $post    The WP_Post object instance.
 	 *
 	 * @access private
 	 */
@@ -142,15 +151,5 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		 * @param \Awethemes\Http\Request $request The HTTP Request.
 		 */
 		do_action( "awebooking/process_{$post->post_type}_meta", $post, $request );
-	}
-
-	/**
-	 * Make a callable for metabox output.
-	 *
-	 * @param  string $binding The binding in the plugin.
-	 * @return array
-	 */
-	protected function output_metabox( $binding ) {
-		return [ $this->plugin->make( $binding ), 'output' ];
 	}
 }

@@ -285,7 +285,8 @@ abstract class Abstract_Scheduler {
 	/**
 	 * Filter the datepoint.
 	 *
-	 * @param string $datepoint The datepoint.
+	 * @param  string $datepoint The datepoint.
+	 * @return string
 	 */
 	protected function filter_datepoint( $datepoint ) {
 		$today = Carbonate::today( abrs_get_wp_timezone() );

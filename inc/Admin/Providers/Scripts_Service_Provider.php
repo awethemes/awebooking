@@ -30,9 +30,9 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_script( 'sortable', ABRS_ASSET_URL . 'vendor/sortable/Sortable' . $min . '.js', [], '1.7.0', false );
 		wp_register_script( 'jquery.waypoints', ABRS_ASSET_URL . 'vendor/waypoints/jquery.waypoints' . $min . '.js', [ 'jquery' ], '4.0.1', true );
 
-		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/confetti.css', [], '4.4.4' );
-		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [], '4.4.4', true );
-		wp_register_script( 'flatpickr-range-plugin', ABRS_ASSET_URL . 'vendor/flatpickr/rangePlugin.js', [ 'flatpickr' ], '4.4.4', true );
+		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.4.4' );
+		wp_register_script( 'flatpickr-range-plugin', ABRS_ASSET_URL . 'js/utils/rangePlugin.js', [], '4.4.4', true );
+		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [ 'flatpickr-range-plugin' ], '4.4.4', true );
 
 		wp_register_style( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy.css', [], '2.4.1' );
 		wp_register_script( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy' . $min . '.js', [], '2.4.1', true );
@@ -48,7 +48,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin' . $min . '.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
 		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar' . $min . '.css', [ 'awebooking-admin' ], $version );
 
-		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'wp-util', 'flatpickr', 'flatpickr-range-plugin', 'tippy', 'selectize', 'sweetalert2', 'jquery-effects-highlight' ], $version, true );
+		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'wp-util', 'flatpickr', 'tippy', 'selectize', 'sweetalert2', 'jquery-effects-highlight' ], $version, true );
 		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar' . $min . '.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
 
 		wp_register_script( 'awebooking-settings', ABRS_ASSET_URL . 'js/admin/settings' . $min . '.js', [ 'awebooking-admin', 'sortable' ], $version, true );

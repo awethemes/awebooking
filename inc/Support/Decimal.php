@@ -45,7 +45,7 @@ class Decimal {
 	 */
 	protected function __construct( $amount, $scale ) {
 		if ( false === filter_var( $amount, FILTER_VALIDATE_INT ) ) {
-			trigger_error( 'The amount should be an integer value' );
+			trigger_error( 'The amount should be an integer value', E_USER_WARNING ); // @codingStandardsIgnoreLine
 		}
 
 		$this->amount = (int) $amount;
@@ -187,7 +187,7 @@ class Decimal {
 			// e.g. 123.45 at scale 4 -> 123 (integer) . 4500 (zero padded decimal part) => 1234500.
 			if ( strlen( $captures[3] ) <= $scale ) {
 				$fractional_part = str_pad( $captures[3], $scale, '0', STR_PAD_RIGHT );
-				$result = (int) ( $captures[1] . $captures[2] . $fractional_part );
+				$result          = (int) ( $captures[1] . $captures[2] . $fractional_part );
 			}
 		}
 
@@ -314,12 +314,12 @@ class Decimal {
 			$amount = $string;
 		} elseif ( strlen( $string ) <= $this->scale ) {
 			$fractional_part = str_pad( $string, $this->scale, '0', STR_PAD_LEFT );
-			$amount = '0.' . $fractional_part;
+			$amount          = '0.' . $fractional_part;
 		} else {
 			$fractional_offset = strlen( $string ) - $this->scale;
 			$integer_part      = substr( $string, 0, $fractional_offset );
 			$fractional_part   = substr( $string, $fractional_offset );
-			$amount = $integer_part . '.' . $fractional_part;
+			$amount            = $integer_part . '.' . $fractional_part;
 		}
 
 		if ( null !== $digits ) {
@@ -388,6 +388,7 @@ class Decimal {
 	 * Checks if value is equal to other value.
 	 *
 	 * @param  Decimal $other Other Decimal value.
+	 * @return bool
 	 */
 	public function equals( Decimal $other ) {
 		return $other->scale === $this->scale && $other->amount === $this->amount;
@@ -397,6 +398,7 @@ class Decimal {
 	 * Checks if value is not equal to other value.
 	 *
 	 * @param  Decimal $other Other Decimal value.
+	 * @return bool
 	 */
 	public function not_equals( Decimal $other ) {
 		return ! $this->equals( $other );

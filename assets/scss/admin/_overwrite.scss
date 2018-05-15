@@ -1,6 +1,12 @@
 /* Datepicker */
 .flatpickr-calendar {
   margin-top: 9px;
+  box-shadow: 0 3px 13px rgba(0,0,0,.08);
+
+  &.open {
+    // will-change: left;
+    // transition: left 0.2s ease;
+  }
 
   &:after {
     margin: 0 -9px;
@@ -12,13 +18,8 @@
     margin: 0 -10px;
   }
 
-  &.arrowTop:after {
-    border-bottom-color: $datepicker-main-background;
-  }
-
-  &.arrowBottom:after {
-    border-top-color: #fff;
-  }
+  &.arrowTop:after { border-bottom-color: $datepicker-main-background; }
+  &.arrowBottom:after { border-top-color: #fff; }
 }
 
 /* Tippy */

@@ -345,7 +345,7 @@ function abrs_get_rate_operations() {
  * @param  Timespan     $timespan    The timespan.
  * @param  Guest_Counts $guests      The guest counts.
  * @param  array        $constraints Array of constraints.
- * @return \AweBooking\Calendar\Resource\Resources
+ * @return \AweBooking\Calendar\Finder\Response
  */
 function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $constraints = [] ) {
 	$resources = abrs_collect( $rates )
@@ -652,7 +652,7 @@ function abrs_create_res_request( $args ) {
 		'strict'     => is_admin() ? false : true,
 		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
 		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
-		'adults'     => 0,
+		'adults'     => 1,
 		'children'   => 0,
 		'infants'    => 0,
 		'options'    => [],

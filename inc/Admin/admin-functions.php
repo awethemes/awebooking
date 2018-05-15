@@ -16,6 +16,7 @@ function abrs_admin_screens() {
 		'hotel_location',
 		'edit-room_type',
 		'edit-awebooking',
+		'edit-hotel_extra_service',
 	]);
 }
 
@@ -75,10 +76,10 @@ function abrs_admin_template( $template = null, array $vars = [] ) {
  *
  * @param  string $template The template relative path.
  * @param  array  $vars     The data inject to template.
- * @return \AweBooking\Admin\Admin_Template|string
+ * @return void
  */
 function abrs_admin_template_part( $template = null, array $vars = [] ) {
-	return abrs_admin_template()->partial( $template, $vars );
+	abrs_admin_template()->partial( $template, $vars );
 }
 
 /**

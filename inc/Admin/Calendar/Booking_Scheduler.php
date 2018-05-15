@@ -184,7 +184,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * Display content in event columns.
 	 *
 	 * @param  \AweBooking\Calendar\Period\Day $day       The current day.
-	 * @param  \AweBooking\Calendar\Caelendar  $calendar  The current loop calendar.
+	 * @param  \AweBooking\Calendar\Calendar   $calendar  The current loop calendar.
 	 * @param  \AweBooking\Calendar\Scheduler  $scheduler The current loop scheduler.
 	 * @return void
 	 */
