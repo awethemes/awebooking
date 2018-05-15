@@ -13,6 +13,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	public function register() {
 		foreach ([ // @codingStandardsIgnoreLine
 			'metabox.room_type'        => \AweBooking\Admin\Metaboxes\Room_Type_Metabox::class,
+			'metabox.room_type_hotel'  => \AweBooking\Admin\Metaboxes\Room_Type_Hotel_Metabox::class,
 			'metabox.booking_main'     => \AweBooking\Admin\Metaboxes\Booking_Main_Metabox::class,
 			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
 			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
@@ -79,6 +80,8 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->metaboxcb( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
 
 		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->metaboxcb( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
+
+		add_meta_box( 'awebooking-room-type-hotel', esc_html__( 'Hotel location', 'awebooking' ), $this->metaboxcb( 'metabox.room_type_hotel' ), Constants::ROOM_TYPE, 'side' );
 
 		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->metaboxcb( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
 	}
