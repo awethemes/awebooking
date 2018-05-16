@@ -4,6 +4,7 @@ use AweBooking\Support\WP_Data;
 
 $hotels = abrs_list_hotels();
 ?>
+
 <ul class="abrs-sortable" id="js-sorting-hotels">
 	<?php foreach ( $hotels as $hotel ) : ?>
 		<li class="abrs-sortable__item">

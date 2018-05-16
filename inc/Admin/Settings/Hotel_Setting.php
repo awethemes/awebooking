@@ -79,7 +79,11 @@ class Hotel_Setting extends Abstract_Setting {
 		parent::save( $request );
 
 		foreach ( (array) $request->get( 'list_hotels_order', [] ) as $order => $id ) {
-			$saved = ( new Hotel( $id ) )->fill( compact( 'order' ) )->save();
+			$hotel = ( new Hotel( $id ) );
+
+			if ( $hotel->exists() ) {
+				$saved = $hotel->fill( compact( 'order' ) )->save();
+			}
 		}
 	}
 }
