@@ -14,7 +14,7 @@ class Hotel extends Model {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $object_type
+	 * @param string $object The object ID.
 	 */
 	public function __construct( $object = null ) {
 		if ( 'default' === $object ) {

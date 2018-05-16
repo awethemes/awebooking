@@ -95,7 +95,7 @@ class Room extends Model {
 
 		// We need a room-type attribute present.
 		if ( empty( $this->attributes['room_type'] ) ) {
-			return;
+			return 0;
 		}
 
 		$wpdb->insert( $wpdb->prefix . 'awebooking_rooms',

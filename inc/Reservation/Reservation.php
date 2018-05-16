@@ -4,7 +4,6 @@ namespace AweBooking\Reservation;
 
 use WP_Error;
 use AweBooking\Model\Pricing\Rate_Plan;
-use Awethemes\WP_Session\Session as WP_Session;
 use AweBooking\Reservation\Room_Stay\Room_Rate;
 use AweBooking\Support\Collection;
 
@@ -47,17 +46,16 @@ class Reservation {
 	/**
 	 * The session instance.
 	 *
-	 * @var \Awethemes\WP_Session\WP_Session
+	 * @var \AweBooking\Reservation\Session
 	 */
 	protected $session;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \Awethemes\WP_Session\Session $session  The Session class instance.
-	 * @param integer                       $lifetime The session lifetime in minutes.
+	 * @param \AweBooking\Reservation\Session $session The Session instance.
 	 */
-	public function __construct( WP_Session $session ) {
+	public function __construct( Session $session ) {
 		$this->session    = $session;
 		$this->source     = 'website';
 		$this->currency   = abrs_current_currency();
@@ -71,7 +69,7 @@ class Reservation {
 	 * @return void
 	 */
 	public function init() {
-		( new Session( $this->session ) )->init();
+		$this->session->init();
 	}
 
 	/**
@@ -152,11 +150,22 @@ class Reservation {
 
 		$room_rate = $this->validate_room_stay( $request, $request['room_type'], $request['room_type'] );
 
+		if ( is_wp_error( $room_rate ) ) {
+			return $room_rate;
+		}
+
 		$assign_room = $room_rate->get_assigned_room();
 
-		$this->room_stays->put( $assign_room->get_id(), apply_filters( 'awebooking/reservation/add_room_stay', [
+		$room_stay = apply_filters( 'awebooking/reservation/add_room_stay', [
+			'request'   => $request,
 			'room_rate' => $room_rate,
-		]));
+		]);
+
+		$this->room_stays->put( $assign_room->get_id(), $room_stay );
+
+		$this->calculate_totals();
+
+		do_action( 'awebooking/reservation/added_room_stay', $room_stay, $this );
 
 		return true;
 	}
@@ -204,5 +213,9 @@ class Reservation {
 	 */
 	public function flush() {
 		$this->room_stays = null;
+	}
+
+	public function calculate_totals() {
+
 	}
 }

@@ -57,14 +57,23 @@ class Session {
 	 */
 	public function init() {
 		add_action( 'wp_loaded', [ $this, 'get_room_stays' ] );
+		add_action( 'awebooking/reservation/added_room_stay', [ $this, 'store' ] );
+	}
+
+	/**
+	 * Will set cart cookies if needed and when possible.
+	 *
+	 * @since 3.2.0
+	 */
+	public function set_cart_cookies() {
+		if ( ! headers_sent() && did_action( 'wp_loaded' ) ) {
+			// ...
+		}
 	}
 
 	public function get_room_stays() {
 		$room_stay = $this->wp_session->get( 'room_stays' );
-
-//		dump( $room_stay );
 	}
-
 
 	/**
 	 * Resolve the reservation from session.
@@ -118,14 +127,12 @@ class Session {
 	/**
 	 * Store the reservation into the session.
 	 *
-	 * @param  \AweBooking\Reservation\Reservation $reservation The reservation instance.
 	 * @return void
 	 */
-	public function store( Reservation $reservation ) {
+	public function store() {
 		$this->wp_session->put( $this->session_name, [
-			'data'       => $reservation,
-			'timeout'    => time() + ( $this->lifetime * MINUTE_IN_SECONDS ),
-			'session_id' => $this->generate_session_id( $reservation ),
+			'data'       => $data,
+			'timeout'    => current_time( 'timestamp' ) + ( $this->lifetime * MINUTE_IN_SECONDS ),
 		]);
 	}
 

@@ -164,6 +164,8 @@
   height: 28px;
   padding: 10px;
   z-index: 3;
+  color: #fff;
+  fill: #fff;
 }
 .flatpickr-months .flatpickr-prev-month.disabled,
 .flatpickr-months .flatpickr-next-month.disabled {
@@ -674,7 +676,6 @@ span.flatpickr-weekday {
   padding: 0;
   height: inherit;
   line-height: inherit;
-  cursor: pointer;
   color: #484848;
   font-size: 14px;
   position: relative;

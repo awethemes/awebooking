@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "debounce": "^1.1.0",
-    "flatpickr": "^4.4.6",
+    "flatpickr": "^4.4.7",
     "js-cookie": "^2.2.0",
     "lodash.defaults": "^4.2.0",
     "lodash.map": "^4.6.0",
@@ -47,7 +47,7 @@
     "query-string": "^6.1.0",
     "selectize": "^0.12.4",
     "sortablejs": "^1.7.0",
-    "sweetalert2": "^7.20.1",
+    "sweetalert2": "^7.20.4",
     "tippy.js": "^2.5.2",
     "waypoints": "^4.0.1"
   },
@@ -65,7 +65,7 @@
     "gulp-if": "^2.0.2",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-rename": "^1.2.2",
+    "gulp-rename": "^1.2.3",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",

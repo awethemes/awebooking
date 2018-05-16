@@ -326,7 +326,7 @@ function abrs_sanitize_decimal( $number ) {
  */
 function abrs_sanitize_days_of_week( $days ) {
 	if ( ! is_array( $days ) ) {
-		return;
+		return null;
 	}
 
 	$days = array_unique( $days );
@@ -406,6 +406,12 @@ function abrs_sanitize_ids( $list ) {
 	return implode( ', ', wp_parse_id_list( $list ) );
 }
 
+/**
+ * Sanitize image size.
+ *
+ * @param  array $size The image size to sanitize.
+ * @return array
+ */
 function abrs_sanitize_image_size( $size ) {
 	$atts = shortcode_atts([
 		'width'  => 150,

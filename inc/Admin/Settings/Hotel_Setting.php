@@ -62,7 +62,6 @@ class Hotel_Setting extends Abstract_Setting {
 				'id'       => '__hotel_listing',
 				'type'     => 'title',
 				'name'     => esc_html__( 'Hotel Listing', 'awebooking' ),
-				'desc'     => esc_html__( 'Hotel listing.', 'awebooking' ),
 			]);
 
 

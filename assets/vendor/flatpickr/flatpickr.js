@@ -1,4 +1,4 @@
-/* flatpickr v4.4.6, @license MIT */
+/* flatpickr v4.4.7, @license MIT */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -294,7 +294,7 @@
           }
         }
 
-        if (!(parsedDate instanceof Date)) {
+        if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
           config.errorHandler(new Error("Invalid date provided: " + date_orig));
           return undefined;
         }
@@ -451,20 +451,6 @@
       };
     }
 
-    if (typeof window.requestAnimationFrame !== "function") {
-      var vendors = ["ms", "moz", "webkit", "o"];
-
-      for (var x = 0, length = vendors.length; x < length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x] + "RequestAnimationFrame"];
-      }
-
-      if (typeof window.requestAnimationFrame !== "function") {
-        window.requestAnimationFrame = function (cb) {
-          return setTimeout(cb, 16);
-        };
-      }
-    }
-
     var DEBOUNCED_CHANGE_MS = 300;
 
     function FlatpickrInstance(element, instanceConfig) {
@@ -479,6 +465,7 @@
       self._handlers = [];
       self._bind = bind;
       self._setHoursFromDate = setHoursFromDate;
+      self._positionCalendar = positionCalendar;
       self.changeMonth = changeMonth;
       self.changeYear = changeYear;
       self.clear = clear;
@@ -621,6 +608,30 @@
       function setHoursFromDate(dateObj) {
         var date = dateObj || self.latestSelectedDateObj;
         if (date) setHours(date.getHours(), date.getMinutes(), date.getSeconds());
+      }
+
+      function setDefaultHours() {
+        var hours = self.config.defaultHour;
+        var minutes = self.config.defaultMinute;
+        var seconds = self.config.defaultSeconds;
+
+        if (self.config.minDate !== undefined) {
+          var min_hr = self.config.minDate.getHours();
+          var min_minutes = self.config.minDate.getMinutes();
+          hours = Math.max(hours, min_hr);
+          if (hours === min_hr) minutes = Math.max(min_minutes, minutes);
+          if (hours === min_hr && minutes === min_minutes) seconds = self.config.minDate.getSeconds();
+        }
+
+        if (self.config.maxDate !== undefined) {
+          var max_hr = self.config.maxDate.getHours();
+          var max_minutes = self.config.maxDate.getMinutes();
+          hours = Math.min(hours, max_hr);
+          if (hours === max_hr) minutes = Math.min(max_minutes, minutes);
+          if (hours === max_hr && minutes === max_minutes) seconds = self.config.maxDate.getSeconds();
+        }
+
+        setHours(hours, minutes, seconds);
       }
 
       function setHours(hours, minutes, seconds) {
@@ -1159,7 +1170,7 @@
         self.showTimeInput = false;
 
         if (self.config.enableTime === true) {
-          if (self.config.minDate !== undefined) setHoursFromDate(self.config.minDate);else setHours(self.config.defaultHour, self.config.defaultMinute, self.config.defaultSeconds);
+          setDefaultHours();
         }
 
         self.redraw();
@@ -1490,8 +1501,8 @@
 
         if (self.config.enableTime === true && self.config.noCalendar === true) {
           if (self.selectedDates.length === 0) {
-            self.setDate(self.config.minDate !== undefined ? new Date(self.config.minDate.getTime()) : new Date().setHours(self.config.defaultHour, self.config.defaultMinute, self.config.defaultSeconds, 0), false);
-            setHoursFromInputs();
+            self.setDate(self.config.minDate !== undefined ? new Date(self.config.minDate.getTime()) : new Date(), false);
+            setDefaultHours();
             updateValue();
           }
 
@@ -1718,7 +1729,7 @@
 
         updateNavigationCurrentMonth();
         buildDays();
-        if (self.config.minDate && self.minDateHasTime && self.config.enableTime && compareDates(selectedDate, self.config.minDate) === 0) setHoursFromDate(self.config.minDate);
+        setDefaultHours();
         updateValue();
         if (self.config.enableTime) setTimeout(function () {
           return self.showTimeInput = true;
@@ -1836,7 +1847,7 @@
       function setupDates() {
         self.selectedDates = [];
         self.now = self.parseDate(self.config.now) || new Date();
-        var preloadedDate = self.config.defaultDate || self.input.value;
+        var preloadedDate = self.config.defaultDate || (self.input.placeholder.length > 0 && self.input.value === self.input.placeholder ? null : self.input.value);
         if (preloadedDate) setSelectedDate(preloadedDate, self.config.dateFormat);
         var initialDate = self.selectedDates.length > 0 ? self.selectedDates[0] : self.config.minDate && self.config.minDate.getTime() > self.now.getTime() ? self.config.minDate : self.config.maxDate && self.config.maxDate.getTime() < self.now.getTime() ? self.config.maxDate : self.now;
         self.currentYear = initialDate.getFullYear();
@@ -1879,7 +1890,7 @@
           self.altInput.required = self.input.required;
           self.altInput.tabIndex = self.input.tabIndex;
           self.altInput.type = "text";
-          self.input.type = "hidden";
+          self.input.setAttribute("type", "hidden");
           if (!self.config.static && self.input.parentNode) self.input.parentNode.insertBefore(self.altInput, self.input.nextSibling);
         }
 

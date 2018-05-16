@@ -1,4 +1,4 @@
-/* flatpickr v4.4.6, @license MIT */
+/* flatpickr v4.4.7, @license MIT */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -41,7 +41,14 @@
               fp.jumpToDate(fp.selectedDates[1]);
             }
             _secondInputFocused = true;
+            fp.isOpen = false;
             fp.open(undefined, secondInput);
+          });
+
+          fp._bind(fp._input, ["focus", "click"], function (e) {
+            e.preventDefault();
+            fp.isOpen = false;
+            fp.open();
           });
 
           if (fp.config.allowInput) fp._bind(secondInput, "keydown", function (e) {
@@ -62,9 +69,13 @@
             createSecondInput();
             fp.config.ignoredFocusElements.push(secondInput);
 
-            fp._input.removeAttribute("readonly");
+            if (fp.config.allowInput) {
+              fp._input.removeAttribute("readonly");
 
-            secondInput.removeAttribute("readonly");
+              secondInput.removeAttribute("readonly");
+            } else {
+              secondInput.setAttribute("readonly", "readonly");
+            }
 
             fp._bind(fp._input, "focus", function () {
               fp.latestSelectedDateObj = fp.selectedDates[0];

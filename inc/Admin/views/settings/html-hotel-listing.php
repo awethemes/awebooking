@@ -7,14 +7,14 @@ $hotels = abrs_list_hotels();
 <ul class="abrs-sortable" id="js-sorting-hotels">
 	<?php foreach ( $hotels as $hotel ) : ?>
 		<li class="abrs-sortable__item">
-			<input type="hidden" name="list_hotels_order[]" value="<?php echo esc_attr( $hotel->ID ); ?>">
+			<input type="hidden" name="list_hotels_order[]" value="<?php echo esc_attr( $hotel->get_id() ); ?>">
 
 			<div class="abrs-sortable__head">
 				<span class="abrs-sortable__handle"></span>
 			</div>
 
 			<div class="abrs-sortable__body">
-				<span><?php echo esc_html( $hotel->post_title ); ?></span>
+				<span><?php echo esc_html( $hotel->get_name() ); ?></span>
 			</div>
 
 			<div class="abrs-sortable__actions">

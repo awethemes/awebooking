@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
+use AweBooking\Reservation\Session;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Frontend\Checkout\Checkout;
 use AweBooking\Support\Service_Provider;
@@ -13,7 +14,7 @@ class Reservation_Service_Provider extends Service_Provider {
 	 */
 	public function register() {
 		$this->plugin->singleton( 'reservation', function() {
-			return new Reservation( $this->plugin['session.store'] );
+			return new Reservation( new Session( $this->plugin['session.store'] ) );
 		});
 
 		$this->plugin->singleton( 'checkout', function() {
@@ -30,7 +31,10 @@ class Reservation_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
+		// Init the reservation hooks.
 		$this->plugin['reservation']->init();
+
+		// Setup the reservation request.
 		add_action( 'template_redirect', [ $this, 'setup_res_request' ] );
 	}
 

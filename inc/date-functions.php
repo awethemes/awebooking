@@ -206,7 +206,7 @@ function abrs_days_of_week( $day_label = 'full' ) {
 }
 
 /**
- * Get classess for a date.
+ * Get classes for a date.
  *
  * @param  mixed $date The date.
  * @return array

@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v7.20.1
+* sweetalert2 v7.20.4
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -258,7 +258,7 @@ var DismissReason = Object.freeze({
   timer: 'timer'
 });
 
-var version = "7.20.1";
+var version = "7.20.4";
 
 var argsToParams = function argsToParams(args) {
   var params = {};
@@ -317,7 +317,6 @@ var iconTypes = prefix(['success', 'warning', 'info', 'question', 'error']);
 
 // Remember state in cases where opening and handling a modal will fiddle with it.
 var states = {
-  previousActiveElement: null,
   previousBodyPadding: null
 };
 
@@ -400,22 +399,6 @@ var removeStyleProperty = function removeStyleProperty(elem, property) {
     elem.style.removeProperty(property);
   } else {
     elem.style.removeAttribute(property);
-  }
-};
-
-// Reset previous window keydown handler and focued element
-var resetPrevState = function resetPrevState() {
-  if (states.previousActiveElement && states.previousActiveElement.focus) {
-    var x = window.scrollX;
-    var y = window.scrollY;
-    setTimeout(function () {
-      // issues/900
-      states.previousActiveElement.focus && states.previousActiveElement.focus();
-    }, 100);
-    if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-      // IE doesn't have scrollX/scrollY support
-      window.scrollTo(x, y);
-    }
   }
 };
 
@@ -683,6 +666,23 @@ var undoIOSfix = function undoIOSfix() {
 
 var globalState = {};
 
+// Restore previous active (focused) element
+var restoreActiveElement = function restoreActiveElement() {
+  if (globalState.previousActiveElement && globalState.previousActiveElement.focus) {
+    var previousActiveElement = globalState.previousActiveElement;
+    globalState.previousActiveElement = null;
+    var x = window.scrollX;
+    var y = window.scrollY;
+    setTimeout(function () {
+      previousActiveElement.focus && previousActiveElement.focus();
+    }, 100); // issues/900
+    if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+      // IE doesn't have scrollX/scrollY support
+      window.scrollTo(x, y);
+    }
+  }
+};
+
 /*
  * Global function to close sweetAlert
  */
@@ -701,13 +701,13 @@ var close = function close(onClose, onAfterClose) {
   addClass(popup, swalClasses.hide);
   clearTimeout(popup.timeout);
 
-  if (!isToast()) {
-    resetPrevState();
-    window.onkeydown = globalState.previousWindowKeyDown;
-    globalState.windowOnkeydownOverridden = false;
-  }
-
   var removePopupAndResetState = function removePopupAndResetState() {
+    if (!isToast()) {
+      restoreActiveElement();
+      window.onkeydown = globalState.previousWindowKeyDown;
+      globalState.windowOnkeydownOverridden = false;
+    }
+
     if (container.parentNode) {
       container.parentNode.removeChild(container);
     }
@@ -1622,7 +1622,9 @@ var openPopup = function openPopup(animation, onBeforeOpen, onOpen) {
     fixScrollbar();
     iOSfix();
   }
-  states.previousActiveElement = document.activeElement;
+  if (!globalState.previousActiveElement) {
+    globalState.previousActiveElement = document.activeElement;
+  }
   if (onOpen !== null && typeof onOpen === 'function') {
     setTimeout(function () {
       onOpen(popup);
@@ -1905,6 +1907,8 @@ function _main(userParams) {
           return el.focus();
         }
       }
+      // no visible focusable elements, focus the popup
+      domCache.popup.focus();
     };
 
     var handleKeyDown = function handleKeyDown(event) {

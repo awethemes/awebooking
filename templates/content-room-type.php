@@ -72,4 +72,3 @@ if ( empty( $room_type ) ) {
 
 	</div>
 </div>
-

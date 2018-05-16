@@ -58,7 +58,7 @@ class Room_Type extends Model {
 				->prepend( $this->get_standard_plan() )
 				->filter( function ( $plan ) {
 					return $plan instanceof Rate_Plan;
-				})->sortBy( function( $plan ) {
+				})->sortBy( function( Rate_Plan $plan ) {
 					return $plan->get_priority();
 				})->values();
 		}
@@ -110,6 +110,7 @@ class Room_Type extends Model {
 		$this['short_description'] = $this->instance->post_excerpt;
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
+		$this['hotel_id']          = $this->instance->parent_id;
 
 		// Correct the gallery_ids.
 		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
@@ -130,11 +131,14 @@ class Room_Type extends Model {
 			'post_excerpt' => $this['short_description'],
 			'post_status'  => $this['status'] ? $this['status'] : 'publish',
 			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
+			'hotel_id'     => $this['hotel_id'] ? $this['hotel_id'] : 0,
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
 			return $insert_id;
 		}
+
+		return 0;
 	}
 
 	/**
@@ -148,6 +152,7 @@ class Room_Type extends Model {
 			'post_excerpt'  => $this['short_description'],
 			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
 			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
+			'hotel_id'      => $this['hotel_id'] ? absint( $this['hotel_id'] ) : 0,
 		]);
 
 		// Allow continue save meta-data if nothing to update post.
@@ -165,6 +170,7 @@ class Room_Type extends Model {
 			'status'            => '',
 			'date_created'      => null,
 			'date_modified'     => null,
+			'hotel_id'          => 0,
 			'description'       => '',
 			'short_description' => '',
 			'thumbnail_id'      => 0,
@@ -242,6 +248,7 @@ class Room_Type extends Model {
 			case 'number_infants':
 			case 'rate_min_los':
 			case 'rate_max_los':
+			case 'hotel_id':
 				$value = absint( $value );
 				break;
 		}

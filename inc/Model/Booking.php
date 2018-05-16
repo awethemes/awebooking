@@ -37,7 +37,7 @@ class Booking extends Model {
 	 * When a payment is complete this function is called.
 	 *
 	 * @param string $transaction_id Optional transaction id to store in post meta.
-	 * @return bool success
+	 * @return bool
 	 */
 	public function payment_complete( $transaction_id = '' ) {
 	}
@@ -117,7 +117,7 @@ class Booking extends Model {
 	/**
 	 * Get payments of this booking.
 	 *
-	 * @return array \AweBooking\Support\Collection
+	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_payments() {
 		return $this->get_items( 'payment_item' );

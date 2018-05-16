@@ -44,7 +44,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * Search the available rooms and rates.
 	 *
 	 * @param  array $constraints The search constraints.
-	 * @return \AweBooking\Reservation\Search\Results
+	 * @return \AweBooking\Reservation\Room_Stay\Search_Results
 	 */
 	public function search( $constraints = [] ) {
 		return ( new Room_Stay\Search( $this ) )->get( $constraints );
