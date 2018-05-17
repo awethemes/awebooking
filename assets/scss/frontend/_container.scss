@@ -1,13 +1,3 @@
-/* box-sizing set to border-box as default */
-.awebooking,
-.awebooking-widget {
-  *,
-  *:after,
-  *:before {
-    box-sizing: border-box;
-  }
-}
-
 /* Container */
 .awebooking-container {
   margin-left: auto;
@@ -17,15 +7,15 @@
   padding-right: ($awebooking-gutter-width / 2);
   @include clearfix;
 
-  @include media('>=sm') {
+  @include media-breakpoint-up('sm') {
     width: $awebooking-container-sm;
   }
 
-  @include media('>=md') {
+  @include media-breakpoint-up('md') {
     width: $awebooking-container-md;
   }
 
-  @include media('>=lg') {
+  @include media-breakpoint-up('lg') {
     width: $awebooking-container-lg;
   }
 }

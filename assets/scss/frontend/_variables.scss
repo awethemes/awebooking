@@ -47,3 +47,16 @@ $awebooking-input-border          : #eee !default;
 $awebooking-input-focus-bg        : #fff !default;
 $awebooking-input-focus-color     : #333 !default;
 $awebooking-input-focus-border:  $awebooking-background !default;
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;

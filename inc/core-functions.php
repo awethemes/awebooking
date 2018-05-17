@@ -603,65 +603,73 @@ function abrs_checkout_shorcode( $atts ) {
 	), $atts, 'awebooking_checkout_template' );
 	ob_start(); ?>
 
-	<table>
+	<table class="abrs-table abrs-table--responsive abrs-table--checkout-review-booking">
 		<thead>
 			<tr>
-				<th width="20%">Room rate</th>
-				<th width="10%">Nights</th>
-				<th width="15%">Arrival</th>
-				<th width="15%">Depature</th>
-				<th width="20%">Guest</th>
-				<th style="max-width: 100px;">Price</th>
+				<th class="room-rate"><?php esc_html_e( 'Room rate', 'awebooking' ); ?></th>
+				<th class="room-nights"><?php esc_html_e( 'Nights', 'awebooking' ); ?></th>
+				<th class="room-arrival"><?php esc_html_e( 'Arrival', 'awebooking' ); ?></th>
+				<th class="room-depature"><?php esc_html_e( 'Depature', 'awebooking' ); ?></th>
+				<th class="room-guest"><?php esc_html_e( 'Guest', 'awebooking' ); ?></th>
+				<th class="room-subtotal"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<tr>
-				<td><strong>Luxury Room</strong> </br> Brilliant Majestic Villa Hotel</td>
-				<td>3</td>
-				<td>15-05-2018</td>
-				<td>18-05-2018</td>
-				<td style="font-size: 12px;">2 adults, 2 children & 1 infant</td>
-				<td>480$</td>
+				<td class="room-rate" data-title="<?php esc_attr_e( 'Room rate', 'awebooking' ); ?>">
+					<strong>Luxury Room</strong> </br> Brilliant Majestic Villa Hotel
+				</td>
+				<td class="room-nights" data-title="<?php esc_attr_e( 'Nights', 'awebooking' ); ?>">3</td>
+				<td class="room-arrival" data-title="<?php esc_attr_e( 'Arrival', 'awebooking' ); ?>">15-05-2018</td>
+				<td class="room-depature" data-title="<?php esc_attr_e( 'Depature', 'awebooking' ); ?>">18-05-2018</td>
+				<td class="room-guest" data-title="<?php esc_attr_e( 'Guest', 'awebooking' ); ?>">2 adults, 2 children & 1 infant</td>
+				<td class="room-price" data-title="<?php esc_attr_e( 'Price', 'awebooking' ); ?>">480$</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td colspan="4">
-					<ul style="list-style: none; font-size: 12px;">
-						<li>
-							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
-							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
-							<p style="width: 10%; float: right; margin: 0;">60$</p>
+				<td class="empty-td"></td>
+				<td colspan="4" data-title="<?php esc_attr_e( 'Services', 'awebooking' ); ?>">
+					<ul class="room-services">
+						<li class="room-service">
+							<label class="room-service__name">Breakfast (salmon, champagne) </label>
+							<p class="room-service__price">60$</p>
 						</li>
 
-						<li>
-							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
-							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
-							<p style="width: 10%; float: right; margin: 0;">60$</p>
+						<li class="room-service">
+							<label class="room-service__name">Gym ticket </label>
+							<p class="room-service__price">60$</p>
 						</li>
 					</ul>
 				</td>
-				<td>120$</td>
+				<td class="services-price" data-title="<?php esc_attr_e( 'Services price', 'awebooking' ); ?>">120$</td>
 			</tr>
 
 		</tbody>
 	</table>
 
-	<div style="width: 40%; float: right;">
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<div style="float: right;">
-							<div>Tax: 60$ (10%)</div>
-							<div>Coupon: -60$</div>
-						</div>
-					</td>
-					<td style="max-width: 100px;"><strong>600$</strong></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	<table class="abrs-table abrs-table--checkout-total-cost">
+		<tbody>
+			<tr>
+				<td class="booking-price-name"><?php esc_html_e( 'Subtotal', 'awebooking' ); ?></td>
+				<td class="booking-price-value"><strong>600$</strong></td>
+			</tr>
+
+			<tr>
+				<td class="booking-price-name">Tax</td>
+				<td class="booking-price-value">+60$</td>
+			</tr>
+
+			<tr>
+				<td class="booking-price-name">Coupon</td>
+				<td class="booking-price-value">-60$</td>
+			</tr>
+
+			<tr>
+				<td class="booking-price-name"><strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong></td>
+				<td class="booking-price-value"><strong>600$</strong></td>
+			</tr>
+		</tbody>
+	</table>
 
 	<?php
 	return ob_get_clean();

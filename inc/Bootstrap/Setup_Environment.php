@@ -39,9 +39,9 @@ class Setup_Environment {
 	 * Add Awebooking Image sizes to WP.
 	 */
 	public function add_image_sizes() {
-		$thumbnail = abrs_get_image_size( 'awebooking_thumbnail' );
-		$archive   = abrs_get_image_size( 'awebooking_archive' );
-		$single    = abrs_get_image_size( 'awebooking_single' );
+		$thumbnail = abrs_get_image_size( 'thumbnail' );
+		$archive   = abrs_get_image_size( 'archive' );
+		$single    = abrs_get_image_size( 'single' );
 
 		add_image_size( 'awebooking_thumbnail', $thumbnail['width'], $thumbnail['height'], $thumbnail['crop'] );
 		add_image_size( 'awebooking_archive', $archive['width'], $archive['height'], $archive['crop'] );

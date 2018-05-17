@@ -1,20 +1,5 @@
 @import "utils/mixins";
 
-@import "frontend/base/base";
-// Layouts
-@import "frontend/layouts/container";
-@import "frontend/layouts/layouts";
-
-@import "frontend/layouts/bootstrap";
-@import "frontend/layouts/loop";
-@import "frontend/layouts/single-room-type";
-@import "frontend/layouts/booking-room";
-@import "frontend/layouts/awebooking-pagination";
-
-
-// Compoments
-@import "frontend/layouts/loading";
-
 .clearfix {
   @include clearfix;
 }
