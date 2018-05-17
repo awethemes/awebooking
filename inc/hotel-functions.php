@@ -123,9 +123,7 @@ function abrs_list_hotels( $args = [], $with_default = false ) {
 		->map_into( Hotel::class );
 
 	if ( $with_default ) {
-		$hotels = abrs_collect( $wp_query->posts )
-		->map_into( Hotel::class )
-		->prepend( abrs_get_default_hotel() );
+		$hotels = $hotels->prepend( abrs_get_default_hotel() );
 	}
 
 	return $hotels;

@@ -19,7 +19,7 @@ $hotels = abrs_list_hotels();
 			</div>
 
 			<div class="abrs-sortable__actions">
-
+				<a href="<?php echo esc_url( get_edit_post_link( $hotel->get_id() ) ); ?>" title="<?php echo esc_html( $hotel->get_name() ); ?>"><span class="dashicons dashicons-edit"></span></a>
 			</div>
 		</li>
 

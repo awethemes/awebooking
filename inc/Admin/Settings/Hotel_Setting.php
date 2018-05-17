@@ -64,7 +64,6 @@ class Hotel_Setting extends Abstract_Setting {
 				'name'     => esc_html__( 'Hotel Listing', 'awebooking' ),
 			]);
 
-
 			$this->add_field([
 				'id'              => 'list_hotels_order',
 				'type'            => 'include',
