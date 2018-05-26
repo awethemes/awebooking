@@ -11,17 +11,17 @@
  * @return void
  */
 function abrs_print_notices() {
-	dump( abrs_flash()->all() );
+	abrs_get_template( 'global/notices.php', [ 'messages' => abrs_flash()->all() ] );
 }
 
-/* Search functions templates */
+/* Query functions templates */
 
 /**
  * Display search result item.
  *
- * @param  \AweBooking\Reservation\Request             $res_request    The current reservation request.
+ * @param  \AweBooking\Availability\Request             $res_request    The current reservation request.
  * @param  \AweBooking\Model\Room_Type                 $room_type      The room type instance.
- * @param  \AweBooking\Reservation\Room_Stay\Room_Rate $room_rate      The room rate instance.
+ * @param  \AweBooking\Availability\Room_Rate $room_rate      The room rate instance.
  * @param  array                                       $availabilities An array of availabilities.
  * @return void
  *
@@ -104,17 +104,6 @@ if ( ! function_exists( 'awebooking_output_content_wrapper' ) ) {
 	 */
 	function awebooking_output_content_wrapper() {
 		abrs_get_template( 'global/wrapper-start.php' );
-	}
-}
-
-if ( ! function_exists( 'awebooking_template_notices' ) ) {
-	/**
-	 * AweBooking notices template.
-	 *
-	 * @return void
-	 */
-	function awebooking_template_notices() {
-		abrs_get_template( 'global/notices.php' );
 	}
 }
 

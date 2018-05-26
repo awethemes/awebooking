@@ -2,11 +2,9 @@
 namespace AweBooking\Model\Booking;
 
 use WP_Error;
-use AweBooking\Constants;
-use AweBooking\Calendar\Event\Event;
+use AweBooking\Support\Period;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
-use AweBooking\Support\Period;
 
 class Room_Item extends Item {
 	/**

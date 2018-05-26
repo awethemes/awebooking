@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Model\Common;
 
-class Guest_Counts {
+class Guest_Counts implements \ArrayAccess, \JsonSerializable {
 	/**
-	 * The listed guest count.
+	 * The listed guests.
 	 *
 	 * @var array
 	 */
@@ -29,9 +29,19 @@ class Guest_Counts {
 	}
 
 	/**
+	 * Determines whether the given age_code exists.
+	 *
+	 * @param  string $age_code The age code name.
+	 * @return bool
+	 */
+	public function has( $age_code ) {
+		return array_key_exists( $age_code, $this->guest_counts );
+	}
+
+	/**
 	 * Get the Guest_Count instance by given a age code.
 	 *
-	 * @param  string $age_code The age code.
+	 * @param  string $age_code The age code name.
 	 * @return \AweBooking\Model\Common\Guest_Count|null
 	 */
 	public function get( $age_code ) {
@@ -43,10 +53,15 @@ class Guest_Counts {
 	/**
 	 * Add a guest count.
 	 *
-	 * @param  \AweBooking\Model\Common\Guest_Count $guest_count The guest count to add.
+	 * @param  \AweBooking\Model\Common\Guest_Count|string $guest_count The guest to add.
+	 * @param  int                                         $count       Optional, the count.
 	 * @return $this
 	 */
-	public function add( Guest_Count $guest_count ) {
+	public function add( $guest_count, $count = 0 ) {
+		if ( ! $guest_count instanceof Guest_Count ) {
+			$guest_count = new Guest_Count( $guest_count, $count );
+		}
+
 		$this->guest_counts[ $guest_count->get_age_code() ] = $guest_count;
 
 		return $this;
@@ -58,7 +73,7 @@ class Guest_Counts {
 	 * @return int
 	 */
 	public function get_totals() {
-		return array_reduce( $this->guest_counts, function( $total, $guest_count ) {
+		return array_reduce( $this->guest_counts, function( $total, Guest_Count $guest_count ) {
 			return $total + $guest_count->get_count();
 		}, 0 );
 	}
@@ -79,13 +94,7 @@ class Guest_Counts {
 	 * @return $this
 	 */
 	public function set_adults( $count ) {
-		$count = max( 1, (int) $count );
-
-		if ( isset( $this->guest_counts['adults'] ) ) {
-			$this->get( 'adults' )->set_count( $count );
-		} else {
-			$this->add( new Guest_Count( 'adults', $count ) );
-		}
+		$this->offsetSet( 'adults', max( 1, (int) $count ) );
 
 		return $this;
 	}
@@ -93,7 +102,7 @@ class Guest_Counts {
 	/**
 	 * Get the children count.
 	 *
-	 * @return \AweBooking\Model\Common\Guest_Count
+	 * @return \AweBooking\Model\Common\Guest_Count|null
 	 */
 	public function get_children() {
 		return $this->get( 'children' );
@@ -106,13 +115,7 @@ class Guest_Counts {
 	 * @return $this
 	 */
 	public function set_children( $count ) {
-		$count = absint( $count );
-
-		if ( isset( $this->guest_counts['children'] ) ) {
-			$this->get( 'children' )->set_count( $count );
-		} else {
-			$this->add( new Guest_Count( 'children', $count ) );
-		}
+		$this->offsetSet( 'children', absint( $count ) );
 
 		return $this;
 	}
@@ -120,7 +123,7 @@ class Guest_Counts {
 	/**
 	 * Get the infants count.
 	 *
-	 * @return \AweBooking\Model\Common\Guest_Count
+	 * @return \AweBooking\Model\Common\Guest_Count|null
 	 */
 	public function get_infants() {
 		return $this->get( 'infants' );
@@ -133,15 +136,72 @@ class Guest_Counts {
 	 * @return $this
 	 */
 	public function set_infants( $count ) {
-		$count = absint( $count );
-
-		if ( isset( $this->guest_counts['infants'] ) ) {
-			$this->get( 'infants' )->set_count( $count );
-		} else {
-			$this->add( new Guest_Count( 'infants', $count ) );
-		}
+		$this->offsetSet( 'infants', absint( $count ) );
 
 		return $this;
+	}
+
+	/**
+	 * Convert the guests to an array.
+	 *
+	 * @return array
+	 */
+	public function to_array() {
+		return [ /* TODO */ ];
+	}
+
+	/**
+	 * Convert the object into something JSON serializable.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return $this->to_array();
+	}
+
+	/**
+	 * Whether the given offset exists.
+	 *
+	 * @param  string $offset The offset name.
+	 * @return bool
+	 */
+	public function offsetExists( $offset ) {
+		return $this->has( $offset );
+	}
+
+	/**
+	 * Fetch the offset.
+	 *
+	 * @param  string $offset The offset name.
+	 * @return \AweBooking\Model\Common\Guest_Count|null
+	 */
+	public function offsetGet( $offset ) {
+		return $this->get( $offset );
+	}
+
+	/**
+	 * Assign the offset.
+	 *
+	 * @param  string $offset The offset name.
+	 * @param  mixed  $value  The offset value.
+	 * @return void
+	 */
+	public function offsetSet( $offset, $value ) {
+		if ( array_key_exists( $offset, $this->guest_counts ) ) {
+			$this->get( $offset )->set_count( $value );
+		} else {
+			$this->add( $offset, $value );
+		}
+	}
+
+	/**
+	 * Unset the offset.
+	 *
+	 * @param  mixed $offset The offset name.
+	 * @return void
+	 */
+	public function offsetUnset( $offset ) {
+		// ...
 	}
 
 	/**

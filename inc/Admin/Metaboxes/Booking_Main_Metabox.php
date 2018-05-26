@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use Awethemes\Http\Request;
-use AweBooking\Model\Booking;
 use AweBooking\Frontend\Checkout\Form_Controls;
 
 class Booking_Main_Metabox {

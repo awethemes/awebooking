@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Admin\Controllers;
 
-use WP_Error;
 use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Admin\Calendar\Pricing_Scheduler;

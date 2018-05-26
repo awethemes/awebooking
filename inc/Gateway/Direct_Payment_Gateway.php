@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Gateway;
 
-use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
 class Direct_Payment_Gateway extends Gateway {
@@ -79,7 +78,7 @@ class Direct_Payment_Gateway extends Gateway {
 		$booking->update_status( 'on-hold' );
 
 		// Flush the reservation data.
-		abrs_reservation()->flush();
+		// abrs_reservation()->flush();
 
 		return new Response( 'success', $this->get_return_url( $booking ) );
 	}

@@ -1,7 +1,8 @@
 <?php
-namespace AweBooking\Reservation\Room_Stay;
+namespace AweBooking\Availability;
 
 use AweBooking\Calendar\Finder\Response;
+use AweBooking\Availability\Constraints\Reason;
 
 class Availability {
 	/**

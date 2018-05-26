@@ -22,12 +22,13 @@ class Query_Service_Provider extends Service_Provider {
 	 * query only in room-type post type. Please do not touch if
 	 * you don't understand the awebooking system.
 	 *
-	 * @param  string   $pieces   The pieces clause of the query.
-	 * @param  WP_Query $wp_query The WP_Query instance.
+	 * @param  array     $pieces   The pieces clause of the query.
+	 * @param  \WP_Query $wp_query The WP_Query instance.
 	 * @return array
 	 */
 	public function apply_query_clauses( $pieces, $wp_query ) {
 		global $wpdb;
+
 		$qv = $wp_query->query_vars;
 
 		// Working only in room-type.

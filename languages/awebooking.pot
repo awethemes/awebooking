@@ -219,7 +219,7 @@ msgid "Infants"
 msgstr ""
 
 #: templates/search-form.php:76, inc/Admin/views/booking/add-room.php:32
-msgid "Search"
+msgid "Query"
 msgstr ""
 
 #: deprecated/Support/Addon.php:225
@@ -246,7 +246,7 @@ msgid "Amenities"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:98
-msgid "Search amenities"
+msgid "Query amenities"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:99
@@ -301,7 +301,7 @@ msgid "Services"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:127
-msgid "Search services"
+msgid "Query services"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:128
@@ -388,7 +388,7 @@ msgid "View room types"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:188
-msgid "Search room types"
+msgid "Query room types"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:189
@@ -479,7 +479,7 @@ msgid "View booking"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:235
-msgid "Search bookings"
+msgid "Query bookings"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:236
@@ -546,7 +546,7 @@ msgid "View hotel"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:272
-msgid "Search hotel"
+msgid "Query hotel"
 msgstr ""
 
 #: inc/Bootstrap/Setup_Environment.php:273
@@ -1043,7 +1043,7 @@ msgstr ""
 
 #: templates/search/search-form.php:11
 msgctxt "search availability"
-msgid "Search"
+msgid "Query"
 msgstr ""
 
 #: templates/single-room-type/form.php:36
@@ -1413,7 +1413,7 @@ msgid "%1$s%2$s%3$s%4$s "
 msgstr ""
 
 #: inc/Admin/List_Tables/Booking_List_Table.php:307
-msgid "Search for a customer&hellip;"
+msgid "Query for a customer&hellip;"
 msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:34, inc/Admin/List_Tables/Room_Type_List_Table.php:34, inc/Admin/views/booking/add-room.php:58
@@ -1739,7 +1739,7 @@ msgstr ""
 
 #: inc/Admin/Providers/Post_Types_Service_Provider.php:178
 msgctxt "Page states"
-msgid "Search Results"
+msgid "Query Results"
 msgstr ""
 
 #: inc/Admin/Providers/Post_Types_Service_Provider.php:182

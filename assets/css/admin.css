@@ -2046,6 +2046,10 @@ span.flatpickr-weekday {
   overflow: hidden;
 }
 
+.cmb2-wrap.awebooking-wrap .cmb-type-textarea-code .CodeMirror-wrap {
+  border: solid 1px #eee;
+}
+
 .cmb2-inline-metabox .cmb-th,
 .cmb2-inline-metabox .cmb-td,
 .cmb2-inline-metabox .cmb-th + .cmb-td {
@@ -2618,6 +2622,10 @@ table.wp-list-table .booking_summary {
   color: #666;
   padding-top: 5px;
   font-style: inherit;
+}
+
+.wrap.awebooking-settings .cmb-row > .cmb-td {
+  padding: 0;
 }
 
 .abrs-cmb2-float .cmb2-tooltip,

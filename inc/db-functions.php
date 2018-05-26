@@ -1,7 +1,5 @@
 <?php
 
-use AweBooking\Model\Room;
-use AweBooking\Model\Room_Type;
 use AweBooking\Model\Model;
 
 /**
@@ -213,7 +211,7 @@ function abrs_get_bookings_by_room( $room_id, $statuses = [] ) {
 }
 
 /**
- * Search customers and return customer IDs.
+ * Query customers and return customer IDs.
  *
  * @param  string $term  The search term.
  * @param  int    $limit Limit the search results.
@@ -267,7 +265,7 @@ function abrs_search_customers( $term, $limit = 0 ) {
 }
 
 /**
- * Search booking data for a term and return IDs.
+ * Query booking data for a term and return IDs.
  *
  * Use for 'post__in' in WP_Query.
  *

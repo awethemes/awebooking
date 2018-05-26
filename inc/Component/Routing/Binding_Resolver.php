@@ -64,7 +64,7 @@ class Binding_Resolver {
 	 * @param  \Closure|null $callback The callback when model not found.
 	 * @return void
 	 *
-	 * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+	 * @throws \AweBooking\Component\Http\Exceptions\ModelNotFoundException
 	 */
 	public function model( $key, $class, Closure $callback = null ) {
 		$this->bind( $key, $this->binding_for_model( $class, $callback ) );

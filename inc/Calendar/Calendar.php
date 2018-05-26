@@ -95,10 +95,10 @@ class Calendar {
 	 */
 	public function get_events( Period $period, array $options = [] ) {
 		return Events::make( $this->get_provider_events( $period, $options ) )
-			->reject(function( $e ) {
+			->reject(function( Event_Interface $e ) {
 				return $this->get_resource()->get_id() !== $e->get_resource()->get_id();
 			})
-			->each(function( $e ) {
+			->each(function( Event_Interface $e ) {
 				if ( $e->is_untrusted_resource() ) {
 					$e->set_resource( $this->get_resource() );
 				}
@@ -111,12 +111,12 @@ class Calendar {
 	 *
 	 * @param  Period $period  The period.
 	 * @param  array  $options Optional, something pass to provider to get events.
-	 * @return array
+	 * @return \AweBooking\Calendar\Event\Itemized
 	 */
 	public function get_itemized( Period $period, array $options = [] ) {
 		$events = $this->get_events( $period, $options );
 
-		return ( new Itemizer( $events ) )->itemize( $period );
+		return ( new Itemizer( $events ) )->itemize();
 	}
 
 	/**

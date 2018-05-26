@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Support\Decimal;
 use AweBooking\Component\Country\Formatter as Country_Formatter;
 
 /**
@@ -249,14 +250,14 @@ function abrs_clean( $var ) {
  */
 function abrs_recursive_sanitizer( $values, $sanitizer ) {
 	if ( ! is_array( $values ) ) {
-		return $sanitizer( $values );
+		return is_scalar( $values ) ? $sanitizer( $values ) : $values;
 	}
 
 	foreach ( $values as $key => &$value ) {
 		if ( is_array( $value ) ) {
 			$value = abrs_recursive_sanitizer( $value, $sanitizer );
 		} else {
-			$value = $sanitizer( $value );
+			$value = is_scalar( $value ) ? $sanitizer( $value ) : $value;
 		}
 	}
 
@@ -407,7 +408,7 @@ function abrs_sanitize_ids( $list ) {
 }
 
 /**
- * Sanitize image size.
+ * Sanitize a image size.
  *
  * @param  array $size The image size to sanitize.
  * @return array

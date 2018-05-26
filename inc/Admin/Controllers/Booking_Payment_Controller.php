@@ -3,7 +3,6 @@ namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
 use Awethemes\Http\Request;
-use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Admin\Forms\Booking_Payment_Form;
 

@@ -10,7 +10,7 @@ class State_Provider extends DB_Provider {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resources|array $resources The resources to get events.
+	 * @param \AweBooking\Calendar\Resource\Resources|array $resources The resources to get events.
 	 */
 	public function __construct( $resources ) {
 		parent::__construct( $resources, 'awebooking_availability', 'room_id' );

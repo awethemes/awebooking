@@ -54,7 +54,7 @@ class Iterator_Period extends Period implements IteratorAggregate {
 	/**
 	 * Given a datepoint, then return an array of period.
 	 *
-	 * @param  string|DateTime $start_date The start date point.
+	 * @param \DateTime|string $start_date The start date point.
 	 * @return array
 	 */
 	protected function filter_from_datepoint( $start_date ) {

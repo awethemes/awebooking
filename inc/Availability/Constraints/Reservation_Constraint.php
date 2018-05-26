@@ -1,10 +1,9 @@
 <?php
-namespace AweBooking\Reservation\Constraints;
+namespace AweBooking\Availability\Constraints;
 
+use AweBooking\Calendar\Finder\Response;
+use AweBooking\Calendar\Finder\Constraint;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Reservation\Search\Reason;
-use AweBooking\Reservation\Search\Constraint;
-use AweBooking\Reservation\Search\Availability;
 
 class Reservation_Constraint implements Constraint {
 	/**
@@ -26,8 +25,8 @@ class Reservation_Constraint implements Constraint {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function apply( Availability $availability ) {
-		$remain_rooms = $availability->remain_rooms();
+	public function apply( Response $response ) {
+		$remain_rooms = $response->get_included();
 
 		// Leave if we have no remain rooms.
 		if ( $remain_rooms->isEmpty() ) {
@@ -35,10 +34,10 @@ class Reservation_Constraint implements Constraint {
 		}
 
 		// Loop througth remain_rooms and reject reservation rooms.
-		$remain_rooms->each( function( $item ) use ( $availability ) {
+		/*$remain_rooms->each( function( $item ) use ( $availability ) {
 			if ( $this->reservation->has_room( $item['room'] ) ) {
 				$availability->reject( $item['room'], Reason::SELECTED_ROOM );
 			}
-		});
+		});*/
 	}
 }

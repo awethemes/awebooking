@@ -40,9 +40,7 @@ class Permalink_Service_Provider extends Service_Provider {
 	public function save() {
 		$screen = get_current_screen();
 
-		if ( 'options-permalink' !== $screen->id
-			|| ! isset( $_POST['permalink_structure'] )
-			|| ! isset( $_POST['room_type_slug'] ) ) {
+		if ( 'options-permalink' !== $screen->id || ! isset( $_POST['permalink_structure'], $_POST['room_type_slug'] ) ) {
 			return;
 		}
 
@@ -59,10 +57,10 @@ class Permalink_Service_Provider extends Service_Provider {
 	/**
 	 * Returns the input callback.
 	 *
-	 * @param string $name        The input name.
-	 * @param string $value       The input value.
-	 * @param string $placeholder The input placeholder.
-	 * @return Clousure
+	 * @param  string $name        The input name.
+	 * @param  string $value       The input value.
+	 * @param  string $placeholder The input placeholder.
+	 * @return \Closure
 	 */
 	protected function input_callback( $name, $value, $placeholder = '' ) {
 		return function() use ( $name, $value, $placeholder ) {

@@ -7,9 +7,9 @@ use AweBooking\Model\Booking;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Gateway\Gateways;
 use AweBooking\Gateway\Response as Gateway_Response;
+use AweBooking\Reservation\Reservation;
 use AweBooking\Gateway\GatewayException;
 use AweBooking\Component\Http\Exceptions\ValidationFailedException;
-use AweBooking\Reservation\Reservation;
 use AweBooking\Support\Fluent;
 use Awethemes\WP_Session\WP_Session;
 use Awethemes\Http\Request;
@@ -290,6 +290,21 @@ class Checkout {
 	}
 
 	/**
+	 * Gets the checkout controls.
+	 *
+	 * @param  string $fieldset to get.
+	 * @return array
+	 */
+	public function get_controls( $fieldset = '' ) {
+		if ( is_null( $this->controls ) ) {
+			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
+			$this->controls->enabled()->prepare_fields();
+		}
+
+		return $this->controls;
+	}
+
+	/**
 	 * Get posted data from the checkout form.
 	 *
 	 * @param  \Awethemes\Http\Request $request The http request.
@@ -303,20 +318,5 @@ class Checkout {
 		$data['payment_method'] = abrs_clean( $request->get( 'payment_method' ) );
 
 		return apply_filters( 'awebooking/checkout/posted_data', $data, $request );
-	}
-
-	/**
-	 * Gets the checkout controls.
-	 *
-	 * @param  string $fieldset to get.
-	 * @return array
-	 */
-	public function get_controls( $fieldset = '' ) {
-		if ( is_null( $this->controls ) ) {
-			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
-			$this->controls->enabled()->prepare_fields();
-		}
-
-		return $this->controls;
 	}
 }

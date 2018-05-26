@@ -130,7 +130,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // Create the flatpickr after.
         this.flatpickr = flatpickr('#date_start', {
           dateFormat: 'Y-m-d',
-          plugins: [new rangePlugin({ input: '#date_end' })]
+          plugins: [new plugin.utils.flatpickrRangePlugin({ input: '#date_end' })]
         });
 
         return $controls;
@@ -152,7 +152,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         flatpickr('#bulk_date_start', {
           dateFormat: 'Y-m-d',
-          plugins: [new rangePlugin({ input: '#bulk_date_end' })]
+          plugins: [new (plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }))()]
         });
       }
     }]);

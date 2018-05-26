@@ -170,7 +170,7 @@ function abrs_get_booking_note( $data ) {
 
 	// Leave if data is not instance of WP_Comment.
 	if ( ! $data instanceof WP_Comment ) {
-		return;
+		return null;
 	}
 
 	$booking_note = new Booking_Note([
@@ -295,8 +295,12 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 		$comment_author       = $user->display_name;
 		$comment_author_email = $user->user_email;
 	} else {
+		$host_name = abrs_rescue( function () {
+			abrs_http_request()->getHttpHost();
+		});
+
 		$comment_author       = esc_html__( 'AweBooking', 'awebooking' );
-		$comment_author_email = strtolower( esc_html__( 'AweBooking', 'awebooking' ) ) . '@' . ( isset( $_SERVER['HTTP_HOST'] ) ? str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) : 'noreply.com' );
+		$comment_author_email = strtolower( esc_html__( 'AweBooking', 'awebooking' ) ) . '@' . ( $host_name ? str_replace( 'www.', '', $host_name ) : 'noreply.com' );
 		$comment_author_email = sanitize_email( $comment_author_email );
 	}
 

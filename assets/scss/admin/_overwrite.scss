@@ -237,6 +237,10 @@
   .wp-editor-wrap {
     overflow: hidden;
   }
+
+  .cmb-type-textarea-code .CodeMirror-wrap {
+    border: solid 1px #eee;
+  }
 }
 
 // Inline form.

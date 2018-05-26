@@ -35,7 +35,7 @@ trait With_Sections {
 	 * Retrieve a section.
 	 *
 	 * @param  string $id   Section ID.
-	 * @return Section|void The section, if set.
+	 * @return Section|null The section, if set.
 	 */
 	public function get_section( $id ) {
 		if ( array_key_exists( $id, $this->sections ) ) {

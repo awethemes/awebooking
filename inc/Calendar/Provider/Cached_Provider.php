@@ -4,6 +4,7 @@ namespace AweBooking\Calendar\Provider;
 use AweBooking\Support\Carbonate;
 use AweBooking\Calendar\Event\Event_Interface;
 use AweBooking\Calendar\Exceptions\StoreNotSupportedException;
+use AweBooking\Calendar\Provider\Contracts\Storable;
 
 class Cached_Provider implements Provider_Interface, Contracts\Storable {
 	/**

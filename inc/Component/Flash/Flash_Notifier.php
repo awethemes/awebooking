@@ -28,7 +28,7 @@ class Flash_Notifier {
 	/**
 	 * The messages collection.
 	 *
-	 * @var \AweBooking\Component\Collection
+	 * @var \AweBooking\Support\Collection
 	 */
 	protected $messages;
 

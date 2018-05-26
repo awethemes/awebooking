@@ -1,9 +1,8 @@
 <?php
 namespace AweBooking\Admin\Providers;
 
-use AweBooking\Constants;
-use AweBooking\Support\Service_Provider;
 use Illuminate\Support\Arr;
+use AweBooking\Support\Service_Provider;
 
 class Menu_Service_Provider extends Service_Provider {
 	/**
@@ -46,8 +45,6 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		// add_submenu_page( 'awebooking', esc_html__( 'New Booking', 'awebooking' ), esc_html_x( 'New Booking', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/reservation' );
-
 		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
 
 		add_submenu_page( 'awebooking', esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
@@ -83,7 +80,7 @@ class Menu_Service_Provider extends Service_Provider {
 
 				unset( $menu_order[ $room_type_index ] );
 				unset( $menu_order[ $separator_index ] );
-			} elseif ( ! in_array( $item, [ 'separator-awebooking' ] ) ) {
+			} elseif ( 'separator-awebooking' != $item ) {
 				$new_menu[] = $item;
 			}
 		}
@@ -113,7 +110,7 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function correct_admin_menus() {
-		global $parent_file, $submenu_file, $submenu;
+		global $parent_file, $submenu_file;
 
 		$current_screen = get_current_screen();
 		if ( 'awebooking_route' === $current_screen->base ) {
@@ -146,7 +143,7 @@ class Menu_Service_Provider extends Service_Provider {
 		}
 
 		$found_submenu = Arr::first( $submenu['awebooking'], function( $submenu_item ) {
-			return 'admin.php?awebooking=' . awebooking( 'request' )->route_path() === $submenu_item[2];
+			return 'admin.php?awebooking=' . abrs_http_request()->route_path() === $submenu_item[2];
 		});
 
 		return $found_submenu ? $found_submenu[3] . $admin_title : $admin_title;

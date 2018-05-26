@@ -21,9 +21,9 @@ class Custom_Fields {
 	/**
 	 * Helper to clone a field_types based on a field.
 	 *
-	 * @param  CMB2_Field $field The field object.
-	 * @param  array      $args  The clone field args.
-	 * @return CMB2_Types
+	 * @param  \CMB2_Field $field The field object.
+	 * @param  array       $args  The clone field args.
+	 * @return \CMB2_Types
 	 */
 	public function copy( $field, $args = [] ) {
 		$clone = $field->get_field_clone( $args );
@@ -94,11 +94,13 @@ class Custom_Fields {
 		/**
 		 * Filter the value before it is saved.
 		 *
-		 * @param bool|mixed    $check      The check variable.
-		 * @param mixed         $value      The value to be saved to this field.
-		 * @param int           $object_id  The ID of the object where the value will be saved.
-		 * @param array         $field_args The current field's arguments.
-		 * @param CMB2_Sanitize $sanitizer  The `CMB2_Sanitize` object.
+		 * @param bool|mixed     $check      The check variable.
+		 * @param mixed          $value      The value to be saved to this field.
+		 * @param int            $object_id  The ID of the object where the value will be saved.
+		 * @param array          $field_args The current field's arguments.
+		 * @param \CMB2_Sanitize $sanitizer  The `CMB2_Sanitize` object.
+		 *
+		 * @return mixed
 		 */
 		return function( $check, $value, $object_id, $field_args, $sanitizer ) use ( $sanitize_cb ) {
 			return call_user_func( $sanitize_cb, $value );
@@ -115,10 +117,11 @@ class Custom_Fields {
 		/**
 		 * Escape recursive the field value.
 		 *
-		 * @param  mixed      $check      The check variable.
-		 * @param  mixed      $meta_value The meta_value.
-		 * @param  array      $field_args The current field's arguments.
-		 * @param  CMB2_Field $field      The `CMB2_Field` object.
+		 * @param  mixed       $check      The check variable.
+		 * @param  mixed       $meta_value The meta_value.
+		 * @param  array       $field_args The current field's arguments.
+		 * @param  \CMB2_Field $field      The `CMB2_Field` object.
+		 *
 		 * @return mixed
 		 */
 		return function( $check, $meta_value, $field_args, $field ) use ( $escape_cb ) {

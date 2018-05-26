@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
-use AweBooking\Model\Common\Guest_Counts;
 
 class Booking_List_Table extends Abstract_List_Table {
 	/**
@@ -102,8 +101,6 @@ class Booking_List_Table extends Abstract_List_Table {
 			echo '<strong>#' . esc_attr( $the_booking->get_booking_number() ) . '</strong>';
 
 		} else {
-			$username = '';
-
 			if ( $the_booking['customer_id'] ) {
 				$userdata = get_userdata( $the_booking['customer_id'] );
 				$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $userdata->ID ), ucwords( $userdata->display_name ) ) : '';
@@ -155,6 +152,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 */
 	protected function display_booking_nights_column() {
 		$nights_stay = $this->booking->get( 'nights_stay' );
+
 		if ( $nights_stay == -1 ) : ?>
 			<span title="<?php esc_attr_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>">
 				<span class="dashicons dashicons-info"></span>
@@ -304,7 +302,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			$user_id = $user->ID;
 		}
 
-		?><select class="awebooking-search-customer" name="_customer" data-placeholder="<?php esc_attr_e( 'Search for a customer&hellip;', 'awebooking' ); ?>">
+		?><select class="awebooking-search-customer" name="_customer" data-placeholder="<?php esc_attr_e( 'Query for a customer&hellip;', 'awebooking' ); ?>">
 			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo wp_kses_post( $user_string ); ?><option>
 		</select><?php // @codingStandardsIgnoreLine
 	}
@@ -338,7 +336,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			];
 		}
 
-		// Filter the bookings by special room ID.
+		// Filter the bookings by specified room ID.
 		if ( ! empty( $_GET['_room'] ) ) {
 			$room_id = absint( $_GET['_room'] );
 
@@ -371,7 +369,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 * @return string
 	 */
 	public function correct_search_label( $query ) {
-		global $pagenow, $typenow, $wp;
+		global $pagenow, $typenow;
 
 		if ( 'edit.php' !== $pagenow || 'awebooking' !== $typenow
 			|| ! get_query_var( 'perform_booking_search' )
@@ -383,9 +381,9 @@ class Booking_List_Table extends Abstract_List_Table {
 	}
 
 	/**
-	 * Search custom fields as well as content.
+	 * Query custom fields as well as content.
 	 *
-	 * @param WP_Query $wp The WP_Query object.
+	 * @param \WP_Query $wp The WP_Query object.
 	 *
 	 * @access private
 	 */
@@ -407,7 +405,7 @@ class Booking_List_Table extends Abstract_List_Table {
 
 			$wp->query_vars['perform_booking_search'] = true;
 
-			// Search by found posts.
+			// Query by found posts.
 			$wp->query_vars['post__in'] = array_merge( $post_ids, [ 0 ] );
 		}
 	}

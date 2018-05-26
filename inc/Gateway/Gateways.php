@@ -13,12 +13,13 @@ class Gateways extends Manager {
 	 * @param array              $gateways Optional, the gateways.
 	 */
 	public function __construct( Plugin $plugin, $gateways = [] ) {
-		$this->plugin  = $plugin;
 		$this->drivers = new Collection;
 
 		foreach ( $gateways as $gateway ) {
 			$this->register( is_string( $gateway ) ? $this->plugin->make( $gateway ) : $gateway );
 		}
+
+		parent::__construct( $plugin );
 	}
 
 	/**

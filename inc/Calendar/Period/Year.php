@@ -12,7 +12,7 @@ class Year extends Iterator_Period {
 	/**
 	 * Create a Year period.
 	 *
-	 * @param int|DateTimeInterface $year The year for the period.
+	 * @param int|\DateTime $year The year for the period.
 	 */
 	public function __construct( $year ) {
 		if ( $year instanceof \DateTimeInterface ) {

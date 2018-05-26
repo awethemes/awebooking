@@ -257,9 +257,9 @@ class Installer {
 	}
 
 	/**
-	 * Update DB version to current or special version.
+	 * Update DB version to current or specified version.
 	 *
-	 * @param  string $version Optional, special version to set.
+	 * @param  string $version Optional, specified version to set.
 	 * @return boolean
 	 */
 	public function update_db_version( $version = null ) {

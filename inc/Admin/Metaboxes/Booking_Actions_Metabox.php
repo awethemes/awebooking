@@ -2,9 +2,6 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use Awethemes\Http\Request;
-use AweBooking\Model\Booking;
-use AweBooking\Email\Mailer;
-use AweBooking\Email\Templates\Invoice;
 
 class Booking_Actions_Metabox {
 	/**

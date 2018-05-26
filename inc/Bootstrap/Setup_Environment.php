@@ -39,9 +39,9 @@ class Setup_Environment {
 	 * Add Awebooking Image sizes to WP.
 	 */
 	public function add_image_sizes() {
-		$thumbnail = abrs_get_image_size( 'awebooking_thumbnail' );
-		$archive   = abrs_get_image_size( 'awebooking_archive' );
-		$single    = abrs_get_image_size( 'awebooking_single' );
+		$thumbnail = abrs_get_image_size( 'thumbnail' );
+		$archive   = abrs_get_image_size( 'archive' );
+		$single    = abrs_get_image_size( 'single' );
 
 		add_image_size( 'awebooking_thumbnail', $thumbnail['width'], $thumbnail['height'], $thumbnail['crop'] );
 		add_image_size( 'awebooking_archive', $archive['width'], $archive['height'], $archive['crop'] );
@@ -95,7 +95,7 @@ class Setup_Environment {
 				'name'                  => esc_html_x( 'Amenities', 'Amenity plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Amenity', 'Amenity singular name', 'awebooking' ),
 				'menu_name'             => esc_html_x( 'Amenities', 'Admin menu name', 'awebooking' ),
-				'search_items'          => esc_html__( 'Search amenities', 'awebooking' ),
+				'search_items'          => esc_html__( 'Query amenities', 'awebooking' ),
 				'popular_items'         => esc_html__( 'Popular amenities', 'awebooking' ),
 				'all_items'             => esc_html__( 'All amenities', 'awebooking' ),
 				'parent_item'           => esc_html__( 'Parent amenity', 'awebooking' ),
@@ -124,7 +124,7 @@ class Setup_Environment {
 				'name'                  => esc_html_x( 'Services', 'Service plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Service', 'Service singular name', 'awebooking' ),
 				'menu_name'             => esc_html_x( 'Services', 'Admin menu name', 'awebooking' ),
-				'search_items'          => esc_html__( 'Search services', 'awebooking' ),
+				'search_items'          => esc_html__( 'Query services', 'awebooking' ),
 				'popular_items'         => esc_html__( 'Popular services', 'awebooking' ),
 				'all_items'             => esc_html__( 'All services', 'awebooking' ),
 				'parent_item'           => esc_html__( 'Parent service', 'awebooking' ),
@@ -185,7 +185,7 @@ class Setup_Environment {
 				'new_item'              => esc_html__( 'New room type', 'awebooking' ),
 				'view_item'             => esc_html__( 'View room type', 'awebooking' ),
 				'view_items'            => esc_html__( 'View room types', 'awebooking' ),
-				'search_items'          => esc_html__( 'Search room types', 'awebooking' ),
+				'search_items'          => esc_html__( 'Query room types', 'awebooking' ),
 				'not_found'             => esc_html__( 'No room types found', 'awebooking' ),
 				'not_found_in_trash'    => esc_html__( 'No room types found in trash', 'awebooking' ),
 				'parent'                => esc_html__( 'Parent room type', 'awebooking' ),
@@ -232,7 +232,7 @@ class Setup_Environment {
 				'edit_item'             => esc_html__( 'Edit booking', 'awebooking' ),
 				'new_item'              => esc_html__( 'New booking', 'awebooking' ),
 				'view_item'             => esc_html__( 'View booking', 'awebooking' ),
-				'search_items'          => esc_html__( 'Search bookings', 'awebooking' ),
+				'search_items'          => esc_html__( 'Query bookings', 'awebooking' ),
 				'not_found'             => esc_html__( 'No bookings found', 'awebooking' ),
 				'not_found_in_trash'    => esc_html__( 'No bookings found in trash', 'awebooking' ),
 				'parent'                => esc_html__( 'Parent bookings', 'awebooking' ),
@@ -269,7 +269,7 @@ class Setup_Environment {
 					'edit_item'             => esc_html__( 'Edit hotel', 'awebooking' ),
 					'new_item'              => esc_html__( 'New hotel', 'awebooking' ),
 					'view_item'             => esc_html__( 'View hotel', 'awebooking' ),
-					'search_items'          => esc_html__( 'Search hotel', 'awebooking' ),
+					'search_items'          => esc_html__( 'Query hotel', 'awebooking' ),
 					'not_found'             => esc_html__( 'No hotel found', 'awebooking' ),
 					'not_found_in_trash'    => esc_html__( 'No hotel found in trash', 'awebooking' ),
 					'parent'                => esc_html__( 'Parent hotel', 'awebooking' ),

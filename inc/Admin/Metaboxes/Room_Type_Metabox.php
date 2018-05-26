@@ -26,7 +26,7 @@ class Room_Type_Metabox {
 	/**
 	 * Output the metabox.
 	 *
-	 * @param WP_Post $post The WP_Post object.
+	 * @param \WP_Post $post The WP_Post object.
 	 */
 	public function output( $post ) {
 		global $the_room_type;
@@ -349,7 +349,7 @@ class Room_Type_Metabox {
 	 *
 	 * @param  int $min Min.
 	 * @param  int $max Max.
-	 * @return Closure
+	 * @return \Closure
 	 */
 	protected function datalist_number_callback( $min, $max ) {
 		return function( $field_args, $field ) use ( $min, $max ) {

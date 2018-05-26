@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+
 namespace AweBooking\Support;
 
 use Countable;

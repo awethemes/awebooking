@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Admin\Providers;
 
-use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
 
 class Taxonomies_Service_Provider extends Service_Provider {
@@ -37,7 +36,7 @@ class Taxonomies_Service_Provider extends Service_Provider {
 	 * Make a callable for metabox output.
 	 *
 	 * @param  string $binding The binding in the plugin.
-	 * @return array
+	 * @return \Closure
 	 */
 	protected function metaboxcb( $binding ) {
 		return function( $term ) use ( $binding ) {
@@ -52,7 +51,7 @@ class Taxonomies_Service_Provider extends Service_Provider {
 	 * @return array
 	 */
 	public function disable_checked_ontop( $args ) {
-		if ( ! empty( $args['taxonomy'] ) && in_array( $args['taxonomy'], [ 'hotel_amenity' ] ) ) {
+		if ( ! empty( $args['taxonomy'] ) && 'hotel_amenity' == $args['taxonomy'] ) {
 			$args['checked_ontop'] = false;
 		}
 

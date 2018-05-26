@@ -177,7 +177,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         flatpickr('#bulk_date_start', {
           dateFormat: 'Y-m-d',
-          plugins: [new rangePlugin({ input: '#bulk_date_end' })]
+          plugins: [new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' })]
         });
       }
     }]);

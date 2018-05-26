@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Event\Core;
 
 use AweBooking\Calendar\Event\Event;
@@ -12,9 +13,9 @@ class Booking_Event extends Event {
 	 * Create an event.
 	 *
 	 * @param Resource_Interface $resource   The resource implementation.
-	 * @param DateTime|string    $start_date The start date of the event.
-	 * @param DateTime|string    $end_date   The end date of the event.
-	 * @param Booking|int        $booking    The booking represent for this event.
+	 * @param \DateTime|string   $start_date The start date of the event.
+	 * @param \DateTime|string   $end_date   The end date of the event.
+	 * @param int                $booking    The booking represent for this event.
 	 *
 	 * @throws \LogicException
 	 */

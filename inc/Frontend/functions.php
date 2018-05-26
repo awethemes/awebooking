@@ -143,7 +143,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		]);
 	}
 
-	if ( is_wp_error( $res_request ) ) {
+	if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
 		$res_request = null;
 	}
 

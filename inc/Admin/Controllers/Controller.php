@@ -9,7 +9,7 @@ abstract class Controller {
 	 * Get instance of the Redirector.
 	 *
 	 * @param  string $url Optional URL to redirect.
-	 * @return \AweBooking\Http\Routing\Redirector|\AweBooking\Http\Redirect_Response
+	 * @return \AweBooking\Component\Routing\Redirector|\Awethemes\Http\Redirect_Response
 	 */
 	protected function redirect( $url = null ) {
 		$redirector = awebooking()->make( 'redirector' );

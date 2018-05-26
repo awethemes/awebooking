@@ -12,9 +12,9 @@ trait Plugin_Provider {
 	/**
 	 * Register a service provider.
 	 *
-	 * @param  Service_Provider|string $provider The provider class instance or class name.
-	 * @param  bool                    $force    If true, force register this provider.
-	 * @return Service_Provider
+	 * @param  \AweBooking\Support\Service_Provider|string $provider The provider class instance or class name.
+	 * @param  bool                                        $force    If true, force register this provider.
+	 * @return \AweBooking\Support\Service_Provider
 	 */
 	public function register( $provider, $force = false ) {
 		if ( ( $registered = $this->get_provider( $provider ) ) && ! $force ) {
@@ -46,8 +46,8 @@ trait Plugin_Provider {
 	/**
 	 * Register the given provider when an action fired.
 	 *
-	 * @param  Service_Provider|string $provider The provider class instance or class name.
-	 * @param  string|array            $hook     The hook name or an array hook: [ $tag, $priority, $accepted_args ].
+	 * @param  \AweBooking\Support\Service_Provider|string $provider The provider class instance or class name.
+	 * @param  string|array                                $hook     The hook name or an array hook: [ $tag, $priority, $accepted_args ].
 	 * @return void
 	 *
 	 * @throws \InvalidArgumentException
@@ -79,8 +79,8 @@ trait Plugin_Provider {
 	/**
 	 * Get the registered service provider instance if it exists.
 	 *
-	 * @param  Service_Provider|string $provider The service provider.
-	 * @return Service_Provider|null
+	 * @param  \AweBooking\Support\Service_Provider|string $provider The service provider.
+	 * @return \AweBooking\Support\Service_Provider|null
 	 */
 	public function get_provider( $provider ) {
 		$name = is_string( $provider ) ? $provider : get_class( $provider );
@@ -93,8 +93,8 @@ trait Plugin_Provider {
 	/**
 	 * Boot the given service provider.
 	 *
-	 * @param  Service_Provider $provider The service provider.
-	 * @return mixed
+	 * @param  \AweBooking\Support\Service_Provider $provider The service provider.
+	 * @return void
 	 */
 	protected function boot_provider( $provider ) {
 		if ( method_exists( $provider, 'boot' ) ) {

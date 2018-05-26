@@ -3,14 +3,17 @@
 $controls = abrs_create_form( 'search-rooms' );
 
 $selected_dates = [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ];
+
 if ( $request->filled( 'check-in', 'check-out' ) ) {
 	$selected_dates = array_values( $request->only( 'check-in', 'check-out' ) );
 }
 
-?><div class="wrap"">
+?>
+
+<div class="wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Add Room', 'awebooking' ); ?></h1>
 	<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
-	<hr class="wp-header-end">
+	<hr class="wp-header-end" />
 
 	<div class="abrs-card abrs-card--page" style="width: 910px;">
 		<div class="abrs-card__header">
@@ -29,7 +32,7 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 					?>
 
 					<div class="abrs-space"></div>
-					<button class="button abrs-button" type="submit"><span class="dashicons dashicons-search"></span><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
+					<button class="button abrs-button" type="submit"><span class="dashicons dashicons-search"></span><?php esc_html_e( 'Query', 'awebooking' ); ?></button>
 				</div>
 			</form>
 		</div>
@@ -75,4 +78,4 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 		</div>
 
 	</div>
-</div><!-- /.wrap -->
+</div>

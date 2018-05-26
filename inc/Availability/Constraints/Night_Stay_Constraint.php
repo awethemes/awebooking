@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Reservation\Constraints;
+namespace AweBooking\Availability\Constraints;
 
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Calendar\Finder\Response;
@@ -37,10 +37,10 @@ class Night_Stay_Constraint implements Constraint {
 	/**
 	 * Constructor.
 	 *
-	 * @param array    $resources  Array of resources as ID.
-	 * @param Timespan $timespan   The timespan.
-	 * @param int      $min_nights Minimum nights stay.
-	 * @param int      $max_nights Maximum nights stay.
+	 * @param array|int $resources  Array of resources as ID.
+	 * @param Timespan  $timespan   The timespan.
+	 * @param int       $min_nights Minimum nights stay.
+	 * @param int       $max_nights Maximum nights stay.
 	 */
 	public function __construct( $resources, Timespan $timespan, $min_nights = 0, $max_nights = 0 ) {
 		$this->resources  = ! is_array( $resources ) ? [ $resources ] : $resources;
@@ -99,5 +99,7 @@ class Night_Stay_Constraint implements Constraint {
 				/* translators: %s Maximum nights stay (1 day, 2 days, etc.) */
 				return sprintf( esc_html__( 'The stay cannot be more than %s', 'awebooking' ), $maximum_stay );
 		}
+
+		return '';
 	}
 }

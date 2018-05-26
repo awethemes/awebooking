@@ -597,6 +597,10 @@ tbody.collapse.in {
   background-size: 32px 32px;
 }
 
+.form-input {
+  box-sizing: border-box;
+}
+
 .clearfix::after {
   content: '';
   display: table;

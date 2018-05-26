@@ -12,7 +12,7 @@ class Day extends Iterator_Period {
 	/**
 	 * Create a Date period.
 	 *
-	 * @param string|DateTime $start_date The start date point.
+	 * @param \DateTime|string $start_date The start date point.
 	 */
 	public function __construct( $start_date ) {
 		$start_date = abrs_date_time( $start_date );

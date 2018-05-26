@@ -26,14 +26,14 @@ class Post_Types_Service_Provider extends Service_Provider {
 		// Extra post data and screen elements.
 		add_filter( 'enter_title_here', [ $this, 'enter_title_here' ], 1, 2 );
 
-		// Add a post display state for special awebooking pages.
+		// Add a post display state for specified awebooking pages.
 		add_filter( 'display_post_states', [ $this, 'display_post_states' ], 10, 2 );
 	}
 
 	/**
 	 * Looks at the current screen and loads the correct list table handler.
 	 *
-	 * @param  WP_Screen $screen The current screen.
+	 * @param  \WP_Screen $screen The current screen.
 	 * @access private
 	 */
 	public function setup_screen( $screen ) {
@@ -140,7 +140,7 @@ class Post_Types_Service_Provider extends Service_Provider {
 	public function disable_autosave() {
 		global $post;
 
-		if ( $post && in_array( $post->post_type, [ Constants::BOOKING ], true ) ) {
+		if ( $post && Constants::BOOKING === $post->post_type ) {
 			wp_dequeue_script( 'autosave' );
 		}
 	}
@@ -148,8 +148,8 @@ class Post_Types_Service_Provider extends Service_Provider {
 	/**
 	 * Change title boxes in admin.
 	 *
-	 * @param  string  $text Text to shown.
-	 * @param  WP_Post $post Current post object.
+	 * @param  string   $text Text to shown.
+	 * @param  \WP_Post $post Current post object.
 	 * @return string
 	 *
 	 * @access private
@@ -165,17 +165,17 @@ class Post_Types_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Add a post display state for special awebooking pages in the page list table.
+	 * Add a post display state for specified awebooking pages in the page list table.
 	 *
-	 * @param array   $post_states An array of post display states.
-	 * @param WP_Post $post        The current post object.
+	 * @param array    $post_states An array of post display states.
+	 * @param \WP_Post $post        The current post object.
 	 *
 	 * @access private
 	 */
 	public function display_post_states( $post_states, $post ) {
 		switch ( true ) {
 			case ( abrs_get_page_id( 'search_results' ) === $post->ID ):
-				$post_states['abrs_page_check_availability'] = esc_html_x( 'Search Results', 'Page states', 'awebooking' );
+				$post_states['abrs_page_check_availability'] = esc_html_x( 'Query Results', 'Page states', 'awebooking' );
 				break;
 
 			case ( abrs_get_page_id( 'checkout' ) === $post->ID ):

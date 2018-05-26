@@ -656,7 +656,7 @@ class Decimal {
 	 *
 	 * @example Decimal::create(100)->discount(15) = 85
 	 *
-	 * @param  int|float $discount      The discount value.
+	 * @param  int|float $discount      The discount (percent) value.
 	 * @param  int|null  $rounding_mode The rounding mode.
 	 * @return static
 	 */
@@ -665,6 +665,23 @@ class Decimal {
 
 		return $this->sub(
 			$this->to_percentage( $discount, $rounding_mode )
+		);
+	}
+
+	/**
+	 * Calculate a surcharge amount.
+	 *
+	 * @example Decimal::create(100)->surcharge(15) = 115
+	 *
+	 * @param  int|float $surcharge     The surcharge (percent) value.
+	 * @param  int|null  $rounding_mode The rounding mode.
+	 * @return static
+	 */
+	public function surcharge( $surcharge, $rounding_mode = null ) {
+		$surcharge = $this->get_scalar_operand( $surcharge );
+
+		return $this->add(
+			$this->to_percentage( $surcharge, $rounding_mode )
 		);
 	}
 

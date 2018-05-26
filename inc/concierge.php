@@ -14,17 +14,20 @@ use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Finder\Finder;
 use AweBooking\Calendar\Finder\State_Finder;
 use AweBooking\Calendar\Event\Core\Booking_Event;
-use AweBooking\Reservation\Constraints\Night_Stay_Constraint;
-use AweBooking\Reservation\Request;
+use AweBooking\Availability\Request;
+use AweBooking\Availability\Room_Rate;
+use AweBooking\Availability\Constraints\Night_Stay_Constraint;
 use Awethemes\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
+use Illuminate\Support\Arr;
 
 /**
  * Determines if a given room is "available" in a timespan.
  *
- * @param  int      $room     The room to check.
- * @param  Timespan $timespan The timespan.
- * @return bool|WP_Error
+ * @param  Collection|array|int $room     The room to check.
+ * @param  Timespan             $timespan The timespan.
+ *
+ * @return bool
  */
 function abrs_room_available( $room, Timespan $timespan ) {
 	return abrs_room_has_states( $room, $timespan, Constants::STATE_AVAILABLE );
@@ -33,16 +36,17 @@ function abrs_room_available( $room, Timespan $timespan ) {
 /**
  * Determines if a given room has given states.
  *
- * @param  int          $room     The room to check.
- * @param  Timespan     $timespan The timespan.
- * @param  array|string $states   The states to check.
- * @return bool|WP_Error
+ * @param  Collection|int|array $room     The room to check.
+ * @param  Timespan             $timespan The timespan.
+ * @param  array|string         $states   The states to check.
+ *
+ * @return bool
  */
 function abrs_room_has_states( $room, Timespan $timespan, $states ) {
 	$response = abrs_check_room_states( $room, $timespan, null, $states );
 
 	if ( is_wp_error( $response ) ) {
-		return $response;
+		return false;
 	}
 
 	return count( $response->get_included() ) > 0;
@@ -51,11 +55,12 @@ function abrs_room_has_states( $room, Timespan $timespan, $states ) {
 /**
  * Check given rooms states.
  *
- * @param  array|int    $room        The room ID to check.
- * @param  Timespan     $timespan    The timespan.
- * @param  Guest_Counts $guests      The guest counts.
- * @param  array|int    $states      A string or an array of states.
- * @param  array        $constraints AweBooking\Calendar\Finder\Constraint[].
+ * @param  Collection|array|int $room        The room ID to check.
+ * @param  Timespan             $timespan    The timespan.
+ * @param  Guest_Counts         $guests      The guest counts.
+ * @param  array|int            $states      A string or an array of states.
+ * @param  array                $constraints AweBooking\Calendar\Finder\Constraint[].
+ *
  * @return \AweBooking\Calendar\Finder\Response|WP_Error
  */
 function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests = null, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
@@ -86,7 +91,7 @@ function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests
  * @param array    $options {
  *     Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in special days of week.
+ *     @type array  $only_days   Apply only in specified days of week.
  *     @type string $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
@@ -103,7 +108,7 @@ function abrs_block_room( $room, Timespan $timespan, $options = [] ) {
  * @param array    $options {
  *     Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in special days of week.
+ *     @type array  $only_days   Apply only in specified days of week.
  *     @type string $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
@@ -121,7 +126,7 @@ function abrs_unblock_room( $room, Timespan $timespan, $options = [] ) {
  * @param array    $options {
  *     Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in special days of week.
+ *     @type array  $only_days   Apply only in specified days of week.
  *     @type string $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
@@ -182,7 +187,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 		// Apply new state.
 		$event->set_state( $state );
 
-		// Apply changes only special days.
+		// Apply changes only specified days.
 		if ( ! empty( $options['only_days'] ) ) {
 			$event->only_days( $options['only_days'] );
 		}
@@ -208,8 +213,9 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 /**
  * Retrieve price of a rate in a timespan.
  *
- * @param  int      $rate     The rate ID to retrieve.
+ * @param  int|Rate $rate The rate ID to retrieve.
  * @param  Timespan $timespan The timespan.
+ *
  * @return \AweBooking\Support\Collection|WP_Error
  */
 function abrs_retrieve_rate( $rate, Timespan $timespan ) {
@@ -244,7 +250,7 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
  * @param array    $options {
  *     Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in special days of week.
+ *     @type array  $only_days   Apply only in specified days of week.
  *     @type string $granularity Granularity by nightly or daily.
  * }
  * @return bool|WP_Error
@@ -298,7 +304,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 			$event->apply_operation( $amount, $operation );
 		}
 
-		// Apply changes only special days.
+		// Apply changes only specified days.
 		if ( ! empty( $options['only_days'] ) ) {
 			$event->only_days( $options['only_days'] );
 		}
@@ -351,7 +357,7 @@ function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $c
 	$resources = abrs_collect( $rates )
 		->transform( 'abrs_resource_rate' )
 		->filter( /* Remove empty items */ )
-		->each(function( $r ) use ( $timespan, $guests ) {
+		->each(function( Resource $r ) use ( $timespan, $guests ) {
 			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan, $guests ) );
 		})->all();
 
@@ -389,6 +395,7 @@ function _abrs_filter_rates_callback( $resource, $response ) {
  * @param  \AweBooking\Model\Pricing\Rate $rate     The rate instance.
  * @param  Timespan                       $timespan The timespan.
  * @param  Guest_Counts                   $guests   The guest counts.
+ *
  * @return array
  */
 function abrs_build_rate_constraints( Rate $rate, Timespan $timespan, Guest_Counts $guests ) {
@@ -425,7 +432,7 @@ function abrs_apply_booking_state( $room, $booking, Timespan $timespan ) {
 	}
 
 	// Leave if give room is not available in given timespan.
-	if ( ! abrs_room_available( $room, $timespan ) ) {
+	if ( ! abrs_room_available( $room->get_id(), $timespan ) ) {
 		return false;
 	}
 
@@ -440,7 +447,7 @@ function abrs_apply_booking_state( $room, $booking, Timespan $timespan ) {
 		$period = $timespan->to_period( Constants::GL_NIGHTLY );
 
 		$stored  = abrs_calendar( $resource, 'booking' )->store( new Booking_Event( $resource, $period->get_start_date(), $period->get_end_date(), $booking ) );
-		$stored2 = abrs_apply_room_state( $room, $timespan, Constants::STATE_BOOKING );
+		$stored2 = abrs_apply_room_state( $room->get_id(), $timespan, Constants::STATE_BOOKING );
 
 		if ( ! $stored || ! $stored2 ) {
 			abrs_db_transaction( 'rollback' );
@@ -498,6 +505,94 @@ function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
 	}
 
 	return true;
+}
+
+/**
+ * Gets a room rate.
+ *
+ * @param  array $args The query args.
+ * @return \AweBooking\Availability\Room_Rate|\WP_Error
+ */
+function abrs_get_room_rate( $args ) {
+	$args = wp_parse_args( $args, [
+		'room_type' => 0,
+		'rate_plan' => 0,
+		'request'   => null,
+		'check_in'  => isset( $args['check-in'] ) ? $args['check-in'] : '',
+		'check_out' => isset( $args['check-out'] ) ? $args['check-out'] : '',
+		'adults'    => 1,
+		'children'  => 0,
+		'infants'   => 0,
+	]);
+
+	if ( ! $room_type = abrs_get_room_type( $args['room_type'] ) ) {
+		return new WP_Error( 'invalid_room_type', esc_html__( 'Invalid room type.', 'awebooking' ) );
+	}
+
+	if ( ! $rate_plan = abrs_get_rate_plan( $args['rate_plan'] ?: $args['room_type'] ) ) {
+		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Invalid rate plan.', 'awebooking' ) );
+	}
+
+	$res_request = $args['request'];
+	if ( ! $res_request instanceof Request ) {
+		$res_request = abrs_create_res_request( Arr::except( $args, 'request' ) );
+	}
+
+	if ( empty( $res_request ) || is_wp_error( $res_request ) ) {
+		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Unable to create the reservation request.', 'awebooking' ) );
+	}
+
+	// Create the room rate request.
+	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
+
+	// Setup the room availability and rate.
+	do_action( 'awebooking/setup_room_rate', $room_rate, $args );
+
+	$room_rate->setup();
+
+	return apply_filters( 'awebooking/get_room_rate', $room_rate, $args );
+}
+
+/**
+ * Create new reservation request.
+ *
+ * @param  array $args The query args.
+ * @return \AweBooking\Availability\Request|null
+ */
+function abrs_create_res_request( $args ) {
+	if ( $args instanceof Http_Request ) {
+		$args = $args->all();
+	}
+
+	$args = wp_parse_args( $args, [
+		'strict'     => is_admin() ? false : true,
+		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
+		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
+		'adults'     => 1,
+		'children'   => 0,
+		'infants'    => 0,
+		'options'    => [],
+	]);
+
+	// Create the timespan.
+	$timespan = abrs_timespan( $args['check_in'], $args['check_out'], 1, $args['strict'] );
+
+	if ( is_wp_error( $timespan ) ) {
+		return null;
+	}
+
+	// Create the guest counts.
+	$guest_counts = new Guest_Counts( $args['adults'] );
+
+	if ( abrs_children_bookable() && $args['children'] > 0 ) {
+		$guest_counts->set_children( $args['children'] );
+	}
+
+	if ( abrs_infants_bookable() && $args['infants'] > 0 ) {
+		$guest_counts->set_infants( $args['infants'] );
+	}
+
+	return apply_filters( 'awebooking/reservation_request', new Request( $timespan, $guest_counts, $args['options'] ) );
 }
 
 /**
@@ -596,7 +691,7 @@ function abrs_resource_room( $room ) {
 
 	// Leave if room not found.
 	if ( empty( $room ) ) {
-		return;
+		return null;
 	}
 
 	// By default rooms in awebooking is alway available
@@ -622,7 +717,7 @@ function abrs_resource_rate( $rate ) {
 
 	// Leave if rate not found.
 	if ( empty( $rate ) ) {
-		return;
+		return null;
 	}
 
 	// In calendar we store as resource integer,
@@ -635,47 +730,4 @@ function abrs_resource_rate( $rate ) {
 	$resource->set_title( $rate->get_name() );
 
 	return apply_filters( 'awebooking/calendar_rate_resource', $resource, $rate );
-}
-
-/**
- * Create new reservation request.
- * TODO: ...
- *
- * @param  array $args The query args.
- * @return \AweBooking\Reservation\Request|WP_Error
- */
-function abrs_create_res_request( $args, $options = [] ) {
-	if ( $args instanceof Http_Request ) {
-		$options = $args->only( 'hotel', 'only' );
-		$args = $args->all();
-	}
-
-	$args = wp_parse_args( $args, [
-		'strict'     => is_admin() ? false : true,
-		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
-		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
-		'adults'     => 1,
-		'children'   => 0,
-		'infants'    => 0,
-		'options'    => $options,
-	]);
-
-	// Create the timespan.
-	$timespan = abrs_timespan( $args['check_in'], $args['check_out'], 1, $args['strict'] );
-	if ( is_wp_error( $timespan ) ) {
-		return $timespan;
-	}
-
-	// Create the guest counts.
-	$guest_counts = new Guest_Counts( $args['adults'] );
-
-	if ( abrs_children_bookable() && $args['children'] > 0 ) {
-		$guest_counts->set_children( $args['children'] );
-	}
-
-	if ( abrs_infants_bookable() && $args['infants'] > 0 ) {
-		$guest_counts->set_infants( $args['infants'] );
-	}
-
-	return new Request( $timespan, $guest_counts, $args['options'] );
 }

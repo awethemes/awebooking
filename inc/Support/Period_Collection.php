@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Support;
 
-use AweBooking\Support\Collection;
-
 class Period_Collection extends Collection {
 	/**
 	 * Collapse the collection of periods into a single period.
@@ -14,7 +12,7 @@ class Period_Collection extends Collection {
 
 		// Returns null if empty periods.
 		if ( 0 === count( $periods ) ) {
-			return;
+			return null;
 		}
 
 		// If have only one period in list,

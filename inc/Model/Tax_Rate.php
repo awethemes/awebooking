@@ -290,7 +290,7 @@ class Tax extends WP_Object {
 	/**
 	 * Run perform insert object into database.
 	 *
-	 * @return int|void
+	 * @return int
 	 */
 	protected function perform_insert() {
 		global $wpdb;
@@ -307,7 +307,7 @@ class Tax extends WP_Object {
 	 * Run perform update object.
 	 *
 	 * @param  array $dirty The attributes has been modified.
-	 * @return bool|void
+	 * @return bool
 	 */
 	protected function perform_update( array $dirty ) {
 		global $wpdb;

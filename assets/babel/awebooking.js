@@ -22,6 +22,8 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
+  awebooking.utils.flatpickrRangePlugin = require('./core/flatpickr-range-plugin.js');
+
   /**
    * Configure.
    *
@@ -69,16 +71,14 @@
 
     const fp = flatpickr(instance, _defaults(options, {
       mode: 'range',
-      altInput: true,
-      altFormat: i18n.date_format,
-      ariaDateFormat: i18n.date_format,
       dateFormat: 'Y-m-d',
+      ariaDateFormat: i18n.date_format,
       minDate: 'today',
       // maxDate: max_date,
+      // disable: disable,
       showMonths: defaults.show_months,
       enableTime: false,
       enableSeconds: false,
-      // disable: disable,
       onReady (_, __, fp) {
         fp.calendarContainer.classList.add('awebooking-datepicker');
       }
@@ -94,22 +94,47 @@
    */
   $(function() {
 
-    $('.searchbox').each(function() {
-      const $checkin  = $(this).find('input[name="check-in"]');
-      const $checkout = $(this).find('input[name="check-out"]');
+    $('.searchbox').each( () => {
+      const $el = $(this);
 
-      awebooking.datepicker($checkin[0], {
-        plugins: [ new rangePlugin({ input: $checkout[0] }) ],
-        onChange: function() {
-          const dates = this.selectedDates.map( (d) => {
-            return this.formatDate(d, 'Y-m-d');
-          });
+      const $checkin = $el.find('input[name="check-in"]');
+      const $checkout = $el.find('input[name="check-out"]');
+      const $rangepicker = $el.find('[data-hotel="rangepicker"]');
 
-          $checkin.val(dates[0] || '');
-          $checkout.val(dates[1] || '');
-        },
+      const fp = awebooking.datepicker($rangepicker[0], {
+        // inline: true,
+        // clickOpens: false,
+        onChange: (dates, str, fp) => {
+          const dateFormat = fp.config.dateFormat;
+
+          $checkin.val('');
+          $checkout.val('');
+
+          if (dates[0]) {
+            $checkin.val(fp.formatDate(dates[0], dateFormat)).trigger('change');
+          }
+
+          if (dates[1]) {
+            $checkout.val(fp.formatDate(dates[1], dateFormat)).trigger('change');
+          }
+        }
       });
 
+      $checkin.on('click focus', (e) => {
+        e.preventDefault();
+
+        fp.isOpen = false;
+        fp.open(undefined, $checkin[0]);
+      });
+
+      $checkout.on('click focus', (e) => {
+        e.preventDefault();
+
+        fp.isOpen = false;
+        fp.open(undefined, $checkout[0]);
+      });
+
+      console.log(fp);
     });
 
   });

@@ -89,7 +89,6 @@ class BATStore extends Store {
 		$year_count = 0;
 		$parameters = '';
 
-
 		foreach ( $itemized[ Event::BAT_DAY ] as $year => $months ) {
 			// If we are dealing with multiple years so add an OR.
 			if ( $year_count > 0 ) {

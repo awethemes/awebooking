@@ -5,6 +5,8 @@ $max_select = 10;
 
 $hotels = abrs_list_hotels();
 
+dump( abrs_reservation() );
+
 ?><form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
@@ -76,10 +78,14 @@ $hotels = abrs_list_hotels();
 			</div>
 
 			<div>
-				<button class="button button--search"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
+				<button class="button button--search"><?php esc_html_e( 'Query', 'awebooking' ); ?></button>
 			</div>
 
 		</div>
-	</div>
 
+		<div class="rangepicker-container">
+			<input type="hidden" data-hotel="rangepicker" style="display: none;" />
+		</div>
+
+	</div>
 </form>

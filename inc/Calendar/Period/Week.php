@@ -12,7 +12,7 @@ class Week extends Iterator_Period {
 	/**
 	 * Create a Week period.
 	 *
-	 * @param string|DateTime $start_date The start date point.
+	 * @param string|\DateTime $start_date The start date point.
 	 */
 	public function __construct( $start_date ) {
 		$start_date = abrs_date( $start_date )->startOfWeek();

@@ -116,7 +116,7 @@ abstract class Manager implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetSet( $offset, $driver ) {
-		$this->register( $offset, $driver );
+		// ...
 	}
 
 	/**

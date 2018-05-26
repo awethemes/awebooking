@@ -1,14 +1,12 @@
 <?php
-namespace AweBooking\Reservation\Room_Stay;
 
-use AweBooking\Support\Collection;
-use AweBooking\Reservation\Request;
+namespace AweBooking\Availability;
 
-class Search_Results implements \IteratorAggregate {
+class Query_Results implements \Countable, \IteratorAggregate {
 	/**
 	 * The reservation request.
 	 *
-	 * @var \AweBooking\Reservation\Request
+	 * @var \AweBooking\Availability\Request
 	 */
 	protected $request;
 
@@ -22,18 +20,18 @@ class Search_Results implements \IteratorAggregate {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Reservation\Request $request The reservation request.
-	 * @param array                           $items   The items.
+	 * @param Request $request The reservation request.
+	 * @param array   $items   The items.
 	 */
 	public function __construct( Request $request, array $items ) {
 		$this->request = $request;
-		$this->items   = new Collection( $items );
+		$this->items   = abrs_collect( $items );
 	}
 
 	/**
 	 * Get the search request.
 	 *
-	 * @return \AweBooking\Reservation\Request
+	 * @return \AweBooking\Availability\Request
 	 */
 	public function get_request() {
 		return $this->request;
@@ -61,10 +59,20 @@ class Search_Results implements \IteratorAggregate {
 	 * Getter property.
 	 *
 	 * @param  string $key Property name.
+	 *
 	 * @return mixed
 	 */
 	public function __get( $key ) {
 		return $this->{$key};
+	}
+
+	/**
+	 * Count the number of items.
+	 *
+	 * @return int
+	 */
+	public function count() {
+		return $this->items->count();
 	}
 
 	/**

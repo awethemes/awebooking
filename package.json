@@ -18,9 +18,7 @@
       "node_modules/sweetalert2/dist/sweetalert2*.{js,css}"
     ],
     "flatpickr": [
-      "node_modules/flatpickr/dist/flatpickr*.{js,css}",
-      "node_modules/flatpickr/dist/plugins/*Plugin.js",
-      "node_modules/flatpickr/dist/themes/confetti.css"
+      "node_modules/flatpickr/dist/flatpickr*.{js,css}"
     ],
     "moment": [
       "node_modules/moment/moment.js",
@@ -38,7 +36,7 @@
   },
   "dependencies": {
     "debounce": "^1.1.0",
-    "flatpickr": "^4.4.7",
+    "flatpickr": "^4.5.0",
     "js-cookie": "^2.2.0",
     "lodash.defaults": "^4.2.0",
     "lodash.map": "^4.6.0",
@@ -47,7 +45,7 @@
     "query-string": "^6.1.0",
     "selectize": "^0.12.4",
     "sortablejs": "^1.7.0",
-    "sweetalert2": "^7.20.4",
+    "sweetalert2": "^7.20.10",
     "tippy.js": "^2.5.2",
     "waypoints": "^4.0.1"
   },

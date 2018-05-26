@@ -104,10 +104,10 @@ function abrs_create_page( $slug, $option = '', $page_title = '', $page_content 
 	}
 
 	if ( strlen( $page_content ) > 0 ) {
-		// Search for an existing page with the specified page content (typically a shortcode).
+		// Query for an existing page with the specified page content (typically a shortcode).
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' ) AND post_content LIKE %s LIMIT 1;", "%{$page_content}%" ) );
 	} else {
-		// Search for an existing page with the specified page slug.
+		// Query for an existing page with the specified page slug.
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' )  AND post_name = %s LIMIT 1;", $slug ) );
 	}
 
@@ -120,12 +120,12 @@ function abrs_create_page( $slug, $option = '', $page_title = '', $page_content 
 		return $valid_page_found;
 	}
 
-	// Search for a matching valid trashed page.
+	// Query for a matching valid trashed page.
 	if ( strlen( $page_content ) > 0 ) {
-		// Search for an existing page with the specified page content (typically a shortcode).
+		// Query for an existing page with the specified page content (typically a shortcode).
 		$trashed_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status = 'trash' AND post_content LIKE %s LIMIT 1;", "%{$page_content}%" ) );
 	} else {
-		// Search for an existing page with the specified page slug.
+		// Query for an existing page with the specified page slug.
 		$trashed_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status = 'trash' AND post_name = %s LIMIT 1;", $slug ) );
 	}
 

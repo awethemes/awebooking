@@ -10,6 +10,8 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
+  awebooking.utils.flatpickrRangePlugin = require('../core/flatpickr-range-plugin.js');
+
   /**
    * The admin route.
    *
@@ -168,7 +170,7 @@
   });
 })(jQuery);
 
-},{"./utils/search-customer.js":2,"debounce":3,"query-string":5}],2:[function(require,module,exports){
+},{"../core/flatpickr-range-plugin.js":3,"./utils/search-customer.js":2,"debounce":4,"query-string":6}],2:[function(require,module,exports){
 'use strict';
 
 var $ = jQuery;
@@ -212,6 +214,66 @@ module.exports = function () {
 };
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = function rangePlugin() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  return function (fp) {
+    var dateFormat = '',
+        secondInput = void 0,
+        _firstInputFocused = void 0,
+        _secondInputFocused = void 0,
+        _prevDates = void 0;
+
+    /**
+     * Create the secondary input picker.
+     */
+    var createSecondInput = function createSecondInput() {
+      // Create the second input.
+      secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+
+      // Set the "end-date" if second input have any value.
+      if (secondInput.value) {
+        var parsedDate = fp.parseDate(secondInput.value);
+
+        if (parsedDate) {
+          fp.selectedDates.push(parsedDate);
+        }
+      }
+    };
+
+    var dateAddDays = function dateAddDays(inputDate) {
+      var days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      var date = new Date(inputDate.getTime());
+
+      date.setDate(date.getDate() + days);
+
+      return date;
+    };
+
+    var plugin = {
+      onParseConfig: function onParseConfig() {
+        fp.config.mode = 'range';
+
+        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
+      },
+
+
+      /**
+       * On flatpickr ready.
+       */
+      onReady: function onReady() {
+        createSecondInput();
+      }
+    };
+
+    return plugin;
+  };
+};
+
+},{}],4:[function(require,module,exports){
 /**
  * Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -279,7 +341,7 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
@@ -375,7 +437,7 @@ module.exports = function (encodedURI) {
 	}
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 const strictUriEncode = require('strict-uri-encode');
 const decodeComponent = require('decode-uri-component');
@@ -599,7 +661,7 @@ exports.parseUrl = (input, options) => {
 	};
 };
 
-},{"decode-uri-component":4,"strict-uri-encode":6}],6:[function(require,module,exports){
+},{"decode-uri-component":5,"strict-uri-encode":7}],7:[function(require,module,exports){
 'use strict';
 module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
 

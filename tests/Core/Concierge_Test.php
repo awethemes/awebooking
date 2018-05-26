@@ -62,7 +62,7 @@ class Concierge_Test extends WP_UnitTestCase {
 		$this->assertTrue( abrs_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-09' ) ) );
 		$this->assertTrue( abrs_room_available( $room, abrs_timespan( '2017-06-09', '2017-06-10' ) ) );
 
-		$this->assertWPError( abrs_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-08' ) ) );
+		$this->assertFalse( abrs_room_available( $room, abrs_timespan( '2017-06-08', '2017-06-08' ) ) );
 	}
 
 

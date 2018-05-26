@@ -12,7 +12,7 @@ $mandatory_ids = $controls->get_mandatory_controls();
 
 <ul class="abrs-sortable-group">
 
-	<?php foreach ( $controls->sections as $section ) : ?>
+	<?php foreach ( $controls->sections() as $section ) : ?>
 		<li class="abrs-sortable-group__item">
 			<span class="abrs-sortable-group__label"><?php echo esc_html( $section->title ); ?></span>
 

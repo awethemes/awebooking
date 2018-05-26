@@ -42,7 +42,7 @@ gulp.task('scss', function() {
 });
 
 gulp.task('babel', function () {
-  return gulp.src(['assets/babel/**/*.js'], { base: 'assets/babel' })
+  return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
     .pipe(bro({ error: 'emit', transform: [ babelify.configure({ presets: ['es2015'] }) ] }))

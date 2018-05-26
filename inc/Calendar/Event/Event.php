@@ -349,7 +349,7 @@ class Event implements Event_Interface {
 	/**
 	 * Get the event date last modified.
 	 *
-	 * @return DateTimeInterface|string|int
+	 * @return \DateTimeInterface|string|int
 	 */
 	public function get_last_modified() {
 		return $this->last_modified;
@@ -358,7 +358,7 @@ class Event implements Event_Interface {
 	/**
 	 * Set the event last_modified date.
 	 *
-	 * @param  DateTimeInterface|string|int $last_modified The last_modified date.
+	 * @param  \DateTimeInterface|string|int $last_modified The last_modified date.
 	 * @return $this
 	 */
 	public function set_last_modified( $last_modified ) {
@@ -379,7 +379,7 @@ class Event implements Event_Interface {
 	/**
 	 * Check if the given date is during the event.
 	 *
-	 * @param  DateTimeInterface|string|int $date The datetime given.
+	 * @param  \DateTimeInterface|string|int $date The datetime given.
 	 * @return bool
 	 */
 	public function contains( $date ) {

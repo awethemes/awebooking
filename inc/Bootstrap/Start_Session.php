@@ -61,7 +61,7 @@ class Start_Session {
 			return new WP_Session( 'awebooking_session', [ 'lifetime' => 120 ] );
 		});
 
-		$this->plugin->singleton( 'session.store', function( $a ) {
+		$this->plugin->singleton( 'session.store', function() {
 			return $this->plugin['session']->get_store();
 		});
 

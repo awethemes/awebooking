@@ -3,7 +3,6 @@ namespace AweBooking\Frontend\Controllers;
 
 use Awethemes\Http\Request;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Reservation\Room_Stay\Room_Rate;
 use AweBooking\Component\Http\Exceptions\ValidationFailedException;
 
 class Reservation_Controller {
@@ -38,19 +37,12 @@ class Reservation_Controller {
 
 		// Create the reservation request.
 		$res_request = abrs_create_res_request( $request );
-		if ( is_wp_error( $res_request ) ) {
+
+		if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
 			throw new ValidationFailedException( $res_request->get_error_message() );
 		}
 
-		// Sets the res request.
-		$res_request['room_type'] = $request->get( 'room_type' );
-		$res_request['rate_plan'] = $request->get( 'rate_plan' );
-
-		$added = $this->reservation->add_room_stay( $res_request,
-			$request->get( 'room_type' ), $request->get( 'rate_plan' )
-		);
-
-		dd( $added );
+		$added = $this->reservation->add_room_stay( $res_request, $request->room_type );
 
 		return awebooking( 'redirector' )->back();
 	}

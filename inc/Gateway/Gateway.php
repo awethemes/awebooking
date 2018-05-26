@@ -129,7 +129,7 @@ abstract class Gateway {
 	/**
 	 * Determine if the gateway support a given meta field.
 	 *
-	 * @param  string|array $meta An array keys or a string of special key.
+	 * @param  string|array $meta An array keys or a string of specified key.
 	 * @return bool
 	 */
 	public function is_support( $meta ) {
@@ -206,7 +206,7 @@ abstract class Gateway {
 		$return_url = add_query_arg( 'completed', 'true', abrs_get_page_permalink( 'checkout' ) );
 
 		if ( is_ssl() || 'on' === abrs_get_option( 'force_ssl_checkout' ) ) {
-			$return_url = str_replace( 'http:', 'https:', $return_url, 1 );
+			$return_url = str_replace( 'http:', 'https:', $return_url );
 		}
 
 		return apply_filters( 'awebooking/get_checkout_return_url', $return_url, $booking );
@@ -248,7 +248,7 @@ abstract class Gateway {
 	 * @return void
 	 */
 	public function display_payment_contents( Payment_Item $payment_item, Booking $booking ) {
-		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get_transaction_id() ) {
+		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get( 'transaction_id' ) ) {
 			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
 		}
 	}

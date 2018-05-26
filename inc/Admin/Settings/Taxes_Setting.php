@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\Settings;
 
 use Awethemes\Http\Request;
-use AweBooking\Support\WP_Data;
 
 class Taxes_Setting implements Setting {
 	/**

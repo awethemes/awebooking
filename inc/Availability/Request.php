@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Reservation;
+namespace AweBooking\Availability;
 
 use AweBooking\Support\Fluent;
 use AweBooking\Model\Common\Timespan;
@@ -19,6 +19,13 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @var \AweBooking\Model\Common\Guest_Counts|null
 	 */
 	protected $guest_counts;
+
+	/**
+	 * The availability constraints.
+	 *
+	 * @var array
+	 */
+	protected $constraints = [];
 
 	/**
 	 * The request options.
@@ -43,11 +50,10 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * Search the available rooms and rates.
 	 *
-	 * @param  array $constraints The search constraints.
-	 * @return \AweBooking\Reservation\Room_Stay\Search_Results
+	 * @return \AweBooking\Availability\Query_Results
 	 */
-	public function search( $constraints = [] ) {
-		return ( new Room_Stay\Search( $this ) )->get( $constraints );
+	public function search() {
+		return ( new Query( $this ) )->search();
 	}
 
 	/**
@@ -81,6 +87,19 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Sets the guest count.
+	 *
+	 * @param  string $age_code The guest age code.
+	 * @param  int    $count    The count.
+	 * @return $this
+	 */
+	public function set_guest_count( $age_code, $count = 0 ) {
+		$this->guest_counts[ $age_code ] = $count;
+
+		return $this;
+	}
+
+	/**
 	 * Sets the Guest_Counts.
 	 *
 	 * @param  \AweBooking\Model\Common\Guest_Counts $guest_counts The guest_counts.
@@ -88,6 +107,41 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function set_guest_counts( Guest_Counts $guest_counts ) {
 		$this->guest_counts = $guest_counts;
+
+		return $this;
+	}
+
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return array
+	 */
+	public function get_constraints() {
+		return $this->constraints;
+	}
+
+	/**
+	 * Sets the constraints.
+	 *
+	 * @param  array $constraints Array of constraints.
+	 * @return $this
+	 */
+	public function set_constraints( $constraints ) {
+		$this->constraints = $constraints;
+
+		return $this;
+	}
+
+	/**
+	 * Add one or more constraints.
+	 *
+	 * @param  array $constraints Array of constraints.
+	 * @return $this
+	 */
+	public function add_contraints( $constraints ) {
+		foreach ( (array) $constraints as $constraint ) {
+			$this->constraints[] = $constraint;
+		}
 
 		return $this;
 	}
@@ -114,12 +168,29 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
-	 * Convert the timespan to an array.
+	 * Convert the request to an array.
+	 *
+	 * Note: Only the timespan and guest-counts can be convert.
 	 *
 	 * @return array
 	 */
 	public function to_array() {
-		return [ /* TODO */ ];
+		$arr = [
+			'check_in'  => $this->timespan->get_start_date(),
+			'check_out' => $this->timespan->get_end_date(),
+		];
+
+		$arr['adults'] = $this->guest_counts['adults']->get_count();
+
+		if ( abrs_children_bookable() && isset( $this->guest_counts['children'] ) ) {
+			$arr['children'] = $this->guest_counts['children']->get_count();
+		}
+
+		if ( abrs_infants_bookable() && isset( $this->guest_counts['infants'] ) ) {
+			$arr['infants'] = $this->guest_counts['infants']->get_count();
+		}
+
+		return $arr;
 	}
 
 	/**
@@ -189,11 +260,11 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return mixed
 	 */
 	public function __get( $property ) {
+		if ( property_exists( $this, $property ) ) {
+			return $this->{$property};
+		}
+
 		switch ( $property ) {
-			case 'options':
-			case 'timespan':
-			case 'guest_counts':
-				return $this->{$property};
 			case 'nights':
 				return $this->timespan->nights();
 			case 'check_in':
@@ -205,7 +276,9 @@ class Request implements \ArrayAccess, \JsonSerializable {
 			case 'adults':
 			case 'children':
 			case 'infants':
-				return abrs_optional( $this->guest_counts->get( $property ) )->get_count();
+				return $this->guest_counts->has( $property )
+					? $this->guest_counts[ $property ]->get_count()
+					: null;
 		}
 
 		return $this->options->get( $property );

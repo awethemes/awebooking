@@ -18,11 +18,8 @@ add_action( 'awebooking/display_search_result_item', 'awebooking_search_result_i
 
 
 
-
 add_action( 'awebooking/before_main_content', 'awebooking_output_content_wrapper', 10 );
 add_action( 'awebooking/after_main_content', 'awebooking_output_content_wrapper_end', 10 );
-
-add_action( 'awebooking/template_notices', 'awebooking_template_notices', 10 );
 
 // Checkout
 add_action( 'awebooking/checkout_guest_details', 'awebooking_checkout_guest_details', 10 );

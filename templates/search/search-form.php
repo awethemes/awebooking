@@ -8,7 +8,7 @@
 		</div>
 
 		<p style="margin-top: 15px;">
-			<button type="submit" class="abrs-button"><?php echo esc_html_x( 'Search', 'search availability', 'awebooking' ); ?></button>
+			<button type="submit" class="abrs-button"><?php echo esc_html_x( 'Query', 'search availability', 'awebooking' ); ?></button>
 		</p>
 	</form>
 </div>

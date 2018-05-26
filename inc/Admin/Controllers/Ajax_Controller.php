@@ -56,7 +56,7 @@ class Ajax_Controller extends Controller {
 	}
 
 	/**
-	 * Search for customers.
+	 * Query for customers.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
@@ -107,7 +107,7 @@ class Ajax_Controller extends Controller {
 				'id'         => $id,
 				'email'      => $customer->user_email,
 				'first_name' => $customer->first_name,
-				'first_name' => $customer->last_name,
+				'last_name'  => $customer->last_name,
 				/* translators: 1: user display name 2: user ID 3: user email */
 				'display'    => sprintf( esc_html__( '%1$s (#%2$s - %3$s)', 'awebooking' ), $customer->first_name . ' ' . $customer->last_name, $customer->ID, $customer->user_email ),
 			];

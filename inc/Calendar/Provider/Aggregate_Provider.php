@@ -47,9 +47,9 @@ class Aggregate_Provider implements Provider_Interface {
 		$events = [];
 
 		foreach ( $this->providers as $provider ) {
-			$events = array_merge( $events, $provider->get_events( $start_date, $end_date, $options ) );
+			$events[] = $provider->get_events( $start_date, $end_date, $options );
 		}
 
-		return $events;
+		return array_merge( ...$events );
 	}
 }

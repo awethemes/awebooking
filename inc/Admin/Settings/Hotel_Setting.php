@@ -23,9 +23,7 @@ class Hotel_Setting extends Abstract_Setting {
 	}
 
 	/**
-	 * Setup the fields.
-	 *
-	 * @return void
+	 * {@inheritdoc}
 	 */
 	public function setup_fields() {
 
@@ -56,6 +54,7 @@ class Hotel_Setting extends Abstract_Setting {
 		foreach ( ( new Hotel_Information_Form )->prop( 'fields' ) as $args ) {
 			$this->add_field( $args );
 		}
+
 		// Enable multiple_hotels.
 		if ( abrs_get_option( 'enable_location', false ) ) {
 			$this->add_field([
@@ -63,7 +62,6 @@ class Hotel_Setting extends Abstract_Setting {
 				'type'     => 'title',
 				'name'     => esc_html__( 'Hotel Listing', 'awebooking' ),
 			]);
-
 
 			$this->add_field([
 				'id'              => 'list_hotels_order',
@@ -75,6 +73,9 @@ class Hotel_Setting extends Abstract_Setting {
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function save( Request $request ) {
 		parent::save( $request );
 

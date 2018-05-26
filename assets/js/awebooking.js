@@ -25,6 +25,8 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
+  awebooking.utils.flatpickrRangePlugin = require('./core/flatpickr-range-plugin.js');
+
   /**
    * Configure.
    *
@@ -72,16 +74,14 @@
 
     var fp = flatpickr(instance, _defaults(options, {
       mode: 'range',
-      altInput: true,
-      altFormat: i18n.date_format,
-      ariaDateFormat: i18n.date_format,
       dateFormat: 'Y-m-d',
+      ariaDateFormat: i18n.date_format,
       minDate: 'today',
       // maxDate: max_date,
+      // disable: disable,
       showMonths: defaults.show_months,
       enableTime: false,
       enableSeconds: false,
-      // disable: disable,
       onReady: function onReady(_, __, fp) {
         fp.calendarContainer.classList.add('awebooking-datepicker');
       }
@@ -96,29 +96,114 @@
    * @return {void}
    */
   $(function () {
+    var _this = this;
 
     $('.searchbox').each(function () {
-      var $checkin = $(this).find('input[name="check-in"]');
-      var $checkout = $(this).find('input[name="check-out"]');
+      var $el = $(_this);
 
-      awebooking.datepicker($checkin[0], {
-        plugins: [new rangePlugin({ input: $checkout[0] })],
-        onChange: function onChange() {
-          var _this = this;
+      var $checkin = $el.find('input[name="check-in"]');
+      var $checkout = $el.find('input[name="check-out"]');
+      var $rangepicker = $el.find('[data-hotel="rangepicker"]');
 
-          var dates = this.selectedDates.map(function (d) {
-            return _this.formatDate(d, 'Y-m-d');
-          });
+      var fp = awebooking.datepicker($rangepicker[0], {
+        // inline: true,
+        // clickOpens: false,
+        onChange: function onChange(dates, str, fp) {
+          var dateFormat = fp.config.dateFormat;
 
-          $checkin.val(dates[0] || '');
-          $checkout.val(dates[1] || '');
+          $checkin.val('');
+          $checkout.val('');
+
+          if (dates[0]) {
+            $checkin.val(fp.formatDate(dates[0], dateFormat)).trigger('change');
+          }
+
+          if (dates[1]) {
+            $checkout.val(fp.formatDate(dates[1], dateFormat)).trigger('change');
+          }
         }
       });
+
+      $checkin.on('click focus', function (e) {
+        e.preventDefault();
+
+        fp.isOpen = false;
+        fp.open(undefined, $checkin[0]);
+      });
+
+      $checkout.on('click focus', function (e) {
+        e.preventDefault();
+
+        fp.isOpen = false;
+        fp.open(undefined, $checkout[0]);
+      });
+
+      console.log(fp);
     });
   });
 })(jQuery);
 
-},{"lodash.defaults":2}],2:[function(require,module,exports){
+},{"./core/flatpickr-range-plugin.js":2,"lodash.defaults":3}],2:[function(require,module,exports){
+'use strict';
+
+module.exports = function rangePlugin() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  return function (fp) {
+    var dateFormat = '',
+        secondInput = void 0,
+        _firstInputFocused = void 0,
+        _secondInputFocused = void 0,
+        _prevDates = void 0;
+
+    /**
+     * Create the secondary input picker.
+     */
+    var createSecondInput = function createSecondInput() {
+      // Create the second input.
+      secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+
+      // Set the "end-date" if second input have any value.
+      if (secondInput.value) {
+        var parsedDate = fp.parseDate(secondInput.value);
+
+        if (parsedDate) {
+          fp.selectedDates.push(parsedDate);
+        }
+      }
+    };
+
+    var dateAddDays = function dateAddDays(inputDate) {
+      var days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      var date = new Date(inputDate.getTime());
+
+      date.setDate(date.getDate() + days);
+
+      return date;
+    };
+
+    var plugin = {
+      onParseConfig: function onParseConfig() {
+        fp.config.mode = 'range';
+
+        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
+      },
+
+
+      /**
+       * On flatpickr ready.
+       */
+      onReady: function onReady() {
+        createSecondInput();
+      }
+    };
+
+    return plugin;
+  };
+};
+
+},{}],3:[function(require,module,exports){
 /**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`

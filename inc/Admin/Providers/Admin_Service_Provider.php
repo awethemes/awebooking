@@ -1,9 +1,8 @@
 <?php
 namespace AweBooking\Admin\Providers;
 
-use AweBooking\Admin\Admin_Settings;
 use AweBooking\Admin\Admin_Template;
-use AweBooking\Component\Routing\Namespace_Route;
+use AweBooking\Admin\Admin_Settings;
 use AweBooking\Support\Service_Provider;
 
 class Admin_Service_Provider extends Service_Provider {
@@ -49,8 +48,6 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_admin_routes( $route ) {
-		$route = new Namespace_Route( $route, 'AweBooking\\Admin\\Controllers' );
-
 		require dirname( __DIR__ ) . '/admin-routes.php';
 	}
 

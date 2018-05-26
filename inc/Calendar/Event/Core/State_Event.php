@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Event\Core;
 
 use AweBooking\Constants;
@@ -13,8 +14,8 @@ class State_Event extends Event {
 	 * Create an event.
 	 *
 	 * @param Resource_Interface $resource   The resource implementation.
-	 * @param DateTime|string    $start_date The start date of the event.
-	 * @param DateTime|string    $end_date   The end date of the event.
+	 * @param \DateTime|string   $start_date The start date of the event.
+	 * @param \DateTime|string   $end_date   The end date of the event.
 	 * @param int                $value      The state represent for this event.
 	 *
 	 * @throws \LogicException
@@ -27,6 +28,7 @@ class State_Event extends Event {
 	 * Set the event state.
 	 *
 	 * @param  int $state The event state.
+	 *
 	 * @return $this
 	 */
 	public function set_state( $state ) {

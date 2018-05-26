@@ -1,7 +1,6 @@
 <?php
 
 use AweBooking\Constants;
-use AweBooking\Model\Hotel;
 use AweBooking\Multilingual;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
@@ -73,7 +72,7 @@ function abrs_redirector() {
 /**
  * Returns the Url_Generator.
  *
- * @return \AweBooking\Http\Routing\Url_Generator
+ * @return \AweBooking\Component\Routing\Url_Generator
  */
 function abrs_url() {
 	return awebooking()->make( 'url' );
@@ -105,7 +104,7 @@ function abrs_admin_route( $path = '/', $parameters = [] ) {
 /**
  * Returns the Mailer.
  *
- * @param  string $email Get special email.
+ * @param  string $email Get specified email.
  * @return \AweBooking\Email\Mailer|\AweBooking\Email\Mailable
  */
 function abrs_mailer( $email = null ) {
@@ -114,8 +113,17 @@ function abrs_mailer( $email = null ) {
 		: awebooking( 'mailer' )->driver( $email );
 }
 
+/**
+ * Returns the WP_Session instance.
+ *
+ * @param  string|null $key     Optional, get a specified session key.
+ * @param  mixed       $default Optional, default value if $key is not exists.
+ * @return \Awethemes\WP_Session\WP_Session|mixed
+ */
 function abrs_session( $key = null, $default = null ) {
-	return awebooking( 'session' );
+	return is_null( $key )
+		? awebooking( 'session' )
+		: awebooking( 'session' )->get( $key, $default );
 }
 
 /**
@@ -138,8 +146,8 @@ function abrs_flash( $message = null, $level = 'info' ) {
 /**
  * Create a new form builder.
  *
- * @param  string     $form_id The form ID.
- * @param  Model|null $data    Optional, form data.
+ * @param  string      $form_id The form ID.
+ * @param  object|null $data    Optional, form data.
  * @return \AweBooking\Component\Form\Form_Builder
  */
 function abrs_create_form( $form_id = '', $data = null ) {
@@ -292,7 +300,7 @@ function abrs_sanitize_option( $key, $value ) {
 	}
 
 	/**
-	 * Allow custom sanitize a special option value.
+	 * Allow custom sanitize a specified option value.
 	 *
 	 * @param mixed $value Mixed option value.
 	 * @var   mixed
@@ -357,7 +365,7 @@ function abrs_maximum_scaffold_rooms() {
 /**
  * Return a list of common titles.
  *
- * @return string
+ * @return array
  */
 function abrs_list_common_titles() {
 	return apply_filters( 'awebooking/list_customer_titles', [
@@ -486,7 +494,7 @@ function abrs_get_template_content( $template_name, $vars = [] ) {
  * Loads a template part into a template.
  *
  * @param mixed  $slug The slug name for the generic template.
- * @param string $name The name of the specialised template.
+ * @param string $name The name of the specified template.
  */
 function abrs_get_template_part( $slug, $name = '' ) {
 	$template = '';
@@ -555,11 +563,7 @@ function abrs_get_image_size( $image_size ) {
 		$height = isset( $image_size[1] ) ? $image_size[1] : '300';
 		$crop   = isset( $image_size[2] ) ? $image_size[2] : 1;
 
-		$size = array(
-			'width'  => $width,
-			'height' => $height,
-			'crop'   => $crop,
-		);
+		$size = compact( 'width', 'height', 'crop' );
 
 		$image_size = $width . '_' . $height;
 
@@ -578,92 +582,3 @@ function abrs_get_image_size( $image_size ) {
 
 	return apply_filters( 'awebooking/get_image_size_' . $image_size, $size );
 }
-
-/**
- * Get hotels.
- *
- * @param  array  $args args
- * @return array
- */
-function abrs_get_hotels( $args = [] ) {
-	$args = wp_parse_args( $args, [
-		'post_type'      => Constants::HOTEL_LOCATION,
-		'post_status'    => 'publish',
-		'order'          => 'ASC',
-		'orderby'        => 'menu_order',
-		'posts_per_page' => 500,
-	]);
-
-	return get_posts( apply_filters( 'awebooking/get_hotels', $args ) );
-}
-
-function abrs_checkout_shorcode( $atts ) {
-	$atts = shortcode_atts( array(
-		'foo' => 'no foo',
-	), $atts, 'awebooking_checkout_template' );
-	ob_start(); ?>
-
-	<table>
-		<thead>
-			<tr>
-				<th width="20%">Room rate</th>
-				<th width="10%">Nights</th>
-				<th width="15%">Arrival</th>
-				<th width="15%">Depature</th>
-				<th width="20%">Guest</th>
-				<th style="max-width: 100px;">Price</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr>
-				<td><strong>Luxury Room</strong> </br> Brilliant Majestic Villa Hotel</td>
-				<td>3</td>
-				<td>15-05-2018</td>
-				<td>18-05-2018</td>
-				<td style="font-size: 12px;">2 adults, 2 children & 1 infant</td>
-				<td>480$</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td colspan="4">
-					<ul style="list-style: none; font-size: 12px;">
-						<li>
-							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
-							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
-							<p style="width: 10%; float: right; margin: 0;">60$</p>
-						</li>
-
-						<li>
-							<label for="" style="width: 30%; float: left;">Dich vu A: </label>
-							<p style="width: 60%; float: left; margin: 0;">Thong tin dich vu A</p>
-							<p style="width: 10%; float: right; margin: 0;">60$</p>
-						</li>
-					</ul>
-				</td>
-				<td>120$</td>
-			</tr>
-
-		</tbody>
-	</table>
-
-	<div style="width: 40%; float: right;">
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<div style="float: right;">
-							<div>Tax: 60$ (10%)</div>
-							<div>Coupon: -60$</div>
-						</div>
-					</td>
-					<td style="max-width: 100px;"><strong>600$</strong></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<?php
-	return ob_get_clean();
-}
-add_shortcode( 'awebooking_checkout_template', 'abrs_checkout_shorcode' );

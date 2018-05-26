@@ -84,7 +84,7 @@ abstract class Abstract_Scheduler {
 	/**
 	 * Get the matrix.
 	 *
-	 * @param  string|int|null $item Get a special item.
+	 * @param  string|int|null $item Get a specified item.
 	 * @return mixed
 	 */
 	public function get_matrix( $item = null ) {
@@ -98,7 +98,7 @@ abstract class Abstract_Scheduler {
 	/**
 	 * Get the events.
 	 *
-	 * @param  string|int|null $item Get a special item.
+	 * @param  string|int|null $item Get a specified item.
 	 * @return mixed
 	 */
 	public function get_events( $item = null ) {

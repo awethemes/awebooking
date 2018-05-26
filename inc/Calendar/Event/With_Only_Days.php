@@ -3,7 +3,7 @@ namespace AweBooking\Calendar\Event;
 
 trait With_Only_Days {
 	/**
-	 * The special days of week this event active.
+	 * The specified days of week this event active.
 	 *
 	 * @var array|null
 	 */

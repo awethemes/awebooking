@@ -136,10 +136,10 @@ abstract class Item extends Model {
 
 		$wpdb->insert( $wpdb->prefix . 'awebooking_booking_items',
 			[
-				'booking_item_name'   => $this->get( 'name', '' ),
+				'booking_item_name'   => $this->get( 'name' ),
 				'booking_item_type'   => $this->get_type(),
-				'booking_item_parent' => $this->get( 'parent_id', 0 ),
-				'booking_id'          => $this->get( 'booking_id', 0 ),
+				'booking_item_parent' => $this->get( 'parent_id' ),
+				'booking_id'          => $this->get( 'booking_id' ),
 			],
 			[
 				'%s',
@@ -160,9 +160,9 @@ abstract class Item extends Model {
 
 		$wpdb->update( $wpdb->prefix . 'awebooking_booking_items',
 			[
-				'booking_id'          => $this->get( 'booking_id', 0 ),
-				'booking_item_name'   => $this->get( 'name', '' ),
-				'booking_item_parent' => $this->get( 'parent_id', 0 ),
+				'booking_id'          => $this->get( 'booking_id' ),
+				'booking_item_name'   => $this->get( 'name' ),
+				'booking_item_parent' => $this->get( 'parent_id' ),
 			],
 			[
 				'booking_item_id' => $this->get_id(),

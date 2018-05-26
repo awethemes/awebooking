@@ -22,6 +22,8 @@ class ValidationFailedException extends \RuntimeException {
 	 * Set the validation errors.
 	 *
 	 * @param mixed $errors The errors.
+	 *
+	 * @return ValidationFailedException
 	 */
 	public function set_errors( $errors ) {
 		$this->errors = $errors;

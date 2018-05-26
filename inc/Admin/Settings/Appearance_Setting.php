@@ -75,6 +75,30 @@ class Appearance_Setting extends Abstract_Setting {
 			],
 		]);
 
+		$general->add_field([
+			'id'    => '__custom_css__',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Custom CSS', 'coming2live' ),
+		]);
+
+		$general->add_field([
+			'id'              => 'custom_css',
+			'type'            => 'textarea_code',
+			'name'            => esc_html__( 'Custom CSS', 'coming2live' ),
+			'show_names'      => false,
+			'before'          => function() {
+				echo '<p class="abrs-mt0">' . esc_html__( 'Add your own CSS code here to customize the appearance and layout of current theme', 'awebooking' ) . '. <a href="https://codex.wordpress.org/CSS" class="external-link" target="_blank">' . esc_html__( 'Learn more about CSS', 'awebooking' ) . '</a></p>';
+			},
+			'sanitization_cb' => function( $value ) {
+				return strip_tags( $value );
+			},
+			'attributes'      => [
+				'data-codeeditor' => json_encode([
+					'codemirror' => [ 'mode' => 'css' ],
+				]),
+			],
+		]);
+
 		$datepicker = $this->add_section( 'datepicker', [
 			'title' => esc_html__( 'Datepicker', 'awebooking' ),
 		]);

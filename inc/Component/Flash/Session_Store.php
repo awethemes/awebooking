@@ -6,7 +6,7 @@ interface Session_Store {
 	 * Flash a message to the session.
 	 *
 	 * @param string $name The session name.
-	 * @param array  $data The session data.
+	 * @param mixed  $data The session data.
 	 */
 	public function flash( $name, $data );
 

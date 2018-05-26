@@ -40,6 +40,7 @@ class Booking extends Model {
 	 * @return bool
 	 */
 	public function payment_complete( $transaction_id = '' ) {
+		return false;
 	}
 
 	/**
@@ -82,7 +83,7 @@ class Booking extends Model {
 		$classmap = abrs_booking_item_classmap();
 
 		if ( ! array_key_exists( $type, $classmap ) ) {
-			return;
+			return null;
 		}
 
 		if ( ! array_key_exists( $type, $this->items ) ) {
@@ -178,7 +179,7 @@ class Booking extends Model {
 	 * Calculate totals by looking at the contents of the booking.
 	 *
 	 * @param  bool $and_taxes Calc taxes if true.
-	 * @return bool
+	 * @return void
 	 */
 	public function calculate_totals( $with_taxes = true ) {
 		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
@@ -393,7 +394,7 @@ class Booking extends Model {
 			'post_excerpt'  => $this->get( 'customer_note' ),
 			'post_status'   => $this['status'] ? $this->get( 'status' ) : 'awebooking-pending',
 			'post_date'     => $this['post_date'] ? (string) abrs_date_time( $this['post_date'] ) : current_time( 'mysql' ),
-			'post_password' => uniqid( 'booking_' ),
+			'post_password' => uniqid( 'booking_', true ),
 			'ping_status'   => 'closed',
 			'post_author'   => 1,
 		], true );
@@ -401,6 +402,8 @@ class Booking extends Model {
 		if ( ! is_wp_error( $insert_id ) ) {
 			return $insert_id;
 		}
+
+		return 0;
 	}
 
 	/**

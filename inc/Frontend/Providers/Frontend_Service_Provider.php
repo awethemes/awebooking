@@ -1,9 +1,8 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Support\Service_Provider;
-use AweBooking\Component\Routing\Namespace_Route;
 use AweBooking\Constants;
+use AweBooking\Support\Service_Provider;
 
 class Frontend_Service_Provider extends Service_Provider {
 	/**
@@ -45,16 +44,14 @@ class Frontend_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_routes( $route ) {
-		$route = new Namespace_Route( $route, 'AweBooking\\Frontend\\Controllers' );
-
 		require dirname( __DIR__ ) . '/routes.php';
 	}
 
 	/**
 	 * When `the_post()` is called, setup the awebooking objects.
 	 *
-	 * @param  WP_Post $post The WP_Post object (passed by reference).
-	 * @return mixed
+	 * @param  \WP_Post $post The WP_Post object (passed by reference).
+	 * @return void
 	 */
 	public function setup_awebooking_objects( $post ) {
 		if ( empty( $post->post_type ) ) {

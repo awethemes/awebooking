@@ -85,7 +85,7 @@ class Room_Type extends Model {
 	}
 
 	public function get_services() {
-		dd( $this->get_term_ids( Constants::HOTEL_SERVICE ) );
+		return $this->get_term_ids( Constants::HOTEL_SERVICE );
 	}
 
 	/**

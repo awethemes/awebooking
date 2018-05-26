@@ -1,10 +1,10 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Reservation\Session;
-use AweBooking\Reservation\Reservation;
-use AweBooking\Frontend\Checkout\Checkout;
 use AweBooking\Support\Service_Provider;
+use AweBooking\Frontend\Checkout\Checkout;
+use AweBooking\Reservation\Reservation;
+use AweBooking\Reservation\Storage\Session_Store;
 
 class Reservation_Service_Provider extends Service_Provider {
 	/**
@@ -13,8 +13,12 @@ class Reservation_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
+		$this->plugin->singleton( 'reservation.store', function() {
+			return new Session_Store( $this->plugin['session.store'] );
+		});
+
 		$this->plugin->singleton( 'reservation', function() {
-			return new Reservation( new Session( $this->plugin['session.store'] ) );
+			return new Reservation( $this->plugin['reservation.store'] );
 		});
 
 		$this->plugin->singleton( 'checkout', function() {
@@ -64,7 +68,7 @@ class Reservation_Service_Provider extends Service_Provider {
 		if ( $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
-			if ( ! is_wp_error( $res_request ) ) {
+			if ( ! is_null( $res_request ) && ! is_wp_error( $res_request ) ) {
 				$this->plugin['reservation']->set_current_request( $res_request );
 			}
 

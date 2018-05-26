@@ -45,7 +45,8 @@ wp_enqueue_script( 'flatpickr' );
 			mode: 'range',
 			dateFormat: 'Y-m-d',
 			showMonths: 2,
-			plugins: [ new rangePlugin({ input: '#<?php echo esc_attr( $types->_id( '_end' ) ); ?>' }) ],
+			minDate: 'today',
+			plugins: [ new awebooking.utils.flatpickrRangePlugin({ input: '#<?php echo esc_attr( $types->_id( '_end' ) ); ?>' }) ],
 		});
 	});
 

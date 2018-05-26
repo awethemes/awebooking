@@ -1,7 +1,7 @@
 <?php
+
 namespace AweBooking\Calendar\Provider\Core;
 
-use AweBooking\Support\Decimal;
 use AweBooking\Calendar\Provider\DB_Provider;
 use AweBooking\Calendar\Event\Core\Pricing_Event;
 use AweBooking\Calendar\Resource\Resource_Interface;
@@ -11,7 +11,7 @@ class Pricing_Provider extends DB_Provider {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resources|array $resources The resources to get events.
+	 * @param \AweBooking\Calendar\Resource\Resources|array $resources The resources to get events.
 	 */
 	public function __construct( $resources ) {
 		parent::__construct( $resources, 'awebooking_pricing', 'rate_id' );

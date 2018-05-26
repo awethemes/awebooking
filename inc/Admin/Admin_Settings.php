@@ -141,8 +141,10 @@ class Admin_Settings {
 		check_admin_referer( 'awebooking-settings' );
 
 		// Handle save the setting.
-		if ( apply_filters( 'awebooking/handle_save_setting_' . $setting, true ) ) {
-			abrs_optional( $this->get( $setting ) )->save( $request );
+		if ( apply_filters( 'awebooking/handle_save_setting_' . $setting, true ) && $instance = $this->get( $setting ) ) {
+			abrs_rescue( function () use ( $instance, $request ) {
+				$instance->save( $request );
+			});
 		}
 
 		// Fire update_setting actions.

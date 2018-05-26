@@ -26,30 +26,14 @@ abstract class Shortcode_Abstract {
 	protected $defaults = [];
 
 	/**
-	 * Constructor.
-	 *
-	 * @param array  $atts     The shortcode attributes.
-	 * @param string $contents The shortcode content (if any).
-	 */
-	public function __construct( $atts, $contents = '' ) {
-		$this->atts     = $this->parse_atts( $atts );
-		$this->contents = $contents;
-	}
-
-	/**
-	 * Output the shortcode.
-	 *
-	 * @param \Awethemes\Http\Request $request Current http request.
-	 * @return void
-	 */
-	abstract public function output( $request );
-
-	/**
 	 * Build the shortcode.
 	 *
 	 * @return string
 	 */
-	public function build() {
+	public function build( $atts, $contents = '' ) {
+		$this->atts     = $this->parse_atts( $atts );
+		$this->contents = $contents;
+
 		$ob_level = ob_get_level();
 
 		// Turn on output buffering.
@@ -65,6 +49,14 @@ abstract class Shortcode_Abstract {
 
 		return ltrim( ob_get_clean() );
 	}
+
+	/**
+	 * Output the shortcode.
+	 *
+	 * @param \Awethemes\Http\Request $request Current http request.
+	 * @return void
+	 */
+	abstract public function output( $request );
 
 	/**
 	 * Get the shortcode attribute.

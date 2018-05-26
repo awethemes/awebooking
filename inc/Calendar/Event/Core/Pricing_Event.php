@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Event\Core;
 
 use AweBooking\Calendar\Event\Event;
@@ -14,14 +15,14 @@ class Pricing_Event extends Event {
 	 * Note: The $amount value will be convert to Decimal object type.
 	 *
 	 * @param Resource_Interface $resource   The resource implementation.
-	 * @param DateTime|string    $start_date The start date of the event.
-	 * @param DateTime|string    $end_date   The end date of the event.
-	 * @param Decimal|float|int  $amount     The amount represent for this event.
+	 * @param \DateTime|string   $start_date The start date of the event.
+	 * @param \DateTime|string   $end_date   The end date of the event.
+	 * @param float|int          $amount     The amount represent for this event.
 	 *
 	 * @throws \LogicException
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $amount = 0 ) {
-		parent::__construct( $resource, $start_date, $end_date, $amount );
+		parent::__construct( $resource, $start_date, $end_date, abrs_decimal( $amount ) );
 	}
 
 	/**
@@ -54,6 +55,7 @@ class Pricing_Event extends Event {
 	 *
 	 * @param  float|int $amount    The amount.
 	 * @param  string    $operation The operation.
+	 *
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function apply_operation( $amount, $operation ) {

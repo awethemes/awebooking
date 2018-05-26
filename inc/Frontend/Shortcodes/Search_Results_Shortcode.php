@@ -1,7 +1,26 @@
 <?php
 namespace AweBooking\Frontend\Shortcodes;
 
+use AweBooking\Reservation\Reservation;
+use AweBooking\Availability\Constraints\Reservation_Constraint;
+
 class Search_Results_Shortcode extends Shortcode_Abstract {
+	/**
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
+	 */
+	protected $reservation;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \AweBooking\Reservation\Reservation $reservation The reservation instance.
+	 */
+	public function __construct( Reservation $reservation ) {
+		$this->reservation = $reservation;
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -18,11 +37,18 @@ class Search_Results_Shortcode extends Shortcode_Abstract {
 		$res_request = $wp->query_vars['res_request'];
 
 		if ( is_wp_error( $res_request ) ) {
-			return $this->print_error( $res_request );
+			$this->print_error( $res_request );
+			return;
 		}
 
-		// Search the rooms.
-		$results = $res_request->search( [] );
+		$contraints = apply_filters( 'awebooking/', [ // TODO: ...
+			new Reservation_Constraint( $this->reservation ),
+		]);
+
+		// Query the rooms.
+		$results = $res_request
+			->add_contraints( $contraints )
+			->search();
 
 		if ( ! $results->has_items() ) {
 			abrs_get_template( 'search/no-results.php', compact( 'results' ) );

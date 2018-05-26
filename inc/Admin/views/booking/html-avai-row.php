@@ -95,7 +95,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 		<?php if ( $room_rate->has_error() ) : ?>
 
 			<?php
-			$reject_rate = $room_rate->filtered_rates->excludes()->first();
+			$reject_rate = $room_rate->rates_availability->excludes()->first();
 
 			if ( $reject_rate && ! empty( $reject_rate['message'] ) ) {
 				$message = $reject_rate['message'];
@@ -118,9 +118,10 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 			</div>
 
 			<div id="js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
+				<?php if ( $room_rate->breakdown ) : ?>
 				<table class="awebooking-table abrs-breakdown-table">
 					<tbody>
-						<?php foreach ( $room_rate->breakdowns['room_rate'] as $date => $amount ) : ?>
+						<?php foreach ( $room_rate->breakdown as $date => $amount ) : ?>
 							<tr>
 								<td class="abrs-text-left"><?php echo abrs_format_date( $date ); // WPCS: XSS OK. ?></td>
 								<td class="abrs-text-right"><?php abrs_price( $amount ); ?></td>
@@ -128,6 +129,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 						<?php endforeach ?>
 					</tbody>
 				</table>
+				<?php endif; ?>
 			</div>
 
 		<?php endif ?>

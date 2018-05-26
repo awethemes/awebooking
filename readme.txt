@@ -48,7 +48,7 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 == Installation ==
 
 * From your WordPress dashboard, Visit `Plugins > Add New`
-* Search for `awebooking`
+* Query for `awebooking`
 * Activate AweBooking from your Plugins page. (You'll be greeted with a Setup page.)
 * Visit `Room type > Add new room type` and create some room types. (You can always delete these later.)
 

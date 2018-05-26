@@ -5,7 +5,7 @@ class Section implements \ArrayAccess {
 	/**
 	 * The CMB2 instance.
 	 *
-	 * @var CMB2
+	 * @var \CMB2
 	 */
 	protected $cmb2;
 
@@ -42,7 +42,7 @@ class Section implements \ArrayAccess {
 	 *
 	 * Any supplied $args override class property defaults.
 	 *
-	 * @param CMB    $cmb2 The CMB2 instance.
+	 * @param \CMB2  $cmb2 The CMB2 instance.
 	 * @param string $id   An specific ID of the section.
 	 * @param array  $args Section arguments.
 	 */

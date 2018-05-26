@@ -16,9 +16,16 @@ class Redirector {
 	/**
 	 * The session store instance.
 	 *
-	 * @var Awethemes\WP_Session\Session
+	 * @var \Awethemes\WP_Session\Session
 	 */
 	protected $session;
+
+	/**
+	 * The HTTP request instance.
+	 *
+	 * @var \Awethemes\Http\Request
+	 */
+	protected $request;
 
 	/**
 	 * Create a new Redirector instance.
@@ -66,7 +73,7 @@ class Redirector {
 	 * @param  int    $status        The response status code.
 	 * @param  array  $headers       The response headers.
 	 * @param  bool   $safe_redirect Use safe redirect or not.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function to( $url, $status = 302, $headers = [], $safe_redirect = false ) {
 		return $this->create_redirect( $this->generator->to( $url ), $status, $headers, $safe_redirect );
@@ -76,7 +83,7 @@ class Redirector {
 	 * Create a new redirect response to the "home".
 	 *
 	 * @param  int $status The response status code.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function home( $status = 302 ) {
 		return $this->create_redirect( home_url(), $status, [], true );
@@ -88,7 +95,7 @@ class Redirector {
 	 * @param  string $path    Optional path relative to the admin URL.
 	 * @param  int    $status  The response status code.
 	 * @param  array  $headers The response headers.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function admin( $path = '', $status = 302, $headers = [] ) {
 		return $this->create_redirect( admin_url( $path ), $status, $headers, true );
@@ -100,7 +107,7 @@ class Redirector {
 	 * @param  mixed $fallback The fallback, if null it'll be admin_url() or home_url() depend by context.
 	 * @param  int   $status   The response status code.
 	 * @param  array $headers  The response headers.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function back( $fallback = null, $status = 302, $headers = [] ) {
 		$previous = wp_get_referer();
@@ -119,7 +126,7 @@ class Redirector {
 	 * @param  array  $parameters The additional parameters.
 	 * @param  int    $status     The response status code.
 	 * @param  array  $headers    The response headers.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function route( $path = '/', $parameters = [], $status = 302, $headers = [] ) {
 		$to_url = $this->generator->route( $path, $parameters );
@@ -134,7 +141,7 @@ class Redirector {
 	 * @param  array  $parameters The additional parameters.
 	 * @param  int    $status     The response status code.
 	 * @param  array  $headers    The response headers.
-	 * @return \AweBooking\Http\Redirect_Response
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function admin_route( $path = '/', $parameters = [], $status = 302, $headers = [] ) {
 		$to_url = $this->generator->admin_route( $path, $parameters );
@@ -149,7 +156,8 @@ class Redirector {
 	 * @param  int    $status        The response status code.
 	 * @param  array  $headers       The response headers.
 	 * @param  bool   $safe_redirect Use safe redirect or not.
-	 * @return \AweBooking\Http\Redirect_Response
+	 *
+	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	protected function create_redirect( $url, $status, $headers, $safe_redirect ) {
 		$redirect = new Redirect_Response( $url, $status, $headers, $safe_redirect );

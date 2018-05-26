@@ -2,7 +2,6 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Admin\Calendar\Booking_Scheduler;
 
@@ -65,30 +64,28 @@ class Calendar_Controller extends Controller {
 	public function bulk_update( Request $request ) {
 		check_admin_referer( 'awebooking_bulk_update_state', '_wpnonce' );
 
-		if ( $request->filled( 'bulk_rooms', 'check-in', 'check-out' ) ) {
+		if ( ! $request->filled( 'bulk_rooms', 'check-in', 'check-out' ) ) {
+			return new WP_Error( 'missing_request', esc_html__( 'Hey, you\'re missing some request parameters.', 'awebooking' ) );
+		}
 
-			foreach ( (array) $request->get( 'bulk_rooms' ) as $room ) {
-				$action = $request->get( 'bulk_action', 'unblock' );
+		$timespan = abrs_timespan( $request->get( 'check-in' ), $request->get( 'check-out' ), 1 );
+		if ( is_wp_error( $timespan ) ) {
+			return $timespan;
+		}
 
-				switch ( $action ) {
-					case 'block':
-						$updated = abrs_block_room([
-							'room'        => absint( $room ),
-							'start_date'  => $request->get( 'check-in' ),
-							'end_date'    => $request->get( 'check-out' ),
-							'only_days'   => $request->get( 'bulk_days' ),
-						]);
-						break;
+		$only_days = $request->get( 'bulk_days' );
 
-					case 'unblock':
-						$updated = abrs_unblock_room([
-							'room'        => absint( $room ),
-							'start_date'  => $request->get( 'check-in' ),
-							'end_date'    => $request->get( 'check-out' ),
-							'only_days'   => $request->get( 'bulk_days' ),
-						]);
-						break;
-				}
+		foreach ( (array) $request->get( 'bulk_rooms' ) as $room ) {
+			$action = $request->get( 'bulk_action', 'unblock' );
+
+			switch ( $action ) {
+				case 'block':
+					$updated = abrs_block_room( absint( $room ), $timespan, $only_days );
+					break;
+
+				case 'unblock':
+					$updated = abrs_unblock_room( absint( $room ), $timespan, $only_days );
+					break;
 			}
 		}
 

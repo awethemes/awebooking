@@ -52,8 +52,8 @@ add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );
 /**
  * Main instance of AweBooking.
  *
- * @param  string|null $make Optional, get special binding in the container.
- * @return AweBooking\Plugin
+ * @param  string|null $make Optional, get specified binding in the container.
+ * @return AweBooking\Plugin|mixed
  */
 function awebooking( $make = null ) {
 	$plugin = AweBooking::get_instance();

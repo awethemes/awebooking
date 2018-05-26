@@ -5,7 +5,6 @@ use WP_Error;
 use Awethemes\Http\Request;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Common\Guest_Counts;
-use AweBooking\Reservation\Room_Stay\Room_Rate;
 use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
 
 class Booking_Room_Controller extends Controller {
@@ -28,8 +27,8 @@ class Booking_Room_Controller extends Controller {
 		if ( $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
-			if ( is_wp_error( $res_request ) ) {
-				return $res_request;
+			if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
+				return new WP_Error( 400, esc_html__( 'ERR.', 'awebooking' ) ); // TODO: ...
 			}
 
 			$results = $res_request->search( [] );

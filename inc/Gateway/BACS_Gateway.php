@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Gateway;
 
-use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
 class BACS_Gateway extends Gateway {
@@ -84,10 +83,10 @@ class BACS_Gateway extends Gateway {
 	public function process( Booking $booking ) {
 		// Mark as on-hold (we're awaiting the payment),
 		// otherwise just mark payment is complete.
-		if ( $order->get( 'total' ) > 0 ) {
-			$order->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
+		if ( $booking->get( 'total' ) > 0 ) {
+			$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
 		} else {
-			$order->payment_complete();
+			$booking->payment_complete();
 		}
 
 		// Return thankyou redirect.

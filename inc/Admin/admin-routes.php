@@ -1,5 +1,9 @@
 <?php
 
+use AweBooking\Component\Routing\Namespace_Route;
+
+$route = new Namespace_Route( $route, 'AweBooking\\Admin\\Controllers' );
+
 // @codingStandardsIgnoreStart
 $route->get(    '/rates',                              'Rate_Controller@index' );
 $route->post(   '/rates',                              'Rate_Controller@update' );

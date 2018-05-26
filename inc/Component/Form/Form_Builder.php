@@ -183,8 +183,8 @@ class Form_Builder extends \CMB2 implements \ArrayAccess {
 	/**
 	 * Custom field label with tooltip.
 	 *
-	 * @param  array      $field_args The field args.
-	 * @param  CMB2_Field $field The CMB2_Field instance.
+	 * @param  array       $field_args The field args.
+	 * @param  \CMB2_Field $field The CMB2_Field instance.
 	 * @return string
 	 */
 	public function render_label_callback( $field_args, $field ) {

@@ -26,12 +26,11 @@ class Scripts_Service_Provider extends Service_Provider {
 		$version = $this->plugin->version();
 
 		// Vendor.
-		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.4.4' );
-		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [ 'flatpickr-range-plugin' ], '4.4.4', true );
-		wp_register_script( 'flatpickr-range-plugin', ABRS_ASSET_URL . 'vendor/flatpickr/rangePlugin.js', [], '4.4.4', true );
+		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.5.0' );
+		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [], '4.5.0', true );
 
-		wp_register_style( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.css', [], '7.18.0' );
-		wp_register_script( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.js', [], '7.18.0', true );
+		wp_register_style( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.css', [], '7.20' );
+		wp_register_script( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.js', [], '7.20', true );
 
 		wp_register_script( 'magnific-popup', ABRS_ASSET_URL . 'js/magnific-popup/jquery.magnific-popup.min.js', [ 'jquery' ], '1.1.0', true );
 

@@ -1,4 +1,4 @@
-/* flatpickr v4.4.7, @license MIT */
+/* flatpickr v4.5.0, @license MIT */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -551,17 +551,11 @@
 
       function updateTime(e) {
         if (self.selectedDates.length === 0) return;
-        timeWrapper(e);
+        if (e !== undefined && e.type !== "blur") timeWrapper(e);
+        setHoursFromInputs();
+        updateValue();
 
-        if (e.type !== "input") {
-          setHoursFromInputs();
-          updateValue();
-        } else {
-          setTimeout(function () {
-            setHoursFromInputs();
-            updateValue();
-          }, DEBOUNCED_CHANGE_MS);
-        }
+        self._debouncedChange();
       }
 
       function ampm2military(hour, amPM) {
@@ -584,7 +578,11 @@
         var hours = (parseInt(self.hourElement.value.slice(-2), 10) || 0) % 24,
             minutes = (parseInt(self.minuteElement.value, 10) || 0) % 60,
             seconds = self.secondElement !== undefined ? (parseInt(self.secondElement.value, 10) || 0) % 60 : 0;
-        if (self.amPM !== undefined) hours = ampm2military(hours, self.amPM.textContent);
+
+        if (self.amPM !== undefined) {
+          hours = ampm2military(hours, self.amPM.textContent);
+        }
+
         var limitMinHours = self.config.minTime !== undefined || self.config.minDate && self.minDateHasTime && self.latestSelectedDateObj && compareDates(self.latestSelectedDateObj, self.config.minDate, true) === 0;
         var limitMaxHours = self.config.maxTime !== undefined || self.config.maxDate && self.maxDateHasTime && self.latestSelectedDateObj && compareDates(self.latestSelectedDateObj, self.config.maxDate, true) === 0;
 
@@ -724,11 +722,11 @@
             return e.target.select();
           };
 
-          bind(self.timeContainer, ["input", "increment"], updateTime);
-          bind(self.timeContainer, "mousedown", onClick(timeIncrement));
-          bind(self.timeContainer, ["input", "increment"], self._debouncedChange, {
-            passive: true
+          bind(self.timeContainer, ["increment"], updateTime);
+          bind(self.timeContainer, "blur", updateTime, {
+            capture: true
           });
+          bind(self.timeContainer, "mousedown", onClick(timeIncrement));
           bind([self.hourElement, self.minuteElement], ["focus", "click"], selText);
           if (self.secondElement !== undefined) bind(self.secondElement, "focus", function () {
             return self.secondElement && self.secondElement.select();
@@ -1297,7 +1295,6 @@
 
       function onKeyDown(e) {
         var isInput = e.target === self._input;
-        var calendarElem = isCalendarElem(e.target);
         var allowInput = self.config.allowInput;
         var allowKeydown = self.isOpen && (!allowInput || !isInput);
         var allowInlineKeydown = self.config.inline && isInput && !allowInput;
@@ -1307,12 +1304,12 @@
             self.setDate(self._input.value, true, e.target === self.altInput ? self.config.altFormat : self.config.dateFormat);
             return e.target.blur();
           } else self.open();
-        } else if (calendarElem || allowKeydown || allowInlineKeydown) {
+        } else if (isCalendarElem(e.target) || allowKeydown || allowInlineKeydown) {
           var isTimeObj = !!self.timeContainer && self.timeContainer.contains(e.target);
 
           switch (e.keyCode) {
             case 13:
-              if (isTimeObj) updateValue();else selectDate(e);
+              if (isTimeObj) updateTime();else selectDate(e);
               break;
 
             case 27:
@@ -1367,19 +1364,18 @@
 
             case 9:
               if (!isTimeObj) break;
+              var elems = [self.hourElement, self.minuteElement, self.secondElement, self.amPM].filter(function (x) {
+                return x;
+              });
+              var i = elems.indexOf(e.target);
 
-              if (e.target === self.hourElement) {
-                e.preventDefault();
-                self.minuteElement.select();
-              } else if (e.target === self.minuteElement && (self.secondElement || self.amPM)) {
-                e.preventDefault();
-                if (self.secondElement !== undefined) self.secondElement.focus();else if (self.amPM !== undefined) {
+              if (i !== -1) {
+                var target = elems[i + (e.shiftKey ? -1 : 1)];
+
+                if (target !== undefined) {
                   e.preventDefault();
-                  self.amPM.focus();
+                  target.focus();
                 }
-              } else if (e.target === self.secondElement && self.amPM) {
-                e.preventDefault();
-                self.amPM.focus();
               }
 
               break;
@@ -1818,7 +1814,7 @@
           format = self.config.dateFormat;
         }
 
-        if (date !== 0 && !date) return self.clear(triggerChange);
+        if (date !== 0 && !date || date instanceof Array && date.length === 0) return self.clear(triggerChange);
         setSelectedDate(date, format);
         self.showTimeInput = self.selectedDates.length > 0;
         self.latestSelectedDateObj = self.selectedDates[0];

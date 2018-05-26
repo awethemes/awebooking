@@ -7,9 +7,6 @@
 
 /* @vars $scheduler */
 
-use AweBooking\Constants;
-use AweBooking\Support\WP_Data;
-
 // Create the form builder.
 $controls = abrs_create_form( 'bulk-adjust-price' );
 

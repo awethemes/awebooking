@@ -54,7 +54,7 @@ class Load_Configuration {
 	/**
 	 * Maybe set the option name on multi-language.
 	 *
-	 * @return string
+	 * @return void
 	 */
 	protected function maybe_modify_options() {
 		if ( ! abrs_running_on_multilanguage() ) {

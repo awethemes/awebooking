@@ -514,7 +514,7 @@ final class Plugin extends Container {
 
 		// Call the callback.
 		if ( is_callable( $callback ) ) {
-			call_user_func( $callback, $e );
+			$callback( $e );
 		}
 	}
 }

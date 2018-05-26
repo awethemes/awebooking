@@ -106,7 +106,7 @@
       // Create the flatpickr after.
       this.flatpickr = flatpickr('#date_start', {
         dateFormat: 'Y-m-d',
-        plugins: [ new rangePlugin({ input: '#date_end' }) ],
+        plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#date_end' }) ],
       });
 
       return $controls;
@@ -125,7 +125,7 @@
 
       flatpickr('#bulk_date_start', {
         dateFormat: 'Y-m-d',
-        plugins: [ new rangePlugin({ input: '#bulk_date_end' }) ],
+        plugins: [ new (plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' })) ],
       });
     }
   }

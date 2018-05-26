@@ -9,9 +9,9 @@ class Logic_Service_Provider extends Service_Provider {
 	/**
 	 * Init service provider.
 	 *
-	 * @param \AweBooking\Plugin $awebooking AweBooking instance.
+	 * @access private
 	 */
-	public function init( $awebooking ) {
+	public function init() {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
 
@@ -49,8 +49,6 @@ class Logic_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function delete_booking_items( $postid ) {
-		global $wpdb;
-
 		if ( get_post_type( $postid ) !== Constants::BOOKING ) {
 			return;
 		}

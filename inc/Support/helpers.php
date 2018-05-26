@@ -61,8 +61,8 @@ function abrs_collect( $value = null ) {
 /**
  * Create a decimal amount.
  *
- * @param  numeric  $amount The amount.
- * @param  int|null $scale  Optional, custom scale.
+ * @param  int|float $amount The amount.
+ * @param  int|null  $scale  Optional, custom scale.
  * @return \AweBooking\Support\Decimal
  */
 function abrs_decimal( $amount = 0, $scale = null ) {
@@ -76,8 +76,8 @@ function abrs_decimal( $amount = 0, $scale = null ) {
 /**
  * Creates a decimal from a raw integer input.
  *
- * @param  numeric  $amount The amount.
- * @param  int|null $scale  Optional, custom scale.
+ * @param  int|float $amount The amount.
+ * @param  int|null  $scale  Optional, custom scale.
  * @return \AweBooking\Support\Decimal
  */
 function abrs_decimal_raw( $amount, $scale = null ) {

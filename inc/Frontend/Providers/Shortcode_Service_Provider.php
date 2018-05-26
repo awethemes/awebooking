@@ -27,13 +27,11 @@ class Shortcode_Service_Provider extends Service_Provider {
 	 * Returns the shortcode callback.
 	 *
 	 * @param  string $class The shortcode class name.
-	 * @return Closure
+	 * @return \Closure
 	 */
 	protected function shortcode_callback( $class ) {
 		return function( $atts, $contents = '' ) use ( $class ) {
-			return $this->plugin
-				->makeWith( $class, compact( 'atts', 'contents' ) )
-				->build();
+			return $this->plugin->make( $class )->build( $atts, $contents );
 		};
 	}
 }

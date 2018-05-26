@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Provider;
 
 use Roomify\Bat\Unit\Unit as BATUnit;
@@ -30,12 +31,12 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	/**
 	 * Constructor.
 	 *
-	 * @param Resources|array $resources   The resources to get events.
-	 * @param string          $table       The table name.
-	 * @param string          $foreign_key The foreign key.
+	 * @param \AweBooking\Calendar\Resource\Resources|array $resources   The resources to get events.
+	 * @param string                                        $table       The table name.
+	 * @param string                                        $foreign_key The foreign key.
 	 */
 	public function __construct( $resources, $table, $foreign_key ) {
-		$this->store = new BATStore( $table, $foreign_key );
+		$this->store     = new BATStore( $table, $foreign_key );
 		$this->resources = new Resources( $resources instanceof Resource_Interface ? [ $resources ] : $resources );
 	}
 
@@ -43,6 +44,7 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	 * Add one more resource to fetching.
 	 *
 	 * @param  Resource_Interface $resource The resource implementation.
+	 *
 	 * @return $this
 	 */
 	public function add( Resource_Interface $resource ) {
@@ -83,19 +85,19 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 		$original_timezone = date_default_timezone_get();
 		date_default_timezone_set( abrs_get_wp_timezone() );
 
-		$raw_events = abrs_rescue( function() use ( $units, $start_date, $end_date ) {
+		$raw_events = abrs_rescue( function () use ( $units, $start_date, $end_date ) {
 			return $this->get_calendar( $units )->getEvents( $start_date, $end_date, true );
 		}, [] );
 
 		$events = abrs_collect( $raw_events )
 			->flatten( 1 )
-			->map(function( $raw_event ) {
-				$resource = $this->resources->first( function( $r ) use ( $raw_event ) {
+			->map( function ( $raw_event ) {
+				$resource = $this->resources->first( function ( $r ) use ( $raw_event ) {
 					return $r->get_id() === $raw_event->getUnitId();
-				});
+				} );
 
 				return $this->transform_calendar_event( $raw_event, $resource );
-			})->all();
+			} )->all();
 
 		date_default_timezone_set( $original_timezone );
 
@@ -123,7 +125,7 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 			$only_days = $event->get_only_days();
 		}
 
-		$stored = abrs_rescue( function() use ( $mockevent, $only_days ) {
+		$stored = abrs_rescue( function () use ( $mockevent, $only_days ) {
 			return $this->get_store()->storeEvent( $mockevent, $only_days );
 		}, false );
 
@@ -136,6 +138,7 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	 * Create the BAT calendar and return it.
 	 *
 	 * @param  array $units The array of BAT units.
+	 *
 	 * @return \Roomify\Bat\Calendar\Calendar
 	 */
 	protected function get_calendar( array $units ) {
@@ -147,6 +150,7 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	 *
 	 * @param  BATEvent           $raw_event The BAT event.
 	 * @param  Resource_Interface $resource  The mapping resource.
+	 *
 	 * @return \AweBooking\Calendar\Event\Event_Interface
 	 */
 	protected function transform_calendar_event( BATEvent $raw_event, Resource_Interface $resource ) {
@@ -160,10 +164,10 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	 */
 	protected function transform_resources_to_units() {
 		return abrs_collect( $this->resources )
-			->map(function( $r ) {
+			->map( function ( $r ) {
 				return new BATUnit( $r->get_id(), $r->get_value() );
-			})->unique(function( $u ) {
+			} )->unique( function ( $u ) {
 				return $u->getUnitId();
-			})->all();
+			} )->all();
 	}
 }

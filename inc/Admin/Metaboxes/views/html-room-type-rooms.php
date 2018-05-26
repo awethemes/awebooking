@@ -12,6 +12,8 @@ if ( abrs_running_on_multilanguage() ) {
 	$is_translation = awebooking( 'multilingual' )->get_original_post( $post_id ) != $post_id;
 }
 
+$max_scaffold_rooms = abrs_maximum_scaffold_rooms();
+
 ?>
 
 <?php if ( abrs_blank( $rooms ) ) : ?>
@@ -19,7 +21,7 @@ if ( abrs_running_on_multilanguage() ) {
 
 	<div class="abrs-input-addon" style="width: 150px;;">
 		<select name="_scaffold_number_rooms" data-title="<?php echo esc_attr( $the_room_type->get( 'title' ) ); ?>">
-			<?php for ( $i = 1; $i <= abrs_maximum_scaffold_rooms(); $i++ ) : ?>
+			<?php for ( $i = 1; $i <= $max_scaffold_rooms; $i++ ) : ?>
 				<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
 			<?php endfor; ?>
 		</select>

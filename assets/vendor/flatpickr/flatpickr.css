@@ -706,9 +706,11 @@ span.flatpickr-weekday {
   text-align: center;
   font-weight: 400;
 }
+.flatpickr-time input:hover,
 .flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-time input:focus,
 .flatpickr-time .flatpickr-am-pm:focus {
-  background: #f0f0f0;
+  background: #f3f3f3;
 }
 .flatpickr-input[readonly] {
   cursor: pointer;

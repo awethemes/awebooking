@@ -98,8 +98,8 @@ abstract class Abstract_List_Table {
 	/**
 	 * Set row actions.
 	 *
-	 * @param  array   $actions Array of actions.
-	 * @param  WP_Post $post Current post object.
+	 * @param  array    $actions Array of actions.
+	 * @param  \WP_Post $post Current post object.
 	 * @return array
 	 *
 	 * @access private
@@ -115,8 +115,8 @@ abstract class Abstract_List_Table {
 	/**
 	 * Get row actions to show in the list table.
 	 *
-	 * @param  array   $actions Array of actions.
-	 * @param  WP_Post $post Current post object.
+	 * @param  array    $actions Array of actions.
+	 * @param  \WP_Post $post Current post object.
 	 * @return array
 	 */
 	protected function get_row_actions( $actions, $post ) {
@@ -169,7 +169,7 @@ abstract class Abstract_List_Table {
 	/**
 	 * Define primary column.
 	 *
-	 * @return array
+	 * @return string
 	 */
 	protected function get_primary_column() {
 		return '';

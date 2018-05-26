@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'awebooking/template_notices' );
+do_action( 'awebooking_template_notices' );
 
 ?>
 
@@ -35,10 +35,10 @@ do_action( 'awebooking/template_notices' );
 		 *
 		 * @hooked awebooking_search_result_item()
 		 *
-		 * @param \AweBooking\Reservation\Request             $res_request    The current reservation request.
-		 * @param \AweBooking\Model\Room_Type                 $room_type      The room type instance.
-		 * @param \AweBooking\Reservation\Room_Stay\Room_Rate $room_rate      The room rate instance.
-		 * @param array                                       $availabilities An array of availabilities.
+		 * @param \AweBooking\Availability\Request   $res_request    The current reservation request.
+		 * @param \AweBooking\Model\Room_Type        $room_type      The room type instance.
+		 * @param \AweBooking\Availability\Room_Rate $room_rate      The room rate instance.
+		 * @param array                              $availabilities An array of availabilities.
 		 */
 		do_action( 'awebooking/display_search_result_item', $res_request, $room_type, $room_rate, $availabilities );
 	}

@@ -3,7 +3,6 @@ namespace AweBooking\Providers;
 
 use Awethemes\Http\Request;
 use AweBooking\Component\Http\Kernel;
-use AweBooking\Component\Http\Exceptions\ModelNotFoundException;
 use AweBooking\Component\Routing\Redirector;
 use AweBooking\Component\Routing\Url_Generator;
 use AweBooking\Component\Routing\Binding_Resolver;
@@ -121,7 +120,7 @@ class Http_Service_Provider extends Service_Provider {
 		/**
 		 * Fire action for user setup custom route binding.
 		 *
-		 * @param \AweBooking\Http\Routing\Binding_Resolver $binder The binder.
+		 * @param \AweBooking\Component\Routing\Binding_Resolver $binder The binder.
 		 */
 		do_action( 'awebooking/route_binding', $binder );
 	}
@@ -148,7 +147,7 @@ class Http_Service_Provider extends Service_Provider {
 	/**
 	 * Dispatch the incoming request (on admin).
 	 *
-	 * @param  WP_Screen $current_screen Current WP_Screen.
+	 * @param  \WP_Screen $current_screen Current WP_Screen.
 	 * @access private
 	 */
 	public function admin_dispatch( $current_screen ) {
