@@ -223,7 +223,7 @@ if ( ! function_exists( 'awebooking_template_loop_room_type_title' ) ) {
 	 * Show the room type title in the room type loop. By default this is an H2.
 	 */
 	function awebooking_template_loop_room_type_title() {
-		the_title( '<h2 class="awebooking-loop-room-type__title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
+		the_title( '<h2 class="list-room__title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 	}
 }
 
