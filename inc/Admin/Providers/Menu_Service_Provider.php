@@ -34,9 +34,9 @@ class Menu_Service_Provider extends Service_Provider {
 		// @codingStandardsIgnoreLine
 		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
 
-		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', 'awebooking', null, 'dashicons-calendar', 53 );
+		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_options', 'awebooking', null, 'dashicons-calendar', 53 );
 
-		add_submenu_page( 'awebooking', esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
+		add_submenu_page( 'awebooking', esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/about' );
 	}
 
 	/**
@@ -45,9 +45,9 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
+		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/calendar' );
 
-		add_submenu_page( 'awebooking', esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
+		add_submenu_page( 'awebooking', esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/rates' );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function regsiter_settings_submenu() {
-		add_submenu_page( 'awebooking', esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/settings' );
+		add_submenu_page( 'awebooking', esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/settings' );
 	}
 
 	/**
