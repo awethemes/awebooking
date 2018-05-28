@@ -46,10 +46,14 @@ function abrs_get_room_type( $room_type ) {
  * @return \AweBooking\Model\Pricing\Rate|null
  */
 function abrs_get_rate( $rate ) {
-	$rate = Model::parse_object_id( $rate );
+	if ( $rate instanceof Base_Rate ) {
+		return $rate;
+	}
 
 	// Let's check given rate if it is base rate or not.
-	$base_rate = abrs_get_room_type( $rate );
+	$base_rate = abrs_get_room_type(
+		Model::parse_object_id( $rate )
+	);
 
 	return ( $base_rate instanceof Room_Type )
 		? new Base_Rate( $base_rate )
@@ -63,10 +67,14 @@ function abrs_get_rate( $rate ) {
  * @return \AweBooking\Model\Pricing\Rate_Plan|null
  */
 function abrs_get_rate_plan( $rate_plan ) {
-	$rate_plan = Model::parse_object_id( $rate_plan );
+	if ( $rate_plan instanceof Standard_Plan ) {
+		return $rate_plan;
+	}
 
 	// Let's check given rate_plan if it is standard rate or not.
-	$standard_plan = abrs_get_room_type( $rate_plan );
+	$standard_plan = abrs_get_room_type(
+		Model::parse_object_id( $rate_plan )
+	);
 
 	return ( $standard_plan instanceof Room_Type )
 		? new Standard_Plan( $standard_plan )

@@ -22,6 +22,38 @@
   box-shadow: none;
 }
 
+table.abrs-table {
+  margin: 0 -1px 24px 0;
+  text-align: left;
+  width: 100%;
+  border-collapse: separate;
+}
+
+table.abrs-table th {
+  font-weight: 700;
+  padding: 9px 12px;
+}
+
+table.abrs-table td {
+  padding: 6px 12px;
+  vertical-align: middle;
+}
+
+table.abrs-table td small {
+  font-weight: normal;
+}
+
+table.abrs-table tbody:first-child tr:first-child th,
+table.abrs-table tbody:first-child tr:first-child td {
+  border-top: 0;
+}
+
+table.abrs-table tfoot td,
+table.abrs-table tfoot th,
+table.abrs-table tbody th {
+  font-weight: 700;
+}
+
 .awebooking-datepicker.flatpickr-calendar {
   margin-top: 9px;
 }
@@ -273,6 +305,21 @@
   flex-direction: column;
 }
 
+/* Container */
+
+.awebooking-container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.awebooking-container::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 /* Room Item */
 
 .abroom {
@@ -328,5 +375,311 @@
 .abroom__remaining-rooms {
   display: block;
   text-align: center;
+}
+
+.list-room {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 50px;
+}
+
+.list-room::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.list-room__title {
+  margin-bottom: 10px;
+}
+
+.list-room__media {
+  width: 45%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-room__media img {
+  width: 100%;
+}
+
+.list-room__info {
+  width: 55%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-room__price {
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.list-room__price span {
+  font-size: 30px;
+}
+
+.list-room__desc {
+  font-size: 14px;
+}
+
+.single-booking_room_type .content-area,
+.single-room_type .content-area {
+  width: 100%;
+}
+
+.single-booking_room_type .awebooking-heading,
+.single-room_type .awebooking-heading {
+  margin-bottom: 0 !important;
+}
+
+.room-type__wrapper {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 30px;
+}
+
+.room-type__wrapper::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.room-type__media {
+  width: 75%;
+  float: left;
+  padding: 0 15px;
+  position: relative;
+}
+
+.room-type__image {
+  margin-bottom: 15px;
+}
+
+.room-type__check-form {
+  width: 25%;
+  float: left;
+}
+
+.room-type-gallery__image {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.room-type-gallery__image img {
+  width: 20%;
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+.room-type__price {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0;
+  font-size: 16px;
+  padding: 0 15px 15px;
+}
+
+.room-type__price span {
+  font-size: 30px;
+}
+
+.room-type__title {
+  padding: 15px 15px 0;
+}
+
+.amenity {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding-left: 32px;
+}
+
+.amenity:before {
+  content: counter(amenity, disc);
+  counter-increment: amenity;
+  position: absolute;
+  left: 10px;
+}
+
+.amenity.has-icon {
+  padding-left: 0;
+}
+
+.amenity.has-icon:before {
+  content: '';
+}
+
+.room-type__header .room-type__title,
+.room-type__header .room-type__price {
+  margin-bottom: 0;
+}
+
+.room-type__check-form .room-type__title,
+.room-type__check-form .room-type__price {
+  display: none;
+}
+
+.amenity__title {
+  display: inline-block;
+  margin-top: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.amenity__icon {
+  vertical-align: middle;
+  display: inline-block;
+  width: 25px;
+  margin-right: 5px;
+}
+
+table.abrs-table--checkout-review-booking {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+table.abrs-table--checkout-review-booking p {
+  margin: 0;
+}
+
+table.abrs-table--checkout-review-booking th.room-nights {
+  width: 10%;
+}
+
+table.abrs-table--checkout-review-booking th.room-arrival,
+table.abrs-table--checkout-review-booking th.room-depature {
+  width: 15%;
+}
+
+table.abrs-table--checkout-review-booking th.room-guest {
+  width: 20%;
+}
+
+table.abrs-table--checkout-review-booking th.room-subtotal {
+  width: 100px;
+}
+
+table.abrs-table--checkout-review-booking .room-nights,
+table.abrs-table--checkout-review-booking .room-arrival,
+table.abrs-table--checkout-review-booking .room-depature,
+table.abrs-table--checkout-review-booking .room-guest,
+table.abrs-table--checkout-review-booking .room-price,
+table.abrs-table--checkout-review-booking .room-subtotal,
+table.abrs-table--checkout-review-booking .services-price {
+  text-align: center;
+}
+
+table.abrs-table--checkout-review-booking .room-services {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+table.abrs-table--checkout-review-booking .room-service {
+  border-bottom: 1px solid #d1d1d1;
+}
+
+table.abrs-table--checkout-review-booking .room-service:last-child {
+  border-bottom: none;
+}
+
+table.abrs-table--checkout-review-booking .room-service__name,
+table.abrs-table--checkout-review-booking .room-service__price {
+  display: inline-block;
+}
+
+table.abrs-table--checkout-review-booking .room-service__price {
+  float: right;
+}
+
+table.abrs-table--checkout-review-booking:nth-child(3n) td,
+table.abrs-table--checkout-review-booking:nth-child(4n) td {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+table.abrs-table--checkout-total-cost {
+  border-top: none;
+}
+
+table.abrs-table--checkout-total-cost .booking-price-name {
+  text-align: right;
+}
+
+table.abrs-table--checkout-total-cost .booking-price-value {
+  width: 100px;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .awebooking-container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 768px) {
+  .awebooking-container {
+    width: 970px;
+  }
+
+  .amenity {
+    width: 49%;
+  }
+}
+
+@media (min-width: 992px) {
+  .awebooking-container {
+    width: 1170px;
+  }
+}
+
+@media (min-width: 996px) {
+  .amenity {
+    width: 33%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  table.abrs-table--responsive thead,
+  table.abrs-table--responsive .empty-td {
+    display: none;
+  }
+
+  table.abrs-table--responsive tbody tr:first-child td:first-child {
+    border-top: 0;
+  }
+
+  table.abrs-table--responsive tbody th {
+    display: none;
+  }
+
+  table.abrs-table--responsive tr {
+    display: block;
+  }
+
+  table.abrs-table--responsive tr td {
+    display: block;
+    text-align: right !important;
+  }
+
+  table.abrs-table--responsive tr td.order-actions {
+    text-align: left !important;
+  }
+
+  table.abrs-table--responsive tr td::before {
+    content: attr(data-title) ": ";
+    font-weight: 700;
+    float: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-type__media {
+    width: 100%;
+  }
+
+  .room-type__check-form {
+    width: 100%;
+  }
 }
 /*# sourceMappingURL=awebooking-colour.css.map */

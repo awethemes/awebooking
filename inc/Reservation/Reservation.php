@@ -144,27 +144,23 @@ class Reservation {
 	public function add_room_stay( Request $request, $room_type, $rate_plan = null, $quantity = 1 ) {
 		$this->set_current_request( $request );
 
-		$room_type = abrs_get_room_type( $room_type );
-		$rate_plan = abrs_get_rate_plan( $rate_plan ?: $room_type );
-
-		if ( $quantity <= 0 || ! $rate_plan || ! $room_type || 'trash' === $room_type->get( 'status' ) ) {
-			return;
+		if ( is_null( $rate_plan ) ) {
+			$rate_plan = $room_type;
 		}
 
-		// Query the room rate.
-		$room_rate = ( new Query( $request ) )->room_rate( $room_type, $rate_plan );
+		$room_rate = abrs_get_room_rate( compact( 'request', 'room_type', 'rate_plan' ) );
 		$this->check_room_rate( $room_rate, $quantity );
 
 		$room_stay = new Item([
-			'id'       => $room_type->get_id(),
-			'name'     => $room_type->get( 'title' ),
-			'price'    => $room_rate->get_rate(),
+			'id'       => $room_rate->room_type->get_id(),
+			'name'     => $room_rate->room_type->get( 'title' ),
+			'price'    => $room_rate->get_rate()->as_numeric(),
 			'quantity' => $quantity,
 			'tax_rate' => 0,
-			'options'  => $this->generate_room_stay_data( $room_rate ),
+			'options'  => $this->generate_room_stay_data( $room_rate, $quantity ),
 		]);
 
-		$room_stay->associate( $room_type );
+		$room_stay->associate( $room_rate->get_room_type() );
 		$room_stay->set_data( $room_rate );
 
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
@@ -180,12 +176,18 @@ class Reservation {
 	 * Generate the room stay data.
 	 *
 	 * @param \AweBooking\Availability\Room_Rate $room_rate The room rate instance.
+	 * @param int                                $quantity  Number of rooms.
 	 * @return array
 	 */
-	protected function generate_room_stay_data( $room_rate, $rooms = [] ) {
+	protected function generate_room_stay_data( $room_rate, $quantity = 1 ) {
 		$request = $room_rate->get_request();
 
 		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
+
+		$rooms = [];
+		for ( $i = 0; $i <= $quantity; $i++ ) {
+			$rooms = [];
+		}
 
 		return array_merge( $request->to_array(), [
 			'rooms'     => $rooms,
@@ -227,11 +229,11 @@ class Reservation {
 			throw new Exceptions\NotEnoughRoomsException( sprintf( esc_html__( 'You cannot book that number of rooms because there are not enough rooms (%1$s remaining)', 'awebooking' ), count( $remaining ) ) );
 		}
 
-		if ( $room_rate->get_rate() <= 0 ) {
+		if ( $room_rate->get_rate()->is_negative() || $room_rate->get_rate()->is_zero() ) {
 			throw new Exceptions\RoomRateException( esc_html__( 'Sorry, the room is not available. Please try another room.', 'awebooking' ) );
 		}
 
-		if ( $room_rate->has_error() ) {
+		if ( $room_rate->has_error() || ! $room_rate->is_visible() ) {
 			throw new Exceptions\RoomRateException( esc_html__( 'Sorry, some kind of error has occurred. Please try again.', 'awebooking' ) );
 		}
 

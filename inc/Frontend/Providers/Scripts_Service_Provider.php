@@ -32,8 +32,6 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.css', [], '7.20' );
 		wp_register_script( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.js', [], '7.20', true );
 
-		wp_register_script( 'magnific-popup', ABRS_ASSET_URL . 'js/magnific-popup/jquery.magnific-popup.min.js', [ 'jquery' ], '1.1.0', true );
-
 		// Core JS & CSS.
 		wp_register_style( 'awebooking-iconfont', ABRS_ASSET_URL . 'fonts/awebooking-webfont.css', [], $version );
 		wp_register_style( 'awebooking', ABRS_ASSET_URL . 'css/awebooking.css', [ 'flatpickr' ], $version );

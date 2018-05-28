@@ -58,9 +58,9 @@
 }
 
 .abwrap::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 .abrow {
@@ -191,9 +191,9 @@
 }
 
 .abrs-clearfix::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 /* Helpers CSS */
@@ -803,9 +803,9 @@ table.availability-table .text-remain-rooms .dashicons {
 }
 
 .awebooking-tabs-panels .awebooking-panel::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 .abrs-card {
@@ -1023,9 +1023,9 @@ table.availability-table .text-remain-rooms .dashicons {
 }
 
 .abrs-toolbar::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 .abrs-toolbar a {
@@ -1281,9 +1281,9 @@ table.availability-table .text-remain-rooms .dashicons {
 }
 
 .abrs-inline-colorpicker::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 .abrs-inline-colorpicker .wp-picker-container {
@@ -2078,9 +2078,9 @@ span.flatpickr-weekday {
 }
 
 .abrs-postbox-title::after {
-  display: block;
+  content: '';
+  display: table;
   clear: both;
-  content: "";
 }
 
 .abrs-postbox-title h3,

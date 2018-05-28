@@ -19,6 +19,20 @@ class Room_Rate {
 	protected $request;
 
 	/**
+	 * The room type instance.
+	 *
+	 * @var \AweBooking\Model\Room_Type
+	 */
+	protected $room_type;
+
+	/**
+	 * The rate plan instance.
+	 *
+	 * @var \AweBooking\Model\Pricing\Rate_Plan
+	 */
+	protected $rate_plan;
+
+	/**
 	 * The room availability.
 	 *
 	 * @var \AweBooking\Availability\Availability
@@ -88,35 +102,65 @@ class Room_Rate {
 	 * @param \AweBooking\Model\Pricing\Rate_Plan $rate_plan The rate plan instance.
 	 */
 	public function __construct( Request $request, Room_Type $room_type, Rate_Plan $rate_plan ) {
-		$this->request = $request;
-		$request->get_timespan()->requires_minimum_nights( 1 );
-
-		$this->rooms_availability = new Availability( $room_type, abrs_check_room_states( $room_type->get_rooms(), $request->get_timespan(), $request->get_guest_counts(), Constants::STATE_AVAILABLE, $request->get_constraints() ) );
-		$this->rates_availability = new Availability( $rate_plan, abrs_filter_rates( $rate_plan->get_rates(), $request->get_timespan(), $request->get_guest_counts() ) );
-
-		$this->check_errors( $this->errors = new WP_Error );
+		$this->request   = $request;
+		$this->room_type = $room_type;
+		$this->rate_plan = $rate_plan;
+		$this->errors    = new WP_Error;
+		$this->precheck();
 	}
 
 	/**
-	 * Check the errors.
+	 * Setup the rooms availability and pricing.
 	 *
-	 * @param \WP_Error $errors The WP_Error instance.
 	 * @return void
 	 */
-	protected function check_errors( $errors ) {
+	public function setup() {
+		// If we got any errors from precheck, just leave.
+		if ( $this->has_error() ) {
+			return;
+		}
+
+		$constraints = $this->request->get_constraints();
+
+		// First, check the rooms availability.
+		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), $this->get_guest_counts(), Constants::STATE_AVAILABLE, $constraints );
+		$this->rooms_availability = new Availability( $this->room_type, $room_response );
+
+		// Leave if no rooms remain.
+		if ( count( $this->rooms_availability->remains() ) === 0 ) {
+			return;
+		}
+
+		// Check the rates availability.
+		$rate_response = abrs_filter_rates( $this->rate_plan->get_rates(), $this->get_timespan(), $this->get_guest_counts() );
+		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
+
+		if ( count( $this->rates_availability->remains() ) > 0 ) {
+			$this->using( apply_filters( 'awebooking/select_room_rate', $this->rates_availability->select( 'first' ), $this->rates_availability, $this ) );
+
+			do_action( 'awebooking/setup_room_rate', $this );
+
+			$this->calculate_totals();
+		}
+	}
+
+	/**
+	 * Validate the the request before create the room rate.
+	 *
+	 * @return void
+	 */
+	protected function precheck() {
+		try {
+			$this->request->get_timespan()->requires_minimum_nights( 1 );
+		} catch ( \Exception $e ) {
+			$this->errors->add( 'minimum_nights', $e->getMessage() );
+		}
+
 		if ( $this->request->get_guest_counts()->get_totals() > $this->room_type->get( 'maximum_occupancy' ) ) {
-			$errors->add( 'overflow_occupancy', esc_html__( 'Error: Maximum occupancy.', 'awebooking' ) );
+			$this->errors->add( 'overflow_occupancy', esc_html__( 'Error: maximum occupancy.', 'awebooking' ) );
 		}
 
-		if ( count( $this->availability->remains() ) === 0 ) {
-			$errors->add( 'no_room_left', esc_html__( 'Sorry, there are no room available.', 'awebooking' ) );
-		}
-
-		if ( count( $this->rates_availability->remains() ) === 0 ) {
-			$errors->add( 'no_rate_available', esc_html__( 'Sorry, there are no rate available.', 'awebooking' ) );
-		}
-
-		do_action( 'awebooking/room_rate/check_errors', $errors, $this );
+		do_action( 'awebooking/precheck_room_rate', $this->errors, $this );
 	}
 
 	/**
@@ -129,30 +173,12 @@ class Room_Rate {
 	}
 
 	/**
-	 * Gets the rooms availability instance.
-	 *
-	 * @return \AweBooking\Availability\Availability
-	 */
-	public function get_availability() {
-		return $this->rooms_availability;
-	}
-
-	/**
-	 * Gets the rates availability instance.
-	 *
-	 * @return \AweBooking\Availability\Availability
-	 */
-	public function get_rates_availability() {
-		return $this->rates_availability;
-	}
-
-	/**
 	 * Gets the room type instance.
 	 *
 	 * @return \AweBooking\Model\Room_Type
 	 */
 	public function get_room_type() {
-		return $this->rooms_availability->get_resource();
+		return $this->room_type;
 	}
 
 	/**
@@ -161,7 +187,25 @@ class Room_Rate {
 	 * @return \AweBooking\Model\Pricing\Rate_Plan
 	 */
 	public function get_rate_plan() {
-		return $this->rates_availability->get_resource();
+		return $this->rate_plan;
+	}
+
+	/**
+	 * Gets the rooms availability instance.
+	 *
+	 * @return \AweBooking\Availability\Availability|null
+	 */
+	public function get_availability() {
+		return $this->rooms_availability;
+	}
+
+	/**
+	 * Gets the rates availability instance.
+	 *
+	 * @return \AweBooking\Availability\Availability|null
+	 */
+	public function get_rates_availability() {
+		return $this->rates_availability;
 	}
 
 	/**
@@ -183,12 +227,33 @@ class Room_Rate {
 	}
 
 	/**
+	 * Determines if the room rate is visible or not.
+	 *
+	 * @return bool
+	 */
+	public function is_visible() {
+		if ( $this->has_error() ) {
+			return false;
+		}
+
+		if ( count( $this->get_remain_rooms() ) === 0 ) {
+			return false;
+		}
+
+		if ( is_null( $this->room_rate ) || $this->get_rate()->is_zero() ) {
+			return false;
+		}
+
+		return apply_filters( 'awebooking/room_rate_visibility', true, $this );
+	}
+
+	/**
 	 * Gets the remain rooms.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_remain_rooms() {
-		return $this->rooms_availability->remains();
+		return $this->rooms_availability ? $this->rooms_availability->remains() : abrs_collect();
 	}
 
 	/**
@@ -197,33 +262,7 @@ class Room_Rate {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_reject_rooms() {
-		return $this->rooms_availability->excludes();
-	}
-
-	/**
-	 * Determines if room rate is read-only.
-	 *
-	 * @return bool
-	 */
-	public function is_readonly() {
-		return count( $this->errors->errors ) > 0;
-	}
-
-	/**
-	 * Setup the rooms availability and pricing.
-	 *
-	 * @return void
-	 */
-	public function setup() {
-		if ( $this->is_readonly() ) {
-			return;
-		}
-
-		$this->using( apply_filters( 'awebooking/room_rate/selected_rate', $this->rates_availability->select( 'first' ), $this->rates_availability, $this ) );
-
-		do_action( 'awebooking/setup_room_rate', $this );
-
-		$this->calculate_totals();
+		return $this->rooms_availability ? $this->rooms_availability->excludes() : abrs_collect();
 	}
 
 	/**
@@ -292,7 +331,7 @@ class Room_Rate {
 	 * @return void
 	 */
 	public function calculate_totals() {
-		if ( $this->is_readonly() || empty( $this->room_rate ) ) {
+		if ( $this->has_error() || empty( $this->room_rate ) ) {
 			return;
 		}
 
@@ -346,10 +385,10 @@ class Room_Rate {
 	/**
 	 * Gets the rate (total).
 	 *
-	 * @return int|float
+	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_rate() {
-		return $this->prices['rate'];
+		return abrs_decimal( $this->prices['rate'] );
 	}
 
 	/**

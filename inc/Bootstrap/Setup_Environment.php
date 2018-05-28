@@ -116,7 +116,7 @@ class Setup_Environment {
 			'show_admin_column'   => false,
 			'rewrite'             => false,
 			'query_var'           => false,
-			'capabilities'        => $capabilities,
+//			'capabilities'        => $capabilities,
 		]));
 
 		register_taxonomy( Constants::HOTEL_SERVICE, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_service_args', [
@@ -143,7 +143,7 @@ class Setup_Environment {
 			'show_in_nav_menus'   => true,
 			'show_in_quick_edit'  => false,
 			'show_admin_column'   => false,
-			'capabilities'        => $capabilities,
+//			'capabilities'        => $capabilities,
 		]));
 
 		/**

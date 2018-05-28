@@ -359,9 +359,9 @@ function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $c
 		->filter( /* Remove empty items */ )
 		->each(function( Resource $r ) use ( $timespan, $guests ) {
 			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan, $guests ) );
-		})->all();
+		});
 
-	$response = ( new Finder( $resources ) )
+	$response = ( new Finder( $resources->all() ) )
 		->callback( '_abrs_filter_rates_callback' )
 		->using( apply_filters( 'awebooking/filter_rates_constraints', $constraints, $timespan, $guests, $resources ) )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
@@ -515,11 +515,11 @@ function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
  */
 function abrs_get_room_rate( $args ) {
 	$args = wp_parse_args( $args, [
+		'request'   => null,
 		'room_type' => 0,
 		'rate_plan' => 0,
-		'request'   => null,
-		'check_in'  => isset( $args['check-in'] ) ? $args['check-in'] : '',
-		'check_out' => isset( $args['check-out'] ) ? $args['check-out'] : '',
+		'check_in'  => '',
+		'check_out' => '',
 		'adults'    => 1,
 		'children'  => 0,
 		'infants'   => 0,
@@ -533,7 +533,9 @@ function abrs_get_room_rate( $args ) {
 		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Invalid rate plan.', 'awebooking' ) );
 	}
 
+	// Resolve the res request.
 	$res_request = $args['request'];
+
 	if ( ! $res_request instanceof Request ) {
 		$res_request = abrs_create_res_request( Arr::except( $args, 'request' ) );
 	}
@@ -546,7 +548,7 @@ function abrs_get_room_rate( $args ) {
 	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
 
 	// Setup the room availability and rate.
-	do_action( 'awebooking/setup_room_rate', $room_rate, $args );
+	do_action( 'awebooking/prepare_setup_room_rate', $room_rate, $args );
 
 	$room_rate->setup();
 

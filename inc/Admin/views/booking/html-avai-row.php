@@ -108,10 +108,10 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 
 		<?php else : ?>
 			<span class="abrs-badge abrs-badge--primary tippy" data-tippy-html="#js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
-				<?php abrs_price( $room_rate->get_price( 'total' ) ); ?>
+				<?php abrs_price( $room_rate->get_rate() ); ?>
 			</span>
 
-			<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_price( 'total' )->as_string() ); ?>">
+			<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_rate()->as_string() ); ?>">
 
 			<div class="book-actions">
 				<button class="button button-primary abrs-button" name="submit" value="<?php echo esc_attr( $room_type->get_id() ); ?>"><?php echo esc_html__( 'Book', 'awebooking' ); ?></button>

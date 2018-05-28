@@ -1,6 +1,5 @@
 <?php
 
-use AweBooking\Constants;
 use AweBooking\Multilingual;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
