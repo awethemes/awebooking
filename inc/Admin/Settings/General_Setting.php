@@ -70,6 +70,7 @@ class General_Setting extends Abstract_Setting {
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
+			'after'            => $this->get_external_link_cb(),
 		]);
 
 		$this->add_field([
@@ -80,6 +81,7 @@ class General_Setting extends Abstract_Setting {
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
+			'after'            => $this->get_external_link_cb(),
 		]);
 
 		$this->add_field([
@@ -90,6 +92,7 @@ class General_Setting extends Abstract_Setting {
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
+			'after'            => $this->get_external_link_cb(),
 		]);
 
 		// Currency options.
@@ -172,5 +175,29 @@ class General_Setting extends Abstract_Setting {
 				120 => esc_html__( '4 Months', 'awebooking' ),
 			],
 		]);
+	}
+
+	/**
+	 * Gets the external link callback.
+	 *
+	 * @return \Closure
+	 */
+	protected function get_external_link_cb() {
+		/**
+		 * Prints the external link a select "page" field.
+		 *
+		 * @param  array       $args  The field args.
+		 * @param  \CMB2_Field $field The field object.
+		 * @return string
+		 */
+		return function ( $args, $field ) {
+			$page_id = $field->escaped_value();
+
+			if ( ! $page_id ) {
+				return '';
+			}
+
+			return '<a href="' . esc_url( get_edit_post_link( $page_id ) ) . '" target="_blank"><span class="dashicons dashicons-external"></span></a>';
+		};
 	}
 }

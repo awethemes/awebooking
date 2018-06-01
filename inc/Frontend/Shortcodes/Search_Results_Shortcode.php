@@ -42,7 +42,7 @@ class Search_Results_Shortcode extends Shortcode_Abstract {
 		}
 
 		$contraints = apply_filters( 'awebooking/', [ // TODO: ...
-			new Reservation_Constraint( $this->reservation ),
+//			new Reservation_Constraint( $this->reservation ),
 		]);
 
 		// Query the rooms.

@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Frontend\Controllers;
 
-use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Frontend\Checkout\Checkout;
+use AweBooking\Frontend\Checkout\Url_Generator;
 
 class Checkout_Controller {
 	/**
@@ -15,20 +15,50 @@ class Checkout_Controller {
 	public function checkout( Request $request, Checkout $checkout ) {
 		abrs_nocache_headers();
 
-		// Add error messages to the flash.
-		// foreach ( $errors->get_error_messages() as $message ) {
-		// 	abrs_add_notice( $message, 'error' );
-		// }
+		$checkout_url = abrs_get_page_permalink( 'checkout' );
 
-		// return abrs_redirector()->back();
+		// Validate the nonce.
+		if ( ! $request->filled( '_wpnonce' ) || ! wp_verify_nonce( $request->get( '_wpnonce' ), 'awebooking_checkout_process' ) ) {
+			abrs_add_notice( esc_html__( 'We were unable to process your reservation, please try again.', 'awebooking' ), 'error' );
+			return abrs_redirector()->back( $checkout_url );
+		}
 
 		try {
-			return $checkout->process( $request );
+			$response = $checkout->process( $request );
+
+			$url_generator = new Url_Generator( $response->get_data() );
+
+			if ( $response->is_redirect() ) {
+				return abrs_redirector()->to( $response->get_redirect_url() );
+			}
+
+			if ( $response->is_successful() ) {
+				return abrs_redirector()->to( $url_generator->get_booking_received_url() );
+			}
+		} catch ( \AweBooking\Component\Http\Exceptions\ValidationFailedException $e ) {
+			$this->handle_validate_exception( $e );
 		} catch ( \Exception $e ) {
-			abrs_report( $e );
 			abrs_add_notice( $e->getMessage(), 'error' );
 		}
 
-		return abrs_redirector()->back( abrs_get_page_permalink( 'checkout' ) )->with_input();
+		return abrs_redirector()->back( $checkout_url )->with_input();
+	}
+
+	/**
+	 * Handle the ValidationFailedException.
+	 *
+	 * @param \AweBooking\Component\Http\Exceptions\ValidationFailedException $e The exception.
+	 */
+	protected function handle_validate_exception( $e ) {
+		$errors = $e->get_errors();
+
+		if ( ! is_wp_error( $errors ) && ! $message = $e->getMessage() ) {
+			abrs_add_notice( $message, 'error' );
+			return;
+		}
+
+		foreach ( $e->get_errors()->get_error_messages() as $message ) {
+			abrs_add_notice( $message, 'error' );
+		}
 	}
 }

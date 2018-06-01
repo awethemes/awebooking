@@ -27,9 +27,17 @@ class Constants {
 	 * @return void
 	 */
 	public static function defines() {
-		static::define( 'ABRS_ABSPATH', awebooking()->plugin_path() );
-		static::define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
-		static::define( 'ABRS_TEMPLATE_DEBUG', false );
+		if ( ! defined( 'ABRS_ABSPATH' ) ) {
+			define( 'ABRS_ABSPATH', awebooking()->plugin_path() );
+		}
+
+		if ( ! defined( 'ABRS_ASSET_URL' ) ) {
+			define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
+		}
+
+		if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
+			define( 'ABRS_TEMPLATE_DEBUG', true );
+		}
 	}
 
 	/**

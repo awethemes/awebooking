@@ -1,6 +1,7 @@
 <?php
 
 use AweBooking\Multilingual;
+use AweBooking\Gateway\Gateway;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
@@ -156,7 +157,7 @@ function abrs_create_form( $form_id = '', $data = null ) {
 /**
  * Gets the gateway manager.
  *
- * @return array
+ * @return \AweBooking\Gateway\Gateways
  */
 function abrs_payment_gateways() {
 	return awebooking()->make( 'gateways' );
@@ -172,9 +173,9 @@ function abrs_list_payment_methods() {
 		'cash' => esc_html__( 'Cash', 'awebooking' ),
 	]);
 
-	$gateways = awebooking()->make( 'gateways' )->enabled()
-		->map( function( $m ) {
-			return $m->get_method_title();
+	$gateways = abrs_payment_gateways()
+		->enabled()->map( function( Gateway $gateway ) {
+			return $gateway->get_method_title();
 		})->all();
 
 	return array_merge( $methods, $gateways );

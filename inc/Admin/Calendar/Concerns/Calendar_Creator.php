@@ -11,8 +11,9 @@ trait Calendar_Creator {
 	/**
 	 * Create room resources.
 	 *
-	 * @param  array|Collection $rooms The rooms.
-	 * @param  int              $state Default resource state.
+	 * @param  \AweBooking\Support\Collection|array $rooms The rooms.
+	 * @param  int                                  $state Default resource state.
+	 *
 	 * @return \AweBooking\Calendar\Resource\Resources
 	 */
 	protected function create_room_resources( $rooms, $state = 0 ) {
@@ -30,7 +31,8 @@ trait Calendar_Creator {
 	/**
 	 * Create rate resources.
 	 *
-	 * @param  array|Collection $rates The rates.
+	 * @param  \AweBooking\Support\Collection|array $rates The rates.
+	 *
 	 * @return \AweBooking\Calendar\Resource\Resources
 	 */
 	protected function create_rate_resources( $rates ) {
@@ -54,6 +56,7 @@ trait Calendar_Creator {
 	 *
 	 * @param  \AweBooking\Calendar\Resource\Resources          $resources The resources.
 	 * @param  \AweBooking\Calendar\Provider\Provider_Interface $provider  The calendar provider.
+	 *
 	 * @return \AweBooking\Calendar\Scheduler
 	 */
 	protected function create_scheduler_for( Resources $resources, Provider_Interface $provider ) {

@@ -272,7 +272,7 @@ class Room_Rate {
 	 */
 	public function using( Rate $rate ) {
 		if ( ! $this->rates_availability->remain( $rate->get_id() ) ) {
-			throw new \InvalidArgumentException( '' );
+			throw new \InvalidArgumentException( esc_html__( 'Invalid rate.', 'awebooking' ) );
 		}
 
 		$this->room_rate = $rate;
@@ -297,7 +297,7 @@ class Room_Rate {
 		}
 
 		if ( $this->room_rate->get_id() === $key ) {
-			throw new \InvalidArgumentException( 'Can not add an duplicate rate.' );
+			throw new \InvalidArgumentException( 'Can not add a duplicate rate.' );
 		}
 
 		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
@@ -319,7 +319,7 @@ class Room_Rate {
 		$breakdown = abrs_retrieve_rate( $rate, $this->request->get_timespan() );
 
 		if ( is_wp_error( $breakdown ) ) {
-			throw new \Exception( '' );
+			throw new \Exception( 'Invalid rate' );
 		}
 
 		return $breakdown;

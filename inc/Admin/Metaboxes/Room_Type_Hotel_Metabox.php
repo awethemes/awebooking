@@ -5,7 +5,7 @@ class Room_Type_Hotel_Metabox {
 	/**
 	 * Output the metabox.
 	 *
-	 * @param WP_Post $post The WP_Post object.
+	 * @param \WP_Post $post The WP_Post object.
 	 */
 	public function output( $post ) {
 		$hotels = abrs_list_hotels( [], true )->pluck( 'name', 'id' );

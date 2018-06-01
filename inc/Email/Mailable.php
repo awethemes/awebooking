@@ -252,7 +252,7 @@ abstract class Mailable {
 		}
 
 		// Make sure we only inline CSS for html emails.
-		if ( in_array( $this->get_content_type(), [ 'text/html' ] ) && class_exists( 'DOMDocument' ) ) {
+		if ( 'text/html' === $this->get_content_type() && class_exists( 'DOMDocument' ) ) {
 			$stylesheet = apply_filters( 'awebooking/email/stylesheets', abrs_get_template_content( 'emails/styles.php' ) );
 
 			// Apply CSS styles inline for picky email clients.
@@ -272,7 +272,7 @@ abstract class Mailable {
 	 * Build the message.
 	 *
 	 * @param  mixed $data The data.
-	 * @return string
+	 * @return \AweBooking\Email\Message
 	 */
 	public function build( $data ) {
 		if ( method_exists( $this, 'prepare_data' ) ) {

@@ -30,18 +30,26 @@ class Query {
 	public function search() {
 		$results = [];
 
-		foreach ( $this->query_rooms() as $room_type ) {
+		$room_types = $this->query_rooms();
+
+		do_action( 'awebooking/prepare_search_rooms', $room_types, $this->request );
+
+		foreach ( $room_types as $room_type ) {
 			$room_rate = abrs_get_room_rate([
 				'request'   => $this->get_request(),
 				'room_type' => $room_type,
 				'rate_plan' => $room_type->get_standard_plan(),
 			]);
 
-			if ( is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
+			// This filter let users modify the room rate before it can be rejected.
+			$room_rate = apply_filters( 'awebooking/search_room_rate', $room_rate, $this->request );
+
+			// Ignore invalid room rates.
+			if ( is_null( $room_rate ) || is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
 				continue;
 			}
 
-			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $this->request, $room_type, $room_rate );
+			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $this->request );
 		}
 
 		return apply_filters( 'awebooking/search_results', new Query_Results( $this->request, $results ), $this->request );
@@ -79,6 +87,9 @@ class Query {
 		$room_types = ( new WP_Query(
 			apply_filters( 'awebooking/reservation/query_room_types', $wp_query_args, $this )
 		) )->posts;
+
+		// Prime caches to reduce future queries.
+		abrs_prime_room_caches( wp_list_pluck( $room_types, 'ID' ) );
 
 		return abrs_collect( $room_types )
 			->transform( 'abrs_get_room_type' )

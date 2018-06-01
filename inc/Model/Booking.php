@@ -153,6 +153,10 @@ class Booking extends Model {
 		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
 	}
 
+	public function remove_items() {
+		// TODO: ...
+	}
+
 	/**
 	 * Returns the last payment item.
 	 *

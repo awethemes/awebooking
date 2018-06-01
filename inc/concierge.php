@@ -508,10 +508,10 @@ function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
 }
 
 /**
- * Gets a room rate.
+ * Gets a room rate by given an array args.
  *
  * @param  array $args The query args.
- * @return \AweBooking\Availability\Room_Rate|\WP_Error
+ * @return \AweBooking\Availability\Room_Rate|\WP_Error|null
  */
 function abrs_get_room_rate( $args ) {
 	$args = wp_parse_args( $args, [
@@ -544,15 +544,13 @@ function abrs_get_room_rate( $args ) {
 		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Unable to create the reservation request.', 'awebooking' ) );
 	}
 
-	// Create the room rate request.
 	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
 
-	// Setup the room availability and rate.
-	do_action( 'awebooking/prepare_setup_room_rate', $room_rate, $args );
+	if ( ! $room_rate->has_error() ) {
+		$room_rate->setup();
+	}
 
-	$room_rate->setup();
-
-	return apply_filters( 'awebooking/get_room_rate', $room_rate, $args );
+	return $room_rate;
 }
 
 /**

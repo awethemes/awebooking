@@ -61,8 +61,8 @@ $room_items = $the_booking->get_rooms();
 								printf( '<div class="abrs-thumb-image abrs-fleft" style="margin-right: 10px;">%2$s</div>', esc_url( '#' ), $thumbnail ); // @wpcs: XSS OK.
 								?>
 
-								<strong class="row-title"><?php esc_html_e( 'Room Type', 'awebooking' ); ?></strong>
-								<span class="dp-block"><?php echo esc_html( $item->get_name() ); ?></span>
+								<strong class="row-title"><?php echo esc_html( $item->get_name() ); ?></strong>
+								<span class="dp-block"><?php esc_html_e( 'Room Type', 'awebooking' ); ?></span>
 							</td>
 
 							<td>

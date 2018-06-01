@@ -81,15 +81,11 @@ class BACS_Gateway extends Gateway {
 	 * {@inheritdoc}
 	 */
 	public function process( Booking $booking ) {
-		// Mark as on-hold (we're awaiting the payment),
-		// otherwise just mark payment is complete.
-		if ( $booking->get( 'total' ) > 0 ) {
-			$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
-		} else {
-			$booking->payment_complete();
-		}
+		$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
 
-		// Return thankyou redirect.
-		return new Response( 'success', $this->get_return_url( $booking ) );
+		// Flush the reservation data.
+		abrs_reservation()->flush();
+
+		return ( new Response( 'success' ) )->data( $booking );
 	}
 }

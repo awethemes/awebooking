@@ -93,7 +93,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 			$this->set_options( [] );
 		}
 
-		if ( $this->id && ! $this->row_id ) {
+		if ( ! $this->row_id ) {
 			$this->row_id = static::generate_row_id( $this->id, $this->options );
 		}
 	}
@@ -105,14 +105,12 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return $this
 	 */
 	public function update( array $attributes ) {
-		$this->id       = Arr::get( $attributes, 'id', $this->id );
-		$this->name     = Arr::get( $attributes, 'name', $this->name );
-		$this->quantity = Arr::get( $attributes, 'quantity', $this->quantity );
-		$this->price    = Arr::get( $attributes, 'price', $this->price );
-		$this->tax_rate = Arr::get( $attributes, 'tax_rate', $this->tax_rate );
+		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
+			if ( array_key_exists( $key, $attributes ) ) {
+				$this->set( $key, $attributes[ $key ] );
+			}
+		}
 
-		$this->set_options( Arr::get( $attributes, 'options', $this->options ) );
-		$this->associated_model = Arr::get( $attributes, 'associated_model', $this->associated_model );
 		$this->row_id = static::generate_row_id( $this->id, $this->options );
 
 		return $this;

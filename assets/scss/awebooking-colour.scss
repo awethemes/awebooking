@@ -1,12 +1,10 @@
 @import "utils/mixins";
-@import "utils/breakpoints";
-@import "utils/grid";
-@import "frontend/variables";
-@import "frontend/buttons";
-@import "frontend/table";
+
+@import "frontend/notices";
+
 @import "frontend/datepicker";
 @import "frontend/searchbox";
-@import "frontend/container";
+//@import "frontend/container";
 @import "frontend/rooms";
 @import "frontend/list-rooms";
 @import "frontend/single-room";
