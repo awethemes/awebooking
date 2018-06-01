@@ -194,14 +194,13 @@ if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
+		if ( ! has_post_thumbnail( $post_id ) ) {
+			return;
+		}
 
 		$size = apply_filters( 'awebooking/archive_thumbnail_size', $size );
 
-		if ( has_post_thumbnail( $post_id ) ) {
-			return get_the_post_thumbnail( $post_id, $size );
-		} elseif ( awebooking_placeholder_img_src() ) {
-			return awebooking_placeholder_img( $size );
-		}
+		return get_the_post_thumbnail( $post_id, $size );
 	}
 }
 
