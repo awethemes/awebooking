@@ -36,7 +36,7 @@ class Constants {
 		}
 
 		if ( ! defined( 'ABRS_TEMPLATE_DEBUG' ) ) {
-			define( 'ABRS_TEMPLATE_DEBUG', true );
+			define( 'ABRS_TEMPLATE_DEBUG', false );
 		}
 	}
 
