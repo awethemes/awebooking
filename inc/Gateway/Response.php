@@ -46,15 +46,6 @@ class Response {
 	}
 
 	/**
-	 * Is the response is pending?
-	 *
-	 * @return boolean
-	 */
-	public function is_pending() {
-		return 'success' === $this->status;
-	}
-
-	/**
 	 * Is the response is error?
 	 *
 	 * @return boolean
@@ -79,5 +70,36 @@ class Response {
 	 */
 	public function get_redirect_url() {
 		return $this->redirect;
+	}
+
+	/**
+	 * Gets the data.
+	 *
+	 * @return mixed
+	 */
+	public function get_data() {
+		return $this->data;
+	}
+
+	/**
+	 * Sets the data.
+	 *
+	 * @param  mixed $data The data.
+	 * @return $this
+	 */
+	public function set_data( $data ) {
+		$this->data = $data;
+
+		return $this;
+	}
+
+	/**
+	 * Sets the data.
+	 *
+	 * @param  mixed $data The data.
+	 * @return $this
+	 */
+	public function data( $data ) {
+		return $this->set_data( $data );
 	}
 }

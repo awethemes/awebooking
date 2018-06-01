@@ -1,11 +1,10 @@
 <?php
 namespace AweBooking\Reservation;
 
-use AweBooking\Availability\Query;
+use Illuminate\Support\Arr;
 use AweBooking\Availability\Request;
 use AweBooking\Reservation\Storage\Store;
 use AweBooking\Support\Collection;
-use Illuminate\Support\Arr;
 
 class Reservation {
 	/**
@@ -79,11 +78,30 @@ class Reservation {
 		$this->language = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 
 		// Perform restore the reservation when wp_loaded.
-		if ( ! did_action( 'wp_loaded' ) ) {
+		if ( did_action( 'wp_loaded' ) ) {
+			$this->restore();
+		} else {
 			add_action( 'wp_loaded', [ $this, 'restore' ] );
 		}
 
+		add_action( 'awebooking/search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
+
 		do_action( 'awebooking/reservation/initial', $this );
+	}
+
+	/**
+	 * Exclude existing rooms in the reservation.
+	 *
+	 * @param  \AweBooking\Availability\Room_Rate $room_rate The room rate instance.
+	 * @param  \AweBooking\Availability\Request   $request   The res request instance.
+	 * @return \AweBooking\Availability\Room_Rate
+	 */
+	public function exclude_existing_rooms( $room_rate, $request ) {
+		foreach ( $this->get_room_stays() as $room_stay ) {
+			$quantity = $room_stay->quantity;
+		}
+
+		return $room_rate;
 	}
 
 	/**
@@ -132,6 +150,24 @@ class Reservation {
 	}
 
 	/**
+	 * Checks if the reservation is empty.
+	 *
+	 * @return bool
+	 */
+	public function is_empty() {
+		return 0 === count( $this->get_room_stays() );
+	}
+
+	/**
+	 * Gets the room stays.
+	 *
+	 * @return \AweBooking\Support\Collection \AweBooking\Reservation\Room_Stay[]
+	 */
+	public function get_room_stays() {
+		return $this->room_stays;
+	}
+
+	/**
 	 * Add a room stay into the list.
 	 *
 	 * @param \AweBooking\Availability\Request $request   The res request instance.
@@ -151,7 +187,7 @@ class Reservation {
 		$room_rate = abrs_get_room_rate( compact( 'request', 'room_type', 'rate_plan' ) );
 		$this->check_room_rate( $room_rate, $quantity );
 
-		$room_stay = new Item([
+		$room_stay = new Room_Stay([
 			'id'       => $room_rate->room_type->get_id(),
 			'name'     => $room_rate->room_type->get( 'title' ),
 			'price'    => $room_rate->get_rate()->as_numeric(),
@@ -160,8 +196,8 @@ class Reservation {
 			'options'  => $this->generate_room_stay_data( $room_rate, $quantity ),
 		]);
 
-		$room_stay->associate( $room_rate->get_room_type() );
 		$room_stay->set_data( $room_rate );
+		$room_stay->associate( $room_rate->get_room_type() );
 
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 
@@ -184,13 +220,7 @@ class Reservation {
 
 		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
 
-		$rooms = [];
-		for ( $i = 0; $i <= $quantity; $i++ ) {
-			$rooms = [];
-		}
-
 		return array_merge( $request->to_array(), [
-			'rooms'     => $rooms,
 			'room_type' => $room_type->get_id(),
 			'rate_plan' => $rate_plan->get_id(),
 		]);
@@ -287,7 +317,7 @@ class Reservation {
 			}
 
 			// Transform the room stay array to object.
-			$room_stay = ( new Item )->update( $values );
+			$room_stay = ( new Room_Stay )->update( $values );
 			if ( ! hash_equals( $values['row_id'], $room_stay->get_row_id() ) ) {
 				continue;
 			}

@@ -19,9 +19,9 @@ $html_messages = $messages->where( 'overlay', false )->all();
 
 foreach ( $html_messages as $message ) {
 	// Otherwise, just print the message.
-	printf( '<div class="notice notice-%1$s %2$s" role="notice">%3$s</div>',
+	printf( '<div class="hotel-notice hotel-notice--%1$s %2$s" role="notice">%3$s</div>',
 		esc_attr( $message['level'] ),
-		( true === $message['important'] ) ? 'notice-important' : 'is-dismissible',
+		( true === $message['important'] ) ? 'important' : 'dismissible',
 		wp_kses_post( wpautop( $message['message'] ) )
 	);
 }

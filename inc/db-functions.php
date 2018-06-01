@@ -92,6 +92,47 @@ function abrs_db_rooms_in( $room_type ) {
 }
 
 /**
+ * Adds any rooms from the given ids to the cache that do not already exist in the cache.
+ *
+ * @param  array $ids ID list.
+ * @return void
+ */
+function abrs_prime_room_caches( $ids ) {
+	global $wpdb;
+
+	$non_cached_ids = _get_non_cached_ids( (array) $ids, 'awebooking_rooms' );
+
+	if ( ! empty( $non_cached_ids ) ) {
+		// @codingStandardsIgnoreLine
+		$fresh_rooms = $wpdb->get_results( sprintf( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN (%s) ORDER BY `order` ASC LIMIT 1000", join( ',', $non_cached_ids ) ), ARRAY_A );
+
+		abrs_update_room_caches( $fresh_rooms );
+	}
+}
+
+/**
+ * Call major cache updating functions for list of rooms.
+ *
+ * @param  array $rooms Array of rooms.
+ * @return void
+ */
+function abrs_update_room_caches( array $rooms ) {
+	if ( empty( $rooms ) ) {
+		return;
+	}
+
+	$group_rooms = abrs_collect( $rooms )->groupBy( 'room_type' );
+
+	foreach ( $group_rooms as $room_type => $rooms ) {
+		wp_cache_add( (int) $room_type, $rooms->all(), 'awebooking_rooms' );
+
+		foreach ( $rooms as $item ) {
+			wp_cache_set( (int) $item['id'], $item, 'awebooking_db_room' );
+		}
+	}
+}
+
+/**
  * Will clean the room in the cache.
  *
  * @param  \AweBooking\Model\Room|int $room The room ID or room model.

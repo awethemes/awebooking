@@ -1,57 +1,47 @@
-/* Button */
-
-.abrs-button {
-  margin: 0;
-  border-radius: 0;
-  display: inline-block;
-  background-image: none;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  touch-action: manipulation;
+.hotel-notice {
+  background-color: #eee;
+  border-radius: 1px;
+  padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+  position: relative;
 }
 
-.abrs-button:hover,
-.abrs-button:focus {
-  text-decoration: none;
+.hotel-notice:not(:last-child) {
+  margin-bottom: 1.5rem;
 }
 
-.abrs-button:active,
-.abrs-button.active {
-  outline: 0;
-  box-shadow: none;
+.hotel-notice a:not(.button) {
+  color: currentColor;
+  text-decoration: underline;
 }
 
-table.abrs-table {
-  margin: 0 -1px 24px 0;
-  text-align: left;
-  width: 100%;
-  border-collapse: separate;
+.hotel-notice p:last-child {
+  margin-bottom: 0;
 }
 
-table.abrs-table th {
-  font-weight: 700;
-  padding: 9px 12px;
+.hotel-notice p,
+.hotel-notice strong {
+  color: currentColor;
 }
 
-table.abrs-table td {
-  padding: 6px 12px;
-  vertical-align: middle;
+.hotel-notice code,
+.hotel-notice pre {
+  background: #fff;
 }
 
-table.abrs-table td small {
-  font-weight: normal;
+.hotel-notice pre code {
+  background: transparent;
 }
 
-table.abrs-table tbody:first-child tr:first-child th,
-table.abrs-table tbody:first-child tr:first-child td {
-  border-top: 0;
+.hotel-notice > .delete {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
 }
 
-table.abrs-table tfoot td,
-table.abrs-table tfoot th,
-table.abrs-table tbody th {
-  font-weight: 700;
+.hotel-notice .title,
+.hotel-notice .subtitle,
+.hotel-notice .content {
+  color: currentColor;
 }
 
 .awebooking-datepicker.flatpickr-calendar {
@@ -303,21 +293,6 @@ table.abrs-table tbody th {
 
 .searchbox--vertical .searchbox__wrapper {
   flex-direction: column;
-}
-
-/* Container */
-
-.awebooking-container {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.awebooking-container::after {
-  content: '';
-  display: table;
-  clear: both;
 }
 
 /* Room Item */
@@ -611,65 +586,15 @@ table.abrs-table--checkout-total-cost .booking-price-value {
   text-align: center;
 }
 
-@media (min-width: 576px) {
-  .awebooking-container {
-    width: 750px;
-  }
-}
-
 @media (min-width: 768px) {
-  .awebooking-container {
-    width: 970px;
-  }
-
   .amenity {
     width: 49%;
-  }
-}
-
-@media (min-width: 992px) {
-  .awebooking-container {
-    width: 1170px;
   }
 }
 
 @media (min-width: 996px) {
   .amenity {
     width: 33%;
-  }
-}
-
-@media (max-width: 767.98px) {
-  table.abrs-table--responsive thead,
-  table.abrs-table--responsive .empty-td {
-    display: none;
-  }
-
-  table.abrs-table--responsive tbody tr:first-child td:first-child {
-    border-top: 0;
-  }
-
-  table.abrs-table--responsive tbody th {
-    display: none;
-  }
-
-  table.abrs-table--responsive tr {
-    display: block;
-  }
-
-  table.abrs-table--responsive tr td {
-    display: block;
-    text-align: right !important;
-  }
-
-  table.abrs-table--responsive tr td.order-actions {
-    text-align: left !important;
-  }
-
-  table.abrs-table--responsive tr td::before {
-    content: attr(data-title) ": ";
-    font-weight: 700;
-    float: left;
   }
 }
 

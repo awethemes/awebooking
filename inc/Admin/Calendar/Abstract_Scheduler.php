@@ -273,11 +273,14 @@ abstract class Abstract_Scheduler {
 		]), $this );
 
 		// Create the WP_Query room types.
-		$room_types = new WP_Query( $wp_query_args );
+		$room_types = ( new WP_Query( $wp_query_args ) )->posts;
 
-		return abrs_collect( $room_types->posts )
+		// Prime caches to reduce future queries.
+		abrs_prime_room_caches( wp_list_pluck( $room_types, 'ID' ) );
+
+		return abrs_collect( $room_types )
 			->map_into( Room_Type::class )
-			->reject( function ( $r ) {
+			->reject( function ( Room_Type $r ) {
 				return count( $r->get_rooms() ) === 0;
 			})->values();
 	}

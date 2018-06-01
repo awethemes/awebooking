@@ -14,10 +14,10 @@ class Service_Metabox {
 	/**
 	 * Output the metabox.
 	 *
-	 * @param WP_Term $term The WP_Term object.
+	 * @param \WP_Term $term The WP_Term object.
 	 */
 	public function output( $term ) {
-		(new Term_Service_Form( $term ) )->show_form();
+		( new Term_Service_Form( $term ) )->show_form();
 	}
 
 	/**

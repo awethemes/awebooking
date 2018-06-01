@@ -29,7 +29,7 @@ function handleErrors() {
   this.emit('end');
 }
 
-gulp.task('scss', function() {
+gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
@@ -41,7 +41,7 @@ gulp.task('scss', function() {
     .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
-gulp.task('babel', function () {
+gulp.task('babel', () => {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
@@ -51,26 +51,26 @@ gulp.task('babel', function () {
     .pipe(browserSync.stream({ match: '**/*.js' }));
 });
 
-gulp.task('i18n', function () {
+gulp.task('i18n', () => {
   gulp.src(['**/*.php', '!vendor/**', '!tests/**'])
     .pipe(plumber())
     .pipe(potgen({ domain: 'awebooking', package: 'AweBooking' }))
     .pipe(gulp.dest('languages/awebooking.pot'));
 });
 
-gulp.task('copy', function () {
-  return map(pkg.copyFiles, function(files, vendor) {
+gulp.task('copy', () => {
+  return map(pkg.copyFiles, (files, vendor) => {
     return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor));
   });
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', () => {
   browserSync.init({
     proxy: 'awebooking.local',
   });
 
-  gulp.watch('assets/scss/**/*.scss', ['scss']);
-  gulp.watch('assets/babel/**/*.js', ['babel']);
+  gulp.watch('assets/scss/**/*.scss', gulp.parallel('scss'));
+  gulp.watch('assets/babel/**/*.js', gulp.parallel('babel'));
 });
 
-gulp.task('default', ['scss', 'babel', 'i18n', 'copy']);
+gulp.task('default', gulp.series(['scss', 'babel', 'i18n', 'copy']));

@@ -130,7 +130,7 @@ class Room_Item extends Item {
 
 		try {
 			$timespan->requires_minimum_nights( 1 );
-		} catch ( LogicException $e ) {
+		} catch ( \LogicException $e ) {
 			return new WP_Error( 'timespan_error', $e->getMessage() );
 		}
 
@@ -183,7 +183,7 @@ class Room_Item extends Item {
 
 		try {
 			$to_timespan->requires_minimum_nights( 1 );
-		} catch ( LogicException $e ) {
+		} catch ( \LogicException $e ) {
 			return false;
 		}
 
@@ -251,7 +251,7 @@ class Room_Item extends Item {
 		$this->set_attribute( 'total', $amount );
 
 		// Subtotal cannot be less than total.
-		$subtotal = $this->get_subtotal();
+		$subtotal = $this->get( 'subtotal' );
 
 		if ( '' === $subtotal || $subtotal < $amount ) {
 			$this->set_subtotal( $amount );
@@ -302,7 +302,7 @@ class Room_Item extends Item {
 		$updated2 = abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
 
 		if ( true !== $updated1 || true !== $updated2 ) {
-			awebooking_wpdb_transaction( 'rollback' );
+			abrs_db_transaction( 'rollback' );
 			throw new \RuntimeException( 'Can not change the timespan.' );
 		}
 
@@ -336,8 +336,6 @@ class Room_Item extends Item {
 			'room_id'        => 0,
 			'room_type_id'   => 0,
 			'rate_plan_id'   => 0,
-			'room_type_name' => '',
-			'rate_plan_name' => '',
 
 			'check_in'       => '',
 			'check_out'      => '',
@@ -360,8 +358,6 @@ class Room_Item extends Item {
 			'room_id'        => '_room_id',
 			'room_type_id'   => '_room_type_id',
 			'rate_plan_id'   => '_rate_plan_id',
-			'room_type_name' => '_room_type_name',
-			'rate_plan_name' => '_rate_plan_name',
 
 			'check_in'       => '_check_in',
 			'check_out'      => '_check_out',

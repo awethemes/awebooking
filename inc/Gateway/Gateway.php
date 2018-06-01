@@ -57,7 +57,7 @@ abstract class Gateway {
 	/**
 	 * The extra metadata this gateway support.
 	 *
-	 * Support: "transaction_id", "credit_card"
+	 * Support: "transaction_id", "credit_card".
 	 *
 	 * @var array
 	 */
@@ -197,22 +197,6 @@ abstract class Gateway {
 	abstract public function process( Booking $booking );
 
 	/**
-	 * Get the return URL (thank you page).
-	 *
-	 * @param  \AweBooking\Model\Booking|int|null $booking Optional, the booking instance or booking ID.
-	 * @return string
-	 */
-	public function get_return_url( $booking = null ) {
-		$return_url = add_query_arg( 'completed', 'true', abrs_get_page_permalink( 'checkout' ) );
-
-		if ( is_ssl() || 'on' === abrs_get_option( 'force_ssl_checkout' ) ) {
-			$return_url = str_replace( 'http:', 'https:', $return_url );
-		}
-
-		return apply_filters( 'awebooking/get_checkout_return_url', $return_url, $booking );
-	}
-
-	/**
 	 * Determines if the gateway has fields on the checkout.
 	 *
 	 * @return bool
@@ -244,6 +228,9 @@ abstract class Gateway {
 
 	/**
 	 * Display the payment content in admin.
+	 *
+	 * @param \AweBooking\Model\Booking\Payment_Item $payment_item The payment item instance.
+	 * @param \AweBooking\Model\Booking              $booking      The current booking instance.
 	 *
 	 * @return void
 	 */

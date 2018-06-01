@@ -1,6 +1,5 @@
 <?php
 
-use AweBooking\Support\Decimal;
 use AweBooking\Component\Country\Formatter as Country_Formatter;
 
 /**

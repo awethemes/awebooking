@@ -19,12 +19,12 @@ function abrs_print_notices() {
 /**
  * Display search result item.
  *
- * @param  \AweBooking\Availability\Request             $res_request    The current reservation request.
- * @param  \AweBooking\Model\Room_Type                 $room_type      The room type instance.
+ * @param  \AweBooking\Availability\Request   $res_request    The current reservation request.
+ * @param  \AweBooking\Model\Room_Type        $room_type      The room type instance.
  * @param  \AweBooking\Availability\Room_Rate $room_rate      The room rate instance.
- * @param  array                                       $availabilities An array of availabilities.
- * @return void
+ * @param  array                              $availabilities An array of availabilities.
  *
+ * @return void
  * @access private
  */
 function awebooking_search_result_item( $res_request, $room_type, $room_rate, $availabilities ) {
