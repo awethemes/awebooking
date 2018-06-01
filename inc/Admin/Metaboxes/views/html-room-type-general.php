@@ -7,6 +7,18 @@
 		</div>
 	</div>
 
+	<div class="abrow">
+		<div class="abcol-6">
+			<?php $form->show_field( '_beds' ); ?>
+		</div>
+	</div>
+
+	<div class="abrow">
+		<div class="abcol-6">
+			<?php $form->show_field( '_view' ); ?>
+		</div>
+	</div>
+
 	<div class="abrs-postbox-title"><h3><?php esc_html_e( 'Occupancy', 'awebooking' ); ?></h3></div>
 
 	<div class="abrow">

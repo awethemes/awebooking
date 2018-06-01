@@ -177,6 +177,8 @@ class Room_Type extends Model {
 			'gallery_ids'       => [],
 
 			// Room data.
+			'beds'                => [],
+			'view'                => '',
 			'maximum_occupancy'   => 0,
 			'number_adults'       => 0,
 			'number_children'     => 0,
@@ -200,6 +202,8 @@ class Room_Type extends Model {
 			'gallery_ids'         => 'gallery',
 			'thumbnail_id'        => '_thumbnail_id',
 
+			'beds'                => '_beds',
+			'view'                => '_view',
 			'maximum_occupancy'   => '_maximum_occupancy',
 			'number_adults'       => 'number_adults',
 			'number_children'     => 'number_children',
@@ -220,6 +224,7 @@ class Room_Type extends Model {
 	protected function sanitize_attribute( $key, $value ) {
 		switch ( $key ) {
 			case 'gallery_ids':
+			case 'beds':
 				$value = is_array( $value ) ? $value : [];
 				break;
 
@@ -229,6 +234,7 @@ class Room_Type extends Model {
 
 			case 'description':
 			case 'short_description':
+			case 'view':
 				$value = abrs_sanitize_html( $value );
 				break;
 
