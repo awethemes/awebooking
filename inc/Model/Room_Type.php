@@ -110,7 +110,7 @@ class Room_Type extends Model {
 		$this['short_description'] = $this->instance->post_excerpt;
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
-		$this['hotel_id']          = $this->instance->parent_id;
+		$this['hotel_id']          = $this->instance->post_parent;
 
 		// Correct the gallery_ids.
 		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
@@ -131,7 +131,7 @@ class Room_Type extends Model {
 			'post_excerpt' => $this['short_description'],
 			'post_status'  => $this['status'] ? $this['status'] : 'publish',
 			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
-			'hotel_id'     => $this['hotel_id'] ? $this['hotel_id'] : 0,
+			'post_parent'  => $this['hotel_id'] ? $this['hotel_id'] : 0,
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
@@ -152,7 +152,7 @@ class Room_Type extends Model {
 			'post_excerpt'  => $this['short_description'],
 			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
 			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
-			'hotel_id'      => $this['hotel_id'] ? absint( $this['hotel_id'] ) : 0,
+			'post_parent'   => $this['hotel_id'] ? absint( $this['hotel_id'] ) : 0,
 		]);
 
 		// Allow continue save meta-data if nothing to update post.

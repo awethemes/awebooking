@@ -88,6 +88,10 @@ function abrs_get_rate_plan( $rate_plan ) {
  * @return \AweBooking\Model\Hotel|false|null
  */
 function abrs_get_hotel( $hotel ) {
+	if ( 0 == $hotel ) {
+		return abrs_get_default_hotel();
+	}
+
 	return abrs_rescue( function() use ( $hotel ) {
 		$hotel = new Hotel( $hotel );
 
