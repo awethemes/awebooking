@@ -82,6 +82,8 @@ class Room_Type_Metabox {
 
 		// Fill the room type data.
 		$room_type->fill([
+			'beds'                => $values->get( '_beds', [] ),
+			'view'                => $values->get( '_view', '' ),
 			'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
 			'number_adults'       => $values->get( 'number_adults', 0 ),
 			'number_children'     => $values->get( 'number_children', 0 ),
@@ -185,6 +187,24 @@ class Room_Type_Metabox {
 	 */
 	protected function form_fields( $form ) {
 		// General tab.
+		$form->add_field([
+			'id'          => '_beds',
+			'type'        => 'include',
+			'name'        => esc_html__( 'Beds', 'awebooking' ),
+			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'include'     => trailingslashit( __DIR__ ) . 'views/html-room-type-bed.php',
+			'repeatable'  => true,
+			'sanitization_cb' => [ $this, 'sanitize_beds' ],
+		]);
+
+		$form->add_field([
+			'id'          => '_view',
+			'type'        => 'text',
+			'name'        => esc_html__( 'View', 'awebooking' ),
+			'attributes'  => [ 'list' => 'view_datalist' ],
+			'after'       => $this->datalist_view_callback( 1, 20 ),
+		]);
+
 		$form->add_field([
 			'id'              => '_maximum_occupancy',
 			'type'            => 'text_medium',
@@ -361,5 +381,67 @@ class Room_Type_Metabox {
 
 			echo '</datalist>';
 		};
+	}
+
+	/**
+	 * Generate view datalist HTML callback.
+	 *
+	 * @return \Closure
+	 */
+	protected function datalist_view_callback() {
+		$view_datalist = apply_filters( 'awebooking/view_list', [
+			esc_html__( 'Airport view', 'awebooking' ),
+			esc_html__( 'Bay view', 'awebooking' ),
+			esc_html__( 'City view', 'awebooking' ),
+			esc_html__( 'Courtyard view', 'awebooking' ),
+			esc_html__( 'Golf view', 'awebooking' ),
+			esc_html__( 'Harbor view', 'awebooking' ),
+			esc_html__( 'Intercoastal view', 'awebooking' ),
+			esc_html__( 'Lake view', 'awebooking' ),
+			esc_html__( 'Marina view', 'awebooking' ),
+			esc_html__( 'Mountain view', 'awebooking' ),
+			esc_html__( 'Ocean view', 'awebooking' ),
+			esc_html__( 'Pool view', 'awebooking' ),
+			esc_html__( 'River view', 'awebooking' ),
+			esc_html__( 'Water view', 'awebooking' ),
+			esc_html__( 'Beach view', 'awebooking' ),
+			esc_html__( 'Garden view', 'awebooking' ),
+			esc_html__( 'Park view', 'awebooking' ),
+			esc_html__( 'Forest view', 'awebooking' ),
+			esc_html__( 'Rain forest view', 'awebooking' ),
+			esc_html__( 'Various views', 'awebooking' ),
+			esc_html__( 'Limited view', 'awebooking' ),
+			esc_html__( 'Slope view', 'awebooking' ),
+			esc_html__( 'Strip view', 'awebooking' ),
+			esc_html__( 'Countryside view', 'awebooking' ),
+			esc_html__( 'Sea view', 'awebooking' ),
+		]);
+
+		echo '<datalist id="view_datalist">';
+
+		foreach ( $view_datalist as $val ) {
+			echo '<option value="' . esc_attr( $val ) . '">';
+		}
+
+		echo '</datalist>';
+	}
+
+	/**
+	 * Sanitize beds.
+	 *
+	 * @param  array $beds beds
+	 * @return array
+	 */
+	public function sanitize_beds( $beds ) {
+		$values = [];
+		foreach ( (array) $beds as $key => $val ) {
+			if ( ! isset( $val['type'] ) || ! $val['type'] ) {
+				continue;
+			}
+
+			$values[ $key ] = $val;
+		}
+
+		return array_filter( $values );
 	}
 }
