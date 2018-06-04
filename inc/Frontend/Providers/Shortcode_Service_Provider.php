@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
 
 class Shortcode_Service_Provider extends Service_Provider {
@@ -19,19 +18,27 @@ class Shortcode_Service_Provider extends Service_Provider {
 		]);
 
 		foreach ( $shortcodes as $tag => $class ) {
-			add_shortcode( $tag, $this->shortcode_callback( $class ) );
+			add_shortcode( $tag, $this->shortcode_callback( $tag, $class ) );
 		}
 	}
 
 	/**
 	 * Returns the shortcode callback.
 	 *
+	 * @param  string $tag   The shortcode tag name.
 	 * @param  string $class The shortcode class name.
+	 *
 	 * @return \Closure
 	 */
-	protected function shortcode_callback( $class ) {
-		return function( $atts, $contents = '' ) use ( $class ) {
-			return $this->plugin->make( $class )->build( $atts, $contents );
+	protected function shortcode_callback( $tag, $class ) {
+		return function( $atts, $contents = '' ) use ( $tag, $class ) {
+			$shortcode = $this->plugin->make( $class );
+
+			if ( ! $shortcode->tag ) {
+				$shortcode->tag = $tag;
+			}
+
+			return $shortcode->build( $atts, $contents );
 		};
 	}
 }

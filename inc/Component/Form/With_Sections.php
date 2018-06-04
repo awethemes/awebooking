@@ -7,7 +7,7 @@ trait With_Sections {
 	 *
 	 * @var array
 	 */
-	protected $sections = [];
+	public $sections = [];
 
 	/**
 	 * Get the registered sections.

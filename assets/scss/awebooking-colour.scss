@@ -1,11 +1,30 @@
+$radius:           1px;
+$radius-small:     0;
+$radius-large:     2px;
+$variable-columns: false;
+
 @import "utils/mixins";
+@import "node_modules/bulma/sass/utilities/all";
 
 @import "frontend/notices";
-
 @import "frontend/datepicker";
 @import "frontend/searchbox";
-//@import "frontend/container";
-@import "frontend/rooms";
-@import "frontend/list-rooms";
-@import "frontend/single-room";
-@import "frontend/checkout";
+@import "frontend/layout";
+
+.awebooking,
+.awebooking-block {
+  @import "node_modules/bulma/sass/grid/columns";
+  @import "node_modules/bulma/sass/elements/form";
+  @import "node_modules/bulma/sass/elements/button";
+  @import "node_modules/bulma/sass/elements/box";
+  @import "node_modules/bulma/sass/elements/notification";
+}
+
+// Temp code...
+body {
+  background-color: #f7f7f7 !important;
+}
+.site-content {
+  width: 1200px;
+  margin: 0 auto;
+}

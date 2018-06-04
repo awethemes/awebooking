@@ -14,20 +14,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'awebooking_print_notices' );
-
 ?>
 
-<?php do_action( 'awebooking/before_checkout_form' ); ?>
+<?php do_action( 'awebooking_print_notices' ); ?>
 
-<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
-	<?php wp_nonce_field( 'awebooking_checkout_process', '_wpnonce', true ); ?>
+<div class="hotel-content">
+	<div class="hotel-content__main">
+		<?php do_action( 'awebooking_before_checkout_form' ); ?>
 
-	<?php do_action( 'awebooking/checkout_booking_details' ); ?>
+		<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
+			<?php wp_nonce_field( 'awebooking_checkout_process', '_wpnonce', true ); ?>
 
-	<?php do_action( 'awebooking/checkout_guest_details' ); ?>
+			<?php do_action( 'awebooking_checkout_booking_details' ); ?>
 
-	<?php do_action( 'awebooking/checkout_payments' ); ?>
-</form>
+			<?php do_action( 'awebooking_checkout_guest_details' ); ?>
 
-<?php do_action( 'awebooking/after_checkout_form' ); ?>
+			<?php do_action( 'awebooking_checkout_payments' ); ?>
+		</form>
+
+		<?php do_action( 'awebooking_after_checkout_form' ); ?>
+	</div>
+
+	<aside class="hotel-content__aside">
+		<?php abrs_get_template( 'reservation/booked.php' ); ?>
+	</aside>
+</div><!-- /.container -->

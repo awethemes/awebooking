@@ -22,7 +22,7 @@ if ( empty( $customer_controls->fields ) ) {
 
 ?>
 
-<div id="guest-details" class="checkout__section checkout__section--guest-details">
+<div id="guest-details" class="checkout__section checkout__section--guest-details box">
 	<header class="section-header">
 		<h3 class="section-header__title"><?php esc_html_e( 'Guest details', 'awebooking' ); ?></h3>
 	</header>

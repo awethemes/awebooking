@@ -63,13 +63,20 @@ class Reservation_Service_Provider extends Service_Provider {
 			$this->plugin->instance( 'request', $request );
 		}
 
+		$reservation = $this->plugin->make( 'reservation' );
+
 		// Set the "res_request" into the query vars,
 		// we can retrieve it late (in the shortcode).
-		if ( $request->filled( 'check-in', 'check-out' ) ) {
+		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
+			$previous_request = $reservation->get_previous_request();
+			if ( $previous_request && ! $res_request->same_with( $previous_request ) ) {
+				 $reservation->flush();
+			}
+
 			if ( ! is_null( $res_request ) && ! is_wp_error( $res_request ) ) {
-				$this->plugin['reservation']->set_current_request( $res_request );
+				$reservation->set_current_request( $res_request );
 			}
 
 			$wp->set_query_var( 'res_request', $res_request );

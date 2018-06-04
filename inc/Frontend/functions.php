@@ -41,11 +41,7 @@ function abrs_add_notice( $message, $level = 'info' ) {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = (
-		   is_room_type_list()
-		|| is_room_type()
-		|| abrs_is_search_page()
-	) ? true : false;
+	$is_awebooking = ( is_room_type_list() || is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
@@ -82,6 +78,15 @@ function abrs_is_search_page() {
 }
 
 /**
+ * Determines if current viewing on "search_results" page.
+ *
+ * @return bool
+ */
+function abrs_is_checkout_page() {
+	return is_page( abrs_get_page_id( 'booking' ) ) || abrs_page_has_shortcode( 'awebooking_checkout' );
+}
+
+/**
  * Checks whether the content passed contains a specific short code.
  *
  * @param  string $tag Shortcode tag to check.
@@ -105,7 +110,7 @@ function abrs_body_class( $classes ) {
 	$classes = (array) $classes;
 
 	if ( is_awebooking() ) {
-		$classes[] = 'awebooking-page';
+		$classes[] = 'awebooking';
 	}
 
 	return array_unique( $classes );
@@ -177,6 +182,7 @@ function abrs_bookroom_button( $args, $echo = true ) {
 	$args = wp_parse_args( $args, [
 		'room_type'   => 0,
 		'rate_plan'   => 0,
+		'show_button' => true,
 		'button_text' => esc_html__( 'Book Now', 'awebooking' ),
 		'button_atts' => [],
 	]);

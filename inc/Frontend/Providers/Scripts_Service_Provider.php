@@ -12,7 +12,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	 */
 	public function init() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 9 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9 );
 		add_action( 'wp_enqueue_scripts', 'abrs_localize_flatpickr', 1000 );
 	}
 

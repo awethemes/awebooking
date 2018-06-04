@@ -5,6 +5,13 @@ use Illuminate\Support\Arr;
 
 abstract class Shortcode_Abstract {
 	/**
+	 * The shortcode tag name.
+	 *
+	 * @var string
+	 */
+	public $tag;
+
+	/**
 	 * The shortcode attributes.
 	 *
 	 * @var array
@@ -47,7 +54,25 @@ abstract class Shortcode_Abstract {
 			awebooking()->handle_buffering_exception( $e, $ob_level );
 		}
 
-		return ltrim( ob_get_clean() );
+		return $this->wrap( ltrim( ob_get_clean() ) );
+	}
+
+	/**
+	 * Wrap the shortcode in a tag.
+	 *
+	 * @param  string $content The shortcode content.
+	 * @return string
+	 */
+	protected function wrap( $content ) {
+		if ( ! $content ) {
+			return '';
+		}
+
+		$tagname = ( 0 === strpos( $this->tag, 'awebooking_' ) )
+			? substr( $this->tag, 11 )
+			: $this->tag;
+
+		return sprintf( '<div class="awebooking-block awebooking-block--%1$s">%2$s</div>', sanitize_key( $tagname ), $content );
 	}
 
 	/**

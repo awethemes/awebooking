@@ -77,13 +77,7 @@ class Reservation {
 		$this->currency = abrs_current_currency();
 		$this->language = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 
-		// Perform restore the reservation when wp_loaded.
-		if ( did_action( 'wp_loaded' ) ) {
-			$this->restore();
-		} else {
-			add_action( 'wp_loaded', [ $this, 'restore' ] );
-		}
-
+		add_action( 'wp_loaded', [ $this, 'restore' ] );
 		add_action( 'awebooking/search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
 
 		do_action( 'awebooking/reservation/initial', $this );
@@ -290,6 +284,8 @@ class Reservation {
 	 */
 	public function store() {
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
+
+		$this->set_previous_request( $this->current_request );
 	}
 
 	/**
@@ -352,6 +348,34 @@ class Reservation {
 	 * @return void
 	 */
 	public function calculate_totals() {
+	}
+
+	/**
+	 * Gets the previous_request store in the session.
+	 *
+	 * @return \AweBooking\Availability\Request|null
+	 */
+	public function get_previous_request() {
+		$previous_request = $this->store->get( 'previous_request' );
+
+		if ( ! $previous_request || ! $previous_request instanceof Request ) {
+			return null;
+		}
+
+		return $previous_request;
+	}
+
+	/**
+	 * Sets or flush the previous_request.
+	 *
+	 * @param \AweBooking\Availability\Request|null $request The res request.
+	 */
+	public function set_previous_request( Request $request = null ) {
+		if ( is_null( $request ) ) {
+			$this->store->flush( 'previous_request' );
+		} else {
+			$this->store->put( 'previous_request', $request );
+		}
 	}
 
 	/**

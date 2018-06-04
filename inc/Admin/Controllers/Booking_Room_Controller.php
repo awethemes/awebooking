@@ -24,7 +24,7 @@ class Booking_Room_Controller extends Controller {
 			return new WP_Error( 400, esc_html__( 'This booking is no longer editable.', 'awebooking' ) );
 		}
 
-		if ( $request->filled( 'check-in', 'check-out' ) ) {
+		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
 			if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {

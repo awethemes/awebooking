@@ -4,8 +4,8 @@ $controls = abrs_create_form( 'search-rooms' );
 
 $selected_dates = [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ];
 
-if ( $request->filled( 'check-in', 'check-out' ) ) {
-	$selected_dates = array_values( $request->only( 'check-in', 'check-out' ) );
+if ( $request->filled( 'check_in', 'check_out' ) ) {
+	$selected_dates = array_values( $request->only( 'check_in', 'check_out' ) );
 }
 
 ?>

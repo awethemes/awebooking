@@ -24,7 +24,7 @@ get_header( 'awebooking' ); ?>
 		 */
 		do_action( 'awebooking/before_main_content' );
 
-		do_action( 'awebooking_template_notices' );
+		do_action( 'awebooking_print_notices' );
 	?>
 
 	<?php while ( have_posts() ) : the_post(); ?>

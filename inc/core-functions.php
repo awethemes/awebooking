@@ -525,6 +525,7 @@ function abrs_get_template_part( $slug, $name = '' ) {
  */
 function abrs_get_page_id( $page ) {
 	$page_alias = [ // Back-compat, we changed name but still keep ID.
+		'search'         => 'check_availability',
 		'search_results' => 'check_availability',
 	];
 
@@ -534,7 +535,7 @@ function abrs_get_page_id( $page ) {
 
 	$page = apply_filters( "awebooking/get_{$page}_page_id", abrs_get_option( 'page_' . $page ) );
 
-	return $page ? absint( $page ) : -1;
+	return $page ? absint( $page ) : 0;
 }
 
 /**
@@ -546,13 +547,13 @@ function abrs_get_page_id( $page ) {
 function abrs_get_page_permalink( $page ) {
 	$page_id = abrs_get_page_id( $page );
 
-	$permalink = 0 < $page_id ? get_permalink( $page_id ) : get_home_url();
+	$permalink = 0 <= $page_id ? get_permalink( $page_id ) : get_home_url();
 
 	return apply_filters( "awebooking/get_{$page}_page_permalink", $permalink );
 }
 
 /**
- * Get an image size.
+ * Get an image size. TODO: ...
  *
  * @param array|string $image_size Image size.
  * @return array

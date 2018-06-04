@@ -556,7 +556,7 @@ function abrs_get_room_rate( $args ) {
 /**
  * Create new reservation request.
  *
- * @param  array $args The query args.
+ * @param  \Awethemes\Http\Request|array $args The query args.
  * @return \AweBooking\Availability\Request|null
  */
 function abrs_create_res_request( $args ) {

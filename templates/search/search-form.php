@@ -1,7 +1,7 @@
 <div>
 	<form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" role="search">
-		<input type="hidden" name="check-in">
-		<input type="hidden" name="check-out">
+		<input type="hidden" name="check_in">
+		<input type="hidden" name="check_out">
 
 		<div class="abrs-inline-datepicker">
 			<div id="js-inline-dates"></div><!-- JS: Inline datepicker -->

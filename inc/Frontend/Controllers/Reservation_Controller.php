@@ -3,7 +3,7 @@ namespace AweBooking\Frontend\Controllers;
 
 use Awethemes\Http\Request;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Component\Http\Exceptions\ValidationFailedException;
+use AweBooking\Reservation\Url_Generator;
 
 class Reservation_Controller {
 	/**
@@ -27,23 +27,38 @@ class Reservation_Controller {
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
-	 *
-	 * @throws ValidationFailedException
 	 */
 	public function book( Request $request ) {
 		if ( ! $request->filled( 'room_type', 'check_in', 'check_out' ) ) {
-			throw new ValidationFailedException( esc_html__( 'Invalid request parameters, please try again.', 'awebooking' ) );
+			abrs_add_notice( 'Invalid request parameters, please try again.', 'error' );
+			return abrs_redirector()->back();
 		}
 
 		// Create the reservation request.
 		$res_request = abrs_create_res_request( $request );
 
 		if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
-			throw new ValidationFailedException( $res_request->get_error_message() );
+			return abrs_redirector()->back();
 		}
 
-		$added = $this->reservation->add_room_stay( $res_request, $request->room_type );
+		$url_generator = new Url_Generator( $res_request );
+		$availability_url = $url_generator->get_availability_url();
 
-		return awebooking( 'redirector' )->back();
+		try {
+			$this->reservation->add_room_stay( $res_request, $request->get( 'room_type' ), $request->get( 'rate_plan' ) );
+		} catch ( \Exception $e ) {
+			abrs_add_notice( $e->getMessage(), 'error' );
+			return abrs_redirector()->back( $availability_url );
+		}
+
+		abrs_add_notice( esc_html__( 'Room has been successfully added to your reservation!', 'awebooking' ), 'success' );
+
+		// Redirect to the checkout page if requested
+		// or in case the "booking" page is not setup yet.
+		if ( $request->has( '_redirect_checkout' ) || ! abrs_get_page_id( 'booking' ) ) {
+			return abrs_redirector()->to( abrs_get_page_permalink( 'checkout' ) );
+		}
+
+		return abrs_redirector()->to( abrs_get_page_permalink( 'booking' ) );
 	}
 }

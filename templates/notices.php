@@ -2,7 +2,7 @@
 /**
  * Display the notices template.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/global/notices.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/notices.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -19,7 +19,7 @@ $html_messages = $messages->where( 'overlay', false )->all();
 
 foreach ( $html_messages as $message ) {
 	// Otherwise, just print the message.
-	printf( '<div class="hotel-notice hotel-notice--%1$s %2$s" role="notice">%3$s</div>',
+	printf( '<div class="notification is-%1$s %2$s" role="notice">%3$s</div>',
 		esc_attr( $message['level'] ),
 		( true === $message['important'] ) ? 'important' : 'dismissible',
 		wp_kses_post( wpautop( $message['message'] ) )

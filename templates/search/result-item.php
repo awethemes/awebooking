@@ -18,7 +18,7 @@ $remain_rooms = $room_rate->get_remain_rooms();
 
 ?>
 
-<div class="abroom">
+<div class="box abroom">
 	<div class="abroom__data">
 		<table class="abroom__table">
 			<tbody>
@@ -66,7 +66,7 @@ $remain_rooms = $room_rate->get_remain_rooms();
 							<?php
 							switch ( abrs_get_option( 'display_price', 'total' ) ) {
 								case 'total':
-									abrs_price( $room_rate->get_price() );
+									abrs_price( $room_rate->get_rate() );
 									echo sprintf( 'Cost for %s nights', $room_rate->timespan->nights() );
 									break;
 
@@ -79,7 +79,15 @@ $remain_rooms = $room_rate->get_remain_rooms();
 
 					<td class="column-room-button">
 						<?php if ( ! $room_rate->has_error() ) : ?>
-							<?php abrs_bookroom_button( [ 'room_type' => $room_type->get_id() ] ); ?>
+							<?php
+							abrs_bookroom_button([
+								'room_type'   => $room_type->get_id(),
+								'show_button' => true,
+								'button_atts' => [
+									'class' => 'booknow button is-primary',
+								],
+							]);
+							?>
 						<?php endif ?>
 
 						<span class="abroom__remaining-rooms">

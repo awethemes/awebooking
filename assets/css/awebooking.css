@@ -4,10 +4,6 @@
   clear: both;
 }
 
-.form-input {
-  box-sizing: border-box;
-}
-
 /* Inline datepicker */
 
 .abrs-inline-datepicker .flatpickr-calendar.inline {

@@ -1,0 +1,16 @@
+.hotel-content {
+  @extend .columns;
+}
+
+.hotel-content__main,
+.hotel-content__aside {
+  @extend .column;
+}
+
+.hotel-content__main {
+  @extend .is-8;
+}
+
+.hotel-content__aside {
+  @extend .is-4;
+}
