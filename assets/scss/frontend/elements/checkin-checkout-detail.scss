@@ -1,0 +1,88 @@
+.checkin-checkout-details {
+	display: table;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.checkin-checkout-details___item {
+	display: table-cell;
+
+	&.tb-width-40 {
+		width: 40%;
+	}
+
+	&.tb-width-20 {
+		width: 20%;
+	}
+}
+
+.checkin-checkout-details__subtitle {
+	display: block;
+	margin-bottom: 8px;
+}
+
+.checkin-checkout-details__info {
+	position: relative;
+	padding-left: 60px;
+	margin-bottom: 5px;
+
+	.meta-day {
+		font-size: 45px;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+	}
+
+	.meta-day-week,
+	.meta-month-year {
+		display: block;
+	}
+}
+
+.divider-solid-bottom {
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px solid #cbd3db;
+	margin: 20px 0;
+}
+
+.roomdetails-room {
+	margin: 0;
+}
+
+.roomdetails-room__title {
+	width: 115px;
+	float: left;
+	clear: left;
+	font-size: 14px;
+}
+
+.roomdetails-room__text {
+	margin-left: 125px;
+
+	&:after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+.roomdetails-room__title,
+.roomdetails-room__text {
+	margin-bottom: 5px;
+}
+
+.rooms.rooms--booked {
+	.mini-room--booked {
+		font-size: 20px;
+	}
+
+	.mini-room__title {
+		width: 124px;
+		float: left;
+		clear: left;
+		font-weight: bold;
+		padding-right: 5px;
+	}
+}
