@@ -258,7 +258,7 @@ class Setup_Environment {
 			'show_in_admin_bar'   => false,
 			'show_in_rest'        => true,
 			// 'capability_type'     => Constants::HOTEL_SERVICE,
-			'supports'            => [ 'comments' ],
+			'supports'            => [ 'title' ],
 			'rewrite'             => false,
 			'has_archive'         => false,
 		]));

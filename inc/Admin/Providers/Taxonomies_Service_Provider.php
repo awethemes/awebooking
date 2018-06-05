@@ -10,11 +10,11 @@ class Taxonomies_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register() {
-		foreach ([ // @codingStandardsIgnoreLine
-			'term_metabox.hotel_extra_service' => \AweBooking\Admin\Metaboxes\Service_Metabox::class,
+		/*foreach ([ // @codingStandardsIgnoreLine
+			'term_metabox.amenity' => \AweBooking\Admin\Metaboxes\Amenity_Data_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
-		}
+		}*/
 	}
 
 	/**
@@ -23,10 +23,10 @@ class Taxonomies_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function init() {
-		foreach ( [ 'hotel_extra_service' ] as $taxonomy ) {
+		/*foreach ( [ 'hotel_amenity' ] as $taxonomy ) {
 			add_action( "{$taxonomy}_edit_form", $this->metaboxcb( 'term_metabox.' . $taxonomy ) );
 			add_action( "{$taxonomy}_add_form_fields", $this->metaboxcb( 'term_metabox.' . $taxonomy ) );
-		}
+		}*/
 
 		// Maintain hierarchy of terms.
 		add_filter( 'wp_terms_checklist_args', [ $this, 'disable_checked_ontop' ] );

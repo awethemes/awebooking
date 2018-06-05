@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Metaboxes;
 use Awethemes\Http\Request;
 use AweBooking\Admin\Forms\Term_Service_Form;
 
-class Service_Metabox {
+class Service_Data_Metabox {
 	/**
 	 * Constructor.
 	 */

@@ -8,7 +8,7 @@ class Booking_Main_Metabox {
 	/**
 	 * Output the metabox.
 	 *
-	 * @param WP_Post $post The WP_Post object.
+	 * @param \WP_Post $post The WP_Post object.
 	 */
 	public function output( $post ) {
 		global $the_booking;

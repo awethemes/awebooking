@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php do_action( 'awebooking_print_notices' ); ?>
 
-<div class="search-rooms columns">
-	<div class="search-rooms__main column is-9">
+<div class="hotel-content">
+	<div class="hotel-content__main">
 		<?php do_action( 'awebooking_before_search_results', $results, $res_request ); ?>
 
 		<div id="search-rooms-results" class="rooms rooms--search">
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php do_action( 'awebooking_after_search_results', $results, $res_request ); ?>
 	</div>
 
-	<aside class="search-rooms__aside column is-3">
+	<aside class="hotel-content__aside">
 		<?php abrs_get_template( 'reservation/booked.php' ); ?>
 	</aside>
 </div><!-- /.container -->

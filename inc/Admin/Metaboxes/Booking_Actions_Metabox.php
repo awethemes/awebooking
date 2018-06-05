@@ -47,7 +47,7 @@ class Booking_Actions_Metabox {
 				break;
 
 			case 'send_booking_details_admin':
-				abrs_mailer( 'new_booking' )->build( $the_booking )->send();
+				abrs_mailer( 'invoice' )->build( $the_booking )->send();
 				break;
 
 			default:

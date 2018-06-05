@@ -198,11 +198,11 @@ class Room_Type_Metabox {
 		]);
 
 		$form->add_field([
-			'id'          => '_view',
+			'id'          => '_room_view',
 			'type'        => 'text',
 			'name'        => esc_html__( 'View', 'awebooking' ),
 			'attributes'  => [ 'list' => 'view_datalist' ],
-			'after'       => $this->datalist_view_callback( 1, 20 ),
+			'after'       => $this->datalist_view_callback(),
 		]);
 
 		$form->add_field([
@@ -386,7 +386,7 @@ class Room_Type_Metabox {
 	/**
 	 * Generate view datalist HTML callback.
 	 *
-	 * @return \Closure
+	 * @return void
 	 */
 	protected function datalist_view_callback() {
 		$view_datalist = apply_filters( 'awebooking/view_list', [
