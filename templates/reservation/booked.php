@@ -84,6 +84,34 @@ $room_stays = abrs_reservation()->get_room_stays();
 			<?php endforeach ?>
 		</div>
 
+		<div class="roomdetails-price">
+			<dl class="roomdetails-price-base">
+				<dt data-bind="text: roomDetails.roomText() + ' :'">Old price (1 room x 1 night)</dt>
+				<dd data-bind="text: roomDetails.roomTypeListText">
+					<del>1.700.814</del>
+				</dd>
+				<dt data-bind="text: roomDetails.roomText() + ' :'">Price (1 room x 1 night)</dt>
+				<dd data-bind="text: roomDetails.roomTypeListText">700.814</dd>
+				<dt data-bind="text: roomDetails.roomText() + ' :'">Vat</dt>
+				<dd class="roomdetails-price-base__text roomdetails-price-vat" data-bind="text: roomDetails.roomTypeListText">free</dd>
+			</dl>
+			
+			<div class="roomdetails-price-footer">
+				<dl class="roomdetails-price-total">
+					<dt data-bind="text: roomDetails.roomText() + ' :'">Price</dt>
+					<dd data-bind="text: roomDetails.roomTypeListText">1.700.814</dd>
+				</dl>
+				<p class="roomdetails-price-footer__info">
+					<strong>Giá đã bao gồm:</strong>
+					Phí dịch vụ 5%, Thuế 10%
+				</p>
+				<p class="roomdetails-price-footer__info-more">
+					<small> Lựa chọn khôn khéo! Bạn tiết kiệm được 1.890.235 ₫</small>
+				</p>
+			</div>
+			
+		<div>
+
 		<div class="reservation__totals">
 			<table>
 				<tbody>

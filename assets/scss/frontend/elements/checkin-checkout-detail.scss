@@ -1,3 +1,7 @@
+$background: #F9F9FA;
+$border: #cbd3db;
+
+
 .checkin-checkout-details {
 	display: table;
 	width: 100%;
@@ -43,7 +47,7 @@
 .divider-solid-bottom {
 	width: 100%;
 	height: 1px;
-	border-bottom: 1px solid #cbd3db;
+	border-bottom: 1px solid $border;
 	margin: 20px 0;
 }
 
@@ -74,6 +78,8 @@
 }
 
 .rooms.rooms--booked {
+	margin-bottom: 30px;
+
 	.mini-room--booked {
 		font-size: 20px;
 	}
@@ -85,4 +91,67 @@
 		font-weight: bold;
 		padding-right: 5px;
 	}
+}
+
+.box .roomdetails-price {
+	margin-left: -1rem;
+	margin-right: -1rem;
+}
+
+.roomdetails-price {
+	dt {
+		width: 220px;
+		float: left;
+		clear: left;
+		font-size: 14px;
+		font-weight: normal;
+	}
+
+	dd {
+		margin: 0;
+		margin-left: 230px;
+		text-align: right;
+
+		&.roomdetails-price-vat {
+			text-transform: uppercase;
+		}
+	}
+}
+
+.roomdetails-price-base {
+	border-bottom: 1px solid $border;
+	padding: 15px;
+	margin: 0;
+}
+
+.roomdetails-price-base__title,
+.roomdetails-price-base__text {
+	margin-bottom: 5px;
+}
+
+.roomdetails-price-footer {
+	background-color: $background;
+	padding: 15px;
+}
+
+.roomdetails-price-total {
+	margin: 0;
+	margin-bottom: 5px;
+
+	dt, dd {
+		margin-bottom: 0;
+		font-size: 16px;
+		font-weight: bold;
+	}
+}
+
+.roomdetails-price-footer__info {
+	font-size: 12px;
+	margin: 0;
+}
+
+.roomdetails-price-footer__info-more  {
+	border-top: 1px dotted $border;
+	margin: 10px 0 0;
+	padding-top: 5px;
 }
