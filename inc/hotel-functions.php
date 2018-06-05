@@ -4,6 +4,7 @@ use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Hotel;
+use AweBooking\Model\Service;
 use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Standard_Plan;
 use AweBooking\Model\Model;
@@ -139,4 +140,18 @@ function abrs_list_hotels( $args = [], $with_default = false ) {
 	}
 
 	return $hotels;
+}
+
+/**
+ * Retrieves the service object.
+ *
+ * @param  mixed $service The post object or post ID of the service.
+ * @return \AweBooking\Model\Service|false|null
+ */
+function abrs_get_service( $service ) {
+	return abrs_rescue( function() use ( $service ) {
+		$service = new Service( $service );
+
+		return $service->exists() ? $service : null;
+	}, false );
 }
