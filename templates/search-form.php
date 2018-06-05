@@ -35,21 +35,21 @@ dump( abrs_reservation() );
 			<div class="searchbox__box searchbox__box--checkin">
 				<label class="searchbox__label searchbox__label--checkin">
 					<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-					<input type="text" class="hotel-input hotel-input--checkin input" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+					<input type="text" class="form-control form-control--checkin" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 				</label>
 			</div>
 
 			<div class="searchbox__box searchbox__box--checkout">
 				<label class="searchbox__label searchbox__label--checkout">
 					<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-					<input type="text" class="hotel-input hotel-input--checkout input" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+					<input type="text" class="form-control form-control--checkout input" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 				</label>
 			</div>
 
 			<div class="searchbox__box searchbox__box--occupancy">
 				<label class="">
 					<span><?php esc_html_e( 'Adults', 'awebooking' ); ?></span>
-					<select name="adults" class="">
+					<select name="adults" class="form-select">
 						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
 							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
 						<?php endfor; ?>
@@ -59,7 +59,7 @@ dump( abrs_reservation() );
 				<label>
 					<span><?php esc_html_e( 'Children', 'awebooking' ); ?></span>
 
-					<select name="children" class="">
+					<select name="children" class="form-select">
 						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
 							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
 						<?php endfor; ?>
@@ -69,7 +69,7 @@ dump( abrs_reservation() );
 				<label>
 					<span><?php esc_html_e( 'Infants', 'awebooking' ); ?></span>
 
-					<select name="infants">
+					<select name="infants" class="form-select">
 						<?php for ( $i = 1; $i <= $max_select; $i++ ) : ?>
 							<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
 						<?php endfor; ?>

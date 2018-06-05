@@ -110,7 +110,7 @@ function abrs_body_class( $classes ) {
 	$classes = (array) $classes;
 
 	if ( is_awebooking() ) {
-		$classes[] = 'awebooking';
+		$classes[] = 'awebooking-page';
 	}
 
 	return array_unique( $classes );

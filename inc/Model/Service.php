@@ -18,19 +18,11 @@ class Service extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function setup() {
-		$this['title']             = $this->instance->post_title;
-		$this['slug']              = $this->instance->post_name;
-		$this['status']            = $this->instance->post_status;
-		$this['description']       = $this->instance->post_content;
-		$this['short_description'] = $this->instance->post_excerpt;
-		$this['date_created']      = $this->instance->post_date;
-		$this['date_modified']     = $this->instance->post_modified;
-		$this['hotel_id']          = $this->instance->post_parent;
-
-		// Correct the gallery_ids.
-		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
-			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
-		}
+		$this->set_attribute( 'name', $this->instance->post_title );
+		$this->set_attribute( 'description', $this->instance->post_excerpt );
+		$this->set_attribute( 'date_created', $this->instance->post_date );
+		$this->set_attribute( 'date_modified', $this->instance->post_modified );
+		$this->set_attribute( 'status', $this->instance->post_status );
 
 		do_action( $this->prefix( 'after_setup' ), $this );
 	}
@@ -41,12 +33,10 @@ class Service extends Model {
 	protected function perform_insert() {
 		$insert_id = wp_insert_post([
 			'post_type'    => $this->object_type,
-			'post_title'   => $this['title'],
-			'post_content' => $this['description'],
-			'post_excerpt' => $this['short_description'],
-			'post_status'  => $this['status'] ? $this['status'] : 'publish',
-			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
-			'post_parent'  => $this['hotel_id'] ? $this['hotel_id'] : 0,
+			'post_title'   => $this->get( 'name' ),
+			'post_excerpt' => $this->get( 'description' ),
+			'post_status'  => $this->get( 'status' ) ?: 'publish',
+			'post_date'    => $this->get( 'date_created' ) ?: current_time( 'mysql' ),
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
@@ -60,18 +50,14 @@ class Service extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function perform_update( array $dirty ) {
-		$this->update_the_post([
-			'post_title'    => $this['title'],
-			'post_status'   => $this['status'],
-			'post_content'  => $this['description'],
-			'post_excerpt'  => $this['short_description'],
-			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
-			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
-			'post_parent'   => $this['hotel_id'] ? absint( $this['hotel_id'] ) : 0,
-		]);
-
-		// Allow continue save meta-data if nothing to update post.
-		return true;
+		if ( $this->get_changes_only( $dirty, [ 'title', 'status', 'description', 'date_created' ] ) ) {
+			$this->update_the_post([
+				'post_title'    => $this->get( 'title' ),
+				'post_status'   => $this->get( 'status' ),
+				'post_excerpt'  => $this->get( 'description' ),
+				'post_date'     => $this->get( 'date_created' ),
+			]);
+		}
 	}
 
 	/**
@@ -79,14 +65,14 @@ class Service extends Model {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
-			'status'            => '',
-			'name'              => '',
-			'description'       => '',
-			'type'              => '',
-			'operation'         => '',
-			'value'             => '',
-			'date_created'      => null,
-			'date_modified'     => null,
+			'name'          => '',
+			'description'   => '',
+			'date_created'  => null,
+			'date_modified' => null,
+			'status'        => '',
+			'type'          => '',
+			'value'         => '',
+			'operation'     => '',
 		]);
 	}
 
@@ -106,39 +92,8 @@ class Service extends Model {
 	 */
 	protected function sanitize_attribute( $key, $value ) {
 		switch ( $key ) {
-			case 'gallery_ids':
-			case 'beds':
-				$value = is_array( $value ) ? $value : [];
-				break;
-
-			case 'rack_rate':
+			case 'value':
 				$value = abrs_sanitize_decimal( $value );
-				break;
-
-			case 'description':
-			case 'short_description':
-			case 'view':
-				$value = abrs_sanitize_html( $value );
-				break;
-
-			case 'rate_policies':
-			case 'rate_inclusions':
-				if ( $value && is_string( $value ) ) {
-					$value = abrs_clean( explode( "\n", $value ) );
-				}
-
-				$value = is_array( $value ) ? array_filter( $value ) : [];
-				break;
-
-			case 'thumbnail_id':
-			case 'maximum_occupancy':
-			case 'number_adults':
-			case 'number_children':
-			case 'number_infants':
-			case 'rate_min_los':
-			case 'rate_max_los':
-			case 'hotel_id':
-				$value = absint( $value );
 				break;
 		}
 
