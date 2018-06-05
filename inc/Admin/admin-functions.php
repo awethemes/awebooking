@@ -16,7 +16,8 @@ function abrs_admin_screens() {
 		'hotel_location',
 		'edit-room_type',
 		'edit-awebooking',
-		'edit-hotel_extra_service',
+		'hotel_service',
+		'edit-hotel_service',
 	]);
 }
 

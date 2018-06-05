@@ -21,6 +21,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
 			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
 			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Info_Metabox::class,
+			'metabox.service'          => \AweBooking\Admin\Metaboxes\Service_Data_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
 			$this->plugin->tag( $abstract, 'metaboxes' );
@@ -83,6 +84,8 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		add_meta_box( 'awebooking-room-type-hotel', esc_html__( 'Hotel location', 'awebooking' ), $this->metaboxcb( 'metabox.room_type_hotel' ), Constants::ROOM_TYPE, 'side' );
 
 		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->metaboxcb( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
+
+		add_meta_box( 'awebooking-service-data', esc_html__( 'Service Data', 'awebooking' ), $this->metaboxcb( 'metabox.service' ), Constants::HOTEL_SERVICE, 'normal' );
 	}
 
 	/**
@@ -138,6 +141,10 @@ class Metaboxes_Service_Provider extends Service_Provider {
 
 			case 'hotel_location':
 				$this->plugin->make( 'metabox.hotel_info' )->save( $post, $request );
+				break;
+
+			case 'hotel_service':
+				$this->plugin->make( 'metabox.service' )->save( $post, $request );
 				break;
 
 			case 'awebooking':

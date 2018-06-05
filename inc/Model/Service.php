@@ -4,8 +4,6 @@ namespace AweBooking\Model;
 use AweBooking\Constants;
 
 class Service extends Model {
-	const TYPE_OPTIONAL  = 'optional';
-	const TYPE_MANDATORY = 'mandatory';
 
 	/**
 	 * This is the name of this object type.
@@ -13,6 +11,24 @@ class Service extends Model {
 	 * @var string
 	 */
 	protected $object_type = Constants::HOTEL_SERVICE;
+
+	/**
+	 * Get all service operations.
+	 *
+	 * @return array
+	 */
+	public static function get_operations() {
+		return apply_filters( 'awebooking/service_operations', [
+			'add'               => esc_html__( 'Add to price', 'awebooking' ),
+			'add_daily'         => esc_html__( 'Add to price per night', 'awebooking' ),
+			'add_person'        => esc_html__( 'Add to price per person', 'awebooking' ),
+			'add_person_daily'  => esc_html__( 'Add to price per person per night', 'awebooking' ),
+			'sub'               => esc_html__( 'Subtract from price', 'awebooking' ),
+			'sub_daily'         => esc_html__( 'Subtract from price per night', 'awebooking' ),
+			'increase'          => esc_html__( 'Increase price by % amount', 'awebooking' ),
+			'decrease'          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
+		]);
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -50,9 +66,9 @@ class Service extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function perform_update( array $dirty ) {
-		if ( $this->get_changes_only( $dirty, [ 'title', 'status', 'description', 'date_created' ] ) ) {
+		if ( $this->get_changes_only( $dirty, [ 'name', 'status', 'description', 'date_created' ] ) ) {
 			$this->update_the_post([
-				'post_title'    => $this->get( 'title' ),
+				'post_title'    => $this->get( 'name' ),
 				'post_status'   => $this->get( 'status' ),
 				'post_excerpt'  => $this->get( 'description' ),
 				'post_date'     => $this->get( 'date_created' ),
@@ -70,9 +86,9 @@ class Service extends Model {
 			'date_created'  => null,
 			'date_modified' => null,
 			'status'        => '',
-			'type'          => '',
 			'value'         => '',
 			'operation'     => '',
+			'icon'          => [],
 		]);
 	}
 
@@ -81,9 +97,9 @@ class Service extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'operation' => '_service_operation',
-			'value'     => '_service_value',
-			'type'      => '_service_type',
+			'operation' => '_operation',
+			'value'     => '_value',
+			'icon'      => '_icon',
 		]);
 	}
 
