@@ -23,82 +23,57 @@ $room_stays = abrs_reservation()->get_room_stays();
 
 	<?php else : ?>
 
-		<div class="checkin-checkout-details-panel">
-			<div class="columns">
-				<div class="column is-5">
-					<div class="check-in-check-out-details">
-						<div class="column">
-							<div class="column is-12"><span class="title-text" data-bind="text: title">Check-in</span>
-							</div>
-						</div>
-						<div class="column">
-							<div class="column is-4"><span class="big-text" data-bind="text: day">10</span></div>
-							<div class="column is-8 right-content">
-								<div class="column">
-									<div class="column is-12"><span class="small-text"
-									                             data-bind="text: dayOfWeek">Sunday</span></div>
-								</div>
-								<div class="column">
-									<div class="column is-12"><span data-bind="text: monthYear">Jun 2018</span></div>
-								</div>
-							</div>
-						</div>
-						<div class="column">
-							<div class="column is-12"><span class="title-text" data-bind="text: time">from 14:00</span>
-							</div>
-						</div>
-					</div>
+		<div class="checkin-checkout-details">
+			<div class="checkin-checkout-details___item tb-width-40">
+				<span class="checkin-checkout-details__subtitle" data-bind="text: title">Check-in</span>
+				<div class="checkin-checkout-details__info">
+					<span class="meta-day">10</span>
+					<span class="meta-day-week" data-bind="text: dayOfWeek">Sunday</span>
+					<span class="meta-month-year">Jun 2018</span>
 				</div>
-				<div class="column is-1"><i class="fa ficon ficon-edge-arcolumn-right ficon-20"></i></div>
-				<div class="column is-5">
-					<div class="check-in-check-out-details">
-						<div class="column">
-							<div class="column is-12"><span class="title-text" data-bind="text: title">Check-out</span>
-							</div>
-						</div>
-						<div class="column">
-							<div class="column is-4"><span class="big-text" data-bind="text: day">11</span></div>
-							<div class="column is-8 right-content">
-								<div class="column">
-									<div class="column is-12"><span class="small-text" data-bind="text: dayOfWeek">Monday</span></div>
-								</div>
-								<div class="column">
-									<div class="column is-12"><span data-bind="text: monthYear">Jun 2018</span></div>
-								</div>
-							</div>
-						</div>
-						<div class="column">
-							<div class="column is-12"><span class="title-text" data-bind="text: time">until 12:00</span>
-							</div>
-						</div>
-					</div>
+				<div class="checkin-checkout-details__from">
+					<span class="meta-time">from 14:00</span>
 				</div>
 			</div>
-			<div class="divider-solid-bottom"></div>
+			<div class="checkin-checkout-details___item tb-width-20"><i class="fa ficon ficon-edge-arcolumn-right ficon-20"></i></div>
+			<div class="checkin-checkout-details___item tb-width-40">
+				<span class="checkin-checkout-details__subtitle" data-bind="text: title">Check-out</span>
+				<div class="checkin-checkout-details__info">
+					<span class="meta-day">11</span>
+					<span class="meta-day-week" data-bind="text: dayOfWeek">Sunday</span>
+					<span class="meta-month-year">Jun 2018</span>
+				</div>
+				<div class="checkin-checkout-details__from">
+					<span class="meta-time">to 14:00</span>
+				</div>
+			</div>
 		</div>
+		<div class="divider-solid-bottom"></div>
+		
+		<dl class="roomdetails-room">
+			<dt class="roomdetails-room__title" data-bind="text: roomDetails.roomText() + ' :'">Room :</dt>
+			<dd class="roomdetails-room__text" data-bind="text: roomDetails.roomTypeListText">2 x Single Bed in 4-Bed Room (Female only)</dd>
+			<dd class="roomdetails-room__text" data-bind="text: roomDetails.roomTypeListText">2 x Single Bed in 4-Bed Room (Female only)</dd>
 
-		<dl class="dl-horizontal dl-horizontal-left">
-
-			<dt id="roomdetails-room-text" data-bind="text: roomDetails.roomText() + ' :'">Room :</dt>
-			<dd data-bind="text: roomDetails.roomTypeListText">2 x Single Bed in 4-Bed Room (Female only)</dd>
-
-			<dd id="roomdetails-change-room">
-				<a target="_blank" href="">
+			<dd class="roomdetails-room__text">
+				<a target="_blank" href="" class="roomdetails-change-room">
 					<span>Change room</span> <i class="ficon ficon-16 ficon-arrow-right text ficon-txtdeco-none"></i>
 				</a>
 			</dd>
 
-			<dt data-bind="text: roomDetails.stayText() + ' :'">Stay :</dt>
-			<dd id="occupancyDetails" class="occupancy-details" data-bind="text: roomDetails.occupancy">1 night, 2
+			<dt class="roomdetails-room__title" data-bind="text: roomDetails.stayText() + ' :'">Stay :</dt>
+			<dd class="roomdetails-room__text" class="occupancy-details" data-bind="text: roomDetails.occupancy">1 night, 2
 				rooms, 8 adults
 			</dd>
-			<dt id="roomdetails-capacity-text" data-bind="text: roomDetails.capacityText()+ ' :'">Max occupancy :</dt>
-			<dd data-bind="text: roomDetails.capacity()">8 adults</dd>
-			<dt id="roomdetails-room-size-text" data-bind="text: roomDetails.roomSizeText() + ' :'">Room Size :</dt>
-			<dd data-bind="text: roomDetails.roomTypes()[0].size()">25 sq.m.</dd>
 
-			<dt id="roomdetails-policy-text" data-bind="text: roomDetails.policyText()+ ' :'">Policy :</dt>
-			<dd data-bind="text: roomDetails.bnplMessage">Nothing to pay until June 5, 2018</dd>
+			<dt class="roomdetails-room__title" data-bind="text: roomDetails.capacityText()+ ' :'">Max occupancy :</dt>
+			<dd class="roomdetails-room__text" data-bind="text: roomDetails.capacity()">8 adults</dd>
+
+			<dt class="roomdetails-room__title" data-bind="text: roomDetails.roomSizeText() + ' :'">Room Size :</dt>
+			<dd class="roomdetails-room__text" data-bind="text: roomDetails.roomTypes()[0].size()">25 sq.m.</dd>
+
+			<dt class="roomdetails-room__title" data-bind="text: roomDetails.policyText()+ ' :'">Policy :</dt>
+			<dd class="roomdetails-room__text" data-bind="text: roomDetails.bnplMessage">Nothing to pay until June 5, 2018</dd>
 		</dl>
 
 		<div class="rooms rooms--booked">
