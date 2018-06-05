@@ -16,7 +16,6 @@
 .searchbox__box {
   position: relative;
   box-sizing: border-box;
-  padding: 10px 0;
 }
 
 .searchbox__box-content {
@@ -69,12 +68,17 @@
 
 
 .searchbox__wrapper-4 {
-  .searchbox__box {
-    width: 25%;
+
+  .searchbox__box--button {
+    width: 20%;
+  }
+  
+  .searchbox__box--occupancy {
+    width: 30%;
   }
 
   .searchbox__box--datepicker {
-    width: 50%;
+    width: 55%;
   }
 }
 
@@ -92,8 +96,9 @@
 .searchbox__box--checkin,
 .searchbox__box--checkout {
   .hotel-input {
-    border: 0;
+    display: block;
     font-weight: bold;
+    border: 0;
 
     &:focus {
       outline: none;
