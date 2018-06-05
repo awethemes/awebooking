@@ -308,7 +308,7 @@ class Installer {
 		$current_db_version = $this->get_current_db_version();
 
 		// If no db_version found, there's nothing to update.
-		if ( is_null( $current_db_version ) ) {
+		if ( is_null( $current_db_version ) || empty( $this->db_updates ) ) {
 			return false;
 		}
 
@@ -390,13 +390,13 @@ class Installer {
 		$tables = "
 		CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
 		  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		  `name` varchar(191) DEFAULT NULL,
+		  `name` VARCHAR(191) DEFAULT NULL,
 		  `room_type` BIGINT UNSIGNED NOT NULL,
-		  `order` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-		  PRIMARY KEY (`id`),
-		  KEY `name` (`name`),
-		  KEY `order` (`order`),
-		  KEY `room_type` (`room_type`)
+		  `order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+		  PRIMARY KEY (id),
+		  KEY name (name),
+		  KEY order (order),
+		  KEY room_type (room_type)
 		) $collate;
 
 		CREATE TABLE `{$wpdb->prefix}awebooking_booking` (
@@ -404,7 +404,7 @@ class Installer {
 		  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		  {$days_schema}
-		  PRIMARY KEY (`room_id`, `year`, `month`)
+		  PRIMARY KEY (room_id, year, month)
 		) $collate;
 
 		CREATE TABLE `{$wpdb->prefix}awebooking_availability` (
@@ -412,7 +412,7 @@ class Installer {
 		  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		  {$days_schema}
-		  PRIMARY KEY (`room_id`, `year`, `month`)
+		  PRIMARY KEY (room_id, year, month)
 		) $collate;
 
 		CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
@@ -420,36 +420,46 @@ class Installer {
 		  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		  {$days_schema}
-		  PRIMARY KEY (`rate_id`, `year`, `month`)
+		  PRIMARY KEY (rate_id, year, month)
 		) $collate;
 
-		CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
-		  booking_item_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		  booking_item_name TEXT NOT NULL,
-		  booking_item_type varchar(191) NOT NULL DEFAULT '',
-		  booking_item_parent BIGINT UNSIGNED NOT NULL,
-		  booking_id BIGINT UNSIGNED NOT NULL,
+		CREATE TABLE `{$wpdb->prefix}awebooking_booking_items` (
+		  `booking_item_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		  `booking_item_name` TEXT NOT NULL,
+		  `booking_item_type` VARCHAR(191) NOT NULL DEFAULT '',
+		  `booking_item_parent` BIGINT UNSIGNED NOT NULL,
+		  `booking_id` BIGINT UNSIGNED NOT NULL,
 		  PRIMARY KEY (booking_item_id),
 		  KEY booking_id (booking_id),
 		  KEY booking_item_parent (booking_item_parent)
 		) $collate;
 
-		CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
-		  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		  booking_item_id BIGINT UNSIGNED NOT NULL,
-		  meta_key varchar(191) default NULL,
-		  meta_value longtext NULL,
+		CREATE TABLE `{$wpdb->prefix}awebooking_booking_itemmeta` (
+		  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		  `booking_item_id` BIGINT UNSIGNED NOT NULL,
+		  `meta_key` VARCHAR(191) default NULL,
+		  `meta_value` longtext NULL,
 		  PRIMARY KEY (meta_id),
 		  KEY booking_item_id (booking_item_id),
 		  KEY meta_key (meta_key(32))
 		) $collate;
 
-		CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
-		  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		  rate varchar(8) NOT NULL DEFAULT '',
-		  name varchar(191) NOT NULL DEFAULT '',
-		  priority BIGINT UNSIGNED NOT NULL,
-		  compound int(1) NOT NULL DEFAULT 0,
+		CREATE TABLE `{$wpdb->prefix}awebooking_service_relationships` (
+		  `rate_plan_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+		  `service_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+		  `inclusion` INT(1) NOT NULL DEFAULT 0,
+		  `mandatory` INT(1) NOT NULL DEFAULT 0,
+		  `sort_order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+		  PRIMARY KEY (rate_plan_id, service_id),
+		  KEY service_id (service_id)
+		) $collate;
+
+		CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
+		  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		  `rate` VARCHAR(8) NOT NULL DEFAULT '',
+		  `name` VARCHAR(191) NOT NULL DEFAULT '',
+		  `priority` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+		  `compound` INT(1) NOT NULL DEFAULT 0,
 		  PRIMARY KEY (id),
 		  KEY name (name),
 		  KEY priority (priority)
