@@ -38,9 +38,16 @@ interface Rate_Plan {
 	public function get_priority();
 
 	/**
-	 * Gets the rates.
+	 * Gets all rates of the rate plan.
 	 *
-	 * @return array \AweBooking\Model\Pricing[]
+	 * @return \AweBooking\Support\Collection \AweBooking\Model\Pricing[]
 	 */
 	public function get_rates();
+
+	/**
+	 * Gets all services of the rate plan.
+	 *
+	 * @return \AweBooking\Support\Collection \AweBooking\Model\Service[]
+	 */
+	public function get_services();
 }

@@ -2,6 +2,8 @@
 namespace AweBooking\Model\Pricing;
 
 class Standard_Plan implements Rate_Plan {
+	use With_Services;
+
 	/**
 	 * The room-type instance.
 	 *
@@ -36,7 +38,7 @@ class Standard_Plan implements Rate_Plan {
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return $this->instance->get_title();
+		return $this->instance->get( 'title' );
 	}
 
 	/**
@@ -72,15 +74,15 @@ class Standard_Plan implements Rate_Plan {
 	 */
 	public function get_rates() {
 		if ( is_null( $this->rates ) ) {
-			// Multi rates only available in pro version, please upgrade :).
+			// Multiple rates only available in pro version, please upgrade :).
 			$rates = apply_filters( 'awebooking/standard_plan/setup_rates', [], $this );
 
 			$this->rates = abrs_collect( $rates )
 				->prepend( new Base_Rate( $this->instance ) )
 				->filter( function ( $plan ) {
 					return $plan instanceof Rate;
-				})->sortBy( function( $plan ) {
-					return $plan->get_priority();
+				})->sortBy( function( Rate $rate ) {
+					return $rate->get_priority();
 				})->values();
 		}
 

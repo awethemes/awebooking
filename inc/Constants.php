@@ -10,7 +10,8 @@ class Constants {
 	const HOTEL_RATE_PLAN   = 'hotel_rate_plan';
 	const HOTEL_LOCATION    = 'hotel_location';
 	const HOTEL_AMENITY     = 'hotel_amenity';
-	const HOTEL_SERVICE     = 'hotel_extra_service';
+	const HOTEL_SERVICE     = 'hotel_service';
+	const HOTEL_SERVICE_CAT = 'hotel_service_cat';
 
 	// Booking constants.
 	const STATE_AVAILABLE   = 0;

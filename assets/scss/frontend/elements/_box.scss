@@ -1,0 +1,12 @@
+$box-radius:           1px;
+$box-padding:          1rem;
+$box-background-color: #fff;
+$box-box-shadow:       0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
+
+.box {
+  background-color: $box-background-color;
+  border-radius: $box-radius;
+  box-shadow: $box-box-shadow;
+  display: block;
+  padding: $box-padding;
+}

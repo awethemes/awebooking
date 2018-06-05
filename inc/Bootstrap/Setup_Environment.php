@@ -37,6 +37,8 @@ class Setup_Environment {
 
 	/**
 	 * Add Awebooking Image sizes to WP.
+	 *
+	 * @access private
 	 */
 	public function add_image_sizes() {
 		$thumbnail = abrs_get_image_size( 'thumbnail' );
@@ -116,34 +118,7 @@ class Setup_Environment {
 			'show_admin_column'   => false,
 			'rewrite'             => false,
 			'query_var'           => false,
-//			'capabilities'        => $capabilities,
-		]));
-
-		register_taxonomy( Constants::HOTEL_SERVICE, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_service_args', [
-			'labels'              => [
-				'name'                  => esc_html_x( 'Services', 'Service plural name', 'awebooking' ),
-				'singular_name'         => esc_html_x( 'Service', 'Service singular name', 'awebooking' ),
-				'menu_name'             => esc_html_x( 'Services', 'Admin menu name', 'awebooking' ),
-				'search_items'          => esc_html__( 'Query services', 'awebooking' ),
-				'popular_items'         => esc_html__( 'Popular services', 'awebooking' ),
-				'all_items'             => esc_html__( 'All services', 'awebooking' ),
-				'parent_item'           => esc_html__( 'Parent service', 'awebooking' ),
-				'parent_item_colon'     => esc_html__( 'Parent service', 'awebooking' ),
-				'edit_item'             => esc_html__( 'Edit service', 'awebooking' ),
-				'update_item'           => esc_html__( 'Update service', 'awebooking' ),
-				'add_new_item'          => esc_html__( 'Add New Service', 'awebooking' ),
-				'new_item_name'         => esc_html__( 'New Service Name', 'awebooking' ),
-				'add_or_remove_items'   => esc_html__( 'Add or remove services', 'awebooking' ),
-				'choose_from_most_used' => esc_html__( 'Choose from most used services', 'awebooking' ),
-			],
-			'hierarchical'        => true,
-			'public'              => true,
-			'publicly_queryable'  => true,
-			'show_ui'             => true,
-			'show_in_nav_menus'   => true,
-			'show_in_quick_edit'  => false,
-			'show_admin_column'   => false,
-//			'capabilities'        => $capabilities,
+			// 'capabilities'        => $capabilities,
 		]));
 
 		/**
@@ -162,10 +137,7 @@ class Setup_Environment {
 			return;
 		}
 
-		/**
-		 * Fire action to register_post_type.
-		 */
-		do_action( 'awebooking/register_post_type' );
+		do_action( 'awebooking/register_post_types' );
 
 		// Get the room type slug.
 		$room_type_slug = apply_filters( 'awebooking/room_type_slug',
@@ -256,6 +228,41 @@ class Setup_Environment {
 			'has_archive'         => false,
 		]));
 
+		register_post_type( Constants::HOTEL_SERVICE, apply_filters( 'awebooking/register_service_args', [
+			'labels'              => [
+				'name'                  => esc_html_x( 'Services', 'Service plural name', 'awebooking' ),
+				'singular_name'         => esc_html_x( 'Service', 'Service singular name', 'awebooking' ),
+				'menu_name'             => esc_html_x( 'Services', 'Admin menu name', 'awebooking' ),
+				'add_new'               => esc_html__( 'Add service', 'awebooking' ),
+				'add_new_item'          => esc_html__( 'Add new service', 'awebooking' ),
+				'edit'                  => esc_html__( 'Edit', 'awebooking' ),
+				'edit_item'             => esc_html__( 'Edit service', 'awebooking' ),
+				'new_item'              => esc_html__( 'New service', 'awebooking' ),
+				'view_item'             => esc_html__( 'View service', 'awebooking' ),
+				'search_items'          => esc_html__( 'Query services', 'awebooking' ),
+				'not_found'             => esc_html__( 'No services found', 'awebooking' ),
+				'not_found_in_trash'    => esc_html__( 'No services found in trash', 'awebooking' ),
+				'parent'                => esc_html__( 'Parent services', 'awebooking' ),
+				'filter_items_list'     => esc_html__( 'Filter services', 'awebooking' ),
+				'items_list_navigation' => esc_html__( 'Services navigation', 'awebooking' ),
+				'items_list'            => esc_html__( 'Services List', 'awebooking' ),
+			],
+			'description'         => esc_html__( 'This is where store services are stored.', 'awebooking' ),
+			'public'              => false,
+			'hierarchical'        => false,
+			'exclude_from_search' => true,
+			'publicly_queryable'  => false,
+			'show_ui'             => true,
+			'show_in_menu'        => 'edit.php?post_type=room_type',
+			'show_in_nav_menus'   => false,
+			'show_in_admin_bar'   => false,
+			'show_in_rest'        => true,
+			// 'capability_type'     => Constants::HOTEL_SERVICE,
+			'supports'            => [ 'comments' ],
+			'rewrite'             => false,
+			'has_archive'         => false,
+		]));
+
 		// Enable multiple_hotels.
 		if ( $this->plugin->get_option( 'enable_location', false ) ) {
 			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'awebooking/register_location_args', [
@@ -293,10 +300,7 @@ class Setup_Environment {
 			]));
 		}
 
-		/**
-		 * Fire action after_register_post_type.
-		 */
-		do_action( 'awebooking/after_register_post_type' );
+		do_action( 'awebooking/after_register_post_types' );
 	}
 
 	/**

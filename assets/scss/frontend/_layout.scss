@@ -1,16 +1,16 @@
 .hotel-content {
-  @extend .columns;
+  @include make-row();
 }
 
 .hotel-content__main,
 .hotel-content__aside {
-  @extend .column;
+  @include make-col-ready();
 }
 
 .hotel-content__main {
-  @extend .is-8;
+  @include make-col(8);
 }
 
 .hotel-content__aside {
-  @extend .is-4;
+  @include make-col(4);
 }

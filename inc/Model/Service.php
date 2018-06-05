@@ -2,81 +2,17 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Model\Pricing\Rate_Plan;
-use AweBooking\Model\Pricing\Standard_Plan;
 
-class Room_Type extends Model {
+class Service extends Model {
+	const TYPE_OPTIONAL  = 'optional';
+	const TYPE_MANDATORY = 'mandatory';
+
 	/**
 	 * This is the name of this object type.
 	 *
 	 * @var string
 	 */
-	protected $object_type = Constants::ROOM_TYPE;
-
-	/**
-	 * List the rate plans.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $rate_plans;
-
-	/**
-	 * Gets rooms belongs to this room type.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function get_rooms() {
-		// If working on non-exists room type, just create an empty rooms.
-		$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
-
-		$rooms = abrs_collect( $rooms )->map_into( Room::class );
-
-		return apply_filters( $this->prefix( 'get_rooms' ), $rooms, $this );
-	}
-
-	/**
-	 * Gets rate plans available for this room type.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function get_rate_plans() {
-		if ( is_null( $this->rate_plans ) ) {
-			// Multi rate-plans only available in pro version, please upgrade :).
-			$rate_plans = $this->exists()
-				? apply_filters( $this->prefix( 'setup_rate_plans' ), [], $this )
-				: [];
-
-			$this->rate_plans = abrs_collect( $rate_plans )
-				->prepend( $this->get_standard_plan() )
-				->filter( function ( $plan ) {
-					return $plan instanceof Rate_Plan;
-				})->sortBy( function( Rate_Plan $plan ) {
-					return $plan->get_priority();
-				})->values();
-		}
-
-		return $this->rate_plans;
-	}
-
-	/**
-	 * Returns the standard rate plan of this room type.
-	 *
-	 * @return \AweBooking\Model\Pricing\Standard_Plan
-	 */
-	public function get_standard_plan() {
-		return apply_filters( $this->prefix( 'get_standard_plan' ), new Standard_Plan( $this ), $this );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function clean_cache() {
-		$this->rate_plans = null;
-
-		clean_post_cache( $this->get_id() );
-
-		wp_cache_delete( $this->get_id(), 'awebooking_rooms' );
-	}
+	protected $object_type = Constants::HOTEL_SERVICE;
 
 	/**
 	 * {@inheritdoc}
@@ -143,33 +79,14 @@ class Room_Type extends Model {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
-			// Basic infomations.
-			'title'             => '',
-			'slug'              => '',
 			'status'            => '',
+			'name'              => '',
+			'description'       => '',
+			'type'              => '',
+			'operation'         => '',
+			'value'             => '',
 			'date_created'      => null,
 			'date_modified'     => null,
-			'hotel_id'          => 0,
-			'description'       => '',
-			'short_description' => '',
-			'thumbnail_id'      => 0,
-			'gallery_ids'       => [],
-
-			// Room data.
-			'beds'                => [],
-			'view'                => '',
-			'maximum_occupancy'   => 0,
-			'number_adults'       => 0,
-			'number_children'     => 0,
-			'number_infants'      => 0,
-			'calculation_infants' => 'on', // on | off.
-
-			// Rate.
-			'rack_rate'           => 0,
-			'rate_inclusions'     => [],
-			'rate_policies'       => [],
-			'rate_min_los'        => 0,
-			'rate_max_los'        => 0,
 		]);
 	}
 
@@ -178,22 +95,9 @@ class Room_Type extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'gallery_ids'         => 'gallery',
-			'thumbnail_id'        => '_thumbnail_id',
-
-			'beds'                => '_beds',
-			'view'                => '_view',
-			'maximum_occupancy'   => '_maximum_occupancy',
-			'number_adults'       => 'number_adults',
-			'number_children'     => 'number_children',
-			'number_infants'      => 'number_infants',
-			'calculation_infants' => '_infants_in_calculations',
-
-			'rack_rate'           => 'base_price',
-			'rate_inclusions'     => '_rate_inclusions',
-			'rate_policies'       => '_rate_policies',
-			'rate_min_los'        => 'minimum_night',
-			'rate_max_los'        => '_rate_maximum_los',
+			'operation' => '_service_operation',
+			'value'     => '_service_value',
+			'type'      => '_service_type',
 		]);
 	}
 

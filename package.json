@@ -35,7 +35,7 @@
     ]
   },
   "dependencies": {
-    "bulma": "^0.7.1",
+    "bootstrap": "^4.1.1",
     "debounce": "^1.1.0",
     "flatpickr": "^4.5.0",
     "js-cookie": "^2.2.0",
