@@ -5,6 +5,7 @@ use Awethemes\Http\Request;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Component\Form\Form_Builder;
+use function foo\func;
 
 class Room_Type_Metabox {
 	/**
@@ -386,44 +387,46 @@ class Room_Type_Metabox {
 	/**
 	 * Generate view datalist HTML callback.
 	 *
-	 * @return void
+	 * @return \Closure
 	 */
 	protected function datalist_view_callback() {
-		$view_datalist = apply_filters( 'awebooking/view_list', [
-			esc_html__( 'Airport view', 'awebooking' ),
-			esc_html__( 'Bay view', 'awebooking' ),
-			esc_html__( 'City view', 'awebooking' ),
-			esc_html__( 'Courtyard view', 'awebooking' ),
-			esc_html__( 'Golf view', 'awebooking' ),
-			esc_html__( 'Harbor view', 'awebooking' ),
-			esc_html__( 'Intercoastal view', 'awebooking' ),
-			esc_html__( 'Lake view', 'awebooking' ),
-			esc_html__( 'Marina view', 'awebooking' ),
-			esc_html__( 'Mountain view', 'awebooking' ),
-			esc_html__( 'Ocean view', 'awebooking' ),
-			esc_html__( 'Pool view', 'awebooking' ),
-			esc_html__( 'River view', 'awebooking' ),
-			esc_html__( 'Water view', 'awebooking' ),
-			esc_html__( 'Beach view', 'awebooking' ),
-			esc_html__( 'Garden view', 'awebooking' ),
-			esc_html__( 'Park view', 'awebooking' ),
-			esc_html__( 'Forest view', 'awebooking' ),
-			esc_html__( 'Rain forest view', 'awebooking' ),
-			esc_html__( 'Various views', 'awebooking' ),
-			esc_html__( 'Limited view', 'awebooking' ),
-			esc_html__( 'Slope view', 'awebooking' ),
-			esc_html__( 'Strip view', 'awebooking' ),
-			esc_html__( 'Countryside view', 'awebooking' ),
-			esc_html__( 'Sea view', 'awebooking' ),
-		]);
+		return function() {
+			$view_datalist = apply_filters( 'awebooking/view_list', [
+				esc_html__( 'Airport view', 'awebooking' ),
+				esc_html__( 'Bay view', 'awebooking' ),
+				esc_html__( 'City view', 'awebooking' ),
+				esc_html__( 'Courtyard view', 'awebooking' ),
+				esc_html__( 'Golf view', 'awebooking' ),
+				esc_html__( 'Harbor view', 'awebooking' ),
+				esc_html__( 'Intercoastal view', 'awebooking' ),
+				esc_html__( 'Lake view', 'awebooking' ),
+				esc_html__( 'Marina view', 'awebooking' ),
+				esc_html__( 'Mountain view', 'awebooking' ),
+				esc_html__( 'Ocean view', 'awebooking' ),
+				esc_html__( 'Pool view', 'awebooking' ),
+				esc_html__( 'River view', 'awebooking' ),
+				esc_html__( 'Water view', 'awebooking' ),
+				esc_html__( 'Beach view', 'awebooking' ),
+				esc_html__( 'Garden view', 'awebooking' ),
+				esc_html__( 'Park view', 'awebooking' ),
+				esc_html__( 'Forest view', 'awebooking' ),
+				esc_html__( 'Rain forest view', 'awebooking' ),
+				esc_html__( 'Various views', 'awebooking' ),
+				esc_html__( 'Limited view', 'awebooking' ),
+				esc_html__( 'Slope view', 'awebooking' ),
+				esc_html__( 'Strip view', 'awebooking' ),
+				esc_html__( 'Countryside view', 'awebooking' ),
+				esc_html__( 'Sea view', 'awebooking' ),
+			]);
 
-		echo '<datalist id="view_datalist">';
+			echo '<datalist id="view_datalist">';
 
-		foreach ( $view_datalist as $val ) {
-			echo '<option value="' . esc_attr( $val ) . '">';
-		}
+			foreach ( $view_datalist as $val ) {
+				echo '<option value="' . esc_attr( $val ) . '">';
+			}
 
-		echo '</datalist>';
+			echo '</datalist>';
+		};
 	}
 
 	/**

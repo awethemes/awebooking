@@ -61,6 +61,10 @@ function abrs_get_booking_item( $item ) {
 	return abrs_rescue( function() use ( $classname, $item_id ) {
 		$item = new $classname( $item_id );
 
+		if ( ! $item instanceof Item ) {
+			return false;
+		}
+
 		return $item->exists() ? $item : null;
 	}, false );
 }

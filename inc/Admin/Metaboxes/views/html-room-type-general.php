@@ -9,13 +9,11 @@
 
 	<div class="abrow">
 		<div class="abcol-6">
-			<?php $form->show_field( '_beds' ); ?>
+			<?php $form->show_field( '_room_view' ); ?>
 		</div>
-	</div>
 
-	<div class="abrow">
 		<div class="abcol-6">
-			<?php $form->show_field( '_view' ); ?>
+			<?php $form->show_field( '_beds' ); ?>
 		</div>
 	</div>
 

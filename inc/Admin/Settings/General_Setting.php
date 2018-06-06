@@ -53,6 +53,18 @@ class General_Setting extends Abstract_Setting {
 			'default'   => 'on',
 		]);
 
+		$this->add_field([
+			'id'               => 'reservation_mode',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Reservation Mode', 'awebooking' ),
+			'default'          => 'multiple_room',
+			'classes'          => 'with-selectize',
+			'options'          => apply_filters( 'awebooking/list_reservation_mode', [
+				'single_room'   => esc_html__( 'Single Room', 'awebooking' ),
+				'multiple_room' => esc_html__( 'Multiple Rooms', 'awebooking' ),
+			]),
+		]);
+
 		// Pages settings.
 		$all_pages_cb = WP_Data::cb( 'pages', [ 'post_status' => 'publish' ] );
 
