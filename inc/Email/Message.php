@@ -108,7 +108,7 @@ class Message {
 	 * @return bool
 	 */
 	public function send() {
-		if ( empty( $this->to ) ) {
+		if ( ! is_email( $this->to ) ) {
 			return false;
 		}
 

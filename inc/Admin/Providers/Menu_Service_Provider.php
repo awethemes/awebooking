@@ -113,7 +113,8 @@ class Menu_Service_Provider extends Service_Provider {
 		global $parent_file, $submenu_file;
 
 		$current_screen = get_current_screen();
-		if ( 'awebooking_route' === $current_screen->base ) {
+
+		if ( $current_screen && 'awebooking_route' === $current_screen->base ) {
 			// @codingStandardsIgnoreStart
 			$parent_file  = 'awebooking';
 			$submenu_file = 'admin.php?awebooking=' . $this->plugin['request']->route_path();

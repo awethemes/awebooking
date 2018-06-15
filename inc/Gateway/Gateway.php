@@ -3,6 +3,7 @@ namespace AweBooking\Gateway;
 
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
+use AweBooking\Frontend\Checkout\Url_Generator;
 
 abstract class Gateway {
 	/**
@@ -195,6 +196,22 @@ abstract class Gateway {
 	 * @return \AweBooking\Gateway\Response
 	 */
 	abstract public function process( Booking $booking );
+
+	/**
+	 * Get the return url (thank you page).
+	 *
+	 * @param int|\AweBooking\Model\Booking $booking The booking instance or booking ID.
+	 * @return string
+	 */
+	public function get_return_url( $booking ) {
+		$booking = abrs_get_booking( $booking );
+
+		if ( is_null( $booking ) ) {
+			return '';
+		}
+
+		return ( new Url_Generator( $booking ) )->get_booking_received_url();
+	}
 
 	/**
 	 * Determines if the gateway has fields on the checkout.

@@ -22,6 +22,10 @@ class Constants {
 	const GL_DAILY   = 'daily';
 	const GL_NIGHTLY = 'nightly';
 
+	// Reservation modes.
+	const MODE_SINGLE   = 'single_room';
+	const MODE_MULTIPLE = 'multiple_room';
+
 	/**
 	 * Defines constants.
 	 *

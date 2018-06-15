@@ -5,7 +5,6 @@ use Awethemes\Http\Request;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Component\Form\Form_Builder;
-use function foo\func;
 
 class Room_Type_Metabox {
 	/**

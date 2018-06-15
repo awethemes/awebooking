@@ -21,4 +21,3 @@
 		<button <?php echo abrs_html_attributes( $args['button_atts'] ); // WPCS: XSS OK. ?>><?php echo $args['button_text']; // WPCS: XSS OK. ?></button>
 	<?php endif; ?>
 </form>
-

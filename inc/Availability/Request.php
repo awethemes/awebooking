@@ -174,9 +174,9 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return bool
 	 */
 	public function same_with( Request $another ) {
-		$hash1 = sha1( serialize( $this->to_array() ) );
+		$hash1 = sha1( serialize( $this->get_timespan()->to_array() ) );
 
-		$hash2 = sha1( serialize( $another->to_array() ) );
+		$hash2 = sha1( serialize( $another->get_timespan()->to_array() ) );
 
 		return hash_equals( $hash1, $hash2 );
 	}

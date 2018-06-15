@@ -88,7 +88,7 @@ function abrs_get_rate_plan( $rate_plan ) {
  * @param  mixed $hotel The post object or post ID of the hotel.
  * @return \AweBooking\Model\Hotel|false|null
  */
-function abrs_get_hotel( $hotel ) {
+function abrs_get_hotel( $hotel = 0 ) {
 	if ( 0 == $hotel ) {
 		return abrs_get_default_hotel();
 	}
@@ -154,4 +154,47 @@ function abrs_get_service( $service ) {
 
 		return $service->exists() ? $service : null;
 	}, false );
+}
+
+
+
+/**
+ * Get room beds.
+ *
+ * @param  int    $room_type room type
+ * @param  string $separator separator
+ * @return void
+ */
+function abrs_get_room_beds( $room_type, $separator = ', ' ) {
+	$room_type = abrs_get_room_type( $room_type );
+
+	if ( ! $room_type ) {
+		return;
+	}
+
+	$beds = $room_type->get( 'beds' );
+
+	$items = [];
+	foreach ( $beds as $bed ) {
+		/* translators: %1$s number of beds, %2$s bed type */
+		$items[] = sprintf( __( '<span>%1$s %2$s</span>', 'awebooking' ), absint( $bed['number'] ), $bed['type'] );
+	}
+
+	return implode( $items, $separator );
+}
+
+/**
+ * Get room view.
+ *
+ * @param  int $room_type room type
+ * @return string
+ */
+function abrs_get_room_view( $room_type ) {
+	$room_type = abrs_get_room_type( $room_type );
+
+	if ( ! $room_type ) {
+		return;
+	}
+
+	return $room_type->get( 'view' );
 }

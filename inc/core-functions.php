@@ -274,6 +274,29 @@ function abrs_get_option( $key, $default = null ) {
 }
 
 /**
+ * Gets the current reservation mode.
+ *
+ * Modes: single_room, multiple_room
+ *
+ * @return string
+ */
+function abrs_get_reservation_mode() {
+	return abrs_get_option( 'reservation_mode', 'multiple_room' );
+}
+
+/**
+ * Determines if current reservation mode match with given modes.
+ *
+ * @param string|array $modes The modes.
+ * @return bool
+ */
+function abrs_is_reservation_mode( $modes ) {
+	return in_array( abrs_get_reservation_mode(),
+		is_array( $modes ) ? $modes : func_get_args()
+	);
+}
+
+/**
  * Sanitises various option values based on the nature of the option.
  *
  * @param  string $key   The name of the option.

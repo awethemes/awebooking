@@ -7,8 +7,6 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
-  awebooking.utils.flatpickrRangePlugin = require('../core/flatpickr-range-plugin.js');
-
   /**
    * The admin route.
    *

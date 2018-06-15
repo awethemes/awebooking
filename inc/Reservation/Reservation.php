@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Reservation;
 
+use AweBooking\Constants;
 use Illuminate\Support\Arr;
 use AweBooking\Availability\Request;
 use AweBooking\Reservation\Storage\Store;
@@ -15,7 +16,14 @@ class Reservation {
 	protected $store;
 
 	/**
-	 * The current request.
+	 * The previous res request.
+	 *
+	 * @var \AweBooking\Availability\Request
+	 */
+	protected $previous_request;
+
+	/**
+	 * The current res request.
 	 *
 	 * @var \AweBooking\Availability\Request
 	 */
@@ -77,6 +85,7 @@ class Reservation {
 		$this->currency = abrs_current_currency();
 		$this->language = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 
+		add_action( 'wp_loaded', [ $this, 'restore_request' ] );
 		add_action( 'wp_loaded', [ $this, 'restore' ] );
 		add_action( 'awebooking/search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
 
@@ -193,6 +202,11 @@ class Reservation {
 		$room_stay->set_data( $room_rate );
 		$room_stay->associate( $room_rate->get_room_type() );
 
+		// In single mode, we'll clear all room stays was added before.
+		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
+			$this->room_stays->clear();
+		}
+
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 
 		do_action( 'awebooking/reservation/added_room_stay', $room_stay );
@@ -271,8 +285,12 @@ class Reservation {
 	 */
 	public function flush() {
 		$this->room_stays->clear();
-
 		$this->store->flush( 'room_stays' );
+
+		$this->current_request = null;
+
+		$this->previous_request = null;
+		$this->store->flush( 'previous_request' );
 
 		do_action( 'awebooking/reservation/flush', $this );
 	}
@@ -283,9 +301,15 @@ class Reservation {
 	 * @return void
 	 */
 	public function store() {
+		if ( $this->room_stays->isEmpty() || ! $this->current_request ) {
+			return;
+		}
+
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
 
-		$this->set_previous_request( $this->current_request );
+		$this->store->put( 'previous_request', $this->current_request );
+
+		do_action( 'awebooking/reservation/stored', $this );
 	}
 
 	/**
@@ -294,10 +318,17 @@ class Reservation {
 	 * @return void
 	 */
 	public function restore() {
-		$session_room_stays = $this->store->get( 'room_stays' );
+		if ( is_null( $this->previous_request ) ) {
+			return;
+		}
 
+		$session_room_stays = $this->store->get( 'room_stays' );
 		if ( empty( $session_room_stays ) || ! is_array( $session_room_stays ) ) {
 			return;
+		}
+
+		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
+			$session_room_stays = [ Arr::last( $session_room_stays ) ];
 		}
 
 		// Prime caches to reduce future queries.
@@ -343,6 +374,21 @@ class Reservation {
 	}
 
 	/**
+	 * Restore the res request from the store.
+	 *
+	 * @return void
+	 */
+	public function restore_request() {
+		$previous_request = $this->store->get( 'previous_request' );
+
+		if ( ! $previous_request || ! $previous_request instanceof Request ) {
+			return;
+		}
+
+		$this->previous_request = $previous_request;
+	}
+
+	/**
 	 * Calculate the totals.
 	 *
 	 * @return void
@@ -356,26 +402,18 @@ class Reservation {
 	 * @return \AweBooking\Availability\Request|null
 	 */
 	public function get_previous_request() {
-		$previous_request = $this->store->get( 'previous_request' );
-
-		if ( ! $previous_request || ! $previous_request instanceof Request ) {
-			return null;
-		}
-
-		return $previous_request;
+		return $this->previous_request;
 	}
 
 	/**
-	 * Sets or flush the previous_request.
+	 * Sets the previous_request.
 	 *
-	 * @param \AweBooking\Availability\Request|null $request The res request.
+	 * @param \AweBooking\Availability\Request $request The res request.
 	 */
-	public function set_previous_request( Request $request = null ) {
-		if ( is_null( $request ) ) {
-			$this->store->flush( 'previous_request' );
-		} else {
-			$this->store->put( 'previous_request', $request );
-		}
+	public function set_previous_request( Request $request ) {
+		$this->previous_request = $request;
+
+		return $this;
 	}
 
 	/**
@@ -435,7 +473,6 @@ class Reservation {
 	 * Sets the ISO currency code.
 	 *
 	 * @param  string $currency The ISO code currency.
-	 *
 	 * @return $this
 	 */
 	public function set_currency( $currency ) {

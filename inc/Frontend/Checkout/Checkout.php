@@ -5,6 +5,7 @@ use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Room_Item;
+use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Gateway\Gateways;
 use AweBooking\Gateway\Response as Gateway_Response;
@@ -143,9 +144,6 @@ class Checkout {
 	protected function process_without_payment( Booking $booking ) {
 		$booking->update_status( apply_filters( 'awebooking/booking_status_without_payment', 'on-hold' ) );
 
-		// Mark the payment is complete.
-		$booking->payment_complete();
-
 		// flush the reservation data.
 		$this->reservation->flush();
 
@@ -215,11 +213,20 @@ class Checkout {
 	}
 
 	/**
+	 * Get current payment method (store in session).
+	 *
+	 * @return string
+	 */
+	public function get_current_payment_method() {
+		return $this->session->get( 'selected_payment_method' );
+	}
+
+	/**
 	 * Determines if have any awaiting booking need to re-process.
 	 *
 	 * @return \AweBooking\Model\Booking|null
 	 */
-	protected function get_awaiting_booking() {
+	public function get_awaiting_booking() {
 		$awaiting_booking = $this->session->get( 'booking_awaiting_payment' );
 
 		if ( empty( $awaiting_booking ) ) {
@@ -227,6 +234,9 @@ class Checkout {
 		}
 
 		$booking = abrs_get_booking( $awaiting_booking );
+		if ( ! $booking ) {
+			return null;
+		}
 
 		if ( ! in_array( $booking->get_status(), [ 'pending', 'failed' ] ) ) {
 			return null;
@@ -254,7 +264,7 @@ class Checkout {
 	 * @param  \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
-	protected function create_booking_items( $booking, $data ) {
+	public function create_booking_items( $booking, $data ) {
 		foreach ( $this->reservation->get_room_stays() as $item_key => $room_stay ) {
 			$room_rate = $room_stay->get_data();
 
@@ -301,6 +311,29 @@ class Checkout {
 
 		// Re-calculate the totals.
 		$booking->calculate_totals();
+	}
+
+	/**
+	 * Create the booking items.
+	 *
+	 * @param  \AweBooking\Model\Booking $booking        The booking instance.
+	 * @param  string                    $method         The payment method.
+	 * @param  string                    $transaction_id The transaction ID.
+	 * @return \AweBooking\Model\Booking\Payment_Item
+	 */
+	public function create_payment_item( $booking, $method, $transaction_id = '' ) {
+		$payment_item = ( new Payment_Item )->fill([
+			'booking_id'     => $booking->get_id(),
+			'amount'         => $booking->get( 'total' ),
+			'method'         => $method,
+			'transaction_id' => $transaction_id,
+		]);
+
+		$payment_item->save();
+
+		// do_action( $tag );
+
+		return $payment_item;
 	}
 
 	/**

@@ -5,8 +5,6 @@ $max_select = 10;
 
 $hotels = abrs_list_hotels();
 
-dump( abrs_reservation() );
-
 ?><form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
 
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
@@ -31,38 +29,25 @@ dump( abrs_reservation() );
 					</label>
 				</div>
 			<?php endif ?>
+
 			<div class="searchbox__box searchbox__box--datepicker">
 				<div class="searchbox__box-content">
 					<div class="searchbox__box--checkin">
 						<label class="searchbox__label searchbox__label--checkin">
 							<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-							<input type="text" class="hotel-input hotel-input--checkin input" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+							<input type="text" class="hotel-input hotel-input--checkin" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</label>
-
-						<div class="searchbox__popup">
-							<div class="searchbox-datepicker">
-								<input type="text" class="searchbox-datepicker__input">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit doloribus,</p>
-							</div>
-						</div>
 					</div>
 				</div>
 				<div class="searchbox__box-content">
 					<div class="searchbox__box--checkout">
 						<label class="searchbox__label searchbox__label--checkout">
 							<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-							<input type="text" class="hotel-input hotel-input--checkout input" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+							<input type="text" class="hotel-input hotel-input--checkout" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</label>
 					</div>
-
-					<div class="searchbox__popup">
-						<div class="searchbox-datepicker">
-							<input type="text" class="searchbox-datepicker__input">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit doloribus,</p>
-						</div>
-					</div>					
 				</div>
-			</div>	
+			</div>
 
 			<div class="searchbox__box searchbox__box--occupancy">
 				<div class="searchbox__box-content">
@@ -83,7 +68,7 @@ dump( abrs_reservation() );
 							</span>
 						</div>
 					</label>
-					
+
 					<div class="searchbox__popup">
 						<label class="searchbox-spinner">
 							<!-- <select name="adults" class="">
@@ -97,7 +82,7 @@ dump( abrs_reservation() );
 							<span class="searchbox-spinner__decrement">-</span>
 							<span class="searchbox-spinner__increment">+</span>
 						</label>
-						
+
 						<label class="searchbox-spinner">
 							<span class="searchbox-spinner__output">1</span>
 							<input type="text" name="children" maxlength="12" value="1" title="" class="searchbox-spinner__input" />
@@ -105,7 +90,7 @@ dump( abrs_reservation() );
 							<span class="searchbox-spinner__decrement">-</span>
 							<span class="searchbox-spinner__increment">+</span>
 						</label>
-						
+
 						<label class="searchbox-spinner">
 							<span class="searchbox-spinner__output">1</span>
 							<input type="text" name="infants" maxlength="12" value="1" title="" class="searchbox-spinner__input" />
@@ -133,20 +118,17 @@ dump( abrs_reservation() );
 </form>
 <script>
 	(function($) {
-
 		$('html,body').on('click', function() {
-
 			$('.searchbox__box-content .searchbox__popup').removeClass('searchbox__popup--active');
 		});
-
 
 		$('.searchbox__box-content').on('click', function(e) {
 			e.stopPropagation();
 
 			var self = $(this);
-			
+
 			$('.searchbox__box-content .searchbox__popup').removeClass('searchbox__popup--active');
-	
+
 			self.find('.searchbox__popup').toggleClass('searchbox__popup--active');
 
 		});
@@ -160,7 +142,7 @@ dump( abrs_reservation() );
 				title = $('.searchbox-spinner__title', self),
 				value = input.val(),
 				index;
-			
+
 			increment.on('click', function() {
 				index = self.index();
 				value =  isNaN(value) ? 1 : value;
@@ -169,7 +151,7 @@ dump( abrs_reservation() );
 				output.text(value);
 
 				getNumber(index, value);
-				
+
 			});
 
 			decrement.on('click', function() {

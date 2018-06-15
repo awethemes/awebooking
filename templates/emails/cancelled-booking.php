@@ -2,13 +2,7 @@
 /**
  * Cancelled booking email.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/emails/cancelled-booking.php.
- *
- * HOWEVER, on occasion AweBooking will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/emails/cancelled-booking.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -22,6 +16,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abrs_mailer()->header( $email );
 
-echo wp_kses_post( wpautop( wptexturize( $content ) ) );
+?>
+
+<div class="body-content">
+	<?php echo wp_kses_post( wpautop( wptexturize( $content ) ) ); ?>
+</div>
+
+<?php
+
+/**
+ * Print the booking details.
+ *
+ * @param \AweBooking\Model\Booking  $booking The booking instance.
+ * @param \AweBooking\Email\Mailable $email   The mailable instance.
+ *ZZZZZZZZZZZZZZZZZZZZZZA
+ * @hooked \AweBooking\Email\Mailer::template_hotel_address()
+ * @hooked \AweBooking\Email\Mailer::template_customer_details()
+ * @hooked \AweBooking\Email\Mailer::template_booking_details()
+ */
+do_action( 'awebooking_email_booking_details', $booking, $email );
 
 abrs_mailer()->footer( $email );

@@ -1,7 +1,6 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
 
 class Scripts_Service_Provider extends Service_Provider {

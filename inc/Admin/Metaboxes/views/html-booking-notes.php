@@ -1,7 +1,7 @@
 <div class="form-booking-note">
 	<div style="margin-bottom: 5px;">
 		<label for="js-booking-note" class="screen-reader-text"><strong><?php esc_html_e( 'Leave note:', 'awebooking' ); ?></strong></label>
-		<textarea type="text" name="booking_note" id="js-booking-note" class="input-text" rows="2" style="width: 100%;" placeholder="<?php esc_html_e( 'Write some note', 'awebooking' ); ?>"></textarea>
+		<textarea name="booking_note" id="js-booking-note" class="input-text" rows="2" autocomplete="off" style="width: 100%;" placeholder="<?php esc_html_e( 'Write some note', 'awebooking' ); ?>"></textarea>
 	</div>
 
 	<div class="abrs-mb0">

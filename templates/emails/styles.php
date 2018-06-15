@@ -4,12 +4,6 @@
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/emails/styles.php.
  *
- * HOWEVER, on occasion AweBooking will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
@@ -37,6 +31,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
+	font-size: 14px;
 	color: <?php echo esc_attr( $text_color ); ?>;
 	height: 100%;
 	hyphens: auto;
@@ -95,7 +90,7 @@ h3 {
 
 p {
 	color: <?php echo esc_attr( $text_color ); ?>;
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 1.5em;
 	margin-top: 0;
 	text-align: left;
@@ -329,4 +324,58 @@ blockquote {
 .promotion p {
 	font-size: 15px;
 	text-align: center;
+}
+
+/* Custom CSS */
+.body-content {
+	margin-bottom: 25px;
+	padding-bottom: 25px;
+	border-bottom: solid 1px #eee;
+}
+
+.table-hotel,
+.table-customer,
+.table-booking,
+.table-booking-totals {
+	border-collapse: collapse;
+}
+
+.table-hotel,
+.table-customer {
+	margin-bottom: 25px;
+}
+
+.table-hotel td {
+	vertical-align: top;
+}
+
+.table-customer th,
+.table-customer td,
+.table-booking th,
+.table-booking td,
+.table-booking-totals th,
+.table-booking-totals td {
+	text-align: left;
+	padding: 7px 10px;
+	vertical-align: top;
+	box-sizing: border-box;
+	border: solid 1px #eee;
+}
+
+.table-customer th {
+	width: 150px;
+}
+
+.line-hotel-address {
+	padding-right: 10px;
+	border-right: solid 3px <?php echo esc_attr( $main_color ); ?>;
+}
+
+.booking-id {
+	margin-top: 5px;
+	padding: 5px 20px;
+	border: dashed 2px #9BA2AB;
+	display: inline-block;
+	text-align: center;
+	border-radius: 2px;
 }

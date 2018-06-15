@@ -39,7 +39,7 @@ class Reservation_Service_Provider extends Service_Provider {
 		$this->plugin['reservation']->init();
 
 		// Setup the reservation request.
-		add_action( 'template_redirect', [ $this, 'setup_res_request' ] );
+		add_action( 'wp', [ $this, 'setup_res_request' ] );
 	}
 
 	/**

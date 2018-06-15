@@ -34,16 +34,6 @@ class Booking extends Model {
 	protected $force_calculate_totals = false;
 
 	/**
-	 * When a payment is complete this function is called.
-	 *
-	 * @param string $transaction_id Optional transaction id to store in post meta.
-	 * @return bool
-	 */
-	public function payment_complete( $transaction_id = '' ) {
-		return false;
-	}
-
-	/**
 	 * Returns the booking number.
 	 *
 	 * Apply filters allow users can be change this.
@@ -369,7 +359,7 @@ class Booking extends Model {
 		}
 
 		// Log the transition occurred in the notes.
-		abrs_add_booking_note( $this, $transition_note, false, true );
+		abrs_add_booking_note( $this->get_id(), $transition_note, false, true );
 	}
 
 	/**
@@ -476,6 +466,7 @@ class Booking extends Model {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
 			'status'                  => '',
 			'source'                  => '',
+			'hotel_id'                => 0,
 			'created_via'             => '',
 			'date_created'            => null,
 			'date_modified'           => null,
@@ -517,6 +508,7 @@ class Booking extends Model {
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
 			'source'                  => '_source',
+			'hotel_id'                => '_hotel_id',
 			'created_via'             => '_created_via',
 			'arrival_time'            => '_arrival_time',
 			'nights_stay'             => '_nights_stay',
@@ -567,5 +559,12 @@ class Booking extends Model {
 		}
 
 		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function prefix( $hook_name ) {
+		return 'awebooking/booking/' . $hook_name;
 	}
 }

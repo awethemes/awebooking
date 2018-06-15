@@ -1,12 +1,13 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
+var lodashDefaults = require('lodash.defaults');
+
 (function ($) {
   'use strict';
 
-  var _defaults = require('lodash.defaults');
-
   // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
+
   if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
   }
@@ -24,15 +25,14 @@
   // Sub objects
   awebooking.utils = {};
   awebooking.instances = {};
-
-  awebooking.utils.flatpickrRangePlugin = require('./core/flatpickr-range-plugin.js');
+  awebooking.utils.rangeDates = require('./core/flatpickr-dates.js');
 
   /**
    * Configure.
    *
    * @type {Object}
    */
-  awebooking.config = _defaults(window._awebooking, {
+  awebooking.config = lodashDefaults(window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
     ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
     i18n: {
@@ -72,8 +72,7 @@
     var min_date = new Date().fp_incr(defaults.min_date);
     var max_date = defaults.max_date && defaults.max_date !== 0 ? new Date().fp_incr(defaults.max_date) : '';
 
-    var fp = flatpickr(instance, _defaults(options, {
-      mode: 'range',
+    var fp = flatpickr(instance, lodashDefaults(options, {
       dateFormat: 'Y-m-d',
       ariaDateFormat: i18n.date_format,
       minDate: 'today',
@@ -96,114 +95,325 @@
    * @return {void}
    */
   $(function () {
-    var _this = this;
 
-    $('.searchbox').each(function () {
-      var $el = $(_this);
-
-      var $checkin = $el.find('input[name="check-in"]');
-      var $checkout = $el.find('input[name="check-out"]');
-      var $rangepicker = $el.find('[data-hotel="rangepicker"]');
-
-      var fp = awebooking.datepicker($rangepicker[0], {
-        // inline: true,
-        // clickOpens: false,
-        onChange: function onChange(dates, str, fp) {
-          var dateFormat = fp.config.dateFormat;
-
-          $checkin.val('');
-          $checkout.val('');
-
-          if (dates[0]) {
-            $checkin.val(fp.formatDate(dates[0], dateFormat)).trigger('change');
-          }
-
-          if (dates[1]) {
-            $checkout.val(fp.formatDate(dates[1], dateFormat)).trigger('change');
-          }
-        }
-      });
-
-      $checkin.on('click focus', function (e) {
-        e.preventDefault();
-
-        fp.isOpen = false;
-        fp.open(undefined, $checkin[0]);
-      });
-
-      $checkout.on('click focus', function (e) {
-        e.preventDefault();
-
-        fp.isOpen = false;
-        fp.open(undefined, $checkout[0]);
-      });
-
-      console.log(fp);
+    var rangeDates = new awebooking.utils.rangeDates('.searchbox', {
+      // ...
     });
+
+    console.log(rangeDates);
   });
 })(jQuery);
 
-},{"./core/flatpickr-range-plugin.js":2,"lodash.defaults":3}],2:[function(require,module,exports){
+},{"./core/flatpickr-dates.js":2,"lodash.defaults":4}],2:[function(require,module,exports){
 'use strict';
 
-module.exports = function rangePlugin() {
-  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = jQuery;
+var debounce = require('debounce');
+
+var SelectedDates = function () {
+  function SelectedDates(fp, input) {
+    _classCallCheck(this, SelectedDates);
+
+    this.fp = fp;
+    this.input = input;
+    this.dates = { startDate: void 0, endDate: void 0 };
+  }
+
+  _createClass(SelectedDates, [{
+    key: 'set',
+    value: function set(startDate, endDate) {
+      this.setStartDate(startDate);
+      this.setEndDate(endDate);
+    }
+  }, {
+    key: 'setStartDate',
+    value: function setStartDate(startDate) {
+      var parsedDate = this.fp.parseDate(startDate);
+
+      if (!parsedDate) {
+        return;
+      }
+
+      this.dates.startDate = parsedDate;
+
+      if (this.dates.endDate && parsedDate >= this.dates.endDate) {
+        this.dates.endDate = void 0;
+      }
+
+      this.updateInputValues();
+    }
+  }, {
+    key: 'setEndDate',
+    value: function setEndDate(endDate) {
+      var parsedDate = this.fp.parseDate(endDate);
+
+      if (!parsedDate) {
+        return;
+      }
+
+      this.dates.endDate = parsedDate;
+      this.updateInputValues();
+    }
+  }, {
+    key: 'toArray',
+    value: function toArray() {
+      var dates = Object.values(this.dates);
+
+      return dates.filter(function (d) {
+        return d instanceof Date;
+      });
+    }
+  }, {
+    key: 'updateInputValues',
+    value: function updateInputValues() {
+      var _this = this;
+
+      var input = this.input;
+      var dateFormat = this.fp.config.dateFormat;
+
+      this.fp.selectedDates = this.toArray();
+
+      var _fp$selectedDates$map = this.fp.selectedDates.map(function (d) {
+        return _this.fp.formatDate(d, dateFormat);
+      });
+
+      var _fp$selectedDates$map2 = _slicedToArray(_fp$selectedDates$map, 2);
+
+      var _fp$selectedDates$map3 = _fp$selectedDates$map2[0];
+      input.start.value = _fp$selectedDates$map3 === undefined ? '' : _fp$selectedDates$map3;
+      var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
+      input.end.value = _fp$selectedDates$map4 === undefined ? '' : _fp$selectedDates$map4;
+    }
+  }]);
+
+  return SelectedDates;
+}();
+
+function RangeDatesPlugin(config) {
+  var plugin = this;
+
+  plugin.config = config;
 
   return function (fp) {
-    var dateFormat = '',
-        secondInput = void 0,
+    var firstInput = config.firstInput;
+    var secondInput = config.secondInput;
+
+    var _minDate = void 0,
         _firstInputFocused = void 0,
-        _secondInputFocused = void 0,
-        _prevDates = void 0;
+        _secondInputFocused = void 0;
+
+    var dates = new SelectedDates(fp, {
+      start: firstInput,
+      end: secondInput
+    });
 
     /**
-     * Create the secondary input picker.
+     * Handle binding inputs.
      */
-    var createSecondInput = function createSecondInput() {
-      // Create the second input.
-      secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+    function bindingInputs() {
+      firstInput.setAttribute('data-fp-omit', '');
+      secondInput.setAttribute('data-fp-omit', '');
 
-      // Set the "end-date" if second input have any value.
-      if (secondInput.value) {
-        var parsedDate = fp.parseDate(secondInput.value);
+      fp._bind(firstInput, ['focus', 'click'], debounce(function (e) {
+        e.preventDefault();
 
-        if (parsedDate) {
-          fp.selectedDates.push(parsedDate);
+        _firstInputFocused = true;
+        _secondInputFocused = false;
+
+
+        fp.isOpen = false;
+        fp.open(undefined, firstInput);
+      }, 150, true));
+
+      fp._bind(secondInput, ['focus', 'click'], debounce(function (e) {
+        e.preventDefault();
+
+        _firstInputFocused = false;
+        _secondInputFocused = true;
+
+
+        fp.isOpen = false;
+        fp.open(undefined, firstInput);
+      }, 150, true));
+    }
+
+    function handleSetFirstDate(date) {
+      if (_prevDates.length === 2 && date < _prevDates[1]) {
+        return [date, _prevDates[1]];
+      }
+
+      if (_prevDates[1] && date.getTime() === _prevDates[1].getTime()) {
+        console.log(1);
+      }
+
+      return [date];
+    }
+
+    function handleSetSecondDate(date) {
+      if (!_prevDates[1] || _prevDates.length === 2 && date <= _prevDates[0]) {
+        return [date];
+      }
+
+      return [_prevDates[0], date];
+    }
+
+    return {
+      onParseConfig: function onParseConfig() {
+        fp.config.mode = 'range';
+        fp.config.clickOpens = false;
+        fp.config.closeOnSelect = false;
+
+        _minDate = fp.config.minDate;
+      },
+      onReady: function onReady() {
+        bindingInputs();
+
+        fp.config.ignoredFocusElements.push(firstInput);
+        fp.config.ignoredFocusElements.push(secondInput);
+
+        dates.set(firstInput.value, secondInput.value);
+      },
+      onOpen: function onOpen() {
+        $([firstInput, secondInput]).removeClass('selected');
+
+        if (_firstInputFocused) {
+          firstInput.classList.add('selected');
+        } else {
+          secondInput.classList.add('selected');
+        }
+
+        if (_secondInputFocused && fp.selectedDates[0]) {
+          fp.config.minDate = fp.selectedDates[0];
+        } else {
+          fp.config.minDate = _minDate;
+        }
+      },
+      onClose: function onClose() {
+        $([firstInput, secondInput]).removeClass('selected');
+        _firstInputFocused = false;
+        _secondInputFocused = false;
+      },
+      onPreCalendarPosition: function onPreCalendarPosition() {
+        fp._positionElement = firstInput;
+        // fp._positionElement = _firstInputFocused ? firstInput : secondInput;
+        setTimeout(function () {
+          fp._positionElement = fp._input;
+        }, 0);
+      },
+      onValueUpdate: function onValueUpdate(selfDates) {
+        if (_firstInputFocused) {
+          dates.setStartDate(selfDates[0]);
+        } else if (_secondInputFocused) {
+          dates.setEndDate(selfDates[1] ? selfDates[1] : selfDates[0]);
+        }
+
+        fp.setDate(fp.selectedDates, false);
+      },
+      onChange: function onChange() {
+        if (_secondInputFocused && fp.selectedDates.length === 2) {
+          setTimeout(fp.close, 0);
         }
       }
     };
-
-    var dateAddDays = function dateAddDays(inputDate) {
-      var days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
-      var date = new Date(inputDate.getTime());
-
-      date.setDate(date.getDate() + days);
-
-      return date;
-    };
-
-    var plugin = {
-      onParseConfig: function onParseConfig() {
-        fp.config.mode = 'range';
-
-        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
-      },
-
-
-      /**
-       * On flatpickr ready.
-       */
-      onReady: function onReady() {
-        createSecondInput();
-      }
-    };
-
-    return plugin;
   };
+}
+
+module.exports = function FlatpickrDates(el) {
+  var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  this.el = el;
+  this.config = config;
+
+  var $checkin = $(el).find('input[name="check_in"]');
+  var $checkout = $(el).find('input[name="check_out"]');
+  var $rangepicker = $(el).find('[data-hotel="rangepicker"]');
+
+  var rangedates = new RangeDatesPlugin({
+    firstInput: $checkin[0],
+    secondInput: $checkout[0]
+  });
+
+  this.datepicker = awebooking.datepicker($rangepicker[0], {
+    mode: 'range',
+    plugins: [rangedates]
+  });
 };
 
-},{}],3:[function(require,module,exports){
+},{"debounce":3}],3:[function(require,module,exports){
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+},{}],4:[function(require,module,exports){
 /**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`

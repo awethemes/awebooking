@@ -4,7 +4,6 @@ namespace AweBooking\Email\Templates;
 use AweBooking\Email\Mailable;
 
 class Cancelled_Booking extends Mailable {
-
 	/**
 	 * The booking instance.
 	 *
@@ -16,7 +15,7 @@ class Cancelled_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'cancelled_booking';
+		$this->id             = 'cancelled';
 		$this->title          = esc_html__( 'Cancelled booking', 'awebooking' );
 		$this->description    = esc_html__( 'Cancelled booking emails are sent to chosen recipient(s) when bookings have been marked cancelled.', 'awebooking' );
 		$this->customer_email = false;
@@ -26,19 +25,13 @@ class Cancelled_Booking extends Mailable {
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function init() {
-		add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
-	}
-
-	/**
 	 * Trigger send email.
 	 *
+	 * @param \AweBooking\Model\Booking $booking The booking instance.
 	 * @return void
 	 */
-	public function trigger( $new_status, $old_status, $booking ) {
-		if ( 'awebooking-cancelled' !== $new_status ) {
+	public function trigger( $booking ) {
+		if ( 'cancelled' !== $booking->get_status() ) {
 			return;
 		}
 
@@ -56,6 +49,10 @@ class Cancelled_Booking extends Mailable {
 	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
 
+		if ( 'cancelled' !== $booking->get_status() ) {
+			$this->recipient = '';
+		}
+
 		$this->placeholders = ( new Booking_Placeholder( $booking, $this ) )->apply( $this->placeholders );
 	}
 
@@ -63,7 +60,7 @@ class Cancelled_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( 'Cancelled booking (#{booking_id})', 'awebooking' );
+		return esc_html__( 'Cancelled booking #{booking_id}', 'awebooking' );
 	}
 
 	/**

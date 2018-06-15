@@ -1,10 +1,23 @@
 <?php
 
 use AweBooking\Constants;
+use AweBooking\Availability\Request;
+use Illuminate\Support\Arr;
 
 // Require other functions.
 require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 require_once trailingslashit( __DIR__ ) . 'hooks.php';
+
+/**
+ * Add a notice message to the flash.
+ *
+ * @param  string $message The notice message.
+ * @param  string $level   The notice level.
+ * @return \AweBooking\Component\Flash\Flash_Notifier
+ */
+function abrs_add_notice( $message, $level = 'info' ) {
+	return abrs_flash( $message, $level );
+}
 
 /**
  * Gets the checkout instance.
@@ -25,15 +38,41 @@ function abrs_reservation() {
 }
 
 /**
- * Add a notice message to the flash.
+ * Gets the current res request.
  *
- * @param  string $message The notice message.
- * @param  string $level   The notice level.
- * @return \AweBooking\Component\Flash\Flash_Notifier
+ * @return \AweBooking\Availability\Request|null
  */
-function abrs_add_notice( $message, $level = 'info' ) {
-	return abrs_flash( $message, $level );
+function abrs_get_res_request() {
+	global $wp;
+
+	return Arr::get( $wp->query_vars, 'res_request' );
 }
+
+/**
+ * Sets the res request into the query var.
+ *
+ * @param \AweBooking\Availability\Request|null $request The res request instance.
+ */
+function abrs_set_res_request( Request $request = null ) {
+	global $wp;
+
+	$wp->set_query_var( 'res_request', $request );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Determines if current page is in awebooking pages.

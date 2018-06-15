@@ -23,18 +23,11 @@ class Processing_Booking extends Mailable {
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function init() {
-		add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
-	}
-
-	/**
 	 * Trigger send email.
 	 *
 	 * @return void
 	 */
-	public function trigger( $new_status, $old_status, $booking ) {
+	public function trigger( $booking ) {
 		if ( 'awebooking-inprocess' !== $new_status ) {
 			return;
 		}

@@ -24,6 +24,13 @@ class Booking_Main_Metabox {
 		$controls = new Form_Controls( $the_booking );
 		$this->additional_fields( $controls );
 
+		// Disable required fields.
+		foreach ( $controls->prop( 'fields' ) as $field_args ) {
+			$controls->get_field( $field_args['id'] )
+					 ->set_prop( 'required', false )
+					 ->set_attribute( 'required', false );
+		}
+
 		// Print the core nonce field.
 		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
 		$controls->prepare_fields();

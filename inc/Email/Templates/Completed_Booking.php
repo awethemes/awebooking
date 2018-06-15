@@ -23,13 +23,6 @@ class Completed_Booking extends Mailable {
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function init() {
-		add_action( 'awebooking/awebooking/status_changed', [ $this, 'trigger' ], 10, 3 );
-	}
-
-	/**
 	 * Trigger send email.
 	 *
 	 * @return void
