@@ -68,6 +68,8 @@ class Hotel extends Model {
 			'hotel_country'   => abrs_get_option( 'hotel_country' ),
 			'hotel_postcode'  => abrs_get_option( 'hotel_postcode' ),
 			'hotel_phone'     => abrs_get_option( 'hotel_phone' ),
+			'hotel_check_in'  => abrs_get_option( 'hotel_check_in' ),
+			'hotel_check_out' => abrs_get_option( 'hotel_check_out' ),
 		]);
 
 		do_action( $this->prefix( 'setup_default_hotel' ), $this );
@@ -131,6 +133,8 @@ class Hotel extends Model {
 			'hotel_country'   => '',
 			'hotel_postcode'  => '',
 			'hotel_phone'     => '',
+			'hotel_check_in'  => '',
+			'hotel_check_out' => '',
 		]);
 	}
 
@@ -147,6 +151,8 @@ class Hotel extends Model {
 			'hotel_country'   => '_hotel_country',
 			'hotel_postcode'  => '_hotel_postcode',
 			'hotel_phone'     => '_hotel_phone',
+			'hotel_check_in'  => '_hotel_check_in',
+			'hotel_check_out' => '_hotel_check_out',
 		]);
 	}
 }
