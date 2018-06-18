@@ -17,3 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 dump( $room_stays );
 
 ?>
+
+<?php if ( ! abrs_is_checkout_page() ) : ?>
+
+	<a href="<?php echo esc_url( abrs_get_checkout_url() ); ?>" class="button button--block-checkout"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
+
+<?php endif; ?>

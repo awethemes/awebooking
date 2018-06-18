@@ -170,7 +170,7 @@ function RangeDatesPlugin(config) {
 
       onChange() {
         if (_firstInputFocused) {
-          setTimeout(() => { secondInput.focus(); }, 0);
+          // setTimeout(() => { secondInput.focus(); }, 0);
         } else if (_secondInputFocused && fp.selectedDates.length === 2) {
           setTimeout(fp.close, 0);
         }

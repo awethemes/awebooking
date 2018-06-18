@@ -575,6 +575,21 @@ function abrs_get_page_permalink( $page ) {
 }
 
 /**
+ * Returns the checkout page URL.
+ *
+ * @return string
+ */
+function abrs_get_checkout_url() {
+	$checkout_url = abrs_get_page_permalink( 'checkout' );
+
+	if ( abrs_get_option( 'force_ssl_checkout' ) || is_ssl() ) {
+		$checkout_url = str_replace( 'http:', 'https:', $checkout_url );
+	}
+
+	return $checkout_url;
+}
+
+/**
  * Get an image size. TODO: ...
  *
  * @param array|string $image_size Image size.
