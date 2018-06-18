@@ -1,0 +1,163 @@
+.roommaster {
+	background-color: #fff;
+	border: 1px solid #cecece;
+	margin-bottom: 40px;
+}
+
+.roommaster-header {
+	padding: 10px;
+}
+
+.roommaster-header__title {
+	margin: 0;
+	padding: 0;
+}
+
+.roommaster-content {
+	@include clearfix;
+	background-color: #eee;
+}
+
+.roommaster-info,
+.roommaster-list {
+	padding: 0 10px 10px;
+}
+
+.roommaster-info {
+	padding-right: 5px;
+}
+
+.roommaster-list {
+	padding-left: 5px;
+}
+
+.roommaster-info__title {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px 0;
+}
+
+
+.roommaster-info__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	
+	.info-item {
+		position: relative;
+		font-size: 14px;
+		padding-left: 25px;
+		padding-bottom: 10px;
+	}
+
+	.info-icon {
+		position: absolute;
+		top: 1px;
+		left: 0;
+	}
+
+}
+
+.roommaster-table {
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 1px;
+	margin: 0;
+
+	thead {
+		text-align: left;
+
+		th {
+			font-size: 14px;
+			padding: 10px 0;
+		}
+
+		.thead-1 {
+			width: 30%;
+		}
+
+		.thead-2 {
+			width: 15%;
+		}
+
+		.thead-3 {
+			width: 20%;
+		}
+
+		.thead-4 {
+			width: 15%;
+		}
+
+		.thead-5 {
+			width: 20%;
+		}
+	}
+
+	tbody {
+		tr {
+			background-color: #fff;
+			
+			td {
+				vertical-align: top;
+				padding: 10px;
+			}
+		}
+	}
+}
+
+.roommaster-child {
+
+}
+
+.roommaster-child__item {
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
+}
+
+.roommaster-child__bucketspan {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.roommaster-child__info {
+	font-size: 12px;
+
+	.info-icon {
+		margin-right: 10px;
+
+	}
+}
+
+.roommaster-occupancy {
+
+}
+
+.roommaster-occupancy__item {
+	display: block;
+}
+
+.roommaster-inventory {
+	font-size: 14px;
+	text-align: right;
+
+	.awebooking-price  {
+		display: block;
+		font-size: 20px;
+	}
+}
+
+
+.roommaster-select {
+	.select-form {
+		width: 100%;
+		height: 40px;
+		text-align-last: center; 
+	}
+}
+
+.roommaster-button {
+	.button {
+		width: 100%;
+	}
+}
