@@ -88,7 +88,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_method_title() {
-		return apply_filters( 'awebooking/gateway/get_method_title', $this->method_title, $this );
+		return apply_filters( 'abrs_gateway_method_title', $this->method_title, $this );
 	}
 
 	/**
@@ -97,7 +97,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_method_description() {
-		return apply_filters( 'awebooking/gateway/get_method_description', $this->method_description, $this );
+		return apply_filters( 'abrs_gateway_method_description', $this->method_description, $this );
 	}
 
 	/**
@@ -106,7 +106,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_title() {
-		return apply_filters( 'awebooking/gateway/get_title', $this->title, $this->method );
+		return apply_filters( 'abrs_gateway_title', $this->title, $this->method );
 	}
 
 	/**
@@ -115,7 +115,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_description() {
-		return apply_filters( 'awebooking/gateway/get_description', $this->description, $this->method );
+		return apply_filters( 'abrs_gateway_description', $this->description, $this->method );
 	}
 
 	/**
@@ -124,7 +124,7 @@ abstract class Gateway {
 	 * @return array
 	 */
 	public function get_supports() {
-		return apply_filters( 'awebooking/gateway/get_supports', $this->supports, $this );
+		return apply_filters( 'abrs_gateway_supports', $this->supports, $this );
 	}
 
 	/**
@@ -153,7 +153,7 @@ abstract class Gateway {
 	 * @return array|null
 	 */
 	public function get_setting_fields() {
-		return apply_filters( 'awebooking/gateway/setting_fields', $this->setting_fields, $this );
+		return apply_filters( 'abrs_gateway_setting_fields', $this->setting_fields, $this );
 	}
 
 	/**

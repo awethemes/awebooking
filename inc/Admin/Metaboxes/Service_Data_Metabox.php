@@ -44,9 +44,10 @@ class Service_Data_Metabox {
 		$service->fill( $values->toArray() );
 
 		// Fire action before save.
-		do_action( 'awebooking/process_service_data', $service, $values, $request );
+		do_action( 'abrs_process_service_data', $service, $values, $request );
 
 		$saved = $service->save();
+
 		if ( $saved ) {
 			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
 		}

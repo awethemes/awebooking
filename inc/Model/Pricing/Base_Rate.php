@@ -73,7 +73,7 @@ class Base_Rate implements Rate {
 	 * {@inheritdoc}
 	 */
 	public function get_restrictions() {
-		return apply_filters( 'awebooking/rate/get_restrictions', [
+		return apply_filters( 'abrs_get_rate_restrictions', [
 			'min_los' => $this->instance->get( 'rate_min_los' ),
 			'max_los' => $this->instance->get( 'rate_max_los' ),
 		], $this );

@@ -98,7 +98,7 @@ class Room_Type_Metabox {
 		]);
 
 		// Fire action before save.
-		do_action( 'awebooking/process_room_type_data', $room_type, $values, $request );
+		do_action( 'abrs_process_room_type_data', $room_type, $values, $request );
 
 		// Save the data.
 		$saved = $room_type->save();
@@ -331,7 +331,7 @@ class Room_Type_Metabox {
 	 * @return array
 	 */
 	protected function get_tabs() {
-		return apply_filters( 'awebooking/room_type_data_tabs', [
+		return apply_filters( 'abrs_room_type_data_tabs', [
 			'general' => [
 				'title'    => esc_html__( 'General' ),
 				'priority' => 10,
@@ -390,7 +390,7 @@ class Room_Type_Metabox {
 	 */
 	protected function datalist_view_callback() {
 		return function() {
-			$view_datalist = apply_filters( 'awebooking/view_list', [
+			$view_datalist = apply_filters( 'abrs_list_room_views', [
 				esc_html__( 'Airport view', 'awebooking' ),
 				esc_html__( 'Bay view', 'awebooking' ),
 				esc_html__( 'City view', 'awebooking' ),

@@ -5,13 +5,6 @@ use Awethemes\WP_Object\WP_Object;
 
 abstract class Model extends WP_Object {
 	/**
-	 * Prefix for hooks.
-	 *
-	 * @var string
-	 */
-	protected $prefix = 'awebooking';
-
-	/**
 	 * Mark the object readonly.
 	 *
 	 * @var bool
@@ -114,6 +107,13 @@ abstract class Model extends WP_Object {
 	 * @return void
 	 */
 	protected function map_attributes() {}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function prefix( $hook_name ) {
+		return sprintf( 'abrs_%s_%s', $this->prefix, $this->object_type, $hook_name );
+	}
 
 	/**
 	 * Handle dynamic calls to get attributes.

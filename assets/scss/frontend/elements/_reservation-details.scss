@@ -1,14 +1,24 @@
-$background: #F9F9FA;
 $border: #cbd3db;
+$background: #F9F9FA;
 
+.reservation--summary {
+  padding: 0;
+  background-color: $white;
+  box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
 
-.checkin-checkout-details {
-	display: table;
-	width: 100%;
+  .reservation__title {
+    font-size: 16px;
+    border-bottom: solid 1px $border;
+  }
+}
+
+.reservation_details {
+  width: 100%;
+  display: table;
 	margin-bottom: 20px;
 }
 
-.checkin-checkout-details___item {
+.reservation_details___item {
 	display: table-cell;
 
 	&.tb-width-40 {
@@ -20,12 +30,12 @@ $border: #cbd3db;
 	}
 }
 
-.checkin-checkout-details__subtitle {
+.reservation_details__subtitle {
 	display: block;
 	margin-bottom: 8px;
 }
 
-.checkin-checkout-details__info {
+.reservation_details__info {
 	position: relative;
 	padding-left: 60px;
 	margin-bottom: 5px;
@@ -99,6 +109,8 @@ $border: #cbd3db;
 }
 
 .roomdetails-price {
+  border-top: solid 1px $border;
+
 	dt {
 		width: 220px;
 		float: left;

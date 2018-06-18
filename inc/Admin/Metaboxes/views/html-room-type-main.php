@@ -8,7 +8,7 @@
 						<li class="tab-<?php echo sanitize_html_class( $section['uid'] ); ?> <?php echo ( 'general' === $key ? 'active' : '' ); ?>"><a href="#<?php echo esc_html( $section['uid'] ); ?>"><?php echo esc_html( $section['title'] ); ?></a></li>
 					<?php endforeach ?>
 
-					<?php do_action( 'awebooking/room_type_print_nav_tabs', $form ); ?>
+					<?php do_action( 'abrs_room_type_print_nav_tabs', $form ); ?>
 				</ul>
 			</div>
 
@@ -19,7 +19,7 @@
 					$this->output_tabs( $form );
 
 					// Fire action after output tabs.
-					do_action( 'awebooking/room_type_print_tabs', $form );
+					do_action( 'abrs_room_type_print_tabs', $form );
 					?>
 				</div>
 			</div>

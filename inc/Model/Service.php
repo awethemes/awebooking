@@ -18,7 +18,7 @@ class Service extends Model {
 	 * @return array
 	 */
 	public static function get_operations() {
-		return apply_filters( 'awebooking/service_operations', [
+		return apply_filters( 'abrs_get_service_operations', [
 			'add'               => esc_html__( 'Add to price', 'awebooking' ),
 			'add_daily'         => esc_html__( 'Add to price per night', 'awebooking' ),
 			'add_person'        => esc_html__( 'Add to price per person', 'awebooking' ),

@@ -8,7 +8,7 @@ use AweBooking\Component\Country\Formatter as Country_Formatter;
  * @return string
  */
 function abrs_date_format() {
-	return apply_filters( 'awebooking/date_format', get_option( 'date_format' ) );
+	return apply_filters( 'abrs_date_format', get_option( 'date_format' ) );
 }
 
 /**
@@ -17,7 +17,7 @@ function abrs_date_format() {
  * @return string
  */
 function abrs_time_format() {
-	return apply_filters( 'awebooking/time_format', get_option( 'time_format' ) );
+	return apply_filters( 'abrs_time_format', get_option( 'time_format' ) );
 }
 
 /**
@@ -26,7 +26,7 @@ function abrs_time_format() {
  * @return string
  */
 function abrs_datetime_format() {
-	return apply_filters( 'awebooking/date_time_format',
+	return apply_filters( 'abrs_date_time_format',
 		/* translators: 1 -Date format, 2 - Time format */
 		sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() )
 	);
@@ -98,7 +98,7 @@ function abrs_get_price_format() {
 			break;
 	}
 
-	return apply_filters( 'awebooking/get_price_format', $format, $position );
+	return apply_filters( 'abrs_get_price_format', $format, $position );
 }
 
 /**
@@ -113,7 +113,7 @@ function abrs_format_price( $amount, $currency = null ) {
 	$amount = abrs_decimal( $amount );
 
 	// Prepare the price format args.
-	$args = apply_filters( 'awebooking/format_price_args', [
+	$args = apply_filters( 'abrs_format_price_args', [
 		'currency'           => $currency ?: abrs_current_currency(), // Fallback use default currency.
 		'price_format'       => abrs_get_price_format(),
 		'decimals'           => abrs_get_option( 'price_number_decimals', 2 ),
@@ -123,9 +123,9 @@ function abrs_format_price( $amount, $currency = null ) {
 
 	// Format amount use number_format().
 	$formatted = number_format( $amount->abs()->as_numeric(), $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
-	$formatted = apply_filters( 'awebooking/price_formatted', $formatted, $amount, $args );
+	$formatted = apply_filters( 'abrs_price_formatted', $formatted, $amount, $args );
 
-	if ( apply_filters( 'awebooking/price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+	if ( apply_filters( 'abrs_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
 		$formatted = preg_replace( '/' . preg_quote( $args['decimal_separator'], '/' ) . '0++$/', '', $formatted );
 	}
 
@@ -144,7 +144,7 @@ function abrs_format_price( $amount, $currency = null ) {
 	 * @param \AweBooking\Support\Decimal $amount The amount as Decimal.
 	 * @param array                       $args   Price format args.
 	 */
-	return apply_filters( 'awebooking/price_formatted_markup', $return, $amount, $args );
+	return apply_filters( 'abrs_price_formatted_markup', $return, $amount, $args );
 }
 
 /**

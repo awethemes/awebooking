@@ -92,7 +92,7 @@ class Url_Generator {
 			$url = add_query_arg( $parameters, $url );
 		}
 
-		return apply_filters( 'awebooking/route_url', rawurldecode( $url ), $path, $parameters, $scheme );
+		return apply_filters( 'abrs_route_url', rawurldecode( $url ), $path, $parameters, $scheme );
 	}
 
 	/**
@@ -117,6 +117,6 @@ class Url_Generator {
 			$url = add_query_arg( $parameters, $url );
 		}
 
-		return apply_filters( 'awebooking/admin_route_url', rawurldecode( $url ), $path, $parameters );
+		return apply_filters( 'abrs_admin_route_url', rawurldecode( $url ), $path, $parameters );
 	}
 }

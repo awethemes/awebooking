@@ -32,7 +32,7 @@ class Query {
 
 		$room_types = $this->query_rooms();
 
-		do_action( 'awebooking/prepare_search_rooms', $room_types, $this->request );
+		do_action( 'abrs_prepare_search_rooms', $room_types, $this->request );
 
 		foreach ( $room_types as $room_type ) {
 			$room_rate = abrs_get_room_rate([
@@ -42,17 +42,17 @@ class Query {
 			]);
 
 			// This filter let users modify the room rate before it can be rejected.
-			$room_rate = apply_filters( 'awebooking/search_room_rate', $room_rate, $this->request );
+			$room_rate = apply_filters( 'abrs_search_room_rate', $room_rate, $this->request );
 
 			// Ignore invalid room rates.
 			if ( is_null( $room_rate ) || is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
 				continue;
 			}
 
-			$results[] = apply_filters( 'awebooking/search_result_item', compact( 'room_type', 'room_rate' ), $this->request );
+			$results[] = apply_filters( 'abrs_search_result_item', compact( 'room_type', 'room_rate' ), $this->request );
 		}
 
-		return apply_filters( 'awebooking/search_results', new Query_Results( $this->request, $results ), $this->request );
+		return apply_filters( 'abrs_search_results', new Query_Results( $this->request, $results ), $this->request );
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Query {
 
 		// Perform query room types.
 		$room_types = ( new WP_Query(
-			apply_filters( 'awebooking/reservation/query_room_types', $wp_query_args, $this )
+			apply_filters( 'abrs_query_room_types', $wp_query_args, $this )
 		) )->posts;
 
 		// Prime caches to reduce future queries.

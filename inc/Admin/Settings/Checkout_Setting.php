@@ -101,7 +101,7 @@ class Checkout_Setting extends Abstract_Setting {
 			$section->add_field( $field_args );
 		}
 
-		do_action( 'awebooking/register_gateway_settings', $gateway, $section );
+		do_action( 'abrs_register_gateway_settings', $gateway, $section );
 	}
 
 	/**

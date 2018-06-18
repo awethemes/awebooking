@@ -14,18 +14,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+do_action( 'awebooking_print_notices' );
+
 if ( post_password_required() ) {
-	echo get_the_password_form(); // WPCS: xss ok.
+	echo get_the_password_form(); // WPCS: XSS ok.
 	return;
 }
+
 ?>
-<div id="room-type-<?php the_ID(); ?>" <?php post_class( 'room-type' ); ?>>
+
+<div id="room-<?php the_ID(); ?>" <?php post_class( 'room-type' ); ?>>
 	<div class="room-type__wrapper">
 
 		<div class="room-type__header">
 			<?php
-				awebooking_template_single_title();
-				awebooking_template_single_price();
+
 			?>
 		</div>
 

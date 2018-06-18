@@ -246,7 +246,7 @@ function abrs_date_classes( $date ) {
  * @return string
  */
 function abrs_list_hours() {
-	return apply_filters( 'awebooking/abrs_list_hours', [
+	return apply_filters( 'abrs_list_hours', [
 		'0'  => '00:00 - 01:00',
 		'1'  => '01:00 - 02:00',
 		'2'  => '02:00 - 03:00',

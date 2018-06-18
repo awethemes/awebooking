@@ -27,7 +27,7 @@ final class ISO3166 implements \Countable, \IteratorAggregate {
 		static::$instance = $this;
 
 		if ( empty( $countries ) ) {
-			$countries = apply_filters( 'awebooking/countries', include( __DIR__ . '/dataset.php' ) );
+			$countries = apply_filters( 'abrs_countries_dataset', include( __DIR__ . '/dataset.php' ) );
 		}
 
 		$this->countries = $countries;

@@ -141,7 +141,7 @@ function abrs_update_room_caches( array $rooms ) {
 function abrs_clean_room_cache( $room ) {
 	wp_cache_delete( $room, 'awebooking_db_room' );
 
-	do_action( 'awebooking/clean_room_cache', $room );
+	do_action( 'abrs_clean_room_cache', $room );
 }
 
 /**
@@ -221,7 +221,7 @@ function abrs_clean_booking_item_cache( $item ) {
 
 	wp_cache_delete( $item, 'booking_itemmeta_meta' );
 
-	do_action( 'awebooking/clean_booking_item_cache', $item );
+	do_action( 'abrs_clean_booking_item_cache', $item );
 }
 
 /**
@@ -260,21 +260,21 @@ function abrs_get_bookings_by_room( $room_id, $statuses = [] ) {
  */
 function abrs_search_customers( $term, $limit = 0 ) {
 	// Apply fillter to allow users custom the results.
-	$results = apply_filters( 'awebooking/pre_search_customers', false, $term, $limit );
+	$results = apply_filters( 'abrs_pre_search_customers', false, $term, $limit );
 
 	// If custom search results available, just return it.
 	if ( is_array( $results ) ) {
 		return $results;
 	}
 
-	$query = new WP_User_Query( apply_filters( 'awebooking/customer_search_query', [
+	$query = new WP_User_Query( apply_filters( 'abrs_customer_search_query', [
 		'fields'         => 'ID',
 		'number'         => $limit,
 		'search'         => '*' . esc_attr( $term ) . '*',
 		'search_columns' => [ 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' ],
 	], $term, $limit, 'main_query' ) );
 
-	$query2 = new WP_User_Query( apply_filters( 'awebooking/customer_search_query', [
+	$query2 = new WP_User_Query( apply_filters( 'abrs_customer_search_query', [
 		'fields'         => 'ID',
 		'number'         => $limit,
 		'meta_query'     => [
@@ -317,7 +317,7 @@ function abrs_search_booking( $term ) {
 	global $wpdb;
 
 	// Filters the search fields.
-	$search_fields = array_map( 'abrs_clean', apply_filters( 'awebooking/search_booking_fields', [
+	$search_fields = array_map( 'abrs_clean', apply_filters( 'abrs_search_booking_fields', [
 		'_customer_first_name',
 		'_customer_last_name',
 		'_customer_address',
@@ -347,5 +347,5 @@ function abrs_search_booking( $term ) {
 		$booking_ids = array_unique( array_merge( $booking_ids, $search1, $search2 ) );
 	}
 
-	return apply_filters( 'awebooking/search_booking_results', $booking_ids, $term, $search_fields );
+	return apply_filters( 'abrs_search_booking_results', $booking_ids, $term, $search_fields );
 }

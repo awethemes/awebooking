@@ -135,7 +135,7 @@ abstract class Abstract_Scheduler {
 		$contents = ob_get_clean();
 
 		// @codingStandardsIgnoreLine
-		echo apply_filters( 'awebooking/scheduler/' . $method, $contents, $args, $this );
+		echo apply_filters( 'abrs_scheduler_' . $method, $contents, $args, $this );
 	}
 
 	/**
@@ -265,7 +265,7 @@ abstract class Abstract_Scheduler {
 	 * @return \AweBooking\Support\Collection
 	 */
 	protected function query_room_types( $query = [] ) {
-		$wp_query_args = apply_filters( 'awebooking/scheduler/query_room_types', wp_parse_args( $query, [
+		$wp_query_args = apply_filters( 'abrs_scheduler_query_room_types', wp_parse_args( $query, [
 			'post_type'        => Constants::ROOM_TYPE,
 			'post_status'      => 'publish',
 			'no_found_rows'    => true,

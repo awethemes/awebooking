@@ -115,13 +115,13 @@ class Admin_Settings {
 		// Clear the settings before.
 		$this->settings->clear();
 
-		$settings = apply_filters( 'awebooking/admin_settings', $this->core_settings );
+		$settings = apply_filters( 'abrs_admin_settings', $this->core_settings );
 
 		foreach ( $settings as $setting ) {
 			$this->register( $this->plugin->make( $setting ) );
 		}
 
-		do_action( 'awebooking/register_admin_settings', $this );
+		do_action( 'abrs_register_admin_settings', $this );
 	}
 
 	/**
@@ -141,15 +141,15 @@ class Admin_Settings {
 		check_admin_referer( 'awebooking-settings' );
 
 		// Handle save the setting.
-		if ( apply_filters( 'awebooking/handle_save_setting_' . $setting, true ) && $instance = $this->get( $setting ) ) {
+		if ( apply_filters( 'abrs_handle_save_setting_' . $setting, true ) && $instance = $this->get( $setting ) ) {
 			abrs_rescue( function () use ( $instance, $request ) {
 				$instance->save( $request );
 			});
 		}
 
 		// Fire update_setting actions.
-		do_action( 'awebooking/update_setting_' . $setting, $this );
-		do_action( 'awebooking/update_settings', $setting, $this );
+		do_action( 'abrs_update_setting_' . $setting, $this );
+		do_action( 'abrs_update_settings', $setting, $this );
 
 		// Add an success notices.
 		abrs_admin_notices( esc_html__( 'Your settings have been saved.', 'awebooking' ), 'success' )->dialog();
@@ -157,7 +157,7 @@ class Admin_Settings {
 		// Force flush_rewrite_rules.
 		@flush_rewrite_rules();
 
-		// Fire updated_settings action.
-		do_action( 'awebooking/updated_settings', $this );
+		// Fire abrs_settings_updated action.
+		do_action( 'abrs_settings_updated', $this );
 	}
 }

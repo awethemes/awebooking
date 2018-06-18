@@ -10,7 +10,7 @@
  *
  * @return void
  */
-function abrs_print_notices() {
+function awebooking_print_notices() {
 	abrs_get_template( 'notices.php', [ 'messages' => abrs_flash()->all() ] );
 }
 
@@ -56,6 +56,6 @@ function awebooking_checkout_payments() {
 	abrs_get_template( 'checkout/payments.php', [
 		'checkout'    => abrs_checkout(),
 		'gateways'    => awebooking( 'gateways' )->enabled(),
-		'button_text' => apply_filters( 'awebooking/booking_button_text', esc_html__( 'Book Now', 'awebooking' ) ),
+		'button_text' => apply_filters( 'abrs_booking_button_text', esc_html__( 'Book Now', 'awebooking' ) ),
 	]);
 }

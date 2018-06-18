@@ -58,7 +58,7 @@ function abrs_get_rate( $rate ) {
 
 	return ( $base_rate instanceof Room_Type )
 		? new Base_Rate( $base_rate )
-		: apply_filters( 'awebooking/get_rate_object', null, $rate );
+		: apply_filters( 'abrs_get_rate_object', null, $rate );
 }
 
 /**
@@ -79,7 +79,7 @@ function abrs_get_rate_plan( $rate_plan ) {
 
 	return ( $standard_plan instanceof Room_Type )
 		? new Standard_Plan( $standard_plan )
-		: apply_filters( 'awebooking/get_rate_plan_object', null, $rate_plan );
+		: apply_filters( 'abrs_get_rate_plan_object', null, $rate_plan );
 }
 
 /**
@@ -122,7 +122,7 @@ function abrs_get_default_hotel() {
  * @return \AweBooking\Support\Collection
  */
 function abrs_list_hotels( $args = [], $with_default = false ) {
-	$args = wp_parse_args( $args, apply_filters( 'awebooking/query_hotels_args', [
+	$args = wp_parse_args( $args, apply_filters( 'abrs_query_hotels_args', [
 		'post_type'      => Constants::HOTEL_LOCATION,
 		'post_status'    => 'publish',
 		'posts_per_page' => 500, // Limit max 500.

@@ -3,7 +3,7 @@
 $note_classes   = [ 'booking-note' ];
 $note_classes[] = $note->customer_note ? 'customer-note' : '';
 $note_classes[] = 'system' === $note->added_by ? 'system-note' : '';
-$note_classes   = apply_filters( 'awebooking/booking_note_class', array_filter( $note_classes ), $note );
+$note_classes   = apply_filters( 'abrs_booking_note_class', array_filter( $note_classes ), $note );
 
 ?><li rel="<?php echo absint( $note->id ); ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
 	<button type="button" class="button abrs-delete-button js-delete-note" role="button" title="<?php esc_html_e( 'Delete Note', 'awebooking' ); ?>">

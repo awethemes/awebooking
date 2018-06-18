@@ -61,7 +61,7 @@ class Installer {
 	 * @return void
 	 */
 	public function activation() {
-		if ( apply_filters( 'awebooking/enable_setup_wizard', $this->is_new_install() ) ) {
+		if ( apply_filters( 'abrs_enable_setup_wizard', $this->is_new_install() ) ) {
 			set_transient( '_awebooking_activation_redirect', 1, 30 );
 		}
 
@@ -119,7 +119,7 @@ class Installer {
 		delete_transient( 'awebooking_installing' );
 
 		// Fire installed action.
-		do_action( 'awebooking/installed' );
+		do_action( 'abrs_installed' );
 
 		// Remove rewrite rules and then recreate rewrite rules.
 		@flush_rewrite_rules();
@@ -177,7 +177,7 @@ class Installer {
 
 		$this->install();
 
-		do_action( 'awebooking/updated' );
+		do_action( 'abrs_updated' );
 	}
 
 	/**

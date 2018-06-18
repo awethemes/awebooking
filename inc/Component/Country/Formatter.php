@@ -32,7 +32,7 @@ class Formatter {
 		}
 
 		// Substitute address parts into the string.
-		$replaces = array_map( 'esc_html', apply_filters( 'awebooking/formatted_address_replacements', [
+		$replaces = array_map( 'esc_html', apply_filters( 'abrs_formatted_address_replacements', [
 			'{address_1}'        => $args['address_1'],
 			'{address_2}'        => $args['address_2'],
 			'{city}'             => $args['city'],
@@ -82,7 +82,7 @@ class Formatter {
 	 * @return array
 	 */
 	public static function get_address_formats() {
-		return apply_filters( 'awebooking/localisation_address_formats', [
+		return apply_filters( 'abrs_localisation_address_formats', [
 			'default' => "{address_1}\n{address_2}\n{city}\n{state}\n{postcode}\n{country}",
 			'AU'      => "{address_1}\n{address_2}\n{city} {state} {postcode}\n{country}",
 			'AT'      => "{address_1}\n{address_2}\n{postcode} {city}\n{country}",

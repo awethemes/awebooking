@@ -49,7 +49,7 @@ class Form_Controls extends Form_Builder {
 			return array_key_exists( $key, $data_controls ) && $data_controls[ $key ];
 		});
 
-		return apply_filters( 'awebooking/checkout/enable_controls', $controls );
+		return apply_filters( 'abrs_checkout_enable_controls', $controls );
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Form_Controls extends Form_Builder {
 	 * @return array
 	 */
 	public function get_mandatory_controls() {
-		return apply_filters( 'awebooking/checkout/mandatory_controls', [ 'customer_first_name', 'customer_email' ] );
+		return apply_filters( 'abrs_checkout_mandatory_controls', [ 'customer_first_name', 'customer_email' ] );
 	}
 
 	/**
@@ -226,6 +226,6 @@ class Form_Controls extends Form_Builder {
 			'sanitization_cb'  => 'sanitize_textarea_field',
 		]);
 
-		do_action( 'awebooking/checkout/setup_controls', $this );
+		do_action( 'abrs_checkout_setup_controls', $this );
 	}
 }

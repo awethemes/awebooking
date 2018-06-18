@@ -32,6 +32,6 @@ class Url_Generator {
 			abrs_get_page_permalink( 'search_results' )
 		);
 
-		return apply_filters( 'awebooking/reservation/get_availability_url', $availability_url, $this->request );
+		return apply_filters( 'abrs_get_availability_url', $availability_url, $this->request );
 	}
 }

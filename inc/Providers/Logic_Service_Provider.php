@@ -15,8 +15,8 @@ class Logic_Service_Provider extends Service_Provider {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
 
-		add_action( 'awebooking/room/saved', [ $this, 'update_total_rooms' ] );
-		add_action( 'awebooking/room_type/saved', [ $this, 'update_total_rooms' ] );
+		add_action( 'abrs_room_saved', [ $this, 'update_total_rooms' ] );
+		add_action( 'abrs_room_type_saved', [ $this, 'update_total_rooms' ] );
 	}
 
 	/**
@@ -56,14 +56,14 @@ class Logic_Service_Provider extends Service_Provider {
 		// Get booking object.
 		$booking = abrs_get_booking( $postid );
 
-		do_action( 'awebooking/delete_booking_items', $postid );
+		do_action( 'abrs_delete_booking_items', $postid );
 
 		// Loop all item and run delete.
 		foreach ( $booking->get_items() as $item ) {
 			$item->delete();
 		}
 
-		do_action( 'awebooking/deleted_booking_items', $postid );
+		do_action( 'abrs_deleted_booking_items', $postid );
 	}
 
 	/**
@@ -102,6 +102,6 @@ class Logic_Service_Provider extends Service_Provider {
 		// Delete all `rate` in "awebooking_pricing" table.
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_pricing` WHERE `rate_id` = %d", $postid ) );
 
-		do_action( 'awebooking/delete_room_type', $postid );
+		do_action( 'abrs_deleted_room_type', $postid );
 	}
 }

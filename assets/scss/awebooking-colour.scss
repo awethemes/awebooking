@@ -1,6 +1,6 @@
 $primary:                     #5392F9;
-$border-radius:               1px;
-$border-radius-lg:            1px;
+$border-radius:               2px;
+$border-radius-lg:            2px;
 $border-radius-sm:            0;
 
 @import "node_modules/bootstrap/scss/functions";
@@ -19,7 +19,8 @@ $border-radius-sm:            0;
 @import "frontend/searchbox";
 @import "frontend/layout";
 @import "frontend/elements/box";
-@import "frontend/elements/checkin-checkout-detail.scss";
+@import "frontend/elements/checkout";
+@import "frontend/elements/reservation-details";
 
 // Temp code...
 body {

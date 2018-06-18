@@ -16,7 +16,7 @@ class Booking_Actions_Metabox {
 			$the_booking = abrs_get_booking( $post );
 		}
 
-		$booking_actions = apply_filters( 'awebooking/admin_booking_actions', [
+		$booking_actions = apply_filters( 'abrs_admin_booking_actions', [
 			'send_booking_details'       => esc_html__( 'Email invoice to customer', 'awebooking' ),
 			'send_booking_details_admin' => esc_html__( 'Resend new booking notification (admin)', 'awebooking' ),
 		]);
@@ -51,7 +51,7 @@ class Booking_Actions_Metabox {
 				break;
 
 			default:
-				do_action( 'awebooking/booking_action_' . sanitize_title( $action ), $the_booking );
+				do_action( 'abrs_booking_action_' . sanitize_title( $action ), $the_booking );
 				break;
 		}
 	}

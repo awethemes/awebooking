@@ -49,7 +49,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'awebooking' );
 
-		if ( apply_filters( 'awebooking/enqueue_default_style', true ) ) {
+		if ( apply_filters( 'abrs_enqueue_default_style', true ) ) {
 			wp_enqueue_style( 'awebooking-colour' );
 		}
 
@@ -75,6 +75,9 @@ class Scripts_Service_Provider extends Service_Provider {
 		switch ( true ) {
 			case abrs_is_search_page():
 				wp_enqueue_script( 'awebooking-search' );
+				break;
+			case abrs_is_checkout_page():
+				wp_enqueue_script( 'awebooking-checkout' );
 				break;
 		}
 	}

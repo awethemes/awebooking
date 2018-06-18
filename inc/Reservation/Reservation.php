@@ -85,11 +85,11 @@ class Reservation {
 		$this->currency = abrs_current_currency();
 		$this->language = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 
-		add_action( 'wp_loaded', [ $this, 'restore_request' ] );
-		add_action( 'wp_loaded', [ $this, 'restore' ] );
-		add_action( 'awebooking/search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
+		add_action( 'wp_loaded', [ $this, 'restore_request' ], 10 );
+		add_action( 'wp_loaded', [ $this, 'restore' ], 20 );
+		add_action( 'abrs_search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
 
-		do_action( 'awebooking/reservation/initial', $this );
+		do_action( 'abrs_reservation_init', $this );
 	}
 
 	/**
@@ -209,7 +209,7 @@ class Reservation {
 
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 
-		do_action( 'awebooking/reservation/added_room_stay', $room_stay );
+		do_action( 'abrs_room_stay_added', $room_stay );
 
 		$this->store();
 
@@ -275,7 +275,7 @@ class Reservation {
 			throw new Exceptions\RoomRateException( esc_html__( 'Sorry, some kind of error has occurred. Please try again.', 'awebooking' ) );
 		}
 
-		do_action( 'awebooking/reservation/check_room_rate', $room_rate, compact( 'quantity' ), $this );
+		do_action( 'abrs_check_room_rate', $room_rate, compact( 'quantity' ), $this );
 	}
 
 	/**
@@ -285,14 +285,14 @@ class Reservation {
 	 */
 	public function flush() {
 		$this->room_stays->clear();
-		$this->store->flush( 'room_stays' );
 
 		$this->current_request = null;
-
 		$this->previous_request = null;
+
+		$this->store->flush( 'room_stays' );
 		$this->store->flush( 'previous_request' );
 
-		do_action( 'awebooking/reservation/flush', $this );
+		do_action( 'abrs_reservation_emptied', $this );
 	}
 
 	/**
@@ -301,15 +301,17 @@ class Reservation {
 	 * @return void
 	 */
 	public function store() {
-		if ( $this->room_stays->isEmpty() || ! $this->current_request ) {
+		if ( $this->room_stays->isEmpty() ) {
 			return;
 		}
 
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
 
-		$this->store->put( 'previous_request', $this->current_request );
+		if ( $this->current_request ) {
+			$this->store->put( 'previous_request', $this->current_request );
+		}
 
-		do_action( 'awebooking/reservation/stored', $this );
+		do_action( 'abrs_reservation_stored', $this );
 	}
 
 	/**
@@ -364,7 +366,7 @@ class Reservation {
 			$this->room_stays->put( $row_id, $room_stay );
 		}
 
-		do_action( 'awebooking/reservation/restored', $this );
+		do_action( 'abrs_reservation_restored', $this );
 
 		// Re-store the session.
 		if ( count( $session_room_stays ) !== count( $this->room_stays ) ) {
@@ -386,6 +388,8 @@ class Reservation {
 		}
 
 		$this->previous_request = $previous_request;
+
+		do_action( 'abrs_reservation_request_restored', $this );
 	}
 
 	/**

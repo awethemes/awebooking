@@ -136,9 +136,9 @@ class Room_Rate {
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
-			$this->using( apply_filters( 'awebooking/select_room_rate', $this->rates_availability->select( 'first' ), $this->rates_availability, $this ) );
+			$this->using( apply_filters( 'abrs_select_room_rate', $this->rates_availability->select( 'first' ), $this->rates_availability, $this ) );
 
-			do_action( 'awebooking/setup_room_rate', $this );
+			do_action( 'abrs_setup_room_rate', $this );
 
 			$this->calculate_totals();
 		}
@@ -160,7 +160,7 @@ class Room_Rate {
 			$this->errors->add( 'overflow_occupancy', esc_html__( 'Error: maximum occupancy.', 'awebooking' ) );
 		}
 
-		do_action( 'awebooking/precheck_room_rate', $this->errors, $this );
+		do_action( 'abrs_precheck_room_rate', $this->errors, $this );
 	}
 
 	/**
@@ -244,7 +244,7 @@ class Room_Rate {
 			return false;
 		}
 
-		return apply_filters( 'awebooking/room_rate_visibility', true, $this );
+		return apply_filters( 'abrs_room_rate_visibility', true, $this );
 	}
 
 	/**
@@ -346,7 +346,7 @@ class Room_Rate {
 			$rate_average     += $_breakdown->first();
 		}
 
-		$this->prices = apply_filters( 'awebooking/room_rate/apply_calculated_prices', [
+		$this->prices = apply_filters( 'abrs_room_rate_prices', [
 			'room_only'        => $room_cost,
 			'additionals'      => $additional_cost,
 			'rate'             => $room_cost + $additional_cost,

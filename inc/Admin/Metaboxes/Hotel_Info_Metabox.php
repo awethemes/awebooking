@@ -44,7 +44,7 @@ class Hotel_Info_Metabox {
 		$hotel->fill( $values->toArray() );
 
 		// Fire action before save.
-		do_action( 'awebooking/process_hotel_data', $hotel, $values, $request );
+		do_action( 'abrs_process_hotel_data', $hotel, $values, $request );
 
 		$saved = $hotel->save();
 

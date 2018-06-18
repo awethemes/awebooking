@@ -77,10 +77,10 @@ function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->only( is_array( $states ) ? $states : [ $states ] )
-		->using( apply_filters( 'awebooking/check_rooms_constraints', $constraints, $timespan, $guests, $states, $resources ) )
+		->using( apply_filters( 'abrs_check_rooms_constraints', $constraints, $timespan, $guests, $states, $resources ) )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'awebooking/check_room_state_response', $response, $timespan, $guests, $states, $resources );
+	return apply_filters( 'abrs_check_room_state_response', $response, $timespan, $guests, $states, $resources );
 }
 
 /**
@@ -156,7 +156,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 	 * @param int                               $state    The state to apply.
 	 * @param array                             $options  Options to apply the state.
 	 */
-	do_action( 'awebooking/prepare_apply_room_state', $room, $timespan, $state, $options );
+	do_action( 'abrs_prepare_apply_room_state', $room, $timespan, $state, $options );
 
 	// Create the state Calendar,
 	// then fetch all events in given timespan.
@@ -205,7 +205,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 	 * @param int                               $state    The state to apply.
 	 * @param array                             $options  Options to apply the state.
 	 */
-	do_action( 'awebooking/after_apply_room_state', $stored, $room, $timespan, $state, $options );
+	do_action( 'abrs_after_apply_room_state', $stored, $room, $timespan, $state, $options );
 
 	return $stored;
 }
@@ -281,7 +281,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	 * @param mixed                             $operation The operation apply amount
 	 * @param array                             $options   Options to apply the state.
 	 */
-	do_action( 'awebooking/prepare_apply_price', $rate, $timespan, $amount, $operation, $options );
+	do_action( 'abrs_prepare_apply_price', $rate, $timespan, $amount, $operation, $options );
 
 	// Create the pricing Calendar
 	// then fetch all events in given timespan.
@@ -296,7 +296,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	// We will perform set the price on each piece of events.
 	foreach ( $events as $event ) {
 		// Apply filters for another custom the evaluate room price.
-		$evaluated = apply_filters( 'awebooking/evaluate_room_price', null, $event->get_amount(), $amount, $operation, $rate, $timespan, $options );
+		$evaluated = apply_filters( 'abrs_evaluate_room_price', null, $event->get_amount(), $amount, $operation, $rate, $timespan, $options );
 
 		if ( ! is_null( $evaluated ) ) {
 			$event->set_value( $evaluated );
@@ -322,7 +322,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	 * @param mixed                             $operation The operation apply amount
 	 * @param array                             $options   Options to apply the state.
 	 */
-	do_action( 'awebooking/after_apply_price', $stored, $rate, $timespan, $amount, $operation, $options );
+	do_action( 'abrs_after_apply_price', $stored, $rate, $timespan, $amount, $operation, $options );
 
 	return $stored;
 }
@@ -333,7 +333,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
  * @return array
  */
 function abrs_get_rate_operations() {
-	return apply_filters( 'awebooking/rate_operations', [
+	return apply_filters( 'abrs_rate_operations', [
 		'replace'  => esc_html__( 'Replace', 'awebooking' ),
 		'add'      => esc_html__( 'Add', 'awebooking' ),
 		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
@@ -363,10 +363,10 @@ function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $c
 
 	$response = ( new Finder( $resources->all() ) )
 		->callback( '_abrs_filter_rates_callback' )
-		->using( apply_filters( 'awebooking/filter_rates_constraints', $constraints, $timespan, $guests, $resources ) )
+		->using( apply_filters( 'abrs_filter_rates_constraints', $constraints, $timespan, $guests, $resources ) )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'awebooking/filter_rates_response', $response, $timespan, $guests, $resources );
+	return apply_filters( 'abrs_filter_rates_response', $response, $timespan, $guests, $resources );
 }
 
 /**
@@ -408,7 +408,7 @@ function abrs_build_rate_constraints( Rate $rate, Timespan $timespan, Guest_Coun
 		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
 
-	return apply_filters( 'awebooking/rate_constraints', $constraints, $rate );
+	return apply_filters( 'abrs_rate_constraints', $constraints, $rate );
 }
 
 /**
@@ -592,7 +592,7 @@ function abrs_create_res_request( $args ) {
 		$guest_counts->set_infants( $args['infants'] );
 	}
 
-	return apply_filters( 'awebooking/reservation_request', new Request( $timespan, $guest_counts, $args['options'] ) );
+	return apply_filters( 'abrs_reservation_request', new Request( $timespan, $guest_counts, $args['options'] ) );
 }
 
 /**
@@ -627,7 +627,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 	static $providers;
 
 	if ( is_null( $providers ) ) {
-		$providers = apply_filters( 'awebooking/calendar_providers_classmap', [
+		$providers = apply_filters( 'abrs_calendar_providers_classmap', [
 			'state'   => \AweBooking\Calendar\Provider\Core\State_Provider::class,
 			'booking' => \AweBooking\Calendar\Provider\Core\Booking_Provider::class,
 			'pricing' => \AweBooking\Calendar\Provider\Core\Pricing_Provider::class,
@@ -655,7 +655,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 		$instance = new Cached_Provider( $instance );
 	}
 
-	return apply_filters( 'awebooking/calendar_provider', $instance, $provider, $resource, $cached );
+	return apply_filters( 'abrs_calendar_provider', $instance, $provider, $resource, $cached );
 }
 
 /**
@@ -697,13 +697,13 @@ function abrs_resource_room( $room ) {
 	// By default rooms in awebooking is alway available
 	// but you can apply filters to here to change that.
 	$resource = new Resource( $room->get_id(),
-		apply_filters( 'awebooking/default_room_state', Constants::STATE_AVAILABLE )
+		apply_filters( 'abrs_default_room_state', Constants::STATE_AVAILABLE )
 	);
 
 	$resource->set_reference( $room );
 	$resource->set_title( $room->get( 'name' ) );
 
-	return apply_filters( 'awebooking/calendar_room_resource', $resource, $room );
+	return apply_filters( 'abrs_calendar_room_resource', $resource, $room );
 }
 
 /**
@@ -729,5 +729,5 @@ function abrs_resource_rate( $rate ) {
 	$resource->set_reference( $rate );
 	$resource->set_title( $rate->get_name() );
 
-	return apply_filters( 'awebooking/calendar_rate_resource', $resource, $rate );
+	return apply_filters( 'abrs_calendar_rate_resource', $resource, $rate );
 }

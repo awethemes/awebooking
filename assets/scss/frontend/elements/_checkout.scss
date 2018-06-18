@@ -1,0 +1,46 @@
+.checkout__section {
+
+}
+
+#checkout-form {
+  padding: 1em;
+  background-color: #fff;
+}
+
+.awebooking {
+  .payment-methods {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .payment-method {
+    padding: 1em;
+    border-radius: 5px;
+    margin-bottom: 1em;
+    background-color: #f7f7f7;
+    position: relative;
+    box-sizing: border-box;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.selected {
+      border: solid 2px lighten($primary, 5%);
+    }
+  }
+
+  .payment-method__description {
+    padding-left: $custom-control-gutter;
+
+    p {
+      color: #8c8c8c;
+      margin-top: 0;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

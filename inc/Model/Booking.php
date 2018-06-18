@@ -565,6 +565,6 @@ class Booking extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function prefix( $hook_name ) {
-		return 'awebooking/booking/' . $hook_name;
+		return 'abrs_booking_' . $hook_name;
 	}
 }

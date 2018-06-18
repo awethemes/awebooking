@@ -75,7 +75,7 @@ class Standard_Plan implements Rate_Plan {
 	public function get_rates() {
 		if ( is_null( $this->rates ) ) {
 			// Multiple rates only available in pro version, please upgrade :).
-			$rates = apply_filters( 'awebooking/standard_plan/setup_rates', [], $this );
+			$rates = apply_filters( 'abrs_standard_plan_setup_rates', [], $this );
 
 			$this->rates = abrs_collect( $rates )
 				->prepend( new Base_Rate( $this->instance ) )

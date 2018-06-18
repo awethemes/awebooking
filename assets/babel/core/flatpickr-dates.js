@@ -7,48 +7,21 @@ class SelectedDates {
   constructor(fp, input) {
     this.fp    = fp;
     this.input = input;
-    this.dates = { startDate: void 0, endDate: void 0 };
+    this.dates = { startDate: null, endDate: null };
   }
 
   set(startDate, endDate) {
     this.setStartDate(startDate);
     this.setEndDate(endDate);
+    this.update();
   }
 
-  setStartDate(startDate) {
-    const parsedDate = this.fp.parseDate(startDate);
-
-    if (!parsedDate) {
-      return;
-    }
-
-    this.dates.startDate = parsedDate;
-
-    if (this.dates.endDate && parsedDate >= this.dates.endDate) {
-      this.dates.endDate = void 0;
-    }
-
-    this.updateInputValues();
+  reset(update = false) {
+    this.dates = { startDate: null, endDate: null };
+    update && this.update();
   }
 
-  setEndDate(endDate) {
-    const parsedDate = this.fp.parseDate(endDate);
-
-    if (!parsedDate) {
-      return;
-    }
-
-    this.dates.endDate = parsedDate;
-    this.updateInputValues();
-  }
-
-  toArray() {
-    let dates = Object.values(this.dates);
-
-    return dates.filter((d) => { return d instanceof Date; });
-  }
-
-  updateInputValues() {
+  update() {
     const input = this.input;
     const dateFormat = this.fp.config.dateFormat;
 
@@ -57,6 +30,38 @@ class SelectedDates {
     [input.start.value = '', input.end.value = ''] = this.fp.selectedDates.map(
       d => this.fp.formatDate(d, dateFormat)
     );
+  }
+
+  setStartDate(startDate) {
+    const parsedDate = this.fp.parseDate(startDate);
+
+    if (!parsedDate) {
+      this.reset();
+      return;
+    }
+
+    this.dates.startDate = parsedDate;
+
+    if (this.dates.endDate && parsedDate >= this.dates.endDate) {
+      this.dates.endDate = null;
+    }
+  }
+
+  setEndDate(endDate) {
+    const parsedDate = this.fp.parseDate(endDate);
+
+    if (!parsedDate) {
+      this.reset();
+      return;
+    }
+
+    this.dates.endDate = parsedDate;
+  }
+
+  toArray() {
+    let dates = Object.values(this.dates);
+
+    return dates.filter((d) => { return d instanceof Date; });
   }
 }
 
@@ -104,26 +109,6 @@ function RangeDatesPlugin(config) {
         fp.open(undefined, firstInput);
 
       }, 150, true));
-    }
-
-    function handleSetFirstDate(date) {
-      if (_prevDates.length === 2 && date < _prevDates[1]) {
-        return [date, _prevDates[1]];
-      }
-
-      if (_prevDates[1] && date.getTime() === _prevDates[1].getTime() ) {
-        console.log(1);
-      }
-
-      return [date];
-    }
-
-    function handleSetSecondDate(date) {
-      if (!_prevDates[1] || _prevDates.length === 2 && date <= _prevDates[0]) {
-        return [date];
-      }
-
-      return [_prevDates[0], date];
     }
 
     return {
@@ -178,11 +163,14 @@ function RangeDatesPlugin(config) {
           dates.setEndDate(selfDates[1] ? selfDates[1] : selfDates[0]);
         }
 
+        dates.update();
         fp.setDate(fp.selectedDates, false);
       },
 
       onChange() {
-        if (_secondInputFocused && fp.selectedDates.length === 2) {
+        if (_firstInputFocused) {
+          setTimeout(() => { secondInput.focus(); }, 0);
+        } else if (_secondInputFocused && fp.selectedDates.length === 2) {
           setTimeout(fp.close, 0);
         }
       },

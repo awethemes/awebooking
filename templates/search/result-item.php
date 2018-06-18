@@ -18,8 +18,6 @@ $remain_rooms = $room_rate->get_remain_rooms();
 
 $rate_plan = $room_rate->get_rate_plan();
 
-$services = $rate_plan->get_services();
-dump( $services );
 ?>
 
 <div class="box abroom">

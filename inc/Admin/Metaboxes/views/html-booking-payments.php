@@ -53,9 +53,9 @@ $payment_items = $the_booking->get_payments()
 					<td>
 						<div class="awebooking-contents">
 							<?php
-							do_action( "awebooking/booking/display_payment_{$payment_item->get( 'method' )}", $payment_item, $the_booking );
+							do_action( "abrs_display_payment_{$payment_item->get( 'method' )}", $payment_item, $the_booking );
 
-							do_action( 'awebooking/booking/display_payment', $payment_item, $the_booking );
+							do_action( 'abrs_display_payment', $payment_item, $the_booking );
 							?>
 						</div>
 					</td>

@@ -181,10 +181,6 @@ class Post_Types_Service_Provider extends Service_Provider {
 			case ( abrs_get_page_id( 'checkout' ) === $post->ID ):
 				$post_states['abrs_page_checkout'] = esc_html_x( 'Checkout', 'Page states', 'awebooking' );
 				break;
-
-			case ( abrs_get_page_id( 'booking' ) === $post->ID ):
-				$post_states['abrs_page_booking'] = esc_html_x( 'Booking Confirmation', 'Page states', 'awebooking' );
-				break;
 		}
 
 		return $post_states;

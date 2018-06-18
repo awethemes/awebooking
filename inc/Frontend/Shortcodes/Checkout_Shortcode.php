@@ -38,7 +38,7 @@ class Checkout_Shortcode extends Shortcode_Abstract {
 	 * @return void
 	 */
 	public function output_received( $request ) {
-		$booking_id = apply_filters( 'awebooking/thankyou_booking_id', absint( $request->get( 'booking-received' ) ) );
+		$booking_id = apply_filters( 'abrs_thankyou_booking_id', absint( $request->get( 'booking-received' ) ) );
 
 		$booking = abrs_get_booking( $booking_id );
 

@@ -72,7 +72,7 @@ class Checkout {
 		abrs_set_time_limit( 0 );
 		Constants::define( 'AWEBOOKING_CHECKOUT', true );
 
-		do_action( 'awebooking/checkout/prepare_process', $this );
+		do_action( 'abrs_prepare_checkout_process', $this );
 
 		if ( $this->reservation->is_empty() ) {
 			throw new RuntimeException( esc_html__( 'Sorry, your session has expired.', 'awebooking' ) );
@@ -81,7 +81,7 @@ class Checkout {
 		$errors = new WP_Error();
 		$data   = $this->get_posted_data( $request );
 
-		do_action( 'awebooking/checkout/processing', $data, $errors, $this );
+		do_action( 'abrs_checkout_processing', $data, $errors, $this );
 
 		// Update session for customer and totals.
 		$this->update_session( $data );
@@ -102,7 +102,7 @@ class Checkout {
 			throw new RuntimeException( esc_html__( 'Sorry, we cannot serve your reservation request at this moment.', 'awebooking' ) );
 		}
 
-		do_action( 'awebooking/checkout/processed', $booking_id, $data );
+		do_action( 'abrs_checkout_processed', $booking_id, $data );
 
 		// Process with payment.
 		if ( ! empty( $data['payment_method'] ) ) {
@@ -142,7 +142,7 @@ class Checkout {
 	 * @return \AweBooking\Gateway\Response
 	 */
 	protected function process_without_payment( Booking $booking ) {
-		$booking->update_status( apply_filters( 'awebooking/booking_status_without_payment', 'on-hold' ) );
+		$booking->update_status( apply_filters( 'abrs_booking_status_without_payment', 'on-hold' ) );
 
 		// flush the reservation data.
 		$this->reservation->flush();
@@ -158,7 +158,7 @@ class Checkout {
 	 */
 	public function create_booking( $data ) {
 		// Give plugins the opportunity to create an booking themselves.
-		if ( $booking_id = apply_filters( 'awebooking/checkout/create_booking', null, $this ) ) {
+		if ( $booking_id = apply_filters( 'abrs_checkout_create_booking', null, $this ) ) {
 			return $booking_id;
 		}
 
@@ -174,7 +174,7 @@ class Checkout {
 		// Fill the booking data.
 		$booking->fill([
 			'created_via'          => 'checkout',
-			'customer_id'          => apply_filters( 'awebooking/checkout/customer_id', get_current_user_id() ),
+			'customer_id'          => apply_filters( 'abrs_checkout_customer_id', get_current_user_id() ),
 			'arrival_time'         => $data->get( 'arrival_time', '' ),
 			'customer_note'        => $data->get( 'customer_note', '' ),
 			'customer_first_name'  => $data->get( 'customer_first_name', '' ),
@@ -194,7 +194,7 @@ class Checkout {
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
 		]);
 
-		do_action( 'awebooking/checkout/creating_booking', $booking, $data, $this );
+		do_action( 'abrs_checkout_creating_booking', $booking, $data, $this );
 
 		// Save the booking.
 		$saved = $booking->save();
@@ -207,7 +207,7 @@ class Checkout {
 		// Create the booking items.
 		$this->create_booking_items( $booking, $data );
 
-		do_action( 'awebooking/checkout/update_booking_meta', $booking_id, $data );
+		do_action( 'abrs_checkout_update_booking_meta', $booking_id, $data );
 
 		return $booking->get_id();
 	}
@@ -254,7 +254,7 @@ class Checkout {
 	protected function resume_awating_booking( $booking ) {
 		$booking->remove_items();
 
-		do_action( 'awebooking/checkout/resume_booking', $booking );
+		do_action( 'abrs_resume_booking', $booking );
 	}
 
 	/**
@@ -297,7 +297,7 @@ class Checkout {
 					'total'        => $room_rate->get_rate(),
 				]);
 
-				do_action( 'aweboooking/checkout/creating_booking_room_item', $item, $room_stay, $item_key, $booking );
+				do_action( 'abrs_checkout_creating_booking_room_item', $item, $room_stay, $item_key, $booking );
 
 				try {
 					$item->save();
@@ -306,7 +306,7 @@ class Checkout {
 				}
 			}
 
-			do_action( 'awebooking/checkout/process_room_stay', $room_stay, $item_key, $booking );
+			do_action( 'abrs_checkout_process_room_stay', $room_stay, $item_key, $booking );
 		}
 
 		// Re-calculate the totals.
@@ -331,8 +331,6 @@ class Checkout {
 
 		$payment_item->save();
 
-		// do_action( $tag );
-
 		return $payment_item;
 	}
 
@@ -343,7 +341,7 @@ class Checkout {
 	 * @throws \Exception
 	 */
 	protected function process_customer( $data ) {
-		do_action( 'awebooking/checkout/process_customer_data', $data );
+		do_action( 'abrs_checkout_process_customer_data', $data );
 	}
 
 	/**
@@ -365,7 +363,7 @@ class Checkout {
 	 * @param  \WP_Error                  $errors WP_Error instance.
 	 */
 	protected function validate_checkout( $data, $errors ) {
-		if ( empty( $data['terms'] ) && apply_filters( 'awebooking/checkout/show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
+		if ( empty( $data['terms'] ) && apply_filters( 'awebooking_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
 			$errors->add( 'terms', esc_html__( 'You must accept our Terms &amp; Conditions.', 'awebooking' ) );
 		}
 
@@ -383,7 +381,7 @@ class Checkout {
 			}
 		}
 
-		do_action( 'awebooking/checkout/after_validation', $data, $errors );
+		do_action( 'abrs_checkout_after_validation', $data, $errors );
 	}
 
 	/**
@@ -405,7 +403,7 @@ class Checkout {
 			}
 		}
 
-		do_action( 'awebooking/checkout/validate_posted_data', $data, $errors );
+		do_action( 'abrs_checkout_validate_posted_data', $data, $errors );
 	}
 
 	/**
@@ -421,7 +419,7 @@ class Checkout {
 		$data['terms'] = $request->filled( 'terms' );
 		$data['payment_method'] = abrs_clean( $request->get( 'payment_method' ) );
 
-		return apply_filters( 'awebooking/checkout/posted_data', $data, $request );
+		return apply_filters( 'abrs_checkout_posted_data', $data, $request );
 	}
 
 	/**
@@ -432,7 +430,7 @@ class Checkout {
 	 */
 	public function get_controls( $fieldset = '' ) {
 		if ( is_null( $this->controls ) ) {
-			$this->controls = apply_filters( 'awebooking/checkout/controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
+			$this->controls = apply_filters( 'abrs_checkout_controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
 			$this->controls->enabled()->prepare_fields();
 		}
 

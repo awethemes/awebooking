@@ -77,7 +77,7 @@ class Booking_Main_Metabox {
 		$booking->set_status( $values->get( '_status' ) );
 
 		// Fire action before save.
-		do_action( 'awebooking/process_booking_data', $booking, $values, $request );
+		do_action( 'abrs_process_booking_data', $booking, $values, $request );
 
 		// Save the data.
 		if ( $booking->save() ) {

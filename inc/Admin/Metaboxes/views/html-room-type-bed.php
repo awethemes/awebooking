@@ -16,7 +16,7 @@ $value = wp_parse_args( $field->escaped_value(), [
 					'list'   => 'bed_type_list',
 				]);
 
-				$type_list = apply_filters( 'awebooking/bed_type_list', [
+				$type_list = apply_filters( 'abrs_list_beds', [
 					esc_html__( 'Single bed', 'awebooking' ),
 					esc_html__( 'Double bed', 'awebooking' ),
 					esc_html__( 'Queen bed', 'awebooking' ),

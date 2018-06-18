@@ -1,7 +1,5 @@
 <div class="submitbox" id="awebooking-actions">
 	<div id="minor-publishing">
-		<?php do_action( 'awebooking/admin_booking_actions_start', $the_booking ); ?>
-
 		<div class="misc-pub-section abrs-input-addon">
 			<select name="awebooking_action" style="width: 100%;">
 				<option value=""><?php esc_html_e( 'Choose an action...', 'awebooking' ); ?></option>
@@ -16,8 +14,6 @@
 				<span class="screen-reader-text"><?php esc_html_e( 'Apply', 'awebooking' ); ?></span>
 			</button>
 		</div>
-
-		<?php do_action( 'awebooking/admin_booking_actions_end', $the_booking ); ?>
 	</div>
 
 	<div id="major-publishing-actions">

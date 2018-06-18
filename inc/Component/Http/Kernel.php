@@ -49,9 +49,9 @@ class Kernel extends Http_Kernel {
 	 */
 	protected function register_routes( $route ) {
 		if ( is_admin() ) {
-			do_action( 'awebooking/register_admin_routes', $route );
+			do_action( 'abrs_register_admin_routes', $route );
 		} else {
-			do_action( 'awebooking/register_routes', $route );
+			do_action( 'abrs_register_routes', $route );
 		}
 	}
 

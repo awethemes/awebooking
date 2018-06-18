@@ -206,7 +206,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/bootstrapping', $this );
+		do_action( 'abrs_bootstrapping', $this );
 
 		// Run bootstrap classes.
 		array_walk( $this->bootstrappers, function( $bootstrapper ) {
@@ -218,7 +218,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/bootstrapped', $this );
+		do_action( 'abrs_bootstrapped', $this );
 
 		// Build the providers.
 		$providers = $this->service_providers['core'];
@@ -230,7 +230,7 @@ final class Plugin extends Container {
 		}
 
 		// Filter the service_providers.
-		$providers = apply_filters( 'awebooking/service_providers', $providers, $this );
+		$providers = apply_filters( 'abrs_service_providers', $providers, $this );
 
 		// Require the core functions before registered providers.
 		require trailingslashit( __DIR__ ) . 'core-functions.php';
@@ -240,7 +240,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/init', $this );
+		do_action( 'abrs_init', $this );
 
 		// Loop each provider then register them.
 		foreach ( $providers as $provider ) {
@@ -258,7 +258,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/after_init', $this );
+		do_action( 'abrs_after_init', $this );
 	}
 
 	/**
@@ -286,7 +286,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/booting', $this );
+		do_action( 'abrs_booting', $this );
 
 		// Perform boot the loaded providers.
 		array_walk( $this->loaded_providers, function( $provider ) {
@@ -301,7 +301,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking/booted', $this );
+		do_action( 'abrs_booted', $this );
 	}
 
 	/**
@@ -348,7 +348,7 @@ final class Plugin extends Container {
 	 * @return string
 	 */
 	public function template_path() {
-		return apply_filters( 'awebooking/template_path', 'awebooking/' );
+		return apply_filters( 'abrs_template_path', 'awebooking/' );
 	}
 
 	/**
@@ -357,7 +357,7 @@ final class Plugin extends Container {
 	 * @return string
 	 */
 	public function endpoint_name() {
-		return apply_filters( 'awebooking/endpoint_name', 'awebooking-route' );
+		return apply_filters( 'abrs_endpoint_name', 'awebooking-route' );
 	}
 
 	/**
@@ -377,7 +377,7 @@ final class Plugin extends Container {
 	 */
 	public function set_option_key( $key_name ) {
 		// Option name can't be set after plugin booting.
-		if ( did_action( 'awebooking/booting' ) ) {
+		if ( did_action( 'abrs_booting' ) ) {
 			return false;
 		}
 
@@ -421,7 +421,7 @@ final class Plugin extends Container {
 		 * @param string $option     The option name.
 		 * @param mixed  $default    The fallback value to return if the option does not exist.
 		 */
-		$pre = apply_filters( "awebooking/pre_option_{$option}", null, $option, $default );
+		$pre = apply_filters( "abrs_pre_option_{$option}", null, $option, $default );
 
 		if ( null !== $pre ) {
 			return $pre;
@@ -461,7 +461,7 @@ final class Plugin extends Container {
 		 * @param mixed  $value  Value of the option.
 		 * @param string $option Option name.
 		 */
-		return apply_filters( "awebooking/option_{$option}", $value, $option );
+		return apply_filters( "abrs_option_{$option}", $value, $option );
 	}
 
 	/**

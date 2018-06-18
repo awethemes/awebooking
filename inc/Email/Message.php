@@ -130,7 +130,7 @@ class Message {
 	 * @return string
 	 */
 	public function get_from_name( $from_name ) {
-		$name = apply_filters( 'awebooking/email_from_name', abrs_get_option( 'email_from_name' ), $this );
+		$name = apply_filters( 'abrs_email_from_name', abrs_get_option( 'email_from_name' ), $this );
 
 		return $name ? wp_specialchars_decode( esc_html( $name ), ENT_QUOTES ) : $from_name;
 	}
@@ -142,7 +142,7 @@ class Message {
 	 * @return string
 	 */
 	public function get_from_address( $from_email ) {
-		$from_address = apply_filters( 'awebooking/email_from_address', abrs_get_option( 'email_from_address' ), $this );
+		$from_address = apply_filters( 'abrs_email_from_address', abrs_get_option( 'email_from_address' ), $this );
 
 		return $from_address ? sanitize_email( $from_address ) : $from_email;
 	}

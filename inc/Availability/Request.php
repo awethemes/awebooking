@@ -168,17 +168,22 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Returns the request hash ID.
+	 *
+	 * @return string
+	 */
+	public function get_hash() {
+		return sha1( serialize( $this->get_timespan()->to_array() ) );
+	}
+
+	/**
 	 * Checks if the request is sane with other request.
 	 *
 	 * @param \AweBooking\Availability\Request $another Another request.
 	 * @return bool
 	 */
 	public function same_with( Request $another ) {
-		$hash1 = sha1( serialize( $this->get_timespan()->to_array() ) );
-
-		$hash2 = sha1( serialize( $another->get_timespan()->to_array() ) );
-
-		return hash_equals( $hash1, $hash2 );
+		return hash_equals( $this->get_hash(), $another->get_hash() );
 	}
 
 	/**

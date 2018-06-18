@@ -59,7 +59,7 @@ class General_Setting extends Abstract_Setting {
 			'name'             => esc_html__( 'Reservation Mode', 'awebooking' ),
 			'default'          => 'multiple_room',
 			'classes'          => 'with-selectize',
-			'options'          => apply_filters( 'awebooking/list_reservation_mode', [
+			'options'          => apply_filters( 'abrs_list_reservation_mode', [
 				'single_room'   => esc_html__( 'Single Room', 'awebooking' ),
 				'multiple_room' => esc_html__( 'Multiple Rooms', 'awebooking' ),
 			]),
@@ -78,17 +78,6 @@ class General_Setting extends Abstract_Setting {
 			'id'               => 'page_check_availability',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Availability Results', 'awebooking' ),
-			'options_cb'       => $all_pages_cb,
-			'sanitization_cb'  => 'absint',
-			'classes'          => 'with-selectize',
-			'show_option_none' => '---',
-			'after'            => $this->get_external_link_cb(),
-		]);
-
-		$this->add_field([
-			'id'               => 'page_booking',
-			'type'             => 'select',
-			'name'             => esc_html__( 'Confirm Booking', 'awebooking' ),
 			'options_cb'       => $all_pages_cb,
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',

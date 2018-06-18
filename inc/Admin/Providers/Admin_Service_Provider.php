@@ -34,11 +34,11 @@ class Admin_Service_Provider extends Service_Provider {
 		require_once dirname( __DIR__ ) . '/admin-functions.php';
 
 		// Register the admin routes.
-		add_action( 'awebooking/register_admin_routes', [ $this, 'register_admin_routes' ], 1 );
+		add_action( 'abrs_register_admin_routes', [ $this, 'register_admin_routes' ], 1 );
 		add_action( 'admin_init', [ $this, 'register_admin_settings' ] );
 
 		// Trim price zeros in admin area.
-		add_filter( 'awebooking/price_trim_zeros', '__return_true' );
+		add_filter( 'abrs_price_trim_zeros', '__return_true' );
 	}
 
 	/**

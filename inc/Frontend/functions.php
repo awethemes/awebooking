@@ -64,7 +64,23 @@ function abrs_set_res_request( Request $request = null ) {
 
 
 
+/**
+ * Determines if current viewing on "search_results" page.
+ *
+ * @return bool
+ */
+function abrs_is_search_page() {
+	return is_page( abrs_get_page_id( 'search_results' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
+}
 
+/**
+ * Determines if current viewing on "checkout" page.
+ *
+ * @return bool
+ */
+function abrs_is_checkout_page() {
+	return is_page( abrs_get_page_id( 'checkout' ) ) || abrs_page_has_shortcode( 'awebooking_checkout' );
+}
 
 
 
@@ -107,23 +123,7 @@ if ( ! function_exists( 'is_room_type_list' ) ) {
 	}
 }
 
-/**
- * Determines if current viewing on "search_results" page.
- *
- * @return bool
- */
-function abrs_is_search_page() {
-	return is_page( abrs_get_page_id( 'search_results' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
-}
 
-/**
- * Determines if current viewing on "search_results" page.
- *
- * @return bool
- */
-function abrs_is_checkout_page() {
-	return is_page( abrs_get_page_id( 'booking' ) ) || abrs_page_has_shortcode( 'awebooking_checkout' );
-}
 
 /**
  * Checks whether the content passed contains a specific short code.
@@ -176,7 +176,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 *
 	 * @param array $atts The form attributes.
 	 */
-	do_action( 'awebooking/pre_get_search_form', $atts );
+	do_action( 'abrs_pre_get_search_form', $atts );
 
 	if ( is_null( $atts['res_request'] ) && ! empty( $wp->query_vars['res_request'] ) ) {
 		$res_request = $wp->query_vars['res_request'];
@@ -199,7 +199,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 * @param string $form The search form HTML output.
 	 * @param array  $atts The form attributes.
 	 */
-	$result = apply_filters( 'awebooking/get_search_form', $form, $atts );
+	$result = apply_filters( 'abrs_get_search_form', $form, $atts );
 
 	if ( $echo ) {
 		echo $result; // WPCS: XSS OK.
@@ -238,7 +238,7 @@ function abrs_bookroom_button( $args, $echo = true ) {
 	 * @param string $form The search form HTML output.
 	 * @param array  $atts The form attributes.
 	 */
-	$button = apply_filters( 'awebooking/book_room_button', $button, $args );
+	$button = apply_filters( 'abrs_book_room_button', $button, $args );
 
 	if ( $echo ) {
 		echo $button; // WPCS: XSS OK.

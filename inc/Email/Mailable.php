@@ -112,7 +112,7 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function get_title() {
-		return apply_filters( 'awebooking/email/get_title', $this->title, $this );
+		return apply_filters( 'abrs_email_title', $this->title, $this );
 	}
 
 	/**
@@ -121,7 +121,7 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function get_description() {
-		return apply_filters( 'awebooking/email/get_description', $this->description, $this );
+		return apply_filters( 'abrs_email_description', $this->description, $this );
 	}
 
 	/**
@@ -166,7 +166,7 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function get_recipient() {
-		return abrs_sanitize_email( apply_filters( "awebooking/email/recipient_{$this->id}", $this->recipient, $this ) );
+		return abrs_sanitize_email( apply_filters( "abrs_email_recipient_{$this->id}", $this->recipient, $this ) );
 	}
 
 	/**
@@ -175,7 +175,7 @@ abstract class Mailable {
 	 * @return string
 	 */
 	public function get_subject() {
-		return apply_filters( "awebooking/email/subject_{$this->id}", $this->format_string( $this->get_option( 'subject' ) ), $this );
+		return apply_filters( "abrs_email_subject_{$this->id}", $this->format_string( $this->get_option( 'subject' ) ), $this );
 	}
 
 	/**
@@ -184,7 +184,7 @@ abstract class Mailable {
 	 * @return array
 	 */
 	public function get_attachments() {
-		return apply_filters( 'awebooking/email/attachments', [], $this );
+		return apply_filters( 'abrs_email_attachments', [], $this );
 	}
 
 	/**
@@ -195,7 +195,7 @@ abstract class Mailable {
 	public function get_headers() {
 		$header = "Content-Type: {$this->get_content_type()}\r\n";
 
-		return apply_filters( 'awebooking/email/headers', $header, $this );
+		return apply_filters( 'abrs_email_headers', $header, $this );
 	}
 
 	/**
@@ -228,7 +228,7 @@ abstract class Mailable {
 			$body = $this->apply_inline_style( $this->get_content_html() );
 		}
 
-		return apply_filters( 'awebooking/email/body', wordwrap( $body, 70 ), $this );
+		return apply_filters( 'abrs_email_body', wordwrap( $body, 70 ), $this );
 	}
 
 	/**
@@ -244,7 +244,7 @@ abstract class Mailable {
 
 		// Make sure we only inline CSS for html emails.
 		if ( 'text/html' === $this->get_content_type() && class_exists( 'DOMDocument' ) ) {
-			$stylesheet = apply_filters( 'awebooking/email/stylesheets', abrs_get_template_content( 'emails/styles.php' ) );
+			$stylesheet = apply_filters( 'abrs_email_stylesheets', abrs_get_template_content( 'emails/styles.php' ) );
 
 			// Apply CSS styles inline for picky email clients.
 			$emogrifier = new Emogrifier( $content, $stylesheet );
@@ -304,7 +304,7 @@ abstract class Mailable {
 	 * @return array|null
 	 */
 	public function get_setting_fields() {
-		return apply_filters( 'awebooking/email/setting_fields', $this->setting_fields, $this );
+		return apply_filters( 'abrs_email_setting_fields', $this->setting_fields, $this );
 	}
 
 	/**
@@ -410,7 +410,7 @@ abstract class Mailable {
 	 * @return array
 	 */
 	public function get_placeholders() {
-		return apply_filters( 'awebooking/mail/placeholders', $this->placeholders, $this );
+		return apply_filters( 'abrs_email_placeholders', $this->placeholders, $this );
 	}
 
 	/**

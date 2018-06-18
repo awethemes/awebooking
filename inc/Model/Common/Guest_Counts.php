@@ -230,6 +230,6 @@ class Guest_Counts implements \ArrayAccess, \JsonSerializable {
 			);
 		}
 
-		return apply_filters( 'awebooking/html_guest_counts', $html, $this );
+		return apply_filters( 'abrs_html_guest_counts', $html, $this );
 	}
 }

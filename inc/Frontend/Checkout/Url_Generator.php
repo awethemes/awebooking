@@ -32,7 +32,7 @@ class Url_Generator {
 			$received_url = str_replace( 'http:', 'https:', $received_url );
 		}
 
-		return apply_filters( 'awebooking/get_booking_received_url', $received_url, $this->booking );
+		return apply_filters( 'abrs_get_booking_received_url', $received_url, $this->booking );
 	}
 
 	/**

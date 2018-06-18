@@ -4,7 +4,7 @@ namespace AweBooking\Frontend\Controllers;
 use Awethemes\Http\Request;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Url_Generator;
-use \AweBooking\Component\Routing\Redirector;
+use AweBooking\Component\Routing\Redirector;
 
 class Reservation_Controller {
 	/**
@@ -42,8 +42,9 @@ class Reservation_Controller {
 			return $redirector->back();
 		}
 
-		$url_generator = new Url_Generator( $res_request );
-		$availability_url = $url_generator->get_availability_url();
+		// Create the availability url.
+		$availability_url = ( new Url_Generator( $res_request ) )
+			->get_availability_url();
 
 		try {
 			$item = $this->reservation->add_room_stay( $res_request,
@@ -51,25 +52,17 @@ class Reservation_Controller {
 			);
 		} catch ( \Exception $e ) {
 			abrs_add_notice( $e->getMessage(), 'error' );
+
+			// Redirect back to the search availability page.
 			return $redirector->to( $availability_url );
 		}
 
-		// Redirect to the checkout page if requested
-		// or in case the "booking" page is not setup yet.
-		if ( $this->need_redirect_to_checkout( $request ) ) {
-			return $redirector->to( abrs_get_page_permalink( 'checkout' ) );
+		// Continue the reservation.
+		if ( $this->is_continue_reservation( $request ) ) {
+			return $redirector->to( add_query_arg( 'res', $res_request->get_hash(), $availability_url ) );
 		}
 
-		// Redirect back to the search page.
-		if ( $request->has( '_continue_reservation' ) ) {
-			return $redirector->to( $availability_url );
-		}
-
-		abrs_add_notice( esc_html__( 'Room has been successfully added to your reservation!', 'awebooking' ), 'success' );
-
-		return $redirector->to(
-			add_query_arg( 'row_id', $item->get_row_id(), abrs_get_page_permalink( 'booking' ) )
-		);
+		return $redirector->to( abrs_get_page_permalink( 'checkout' ) );
 	}
 
 	/**
@@ -78,14 +71,13 @@ class Reservation_Controller {
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return bool
 	 */
-	protected function need_redirect_to_checkout( Request $request ) {
-		// Redirect the checkout page in case requested or the reservation mode is "single_room".
-		if ( $request->has( '_redirect_checkout' ) || 'single_room' === abrs_get_option( 'reservation_mode', 'multiple_room' ) ) {
+	protected function is_continue_reservation( Request $request ) {
+		// Redirect the checkout page in case requested or the reservation mode is "multiple_room".
+		if ( $request->has( '_continue_reservation' ) ) {
 			return true;
 		}
 
-		// Or the booking page is not set yet.
-		if ( ! abrs_get_page_id( 'booking' ) ) {
+		if ( 'multiple_room' === abrs_get_option( 'reservation_mode' ) ) {
 			return true;
 		}
 

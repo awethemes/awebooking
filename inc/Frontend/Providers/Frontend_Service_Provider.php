@@ -20,7 +20,7 @@ class Frontend_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'awebooking/register_routes', [ $this, 'register_routes' ], 1 );
+		add_action( 'abrs_register_routes', [ $this, 'register_routes' ], 1 );
 
 		// Setup the awebooking objects into the main query.
 		add_action( 'the_post', [ $this, 'setup_awebooking_objects' ] );
@@ -63,6 +63,6 @@ class Frontend_Service_Provider extends Service_Provider {
 			$GLOBALS['room_type'] = abrs_get_room_type( $post );
 		}
 
-		do_action( 'awebooking/setup_objects', $post );
+		do_action( 'abrs_setup_global_objects', $post );
 	}
 }

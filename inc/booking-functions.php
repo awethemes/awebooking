@@ -56,7 +56,7 @@ function abrs_get_booking_item( $item ) {
 	}
 
 	// Apply filters allow users can overwrite the class name.
-	$classname = apply_filters( 'awebooking/get_booking_item_classname', $classmap[ $item_type ], $item_type, $item_id );
+	$classname = apply_filters( 'abrs_get_booking_item_classname', $classmap[ $item_type ], $item_type, $item_id );
 
 	return abrs_rescue( function() use ( $classname, $item_id ) {
 		$item = new $classname( $item_id );
@@ -101,7 +101,7 @@ function abrs_delete_booking_item( $item ) {
  * @return array
  */
 function abrs_booking_item_classmap() {
-	return apply_filters( 'awebooking/booking_items_classmap', [
+	return apply_filters( 'abrs_booking_items_classmap', [
 		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
 		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
 	]);
@@ -113,7 +113,7 @@ function abrs_booking_item_classmap() {
  * @return array
  */
 function abrs_get_booking_statuses() {
-	return apply_filters( 'awebooking/list_booking_statuses', [
+	return apply_filters( 'abrs_list_booking_statuses', [
 		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
 		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
 		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
@@ -185,7 +185,7 @@ function abrs_get_booking_note( $data ) {
 		'added_by'      => esc_html__( 'AweBooking', 'awebooking' ) === $data->comment_author ? 'system' : $data->comment_author,
 	]);
 
-	return apply_filters( 'awebooking/get_booking_note', $booking_note, $data );
+	return apply_filters( 'abrs_get_booking_note', $booking_note, $data );
 }
 
 /**
@@ -309,7 +309,7 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 	}
 
 	// Prepare comment data.
-	$commentdata = apply_filters( 'awebooking/add_booking_note_data', [
+	$commentdata = apply_filters( 'abrs_add_booking_note_data', [
 		'comment_post_ID'      => $booking->get_id(),
 		'comment_author'       => $comment_author,
 		'comment_author_email' => $comment_author_email,
@@ -335,7 +335,7 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 		 * @param \AweBooking\Model\Booking $booking The booking object.
 		 * @param string                    $note    The note content.
 		 */
-		do_action( 'awebooking/new_customer_note', $booking, $note );
+		do_action( 'abrs_new_customer_note', $booking, $note );
 	}
 
 	return $comment_id;

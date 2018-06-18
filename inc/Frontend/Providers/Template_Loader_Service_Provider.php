@@ -44,11 +44,11 @@ class Template_Loader_Service_Provider extends Service_Provider {
 
 		switch ( true ) {
 			case is_singular( Constants::ROOM_TYPE ):
-				$template = 'single-room-type.php';
+				$template = 'single-room.php';
 				break;
 
 			case is_post_type_archive( Constants::ROOM_TYPE ):
-				$template = 'archive-room-type.php';
+				$template = 'archive-room.php';
 				break;
 		}
 

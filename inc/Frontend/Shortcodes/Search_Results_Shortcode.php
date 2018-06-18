@@ -41,7 +41,7 @@ class Search_Results_Shortcode extends Shortcode_Abstract {
 			return;
 		}
 
-		$contraints = apply_filters( 'awebooking/', [ // TODO: ...
+		$contraints = apply_filters( 'abrs_contraints', [ // TODO: ...
 		]);
 
 		// Query the rooms.

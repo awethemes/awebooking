@@ -6,22 +6,6 @@ use AweBooking\Support\Service_Provider;
 
 class Email_Service_Provider extends Service_Provider {
 	/**
-	 * List of email template.
-	 *
-	 * @var array
-	 */
-	protected $templates = [
-		\AweBooking\Email\Templates\Invoice::class,
-		\AweBooking\Email\Templates\New_Booking::class,
-		\AweBooking\Email\Templates\Cancelled_Booking::class,
-		\AweBooking\Email\Templates\Failed_Booking::class,
-		\AweBooking\Email\Templates\Reserved_Booking::class,
-		\AweBooking\Email\Templates\Processing_Booking::class,
-		\AweBooking\Email\Templates\Completed_Booking::class,
-		\AweBooking\Email\Templates\Customer_Note::class,
-	];
-
-	/**
 	 * Registers services on the plugin.
 	 *
 	 * @return void
@@ -40,7 +24,7 @@ class Email_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		$this->register_templates( $this->plugin->make( 'mailer' ) );
+		$this->plugin['mailer']->init();
 
 		// Email templates.
 		add_action( 'awebooking_email_header', [ $this, 'template_header' ] );
@@ -50,24 +34,8 @@ class Email_Service_Provider extends Service_Provider {
 		add_action( 'awebooking_email_booking_details', [ $this, 'template_booking_details' ], 30, 2 );
 
 		// Trigger send emails.
-		add_action( 'awebooking/new_customer_note', [ $this, 'send_customer_note' ], 10, 2 );
-		add_action( 'awebooking/booking/status_changed', [ $this, 'trigger_status_changed' ], 10, 3 );
-	}
-
-	/**
-	 * Perform register email templates.
-	 *
-	 * @param \AweBooking\Email\Mailer $mailer The mailer instance.
-	 * @return void
-	 */
-	protected function register_templates( $mailer ) {
-		$templates = apply_filters( 'awebooking/email_templates', $this->templates );
-
-		foreach ( $templates as $template ) {
-			$mailer->register( $this->plugin->make( $template ) );
-		}
-
-		do_action( 'awebooking/register_email_template', $this );
+		add_action( 'abrs_new_customer_note', [ $this, 'send_customer_note' ], 10, 2 );
+		add_action( 'abrs_booking_status_changed', [ $this, 'trigger_status_changed' ], 10, 3 );
 	}
 
 	/**

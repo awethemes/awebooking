@@ -105,7 +105,7 @@ class Http_Service_Provider extends Service_Provider {
 		$binder = $this->plugin->make( 'route_binder' );
 
 		// Core models to binding.
-		$models_binding = apply_filters( 'awebooking/route_models_binding', [
+		$models_binding = apply_filters( 'abrs_route_models_binding', [
 			'booking'      => \AweBooking\Model\Booking::class,
 			'room_item'    => \AweBooking\Model\Booking\Room_Item::class,
 			'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
@@ -122,7 +122,7 @@ class Http_Service_Provider extends Service_Provider {
 		 *
 		 * @param \AweBooking\Component\Routing\Binding_Resolver $binder The binder.
 		 */
-		do_action( 'awebooking/route_binding', $binder );
+		do_action( 'abrs_route_binding', $binder );
 	}
 
 	/**

@@ -80,10 +80,7 @@ class Setup_Environment {
 			return;
 		}
 
-		/**
-		 * Fire action to register_taxonomy.
-		 */
-		do_action( 'awebooking/register_taxonomy' );
+		do_action( 'abrs_register_taxonomy' );
 
 		$capabilities = [
 			'manage_terms' => 'manage_room_type_terms',
@@ -92,7 +89,7 @@ class Setup_Environment {
 			'assign_terms' => 'assign_room_type_terms',
 		];
 
-		register_taxonomy( Constants::HOTEL_AMENITY, Constants::ROOM_TYPE, apply_filters( 'awebooking/register_amenity_args', [
+		register_taxonomy( Constants::HOTEL_AMENITY, Constants::ROOM_TYPE, apply_filters( 'abrs_register_amenity_args', [
 			'labels'              => [
 				'name'                  => esc_html_x( 'Amenities', 'Amenity plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Amenity', 'Amenity singular name', 'awebooking' ),
@@ -121,10 +118,7 @@ class Setup_Environment {
 			// 'capabilities'        => $capabilities,
 		]));
 
-		/**
-		 * Fire action after_register_taxonomy.
-		 */
-		do_action( 'awebooking/after_register_taxonomy' );
+		do_action( 'abrs_after_register_taxonomy' );
 	}
 
 	/**
@@ -137,14 +131,14 @@ class Setup_Environment {
 			return;
 		}
 
-		do_action( 'awebooking/register_post_types' );
+		do_action( 'abrs_register_post_types' );
 
 		// Get the room type slug.
-		$room_type_slug = apply_filters( 'awebooking/room_type_slug',
+		$room_type_slug = apply_filters( 'abrs_room_type_slug',
 			get_option( 'awebooking_room_type_permalink', 'room_type' )
 		);
 
-		register_post_type( Constants::ROOM_TYPE, apply_filters( 'awebooking/register_room_type_args', [
+		register_post_type( Constants::ROOM_TYPE, apply_filters( 'abrs_register_room_type_args', [
 			'labels'              => [
 				'name'                  => esc_html_x( 'Room Types', 'Room type plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Room type', 'Room type singular name', 'awebooking' ),
@@ -193,7 +187,7 @@ class Setup_Environment {
 			],
 		]));
 
-		register_post_type( Constants::BOOKING, apply_filters( 'awebooking/register_booking_args', [
+		register_post_type( Constants::BOOKING, apply_filters( 'abrs_register_booking_args', [
 			'labels'              => [
 				'name'                  => esc_html_x( 'Bookings', 'Booking plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Booking', 'Booking singular name', 'awebooking' ),
@@ -228,7 +222,7 @@ class Setup_Environment {
 			'has_archive'         => false,
 		]));
 
-		register_post_type( Constants::HOTEL_SERVICE, apply_filters( 'awebooking/register_service_args', [
+		register_post_type( Constants::HOTEL_SERVICE, apply_filters( 'abrs_register_service_args', [
 			'labels'              => [
 				'name'                  => esc_html_x( 'Services', 'Service plural name', 'awebooking' ),
 				'singular_name'         => esc_html_x( 'Service', 'Service singular name', 'awebooking' ),
@@ -265,7 +259,7 @@ class Setup_Environment {
 
 		// Enable multiple_hotels.
 		if ( $this->plugin->get_option( 'enable_location', false ) ) {
-			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'awebooking/register_location_args', [
+			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'abrs_register_location_args', [
 				'labels'              => [
 					'name'                  => esc_html_x( 'Hotels', 'Hotel plural name', 'awebooking' ),
 					'singular_name'         => esc_html_x( 'Hotel', 'Hotel singular name', 'awebooking' ),
@@ -300,7 +294,7 @@ class Setup_Environment {
 			]));
 		}
 
-		do_action( 'awebooking/after_register_post_types' );
+		do_action( 'abrs_after_register_post_types' );
 	}
 
 	/**

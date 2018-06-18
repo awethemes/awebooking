@@ -23,7 +23,7 @@ $tabs = $settings->all()
 				<a class="nav-tab <?php echo ( $key === $current_setting ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( abrs_admin_route( '/settings', [ 'setting' => $key ] ) ); ?>"><?php echo esc_html( $label ); ?></a>
 			<?php endforeach; ?>
 
-			<?php do_action( 'awebooking/admin_settings_tabs' ); ?>
+			<?php do_action( 'abrs_admin_settings_tabs' ); ?>
 
 			<?php if ( abrs_running_on_multilanguage() && 'awebooking_settings' !== awebooking()->get_option_key() ) : ?>
 				<span class="abrs-badge abrs-fright" style="margin-top: 8px;"><?php echo esc_html( awebooking( 'multilingual' )->get_current_language() ); ?></span>
@@ -32,11 +32,11 @@ $tabs = $settings->all()
 
 		<?php
 		if ( $setting = $settings->get( $current_setting ) ) {
-			do_action( 'awebooking/before_output_setting', $setting );
+			do_action( 'abrs_before_output_setting', $setting );
 
 			$setting->output( $request );
 
-			do_action( 'awebooking/after_output_setting', $setting );
+			do_action( 'abrs_after_output_setting', $setting );
 		}
 		?>
 

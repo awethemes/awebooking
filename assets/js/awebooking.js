@@ -122,7 +122,7 @@ var SelectedDates = function () {
 
     this.fp = fp;
     this.input = input;
-    this.dates = { startDate: void 0, endDate: void 0 };
+    this.dates = { startDate: null, endDate: null };
   }
 
   _createClass(SelectedDates, [{
@@ -130,48 +130,19 @@ var SelectedDates = function () {
     value: function set(startDate, endDate) {
       this.setStartDate(startDate);
       this.setEndDate(endDate);
+      this.update();
     }
   }, {
-    key: 'setStartDate',
-    value: function setStartDate(startDate) {
-      var parsedDate = this.fp.parseDate(startDate);
+    key: 'reset',
+    value: function reset() {
+      var update = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-      if (!parsedDate) {
-        return;
-      }
-
-      this.dates.startDate = parsedDate;
-
-      if (this.dates.endDate && parsedDate >= this.dates.endDate) {
-        this.dates.endDate = void 0;
-      }
-
-      this.updateInputValues();
+      this.dates = { startDate: null, endDate: null };
+      update && this.update();
     }
   }, {
-    key: 'setEndDate',
-    value: function setEndDate(endDate) {
-      var parsedDate = this.fp.parseDate(endDate);
-
-      if (!parsedDate) {
-        return;
-      }
-
-      this.dates.endDate = parsedDate;
-      this.updateInputValues();
-    }
-  }, {
-    key: 'toArray',
-    value: function toArray() {
-      var dates = Object.values(this.dates);
-
-      return dates.filter(function (d) {
-        return d instanceof Date;
-      });
-    }
-  }, {
-    key: 'updateInputValues',
-    value: function updateInputValues() {
+    key: 'update',
+    value: function update() {
       var _this = this;
 
       var input = this.input;
@@ -189,6 +160,43 @@ var SelectedDates = function () {
       input.start.value = _fp$selectedDates$map3 === undefined ? '' : _fp$selectedDates$map3;
       var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
       input.end.value = _fp$selectedDates$map4 === undefined ? '' : _fp$selectedDates$map4;
+    }
+  }, {
+    key: 'setStartDate',
+    value: function setStartDate(startDate) {
+      var parsedDate = this.fp.parseDate(startDate);
+
+      if (!parsedDate) {
+        this.reset();
+        return;
+      }
+
+      this.dates.startDate = parsedDate;
+
+      if (this.dates.endDate && parsedDate >= this.dates.endDate) {
+        this.dates.endDate = null;
+      }
+    }
+  }, {
+    key: 'setEndDate',
+    value: function setEndDate(endDate) {
+      var parsedDate = this.fp.parseDate(endDate);
+
+      if (!parsedDate) {
+        this.reset();
+        return;
+      }
+
+      this.dates.endDate = parsedDate;
+    }
+  }, {
+    key: 'toArray',
+    value: function toArray() {
+      var dates = Object.values(this.dates);
+
+      return dates.filter(function (d) {
+        return d instanceof Date;
+      });
     }
   }]);
 
@@ -243,26 +251,6 @@ function RangeDatesPlugin(config) {
       }, 150, true));
     }
 
-    function handleSetFirstDate(date) {
-      if (_prevDates.length === 2 && date < _prevDates[1]) {
-        return [date, _prevDates[1]];
-      }
-
-      if (_prevDates[1] && date.getTime() === _prevDates[1].getTime()) {
-        console.log(1);
-      }
-
-      return [date];
-    }
-
-    function handleSetSecondDate(date) {
-      if (!_prevDates[1] || _prevDates.length === 2 && date <= _prevDates[0]) {
-        return [date];
-      }
-
-      return [_prevDates[0], date];
-    }
-
     return {
       onParseConfig: function onParseConfig() {
         fp.config.mode = 'range';
@@ -313,10 +301,15 @@ function RangeDatesPlugin(config) {
           dates.setEndDate(selfDates[1] ? selfDates[1] : selfDates[0]);
         }
 
+        dates.update();
         fp.setDate(fp.selectedDates, false);
       },
       onChange: function onChange() {
-        if (_secondInputFocused && fp.selectedDates.length === 2) {
+        if (_firstInputFocused) {
+          setTimeout(function () {
+            secondInput.focus();
+          }, 0);
+        } else if (_secondInputFocused && fp.selectedDates.length === 2) {
           setTimeout(fp.close, 0);
         }
       }

@@ -5,6 +5,37 @@ use AweBooking\Support\Manager;
 
 class Mailer extends Manager {
 	/**
+	 * List of email template.
+	 *
+	 * @var array
+	 */
+	protected $templates = [
+		\AweBooking\Email\Templates\Invoice::class,
+		\AweBooking\Email\Templates\New_Booking::class,
+		\AweBooking\Email\Templates\Cancelled_Booking::class,
+		\AweBooking\Email\Templates\Failed_Booking::class,
+		\AweBooking\Email\Templates\Reserved_Booking::class,
+		\AweBooking\Email\Templates\Processing_Booking::class,
+		\AweBooking\Email\Templates\Completed_Booking::class,
+		\AweBooking\Email\Templates\Customer_Note::class,
+	];
+
+	/**
+	 * Init the mailer.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		$templates = apply_filters( 'abrs_email_templates', $this->templates );
+
+		foreach ( $templates as $template ) {
+			$this->register( $this->plugin->make( $template ) );
+		}
+
+		do_action( 'abrs_register_email_template', $this );
+	}
+
+	/**
 	 * Handle register a email template.
 	 *
 	 * @param  mixed $email The mailable implementation.
@@ -34,7 +65,7 @@ class Mailer extends Manager {
 	 * @return void
 	 */
 	public function header( Mailable $email = null ) {
-		do_action( 'awebooking_email_header', $email );
+		do_action( 'abrs_email_header', $email );
 	}
 
 	/**
@@ -44,6 +75,6 @@ class Mailer extends Manager {
 	 * @return void
 	 */
 	public function footer( Mailable $email = null ) {
-		do_action( 'awebooking_email_footer', $email );
+		do_action( 'abrs_email_footer', $email );
 	}
 }
