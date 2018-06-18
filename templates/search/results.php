@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<?php do_action( 'awebooking_print_notices' ); ?>
+<?php do_action( 'abrs_print_notices' ); ?>
 
 <div class="hotel-content">
 	<div class="hotel-content__main">
-		<?php do_action( 'awebooking_before_search_results', $results, $res_request ); ?>
+		<?php do_action( 'abrs_before_search_results', $results, $res_request ); ?>
 
 		<div id="search-rooms-results" class="rooms rooms--search">
 			<?php
@@ -42,12 +42,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 				 * @param \AweBooking\Availability\Room_Rate $room_rate      The room rate instance.
 				 * @param array                              $availabilities An array of availabilities.
 				 */
-				do_action( 'awebooking_display_search_result_item', $res_request, $room_type, $room_rate, $availabilities );
+				do_action( 'abrs_display_search_result_item', $res_request, $room_type, $room_rate, $availabilities );
 			}
 			?>
 		</div><!-- /.rooms -->
 
-		<?php do_action( 'awebooking_after_search_results', $results, $res_request ); ?>
+		<?php do_action( 'abrs_after_search_results', $results, $res_request ); ?>
 	</div>
 
 	<aside class="hotel-content__aside">

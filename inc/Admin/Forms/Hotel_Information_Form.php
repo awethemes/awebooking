@@ -19,6 +19,24 @@ class Hotel_Information_Form extends Form_Builder {
 	 */
 	protected function setup_fields() {
 		$this->add_field([
+			'id'           => 'hotel_check_in',
+			'type'         => 'text_time',
+			'name'         => esc_html__( 'Check-in time', 'awebooking' ),
+			'desc'         => esc_html__( 'Guest arrival time', 'awebooking' ),
+			'tooltip'      => true,
+			'default'      => '12:00',
+		]);
+
+		$this->add_field([
+			'id'           => 'hotel_check_out',
+			'type'         => 'text_time',
+			'name'         => esc_html__( 'Check-out time', 'awebooking' ),
+			'desc'         => esc_html__( 'Guest departure time.', 'awebooking' ),
+			'tooltip'      => true,
+			'default'      => '14:00',
+		]);
+
+		$this->add_field([
 			'id'              => 'hotel_star_rating',
 			'type'            => 'select',
 			'name'            => esc_html__( 'Star Rating', 'awebooking' ),
@@ -88,22 +106,6 @@ class Hotel_Information_Form extends Form_Builder {
 			'name'         => esc_html__( 'Phone number', 'awebooking' ),
 			'attributes'   => [ 'autocomplete' => 'tel' ],
 			'desc'         => esc_html__( 'The hotel telephone number.', 'awebooking' ),
-			'tooltip'      => true,
-		]);
-
-		$this->add_field([
-			'id'           => 'hotel_check_in',
-			'type'         => 'text_time',
-			'name'         => esc_html__( 'Check-in time', 'awebooking' ),
-			'desc'         => esc_html__( 'The hotel check-in time.', 'awebooking' ),
-			'tooltip'      => true,
-		]);
-
-		$this->add_field([
-			'id'           => 'hotel_check_out',
-			'type'         => 'text_time',
-			'name'         => esc_html__( 'Check-out time', 'awebooking' ),
-			'desc'         => esc_html__( 'The hotel check-out time.', 'awebooking' ),
 			'tooltip'      => true,
 		]);
 	}

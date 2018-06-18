@@ -27,7 +27,7 @@ if ( empty( $additionals->fields ) ) {
 		<h3 class="section-header__title"><?php esc_html_e( 'Additional information', 'awebooking' ); ?></h3>
 	</header>
 
-	<?php do_action( 'awebooking_before_additional_information' ); ?>
+	<?php do_action( 'abrs_before_additional_information' ); ?>
 
 	<div class="guest-additional-information-fields">
 		<?php foreach ( $additionals->fields as $field_args ) : ?>
@@ -37,5 +37,5 @@ if ( empty( $additionals->fields ) ) {
 		<?php endforeach; ?>
 	</div>
 
-	<?php do_action( 'awebooking_after_additional_information' ); ?>
+	<?php do_action( 'abrs_after_additional_information' ); ?>
 </div>

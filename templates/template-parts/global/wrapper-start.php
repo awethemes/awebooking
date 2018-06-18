@@ -1,8 +1,8 @@
 <?php
 /**
- * Content wrappers
+ * Content wrappers.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/global/wrapper-start.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/template-parts/global/wrapper-start.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -17,11 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $template = get_option( 'template' );
 
 switch ( $template ) {
-	case 'twentysixteen' :
+	case 'twentysixteen':
 		echo '<div id="primary" class="content-area twentysixteen"><main id="main" class="site-main" role="main">';
 		break;
-	default :
-		echo '<div id="container"><div id="content" role="main">';
+	default:
+		echo '<div id="awebooking-container"><div id="awebooking-main" role="main">';
 		break;
 }
-?>
