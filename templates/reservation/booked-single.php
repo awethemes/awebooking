@@ -14,20 +14,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+$room_stay = $room_stays->first();
+
+$room_type = $room_stay->model();
+$res_request = $room_stay->data->request;
+dump($room_stay);
 ?>
 
-
 <dl class="roomdetails-room">
-	<dt class="roomdetails-room__title">Room :</dt>
-	<dd class="roomdetails-room__text">2 x Single Bed in 4-Bed Room (Female only)</dd>
+	<dt class="roomdetails-room__title"><?php esc_html_e( 'Room', 'awebooking' ); ?></dt>
+	<dd class="roomdetails-room__text"><?php echo esc_html( $room_stay->get( 'name' ) ); ?></dd>
 
-	<dt class="roomdetails-room__title">Stay :</dt>
-	<dd class="roomdetails-room__text" class="occupancy-details">1 night, 2
-		rooms, 8 adults
+	<dt class="roomdetails-room__title"><?php esc_html_e( 'Stay', 'awebooking' ); ?></dt>
+	<dd class="roomdetails-room__text" class="occupancy-details">
+		<?php
+			/* translators: %1$s nights, %2$s guest */
+			printf( esc_html_x( '%1$s, %2$s', 'room stay', 'awebooking' ),
+				abrs_format_night_counts( $res_request['nights'] ),
+				abrs_format_guest_counts( $res_request->get_guest_counts() )
+			); // WPCS: xss ok.
+		?>
 	</dd>
 
-	<dt class="roomdetails-room__title">Max occupancy :</dt>
-	<dd class="roomdetails-room__text">8 adults</dd>
+	<dt class="roomdetails-room__title"><?php esc_html_e( 'Max occupancy', 'awebooking' ); ?></dt>
+	<dd class="roomdetails-room__text">
+		<?php
+			/* translators: %s max occupancy */
+			printf( esc_html_x( '%s people', 'max occupancy', 'awebooking' ), absint( $room_type->get( 'maximum_occupancy' ) ) );
+		?>
+	</dd>
 </dl>
 
 <div class="roomdetails-price">
@@ -36,13 +51,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<dd>700.814</dd>
 
 		<dt>VAT</dt>
-		<dd class="roomdetails-price-base__text roomdetails-price-vat">free</dd>
+		<dd class="roomdetails-price-base__text roomdetails-price-tax">free</dd>
 	</dl>
+</div>
 
+<div class="roomdetails-price">
 	<div class="roomdetails-price-footer">
 		<dl class="roomdetails-price-total">
-			<dt data-bind="text: roomDetails.roomText() + ' :'">Price</dt>
-			<dd data-bind="text: roomDetails.roomTypeListText">1.700.814</dd>
+			<dt>Price</dt>
+			<dd>1.700.814</dd>
 		</dl>
 
 		<p class="roomdetails-price-footer__info">

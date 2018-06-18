@@ -39,7 +39,12 @@ $check_out = abrs_date( $res_request['check_out'] );
 		</div>
 
 		<div class="reservation_details__from">
-			<span class="meta-time">from 14:00</span>
+			<span class="meta-time">
+				<?php
+					/* translators: %s check-in time */
+					printf( esc_html_x( 'from %s', 'check-in time', 'awebooking' ), esc_html( abrs_get_hotel_check_time( 0 ) ) );
+				?>
+			</span>
 		</div>
 	</div>
 
@@ -57,7 +62,12 @@ $check_out = abrs_date( $res_request['check_out'] );
 		</div>
 
 		<div class="reservation_details__from">
-			<span class="meta-time">to 14:00</span>
+			<span class="meta-time">
+				<?php
+					/* translators: %s check-out time */
+					printf( esc_html_x( 'from %s', 'check-out time', 'awebooking' ), esc_html( abrs_get_hotel_check_time( 0, 'hotel_check_out' ) ) );
+				?>
+			</span>
 		</div>
 	</div>
 </div>

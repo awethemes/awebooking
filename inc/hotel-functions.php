@@ -198,3 +198,16 @@ function abrs_get_room_view( $room_type ) {
 
 	return $room_type->get( 'view' );
 }
+
+/**
+ * Get hotel check time.
+ *
+ * @param  int    $hotel hotel ID
+ * @param  string $type  check time type
+ * @return string
+ */
+function abrs_get_hotel_check_time( $hotel, $type = 'hotel_check_in' ) {
+	$hotel = abrs_get_hotel( $hotel );
+
+	return $hotel->get( $type );
+}

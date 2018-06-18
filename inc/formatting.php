@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Component\Country\Formatter as Country_Formatter;
 
 /**
@@ -156,6 +157,62 @@ function abrs_format_price( $amount, $currency = null ) {
  */
 function abrs_price( $amount, $currency = null ) {
 	echo abrs_format_price( $amount, $currency ); // WPCS: XSS OK.
+}
+
+/**
+ * Return night counts formating.
+ *
+ * @param  int $nights nights.
+ * @return string
+ */
+function abrs_format_night_counts( $nights ) {
+	$html = sprintf(
+		'<span class="awebooking_nights">%1$d %2$s</span>',
+		esc_html( $nights ),
+		esc_html( _n( 'night', 'nights', $nights, 'awebooking' ) )
+	);
+
+	return apply_filters( 'abrs_format_night_counts', $html, $nights );
+}
+
+/**
+ * Return guest counts formating.
+ *
+ * @param  Guest_Counts|int $adults   adults
+ * @param  int              $children children
+ * @param  int              $infants  infants
+ * @return string
+ */
+function abrs_format_guest_counts( $adults, $children = 0, $infants = 0 ) {
+	$guest_counts = $adults;
+
+	if ( ! $adults instanceof Guest_Counts ) {
+		$guest_counts = new Guest_Counts( $adults, $children, $infants );
+	}
+
+	$html = sprintf(
+		'<span class="awebooking_guest__adults">%1$d %2$s</span>',
+		esc_html( $guest_counts->get_adults()->get_count() ),
+		esc_html( _n( 'adult', 'adults', $guest_counts->get_adults()->get_count(), 'awebooking' ) )
+	);
+
+	if ( $children = $guest_counts->get_children() ) {
+		$html .= sprintf(
+			' , <span class="awebooking_guest__children">%1$d %2$s</span>',
+			esc_html( $children->get_count() ),
+			esc_html( _n( 'child', 'children', $children->get_count(), 'awebooking' ) )
+		);
+	}
+
+	if ( $infants = $guest_counts->get_infants() ) {
+		$html .= sprintf(
+			' &amp; <span class="awebooking_guest__infants">%1$d %2$s</span>',
+			esc_html( $infants->get_count() ),
+			esc_html( _n( 'infant', 'infants', $infants->get_count(), 'awebooking' ) )
+		);
+	}
+
+	return apply_filters( 'abrs_format_guest_counts', $html, $guest_counts );
 }
 
 /**

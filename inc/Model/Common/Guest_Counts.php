@@ -208,28 +208,6 @@ class Guest_Counts implements \ArrayAccess, \JsonSerializable {
 	 * {@inheritdoc}
 	 */
 	public function as_string() {
-		$html = sprintf(
-			'<span class="awebooking_guest__adults">%1$d %2$s</span>',
-			esc_html( $this->get_adults()->get_count() ),
-			esc_html( _n( 'adult', 'adults', $this->get_adults()->get_count(), 'awebooking' ) )
-		);
-
-		if ( $children = $this->get_children() ) {
-			$html .= sprintf(
-				' , <span class="awebooking_guest__children">%1$d %2$s</span>',
-				esc_html( $children->get_count() ),
-				esc_html( _n( 'child', 'children', $children->get_count(), 'awebooking' ) )
-			);
-		}
-
-		if ( $infants = $this->get_infants() ) {
-			$html .= sprintf(
-				' &amp; <span class="awebooking_guest__infants">%1$d %2$s</span>',
-				esc_html( $infants->get_count() ),
-				esc_html( _n( 'infant', 'infants', $infants->get_count(), 'awebooking' ) )
-			);
-		}
-
-		return apply_filters( 'abrs_html_guest_counts', $html, $this );
+		return abrs_format_guest_counts( $this );
 	}
 }
