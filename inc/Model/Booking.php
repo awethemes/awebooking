@@ -556,6 +556,10 @@ class Booking extends Model {
 			case 'customer_note':
 				$value = abrs_sanitize_html( $value );
 				break;
+
+			case 'customer_id':
+				$value = absint( $value );
+				break;
 		}
 
 		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );

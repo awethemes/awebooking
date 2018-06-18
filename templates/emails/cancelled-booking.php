@@ -29,7 +29,7 @@ abrs_mailer()->header( $email );
  *
  * @param \AweBooking\Model\Booking  $booking The booking instance.
  * @param \AweBooking\Email\Mailable $email   The mailable instance.
- *ZZZZZZZZZZZZZZZZZZZZZZA
+ *
  * @hooked \AweBooking\Email\Mailer::template_hotel_address()
  * @hooked \AweBooking\Email\Mailer::template_customer_details()
  * @hooked \AweBooking\Email\Mailer::template_booking_details()

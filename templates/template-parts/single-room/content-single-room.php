@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-do_action( 'awebooking_print_notices' );
+do_action( 'abrs_print_notices' );
 
 if ( post_password_required() ) {
 	echo get_the_password_form(); // WPCS: XSS ok.
@@ -24,41 +24,14 @@ if ( post_password_required() ) {
 ?>
 
 <div id="room-<?php the_ID(); ?>" <?php post_class( 'room-type' ); ?>>
-	<div class="room-type__wrapper">
 
-		<div class="room-type__header">
-			<?php
-
-			?>
+	<div class="columns">
+		<div class="room-type__media column-8">
 		</div>
 
-		<div class="room-type__media">
-
-			<?php
-				/**
-				 * awebooking/before_single_room_type_summary hook.
-				 *
-				 * @hooked awebooking_show_room_type_images - 20
-				 */
-				do_action( 'awebooking/before_single_room_type_summary' );
-			?>
-		</div>
-
-		<div class="room-type__check-form summary">
-
-			<?php
-				/**
-				 * awebooking/single_room_type_summary hook.
-				 *
-				 * @hooked awebooking_template_single_title - 5
-				 * @hooked awebooking_template_single_price - 10
-				 * @hooked awebooking_template_single_form - 15
-				 */
-				do_action( 'awebooking/single_room_type_summary' );
-			?>
-
+		<div class="room-type__check-form column-4">
+			<?php the_title( '<h1 class="awebooking-room-type__title h2">', '</h1>' ); ?>
 		</div><!-- .summary -->
-
 	</div>
 
 	<div class="room-type__sections">

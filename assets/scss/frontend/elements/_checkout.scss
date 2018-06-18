@@ -44,3 +44,37 @@
     }
   }
 }
+
+/**
+   * Order page
+   */
+ul.booking_details {
+  @include clearfix();
+  padding: 0;
+  margin: 0 0 3em;
+  list-style: none;
+
+  li {
+    float: left;
+    margin-right: 2em;
+    text-transform: uppercase;
+    font-size: 0.715em;
+    line-height: 1;
+    border-right: 1px dashed darken( $secondary, 10% );
+    padding-right: 2em;
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+
+    strong {
+      display: block;
+      font-size: 1.4em;
+      text-transform: none;
+      line-height: 1.5;
+    }
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+}

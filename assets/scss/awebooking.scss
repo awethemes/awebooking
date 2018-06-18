@@ -3,7 +3,8 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
-.awebooking {
+.awebooking,
+.awebooking-page {
   @import "frontend/grid";
 }
 

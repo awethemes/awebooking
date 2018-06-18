@@ -1,3 +1,11 @@
+#awebooking-container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .awebooking .form-control {
   display: block;
   width: 100%;
@@ -810,6 +818,46 @@
   margin-bottom: 0;
 }
 
+/**
+   * Order page
+   */
+
+ul.booking_details {
+  padding: 0;
+  margin: 0 0 3em;
+  list-style: none;
+}
+
+ul.booking_details::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+ul.booking_details li {
+  float: left;
+  margin-right: 2em;
+  text-transform: uppercase;
+  font-size: 0.715em;
+  line-height: 1;
+  border-right: 1px dashed #545b62;
+  padding-right: 2em;
+  margin-left: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+ul.booking_details li strong {
+  display: block;
+  font-size: 1.4em;
+  text-transform: none;
+  line-height: 1.5;
+}
+
+ul.booking_details li:last-of-type {
+  border: none;
+}
+
 .reservation--summary {
   padding: 0;
   background-color: #fff;
@@ -983,9 +1031,28 @@ body {
   background-color: #f7f7f7 !important;
 }
 
-.site-content {
-  width: 1200px;
-  margin: 0 auto;
+@media (min-width: 576px) {
+  #awebooking-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  #awebooking-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  #awebooking-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #awebooking-container {
+    max-width: 1140px;
+  }
 }
 
 @media screen and (prefers-reduced-motion: reduce) {

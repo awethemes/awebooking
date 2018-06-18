@@ -59,6 +59,15 @@ class Payment_Item extends Item {
 	}
 
 	/**
+	 * Perform update attributes when update.
+	 *
+	 * @return void
+	 */
+	protected function updating() {
+		$this->attributes['name'] = $this->get_method_title();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup_attributes() {

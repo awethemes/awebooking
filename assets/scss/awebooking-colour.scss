@@ -8,6 +8,11 @@ $border-radius-sm:            0;
 @import "node_modules/bootstrap/scss/mixins";
 @import "utils/mixins";
 
+#awebooking-container {
+  @include make-container;
+  @include make-container-max-widths;
+}
+
 .awebooking {
   @import "frontend/elements/form";
   @import "frontend/elements/button";
@@ -24,8 +29,4 @@ $border-radius-sm:            0;
 // Temp code...
 body {
   background-color: #f7f7f7 !important;
-}
-.site-content {
-  width: 1200px;
-  margin: 0 auto;
 }

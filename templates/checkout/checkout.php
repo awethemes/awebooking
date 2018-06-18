@@ -16,23 +16,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<?php do_action( 'awebooking_print_notices' ); ?>
+<?php do_action( 'abrs_print_notices' ); ?>
 
 <div class="hotel-content">
 	<div class="hotel-content__main">
-		<?php do_action( 'awebooking_before_checkout_form' ); ?>
+		<?php do_action( 'abrs_before_checkout_form' ); ?>
 
 		<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
 			<?php wp_nonce_field( 'awebooking_checkout_process', '_wpnonce', true ); ?>
 
-			<?php do_action( 'awebooking_checkout_booking_details' ); ?>
+			<?php do_action( 'abrs_html_checkout_booking_details' ); ?>
 
-			<?php do_action( 'awebooking_checkout_guest_details' ); ?>
+			<?php do_action( 'abrs_html_checkout_guest_details' ); ?>
 
-			<?php do_action( 'awebooking_checkout_payments' ); ?>
+			<?php do_action( 'abrs_html_checkout_payments' ); ?>
 		</form>
 
-		<?php do_action( 'awebooking_after_checkout_form' ); ?>
+		<?php do_action( 'abrs_after_checkout_form' ); ?>
 	</div>
 
 	<aside class="hotel-content__aside">
