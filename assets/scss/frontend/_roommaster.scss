@@ -161,3 +161,59 @@
 		width: 100%;
 	}
 }
+
+.roommaster-detail {
+	border-top: 1px solid #bfbfbf;
+	padding: 20px 10px;
+}
+
+.roommaster-tab {
+	overflow: hidden;
+}
+
+.roommaster-tab__list {
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #bfbfbf;
+
+	li {
+		position: relative;
+		cursor: pointer;
+		display: inline-block;
+		padding: 10px 20px;
+
+		+ li {
+			margin-left: 20px;
+		}
+
+		&.active {
+			color: #5392F9
+		}
+	}
+}
+
+.roommaster-tab-list-divider {
+	position: absolute;
+	left: 0;
+	bottom: -1px;
+	height: 3px;
+	background-color: #5392F9;
+	transition: all .6s ease;
+}
+
+.roommaster-tab__container {
+	white-space: nowrap;
+	transition: all .6s ease;
+	box-sizing: border-box;
+	font-size: 0;
+
+	.tabs-main-content {
+		display: inline-block;
+	    vertical-align: top;
+	    font-size: 16px;
+	    width: 100%;
+	    white-space: normal;
+	}
+}
