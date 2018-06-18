@@ -90,5 +90,21 @@ class Hotel_Information_Form extends Form_Builder {
 			'desc'         => esc_html__( 'The hotel telephone number.', 'awebooking' ),
 			'tooltip'      => true,
 		]);
+
+		$this->add_field([
+			'id'           => 'hotel_check_in',
+			'type'         => 'text_time',
+			'name'         => esc_html__( 'Check-in time', 'awebooking' ),
+			'desc'         => esc_html__( 'The hotel check-in time.', 'awebooking' ),
+			'tooltip'      => true,
+		]);
+
+		$this->add_field([
+			'id'           => 'hotel_check_out',
+			'type'         => 'text_time',
+			'name'         => esc_html__( 'Check-out time', 'awebooking' ),
+			'desc'         => esc_html__( 'The hotel check-out time.', 'awebooking' ),
+			'tooltip'      => true,
+		]);
 	}
 }

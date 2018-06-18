@@ -229,6 +229,7 @@
 }
 
 .awebooking .button {
+  box-sizing: border-box;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -342,6 +343,12 @@
 .awebooking .button--secondary:not(:disabled):not(.disabled).active:focus,
 .show > .awebooking .button--secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(215, 215, 215, 0.5);
+}
+
+.awebooking .button--block-checkout {
+  display: block;
+  min-height: 42px;
+  line-height: 42px;
 }
 
 .notification p {
