@@ -265,7 +265,7 @@ function RangeDatesPlugin(config) {
         fp.config.ignoredFocusElements.push(firstInput);
         fp.config.ignoredFocusElements.push(secondInput);
 
-        dates.set(firstInput.value, secondInput.value);
+        // dates.set(firstInput.value, secondInput.value);
       },
       onOpen: function onOpen() {
         $([firstInput, secondInput]).removeClass('selected');
@@ -302,6 +302,7 @@ function RangeDatesPlugin(config) {
         }
 
         dates.update();
+        console.log(dates.dates);
         fp.setDate(fp.selectedDates, false);
       },
       onChange: function onChange() {

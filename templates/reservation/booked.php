@@ -21,6 +21,8 @@ $room_stays = abrs_reservation()->get_room_stays();
 
 	<?php else : ?>
 
+		<?php abrs_get_template( 'reservation/stay.php' ); ?>
+
 		<?php if ( 'single_room' === abrs_get_reservation_mode() ) : ?>
 			<?php abrs_get_template( 'reservation/booked-single.php', compact( 'room_stays' ) ); ?>
 		<?php else : ?>

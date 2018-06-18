@@ -27,7 +27,7 @@ if ( empty( $customer_controls->fields ) ) {
 		<h3 class="section-header__title"><?php esc_html_e( 'Guest details', 'awebooking' ); ?></h3>
 	</header>
 
-	<?php do_action( 'awebooking/before_guest_details' ); ?>
+	<?php do_action( 'abrs_before_guest_details' ); ?>
 
 	<div class="guest-details-fields">
 		<?php foreach ( $customer_controls->fields as $field_args ) : ?>
@@ -37,5 +37,5 @@ if ( empty( $customer_controls->fields ) ) {
 		<?php endforeach; ?>
 	</div>
 
-	<?php do_action( 'awebooking/after_guest_details' ); ?>
+	<?php do_action( 'abrs_after_guest_details' ); ?>
 </div>

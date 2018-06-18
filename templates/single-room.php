@@ -22,7 +22,7 @@ get_header( 'awebooking' ); ?>
 	 *
 	 * @hooked awebooking_output_content_wrapper - 10 (outputs opening divs for the content)
 	 */
-	do_action( 'awebooking_before_main_content' );
+	do_action( 'abrs_before_main_content' );
 
 	while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
 		abrs_get_template_part( 'template-parts/single-room/content', 'single-room' );
@@ -33,7 +33,7 @@ get_header( 'awebooking' ); ?>
 	 *
 	 * @hooked awebooking_output_content_wrapper_end - 10 (outputs closing divs for the content)
 	 */
-	do_action( 'awebooking/after_main_content' );
+	do_action( 'abrs_after_main_content' );
 	?>
 
 <?php get_footer( 'awebooking' ); // @codingStandardsIgnoreLine

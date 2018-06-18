@@ -10,45 +10,12 @@
  * @version  3.1.0
  */
 
-$room_stay = $room_stays->first();
-$room_type = $room_stay->model();
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
-$check_in  = abrs_date( $room_stay->get( 'check_in' ) );
-$check_out = abrs_date( $room_stay->get( 'check_out' ) );
+?>
 
-?><div class="reservation_details">
-	<div class="reservation_details___item tb-width-40">
-		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
-
-		<div class="reservation_details__info">
-			<span class="meta-day"><?php echo esc_html( $check_in->date_i18n( 'd' ) ); ?></span>
-			<span class="meta-day-week"><?php echo esc_html( $check_in->date_i18n( 'l' ) ); ?></span>
-			<span class="meta-month-year"><?php echo esc_html( $check_in->date_i18n( 'M Y' ) ); ?></span>
-		</div>
-
-		<div class="reservation_details__from">
-			<span class="meta-time">from 14:00</span>
-		</div>
-	</div>
-
-	<div class="reservation_details___item tb-width-20">
-		<i class="fa ficon ficon-edge-arcolumn-right ficon-20"></i>
-	</div>
-
-	<div class="reservation_details___item tb-width-40">
-		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-out', 'awebooking' ); ?></span>
-
-		<div class="reservation_details__info">
-			<span class="meta-day"><?php echo esc_html( $check_out->date_i18n( 'd' ) ); ?></span>
-			<span class="meta-day-week"><?php echo esc_html( $check_out->date_i18n( 'l' ) ); ?></span>
-			<span class="meta-month-year"><?php echo esc_html( $check_out->date_i18n( 'M Y' ) ); ?></span>
-		</div>
-
-		<div class="reservation_details__from">
-			<span class="meta-time">to 14:00</span>
-		</div>
-	</div>
-</div>
 
 <dl class="roomdetails-room">
 	<dt class="roomdetails-room__title">Room :</dt>

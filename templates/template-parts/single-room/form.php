@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $page_id = get_the_ID();
 
-$form_classes = apply_filters( 'awebooking/check_availability_form_classes', array(
+$form_classes = apply_filters( 'abrs_check_availability_form_classes', array(
 	'awebooking-check-form',
 	'awebooking-check-form--vertical',
 	awebooking( 'setting' )->is_children_bookable() ? 'has-children' : '',

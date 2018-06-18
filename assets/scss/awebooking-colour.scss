@@ -9,7 +9,6 @@ $border-radius-sm:            0;
 @import "utils/mixins";
 
 .awebooking {
-  @import "frontend/grid";
   @import "frontend/elements/form";
   @import "frontend/elements/button";
 }

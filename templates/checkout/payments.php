@@ -33,11 +33,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div id="submit_booking" class="checkout__section checkout__section--submit">
 	<?php
-	do_action( 'awebooking/before_submit_button' );
+	do_action( 'abrs_before_submit_button' );
 
-	echo apply_filters( 'awebooking/booking_button_html', '<button type="submit" class="button" name="awebooking_submit">' . esc_html( $button_text ) . '</button>' ); // @codingStandardsIgnoreLine
+	echo apply_filters( 'abrs_booking_button_html', '<button type="submit" class="button" name="awebooking_submit">' . esc_html( $button_text ) . '</button>' ); // @codingStandardsIgnoreLine
 
-	do_action( 'awebooking/after_submit_button' );
+	do_action( 'abrs_after_submit_button' );
 	?>
 </div>
 

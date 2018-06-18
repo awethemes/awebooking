@@ -1,7 +1,10 @@
 @import "utils/mixins";
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
 
-.clearfix {
-  @include clearfix;
+.awebooking {
+  @import "frontend/grid";
 }
 
 /* Inline datepicker */
