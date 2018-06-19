@@ -31,7 +31,7 @@ $rate_plan = $room_rate->get_rate_plan();
 			<div class="columns no-gutters">
 				<div class="column-3">
 					<div class="roommaster-info">
-						<div class="roommaster-info__title">Loại phòng</div>
+						<div class="roommaster-info__title"><?php esc_html_e( 'Room type', 'awebooking' ); ?></div>
 						<div class="roommaster-info__image">
 							<?php
 								if ( has_post_thumbnail( $room_type->get_id() ) ) {
@@ -39,47 +39,65 @@ $rate_plan = $room_rate->get_rate_plan();
 								}
 							?>
 						</div>
+
 						<ul class="roommaster-info__list">
-							<li class="info-item">
-								<span class="info-icon">
-									<i class="afc afc-building-alt"></i>
-								</span>
-								Hướng phòng: Đường phố
-							</li>
-							<li class="info-item">
-								<span class="info-icon">
-									<i class="afc afc-elevator"></i>
-								</span>
-								35 m²/377 ft²
-							</li>
-							<li class="info-item">
-								<span class="info-icon">
-									<i class="afc afc-shower"></i>
-								</span>
-								vòi hoa sen
-							</li>
-							<li class="info-item">
-								<span class="info-icon">
-									<i class="afc afc-bed"></i>
-								</span>
-								3 giường đôi
-							</li>
+							<?php if ( $room_type->get( 'view' ) ) : ?>
+								<li class="info-item">
+									<span class="info-icon">
+										<i class="afc afc-building-alt"></i>
+										<span class="screen-reader-text"><?php echo esc_html_x( 'Room view', 'room view button', 'awebooking' ); ?></span>
+									</span>
+									<?php echo esc_html( $room_type->get( 'view' ) ); ?>
+								</li>
+							<?php endif; ?>
+
+							<?php if ( $room_type->get( 'area_size' ) ) : ?>
+								<li class="info-item">
+									<span class="info-icon">
+										<i class="afc afc-elevator"></i>
+										<span class="screen-reader-text"><?php echo esc_html_x( 'Area size', 'area size button', 'awebooking' ); ?></span>
+									</span>
+									<?php
+										/* translators: %1$s area size, %2$s measure unit */
+										printf( esc_html_x( '%1$s %2$s', 'room area size', 'awebooking' ),
+											esc_html( $room_type->get( 'area_size' ) ),
+											abrs_format_measure_unit_label()
+										); // WPCS: xss ok.
+									?>
+								</li>
+							<?php endif; ?>
+
+							<?php if ( $room_type->get( 'beds' ) ) : ?>
+								<li class="info-item">
+									<span class="info-icon">
+										<i class="afc afc-bed"></i>
+										<span class="screen-reader-text"><?php echo esc_html_x( 'Bed', 'bed button', 'awebooking' ); ?></span>
+									</span>
+									<?php print abrs_get_room_beds( $room_type ); // WPCS: xss ok. ?>
+								</li>
+							<?php endif; ?>
+
+							<?php do_action( 'awebooking/result_item/after_room_informations' ); ?>
 						</ul>
 					</div>
 				</div>
+
 				<div class="column-9">
 					<div class="roommaster-list">
 						<table class="roommaster-table">
 							<thead>
 								<tr>
 									<th class="thead-1">Lựa chọn</th>
-									<th class="thead-2">Sức chứa</th>
-									<th class="thead-3">Giá phòng/đêm</th>
-									<th class="thead-4">SL</th>
+									<th class="thead-2"><?php esc_html_e( 'Occupancy', 'awebooking' ); ?></th>
+									<th class="thead-3"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
+									<!-- <th class="thead-4">SL</th> -->
 									<th class="thead-5">Đặt nhiều nhất</th>
 								</tr>
 							</thead>
 							<tbody>
+
+
+								<?php //foreach ($variable as $key => $value) : ?>
 								<tr>
 									<td class="roommaster-child">
 										<div class="roommaster-child__item">
@@ -133,14 +151,14 @@ $rate_plan = $room_rate->get_rate_plan();
 										}
 										?>
 									</td>
-									<td class="roommaster-select">
+<!-- 									<td class="roommaster-select">
 										<select name="" id="" class="select-form">
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
 											<option value="4">4</option>
 										</select>
-									</td>
+									</td> -->
 									<td class="roommaster-button">
 										<?php if ( ! $room_rate->has_error() ) : ?>
 											<?php
@@ -169,95 +187,8 @@ $rate_plan = $room_rate->get_rate_plan();
 										</span>
 									</td>
 								</tr>
-								<tr>
-									<td class="roommaster-child">
-										<div class="roommaster-child__item">
-											<span class="roommaster-child__bucketspan">Lợi ích</span>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span class="info-text">Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
-											</div>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span>Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
-											</div>
-										</div>
-										<div class="roommaster-child__item">
-											<span class="roommaster-child__bucketspan">Giảm giá</span>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span>Coupon giảm giá: 73.202 ₫</span>
-											</div>
-										</div>
-									</td>
-									<td class="roommaster-occupancy">
-										<span class="roommaster-occupancy__item">
-											<span>6</span>
-											x
-											<i class="afc afc-male"></i>
-										</span>
+								<?php //endforeach; ?>
 
-										<span class="roommaster-occupancy__item">
-											<span>3</span>
-											x
-											<i class="afc afc-child"></i>
-										</span>
-									</td>
-									<td  class="roommaster-inventory">
-										<?php
-										switch ( abrs_get_option( 'display_price', 'total' ) ) {
-											case 'total':
-												abrs_price( $room_rate->get_rate() );
-												echo sprintf( 'Cost for %s nights', $room_rate->timespan->nights() );
-												break;
-
-											case 'first_night':
-												break;
-										}
-										?>
-									</td>
-									<td class="roommaster-select">
-										<select name="" id="" class="select-form">
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
-									</td>
-									<td class="roommaster-button">
-										<?php if ( ! $room_rate->has_error() ) : ?>
-											<?php
-											abrs_bookroom_button([
-												'room_type'   => $room_type->get_id(),
-												'show_button' => true,
-												'button_atts' => [
-													'class' => 'booknow button is-primary',
-												],
-											]);
-											?>
-										<?php endif ?>
-
-										<span class="abroom__remaining-rooms">
-											<?php
-											$rooms_left = $remain_rooms->count();
-
-											if ( $rooms_left <= 2 ) {
-												/* translators: %s Number of remain rooms */
-												printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
-											} else {
-												/* translators: %s Number of remain rooms */
-												printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
-											}
-											?>
-										</span>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>

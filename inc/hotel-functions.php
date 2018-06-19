@@ -184,22 +184,6 @@ function abrs_get_room_beds( $room_type, $separator = ', ' ) {
 }
 
 /**
- * Get room view.
- *
- * @param  int $room_type room type
- * @return string
- */
-function abrs_get_room_view( $room_type ) {
-	$room_type = abrs_get_room_type( $room_type );
-
-	if ( ! $room_type ) {
-		return;
-	}
-
-	return $room_type->get( 'view' );
-}
-
-/**
  * Get hotel check time.
  *
  * @param  int    $hotel hotel ID
