@@ -2,11 +2,11 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?1ebc13a1683f9124766adb5b08f102f9?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?1ebc13a1683f9124766adb5b08f102f9") format("woff2"),
-url("awebooking-webfont.woff?1ebc13a1683f9124766adb5b08f102f9") format("woff"),
-url("awebooking-webfont.ttf?1ebc13a1683f9124766adb5b08f102f9") format("truetype"),
-url("awebooking-webfont.svg?1ebc13a1683f9124766adb5b08f102f9#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?58fd124447417a386ae62cf976e7acb0?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?58fd124447417a386ae62cf976e7acb0") format("woff2"),
+url("awebooking-webfont.woff?58fd124447417a386ae62cf976e7acb0") format("woff"),
+url("awebooking-webfont.ttf?58fd124447417a386ae62cf976e7acb0") format("truetype"),
+url("awebooking-webfont.svg?58fd124447417a386ae62cf976e7acb0#awebooking-webfont") format("svg");
 }
 
 .afc {
@@ -151,4 +151,10 @@ url("awebooking-webfont.svg?1ebc13a1683f9124766adb5b08f102f9#awebooking-webfont"
 }
 .afc-warehouse:before {
 	content: "\e02c";
+}
+.afc-chevron-left:before {
+	content: "\e02d";
+}
+.afc-chevron-right:before {
+	content: "\e02e";
 }

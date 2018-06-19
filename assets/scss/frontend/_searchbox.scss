@@ -24,9 +24,8 @@
   height: 100%;
   padding: 10px;
   cursor: pointer;
-  perspective: 500px;
-
   border-right: 1px solid #eee;
+  perspective: 500px;
 }
 
 .searchbox__popup {
@@ -42,6 +41,7 @@
   transform-origin: 50% 0;
   visibility: hidden;
   opacity: 0;
+  box-shadow: 0 0 10px rgba(#000, .2);
   transition: all .3s ease;
 
   &.searchbox__popup--active {
@@ -54,9 +54,37 @@
 /* Horizontal layout */
 .searchbox--horizontal {
   // padding: 13px;
-
+  
   .searchbox__wrapper {
-    flex-direction: row;
+    flex-direction: column;
+  }
+
+  @include media-breakpoint-up('md') {
+    .searchbox__wrapper {
+      flex-direction: row;
+    }
+    
+    .searchbox__wrapper-4 {
+      .searchbox__box--button {
+        flex-grow: 1;
+      }
+      
+      .searchbox__box--occupancy {
+        width: 30%;
+      }
+
+      .searchbox__box--datepicker {
+        width: 55%;
+      }
+    }
+  }
+
+  @include media-breakpoint-down('md') {
+    .searchbox__box {
+      + .searchbox__box {
+        border-top: 1px solid #eee;
+      }
+    }
   }
 }
 
@@ -64,21 +92,13 @@
   .searchbox__wrapper {
     flex-direction: column;
   }
-}
 
-
-.searchbox__wrapper-4 {
-
-  .searchbox__box--button {
-    width: 20%;
-  }
-  
-  .searchbox__box--occupancy {
-    width: 30%;
+  .searchbox__box {
+    margin-bottom: 20px;
   }
 
-  .searchbox__box--datepicker {
-    width: 55%;
+  .searchbox__submit {
+    padding: 1rem;
   }
 }
 
@@ -99,10 +119,6 @@
     display: block;
     font-weight: bold;
     border: 0;
-
-    &:focus {
-      outline: none;
-    }
   }
 }
 
@@ -114,24 +130,34 @@
 }
 
 .searchbox-spinner {
-  display: block;
+  display: flex;
+  justify-content: center;
   position: relative;
   padding: 0 40px;
-  text-align: center;
   height: 40px;
   line-height: 40px;
 }
 
-.searchbox-spinner__output {
+.searchbox-spinner__input {
+  border: 0 !important;
   font-weight: bold;
+  width: auto;
+  text-align: right;
+  max-width: 30px;
+  color: #000 !important;
+
+  &:focus {
+    outline: none;
+  }
 }
 
-.searchbox-spinner__input {
-  display: none; 
+.searchbox-spinner__title {
+  margin-left: 3px;
 }
 
 .searchbox-spinner__decrement,
 .searchbox-spinner__increment {
+  display: inline-block;
   position: absolute;
   top: 50%;
   width: 25px;
@@ -181,4 +207,19 @@
 
 .searchbox-datepicker__input {
   display: none;
+}
+
+.searchbox__box-icon,
+.searchbox__box-child {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.searchbox__box-icon {
+  font-size: 16px;
+  padding-right: 20px;
+}
+
+.searchbox__box-child {
+  width: calc(100% - 70px);
 }
