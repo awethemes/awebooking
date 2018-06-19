@@ -1,4 +1,4 @@
-.form-control {
+.form-input {
   display: block;
   width: 100%;
   padding: $input-padding-y $input-padding-x;
@@ -63,6 +63,17 @@ select.form-control {
     // See https://github.com/twbs/bootstrap/issues/19398.
     color: $input-color;
     background-color: $input-bg;
+  }
+}
+
+.form-input-transparent {
+  width: 100%;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+
+  &:focus {
+    outline: none;
   }
 }
 

@@ -65,6 +65,19 @@ class General_Setting extends Abstract_Setting {
 			]),
 		]);
 
+		$this->add_field([
+			'id'       => 'measure_unit',
+			'type'     => 'select',
+			'section'  => 'general',
+			'name'     => esc_html__( 'Measurement Unit', 'awebooking' ),
+			'default'          => 'm2',
+			'classes'          => 'with-selectize',
+			'options'  => apply_filters( 'abrs_measure_units', [
+				'm2'   => esc_html__( 'Square Meters', 'awebooking' ),
+				'ft2'  => esc_html__( 'Square Feet', 'awebooking' ),
+			]),
+		]);
+
 		// Pages settings.
 		$all_pages_cb = WP_Data::cb( 'pages', [ 'post_status' => 'publish' ] );
 

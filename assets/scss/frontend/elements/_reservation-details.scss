@@ -13,14 +13,14 @@ $background: #F9F9FA;
 }
 
 .reservation_details {
-  width: 100%;
-  display: table;
+  display: flex;
+	justify-content: space-between;
+  align-items: center;
 	margin-bottom: 20px;
+
 }
 
 .reservation_details___item {
-	display: table-cell;
-
 	&.tb-width-40 {
 		width: 40%;
 	}
@@ -166,4 +166,9 @@ $background: #F9F9FA;
 	border-top: 1px dotted $border;
 	margin: 10px 0 0;
 	padding-top: 5px;
+}
+
+
+.reservation_details__icon {
+	font-size: 20px;
 }

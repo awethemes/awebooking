@@ -6,7 +6,7 @@
   margin-left: auto;
 }
 
-.awebooking .form-control {
+.awebooking .form-input {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -20,12 +20,12 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.awebooking .form-control::-ms-expand {
+.awebooking .form-input::-ms-expand {
   background-color: transparent;
   border: 0;
 }
 
-.awebooking .form-control:focus {
+.awebooking .form-input:focus {
   color: #495057;
   background-color: #fff;
   border-color: #cee0fd;
@@ -33,28 +33,28 @@
   box-shadow: 0 0 0 0.2rem rgba(83, 146, 249, 0.25);
 }
 
-.awebooking .form-control::-webkit-input-placeholder {
+.awebooking .form-input::-webkit-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.awebooking .form-control:-ms-input-placeholder {
+.awebooking .form-input:-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.awebooking .form-control::-ms-input-placeholder {
+.awebooking .form-input::-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.awebooking .form-control::placeholder {
+.awebooking .form-input::placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.awebooking .form-control:disabled,
-.awebooking .form-control[readonly] {
+.awebooking .form-input:disabled,
+.awebooking .form-input[readonly] {
   background-color: #e9ecef;
   opacity: 1;
 }
@@ -66,6 +66,17 @@
 .awebooking select.form-control:focus::-ms-value {
   color: #495057;
   background-color: #fff;
+}
+
+.awebooking .form-input-transparent {
+  width: 100%;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.awebooking .form-input-transparent:focus {
+  outline: none;
 }
 
 .awebooking select.form-select {
@@ -598,9 +609,9 @@
   height: 100%;
   padding: 10px;
   cursor: pointer;
+  border-right: 1px solid #eee;
   -webkit-perspective: 500px;
   perspective: 500px;
-  border-right: 1px solid #eee;
 }
 
 .searchbox__popup {
@@ -618,6 +629,7 @@
   transform-origin: 50% 0;
   visibility: hidden;
   opacity: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: all .3s ease;
 }
 
@@ -631,23 +643,19 @@
 /* Horizontal layout */
 
 .searchbox--horizontal .searchbox__wrapper {
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .searchbox--vertical .searchbox__wrapper {
   flex-direction: column;
 }
 
-.searchbox__wrapper-4 .searchbox__box--button {
-  width: 20%;
+.searchbox--vertical .searchbox__box {
+  margin-bottom: 20px;
 }
 
-.searchbox__wrapper-4 .searchbox__box--occupancy {
-  width: 30%;
-}
-
-.searchbox__wrapper-4 .searchbox__box--datepicker {
-  width: 55%;
+.searchbox--vertical .searchbox__submit {
+  padding: 1rem;
 }
 
 .searchbox__box--datepicker .searchbox__box-content {
@@ -666,11 +674,6 @@
   border: 0;
 }
 
-.searchbox__box--checkin .hotel-input:focus,
-.searchbox__box--checkout .hotel-input:focus {
-  outline: none;
-}
-
 .searchbox__submit {
   width: 100%;
   height: 100%;
@@ -679,24 +682,34 @@
 }
 
 .searchbox-spinner {
-  display: block;
+  display: flex;
+  justify-content: center;
   position: relative;
   padding: 0 40px;
-  text-align: center;
   height: 40px;
   line-height: 40px;
 }
 
-.searchbox-spinner__output {
+.searchbox-spinner__input {
+  border: 0 !important;
   font-weight: bold;
+  width: auto;
+  text-align: right;
+  max-width: 30px;
+  color: #000 !important;
 }
 
-.searchbox-spinner__input {
-  display: none;
+.searchbox-spinner__input:focus {
+  outline: none;
+}
+
+.searchbox-spinner__title {
+  margin-left: 3px;
 }
 
 .searchbox-spinner__decrement,
 .searchbox-spinner__increment {
+  display: inline-block;
   position: absolute;
   top: 50%;
   width: 25px;
@@ -742,6 +755,21 @@
 
 .searchbox-datepicker__input {
   display: none;
+}
+
+.searchbox__box-icon,
+.searchbox__box-child {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.searchbox__box-icon {
+  font-size: 16px;
+  padding-right: 20px;
+}
+
+.searchbox__box-child {
+  width: calc(100% - 70px);
 }
 
 .hotel-content {
@@ -913,6 +941,11 @@
   width: 100%;
   height: 40px;
   text-align-last: center;
+  background-color: transparent;
+}
+
+.roommaster-select .select-form:focus {
+  outline: none;
 }
 
 .roommaster-button .button {
@@ -924,11 +957,11 @@
   padding: 20px 10px;
 }
 
-.roommaster-tab {
+.tabs-main {
   overflow: hidden;
 }
 
-.roommaster-tab__list {
+.tabs-main-list {
   position: relative;
   list-style: none;
   margin: 0;
@@ -936,22 +969,22 @@
   border-bottom: 1px solid #bfbfbf;
 }
 
-.roommaster-tab__list li {
+.tabs-main-list li {
   position: relative;
   cursor: pointer;
   display: inline-block;
   padding: 10px 20px;
 }
 
-.roommaster-tab__list li + li {
+.tabs-main-list li + li {
   margin-left: 20px;
 }
 
-.roommaster-tab__list li.active {
+.tabs-main-list li.active {
   color: #5392F9;
 }
 
-.roommaster-tab-list-divider {
+.tabs-active-divider {
   position: absolute;
   left: 0;
   bottom: -1px;
@@ -960,14 +993,14 @@
   transition: all .6s ease;
 }
 
-.roommaster-tab__container {
+.tabs-main-container {
   white-space: nowrap;
   transition: all .6s ease;
   box-sizing: border-box;
   font-size: 0;
 }
 
-.roommaster-tab__container .tabs-main-content {
+.tabs-main-container .tabs-main-content {
   display: inline-block;
   vertical-align: top;
   font-size: 16px;
@@ -1076,13 +1109,10 @@ ul.booking_details li:last-of-type {
 }
 
 .reservation_details {
-  width: 100%;
-  display: table;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
-}
-
-.reservation_details___item {
-  display: table-cell;
 }
 
 .reservation_details___item.tb-width-40 {
@@ -1233,6 +1263,10 @@ ul.booking_details li:last-of-type {
   padding-top: 5px;
 }
 
+.reservation_details__icon {
+  font-size: 20px;
+}
+
 .site-content {
   width: 1200px;
   margin: auto;
@@ -1248,6 +1282,22 @@ ul.booking_details li:last-of-type {
   #awebooking-container {
     max-width: 720px;
   }
+
+  .searchbox--horizontal .searchbox__wrapper {
+    flex-direction: row;
+  }
+
+  .searchbox--horizontal .searchbox__wrapper-4 .searchbox__box--button {
+    flex-grow: 1;
+  }
+
+  .searchbox--horizontal .searchbox__wrapper-4 .searchbox__box--occupancy {
+    width: 30%;
+  }
+
+  .searchbox--horizontal .searchbox__wrapper-4 .searchbox__box--datepicker {
+    width: 55%;
+  }
 }
 
 @media (min-width: 992px) {
@@ -1262,8 +1312,14 @@ ul.booking_details li:last-of-type {
   }
 }
 
+@media (max-width: 991.98px) {
+  .searchbox--horizontal .searchbox__box + .searchbox__box {
+    border-top: 1px solid #eee;
+  }
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
-  .awebooking .form-control {
+  .awebooking .form-input {
     transition: none;
   }
 

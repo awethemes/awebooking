@@ -216,6 +216,29 @@ function abrs_format_guest_counts( $adults, $children = 0, $infants = 0 ) {
 }
 
 /**
+ * Return measure unit label formating.
+ *
+ * @return string
+ */
+function abrs_format_measure_unit_label() {
+	$measure_unit = abrs_get_option( 'measure_unit', 'm2' );
+
+	switch ( $measure_unit ) {
+		case 'm2':
+			$format = 'm<sup>2</sup>';
+			break;
+		case 'ft2':
+			$format = 'ft<sup>2</sup>';
+			break;
+		default:
+			$format = 'm<sup>2</sup>';
+			break;
+	}
+
+	return apply_filters( 'abrs_format_measure_unit_label', $format, $measure_unit );
+}
+
+/**
  * Escaping for text with few html allowed.
  *
  * @param  string $text Input text.

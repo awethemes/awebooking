@@ -18,7 +18,6 @@ $room_stay = $room_stays->first();
 
 $room_type = $room_stay->model();
 $res_request = $room_stay->data->request;
-dump($room_stay);
 ?>
 
 <dl class="roomdetails-room">
