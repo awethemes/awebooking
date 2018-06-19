@@ -28,6 +28,7 @@ $border-radius-sm:            0;
 @import "frontend/elements/reservation-details";
 
 // Temp code...
-body {
-  background-color: #f7f7f7 !important;
+.site-content {
+  width: 1200px;
+  margin: auto;
 }

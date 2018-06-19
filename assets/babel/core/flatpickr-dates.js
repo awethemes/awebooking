@@ -164,16 +164,15 @@ function RangeDatesPlugin(config) {
         }
 
         dates.update();
-        console.log(dates.dates);
         fp.setDate(fp.selectedDates, false);
       },
 
       onChange() {
-        if (_firstInputFocused) {
-          // setTimeout(() => { secondInput.focus(); }, 0);
-        } else if (_secondInputFocused && fp.selectedDates.length === 2) {
-          setTimeout(fp.close, 0);
-        }
+        // if (_firstInputFocused) {
+        //   setTimeout(() => { $(secondInput).trigger('focus'); }, 0);
+        // } else if (_secondInputFocused && fp.selectedDates.length === 2) {
+        //   setTimeout(fp.close, 0);
+        // }
       },
 
     };

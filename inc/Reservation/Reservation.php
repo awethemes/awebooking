@@ -9,6 +9,34 @@ use AweBooking\Support\Collection;
 
 class Reservation {
 	/**
+	 * The reservation hotel ID.
+	 *
+	 * @var int
+	 */
+	public $hotel_id;
+
+	/**
+	 * The reservation source.
+	 *
+	 * @var string
+	 */
+	public $source;
+
+	/**
+	 * ISO currency code.
+	 *
+	 * @var string
+	 */
+	public $currency;
+
+	/**
+	 * ISO language code.
+	 *
+	 * @var string
+	 */
+	public $language;
+
+	/**
 	 * The store instance.
 	 *
 	 * @var \AweBooking\Reservation\Storage\Store
@@ -44,27 +72,6 @@ class Reservation {
 	protected $services;
 
 	/**
-	 * The reservation source.
-	 *
-	 * @var string
-	 */
-	public $source;
-
-	/**
-	 * ISO currency code.
-	 *
-	 * @var string
-	 */
-	public $currency;
-
-	/**
-	 * ISO language code.
-	 *
-	 * @var string
-	 */
-	public $language;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Reservation\Storage\Store $store The store instance.
@@ -87,7 +94,7 @@ class Reservation {
 
 		add_action( 'wp_loaded', [ $this, 'restore_request' ], 10 );
 		add_action( 'wp_loaded', [ $this, 'restore' ], 20 );
-		add_action( 'abrs_search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
+		add_filter( 'abrs_search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
 
 		do_action( 'abrs_reservation_init', $this );
 	}

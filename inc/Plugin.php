@@ -206,7 +206,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_bootstrapping', $this );
+		do_action( 'awebooking_bootstrapping', $this );
 
 		// Run bootstrap classes.
 		array_walk( $this->bootstrappers, function( $bootstrapper ) {
@@ -218,7 +218,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_bootstrapped', $this );
+		do_action( 'awebooking_bootstrapped', $this );
 
 		// Build the providers.
 		$providers = $this->service_providers['core'];
@@ -240,7 +240,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_init', $this );
+		do_action( 'awebooking_init', $this );
 
 		// Loop each provider then register them.
 		foreach ( $providers as $provider ) {
@@ -258,7 +258,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_after_init', $this );
+		do_action( 'awebooking_after_init', $this );
 	}
 
 	/**
@@ -286,7 +286,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_booting', $this );
+		do_action( 'awebooking_booting', $this );
 
 		// Perform boot the loaded providers.
 		array_walk( $this->loaded_providers, function( $provider ) {
@@ -301,7 +301,7 @@ final class Plugin extends Container {
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'abrs_booted', $this );
+		do_action( 'awebooking_booted', $this );
 	}
 
 	/**
@@ -377,7 +377,7 @@ final class Plugin extends Container {
 	 */
 	public function set_option_key( $key_name ) {
 		// Option name can't be set after plugin booting.
-		if ( did_action( 'abrs_booting' ) ) {
+		if ( did_action( 'awebooking_booting' ) ) {
 			return false;
 		}
 
