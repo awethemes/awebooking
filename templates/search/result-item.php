@@ -46,25 +46,25 @@ $rate_plan = $room_rate->get_rate_plan();
 						<ul class="roommaster-info__list">
 							<li class="info-item">
 								<span class="info-icon">
-									<i>K</i>
+									<i class="afc afc-building-alt"></i>
 								</span>
 								Hướng phòng: Đường phố
 							</li>
 							<li class="info-item">
 								<span class="info-icon">
-									<i>K</i>
+									<i class="afc afc-elevator"></i>
 								</span>
 								35 m²/377 ft²
 							</li>
 							<li class="info-item">
 								<span class="info-icon">
-									<i>K</i>
+									<i class="afc afc-shower"></i>
 								</span>
 								vòi hoa sen
 							</li>
 							<li class="info-item">
 								<span class="info-icon">
-									<i>K</i>
+									<i class="afc afc-bed"></i>
 								</span>
 								3 giường đôi
 							</li>
@@ -89,18 +89,24 @@ $rate_plan = $room_rate->get_rate_plan();
 										<div class="roommaster-child__item">
 											<span class="roommaster-child__bucketspan">Lợi ích</span>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span class="info-text">Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
 											</div>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span>Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
 											</div>
 										</div>
 										<div class="roommaster-child__item">
 											<span class="roommaster-child__bucketspan">Giảm giá</span>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span>Coupon giảm giá: 73.202 ₫</span>
 											</div>
 										</div>
@@ -109,13 +115,13 @@ $rate_plan = $room_rate->get_rate_plan();
 										<span class="roommaster-occupancy__item">
 											<span>6</span>
 											x
-											<i>K</i>
+											<i class="afc afc-male"></i>
 										</span>
 
 										<span class="roommaster-occupancy__item">
 											<span>3</span>
 											x
-											<i>K</i>
+											<i class="afc afc-child"></i>
 										</span>
 									</td>
 									<td  class="roommaster-inventory">
@@ -172,18 +178,24 @@ $rate_plan = $room_rate->get_rate_plan();
 										<div class="roommaster-child__item">
 											<span class="roommaster-child__bucketspan">Lợi ích</span>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span class="info-text">Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
 											</div>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span>Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
 											</div>
 										</div>
 										<div class="roommaster-child__item">
 											<span class="roommaster-child__bucketspan">Giảm giá</span>
 											<div class="roommaster-child__info">
-												<i class="info-icon">K</i>
+												<span class="info-icon">
+													<i class="afc afc-dogs-not-permitted"></i>
+												</span>
 												<span>Coupon giảm giá: 73.202 ₫</span>
 											</div>
 										</div>
@@ -192,13 +204,13 @@ $rate_plan = $room_rate->get_rate_plan();
 										<span class="roommaster-occupancy__item">
 											<span>6</span>
 											x
-											<i>K</i>
+											<i class="afc afc-male"></i>
 										</span>
 
 										<span class="roommaster-occupancy__item">
 											<span>3</span>
 											x
-											<i>K</i>
+											<i class="afc afc-child"></i>
 										</span>
 									</td>
 									<td  class="roommaster-inventory">
@@ -279,7 +291,7 @@ $rate_plan = $room_rate->get_rate_plan();
 							<li rel="tab4">
 								Tab 4
 							</li>
-							<div class="roommaster-tab-list-divider"></div>
+							<div class="tabs-active-divider"></div>
 						</ul>
 						<div class="roommaster-tab__container tabs-main-container">
 							<div id="tab1" class="tabs-main-content">
@@ -401,12 +413,12 @@ $rate_plan = $room_rate->get_rate_plan();
 
 <script>
 	(function($) {
-		$('.roommaster-tab').each(function() {
+		$('.tabs-main').each(function() {
 			var self= $(this),
 				container = $('.tabs-main-container', self),
 				list = $('.tabs-main-list', self),
 				content = $('.tabs-main-content', self),
-				divider = $('.roommaster-tab-list-divider', self);
+				divider = $('.tabs-active-divider', self);
 				offsetThis = self.offset().left;
 
 			list.find('li').click(function() {

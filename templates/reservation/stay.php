@@ -49,7 +49,9 @@ $check_out = abrs_date( $res_request['check_out'] );
 	</div>
 
 	<div class="reservation_details___item tb-width-20">
-		<i class="fa ficon ficon-edge-arcolumn-right ficon-20"></i>
+		<div class="reservation_details__icon">
+			<i class="afc afc-chevron-right"></i>
+		</div>
 	</div>
 
 	<div class="reservation_details___item tb-width-40">

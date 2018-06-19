@@ -1,5 +1,5 @@
 {
-  "lastCodepoint": 57388,
+  "lastCodepoint": 57390,
   "icons": {
     "bed": 57345,
     "building-alt": 57346,
@@ -44,6 +44,8 @@
     "train": 57385,
     "truck": 57386,
     "umbrella": 57387,
-    "warehouse": 57388
+    "warehouse": 57388,
+    "chevron-left": 57389,
+    "chevron-right": 57390
   }
 }
