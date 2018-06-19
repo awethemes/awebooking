@@ -33,15 +33,11 @@ $rate_plan = $room_rate->get_rate_plan();
 					<div class="roommaster-info">
 						<div class="roommaster-info__title">Loại phòng</div>
 						<div class="roommaster-info__image">
-							<a href="#">
-								<?php
-									if ( has_post_thumbnail( $room_type->get_id() ) ) {
-										echo get_the_post_thumbnail( $room_type->get_id(), 'awebooking_archive' );
-									}
-								?>
-								<img src="https://picsum.photos/200/200" alt="">
-								<span>Hình ảnh và chi tiết khác</span>
-							</a>
+							<?php
+								if ( has_post_thumbnail( $room_type->get_id() ) ) {
+									echo get_the_post_thumbnail( $room_type->get_id(), 'awebooking_archive' );
+								}
+							?>
 						</div>
 						<ul class="roommaster-info__list">
 							<li class="info-item">
@@ -267,7 +263,7 @@ $rate_plan = $room_rate->get_rate_plan();
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 
 		<div class=" roommaster-detail">
@@ -275,7 +271,7 @@ $rate_plan = $room_rate->get_rate_plan();
 				<div class="column-3">
 					<img src="https://picsum.photos/500/500" alt="">
 				</div>
-				
+
 				<div class="column-9">
 					<div class="roommaster-tab tabs-main">
 						<ul class="roommaster-tab__list tabs-main-list">
@@ -439,7 +435,7 @@ $rate_plan = $room_rate->get_rate_plan();
 			        	'width': width,
 			        	'left': offsetX
 			        })
-			    }				
+			    }
 			});
 
 		    var activeTabs = list.find('li.active');
@@ -454,7 +450,7 @@ $rate_plan = $room_rate->get_rate_plan();
 	        	'width': width,
 	        	'left': offsetX
 	        })
-   			
+
 		});
 
 
