@@ -15,7 +15,7 @@ $hotels = abrs_list_hotels();
 		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_current_language() ); ?>">
 	<?php endif ?>
 
-	<div class="searchbox searchbox--horizontal-agoda">
+	<div class="searchbox searchbox--horizontal">
 		<div class="searchbox__wrap">
 
 			<div class="rangepicker-container">
@@ -29,7 +29,7 @@ $hotels = abrs_list_hotels();
 							<i class="aficon aficon-search"></i>
 						</div>
 
-						<div class="searchbox__box-child">
+						<div class="searchbox__box-line">
 							<label class="searchbox__box-label">
 								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
 								<select name="hotel" id="">
@@ -49,10 +49,10 @@ $hotels = abrs_list_hotels();
 						<i class="aficon aficon-calendar"></i>
 					</div>
 
-					<div class="searchbox__box-child">
+					<div class="searchbox__box-line">
 						<label class="searchbox__box-label">
 							<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-							<input type="text" class="hotel-input hotel-input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+							<input type="text" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</label>
 					</div>
 				</div>
@@ -65,10 +65,10 @@ $hotels = abrs_list_hotels();
 						<i class="aficon aficon-calendar"></i>
 					</div>
 
-					<div class="searchbox__box-child">
+					<div class="searchbox__box-line">
 						<label class="searchbox__box-label">
 							<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-							<input type="text" class="hotel-input hotel-input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+							<input type="text" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</label>
 					</div>
 				</div>
@@ -80,7 +80,7 @@ $hotels = abrs_list_hotels();
 						<i class="aficon aficon-male"></i>
 					</div>
 
-					<div class="searchbox__box-child">
+					<div class="searchbox__box-line">
 						<label class="searchbox__box-label">
 							<span>Customer</span>
 							<div class="searchbox-occupancy-info">

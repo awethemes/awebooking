@@ -9,7 +9,8 @@ $searchbox-box--border:      200px !default;
 .searchbox__wrap,
 .searchbox__box,
 .searchbox__box-wrap,
-.searchbox__box-icon {
+.searchbox__box-icon,
+.searchbox__box-child {
   box-sizing: border-box;
 }
 
@@ -39,6 +40,7 @@ $searchbox-box--border:      200px !default;
 }
 
 .searchbox__box-wrap {
+  z-index: 10;
   position: relative;
 }
 
@@ -61,6 +63,26 @@ $searchbox-box--border:      200px !default;
   font-size: 22px;
   text-align: center;
   vertical-align: middle;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+}
+
+.searchbox__box-line {
+  display: block;
+  margin-left: 48px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.searchbox__input.input-transparent {
+  line-height: 1;
+}
+
+.button--search.searchbox__submit {
+  min-width: 130px;
 }
 
 /* Styles */
@@ -96,29 +118,63 @@ $searchbox-box--border:      200px !default;
 // Layout Horizontal
 .searchbox--horizontal {
   .searchbox__wrap {
+    flex-wrap: nowrap;
     flex-direction: row;
+
+    padding: 10px 12px;
     border-radius: 4px;
     background-color: $searchbox-bg-color;
     box-shadow: 0 1px 4px 0 rgba(black, .08);
   }
+
+  .searchbox__box:not(:last-child) {
+    height: 48px;
+    padding: 0 12px 0 0;
+    box-shadow: 1px 0 0 rgba(0,0,0,.07);
+  }
+
+  // Box width.
+  .searchbox__box--hotel {
+    flex-grow: 1;
+    min-width: 320px;
+  }
+
+  .searchbox__box--checkin,
+  .searchbox__box--checkout {
+    flex: 0 0 190px;
+    max-width: 190px;
+  }
+
+  .searchbox__box--occupancy {
+    flex: 0 0 300px;
+    max-width: 300px;
+  }
+
+  .searchbox__box-wrap {
+    height: 100%;
+  }
+
+  .button.searchbox__submit {
+    height: 100%;
+  }
 }
 
 // Test
-.awebooking--search_form {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10000000;
-  width: 100%;
-  background-color: #515b62;
-  padding: 12px 0;
-
-  > form {
-    @include make-container;
-    @include make-container-max-widths;
-  }
-}
+//.awebooking--search_form {
+//  position: fixed;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  z-index: 10000000;
+//  width: 100%;
+//  background-color: #515b62;
+//  padding: 12px 0;
+//
+//  > form {
+//    @include make-container;
+//    @include make-container-max-widths;
+//  }
+//}
 
 .searchbox--horizontal-agoda {
   .searchbox__wrap {
@@ -131,20 +187,33 @@ $searchbox-box--border:      200px !default;
     padding: 0 5px;
     background-color: #fff;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
-
-    &.searchbox__box--button {
-      box-shadow: none;
-      background-color: transparent;
-    }
   }
 
+  // Box width.
   .searchbox__box--hotel {
     flex-grow: 1;
-    min-width: 300px;
+    min-width: 320px;
+  }
+
+  .searchbox__box--checkin,
+  .searchbox__box--checkout {
+    flex: 0 0 170px;
+    max-width: 170px;
+  }
+  .searchbox__box--checkin {
+    margin-right: 0;
+  }
+
+  .searchbox__box--occupancy {
+    flex: 0 0 290px;
+    max-width: 290px;
   }
 
   .searchbox__box--button {
-    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background-color: transparent;
     min-width: 130px;
   }
 
@@ -170,11 +239,10 @@ $searchbox-box--border:      200px !default;
 }
 
 .searchbox--vertical {
-  width: 300px;
-
   .searchbox__box {
     @include make-col(12);
     @extend %vertical-searchbox-box;
+    height: 48px;
   }
 
   .button.searchbox__submit {
@@ -183,9 +251,8 @@ $searchbox-box--border:      200px !default;
 }
 
 .searchbox--vertical-agoda {
-  width: 620px;
-
   .searchbox__box {
+    height: 64px;
     @extend %vertical-searchbox-box;
   }
 
@@ -215,7 +282,13 @@ $searchbox-box--border:      200px !default;
   }
 
   .searchbox__box-icon {
+    top: 8px;
+    left: 12px;
     font-size: 26px;
+  }
+
+  .searchbox__box-line {
+    margin-left: 48px;
   }
 
   .button.searchbox__submit {
@@ -252,25 +325,6 @@ $searchbox-box--border:      200px !default;
     visibility: visible;
     opacity: 1;
     transform: translateY(10px) rotateX(0);
-  }
-}
-
-.searchbox__box--datepicker {
-  .searchbox__box-content {
-    width: 50%;
-    float: left;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-.searchbox__box--checkin,
-.searchbox__box--checkout {
-  .hotel-input {
-    display: block;
-    border: 0;
   }
 }
 
@@ -332,30 +386,8 @@ $searchbox-box--border:      200px !default;
   right: 5px;
 }
 
-
-
 .searchbox-occupancy-info__item {
-
   &:not(:last-child):after {
     content: ','
   }
-}
-
-.searchbox-occupancy-info__number {
-  font-weight: bold;
-}
-
-
-.searchbox-datepicker__input {
-  display: none;
-}
-
-.searchbox__box-icon,
-.searchbox__box-child {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.searchbox__box-child {
-  width: calc(100% - 70px);
 }
