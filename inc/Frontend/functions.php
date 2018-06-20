@@ -167,8 +167,10 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 
 	// Pairs the input atts.
 	$atts = shortcode_atts([
-		'layout'      => '',
-		'res_request' => null,
+		'layout'          => 'horizontal',
+		'alignment'       => '',
+		'container_class' => '',
+		'res_request'     => null,
 	], $atts );
 
 	/**
