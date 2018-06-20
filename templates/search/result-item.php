@@ -44,7 +44,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'view' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-building-alt"></i>
+										<i class="aficon aficon-business"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Room view', 'room view button', 'awebooking' ); ?></span>
 									</span>
 									<?php echo esc_html( $room_type->get( 'view' ) ); ?>
@@ -54,7 +54,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'area_size' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-elevator"></i>
+										<i class="aficon aficon-elevator"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Area size', 'area size button', 'awebooking' ); ?></span>
 									</span>
 									<?php
@@ -70,7 +70,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'beds' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-bed"></i>
+										<i class="aficon aficon-bed"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Bed', 'bed button', 'awebooking' ); ?></span>
 									</span>
 									<?php print abrs_get_room_beds( $room_type ); // WPCS: xss ok. ?>
@@ -105,7 +105,7 @@ dump($rate_plan);
 												<?php foreach ( $room_type->get( 'rate_inclusions' ) as $inclusion ): ?>
 													<div class="roommaster-child__info">
 														<span class="info-icon">
-															<i class="afc afc-dogs-not-permitted"></i>
+															<i class="aficon aficon-checkmark"></i>
 														</span>
 														<span class="info-text"><?php echo esc_html( $inclusion ); ?></span>
 													</div>
@@ -119,7 +119,7 @@ dump($rate_plan);
 												<?php foreach ( $room_type->get( 'rate_policies' ) as $policy ): ?>
 													<div class="roommaster-child__info">
 														<span class="info-icon">
-															<i class="afc afc-dogs-not-permitted"></i>
+															<i class="aficon aficon-checkmark"></i>
 														</span>
 														<span><?php echo esc_html( $policy ); ?></span>
 													</div>
@@ -134,19 +134,19 @@ dump($rate_plan);
 													/* translators: %1$s number adults, %2$s adult button */
 													printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
 														absint( $room_type->get( 'number_adults' ) ),
-														'<i class="afc afc-male"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-man"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
 													);
 												?>
 											</span>
 										<?php endif; ?>
 
-										<?php if ( $room_type->get( 'number_adults' ) ) : ?>
+										<?php if ( $room_type->get( 'number_children' ) ) : ?>
 											<span class="roommaster-occupancy__item">
 												<?php
 													/* translators: %1$s number children, %2$s child button */
 													printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
 														absint( $room_type->get( 'number_children' ) ),
-														'<i class="afc afc-child"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-body"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
 													);
 												?>
 
@@ -156,10 +156,10 @@ dump($rate_plan);
 										<?php if ( $room_type->get( 'number_infants' ) ) : ?>
 											<span class="roommaster-occupancy__item">
 												<?php
-													/* translators: %1$s number infants, %2$s adult button */
+													/* translators: %1$s number infants, %2$s infant button */
 													printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
 														absint( $room_type->get( 'number_infants' ) ),
-														'<i class="afc afc-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
 													);
 												?>
 											</span>
@@ -275,103 +275,6 @@ dump($rate_plan);
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-
-
-<div class="box abroom">
-	<div class="abroom__data">
-		<table class="abroom__table">
-			<tbody>
-				<tr>
-					<td class="column-room-info">
-						<div class="clearfix">
-							<div class="abroom__image">
-								<?php
-								if ( has_post_thumbnail( $room_type->get_id() ) ) {
-									echo get_the_post_thumbnail( $room_type->get_id(), 'awebooking_archive' );
-								}
-								?>
-							</div>
-
-							<div class="abroom__room">
-								<h2 class="abroom__roomname"><a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark" target="_blank"><?php echo esc_html( $room_type->get( 'title' ) ); ?></a></h2>
-
-								<div class="abroom__occupancy">
-									<?php
-									$max_capacity = $room_type->get( 'maximum_occupancy' );
-
-									/* translators: %s Maximum capacity */
-									echo sprintf( esc_html( _nx( 'Maximum capacity for %s person', 'Maximum capacity for %s people', $max_capacity, 'awebooking' ) ), esc_html( number_format_i18n( $max_capacity ) ) );
-									?>
-								</div>
-
-								<div>
-									<strong><?php esc_html_e( 'What\'s included', 'awebooking' ); ?></strong>
-
-									<?php if ( ! empty( $room_type['rate_inclusions'] ) ) : ?>
-										<?php foreach ( $room_type->get( 'rate_inclusions' ) as $string ) : ?>
-
-											<p><?php echo abrs_esc_text( $string ); // WPCS: XSS OK. ?></p>
-
-										<?php endforeach ?>
-									<?php endif ?>
-								</div>
-
-							</div>
-						</div>
-					</td>
-
-					<td class="column-room-inventory">
-						<div class="abroom__inventory">
-							<?php
-							switch ( abrs_get_option( 'display_price', 'total' ) ) {
-								case 'total':
-									abrs_price( $room_rate->get_rate() );
-									echo sprintf( 'Cost for %s nights', $room_rate->timespan->nights() );
-									break;
-
-								case 'first_night':
-									break;
-							}
-							?>
-						</div>
-					</td>
-
-					<td class="column-room-button">
-						<?php if ( ! $room_rate->has_error() ) : ?>
-							<?php
-							abrs_bookroom_button([
-								'room_type'   => $room_type->get_id(),
-								'show_button' => true,
-								'button_atts' => [
-									'class' => 'booknow button is-primary',
-								],
-							]);
-							?>
-						<?php endif ?>
-
-						<span class="abroom__remaining-rooms">
-							<?php
-							$rooms_left = $remain_rooms->count();
-
-							if ( $rooms_left <= 2 ) {
-								/* translators: %s Number of remain rooms */
-								printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
-							} else {
-								/* translators: %s Number of remain rooms */
-								printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
-							}
-							?>
-						</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<div class="abroom__details">
-
 	</div>
 </div>
 
