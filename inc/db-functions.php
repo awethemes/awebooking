@@ -349,3 +349,31 @@ function abrs_search_booking( $term ) {
 
 	return apply_filters( 'abrs_search_booking_results', $booking_ids, $term, $search_fields );
 }
+
+/**
+ * Delete expired transients.
+ *
+ * @see wc_delete_expired_transients()
+ *
+ * @return int
+ */
+function abrs_delete_expired_transients() {
+	global $wpdb;
+
+	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+		WHERE a.option_name LIKE %s
+		AND a.option_name NOT LIKE %s
+		AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
+		AND b.option_value < %d";
+	$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+
+	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+		WHERE a.option_name LIKE %s
+		AND a.option_name NOT LIKE %s
+		AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
+		AND b.option_value < %d";
+	$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+
+	return absint( $rows + $rows2 );
+}
+add_action( 'awebooking_installed', 'abrs_delete_expired_transients' );

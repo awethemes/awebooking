@@ -1,32 +1,236 @@
-.searchbox {
-  width: 100%;
+$searchbox-bg-color:         #fff !default;
+$searchbox-button-font-size: 1.1rem !default;
+$searchbox-button-min-width: 130px !default;
+
+$searchbox-box--border:      200px !default;
+
+/* Searchbox Layout */
+.searchbox,
+.searchbox__wrap,
+.searchbox__box,
+.searchbox__box-wrap,
+.searchbox__box-icon {
   box-sizing: border-box;
 }
 
-.searchbox__spacer {
-  flex-grow: 1;
+.searchbox {
+  margin: 0;
+  width: 100%;
+  display: block;
 }
 
-.searchbox__wrapper {
+.searchbox__wrap {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  min-height: 1px;
   position: relative;
+  backface-visibility: hidden;
 }
 
 .searchbox__box {
-  position: relative;
-  box-sizing: border-box;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+    box-shadow: none;
+  }
 }
 
-.searchbox__box-content {
+.searchbox__box-wrap {
   position: relative;
-  background-color: #fff;
-  height: 100%;
-  padding: 10px;
-  cursor: pointer;
-  border-right: 1px solid #eee;
-  perspective: 500px;
 }
+
+.searchbox__box-label,
+.searchbox--box-line-occupancy {
+  @include text-truncate;
+}
+
+.searchbox__box-icon {
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+
+  padding: 0;
+  margin: auto 0;
+  overflow: hidden;
+  display: inline-block;
+
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Styles */
+.searchbox--inline {
+  display: flex;
+
+  .searchbox__wrap {
+    width: auto;
+    display: inline-flex;
+  }
+}
+
+.searchbox--align-center {
+  &.searchbox--inline {
+    justify-content: center;
+  }
+
+  &:not(.searchbox--inline) .searchbox__wrap {
+    justify-content: center;
+  }
+}
+
+.searchbox--align-right {
+  &.searchbox--inline{
+    justify-content: flex-end;
+  }
+
+  &:not(.searchbox--inline) .searchbox__wrap {
+    justify-content: flex-end;
+  }
+}
+
+// Layout Horizontal
+.searchbox--horizontal {
+  .searchbox__wrap {
+    flex-direction: row;
+    border-radius: 4px;
+    background-color: $searchbox-bg-color;
+    box-shadow: 0 1px 4px 0 rgba(black, .08);
+  }
+}
+
+// Test
+.awebooking--search_form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000000;
+  width: 100%;
+  background-color: #515b62;
+  padding: 12px 0;
+
+  > form {
+    @include make-container;
+    @include make-container-max-widths;
+  }
+}
+
+.searchbox--horizontal-agoda {
+  .searchbox__wrap {
+    flex-wrap: nowrap;
+  }
+
+  .searchbox__box {
+    height: 48px;
+    margin: 0 5px 0 0;
+    padding: 0 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+
+    &.searchbox__box--button {
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
+
+  .searchbox__box--hotel {
+    flex-grow: 1;
+    min-width: 300px;
+  }
+
+  .searchbox__box--button {
+    flex-grow: 1;
+    min-width: 130px;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+    height: 48px;
+    display: block;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+  }
+}
+
+// Layout Vertical
+%vertical-searchbox-box {
+  padding: 0;
+  margin: 0 0 12px;
+  background-color: $searchbox-bg-color;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+
+  &.searchbox__box--button {
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+.searchbox--vertical {
+  width: 300px;
+
+  .searchbox__box {
+    @include make-col(12);
+    @extend %vertical-searchbox-box;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+  }
+}
+
+.searchbox--vertical-agoda {
+  width: 620px;
+
+  .searchbox__box {
+    @extend %vertical-searchbox-box;
+  }
+
+  .searchbox__box--hotel {
+    @include make-col(12);
+  }
+  .searchbox__box--checkin,
+  .searchbox__box--checkout {
+    @include make-col(6);
+  }
+  .searchbox__box--occupancy {
+    @include make-col(8);
+  }
+  .searchbox__box--button {
+    @include make-col(4);
+  }
+
+  .searchbox__box:not(.searchbox__box--button) .searchbox__box-wrap {
+    padding: 8px 12px; // height 65px.
+  }
+  .searchbox__box--button .searchbox__box-wrap {
+    padding-left: 12px;
+  }
+
+  .searchbox__box-wrap {
+    height: 100%;
+  }
+
+  .searchbox__box-icon {
+    font-size: 26px;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: $searchbox-button-font-size;
+  }
+}
+
+
+
+
+
 
 .searchbox__popup {
   position: absolute;
@@ -51,57 +255,6 @@
   }
 }
 
-/* Horizontal layout */
-.searchbox--horizontal {
-  // padding: 13px;
-  
-  .searchbox__wrapper {
-    flex-direction: column;
-  }
-
-  @include media-breakpoint-up('md') {
-    .searchbox__wrapper {
-      flex-direction: row;
-    }
-    
-    .searchbox__wrapper-4 {
-      .searchbox__box--button {
-        flex-grow: 1;
-      }
-      
-      .searchbox__box--occupancy {
-        width: 30%;
-      }
-
-      .searchbox__box--datepicker {
-        width: 55%;
-      }
-    }
-  }
-
-  @include media-breakpoint-down('md') {
-    .searchbox__box {
-      + .searchbox__box {
-        border-top: 1px solid #eee;
-      }
-    }
-  }
-}
-
-.searchbox--vertical {
-  .searchbox__wrapper {
-    flex-direction: column;
-  }
-
-  .searchbox__box {
-    margin-bottom: 20px;
-  }
-
-  .searchbox__submit {
-    padding: 1rem;
-  }
-}
-
 .searchbox__box--datepicker {
   .searchbox__box-content {
     width: 50%;
@@ -117,17 +270,10 @@
 .searchbox__box--checkout {
   .hotel-input {
     display: block;
-    font-weight: bold;
     border: 0;
   }
 }
 
-.searchbox__submit {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  cursor: pointer;
-}
 
 .searchbox-spinner {
   display: flex;
@@ -166,7 +312,7 @@
   text-align: center;
   cursor: pointer;
   border-radius: 50%;
-  
+
   transform: translateY(-50%);
 
   &:hover {
@@ -186,12 +332,10 @@
   right: 5px;
 }
 
-.searchbox-occupancy-info {
 
-}
 
 .searchbox-occupancy-info__item {
-  
+
   &:not(:last-child):after {
     content: ','
   }
@@ -201,9 +345,6 @@
   font-weight: bold;
 }
 
-.searchbox-datepicker {
-
-}
 
 .searchbox-datepicker__input {
   display: none;
@@ -213,11 +354,6 @@
 .searchbox__box-child {
   display: inline-block;
   vertical-align: middle;
-}
-
-.searchbox__box-icon {
-  font-size: 16px;
-  padding-right: 20px;
 }
 
 .searchbox__box-child {

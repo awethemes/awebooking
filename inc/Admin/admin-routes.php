@@ -1,7 +1,6 @@
 <?php
 
 use AweBooking\Component\Routing\Namespace_Route;
-use AweBooking\Email\Templates\Cancelled_Booking;
 
 $route = new Namespace_Route( $route, 'AweBooking\\Admin\\Controllers' );
 
@@ -17,6 +16,8 @@ $route->get(   '/export/calendar',                     'Export_Controller@calend
 
 $route->get(    '/settings',                           'Settings_Controller@index' );
 $route->post(   '/settings',                           'Settings_Controller@store' );
+$route->get(    '/tools[/{tab}]',                      'Tools_Controller@index' );
+$route->post(   '/tools/execute',                      'Tools_Controller@execute' );
 
 $route->delete( '/room/{room:\d+}',                    'Room_Controller@destroy' );
 
@@ -38,12 +39,3 @@ $route->get(    '/search/customers',                   'Ajax_Controller@search_c
 $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_booking_note' );
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );
 // @codingStandardsIgnoreEnd
-
-$route->get('/test-mail', function () {
-	$booking = abrs_get_booking( 1241 );
-
-	$email = new Cancelled_Booking;
-	$email->build( $booking );
-
-	return $email->get_content();
-});

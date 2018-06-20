@@ -64,10 +64,11 @@ $max_scaffold_rooms = abrs_maximum_scaffold_rooms();
 	</ul>
 
 	<?php if ( true === $is_translation ) : ?>
-		<p><?php echo esc_html__( 'Note: This is a translation of room type, you can not to perform any action to rooms.', 'awebooking' ); ?></p>
+		<p><?php echo esc_html__( 'Note: This is a translation of room type, you can not perform any action to rooms.', 'awebooking' ); ?></p>
+	<?php else : ?>
+		<button type="button" class="button js-add-room"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
 	<?php endif ?>
 
-	<button type="button" class="button js-add-room"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
 <?php endif ?>
 
 <script type="text/template" id="tmpl-template-room-item">

@@ -31,9 +31,7 @@ class Booking_Actions_Metabox {
 	 * @param \Awethemes\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
-		$action = sanitize_text_field( $request['awebooking_action'] );
-
-		// Nothing to work.
+		$action = sanitize_text_field( $request->awebooking_action );
 		if ( empty( $action ) ) {
 			return;
 		}
@@ -43,11 +41,11 @@ class Booking_Actions_Metabox {
 
 		switch ( $action ) {
 			case 'send_booking_details':
-				abrs_mailer( 'new_booking' )->build( $the_booking )->send();
+				abrs_mailer( 'invoice' )->build( $the_booking )->send();
 				break;
 
 			case 'send_booking_details_admin':
-				abrs_mailer( 'invoice' )->build( $the_booking )->send();
+				abrs_mailer()->send_new_booking( $the_booking );
 				break;
 
 			default:

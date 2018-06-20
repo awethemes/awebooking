@@ -109,7 +109,7 @@ class Checkout {
 			return $this->process_payment( $booking, $this->gateways->get( $data['payment_method'] ) );
 		}
 
-		return $this->process_without_payment( $booking );
+		// return $this->process_without_payment( $booking );
 	}
 
 	/**

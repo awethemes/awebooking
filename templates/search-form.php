@@ -15,56 +15,73 @@ $hotels = abrs_list_hotels();
 		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_current_language() ); ?>">
 	<?php endif ?>
 
-	<div class="searchbox searchbox--horizontal">
-		<div class="searchbox__wrapper searchbox__wrapper-4">
-			<?php if ( abrs_multiple_hotels() && count( $hotels ) > 1 ) : ?>
-				<div class="searchbox__box searchbox__box--hotel">
-					<label class="searchbox__label searchbox__label--hotel">
-						<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
-						<select name="hotel" id="">
-							<?php foreach ( $hotels as $hotel ) : ?>
-								<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</label>
+	<div class="searchbox searchbox--horizontal-agoda">
+		<div class="searchbox__wrap">
+
+			<div class="rangepicker-container">
+				<input type="hidden" data-hotel="rangepicker" style="display: none;" />
+			</div>
+
+			<?php if ( abrs_multiple_hotels() ) : ?>
+				<div tabindex="0" class="searchbox__box searchbox__box--hotel">
+					<div class="searchbox__box-wrap">
+						<div class="searchbox__box-icon">
+							<i class="aficon aficon-search"></i>
+						</div>
+
+						<div class="searchbox__box-child">
+							<label class="searchbox__box-label">
+								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
+								<select name="hotel" id="">
+									<?php foreach ( $hotels as $hotel ) : ?>
+										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</label>
+						</div>
+					</div>
 				</div>
 			<?php endif ?>
-			<div class="searchbox__box searchbox__box--datepicker">
-				<div class="searchbox__box-content">
+
+			<div tabindex="0" class="searchbox__box searchbox__box--checkin">
+				<div class="searchbox__box-wrap">
 					<div class="searchbox__box-icon">
-						<i class="afc afc-calendar-alt"></i>
+						<i class="aficon aficon-calendar"></i>
 					</div>
+
 					<div class="searchbox__box-child">
-						<div class="searchbox__box--checkin">
-							<label class="searchbox__label searchbox__label--checkin">
-								<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-								<input type="text" class="hotel-input hotel-input--checkin form-input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
-							</label>
-						</div>
+						<label class="searchbox__box-label">
+							<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
+							<input type="text" class="hotel-input hotel-input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+						</label>
 					</div>
 				</div>
-				<div class="searchbox__box-content">
+
+			</div>
+
+			<div tabindex="0" class="searchbox__box searchbox__box--checkout">
+				<div class="searchbox__box-wrap">
 					<div class="searchbox__box-icon">
-						<i class="afc afc-calendar-alt"></i>
+						<i class="aficon aficon-calendar"></i>
 					</div>
+
 					<div class="searchbox__box-child">
-						<div class="searchbox__box--checkout">
-							<label class="searchbox__label searchbox__label--checkout">
-								<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-								<input type="text" class="hotel-input hotel-input--checkout form-input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
-							</label>
-						</div>
+						<label class="searchbox__box-label">
+							<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
+							<input type="text" class="hotel-input hotel-input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+						</label>
 					</div>
 				</div>
 			</div>
 
-			<div class="searchbox__box searchbox__box--occupancy">
-				<div class="searchbox__box-content">
+			<div tabindex="0" class="searchbox__box searchbox__box--occupancy">
+				<div class="searchbox__box-wrap">
 					<div class="searchbox__box-icon">
-						<i class="afc afc-male"></i>
+						<i class="aficon aficon-male"></i>
 					</div>
+
 					<div class="searchbox__box-child">
-						<label class="searchbox__label">
+						<label class="searchbox__box-label">
 							<span>Customer</span>
 							<div class="searchbox-occupancy-info">
 								<span class="searchbox-occupancy-info__item">
@@ -81,7 +98,7 @@ $hotels = abrs_list_hotels();
 								</span>
 							</div>
 						</label>
-						
+
 						<div class="searchbox__popup">
 							<label class="searchbox-spinner">
 								<!-- <select name="adults" class="">
@@ -95,7 +112,7 @@ $hotels = abrs_list_hotels();
 								<span class="searchbox-spinner__decrement">-</span>
 								<span class="searchbox-spinner__increment">+</span>
 							</label>
-						
+
 							<label class="searchbox-spinner">
 								<!-- <span class="searchbox-spinner__output">1</span> -->
 								<input type="text" name="children" maxlength="12" value="1" title="" class="searchbox-spinner__input form-input-transparent" />
@@ -103,7 +120,7 @@ $hotels = abrs_list_hotels();
 								<span class="searchbox-spinner__decrement">-</span>
 								<span class="searchbox-spinner__increment">+</span>
 							</label>
-						
+
 							<label class="searchbox-spinner">
 								<!-- <span class="searchbox-spinner__output">1</span> -->
 								<input type="text" name="infants" maxlength="12" value="0" title="" class="searchbox-spinner__input form-input-transparent" />
@@ -116,32 +133,29 @@ $hotels = abrs_list_hotels();
 				</div>
 			</div>
 
-			<div class="searchbox__box searchbox__box--button">
-				<div class="searchbox__box-content">
-					<button class="button button--search searchbox__submit"><?php esc_html_e( 'Query', 'awebooking' ); ?></button>
+			<div tabindex="0" class="searchbox__box searchbox__box--button">
+				<div class="searchbox__box-wrap">
+					<button class="button button--search searchbox__submit"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
 				</div>
 			</div>
 
-		</div>
+		</div><!-- /.searchbox__wrapper-->
+	</div><!-- /.searchbox-->
 
-		<div class="rangepicker-container">
-			<input type="hidden" data-hotel="rangepicker" style="display: none;" />
-		</div>
 
-	</div>
 </form>
 <script>
 	(function($) {
 		$('html,body').on('click', function() {
-			$('.searchbox__box-content .searchbox__popup').removeClass('searchbox__popup--active');
+			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
 		});
 
-		$('.searchbox__box-content').on('click', function(e) {
+		$('.searchbox__box-wrap').on('click', function(e) {
 			e.stopPropagation();
 
 			var self = $(this);
 
-			$('.searchbox__box-content .searchbox__popup').removeClass('searchbox__popup--active');
+			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
 
 			self.find('.searchbox__popup').toggleClass('searchbox__popup--active');
 

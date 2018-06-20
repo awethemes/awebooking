@@ -34,6 +34,6 @@ abrs_mailer()->header( $email );
  * @hooked \AweBooking\Email\Mailer::template_customer_details()
  * @hooked \AweBooking\Email\Mailer::template_booking_details()
  */
-do_action( 'awebooking_email_booking_details', $booking, $email );
+do_action( 'abrs_email_booking_details', $booking, $email );
 
 abrs_mailer()->footer( $email );

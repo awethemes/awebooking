@@ -119,7 +119,7 @@ class Installer {
 		delete_transient( 'awebooking_installing' );
 
 		// Fire installed action.
-		do_action( 'abrs_installed' );
+		do_action( 'awebooking_installed' );
 
 		// Remove rewrite rules and then recreate rewrite rules.
 		@flush_rewrite_rules();
@@ -177,7 +177,7 @@ class Installer {
 
 		$this->install();
 
-		do_action( 'abrs_updated' );
+		do_action( 'awebookin_updated' );
 	}
 
 	/**

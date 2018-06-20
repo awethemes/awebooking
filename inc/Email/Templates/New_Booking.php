@@ -19,18 +19,10 @@ class New_Booking extends Mailable {
 		$this->title          = esc_html__( 'New booking', 'awebooking' );
 		$this->description    = esc_html__( 'New booking emails are sent to chosen recipient(s) when a new booking is received.', 'awebooking' );
 		$this->customer_email = false;
-		$this->placeholders   = [];
-	}
-
-	/**
-	 * Trigger send email.
-	 *
-	 * @return void
-	 */
-	public function trigger( $booking ) {
-		if ( $this->is_enabled() && $this->get_recipient() ) {
-			$this->build( $booking )->send();
-		}
+		$this->placeholders   = [
+			'{booking_date}'   => '',
+			'{booking_number}' => '',
+		];
 	}
 
 	/**
@@ -41,7 +33,6 @@ class New_Booking extends Mailable {
 	 */
 	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
-
 		$this->placeholders = ( new Booking_Placeholder( $booking, $this ) )->apply( $this->placeholders );
 	}
 
@@ -49,14 +40,14 @@ class New_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( 'New customer booking ({booking_id}) - {date_created}', 'awebooking' );
+		return esc_html__( '[{site_title}] New customer booking #{booking_number} - {booking_date}', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		return "You have received a booking from {customer_first_name}. The booking is as follows:\n\n{contents}\n\n{customer_details}";
+		return "You have received a booking from {customer_first_name}. The booking is as follows:\n\n";
 	}
 
 	/**

@@ -10,6 +10,24 @@ use AweBooking\Support\Service_Provider;
 
 class Http_Service_Provider extends Service_Provider {
 	/**
+	 * Global middleware in front-end.
+	 *
+	 * @var array
+	 */
+	protected $middleware = [
+		// ...
+	];
+
+	/**
+	 * Global middleware in admin area.
+	 *
+	 * @var array
+	 */
+	protected $admin_middleware = [
+		\AweBooking\Component\Http\Middleware\Setup_Admin_Screen::class,
+	];
+
+	/**
 	 * Registers services on the plugin.
 	 *
 	 * @access private
@@ -141,16 +159,16 @@ class Http_Service_Provider extends Service_Provider {
 		// Handle the awebooking_route endpoint requests.
 		$this->plugin->make( 'kernel' )
 			->use_request_uri( $wp->query_vars['awebooking_route'] )
+			->middleware( $this->middleware )
 			->handle( $this->plugin->make( 'request' ) );
 	}
 
 	/**
 	 * Dispatch the incoming request (on admin).
 	 *
-	 * @param  \WP_Screen $current_screen Current WP_Screen.
 	 * @access private
 	 */
-	public function admin_dispatch( $current_screen ) {
+	public function admin_dispatch() {
 		if ( defined( 'DOING_AJAX' ) || isset( $_GET['page'] ) || empty( $_REQUEST['awebooking'] ) ) {
 			return;
 		}
@@ -158,16 +176,10 @@ class Http_Service_Provider extends Service_Provider {
 		// Get the request uri.
 		$request_uri = '/' . trim( rawurldecode( $_REQUEST['awebooking'] ), '/' );
 
-		// Set the screen ID.
-		$current_screen->base = 'awebooking_route';
-		$current_screen->id   = 'awebooking' . $request_uri;
-
-		// Ths action is not needed.
-		remove_action( 'admin_head', 'wp_admin_canonical_url' );
-
 		// Handle the route.
 		$this->plugin->make( 'kernel' )
 			->use_request_uri( $request_uri )
+			->middleware( $this->admin_middleware )
 			->handle( $this->plugin->make( 'request' ) );
 	}
 }

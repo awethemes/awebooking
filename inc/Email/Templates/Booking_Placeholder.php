@@ -58,11 +58,11 @@ class Booking_Placeholder {
 			'{customer_company}'        => $this->booking->get( 'customer_company' ),
 			'{customer_phone}'          => $this->booking->get( 'customer_phone' ),
 			'{customer_email}'          => $this->booking->get( 'customer_email' ),
-			'{customer_details}'        => abrs_get_template_content( 'emails/line-customer.php', [ 'booking' => $this->booking ] ),
+			/*'{customer_details}'        => abrs_get_template_content( 'emails/line-customer.php', [ 'booking' => $this->booking ] ),
 			'{contents}'                => abrs_get_template_content( 'emails/breakdown.php', [
 				'booking' => $this->booking,
 				'email'   => $this->email,
-			] ),
+			] ),*/
 		];
 
 		return array_merge( $placeholders, $new_placeholders );

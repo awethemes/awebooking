@@ -530,10 +530,11 @@ body.swal2-toast-shown > .swal2-container {
     right: .1875em;
     width: 1.375em; } }
 
-html.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown),
 body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
-  height: auto;
   overflow-y: hidden; }
+
+body.swal2-height-auto {
+  height: auto !important; }
 
 body.swal2-no-backdrop .swal2-shown {
   top: auto;

@@ -52,16 +52,18 @@ gulp.task('babel', () => {
 });
 
 gulp.task('i18n', () => {
-  gulp.src(['**/*.php', '!vendor/**', '!tests/**'])
+  return gulp.src(['**/*.php', '!vendor/**', '!tests/**'])
     .pipe(plumber())
     .pipe(potgen({ domain: 'awebooking', package: 'AweBooking' }))
     .pipe(gulp.dest('languages/awebooking.pot'));
 });
 
-gulp.task('copy', () => {
-  return map(pkg.copyFiles, (files, vendor) => {
+gulp.task('copy', (done) => {
+  map(pkg.copyFiles, (files, vendor) => {
     return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor));
   });
+
+  done();
 });
 
 gulp.task('watch', () => {
