@@ -47,7 +47,7 @@
     "selectize": "^0.12.4",
     "sortablejs": "^1.7.0",
     "sweetalert2": "^7.22.2",
-    "tippy.js": "^2.5.2",
+    "tippy.js": "^2.5.3",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {

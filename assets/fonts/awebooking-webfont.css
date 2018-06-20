@@ -2,159 +2,312 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?b6f86a995c05682be66717c6167c484c?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?b6f86a995c05682be66717c6167c484c") format("woff2"),
-url("awebooking-webfont.woff?b6f86a995c05682be66717c6167c484c") format("woff"),
-url("awebooking-webfont.ttf?b6f86a995c05682be66717c6167c484c") format("truetype"),
-url("awebooking-webfont.svg?b6f86a995c05682be66717c6167c484c#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?5cff041cc936c163882cda3301db8d60?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?5cff041cc936c163882cda3301db8d60") format("woff2"),
+url("awebooking-webfont.woff?5cff041cc936c163882cda3301db8d60") format("woff"),
+url("awebooking-webfont.ttf?5cff041cc936c163882cda3301db8d60") format("truetype"),
+url("awebooking-webfont.svg?5cff041cc936c163882cda3301db8d60#awebooking-webfont") format("svg");
 }
 
-.afc {
+.aficon {
 	font-family: awebooking-webfont;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	display: inline-block;
 	font-style: normal;
+	font-weight: 400;
 	font-variant: normal;
-	text-rendering: auto;
+	text-rendering: optimizeLegibility;
 	line-height: 1;
+	vertical-align: middle;
+	speak: none;
 }
 
-.afc-bed:before {
-	content: "\e001";
+.aficon-add-circle-outline:before {
+	content: "\f101";
 }
-.afc-building-alt:before {
-	content: "\e002";
+.aficon-add-circle:before {
+	content: "\f102";
 }
-.afc-building:before {
-	content: "\e003";
+.aficon-add:before {
+	content: "\f103";
 }
-.afc-calendar-alt:before {
-	content: "\e004";
+.aficon-airplane:before {
+	content: "\f104";
 }
-.afc-calendar:before {
-	content: "\e005";
+.aficon-alarm:before {
+	content: "\f105";
 }
-.afc-credit-card:before {
-	content: "\e006";
+.aficon-alert:before {
+	content: "\f106";
 }
-.afc-room-service:before {
-	content: "\e007";
+.aficon-arrow-back:before {
+	content: "\f107";
 }
-.afc-bath:before {
-	content: "\e008";
+.aficon-arrow-down:before {
+	content: "\f108";
 }
-.afc-birthday-cake:before {
-	content: "\e009";
+.aficon-arrow-dropdown-circle:before {
+	content: "\f109";
 }
-.afc-calendar-check:before {
-	content: "\e00a";
+.aficon-arrow-dropdown:before {
+	content: "\f10a";
 }
-.afc-calendar-minus:before {
-	content: "\e00b";
+.aficon-arrow-dropleft-circle:before {
+	content: "\f10b";
 }
-.afc-calendar-plus:before {
-	content: "\e00c";
+.aficon-arrow-dropleft:before {
+	content: "\f10c";
 }
-.afc-calendar-times:before {
-	content: "\e00d";
+.aficon-arrow-dropright-circle:before {
+	content: "\f10d";
 }
-.afc-camera:before {
-	content: "\e00e";
+.aficon-arrow-dropright:before {
+	content: "\f10e";
 }
-.afc-dollar-sign:before {
-	content: "\e00f";
+.aficon-arrow-dropup-circle:before {
+	content: "\f10f";
 }
-.afc-female:before {
-	content: "\e010";
+.aficon-arrow-dropup:before {
+	content: "\f110";
 }
-.afc-male:before {
-	content: "\e011";
+.aficon-arrow-forward:before {
+	content: "\f111";
 }
-.afc-money-bill-alt:before {
-	content: "\e012";
+.aficon-arrow-up:before {
+	content: "\f112";
 }
-.afc-shower:before {
-	content: "\e013";
+.aficon-bath:before {
+	content: "\f113";
 }
-.afc-taxi:before {
-	content: "\e014";
+.aficon-bbq-facilities:before {
+	content: "\f114";
 }
-.afc-wheelchair:before {
-	content: "\e015";
+.aficon-beach:before {
+	content: "\f115";
 }
-.afc-wifi:before {
-	content: "\e016";
+.aficon-bed:before {
+	content: "\f116";
 }
-.afc-bbq-facilities:before {
-	content: "\e017";
+.aficon-beer:before {
+	content: "\f117";
 }
-.afc-beach:before {
-	content: "\e018";
+.aficon-bicycle:before {
+	content: "\f118";
 }
-.afc-dogs-not-permitted:before {
-	content: "\e019";
+.aficon-boat:before {
+	content: "\f119";
 }
-.afc-dogs-permitted:before {
-	content: "\e01a";
+.aficon-body:before {
+	content: "\f11a";
 }
-.afc-elevator:before {
-	content: "\e01b";
+.aficon-briefcase:before {
+	content: "\f11b";
 }
-.afc-bell-slash:before {
-	content: "\e01c";
+.aficon-bus:before {
+	content: "\f11c";
 }
-.afc-bell:before {
-	content: "\e01d";
+.aficon-business:before {
+	content: "\f11d";
 }
-.afc-child:before {
-	content: "\e01e";
+.aficon-cafe:before {
+	content: "\f11e";
 }
-.afc-heart:before {
-	content: "\e01f";
+.aficon-calendar:before {
+	content: "\f11f";
 }
-.afc-heartbeat:before {
-	content: "\e020";
+.aficon-call:before {
+	content: "\f120";
 }
-.afc-home:before {
-	content: "\e021";
+.aficon-camera:before {
+	content: "\f121";
 }
-.afc-hospital:before {
-	content: "\e022";
+.aficon-car:before {
+	content: "\f122";
 }
-.afc-moon:before {
-	content: "\e023";
+.aficon-card:before {
+	content: "\f123";
 }
-.afc-shield-alt:before {
-	content: "\e024";
+.aficon-chatboxes:before {
+	content: "\f124";
 }
-.afc-shipping-fast:before {
-	content: "\e025";
+.aficon-checkmark-circle-outline:before {
+	content: "\f125";
 }
-.afc-snowflake:before {
-	content: "\e026";
+.aficon-checkmark-circle:before {
+	content: "\f126";
 }
-.afc-thumbs-down:before {
-	content: "\e027";
+.aficon-checkmark:before {
+	content: "\f127";
 }
-.afc-thumbs-up:before {
-	content: "\e028";
+.aficon-close-circle-outline:before {
+	content: "\f128";
 }
-.afc-train:before {
-	content: "\e029";
+.aficon-close-circle:before {
+	content: "\f129";
 }
-.afc-truck:before {
-	content: "\e02a";
+.aficon-close:before {
+	content: "\f12a";
 }
-.afc-umbrella:before {
-	content: "\e02b";
+.aficon-cloud-done:before {
+	content: "\f12b";
 }
-.afc-warehouse:before {
-	content: "\e02c";
+.aficon-cloud-download:before {
+	content: "\f12c";
 }
-.afc-chevron-left:before {
-	content: "\e02d";
+.aficon-cloud-upload:before {
+	content: "\f12d";
 }
-.afc-chevron-right:before {
-	content: "\e02e";
+.aficon-cloud:before {
+	content: "\f12e";
+}
+.aficon-cloudy-night:before {
+	content: "\f12f";
+}
+.aficon-cloudy:before {
+	content: "\f130";
+}
+.aficon-desktop:before {
+	content: "\f131";
+}
+.aficon-dogs-not-permitted:before {
+	content: "\f132";
+}
+.aficon-dogs-permitted:before {
+	content: "\f133";
+}
+.aficon-gift:before {
+	content: "\f134";
+}
+.aficon-heart:before {
+	content: "\f135";
+}
+.aficon-help-circle-outline:before {
+	content: "\f136";
+}
+.aficon-help-circle:before {
+	content: "\f137";
+}
+.aficon-home:before {
+	content: "\f138";
+}
+.aficon-information-circle-outline:before {
+	content: "\f139";
+}
+.aficon-information-circle:before {
+	content: "\f13a";
+}
+.aficon-information:before {
+	content: "\f13b";
+}
+.aficon-laptop:before {
+	content: "\f13c";
+}
+.aficon-link:before {
+	content: "\f13d";
+}
+.aficon-logo-bitcoin:before {
+	content: "\f13e";
+}
+.aficon-logo-euro:before {
+	content: "\f13f";
+}
+.aficon-logo-facebook:before {
+	content: "\f140";
+}
+.aficon-logo-foursquare:before {
+	content: "\f141";
+}
+.aficon-logo-google:before {
+	content: "\f142";
+}
+.aficon-logo-instagram:before {
+	content: "\f143";
+}
+.aficon-logo-pinterest:before {
+	content: "\f144";
+}
+.aficon-logo-skype:before {
+	content: "\f145";
+}
+.aficon-logo-slack:before {
+	content: "\f146";
+}
+.aficon-logo-usd:before {
+	content: "\f147";
+}
+.aficon-logo-whatsapp:before {
+	content: "\f148";
+}
+.aficon-logo-wordpress:before {
+	content: "\f149";
+}
+.aficon-logo-yahoo:before {
+	content: "\f14a";
+}
+.aficon-logo-yen:before {
+	content: "\f14b";
+}
+.aficon-male:before {
+	content: "\f14c";
+}
+.aficon-man:before {
+	content: "\f14d";
+}
+.aficon-moon:before {
+	content: "\f14e";
+}
+.aficon-more:before {
+	content: "\f14f";
+}
+.aficon-musical-note:before {
+	content: "\f150";
+}
+.aficon-musical-notes:before {
+	content: "\f151";
+}
+.aficon-partly-sunny:before {
+	content: "\f152";
+}
+.aficon-rainy:before {
+	content: "\f153";
+}
+.aficon-search:before {
+	content: "\f154";
+}
+.aficon-star-half:before {
+	content: "\f155";
+}
+.aficon-star-outline:before {
+	content: "\f156";
+}
+.aficon-star:before {
+	content: "\f157";
+}
+.aficon-sunny:before {
+	content: "\f158";
+}
+.aficon-thunderstorm:before {
+	content: "\f159";
+}
+.aficon-tv:before {
+	content: "\f15a";
+}
+.aficon-umbrella:before {
+	content: "\f15b";
+}
+.aficon-warning:before {
+	content: "\f15c";
+}
+.aficon-water:before {
+	content: "\f15d";
+}
+.aficon-wifi:before {
+	content: "\f15e";
+}
+.aficon-wine:before {
+	content: "\f15f";
+}
+.aficon-woman:before {
+	content: "\f160";
 }

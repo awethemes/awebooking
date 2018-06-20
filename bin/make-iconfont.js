@@ -2,7 +2,7 @@ const path = require('path');
 const generator = require('icon.font');
 
 const options = {
-  src:             './assets/img/raw-svg',
+  src:             './assets/img/svg',
   dest:            './assets/fonts',
   image:           false,
   fontName:        'awebooking-webfont',
@@ -12,8 +12,8 @@ const options = {
   types:           ['woff2', 'woff', 'ttf', 'eot', 'svg'],
   codepointRanges: [ [0xF101, Infinity] ],
   templateOptions: {
-    baseSelector:  'afc', // awebooking-webfont
-    classPrefix:   'afc-',
+    baseSelector:  'aficon', // awebooking-webfont
+    classPrefix:   'aficon-',
   },
 };
 

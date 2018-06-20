@@ -47,7 +47,7 @@ if ( ! empty( $old_input ) ) {
 
 						<div class="cmb-td">
 							<span>
-								<i class="afc afc-moon" style="vertical-align: middle;"></i>
+								<i class="aficon aficon-moon" style="vertical-align: middle;"></i>
 								<?php /* translators: %s number of night */ ?>
 								<?php echo sprintf( _n( 'one night', '%s nights', $room_item->get_nights_stayed(), 'awebooking' ), esc_html( number_format_i18n( $room_item->get_nights_stayed() ) ) ); // @codingStandardsIgnoreLine. ?>
 							</span>
