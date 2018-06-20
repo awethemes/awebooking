@@ -29,6 +29,23 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
+			'id'    => '__search_result',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Search result', 'awebooking' ),
+		]);
+
+		$general->add_field([
+			'id'              => 'display_price',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Price displayed on search', 'awebooking' ),
+			'options'         => apply_filters( 'abrs_display_price', [
+				'total'       => esc_html__( 'Total', 'awebooking' ),
+				'average'     => esc_html__( 'Average', 'awebooking' ),
+				'first_night' => esc_html__( 'First night', 'awebooking' ),
+			]),
+		]);
+
+		$general->add_field([
 			'id'    => '__images',
 			'type'  => 'title',
 			'name'  => esc_html__( 'Room images', 'awebooking' ),

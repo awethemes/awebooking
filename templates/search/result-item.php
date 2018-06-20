@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $remain_rooms = $room_rate->get_remain_rooms();
 
 $rate_plan = $room_rate->get_rate_plan();
-
+dump($rate_plan);
 ?>
 
 <div class="roommaster">
@@ -87,11 +87,10 @@ $rate_plan = $room_rate->get_rate_plan();
 						<table class="roommaster-table">
 							<thead>
 								<tr>
-									<th class="thead-1">Lựa chọn</th>
-									<th class="thead-2"><?php esc_html_e( 'Occupancy', 'awebooking' ); ?></th>
+									<th class="thead-1"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></th>
+									<th class="thead-2"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></th>
 									<th class="thead-3"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
-									<!-- <th class="thead-4">SL</th> -->
-									<th class="thead-5">Đặt nhiều nhất</th>
+									<th class="thead-5"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -100,65 +99,103 @@ $rate_plan = $room_rate->get_rate_plan();
 								<?php //foreach ($variable as $key => $value) : ?>
 								<tr>
 									<td class="roommaster-child">
-										<div class="roommaster-child__item">
-											<span class="roommaster-child__bucketspan">Lợi ích</span>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span class="info-text">Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
+										<?php if ( $room_type->get( 'rate_inclusions' ) ): ?>
+											<div class="roommaster-child__item">
+												<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Inclusions', 'awebooking' ); ?></span>
+												<?php foreach ( $room_type->get( 'rate_inclusions' ) as $inclusion ): ?>
+													<div class="roommaster-child__info">
+														<span class="info-icon">
+															<i class="afc afc-dogs-not-permitted"></i>
+														</span>
+														<span class="info-text"><?php echo esc_html( $inclusion ); ?></span>
+													</div>
+												<?php endforeach; ?>
 											</div>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span>Chỉ thanh toán vào ngày 19 Tháng Sáu 2018</span>
+										<?php endif; ?>
+
+										<?php if ( $room_type->get( 'rate_policies' ) ): ?>
+											<div class="roommaster-child__item">
+												<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Policies', 'awebooking' ); ?></span>
+												<?php foreach ( $room_type->get( 'rate_policies' ) as $policy ): ?>
+													<div class="roommaster-child__info">
+														<span class="info-icon">
+															<i class="afc afc-dogs-not-permitted"></i>
+														</span>
+														<span><?php echo esc_html( $policy ); ?></span>
+													</div>
+												<?php endforeach; ?>
 											</div>
-										</div>
-										<div class="roommaster-child__item">
-											<span class="roommaster-child__bucketspan">Giảm giá</span>
-											<div class="roommaster-child__info">
-												<span class="info-icon">
-													<i class="afc afc-dogs-not-permitted"></i>
-												</span>
-												<span>Coupon giảm giá: 73.202 ₫</span>
-											</div>
-										</div>
+										<?php endif; ?>
 									</td>
 									<td class="roommaster-occupancy">
-										<span class="roommaster-occupancy__item">
-											<span>6</span>
-											x
-											<i class="afc afc-male"></i>
-										</span>
+										<?php if ( $room_type->get( 'number_adults' ) ) : ?>
+											<span class="roommaster-occupancy__item">
+												<?php
+													/* translators: %1$s number adults, %2$s adult button */
+													printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
+														absint( $room_type->get( 'number_adults' ) ),
+														'<i class="afc afc-male"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
+													);
+												?>
+											</span>
+										<?php endif; ?>
 
-										<span class="roommaster-occupancy__item">
-											<span>3</span>
-											x
-											<i class="afc afc-child"></i>
-										</span>
+										<?php if ( $room_type->get( 'number_adults' ) ) : ?>
+											<span class="roommaster-occupancy__item">
+												<?php
+													/* translators: %1$s number children, %2$s child button */
+													printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
+														absint( $room_type->get( 'number_children' ) ),
+														'<i class="afc afc-child"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
+													);
+												?>
+
+											</span>
+										<?php endif; ?>
+
+										<?php if ( $room_type->get( 'number_infants' ) ) : ?>
+											<span class="roommaster-occupancy__item">
+												<?php
+													/* translators: %1$s number infants, %2$s adult button */
+													printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
+														absint( $room_type->get( 'number_infants' ) ),
+														'<i class="afc afc-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
+													);
+												?>
+											</span>
+										<?php endif; ?>
+
+										<div>
+											(Tool tip)
+											Maximum occupancy: 4
+											Adults: 2
+											Children: 2
+										</div>
 									</td>
-									<td  class="roommaster-inventory">
+									<td class="roommaster-inventory">
 										<?php
 										switch ( abrs_get_option( 'display_price', 'total' ) ) {
 											case 'total':
 												abrs_price( $room_rate->get_rate() );
-												echo sprintf( 'Cost for %s nights', $room_rate->timespan->nights() );
+												/* translators: %s nights */
+												printf( esc_html_x( 'Cost for %s', 'total cost', 'awebooking' ),
+													abrs_format_night_counts( $room_rate->timespan->nights() )
+												); // WPCS: xss ok.
+												break;
+
+											case 'average':
+												abrs_price( $room_rate->get_price( 'rate_average' ) );
+												esc_html_e( 'Average cost per night', 'awebooking' );
 												break;
 
 											case 'first_night':
+												abrs_price( $room_rate->get_price( 'rate_first_night' ) );
+												esc_html_e( 'Cost for first night', 'awebooking' );
 												break;
 										}
 										?>
 									</td>
-<!-- 									<td class="roommaster-select">
-										<select name="" id="" class="select-form">
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
-									</td> -->
+
 									<td class="roommaster-button">
 										<?php if ( ! $room_rate->has_error() ) : ?>
 											<?php
@@ -197,7 +234,7 @@ $rate_plan = $room_rate->get_rate_plan();
 
 		</div>
 
-		<div class=" roommaster-detail">
+		<div class="roommaster-detail">
 			<div class="columns">
 				<div class="column-3">
 					<img src="https://picsum.photos/500/500" alt="">
