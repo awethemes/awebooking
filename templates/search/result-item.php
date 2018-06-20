@@ -44,7 +44,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'view' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-building-alt"></i>
+										<i class="aficon aficon-business"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Room view', 'room view button', 'awebooking' ); ?></span>
 									</span>
 									<?php echo esc_html( $room_type->get( 'view' ) ); ?>
@@ -54,7 +54,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'area_size' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-elevator"></i>
+										<i class="aficon aficon-elevator"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Area size', 'area size button', 'awebooking' ); ?></span>
 									</span>
 									<?php
@@ -70,7 +70,7 @@ dump($rate_plan);
 							<?php if ( $room_type->get( 'beds' ) ) : ?>
 								<li class="info-item">
 									<span class="info-icon">
-										<i class="afc afc-bed"></i>
+										<i class="aficon aficon-bed"></i>
 										<span class="screen-reader-text"><?php echo esc_html_x( 'Bed', 'bed button', 'awebooking' ); ?></span>
 									</span>
 									<?php print abrs_get_room_beds( $room_type ); // WPCS: xss ok. ?>
@@ -105,7 +105,7 @@ dump($rate_plan);
 												<?php foreach ( $room_type->get( 'rate_inclusions' ) as $inclusion ): ?>
 													<div class="roommaster-child__info">
 														<span class="info-icon">
-															<i class="afc afc-dogs-not-permitted"></i>
+															<i class="aficon aficon-checkmark"></i>
 														</span>
 														<span class="info-text"><?php echo esc_html( $inclusion ); ?></span>
 													</div>
@@ -119,7 +119,7 @@ dump($rate_plan);
 												<?php foreach ( $room_type->get( 'rate_policies' ) as $policy ): ?>
 													<div class="roommaster-child__info">
 														<span class="info-icon">
-															<i class="afc afc-dogs-not-permitted"></i>
+															<i class="aficon aficon-checkmark"></i>
 														</span>
 														<span><?php echo esc_html( $policy ); ?></span>
 													</div>
@@ -134,19 +134,19 @@ dump($rate_plan);
 													/* translators: %1$s number adults, %2$s adult button */
 													printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
 														absint( $room_type->get( 'number_adults' ) ),
-														'<i class="afc afc-male"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-man"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
 													);
 												?>
 											</span>
 										<?php endif; ?>
 
-										<?php if ( $room_type->get( 'number_adults' ) ) : ?>
+										<?php if ( $room_type->get( 'number_children' ) ) : ?>
 											<span class="roommaster-occupancy__item">
 												<?php
 													/* translators: %1$s number children, %2$s child button */
 													printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
 														absint( $room_type->get( 'number_children' ) ),
-														'<i class="afc afc-child"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-body"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
 													);
 												?>
 
@@ -156,10 +156,10 @@ dump($rate_plan);
 										<?php if ( $room_type->get( 'number_infants' ) ) : ?>
 											<span class="roommaster-occupancy__item">
 												<?php
-													/* translators: %1$s number infants, %2$s adult button */
+													/* translators: %1$s number infants, %2$s infant button */
 													printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
 														absint( $room_type->get( 'number_infants' ) ),
-														'<i class="afc afc-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
+														'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
 													);
 												?>
 											</span>
