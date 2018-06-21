@@ -19,6 +19,12 @@ $border-radius-sm:            0;
 @import "node_modules/bootstrap/scss/mixins";
 @import "utils/mixins";
 
+.awebooking-popup-theme {
+  color: inherit;
+  background-color: #fff;
+  box-shadow: 1px 3px 25px rgba($black, .08);
+}
+
 #awebooking-container {
   @include make-container;
   @include make-container-max-widths;

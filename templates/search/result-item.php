@@ -22,7 +22,7 @@ $rate_plan = $room_rate->get_rate_plan();
 <div class="roommaster">
 	<div class="roommaster-header">
 		<h3 class="roommaster-header__title">
-			<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark" target="_blank"><?php echo esc_html( $room_type->get( 'title' ) ); ?></a>
+			<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark" target="_blank" title="<?php echo esc_html( $room_type->get( 'title' ) ); ?>"><?php echo esc_html( $room_type->get( 'title' ) ); ?></a>
 		</h3>
 	</div>
 	<div class="roommaster-wrapper awebooking">

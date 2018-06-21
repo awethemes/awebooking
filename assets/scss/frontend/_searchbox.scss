@@ -305,28 +305,6 @@ $searchbox-box--border:      200px !default;
 
 
 
-.searchbox__popup {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  transform-origin: 0 50%;
-  padding: 10px;
-
-  transform: translateY(10px) rotateX(-10deg);
-  transform-origin: 50% 0;
-  visibility: hidden;
-  opacity: 0;
-  box-shadow: 0 0 10px rgba(#000, .2);
-  transition: all .3s ease;
-
-  &.searchbox__popup--active {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(10px) rotateX(0);
-  }
-}
 
 
 .searchbox-spinner {

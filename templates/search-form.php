@@ -55,6 +55,7 @@ $form_classes = [
 								</select>
 							</label>
 						</div>
+
 					</div>
 				</div>
 			<?php endif; ?>
@@ -158,21 +159,6 @@ $form_classes = [
 </form>
 <script>
 	(function($) {
-		$('html,body').on('click', function() {
-			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
-		});
-
-		$('.searchbox__box-wrap').on('click', function(e) {
-			e.stopPropagation();
-
-			var self = $(this);
-
-			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
-
-			self.find('.searchbox__popup').toggleClass('searchbox__popup--active');
-
-		});
-
 		$('.searchbox-spinner').each(function() {
 			var self = $(this),
 				decrement = $('.searchbox-spinner__decrement', self),
