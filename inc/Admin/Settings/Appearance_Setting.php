@@ -29,26 +29,26 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
-			'id'    => '__search_form',
-			'type'  => 'title',
-			'name'  => esc_html__( 'Search form', 'awebooking' ),
+			'id'   => '__search_form',
+			'type' => 'title',
+			'name' => esc_html__( 'Search form', 'awebooking' ),
 		]);
 
 		$general->add_field([
-			'id'              => 'search_form_style',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Search form style', 'awebooking' ),
-			'options'         => apply_filters( 'abrs_search_form_style', [
+			'id'      => 'search_form_style',
+			'type'    => 'select',
+			'name'    => esc_html__( 'Search form style', 'awebooking' ),
+			'options' => apply_filters( 'abrs_search_form_style', [
 				'horizontal'       => esc_html__( 'Horizontal', 'awebooking' ),
 				'horizontal-agoda' => esc_html__( 'Horizontal Agoda', 'awebooking' ),
 			]),
 		]);
 
 		$general->add_field([
-			'id'              => 'search_form_aligment',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Search form aligment', 'awebooking' ),
-			'options'         => apply_filters( 'abrs_search_form_aligment', [
+			'id'      => 'search_form_aligment',
+			'type'    => 'select',
+			'name'    => esc_html__( 'Search form aligment', 'awebooking' ),
+			'options' => apply_filters( 'abrs_search_form_aligment', [
 				'left'   => esc_html__( 'Left', 'awebooking' ),
 				'center' => esc_html__( 'Center', 'awebooking' ),
 				'right'  => esc_html__( 'Right', 'awebooking' ),
@@ -57,48 +57,56 @@ class Appearance_Setting extends Abstract_Setting {
 
 		$general->add_field([
 			'id'              => 'search_form_max_adults',
-			'type'            => 'select',
+			'type'            => 'text_small',
 			'name'            => esc_html__( 'Maximum adults', 'awebooking' ),
 			'desc'            => esc_html__( 'The maximum number of adults can be selected', 'awebooking' ),
 			'tooltip'         => true,
-			'options'         => apply_filters( 'abrs_search_form_max_adults', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
+			'attributes'      => [
+				'type' => 'number',
+			],
 			'default'         => '6',
 			'sanitization_cb' => 'absint',
 		]);
 
 		$general->add_field([
 			'id'              => 'search_form_max_children',
-			'type'            => 'select',
+			'type'            => 'text_small',
 			'name'            => esc_html__( 'Maximum children', 'awebooking' ),
 			'desc'            => esc_html__( 'The maximum number of children can be selected', 'awebooking' ),
 			'tooltip'         => true,
-			'options'         => apply_filters( 'abrs_search_form_max_children', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
 			'default'         => '6',
+			'show_on_cb'      => 'abrs_children_bookable',
 			'sanitization_cb' => 'absint',
+			'attributes'      => [
+				'type' => 'number',
+			],
 		]);
 
 		$general->add_field([
 			'id'              => 'search_form_max_infants',
-			'type'            => 'select',
+			'type'            => 'text_small',
 			'name'            => esc_html__( 'Maximum infants', 'awebooking' ),
 			'desc'            => esc_html__( 'The maximum number of infants can be selected', 'awebooking' ),
 			'tooltip'         => true,
-			'options'         => apply_filters( 'abrs_search_form_max_infants', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
 			'default'         => '6',
+			'show_on_cb'      => 'abrs_infants_bookable',
 			'sanitization_cb' => 'absint',
+			'attributes'      => [
+				'type' => 'number',
+			],
 		]);
 
 		$general->add_field([
-			'id'    => '__search_result',
-			'type'  => 'title',
-			'name'  => esc_html__( 'Search result', 'awebooking' ),
+			'id'   => '__search_result',
+			'type' => 'title',
+			'name' => esc_html__( 'Search result', 'awebooking' ),
 		]);
 
 		$general->add_field([
-			'id'              => 'display_price',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Price displayed on search', 'awebooking' ),
-			'options'         => apply_filters( 'abrs_display_price', [
+			'id'      => 'display_price',
+			'type'    => 'select',
+			'name'    => esc_html__( 'Price displayed on search', 'awebooking' ),
+			'options' => apply_filters( 'abrs_display_price', [
 				'total'       => esc_html__( 'Total', 'awebooking' ),
 				'average'     => esc_html__( 'Average', 'awebooking' ),
 				'first_night' => esc_html__( 'First night', 'awebooking' ),
@@ -106,20 +114,20 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
-			'id'    => '__images',
-			'type'  => 'title',
-			'name'  => esc_html__( 'Room images', 'awebooking' ),
+			'id'   => '__images',
+			'type' => 'title',
+			'name' => esc_html__( 'Room images', 'awebooking' ),
 			/* translators: Link */
-			'desc'  => sprintf( wp_kses_post( __( 'These settings affect the display and dimensions of images. After changing these settings you may need to <a target="_blank" href="%s">regenerate your thumbnails</a>.', 'awebooking' ) ), esc_url( 'https://wordpress.org/plugins/regenerate-thumbnails' ) ),
+			'desc' => sprintf( wp_kses_post( __( 'These settings affect the display and dimensions of images. After changing these settings you may need to <a target="_blank" href="%s">regenerate your thumbnails</a>.', 'awebooking' ) ), esc_url( 'https://wordpress.org/plugins/regenerate-thumbnails' ) ),
 		]);
 
 		$general->add_field([
-			'id'              => 'archive_image_size',
-			'type'            => 'abrs_image_size',
-			'name'            => esc_html__( 'Archive images', 'awebooking' ),
-			'desc'            => esc_html__( 'This size is usually used in room type listings. (W x H)', 'awebooking' ),
-			'tooltip'         => true,
-			'default'         => [
+			'id'      => 'archive_image_size',
+			'type'    => 'abrs_image_size',
+			'name'    => esc_html__( 'Archive images', 'awebooking' ),
+			'desc'    => esc_html__( 'This size is usually used in room type listings. (W x H)', 'awebooking' ),
+			'tooltip' => true,
+			'default' => [
 				'width'  => 600,
 				'height' => 400,
 				'crop'   => 'on',
@@ -127,12 +135,12 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
-			'id'              => 'single_image_size',
-			'type'            => 'abrs_image_size',
-			'name'            => esc_html__( 'Single room image', 'awebooking' ),
-			'desc'            => esc_html__( 'This is the size used by the main image on the room type page. (W x H)', 'awebooking' ),
-			'tooltip'         => true,
-			'default'         => [
+			'id'      => 'single_image_size',
+			'type'    => 'abrs_image_size',
+			'name'    => esc_html__( 'Single room image', 'awebooking' ),
+			'desc'    => esc_html__( 'This is the size used by the main image on the room type page. (W x H)', 'awebooking' ),
+			'tooltip' => true,
+			'default' => [
 				'width'  => 900,
 				'height' => 600,
 				'crop'   => 'on',
@@ -140,12 +148,12 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
-			'id'              => 'thumbnail_image_size',
-			'type'            => 'abrs_image_size',
-			'name'            => esc_html__( 'Room thumbnails', 'awebooking' ),
-			'desc'            => esc_html__( 'This size is usually used for the gallery of images on the room type page. (W x H)', 'awebooking' ),
-			'tooltip'         => true,
-			'default'         => [
+			'id'      => 'thumbnail_image_size',
+			'type'    => 'abrs_image_size',
+			'name'    => esc_html__( 'Room thumbnails', 'awebooking' ),
+			'desc'    => esc_html__( 'This size is usually used for the gallery of images on the room type page. (W x H)', 'awebooking' ),
+			'tooltip' => true,
+			'default' => [
 				'width'  => 300,
 				'height' => 300,
 				'crop'   => 'on',
@@ -153,9 +161,9 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
-			'id'    => '__custom_css__',
-			'type'  => 'title',
-			'name'  => esc_html__( 'Custom CSS', 'awebooking' ),
+			'id'   => '__custom_css__',
+			'type' => 'title',
+			'name' => esc_html__( 'Custom CSS', 'awebooking' ),
 		]);
 
 		$general->add_field([
