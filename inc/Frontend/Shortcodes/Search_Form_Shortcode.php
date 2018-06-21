@@ -12,6 +12,7 @@ class Search_Form_Shortcode extends Shortcode_Abstract {
 		'alignment'       => '',
 		'container_class' => '',
 		'res_request'     => null,
+		'hotel_location'  => true,
 	];
 
 	/**

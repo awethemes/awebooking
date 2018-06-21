@@ -29,6 +29,66 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
+			'id'    => '__search_form',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Search form', 'awebooking' ),
+		]);
+
+		$general->add_field([
+			'id'              => 'search_form_style',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Search form style', 'awebooking' ),
+			'options'         => apply_filters( 'abrs_search_form_style', [
+				'horizontal'       => esc_html__( 'Horizontal', 'awebooking' ),
+				'horizontal-agoda' => esc_html__( 'Horizontal Agoda', 'awebooking' ),
+			]),
+		]);
+
+		$general->add_field([
+			'id'              => 'search_form_aligment',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Search form aligment', 'awebooking' ),
+			'options'         => apply_filters( 'abrs_search_form_aligment', [
+				'left'   => esc_html__( 'Left', 'awebooking' ),
+				'center' => esc_html__( 'Center', 'awebooking' ),
+				'right'  => esc_html__( 'Right', 'awebooking' ),
+			]),
+		]);
+
+		$general->add_field([
+			'id'              => 'search_form_max_adults',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Maximum adults', 'awebooking' ),
+			'desc'            => esc_html__( 'The maximum number of adults can be selected', 'awebooking' ),
+			'tooltip'         => true,
+			'options'         => apply_filters( 'abrs_search_form_max_adults', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
+			'default'         => '6',
+			'sanitization_cb' => 'absint',
+		]);
+
+		$general->add_field([
+			'id'              => 'search_form_max_children',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Maximum children', 'awebooking' ),
+			'desc'            => esc_html__( 'The maximum number of children can be selected', 'awebooking' ),
+			'tooltip'         => true,
+			'options'         => apply_filters( 'abrs_search_form_max_children', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
+			'default'         => '6',
+			'sanitization_cb' => 'absint',
+		]);
+
+		$general->add_field([
+			'id'              => 'search_form_max_infants',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Maximum infants', 'awebooking' ),
+			'desc'            => esc_html__( 'The maximum number of infants can be selected', 'awebooking' ),
+			'tooltip'         => true,
+			'options'         => apply_filters( 'abrs_search_form_max_infants', [ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6 ] ),
+			'default'         => '6',
+			'sanitization_cb' => 'absint',
+		]);
+
+		$general->add_field([
 			'id'    => '__search_result',
 			'type'  => 'title',
 			'name'  => esc_html__( 'Search result', 'awebooking' ),
@@ -95,13 +155,13 @@ class Appearance_Setting extends Abstract_Setting {
 		$general->add_field([
 			'id'    => '__custom_css__',
 			'type'  => 'title',
-			'name'  => esc_html__( 'Custom CSS', 'coming2live' ),
+			'name'  => esc_html__( 'Custom CSS', 'awebooking' ),
 		]);
 
 		$general->add_field([
 			'id'              => 'custom_css',
 			'type'            => 'textarea_code',
-			'name'            => esc_html__( 'Custom CSS', 'coming2live' ),
+			'name'            => esc_html__( 'Custom CSS', 'awebooking' ),
 			'show_names'      => false,
 			'before'          => function() {
 				echo '<p class="abrs-mt0">' . esc_html__( 'Add your own CSS code here to customize the appearance and layout of current theme', 'awebooking' ) . '. <a href="https://codex.wordpress.org/CSS" class="external-link" target="_blank">' . esc_html__( 'Learn more about CSS', 'awebooking' ) . '</a></p>';
