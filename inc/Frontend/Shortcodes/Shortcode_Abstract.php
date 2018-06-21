@@ -72,7 +72,7 @@ abstract class Shortcode_Abstract {
 			? substr( $this->tag, 11 )
 			: $this->tag;
 
-		return sprintf( '<div class="awebooking awebooking--%1$s">%2$s</div>', sanitize_key( $tagname ), $content );
+		return sprintf( '<div class="awebooking-block awebooking-block--%1$s">%2$s</div>', sanitize_key( $tagname ), $content );
 	}
 
 	/**

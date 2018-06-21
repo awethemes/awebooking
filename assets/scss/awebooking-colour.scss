@@ -13,7 +13,8 @@ $border-radius-sm:            0;
   @include make-container-max-widths;
 }
 
-.awebooking {
+.awebooking,
+.awebooking-block {
   @import "frontend/elements/form";
   @import "frontend/elements/button";
 }

@@ -161,7 +161,7 @@ msgid "Specified arrival date is prior to today's date."
 msgstr ""
 
 #: inc/date-functions.php:103
-msgid "Please enter a valid timespan."
+msgid "Please enter a valid dates."
 msgstr ""
 
 #. translators: 1 -Date format, 2 - Time format
@@ -227,32 +227,32 @@ msgstr ""
 msgid "Contribute"
 msgstr ""
 
-#: templates/search-form.php:23, inc/Admin/Settings/Hotel_Setting.php:22
+#: templates/search-form.php:54, inc/Admin/Settings/Hotel_Setting.php:22
 msgid "Hotel"
 msgstr ""
 
-#: templates/search-form.php:40, templates/search-form.php:41, inc/Admin/Metaboxes/views/html-booking-rooms.php:19, inc/Component/Form/fields/abrs_dates.php:23
+#: templates/search-form.php:74, templates/search-form.php:75, inc/Admin/Metaboxes/views/html-booking-rooms.php:19, inc/Component/Form/fields/abrs_dates.php:23
 msgid "Check In"
 msgstr ""
 
-#: templates/search-form.php:53, templates/search-form.php:54, inc/Admin/Metaboxes/views/html-booking-rooms.php:20, inc/Component/Form/fields/abrs_dates.php:32
+#: templates/search-form.php:90, templates/search-form.php:91, inc/Admin/Metaboxes/views/html-booking-rooms.php:20, inc/Component/Form/fields/abrs_dates.php:32
 msgid "Check Out"
 msgstr ""
 
-#: templates/search-form.php:72, templates/search-form.php:94, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:21, inc/Admin/views/booking/html-avai-row.php:68
+#: templates/search-form.php:109, templates/search-form.php:131, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:21, inc/Admin/views/booking/html-avai-row.php:68
 msgid "Adults"
 msgstr ""
 
-#: templates/search-form.php:76, templates/search-form.php:102, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:24, inc/Admin/views/booking/html-avai-row.php:76
+#: templates/search-form.php:113, templates/search-form.php:139, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:24, inc/Admin/views/booking/html-avai-row.php:76
 msgid "Children"
 msgstr ""
 
-#: templates/search-form.php:80, templates/search-form.php:110, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:85
+#: templates/search-form.php:117, templates/search-form.php:147, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:85
 msgid "Infants"
 msgstr ""
 
-#: templates/search-form.php:121, inc/Admin/views/booking/add-room.php:35
-msgid "Query"
+#: templates/search-form.php:158
+msgid "Search"
 msgstr ""
 
 #: inc/Admin/Admin_Settings.php:155
@@ -745,7 +745,7 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
-#: inc/Frontend/functions.php:225, inc/Frontend/template-functions.php:59
+#: inc/Frontend/functions.php:227, inc/Frontend/template-functions.php:68
 msgid "Book Now"
 msgstr ""
 
@@ -975,7 +975,7 @@ msgid_plural "rooms"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/reservation/booked-multiple.php:80, inc/Admin/Forms/Edit_Booking_Room_Form.php:73, inc/Admin/List_Tables/Booking_List_Table.php:62
+#: templates/reservation/booked-multiple.php:80, inc/Admin/Forms/Edit_Booking_Room_Form.php:73, inc/Admin/List_Tables/Booking_List_Table.php:62, inc/Admin/Settings/Appearance_Setting.php:42
 msgid "Total"
 msgstr ""
 
@@ -1040,17 +1040,75 @@ msgctxt "bed button"
 msgid "Bed"
 msgstr ""
 
-#: templates/search/result-item.php:91, inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/Metaboxes/views/html-room-type-general.php:10, inc/Admin/views/booking/add-room.php:64
-msgid "Occupancy"
+#: templates/search/result-item.php:90
+msgid "Choose your deal"
+msgstr ""
+
+#: templates/search/result-item.php:91
+msgid "Capacity"
 msgstr ""
 
 #: templates/search/result-item.php:92, inc/Admin/Metaboxes/views/html-booking-rooms.php:31, inc/Admin/views/booking/add-room.php:65
 msgid "Price"
 msgstr ""
 
+#: templates/search/result-item.php:104, inc/Admin/Metaboxes/views/html-room-type-pricing.php:24
+msgid "Inclusions"
+msgstr ""
+
+#: templates/search/result-item.php:118, inc/Admin/Metaboxes/views/html-room-type-pricing.php:41
+msgid "Policies"
+msgstr ""
+
+#. translators: %1$s number adults, %2$s adult button
+#: templates/search/result-item.php:135
+msgctxt "number adults"
+msgid "%1$s x %2$s"
+msgstr ""
+
+#: templates/search/result-item.php:137
+msgctxt "adult button"
+msgid "Adult"
+msgstr ""
+
+#. translators: %1$s number children, %2$s child button
+#: templates/search/result-item.php:147
+msgctxt "number children"
+msgid "%1$s x %2$s"
+msgstr ""
+
+#: templates/search/result-item.php:149
+msgctxt "child button"
+msgid "Child"
+msgstr ""
+
+#. translators: %1$s number infants, %2$s infant button
+#: templates/search/result-item.php:160
+msgctxt "number infants"
+msgid "%1$s x %2$s"
+msgstr ""
+
+#: templates/search/result-item.php:162
+msgctxt "infant button"
+msgid "Infant"
+msgstr ""
+
+#. translators: %s nights
+#: templates/search/result-item.php:181
+msgctxt "total cost"
+msgid "Cost for %s"
+msgstr ""
+
+#: templates/search/result-item.php:188
+msgid "Average cost per night"
+msgstr ""
+
+#: templates/search/result-item.php:193
+msgid "Cost for first night"
+msgstr ""
+
 #. translators: %s Number of remain rooms
-#. translators: %s Number of remain rooms
-#: templates/search/result-item.php:181, templates/search/result-item.php:323
+#: templates/search/result-item.php:218
 msgctxt "remain rooms"
 msgid "Only %s room left"
 msgid_plural "Only %s rooms left"
@@ -1058,27 +1116,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s Number of remain rooms
-#. translators: %s Number of remain rooms
-#: templates/search/result-item.php:184, templates/search/result-item.php:326
+#: templates/search/result-item.php:221
 msgctxt "remain rooms"
 msgid "%s rooms left"
-msgstr ""
-
-#. translators: %s Maximum capacity
-#: templates/search/result-item.php:268
-msgctxt "awebooking"
-msgid "Maximum capacity for %s person"
-msgid_plural "Maximum capacity for %s people"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/search/result-item.php:273
-msgid "What's included"
-msgstr ""
-
-#: templates/search/search-form.php:11
-msgctxt "search availability"
-msgid "Query"
 msgstr ""
 
 #: inc/Admin/Calendar/Booking_Scheduler.php:127
@@ -1455,6 +1495,10 @@ msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:37, inc/Admin/Metaboxes/Room_Type_Metabox.php:270
 msgid "Rack Rate"
+msgstr ""
+
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/Metaboxes/views/html-room-type-general.php:10, inc/Admin/views/booking/add-room.php:64
+msgid "Occupancy"
 msgstr ""
 
 #. translators: %s Max occupancy
@@ -1925,103 +1969,119 @@ msgid "Appearance"
 msgstr ""
 
 #: inc/Admin/Settings/Appearance_Setting.php:34
+msgid "Search result"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:40
+msgid "Price displayed on search"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:43
+msgid "Average"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:44
+msgid "First night"
+msgstr ""
+
+#: inc/Admin/Settings/Appearance_Setting.php:51
 msgid "Room images"
 msgstr ""
 
 #. translators: Link
-#: inc/Admin/Settings/Appearance_Setting.php:36
+#: inc/Admin/Settings/Appearance_Setting.php:53
 msgid "These settings affect the display and dimensions of images. After changing these settings you may need to <a target=\"_blank\" href=\"%s\">regenerate your thumbnails</a>."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:42
+#: inc/Admin/Settings/Appearance_Setting.php:59
 msgid "Archive images"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:43
+#: inc/Admin/Settings/Appearance_Setting.php:60
 msgid "This size is usually used in room type listings. (W x H)"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:55
+#: inc/Admin/Settings/Appearance_Setting.php:72
 msgid "Single room image"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:56
+#: inc/Admin/Settings/Appearance_Setting.php:73
 msgid "This is the size used by the main image on the room type page. (W x H)"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:68
+#: inc/Admin/Settings/Appearance_Setting.php:85
 msgid "Room thumbnails"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:69
+#: inc/Admin/Settings/Appearance_Setting.php:86
 msgid "This size is usually used for the gallery of images on the room type page. (W x H)"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:90
+#: inc/Admin/Settings/Appearance_Setting.php:107
 msgid "Add your own CSS code here to customize the appearance and layout of current theme"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:90
+#: inc/Admin/Settings/Appearance_Setting.php:107
 msgid "Learn more about CSS"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:103
+#: inc/Admin/Settings/Appearance_Setting.php:120
 msgid "Datepicker"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:109
+#: inc/Admin/Settings/Appearance_Setting.php:126
 msgid "Date Picker"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:115
+#: inc/Admin/Settings/Appearance_Setting.php:132
 msgid "Minimum nights"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:116
+#: inc/Admin/Settings/Appearance_Setting.php:133
 msgid "Minimum nights required to select a range of dates."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:128, inc/Admin/Settings/Appearance_Setting.php:154
+#: inc/Admin/Settings/Appearance_Setting.php:145, inc/Admin/Settings/Appearance_Setting.php:171
 msgid "Maximum dates"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:129
+#: inc/Admin/Settings/Appearance_Setting.php:146
 msgid "The maximum selectable date. When set to null, there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:141
+#: inc/Admin/Settings/Appearance_Setting.php:158
 msgid "Minimum dates"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:142
+#: inc/Admin/Settings/Appearance_Setting.php:159
 msgid "The minimum selectable date. When set to \"0\", there is no minimum. A number of days from today. For example 2 represents two days from today. All the dates before the additional date will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:155
+#: inc/Admin/Settings/Appearance_Setting.php:172
 msgid "The maximum selectable date. When set to \"0\", there is no maximum. A number of days from today. For example 2 represents two days from today. All the dates after the additional date will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:167
+#: inc/Admin/Settings/Appearance_Setting.php:184
 msgid "Disabled dates"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:168
+#: inc/Admin/Settings/Appearance_Setting.php:185
 msgid "Enter dates by \", \" separating values in this format: `Y-m-d`. All the dates passed to the list will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:174
+#: inc/Admin/Settings/Appearance_Setting.php:191
 msgid "Disabled days"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:175
+#: inc/Admin/Settings/Appearance_Setting.php:192
 msgid "All the days passed to the list will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:183
+#: inc/Admin/Settings/Appearance_Setting.php:200
 msgid "The number of months displayed"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:184
+#: inc/Admin/Settings/Appearance_Setting.php:201
 msgid "Display on month or two months."
 msgstr ""
 
@@ -2796,16 +2856,8 @@ msgstr ""
 msgid "Limit the availability of the rate."
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-room-type-pricing.php:24
-msgid "Inclusions"
-msgstr ""
-
 #: inc/Admin/Metaboxes/views/html-room-type-pricing.php:29
 msgid "Services"
-msgstr ""
-
-#: inc/Admin/Metaboxes/views/html-room-type-pricing.php:41
-msgid "Policies"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-room-type-rooms.php:20, inc/Admin/Metaboxes/views/html-room-type-rooms.php:29, inc/Admin/Metaboxes/views/html-room-type-rooms.php:30
@@ -2827,6 +2879,10 @@ msgstr ""
 
 #: inc/Admin/views/booking/add-room.php:15, inc/Admin/views/booking/page-edit-room.php:23, inc/Admin/views/booking/payment-form.php:30
 msgid "Reference"
+msgstr ""
+
+#: inc/Admin/views/booking/add-room.php:35
+msgid "Query"
 msgstr ""
 
 #: inc/Admin/views/booking/add-room.php:43
