@@ -1,10 +1,11 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Support\Service_Provider;
 use AweBooking\Frontend\Checkout\Checkout;
+use AweBooking\Frontend\Search\Search_Query;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Storage\Session_Store;
+use AweBooking\Support\Service_Provider;
 
 class Reservation_Service_Provider extends Service_Provider {
 	/**
@@ -38,48 +39,23 @@ class Reservation_Service_Provider extends Service_Provider {
 		// Init the reservation hooks.
 		$this->plugin['reservation']->init();
 
-		// Setup the reservation request.
-		add_action( 'wp', [ $this, 'setup_res_request' ] );
+		// Init the search rooms.
+		add_action( 'wp', [ $this, 'init_search_rooms' ] );
 	}
 
 	/**
-	 * Setup the reservation request on the "search results" page.
+	 * Init the search query the "search results" page.
 	 *
 	 * @access private
 	 */
-	public function setup_res_request() {
-		global $wp;
-
+	public function init_search_rooms() {
 		// This action work only on search page.
 		if ( ! abrs_is_search_page() ) {
 			return;
 		}
 
-		// Resolve the htp request, if the request is not "shared",
-		// we will set it as "shared" in the container.
-		$request = $this->plugin->make( 'request' );
-
-		if ( ! $this->plugin->isShared( 'request' ) ) {
-			$this->plugin->instance( 'request', $request );
-		}
-
-		$reservation = $this->plugin->make( 'reservation' );
-
-		// Set the "res_request" into the query vars,
-		// we can retrieve it late (in the shortcode).
-		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
-			$res_request = abrs_create_res_request( $request );
-
-			$previous_request = $reservation->get_previous_request();
-			if ( $previous_request && ! $res_request->same_with( $previous_request ) ) {
-				 $reservation->flush();
-			}
-
-			if ( ! is_null( $res_request ) && ! is_wp_error( $res_request ) ) {
-				$reservation->set_current_request( $res_request );
-			}
-
-			$wp->set_query_var( 'res_request', $res_request );
-		}
+		( new Search_Query( $this->plugin ) )
+			->prepare( $this->plugin['request'] )
+			->init();
 	}
 }
