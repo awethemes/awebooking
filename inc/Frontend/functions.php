@@ -171,6 +171,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		'alignment'       => '',
 		'container_class' => '',
 		'res_request'     => null,
+		'hotel_location'  => true,
 	], $atts );
 
 	/**
