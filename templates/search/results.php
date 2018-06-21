@@ -14,6 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* @var \AweBooking\Availability\Query_Results $results */
+
+$res_request = $results->get_request();
+
 ?>
 
 <?php do_action( 'abrs_print_notices' ); ?>

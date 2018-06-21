@@ -216,7 +216,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
  * @return string|void
  */
 function abrs_bookroom_button( $args, $echo = true ) {
-	global $wp;
+	global $wp, $abrs_query;
 
 	$args = wp_parse_args( $args, [
 		'room_type'   => 0,
@@ -226,8 +226,8 @@ function abrs_bookroom_button( $args, $echo = true ) {
 		'button_atts' => [],
 	]);
 
-	$res_request = isset( $wp->query_vars['res_request'] )
-		? $wp->query_vars['res_request']
+	$res_request = ( $abrs_query && $abrs_query->res_request )
+		? $abrs_query->res_request
 		: null;
 
 	$button = abrs_get_template_content( 'book-button.php', compact( 'args', 'res_request' ) );

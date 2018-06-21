@@ -20,7 +20,7 @@ get_header( 'awebooking' ); ?>
 	/**
 	 * The opening divs for the content.
 	 *
-	 * @hooked awebooking_output_content_wrapper - 10 (outputs opening divs for the content)
+	 * @hooked abrs_content_wrapper_before() - 10 (outputs opening divs for the content).
 	 */
 	do_action( 'abrs_before_main_content' );
 
@@ -31,7 +31,7 @@ get_header( 'awebooking' ); ?>
 	/**
 	 * Outputs closing divs for the content
 	 *
-	 * @hooked awebooking_output_content_wrapper_end - 10 (outputs closing divs for the content)
+	 * @hooked abrs_content_wrapper_after() - 10 (outputs closing divs for the content).
 	 */
 	do_action( 'abrs_after_main_content' );
 	?>

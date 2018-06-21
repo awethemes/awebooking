@@ -50,6 +50,10 @@ class Template_Loader_Service_Provider extends Service_Provider {
 			case is_post_type_archive( Constants::ROOM_TYPE ):
 				$template = 'archive-room.php';
 				break;
+
+			case is_page( abrs_get_page_id( 'search_results' ) ):
+				$template = 'search.php';
+				break;
 		}
 
 		return $template;
