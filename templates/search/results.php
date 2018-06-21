@@ -57,4 +57,4 @@ $res_request = $results->get_request();
 	<aside class="hotel-content__aside">
 		<?php abrs_get_template( 'reservation/booked.php' ); ?>
 	</aside>
-</div><!-- /.container -->
+</div><!-- /.hotel-content -->
