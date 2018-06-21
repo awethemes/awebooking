@@ -41,10 +41,10 @@ if ( post_password_required() ) {
 				<div class="room-type__section">
 					<h4 class="room-type__section-title"><?php esc_html_e( 'Amenities', 'awebooking' ); ?></h4>
 
-					<div id="amenities-<?php echo absint( $room_type->get_id() ); ?>">
+					<ul id="amenities-<?php echo absint( $room_type->get_id() ); ?>">
 						<?php $amenities = wp_get_post_terms( $room_type->get_id(), 'hotel_amenity' ); ?>
 						<?php foreach ( $amenities as $amenity ) : ?>
-							<div class="room-amenity">
+							<li class="room-amenity">
 								<?php if ( $icon = get_term_meta( $amenity->term_id, '_icon', true ) ) : ?>
 									<span class="room-amenity__icon">
 										<?php if ( 'svg' === $icon['type'] || 'image' === $icon['type'] ) : ?>
@@ -57,9 +57,9 @@ if ( post_password_required() ) {
 									<i class="aficon aficon-checkmark"></i>
 								<?php endif; ?>
 								<span class="room-amenity__title"><?php echo esc_html( $amenity->name ); ?></span>
-							</div>
+							</li>
 						<?php endforeach; ?>
-					</div>
+					</ul>
 				</div>
 
 				<div class="room-type__section">
