@@ -500,12 +500,94 @@
   text-decoration: none;
 }
 
-.notification p {
+.awebooking .notification,
+.awebooking-block .notification {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid #6c757d;
+  background-color: #f8f9fa;
+  border-radius: 2px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.awebooking .notification p,
+.awebooking-block .notification p {
   margin-top: 0;
 }
 
-.notification p:last-child {
+.awebooking .notification p:last-child,
+.awebooking-block .notification p:last-child {
   margin-bottom: 0;
+}
+
+.awebooking .notification--success,
+.awebooking-block .notification--success {
+  color: #1b722f;
+  background-color: #f1f9f3;
+  border-color: #28a745;
+}
+
+.awebooking .notification--success hr,
+.awebooking-block .notification--success hr {
+  border-top-color: #23923d;
+}
+
+.awebooking .notification--success .alert-link,
+.awebooking-block .notification--success .alert-link {
+  color: #11491e;
+}
+
+.awebooking .notification--info,
+.awebooking-block .notification--info {
+  color: #106e7d;
+  background-color: #f0f9fa;
+  border-color: #17a2b8;
+}
+
+.awebooking .notification--info hr,
+.awebooking-block .notification--info hr {
+  border-top-color: #148ea1;
+}
+
+.awebooking .notification--info .alert-link,
+.awebooking-block .notification--info .alert-link {
+  color: #0a4650;
+}
+
+.awebooking .notification--warning,
+.awebooking-block .notification--warning {
+  color: #ad8305;
+  background-color: #fffbef;
+  border-color: #ffc107;
+}
+
+.awebooking .notification--warning hr,
+.awebooking-block .notification--warning hr {
+  border-top-color: #edb100;
+}
+
+.awebooking .notification--warning .alert-link,
+.awebooking-block .notification--warning .alert-link {
+  color: #7b5d04;
+}
+
+.awebooking .notification--error,
+.awebooking-block .notification--error {
+  color: #a62e25;
+  background-color: #fef3f2;
+  border-color: #f44336;
+}
+
+.awebooking .notification--error hr,
+.awebooking-block .notification--error hr {
+  border-top-color: #f32c1e;
+}
+
+.awebooking .notification--error .alert-link,
+.awebooking-block .notification--error .alert-link {
+  color: #7c221c;
 }
 
 .awebooking-datepicker.flatpickr-calendar {
@@ -1126,9 +1208,9 @@
 }
 
 .roommaster-content::after {
-  content: '';
-  display: table;
+  display: block;
   clear: both;
+  content: "";
 }
 
 .roommaster-info,
@@ -1376,9 +1458,9 @@ ul.booking_details {
 }
 
 ul.booking_details::after {
-  content: '';
-  display: table;
+  display: block;
   clear: both;
+  content: "";
 }
 
 ul.booking_details li {
@@ -1575,13 +1657,33 @@ ul.booking_details li:last-of-type {
   font-size: 20px;
 }
 
-body {
-  background-color: #f7f7f7 !important;
+.search-rooms__form {
+  margin-bottom: 1.5rem;
 }
 
-.site-content {
-  width: 1200px;
-  margin: auto;
+.search-rooms__box {
+  padding: 3.5rem 0;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #fbfbfb;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08);
+}
+
+.search-rooms__box-icon {
+  margin-bottom: 1rem;
+}
+
+.search-rooms__box-title {
+  color: #6c757d;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.search-rooms__box-text {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: #737d85;
 }
 
 @media (min-width: 576px) {

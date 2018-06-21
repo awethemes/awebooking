@@ -21,6 +21,6 @@ switch ( $template ) {
 		echo '<div id="primary" class="content-area twentysixteen"><main id="main" class="site-main" role="main">';
 		break;
 	default:
-		echo '<div id="awebooking-container"><div id="awebooking-main" role="main">';
+		echo '<div id="awebooking-container" class="awebooking-container"><div id="awebooking-main" class="awebooking-main" role="main">';
 		break;
 }

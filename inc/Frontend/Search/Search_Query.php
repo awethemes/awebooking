@@ -149,6 +149,15 @@ class Search_Query {
 	}
 
 	/**
+	 * Return true if we got any errors.
+	 *
+	 * @return bool
+	 */
+	public function is_error() {
+		return is_wp_error( $this->errors ) && count( $this->errors->errors ) > 0;
+	}
+
+	/**
 	 * Gets the plugin instance.
 	 *
 	 * @return \AweBooking\Plugin

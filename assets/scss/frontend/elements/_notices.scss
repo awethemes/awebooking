@@ -1,0 +1,36 @@
+$alert-bg-level:     -11.7;
+$alert-color-level:  4;
+$alert-border-level: 0;
+$alert-border-width: 3px;
+
+$notices-colors: (
+  "success": $success,
+  "info":    $info,
+  "warning": $warning,
+  "error":   $danger,
+);
+
+.notification {
+  position: relative;
+  padding: $alert-padding-y $alert-padding-x;
+  margin-bottom: $alert-margin-bottom;
+  border-left: $alert-border-width solid $gray-600;
+  background-color: $gray-100;
+  @include border-radius($alert-border-radius);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+  p {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@each $color, $value in $notices-colors {
+  .notification--#{$color} {
+    @include alert-variant(color-level($value, $alert-bg-level), color-level($value, $alert-border-level), color-level($value, $alert-color-level));
+  }
+}

@@ -1,3 +1,14 @@
+$blue:    #007bff;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #f44336;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
+
 $primary:                     #5392F9;
 $border-radius:               2px;
 $border-radius-lg:            2px;
@@ -17,9 +28,9 @@ $border-radius-sm:            0;
 .awebooking-block {
   @import "frontend/elements/form";
   @import "frontend/elements/button";
+  @import "frontend/elements/notices";
 }
 
-@import "frontend/notices";
 @import "frontend/datepicker";
 @import "frontend/searchbox";
 @import "frontend/layout";
@@ -27,13 +38,4 @@ $border-radius-sm:            0;
 @import "frontend/elements/box";
 @import "frontend/elements/checkout";
 @import "frontend/elements/reservation-details";
-
-// Temp code...
-body {
-  background-color: #f7f7f7 !important;
-}
-
-.site-content {
-  width: 1200px;
-  margin: auto;
-}
+@import "frontend/search-page";

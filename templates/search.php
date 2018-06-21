@@ -23,9 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 global $abrs_query, $res_request, $abrs_results;
 
-get_header( 'awebooking' ); ?>
+get_header( 'awebooking' );
 
-<?php
 /**
  * The opening divs for the content.
  *
@@ -33,30 +32,40 @@ get_header( 'awebooking' ); ?>
  */
 do_action( 'abrs_before_main_content' );
 
-while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
+?>
 
-	do_action( 'abrs_before_search_content' );
+<div class="awebooking-page awebooking-page--search">
+	<div class="search-rooms">
 
-	if ( ! $res_request || ! $abrs_results || is_wp_error( $abrs_query->errors ) ) {
-		abrs_get_template( 'search/error.php' );
-	} elseif ( ! $abrs_results->has_items() ) {
-		abrs_get_template( 'search/no-results.php', [ 'results' => $abrs_results ] );
-	} else {
-		abrs_get_template( 'search/results.php', [ 'results' => $abrs_results ] );
-	}
+		<?php while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
 
-	do_action( 'abrs_after_search_content' );
+			do_action( 'abrs_before_search_content' );
 
-endwhile;
+			if ( $abrs_query->is_error() ) {
+				abrs_get_template( 'search/error.php', [ 'errors' => $abrs_query->errors ] );
+			} elseif ( ! $res_request && ! $abrs_results ) {
+				abrs_get_template( 'search/welcome.php' );
+			} elseif ( ! $abrs_results->has_items() ) {
+				abrs_get_template( 'search/no-results.php' );
+			} else {
+				abrs_get_template( 'search/results.php', [ 'results' => $abrs_results ] );
+			}
 
+			do_action( 'abrs_after_search_content' );
+
+		endwhile; // @codingStandardsIgnoreLine. ?>
+
+	</div><!-- /.search-rooms -->
+</div><!-- /.awebooking-page--search -->
+
+<?php
 /**
  * Outputs closing divs for the content
  *
  * @hooked abrs_content_wrapper_after() - 10 (outputs closing divs for the content).
  */
 do_action( 'abrs_after_main_content' );
-?>
 
-<?php get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
+get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
 
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
