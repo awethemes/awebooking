@@ -1,11 +1,31 @@
 <?php
+/**
+ * Display the search form.
+ *
+ * This template can be overridden by copying it to {yourtheme}/awebooking/search-form.php.
+ *
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
+ */
 
-$form_classes = [];
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$form_classes = [
+	'searchbox',
+	'searchbox--' . $atts['layout'],
+	'searchbox--align-' . $atts['alignment'],
+	$atts['container_class'],
+];
+
 $max_select = 10;
 
 $hotels = abrs_list_hotels();
 
-?><form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>" role="search">
+?><form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" role="search">
 
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">
@@ -15,7 +35,7 @@ $hotels = abrs_list_hotels();
 		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_current_language() ); ?>">
 	<?php endif ?>
 
-	<div class="searchbox searchbox--horizontal">
+	<div class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
 		<div class="searchbox__wrap">
 
 			<div class="rangepicker-container">
