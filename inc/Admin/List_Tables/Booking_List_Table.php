@@ -55,7 +55,7 @@ class Booking_List_Table extends Abstract_List_Table {
 		return array_merge( $columns, [
 			'booking_number'    => esc_html__( 'Booking', 'awebooking' ),
 			'booking_status'    => esc_html__( 'Status', 'awebooking' ),
-			'booking_nights'    => '<span class="tippy" title="' . esc_html__( 'Nights', 'awebooking' ) . '"><i class="afc afc-moon"></i><span class="screen-reader-text">' . esc_html__( 'Nights', 'awebooking' ) . '</span></span>',
+			'booking_nights'    => '<span class="tippy" title="' . esc_html__( 'Nights', 'awebooking' ) . '"><i class="aficon aficon-moon"></i><span class="screen-reader-text">' . esc_html__( 'Nights', 'awebooking' ) . '</span></span>',
 			'booking_check_in'  => esc_html__( 'Check-In', 'awebooking' ),
 			'booking_check_out' => esc_html__( 'Check-Out', 'awebooking' ),
 			'booking_summary'   => esc_html__( 'Summary', 'awebooking' ),

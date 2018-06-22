@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 
-.scheduler .afc,
+.scheduler .aficon,
 .scheduler .dashicons {
   width: auto;
   height: auto;
@@ -110,7 +110,7 @@
   border-bottom: none;
 }
 
-.scheduler__menu .afc {
+.scheduler__menu .aficon {
   color: #666;
   font-size: 11px;
   text-align: center;
@@ -371,7 +371,7 @@
   background-color: #f9f9f9;
 }
 
-.scheduler__actions .afc,
+.scheduler__actions .aficon,
 .scheduler__actions .dashicons {
   width: 20px;
   height: 20px;
@@ -388,7 +388,7 @@
   transition: all 0.1s ease;
 }
 
-.scheduler__actions a:hover > .afc,
+.scheduler__actions a:hover > .aficon,
 .scheduler__actions a:hover > .dashicons {
   color: #fff;
   background-color: #666;
@@ -431,7 +431,7 @@
   box-shadow: none !important;
 }
 
-.scheduler__arrow .afc,
+.scheduler__arrow .aficon,
 .scheduler__arrow .dashicons {
   font-size: 16px;
 }

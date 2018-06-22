@@ -55,7 +55,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 	 */
 	protected function display_actions() {
 		?>
-		<li><a href="#" data-schedule-action="set-price"><i class="afc afc-dollar-sign"></i><span><?php echo esc_html__( 'Adjust Price', 'awebooking' ); ?></span></a></li>
+		<li><a href="#" data-schedule-action="set-price"><i class="aficon aficon-logo-usd"></i><span><?php echo esc_html__( 'Adjust Price', 'awebooking' ); ?></span></a></li>
 		<li><a href="#" data-schedule-action="reset-price"><i class="dashicons dashicons-image-rotate"></i><span><?php echo esc_html__( 'Revert Price', 'awebooking' ); ?></span></a></li>
 		<?php
 	}

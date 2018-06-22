@@ -1767,6 +1767,52 @@ ul.booking_details li:last-of-type {
   color: #737d85;
 }
 
+.list-room {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 50px;
+}
+
+.list-room::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.list-room__title {
+  margin-bottom: 10px;
+}
+
+.list-room__media {
+  width: 45%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-room__media img {
+  width: 100%;
+}
+
+.list-room__info {
+  width: 55%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-room__price {
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.list-room__price span {
+  font-size: 30px;
+}
+
+.list-room__desc {
+  font-size: 14px;
+}
+
 @media (min-width: 576px) {
   #awebooking-container {
     max-width: 540px;
