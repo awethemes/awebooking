@@ -2,7 +2,7 @@
 /**
  * The template for displaying room types.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/archive-room-type.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/archive-room.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -22,19 +22,22 @@ get_header( 'awebooking' ); ?>
 	 *
 	 * @hooked abrs_content_wrapper_before() - 10 (outputs opening divs for the content).
 	 */
-	do_action( 'abrs_before_main_content' ); ?>
-	<?php if ( have_posts() ) : ?>
+	do_action( 'abrs_before_main_content' );
 
-		<?php
+	if ( have_posts() ) :
 		while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
-			abrs_get_template_part( 'template-parts/loop/content', 'room-type' );
-		endwhile; ?>
+			abrs_get_template_part( 'template-parts/archive/content', 'room' );
+		endwhile;
+		?>
 
-	<?php else : ?>
-		<?php abrs_get_template( 'search/no-results.php' ); ?>
-	<?php endif; ?>
-
+		<nav class="awebooking-pagination">
+			<?php print paginate_links(); // WPCS: xss ok. ?>
+		</nav>
 	<?php
+	else :
+		abrs_get_template_part( 'template-parts/archive/content', 'none' );
+	endif;
+
 	/**
 	 * Outputs closing divs for the content
 	 *
