@@ -181,13 +181,13 @@ $rate_plan = $room_rate->get_rate_plan();
 
 								</div>
 								<div id="occupancy-description-<?php echo absint( $room_type->get_id() ); ?>" class="occupancy-description" style="display: none;">
-									<h4>
+									<h4 class="occupancy-description__title">
 										<?php
 											/* translators: %s maximum occupancy */
 											printf( esc_html__( 'Maximum occupancy: %s', 'awebooking' ), absint( $room_type->get( 'maximum_occupancy' ) ) );
 										?>
 									</h4>
-									<ul>
+									<ul class="occupancy-description__list">
 										<li>
 											<?php
 												/* translators: %s number adults */

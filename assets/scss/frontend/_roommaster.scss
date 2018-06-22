@@ -171,3 +171,23 @@
 	    white-space: normal;
 	}
 }
+
+
+.awebooking-tooltip-theme {
+	.occupancy-description {
+		&__title {
+			margin: 0;
+			padding-bottom: .4em;
+		}
+
+		&__list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			li {
+				padding: .2em 0;
+			}
+		}
+	}
+}
