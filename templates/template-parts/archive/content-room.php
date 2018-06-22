@@ -27,7 +27,7 @@ if ( empty( $room_type ) ) {
 	<div class="list-room__media">
 
 		<a href="<?php echo esc_url( get_the_permalink() ); ?>">
-			<?php awebooking_template_loop_room_type_thumbnail(); ?>
+			<?php abrs_template_room_thumbnail(); ?>
 		</a>
 	</div>
 

@@ -239,6 +239,63 @@ function abrs_format_measure_unit_label() {
 }
 
 /**
+ * Return service describe formating.
+ *
+ * @param  value  $value        value
+ * @param  string $operation    operation
+ * @param  string $before_value before value
+ * @param  string $after_value  after value
+ * @return string
+ */
+function abrs_format_service_describe( $value, $operation = 'add' ) {
+	$label = '';
+
+	switch ( $operation ) {
+		case 'add':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '+ %s to price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'add_daily':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '+ %s x night to price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'add_person':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '+ %s x person to price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'add_person_daily':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '+ %s x person x night to price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'sub':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '- %s from price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'sub_daily':
+			/* translators: %s value */
+			$label = sprintf( esc_html__( '- %s x night from price', 'awebooking' ), abrs_format_price( $value ) );
+			break;
+
+		case 'increase':
+			/* translators: %1$s value */
+			$label = sprintf( __( '+ <span>%1$s%%</span> to price', 'awebooking' ), $value );
+			break;
+
+		case 'decrease':
+			/* translators: %1$s value */
+			$label = sprintf( __( '- <span>%1$s%%</span> from price', 'awebooking' ), $value );
+			break;
+	}
+
+	return apply_filters( 'abrs_format_service_describe', $label, $value, $operation );
+}
+
+/**
  * Escaping for text with few html allowed.
  *
  * @param  string $text Input text.
