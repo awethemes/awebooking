@@ -1,7 +1,7 @@
 <?php foreach ( $calendar->scheduler as $loop_calendar ) : ?>
 	<li class="scheduler__menu">
 		<strong class="scheduler__calendar-title">
-			<i class="afc afc-bed"></i>
+			<i class="aficon aficon-bed"></i>
 			<span><?php echo esc_html( $loop_calendar->get_name() ); ?></span>
 		</strong>
 

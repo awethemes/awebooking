@@ -27,8 +27,8 @@ $rate_plan = $room_rate->get_rate_plan();
 ?>
 
 <div class="roommaster">
-	<div class="roommaster__header">
-		<h3 class="roommaster__title">
+	<div class="roommaster-header">
+		<h3 class="roommaster-header__title">
 			<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark" target="_blank"><?php echo esc_html( $room_type->get( 'title' ) ); ?></a>
 		</h3>
 
@@ -42,7 +42,7 @@ $rate_plan = $room_rate->get_rate_plan();
 			<div class="columns no-gutters">
 				<div class="column-3">
 					<div class="roommaster-info">
-						<div class="roommaster-info__title"><?php esc_html_e( 'Room type', 'awebooking' ); ?></div>
+						<div class="roommaster-content__title"><?php esc_html_e( 'Room type', 'awebooking' ); ?></div>
 						<div class="roommaster-info__image">
 							<?php
 							if ( has_post_thumbnail( $room_type->get_id() ) ) {
@@ -92,99 +92,104 @@ $rate_plan = $room_rate->get_rate_plan();
 						</ul>
 					</div>
 				</div>
-
 				<div class="column-9">
 					<div class="roommaster-list">
-						<table class="roommaster-table">
-							<thead>
-								<tr>
-									<th class="thead-1"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></th>
-									<th class="thead-2"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></th>
-									<th class="thead-3"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
-									<th class="thead-5"></th>
-								</tr>
-							</thead>
-							<tbody>
+						<div class="columns no-gutters">
+							<div class="column-4">
+								<div class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></div>
+							</div>
+							<div class="column-3">
+								<div class="roommaster-content__title"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></div>
+							</div>
+							<div class="column-3">
+								<div class="roommaster-content__title"><?php esc_html_e( 'Price', 'awebooking' ); ?></div>
+							</div>
+							<div class="column-2"></div>
+						</div>
 
-
-								<?php //foreach ($variable as $key => $value) : ?>
-								<tr>
-									<td class="roommaster-child">
-										<?php if ( $room_type->get( 'rate_inclusions' ) ): ?>
-											<div class="roommaster-child__item">
-												<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Inclusions', 'awebooking' ); ?></span>
-												<?php foreach ( $room_type->get( 'rate_inclusions' ) as $inclusion ): ?>
-													<div class="roommaster-child__info">
-														<span class="info-icon">
-															<i class="aficon aficon-checkmark"></i>
-														</span>
-														<span class="info-text"><?php echo esc_html( $inclusion ); ?></span>
-													</div>
-												<?php endforeach; ?>
-											</div>
-										<?php endif; ?>
-
-										<?php if ( $room_type->get( 'rate_policies' ) ): ?>
-											<div class="roommaster-child__item">
-												<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Policies', 'awebooking' ); ?></span>
-												<?php foreach ( $room_type->get( 'rate_policies' ) as $policy ): ?>
-													<div class="roommaster-child__info">
-														<span class="info-icon">
-															<i class="aficon aficon-checkmark"></i>
-														</span>
-														<span><?php echo esc_html( $policy ); ?></span>
-													</div>
-												<?php endforeach; ?>
-											</div>
-										<?php endif; ?>
-									</td>
-									<td class="roommaster-occupancy">
-										<?php if ( $room_type->get( 'number_adults' ) ) : ?>
-											<span class="roommaster-occupancy__item">
-												<?php
-													/* translators: %1$s number adults, %2$s adult button */
-													printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
-														absint( $room_type->get( 'number_adults' ) ),
-														'<i class="aficon aficon-man"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
-													);
-												?>
-											</span>
-										<?php endif; ?>
-
-										<?php if ( $room_type->get( 'number_children' ) ) : ?>
-											<span class="roommaster-occupancy__item">
-												<?php
-													/* translators: %1$s number children, %2$s child button */
-													printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
-														absint( $room_type->get( 'number_children' ) ),
-														'<i class="aficon aficon-body"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
-													);
-												?>
-
-											</span>
-										<?php endif; ?>
-
-										<?php if ( $room_type->get( 'number_infants' ) ) : ?>
-											<span class="roommaster-occupancy__item">
-												<?php
-													/* translators: %1$s number infants, %2$s infant button */
-													printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
-														absint( $room_type->get( 'number_infants' ) ),
-														'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
-													);
-												?>
-											</span>
-										<?php endif; ?>
-
-										<div>
-											(Tool tip)
-											Maximum occupancy: 4
-											Adults: 2
-											Children: 2
+						<?php //foreach ($variable as $key => $value) : ?>
+						<div class="columns no-gutters">
+							<div class="column-4">
+								<div class="roommaster-child">
+									<?php if ( $room_type->get( 'rate_inclusions' ) ): ?>
+										<div class="roommaster-child__item">
+											<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Inclusions', 'awebooking' ); ?></span>
+											<?php foreach ( $room_type->get( 'rate_inclusions' ) as $inclusion ): ?>
+												<div class="roommaster-child__info">
+													<span class="info-icon">
+														<i class="aficon aficon-checkmark"></i>
+													</span>
+													<span class="info-text"><?php echo esc_html( $inclusion ); ?></span>
+												</div>
+											<?php endforeach; ?>
 										</div>
-									</td>
-									<td class="roommaster-inventory">
-										<?php
+									<?php endif; ?>
+
+									<?php if ( $room_type->get( 'rate_policies' ) ): ?>
+										<div class="roommaster-child__item">
+											<span class="roommaster-child__bucketspan"><?php esc_html_e( 'Policies', 'awebooking' ); ?></span>
+											<?php foreach ( $room_type->get( 'rate_policies' ) as $policy ): ?>
+												<div class="roommaster-child__info">
+													<span class="info-icon">
+														<i class="aficon aficon-checkmark"></i>
+													</span>
+													<span><?php echo esc_html( $policy ); ?></span>
+												</div>
+											<?php endforeach; ?>
+										</div>
+									<?php endif; ?>
+								</div>
+							</div>
+							<div class="column-3">
+								<div class="roommaster-occupancy">
+									<?php if ( $room_type->get( 'number_adults' ) ) : ?>
+										<span class="roommaster-occupancy__item">
+											<?php
+												/* translators: %1$s number adults, %2$s adult button */
+												printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
+													absint( $room_type->get( 'number_adults' ) ),
+													'<i class="aficon aficon-man"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
+												);
+											?>
+										</span>
+									<?php endif; ?>
+
+									<?php if ( $room_type->get( 'number_children' ) ) : ?>
+										<span class="roommaster-occupancy__item">
+											<?php
+												/* translators: %1$s number children, %2$s child button */
+												printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
+													absint( $room_type->get( 'number_children' ) ),
+													'<i class="aficon aficon-body"></i><span class="screen-reader-text">' . esc_html_x( 'Child', 'child button', 'awebooking' ) . '</span>'
+												);
+											?>
+
+										</span>
+									<?php endif; ?>
+
+									<?php if ( $room_type->get( 'number_infants' ) ) : ?>
+										<span class="roommaster-occupancy__item">
+											<?php
+												/* translators: %1$s number infants, %2$s infant button */
+												printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
+													absint( $room_type->get( 'number_infants' ) ),
+													'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
+												);
+											?>
+										</span>
+									<?php endif; ?>
+
+									<div>
+										(Tool tip)
+										Maximum occupancy: 4
+										Adults: 2
+										Children: 2
+									</div>
+								</div>
+							</div>
+							<div class="column-3">
+								<div class="roommaster-inventory">
+									<?php
 										switch ( abrs_get_option( 'display_price', 'total' ) ) {
 											case 'total':
 												abrs_price( $room_rate->get_rate() );
@@ -204,43 +209,42 @@ $rate_plan = $room_rate->get_rate_plan();
 												esc_html_e( 'Cost for first night', 'awebooking' );
 												break;
 										}
+									?>
+								</div>
+							</div>
+							<div class="column-2">
+								<div class="roommaster-button">
+									<?php if ( ! $room_rate->has_error() ) : ?>
+										<?php
+										abrs_bookroom_button([
+											'room_type'   => $room_type->get_id(),
+											'show_button' => true,
+											'button_atts' => [
+												'class' => 'booknow button is-primary',
+											],
+										]);
 										?>
-									</td>
+									<?php endif ?>
 
-									<td class="roommaster-button">
-										<?php if ( ! $room_rate->has_error() ) : ?>
-											<?php
-											abrs_bookroom_button([
-												'room_type'   => $room_type->get_id(),
-												'show_button' => true,
-												'button_atts' => [
-													'class' => 'booknow button is-primary',
-												],
-											]);
-											?>
-										<?php endif ?>
+									<span class="roommaster-button__remaining-rooms">
+										<?php
+										$rooms_left = $remain_rooms->count();
 
-										<span class="roommaster-button__remaining-rooms">
-											<?php
-											$rooms_left = $remain_rooms->count();
-
-											if ( $rooms_left <= 2 ) {
-												/* translators: %s Number of remain rooms */
-												printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
-											} else {
-												/* translators: %s Number of remain rooms */
-												printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
-											}
-											?>
-										</span>
-									</td>
-								</tr>
-								<?php //endforeach; ?>
-
-							</tbody>
-						</table>
+										if ( $rooms_left <= 2 ) {
+											/* translators: %s Number of remain rooms */
+											printf( esc_html( _nx( 'Only %s room left', 'Only %s rooms left', $rooms_left, 'remain rooms', 'awebooking' ) ), esc_html( number_format_i18n( $rooms_left ) ) );
+										} else {
+											/* translators: %s Number of remain rooms */
+											printf( esc_html_x( '%s rooms left', 'remain rooms', 'awebooking' ), esc_html( number_format_i18n( $rooms_left ) ) );
+										}
+										?>
+									</span>
+								</div>
+							</div>
+						</div>
+						<?php //endforeach; ?>
 					</div>
-				</div>
+				</div>	
 			</div>
 		</div>
 
