@@ -2,178 +2,158 @@ $border: #cbd3db;
 $background: #F9F9FA;
 
 .reservation--summary {
-  padding: 0;
-  border-radius: 6px;
-  background-color: $white;
-  box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
+	padding: 0;
+	border-radius: 6px;
+	background-color: $white;
+	box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
 
-  .reservation__title {
-    @include sr-only;
-  }
+	.reservation__title {
+		@include sr-only;
+	}
 
-  .reservation_details {
-    padding: 1rem;
-    border-bottom: solid 1px $gray-200;
-  }
+	.reservation-dates {
+		padding: 1rem;
+		border-bottom: solid 1px $gray-200;
+	}
 }
 
-.reservation_details {
-  display: flex;
+.reservation-dates {
+  	display: flex;
 	justify-content: space-between;
-  align-items: center;
-	margin-bottom: 20px;
-
+  	align-items: center;
 }
 
-.reservation_details___item {
-	&.tb-width-40 {
-		width: 40%;
+.reservation-date {
+	&__subtitle {
+		display: block;
+		margin-bottom: .3rem;
+		color: $gray-600;
 	}
 
-	&.tb-width-20 {
-		width: 20%;
+	&__info {
+		position: relative;
+		padding-left: 4rem;
+		margin-bottom: .2rem;
 	}
-}
 
-.reservation_details__subtitle {
-	display: block;
-	margin-bottom: 8px;
-}
-
-.reservation_details__info {
-	position: relative;
-	padding-left: 60px;
-	margin-bottom: 5px;
-
-	.meta-day {
-		font-size: 45px;
+	&__day {
+		font-size: 3rem;
 		position: absolute;
 		top: 50%;
 		left: 0;
 		transform: translateY(-50%);
 	}
 
-	.meta-day-week,
-	.meta-month-year {
+	&__week,
+	&__year {
 		display: block;
 	}
-}
 
-.divider-solid-bottom {
-	width: 100%;
-	height: 1px;
-	border-bottom: 1px solid $border;
-	margin: 20px 0;
+	&__time {
+		color: $gray-600;
+	}
+
+
+	&__arrow {
+		font-size: 2rem;
+	}
+
 }
 
 .roomdetails-room {
-	margin: 0;
-}
-
-.roomdetails-room__title {
-	width: 115px;
-	float: left;
-	clear: left;
-	font-size: 14px;
-}
-
-.roomdetails-room__text {
-	margin-left: 125px;
-
-	&:after {
-		content: '';
-		display: table;
-		clear: both;
+	&__content {
+		padding: 1rem;
 	}
-}
+	
+	&__list {
+		margin: 0;
+	}
 
-.roomdetails-room__title,
-.roomdetails-room__text {
-	margin-bottom: 5px;
+	&__title {
+		float: left;
+		clear: left;
+		font-size: 1rem;
+		width: 7rem;
+	}
+
+	&__text {
+		margin: 0;
+		margin-left: 8rem;
+
+		&:after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+	}
+
+	&__title,
+	&__text {
+		margin-bottom: .2rem;
+	}
 }
 
 .rooms.rooms--booked {
-	margin-bottom: 30px;
+	margin-bottom: 3rem;
 
 	.mini-room--booked {
-		font-size: 20px;
+		font-size: 1.3rem;
 	}
 
 	.mini-room__title {
-		width: 124px;
+		width: 14rem;
 		float: left;
 		clear: left;
 		font-weight: bold;
-		padding-right: 5px;
+		padding-right: .2rem;
 	}
 }
 
-.box .roomdetails-price {
-	margin-left: -1rem;
-	margin-right: -1rem;
-}
+// .box .roomdetails-price {
+// 	margin-left: -1rem;
+// 	margin-right: -1rem;
+// }
 
 .roomdetails-price {
-  border-top: solid 1px $border;
+  	border-top: solid 1px $border;
+  	padding: 1rem;
+  	
+  	dl {
+  		margin: 0;
+  	}
 
 	dt {
-		width: 220px;
+		width: 13rem;
 		float: left;
 		clear: left;
-		font-size: 14px;
+		font-size: 1rem;
 		font-weight: normal;
 	}
 
 	dd {
 		margin: 0;
-		margin-left: 230px;
+		margin-left: 14rem;
 		text-align: right;
 
-		&.roomdetails-price-vat {
-			text-transform: uppercase;
-		}
+	}
+
+	&__vat {
+		text-transform: uppercase;
 	}
 }
 
-.roomdetails-price-base {
-	border-bottom: 1px solid $border;
-	padding: 15px;
-	margin: 0;
-}
-
-.roomdetails-price-base__title,
-.roomdetails-price-base__text {
-	margin-bottom: 5px;
-}
-
-.roomdetails-price-footer {
+.roomdetails-total {
 	background-color: $background;
-	padding: 15px;
-}
-
-.roomdetails-price-total {
-	margin: 0;
-	margin-bottom: 5px;
-
+	padding: 1rem;
+	
 	dt, dd {
 		margin-bottom: 0;
-		font-size: 16px;
+		font-size: 1rem;
 		font-weight: bold;
 	}
-}
 
-.roomdetails-price-footer__info {
-	font-size: 12px;
-	margin: 0;
-}
-
-.roomdetails-price-footer__info-more  {
-	border-top: 1px dotted $border;
-	margin: 10px 0 0;
-	padding-top: 5px;
-}
-
-
-.reservation_details__icon {
-	font-size: 20px;
+	&__info {
+		font-size: .6rem;
+		margin-bottom: 0 !important;
+	}
 }
