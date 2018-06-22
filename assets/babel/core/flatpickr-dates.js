@@ -194,6 +194,8 @@ module.exports = function FlatpickrDates(el, config = {}) {
 
   this.datepicker = awebooking.datepicker($rangepicker[0], {
     mode: 'range',
-    plugins: [ rangedates ],
+    inline: true,
+    // static: true,
+    // plugins: [ rangedates ],
   });
 };

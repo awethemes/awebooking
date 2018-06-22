@@ -34,10 +34,6 @@ $form_classes = [
 	<div class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
 		<div class="searchbox__wrap">
 
-			<div class="rangepicker-container">
-				<input type="hidden" data-hotel="rangepicker" style="display: none;" />
-			</div>
-
 			<?php if ( abrs_multiple_hotels() && $atts['hotel_location'] ) : ?>
 				<div tabindex="0" class="searchbox__box searchbox__box--hotel">
 					<div class="searchbox__box-wrap">
@@ -49,7 +45,7 @@ $form_classes = [
 							<label class="searchbox__box-label">
 								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
 								<select name="hotel" class="input-transparent">
-									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
+									<?php foreach ( abrs_list_hotels( [], true ) as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
 								</select>
@@ -72,6 +68,12 @@ $form_classes = [
 							<input type="text" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</label>
 					</div>
+
+					<div class="searchbox__popup">
+						<div class="rangepicker-container">
+							<input type="hidden" data-hotel="rangepicker" style="display: none;" />
+						</div>
+					</div><!-- /.searchbox__popup -->
 				</div>
 
 			</div>

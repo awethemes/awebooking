@@ -7,17 +7,16 @@ class SearchForm {
   constructor (el) {
     this.$el = $(el);
 
+    const rangeDates = new plugin.utils.rangeDates('.searchbox', {
+
+    });
+
     $('.searchbox__box', this.$el).each((i, box) => {
       $(box).data('popup', this.setuptPopper(box));
     });
 
-    const rangeDates = new plugin.utils.rangeDates('.searchbox', {
-      // ...
-    });
-
-    console.log(rangeDates);
-
-    console.log(this);
+    // console.log(rangeDates);
+    // console.log(this);
   }
 
   setuptPopper(el) {
@@ -32,7 +31,6 @@ class SearchForm {
       arrow: true,
       distance: 0,
       placement: 'bottom',
-      sticky: true,
       trigger: 'click',
       interactive: true,
       performance: true,
