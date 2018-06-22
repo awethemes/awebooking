@@ -69,20 +69,70 @@ function abrs_checkout_payments() {
 	]);
 }
 
-/**
- * Output the start of the page wrapper.
- *
- * @access private
- */
-function abrs_content_wrapper_before() {
-	abrs_get_template( 'template-parts/global/wrapper-start.php' );
+if ( ! function_exists( 'abrs_content_wrapper_before' ) ) {
+	/**
+	 * Output the start of the page wrapper.
+	 *
+	 * @access private
+	 */
+	function abrs_content_wrapper_before() {
+		abrs_get_template( 'template-parts/global/wrapper-start.php' );
+	}
 }
 
-/**
- * Output the end of the page wrapper.
- *
- * @access private
- */
-function abrs_content_wrapper_after() {
-	abrs_get_template( 'template-parts/global/wrapper-end.php' );
+if ( ! function_exists( 'abrs_content_wrapper_after' ) ) {
+	/**
+	 * Output the end of the page wrapper.
+	 *
+	 * @access private
+	 */
+	function abrs_content_wrapper_after() {
+		abrs_get_template( 'template-parts/global/wrapper-end.php' );
+	}
+}
+
+if ( ! function_exists( 'awebooking_get_sidebar' ) ) {
+
+	/**
+	 * Get the room type sidebar template.
+	 */
+	function awebooking_get_sidebar() {
+		abrs_get_template( 'global/sidebar.php' );
+	}
+}
+
+if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
+
+	/**
+	 * Get the room type thumbnail, or the placeholder if not set.
+	 *
+	 * @param string $size (default: 'awebooking_archive').
+	 * @return string
+	 */
+	function awebooking_get_room_type_thumbnail( $size = 'awebooking_archive', $post_id = null ) {
+		global $post;
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		if ( ! has_post_thumbnail( $post_id ) ) {
+			return;
+		}
+
+		$size = apply_filters( 'awebooking/archive_thumbnail_size', $size );
+
+		return get_the_post_thumbnail( $post_id, $size );
+	}
+}
+
+if ( ! function_exists( 'awebooking_template_loop_room_type_thumbnail' ) ) {
+
+	/**
+	 * Get the room type thumbnail for the loop.
+	 *
+	 * @subpackage Loop
+	 */
+	function awebooking_template_loop_room_type_thumbnail() {
+		echo awebooking_get_room_type_thumbnail(); // WPCS: xss ok.
+	}
 }
