@@ -26,17 +26,17 @@ list( $check_in, $check_out ) = [
 ?>
 
 <div class="reservation-dates">
-	<div class="reservation-date tb-width-40">
-		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
+	<div class="reservation-date">
+		<span class="reservation-date__subtitle"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
 
-		<div class="reservation_details__info">
-			<span class="meta-day" data-date-format="d"><?php echo esc_html( $check_in->date_i18n( 'd' ) ); ?></span>
-			<span class="meta-day-week" data-date-format="l"><?php echo esc_html( $check_in->date_i18n( 'l' ) ); ?></span>
-			<span class="meta-month-year" data-date-format="M Y"><?php echo esc_html( $check_in->date_i18n( 'M Y' ) ); ?></span>
+		<div class="reservation-date__info">
+			<span class="reservation-date__day" data-date-format="d"><?php echo esc_html( $check_in->date_i18n( 'd' ) ); ?></span>
+			<span class="reservation-date__week" data-date-format="l"><?php echo esc_html( $check_in->date_i18n( 'l' ) ); ?></span>
+			<span class="reservation-date__year" data-date-format="M Y"><?php echo esc_html( $check_in->date_i18n( 'M Y' ) ); ?></span>
 		</div>
 
-		<div class="reservation_details__from">
-			<span class="meta-time">
+		<div class="reservation-date__from">
+			<span class="reservation-date__time">
 				<?php
 					/* translators: %s check-in time */
 					printf( esc_html_x( 'from %s', 'check-in time', 'awebooking' ), esc_html( abrs_get_hotel_check_time( 0 ) ) );
@@ -45,23 +45,23 @@ list( $check_in, $check_out ) = [
 		</div>
 	</div>
 
-	<div class="reservation_details___item tb-width-20">
-		<div class="reservation_details__icon">
-			<i class="afc afc-chevron-right"></i>
+	<div class="reservation-date">
+		<div class="reservation-date__arrow">
+			<i class="aficon aficon-arrow-forward"></i>
 		</div>
 	</div>
 
-	<div class="reservation_details___item tb-width-40">
-		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-out', 'awebooking' ); ?></span>
+	<div class="reservation-date">
+		<span class="reservation-date__subtitle"><?php echo esc_html__( 'Check-out', 'awebooking' ); ?></span>
 
-		<div class="reservation_details__info">
-			<span class="meta-day" data-date-format="d"><?php echo esc_html( $check_out->date_i18n( 'd' ) ); ?></span>
-			<span class="meta-day-week" data-date-format="l"><?php echo esc_html( $check_out->date_i18n( 'l' ) ); ?></span>
-			<span class="meta-month-year" data-date-format="M Y"><?php echo esc_html( $check_out->date_i18n( 'M Y' ) ); ?></span>
+		<div class="reservation-date__info">
+			<span class="reservation-date__day" data-date-format="d"><?php echo esc_html( $check_out->date_i18n( 'd' ) ); ?></span>
+			<span class="reservation-date__week" data-date-format="l"><?php echo esc_html( $check_out->date_i18n( 'l' ) ); ?></span>
+			<span class="reservation-date__year" data-date-format="M Y"><?php echo esc_html( $check_out->date_i18n( 'M Y' ) ); ?></span>
 		</div>
 
-		<div class="reservation_details__from">
-			<span class="meta-time">
+		<div class="reservation-date__from">
+			<span class="reservation-date__time">
 				<?php
 					/* translators: %s check-out time */
 					printf( esc_html_x( 'from %s', 'check-out time', 'awebooking' ), esc_html( abrs_get_hotel_check_time( 0, 'hotel_check_out' ) ) );
