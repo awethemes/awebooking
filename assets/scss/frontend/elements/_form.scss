@@ -266,7 +266,7 @@ select.form-select {
 
   color: $input-color;
   font-size: $font-size-base;
-  line-height: $input-line-height;
+  line-height: 1;
 
   &:focus {
     outline: 0 !important;
@@ -283,4 +283,8 @@ select.form-select {
     opacity: 1;
     color: $input-placeholder-color;
   }
+}
+
+select.input-transparent {
+  appearance: none;
 }

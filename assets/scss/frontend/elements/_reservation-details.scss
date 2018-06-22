@@ -3,12 +3,17 @@ $background: #F9F9FA;
 
 .reservation--summary {
   padding: 0;
+  border-radius: 6px;
   background-color: $white;
   box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
 
   .reservation__title {
-    font-size: 16px;
-    border-bottom: solid 1px $border;
+    @include sr-only;
+  }
+
+  .reservation_details {
+    padding: 1rem;
+    border-bottom: solid 1px $gray-200;
   }
 }
 

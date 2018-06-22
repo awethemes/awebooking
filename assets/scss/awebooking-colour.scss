@@ -14,6 +14,9 @@ $border-radius:               2px;
 $border-radius-lg:            2px;
 $border-radius-sm:            0;
 
+$link-hover-decoration:     none;
+
+
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
@@ -32,6 +35,44 @@ $border-radius-sm:            0;
 
 .awebooking,
 .awebooking-block {
+  //font-family: $font-family-base;
+  a {
+    color: $link-color;
+    text-decoration: $link-decoration;
+    background-color: transparent; // Remove the gray background on active links in IE 10.
+    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
+
+    @include hover {
+      color: $link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+
+    &:visited {
+      color: $link-color;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: $headings-margin-bottom;
+    font-family: $headings-font-family;
+    font-weight: $headings-font-weight;
+    line-height: $headings-line-height;
+    color: $headings-color;
+  }
+
+  h1 { font-size: $h1-font-size; }
+  h2 { font-size: $h2-font-size; }
+  h3 { font-size: $h3-font-size; }
+  h4 { font-size: $h4-font-size; }
+  h5 { font-size: $h5-font-size; }
+  h6 { font-size: $h6-font-size; }
+
+  p {
+    margin-top: 0;
+    margin-bottom: $paragraph-margin-bottom;
+  }
+
   @import "frontend/elements/form";
   @import "frontend/elements/button";
   @import "frontend/elements/notices";
@@ -41,7 +82,6 @@ $border-radius-sm:            0;
 @import "frontend/searchbox";
 @import "frontend/layout";
 @import "frontend/roommaster";
-@import "frontend/elements/box";
 @import "frontend/elements/checkout";
 @import "frontend/elements/reservation-details";
 @import "frontend/search-page";

@@ -20,8 +20,6 @@ $res_request = $results->get_request();
 
 ?>
 
-<?php do_action( 'abrs_print_notices' ); ?>
-
 <div class="hotel-content">
 	<div class="hotel-content__main">
 		<?php do_action( 'abrs_before_search_results', $results, $res_request ); ?>

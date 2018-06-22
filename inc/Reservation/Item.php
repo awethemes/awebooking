@@ -83,7 +83,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @param array $attributes The item attributes.
 	 */
 	public function __construct( array $attributes = [] ) {
-		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
+		foreach ( array_keys( $this->attributes() ) as $key ) {
 			if ( array_key_exists( $key, $attributes ) ) {
 				$this->set( $key, $attributes[ $key ] );
 			}
@@ -99,13 +99,22 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Returns the item attributes.
+	 *
+	 * @return array
+	 */
+	public function attributes() {
+		return get_object_vars( $this );
+	}
+
+	/**
 	 * Update the item from an array.
 	 *
 	 * @param  array $attributes The item attributes.
 	 * @return $this
 	 */
 	public function update( array $attributes ) {
-		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
+		foreach ( array_keys( $this->attributes() ) as $key ) {
 			if ( array_key_exists( $key, $attributes ) ) {
 				$this->set( $key, $attributes[ $key ] );
 			}
@@ -123,7 +132,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return mixed
 	 */
 	public function get( $key ) {
-		if ( array_key_exists( $key, get_object_vars( $this ) ) ) {
+		if ( array_key_exists( $key, $this->attributes() ) ) {
 			return $this->{$key};
 		}
 
@@ -145,7 +154,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	public function set( $key, $value ) {
 		if ( 'options' === $key ) {
 			$this->set_options( $value );
-		} elseif ( array_key_exists( $key, get_object_vars( $this ) ) ) {
+		} elseif ( array_key_exists( $key, $this->attributes() ) ) {
 			$this->{$key} = $this->sanitize_prop( $value, $key );
 		} else {
 			$this->set_option( $key, $value );
@@ -382,7 +391,9 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return string
 	 */
 	public static function generate_row_id( $id, $options ) {
-		$options = $options instanceof Collection ? $options->all() : (array) $options;
+		$options = array_filter(
+			$options instanceof Collection ? $options->all() : (array) $options
+		);
 
 		ksort( $options );
 
@@ -431,7 +442,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return array
 	 */
 	public function to_array() {
-		$arr = get_object_vars( $this );
+		$arr = $this->attributes();
 
 		$arr['options'] = $this->options->all();
 		unset( $arr['data'] );
@@ -462,7 +473,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return bool
 	 */
 	public function offsetExists( $offset ) {
-		if ( array_key_exists( $offset, get_object_vars( $this ) ) ) {
+		if ( array_key_exists( $offset, $this->attributes() ) ) {
 			return true;
 		}
 

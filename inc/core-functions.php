@@ -376,6 +376,24 @@ function abrs_infants_bookable() {
 }
 
 /**
+ * Determines if taxes enable or not.
+ *
+ * @return bool
+ */
+function abrs_tax_enabled() {
+	return apply_filters( 'abrs_tax_enabled', abrs_get_option( 'calc_taxes' ) );
+}
+
+/**
+ * Determines if prices inclusive of tax or not.
+ *
+ * @return bool
+ */
+function abrs_prices_include_tax() {
+	return abrs_tax_enabled() & abrs_get_option( 'prices_include_tax' );
+}
+
+/**
  * Returns the maximum rooms allowed in the scaffold.
  *
  * @return int

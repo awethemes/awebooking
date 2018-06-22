@@ -86,6 +86,9 @@ window.awebooking = {};
     // Init
     require('./frontend/search-form').init();
 
+    tippy('[data-awebooking="tooltip"]', [
+
+    ]);
   });
 
 })(jQuery, window.awebooking);

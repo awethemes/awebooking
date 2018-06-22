@@ -16,8 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<?php do_action( 'abrs_print_notices' ); ?>
-
 <div class="hotel-content">
 	<div class="hotel-content__main">
 		<?php do_action( 'abrs_before_checkout_form' ); ?>
