@@ -3,9 +3,8 @@ namespace AweBooking\Availability\Constraints;
 
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Calendar\Finder\Response;
-use AweBooking\Calendar\Finder\Constraint;
 
-class Night_Stay_Constraint implements Constraint {
+class Night_Stay_Constraint extends Constraint {
 	/**
 	 * The Timespan instance.
 	 *

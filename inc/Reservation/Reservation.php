@@ -65,6 +65,13 @@ class Reservation {
 	protected $room_stays;
 
 	/**
+	 * List of booked rooms.
+	 *
+	 * @var array
+	 */
+	protected $booked_rooms;
+
+	/**
 	 * List of booked services.
 	 *
 	 * @var \AweBooking\Support\Collection
@@ -72,14 +79,23 @@ class Reservation {
 	protected $services;
 
 	/**
+	 * The reservation totals.
+	 *
+	 * @var \AweBooking\Reservation\Totals
+	 */
+	protected $totals;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Reservation\Storage\Store $store The store instance.
 	 */
 	public function __construct( Store $store ) {
-		$this->store      = $store;
-		$this->room_stays = new Collection;
-		$this->services   = new Collection;
+		$this->store        = $store;
+		$this->services     = new Collection;
+		$this->room_stays   = new Collection;
+		$this->booked_rooms = [];
+		$this->totals       = new Totals( $this );
 	}
 
 	/**
@@ -94,38 +110,8 @@ class Reservation {
 
 		add_action( 'wp_loaded', [ $this, 'restore_request' ], 10 );
 		add_action( 'wp_loaded', [ $this, 'restore' ], 20 );
-		add_filter( 'abrs_search_room_rate', [ $this, 'exclude_existing_rooms' ], 5, 2 );
 
 		do_action( 'abrs_reservation_init', $this );
-	}
-
-	/**
-	 * Exclude existing rooms in the reservation.
-	 *
-	 * @param  \AweBooking\Availability\Room_Rate $room_rate The room rate instance.
-	 * @param  \AweBooking\Availability\Request   $request   The res request instance.
-	 * @return \AweBooking\Availability\Room_Rate
-	 */
-	public function exclude_existing_rooms( $room_rate, $request ) {
-		foreach ( $this->get_room_stays() as $room_stay ) {
-			$quantity = $room_stay->quantity;
-		}
-
-		return $room_rate;
-	}
-
-	/**
-	 * Add a room stay into the list.
-	 *
-	 * @param \AweBooking\Availability\Request $request   The res request instance.
-	 * @param int                              $room_type The room type ID.
-	 * @param int|null                         $rate_plan The rate plan ID.
-	 * @param int                              $quantity  The number of room to book.
-	 *
-	 * @return \AweBooking\Reservation\Item
-	 */
-	public function add( Request $request, $room_type, $rate_plan = null, $quantity = 1 ) {
-		return $this->add_room_stay( $request, $room_type, $rate_plan, $quantity );
 	}
 
 	/**
@@ -171,10 +157,46 @@ class Reservation {
 	/**
 	 * Gets the room stays.
 	 *
-	 * @return \AweBooking\Support\Collection \AweBooking\Reservation\Room_Stay[]
+	 * @return \AweBooking\Support\Collection \AweBooking\Reservation\Item[]
 	 */
 	public function get_room_stays() {
 		return $this->room_stays;
+	}
+
+	/**
+	 * Add a room_stay into the list.
+	 *
+	 * @param \AweBooking\Availability\Request $request   The res request instance.
+	 * @param int                              $room_type The room type ID.
+	 * @param int|null                         $rate_plan The rate plan ID.
+	 * @param int                              $quantity  The number of room to book.
+	 *
+	 * @return \AweBooking\Reservation\Item
+	 */
+	public function add( Request $request, $room_type, $rate_plan = null, $quantity = 1 ) {
+		return $this->add_room_stay( $request, $room_type, $rate_plan, $quantity );
+	}
+
+	/**
+	 * Remove a room_stay from the list.
+	 *
+	 * @return \AweBooking\Reservation\Item|false
+	 */
+	public function remove( $row_id ) {
+		if ( ! $this->has( $row_id ) ) {
+			return false;
+		}
+
+		do_action( 'abrs_remove_room_stay', $row_id, $this );
+
+		$removed = $this->room_stays->pull( $row_id );
+
+		do_action( 'abrs_room_stay_removed', $removed, $this );
+
+		$this->store();
+		$this->calculate_totals();
+
+		return $removed;
 	}
 
 	/**
@@ -194,51 +216,51 @@ class Reservation {
 			$rate_plan = $room_type;
 		}
 
+		// Create the room rate, perform check after.
 		$room_rate = abrs_get_room_rate( compact( 'request', 'room_type', 'rate_plan' ) );
 		$this->check_room_rate( $room_rate, $quantity );
 
-		$room_stay = new Room_Stay([
-			'id'       => $room_rate->room_type->get_id(),
-			'name'     => $room_rate->room_type->get( 'title' ),
+		$request = $room_rate->get_request();
+		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
+
+		// Create the room stay instance.
+		$room_stay = new Item([
+			'id'       => $room_type->get_id(),
+			'name'     => $room_type->get( 'title' ),
 			'price'    => $room_rate->get_rate()->as_numeric(),
 			'quantity' => $quantity,
 			'tax_rate' => 0,
-			'options'  => $this->generate_room_stay_data( $room_rate, $quantity ),
+			'options'  => array_merge( $request->to_array(), [
+				'room_type' => $room_type->get_id(),
+				'rate_plan' => $rate_plan->get_id(),
+			]),
 		]);
 
+		// ...
+		if ( $this->has( $room_stay->get_row_id() ) ) {
+			dd(1);
+		}
+
 		$room_stay->set_data( $room_rate );
-		$room_stay->associate( $room_rate->get_room_type() );
+		$room_stay->associate( $room_type );
 
 		// In single mode, we'll clear all room stays was added before.
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
 			$this->room_stays->clear();
 		}
 
+		// Take the room IDs for temporary lock.
+		$room_ids = array_keys(
+			$room_rate->get_remain_rooms()->take( $quantity )->all()
+		);
+
+		$this->add_booked_rooms( $room_ids );
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 
 		do_action( 'abrs_room_stay_added', $room_stay );
-
 		$this->store();
 
 		return $room_stay;
-	}
-
-	/**
-	 * Generate the room stay data.
-	 *
-	 * @param \AweBooking\Availability\Room_Rate $room_rate The room rate instance.
-	 * @param int                                $quantity  Number of rooms.
-	 * @return array
-	 */
-	protected function generate_room_stay_data( $room_rate, $quantity = 1 ) {
-		$request = $room_rate->get_request();
-
-		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
-
-		return array_merge( $request->to_array(), [
-			'room_type' => $room_type->get_id(),
-			'rate_plan' => $rate_plan->get_id(),
-		]);
 	}
 
 	/**
@@ -297,6 +319,7 @@ class Reservation {
 		$this->previous_request = null;
 
 		$this->store->flush( 'room_stays' );
+		$this->store->flush( 'booked_rooms' );
 		$this->store->flush( 'previous_request' );
 
 		do_action( 'abrs_reservation_emptied', $this );
@@ -309,9 +332,11 @@ class Reservation {
 	 */
 	public function store() {
 		if ( $this->room_stays->isEmpty() ) {
+			$this->flush();
 			return;
 		}
 
+		$this->store->put( 'booked_rooms', $this->booked_rooms );
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
 
 		if ( $this->current_request ) {
@@ -336,6 +361,14 @@ class Reservation {
 			return;
 		}
 
+		$booked_rooms = $this->store->get( 'booked_rooms' );
+		if ( empty( $booked_rooms ) || ! is_array( $booked_rooms ) ) {
+			return;
+		}
+
+		// Set the booked_rooms.
+		$this->booked_rooms = wp_parse_id_list( $booked_rooms );
+
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
 			$session_room_stays = [ Arr::last( $session_room_stays ) ];
 		}
@@ -353,7 +386,7 @@ class Reservation {
 			}
 
 			// Transform the room stay array to object.
-			$room_stay = ( new Room_Stay )->update( $values );
+			$room_stay = ( new Item )->update( $values );
 			if ( ! hash_equals( $values['row_id'], $room_stay->get_row_id() ) ) {
 				continue;
 			}
@@ -374,11 +407,11 @@ class Reservation {
 		}
 
 		do_action( 'abrs_reservation_restored', $this );
+		$this->calculate_totals();
 
 		// Re-store the session.
 		if ( count( $session_room_stays ) !== count( $this->room_stays ) ) {
 			$this->store();
-			$this->calculate_totals();
 		}
 	}
 
@@ -405,6 +438,134 @@ class Reservation {
 	 * @return void
 	 */
 	public function calculate_totals() {
+		$this->totals->calculate();
+	}
+
+	/**
+	 * Gets the totals instance.
+	 *
+	 * @return Totals
+	 */
+	public function get_totals() {
+		return $this->totals;
+	}
+
+	/**
+	 * Get subtotal.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_subtotal() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'subtotal' ) );
+	}
+
+	/**
+	 * Get subtotal.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_subtotal_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'subtotal_tax' ) );
+	}
+
+	/**
+	 * Get discount_total.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_discount_total() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'discount_total' ) );
+	}
+
+	/**
+	 * Get discount_tax.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_discount_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'discount_tax' ) );
+	}
+
+	/**
+	 * Gets cart total. This is the total of items in the cart, but after discounts. Subtotal is before discounts.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_cart_contents_total() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_total' ) );
+	}
+
+	/**
+	 * Gets cart tax amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_cart_contents_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_tax' ) );
+	}
+
+	/**
+	 * Gets the total after calculation.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_total() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->totals->get( 'total' ) );
+	}
+
+	/**
+	 * Get total tax amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_total_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'total_tax' ) );
+	}
+
+	/**
+	 * Get total fee amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_fee_total() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_total' ) );
+	}
+
+	/**
+	 * Get total fee tax amount.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_fee_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_tax' ) );
+	}
+
+	/**
+	 * Get taxes.
+	 *
+	 * @since 3.2.0
+	 */
+	public function get_cart_contents_taxes() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_taxes' ) );
+	}
+
+	/**
+	 * Get taxes.
+	 *
+	 * @since 3.2.0
+	 */
+	public function get_fee_taxes() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_taxes' ) );
+	}
+
+	/**
+	 * Return whether or not the cart is displaying prices including tax, rather than excluding tax.
+	 *
+	 * @since 3.3.0
+	 * @return bool
+	 */
+	public function display_prices_including_tax() {
+		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, 'incl' === $this->tax_display_cart );
 	}
 
 	/**
@@ -428,7 +589,7 @@ class Reservation {
 	}
 
 	/**
-	 * Gets the current res request.
+	 * Gets the current res_request.
 	 *
 	 * @return \AweBooking\Availability\Request|null
 	 */
@@ -437,7 +598,7 @@ class Reservation {
 	}
 
 	/**
-	 * Sets the current res request.
+	 * Sets the current res_request.
 	 *
 	 * @param  \AweBooking\Availability\Request $current_request The request instance.
 	 *
@@ -447,6 +608,41 @@ class Reservation {
 		$this->current_request = $current_request;
 
 		return $this;
+	}
+
+	/**
+	 * Resolve the res_request.
+	 *
+	 * @return \AweBooking\Availability\Request|null
+	 */
+	public function resolve_res_request() {
+		$res_request = $this->get_current_request();
+
+		if ( ! $res_request ) {
+			$res_request = $this->get_previous_request();
+		}
+
+		return $res_request;
+	}
+
+	/**
+	 * Gets the booked rooms.
+	 *
+	 * @return array
+	 */
+	public function get_booked_rooms() {
+		return $this->booked_rooms;
+	}
+
+	/**
+	 * Add booked rooms.
+	 *
+	 * @param array $rooms The room IDs.
+	 */
+	protected function add_booked_rooms( array $rooms ) {
+		$this->booked_rooms = wp_parse_id_list(
+			array_merge( $this->booked_rooms, $rooms )
+		);
 	}
 
 	/**

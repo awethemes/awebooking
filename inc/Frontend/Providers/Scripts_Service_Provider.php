@@ -36,7 +36,7 @@ class Scripts_Service_Provider extends Service_Provider {
 
 		// Core JS & CSS.
 		wp_register_style( 'awebooking-iconfont', ABRS_ASSET_URL . 'fonts/awebooking-webfont.css', [], $version );
-		wp_register_style( 'awebooking', ABRS_ASSET_URL . 'css/awebooking.css', [ 'flatpickr' ], $version );
+		wp_register_style( 'awebooking', ABRS_ASSET_URL . 'css/awebooking.css', [ 'flatpickr', 'tippy' ], $version );
 		wp_register_style( 'awebooking-colour', ABRS_ASSET_URL . 'css/awebooking-colour.css', [ 'awebooking-iconfont', 'awebooking' ], $version );
 
 		wp_register_script( 'awebooking', ABRS_ASSET_URL . 'js/awebooking.js', [ 'jquery', 'flatpickr', 'tippy' ], $version, true );

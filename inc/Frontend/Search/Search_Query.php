@@ -2,6 +2,7 @@
 
 namespace AweBooking\Frontend\Search;
 
+use AweBooking\Availability\Constraints\Reservation_Constraint;
 use AweBooking\Plugin;
 use Awethemes\Http\Request;
 
@@ -128,8 +129,12 @@ class Search_Query {
 			return null;
 		}
 
+		$contraints = apply_filters( 'abrs_search_contraints', [
+			new Reservation_Constraint( $this->plugin['reservation'] ),
+		]);
+
 		$this->results = $this->res_request
-			->add_contraints( apply_filters( 'abrs_contraints', [] ) )
+			->add_contraints( $contraints )
 			->search();
 
 		do_action( 'abrs_search_complete', $this );
@@ -177,3 +182,4 @@ class Search_Query {
 			: $this->plugin->make( 'request' );
 	}
 }
+

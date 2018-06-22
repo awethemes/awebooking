@@ -32,6 +32,9 @@ get_header( 'awebooking' );
  */
 do_action( 'abrs_before_main_content' );
 
+// Print the notices messages.
+do_action( 'abrs_print_notices' );
+
 ?>
 
 <div class="awebooking-page awebooking-page--search">

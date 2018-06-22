@@ -14,18 +14,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Variables.
+ *
+ * @var \AweBooking\Model\Room_Type        $room_type
+ * @var \AweBooking\Availability\Room_Rate $room_rate
+ */
+
 $remain_rooms = $room_rate->get_remain_rooms();
 
 $rate_plan = $room_rate->get_rate_plan();
 ?>
 
 <div class="roommaster">
-	<div class="roommaster-header">
-		<h3 class="roommaster-header__title">
+	<div class="roommaster__header">
+		<h3 class="roommaster__title">
 			<a href="<?php echo esc_url( get_permalink( $room_type->get_id() ) ); ?>" rel="bookmark" target="_blank"><?php echo esc_html( $room_type->get( 'title' ) ); ?></a>
 		</h3>
+
+		<button class="button button--secondary button--circle-icon">
+			<span class="aficon aficon-arrow-down"></span>
+		</button>
 	</div>
-	<div class="roommaster-wrapper awebooking">
+
+	<div class="roommaster-wrapper">
 		<div class="roommaster-content">
 			<div class="columns no-gutters">
 				<div class="column-3">
@@ -230,10 +242,9 @@ $rate_plan = $room_rate->get_rate_plan();
 					</div>
 				</div>
 			</div>
-
 		</div>
 
-		<div class="roommaster-detail">
+		<div class="roommaster-detail" style="display: none;">
 			<div class="columns">
 				<div class="column-3">
 					<?php

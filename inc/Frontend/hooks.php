@@ -15,4 +15,3 @@ add_action( 'abrs_html_checkout_guest_details', 'abrs_checkout_guest_details', 1
 add_action( 'abrs_html_checkout_guest_details', 'abrs_checkout_additionals', 20         );
 add_action( 'abrs_html_checkout_payments',      'abrs_checkout_payments', 10            );
 // @codingStandardsIgnoreEnd
-

@@ -1,9 +1,90 @@
+.awebooking-popup-theme {
+  color: inherit;
+  background-color: #fff;
+  box-shadow: 1px 3px 25px rgba(0, 0, 0, 0.08);
+}
+
 #awebooking-container {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.awebooking a,
+.awebooking-block a {
+  color: #5392F9;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+.awebooking a:hover,
+.awebooking-block a:hover {
+  color: #0963f6;
+  text-decoration: none;
+}
+
+.awebooking a:visited,
+.awebooking-block a:visited {
+  color: #5392F9;
+}
+
+.awebooking h1,
+.awebooking h2,
+.awebooking h3,
+.awebooking h4,
+.awebooking h5,
+.awebooking h6,
+.awebooking-block h1,
+.awebooking-block h2,
+.awebooking-block h3,
+.awebooking-block h4,
+.awebooking-block h5,
+.awebooking-block h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.awebooking h1,
+.awebooking-block h1 {
+  font-size: 2.5rem;
+}
+
+.awebooking h2,
+.awebooking-block h2 {
+  font-size: 2rem;
+}
+
+.awebooking h3,
+.awebooking-block h3 {
+  font-size: 1.75rem;
+}
+
+.awebooking h4,
+.awebooking-block h4 {
+  font-size: 1.5rem;
+}
+
+.awebooking h5,
+.awebooking-block h5 {
+  font-size: 1.25rem;
+}
+
+.awebooking h6,
+.awebooking-block h6 {
+  font-size: 1rem;
+}
+
+.awebooking p,
+.awebooking-block p {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .awebooking .form-input,
@@ -297,7 +378,7 @@
   background-color: transparent !important;
   color: #495057;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1;
 }
 
 .awebooking .input-transparent:focus,
@@ -336,6 +417,13 @@
 .awebooking-block .input-transparent::placeholder {
   opacity: 1;
   color: #6c757d;
+}
+
+.awebooking select.input-transparent,
+.awebooking-block select.input-transparent {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .awebooking .button,
@@ -444,21 +532,21 @@
 .awebooking-block .button--secondary {
   color: #212529;
   background-color: #fff;
-  border-color: #d7d7d7;
+  border-color: #eee;
 }
 
 .awebooking .button--secondary:hover,
 .awebooking-block .button--secondary:hover {
   color: #212529;
   background-color: #ececec;
-  border-color: #bebebe;
+  border-color: #d5d5d5;
 }
 
 .awebooking .button--secondary:focus,
 .awebooking .button--secondary.focus,
 .awebooking-block .button--secondary:focus,
 .awebooking-block .button--secondary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(215, 215, 215, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(238, 238, 238, 0.5);
 }
 
 .awebooking .button--secondary.disabled,
@@ -467,7 +555,7 @@
 .awebooking-block .button--secondary:disabled {
   color: #212529;
   background-color: #fff;
-  border-color: #d7d7d7;
+  border-color: #eee;
 }
 
 .awebooking .button--secondary:not(:disabled):not(.disabled):active,
@@ -479,7 +567,7 @@
   .awebooking-block .button--secondary.dropdown-toggle {
   color: #212529;
   background-color: #e6e6e6;
-  border-color: #b7b7b7;
+  border-color: #cecece;
 }
 
 .awebooking .button--secondary:not(:disabled):not(.disabled):active:focus,
@@ -489,7 +577,7 @@
 .awebooking-block .button--secondary:not(:disabled):not(.disabled).active:focus,
 .show >
     .awebooking-block .button--secondary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(215, 215, 215, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(238, 238, 238, 0.5);
 }
 
 .awebooking .button--block-checkout,
@@ -498,6 +586,15 @@
   min-height: 42px;
   line-height: 42px;
   text-decoration: none;
+}
+
+.awebooking .button--circle-icon,
+.awebooking-block .button--circle-icon {
+  padding: 0;
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  border-radius: 50%;
 }
 
 .awebooking .notification,
@@ -920,7 +1017,6 @@
 
 .searchbox--horizontal .searchbox__box--hotel {
   flex-grow: 1;
-  min-width: 320px;
 }
 
 .searchbox--horizontal .searchbox__box--checkin,
@@ -932,14 +1028,6 @@
 .searchbox--horizontal .searchbox__box--occupancy {
   flex: 0 0 300px;
   max-width: 300px;
-}
-
-.searchbox--horizontal .searchbox__box-wrap {
-  height: 100%;
-}
-
-.searchbox--horizontal .button.searchbox__submit {
-  height: 100%;
 }
 
 .searchbox--horizontal-agoda .searchbox__wrap {
@@ -956,7 +1044,6 @@
 
 .searchbox--horizontal-agoda .searchbox__box--hotel {
   flex-grow: 1;
-  min-width: 320px;
 }
 
 .searchbox--horizontal-agoda .searchbox__box--checkin,
@@ -1046,10 +1133,6 @@
   padding-left: 12px;
 }
 
-.searchbox--vertical-agoda .searchbox__box-wrap {
-  height: 100%;
-}
-
 .searchbox--vertical-agoda .searchbox__box-icon {
   top: 8px;
   left: 12px;
@@ -1062,36 +1145,9 @@
 
 .searchbox--vertical-agoda .button.searchbox__submit {
   width: 100%;
-  height: 100%;
   text-align: center;
   text-transform: uppercase;
   font-size: 1.1rem;
-}
-
-.searchbox__popup {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  -webkit-transform-origin: 0 50%;
-  transform-origin: 0 50%;
-  padding: 10px;
-  -webkit-transform: translateY(10px) rotateX(-10deg);
-  transform: translateY(10px) rotateX(-10deg);
-  -webkit-transform-origin: 50% 0;
-  transform-origin: 50% 0;
-  visibility: hidden;
-  opacity: 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transition: all .3s ease;
-}
-
-.searchbox__popup.searchbox__popup--active {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transform: translateY(10px) rotateX(0);
-  transform: translateY(10px) rotateX(0);
 }
 
 .searchbox-spinner {
@@ -1190,8 +1246,33 @@
 
 .roommaster {
   background-color: #fff;
-  border: 1px solid #cecece;
-  margin-bottom: 40px;
+  background-clip: padding-box;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 1px 3px 14px rgba(0, 0, 0, 0.1);
+}
+
+.roommaster:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.roommaster__header {
+  padding: .75rem 1.25rem;
+  border-bottom: solid 1px #e9ecef;
+  position: relative;
+}
+
+.roommaster__title,
+.roommaster h3.roommaster__title,
+.roommaster h4.roommaster__title {
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+.roommaster .button--circle-icon {
+  top: 4px;
+  right: .75rem;
+  position: absolute;
+  border-color: transparent;
 }
 
 .roommaster-header {
@@ -1201,10 +1282,6 @@
 .roommaster-header__title {
   margin: 0;
   padding: 0;
-}
-
-.roommaster-content {
-  background-color: #eee;
 }
 
 .roommaster-content::after {
@@ -1398,14 +1475,6 @@
   white-space: normal;
 }
 
-.box {
-  background-color: #fff;
-  border-radius: 1px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
-  display: block;
-  padding: 1rem;
-}
-
 #checkout-form {
   padding: 1em;
   background-color: #fff;
@@ -1489,13 +1558,25 @@ ul.booking_details li:last-of-type {
 
 .reservation--summary {
   padding: 0;
+  border-radius: 6px;
   background-color: #fff;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .reservation--summary .reservation__title {
-  font-size: 16px;
-  border-bottom: solid 1px #cbd3db;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.reservation--summary .reservation_details {
+  padding: 1rem;
+  border-bottom: solid 1px #e9ecef;
 }
 
 .reservation_details {

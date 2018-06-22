@@ -48,13 +48,14 @@ $form_classes = [
 						<div class="searchbox__box-line">
 							<label class="searchbox__box-label">
 								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
-								<select name="hotel">
+								<select name="hotel" class="input-transparent">
 									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</label>
 						</div>
+
 					</div>
 				</div>
 			<?php endif; ?>
@@ -158,21 +159,6 @@ $form_classes = [
 </form>
 <script>
 	(function($) {
-		$('html,body').on('click', function() {
-			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
-		});
-
-		$('.searchbox__box-wrap').on('click', function(e) {
-			e.stopPropagation();
-
-			var self = $(this);
-
-			$('.searchbox__box-wrap .searchbox__popup').removeClass('searchbox__popup--active');
-
-			self.find('.searchbox__popup').toggleClass('searchbox__popup--active');
-
-		});
-
 		$('.searchbox-spinner').each(function() {
 			var self = $(this),
 				decrement = $('.searchbox-spinner__decrement', self),

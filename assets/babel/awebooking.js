@@ -1,6 +1,8 @@
 const lodashDefaults = require('lodash.defaults');
 
-(function ($) {
+window.awebooking = {};
+
+(function ($, plugin) {
   'use strict';
 
   // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
@@ -8,27 +10,17 @@ const lodashDefaults = require('lodash.defaults');
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
   }
 
-  /**
-   * The awebooking main object.
-   *
-   * @type {Object}
-   */
-  window.awebooking = {};
-
-  // Alias of awebooking.
-  const self = awebooking;
-
-  // Sub objects
-  awebooking.utils = {};
-  awebooking.instances = {};
-  awebooking.utils.rangeDates = require('./core/flatpickr-dates.js');
+  // Main objects
+  plugin.utils = {};
+  plugin.instances = {};
+  plugin.utils.rangeDates = require('./core/flatpickr-dates.js');
 
   /**
    * Configure.
    *
    * @type {Object}
    */
-  awebooking.config = lodashDefaults(window._awebooking, {
+  plugin.config = lodashDefaults(window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
     ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
     i18n: {
@@ -43,7 +35,7 @@ const lodashDefaults = require('lodash.defaults');
    * @param  {string} route
    * @return {string}
    */
-  awebooking.route = function (route) {
+  plugin.route = function (route) {
     return this.config.route + (route || '').replace(/^\//g, '');
   };
 
@@ -54,9 +46,9 @@ const lodashDefaults = require('lodash.defaults');
    *
    * @return {flatpickr}
    */
-  awebooking.datepicker = function (instance, options) {
-    const i18n = self.config.i18n;
-    const defaults = self.config.datepicker;
+  plugin.datepicker = function (instance, options) {
+    const i18n = plugin.config.i18n;
+    const defaults = plugin.config.datepicker;
     const disable = Array.isArray(defaults.disable) ? defaults.disable : [];
 
     if (Array.isArray(defaults.disable_days)) {
@@ -91,13 +83,12 @@ const lodashDefaults = require('lodash.defaults');
    * @return {void}
    */
   $(function () {
+    // Init
+    require('./frontend/search-form').init();
 
-    const rangeDates = new awebooking.utils.rangeDates('.searchbox', {
-      // ...
-    });
+    tippy('[data-awebooking="tooltip"]', [
 
-    console.log(rangeDates);
-
+    ]);
   });
 
-})(jQuery);
+})(jQuery, window.awebooking);

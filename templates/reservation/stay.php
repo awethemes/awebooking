@@ -2,7 +2,7 @@
 /**
  * The template displaying the reservation stay.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/booked-single.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/stay.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -14,22 +14,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$reservation = abrs_reservation();
-$res_request = $reservation->get_current_request();
-
-if ( is_null( $res_request ) ) {
-	$res_request = $reservation->get_previous_request();
-}
-
-if ( is_null( $res_request ) ) {
+if ( ! $res_request = abrs_reservation()->resolve_res_request() ) {
 	return;
 }
 
-$check_in  = abrs_date( $res_request['check_in'] );
-$check_out = abrs_date( $res_request['check_out'] );
+list( $check_in, $check_out ) = [
+	abrs_date( $res_request['check_in'] ),
+	abrs_date( $res_request['check_out'] ),
+];
 
-?><div class="reservation_details">
-	<div class="reservation_details___item tb-width-40">
+?>
+
+<div class="reservation-dates">
+	<div class="reservation-date tb-width-40">
 		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
 
 		<div class="reservation_details__info">

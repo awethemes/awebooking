@@ -3,7 +3,9 @@
 
 var lodashDefaults = require('lodash.defaults');
 
-(function ($) {
+window.awebooking = {};
+
+(function ($, plugin) {
   'use strict';
 
   // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
@@ -12,27 +14,17 @@ var lodashDefaults = require('lodash.defaults');
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
   }
 
-  /**
-   * The awebooking main object.
-   *
-   * @type {Object}
-   */
-  window.awebooking = {};
-
-  // Alias of awebooking.
-  var self = awebooking;
-
-  // Sub objects
-  awebooking.utils = {};
-  awebooking.instances = {};
-  awebooking.utils.rangeDates = require('./core/flatpickr-dates.js');
+  // Main objects
+  plugin.utils = {};
+  plugin.instances = {};
+  plugin.utils.rangeDates = require('./core/flatpickr-dates.js');
 
   /**
    * Configure.
    *
    * @type {Object}
    */
-  awebooking.config = lodashDefaults(window._awebooking, {
+  plugin.config = lodashDefaults(window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
     ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
     i18n: {
@@ -47,7 +39,7 @@ var lodashDefaults = require('lodash.defaults');
    * @param  {string} route
    * @return {string}
    */
-  awebooking.route = function (route) {
+  plugin.route = function (route) {
     return this.config.route + (route || '').replace(/^\//g, '');
   };
 
@@ -58,9 +50,9 @@ var lodashDefaults = require('lodash.defaults');
    *
    * @return {flatpickr}
    */
-  awebooking.datepicker = function (instance, options) {
-    var i18n = self.config.i18n;
-    var defaults = self.config.datepicker;
+  plugin.datepicker = function (instance, options) {
+    var i18n = plugin.config.i18n;
+    var defaults = plugin.config.datepicker;
     var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
 
     if (Array.isArray(defaults.disable_days)) {
@@ -95,16 +87,14 @@ var lodashDefaults = require('lodash.defaults');
    * @return {void}
    */
   $(function () {
+    // Init
+    require('./frontend/search-form').init();
 
-    var rangeDates = new awebooking.utils.rangeDates('.searchbox', {
-      // ...
-    });
-
-    console.log(rangeDates);
+    tippy('[data-awebooking="tooltip"]', []);
   });
-})(jQuery);
+})(jQuery, window.awebooking);
 
-},{"./core/flatpickr-dates.js":2,"lodash.defaults":4}],2:[function(require,module,exports){
+},{"./core/flatpickr-dates.js":2,"./frontend/search-form":3,"lodash.defaults":5}],2:[function(require,module,exports){
 'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -336,7 +326,81 @@ module.exports = function FlatpickrDates(el) {
   });
 };
 
-},{"debounce":3}],3:[function(require,module,exports){
+},{"debounce":4}],3:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = window.jQuery;
+var plugin = window.awebooking;
+
+var SearchForm = function () {
+  function SearchForm(el) {
+    var _this = this;
+
+    _classCallCheck(this, SearchForm);
+
+    this.$el = $(el);
+
+    $('.searchbox__box', this.$el).each(function (i, box) {
+      $(box).data('popup', _this.setuptPopper(box));
+    });
+
+    var rangeDates = new plugin.utils.rangeDates('.searchbox', {
+      // ...
+    });
+
+    console.log(rangeDates);
+
+    console.log(this);
+  }
+
+  _createClass(SearchForm, [{
+    key: 'setuptPopper',
+    value: function setuptPopper(el) {
+      var $html = $(el).find('.searchbox__popup');
+      if ($html.length === 0) {
+        return;
+      }
+
+      tippy(el, {
+        theme: 'awebooking-popup',
+        delay: 0,
+        arrow: true,
+        distance: 0,
+        placement: 'bottom',
+        sticky: true,
+        trigger: 'click',
+        interactive: true,
+        performance: true,
+        hideOnClick: true,
+        animation: 'shift-toward',
+        duration: [150, 150],
+        html: $html[0],
+        popperOptions: { modifiers: {
+            hide: { enabled: false },
+            preventOverflow: { enabled: false }
+          } }
+      });
+
+      return el._tippy;
+    }
+  }]);
+
+  return SearchForm;
+}();
+
+module.exports = {
+  init: function init() {
+    $('.searchbox').each(function () {
+      new SearchForm(this);
+    });
+  }
+};
+
+},{}],4:[function(require,module,exports){
 /**
  * Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -404,7 +468,7 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
