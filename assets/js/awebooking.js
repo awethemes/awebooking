@@ -322,7 +322,9 @@ module.exports = function FlatpickrDates(el) {
 
   this.datepicker = awebooking.datepicker($rangepicker[0], {
     mode: 'range',
-    plugins: [rangedates]
+    inline: true
+    // static: true,
+    // plugins: [ rangedates ],
   });
 };
 
@@ -344,17 +346,14 @@ var SearchForm = function () {
 
     this.$el = $(el);
 
+    var rangeDates = new plugin.utils.rangeDates('.searchbox', {});
+
     $('.searchbox__box', this.$el).each(function (i, box) {
       $(box).data('popup', _this.setuptPopper(box));
     });
 
-    var rangeDates = new plugin.utils.rangeDates('.searchbox', {
-      // ...
-    });
-
-    console.log(rangeDates);
-
-    console.log(this);
+    // console.log(rangeDates);
+    // console.log(this);
   }
 
   _createClass(SearchForm, [{
@@ -371,7 +370,6 @@ var SearchForm = function () {
         arrow: true,
         distance: 0,
         placement: 'bottom',
-        sticky: true,
         trigger: 'click',
         interactive: true,
         performance: true,

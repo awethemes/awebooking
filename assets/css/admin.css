@@ -2136,21 +2136,15 @@ span.flatpickr-weekday {
 }
 
 #awebooking-room-type-data .awebooking-tabs > li.tab-room-type-pricing > a:before {
-  content: "\e012";
-}
-
-#awebooking-room-type-data .awebooking-tabs > li.tab-room-type-services > a:before {
-  content: "\e007";
+  content: "\f147";
 }
 
 #awebooking-room-type-data .awebooking-tabs > li.tab-room-type-amenities > a:before {
-  content: "\e016";
+  content: "\f116";
 }
 
 #awebooking-room-type-data .awebooking-tabs > li.tab-room-type-description > a:before {
-  content: "\f348";
-  font-size: 18px;
-  font-family: "Dashicons";
+  content: "\f13a";
 }
 
 #awebooking-room-type-data .awebooking-panel {

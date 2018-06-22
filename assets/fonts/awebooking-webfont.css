@@ -2,11 +2,11 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?5cff041cc936c163882cda3301db8d60?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?5cff041cc936c163882cda3301db8d60") format("woff2"),
-url("awebooking-webfont.woff?5cff041cc936c163882cda3301db8d60") format("woff"),
-url("awebooking-webfont.ttf?5cff041cc936c163882cda3301db8d60") format("truetype"),
-url("awebooking-webfont.svg?5cff041cc936c163882cda3301db8d60#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?d1c2c4c465b038b2af416408f02fdaef?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?d1c2c4c465b038b2af416408f02fdaef") format("woff2"),
+url("awebooking-webfont.woff?d1c2c4c465b038b2af416408f02fdaef") format("woff"),
+url("awebooking-webfont.ttf?d1c2c4c465b038b2af416408f02fdaef") format("truetype"),
+url("awebooking-webfont.svg?d1c2c4c465b038b2af416408f02fdaef#awebooking-webfont") format("svg");
 }
 
 .aficon {
@@ -272,42 +272,45 @@ url("awebooking-webfont.svg?5cff041cc936c163882cda3301db8d60#awebooking-webfont"
 .aficon-rainy:before {
 	content: "\f153";
 }
-.aficon-search:before {
+.aficon-room-service:before {
 	content: "\f154";
 }
-.aficon-star-half:before {
+.aficon-search:before {
 	content: "\f155";
 }
-.aficon-star-outline:before {
+.aficon-star-half:before {
 	content: "\f156";
 }
-.aficon-star:before {
+.aficon-star-outline:before {
 	content: "\f157";
 }
-.aficon-sunny:before {
+.aficon-star:before {
 	content: "\f158";
 }
-.aficon-thunderstorm:before {
+.aficon-sunny:before {
 	content: "\f159";
 }
-.aficon-tv:before {
+.aficon-thunderstorm:before {
 	content: "\f15a";
 }
-.aficon-umbrella:before {
+.aficon-tv:before {
 	content: "\f15b";
 }
-.aficon-warning:before {
+.aficon-umbrella:before {
 	content: "\f15c";
 }
-.aficon-water:before {
+.aficon-warning:before {
 	content: "\f15d";
 }
-.aficon-wifi:before {
+.aficon-water:before {
 	content: "\f15e";
 }
-.aficon-wine:before {
+.aficon-wifi:before {
 	content: "\f15f";
 }
-.aficon-woman:before {
+.aficon-wine:before {
 	content: "\f160";
+}
+.aficon-woman:before {
+	content: "\f161";
 }

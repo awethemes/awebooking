@@ -50,18 +50,13 @@
       content: "\e001";
     }
     &.tab-room-type-pricing > a:before {
-      content: "\e012";
-    }
-    &.tab-room-type-services > a:before {
-      content: "\e007";
+      content: "\f147";
     }
     &.tab-room-type-amenities > a:before {
-      content: "\e016";
+      content: "\f116";
     }
     &.tab-room-type-description > a:before {
-      content: "\f348";
-      font-size: 18px;
-      font-family: "Dashicons";
+      content: "\f13a";
     }
   }
 

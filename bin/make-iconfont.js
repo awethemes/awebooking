@@ -1,10 +1,8 @@
-const path = require('path');
-const generator = require('icon.font');
-
-const options = {
-  src:             './assets/img/svg',
-  dest:            './assets/fonts',
+require('icon.font')({
+  src:             'assets/img/svg',
+  dest:            'assets/fonts',
   image:           false,
+  saveConfig:      true,
   fontName:        'awebooking-webfont',
   configFile:      'bin/webfonts/config.json',
   htmlTemplate:    'bin/webfonts/html.hbs',
@@ -15,8 +13,6 @@ const options = {
     baseSelector:  'aficon', // awebooking-webfont
     classPrefix:   'aficon-',
   },
-};
-
-generator(options).then(function() {
-  console.info('Generator iconfont successfully!');
+}).then(function() {
+  console.log('Generator iconfont successfully!');
 });

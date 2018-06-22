@@ -23,6 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/checkout' ) ); ?>" enctype="multipart/form-data">
 			<?php wp_nonce_field( 'awebooking_checkout_process', '_wpnonce', true ); ?>
 
+			<?php do_action( 'abrs_html_checkout_services' ); ?>
+
 			<?php do_action( 'abrs_html_checkout_booking_details' ); ?>
 
 			<?php do_action( 'abrs_html_checkout_guest_details' ); ?>

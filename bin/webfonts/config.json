@@ -1,5 +1,5 @@
 {
-  "lastCodepoint": 61792,
+  "lastCodepoint": 61793,
   "icons": {
     "add-circle-outline": 61697,
     "add-circle": 61698,
@@ -84,18 +84,19 @@
     "musical-notes": 61777,
     "partly-sunny": 61778,
     "rainy": 61779,
-    "search": 61780,
-    "star-half": 61781,
-    "star-outline": 61782,
-    "star": 61783,
-    "sunny": 61784,
-    "thunderstorm": 61785,
-    "tv": 61786,
-    "umbrella": 61787,
-    "warning": 61788,
-    "water": 61789,
-    "wifi": 61790,
-    "wine": 61791,
-    "woman": 61792
+    "room-service": 61780,
+    "search": 61781,
+    "star-half": 61782,
+    "star-outline": 61783,
+    "star": 61784,
+    "sunny": 61785,
+    "thunderstorm": 61786,
+    "tv": 61787,
+    "umbrella": 61788,
+    "warning": 61789,
+    "water": 61790,
+    "wifi": 61791,
+    "wine": 61792,
+    "woman": 61793
   }
 }
