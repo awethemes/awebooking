@@ -145,7 +145,7 @@
 
       flatpickr('#bulk_date_start', {
         dateFormat: 'Y-m-d',
-        plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }) ],
+        // plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }) ],
       });
     }
   }

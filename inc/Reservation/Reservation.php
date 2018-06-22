@@ -223,22 +223,26 @@ class Reservation {
 		$request = $room_rate->get_request();
 		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
 
-		// Create the room stay instance.
-		$room_stay = new Item([
-			'id'       => $room_type->get_id(),
-			'name'     => $room_type->get( 'title' ),
-			'price'    => $room_rate->get_rate()->as_numeric(),
-			'quantity' => $quantity,
-			'tax_rate' => 0,
-			'options'  => array_merge( $request->to_array(), [
-				'room_type' => $room_type->get_id(),
-				'rate_plan' => $rate_plan->get_id(),
-			]),
+		$options = array_merge( $request->to_array(), [
+			'room_type' => $room_type->get_id(),
+			'rate_plan' => $rate_plan->get_id(),
 		]);
 
-		// ...
-		if ( $this->has( $room_stay->get_row_id() ) ) {
-			dd(1);
+		$row_id = Item::generate_row_id( $room_type->get_id(), $options );
+
+		if ( $this->has( $row_id ) ) {
+			$room_stay = $this->get( $row_id );
+			$room_stay->increment( $quantity );
+		} else {
+			// Create the room stay instance.
+			$room_stay = new Item([
+				'id'       => $room_type->get_id(),
+				'name'     => $room_type->get( 'title' ),
+				'price'    => $room_rate->get_rate()->as_numeric(),
+				'quantity' => $quantity,
+				'tax_rate' => 0,
+				'options'  => $options,
+			]);
 		}
 
 		$room_stay->set_data( $room_rate );
@@ -250,9 +254,11 @@ class Reservation {
 		}
 
 		// Take the room IDs for temporary lock.
-		$room_ids = array_keys(
-			$room_rate->get_remain_rooms()->take( $quantity )->all()
-		);
+		$take_rooms = $room_rate->get_remain_rooms()
+			->take( $room_stay->get_quantity() )
+			->all();
+
+		$room_ids = array_keys( $take_rooms );
 
 		$this->add_booked_rooms( $room_ids );
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );

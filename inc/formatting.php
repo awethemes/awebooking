@@ -105,9 +105,9 @@ function abrs_get_price_format() {
 /**
  * Format the price with a currency symbol.
  *
- * @param  int|float $amount   The price amount.
- * @param  string    $currency The currency, default is current currency.
- * @return string
+ * @param  \AweBooking\Support\Decimal|int|float $amount   The amount.
+ * @param  string                                $currency The currency, default is current currency.
+ * @return void
  */
 function abrs_format_price( $amount, $currency = null ) {
 	// Convert amount to Decimal.
@@ -151,8 +151,8 @@ function abrs_format_price( $amount, $currency = null ) {
 /**
  * Same as abrs_format_price() but echo the price instead.
  *
- * @param  int|float $amount   The amount.
- * @param  string    $currency The currency, default is current currency.
+ * @param  \AweBooking\Support\Decimal|int|float $amount   The amount.
+ * @param  string                                $currency The currency, default is current currency.
  * @return void
  */
 function abrs_price( $amount, $currency = null ) {

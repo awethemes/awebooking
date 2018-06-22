@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="search-rooms__empty search-rooms__box">
+
 	<div class="search-rooms__box-icon">
 		<img src="<?php echo esc_url( abrs_plugin_url( '/assets/img/no-rooms.svg' ) ); ?>" alt="<?php echo esc_html__( 'No rooms available', 'awebooking' ); ?>">
 	</div>
@@ -28,4 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p class="search-rooms__box-text">
 		<?php esc_html_e( 'Sorry, there\'s no available room that fits your current request.', 'awebooking' ); ?>
 	</p>
+
+	<?php if ( ! abrs_reservation()->is_empty() ) : ?>
+
+		<a class="button" href="<?php echo esc_url( abrs_get_checkout_url() ); ?>">
+			<span><?php esc_html_e( 'Go to Checkout', 'awebooking' ); ?></span>
+		</a>
+
+	<?php endif; ?>
+
 </div><!-- /.search-rooms-timeout -->

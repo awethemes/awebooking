@@ -38,6 +38,7 @@
     "bootstrap": "^4.1.1",
     "debounce": "^1.1.0",
     "flatpickr": "^4.5.0",
+    "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
     "lodash.defaults": "^4.2.0",
     "lodash.map": "^4.6.0",
