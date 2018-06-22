@@ -25,8 +25,8 @@ list( $check_in, $check_out ) = [
 
 ?>
 
-<div class="reservation_details">
-	<div class="reservation_details___item tb-width-40">
+<div class="reservation-dates">
+	<div class="reservation-date tb-width-40">
 		<span class="reservation_details__subtitle"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
 
 		<div class="reservation_details__info">

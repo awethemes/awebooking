@@ -48,7 +48,7 @@ $form_classes = [
 						<div class="searchbox__box-line">
 							<label class="searchbox__box-label">
 								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
-								<select name="hotel">
+								<select name="hotel" class="input-transparent">
 									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
