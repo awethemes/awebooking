@@ -26,56 +26,6 @@
   text-decoration: none;
 }
 
-.awebooking h1,
-.awebooking h2,
-.awebooking h3,
-.awebooking h4,
-.awebooking h5,
-.awebooking h6,
-.awebooking-block h1,
-.awebooking-block h2,
-.awebooking-block h3,
-.awebooking-block h4,
-.awebooking-block h5,
-.awebooking-block h6 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.2;
-  color: inherit;
-}
-
-.awebooking h1,
-.awebooking-block h1 {
-  font-size: 2.5rem;
-}
-
-.awebooking h2,
-.awebooking-block h2 {
-  font-size: 2rem;
-}
-
-.awebooking h3,
-.awebooking-block h3 {
-  font-size: 1.75rem;
-}
-
-.awebooking h4,
-.awebooking-block h4 {
-  font-size: 1.5rem;
-}
-
-.awebooking h5,
-.awebooking-block h5 {
-  font-size: 1.25rem;
-}
-
-.awebooking h6,
-.awebooking-block h6 {
-  font-size: 1rem;
-}
-
 .awebooking p,
 .awebooking-block p {
   margin-top: 0;
@@ -1405,6 +1355,26 @@
   white-space: normal;
 }
 
+.awebooking-tooltip-theme {
+  text-align: left;
+}
+
+.awebooking-tooltip-theme .occupancy-description__title {
+  margin: 0;
+  padding-bottom: .4em;
+}
+
+.awebooking-tooltip-theme .occupancy-description__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 1rem;
+}
+
+.awebooking-tooltip-theme .occupancy-description__list li {
+  padding: .2em 0;
+}
+
 #checkout-form {
   padding: 1em;
   background-color: #fff;
@@ -1640,6 +1610,68 @@ ul.booking_details li:last-of-type {
 .roomdetails-total__info {
   font-size: .6rem;
   margin-bottom: 0 !important;
+}
+
+.checkout-services {
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.checkout-services__header {
+  font-size: 1rem;
+  padding: .8rem;
+  margin: 0;
+}
+
+.checkout-service {
+  border-top: 1px solid #e9ecef;
+  padding: 1.2rem;
+}
+
+.checkout-service__media {
+  border-radius: .4rem;
+  overflow: hidden;
+}
+
+.checkout-service__media img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.checkout-service__title {
+  font-size: 1.2rem;
+  color: #007bff;
+  text-transform: capitalize;
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+.checkout-service__description {
+  margin-bottom: .5rem;
+}
+
+.checkout-service__operation {
+  font-size: .8rem;
+  color: #f44336;
+}
+
+.checkout-service__pay {
+  text-align: right;
+}
+
+.checkout-service__price {
+  color: #f44336;
+}
+
+.checkout-service__price .awebooking-price {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+  color: #343a40;
+}
+
+.checkout-service__price .awebooking-price__symbol {
+  font-size: 1rem;
 }
 
 .search-rooms__form {

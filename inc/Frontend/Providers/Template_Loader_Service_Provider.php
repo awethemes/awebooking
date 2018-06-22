@@ -54,6 +54,10 @@ class Template_Loader_Service_Provider extends Service_Provider {
 			case is_page( abrs_get_page_id( 'search_results' ) ):
 				$template = 'search.php';
 				break;
+
+			case is_page( abrs_get_page_id( 'checkout' ) ):
+				$template = 'checkout.php';
+				break;
 		}
 
 		return $template;

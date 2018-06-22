@@ -9,6 +9,7 @@
  * @package  AweBooking
  * @version  3.1.0
  */
+
 use AweBooking\Model\Service;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -57,7 +58,7 @@ $operations = Service::get_operations();
 									<div class="checkout-service__price">
 										<?php print abrs_format_service_describe( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?>
 									</div>
-									
+
 									<div class="nice-checkbox">
 										<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="awebooking_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>" />
 										<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>"></label>

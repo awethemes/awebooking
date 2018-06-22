@@ -91,7 +91,9 @@ window.awebooking = {};
     // Init
     require('./frontend/search-form').init();
 
-    tippy('[data-awebooking="tooltip"]', []);
+    tippy('[data-awebooking="tooltip"]', {
+      theme: 'awebooking-tooltip'
+    });
   });
 })(jQuery, window.awebooking);
 
