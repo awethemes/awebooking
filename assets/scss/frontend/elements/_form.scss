@@ -50,7 +50,7 @@
   }
 }
 
-select.form-control {
+select.form-input {
   &:not([size]):not([multiple]) {
     height: $input-height;
   }
@@ -63,17 +63,6 @@ select.form-control {
     // See https://github.com/twbs/bootstrap/issues/19398.
     color: $input-color;
     background-color: $input-bg;
-  }
-}
-
-.form-input-transparent {
-  width: 100%;
-  background-color: transparent;
-  margin: 0;
-  padding: 0;
-
-  &:focus {
-    outline: none;
   }
 }
 
@@ -262,4 +251,40 @@ select.form-select {
       background-color: $custom-control-indicator-checked-disabled-bg;
     }
   }
+}
+
+.input-transparent {
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  background-color: transparent !important;
+
+  color: $input-color;
+  font-size: $font-size-base;
+  line-height: 1;
+
+  &:focus {
+    outline: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  &:disabled,
+  &[readonly] {
+    opacity: 1;
+  }
+
+  &::placeholder {
+    opacity: 1;
+    color: $input-placeholder-color;
+  }
+}
+
+select.input-transparent {
+  appearance: none;
 }

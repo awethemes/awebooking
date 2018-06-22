@@ -83,7 +83,8 @@ class Room_Type_Metabox {
 		// Fill the room type data.
 		$room_type->fill([
 			'beds'                => $values->get( '_beds', [] ),
-			'view'                => $values->get( '_view', '' ),
+			'view'                => $values->get( '_room_view', '' ),
+			'area_size'           => $values->get( '_area_size', '' ),
 			'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
 			'number_adults'       => $values->get( 'number_adults', 0 ),
 			'number_children'     => $values->get( 'number_children', 0 ),
@@ -199,10 +200,19 @@ class Room_Type_Metabox {
 
 		$form->add_field([
 			'id'          => '_room_view',
-			'type'        => 'text',
+			'type'        => 'text_medium',
 			'name'        => esc_html__( 'View', 'awebooking' ),
 			'attributes'  => [ 'list' => 'view_datalist' ],
 			'after'       => $this->datalist_view_callback(),
+		]);
+
+		$form->add_field([
+			'name'       => esc_html__( 'Area size', 'awebooking' ),
+			'id'         => '_area_size',
+			'type'       => 'text_small',
+			'validate'   => 'numeric|min:1',
+			'before'     => '<div class="abrs-input-addon">',
+			'after'      => '<label for="area_size">' . abrs_format_measure_unit_label() . '</label></div>',
 		]);
 
 		$form->add_field([
@@ -333,19 +343,19 @@ class Room_Type_Metabox {
 	protected function get_tabs() {
 		return apply_filters( 'abrs_room_type_data_tabs', [
 			'general' => [
-				'title'    => esc_html__( 'General' ),
+				'title'    => esc_html__( 'General', 'awebooking' ),
 				'priority' => 10,
 			],
 			'pricing' => [
-				'title'    => esc_html__( 'Pricing' ),
+				'title'    => esc_html__( 'Pricing', 'awebooking' ),
 				'priority' => 20,
 			],
 			'amenities' => [
-				'title'    => esc_html__( 'Amenities' ),
+				'title'    => esc_html__( 'Rooms', 'awebooking' ),
 				'priority' => 40,
 			],
 			'description' => [
-				'title'    => esc_html__( 'Description' ),
+				'title'    => esc_html__( 'Description', 'awebooking' ),
 				'priority' => 50,
 			],
 		]);

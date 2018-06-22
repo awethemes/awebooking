@@ -9,7 +9,7 @@ class Ajax_Controller extends Controller {
 	 * Handle add booking note.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function add_booking_note( Request $request ) {
 		if ( ! check_ajax_referer( 'awebooking_add_note', null, false ) ) {
@@ -43,7 +43,7 @@ class Ajax_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @param  int                     $note    The booking note ID to delete.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function delete_booking_note( Request $request, $note ) {
 		if ( ! check_ajax_referer( 'awebooking_delete_note', null, false ) ) {
@@ -59,7 +59,7 @@ class Ajax_Controller extends Controller {
 	 * Query for customers.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return \Awethemes\Http\Response|mixed
 	 */
 	public function search_customers( Request $request ) {
 		$term = abrs_clean( stripslashes( $request->get( 'term' ) ) );

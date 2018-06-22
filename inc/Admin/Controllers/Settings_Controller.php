@@ -22,7 +22,7 @@ class Settings_Controller extends Controller {
 	}
 
 	/**
-	 * Handle store the settings.
+	 * Display the settings.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
@@ -37,7 +37,7 @@ class Settings_Controller extends Controller {
 	 * Handle store the settings.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return \Awethemes\Http\Response|mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'awebooking-settings', '_wpnonce' );

@@ -46,11 +46,20 @@
 }
 
 .button--secondary {
-  @include button-variant(#fff, #d7d7d7);
+  @include button-variant(#fff, #eee);
 }
 
 .button--block-checkout {
   display: block;
   min-height: 42px;
   line-height: 42px;
+  text-decoration: none;
+}
+
+.button--circle-icon {
+  padding: 0;
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  border-radius: 50%;
 }

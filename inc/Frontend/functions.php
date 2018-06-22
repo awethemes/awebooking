@@ -149,7 +149,7 @@ function abrs_body_class( $classes ) {
 	$classes = (array) $classes;
 
 	if ( is_awebooking() ) {
-		$classes[] = 'awebooking-page';
+		$classes[] = 'awebooking';
 	}
 
 	return array_unique( $classes );
@@ -163,12 +163,15 @@ function abrs_body_class( $classes ) {
  * @return string|void
  */
 function abrs_get_search_form( $atts = [], $echo = true ) {
-	global $wp;
+	global $wp, $abrs_query;
 
 	// Pairs the input atts.
 	$atts = shortcode_atts([
-		'layout'      => '',
-		'res_request' => null,
+		'layout'          => 'horizontal',
+		'alignment'       => '',
+		'container_class' => '',
+		'res_request'     => null,
+		'hotel_location'  => true,
 	], $atts );
 
 	/**
@@ -178,8 +181,8 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 */
 	do_action( 'abrs_pre_get_search_form', $atts );
 
-	if ( is_null( $atts['res_request'] ) && ! empty( $wp->query_vars['res_request'] ) ) {
-		$res_request = $wp->query_vars['res_request'];
+	if ( is_null( $atts['res_request'] ) && $abrs_query && $abrs_query->res_request ) {
+		$res_request = $abrs_query->res_request;
 	} else {
 		$res_request = abrs_create_res_request([
 			'check_in'  => 'today',
@@ -216,7 +219,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
  * @return string|void
  */
 function abrs_bookroom_button( $args, $echo = true ) {
-	global $wp;
+	global $wp, $abrs_query;
 
 	$args = wp_parse_args( $args, [
 		'room_type'   => 0,
@@ -226,8 +229,8 @@ function abrs_bookroom_button( $args, $echo = true ) {
 		'button_atts' => [],
 	]);
 
-	$res_request = isset( $wp->query_vars['res_request'] )
-		? $wp->query_vars['res_request']
+	$res_request = ( $abrs_query && $abrs_query->res_request )
+		? $abrs_query->res_request
 		: null;
 
 	$button = abrs_get_template_content( 'book-button.php', compact( 'args', 'res_request' ) );

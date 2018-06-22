@@ -16,7 +16,7 @@ class Misc_Controller extends Controller {
 	/**
 	 * Preview a email template.
 	 *
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function preview_email() {
 		return ( new Sample_Email )->get_content();

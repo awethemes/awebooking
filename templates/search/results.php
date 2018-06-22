@@ -14,9 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-?>
+/* @var \AweBooking\Availability\Query_Results $results */
 
-<?php do_action( 'abrs_print_notices' ); ?>
+$res_request = $results->get_request();
+
+?>
 
 <div class="hotel-content">
 	<div class="hotel-content__main">
@@ -53,4 +55,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<aside class="hotel-content__aside">
 		<?php abrs_get_template( 'reservation/booked.php' ); ?>
 	</aside>
-</div><!-- /.container -->
+</div><!-- /.hotel-content -->

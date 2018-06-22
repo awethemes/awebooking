@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v7.20.8
+* sweetalert2 v7.22.2
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -258,7 +258,7 @@ var DismissReason = Object.freeze({
   timer: 'timer'
 });
 
-var version = "7.20.8";
+var version = "7.22.2";
 
 var argsToParams = function argsToParams(args) {
   var params = {};
@@ -311,7 +311,7 @@ var prefix = function prefix(items) {
   return result;
 };
 
-var swalClasses = prefix(['container', 'shown', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'icon-text', 'image', 'input', 'has-input', 'file', 'range', 'select', 'radio', 'checkbox', 'textarea', 'inputerror', 'validationerror', 'progresssteps', 'activeprogressstep', 'progresscircle', 'progressline', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen']);
+var swalClasses = prefix(['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'icon-text', 'image', 'input', 'has-input', 'file', 'range', 'select', 'radio', 'checkbox', 'textarea', 'inputerror', 'validationerror', 'progresssteps', 'activeprogressstep', 'progresscircle', 'progressline', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen']);
 
 var iconTypes = prefix(['success', 'warning', 'info', 'question', 'error']);
 
@@ -544,8 +544,12 @@ var init = function init(params) {
     popup.setAttribute('aria-modal', 'true');
   }
 
-  var resetValidationError = function resetValidationError() {
-    Swal.isVisible() && Swal.resetValidationError();
+  var oldInputVal = void 0; // IE11 workaround, see #1109 for details
+  var resetValidationError = function resetValidationError(e) {
+    if (Swal.isVisible() && oldInputVal !== e.target.value) {
+      Swal.resetValidationError();
+    }
+    oldInputVal = e.target.value;
   };
 
   input.oninput = resetValidationError;
@@ -554,13 +558,13 @@ var init = function init(params) {
   checkbox.onchange = resetValidationError;
   textarea.oninput = resetValidationError;
 
-  range.oninput = function () {
-    resetValidationError();
+  range.oninput = function (e) {
+    resetValidationError(e);
     rangeOutput.value = range.value;
   };
 
-  range.onchange = function () {
-    resetValidationError();
+  range.onchange = function (e) {
+    resetValidationError(e);
     range.nextSibling.value = range.value;
   };
 
@@ -669,12 +673,11 @@ var globalState = {};
 // Restore previous active (focused) element
 var restoreActiveElement = function restoreActiveElement() {
   if (globalState.previousActiveElement && globalState.previousActiveElement.focus) {
-    var previousActiveElement = globalState.previousActiveElement;
-    globalState.previousActiveElement = null;
     var x = window.scrollX;
     var y = window.scrollY;
-    setTimeout(function () {
-      previousActiveElement.focus && previousActiveElement.focus();
+    globalState.restoreFocusTimeout = setTimeout(function () {
+      globalState.previousActiveElement.focus();
+      globalState.previousActiveElement = null;
     }, 100); // issues/900
     if (typeof x !== 'undefined' && typeof y !== 'undefined') {
       // IE doesn't have scrollX/scrollY support
@@ -710,7 +713,7 @@ var close = function close(onClose, onAfterClose) {
     if (container.parentNode) {
       container.parentNode.removeChild(container);
     }
-    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['no-backdrop'], swalClasses['has-input'], swalClasses['toast-shown']]);
+    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['has-input'], swalClasses['toast-shown']]);
 
     if (isModal()) {
       undoScrollbar();
@@ -759,6 +762,16 @@ var clickCancel = function clickCancel() {
   return getCancelButton().click();
 };
 
+function fire() {
+  var Swal = this;
+
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  return new (Function.prototype.bind.apply(Swal, [null].concat(args)))();
+}
+
 /**
  * Extends a Swal class making it able to be instantiated without the `new` keyword (and thus without `Swal.fire`)
  * @param ParentSwal
@@ -799,6 +812,7 @@ var defaultParams = {
   target: 'body',
   backdrop: true,
   animation: true,
+  heightAuto: true,
   allowOutsideClick: true,
   allowEscapeKey: true,
   allowEnterKey: true,
@@ -1060,15 +1074,12 @@ var showLoading = function showLoading() {
   popup.focus();
 };
 
-function fire() {
-  var Swal = this;
-
-  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  return new (Function.prototype.bind.apply(Swal, [null].concat(args)))();
-}
+/**
+ * Show spinner instead of Confirm button and disable Cancel button
+ */
+var getTimerLeft = function getTimerLeft() {
+  return globalState.timeout && globalState.timeout.getTimerLeft();
+};
 
 
 
@@ -1094,6 +1105,7 @@ var staticMethods = Object.freeze({
 	getCancelButton: getCancelButton,
 	getFooter: getFooter,
 	isLoading: isLoading,
+	fire: fire,
 	mixin: mixin,
 	queue: queue,
 	getQueueStep: getQueueStep,
@@ -1101,7 +1113,7 @@ var staticMethods = Object.freeze({
 	deleteQueueStep: deleteQueueStep,
 	showLoading: showLoading,
 	enableLoading: showLoading,
-	fire: fire
+	getTimerLeft: getTimerLeft
 });
 
 /**
@@ -1282,6 +1294,34 @@ function resetValidationError() {
     removeClass(input, swalClasses.inputerror);
   }
 }
+
+var Timer = function Timer(callback, delay) {
+  classCallCheck(this, Timer);
+
+  var id, started, running;
+  var remaining = delay;
+  this.start = function () {
+    running = true;
+    started = new Date();
+    id = setTimeout(callback, remaining);
+  };
+  this.stop = function () {
+    running = false;
+    clearTimeout(id);
+    remaining -= new Date() - started;
+  };
+  this.getTimerLeft = function () {
+    if (running) {
+      this.stop();
+      this.start();
+    }
+    return remaining;
+  };
+  this.getStateRunning = function () {
+    return running;
+  };
+  this.start();
+};
 
 var defaultInputValidators = {
   email: function email(string, extraParams) {
@@ -1582,21 +1622,19 @@ function setParameters(params) {
 }
 
 /**
- * Animations
+ * Open popup, add necessary classes and styles, fix scrollbar
  *
- * @param animation
- * @param onBeforeOpen
- * @param onComplete
+ * @param {Array} params
  */
-var openPopup = function openPopup(animation, onBeforeOpen, onOpen) {
+var openPopup = function openPopup(params) {
   var container = getContainer();
   var popup = getPopup();
 
-  if (onBeforeOpen !== null && typeof onBeforeOpen === 'function') {
-    onBeforeOpen(popup);
+  if (params.onBeforeOpen !== null && typeof params.onBeforeOpen === 'function') {
+    params.onBeforeOpen(popup);
   }
 
-  if (animation) {
+  if (params.animation) {
     addClass(popup, swalClasses.show);
     addClass(container, swalClasses.fade);
     removeClass(popup, swalClasses.hide);
@@ -1617,6 +1655,10 @@ var openPopup = function openPopup(animation, onBeforeOpen, onOpen) {
   }
 
   addClass([document.documentElement, document.body, container], swalClasses.shown);
+  if (params.heightAuto && params.backdrop && !params.toast) {
+    addClass([document.documentElement, document.body], swalClasses['height-auto']);
+  }
+
   if (isModal()) {
     fixScrollbar();
     iOSfix();
@@ -1624,9 +1666,9 @@ var openPopup = function openPopup(animation, onBeforeOpen, onOpen) {
   if (!globalState.previousActiveElement) {
     globalState.previousActiveElement = document.activeElement;
   }
-  if (onOpen !== null && typeof onOpen === 'function') {
+  if (params.onOpen !== null && typeof params.onOpen === 'function') {
     setTimeout(function () {
-      onOpen(popup);
+      params.onOpen(popup);
     });
   }
 };
@@ -1642,7 +1684,13 @@ function _main(userParams) {
   privateProps.innerParams.set(this, innerParams);
 
   // clear the previous timer
-  clearTimeout(globalState.timeout);
+  if (globalState.timeout) {
+    globalState.timeout.stop();
+    delete globalState.timeout;
+  }
+
+  // clear the restore focus timeout
+  clearTimeout(globalState.restoreFocusTimeout);
 
   var domCache = {
     popup: getPopup(),
@@ -1684,8 +1732,9 @@ function _main(userParams) {
 
     // Close on timer
     if (innerParams.timer) {
-      globalState.timeout = setTimeout(function () {
-        return dismissWith('timer');
+      globalState.timeout = new Timer(function () {
+        dismissWith('timer');
+        delete globalState.timeout;
       }, innerParams.timer);
     }
 
@@ -2166,7 +2215,7 @@ function _main(userParams) {
       });
     }
 
-    openPopup(innerParams.animation, innerParams.onBeforeOpen, innerParams.onOpen);
+    openPopup(innerParams);
 
     if (!innerParams.toast) {
       if (!callIfFunction(innerParams.allowEnterKey)) {

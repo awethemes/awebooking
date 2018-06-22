@@ -115,7 +115,9 @@ class Message {
 		add_filter( 'wp_mail_from', [ $this, 'get_from_address' ] );
 		add_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );
 
-		$sended = wp_mail( $this->to, $this->subject, $this->content, $this->headers, $this->attachments );
+		$sended = abrs_rescue( function () {
+			return wp_mail( $this->to, $this->subject, $this->content, $this->headers, $this->attachments );
+		}, false );
 
 		remove_filter( 'wp_mail_from', [ $this, 'get_from_address' ] );
 		remove_filter( 'wp_mail_from_name', [ $this, 'get_from_name' ] );

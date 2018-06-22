@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+/* @var \AweBooking\Reservation\Item $room_stay */
+
+$reservation = abrs_reservation();
 
 ?>
 
@@ -25,6 +25,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$room_type = $room_stay->model();
 		$res_request = $room_stay->data->request;
 	?>
+
+	<a href="<?php echo esc_url( abrs_route( "/reservation/remove/{$room_stay->get_row_id()}" ) ); ?>">
+		<span><?php echo esc_html__( 'Remove', 'awebooking' ) ?></span>
+	</a>
+
 	<dl class="roomdetails-room">
 		<dt class="roomdetails-room__title"><?php esc_html_e( 'Room', 'awebooking' ); ?></dt>
 		<dd class="roomdetails-room__text"><?php echo esc_html( $room_stay->get( 'name' ) ); ?></dd>
@@ -51,11 +56,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="roomdetails-price">
 		<dl class="roomdetails-price-base">
-			<dt>Price (1 room x 1 night)</dt>
-			<dd>700.814</dd>
+			<dt>
+				<?php
+					/* translators: %1$s quantity, %2$s nights */
+					printf( esc_html__( 'Price (%1$s x %2$s)', 'awebooking' ),
+						sprintf(
+							'%1$d %2$s',
+							esc_html( $room_stay->get( 'quantity' ) ),
+							esc_html( _n( 'room', 'rooms', $room_stay->get( 'quantity' ), 'awebooking' ) )
+						),
+						abrs_format_night_counts( $res_request['nights'] )
+					); // WPCS: xss ok.
+				?>
+			</dt>
+			<dd><?php echo abrs_price( $room_stay->get_total_price_exc_tax() ); // WPCS: xss ok. ?></dd>
 
 			<dt>VAT</dt>
-			<dd class="roomdetails-price-base__text roomdetails-price-tax">free</dd>
+			<dd class="roomdetails-price-base__text roomdetails-tax">free</dd>
+
+			<dt>Subtotal</dt>
+			<dd class="roomdetails-price-base__text roomdetails-subtotal">
+				<?php echo abrs_price( $room_stay->get_total_price() ); // WPCS: xss ok. ?>
+			</dd>
 		</dl>
 	</div>
 
@@ -65,8 +87,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="roomdetails-price-footer">
 		<dl class="roomdetails-price-total">
-			<dt>Price</dt>
-			<dd>1.700.814</dd>
+			<dt><?php esc_html_e( 'Total', 'awebooking' ); ?></dt>
+			<dd><?php abrs_price( $reservation->get_total() ) ?></dd>
 		</dl>
 
 		<p class="roomdetails-price-footer__info">

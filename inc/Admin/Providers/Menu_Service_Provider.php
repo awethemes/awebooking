@@ -57,6 +57,7 @@ class Menu_Service_Provider extends Service_Provider {
 	 */
 	public function regsiter_settings_submenu() {
 		add_submenu_page( 'awebooking', esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/settings' );
+		add_submenu_page( 'awebooking', esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/tools' );
 	}
 
 	/**
@@ -117,7 +118,9 @@ class Menu_Service_Provider extends Service_Provider {
 		if ( $current_screen && 'awebooking_route' === $current_screen->base ) {
 			// @codingStandardsIgnoreStart
 			$parent_file  = 'awebooking';
-			$submenu_file = 'admin.php?awebooking=' . $this->plugin['request']->route_path();
+
+			$segments = explode( '/', trim( $this->plugin['request']->route_path(), '/' ) );
+			$submenu_file = 'admin.php?awebooking=/' . $segments[0];
 
 			if ( 0 === strpos( $current_screen->id, 'awebooking/booking' ) ) {
 				$submenu_file = 'edit.php?post_type=awebooking';

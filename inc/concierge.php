@@ -556,10 +556,11 @@ function abrs_get_room_rate( $args ) {
 /**
  * Create new reservation request.
  *
- * @param  \Awethemes\Http\Request|array $args The query args.
- * @return \AweBooking\Availability\Request|null
+ * @param  \Awethemes\Http\Request|array $args     The query args.
+ * @param  bool                          $wp_error Optional. Whether to return a WP_Error on failure.
+ * @return \AweBooking\Availability\Request|\WP_Error|null
  */
-function abrs_create_res_request( $args ) {
+function abrs_create_res_request( $args, $wp_error = false ) {
 	if ( $args instanceof Http_Request ) {
 		$args = $args->all();
 	}
@@ -578,7 +579,7 @@ function abrs_create_res_request( $args ) {
 	$timespan = abrs_timespan( $args['check_in'], $args['check_out'], 1, $args['strict'] );
 
 	if ( is_wp_error( $timespan ) ) {
-		return null;
+		return $wp_error ? $timespan : null;
 	}
 
 	// Create the guest counts.

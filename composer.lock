@@ -88,16 +88,16 @@
         },
         {
             "name": "awethemes/wp-http",
-            "version": "v1.0.4",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awethemes/wp-http.git",
-                "reference": "3c2d1011c787c0316a0859ce10641c76de452d21"
+                "reference": "3b3e4f65b9a0f5dfb97110e3f1a9433c7e890041"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awethemes/wp-http/zipball/3c2d1011c787c0316a0859ce10641c76de452d21",
-                "reference": "3c2d1011c787c0316a0859ce10641c76de452d21",
+                "url": "https://api.github.com/repos/awethemes/wp-http/zipball/3b3e4f65b9a0f5dfb97110e3f1a9433c7e890041",
+                "reference": "3b3e4f65b9a0f5dfb97110e3f1a9433c7e890041",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                 }
             ],
             "description": "The Missing WordPress HTTP Foundation",
-            "time": "2018-06-15T03:31:32+00:00"
+            "time": "2018-06-19T08:59:21+00:00"
         },
         {
             "name": "awethemes/wp-object",

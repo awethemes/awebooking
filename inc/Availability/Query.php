@@ -23,6 +23,15 @@ class Query {
 	}
 
 	/**
+	 * Gets the current request.
+	 *
+	 * @return \AweBooking\Availability\Request
+	 */
+	public function get_request() {
+		return $this->request;
+	}
+
+	/**
 	 * Gets the search results.
 	 *
 	 * @return \AweBooking\Availability\Query_Results
@@ -96,14 +105,5 @@ class Query {
 			->reject( function ( Room_Type $rt ) {
 				return empty( $rt ) || count( $rt->get_rooms() ) === 0;
 			})->values();
-	}
-
-	/**
-	 * Gets the current request.
-	 *
-	 * @return \AweBooking\Availability\Request
-	 */
-	public function get_request() {
-		return $this->request;
 	}
 }

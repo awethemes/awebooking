@@ -1,7 +1,33 @@
 .roommaster {
-	background-color: #fff;
-	border: 1px solid #cecece;
-	margin-bottom: 40px;
+  background-color: #fff;
+  background-clip: padding-box;
+  //border: solid 1px rgba($black, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba($black, .02), 1px 3px 14px rgba($black, .1);
+
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  &__header {
+    padding: .75rem 1.25rem;
+    border-bottom: solid 1px $gray-200;
+    position: relative;
+  }
+
+  &__title,
+  h3#{&}__title,
+  h4#{&}__title {
+    margin-bottom: 0;
+    font-size: $h5-font-size;
+  }
+
+  .button--circle-icon {
+    top: 4px;
+    right: .75rem;
+    position: absolute;
+    border-color: transparent;
+  }
 }
 
 .roommaster-header {
@@ -15,7 +41,6 @@
 
 .roommaster-content {
 	@include clearfix;
-	background-color: #eee;
 }
 
 .roommaster-info,
@@ -42,7 +67,7 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	
+
 	.info-item {
 		position: relative;
 		font-size: 14px;
@@ -96,7 +121,7 @@
 	tbody {
 		tr {
 			background-color: #fff;
-			
+
 			td {
 				vertical-align: top;
 				padding: 10px;

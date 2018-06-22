@@ -8,8 +8,11 @@ class Search_Form_Shortcode extends Shortcode_Abstract {
 	 * @var array
 	 */
 	protected $defaults = [
-		'layout'        => '',
-		'hide_location' => false,
+		'layout'          => 'horizontal',
+		'alignment'       => '',
+		'container_class' => '',
+		'res_request'     => null,
+		'hotel_location'  => true,
 	];
 
 	/**

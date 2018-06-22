@@ -1,4 +1,4 @@
-<form method="POST" action="<?php echo esc_url( abrs_route( '/book-room' ) ); ?>">
+<form method="POST" action="<?php echo esc_url( abrs_route( '/reservation/book-room' ) ); ?>">
 	<?php wp_nonce_field( 'book-room', '_wpnonce', true ); ?>
 
 	<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request->check_in ); ?>">

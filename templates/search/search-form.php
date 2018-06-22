@@ -1,14 +1,30 @@
-<div>
-	<form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" role="search">
-		<input type="hidden" name="check_in">
-		<input type="hidden" name="check_out">
+<?php
+/**
+ * This template show the search results.
+ *
+ * This template can be overridden by copying it to {yourtheme}/awebooking/search/results.php.
+ *
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
+ */
 
-		<div class="abrs-inline-datepicker">
-			<div id="js-inline-dates"></div><!-- JS: Inline datepicker -->
-		</div>
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-		<p style="margin-top: 15px;">
-			<button type="submit" class="abrs-button"><?php echo esc_html_x( 'Query', 'search availability', 'awebooking' ); ?></button>
-		</p>
-	</form>
+if ( ! abrs_get_option( 'display_search_form_on_search', true ) ) {
+	return;
+}
+
+?>
+
+<div class="search-rooms__form">
+	<?php
+	// Print the search form.
+	abrs_get_search_form([
+		'layout' => 'horizontal',
+	]);
+	?>
 </div>

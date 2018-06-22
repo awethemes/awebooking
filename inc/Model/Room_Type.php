@@ -158,6 +158,7 @@ class Room_Type extends Model {
 			// Room data.
 			'beds'                => [],
 			'view'                => '',
+			'area_size'           => '',
 			'maximum_occupancy'   => 0,
 			'number_adults'       => 0,
 			'number_children'     => 0,
@@ -182,7 +183,8 @@ class Room_Type extends Model {
 			'thumbnail_id'        => '_thumbnail_id',
 
 			'beds'                => '_beds',
-			'view'                => '_view',
+			'view'                => '_room_view',
+			'area_size'           => '_area_size',
 			'maximum_occupancy'   => '_maximum_occupancy',
 			'number_adults'       => 'number_adults',
 			'number_children'     => 'number_children',
@@ -214,6 +216,7 @@ class Room_Type extends Model {
 			case 'description':
 			case 'short_description':
 			case 'view':
+			case 'area_size':
 				$value = abrs_sanitize_html( $value );
 				break;
 
