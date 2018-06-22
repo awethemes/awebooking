@@ -105,12 +105,12 @@ if ( ! function_exists( 'awebooking_get_sidebar' ) ) {
 	/**
 	 * Get the room type sidebar template.
 	 */
-	function awebooking_get_sidebar() {
+	function abrs_get_sidebar() {
 		abrs_get_template( 'global/sidebar.php' );
 	}
 }
 
-if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
+if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
 
 	/**
 	 * Get the room type thumbnail, or the placeholder if not set.
@@ -118,7 +118,7 @@ if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
 	 * @param string $size (default: 'awebooking_archive').
 	 * @return string
 	 */
-	function awebooking_get_room_type_thumbnail( $size = 'awebooking_archive', $post_id = null ) {
+	function abrs_get_thumbnail( $post_id = null, $size = 'awebooking_archive' ) {
 		global $post;
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
@@ -128,20 +128,18 @@ if ( ! function_exists( 'awebooking_get_room_type_thumbnail' ) ) {
 			return;
 		}
 
-		$size = apply_filters( 'awebooking/archive_thumbnail_size', $size );
-
 		return get_the_post_thumbnail( $post_id, $size );
 	}
 }
 
-if ( ! function_exists( 'awebooking_template_loop_room_type_thumbnail' ) ) {
+if ( ! function_exists( 'abrs_template_room_thumbnail' ) ) {
 
 	/**
 	 * Get the room type thumbnail for the loop.
 	 *
 	 * @subpackage Loop
 	 */
-	function awebooking_template_loop_room_type_thumbnail() {
-		echo awebooking_get_room_type_thumbnail(); // WPCS: xss ok.
+	function abrs_template_room_thumbnail() {
+		echo abrs_get_thumbnail(); // WPCS: xss ok.
 	}
 }
