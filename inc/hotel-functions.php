@@ -156,7 +156,28 @@ function abrs_get_service( $service ) {
 	}, false );
 }
 
+/**
+ * Gets all services.
+ *
+ * @param  array $args Optional, the WP_Query args.
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_list_services( $args = [], $with_default = false ) {
+	$args = wp_parse_args( $args, apply_filters( 'abrs_query_services_args', [
+		'post_type'      => Constants::HOTEL_SERVICE,
+		'post_status'    => 'publish',
+		'posts_per_page' => 500, // Limit max 500.
+		'order'          => 'ASC',
+		'orderby'        => 'menu_order',
+	]));
 
+	$wp_query = new WP_Query( $args );
+
+	$services = abrs_collect( $wp_query->posts )
+		->map_into( Service::class );
+
+	return $services;
+}
 
 /**
  * Get room beds.
