@@ -270,10 +270,10 @@ $rate_plan = $room_rate->get_rate_plan();
 							<div id="short-description-<?php echo absint( $room_type->get_id() ); ?>" class="tabs-main-content">
 								<?php echo esc_html( $room_type->get( 'short_description' ) ); ?>
 							</div>
-							<div id="amenities-<?php echo absint( $room_type->get_id() ); ?>" class="tabs-main-content">
+							<ul id="amenities-<?php echo absint( $room_type->get_id() ); ?>" class="tabs-main-content">
 								<?php $amenities = wp_get_post_terms( $room_type->get_id(), 'hotel_amenity' ); ?>
 								<?php foreach ( $amenities as $amenity ) : ?>
-									<div class="room-amenity">
+									<li class="room-amenity">
 										<?php if ( $icon = get_term_meta( $amenity->term_id, '_icon', true ) ) : ?>
 											<span class="room-amenity__icon">
 												<?php if ( 'svg' === $icon['type'] || 'image' === $icon['type'] ) : ?>
@@ -286,9 +286,9 @@ $rate_plan = $room_rate->get_rate_plan();
 											<i class="aficon aficon-checkmark"></i>
 										<?php endif; ?>
 										<span class="room-amenity__title"><?php echo esc_html( $amenity->name ); ?></span>
-									</div>
+									</li>
 								<?php endforeach; ?>
-							</div>
+							</ul>
 						</div>
 					</div>
 				</div>
