@@ -246,7 +246,7 @@ function abrs_format_measure_unit_label() {
  *
  * @return string
  */
-function abrs_format_service_describe( $value, $operation = 'add' ) {
+function abrs_format_service_price( $value, $operation = 'add' ) {
 	$label = '';
 
 	switch ( $operation ) {
@@ -291,7 +291,7 @@ function abrs_format_service_describe( $value, $operation = 'add' ) {
 			break;
 	}
 
-	return apply_filters( 'abrs_format_service_describe', $label, $value, $operation );
+	return apply_filters( 'abrs_format_service_price', $label, $value, $operation );
 }
 
 /**

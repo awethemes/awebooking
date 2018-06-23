@@ -56,7 +56,7 @@ $operations = Service::get_operations();
 							<div class="column-3">
 								<div class="checkout-service__pay">
 									<div class="checkout-service__price">
-										<?php print abrs_format_service_describe( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?>
+										<?php print abrs_format_service_price( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?>
 									</div>
 
 									<div class="nice-checkbox">
