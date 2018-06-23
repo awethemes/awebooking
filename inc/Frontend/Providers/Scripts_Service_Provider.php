@@ -25,6 +25,8 @@ class Scripts_Service_Provider extends Service_Provider {
 		$version = $this->plugin->version();
 
 		// Vendor.
+		wp_register_script( 'a11y-dialog', ABRS_ASSET_URL . 'vendor/a11y-dialog/a11y-dialog' . $suffix . '.js', [], '5.1.1', true );
+
 		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.5.0' );
 		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $suffix . '.js', [], '4.5.0', true );
 
@@ -39,7 +41,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking', ABRS_ASSET_URL . 'css/awebooking.css', [ 'flatpickr', 'tippy' ], $version );
 		wp_register_style( 'awebooking-colour', ABRS_ASSET_URL . 'css/awebooking-colour.css', [ 'awebooking-iconfont', 'awebooking' ], $version );
 
-		wp_register_script( 'awebooking', ABRS_ASSET_URL . 'js/awebooking.js', [ 'jquery', 'flatpickr', 'tippy' ], $version, true );
+		wp_register_script( 'awebooking', ABRS_ASSET_URL . 'js/awebooking.js', [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
 		wp_register_script( 'awebooking-search', ABRS_ASSET_URL . 'js/main-search.js', [ 'awebooking' ], $version, true );
 		wp_register_script( 'awebooking-checkout', ABRS_ASSET_URL . 'js/checkout.js', [ 'awebooking' ], $version, true );
 	}

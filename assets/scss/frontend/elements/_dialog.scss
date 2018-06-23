@@ -1,0 +1,75 @@
+dialog[open] {
+  display: block;
+}
+
+.awebooking-dialog[aria-hidden="true"],
+[data-a11y-dialog-native] > .awebooking-dialog__overlay {
+  display: none !important;
+}
+
+// Styling
+%dialog-backdrop {
+  z-index: 99999;
+  background-color: rgba($white, .5);
+}
+
+dialog::backdrop {
+  @extend %dialog-backdrop;
+}
+
+.awebooking-dialog {
+  &__overlay {
+    @extend %dialog-backdrop;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  &__dialog {
+    border: none;
+    background-color: red;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100000;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .button#{&}__close {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 0;
+    text-align: center;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: $gray-600;
+  }
+}
+
+.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__overlay {
+  animation: dialog-fade-in 150ms 1 both;
+}
+
+//.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__content {
+//  animation: dialog-appear 150ms 150ms 1 both;
+//}
+
+@keyframes dialog-appear {
+  from { transform: scale(0.95) translate(-50%, -50%); opacity: 0; }
+  to { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+}
+
+@keyframes dialog-fade-in {
+  from { opacity: 0;  }
+  to { opacity: 1;  }
+}

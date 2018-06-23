@@ -28,8 +28,4 @@ $reservation = abrs_reservation();
 		<strong>Giá đã bao gồm:</strong>
 		Phí dịch vụ 5%, Thuế 10%
 	</p>
-
-	<div>
-		<a href="#"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
-	</div>
 </div>

@@ -52,15 +52,13 @@ $room_type = $room_stay->model();
 			</dd>
 		</dl>
 
-		<div class="roomdetails-price">
-			<dl>
-				<dt>Price (1 room x 1 night)</dt>
-				<dd>700.814</dd>
+		<dl>
+			<dt>Price (1 room x 1 night)</dt>
+			<dd>700.814</dd>
 
-				<dt>VAT</dt>
-				<dd>free</dd>
-			</dl>
-		</div>
+			<dt>VAT</dt>
+			<dd>free</dd>
+		</dl>
 
 	</div><!-- /.roomdetails-room -->
 </div><!-- .reservation__section -->

@@ -1,4 +1,8 @@
 // Reservation
+.reservation-goto-checkout {
+  margin-top: 1rem;
+}
+
 .reservation {
 	padding: 0;
 	border-radius: 6px;
@@ -20,7 +24,29 @@
   &__empty {
   }
 
-  &__dl {
+  dl {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    &:not(:last-child) {
+      border-bottom: solid 1px $gray-100;
+    }
+  }
+
+  dt {
+    width: 40%;
+    float: left;
+    clear: left;
+    font-weight: normal;
+    box-sizing: border-box;
+  }
+
+  dd {
+    margin: 0;
+    margin-left: 40%;
+    text-align: right;
+    box-sizing: border-box;
   }
 }
 
@@ -131,24 +157,6 @@
   	border-top: solid 1px #eee;
   	padding: 1rem;
 
-  	dl {
-  		margin: 0;
-  	}
-
-	dt {
-		width: 13rem;
-		float: left;
-		clear: left;
-		font-size: 1rem;
-		font-weight: normal;
-	}
-
-	dd {
-		margin: 0;
-		margin-left: 14rem;
-		text-align: right;
-
-	}
 
 	&__vat {
 		text-transform: uppercase;

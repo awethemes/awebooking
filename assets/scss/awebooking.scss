@@ -3,6 +3,10 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
+.screen-reader-text {
+  @include sr-only;
+}
+
 .awebooking,
 .awebooking-block {
   @import "frontend/grid";

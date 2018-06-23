@@ -94,6 +94,10 @@ window.awebooking = {};
     tippy('[data-awebooking="tooltip"]', {
       theme: 'awebooking-tooltip'
     });
+
+    $('[data-awebooking="dialog"]').each(function (e, el) {
+      var dialog = new A11yDialog(el);
+    });
   });
 })(jQuery, window.awebooking);
 

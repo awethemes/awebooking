@@ -54,5 +54,14 @@ $res_request = $results->get_request();
 
 	<aside class="hotel-content__aside">
 		<?php abrs_get_template( 'reservation/booked.php' ); ?>
+
+		<?php if ( ! abrs_reservation()->is_empty() ) : ?>
+
+			<div class="reservation-goto-checkout">
+				<a href="<?php echo esc_url( abrs_get_checkout_url() ); ?>" class="button button--block-checkout"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
+			</div>
+
+		<?php endif; ?>
+
 	</aside>
 </div><!-- /.hotel-content -->

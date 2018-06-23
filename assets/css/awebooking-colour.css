@@ -1375,6 +1375,114 @@
   padding: .2em 0;
 }
 
+dialog[open] {
+  display: block;
+}
+
+.awebooking-dialog[aria-hidden="true"],
+[data-a11y-dialog-native] > .awebooking-dialog__overlay {
+  display: none !important;
+}
+
+dialog::-webkit-backdrop,
+.awebooking-dialog__overlay {
+  z-index: 99999;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+dialog::backdrop,
+.awebooking-dialog__overlay {
+  z-index: 99999;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.awebooking-dialog__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.awebooking-dialog__dialog {
+  border: none;
+  background-color: red;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100000;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.awebooking-dialog .button.awebooking-dialog__close {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 0;
+  text-align: center;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: #6c757d;
+}
+
+.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__overlay {
+  -webkit-animation: dialog-fade-in 150ms 1 both;
+  animation: dialog-fade-in 150ms 1 both;
+}
+
+@-webkit-keyframes dialog-appear {
+  from {
+    -webkit-transform: scale(0.95) translate(-50%, -50%);
+    transform: scale(0.95) translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: scale(1) translate(-50%, -50%);
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-appear {
+  from {
+    -webkit-transform: scale(0.95) translate(-50%, -50%);
+    transform: scale(0.95) translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: scale(1) translate(-50%, -50%);
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes dialog-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 #checkout-form {
   padding: 1em;
   background-color: #fff;
@@ -1456,6 +1564,10 @@ ul.booking_details li:last-of-type {
   border: none;
 }
 
+.reservation-goto-checkout {
+  margin-top: 1rem;
+}
+
 .reservation {
   padding: 0;
   border-radius: 6px;
@@ -1480,6 +1592,31 @@ ul.booking_details li:last-of-type {
 
 .reservation__section--dates {
   border-bottom: solid 1px #dee2e6;
+}
+
+.reservation dl {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.reservation dl:not(:last-child) {
+  border-bottom: solid 1px #f8f9fa;
+}
+
+.reservation dt {
+  width: 40%;
+  float: left;
+  clear: left;
+  font-weight: normal;
+  box-sizing: border-box;
+}
+
+.reservation dd {
+  margin: 0;
+  margin-left: 40%;
+  text-align: right;
+  box-sizing: border-box;
 }
 
 .reservation-dates {
@@ -1578,24 +1715,6 @@ ul.booking_details li:last-of-type {
 .roomdetails-price {
   border-top: solid 1px #eee;
   padding: 1rem;
-}
-
-.roomdetails-price dl {
-  margin: 0;
-}
-
-.roomdetails-price dt {
-  width: 13rem;
-  float: left;
-  clear: left;
-  font-size: 1rem;
-  font-weight: normal;
-}
-
-.roomdetails-price dd {
-  margin: 0;
-  margin-left: 14rem;
-  text-align: right;
 }
 
 .roomdetails-price__vat {

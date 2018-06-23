@@ -8,6 +8,9 @@
     "watch": "NODE_ENV=development gulp watch"
   },
   "copyFiles": {
+    "a11y-dialog": [
+      "node_modules/a11y-dialog/a11y-dialog*.js"
+    ],
     "sortable": [
       "node_modules/sortablejs/Sortable*.js"
     ],
@@ -35,6 +38,7 @@
     ]
   },
   "dependencies": {
+    "a11y-dialog": "^5.1.1",
     "bootstrap": "^4.1.1",
     "debounce": "^1.1.0",
     "flatpickr": "^4.5.0",

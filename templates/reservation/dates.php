@@ -38,7 +38,7 @@ $should_show_arrival_time = (
 <div class="reservation__section reservation__section--dates">
 	<div class="reservation-dates">
 		<div class="reservation-date reservation-date--checkin">
-			<span class="reservation-date__title"><?php echo esc_html__( 'Check-in', 'awebooking' ); ?></span>
+			<span class="reservation-date__title"><?php echo esc_html__( 'Check In', 'awebooking' ); ?></span>
 
 			<div class="reservation-date__date">
 				<span class="reservation-date__day" data-date-format="d"><?php echo esc_html( $check_in->date_i18n( 'd' ) ); ?></span>
@@ -61,7 +61,7 @@ $should_show_arrival_time = (
 		</div>
 
 		<div class="reservation-date reservation-date--checkout">
-			<span class="reservation-date__title"><?php echo esc_html__( 'Check-out', 'awebooking' ); ?></span>
+			<span class="reservation-date__title"><?php echo esc_html__( 'Check Out', 'awebooking' ); ?></span>
 
 			<div class="reservation-date__date">
 				<span class="reservation-date__day" data-date-format="d"><?php echo esc_html( $check_out->date_i18n( 'd' ) ); ?></span>
