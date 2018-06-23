@@ -56,3 +56,28 @@ $res_request = $results->get_request();
 		<?php abrs_get_template( 'reservation/booked.php' ); ?>
 	</aside>
 </div><!-- /.hotel-content -->
+comm
+<!-- <dialog class="popup-request" data-time="5000">
+	jgaswklajwse ajwekgjkawgje 
+</dialog> -->
+
+<!-- <script>
+	(function($) {
+		$(window).on('load', function() {
+
+			$('.popup-request').each(function() {
+				var self = $(this),
+					time = self.attr('data-time')
+
+				function myTimer() {
+				   alert('clear request');
+
+				   clearInterval(myVar);
+				}
+				var myVar = setInterval(myTimer, time);
+			})
+		})
+
+	})(jQuery);
+</script>
+ -->
