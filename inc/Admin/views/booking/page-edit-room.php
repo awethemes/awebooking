@@ -1,4 +1,9 @@
 <?php
+/**
+ *
+ * @var \AweBooking\Model\Booking           $booking
+ * @var \AweBooking\Model\Booking\Room_Item $room_item
+ */
 
 $current_action = abrs_http_request()->get( 'action' );
 
@@ -6,6 +11,9 @@ $old_input = awebooking( 'session' )->get_old_input();
 if ( ! empty( $old_input ) ) {
 	$controls->fill( $old_input );
 }
+
+$room_type = abrs_get_room_type( $room_item->get( 'room_type_id' ) );
+$rate_plan = abrs_get_rate_plan( $room_item->get( 'rate_plan_id' ) );
 
 ?><div class="wrap">
 	<h1 class="wp-heading-inline screen-reader-text"><?php esc_html_e( 'Update Room Stay', 'awebooking' ); ?></h1>
@@ -29,7 +37,7 @@ if ( ! empty( $old_input ) ) {
 						<div class="cmb-th"><label><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
-							<strong><?php echo esc_html( $room_item->get( 'room_type_name' ) ); ?></strong>
+							<strong><?php echo esc_html( $room_type->get( 'title' ) ); ?></strong>
 							<span>(<?php echo esc_html( $room_item->get( 'name' ) ); ?>)</span>
 						</div>
 					</div>
@@ -38,7 +46,9 @@ if ( ! empty( $old_input ) ) {
 						<div class="cmb-th"><label><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
-							<strong><?php echo esc_html( $room_item->get( 'rate_plan_name' ) ); ?></strong>
+							<?php if ( $rate_plan ) : ?>
+								<strong><?php echo esc_html( $rate_plan->get_name() ); ?></strong>
+							<?php endif; ?>
 						</div>
 					</div>
 

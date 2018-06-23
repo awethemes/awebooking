@@ -25,6 +25,7 @@ class Hotel_Information_Form extends Form_Builder {
 			'desc'         => esc_html__( 'Guest arrival time', 'awebooking' ),
 			'tooltip'      => true,
 			'default'      => '12:00',
+			'time_format'  => 'H:i',
 		]);
 
 		$this->add_field([
@@ -33,7 +34,7 @@ class Hotel_Information_Form extends Form_Builder {
 			'name'         => esc_html__( 'Check-out time', 'awebooking' ),
 			'desc'         => esc_html__( 'Guest departure time.', 'awebooking' ),
 			'tooltip'      => true,
-			'default'      => '14:00',
+			'time_format'  => 'H:i',
 		]);
 
 		$this->add_field([

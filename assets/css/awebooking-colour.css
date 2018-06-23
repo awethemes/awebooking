@@ -1456,14 +1456,14 @@ ul.booking_details li:last-of-type {
   border: none;
 }
 
-.reservation--summary {
+.reservation {
   padding: 0;
   border-radius: 6px;
   background-color: #fff;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-.reservation--summary .reservation__title {
+.reservation__title {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1474,36 +1474,47 @@ ul.booking_details li:last-of-type {
   border: 0;
 }
 
-.reservation--summary .reservation-dates {
+.reservation__section {
   padding: 1rem;
-  border-bottom: solid 1px #e9ecef;
+}
+
+.reservation__section--dates {
+  border-bottom: solid 1px #dee2e6;
 }
 
 .reservation-dates {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
-.reservation-date__subtitle {
+.reservation-date__title {
+  color: #6c757d;
+  font-size: .75rem;
   display: block;
   margin-bottom: .3rem;
-  color: #6c757d;
+  text-transform: uppercase;
 }
 
-.reservation-date__info {
+.reservation-date__date {
   position: relative;
   padding-left: 4rem;
-  margin-bottom: .2rem;
+  margin-bottom: 0;
 }
 
 .reservation-date__day {
-  font-size: 3rem;
-  position: absolute;
   top: 50%;
   left: 0;
+  position: absolute;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.reservation-date__arrow {
+  font-size: 2rem;
+  line-height: 1;
 }
 
 .reservation-date__week,
@@ -1513,10 +1524,8 @@ ul.booking_details li:last-of-type {
 
 .reservation-date__time {
   color: #6c757d;
-}
-
-.reservation-date__arrow {
-  font-size: 2rem;
+  font-size: .85rem;
+  display: block;
 }
 
 .roomdetails-room__content {
@@ -1567,7 +1576,7 @@ ul.booking_details li:last-of-type {
 }
 
 .roomdetails-price {
-  border-top: solid 1px #cbd3db;
+  border-top: solid 1px #eee;
   padding: 1rem;
 }
 
@@ -1594,7 +1603,7 @@ ul.booking_details li:last-of-type {
 }
 
 .roomdetails-total {
-  background-color: #F9F9FA;
+  background-color: #eee;
   padding: 1rem;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;

@@ -395,7 +395,6 @@ class Installer {
 		  `order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
 		  PRIMARY KEY (id),
 		  KEY name (name),
-		  KEY order (order),
 		  KEY room_type (room_type)
 		) $collate;
 
@@ -461,8 +460,7 @@ class Installer {
 		  `priority` BIGINT UNSIGNED NOT NULL DEFAULT 0,
 		  `compound` INT(1) NOT NULL DEFAULT 0,
 		  PRIMARY KEY (id),
-		  KEY name (name),
-		  KEY priority (priority)
+		  KEY name (name)
 		) $collate;";
 
 		return $tables;

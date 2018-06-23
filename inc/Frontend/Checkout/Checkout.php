@@ -72,6 +72,10 @@ class Checkout {
 			return;
 		}
 
+		if ( $this->reservation->is_empty() ) {
+			return;
+		}
+
 		abrs_get_template( 'checkout/checkout.php', compact( 'request' ) );
 	}
 

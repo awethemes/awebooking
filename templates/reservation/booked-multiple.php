@@ -86,15 +86,3 @@ $res_request = $reservation->resolve_res_request();
 	</div>
 
 <?php endforeach; ?>
-
-<div class="roomdetails-price roomdetails-total">
-	<dl>
-		<dt><?php esc_html_e( 'Total', 'awebooking' ); ?></dt>
-		<dd><?php abrs_price( $reservation->get_total() ); ?></dd>
-	</dl>
-
-	<p class="roomdetails-total__info">
-		<strong>Giá đã bao gồm:</strong>
-		Phí dịch vụ 5%, Thuế 10%
-	</p>
-</div>

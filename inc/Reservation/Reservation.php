@@ -9,13 +9,6 @@ use AweBooking\Support\Collection;
 
 class Reservation {
 	/**
-	 * The reservation hotel ID.
-	 *
-	 * @var int
-	 */
-	public $hotel_id;
-
-	/**
 	 * The reservation source.
 	 *
 	 * @var string
@@ -35,6 +28,13 @@ class Reservation {
 	 * @var string
 	 */
 	public $language;
+
+	/**
+	 * The reservation hotel ID.
+	 *
+	 * @var int
+	 */
+	public $hotel_id = 0;
 
 	/**
 	 * The store instance.
@@ -649,6 +649,17 @@ class Reservation {
 		$this->booked_rooms = wp_parse_id_list(
 			array_merge( $this->booked_rooms, $rooms )
 		);
+	}
+
+	/**
+	 * Gets the current hotel instance.
+	 *
+	 * @return \AweBooking\Model\Hotel
+	 */
+	public function get_hotel() {
+		return $this->hotel_id
+			? abrs_get_hotel( $this->hotel_id )
+			: abrs_get_primary_hotel();
 	}
 
 	/**
