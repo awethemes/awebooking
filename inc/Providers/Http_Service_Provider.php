@@ -127,6 +127,7 @@ class Http_Service_Provider extends Service_Provider {
 			'booking'      => \AweBooking\Model\Booking::class,
 			'room_item'    => \AweBooking\Model\Booking\Room_Item::class,
 			'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
+			'service_item' => \AweBooking\Model\Booking\Service_Item::class,
 			'room_type'    => \AweBooking\Model\Room_Type::class,
 			'room'         => \AweBooking\Model\Room::class,
 		]);

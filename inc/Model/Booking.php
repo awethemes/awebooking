@@ -115,6 +115,15 @@ class Booking extends Model {
 	}
 
 	/**
+	 * Get services of this booking.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_services() {
+		return $this->get_items( 'service_item' );
+	}
+
+	/**
 	 * Returns a list of fees within this booking.
 	 *
 	 * @return \AweBooking\Support\Collection
