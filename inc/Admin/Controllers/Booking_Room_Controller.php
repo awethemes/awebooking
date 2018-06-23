@@ -75,8 +75,6 @@ class Booking_Room_Controller extends Controller {
 			'booking_id'     => $booking->get_id(),
 			'room_type_id'   => $room_type->get_id(),
 			'rate_plan_id'   => $rate_plan->get_id(),
-			'room_type_name' => $room_type->get( 'title' ),
-			'rate_plan_name' => $rate_plan->get_private_name(),
 			'adults'         => absint( $submit_data['adults'] ),
 			'children'       => isset( $submit_data['children'] ) ? absint( $submit_data['children'] ) : 0,
 			'infants'        => isset( $submit_data['infants'] ) ? absint( $submit_data['infants'] ) : 0,

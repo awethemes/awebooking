@@ -124,6 +124,7 @@ function abrs_update_room_caches( array $rooms ) {
 	$group_rooms = abrs_collect( $rooms )->groupBy( 'room_type' );
 
 	foreach ( $group_rooms as $room_type => $rooms ) {
+		/* @var \AweBooking\Support\Collection $rooms */
 		wp_cache_add( (int) $room_type, $rooms->all(), 'awebooking_rooms' );
 
 		foreach ( $rooms as $item ) {

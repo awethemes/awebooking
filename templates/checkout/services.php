@@ -9,6 +9,7 @@
  * @package  AweBooking
  * @version  3.1.0
  */
+
 use AweBooking\Model\Service;
 
 if ( ! defined( 'ABSPATH' ) ) {

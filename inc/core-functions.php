@@ -10,6 +10,7 @@ use AweBooking\Component\Form\Form_Builder;
 require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
+require trailingslashit( __DIR__ ) . 'tax-functions.php';
 require trailingslashit( __DIR__ ) . 'hotel-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
@@ -208,7 +209,7 @@ function abrs_list_currencies() {
  * @return string
  */
 function abrs_currency_symbol( $currency = null ) {
-	if ( is_null( $currency ) ) {
+	if ( ! $currency ) {
 		$currency = abrs_current_currency();
 	}
 
@@ -309,6 +310,7 @@ function abrs_sanitize_option( $key, $value ) {
 		case 'enable_location':
 		case 'children_bookable':
 		case 'infants_bookable':
+		case 'calc_taxes':
 			$value = abrs_sanitize_checkbox( $value );
 			break;
 
@@ -373,24 +375,6 @@ function abrs_children_bookable() {
  */
 function abrs_infants_bookable() {
 	return apply_filters( 'abrs_is_infants_bookable', abrs_get_option( 'infants_bookable', true ) );
-}
-
-/**
- * Determines if taxes enable or not.
- *
- * @return bool
- */
-function abrs_tax_enabled() {
-	return apply_filters( 'abrs_tax_enabled', abrs_get_option( 'calc_taxes' ) );
-}
-
-/**
- * Determines if prices inclusive of tax or not.
- *
- * @return bool
- */
-function abrs_prices_include_tax() {
-	return abrs_tax_enabled() & abrs_get_option( 'prices_include_tax' );
 }
 
 /**

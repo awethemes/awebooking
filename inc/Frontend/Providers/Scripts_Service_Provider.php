@@ -61,8 +61,8 @@ class Scripts_Service_Provider extends Service_Provider {
 			'ajax_url'    => admin_url( 'admin-ajax.php' ),
 			'route'       => $this->plugin['url']->route( '/' ),
 			'i18n'        => [
-				'date_format' => abrs_date_format(),
-				'time_format' => abrs_time_format(),
+				'date_format' => abrs_get_date_format(),
+				'time_format' => abrs_get_time_format(),
 			],
 			'datepicker' => [
 				'min_nights'   => abrs_get_option( 'display_datepicker_minnights' ),

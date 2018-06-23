@@ -95,7 +95,7 @@ function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false
 
 		// Validate when strict mode.
 		if ( $strict && abrs_date( $timespan->get_start_date() )->lt( abrs_date( 'today' ) ) ) {
-			return new WP_Error( esc_html__( 'Specified arrival date is prior to today\'s date.', 'awebooking' ) );
+			return new WP_Error( 'timespan_error', esc_html__( 'Specified arrival date is prior to today\'s date.', 'awebooking' ) );
 		}
 
 		return $timespan;

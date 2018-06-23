@@ -12,7 +12,7 @@
 
 $room_stays = abrs_reservation()->get_room_stays();
 
-?><div class="reservation reservation--summary">
+?><div class="reservation">
 	<h2 class="reservation__title"><?php esc_html_e( 'Reservation Summary', 'awebooking' ); ?></h2>
 
 	<?php if ( 0 === count( $room_stays ) ) : ?>
@@ -21,7 +21,7 @@ $room_stays = abrs_reservation()->get_room_stays();
 
 	<?php else : ?>
 
-		<?php abrs_get_template( 'reservation/stay.php' ); ?>
+		<?php abrs_get_template( 'reservation/dates.php' ); ?>
 
 		<?php if ( 'single_room' === abrs_get_reservation_mode() ) : ?>
 			<?php abrs_get_template( 'reservation/booked-single.php', compact( 'room_stays' ) ); ?>
@@ -29,6 +29,8 @@ $room_stays = abrs_reservation()->get_room_stays();
 			<?php abrs_get_template( 'reservation/booked-multiple.php', compact( 'room_stays' ) ); ?>
 		<?php endif; ?>
 
+		<?php abrs_get_template( 'reservation/totals.php' ); ?>
+
 	<?php endif; ?>
 
-</div><!-- .reservation--summary -->
+</div><!-- .reservation -->

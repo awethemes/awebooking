@@ -80,13 +80,13 @@ $service_items = $the_booking->get_services();
 
 							<td>
 								<?php if ( ! is_null( $timespan ) ) : ?>
-									<?php echo esc_html( abrs_date( $timespan->get_start_date() )->date_i18n( abrs_date_format() ) ); ?>
+									<?php echo esc_html( abrs_date( $timespan->get_start_date() )->date_i18n( abrs_get_date_format() ) ); ?>
 								<?php endif ?>
 							</td>
 
 							<td>
 								<?php if ( ! is_null( $timespan ) ) : ?>
-									<?php echo esc_html( abrs_date( $timespan->get_end_date() )->date_i18n( abrs_date_format() ) ); ?>
+									<?php echo esc_html( abrs_date( $timespan->get_end_date() )->date_i18n( abrs_get_date_format() ) ); ?>
 								<?php endif ?>
 							</td>
 

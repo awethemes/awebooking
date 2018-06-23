@@ -7,6 +7,8 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
+  awebooking.utils.flatpickrRangePlugin = require('flatpickr/dist/plugins/rangePlugin.js');
+
   /**
    * The admin route.
    *
@@ -15,7 +17,7 @@
    */
   awebooking.route = function(route) {
     return this.admin_route + route.replace(/^\//g, '');
-  }
+  };
 
   /**
    * Show the alert dialog.
@@ -32,7 +34,7 @@
       showConfirmButton: true,
       confirmButtonClass: 'button'
     });
-  }
+  };
 
   /**
    * Show the confirm message.

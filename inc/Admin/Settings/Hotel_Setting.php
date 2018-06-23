@@ -26,7 +26,6 @@ class Hotel_Setting extends Abstract_Setting {
 	 * {@inheritdoc}
 	 */
 	public function setup_fields() {
-
 		$this->add_field([
 			'id'       => '__hotel_title',
 			'type'     => 'title',

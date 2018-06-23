@@ -1,48 +1,64 @@
-$border: #cbd3db;
-$background: #F9F9FA;
-
-.reservation--summary {
+// Reservation
+.reservation {
 	padding: 0;
 	border-radius: 6px;
 	background-color: $white;
 	box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
 
-	.reservation__title {
+	&__title {
 		@include sr-only;
 	}
 
-	.reservation-dates {
+	&__section {
 		padding: 1rem;
-		border-bottom: solid 1px $gray-200;
 	}
+
+  &__section--dates {
+    border-bottom: solid 1px $border-color;
+  }
+
+  &__empty {
+  }
+
+  &__dl {
+  }
 }
 
+// Reservation dates.
 .reservation-dates {
-  	display: flex;
-	justify-content: space-between;
-  	align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .reservation-date {
-	&__subtitle {
-		display: block;
-		margin-bottom: .3rem;
-		color: $gray-600;
-	}
+	&__title {
+    color: $gray-600;
+    font-size: .75rem;
+    display: block;
+    margin-bottom: .3rem;
+    text-transform: uppercase;
+  }
 
-	&__info {
+	&__date {
 		position: relative;
 		padding-left: 4rem;
-		margin-bottom: .2rem;
+		margin-bottom: 0;
 	}
 
 	&__day {
-		font-size: 3rem;
-		position: absolute;
 		top: 50%;
-		left: 0;
-		transform: translateY(-50%);
-	}
+    left: 0;
+    position: absolute;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  &__arrow {
+    font-size: 2rem;
+    line-height: 1;
+  }
 
 	&__week,
 	&__year {
@@ -50,21 +66,18 @@ $background: #F9F9FA;
 	}
 
 	&__time {
-		color: $gray-600;
+    color: $gray-600;
+    font-size: .85rem;
+    display: block;
 	}
-
-
-	&__arrow {
-		font-size: 2rem;
-	}
-
 }
 
+// Room details.
 .roomdetails-room {
 	&__content {
 		padding: 1rem;
 	}
-	
+
 	&__list {
 		margin: 0;
 	}
@@ -115,9 +128,9 @@ $background: #F9F9FA;
 // }
 
 .roomdetails-price {
-  	border-top: solid 1px $border;
+  	border-top: solid 1px #eee;
   	padding: 1rem;
-  	
+
   	dl {
   		margin: 0;
   	}
@@ -143,9 +156,11 @@ $background: #F9F9FA;
 }
 
 .roomdetails-total {
-	background-color: $background;
+	background-color: #eee;
 	padding: 1rem;
-	
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+
 	dt, dd {
 		margin-bottom: 0;
 		font-size: 1rem;

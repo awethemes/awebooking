@@ -30,8 +30,8 @@ $note_classes   = apply_filters( 'abrs_booking_note_class', array_filter( $note_
 			} else {
 				/* translators: 1: Date string, 2: Time string. */
 				printf( esc_html__( 'added on %1$s at %2$s', 'awebooking' ),
-					esc_html( $note->date_created->date_i18n( abrs_date_format() ) ),
-					esc_html( $note->date_created->date_i18n( abrs_time_format() ) )
+					esc_html( $note->date_created->date_i18n( abrs_get_date_format() ) ),
+					esc_html( $note->date_created->date_i18n( abrs_get_time_format() ) )
 				);
 			}
 			?>

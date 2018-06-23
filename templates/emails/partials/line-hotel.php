@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $hotel = abrs_get_hotel( $booking->get( 'hotel_id' ) );
 
 if ( is_null( $hotel ) ) {
-	$hotel = abrs_get_default_hotel();
+	$hotel = abrs_get_primary_hotel();
 }
 
 ?><table class="table-hotel" width="100%" cellpadding="0" cellspacing="0">

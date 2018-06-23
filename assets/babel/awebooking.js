@@ -1,9 +1,11 @@
-const lodashDefaults = require('lodash.defaults');
-
 window.awebooking = {};
 
 (function ($, plugin) {
   'use strict';
+
+  const _defaults = function (options, defaults) {
+    return $.extend( {}, defaults, options );
+  };
 
   // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
   if (!window.location.origin) {
@@ -20,7 +22,7 @@ window.awebooking = {};
    *
    * @type {Object}
    */
-  plugin.config = lodashDefaults(window._awebooking, {
+  plugin.config = _defaults(window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
     ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
     i18n: {
@@ -57,10 +59,10 @@ window.awebooking = {};
       });
     }
 
-    const min_date = new Date().fp_incr(defaults.min_date);
-    const max_date = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+    const minDate = new Date().fp_incr(defaults.min_date);
+    const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
 
-    const fp = flatpickr(instance, lodashDefaults(options, {
+    const fp = flatpickr(instance, _defaults(options, {
       dateFormat: 'Y-m-d',
       ariaDateFormat: i18n.date_format,
       minDate: 'today',

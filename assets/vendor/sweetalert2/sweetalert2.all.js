@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v7.22.2
+* sweetalert2 v7.24.1
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -258,7 +258,7 @@ var DismissReason = Object.freeze({
   timer: 'timer'
 });
 
-var version = "7.22.2";
+var version = "7.24.1";
 
 var argsToParams = function argsToParams(args) {
   var params = {};
@@ -672,17 +672,17 @@ var globalState = {};
 
 // Restore previous active (focused) element
 var restoreActiveElement = function restoreActiveElement() {
-  if (globalState.previousActiveElement && globalState.previousActiveElement.focus) {
-    var x = window.scrollX;
-    var y = window.scrollY;
-    globalState.restoreFocusTimeout = setTimeout(function () {
+  var x = window.scrollX;
+  var y = window.scrollY;
+  globalState.restoreFocusTimeout = setTimeout(function () {
+    if (globalState.previousActiveElement && globalState.previousActiveElement.focus) {
       globalState.previousActiveElement.focus();
       globalState.previousActiveElement = null;
-    }, 100); // issues/900
-    if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-      // IE doesn't have scrollX/scrollY support
-      window.scrollTo(x, y);
     }
+  }, 100); // issues/900
+  if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+    // IE doesn't have scrollX/scrollY support
+    window.scrollTo(x, y);
   }
 };
 
@@ -706,7 +706,7 @@ var close = function close(onClose, onAfterClose) {
   var removePopupAndResetState = function removePopupAndResetState() {
     if (!isToast()) {
       restoreActiveElement();
-      window.removeEventListener('keydown', globalState.keydownHandler, { capture: true });
+      globalState.keydownTarget.removeEventListener('keydown', globalState.keydownHandler, { capture: globalState.keydownListenerCapture });
       globalState.keydownHandlerAdded = false;
     }
 
@@ -816,6 +816,8 @@ var defaultParams = {
   allowOutsideClick: true,
   allowEscapeKey: true,
   allowEnterKey: true,
+  stopKeydownPropagation: true,
+  keydownListenerCapture: false,
   showConfirmButton: true,
   showCancelButton: false,
   preConfirm: null,
@@ -1116,6 +1118,42 @@ var staticMethods = Object.freeze({
 	getTimerLeft: getTimerLeft
 });
 
+// https://github.com/Riim/symbol-polyfill/blob/master/index.js
+
+var _Symbol = typeof Symbol === 'function' ? Symbol : function () {
+  var idCounter = 0;
+  function _Symbol(key) {
+    return '__' + key + '_' + Math.floor(Math.random() * 1e9) + '_' + ++idCounter + '__';
+  }
+  _Symbol.iterator = _Symbol('Symbol.iterator');
+  return _Symbol;
+}();
+
+// WeakMap polyfill, needed for Android 4.4
+// Related issue: https://github.com/sweetalert2/sweetalert2/issues/1071
+// http://webreflection.blogspot.fi/2015/04/a-weakmap-polyfill-in-20-lines-of-code.html
+
+var WeakMap$1 = typeof WeakMap === 'function' ? WeakMap : function (s, dP, hOP) {
+  function WeakMap() {
+    dP(this, s, { value: _Symbol('WeakMap') });
+  }
+  WeakMap.prototype = {
+    'delete': function del(o) {
+      delete o[this[s]];
+    },
+    get: function get(o) {
+      return o[this[s]];
+    },
+    has: function has(o) {
+      return hOP.call(o, this[s]);
+    },
+    set: function set(o, v) {
+      dP(o, this[s], { configurable: true, value: v });
+    }
+  };
+  return WeakMap;
+}(_Symbol('WeakMap'), Object.defineProperty, {}.hasOwnProperty);
+
 /**
  * This module containts `WeakMap`s for each effectively-"private  property" that a `swal` has.
  * For example, to set the private property "foo" of `this` to "bar", you can `privateProps.foo.set(this, 'bar')`
@@ -1126,43 +1164,10 @@ var staticMethods = Object.freeze({
  *   then we can use that language feature.
  */
 
-// WeakMap polyfill, needed for Android 4.4
-// Related issue: https://github.com/sweetalert2/sweetalert2/issues/1071
-if (typeof window !== 'undefined' && typeof window.WeakMap !== 'function') {
-  // https://github.com/Riim/symbol-polyfill/blob/master/index.js
-  var idCounter = 0;
-  window.Symbol = function _Symbol(key) {
-    return '__' + key + '_' + Math.floor(Math.random() * 1e9) + '_' + ++idCounter + '__';
-  };
-  Symbol.iterator = Symbol('Symbol.iterator');
-
-  // http://webreflection.blogspot.fi/2015/04/a-weakmap-polyfill-in-20-lines-of-code.html
-  window.WeakMap = function (s, dP, hOP) {
-    function WeakMap() {
-      dP(this, s, { value: Symbol('WeakMap') });
-    }
-    WeakMap.prototype = {
-      'delete': function del(o) {
-        delete o[this[s]];
-      },
-      get: function get(o) {
-        return o[this[s]];
-      },
-      has: function has(o) {
-        return hOP.call(o, this[s]);
-      },
-      set: function set(o, v) {
-        dP(o, this[s], { configurable: true, value: v });
-      }
-    };
-    return WeakMap;
-  }(Symbol('WeakMap'), Object.defineProperty, {}.hasOwnProperty);
-}
-
 var privateProps = {
-  promise: new WeakMap(),
-  innerParams: new WeakMap(),
-  domCache: new WeakMap()
+  promise: new WeakMap$1(),
+  innerParams: new WeakMap$1(),
+  domCache: new WeakMap$1()
 };
 
 /**
@@ -1963,7 +1968,9 @@ function _main(userParams) {
     };
 
     var keydownHandler = function keydownHandler(e, innerParams) {
-      e.stopPropagation();
+      if (innerParams.stopKeydownPropagation) {
+        e.stopPropagation();
+      }
 
       var arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Left', 'Right', 'Up', 'Down' // IE11
       ];
@@ -2018,7 +2025,7 @@ function _main(userParams) {
     };
 
     if (globalState.keydownHandlerAdded) {
-      window.removeEventListener('keydown', globalState.keydownHandler, { capture: true });
+      globalState.keydownTarget.removeEventListener('keydown', globalState.keydownHandler, { capture: globalState.keydownListenerCapture });
       globalState.keydownHandlerAdded = false;
     }
 
@@ -2026,7 +2033,9 @@ function _main(userParams) {
       globalState.keydownHandler = function (e) {
         return keydownHandler(e, innerParams);
       };
-      window.addEventListener('keydown', globalState.keydownHandler, { capture: true });
+      globalState.keydownTarget = innerParams.keydownListenerCapture ? window : domCache.popup;
+      globalState.keydownListenerCapture = innerParams.keydownListenerCapture;
+      globalState.keydownTarget.addEventListener('keydown', globalState.keydownHandler, { capture: globalState.keydownListenerCapture });
       globalState.keydownHandlerAdded = true;
     }
 

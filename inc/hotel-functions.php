@@ -85,12 +85,12 @@ function abrs_get_rate_plan( $rate_plan ) {
 /**
  * Retrieves the hotel object.
  *
- * @param  mixed $hotel The post object or post ID of the hotel.
+ * @param  mixed $hotel The hotel ID.
  * @return \AweBooking\Model\Hotel|false|null
  */
 function abrs_get_hotel( $hotel = 0 ) {
 	if ( 0 == $hotel ) {
-		return abrs_get_default_hotel();
+		return abrs_get_primary_hotel();
 	}
 
 	return abrs_rescue( function() use ( $hotel ) {
@@ -105,7 +105,7 @@ function abrs_get_hotel( $hotel = 0 ) {
  *
  * @return \AweBooking\Model\Hotel
  */
-function abrs_get_default_hotel() {
+function abrs_get_primary_hotel() {
 	if ( ! awebooking()->bound( 'default_hotel' ) ) {
 		awebooking()->singleton( 'default_hotel', function () {
 			return new Hotel( 'default' );
@@ -136,7 +136,7 @@ function abrs_list_hotels( $args = [], $with_default = false ) {
 		->map_into( Hotel::class );
 
 	if ( $with_default ) {
-		$hotels = $hotels->prepend( abrs_get_default_hotel() );
+		$hotels = $hotels->prepend( abrs_get_primary_hotel() );
 	}
 
 	return $hotels;
@@ -202,17 +202,4 @@ function abrs_get_room_beds( $room_type, $separator = ', ' ) {
 	}
 
 	return implode( $items, $separator );
-}
-
-/**
- * Get hotel check time.
- *
- * @param  int    $hotel hotel ID
- * @param  string $type  check time type
- * @return string
- */
-function abrs_get_hotel_check_time( $hotel, $type = 'hotel_check_in' ) {
-	$hotel = abrs_get_hotel( $hotel );
-
-	return $hotel->get( $type );
 }

@@ -86,8 +86,8 @@ class Scripts_Service_Provider extends Service_Provider {
 				'ajax_url'    => admin_url( 'admin-ajax.php' ),
 				'admin_route' => $this->plugin['url']->admin_route(),
 				'i18n'        => [
-					'date_format' => abrs_date_format(),
-					'time_format' => abrs_time_format(),
+					'date_format' => abrs_get_date_format(),
+					'time_format' => abrs_get_time_format(),
 					'ok'          => esc_html__( 'OK', 'awebooking' ),
 					'cancel'      => esc_html__( 'Cancel', 'awebooking' ),
 					'warning'     => esc_html__( 'Are you sure you want to do this?', 'awebooking' ),

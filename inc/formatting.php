@@ -8,7 +8,7 @@ use AweBooking\Component\Country\Formatter as Country_Formatter;
  *
  * @return string
  */
-function abrs_date_format() {
+function abrs_get_date_format() {
 	return apply_filters( 'abrs_date_format', get_option( 'date_format' ) );
 }
 
@@ -17,7 +17,7 @@ function abrs_date_format() {
  *
  * @return string
  */
-function abrs_time_format() {
+function abrs_get_time_format() {
 	return apply_filters( 'abrs_time_format', get_option( 'time_format' ) );
 }
 
@@ -26,10 +26,10 @@ function abrs_time_format() {
  *
  * @return string
  */
-function abrs_datetime_format() {
+function abrs_get_datetime_format() {
 	return apply_filters( 'abrs_date_time_format',
 		/* translators: 1 -Date format, 2 - Time format */
-		sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_date_format(), abrs_time_format() )
+		sprintf( esc_html_x( '%1$s %2$s', 'DateTime Format', 'awebooking' ), abrs_get_date_format(), abrs_get_time_format() )
 	);
 }
 
@@ -41,7 +41,7 @@ function abrs_datetime_format() {
  * @return string
  */
 function abrs_format_date( $date, $format = null ) {
-	return abrs_format_datetime( $date, $format ?: abrs_date_format() );
+	return abrs_format_datetime( $date, $format ?: abrs_get_date_format() );
 }
 
 /**
@@ -52,7 +52,7 @@ function abrs_format_date( $date, $format = null ) {
  * @return string
  */
 function abrs_format_datetime( $date_time, $format = null ) {
-	$format = $format ?: abrs_datetime_format();
+	$format = $format ?: abrs_get_datetime_format();
 
 	$date_time = abrs_date_time( $date_time );
 
@@ -105,8 +105,8 @@ function abrs_get_price_format() {
 /**
  * Format the price with a currency symbol.
  *
- * @param  int|float $amount   The price amount.
- * @param  string    $currency The currency, default is current currency.
+ * @param  \AweBooking\Support\Decimal|int|float $amount   The amount.
+ * @param  string                                $currency The currency, default is current currency.
  * @return string
  */
 function abrs_format_price( $amount, $currency = null ) {
@@ -151,8 +151,8 @@ function abrs_format_price( $amount, $currency = null ) {
 /**
  * Same as abrs_format_price() but echo the price instead.
  *
- * @param  int|float $amount   The amount.
- * @param  string    $currency The currency, default is current currency.
+ * @param  \AweBooking\Support\Decimal|int|float $amount   The amount.
+ * @param  string                                $currency The currency, default is current currency.
  * @return void
  */
 function abrs_price( $amount, $currency = null ) {
@@ -241,10 +241,9 @@ function abrs_format_measure_unit_label() {
 /**
  * Return service describe formating.
  *
- * @param  value  $value        value
- * @param  string $operation    operation
- * @param  string $before_value before value
- * @param  string $after_value  after value
+ * @param  int|float $value     value
+ * @param  string    $operation operation
+ *
  * @return string
  */
 function abrs_format_service_price( $value, $operation = 'add' ) {

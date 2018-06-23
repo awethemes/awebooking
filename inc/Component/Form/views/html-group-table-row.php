@@ -1,9 +1,16 @@
 <?php
+/**
+ * HTML layout for group field.
+ *
+ * @var \CMB2_Field $field_group
+ *
+ * @package AweBooking
+ */
 
 $field_group->peform_param_callback( 'before_group_row' );
 $closed_class = $field_group->options( 'closed' ) ? ' closed' : '';
 
-echo '<div class="cmb-repeatable-grouping', $closed_class, '" data-iterator="', $field_group->index, '">';
+echo '<div class="cmb-repeatable-grouping', $closed_class, '" data-iterator="' . esc_attr( $field_group->index ) . '">';
 
 if ( $field_group->args( 'repeatable' ) ) {
 	// echo '<button type="button" data-selector="', $field_group->id(), '_repeat" class="dashicons-before dashicons-no-alt cmb-remove-group-row" title="', esc_attr( $field_group->options( 'remove_button' ) ), '"></button>';

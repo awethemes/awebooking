@@ -437,6 +437,7 @@ final class Plugin extends Container {
 			case 'enable_location':
 			case 'children_bookable':
 			case 'infants_bookable':
+			case 'calc_taxes':
 				$value = ( 'on' === $value );
 				break;
 

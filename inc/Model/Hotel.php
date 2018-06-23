@@ -17,7 +17,7 @@ class Hotel extends Model {
 	 * @param string $object The object ID.
 	 */
 	public function __construct( $object = null ) {
-		if ( 'default' === $object ) {
+		if ( 'default' === $object || 0 == $object ) {
 			$this->setup_default_hotel();
 		} else {
 			parent::__construct( $object );
@@ -61,15 +61,15 @@ class Hotel extends Model {
 			'order'           => 0,
 			'description'     => '',
 			'star_rating'     => abrs_get_option( 'hotel_star_rating' ),
+			'check_in_time'   => abrs_get_option( 'hotel_check_in' ),
+			'check_out_time'  => abrs_get_option( 'hotel_check_out' ),
+			'hotel_phone'     => abrs_get_option( 'hotel_phone' ),
 			'hotel_address'   => abrs_get_option( 'hotel_address' ),
 			'hotel_address_2' => abrs_get_option( 'hotel_address_2' ),
 			'hotel_state'     => abrs_get_option( 'hotel_state' ),
 			'hotel_city'      => abrs_get_option( 'hotel_city' ),
 			'hotel_country'   => abrs_get_option( 'hotel_country' ),
 			'hotel_postcode'  => abrs_get_option( 'hotel_postcode' ),
-			'hotel_phone'     => abrs_get_option( 'hotel_phone' ),
-			'hotel_check_in'  => abrs_get_option( 'hotel_check_in' ),
-			'hotel_check_out' => abrs_get_option( 'hotel_check_out' ),
 		]);
 
 		do_action( $this->prefix( 'setup_default_hotel' ), $this );
@@ -133,8 +133,8 @@ class Hotel extends Model {
 			'hotel_country'   => '',
 			'hotel_postcode'  => '',
 			'hotel_phone'     => '',
-			'hotel_check_in'  => '',
-			'hotel_check_out' => '',
+			'check_in_time'   => '',
+			'check_out_time'  => '',
 		]);
 	}
 
@@ -151,8 +151,8 @@ class Hotel extends Model {
 			'hotel_country'   => '_hotel_country',
 			'hotel_postcode'  => '_hotel_postcode',
 			'hotel_phone'     => '_hotel_phone',
-			'hotel_check_in'  => '_hotel_check_in',
-			'hotel_check_out' => '_hotel_check_out',
+			'check_in_time'   => '_hotel_check_in',
+			'check_out_time'  => '_hotel_check_out',
 		]);
 	}
 }
