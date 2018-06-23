@@ -104,6 +104,7 @@ function abrs_booking_item_classmap() {
 	return apply_filters( 'abrs_booking_items_classmap', [
 		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
 		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
+		'service_item' => \AweBooking\Model\Booking\Service_Item::class,
 	]);
 }
 

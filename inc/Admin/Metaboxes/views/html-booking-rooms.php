@@ -1,7 +1,8 @@
 <?php
+use AweBooking\Model\Service;
 
-$room_items = $the_booking->get_rooms();
-
+$room_items    = $the_booking->get_rooms();
+$service_items = $the_booking->get_services();
 ?><style type="text/css">
 	#awebooking-booking-rooms .hndle,
 	#awebooking-booking-rooms .handlediv { display:none }
@@ -117,7 +118,65 @@ $room_items = $the_booking->get_rooms();
 							</td>
 						</tr>
 					<?php endforeach; ?>
-				<?php endif ?>
+				<?php endif; ?>
+			</tbody>
+		</table><!-- /.awebooking-table -->
+	</div>
+
+	<div>
+		<table class="awebooking-table abrs-booking-rooms widefat fixed">
+			<thead>
+				<tr>
+					<th style="width: 20%;"><?php echo esc_html__( 'Service', 'awebooking' ); ?></th>
+					<th style="width: 54%;"><?php echo esc_html__( 'Price description', 'awebooking' ); ?></th>
+					<th class="abrs-text-right"><span><?php esc_html_e( 'Price', 'awebooking' ); ?></span></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<?php if ( abrs_blank( $service_items ) ) : ?>
+
+					<tr>
+						<td colspan="9">
+							<p class="awebooking-no-items"><?php esc_html_e( 'No services found', 'awebooking' ); ?></p>
+						</td>
+					</tr>
+
+				<?php else : ?>
+					<?php foreach ( $service_items as $service_item ) : ?>
+						<?php
+						$action_link = abrs_admin_route( "/booking-service/{$service_item->get_id()}" );
+						$service = new Service( $service_item->get( 'service_id' ) );
+						?>
+
+						<tr>
+							<td>
+								<?php
+								$thumbnail = '<span class="abrs-no-image"></span>';
+								if ( $service && has_post_thumbnail( $service->get_id() ) ) {
+									$thumbnail = get_the_post_thumbnail( $service->get_id(), 'thumbnail' );
+								}
+								printf( '<div class="abrs-thumb-image abrs-fleft" style="margin-right: 10px;">%2$s</div>', esc_url( '#' ), $thumbnail ); // @wpcs: XSS OK.
+								?>
+
+								<strong class="row-title"><?php echo esc_html( $service->get_name() ); ?></strong>
+								<span class="dp-block"><?php esc_html_e( 'Service', 'awebooking' ); ?></span>
+							</td>
+
+							<td><?php print abrs_format_service_price( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></td>
+
+							<td class="abrs-text-right">
+								<?php if ( $the_booking->is_editable() ) : ?>
+									<div class="row-actions abrs-fleft">
+										<span class="trash"><a href="<?php echo esc_url( wp_nonce_url( $action_link, "delete_service_{$service_item->get_id()}" ) ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
+									</div>
+								<?php endif; ?>
+
+								<?php abrs_price( $service_item->get( 'total' ), $the_booking->get( 'currency' ) ); ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
 			</tbody>
 		</table><!-- /.awebooking-table -->
 	</div>
@@ -150,10 +209,14 @@ $room_items = $the_booking->get_rooms();
 				<span><?php esc_html_e( 'Add room', 'awebooking' ); ?></span>
 			</a>
 
+			<a class="button abrs-button" href="<?php echo esc_url( abrs_admin_route( '/booking-service', [ 'refer' => $the_booking->get_id() ] ) ); ?>">
+				<span><?php esc_html_e( 'Add service', 'awebooking' ); ?></span>
+			</a>
+
 		<?php else : ?>
 
 			<span class="abrs-label tippy" title="<?php esc_html_e( 'Change the booking status back to "Pending" to edit this', 'awebooking' ); ?>"><?php esc_html_e( 'This booking is no longer editable', 'awebooking' ); ?></span>
 
-		<?php endif ?>
+		<?php endif; ?>
 	</div>
 </div>
