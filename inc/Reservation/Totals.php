@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Reservation;
 
+use AweBooking\Availability\Room_Rate;
 use AweBooking\Support\Decimal;
 
 class Totals {
@@ -75,7 +76,28 @@ class Totals {
 	 * @return void
 	 */
 	public function calculate() {
+		$this->calculate_tax_rates();
 		$this->calculate_room_totals();
+	}
+
+	/**
+	 * Calculate tax rates.
+	 *
+	 * @return void
+	 */
+	protected function calculate_tax_rates() {
+		/* @var \AweBooking\Reservation\Item $room_stay */
+		foreach ( $this->reservation->get_room_stays() as $room_stay ) {
+			/* @var \AweBooking\Availability\Room_Rate $room_rate */
+			$room_rate = $room_stay->get_data();
+
+			$room_stay->set( 'taxable', abrs_tax_enabled() );
+			$room_stay->set( 'price_includes_tax', abrs_prices_includes_tax() );
+
+			if ( $room_stay['taxable'] && $tax_rate = $room_rate->get_tax_rate() ) {
+				$room_stay->set( 'tax_rate', $tax_rate );
+			}
+		}
 	}
 
 	/**

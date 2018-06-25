@@ -14,8 +14,125 @@ function abrs_tax_enabled() {
  *
  * @return bool
  */
-function abrs_prices_include_tax() {
+function abrs_prices_includes_tax() {
 	return abrs_tax_enabled() && abrs_get_option( 'prices_include_tax' );
+}
+
+/**
+ * Calculate tax for a price.
+ *
+ * @param  float   $price              Price to calc tax on.
+ * @param  array   $rates              Rates to apply.
+ * @param  boolean $price_includes_tax Whether the passed price has taxes included.
+ * @return array                       Array of rates + prices after tax.
+ */
+function abrs_calc_tax( $price, array $rates, $price_includes_tax = false ) {
+	if ( $price_includes_tax ) {
+		$taxes = abrs_calc_inclusive_tax( $price, $rates );
+	} else {
+		$taxes = abrs_calc_exclusive_tax( $price, $rates );
+	}
+
+	return apply_filters( 'abrs_calc_tax', $taxes, $price, $rates, $price_includes_tax );
+}
+
+/**
+ * Calc tax from inclusive price.
+ *
+ * @param  float $price Price to calculate tax for.
+ * @param  array $rates Array of tax rates.
+ * @return array
+ */
+function abrs_calc_inclusive_tax( $price, array $rates ) {
+	$taxes          = [];
+	$compound_rates = [];
+	$regular_rates  = [];
+
+	// Index array so taxes are output in correct order
+	// and see what compound/regular rates we have to calculate.
+	foreach ( $rates as $key => $rate ) {
+		$taxes[ $key ] = 0;
+
+		if ( $rate['compound'] ) {
+			$compound_rates[ $key ] = $rate['rate'];
+		} else {
+			$regular_rates[ $key ] = $rate['rate'];
+		}
+	}
+
+	// Working backwards.
+	$compound_rates = array_reverse( $compound_rates, true );
+
+	$non_compound_price = $price;
+
+	foreach ( $compound_rates as $key => $compound_rate ) {
+		$tax_amount         = apply_filters( 'abrs_price_inc_tax_amount', $non_compound_price - ( $non_compound_price / ( 1 + ( $compound_rate / 100 ) ) ), $key, $rates[ $key ], $price );
+		$taxes[ $key ]     += $tax_amount;
+		$non_compound_price = $non_compound_price - $tax_amount;
+	}
+
+	// Regular taxes.
+	$regular_tax_rate = 1 + ( array_sum( $regular_rates ) / 100 );
+
+	foreach ( $regular_rates as $key => $regular_rate ) {
+		$the_rate       = ( $regular_rate / 100 ) / $regular_tax_rate;
+		$net_price      = $price - ( $the_rate * $non_compound_price );
+		$tax_amount     = apply_filters( 'abrs_price_inc_tax_amount', $price - $net_price, $key, $rates[ $key ], $price );
+		$taxes[ $key ] += $tax_amount;
+	}
+
+	return $taxes;
+}
+
+/**
+ * Calc tax from exclusive price.
+ *
+ * @param  float $price Price to calculate tax for.
+ * @param  array $rates Array of tax rates.
+ * @return array
+ */
+function abrs_calc_exclusive_tax( $price, array $rates ) {
+	$taxes = [];
+
+	if ( ! empty( $rates ) ) {
+		foreach ( $rates as $key => $rate ) {
+			if ( $rate['compound'] ) {
+				continue;
+			}
+
+			$tax_amount = $price * ( $rate['rate'] / 100 );
+			$tax_amount = apply_filters( 'abrs_price_ex_tax_amount', $tax_amount, $key, $rate, $price );
+
+			if ( ! isset( $taxes[ $key ] ) ) {
+				$taxes[ $key ] = $tax_amount;
+			} else {
+				$taxes[ $key ] += $tax_amount;
+			}
+		}
+
+		$pre_compound_total = array_sum( $taxes );
+
+		// Compound taxes.
+		foreach ( $rates as $key => $rate ) {
+			if ( ! $rate['compound'] ) {
+				continue;
+			}
+
+			$the_price_inc_tax = $price + ( $pre_compound_total );
+			$tax_amount        = $the_price_inc_tax * ( $rate['rate'] / 100 );
+			$tax_amount        = apply_filters( 'abrs_price_ex_tax_amount', $tax_amount, $key, $rate, $price, $the_price_inc_tax, $pre_compound_total );
+
+			if ( ! isset( $taxes[ $key ] ) ) {
+				$taxes[ $key ] = $tax_amount;
+			} else {
+				$taxes[ $key ] += $tax_amount;
+			}
+
+			$pre_compound_total = array_sum( $taxes );
+		}
+	}
+
+	return $taxes;
 }
 
 /**

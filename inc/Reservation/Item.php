@@ -57,18 +57,11 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $price_includes_tax = false;
 
 	/**
-	 * The tax rate (percent) of the item.
+	 * The tax rate data.
 	 *
-	 * @var float
+	 * @var array
 	 */
-	protected $tax_rate = 0;
-
-	/**
-	 * The tax rate name for display.
-	 *
-	 * @var string
-	 */
-	protected $tax_name = 'Tax';
+	protected $tax_rate;
 
 	/**
 	 * The options of the item.
@@ -232,12 +225,27 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Is calc item with tax?
+	 *
+	 * @return bool
+	 */
+	public function is_taxable() {
+		return $this->taxable && $this->tax_rate;
+	}
+
+	/**
 	 * Gets the tax rate (percent).
 	 *
-	 * @return int|float
+	 * @return array
 	 */
 	public function get_tax_rate() {
 		return $this->tax_rate;
+	}
+
+	protected function get_tax_rates_for_calc() {
+		return abrs_collect( [ $this->tax_rate ] )
+			->keyBy( 'id' )
+			->all();
 	}
 
 	/**
@@ -246,7 +254,11 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_single_price() {
-		return abrs_decimal( $this->price )->surcharge( $this->tax_rate );
+		if ( $this->is_taxable() && $this->price_includes_tax ) {
+			return abrs_decimal( $this->price );
+		}
+
+		return abrs_decimal( $this->price )->add( $this->get_single_tax() );
 	}
 
 	/**
@@ -255,6 +267,10 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_single_price_exc_tax() {
+		if ( $this->is_taxable() && $this->price_includes_tax ) {
+			return abrs_decimal( $this->price )->sub( $this->get_single_tax() );
+		}
+
 		return abrs_decimal( $this->price );
 	}
 
@@ -282,7 +298,15 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return \AweBooking\Support\Decimal
 	 */
 	public function get_single_tax() {
-		return abrs_decimal( $this->price )->to_percentage( $this->tax_rate );
+		if ( ! $this->is_taxable() ) {
+			return abrs_decimal( 0 );
+		}
+
+		return abrs_decimal(
+			array_sum(
+				abrs_calc_tax( $this->price, $this->get_tax_rates_for_calc(), $this->price_includes_tax )
+			)
+		);
 	}
 
 	/**
@@ -430,17 +454,14 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 */
 	protected function sanitize_prop( $value, $key ) {
 		switch ( $key ) {
-			case 'tax':
 			case 'price':
-			case 'tax_rate':
 				return abrs_sanitize_decimal( $value );
 			case 'model':
 			case 'associated_model':
 				return is_string( $value ) ? $value : get_class( $value );
+			case 'id':
 			case 'quantity':
 				return max( 1, (int) $value );
-			case 'id':
-				return absint( $value );
 		}
 
 		return abrs_clean( $value );
@@ -466,7 +487,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 		$arr = $this->attributes();
 
 		$arr['options'] = $this->options->all();
-		unset( $arr['data'] );
+		Arr::forget( $arr, [ 'data' ] );
 
 		return $arr;
 	}

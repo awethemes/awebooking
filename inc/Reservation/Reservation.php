@@ -251,10 +251,6 @@ class Reservation {
 		$room_stay->set_data( $room_rate );
 		$room_stay->associate( $room_type );
 
-		if ( abrs_tax_enabled() ) {
-			$room_stay['tax_rate'] = Arr::get( $room_rate->get_tax_rate(), 'rate', 0 );
-		}
-
 		// In single mode, we'll clear all room stays was added before.
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
 			$this->room_stays->clear();

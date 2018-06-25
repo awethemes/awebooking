@@ -23,9 +23,4 @@ $reservation = abrs_reservation();
 		<dt><?php esc_html_e( 'Total', 'awebooking' ); ?></dt>
 		<dd><?php abrs_price( $reservation->get_total() ); ?></dd>
 	</dl>
-
-	<p class="roomdetails-total__info">
-		<strong>Giá đã bao gồm:</strong>
-		Phí dịch vụ 5%, Thuế 10%
-	</p>
 </div>

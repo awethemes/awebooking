@@ -20,9 +20,6 @@ $res_request = $reservation->resolve_res_request();
 /* @var \AweBooking\Reservation\Item $room_stay */
 $room_stay = $reservation->get_room_stays()->first();
 
-/* @var \AweBooking\Model\Room_Type $room_type */
-$room_type = $room_stay->model();
-
 ?>
 
 <div class="reservation__section reservation__section--room">
@@ -43,24 +40,12 @@ $room_type = $room_stay->model();
 				?>
 			</dd>
 
-			<dt><?php esc_html_e( 'Max occupancy', 'awebooking' ); ?></dt>
-			<dd>
-				<?php
-				/* translators: %s max occupancy */
-				printf( esc_html_x( '%s people', 'max occupancy', 'awebooking' ), absint( $room_type->get( 'maximum_occupancy' ) ) );
-				?>
-			</dd>
-		</dl>
-
-		<dl>
-			<dt>Price (1 room x 1 night)</dt>
+			<dt><?php esc_html_e( 'Price', 'awebooking' ); ?></dt>
 			<dd><?php abrs_price( $room_stay->get_single_price_exc_tax() ); ?></dd>
 
-			<?php if ( abrs_tax_enabled() && ! abrs_prices_include_tax() ) : ?>
-
-				<dt>TAX</dt>
+			<?php if ( $room_stay->is_taxable() ) : ?>
+				<dt><?php echo isset( $room_stay['tax_rate']['name'] ) ? esc_html( $room_stay['tax_rate']['name'] ) : esc_html__( 'Tax', 'awebooking' ); ?></dt>
 				<dd><?php abrs_price( $room_stay->get_total_tax() ); ?></dd>
-
 			<?php endif; ?>
 		</dl>
 
