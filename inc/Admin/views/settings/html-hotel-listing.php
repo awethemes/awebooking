@@ -2,6 +2,9 @@
 
 $hotels = abrs_list_hotels();
 
+if ( $hotels->isEmpty() ) {
+	return;
+}
 ?>
 
 <ul class="abrs-sortable" id="js-sorting-hotels">

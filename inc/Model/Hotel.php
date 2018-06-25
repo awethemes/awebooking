@@ -17,7 +17,7 @@ class Hotel extends Model {
 	 * @param string $object The object ID.
 	 */
 	public function __construct( $object = null ) {
-		if ( 'default' === $object || 0 == $object ) {
+		if ( 'default' === $object || ( is_int( $object ) && 0 == $object ) ) {
 			$this->setup_default_hotel();
 		} else {
 			parent::__construct( $object );

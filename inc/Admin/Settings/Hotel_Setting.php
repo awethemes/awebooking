@@ -55,7 +55,7 @@ class Hotel_Setting extends Abstract_Setting {
 		}
 
 		// Enable multiple_hotels.
-		if ( abrs_get_option( 'enable_location', false ) ) {
+		if ( abrs_get_option( 'enable_location', false ) && ! abrs_list_hotels()->isEmpty() ) {
 			$this->add_field([
 				'id'       => '__hotel_listing',
 				'type'     => 'title',
