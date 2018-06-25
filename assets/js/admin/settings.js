@@ -1,76 +1,156 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 (function ($, plugin) {
   'use strict';
 
   var settings = window._awebookingSettings || {};
 
-  var MainSetting = function () {
-    function MainSetting() {
-      _classCallCheck(this, MainSetting);
-    }
+  /**
+   * Handle leaving using window.onbeforeunload.
+   *
+   * @return {void}
+   */
+  function handleLeaving() {
+    var changed = false;
 
-    _createClass(MainSetting, [{
-      key: 'handleLeaving',
+    // Set the changed if any controls fire change.
+    $('input, textarea, select').on('change', function () {
+      changed = true;
+    });
 
-      /**
-       * Handle leaving using window.onbeforeunload.
-       *
-       * @return {void}
-       */
-      value: function handleLeaving() {
-        var changed = false;
+    $('.awebooking-settings').on('click', '.nav-tab-wrapper a', function () {
+      if (changed) {
+        window.onbeforeunload = function () {
+          return settings.i18n.nav_warning;
+        };
+      } else {
+        window.onbeforeunload = null;
+      }
+    }).on('click', '.submit button', function () {
+      window.onbeforeunload = null;
+    });
+  }
 
-        // Set the changed if any controls fire change.
-        $('input, textarea, select, checkbox').on('change', function () {
-          changed = true;
-        });
+  /**
+   * Init the datepicker.
+   *
+   * @return {void}
+   */
+  function initDatepicker() {
+    $('#display_datepicker_disabledates').flatpickr({
+      mode: 'multiple',
+      dateFormat: 'Y-m-d'
+    });
+  }
 
-        $('.awebooking-settings').on('click', '.nav-tab-wrapper a', function () {
-          if (changed) {
-            window.onbeforeunload = function () {
-              return settings.i18n.nav_warning;
-            };
-          } else {
-            window.onbeforeunload = null;
+  /**
+   * Setup input table bindings.
+   *
+   * @return {void}
+   */
+  function setupInputTable() {
+    var $table = $('.awebooking-input-table');
+
+    var shifted = void 0,
+        controlled = void 0,
+        hasFocus = void 0;
+    shifted = controlled = hasFocus = false;
+
+    $(document).bind('keyup keydown', function (e) {
+      shifted = e.shiftKey;
+      controlled = e.ctrlKey || e.metaKey;
+    });
+
+    var handleClickInputTable = function handleClickInputTable(el, e) {
+      var $elRow = $(el).closest('tr');
+      var $elTable = $(el).closest('table, tbody');
+
+      if (e.type === 'focus' && hasFocus !== $elRow.index() || e.type === 'click' && $(el).is(':focus')) {
+        hasFocus = $elRow.index();
+
+        if (!shifted && !controlled) {
+          $('tr', $elTable).removeClass('current').removeClass('last-selected');
+          $elRow.addClass('current').addClass('last-selected');
+        } else if (shifted) {
+          $('tr', $elTable).removeClass('current');
+          $elRow.addClass('selected-now').addClass('current');
+
+          if ($('tr.last-selected', $elTable).length > 0) {
+            if ($elRow.index() > $('tr.last-selected', $elTable).index()) {
+              $('tr', $elTable).slice($('tr.last-selected', $elTable).index(), $elRow.index()).addClass('current');
+            } else {
+              $('tr', $elTable).slice($elRow.index(), $('tr.last-selected', $elTable).index() + 1).addClass('current');
+            }
           }
-        }).on('click', '.submit button', function () {
-          window.onbeforeunload = null;
+
+          $('tr', $elTable).removeClass('last-selected');
+          $elRow.addClass('last-selected');
+        } else {
+          $('tr', $elTable).removeClass('last-selected');
+          if (controlled && $(el).closest('tr').is('.current')) {
+            $elRow.removeClass('current');
+          } else {
+            $elRow.addClass('current').addClass('last-selected');
+          }
+        }
+
+        $('tr', $elTable).removeClass('selected-now');
+      }
+    };
+
+    var handleRemoveRows = function handleRemoveRows(el, e) {
+      var $tbody = $(el).closest('table').find('tbody');
+
+      if ($tbody.find('tr.current').length > 0) {
+        var $current = $tbody.find('tr.current');
+
+        $current.each(function () {
+          $(this).remove();
         });
       }
+    };
 
-      /**
-       * Create the datepicker.
-       *
-       * @return {void}
-       */
+    $table.on('blur', 'input', function () {
+      hasFocus = false;
+    }).on('focus click', 'input', function (e) {
+      handleClickInputTable(this, e);
+    }).on('click', '.remove_rows', function (e) {
+      e.preventDefault();
+      handleRemoveRows(this, e);
+    });
+  }
 
-    }, {
-      key: 'createDatepicker',
-      value: function createDatepicker() {
-        $('#display_datepicker_disabledates').flatpickr({
-          mode: 'multiple',
-          dateFormat: 'Y-m-d'
-        });
-      }
-    }]);
+  function setupInputTableSortable() {}
+  /*$('.wc_input_table.sortable tbody').sortable({
+    items: 'tr',
+    cursor: 'move',
+    axis: 'y',
+    scrollSensitivity: 40,
+    forcePlaceholderSize: true,
+    helper: 'clone',
+    opacity: 0.65,
+    placeholder: 'wc-metabox-sortable-placeholder',
+    start: function (event, ui) {
+      ui.item.css('background-color', '#f6f6f6');
+    },
+    stop: function (event, ui) {
+      ui.item.removeAttr('style');
+    }
+  });
+   // Focus on inputs within the table if clicked instead of trying to sort.
+  $('.wc_input_table.sortable tbody input').on('click', function () {
+    $(this).focus();
+  });*/
 
-    return MainSetting;
-  }();
 
   /** Document ready */
-
-
   $(function () {
-    var main = new MainSetting();
+    handleLeaving();
+    initDatepicker();
 
-    main.handleLeaving();
-    main.createDatepicker();
+    setupInputTable();
+    // setupInputTableSortable();
   });
 })(jQuery, window.awebooking);
 

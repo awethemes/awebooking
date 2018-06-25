@@ -78,47 +78,12 @@ class Taxes_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
-			'id'          => '__rates',
-			'type'        => 'group',
+			'id'          => '__tax_rates',
+			'type'        => 'include',
 			'name'        => esc_html__( 'Tax rates', 'awebooking' ),
+			'include'     => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-tax-rates.php',
 			'save_fields' => false,
-			'options'     => [
-				'table_layout' => true,
-			],
-			'fields'      => [
-				[
-					'id'      => 'name',
-					'type'    => 'text',
-					'name'    => esc_html__( 'Name', 'awebooking' ),
-					'default' => '',
-				],
-				[
-					'id'   => 'rate',
-					'type' => 'text',
-					'name' => esc_html__( 'Rate (%)', 'awebooking' ),
-				],
-				[
-					'id'   => 'rate',
-					'type' => 'text',
-					'name' => esc_html__( 'Priority', 'awebooking' ),
-					'attributes' => [ 'type' => 'number' ],
-				],
-				[
-					'id'   => 'rate',
-					'type' => 'text',
-					'name' => esc_html__( 'Compound', 'awebooking' ),
-				],
-			],
 		]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function output( Request $request ) {
-		wp_enqueue_script( 'awebooking-settings-taxes' );
-
-		parent::output( $request );
 	}
 
 	/**

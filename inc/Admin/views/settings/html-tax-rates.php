@@ -1,121 +1,46 @@
-<div class="wc-tax-rates-search" id="rates-search">
-	<input type="search" class="wc-tax-rates-search-field" placeholder="<?php esc_attr_e( 'Query&hellip;', 'woocommerce' ); ?>" value="<?php if ( isset( $_GET['s'] ) ) { echo esc_attr( $_GET['s'] ); } ?>" />
+<div id="bacs_accounts">
+	<table class="widefat awebooking-input-table" cellspacing="0">
+		<thead>
+			<tr>
+				<th>name</th>
+				<th>rate &</th>
+			</tr>
+		</thead>
+
+		<tbody class="accounts ui-sortable">
+			<?php foreach ( abrs_get_tax_rates() as $tax_rate ) : ?>
+				<tr class="account ui-sortable-handle">
+					<td><input type="text" value="<?php echo esc_attr( $tax_rate['name'] ); ?>" name="tax_rates[<?php echo esc_attr( $tax_rate['id'] ); ?>]"></td>
+					<td><input type="text" value="" name="bacs_bic[0]"></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+
+		<tfoot>
+		<tr>
+			<th colspan="7"><a href="#" class="add button">+ Add account</a> <a href="#" class="remove_rows button">Remove
+					selected account(s)</a></th>
+		</tr>
+		</tfoot>
+	</table>
 </div>
+<script type="text/javascript">
+	jQuery(function ($) {
+		$('#bacs_accounts').on('click', 'a.add', function () {
 
-<div id="rates-pagination"></div>
+			var size = $('#bacs_accounts').find('tbody .account').length;
 
-<table class="wc_tax_rates wc_input_table widefat">
-	<thead>
-		<tr>
-			<th width="8%"><?php _e( 'Tax name', 'woocommerce' ); ?>&nbsp;<?php echo wc_help_tip( __( 'Enter a name for this tax rate.', 'woocommerce' ) ); ?></th>
-			<th width="8%"><?php _e( 'Rate&nbsp;%', 'woocommerce' ); ?>&nbsp;<?php echo wc_help_tip( __( 'Enter a tax rate (percentage) to 4 decimal places.', 'woocommerce' ) ); ?></th>
-			<th width="8%"><?php _e( 'Priority', 'woocommerce' ); ?>&nbsp;<?php echo wc_help_tip( __( 'Choose a priority for this tax rate. Only 1 matching rate per priority will be used. To define multiple tax rates for a single area you need to specify a different priority per rate.', 'woocommerce' ) ); ?></th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<th colspan="9">
-				<a href="#" class="button plus insert"><?php _e( 'Insert row', 'woocommerce' ); ?></a>
-				<a href="#" class="button minus remove_tax_rates"><?php _e( 'Remove selected row(s)', 'woocommerce' ); ?></a>
-			</th>
-		</tr>
-	</tfoot>
-	<tbody id="rates">
-		<tr>
-			<th colspan="9" style="text-align: center;"><?php esc_html_e( 'Loading&hellip;', 'woocommerce' ); ?></th>
-		</tr>
-	</tbody>
-</table>
+			$('<tr class="account">\
+									<td class="sort"></td>\
+									<td><input type="text" name="bacs_account_name[' + size + ']" /></td>\
+									<td><input type="text" name="bacs_account_number[' + size + ']" /></td>\
+									<td><input type="text" name="bacs_bank_name[' + size + ']" /></td>\
+									<td><input type="text" name="bacs_sort_code[' + size + ']" /></td>\
+									<td><input type="text" name="bacs_iban[' + size + ']" /></td>\
+									<td><input type="text" name="bacs_bic[' + size + ']" /></td>\
+								</tr>').appendTo('#bacs_accounts table tbody');
 
-<script type="text/html" id="tmpl-wc-tax-table-row">
-	<tr class="tips" data-tip="<?php printf( esc_attr__( 'Tax rate ID: %s', 'woocommerce' ), '{{ data.tax_rate_id }}' ); ?>" data-id="{{ data.tax_rate_id }}">
-		<td class="country">
-			<input type="text" value="{{ data.tax_rate_country }}" placeholder="*" name="tax_rate_country[{{ data.tax_rate_id }}]" class="wc_input_country_iso" data-attribute="tax_rate_country" style="text-transform:uppercase" />
-		</td>
-
-		<td class="state">
-			<input type="text" value="{{ data.tax_rate_state }}" placeholder="*" name="tax_rate_state[{{ data.tax_rate_id }}]" data-attribute="tax_rate_state" />
-		</td>
-
-		<td class="postcode">
-			<input type="text" value="<# if ( data.postcode ) print( _.escape( data.postcode.join( '; ' ) ) ); #>" placeholder="*" data-name="tax_rate_postcode[{{ data.tax_rate_id }}]" data-attribute="postcode" />
-		</td>
-
-		<td class="city">
-			<input type="text" value="<# if ( data.city ) print( _.escape( data.city.join( '; ' ) ) ); #>" placeholder="*" data-name="tax_rate_city[{{ data.tax_rate_id }}]" data-attribute="city" />
-		</td>
-
-		<td class="rate">
-			<input type="text" value="{{ data.tax_rate }}" placeholder="0" name="tax_rate[{{ data.tax_rate_id }}]" data-attribute="tax_rate" />
-		</td>
-
-		<td class="name">
-			<input type="text" value="{{ data.tax_rate_name }}" name="tax_rate_name[{{ data.tax_rate_id }}]" data-attribute="tax_rate_name" />
-		</td>
-
-		<td class="priority">
-			<input type="number" step="1" min="1" value="{{ data.tax_rate_priority }}" name="tax_rate_priority[{{ data.tax_rate_id }}]" data-attribute="tax_rate_priority" />
-		</td>
-
-		<td class="compound">
-			<input type="checkbox" class="checkbox" name="tax_rate_compound[{{ data.tax_rate_id }}]" <# if ( parseInt( data.tax_rate_compound, 10 ) ) { #> checked="checked" <# } #> data-attribute="tax_rate_compound" />
-		</td>
-
-		<td class="apply_to_shipping">
-			<input type="checkbox" class="checkbox" name="tax_rate_shipping[{{ data.tax_rate_id }}]" <# if ( parseInt( data.tax_rate_shipping, 10 ) ) { #> checked="checked" <# } #> data-attribute="tax_rate_shipping" />
-		</td>
-	</tr>
-</script>
-
-<script type="text/html" id="tmpl-wc-tax-table-row-empty">
-	<tr>
-		<th colspan="9" style="text-align:center"><?php esc_html_e( 'No matching tax rates found.', 'woocommerce' ); ?></th>
-	</tr>
-</script>
-
-<script type="text/html" id="tmpl-wc-tax-table-pagination">
-	<div class="tablenav">
-		<div class="tablenav-pages">
-			<span class="displaying-num"><?php
-				/* translators: %s: number */
-				printf(
-					__( '%s items', 'woocommerce' ), // %s will be a number eventually, but must be a string for now.
-					'{{ data.qty_rates }}'
-				);
-			?></span>
-			<span class="pagination-links">
-
-				<a class="tablenav-pages-navspan" data-goto="1">
-					<span class="screen-reader-text"><?php esc_html_e( 'First page', 'woocommerce' ); ?></span>
-					<span aria-hidden="true">&laquo;</span>
-				</a>
-				<a class="tablenav-pages-navspan" data-goto="<# print( Math.max( 1, parseInt( data.current_page, 10 ) - 1 ) ) #>">
-					<span class="screen-reader-text"><?php esc_html_e( 'Previous page', 'woocommerce' ); ?></span>
-					<span aria-hidden="true">&lsaquo;</span>
-				</a>
-
-				<span class="paging-input">
-					<label for="current-page-selector" class="screen-reader-text"><?php esc_html_e( 'Current page', 'woocommerce' ); ?></label>
-					<?php
-						/* translators: 1: current page 2: total pages */
-						printf(
-							esc_html_x( '%1$s of %2$s', 'Pagination', 'woocommerce' ),
-							'<input class="current-page" id="current-page-selector" type="text" name="paged" value="{{ data.current_page }}" size="<# print( data.qty_pages.toString().length ) #>" aria-describedby="table-paging">',
-							'<span class="total-pages">{{ data.qty_pages }}</span>'
-						);
-					?>
-				</span>
-
-				<a class="tablenav-pages-navspan" data-goto="<# print( Math.min( data.qty_pages, parseInt( data.current_page, 10 ) + 1 ) ) #>">
-					<span class="screen-reader-text"><?php esc_html_e( 'Next page', 'woocommerce' ); ?></span>
-					<span aria-hidden="true">&rsaquo;</span>
-				</a>
-				<a class="tablenav-pages-navspan" data-goto="{{ data.qty_pages }}">
-					<span class="screen-reader-text"><?php esc_html_e( 'Last page', 'woocommerce' ); ?></span>
-					<span aria-hidden="true">&raquo;</span>
-				</a>
-
-			</span>
-		</div>
-	</div>
+			return false;
+		});
+	});
 </script>

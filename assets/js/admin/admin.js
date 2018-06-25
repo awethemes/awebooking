@@ -51,7 +51,7 @@
       return window.confirm(message || this.i18n.warning) && callback();
     }
 
-    var confirm = swal({
+    var confirm = window.swal({
       toast: true,
       text: message || this.i18n.warning,
       type: 'warning',
@@ -72,7 +72,7 @@
     }
 
     return confirm;
-  },
+  };
 
   /**
    * Create the dialog.
@@ -100,7 +100,7 @@
     }, 150));
 
     return $dialog;
-  },
+  };
 
   /**
    * Create a form then append to body.
@@ -139,7 +139,7 @@
   $(function () {
     // Init tippy.
     if (window.tippy) {
-      tippy('.tippy', {
+      window.tippy('.tippy', {
         arrow: true,
         animation: 'shift-toward',
         duration: [200, 150]
