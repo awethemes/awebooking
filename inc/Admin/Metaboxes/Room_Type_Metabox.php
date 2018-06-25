@@ -301,6 +301,18 @@ class Room_Type_Metabox {
 			'tooltip'         => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
 		]);
 
+		if ( abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() ) ) {
+			$form->add_field([
+				'id'         => 'single_tax_rate',
+				'type'       => 'select',
+				'name'       => esc_html__( 'Select tax rate', 'awebooking' ),
+				'classes'    => 'with-selectize',
+				'options_cb' => function () {
+					return abrs_get_tax_rates()->pluck( 'name', 'id' )->all();
+				},
+			]);
+		}
+
 		$form->add_field([
 			'id'          => '_rate_inclusions',
 			'type'        => 'text',

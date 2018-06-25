@@ -12,10 +12,19 @@ function abrs_tax_enabled() {
 /**
  * Determines if prices inclusive of tax or not.
  *
- * @return bool
+ * @return string
  */
 function abrs_prices_include_tax() {
 	return abrs_tax_enabled() && abrs_get_option( 'prices_include_tax' );
+}
+
+/**
+ * Get tax rate model.
+ *
+ * @return string
+ */
+function abrs_get_tax_rate_model() {
+	return apply_filters( 'abrs_tax_rate_model', abrs_get_option( 'tax_rate_model', 'single' ) );
 }
 
 /**
