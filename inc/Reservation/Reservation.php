@@ -182,6 +182,7 @@ class Reservation {
 	/**
 	 * Remove a room_stay from the list.
 	 *
+	 * @param  string $row_id The room stay row ID.
 	 * @return \AweBooking\Reservation\Item|false
 	 */
 	public function remove( $row_id ) {

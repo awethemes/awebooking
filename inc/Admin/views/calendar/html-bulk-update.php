@@ -17,7 +17,7 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 							<div class="cmb-td">
 								<label for="bulk_rooms"><?php esc_html_e( 'Select rooms', 'awebooking' ); ?> </label>
 
-								<ul>
+								<ul class="list-bulk-rooms">
 									<?php foreach ( $scheduler->room_types as $room_type ) : ?>
 										<li>
 											<strong><?php echo esc_html( $room_type['title'] ); ?></strong>

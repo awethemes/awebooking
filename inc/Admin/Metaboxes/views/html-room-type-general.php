@@ -25,7 +25,7 @@
 		<?php endif ?>
 
 		<?php if ( abrs_infants_bookable() ) : ?>
-			<div class="abcol-3 abcol-sm-12" style="border-right: none;">
+			<div class="abcol-3 abcol-sm-12">
 				<?php $form->show_field( 'number_infants' ); ?>
 			</div>
 		<?php endif ?>

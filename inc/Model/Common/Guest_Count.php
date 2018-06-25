@@ -28,7 +28,7 @@ class Guest_Count {
 	 *
 	 * @param string|int $age_code The age code.
 	 * @param int        $count    The count.
-	 * @param string|in  $age      Optional, the of qualifying.
+	 * @param string|int $age      Optional, the of qualifying.
 	 */
 	public function __construct( $age_code, $count, $age = null ) {
 		$this->age_code = $age_code;

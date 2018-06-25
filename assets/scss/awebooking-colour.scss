@@ -27,9 +27,13 @@ $link-hover-decoration:     none;
   box-shadow: 1px 3px 25px rgba($black, .08);
 }
 
-#awebooking-container {
+.awebooking-container {
   @include make-container;
   @include make-container-max-widths;
+}
+
+.awebooking-main {
+  padding: 1.75rem 0;
 }
 
 .awebooking,

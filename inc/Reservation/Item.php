@@ -43,11 +43,32 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $quantity = 1;
 
 	/**
+	 * Taxable this item?
+	 *
+	 * @var bool
+	 */
+	protected $taxable = false;
+
+	/**
+	 * Is the price includes tax?
+	 *
+	 * @var bool
+	 */
+	protected $price_includes_tax = false;
+
+	/**
 	 * The tax rate (percent) of the item.
 	 *
 	 * @var float
 	 */
 	protected $tax_rate = 0;
+
+	/**
+	 * The tax rate name for display.
+	 *
+	 * @var string
+	 */
+	protected $tax_name = 'Tax';
 
 	/**
 	 * The options of the item.
@@ -140,6 +161,11 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 		if ( in_array( $key, [ 'single_price', 'single_price_exc_tax', 'total_price', 'total_price_exc_tax', 'single_tax', 'total_tax' ] ) ) {
 			return $this->{"get_{$key}"}();
 		}
+
+		// 500
+		// 10%
+		// 1. 450
+		// 2. 560
 
 		return $this->get_option( $key );
 	}
