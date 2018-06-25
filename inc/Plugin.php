@@ -438,7 +438,8 @@ final class Plugin extends Container {
 			case 'children_bookable':
 			case 'infants_bookable':
 			case 'calc_taxes':
-				$value = ( 'on' === $value );
+			case 'prices_include_tax':
+				$value = 'on' === abrs_sanitize_checkbox( $value );
 				break;
 
 			case 'price_decimal_separator':

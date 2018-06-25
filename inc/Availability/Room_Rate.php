@@ -404,6 +404,34 @@ class Room_Rate {
 	}
 
 	/**
+	 * Gets all taxes of the room rate.
+	 *
+	 * @return array|null
+	 */
+	public function get_tax_rate() {
+		if ( ! abrs_tax_enabled() ) {
+			return null;
+		}
+
+		// Get the tax_rate ID.
+		if ( 'single' === abrs_get_option( 'tax_rate_model' ) ) {
+			$tax_rate_id = abrs_get_option( 'single_tax_rate' );
+		} else {
+			$tax_rate_id = $this->room_type->get( 'tax_rate' );
+		}
+
+		/**
+		 * Allow modify the tax rate of room rate.
+		 *
+		 * @param int                                $tax_rate_id The tax rate ID.
+		 * @param \AweBooking\Availability\Room_Rate $room_rate   The room rate instance,
+		 */
+		$tax_rate = apply_filters( 'abrs_room_rate_tax', $tax_rate_id, $this );
+
+		return $tax_rate ? abrs_get_tax_rate( $tax_rate ) : null;
+	}
+
+	/**
 	 * Gets the errors.
 	 *
 	 * @return WP_Error

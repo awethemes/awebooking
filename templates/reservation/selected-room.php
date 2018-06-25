@@ -2,7 +2,7 @@
 /**
  * This template show the booked room item.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/booked-single.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/selected-room.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -54,10 +54,14 @@ $room_type = $room_stay->model();
 
 		<dl>
 			<dt>Price (1 room x 1 night)</dt>
-			<dd>700.814</dd>
+			<dd><?php abrs_price( $room_stay->get_single_price_exc_tax() ); ?></dd>
 
-			<dt>VAT</dt>
-			<dd>free</dd>
+			<?php if ( abrs_tax_enabled() && ! abrs_prices_include_tax() ) : ?>
+
+				<dt>TAX</dt>
+				<dd><?php abrs_price( $room_stay->get_total_tax() ); ?></dd>
+
+			<?php endif; ?>
 		</dl>
 
 	</div><!-- /.roomdetails-room -->

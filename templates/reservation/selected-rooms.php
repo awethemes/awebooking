@@ -2,7 +2,7 @@
 /**
  * This template show the booked room items.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/booked-multiple.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/selected-rooms.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes

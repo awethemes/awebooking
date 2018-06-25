@@ -91,12 +91,22 @@ window.awebooking = {};
     // Init
     require('./frontend/search-form').init();
 
-    tippy('[data-awebooking="tooltip"]', {
+    window.tippy('[data-awebooking="tooltip"]', {
       theme: 'awebooking-tooltip'
     });
 
-    $('[data-awebooking="dialog"]').each(function (e, el) {
-      var dialog = new A11yDialog(el);
+    $('[data-init="awebooking-dialog"]').each(function (e, el) {
+      var dialog = new window.A11yDialog(el);
+
+      dialog.on('show', function () {
+        el.classList.add('open');
+        el.removeAttribute('aria-hidden');
+      });
+
+      dialog.on('hide', function () {
+        el.classList.remove('open');
+        el.setAttribute('aria-hidden', true);
+      });
     });
   });
 })(jQuery, window.awebooking);

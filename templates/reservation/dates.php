@@ -28,8 +28,7 @@ list( $check_in, $check_out ) = [
 $hotel = $reservation->get_hotel();
 
 $should_show_arrival_time = (
-	$hotel['check_in_time']
-	&& $hotel['check_out_time']
+	$hotel['check_in_time'] && $hotel['check_out_time']
 	&& true === abrs_get_option( 'display_guest_arrival_time', true )
 );
 

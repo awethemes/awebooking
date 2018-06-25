@@ -5,27 +5,27 @@ use AweBooking\Support\Decimal;
 
 class Totals {
 	/**
-	 * The reservation instance.
-	 *
-	 * @var \AweBooking\Reservation\Reservation
-	 */
-	protected $reservation;
-
-	/**
 	 * Stores totals.
 	 *
 	 * @var array
 	 */
 	protected $totals = [
-		'fees_total'         => 0,
-		'fees_total_tax'     => 0,
-		'items_subtotal'     => 0,
-		'items_subtotal_tax' => 0,
-		'items_total'        => 0,
-		'items_total_tax'    => 0,
-		'total'              => 0,
-		'discounts_total'    => 0,
+		'subtotal'       => 0,
+		'subtotal_tax'   => 0,
+		'discount_total' => 0,
+		'discount_tax'   => 0,
+		'rooms_total'    => 0,
+		'rooms_tax'      => 0,
+		'total'          => 0,
+		'total_tax'      => 0,
 	];
+
+	/**
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
+	 */
+	protected $reservation;
 
 	/**
 	 * Constructor.
@@ -93,7 +93,7 @@ class Totals {
 			$total = $total->add( $room_stay->get_total_price() );
 		}
 
-		$this->set( 'items_subtotal', $subtotal );
-		$this->set( 'total', $subtotal );
+		$this->set( 'rooms_subtotal', $subtotal );
+		$this->set( 'total', $total );
 	}
 }

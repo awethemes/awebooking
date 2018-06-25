@@ -88,12 +88,22 @@ window.awebooking = {};
     // Init
     require('./frontend/search-form').init();
 
-    tippy('[data-awebooking="tooltip"]', {
+    window.tippy('[data-awebooking="tooltip"]', {
       theme: 'awebooking-tooltip'
     });
 
-    $('[data-awebooking="dialog"]').each( (e, el) => {
-      const dialog = new A11yDialog(el);
+    $('[data-init="awebooking-dialog"]').each( (e, el) => {
+      const dialog = new window.A11yDialog(el);
+
+      dialog.on('show', () => {
+        el.classList.add('open');
+        el.removeAttribute('aria-hidden');
+      });
+
+      dialog.on('hide', () => {
+        el.classList.remove('open');
+        el.setAttribute('aria-hidden', true);
+      });
     });
 
   });

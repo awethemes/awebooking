@@ -14,16 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Variables.
- *
- * @var \AweBooking\Model\Room_Type        $room_type
- * @var \AweBooking\Availability\Room_Rate $room_rate
- */
+/* @var \AweBooking\Model\Room_Type $room_type */
+/* @var \AweBooking\Availability\Room_Rate $room_rate */
 
 $remain_rooms = $room_rate->get_remain_rooms();
 
 $rate_plan = $room_rate->get_rate_plan();
+
 ?>
 
 <div class="roommaster">
@@ -239,6 +236,10 @@ $rate_plan = $room_rate->get_rate_plan();
 												break;
 										}
 									?>
+								</div>
+
+								<div>
+									<?php abrs_get_template( 'search/breakdown.php', compact( 'room_rate' ) ); ?>
 								</div>
 							</div>
 							<div class="column-2">

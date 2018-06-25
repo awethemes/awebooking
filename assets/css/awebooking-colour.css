@@ -1384,39 +1384,59 @@ dialog[open] {
   display: none !important;
 }
 
-dialog::-webkit-backdrop,
-.awebooking-dialog__overlay {
-  z-index: 99999;
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-dialog::backdrop,
-.awebooking-dialog__overlay {
-  z-index: 99999;
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.awebooking-dialog__overlay {
-  position: fixed;
+.awebooking-dialog {
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  overflow: hidden;
+  outline: 0;
 }
 
+.awebooking-dialog.open {
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.awebooking-dialog__overlay,
+.awebooking-dialog dialog::-webkit-backdrop {
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.awebooking-dialog__overlay,
+.awebooking-dialog dialog::backdrop {
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.awebooking-dialog__overlay {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
+
+.awebooking-dialog > dialog,
 .awebooking-dialog__dialog {
-  border: none;
-  background-color: red;
-  position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
-  z-index: 100000;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  bottom: 0;
+  position: relative;
+  display: block;
+  margin: 2.5rem auto;
+  padding: 1rem;
+  min-width: 320px;
+  max-width: 500px;
+  border: solid 1px transparent;
+  background: #fff;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
 }
 
 .awebooking-dialog .button.awebooking-dialog__close {
@@ -1427,60 +1447,8 @@ dialog::backdrop,
   text-align: center;
   font-size: 1.75rem;
   line-height: 1;
+  font-weight: 300;
   color: #6c757d;
-}
-
-.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__overlay {
-  -webkit-animation: dialog-fade-in 150ms 1 both;
-  animation: dialog-fade-in 150ms 1 both;
-}
-
-@-webkit-keyframes dialog-appear {
-  from {
-    -webkit-transform: scale(0.95) translate(-50%, -50%);
-    transform: scale(0.95) translate(-50%, -50%);
-    opacity: 0;
-  }
-
-  to {
-    -webkit-transform: scale(1) translate(-50%, -50%);
-    transform: scale(1) translate(-50%, -50%);
-    opacity: 1;
-  }
-}
-
-@keyframes dialog-appear {
-  from {
-    -webkit-transform: scale(0.95) translate(-50%, -50%);
-    transform: scale(0.95) translate(-50%, -50%);
-    opacity: 0;
-  }
-
-  to {
-    -webkit-transform: scale(1) translate(-50%, -50%);
-    transform: scale(1) translate(-50%, -50%);
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes dialog-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes dialog-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 
 #checkout-form {
@@ -1592,6 +1560,24 @@ ul.booking_details li:last-of-type {
 
 .reservation__section--dates {
   border-bottom: solid 1px #dee2e6;
+}
+
+.reservation__empty {
+  color: #6c757d;
+  padding: 1rem;
+  text-align: center;
+}
+
+.reservation__empty > span {
+  color: #ced4da;
+  display: block;
+  line-height: 1;
+  font-size: 2rem;
+}
+
+.reservation__empty > p {
+  margin-top: 5px;
+  margin-bottom: 0;
 }
 
 .reservation dl {

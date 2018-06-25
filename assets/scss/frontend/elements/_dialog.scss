@@ -1,3 +1,4 @@
+// Core layout.
 dialog[open] {
   display: block;
 }
@@ -8,40 +9,41 @@ dialog[open] {
 }
 
 // Styling
-%dialog-backdrop {
-  z-index: 99999;
-  background-color: rgba($white, .5);
-}
-
-dialog::backdrop {
-  @extend %dialog-backdrop;
-}
-
 .awebooking-dialog {
-  &__overlay {
-    @extend %dialog-backdrop;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+  @include fixed(0, 0, 0, 0);
+  z-index: 9999;
+  display: none;
+  overflow: hidden;
+  outline: 0;
+
+  &.open {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
+  &__overlay,
+  dialog::backdrop {
+    z-index: 9999;
+    background-color: rgba($black, .35);
+  }
+
+  &__overlay {
+    @include fixed(0, 0, 0, 0);
+  }
+
+  > dialog,
   &__dialog {
-    border: none;
-    background-color: red;
+    @include relative(0, 0, 0, 0);
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 100000;
-
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    display: block;
+    margin: 2.5rem auto;
+    padding: 1rem;
+    min-width: 320px;
+    max-width: 500px;
+    border: solid 1px transparent;
+    background: $white;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
   }
 
   .button#{&}__close {
@@ -52,24 +54,7 @@ dialog::backdrop {
     text-align: center;
     font-size: 1.75rem;
     line-height: 1;
+    font-weight: 300;
     color: $gray-600;
   }
-}
-
-.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__overlay {
-  animation: dialog-fade-in 150ms 1 both;
-}
-
-//.awebooking-dialog:not([aria-hidden='true']) > .awebooking-dialog__content {
-//  animation: dialog-appear 150ms 150ms 1 both;
-//}
-
-@keyframes dialog-appear {
-  from { transform: scale(0.95) translate(-50%, -50%); opacity: 0; }
-  to { transform: scale(1) translate(-50%, -50%); opacity: 1; }
-}
-
-@keyframes dialog-fade-in {
-  from { opacity: 0;  }
-  to { opacity: 1;  }
 }

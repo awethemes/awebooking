@@ -38,6 +38,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<aside class="hotel-content__aside">
-		<?php abrs_get_template( 'reservation/booked.php' ); ?>
+		<?php abrs_get_template( 'reservation/reservation.php' ); ?>
 	</aside>
 </div><!-- /.container -->

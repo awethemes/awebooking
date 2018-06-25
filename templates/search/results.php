@@ -53,7 +53,7 @@ $res_request = $results->get_request();
 	</div>
 
 	<aside class="hotel-content__aside">
-		<?php abrs_get_template( 'reservation/booked.php' ); ?>
+		<?php abrs_get_template( 'reservation/reservation.php' ); ?>
 
 		<?php if ( ! abrs_reservation()->is_empty() ) : ?>
 
@@ -65,9 +65,9 @@ $res_request = $results->get_request();
 
 	</aside>
 </div><!-- /.hotel-content -->
-comm
+
 <!-- <dialog class="popup-request" data-time="5000">
-	jgaswklajwse ajwekgjkawgje 
+	jgaswklajwse ajwekgjkawgje
 </dialog> -->
 
 <!-- <script>

@@ -15,7 +15,7 @@ function abrs_tax_enabled() {
  * @return bool
  */
 function abrs_prices_include_tax() {
-	return abrs_tax_enabled() & abrs_get_option( 'prices_include_tax' );
+	return abrs_tax_enabled() && abrs_get_option( 'prices_include_tax' );
 }
 
 /**

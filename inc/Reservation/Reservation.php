@@ -2,6 +2,8 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\Constants;
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 use Illuminate\Support\Arr;
 use AweBooking\Availability\Request;
 use AweBooking\Reservation\Storage\Store;
@@ -240,13 +242,16 @@ class Reservation {
 				'name'     => $room_type->get( 'title' ),
 				'price'    => $room_rate->get_rate()->as_numeric(),
 				'quantity' => $quantity,
-				'tax_rate' => 0,
 				'options'  => $options,
 			]);
 		}
 
 		$room_stay->set_data( $room_rate );
 		$room_stay->associate( $room_type );
+
+		if ( abrs_tax_enabled() ) {
+			$room_stay['tax_rate'] = Arr::get( $room_rate->get_tax_rate(), 'rate', 0 );
+		}
 
 		// In single mode, we'll clear all room stays was added before.
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
@@ -264,6 +269,8 @@ class Reservation {
 		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 
 		do_action( 'abrs_room_stay_added', $room_stay );
+
+		$this->calculate_totals();
 		$this->store();
 
 		return $room_stay;
@@ -448,130 +455,21 @@ class Reservation {
 	}
 
 	/**
+	 * Gets the total after calculation.
+	 *
+	 * @return \AweBooking\Support\Decimal
+	 */
+	public function get_total() {
+		return $this->totals->get( 'total' );
+	}
+
+	/**
 	 * Gets the totals instance.
 	 *
 	 * @return Totals
 	 */
 	public function get_totals() {
 		return $this->totals;
-	}
-
-	/**
-	 * Get subtotal.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_subtotal() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'subtotal' ) );
-	}
-
-	/**
-	 * Get subtotal.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_subtotal_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'subtotal_tax' ) );
-	}
-
-	/**
-	 * Get discount_total.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_discount_total() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'discount_total' ) );
-	}
-
-	/**
-	 * Get discount_tax.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_discount_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'discount_tax' ) );
-	}
-
-	/**
-	 * Gets cart total. This is the total of items in the cart, but after discounts. Subtotal is before discounts.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_cart_contents_total() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_total' ) );
-	}
-
-	/**
-	 * Gets cart tax amount.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_cart_contents_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_tax' ) );
-	}
-
-	/**
-	 * Gets the total after calculation.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_total() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->totals->get( 'total' ) );
-	}
-
-	/**
-	 * Get total tax amount.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_total_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'total_tax' ) );
-	}
-
-	/**
-	 * Get total fee amount.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_fee_total() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_total' ) );
-	}
-
-	/**
-	 * Get total fee tax amount.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_fee_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_tax' ) );
-	}
-
-	/**
-	 * Get taxes.
-	 *
-	 * @since 3.2.0
-	 */
-	public function get_cart_contents_taxes() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'cart_contents_taxes' ) );
-	}
-
-	/**
-	 * Get taxes.
-	 *
-	 * @since 3.2.0
-	 */
-	public function get_fee_taxes() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, $this->get_totals_var( 'fee_taxes' ) );
-	}
-
-	/**
-	 * Return whether or not the cart is displaying prices including tax, rather than excluding tax.
-	 *
-	 * @since 3.3.0
-	 * @return bool
-	 */
-	public function display_prices_including_tax() {
-		return apply_filters( 'woocommerce_cart_' . __FUNCTION__, 'incl' === $this->tax_display_cart );
 	}
 
 	/**
