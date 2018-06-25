@@ -46,7 +46,7 @@
       return window.confirm(message || this.i18n.warning) && callback();
     }
 
-    const confirm = swal({
+    const confirm = window.swal({
       toast: true,
       text: message || this.i18n.warning,
       type: 'warning',
@@ -67,7 +67,7 @@
     }
 
     return confirm;
-  },
+  };
 
   /**
    * Create the dialog.
@@ -95,7 +95,7 @@
     }, 150));
 
     return $dialog;
-  },
+  };
 
   /**
    * Create a form then append to body.
@@ -129,12 +129,12 @@
     const query  = $.extend({}, parsed.query, args);
 
     return parsed.url + '?' + queryString.stringify(query, { sort: false });
-  }
+  };
 
   $(function() {
     // Init tippy.
     if (window.tippy) {
-      tippy('.tippy', {
+      window.tippy('.tippy', {
         arrow: true,
         animation: 'shift-toward',
         duration: [200, 150],
@@ -162,7 +162,6 @@
         awebooking.createForm(link, 'DELETE').submit();
       });
     });
-
   });
 
 })(jQuery);

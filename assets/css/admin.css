@@ -604,6 +604,110 @@ table.availability-table .text-remain-rooms .dashicons {
   font-size: 14px;
 }
 
+table.awebooking-input-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table.awebooking-input-table th,
+table.awebooking-input-table td {
+  display: table-cell !important;
+}
+
+table.awebooking-input-table th {
+  padding: 10px;
+  white-space: nowrap;
+}
+
+table.awebooking-input-table td {
+  padding: 0;
+  border-right: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  border-top: 0;
+  background: #fff;
+  cursor: default;
+}
+
+table.awebooking-input-table td input[type=text],
+table.awebooking-input-table td input[type=number] {
+  width: 100% !important;
+  min-width: 100px;
+  padding: 8px 10px;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background: transparent none;
+}
+
+table.awebooking-input-table td input[type=text]:focus,
+table.awebooking-input-table td input[type=number]:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+table.awebooking-input-table td.compound,
+table.awebooking-input-table td.apply_to_shipping {
+  padding: 5px 7px;
+  vertical-align: middle;
+}
+
+table.awebooking-input-table td.compound input,
+table.awebooking-input-table td.apply_to_shipping input {
+  width: auto;
+  padding: 0;
+}
+
+table.awebooking-input-table td:last-child {
+  border-right: 0;
+}
+
+table.awebooking-input-table tr.current td {
+  background-color: #fefbcc;
+}
+
+table.awebooking-input-table th.sort {
+  width: 17px;
+  padding: 0 4px;
+}
+
+table.awebooking-input-table td.sort {
+  padding: 0 4px;
+}
+
+table.awebooking-input-table .ui-sortable:not(.ui-sortable-disabled) td.sort {
+  cursor: move;
+  font-size: 15px;
+  background: #f9f9f9;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table.awebooking-input-table .ui-sortable:not(.ui-sortable-disabled) td.sort::before {
+  content: '\f333';
+  font-family: 'Dashicons';
+  text-align: center;
+  line-height: 1;
+  color: #999;
+  display: block;
+  width: 17px;
+  float: left;
+  height: 100%;
+}
+
+table.awebooking-input-table .ui-sortable:not(.ui-sortable-disabled) td.sort:hover::before {
+  color: #333;
+}
+
+table.awebooking-input-table .button {
+  float: left;
+  margin-right: 5px;
+}
+
+table.awebooking-input-table tr:last-child td {
+  border-bottom: 0;
+}
+
 /* CMB2 flex table */
 
 .cmb2-flex-table {

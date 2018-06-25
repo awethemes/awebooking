@@ -1,5 +1,12 @@
 <?php
-/* @var $settings, $request */
+/**
+ * Display the main setting layout.
+ *
+ * @var \AweBooking\Admin\Admin_Settings $settings
+ * @var \Awethemes\Http\Request          $request
+ *
+ * @package AweBooking
+ */
 
 // Get the current setting, fallback 'general'.
 $current_setting = $request->get( 'setting', 'general' );
@@ -7,6 +14,7 @@ $current_setting = $request->get( 'setting', 'general' );
 // Build the tabs array.
 $tabs = $settings->all()
 	->map( function( $setting ) {
+		/* @var \AweBooking\Admin\Settings\Setting $setting */
 		return $setting->get_label() ?: $setting->get_id();
 	})->all();
 
