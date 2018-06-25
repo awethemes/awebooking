@@ -3,6 +3,12 @@
 		<div class="abcol-3 abcol-sm-12">
 			<?php $form->show_field( 'base_price' ); ?>
 		</div>
+
+		<?php if ( abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() ) ) : ?>
+			<div class="abcol-3 abcol-sm-12">
+				<?php $form->show_field( 'single_tax_rate' ); ?>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<div class="abrs-postbox-title">

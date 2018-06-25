@@ -1,44 +1,58 @@
-<div id="bacs_accounts">
+<div id="tax_rates">
 	<table class="widefat awebooking-input-table" cellspacing="0">
 		<thead>
 			<tr>
-				<th>name</th>
-				<th>rate &</th>
+				<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>
+				<th><?php esc_html_e( 'Rate (%)', 'awebooking' ); ?></th>
+				<th><?php esc_html_e( 'Priority', 'awebooking' ); ?></th>
+				<th><?php esc_html_e( 'Compound', 'awebooking' ); ?></th>
 			</tr>
 		</thead>
 
 		<tbody class="accounts ui-sortable">
-			<?php foreach ( abrs_get_tax_rates() as $tax_rate ) : ?>
+			<?php foreach ( abrs_get_tax_rates() as $key => $tax_rate ) : ?>
 				<tr class="account ui-sortable-handle">
-					<td><input type="text" value="<?php echo esc_attr( $tax_rate['name'] ); ?>" name="tax_rates[<?php echo esc_attr( $tax_rate['id'] ); ?>]"></td>
-					<td><input type="text" value="" name="bacs_bic[0]"></td>
+					<td>
+						<input type="hidden" value="<?php echo esc_attr( $tax_rate['id'] ); ?>" name="tax_rates[<?php echo esc_attr( $key ); ?>][id]" />
+						<input type="text" value="<?php echo esc_attr( $tax_rate['name'] ); ?>" name="tax_rates[<?php echo esc_attr( $key ); ?>][name]" />
+					</td>
+					<td>
+						<input type="text" value="<?php echo esc_attr( $tax_rate['rate'] ); ?>" name="tax_rates[<?php echo esc_attr( $key ); ?>][rate]" />
+					</td>
+					<td>
+						<input type="text" value="<?php echo esc_attr( $tax_rate['priority'] ); ?>" name="tax_rates[<?php echo esc_attr( $key ); ?>][priority]" />
+					</td>
+					<td>
+						<input type="checkbox" value="<?php echo esc_attr( $tax_rate['compound'] ); ?>" name="tax_rates[<?php echo esc_attr( $key ); ?>][compound]" <?php checked( $tax_rate['compound'], 1 ); ?> />
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
 
 		<tfoot>
-		<tr>
-			<th colspan="7"><a href="#" class="add button">+ Add account</a> <a href="#" class="remove_rows button">Remove
-					selected account(s)</a></th>
-		</tr>
+			<tr>
+				<th colspan="4">
+					<a href="#" class="add button"><?php esc_html_e( '+ Add account', 'awebooking' ); ?></a>
+					<a href="#" class="remove_rows button"><?php esc_html_e( 'Remove selected account(s)', 'awebooking' ); ?></a>
+				</th>
+			</tr>
 		</tfoot>
 	</table>
 </div>
 <script type="text/javascript">
 	jQuery(function ($) {
-		$('#bacs_accounts').on('click', 'a.add', function () {
-
-			var size = $('#bacs_accounts').find('tbody .account').length;
+		$('#tax_rates').on('click', 'a.add', function () {
+			var size = $('#tax_rates').find('tbody .account').length;
 
 			$('<tr class="account">\
-									<td class="sort"></td>\
-									<td><input type="text" name="bacs_account_name[' + size + ']" /></td>\
-									<td><input type="text" name="bacs_account_number[' + size + ']" /></td>\
-									<td><input type="text" name="bacs_bank_name[' + size + ']" /></td>\
-									<td><input type="text" name="bacs_sort_code[' + size + ']" /></td>\
-									<td><input type="text" name="bacs_iban[' + size + ']" /></td>\
-									<td><input type="text" name="bacs_bic[' + size + ']" /></td>\
-								</tr>').appendTo('#bacs_accounts table tbody');
+				<td>\
+					<input type="hidden" name="tax_rates[' + size + '][id]" />\
+					<input type="text" name="tax_rates[' + size + '][name]" />\
+				</td>\
+				<td><input type="text" name="tax_rates[' + size + '][rate]" /></td>\
+				<td><input type="text" name="tax_rates[' + size + '][priority]" /></td>\
+				<td><input type="checkbox" name="tax_rates[' + size + '][compound]" /></td>\
+			</tr>').appendTo('#tax_rates table tbody');
 
 			return false;
 		});

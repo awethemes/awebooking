@@ -19,6 +19,15 @@ function abrs_prices_includes_tax() {
 }
 
 /**
+ * Get tax rate model.
+ *
+ * @return string
+ */
+function abrs_get_tax_rate_model() {
+	return apply_filters( 'abrs_tax_rate_model', abrs_get_option( 'tax_rate_model', 'single' ) );
+}
+
+/**
  * Calculate tax for a price.
  *
  * @param  float   $price              Price to calc tax on.
@@ -181,6 +190,22 @@ function abrs_insert_tax_rate( array $tax_rate ) {
 }
 
 /**
+ * Perform update a tax rate into the database.
+ *
+ * @param  array $tax_rate Tax rate args.
+ * @return bool
+ */
+function abrs_update_tax_rate( $tax_rate_id, array $tax_rate ) {
+	global $wpdb;
+
+	$updated = $wpdb->update( $wpdb->prefix . 'awebooking_tax_rates', _abrs_prepare_tax_rate( $tax_rate ), [ 'id' => $tax_rate_id ] );
+
+	do_action( 'abrs_tax_rate_updated', $tax_rate_id, $tax_rate );
+
+	return false !== $updated && $updated > 0;
+}
+
+/**
  * Delete a tax rate from the database.
  *
  * @param  int $tax_rate_id Tax rate ID.
@@ -203,6 +228,8 @@ function abrs_delete_tax_rate( $tax_rate_id ) {
 function _abrs_prepare_tax_rate( $tax_rate ) {
 	$tax_rate['name'] = $tax_rate['name'] ?: esc_html__( 'Tax', 'awebooking' );
 	$tax_rate['rate'] = abrs_decimal( $tax_rate['rate'], 4 )->as_string();
+	$tax_rate['priority'] = isset( $tax_rate['priority'] ) ? absint( $tax_rate['priority'] ) : 0;
+	$tax_rate['compound'] = isset( $tax_rate['compound'] ) && $tax_rate['compound'] ? 1 : 0;
 
 	return $tax_rate;
 }

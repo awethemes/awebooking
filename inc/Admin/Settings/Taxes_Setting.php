@@ -91,5 +91,32 @@ class Taxes_Setting extends Abstract_Setting {
 	 */
 	public function save( Request $request ) {
 		parent::save( $request );
+
+		$all_tax_rates = abrs_get_tax_rates();
+
+		$data = abrs_collect( $request->get( 'tax_rates', [] ) );
+
+		$delete_ids = $all_tax_rates->pluck( 'id' )->diff(
+			$data->pluck( 'id' )->filter()
+		);
+
+		// Delete...
+		if ( ! $delete_ids->isEmpty() ) {
+			foreach ( $delete_ids as $tax_rate_id ) {
+				abrs_delete_tax_rate( $tax_rate_id );
+			}
+		}
+
+		$touch_data = $data->whereNotIn( 'id', $delete_ids );
+		// Perform insert or update.
+		if ( ! $touch_data->isEmpty() ) {
+			foreach ( $touch_data as $tax_rate ) {
+				if ( ! $tax_rate['id'] ) {
+					abrs_insert_tax_rate( $tax_rate );
+				} else {
+					abrs_update_tax_rate( $tax_rate['id'], $tax_rate );
+				}
+			}
+		}
 	}
 }
