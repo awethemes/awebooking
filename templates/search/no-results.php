@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="search-rooms__empty search-rooms__box">
 
 	<div class="search-rooms__box-icon">
-		<img src="<?php echo esc_url( abrs_plugin_url( '/assets/img/no-rooms.svg' ) ); ?>" alt="<?php echo esc_html__( 'No rooms available', 'awebooking' ); ?>">
+		<img src="<?php echo esc_url( abrs_plugin_url( '/assets/img/no-rooms.svg' ) ); ?>" alt="<?php esc_attr_e( 'No rooms available', 'awebooking' ); ?>">
 	</div>
 
 	<div class="search-rooms__box-title">

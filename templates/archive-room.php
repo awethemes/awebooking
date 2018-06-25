@@ -46,6 +46,15 @@ get_header( 'awebooking' ); ?>
 	do_action( 'abrs_after_main_content' );
 	?>
 
+	<?php
+		/**
+		 * awebooking/sidebar hook.
+		 *
+		 * @hooked abrs_get_sidebar - 10
+		 */
+		do_action( 'abrs_sidebar' );
+	?>
+
 <?php get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
 
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */

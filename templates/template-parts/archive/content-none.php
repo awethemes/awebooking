@@ -16,16 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class="search-rooms__empty search-rooms__box">
-	<div class="search-rooms__box-icon">
-		<img src="<?php echo esc_url( abrs_plugin_url( '/assets/img/no-rooms.svg' ) ); ?>" alt="<?php echo esc_html__( 'No rooms available', 'awebooking' ); ?>">
+<div class="list-room__none list-room__empty list-room__box">
+	<div class="list-room__box-icon">
+		<img src="<?php echo esc_url( abrs_plugin_url( '/assets/img/no-rooms.svg' ) ); ?>" alt="<?php esc_attr_e( 'No rooms available', 'awebooking' ); ?>">
 	</div>
 
-	<div class="search-rooms__box-title">
+	<div class="list-room__box-title">
 		<?php esc_html_e( 'No rooms available', 'awebooking' ); ?>
 	</div>
 
-	<p class="search-rooms__box-text">
-		<?php esc_html_e( 'Sorry, there\'s no available room that fits your current request.', 'awebooking' ); ?>
-	</p>
 </div><!-- /.search-rooms-timeout -->
