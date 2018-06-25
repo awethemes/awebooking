@@ -13,5 +13,6 @@
 		<custom-field action="copy">number_adults</custom-field>
 		<custom-field action="copy">number_children</custom-field>
 		<custom-field action="copy">number_infants</custom-field>
+		<custom-field action="copy">_cache_total_rooms</custom-field>
 	</custom-fields>
 </wpml-config>

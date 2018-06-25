@@ -66,8 +66,6 @@ class Reservation_Controller {
 			return $this->redirector->to( $availability_url );
 		}
 
-		// dd($this->reservation);
-
 		// Continue the reservation.
 		if ( $this->is_continue_reservation( $request ) ) {
 			return $this->redirector->to( add_query_arg( 'res', $res_request->get_hash(), $availability_url ) );

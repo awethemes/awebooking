@@ -4,6 +4,7 @@ namespace AweBooking\Frontend\Search;
 
 use AweBooking\Availability\Constraints\Reservation_Constraint;
 use AweBooking\Plugin;
+use AweBooking\Reservation\Reservation;
 use Awethemes\Http\Request;
 
 class Search_Query {
@@ -105,16 +106,16 @@ class Search_Query {
 			return;
 		}
 
+		/* @var \AweBooking\Reservation\Reservation $reservation */
 		$reservation = $this->plugin->make( 'reservation' );
-		$previous_request = $reservation->get_previous_request();
-
-		// Flush the reservation when session request & current request is different.
-		if ( $previous_request && ! $res_request->same_with( $previous_request ) ) {
-			$reservation->flush();
-		}
 
 		$this->res_request = $res_request;
 		$reservation->set_current_request( $res_request );
+
+		// Flush the session when something change.
+		if ( $reservation->need_flush() ) {
+			$reservation->flush();
+		}
 	}
 
 	/**

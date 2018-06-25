@@ -9,7 +9,7 @@ $rooms = $the_room_type->get_rooms();
 // like edit or delete room unit.
 $is_translation = null;
 if ( abrs_running_on_multilanguage() ) {
-	$is_translation = awebooking( 'multilingual' )->get_original_post( $post_id ) != $post_id;
+	$is_translation = abrs_multilingual()->get_original_post( $post_id ) != $post_id;
 }
 
 $max_scaffold_rooms = abrs_maximum_scaffold_rooms();

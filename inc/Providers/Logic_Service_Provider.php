@@ -15,6 +15,7 @@ class Logic_Service_Provider extends Service_Provider {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
 
+		// TODO: ...
 		add_action( 'abrs_room_saved', [ $this, 'update_total_rooms' ] );
 		add_action( 'abrs_room_type_saved', [ $this, 'update_total_rooms' ] );
 	}

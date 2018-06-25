@@ -68,6 +68,9 @@ class Setup_Environment {
 		add_rewrite_rule( '^' . $endpoint_name . '/(.*)?', 'index.php?awebooking_route=/$matches[1]', 'top' );
 		add_rewrite_rule( '^' . $wp_rewrite->index . '/' . $endpoint_name . '/?$', 'index.php?awebooking_route=/', 'top' );
 		add_rewrite_rule( '^' . $wp_rewrite->index . '/' . $endpoint_name . '/(.*)?', 'index.php?awebooking_route=/$matches[1]', 'top' );
+
+
+
 	}
 
 	/**
@@ -182,7 +185,6 @@ class Setup_Environment {
 			'has_archive'         => true,
 			'rewrite'             => [
 				'slug'       => $room_type_slug,
-				'feeds'      => true,
 				'with_front' => false,
 			],
 		]));
@@ -278,10 +280,10 @@ class Setup_Environment {
 					'items_list_navigation' => esc_html__( 'Hotels navigation', 'awebooking' ),
 					'items_list'            => esc_html__( 'Hotels List', 'awebooking' ),
 				],
-				'public'              => false,
+				'public'              => true,
 				'hierarchical'        => true,
 				'exclude_from_search' => true,
-				'publicly_queryable'  => false,
+				'publicly_queryable'  => true,
 				'show_ui'             => true,
 				'show_in_menu'        => 'edit.php?post_type=room_type',
 				'show_in_nav_menus'   => false,
@@ -289,7 +291,7 @@ class Setup_Environment {
 				'show_in_rest'        => true,
 				// 'capability_type'     => Constants::HOTEL_LOCATION,
 				'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
-				'rewrite'             => false,
+				// 'rewrite'             => true,
 				'has_archive'         => false,
 			]));
 		}

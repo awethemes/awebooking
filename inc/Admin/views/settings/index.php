@@ -26,7 +26,7 @@ $tabs = $settings->all()
 			<?php do_action( 'abrs_admin_settings_tabs' ); ?>
 
 			<?php if ( abrs_running_on_multilanguage() && 'awebooking_settings' !== awebooking()->get_option_key() ) : ?>
-				<span class="abrs-badge abrs-fright" style="margin-top: 8px;"><?php echo esc_html( awebooking( 'multilingual' )->get_current_language() ); ?></span>
+				<span class="abrs-badge abrs-fright" style="margin-top: 8px;"><?php echo esc_html( abrs_multilingual()->get_current_language() ); ?></span>
 			<?php endif ?>
 		</nav>
 

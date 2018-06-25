@@ -28,7 +28,7 @@ $form_classes = [
 	<?php endif ?>
 
 	<?php if ( abrs_running_on_multilanguage() ) : ?>
-		<input type="hidden" name="lang" value="<?php echo esc_attr( awebooking( 'multilingual' )->get_current_language() ); ?>">
+		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
 	<?php endif ?>
 
 	<div class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">

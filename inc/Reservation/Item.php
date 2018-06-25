@@ -162,11 +162,6 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 			return $this->{"get_{$key}"}();
 		}
 
-		// 500
-		// 10%
-		// 1. 450
-		// 2. 560
-
 		return $this->get_option( $key );
 	}
 

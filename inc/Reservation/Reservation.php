@@ -107,9 +107,10 @@ class Reservation {
 	 */
 	public function init() {
 		$this->source   = 'website';
+		$this->language = abrs_running_on_multilanguage() ? abrs_multilingual()->get_current_language() : '';
 		$this->currency = abrs_current_currency();
-		$this->language = abrs_running_on_multilanguage() ? awebooking( 'multilingual' )->get_current_language() : '';
 
+		add_action( 'wp_loaded', [ $this, 'restore_language' ], 10 );
 		add_action( 'wp_loaded', [ $this, 'restore_request' ], 10 );
 		add_action( 'wp_loaded', [ $this, 'restore' ], 20 );
 
@@ -336,7 +337,34 @@ class Reservation {
 		$this->store->flush( 'booked_rooms' );
 		$this->store->flush( 'previous_request' );
 
+		if ( abrs_running_on_multilanguage() ) {
+			$this->store->flush( 'reservation_language' );
+		}
+
 		do_action( 'abrs_reservation_emptied', $this );
+	}
+
+	/**
+	 * Is need flush session data.
+	 *
+	 * @return bool
+	 */
+	public function need_flush() {
+		/*if ( $this->hotel_id ) {
+			return true;
+		}*/
+
+		// When session request & current request is different.
+		$previous_request = $this->get_previous_request();
+		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
+			return true;
+		}
+
+		if ( abrs_running_on_multilanguage() && abrs_multilingual()->get_current_language() !== $this->language ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -350,12 +378,12 @@ class Reservation {
 			return;
 		}
 
-		$this->store->put( 'booked_rooms', $this->booked_rooms );
-		$this->store->put( 'room_stays', $this->room_stays->to_array() );
-
 		if ( $this->current_request ) {
 			$this->store->put( 'previous_request', $this->current_request );
 		}
+
+		$this->store->put( 'booked_rooms', $this->booked_rooms );
+		$this->store->put( 'room_stays', $this->room_stays->to_array() );
 
 		do_action( 'abrs_reservation_stored', $this );
 	}
@@ -426,6 +454,16 @@ class Reservation {
 		// Re-store the session.
 		if ( count( $session_room_stays ) !== count( $this->room_stays ) ) {
 			$this->store();
+		}
+	}
+
+	public function restore_language() {
+		if ( abrs_running_on_multilanguage() ) {
+			if ( $session_lang = $this->store->get( 'reservation_language' ) ) {
+				$this->language = $session_lang;
+			} else {
+				$this->store->put( 'reservation_language', $this->language );
+			}
 		}
 	}
 

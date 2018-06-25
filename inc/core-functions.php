@@ -16,6 +16,15 @@ require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 
 /**
+ * Returns the multilingual instance.
+ *
+ * @return \AweBooking\Multilingual
+ */
+function abrs_multilingual() {
+	return awebooking()->make( 'multilingual' );
+}
+
+/**
  * Gets the plugin URL.
  *
  * @param  string $path Optional, extra path to added.

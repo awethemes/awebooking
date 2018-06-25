@@ -37,7 +37,7 @@ class Room_Type_Metabox {
 
 		$is_translation = null;
 		if ( abrs_running_on_multilanguage() ) {
-			$is_translation = awebooking( 'multilingual' )->get_original_post( $post->ID ) != $post->ID;
+			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
 		}
 
 		// Prepare the Form.
@@ -77,7 +77,7 @@ class Room_Type_Metabox {
 
 		$is_translation = null;
 		if ( abrs_running_on_multilanguage() ) {
-			$is_translation = awebooking( 'multilingual' )->get_original_post( $post->ID ) != $post->ID;
+			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
 		}
 
 		// Get the sanitized values.
