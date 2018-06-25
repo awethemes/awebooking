@@ -5,7 +5,7 @@ use Awethemes\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
 
-class Form_Builder extends \CMB2 implements \ArrayAccess {
+class Form_Builder extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	use With_Sections;
 
 	/**
@@ -207,6 +207,15 @@ class Form_Builder extends \CMB2 implements \ArrayAccess {
 		}
 
 		return $field_group;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getIterator() {
+		foreach ( $this->prop( 'fields' ) as $field_args ) {
+			yield $this->get_field( $field_args['id'] );
+		}
 	}
 
 	/**

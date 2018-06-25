@@ -145,6 +145,10 @@
       box-shadow: none;
       border-color: #03a9f4;
     }
+
+    &[readonly] {
+      background-color: #fff;
+    }
   }
 
   input:first-child {

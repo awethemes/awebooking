@@ -35,6 +35,11 @@ class Room_Type_Metabox {
 			$the_room_type = abrs_get_room_type( $post->ID );
 		}
 
+		$is_translation = null;
+		if ( abrs_running_on_multilanguage() ) {
+			$is_translation = awebooking( 'multilingual' )->get_original_post( $post->ID ) != $post->ID;
+		}
+
 		// Prepare the Form.
 		$form = $this->form_builder;
 
@@ -45,6 +50,13 @@ class Room_Type_Metabox {
 
 		$form->object_id( $post->ID );
 		$form->prepare_fields();
+
+		foreach ( $form as $control ) {
+			/* @var \AweBooking\Component\Form\Field_Proxy $control */
+			if ( $is_translation && false === $control->prop( 'translatable' ) ) {
+				$control->set_attribute( 'disabled', 'disabled' );
+			}
+		}
 
 		// Print the core nonce field.
 		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
@@ -63,33 +75,19 @@ class Room_Type_Metabox {
 		// Create the new room-type instance.
 		$room_type = new Room_Type( $post->ID );
 
+		$is_translation = null;
+		if ( abrs_running_on_multilanguage() ) {
+			$is_translation = awebooking( 'multilingual' )->get_original_post( $post->ID ) != $post->ID;
+		}
+
 		// Get the sanitized values.
 		$values = $this->form_builder->handle( $request );
-
-		// Correct the occupancy size.
-		foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
-			if ( ! isset( $values[ $key ] ) ) {
-				continue;
-			}
-
-			$max = (int) $values->get( '_maximum_occupancy', 0 );
-
-			// Value cannot be greater than maximum occupancy.
-			if ( (int) $values[ $key ] > $max ) {
-				$values[ $key ] = $max;
-			}
-		}
 
 		// Fill the room type data.
 		$room_type->fill([
 			'beds'                => $values->get( '_beds', [] ),
 			'view'                => $values->get( '_room_view', '' ),
 			'area_size'           => $values->get( '_area_size', '' ),
-			'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
-			'number_adults'       => $values->get( 'number_adults', 0 ),
-			'number_children'     => $values->get( 'number_children', 0 ),
-			'number_infants'      => $values->get( 'number_infants', 0 ),
-			'calculation_infants' => $values->get( '_infants_in_calculations', 'off' ),
 			'rack_rate'           => $values->get( 'base_price', 0 ),
 			'rate_inclusions'     => $values->get( '_rate_inclusions', [] ),
 			'rate_policies'       => $values->get( '_rate_policies', [] ),
@@ -98,6 +96,30 @@ class Room_Type_Metabox {
 			'gallery_ids'         => $values->get( 'gallery', [] ),
 		]);
 
+		if ( ! $is_translation ) {
+			// Correct the occupancy size.
+			foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
+				if ( ! isset( $values[ $key ] ) ) {
+					continue;
+				}
+
+				$max = (int) $values->get( '_maximum_occupancy', 0 );
+
+				// Value cannot be greater than maximum occupancy.
+				if ( (int) $values[ $key ] > $max ) {
+					$values[ $key ] = $max;
+				}
+			}
+
+			$room_type->fill([
+				'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
+				'number_adults'       => $values->get( 'number_adults', 0 ),
+				'number_children'     => $values->get( 'number_children', 0 ),
+				'number_infants'      => $values->get( 'number_infants', 0 ),
+				'calculation_infants' => $values->get( '_infants_in_calculations', 'off' ),
+			]);
+		}
+
 		// Fire action before save.
 		do_action( 'abrs_process_room_type_data', $room_type, $values, $request );
 
@@ -105,10 +127,12 @@ class Room_Type_Metabox {
 		$saved = $room_type->save();
 
 		// Handle update rooms data.
-		if ( 0 === count( $room_type->get_rooms() ) ) {
-			$this->perform_scaffold_rooms( $room_type, $request->input( '_scaffold_rooms', [] ) );
-		} elseif ( $request->filled( '_rooms' ) ) {
-			$this->perform_update_rooms( $room_type, $request->input( '_rooms', [] ) );
+		if ( false === $is_translation ) {
+			if ( 0 === count( $room_type->get_rooms() ) ) {
+				$this->perform_scaffold_rooms( $room_type, $request->input( '_scaffold_rooms', [] ) );
+			} elseif ( $request->filled( '_rooms' ) ) {
+				$this->perform_update_rooms( $room_type, $request->input( '_rooms', [] ) );
+			}
 		}
 
 		// Add successfully notice.
@@ -189,12 +213,12 @@ class Room_Type_Metabox {
 	protected function form_fields( $form ) {
 		// General tab.
 		$form->add_field([
-			'id'          => '_beds',
-			'type'        => 'include',
-			'name'        => esc_html__( 'Beds', 'awebooking' ),
-			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
-			'include'     => trailingslashit( __DIR__ ) . 'views/html-room-type-bed.php',
-			'repeatable'  => true,
+			'id'              => '_beds',
+			'type'            => 'include',
+			'name'            => esc_html__( 'Beds', 'awebooking' ),
+			'text'            => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'include'         => trailingslashit( __DIR__ ) . 'views/html-room-type-bed.php',
+			'repeatable'      => true,
 			'sanitization_cb' => [ $this, 'sanitize_beds' ],
 		]);
 
@@ -223,6 +247,7 @@ class Room_Type_Metabox {
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'attributes'      => [ 'list' => '_maximum_occupancy_datalist' ],
 			'sanitization_cb' => 'absint',
+			'translatable'    => false,
 		]);
 
 		$form->add_field([
@@ -233,6 +258,7 @@ class Room_Type_Metabox {
 			'attributes'      => [ 'list' => 'number_adults_datalist' ],
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'sanitization_cb' => 'absint',
+			'translatable'    => false,
 		]);
 
 		$form->add_field([
@@ -243,6 +269,7 @@ class Room_Type_Metabox {
 			'attributes'      => [ 'list' => 'number_children_datalist' ],
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'sanitization_cb' => 'absint',
+			'translatable'    => false,
 		]);
 
 		$form->add_field([
@@ -253,6 +280,7 @@ class Room_Type_Metabox {
 			'attributes'      => [ 'list' => 'number_infants_datalist' ],
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'sanitization_cb' => 'absint',
+			'translatable'    => false,
 		]);
 
 		$form->add_field( [
@@ -261,6 +289,7 @@ class Room_Type_Metabox {
 			'desc'            => esc_html__( 'Include infants in max calculations?', 'awebooking' ),
 			'default'         => false,
 			'show_names'      => false,
+			'translatable'    => false,
 		]);
 
 		// Pricing.

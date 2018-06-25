@@ -55,4 +55,22 @@
     padding-top: 0;
     padding-bottom: 7px;
   }
+
+  .list-bulk-rooms {
+    overflow: auto;
+    max-height: 350px;
+    margin: 5px 0;
+    border-right: solid 1px #eee;
+
+    > li > strong {
+      cursor: pointer;
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    > li > ul {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  }
 }

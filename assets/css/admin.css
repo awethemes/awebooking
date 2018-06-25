@@ -1101,6 +1101,24 @@ table.availability-table .text-remain-rooms .dashicons {
   padding-bottom: 7px;
 }
 
+.awebooking-dialog .list-bulk-rooms {
+  overflow: auto;
+  max-height: 350px;
+  margin: 5px 0;
+  border-right: solid 1px #eee;
+}
+
+.awebooking-dialog .list-bulk-rooms > li > strong {
+  cursor: pointer;
+  display: block;
+  margin-bottom: 7px;
+}
+
+.awebooking-dialog .list-bulk-rooms > li > ul {
+  display: block;
+  margin-bottom: 1rem;
+}
+
 /* Input addon */
 
 .abrs-input-addon {
@@ -1259,6 +1277,10 @@ table.availability-table .text-remain-rooms .dashicons {
   position: relative;
   box-shadow: none;
   border-color: #03a9f4;
+}
+
+.abrs-input-dates input[readonly] {
+  background-color: #fff;
 }
 
 .abrs-input-dates input:first-child {

@@ -27,7 +27,6 @@
 	<div class="abrow">
 		<div class="abcol-8 abcol-sm-12">
 			<label class="block-label"><?php esc_html_e( 'Services', 'awebooking' ); ?></label>
-			<?php post_categories_meta_box( get_post(), [ 'args' => [ 'taxonomy' => 'hotel_extra_service' ] ] ); ?>
 		</div>
 	</div>
 

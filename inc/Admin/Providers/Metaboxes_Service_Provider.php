@@ -59,9 +59,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		remove_meta_box( 'slugdiv', Constants::BOOKING, 'normal' );
 		remove_meta_box( 'commentsdiv', Constants::BOOKING, 'normal' );
 		remove_meta_box( 'commentstatusdiv', Constants::BOOKING, 'normal' );
-
 		remove_meta_box( 'hotel_amenitydiv', Constants::ROOM_TYPE, 'side' );
-		remove_meta_box( 'hotel_extra_servicediv', Constants::ROOM_TYPE, 'side' );
 	}
 
 	/**

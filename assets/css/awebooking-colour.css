@@ -4,12 +4,16 @@
   box-shadow: 1px 3px 25px rgba(0, 0, 0, 0.08);
 }
 
-#awebooking-container {
+.awebooking-container {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.awebooking-main {
+  padding: 1.75rem 0;
 }
 
 .awebooking a,
@@ -1864,25 +1868,25 @@ ul.booking_details li:last-of-type {
 }
 
 @media (min-width: 576px) {
-  #awebooking-container {
+  .awebooking-container {
     max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
-  #awebooking-container {
+  .awebooking-container {
     max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
-  #awebooking-container {
+  .awebooking-container {
     max-width: 960px;
   }
 }
 
 @media (min-width: 1200px) {
-  #awebooking-container {
+  .awebooking-container {
     max-width: 1140px;
   }
 }

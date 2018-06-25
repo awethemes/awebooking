@@ -27,11 +27,9 @@ $room_only_breakdown = $room_rate->get_breakdown();
 <div id="<?php echo esc_attr( $dialog_id ); ?>" class="awebooking-dialog" data-init="awebooking-dialog" aria-hidden="true" tabindex="-1">
 	<div class="awebooking-dialog__overlay" tabindex="-1" data-a11y-dialog-hide></div>
 
-	<dialog class="awebooking-dialog__dialog" aria-labelledby="dialog-title">
+	<div class="awebooking-dialog__dialog" role="dialog" aria-labelledby="dialog-title">
 		<div class="awebooking-dialog__content">
-			<button class="awebooking-dialog__close button button--secondary" type="button" data-a11y-dialog-hide aria-label="Close this dialog window">
-				&times;
-			</button>
+			<button class="awebooking-dialog__close button button--secondary" type="button" data-a11y-dialog-hide aria-label="Close this dialog window">&times;</button>
 
 			<div>
 
@@ -49,5 +47,5 @@ $room_only_breakdown = $room_rate->get_breakdown();
 			</div>
 
 		</div><!-- /.awebooking-dialog__content -->
-	</dialog>
+	</div>
 </div>
