@@ -176,10 +176,14 @@
 var $ = jQuery;
 var plugin = window.awebooking;
 
-var ajaxSearch = function ajaxSearch(query, callback) {
+var ajaxSearch = function ajaxSearch() {
+  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'customers';
+  var query = arguments[1];
+  var callback = arguments[2];
+
   $.ajax({
     type: 'GET',
-    url: plugin.route('/search/customers'),
+    url: plugin.route('/search/' + type),
     data: { term: encodeURIComponent(query) },
     error: function error() {
       callback();
@@ -201,15 +205,47 @@ var initSelectize = function initSelectize(select) {
       if (!query.length) {
         return callback();
       } else {
-        ajaxSearch(query, callback);
+        ajaxSearch('customers', query, callback);
       }
     }
+  });
+};
+
+var initSelectizeServices = function initSelectizeServices(select) {
+  $(select).selectize({
+    valueField: 'id',
+    labelField: 'name',
+    searchField: 'name',
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch('services', query, callback);
+      }
+    }
+    // render: {
+    //   item: function(item, escape) {
+    //     return '<div>' +
+    //         (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+    //     '</div>';
+    //   },
+    //   option: function(item, escape) {
+    //     var label = item.label ? item.label : '';
+    //     return '<div>' + label + '</div>';
+    //   }
+    // },
   });
 };
 
 module.exports = function () {
   $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select').each(function () {
     initSelectize(this);
+  });
+
+  $('.selectize-search-services').each(function () {
+    initSelectizeServices(this);
   });
 };
 

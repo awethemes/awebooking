@@ -40,6 +40,7 @@ $route->delete( '/booking-service/{service_item:\d+}', 'Booking_Service_Controll
 $route->get(    '/about',                              'Misc_Controller@index' );
 $route->get(    '/preview-email',                      'Misc_Controller@preview_email' );
 $route->get(    '/search/customers',                   'Ajax_Controller@search_customers' );
+$route->get(    '/search/services',                    'Ajax_Controller@search_services' );
 $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_booking_note' );
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );
 // @codingStandardsIgnoreEnd

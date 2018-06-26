@@ -83,6 +83,8 @@ class Room_Type_Metabox {
 		// Get the sanitized values.
 		$values = $this->form_builder->handle( $request );
 
+		$rate_services = array_map( 'absint', $request->get( '_rate_services' ) ?: [] );
+
 		// Fill the room type data.
 		$room_type->fill([
 			'beds'                => $values->get( '_beds', [] ),
@@ -95,6 +97,7 @@ class Room_Type_Metabox {
 			'rate_max_los'        => $values->get( '_rate_maximum_los', 0 ),
 			'gallery_ids'         => $values->get( 'gallery', [] ),
 			'tax_rate_id'         => $values->get( '_tax_rate_id', 0 ),
+			'rate_services'   => $rate_services,
 		]);
 
 		if ( ! $is_translation ) {

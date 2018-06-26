@@ -89,6 +89,7 @@ class Service extends Model {
 			'value'         => '',
 			'operation'     => '',
 			'icon'          => [],
+			'thumbnail_id'  => 0,
 		]);
 	}
 
@@ -97,9 +98,10 @@ class Service extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'operation' => '_operation',
-			'value'     => '_value',
-			'icon'      => '_icon',
+			'operation'    => '_operation',
+			'value'        => '_value',
+			'icon'         => '_icon',
+			'thumbnail_id' => '_thumbnail_id',
 		]);
 	}
 

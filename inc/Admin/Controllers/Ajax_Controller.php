@@ -117,6 +117,45 @@ class Ajax_Controller extends Controller {
 	}
 
 	/**
+	 * Query for services.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return \Awethemes\Http\Response|mixed
+	 */
+	public function search_services( Request $request ) {
+		$term = abrs_clean( stripslashes( $request->get( 'term' ) ) );
+		if ( empty( $term ) ) {
+			return [];
+		}
+
+		$services = [];
+
+		// First, check if term is numeric so we just search by ID.
+		if ( is_numeric( $term ) ) {
+			$service = abrs_get_service( absint( $term ) );
+
+			if ( $service ) {
+				$services = abrs_collect( [ $service ] );
+			}
+		}
+
+		if ( empty( $services ) ) {
+			$services = abrs_list_services([
+				's'            => $term,
+				'post__not_in' => wp_parse_id_list( $request->get( 'exclude', [] ) ),
+			]);
+		}
+
+		return $services->map(function( $items ) {
+			$items['label'] = '<div>
+			<label class="label">' . $items['name'] . '</label>
+			<div class="description">' . abrs_format_service_price( $items->get( 'value' ), $items->get( 'operation' ) ) . '</div></div>';
+
+			return $items;
+		});
+	}
+
+	/**
 	 * Send a json_response to client.
 	 *
 	 * @param  string $status  The status code or string status (error or success).

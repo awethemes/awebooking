@@ -151,6 +151,7 @@ class Room_Type extends Model {
 
 			// Single_Rate.
 			'rack_rate'           => 0,
+			'rate_services'       => [],
 			'rate_inclusions'     => [],
 			'rate_policies'       => [],
 			'rate_min_los'        => 0,
@@ -177,6 +178,7 @@ class Room_Type extends Model {
 			'tax_rate_id'         => '_tax_rate_id',
 
 			'rack_rate'           => 'base_price',
+			'rate_services'       => '_rate_services',
 			'rate_inclusions'     => '_rate_inclusions',
 			'rate_policies'       => '_rate_policies',
 			'rate_min_los'        => 'minimum_night',
@@ -191,6 +193,7 @@ class Room_Type extends Model {
 		switch ( $key ) {
 			case 'beds':
 			case 'gallery_ids':
+			case 'rate_services':
 				$value = is_array( $value ) ? $value : [];
 				break;
 

@@ -131,8 +131,13 @@ table.awebooking-input-table {
   }
 
   th {
-    padding: 10px;
+    padding: 7px 10px;
     white-space: nowrap;
+    border-right: 1px solid #dfdfdf;
+  }
+
+  thead th {
+    font-weight: 700;
   }
 
   td {
