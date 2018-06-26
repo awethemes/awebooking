@@ -80,7 +80,7 @@ msgid "Invalid Room ID"
 msgstr ""
 
 #: inc/concierge.php:230, inc/concierge.php:272
-msgid "Invalid Rate ID"
+msgid "Invalid Single_Rate ID"
 msgstr ""
 
 #: inc/concierge.php:337
@@ -1082,7 +1082,7 @@ msgid "Checkout"
 msgstr ""
 
 #: templates/search/breakdown.php:5
-msgid "Rate Informations"
+msgid "Single_Rate Informations"
 msgstr ""
 
 #: templates/search/no-results.php:22, templates/search/no-results.php:26, templates/search/welcome.php:3, templates/template-parts/archive/content-none.php:21, templates/template-parts/archive/content-none.php:25
@@ -1612,7 +1612,7 @@ msgid "Rooms"
 msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:37, inc/Admin/Metaboxes/Room_Type_Metabox.php:270
-msgid "Rack Rate"
+msgid "Rack Single_Rate"
 msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/Metaboxes/views/html-room-type-general.php:10, inc/Admin/views/booking/add-room.php:64
@@ -2541,7 +2541,7 @@ msgid "Tax rates"
 msgstr ""
 
 #: inc/Admin/Settings/Taxes_Setting.php:98
-msgid "Rate (%)"
+msgid "Single_Rate (%)"
 msgstr ""
 
 #: inc/Admin/Settings/Taxes_Setting.php:103
@@ -2818,7 +2818,7 @@ msgstr ""
 msgid "The timespan requires at least %d nights"
 msgstr ""
 
-#: inc/Model/Pricing/Standard_Plan.php:48
+#: inc/Model/Pricing/Base_Rate.php:48
 msgid "Standard Plan"
 msgstr ""
 
@@ -2971,7 +2971,7 @@ msgid "Room Type"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-rooms.php:17, inc/Admin/views/booking/page-edit-room.php:46
-msgid "Rate Plan"
+msgid "Single_Rate Plan"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-rooms.php:69

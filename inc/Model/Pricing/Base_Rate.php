@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Model\Pricing;
 
-use AweBooking\Model\Room_Type;
+class Base_Rate implements Contracts\Rate {
+	use Traits\Has_Services;
 
-class Base_Rate implements Rate {
 	/**
 	 * The room-type instance.
 	 *
@@ -12,54 +12,54 @@ class Base_Rate implements Rate {
 	protected $instance;
 
 	/**
+	 * The line rates.
+	 *
+	 * @var \AweBooking\Support\Collection
+	 */
+	protected $rates;
+
+	/**
 	 * Create base-rate instance from a room-type.
 	 *
-	 * @param \AweBooking\Model\Room_Type $room_type The room type instance.
+	 * @param mixed $instance The room-type ID or instance.
 	 */
-	public function __construct( Room_Type $room_type ) {
-		$this->instance = $room_type;
+	public function __construct( $instance ) {
+		$this->instance = abrs_get_room_type( $instance );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_id() {
-		return $this->instance->get_id();
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_parent_id() {
-		return $this->instance->get_id();
+		return 0;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return $this->instance->get_title();
+		return $this->instance->get( 'title' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_rack_rate() {
-		return abrs_decimal( $this->instance['rack_rate'] );
+	public function get_private_name() {
+		return esc_html__( 'Base Single_Rate', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_effective_date() {
-		return '';
+	public function get_inclusions() {
+		return $this->instance->get( 'rate_inclusions' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_expires_date() {
-		return '';
+	public function get_policies() {
+		return $this->instance->get( 'rate_policies' );
 	}
 
 	/**
@@ -72,10 +72,33 @@ class Base_Rate implements Rate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_restrictions() {
-		return apply_filters( 'abrs_get_rate_restrictions', [
-			'min_los' => $this->instance->get( 'rate_min_los' ),
-			'max_los' => $this->instance->get( 'rate_max_los' ),
-		], $this );
+	public function get_single_rates() {
+		if ( is_null( $this->rates ) ) {
+			$this->rates = abrs_query_single_rates( $this )
+				->prepend( abrs_get_base_single_rate( $this->instance ) );
+		}
+
+		return $this->rates;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function is_taxable() {
+		return abrs_tax_enabled();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function price_includes_tax() {
+		return abrs_prices_includes_tax();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_tax_rate() {
+		return $this->instance->get( 'tax_rate_id' );
 	}
 }

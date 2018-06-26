@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
-use AweBooking\Model\Pricing\Base_Rate;
+use AweBooking\Model\Pricing\Base_Single_Rate;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
@@ -19,7 +19,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 
 		// Pluck the base rate in each room-type.
 		$rates = $this->room_types
-			->map_into( Base_Rate::class );
+			->map_into( Base_Single_Rate::class );
 
 		return $this->create_scheduler_for(
 			$resources = $this->create_rate_resources( $rates ),

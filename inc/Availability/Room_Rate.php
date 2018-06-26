@@ -4,8 +4,8 @@ namespace AweBooking\Availability;
 use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
-use AweBooking\Model\Pricing\Rate;
-use AweBooking\Model\Pricing\Rate_Plan;
+use AweBooking\Model\Pricing\Contracts\Rate;
+use AweBooking\Model\Pricing\Contracts\Single_Rate;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Room_Rate {
@@ -26,9 +26,9 @@ class Room_Rate {
 	protected $room_type;
 
 	/**
-	 * The rate plan instance.
+	 * The rate instance.
 	 *
-	 * @var \AweBooking\Model\Pricing\Rate_Plan
+	 * @var \AweBooking\Model\Pricing\Contracts\Rate
 	 */
 	protected $rate_plan;
 
@@ -56,7 +56,7 @@ class Room_Rate {
 	/**
 	 * The rate to retrieve the room price.
 	 *
-	 * @var \AweBooking\Model\Pricing\Rate
+	 * @var \AweBooking\Model\Pricing\Contracts\Single_Rate
 	 */
 	protected $room_rate;
 
@@ -97,11 +97,11 @@ class Room_Rate {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Availability\Request    $request   The res request.
-	 * @param \AweBooking\Model\Room_Type         $room_type The room type instance.
-	 * @param \AweBooking\Model\Pricing\Rate_Plan $rate_plan The rate plan instance.
+	 * @param \AweBooking\Availability\Request         $request   The res request.
+	 * @param \AweBooking\Model\Room_Type              $room_type The room type instance.
+	 * @param \AweBooking\Model\Pricing\Contracts\Rate $rate_plan The rate instance.
 	 */
-	public function __construct( Request $request, Room_Type $room_type, Rate_Plan $rate_plan ) {
+	public function __construct( Request $request, Room_Type $room_type, Rate $rate_plan ) {
 		$this->request   = $request;
 		$this->room_type = $room_type;
 		$this->rate_plan = $rate_plan;
@@ -132,7 +132,7 @@ class Room_Rate {
 		}
 
 		// Check the rates availability.
-		$rate_response = abrs_filter_rates( $this->rate_plan->get_rates(), $this->get_timespan(), $this->get_guest_counts() );
+		$rate_response = abrs_filter_single_rates( $this->rate_plan->get_single_rates(), $this->get_timespan(), $this->get_guest_counts() );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
@@ -140,7 +140,7 @@ class Room_Rate {
 
 			do_action( 'abrs_setup_room_rate', $this );
 
-			$this->calculate_totals();
+			$this->calculate_costs();
 		}
 	}
 
@@ -182,9 +182,9 @@ class Room_Rate {
 	}
 
 	/**
-	 * Gets the rate plan instance.
+	 * Gets the rate instance.
 	 *
-	 * @return \AweBooking\Model\Pricing\Rate_Plan
+	 * @return \AweBooking\Model\Pricing\Contracts\Rate
 	 */
 	public function get_rate_plan() {
 		return $this->rate_plan;
@@ -268,17 +268,17 @@ class Room_Rate {
 	/**
 	 * Sets the room rate (the room price).
 	 *
-	 * @param \AweBooking\Model\Pricing\Rate $rate The rate instance.
+	 * @param \AweBooking\Model\Pricing\Contracts\Single_Rate $rate The rate instance.
 	 */
-	public function using( Rate $rate ) {
+	public function using( Single_Rate $rate ) {
 		if ( ! $this->rates_availability->remain( $rate->get_id() ) ) {
-			throw new \InvalidArgumentException( esc_html__( 'Invalid rate.', 'awebooking' ) );
+			throw new \InvalidArgumentException( esc_html__( 'Invalid single rate.', 'awebooking' ) );
 		}
 
 		$this->room_rate = $rate;
 		$this->breakdown = $this->retrieve_rate_breakdown( $rate );
 
-		$this->calculate_totals();
+		$this->calculate_costs();
 
 		return $this;
 	}
@@ -286,10 +286,10 @@ class Room_Rate {
 	/**
 	 * Add a additional rate.
 	 *
-	 * @param  \AweBooking\Model\Pricing\Rate $rate   The rate instance.
-	 * @param  string                         $reason The reason message.
+	 * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate $rate   The rate instance.
+	 * @param  string                                          $reason The reason message.
 	 */
-	public function additional( Rate $rate, $reason = '' ) {
+	public function additional( Single_Rate $rate, $reason = '' ) {
 		$key = $rate->get_id();
 
 		if ( is_null( $this->room_rate ) ) {
@@ -302,7 +302,7 @@ class Room_Rate {
 
 		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
 		$this->additional_breakdowns[ $key ] = $this->retrieve_rate_breakdown( $rate );
-		$this->calculate_totals();
+		$this->calculate_costs();
 
 		return $this;
 	}
@@ -310,16 +310,17 @@ class Room_Rate {
 	/**
 	 * Retrieve the price breakdown of given rate.
 	 *
-	 * @param  \AweBooking\Model\Pricing\Rate $rate The rate instance.
+	 * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate $rate The rate instance.
+	 *
 	 * @return \AweBooking\Support\Collection
 	 *
 	 * @throws \Exception
 	 */
-	public function retrieve_rate_breakdown( Rate $rate ) {
-		$breakdown = abrs_retrieve_rate( $rate, $this->request->get_timespan() );
+	public function retrieve_rate_breakdown( Single_Rate $rate ) {
+		$breakdown = abrs_retrieve_single_rate( $rate, $this->request->get_timespan() );
 
 		if ( is_wp_error( $breakdown ) ) {
-			throw new \Exception( 'Invalid rate' );
+			throw new \RuntimeException( $breakdown->get_error_message() );
 		}
 
 		return $breakdown;
@@ -330,7 +331,7 @@ class Room_Rate {
 	 *
 	 * @return void
 	 */
-	public function calculate_totals() {
+	public function calculate_costs() {
 		if ( $this->has_error() || empty( $this->room_rate ) ) {
 			return;
 		}
@@ -358,7 +359,7 @@ class Room_Rate {
 	/**
 	 * Gets the room rate.
 	 *
-	 * @return \AweBooking\Model\Pricing\Rate|null
+	 * @return \AweBooking\Model\Pricing\Contracts\Single_Rate|null
 	 */
 	public function get_room_rate() {
 		return $this->room_rate;
@@ -401,34 +402,6 @@ class Room_Rate {
 		return array_key_exists( $type, $this->prices )
 			? abrs_decimal( $this->prices[ $type ] )
 			: abrs_decimal( 0 );
-	}
-
-	/**
-	 * Gets all taxes of the room rate.
-	 *
-	 * @return array|null
-	 */
-	public function get_tax_rate() {
-		if ( ! abrs_tax_enabled() ) {
-			return null;
-		}
-
-		// Get the tax_rate ID.
-		if ( 'single' === abrs_get_option( 'tax_rate_model' ) ) {
-			$tax_rate_id = abrs_get_option( 'single_tax_rate' );
-		} else {
-			$tax_rate_id = $this->room_type->get( 'tax_rate' );
-		}
-
-		/**
-		 * Allow modify the tax rate of room rate.
-		 *
-		 * @param int                                $tax_rate_id The tax rate ID.
-		 * @param \AweBooking\Availability\Room_Rate $room_rate   The room rate instance,
-		 */
-		$tax_rate = apply_filters( 'abrs_room_rate_tax', $tax_rate_id, $this );
-
-		return $tax_rate ? abrs_get_tax_rate( $tax_rate ) : null;
 	}
 
 	/**

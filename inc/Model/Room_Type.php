@@ -2,8 +2,6 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Model\Pricing\Rate_Plan;
-use AweBooking\Model\Pricing\Standard_Plan;
 
 class Room_Type extends Model {
 	/**
@@ -14,11 +12,11 @@ class Room_Type extends Model {
 	protected $object_type = Constants::ROOM_TYPE;
 
 	/**
-	 * List the rate plans.
+	 * List the rates.
 	 *
 	 * @var \AweBooking\Support\Collection
 	 */
-	protected $rate_plans;
+	protected $rates;
 
 	/**
 	 * Gets rooms belongs to this room type.
@@ -35,43 +33,28 @@ class Room_Type extends Model {
 	}
 
 	/**
-	 * Gets rate plans available for this room type.
+	 * Gets rates available for this room type.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	public function get_rate_plans() {
-		if ( is_null( $this->rate_plans ) ) {
-			// Multi rate-plans only available in pro version, please upgrade :).
-			$rate_plans = $this->exists()
-				? apply_filters( $this->prefix( 'setup_rate_plans' ), [], $this )
-				: [];
-
-			$this->rate_plans = abrs_collect( $rate_plans )
-				->prepend( $this->get_standard_plan() )
-				->filter( function ( $plan ) {
-					return $plan instanceof Rate_Plan;
-				})->sortBy( function( Rate_Plan $plan ) {
-					return $plan->get_priority();
-				})->values();
+	public function get_rates() {
+		if ( ! $this->exists() ) {
+			return abrs_collect( [] );
 		}
 
-		return $this->rate_plans;
-	}
+		if ( is_null( $this->rates ) ) {
+			$this->rates = abrs_query_rates( $this )
+				->prepend( abrs_get_base_rate( $this ) );
+		}
 
-	/**
-	 * Returns the standard rate plan of this room type.
-	 *
-	 * @return \AweBooking\Model\Pricing\Standard_Plan
-	 */
-	public function get_standard_plan() {
-		return apply_filters( $this->prefix( 'get_standard_plan' ), new Standard_Plan( $this ), $this );
+		return $this->rates;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function clean_cache() {
-		$this->rate_plans = null;
+		$this->rates = null;
 
 		clean_post_cache( $this->get_id() );
 
@@ -164,8 +147,9 @@ class Room_Type extends Model {
 			'number_children'     => 0,
 			'number_infants'      => 0,
 			'calculation_infants' => 'on', // on | off.
+			'tax_rate_id'         => 0,
 
-			// Rate.
+			// Single_Rate.
 			'rack_rate'           => 0,
 			'rate_inclusions'     => [],
 			'rate_policies'       => [],
@@ -190,6 +174,7 @@ class Room_Type extends Model {
 			'number_children'     => 'number_children',
 			'number_infants'      => 'number_infants',
 			'calculation_infants' => '_infants_in_calculations',
+			'tax_rate_id'         => '_tax_rate_id',
 
 			'rack_rate'           => 'base_price',
 			'rate_inclusions'     => '_rate_inclusions',
@@ -204,8 +189,8 @@ class Room_Type extends Model {
 	 */
 	protected function sanitize_attribute( $key, $value ) {
 		switch ( $key ) {
-			case 'gallery_ids':
 			case 'beds':
+			case 'gallery_ids':
 				$value = is_array( $value ) ? $value : [];
 				break;
 
@@ -237,6 +222,7 @@ class Room_Type extends Model {
 			case 'rate_min_los':
 			case 'rate_max_los':
 			case 'hotel_id':
+			case 'tax_rate_id':
 				$value = absint( $value );
 				break;
 		}

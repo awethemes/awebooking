@@ -206,7 +206,7 @@ class Booking_List_Table extends Abstract_List_Table {
 		printf(
 			'<abbr datetime="%1$s" title="%2$s">%3$s</abbr>',
 			esc_attr( $date_created->toDateTimeString() ),
-			esc_html( abrs_format_datetime( $date_created ) ),
+			esc_html( abrs_format_date_time( $date_created ) ),
 			esc_html( $show_date )
 		);
 	}

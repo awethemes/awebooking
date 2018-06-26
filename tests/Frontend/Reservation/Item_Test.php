@@ -15,7 +15,7 @@ class Frontend_Reservation_Item_Test extends WP_UnitTestCase {
 		]);
 
 		$this->assertEquals( 10, $item->get_id());
-		$this->assertEquals( 100, $item->get_single_price_exc_tax()->as_numeric());
+		$this->assertEquals( 100, $item->get_price());
 		$this->assertEquals( 'Room Type 1', $item->get_name());
 	}
 }

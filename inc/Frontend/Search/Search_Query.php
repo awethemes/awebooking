@@ -2,10 +2,9 @@
 
 namespace AweBooking\Frontend\Search;
 
-use AweBooking\Availability\Constraints\Reservation_Constraint;
 use AweBooking\Plugin;
-use AweBooking\Reservation\Reservation;
 use Awethemes\Http\Request;
+use AweBooking\Availability\Constraints\Reservation_Constraint;
 
 class Search_Query {
 	/**
@@ -98,7 +97,7 @@ class Search_Query {
 			return;
 		}
 
-		// Create the res request.
+		// Create the res_request.
 		$res_request = abrs_create_res_request( $request, true );
 
 		if ( is_wp_error( $res_request ) ) {
@@ -106,16 +105,10 @@ class Search_Query {
 			return;
 		}
 
-		/* @var \AweBooking\Reservation\Reservation $reservation */
-		$reservation = $this->plugin->make( 'reservation' );
-
+		// Setup the res_request.
 		$this->res_request = $res_request;
-		$reservation->set_current_request( $res_request );
 
-		// Flush the session when something change.
-		if ( $reservation->need_flush() ) {
-			$reservation->flush();
-		}
+		do_action( 'setup_res_request', $res_request );
 	}
 
 	/**
@@ -183,4 +176,3 @@ class Search_Query {
 			: $this->plugin->make( 'request' );
 	}
 }
-

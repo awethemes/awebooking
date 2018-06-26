@@ -42,8 +42,8 @@ class Taxes_Setting extends Abstract_Setting {
 			'default'  => 'single',
 			'classes'  => 'with-selectize',
 			'options'  => [
-				'single'   => esc_html__( 'A specified tax rate applies for all room', 'awebooking' ),
-				'per_room' => esc_html__( 'Sets tax rate in each room', 'awebooking' ),
+				'single'   => esc_html__( 'A specified tax rate applies for all room rate.', 'awebooking' ),
+				'per_room' => esc_html__( 'Sets different tax rate for each room rate.', 'awebooking' ),
 			],
 		]);
 

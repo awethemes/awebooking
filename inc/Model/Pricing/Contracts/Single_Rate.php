@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\Model\Pricing;
+namespace AweBooking\Model\Pricing\Contracts;
 
-interface Rate {
+interface Single_Rate {
 	/**
 	 * Gets the parent ID.
 	 *
@@ -26,7 +26,7 @@ interface Rate {
 	/**
 	 * Gets the amount.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get_rack_rate();
 

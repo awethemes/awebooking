@@ -94,6 +94,7 @@ class Room_Type_Metabox {
 			'rate_min_los'        => $values->get( 'minimum_night', 0 ),
 			'rate_max_los'        => $values->get( '_rate_maximum_los', 0 ),
 			'gallery_ids'         => $values->get( 'gallery', [] ),
+			'tax_rate_id'         => $values->get( '_tax_rate_id', 0 ),
 		]);
 
 		if ( ! $is_translation ) {
@@ -296,22 +297,22 @@ class Room_Type_Metabox {
 		$form->add_field([
 			'id'              => 'base_price', // _rack_rate
 			'type'            => 'abrs_amount',
-			'name'            => esc_html__( 'Rack Rate', 'awebooking' ),
+			'name'            => esc_html__( 'Rack Single_Rate', 'awebooking' ),
 			'append'          => abrs_currency_symbol(),
 			'tooltip'         => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
 		]);
 
-		if ( abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() ) ) {
-			$form->add_field([
-				'id'         => 'single_tax_rate',
-				'type'       => 'select',
-				'name'       => esc_html__( 'Select tax rate', 'awebooking' ),
-				'classes'    => 'with-selectize',
-				'options_cb' => function () {
-					return abrs_get_tax_rates()->pluck( 'name', 'id' )->all();
-				},
-			]);
-		}
+		$form->add_field([
+			'id'               => '_tax_rate_id',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Tax', 'awebooking' ),
+			'classes'          => 'with-selectize',
+			'options_cb'       => 'abrs_get_tax_rates_for_dropdown',
+			'show_option_none' => esc_html__( 'No Tax', 'awebooking' ),
+			'show_on_cb'       => function () {
+				return abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() );
+			},
+		]);
 
 		$form->add_field([
 			'id'          => '_rate_inclusions',

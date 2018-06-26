@@ -13,7 +13,7 @@ if ( ! empty( $old_input ) ) {
 }
 
 $room_type = abrs_get_room_type( $room_item->get( 'room_type_id' ) );
-$rate_plan = abrs_get_rate_plan( $room_item->get( 'rate_plan_id' ) );
+$rate_plan = abrs_get_rate( $room_item->get( 'rate_plan_id' ) );
 
 ?><div class="wrap">
 	<h1 class="wp-heading-inline screen-reader-text"><?php esc_html_e( 'Update Room Stay', 'awebooking' ); ?></h1>
@@ -43,7 +43,7 @@ $rate_plan = abrs_get_rate_plan( $room_item->get( 'rate_plan_id' ) );
 					</div>
 
 					<div class="cmb-row">
-						<div class="cmb-th"><label><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></label></div>
+						<div class="cmb-th"><label><?php echo esc_html__( 'Single_Rate Plan', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
 							<?php if ( $rate_plan ) : ?>

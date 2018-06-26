@@ -10,13 +10,11 @@
 	<div class="abrs-postbox-title"><h3><?php esc_html_e( 'Extra Informations', 'awebooking' ); ?></h3></div>
 
 	<div class="abrow">
-		<div class="abcol-12">
+		<div class="abcol-4">
 			<?php $form->show_field( '_area_size' ); ?>
 		</div>
-	</div>
 
-	<div class="abrow">
-		<div class="abcol-12">
+		<div class="abcol-4">
 			<?php $form->show_field( '_room_view' ); ?>
 		</div>
 	</div>

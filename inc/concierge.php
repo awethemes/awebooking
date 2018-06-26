@@ -3,7 +3,7 @@
 use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Pricing\Rate;
+use AweBooking\Model\Pricing\Contracts\Single_Rate;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Calendar\Calendar;
@@ -211,14 +211,14 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 }
 
 /**
- * Retrieve price of a rate in a timespan.
+ * Retrieve breakdown of single rate in a timespan.
  *
- * @param  int|Rate $rate The rate ID to retrieve.
- * @param  Timespan $timespan The timespan.
+ * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate|int $rate     The rate ID to retrieve.
+ * @param  Timespan                                            $timespan The timespan.
  *
  * @return \AweBooking\Support\Collection|WP_Error
  */
-function abrs_retrieve_rate( $rate, Timespan $timespan ) {
+function abrs_retrieve_single_rate( $rate, Timespan $timespan ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -226,8 +226,8 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 	}
 
 	// Leave if given invalid rate ID.
-	if ( ! $rate instanceof Rate && ! $rate = abrs_get_rate( $rate ) ) {
-		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid Rate ID', 'awebooking' ) );
+	if ( ! $rate instanceof Single_Rate || ! $rate = abrs_get_single_rate( $rate ) ) {
+		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid single rate ID', 'awebooking' ) );
 	}
 
 	// Get all events as itemized.
@@ -255,7 +255,7 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
  * }
  * @return bool|WP_Error
  */
-function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'replace', $options = [] ) {
+function abrs_apply_single_rate( $rate, Timespan $timespan, $amount, $operation = 'replace', $options = [] ) {
 	$options = wp_parse_args( $options, [
 		'only_days'   => null,
 		'granularity' => Constants::GL_NIGHTLY,
@@ -268,8 +268,8 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	}
 
 	// Leave if given invalid rate ID.
-	if ( ! $rate instanceof Rate && ! $rate = abrs_get_rate( $rate ) ) {
-		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid Rate ID', 'awebooking' ) );
+	if ( ! $rate instanceof Single_Rate && ! $rate = abrs_get_single_rate( $rate ) ) {
+		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid Single_Rate ID', 'awebooking' ) );
 	}
 
 	/**
@@ -347,26 +347,26 @@ function abrs_get_rate_operations() {
 /**
  * Filter given rates by request.
  *
- * @param  array|int    $rates       The rates.
- * @param  Timespan     $timespan    The timespan.
- * @param  Guest_Counts $guests      The guest counts.
- * @param  array        $constraints Array of constraints.
+ * @param  Collection|array|int $rates       The rates.
+ * @param  Timespan             $timespan    The timespan.
+ * @param  Guest_Counts         $guests      The guest counts.
+ * @param  array                $constraints Array of constraints.
  * @return \AweBooking\Calendar\Finder\Response
  */
-function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $constraints = [] ) {
+function abrs_filter_single_rates( $rates, Timespan $timespan, Guest_Counts $guests, $constraints = [] ) {
 	$resources = abrs_collect( $rates )
-		->transform( 'abrs_resource_rate' )
+		->transform( 'abrs_resource_single_rate' )
 		->filter( /* Remove empty items */ )
 		->each(function( Resource $r ) use ( $timespan, $guests ) {
-			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan, $guests ) );
+			$r->set_constraints( abrs_build_single_rate_constraints( $r->get_reference(), $timespan, $guests ) );
 		});
 
 	$response = ( new Finder( $resources->all() ) )
-		->callback( '_abrs_filter_rates_callback' )
+		->callback( '_abrs_filter_single_rates_callback' )
 		->using( apply_filters( 'abrs_filter_rates_constraints', $constraints, $timespan, $guests, $resources ) )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'abrs_filter_rates_response', $response, $timespan, $guests, $resources );
+	return apply_filters( 'abrs_filter_single_rates_response', $response, $timespan, $guests, $resources );
 }
 
 /**
@@ -376,7 +376,7 @@ function abrs_filter_rates( $rates, Timespan $timespan, Guest_Counts $guests, $c
  * @param  \AweBooking\Calendar\Finder\Response   $response The finder response.
  * @return void
  */
-function _abrs_filter_rates_callback( $resource, $response ) {
+function _abrs_filter_single_rates_callback( $resource, $response ) {
 	$effective_date = $resource->get_reference()->get_effective_date();
 	$expires_date   = $resource->get_reference()->get_expires_date();
 
@@ -390,25 +390,24 @@ function _abrs_filter_rates_callback( $resource, $response ) {
 }
 
 /**
- * Build the rate constraints based on reservation request.
+ * Build the single_rate constraints based on reservation request.
  *
- * @param  \AweBooking\Model\Pricing\Rate $rate     The rate instance.
- * @param  Timespan                       $timespan The timespan.
- * @param  Guest_Counts                   $guests   The guest counts.
+ * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate $single_rate     The single_rate instance.
+ * @param  Timespan                                        $timespan The timespan.
+ * @param  Guest_Counts                                    $guests   The guest counts.
  *
  * @return array
  */
-function abrs_build_rate_constraints( Rate $rate, Timespan $timespan, Guest_Counts $guests ) {
-	$constraints  = [];
+function abrs_build_single_rate_constraints( Single_Rate $single_rate, Timespan $timespan, Guest_Counts $guests ) {
+	// Get single_rate restrictions.
+	$restrictions = $single_rate->get_restrictions();
 
-	// Get rate restrictions.
-	$restrictions = $rate->get_restrictions();
-
+	$constraints = [];
 	if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
-		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
+		$constraints[] = new Night_Stay_Constraint( $single_rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
 
-	return apply_filters( 'abrs_rate_constraints', $constraints, $rate );
+	return apply_filters( 'abrs_single_rate_constraints', $constraints, $single_rate );
 }
 
 /**
@@ -508,12 +507,12 @@ function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
 }
 
 /**
- * Gets a room rate by given an array args.
+ * Retrieve a room rate by given an array args.
  *
  * @param  array $args The query args.
  * @return \AweBooking\Availability\Room_Rate|\WP_Error|null
  */
-function abrs_get_room_rate( $args ) {
+function abrs_retrieve_room_rate( $args ) {
 	$args = wp_parse_args( $args, [
 		'request'   => null,
 		'room_type' => 0,
@@ -525,17 +524,22 @@ function abrs_get_room_rate( $args ) {
 		'infants'   => 0,
 	]);
 
+	// Find the room type.
 	if ( ! $room_type = abrs_get_room_type( $args['room_type'] ) ) {
 		return new WP_Error( 'invalid_room_type', esc_html__( 'Invalid room type.', 'awebooking' ) );
 	}
 
-	if ( ! $rate_plan = abrs_get_rate_plan( $args['rate_plan'] ?: $args['room_type'] ) ) {
+	// Find the rate plan.
+	$rate_plan = 0 === $args['rate_plan']
+		? abrs_get_base_rate( $room_type )
+		: abrs_get_rate( $args['rate_plan'] );
+
+	if ( ! $rate_plan ) {
 		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Invalid rate plan.', 'awebooking' ) );
 	}
 
 	// Resolve the res request.
 	$res_request = $args['request'];
-
 	if ( ! $res_request instanceof Request ) {
 		$res_request = abrs_create_res_request( Arr::except( $args, 'request' ) );
 	}
@@ -546,6 +550,7 @@ function abrs_get_room_rate( $args ) {
 
 	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
 
+	// Setup the room rate costs.
 	if ( ! $room_rate->has_error() ) {
 		$room_rate->setup();
 	}
@@ -662,7 +667,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 /**
  * Gets the calendar resource.
  *
- * @param  mixed $resource The resource ID or model represent of resource (Room, Rate, etc.).
+ * @param  mixed $resource The resource ID or model represent of resource (Room, Single_Rate, etc.).
  * @param  mixed $value    The resource value.
  * @return \AweBooking\Calendar\Resource\Resource_Interface
  */
@@ -674,8 +679,8 @@ function abrs_filter_resource( $resource, $value = null ) {
 
 	if ( $resource instanceof Room ) {
 		return abrs_resource_room( $resource );
-	} elseif ( $resource instanceof Rate ) {
-		return abrs_resource_rate( $resource );
+	} elseif ( $resource instanceof Single_Rate ) {
+		return abrs_resource_single_rate( $resource );
 	}
 
 	return new Resource( (int) $resource, (int) $value );
@@ -708,13 +713,13 @@ function abrs_resource_room( $room ) {
 }
 
 /**
- * Returns a resource rate.
+ * Returns a resource single rate.
  *
  * @param  mixed $rate The rate ID.
  * @return \AweBooking\Calendar\Resource\Resource_Interface|null
  */
-function abrs_resource_rate( $rate ) {
-	$rate = ( ! $rate instanceof Rate ) ? abrs_get_rate( $rate ) : $rate;
+function abrs_resource_single_rate( $rate ) {
+	$rate = ( ! $rate instanceof Single_Rate ) ? abrs_get_single_rate( $rate ) : $rate;
 
 	// Leave if rate not found.
 	if ( empty( $rate ) ) {

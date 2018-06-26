@@ -57,9 +57,9 @@ class Reservation_Controller {
 
 		try {
 			$item = $this->reservation->add_room_stay( $res_request,
-				$request->get( 'room_type' ), $request->get( 'rate_plan' )
+				absint( $request->get( 'room_type' ) ), absint( $request->get( 'rate_plan', 0 ) )
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			abrs_add_notice( $e->getMessage(), 'error' );
 
 			// Redirect back to the search availability page.

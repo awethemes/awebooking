@@ -72,8 +72,8 @@ $payment_items = $the_booking->get_payments()
 						<?php
 						if ( $payment_item['date_paid'] ) {
 							printf( '<abbr title="%1$s" class="tippy">%2$s</abbr>',
-								esc_html( abrs_format_datetime( $payment_item->get( 'date_paid' ) ) ),
-								esc_html( abrs_format_datetime( $payment_item->get( 'date_paid' ), abrs_get_date_format() ) )
+								esc_html( abrs_format_date_time( $payment_item->get( 'date_paid' ) ) ),
+								esc_html( abrs_format_date_time( $payment_item->get( 'date_paid' ), abrs_get_date_format() ) )
 							);
 						}
 						?>

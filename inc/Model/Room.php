@@ -55,7 +55,7 @@ class Room extends Model {
 	 */
 	protected function setup_from_array( array $data ) {
 		// Prevent setup from invalid data.
-		if ( ! isset( $data['id'] ) || ! isset( $data['room_type'] ) ) {
+		if ( ! isset( $data['id'], $data['room_type'] ) ) {
 			return;
 		}
 

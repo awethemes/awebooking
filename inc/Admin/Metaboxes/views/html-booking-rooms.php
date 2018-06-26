@@ -15,7 +15,7 @@ $service_items = $the_booking->get_services();
 			<thead>
 				<tr>
 					<th style="width: 20%;"><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
-					<th style="width: 15%;"><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></th>
+					<th style="width: 15%;"><?php echo esc_html__( 'Single_Rate Plan', 'awebooking' ); ?></th>
 					<th style="width: 5%;"><span class="aficon aficon-moon tippy" title="<?php echo esc_html__( 'Nights', 'awebooking' ); ?>"></span><span class="screen-reader-text"><?php echo esc_html__( 'Nights', 'awebooking' ); ?></span></th>
 					<th style="width: 10%;"><?php echo esc_html__( 'Check In', 'awebooking' ); ?></th>
 					<th style="width: 10%;"><?php echo esc_html__( 'Check Out', 'awebooking' ); ?></th>

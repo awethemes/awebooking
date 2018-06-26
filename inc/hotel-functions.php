@@ -2,12 +2,13 @@
 
 use AweBooking\Constants;
 use AweBooking\Model\Room;
-use AweBooking\Model\Room_Type;
 use AweBooking\Model\Hotel;
 use AweBooking\Model\Service;
+use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Base_Rate;
-use AweBooking\Model\Pricing\Standard_Plan;
-use AweBooking\Model\Model;
+use AweBooking\Model\Pricing\Base_Single_Rate;
+use AweBooking\Model\Pricing\Contracts\Rate;
+use AweBooking\Model\Pricing\Contracts\Single_Rate;
 
 /**
  * Retrieves the room object.
@@ -38,48 +39,87 @@ function abrs_get_room_type( $room_type ) {
 }
 
 /**
+ * Gets the base rate by a room type.
+ *
+ * @param  \AweBooking\Model\Room_Type|int $room_type The room type ID.
+ * @return \AweBooking\Model\Pricing\Base_Rate|null
+ */
+function abrs_get_base_rate( $room_type ) {
+	return ( $room_type = abrs_get_room_type( $room_type ) )
+		? new Base_Rate( $room_type )
+		: null;
+}
+
+/**
+ * Gets the base rate by a room type.
+ *
+ * @param  \AweBooking\Model\Room_Type|int $room_type The room type ID.
+ * @return \AweBooking\Model\Pricing\Base_Single_Rate|null
+ */
+function abrs_get_base_single_rate( $room_type ) {
+	return ( $room_type = abrs_get_room_type( $room_type ) )
+		? new Base_Single_Rate( $room_type )
+		: null;
+}
+
+/**
  * Retrieves the rate object.
  *
- * In awebooking, we merge rate & rate plan along with room type.
- * So each room type alway have a "Base Rate" that same ID with room type.
+ * Just a placeholder function for pro version :).
  *
  * @param  mixed $rate The rate ID.
- * @return \AweBooking\Model\Pricing\Rate|null
+ * @return \AweBooking\Model\Pricing\Contracts\Rate|null
  */
 function abrs_get_rate( $rate ) {
-	if ( $rate instanceof Base_Rate ) {
-		return $rate;
-	}
-
-	// Let's check given rate if it is base rate or not.
-	$base_rate = abrs_get_room_type(
-		Model::parse_object_id( $rate )
-	);
-
-	return ( $base_rate instanceof Room_Type )
-		? new Base_Rate( $base_rate )
+	return $rate instanceof Base_Rate ? $rate
 		: apply_filters( 'abrs_get_rate_object', null, $rate );
 }
 
 /**
- * Retrieves the rate plan object.
+ * Retrieves the single_rate object.
  *
- * @param  mixed $rate_plan The rate plan ID.
- * @return \AweBooking\Model\Pricing\Rate_Plan|null
+ * Just a placeholder function for pro version.
+ *
+ * @param  mixed $single_rate The single_rate ID.
+ * @return \AweBooking\Model\Pricing\Contracts\Single_Rate|null
  */
-function abrs_get_rate_plan( $rate_plan ) {
-	if ( $rate_plan instanceof Standard_Plan ) {
-		return $rate_plan;
-	}
+function abrs_get_single_rate( $single_rate ) {
+	return ( $single_rate instanceof Base_Single_Rate ) ? $single_rate
+		: apply_filters( 'abrs_get_single_rate_object', null, $single_rate );
+}
 
-	// Let's check given rate_plan if it is standard rate or not.
-	$standard_plan = abrs_get_room_type(
-		Model::parse_object_id( $rate_plan )
-	);
+/**
+ * Query rates in a room type.
+ *
+ * Just a placeholder function for pro version.
+ *
+ * @param  \AweBooking\Model\Room_Type|int $room_type The room type ID.
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_query_rates( $room_type ) {
+	return abrs_collect( apply_filters( 'abrs_query_rates', [], $room_type ) )
+		->filter( function ( $rate ) {
+			return $rate instanceof Rate;
+		})->sortBy( function( Rate $rate ) {
+			return $rate->get_priority();
+		})->values();
+}
 
-	return ( $standard_plan instanceof Room_Type )
-		? new Standard_Plan( $standard_plan )
-		: apply_filters( 'abrs_get_rate_plan_object', null, $rate_plan );
+/**
+ * Query single rates inside rate.
+ *
+ * Just a placeholder function for pro version :).
+ *
+ * @param \AweBooking\Model\Pricing\Contracts\Rate|int $rate The rate belong to room type.
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_query_single_rates( $rate ) {
+	return abrs_collect( apply_filters( 'abrs_query_single_rates', [], $rate ) )
+		->filter( function ( $plan ) {
+			return $plan instanceof Single_Rate;
+		})->sortBy( function ( Single_Rate $rate ) {
+			return $rate->get_priority();
+		})->values();
 }
 
 /**
@@ -118,10 +158,11 @@ function abrs_get_primary_hotel() {
 /**
  * Gets all hotels.
  *
- * @param  array $args Optional, the WP_Query args.
+ * @param array $args         Optional, the WP_Query args.
+ * @param bool  $with_primary Return with primary hotel?.
  * @return \AweBooking\Support\Collection
  */
-function abrs_list_hotels( $args = [], $with_default = false ) {
+function abrs_list_hotels( $args = [], $with_primary = false ) {
 	$args = wp_parse_args( $args, apply_filters( 'abrs_query_hotels_args', [
 		'post_type'      => Constants::HOTEL_LOCATION,
 		'post_status'    => 'publish',
@@ -135,7 +176,7 @@ function abrs_list_hotels( $args = [], $with_default = false ) {
 	$hotels = abrs_collect( $wp_query->posts )
 		->map_into( Hotel::class );
 
-	if ( $with_default ) {
+	if ( $with_primary ) {
 		$hotels = $hotels->prepend( abrs_get_primary_hotel() );
 	}
 
@@ -162,7 +203,7 @@ function abrs_get_service( $service ) {
  * @param  array $args Optional, the WP_Query args.
  * @return \AweBooking\Support\Collection
  */
-function abrs_list_services( $args = [], $with_default = false ) {
+function abrs_list_services( $args = [] ) {
 	$args = wp_parse_args( $args, apply_filters( 'abrs_query_services_args', [
 		'post_type'      => Constants::HOTEL_SERVICE,
 		'post_status'    => 'publish',
@@ -182,15 +223,17 @@ function abrs_list_services( $args = [], $with_default = false ) {
 /**
  * Get room beds.
  *
- * @param  int    $room_type room type
- * @param  string $separator separator
- * @return void
+ * // TODO: ...
+ *
+ * @param  int    $room_type The room type.
+ * @param  string $separator The separator.
+ * @return string
  */
 function abrs_get_room_beds( $room_type, $separator = ', ' ) {
 	$room_type = abrs_get_room_type( $room_type );
 
 	if ( ! $room_type ) {
-		return;
+		return '';
 	}
 
 	$beds = $room_type->get( 'beds' );

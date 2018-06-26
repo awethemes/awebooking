@@ -443,16 +443,6 @@ class Installer {
 		  KEY meta_key (meta_key(32))
 		) $collate;
 
-		CREATE TABLE `{$wpdb->prefix}awebooking_service_relationships` (
-		  `rate_plan_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
-		  `service_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
-		  `inclusion` INT(1) NOT NULL DEFAULT 0,
-		  `mandatory` INT(1) NOT NULL DEFAULT 0,
-		  `sort_order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
-		  PRIMARY KEY (rate_plan_id, service_id),
-		  KEY service_id (service_id)
-		) $collate;
-
 		CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
 		  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		  `rate` VARCHAR(8) NOT NULL DEFAULT '',

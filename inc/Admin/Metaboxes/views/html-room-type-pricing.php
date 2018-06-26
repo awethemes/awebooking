@@ -6,7 +6,7 @@
 
 		<?php if ( abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() ) ) : ?>
 			<div class="abcol-3 abcol-sm-12">
-				<?php $form->show_field( 'single_tax_rate' ); ?>
+				<?php $form->show_field( '_tax_rate_id' ); ?>
 			</div>
 		<?php endif; ?>
 	</div>

@@ -36,18 +36,18 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $price = 0;
 
 	/**
-	 * The quantity of the item.
+	 * The single tax (after calculate).
 	 *
 	 * @var int
 	 */
-	protected $quantity = 1;
+	protected $tax = 0;
 
 	/**
-	 * Taxable this item?
+	 * Array of tax rates.
 	 *
-	 * @var bool
+	 * @var array
 	 */
-	protected $taxable = false;
+	protected $tax_rates = [];
 
 	/**
 	 * Is the price includes tax?
@@ -57,11 +57,11 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $price_includes_tax = false;
 
 	/**
-	 * The tax rate data.
+	 * The quantity of the item.
 	 *
-	 * @var array
+	 * @var int
 	 */
-	protected $tax_rate;
+	protected $quantity = 1;
 
 	/**
 	 * The options of the item.
@@ -71,18 +71,18 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $options;
 
 	/**
-	 * The item data.
-	 *
-	 * @var mixed
-	 */
-	protected $data;
-
-	/**
 	 * The FQN of the associated model.
 	 *
 	 * @var string|null
 	 */
 	protected $associated_model;
+
+	/**
+	 * The item data.
+	 *
+	 * @var mixed
+	 */
+	protected $data;
 
 	/**
 	 * Cache the resolved models.
@@ -110,15 +110,6 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 		if ( ! $this->row_id ) {
 			$this->row_id = static::generate_row_id( $this->id, $this->options );
 		}
-	}
-
-	/**
-	 * Returns the item attributes.
-	 *
-	 * @return array
-	 */
-	public function attributes() {
-		return get_object_vars( $this );
 	}
 
 	/**
@@ -151,7 +142,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 		}
 
 		// Gets the virutal property.
-		if ( in_array( $key, [ 'single_price', 'single_price_exc_tax', 'total_price', 'total_price_exc_tax', 'single_tax', 'total_tax' ] ) ) {
+		if ( in_array( $key, $this->get_virtual_attributes() ) ) {
 			return $this->{"get_{$key}"}();
 		}
 
@@ -210,112 +201,87 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return int
 	 */
 	public function get_quantity() {
-		return $this->quantity;
+		return absint( $this->quantity );
 	}
 
 	/**
-	 * Increment the quantity of the item.
-	 *
-	 * @param int $amount The amount to increment.
-	 */
-	public function increment( $amount = 1 ) {
-		$this->quantity += $amount;
-
-		return $this;
-	}
-
-	/**
-	 * Is calc item with tax?
-	 *
-	 * @return bool
-	 */
-	public function is_taxable() {
-		return $this->taxable && $this->tax_rate;
-	}
-
-	/**
-	 * Gets the tax rate (percent).
+	 * Gets the tax rates.
 	 *
 	 * @return array
 	 */
-	public function get_tax_rate() {
-		return $this->tax_rate;
-	}
-
-	protected function get_tax_rates_for_calc() {
-		return abrs_collect( [ $this->tax_rate ] )
-			->keyBy( 'id' )
-			->all();
+	public function get_tax_rates() {
+		return $this->tax_rates;
 	}
 
 	/**
-	 * Gets the single price of the item including tax.
+	 * Is the price includes tax?
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return bool
 	 */
-	public function get_single_price() {
-		if ( $this->is_taxable() && $this->price_includes_tax ) {
-			return abrs_decimal( $this->price );
-		}
-
-		return abrs_decimal( $this->price )->add( $this->get_single_tax() );
-	}
-
-	/**
-	 * Gets the single price of the item excluding tax.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_single_price_exc_tax() {
-		if ( $this->is_taxable() && $this->price_includes_tax ) {
-			return abrs_decimal( $this->price )->sub( $this->get_single_tax() );
-		}
-
-		return abrs_decimal( $this->price );
-	}
-
-	/**
-	 * Gets the total price of the item including tax.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_total_price() {
-		return $this->get_single_price()->mul( $this->quantity );
-	}
-
-	/**
-	 * Gets the total price of the item excluding tax.
-	 *
-	 * @return \AweBooking\Support\Decimal
-	 */
-	public function get_total_price_exc_tax() {
-		return $this->get_single_price_exc_tax()->mul( $this->quantity );
+	public function is_price_includes_tax() {
+		return $this->price_includes_tax;
 	}
 
 	/**
 	 * Gets the single tax value of the item.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
-	public function get_single_tax() {
-		if ( ! $this->is_taxable() ) {
-			return abrs_decimal( 0 );
-		}
-
-		return abrs_decimal(
-			array_sum(
-				abrs_calc_tax( $this->price, $this->get_tax_rates_for_calc(), $this->price_includes_tax )
-			)
-		);
+	public function get_tax() {
+		return $this->tax;
 	}
 
 	/**
 	 * Gets the total tax for the item.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get_total_tax() {
-		return $this->get_single_tax()->mul( $this->quantity );
+		return $this->get_tax() * $this->get_quantity();
+	}
+
+	/**
+	 * Gets the single price of the item excluding tax.
+	 *
+	 * @return float
+	 */
+	public function get_price() {
+		if ( ! $this->price_includes_tax ) {
+			return $this->price;
+		}
+
+		return $this->price - $this->get_tax();
+	}
+
+	/**
+	 * Gets the single price of the item including tax.
+	 *
+	 * @return float
+	 */
+	public function get_price_tax() {
+		if ( $this->price_includes_tax ) {
+			return $this->price;
+		}
+
+		return $this->price + $this->get_tax();
+	}
+
+	/**
+	 * Gets the total price of the item excluding tax.
+	 *
+	 * @return float
+	 */
+	public function get_subtotal() {
+		return $this->get_price() * $this->get_quantity();
+	}
+
+	/**
+	 * Gets the total price of the item including tax.
+	 *
+	 * @return float
+	 */
+	public function get_total() {
+		return $this->get_price_tax() * $this->get_quantity();
 	}
 
 	/**
@@ -462,6 +428,8 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 			case 'id':
 			case 'quantity':
 				return max( 1, (int) $value );
+			case 'price_includes_tax':
+				return (bool) $value;
 		}
 
 		return abrs_clean( $value );
@@ -479,12 +447,33 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Returns the item attributes.
+	 *
+	 * @return array
+	 */
+	public function attributes() {
+		return get_object_vars( $this );
+	}
+
+	/**
+	 * Returns virtual attributes (get access only).
+	 *
+	 * @return array
+	 */
+	public function get_virtual_attributes() {
+		return [ 'tax', 'total_tax', 'price_tax', 'subtotal', 'total' ];
+	}
+
+	/**
 	 * Convert the object to an array.
 	 *
 	 * @return array
 	 */
 	public function to_array() {
 		$arr = $this->attributes();
+		foreach ( $this->get_virtual_attributes() as $attribute ) {
+			$arr[ $attribute ] = $this->get( $attribute );
+		}
 
 		$arr['options'] = $this->options->all();
 		Arr::forget( $arr, [ 'data' ] );
@@ -516,6 +505,10 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 */
 	public function offsetExists( $offset ) {
 		if ( array_key_exists( $offset, $this->attributes() ) ) {
+			return true;
+		}
+
+		if ( in_array( $offset, $this->get_virtual_attributes() ) ) {
 			return true;
 		}
 

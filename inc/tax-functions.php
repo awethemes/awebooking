@@ -28,6 +28,16 @@ function abrs_get_tax_rate_model() {
 }
 
 /**
+ * Round to precision.
+ *
+ * @param  int|float $in Input number.
+ * @return int|float
+ */
+function abrs_round_tax( $in ) {
+	return apply_filters( 'abrs_round_tax', round( $in, abrs_get_rounding_precision(), PHP_ROUND_HALF_UP ), $in );
+}
+
+/**
  * Calculate tax for a price.
  *
  * @param  float   $price              Price to calc tax on.
@@ -160,6 +170,19 @@ function abrs_get_tax_rates() {
 }
 
 /**
+ * Gets all tax rates for dropdown.
+ *
+ * @return array
+ */
+function abrs_get_tax_rates_for_dropdown() {
+	return abrs_get_tax_rates()
+		->keyBy( 'id' )
+		->map( function ( $rate ) {
+			return $rate['name'] . ' (' . floatval( $rate['rate'] ) . '%)';
+		})->all();
+}
+
+/**
  * Get a tax rate from the database.
  *
  * @param  int $tax_rate_id The tax rate ID.
@@ -192,7 +215,8 @@ function abrs_insert_tax_rate( array $tax_rate ) {
 /**
  * Perform update a tax rate into the database.
  *
- * @param  array $tax_rate Tax rate args.
+ * @param  int   $tax_rate_id The tax rate ID.
+ * @param  array $tax_rate    Tax rate args.
  * @return bool
  */
 function abrs_update_tax_rate( $tax_rate_id, array $tax_rate ) {
@@ -228,6 +252,7 @@ function abrs_delete_tax_rate( $tax_rate_id ) {
 function _abrs_prepare_tax_rate( $tax_rate ) {
 	$tax_rate['name'] = $tax_rate['name'] ?: esc_html__( 'Tax', 'awebooking' );
 	$tax_rate['rate'] = abrs_decimal( $tax_rate['rate'], 4 )->as_string();
+
 	$tax_rate['priority'] = isset( $tax_rate['priority'] ) ? absint( $tax_rate['priority'] ) : 0;
 	$tax_rate['compound'] = isset( $tax_rate['compound'] ) && $tax_rate['compound'] ? 1 : 0;
 

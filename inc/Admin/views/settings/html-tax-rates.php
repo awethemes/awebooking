@@ -3,7 +3,7 @@
 		<thead>
 			<tr>
 				<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>
-				<th><?php esc_html_e( 'Rate (%)', 'awebooking' ); ?></th>
+				<th><?php esc_html_e( 'Single_Rate (%)', 'awebooking' ); ?></th>
 				<th><?php esc_html_e( 'Priority', 'awebooking' ); ?></th>
 				<th><?php esc_html_e( 'Compound', 'awebooking' ); ?></th>
 			</tr>

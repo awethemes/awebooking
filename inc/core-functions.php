@@ -631,3 +631,18 @@ function abrs_get_image_size( $image_size ) {
 
 	return apply_filters( 'abrs_get_image_size_' . $image_size, $size );
 }
+
+/**
+ * Get rounding precision for internal calculations.
+ *
+ * @return int
+ */
+function abrs_get_rounding_precision() {
+	$precision = abrs_get_option( 'price_number_decimals', 2 ) + 2;
+
+	if ( absint( ABRS_ROUNDING_PRECISION ) > $precision ) {
+		$precision = absint( ABRS_ROUNDING_PRECISION );
+	}
+
+	return $precision;
+}

@@ -6,7 +6,7 @@ use AweBooking\Availability\Constraints\Reason;
 
 class Availability {
 	/**
-	 * The resource model (Room_Type or Rate_Plan).
+	 * The resource model (Room_Type or Rate).
 	 *
 	 * @var mixed
 	 */

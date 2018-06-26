@@ -44,10 +44,10 @@ class Query {
 		do_action( 'abrs_prepare_search_rooms', $room_types, $this->request );
 
 		foreach ( $room_types as $room_type ) {
-			$room_rate = abrs_get_room_rate([
+			$room_rate = abrs_retrieve_room_rate([
 				'request'   => $this->get_request(),
 				'room_type' => $room_type,
-				'rate_plan' => $room_type->get_standard_plan(),
+				'rate_plan' => abrs_get_base_rate( $room_type ),
 			]);
 
 			// This filter let users modify the room rate before it can be rejected.
