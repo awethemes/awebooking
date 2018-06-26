@@ -1,34 +1,42 @@
-<div id="minor-publishing">
-	<div id="actions" style="padding: 10px;">
-		<select name="awebooking_action">
-			<option value=""><?php esc_html_e( 'Actions', 'awebooking' ); ?></option>
-			<option value="send_email_cancelled_order"><?php esc_html_e( 'Resend Cancelled order', 'awebooking' ); ?></option>
-			<option value="send_email_customer_processing_order"><?php esc_html_e( 'Resend Processing order', 'awebooking' ); ?></option>
-			<option value="send_email_customer_completed_order"><?php esc_html_e( 'Resend Completed order', 'awebooking' ); ?></option>
-		</select>
+<div class="submitbox" id="awebooking-actions">
+	<div id="minor-publishing">
+		<div class="misc-pub-section abrs-input-addon">
+			<select name="awebooking_action" style="width: 100%;">
+				<option value=""><?php esc_html_e( 'Choose an action...', 'awebooking' ); ?></option>
 
-		<button class="button awebooking-reload"><span><?php esc_html_e( 'Apply', 'awebooking' ); ?></span></button>
+				<?php foreach ( $booking_actions as $action => $title ) { ?>
+					<option value="<?php echo esc_attr( $action ); ?>"><?php echo esc_html( $title ); ?></option>
+				<?php } ?>
+			</select>
+
+			<button class="button abrs-dashicons-button">
+				<span class="dashicons dashicons-arrow-right-alt2"></span>
+				<span class="screen-reader-text"><?php esc_html_e( 'Apply', 'awebooking' ); ?></span>
+			</button>
+		</div>
 	</div>
-</div>
 
-<div id="major-publishing-actions">
-	<div id="delete-action">
-		<?php if ( current_user_can( 'delete_post', $post->ID ) ) :
+	<div id="major-publishing-actions">
+		<div id="delete-action">
+			<?php
+			if ( current_user_can( 'delete_post', $post->ID ) ) {
 
-			if ( ! EMPTY_TRASH_DAYS ) {
-				$delete_text = esc_html__( 'Delete permanently', 'awebooking' );
-			} else {
-				$delete_text = esc_html__( 'Move to trash', 'awebooking' );
+				if ( ! EMPTY_TRASH_DAYS ) {
+					$delete_text = esc_html__( 'Delete permanently', 'awebooking' );
+				} else {
+					$delete_text = esc_html__( 'Move to trash', 'awebooking' );
+				}
+
+				print '<a class="submitdelete deletion" href="' . esc_url( get_delete_post_link( $post->ID ) ) . '">' . esc_html( $delete_text ) . '</a>';
 			}
+			?>
+		</div>
 
-			?><a class="submitdelete deletion" href="<?php echo esc_url( get_delete_post_link( $post->ID ) ); ?>"><?php print $delete_text; ?></a><?php
-		endif; ?>
+		<div id="publishing-action">
+			<span class="spinner"></span>
+			<input type="submit" class="button button-primary" name="save" value="<?php echo 'auto-draft' === $post->post_status ? esc_attr__( 'Create', 'awebooking' ) : esc_attr__( 'Update', 'awebooking' ); ?>" />
+		</div>
+
+		<div class="clear"></div>
 	</div>
-
-	<div id="publishing-action">
-		<span class="spinner"></span>
-		<input type="submit" class="button button-primary" name="save" value="<?php echo 'auto-draft' === $post->post_status ? esc_attr__( 'Create', 'awebooking' ) : esc_attr__( 'Update', 'awebooking' ); ?>" />
-	</div>
-
-	<div class="clear"></div>
 </div>

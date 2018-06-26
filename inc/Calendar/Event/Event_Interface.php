@@ -1,8 +1,7 @@
 <?php
 namespace AweBooking\Calendar\Event;
 
-use DateTimeInterface;
-use AweBooking\Calendar\Period\Period;
+use AweBooking\Support\Period;
 
 interface Event_Interface {
 	/**
@@ -13,11 +12,27 @@ interface Event_Interface {
 	public function get_start_date();
 
 	/**
+	 * Set the start date.
+	 *
+	 * @param \DateTimeInterface|string $start_date The start date of the event.
+	 * @return void
+	 */
+	public function set_start_date( $start_date );
+
+	/**
 	 * Returns the end date instance.
 	 *
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date();
+
+	/**
+	 * Set the end date.
+	 *
+	 * @param  \DateTimeInterface|string $end_date The end date of the event.
+	 * @return void
+	 */
+	public function set_end_date( $end_date );
 
 	/**
 	 * Returns the event value.
@@ -85,7 +100,7 @@ interface Event_Interface {
 	/**
 	 * Check if the given date is during the event.
 	 *
-	 * @param  DateTimeInterface|string|int $date The datetime given.
+	 * @param  \DateTimeInterface|string|int $date The datetime given.
 	 * @return bool
 	 */
 	public function contains( $date );
@@ -97,4 +112,12 @@ interface Event_Interface {
 	 * @return bool
 	 */
 	public function contains_period( Period $period );
+
+	/**
+	 * Format the event to a specified format (JSON, iCal).
+	 *
+	 * @param  \AweBooking\Calendar\Event\Formatter $formater The formater class.
+	 * @return mixed
+	 */
+	public function format( Formatter $formater );
 }

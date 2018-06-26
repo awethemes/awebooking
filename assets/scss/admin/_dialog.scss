@@ -1,0 +1,76 @@
+/* Dialog */
+.awebooking-dialog {
+  padding: 0;
+  transition: all 0.15s ease-in-out;
+
+  .ui-dialog-titlebar {
+    height: 48px;
+    line-height: 48px;
+    font-weight: 400;
+  }
+
+  .ui-button.ui-dialog-titlebar-close {
+    width: 48px;
+    height: 48px;
+    transition: all .3s ease;
+    border-left: solid 1px #ddd;
+
+    &:before {
+      font-size: 24px;
+      content: '\f335';
+      font-weight: 300;
+    }
+
+    &:hover,
+    &:focus {
+      color: #333;
+      transform: none;
+      background-color: #eee;
+    }
+  }
+
+  .awebooking-dialog-contents {
+    padding: 15px 15px 0 15px;
+  }
+
+  .awebooking-dialog-buttons {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 15px;
+    border-top: solid 1px #ddd;
+    text-align: right;
+  }
+
+  .awebooking-wrap {
+    width: 550px;
+  }
+
+  .cmb2-inline-metabox .cmb-row {
+    margin-bottom: 1em;
+  }
+
+  .cmb-th > label {
+    font-weight: 400;
+    display: inline-block;
+    padding-top: 0;
+    padding-bottom: 7px;
+  }
+
+  .list-bulk-rooms {
+    overflow: auto;
+    max-height: 350px;
+    margin: 5px 0;
+    border-right: solid 1px #eee;
+
+    > li > strong {
+      cursor: pointer;
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    > li > ul {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  }
+}

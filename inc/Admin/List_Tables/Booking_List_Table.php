@@ -2,385 +2,318 @@
 namespace AweBooking\Admin\List_Tables;
 
 use AweBooking\Constants;
-use AweBooking\AweBooking;
-use AweBooking\Booking\Booking;
 
-class Booking_List_Table extends Post_Type_Abstract {
+class Booking_List_Table extends Abstract_List_Table {
 	/**
-	 * Post type slug.
+	 * The booking in the current loop.
+	 *
+	 * @var \AweBooking\Model\Booking
+	 */
+	protected $booking;
+
+	/**
+	 * The post type name.
 	 *
 	 * @var string
 	 */
-	protected $post_type = AweBooking::BOOKING;
+	protected $list_table = Constants::BOOKING;
 
 	/**
-	 * List table primary column.
-	 *
-	 * @var string
+	 * Constructor.
 	 */
-	protected $primary_column = 'booking_title';
+	public function __construct() {
+		parent::__construct();
 
-	/**
-	 * Init somethings hooks.
-	 *
-	 * @access private
-	 */
-	public function init() {
-		add_filter( 'request', [ $this, 'request_query' ] );
-		add_filter( 'post_row_actions', [ $this, 'disable_quick_edit' ], 10, 2 );
-		add_filter( 'parse_query', [ $this, 'perform_searching' ] );
-		add_action( 'restrict_manage_posts', [ $this, 'restrict_manage_posts' ] );
-	}
-
-	public function perform_searching( $wp ) {
-		global $pagenow;
-
-		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] )
-			|| Constants::BOOKING !== $wp->query_vars['post_type'] ) {
-			return;
-		}
-
-		$post_ids = $this->search_bookings( $wp->query_vars['s'] );
-		if ( ! empty( $post_ids ) ) {
-			// Remove "s" - we don't want to search order name.
-			unset( $wp->query_vars['s'] );
-
-			// Search by found posts.
-			$wp->query_vars['post__in'] = array_merge( $post_ids, array( 0 ) );
-		}
+		add_action( 'parse_query', [ $this, 'search_custom_fields' ] );
+		add_filter( 'get_search_query', [ $this, 'correct_search_label' ] );
 	}
 
 	/**
-	 * Search order data for a term and return ids.
-	 *
-	 * @param  string $term
-	 * @return array of ids
+	 * {@inheritdoc}
 	 */
-	public function search_bookings( $term ) {
-		global $wpdb;
-
-		$search_fields = array_map( [ $this, 'awebooking_clean' ], apply_filters( 'awebooking/booking_search_fields', array(
-			'_customer_first_name',
-			'_customer_last_name',
-			'_customer_address',
-			'_customer_company',
-			'_customer_email',
-			'_customer_phone',
-		) ) );
-
-		$booking_ids = array();
-
-		if ( is_numeric( $term ) ) {
-			$booking_ids[] = absint( $term );
-		}
-
-		if ( ! empty( $search_fields ) ) {
-			$booking_ids = array_unique( array_merge(
-				$booking_ids,
-				$wpdb->get_col(
-					$wpdb->prepare( "SELECT DISTINCT p1.post_id FROM {$wpdb->postmeta} p1 WHERE p1.meta_value LIKE '%%%s%%'", $wpdb->esc_like( $this->awebooking_clean( $term ) ) ) . " AND p1.meta_key IN ('" . implode( "','", array_map( 'esc_sql', $search_fields ) ) . "')"
-				),
-				$wpdb->get_col(
-					$wpdb->prepare( "
-						SELECT booking_id
-						FROM {$wpdb->prefix}awebooking_booking_items as booking_items
-						WHERE booking_item_name LIKE '%%%s%%'
-						",
-						$wpdb->esc_like( $this->awebooking_clean( $term ) )
-					)
-				)
-			) );
-		}
-
-		return apply_filters( 'awebooking/booking_search_results', $booking_ids, $term, $search_fields );
+	protected function get_row_actions( $actions, $post ) {
+		return []; // No row actions.
 	}
 
 	/**
-	 * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
-	 * Non-scalar values are ignored.
-	 * @param string|array $var
-	 * @return string|array
+	 * {@inheritdoc}
 	 */
-	public function awebooking_clean( $var ) {
-		if ( is_array( $var ) ) {
-			return array_map( 'awebooking_clean', $var );
+	protected function get_primary_column() {
+		return 'booking_number';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function define_columns( $columns ) {
+		if ( empty( $columns ) && ! is_array( $columns ) ) {
+			$columns = [];
+		}
+
+		unset( $columns['title'], $columns['comments'], $columns['date'] );
+
+		return array_merge( $columns, [
+			'booking_number'    => esc_html__( 'Booking', 'awebooking' ),
+			'booking_status'    => esc_html__( 'Status', 'awebooking' ),
+			'booking_nights'    => '<span class="tippy" title="' . esc_html__( 'Nights', 'awebooking' ) . '"><i class="aficon aficon-moon"></i><span class="screen-reader-text">' . esc_html__( 'Nights', 'awebooking' ) . '</span></span>',
+			'booking_check_in'  => esc_html__( 'Check-In', 'awebooking' ),
+			'booking_check_out' => esc_html__( 'Check-Out', 'awebooking' ),
+			'booking_summary'   => esc_html__( 'Summary', 'awebooking' ),
+			'booking_total'     => esc_html__( 'Total', 'awebooking' ),
+			'booking_paid'      => esc_html__( 'Paid', 'awebooking' ),
+			'booking_date'      => esc_html__( 'Date', 'awebooking' ),
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function define_sortable_columns( $columns ) {
+		return array_merge( $columns, [
+			'booking_number' => 'ID',
+			'booking_total'  => '_total',
+			'booking_date'   => 'date',
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function prepare_row_data( $post_id ) {
+		global $the_booking;
+
+		if ( is_null( $this->booking ) || $this->booking->get_id() !== (int) $post_id ) {
+			$the_booking   = abrs_get_booking( $post_id );
+			$this->booking = $the_booking;
+		}
+	}
+
+	/**
+	 * Display column: booking_number.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_number_column() {
+		global $the_booking;
+
+		if ( $the_booking->get_status() === 'trash' ) {
+
+			echo '<strong>#' . esc_attr( $the_booking->get_booking_number() ) . '</strong>';
+
 		} else {
-			return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
-		}
-	}
+			if ( $the_booking['customer_id'] ) {
+				$userdata = get_userdata( $the_booking['customer_id'] );
+				$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $userdata->ID ), ucwords( $userdata->display_name ) ) : '';
+			} elseif ( $the_booking['customer_first_name'] || $the_booking['customer_last_name'] ) {
+				/* translators: 1 First Name, 2 Last Name */
+				$username = trim( sprintf( _x( '%1$s %2$s', 'full name', 'awebooking' ), $the_booking->get( 'customer_first_name' ), $the_booking->get( 'customer_last_name' ) ) );
+			} elseif ( $the_booking['customer_company'] ) {
+				$username = trim( $the_booking->get( 'customer_company' ) );
+			} else {
+				$username = esc_html__( 'Guest', 'awebooking' );
+			}
 
-	/**
-	 * Filters for post types.
-	 *
-	 * @return void
-	 */
-	public function restrict_manage_posts() {
-		global $typenow;
-
-		if ( Constants::BOOKING !== $typenow ) {
-			return;
-		}
-
-		$this->booking_filters();
-	}
-
-	/**
-	 * Show custom filters to filter orders by status/customer.
-	 *
-	 * @return void
-	 */
-	protected function booking_filters() {
-		$user_string = '';
-		$user_id     = '';
-		if ( ! empty( $_GET['customer'] ) ) {
-			$user_id     = absint( $_GET['customer'] );
-			$user        = get_user_by( 'id', $user_id );
-			/* translators: 1: user display name 2: user ID 3: user email */
-			$user_string = sprintf(
-				esc_html__( '%1$s (#%2$s &ndash; %3$s)', 'awebooking' ),
-				$user->display_name,
-				absint( $user->ID ),
-				$user->user_email
+			/* translators: 1 Booking ID, 2 by user */
+			printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
+				'<a href="' . esc_url( admin_url( 'post.php?post=' . absint( $the_booking['id'] ) . '&action=edit' ) ) . '" class="row-title"><strong>#' . esc_html( $the_booking->get_booking_number() ) . '</strong></a>',
+				wp_kses_post( $username )
 			);
 		}
-		?>
-		<select class="awebooking-customer-search" name="customer" data-placeholder="<?php esc_attr_e( 'Search for a customer&hellip;', 'awebooking' ); ?>" data-allow-clear="true" style="width: 200px;">
-			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo htmlspecialchars( $user_string ); ?><option>
-		</select>
-		<?php
+
+		if ( $customer_note = $the_booking['customer_note'] ) : ?>
+			<span class="tippy abrs-fright" data-tippy-interactive="true" data-tippy-html="#private_customer_note_<?php echo esc_attr( $the_booking['id'] ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Customer note', 'awebooking' ); ?></span>
+				<span class="dashicons dashicons-admin-comments"></span>
+			</span>
+
+			<div id="private_customer_note_<?php echo esc_attr( $the_booking['id'] ); ?>" style="display: none;">
+				<div class="abrs-tooltip-note"><?php echo wp_kses_post( wptexturize( wpautop( $customer_note ) ) ); ?></div>
+			</div>
+		<?php endif; // @codingStandardsIgnoreLine
+
+		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
 	}
 
 	/**
-	 * Registers admin columns to display.
+	 * Display columm: booking_status.
 	 *
-	 * @access private
-	 *
-	 * @param  array $columns Array of registered column names/labels.
-	 * @return array
-	 */
-	public function columns( $columns ) {
-		return [
-			'cb'                => '<input type="checkbox" />',
-			'booking_status'    => esc_html__( 'Status', 'awebooking' ),
-			'booking_title'     => esc_html__( 'Booking', 'awebooking' ),
-			// 'booking_room'      => esc_html__( 'Room', 'awebooking' ),
-			// 'check_in_out_date' => esc_html__( 'Check-in / Check-out', 'awebooking' ),
-			// 'booking_guests'    => esc_html__( 'Guests', 'awebooking' ),
-			'booking_total'     => esc_html__( 'Total', 'awebooking' ),
-			'booking_date'      => esc_html__( 'Date', 'awebooking' ),
-		];
-	}
-
-	/**
-	 * Registers which columns are sortable.
-	 *
-	 * @access private
-	 *
-	 * @param  array $sortable_columns Array of registered column keys => data-identifier.
-	 * @return array
-	 */
-	public function sortable_columns( $sortable_columns ) {
-		$sortable_columns['booking_title'] = 'ID';
-		$sortable_columns['booking_date']  = 'date';
-		$sortable_columns['booking_total'] = 'booking_total';
-
-		return $sortable_columns;
-	}
-
-	/**
-	 * Handles admin column display.
-	 *
-	 * @access private
-	 *
-	 * @param string $column  The name of the column to display.
-	 * @param int    $post_id Current post ID.
-	 */
-	public function columns_display( $column, $post_id ) {
-		global $the_booking, $post;
-
-		switch ( $column ) {
-			case 'booking_status':
-				$status = $the_booking->get_status();
-				$statuses = awebooking( 'setting' )->get_booking_statuses();
-
-				$status_color = '';
-				$status_label = isset( $statuses[ $status ] ) ? $statuses[ $status ] : '';
-
-				switch ( $status ) {
-					case Booking::PENDING:
-						$status_color = 'awebooking-label--info';
-						break;
-					case Booking::PROCESSING:
-						$status_color = 'awebooking-label--warning';
-						break;
-					case Booking::CANCELLED:
-						$status_color = 'awebooking-label--danger';
-						break;
-					case Booking::COMPLETED:
-						$status_color = 'awebooking-label--success';
-						break;
-				}
-
-				if ( $the_booking->is_featured() ) {
-					echo '<span class="dashicons dashicons-star-filled"></span>';
-				}
-
-				printf( '<span class="awebooking-label %2$s">%1$s</span>', $status_label, $status_color );
-			break;
-
-			case 'booking_title':
-				$this->print_booking_title( $the_booking );
-				echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'awebooking' ) . '</span></button>';
-				break;
-
-			case 'booking_date':
-				printf( '<abbr title="%s">%s</abbr>',
-					esc_attr( $the_booking->get_booking_date()->toDateTimeString() ),
-					esc_html( $the_booking->get_booking_date() )
-				);
-				break;
-
-			case 'booking_guestss':
-				printf( '<span class="">%1$d %2$s</span>',
-					$the_booking->get_adults(),
-					_n( 'adult', 'adults', $the_booking->get_adults(), 'awebooking' )
-				);
-
-				if ( $the_booking['children'] ) {
-					printf( ' &amp; <span class="">%1$d %2$s</span>',
-						$the_booking->get_children(),
-						_n( 'child', 'children', $the_booking->get_children(), 'awebooking' )
-					);
-				}
-
-				if ( $the_booking['infants'] ) {
-					printf( ' &amp; <span class="">%1$d %2$s</span>',
-						$the_booking->get_infants(),
-						_n( 'infant', 'infants', $the_booking->get_infants(), 'awebooking' )
-					);
-				}
-				break;
-
-			case 'check_in_out_date':
-				if ( $the_booking->get_arrival_date() ) {
-					printf( '<strong></strong> <br> <span>%s</span> - <span>%s</span>',
-						// $date_period->nights(),
-						// _n( 'night', 'nights', $date_period->nights(), 'awebooking' ),
-						$the_booking->get_arrival_date()->toDateString(),
-						$the_booking->get_departure_date()->toDateString()
-					);
-				}
-				break;
-
-			case 'booking_total' :
-				printf( '<span class="awebooking-label %2$s">%1$s</span>',
-					$the_booking->get_total(),
-					$the_booking->get_total()->is_zero() ? 'awebooking-label--danger' : 'awebooking-label--info'
-				);
-
-				if ( $the_booking['payment_method_title'] ) {
-					echo '<small class="meta">' . esc_html__( 'Via', 'awebooking' ) . ' ' . esc_html( $the_booking->get_payment_method_title() ) . '</small>';
-				}
-			break;
-
-			case 'booking_rooms':
-				$the_room = $the_booking->get_room_unit();
-
-				if ( is_null( $the_room ) ) {
-					printf( '<span class="awebooking-invalid">%s</span>', esc_html__( 'Room was not available by time selected', 'awebooking' ) );
-				} elseif ( $the_room->exists() ) {
-					$room_type = $the_room->get_room_type();
-					$hotel_location = $room_type->get_location();
-
-					printf(
-						'<a href="%1$s" target="_blank"><b>%2$s</b></a> (%3$s)',
-						esc_url( get_edit_post_link( $room_type->get_id() ) ),
-						esc_html( $room_type->get_title() ),
-						esc_html( $the_room->get_name() )
-					);
-
-					if ( awebooking()->is_multi_location() && $hotel_location ) {
-						echo '<br>' . esc_html__( 'Location:', 'awebooking' ) . ' <span>' . esc_html( $hotel_location->name ) . '</span>';
-					}
-				} else {
-					echo '<span class="awebooking-invalid">' . esc_html__( 'Room was deleted', ' awebooking' ) . '</span>';
-				}
-				break;
-		} // End switch().
-	}
-
-	/**
-	 * Print the booking title.
-	 *
-	 * @param  Booking $booking //.
 	 * @return void
 	 */
-	protected function print_booking_title( Booking $booking ) {
-		if ( $booking['customer_id'] ) {
-			$userdata = get_userdata( $booking['customer_id'] );
-			$username = $userdata ? sprintf( '<a href="user-edit.php?user_id=%d">%s</a>', absint( $booking['customer_id'] ), esc_html( $userdata->display_name ) ) : '';
-		} elseif ( $customber_name = $booking->get_customer_name() ) {
-			$username = $customber_name;
-		} elseif ( $booking['customer_company'] ) {
-			$username = trim( $booking->get_customer_company() );
+	protected function display_booking_status_column() {
+		$status = $this->booking->get( 'status' );
+
+		printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) );
+	}
+
+	/**
+	 * Display column: nights stay.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_nights_column() {
+		$nights_stay = $this->booking->get( 'nights_stay' );
+
+		if ( $nights_stay == -1 ) : ?>
+			<span title="<?php esc_attr_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>">
+				<span class="dashicons dashicons-info"></span>
+			</span>
+		<?php else : ?>
+			<?php echo absint( $nights_stay ); ?>
+		<?php endif;
+	}
+
+	/**
+	 * Display column: check-in.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_check_in_column() {
+		echo esc_html( abrs_format_date( $this->booking->get( 'check_in_date' ) ) );
+	}
+
+	/**
+	 * Display column: check-out.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_check_out_column() {
+		echo esc_html( abrs_format_date( $this->booking->get( 'check_out_date' ) ) );
+	}
+
+	/**
+	 * Display columm: booking_date.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_date_column() {
+		$date_created = abrs_date_time( $this->booking->get( 'date_created' ) );
+
+		if ( is_null( $date_created ) ) {
+			return;
+		}
+
+		// Check if the booking was created within the last 24 hours, and not in the future.
+		// We will show the date as human readable date time by using human_time_diff.
+		if ( ! $date_created->isFuture() && $date_created->gt( abrs_date_time( 'now' )->subDay() ) ) {
+			/* translators: %s: human-readable time difference */
+			$show_date = sprintf( _x( '%s ago', '%s = human-readable time difference', 'awebooking' ),
+				human_time_diff( $date_created->getTimestamp(), current_time( 'timestamp', true ) )
+			);
 		} else {
-			$username = esc_html__( 'Guest', 'awebooking' );
+			$show_date = abrs_format_date( $date_created );
 		}
 
-		printf( esc_html__( '%1$s by %2$s', 'awebooking' ),
-			'<a href="' . admin_url( 'post.php?post=' . absint( $booking['id'] ) . '&action=edit' ) . '" class="row-title"><strong>#' . esc_attr( $booking->get_id() ) . '</strong></a>',
-			$username
+		printf(
+			'<abbr datetime="%1$s" title="%2$s">%3$s</abbr>',
+			esc_attr( $date_created->toDateTimeString() ),
+			esc_html( abrs_format_date_time( $date_created ) ),
+			esc_html( $show_date )
 		);
-
-		if ( $booking['customer_email'] ) {
-			echo '<small class="meta email"><a href="' . esc_url( 'mailto:' . $booking->get_customer_email() ) . '">' . esc_html( $booking->get_customer_email() ) . '</a></small>';
-		}
 	}
 
 	/**
-	 * Remove the "Quick Edit" link.
+	 * Display columm: booking_total.
 	 *
-	 * @param array   $actions An array of row action links.
-	 * @param WP_Post $post    The post object.
+	 * @return void
 	 */
-	public function disable_quick_edit( $actions, $post ) {
-		// Prevent if not in booking post type.
-		if ( get_post_type( $post ) !== $this->post_type ) {
-			return $actions;
-		}
-
-		// Remove the "Quick Edit" link.
-		if ( isset( $actions['inline hide-if-no-js'] ) ) {
-			unset( $actions['inline hide-if-no-js'] );
-		}
-
-		return $actions;
+	protected function display_booking_total_column() {
+		// @codingStandardsIgnoreLine
+		echo '<span class="abrs-badge">' . abrs_format_price( $this->booking->get( 'total' ), $this->booking->get( 'currency' ) ) . '</span>';
 	}
 
 	/**
-	 * Filters and sorting handler.
+	 * Display columm: booking_paid.
 	 *
-	 * @param  array $query_vars WP query_vars property.
-	 * @return array
+	 * @return void
 	 */
-	public function request_query( $query_vars ) {
-		global $typenow, $wp_query, $wp_post_statuses;
+	protected function display_booking_paid_column() {
+		global $the_booking;
+		?>
+			<span class="tippy" data-tippy-interactive="true" data-tippy-html="#private_balance_due_<?php echo esc_attr( $the_booking['id'] ); ?>">
+			<span class="abrs-badge"><?php echo abrs_format_price( $this->booking->get( 'paid' ), $this->booking->get( 'currency' ) ); ?></span>
+			</span>
 
-		// Prevent actions if not current post type.
-		if ( $this->post_type !== $typenow ) {
-			return $query_vars;
+			<div id="private_balance_due_<?php echo esc_attr( $the_booking['id'] ); ?>" style="display: none;">
+				<div class="abrs-tooltip-booking-paid-column">
+					<?php esc_html_e( 'Balance due: ', 'awebooking' ); ?>
+					<?php echo abrs_format_price( $this->booking->get( 'balance_due' ), $this->booking->get( 'currency' ) ); ?>
+				</div>
+			</div>
+		<?php
+
+	}
+
+	/**
+	 * Display columm: booking_summary.
+	 *
+	 * @return void
+	 */
+	protected function display_booking_summary_column() {
+		$booked_rooms = $this->booking->get_rooms();
+
+		if ( abrs_blank( $booked_rooms ) ) : ?>
+			<?php esc_html_e( 'No rooms found', 'awebooking' ); ?>
+		<?php else : ?>
+			<?php
+			$first_room = $booked_rooms->first();
+			$rooms_left = absint( count( $booked_rooms ) - 1 );
+
+			$timespan = $first_room->get_timespan();
+
+			$nights = sprintf(
+				'&comma; <span class="">%1$d %2$s</span>',
+				$timespan->get_nights(),
+				_n( 'night', 'nights', $timespan->get_nights(), 'awebooking' )
+			);
+
+			$guest = $first_room->get_guests();
+
+			$more = '';
+			if ( $rooms_left ) {
+				$more = sprintf(
+					/* translators: 1: number of rooms */
+					_nx(
+						'&comma; more %1$s room',
+						'&comma; more %1$s rooms',
+						$rooms_left,
+						'rooms left',
+						'awebooking'
+					),
+					number_format_i18n( $rooms_left )
+				);
+			}
+
+			printf( esc_html__( '%1$s%2$s%3$s%4$s ', 'awebooking' ), esc_html( $first_room->get_name() ), $nights, $guest->as_string(), $more );
+		endif;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function render_filters() {
+		$user_id = '';
+		$user_string = '';
+
+		if ( ! empty( $_GET['_customer'] ) ) {
+			$user = get_user_by( 'id', absint( $_GET['_customer'] ) );
+
+			/* translators: 1: user display name 2: user ID 3: user email */
+			$user_string = sprintf( esc_html__( '%1$s (#%2$s - %3$s)', 'awebooking' ), $user->display_name, $user->ID, $user->user_email );
+			$user_id = $user->ID;
 		}
 
-		// Filter the orders by the posted customer.
-		if ( isset( $_GET['customer'] ) && $_GET['customer'] > 0 ) {
-			$query_vars['meta_query'] = [[
-				'key'     => '_customer_id',
-				'value'   => absint( $_GET['customer'] ),
-				'compare' => '=',
-			]];
-		}
+		?><select class="awebooking-search-customer" name="_customer" data-placeholder="<?php esc_attr_e( 'Query for a customer&hellip;', 'awebooking' ); ?>">
+			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo wp_kses_post( $user_string ); ?><option>
+		</select><?php // @codingStandardsIgnoreLine
+	}
 
-		// Sorting handler.
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function query_filters( $query_vars ) {
+		global $wp_post_statuses;
+
+		// Handler the sorting.
 		if ( isset( $query_vars['orderby'] ) ) {
 			switch ( $query_vars['orderby'] ) {
 				case 'booking_total':
@@ -392,11 +325,32 @@ class Booking_List_Table extends Post_Type_Abstract {
 			}
 		}
 
-		// Added booking status only in "All" section in list-table.
-		if ( ! isset( $query_vars['post_status'] ) ) {
-			$statuses = awebooking( 'setting' )->get_booking_statuses();
+		// Filter the bookings by the posted customer.
+		if ( ! empty( $_GET['_customer'] ) ) {
+			$query_vars['meta_query'] = [
+				[
+					'key'     => '_customer_id',
+					'value'   => absint( $_GET['_customer'] ),
+					'compare' => '=',
+				],
+			];
+		}
 
-			foreach ( $statuses as $status => $display_name ) {
+		// Filter the bookings by specified room ID.
+		if ( ! empty( $_GET['_room'] ) ) {
+			$room_id = absint( $_GET['_room'] );
+
+			$bookings = abrs_get_bookings_by_room( $room_id );
+
+			$query_vars['post__in'] = array_merge( (array) $bookings, [ 0 ] );
+		}
+
+		// Merge booking statuses on "All".
+		if ( ! isset( $query_vars['post_status'] ) ) {
+			$statuses = abrs_get_booking_statuses();
+			unset( $statuses['awebooking-cancelled'] );
+
+			foreach ( $statuses as $status => $value ) {
 				if ( isset( $wp_post_statuses[ $status ] ) && false === $wp_post_statuses[ $status ]->show_in_admin_all_list ) {
 					unset( $statuses[ $status ] );
 				}
@@ -406,5 +360,53 @@ class Booking_List_Table extends Post_Type_Abstract {
 		}
 
 		return $query_vars;
+	}
+
+	/**
+	 * Correct the label when searching bookings.
+	 *
+	 * @param  mixed $query Current search query.
+	 * @return string
+	 */
+	public function correct_search_label( $query ) {
+		global $pagenow, $typenow;
+
+		if ( 'edit.php' !== $pagenow || 'awebooking' !== $typenow
+			|| ! get_query_var( 'perform_booking_search' )
+			|| ! isset( $_GET['s'] ) ) {
+			return $query;
+		}
+
+		return abrs_clean( wp_unslash( $_GET['s'] ) ); // WPCS: input var ok, sanitization ok.
+	}
+
+	/**
+	 * Query custom fields as well as content.
+	 *
+	 * @param \WP_Query $wp The WP_Query object.
+	 *
+	 * @access private
+	 */
+	public function search_custom_fields( $wp ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow
+			|| empty( $wp->query_vars['s'] )
+			|| 'awebooking' !== $wp->query_vars['post_type']
+			|| ! isset( $_GET['s'] ) ) {
+			return;
+		}
+
+		$post_ids = abrs_search_booking( abrs_clean( wp_unslash( $_GET['s'] ) ) ); // WPCS: input var ok, sanitization ok.
+
+		if ( ! empty( $post_ids ) ) {
+			// Remove "s" - we don't want to search order name.
+			unset( $wp->query_vars['s'] );
+
+			$wp->query_vars['perform_booking_search'] = true;
+
+			// Query by found posts.
+			$wp->query_vars['post__in'] = array_merge( $post_ids, [ 0 ] );
+		}
 	}
 }

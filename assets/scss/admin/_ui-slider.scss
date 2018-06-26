@@ -1,0 +1,142 @@
+// jQuery UI Slider Core CSS
+// @see http://api.jqueryui.com/1.11/slider/#theming
+$ui-slider-color: #25daa5;
+$ui-slider-border-color: #d9d9d9;
+
+.ui-slider {
+  position: relative;
+  text-align: left;
+}
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  z-index: 2;
+  width: 1.2em;
+  height: 1.2em;
+  cursor: default;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+.ui-slider .ui-slider-range {
+  position: absolute;
+  z-index: 1;
+  font-size: .7em;
+  display: block;
+  border: 0;
+  background-position: 0 0;
+}
+
+/* support: IE8 - See #6727 */
+.ui-slider.ui-state-disabled .ui-slider-handle,
+.ui-slider.ui-state-disabled .ui-slider-range {
+  filter: inherit;
+}
+
+.ui-slider-horizontal {
+  height: .8em;
+}
+.ui-slider-horizontal .ui-slider-handle {
+  top: -.3em;
+  margin-left: -.6em;
+}
+.ui-slider-horizontal .ui-slider-range {
+  top: 0;
+  height: 100%;
+}
+.ui-slider-horizontal .ui-slider-range-min {
+  left: 0;
+}
+.ui-slider-horizontal .ui-slider-range-max {
+  right: 0;
+}
+
+.ui-slider-vertical {
+  width: .8em;
+  height: 100px;
+}
+.ui-slider-vertical .ui-slider-handle {
+  left: -.3em;
+  margin-left: 0;
+  margin-bottom: -.6em;
+}
+.ui-slider-vertical .ui-slider-range {
+  left: 0;
+  width: 100%;
+}
+.ui-slider-vertical .ui-slider-range-min {
+  bottom: 0;
+}
+.ui-slider-vertical .ui-slider-range-max {
+  top: 0;
+}
+
+// Custom CSS
+.cmb2-slider {
+  padding: 10px 5px 15px 0;
+
+  .ui-slider-horizontal {
+    height: 2px;
+    width: 100%;
+    display: block;
+    background: $ui-slider-border-color;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .ui-slider-handle {
+    width: 12px;
+    height: 12px;
+
+    top: 1px;
+    margin-left: 0;
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+    background-color: $ui-slider-color;
+    transition: background 450ms, cubic-bezier(0.23, 1, 0.32, 1) 0ms, box-shadow 450ms cubic-bezier(0.23, 1, 0.32, 1) 50ms, width 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, height 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+
+    &.ui-state-hover,
+    &.ui-state-active {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+
+      background-color: lighten($ui-slider-color, 15%);
+      box-shadow: 0 0 0 10px rgba($ui-slider-color, 0.15);
+    }
+  }
+
+  .ui-slider-horizontal.ui-slider-pips {
+    .ui-slider-pip {
+      top: 10px;
+    }
+    .ui-slider-label {
+      top: 15px;
+    }
+
+    .ui-slider-pip .ui-slider-line,
+     .ui-slider-pip-inrange .ui-slider-line {
+      height: 7px;
+      transition: all 0.4s ease;
+      background: $ui-slider-border-color;
+    }
+    .ui-slider-pip[class*=ui-slider-pip-selected] .ui-slider-line {
+      background-color: $ui-slider-color;
+      height: 14px;
+    }
+
+    [class*=ui-slider-pip-selected] {
+      color: $ui-slider-color;
+    }
+  }
+
+  .ui-slider-float .ui-slider-tip,
+  .ui-slider-float .ui-slider-tip-label {
+    border-color: $ui-slider-border-color;
+
+    &:before {
+      border-top-color: $ui-slider-border-color;
+    }
+  }
+}

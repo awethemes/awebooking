@@ -1,0 +1,53 @@
+@mixin pseudoicon($glyph: "\f333", $font-family: 'Dashicons') {
+  content: $glyph;
+  font-family: $font-family;
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  text-align: center;
+}
+
+@mixin in-small() {
+  @media only screen and (max-width: 782px) {
+    @content;
+  }
+}
+
+.abrs-clearfix {
+  @include clearfix;
+}
+
+/* Helpers CSS */
+.abrs-mt0 { margin-top: 0 !important; }
+.abrs-mb0 { margin-bottom: 0 !important; }
+.abrs-mt1 { margin-top: 1em !important; }
+.abrs-mb1 { margin-bottom: 1em !important; }
+.abrs-mt2 { margin-top: 2em !important; }
+.abrs-mb2 { margin-bottom: 2em !important; }
+
+.abrs-pt0 { padding-top: 0 !important; }
+.abrs-pb0 { padding-bottom: 0 !important; }
+.abrs-pt1 { padding-top: 1em !important; }
+.abrs-pb1 { padding-bottom: 1em !important; }
+.abrs-pt2 { padding-top: 2em !important; }
+.abrs-pb2 { padding-bottom: 2em !important; }
+
+.abrs-mtb1 { margin-top: 1em; margin-bottom: 1em; }
+.abrs-mlr1 { margin-left: 1em; margin-right: 1em; }
+.abrs-ptb1 { padding-top: 1em; padding-bottom: 1em; }
+.abrs-plr1 { padding-left: 1em; padding-right: 1em; }
+
+.abrs-fleft { float: left !important; }
+.abrs-fright { float: right !important; }
+
+.abrs-text-left { text-align: left !important; }
+.abrs-text-right { text-align: right !important; }
+.abrs-text-center { text-align: center !important; }
+
+.abrs-space,
+.abrs-spacer { flex-grow: 1; }

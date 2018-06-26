@@ -1,119 +1,163 @@
 <?php
 namespace AweBooking\Admin;
 
-use AweBooking\Setting;
-use Skeleton\CMB2\CMB2;
-use Skeleton\CMB2\Field_Proxy;
-use Skeleton\Support\Multidimensional;
+use AweBooking\Plugin;
+use AweBooking\Support\Collection;
+use AweBooking\Admin\Settings\Setting;
+use Awethemes\Http\Request;
 
-class Admin_Settings extends CMB2 {
+class Admin_Settings {
 	/**
-	 * The Setting instance.
+	 * The plugin instance.
 	 *
-	 * @var \AweBooking\Setting
+	 * @var \AweBooking\Plugin
 	 */
-	protected $setting;
+	protected $plugin;
+
+	/**
+	 * All registerd settings.
+	 *
+	 * @var \AweBooking\Support\Collection
+	 */
+	protected $settings;
+
+	/**
+	 * The core settings.
+	 *
+	 * @var array
+	 */
+	protected $core_settings = [
+		\AweBooking\Admin\Settings\General_Setting::class,
+		\AweBooking\Admin\Settings\Hotel_Setting::class,
+		\AweBooking\Admin\Settings\Taxes_Setting::class,
+		\AweBooking\Admin\Settings\Checkout_Setting::class,
+		\AweBooking\Admin\Settings\Appearance_Setting::class,
+		\AweBooking\Admin\Settings\Email_Setting::class,
+		\AweBooking\Admin\Settings\Premium_Setting::class,
+	];
 
 	/**
 	 * Constructor.
 	 *
-	 * @param Setting $setting The Setting instance.
+	 * @param \AweBooking\Plugin $plugin The plugin instance.
 	 */
-	public function __construct( Setting $setting ) {
-		$this->setting = $setting;
-
-		parent::__construct([
-			'id'         => 'awebooking-settings',
-			'hookup'     => false,
-			'cmb_styles' => false,
-		]);
-
-		$this->object_id( $this->setting->get_setting_key() );
-		$this->object_type( 'options-page' );
+	public function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
+		$this->settings = new Collection;
 	}
 
 	/**
-	 * Register settings by callback or setting-class.
+	 * Get all registerd settings.
 	 *
-	 * @param  callable|string $settings The settings callback or class to register.
-	 * @return void
+	 * @return \AweBooking\Support\Collection
 	 */
-	public function register( $settings ) {
-		awebooking()->call( $settings, [ $this ], 'registers' );
+	public function all() {
+		return $this->settings;
 	}
 
 	/**
-	 * Store a raw values into the database.
+	 * Get a registered setting.
 	 *
-	 * @param  array $values The store values.
+	 * @param  string $setting The setting ID.
+	 * @return \AweBooking\Admin\Settings\Setting|null
+	 */
+	public function get( $setting ) {
+		return $this->settings->get( $setting );
+	}
+
+	/**
+	 * Determines if a given setting ID is registered.
+	 *
+	 * @param  string $setting The setting ID.
 	 * @return bool
 	 */
-	public function store( array $values ) {
-		$options = (array) get_option( $this->setting->get_setting_key(), [] );
+	public function registered( $setting ) {
+		return $this->settings->has(
+			$setting instanceof Setting ? $setting->get_id() : $setting
+		);
+	}
 
-		foreach ( $values as $key => $value ) {
-			Multidimensional::replace( $options, $key, $value );
+	/**
+	 * Register a setting.
+	 *
+	 * @param  \AweBooking\Admin\Settings\Setting $setting The setting instance.
+	 * @param  boolean                            $force   Force to register.
+	 * @return \AweBooking\Admin\Settings\Setting|false
+	 */
+	public function register( Setting $setting, $force = false ) {
+		if ( ! $setting->get_id() ) {
+			return false;
 		}
 
-		return update_option( $this->setting->get_setting_key(), $options );
+		if ( $this->registered( $setting ) && ! $force ) {
+			return $setting;
+		}
+
+		return $this->settings[ $setting->get_id() ] = $setting;
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function get_field( $field, $group = null, $reset_cached = false ) {
-		$field = parent::get_field( $field, $group, $reset_cached );
-
-		return $field ? new Field_Proxy( $this, $field ) : null;
-	}
-
-	/**
-	 * Prepare fields validation errors.
+	 * Unregister a registered setting.
 	 *
+	 * @param  string $setting The setting ID.
 	 * @return void
 	 */
-	public function prepare_validation_errors() {
-		$this->prepare_validate();
+	public function unregister( $setting ) {
+		unset( $this->settings[ $setting ] );
 	}
 
 	/**
-	 * Determine if an field exists.
+	 * Setup the settings.
 	 *
-	 * @param  mixed $key The field key ID.
-	 * @return bool
+	 * @access private
 	 */
-	public function offsetExists( $key ) {
-		return ! is_null( $this->offsetGet( $key ) );
+	public function setup() {
+		// Clear the settings before.
+		$this->settings->clear();
+
+		$settings = apply_filters( 'abrs_admin_settings', $this->core_settings );
+
+		foreach ( $settings as $setting ) {
+			$this->register( $this->plugin->make( $setting ) );
+		}
+
+		do_action( 'abrs_register_admin_settings', $this );
 	}
 
 	/**
-	 * Get an field at a given offset.
+	 * Perform handle save a setting.
 	 *
-	 * @param  mixed $key The field key ID.
-	 * @return mixed
-	 */
-	public function offsetGet( $key ) {
-		return $this->get_field( $key );
-	}
-
-	/**
-	 * Set the item at a given offset.
-	 *
-	 * @param  mixed $key  Field ID.
-	 * @param  mixed $args Field args.
+	 * @param  string                  $setting The setting name.
+	 * @param  \Awethemes\Http\Request $request The http request instance.
 	 * @return void
 	 */
-	public function offsetSet( $key, $args ) {
-		$this->add_field( array_merge( (array) $args, [ 'id' => $key ] ) );
-	}
+	public function save( $setting, Request $request ) {
+		// Leave if given an empty setting name.
+		if ( ! is_string( $setting ) || empty( $setting ) ) {
+			return;
+		}
 
-	/**
-	 * Unset the item at a given offset.
-	 *
-	 * @param  string $key Field key ID.
-	 * @return void
-	 */
-	public function offsetUnset( $key ) {
-		$this->remove_field( $key );
+		// Makes sure that request was referred from admin page.
+		check_admin_referer( 'awebooking-settings' );
+
+		// Handle save the setting.
+		if ( apply_filters( 'abrs_handle_save_setting_' . $setting, true ) && $instance = $this->get( $setting ) ) {
+			abrs_rescue( function () use ( $instance, $request ) {
+				$instance->save( $request );
+			});
+		}
+
+		// Fire update_setting actions.
+		do_action( 'abrs_update_setting_' . $setting, $this );
+		do_action( 'abrs_update_settings', $setting, $this );
+
+		// Add an success notices.
+		abrs_admin_notices( esc_html__( 'Your settings have been saved.', 'awebooking' ), 'success' )->dialog();
+
+		// Force flush_rewrite_rules.
+		@flush_rewrite_rules();
+
+		// Fire abrs_settings_updated action.
+		do_action( 'abrs_settings_updated', $this );
 	}
 }

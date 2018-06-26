@@ -2,26 +2,31 @@
 <ruleset name="WordPress Coding Standards for Plugins">
 	<description>Generally-applicable sniffs for WordPress plugins</description>
 
-	<config name="testVersion" value="5.6-7.1" />
+	<arg value="n"/>
+	<arg name="colors"/>
 
 	<exclude-pattern>*/tests/**</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 
+	<config name="testVersion" value="5.6-7.1" />
 	<rule ref="PHPCompatibility" />
 
 	<rule ref="WordPress-Extra">
+		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
+		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" />
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
-		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 	</rule>
 
 	<rule ref="WordPress-Docs">
 		<exclude name="Squiz.Commenting.FileComment.Missing" />
 		<exclude name="Squiz.Commenting.ClassComment.Missing" />
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+		<exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing" />
 	</rule>
 </ruleset>

@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Gateway;
 
-use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Payment_Item;
+use AweBooking\Model\Booking\Payment_Item;
+use AweBooking\Frontend\Checkout\Url_Generator;
 
 abstract class Gateway {
 	/**
@@ -18,51 +18,51 @@ abstract class Gateway {
 	 *
 	 * @var string
 	 */
-	protected $enabled = true;
+	public $enabled = true;
 
 	/**
 	 * Gateway method title.
 	 *
 	 * @var string
 	 */
-	protected $method_title = '';
+	public $method_title = '';
 
 	/**
 	 * Gateway method description.
 	 *
 	 * @var string
 	 */
-	protected $method_description = '';
+	public $method_description = '';
 
 	/**
 	 * Name of gateway (front-end).
 	 *
 	 * @var string
 	 */
-	protected $title = '';
+	public $title = '';
 
 	/**
 	 * Gateway description (front-end).
 	 *
 	 * @var string
 	 */
-	protected $description = '';
+	public $description = '';
 
 	/**
 	 * The admin setting fields.
 	 *
 	 * @var array
 	 */
-	protected $setting_fields;
+	public $setting_fields = [];
 
 	/**
 	 * The extra metadata this gateway support.
 	 *
-	 * Support: "transaction_id", "credit_card"
+	 * Support: "transaction_id", "credit_card".
 	 *
 	 * @var array
 	 */
-	protected $supports = [];
+	public $supports = [];
 
 	/**
 	 * Get method name.
@@ -79,7 +79,7 @@ abstract class Gateway {
 	 * @return boolean
 	 */
 	public function is_enabled() {
-		return (bool) $this->enabled;
+		return 'on' === abrs_sanitize_checkbox( $this->enabled );
 	}
 
 	/**
@@ -88,7 +88,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_method_title() {
-		return apply_filters( 'awebooking/gateway/get_method_title', $this->method_title, $this );
+		return apply_filters( 'abrs_gateway_method_title', $this->method_title, $this );
 	}
 
 	/**
@@ -97,7 +97,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_method_description() {
-		return apply_filters( 'awebooking/gateway/get_method_description', $this->method_description, $this );
+		return apply_filters( 'abrs_gateway_method_description', $this->method_description, $this );
 	}
 
 	/**
@@ -106,7 +106,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_title() {
-		return apply_filters( 'awebooking/gateway/get_title', $this->title, $this->method );
+		return apply_filters( 'abrs_gateway_title', $this->title, $this->method );
 	}
 
 	/**
@@ -115,7 +115,7 @@ abstract class Gateway {
 	 * @return string
 	 */
 	public function get_description() {
-		return apply_filters( 'awebooking/gateway/get_description', $this->description, $this->method );
+		return apply_filters( 'abrs_gateway_description', $this->description, $this->method );
 	}
 
 	/**
@@ -124,13 +124,13 @@ abstract class Gateway {
 	 * @return array
 	 */
 	public function get_supports() {
-		return apply_filters( 'awebooking/gateway/get_supports', $this->supports, $this );
+		return apply_filters( 'abrs_gateway_supports', $this->supports, $this );
 	}
 
 	/**
 	 * Determine if the gateway support a given meta field.
 	 *
-	 * @param  string|array $meta An array keys or a string of special key.
+	 * @param  string|array $meta An array keys or a string of specified key.
 	 * @return bool
 	 */
 	public function is_support( $meta ) {
@@ -153,7 +153,7 @@ abstract class Gateway {
 	 * @return array|null
 	 */
 	public function get_setting_fields() {
-		return apply_filters( 'awebooking/gateway/get_description', $this->setting_fields, $this );
+		return apply_filters( 'abrs_gateway_setting_fields', $this->setting_fields, $this );
 	}
 
 	/**
@@ -162,7 +162,24 @@ abstract class Gateway {
 	 * @return boolean
 	 */
 	public function has_settings() {
-		return ! empty( $this->get_setting_fields() );
+		return ! empty( $this->setting_fields );
+	}
+
+	/**
+	 * Get the option by key (no prefix include).
+	 *
+	 * @param  string $key     The key.
+	 * @param  mixed  $default The default value.
+	 * @return mixed
+	 */
+	public function get_option( $key, $default = null ) {
+		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
+
+		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
+			$default = $this->setting_fields[ $key ]['default'];
+		}
+
+		return abrs_get_option( $prefix . '_' . $key, $default );
 	}
 
 	/**
@@ -183,11 +200,26 @@ abstract class Gateway {
 	/**
 	 * Get the return url (thank you page).
 	 *
-	 * @param  \AweBooking\Model\Booking|int|null $booking Optional, the booking instance or booking ID.
+	 * @param int|\AweBooking\Model\Booking $booking The booking instance or booking ID.
 	 * @return string
 	 */
-	public function get_return_url( $booking = null ) {
-		return '';
+	public function get_return_url( $booking ) {
+		$booking = abrs_get_booking( $booking );
+
+		if ( is_null( $booking ) ) {
+			return '';
+		}
+
+		return ( new Url_Generator( $booking ) )->get_booking_received_url();
+	}
+
+	/**
+	 * Determines if the gateway has fields on the checkout.
+	 *
+	 * @return bool
+	 */
+	public function has_fields() {
+		return false;
 	}
 
 	/**
@@ -195,7 +227,7 @@ abstract class Gateway {
 	 *
 	 * @return void
 	 */
-	public function print_payment_fields() {
+	public function display_fields() {
 		if ( $description = $this->get_description() ) {
 			echo wp_kses_post( wpautop( wptexturize( $description ) ) );
 		}
@@ -204,35 +236,24 @@ abstract class Gateway {
 	/**
 	 * Validate frontend payment fields.
 	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @param  mixed $data The posted data.
 	 * @return bool
 	 */
-	public function validate_payment_fields( Request $request ) {
+	public function validate_fields( $data ) {
 		return true;
 	}
 
 	/**
 	 * Display the payment content in admin.
 	 *
+	 * @param \AweBooking\Model\Booking\Payment_Item $payment_item The payment item instance.
+	 * @param \AweBooking\Model\Booking              $booking      The current booking instance.
+	 *
 	 * @return void
 	 */
-	public function display_payment_contents( Booking_Payment_Item $payment_item, Booking $booking ) {
-
-		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get_transaction_id() ) {
-			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> '. esc_html( $transaction_id );
+	public function display_payment_contents( Payment_Item $payment_item, Booking $booking ) {
+		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get( 'transaction_id' ) ) {
+			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
 		}
-	}
-
-	/**
-	 * Get the option by key (no prefix include).
-	 *
-	 * @param  string $key     The key.
-	 * @param  mixed  $default The default value.
-	 * @return mixed
-	 */
-	protected function get_option( $key, $default = null ) {
-		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
-
-		return awebooking_option( $prefix . '_' . $key, $default );
 	}
 }

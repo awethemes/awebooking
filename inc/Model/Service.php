@@ -2,22 +2,8 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
-use AweBooking\Pricing\Price;
 
-class Service extends WP_Object {
-	/* Constants */
-	const OPTIONAL = 'optional';
-	const MANDATORY = 'mandatory';
-
-	/* Operation constants */
-	const OP_ADD       = 'add';
-	const OP_ADD_DAILY = 'add-daily';
-	const OP_SUB       = 'sub';
-	const OP_SUB_DAILY = 'sub-daily';
-	const OP_INCREASE  = 'increase';
-	const OP_DECREASE  = 'decrease';
-	const OP_ADD_PERSON       = 'add-person';
-	const OP_ADD_PERSON_DAILY = 'add-person-daily';
+class Service extends Model {
 
 	/**
 	 * This is the name of this object type.
@@ -27,248 +13,108 @@ class Service extends WP_Object {
 	protected $object_type = Constants::HOTEL_SERVICE;
 
 	/**
-	 * WordPress type for object.
-	 *
-	 * @var string
-	 */
-	protected $wp_type = 'term';
-
-	/**
-	 * Type of object metadata is for.
-	 *
-	 * @var string
-	 */
-	protected $meta_type = 'term';
-
-	/**
-	 * The attributes for this object.
-	 *
-	 * Name value pairs (name + default value).
-	 *
-	 * @var array
-	 */
-	protected $attributes = [
-		'name'        => '',
-		'description' => '',
-		'operation'   => 'add',
-		'value'       => 0,
-		'type'        => 'optional',
-		'icon'        => '',
-	];
-
-	/**
-	 * An array of attributes mapped with metadata.
-	 *
-	 * @var array
-	 */
-	protected $maps = [
-		'operation' => '_service_operation',
-		'value'     => '_service_value',
-		'type'      => '_service_type',
-		'icon'      => '_icon',
-	];
-
-	/**
-	 * The attributes that should be cast to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'value' => 'float',
-	];
-
-	/**
-	 * Get service by given a slug.
-	 *
-	 * @param  string $slug Service slug.
-	 * @return static
-	 */
-	public static function get_by_slug( $slug ) {
-		$service = get_term_by( 'slug', $slug, Constants::HOTEL_SERVICE );
-		if ( $service instanceof \WP_Term ) {
-			return new static( $service->term_id );
-		}
-	}
-
-	/**
-	 * Setup the object attributes.
-	 *
-	 * @return void
-	 */
-	protected function setup() {
-		$this['name'] = $this->instance->name;
-		$this['description'] = $this->instance->description;
-	}
-
-	/**
-	 * Get service name.
-	 *
-	 * @return string
-	 */
-	public function get_name() {
-		return apply_filters( $this->prefix( 'get_name' ), $this['name'], $this );
-	}
-
-	/**
-	 * Get service description.
-	 *
-	 * @return string
-	 */
-	public function get_description() {
-		return apply_filters( $this->prefix( 'get_description' ), $this['description'], $this );
-	}
-
-	/**
-	 * Returns value.
-	 *
-	 * @return float
-	 */
-	public function get_value() {
-		return apply_filters( $this->prefix( 'get_value' ), $this['value'], $this );
-	}
-
-	/**
-	 * Returns service operation.
-	 *
-	 * @return string
-	 */
-	public function get_operation() {
-		return apply_filters( $this->prefix( 'get_operation' ), $this['operation'], $this );
-	}
-
-	/**
-	 * Returns "optional" or "mandatory".
-	 *
-	 * @return string
-	 */
-	public function get_type() {
-		return apply_filters( $this->prefix( 'get_type' ), $this['type'], $this );
-	}
-
-	/**
-	 * Returns iconfont.
+	 * Get all service operations.
 	 *
 	 * @return array
 	 */
-	public function get_icon() {
-		return apply_filters( $this->prefix( 'get_icon' ), $this['icon'], $this );
+	public static function get_operations() {
+		return apply_filters( 'abrs_get_service_operations', [
+			'add'               => esc_html__( 'Add to price', 'awebooking' ),
+			'add_daily'         => esc_html__( 'Add to price per night', 'awebooking' ),
+			'add_person'        => esc_html__( 'Add to price per person', 'awebooking' ),
+			'add_person_daily'  => esc_html__( 'Add to price per person per night', 'awebooking' ),
+			'sub'               => esc_html__( 'Subtract from price', 'awebooking' ),
+			'sub_daily'         => esc_html__( 'Subtract from price per night', 'awebooking' ),
+			'increase'          => esc_html__( 'Increase price by % amount', 'awebooking' ),
+			'decrease'          => esc_html__( 'Decrease price by % amount', 'awebooking' ),
+		]);
 	}
 
 	/**
-	 * If this is optional service.
-	 *
-	 * @return bool
+	 * {@inheritdoc}
 	 */
-	public function is_optional() {
-		return static::OPTIONAL === $this->get_type();
+	protected function setup() {
+		$this->set_attribute( 'name', $this->instance->post_title );
+		$this->set_attribute( 'description', $this->instance->post_excerpt );
+		$this->set_attribute( 'date_created', $this->instance->post_date );
+		$this->set_attribute( 'date_modified', $this->instance->post_modified );
+		$this->set_attribute( 'status', $this->instance->post_status );
+
+		do_action( $this->prefix( 'after_setup' ), $this );
 	}
 
 	/**
-	 * If this is mandatory service.
-	 *
-	 * @return bool
-	 */
-	public function is_mandatory() {
-		return static::MANDATORY === $this->get_type();
-	}
-
-	/**
-	 * Return describe label for display.
-	 *
-	 * @param  string $before_value  String before value.
-	 * @param  string $after_value   String after value.
-	 * @return string
-	 */
-	public function get_describe( $before_value = '', $after_value = '' ) {
-		$label = '';
-
-		switch ( $this->get_operation() ) {
-			case static::OP_ADD:
-				$label = sprintf( esc_html__( '%2$s + %1$s %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_ADD_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_ADD_PERSON:
-				$label = sprintf( esc_html__( '%2$s + %1$s x person %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_ADD_PERSON_DAILY:
-				$label = sprintf( esc_html__( '%2$s + %1$s x person x night %3$s to price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_SUB:
-				$label = sprintf( esc_html__( '%2$s - %1$s %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_SUB_DAILY:
-				$label = sprintf( esc_html__( '%2$s - %1$s x night %3$s from price', 'awebooking' ), $this->get_price(), $before_value, $after_value );
-				break;
-
-			case static::OP_INCREASE:
-				$label = sprintf( esc_html__( '%2$s + %1$s%% %3$s to price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
-				break;
-
-			case static::OP_DECREASE:
-				$label = sprintf( esc_html__( '%2$s - %1$s%% %3$s from price', 'awebooking' ), $this->get_value(), $before_value, $after_value );
-				break;
-		}
-
-		return $label;
-	}
-
-	/**
-	 * The room-type title.
-	 *
-	 * @return Price
-	 */
-	public function get_price() {
-		if ( in_array( $this->get_operation(), [ static::OP_INCREASE, static::OP_DECREASE ] ) ) {
-			return new Price( 0 );
-		}
-
-		return new Price( $this['value'] );
-	}
-
-	/**
-	 * Run perform insert object into database.
-	 *
-	 * @see wp_insert_term()
-	 *
-	 * @return int|void
+	 * {@inheritdoc}
 	 */
 	protected function perform_insert() {
-		$inserted = wp_insert_term( $this->get_name(), $this->object_type, [
-			'description' => $this->get_description(),
-		]);
+		$insert_id = wp_insert_post([
+			'post_type'    => $this->object_type,
+			'post_title'   => $this->get( 'name' ),
+			'post_excerpt' => $this->get( 'description' ),
+			'post_status'  => $this->get( 'status' ) ?: 'publish',
+			'post_date'    => $this->get( 'date_created' ) ?: current_time( 'mysql' ),
+		], true );
 
-		if ( is_wp_error( $inserted ) ) {
-			return;
+		if ( ! is_wp_error( $insert_id ) ) {
+			return $insert_id;
 		}
 
-		return $inserted['term_id'];
+		return 0;
 	}
 
 	/**
-	 * Run perform update object.
-	 *
-	 * @see wp_update_term()
-	 *
-	 * @param  array $dirty The attributes has been modified.
-	 * @return bool|void
+	 * {@inheritdoc}
 	 */
 	protected function perform_update( array $dirty ) {
-		if ( ! $this->is_dirty( 'name', 'description' ) ) {
-			return true;
+		if ( $this->get_changes_only( $dirty, [ 'name', 'status', 'description', 'date_created' ] ) ) {
+			$this->update_the_post([
+				'post_title'    => $this->get( 'name' ),
+				'post_status'   => $this->get( 'status' ),
+				'post_excerpt'  => $this->get( 'description' ),
+				'post_date'     => $this->get( 'date_created' ),
+			]);
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function setup_attributes() {
+		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
+			'name'          => '',
+			'description'   => '',
+			'date_created'  => null,
+			'date_modified' => null,
+			'status'        => '',
+			'value'         => '',
+			'operation'     => '',
+			'icon'          => [],
+			'thumbnail_id'  => 0,
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function map_attributes() {
+		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
+			'operation'    => '_operation',
+			'value'        => '_value',
+			'icon'         => '_icon',
+			'thumbnail_id' => '_thumbnail_id',
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function sanitize_attribute( $key, $value ) {
+		switch ( $key ) {
+			case 'value':
+				$value = abrs_sanitize_decimal( $value );
+				break;
 		}
 
-		$updated = wp_update_term( $this->get_id(), $this->object_type, [
-			'name'        => $this->get_name(),
-			'description' => $this->get_description(),
-		]);
-
-		return ! is_wp_error( $updated );
+		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );
 	}
 }

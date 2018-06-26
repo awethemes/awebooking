@@ -1,0 +1,16 @@
+.hotel-content {
+  @include make-row();
+}
+
+.hotel-content__main,
+.hotel-content__aside {
+  @include make-col-ready();
+}
+
+.hotel-content__main {
+  @include make-col(8);
+}
+
+.hotel-content__aside {
+  @include make-col(4);
+}

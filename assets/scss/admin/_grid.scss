@@ -1,0 +1,111 @@
+@import "utils/breakpoints";
+@import "utils/grid";
+
+@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+  @return if(breakpoint-max($name, $breakpoints) == null, "", "-#{$name}");
+}
+
+// ------------------------------------------------------
+// Utilities for common `display` values
+// ------------------------------------------------------
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .dp#{$infix}-none         { display: none !important; }
+    .dp#{$infix}-inline       { display: inline !important; }
+    .dp#{$infix}-inline-block { display: inline-block !important; }
+    .dp#{$infix}-block        { display: block !important; }
+    .dp#{$infix}-flex         { display: flex !important; }
+    .dp#{$infix}-inline-flex  { display: inline-flex !important; }
+  }
+}
+
+// ------------------------------------------------------
+// Flex variation
+// ------------------------------------------------------
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .flex#{$infix}-row            { flex-direction: row !important; }
+    .flex#{$infix}-column         { flex-direction: column !important; }
+    .flex#{$infix}-row-reverse    { flex-direction: row-reverse !important; }
+    .flex#{$infix}-column-reverse { flex-direction: column-reverse !important; }
+
+    .flex#{$infix}-wrap         { flex-wrap: wrap !important; }
+    .flex#{$infix}-nowrap       { flex-wrap: nowrap !important; }
+    .flex#{$infix}-wrap-reverse { flex-wrap: wrap-reverse !important; }
+  }
+}
+
+// ------------------------------------------------------
+// Grid system
+// ------------------------------------------------------
+.abwrap {
+  @include clearfix;
+  padding-left: ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width / 2);
+}
+
+.abrow {
+  @include make-row();
+  box-sizing: border-box;
+
+  &.no-gutters {
+    margin-left: 0;
+    margin-right: 0;
+
+    > .abcol,
+    > [class*="abcol-"] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+// Common properties for all breakpoints
+%grid-column {
+  width: 100%;
+  position: relative;
+  min-height: 1px; // Prevent columns from collapsing when empty
+  padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+  box-sizing: border-box;
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+  // Allow columns to stretch full width below their breakpoints
+  @for $i from 1 through $grid-columns {
+    .abcol#{$infix}-#{$i} {
+      @extend %grid-column;
+    }
+  }
+
+  .abcol#{$infix},
+  .abcol#{$infix}-auto {
+    @extend %grid-column;
+  }
+
+  @include media-breakpoint-down($breakpoint, $grid-breakpoints) {
+    .abcol#{$infix} {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+
+    .abcol#{$infix}-auto {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: none; // Reset earlier grid tiers
+    }
+
+    @for $i from 1 through $grid-columns {
+      .abcol#{$infix}-#{$i} {
+        @include make-col($i, $grid-columns);
+      }
+    }
+  }
+}

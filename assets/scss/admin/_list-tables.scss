@@ -1,0 +1,87 @@
+.abrs-tooltip-note {
+  width: 350px;
+}
+
+.abrs-tooltip-booking-paid-column {
+  width: 150px;
+}
+
+table.wp-list-table {
+  .column-thumb {
+    width: 52px;
+    text-align: center;
+
+    @include in-small() {
+      display: none;
+      text-align: left;
+
+      &:before {
+        content: '' !important;
+      }
+    }
+
+    > a {
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 50%;
+      @include size(38px);
+    }
+
+    > a > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // Room type
+  .column-rate { width: 10%; }
+  .column-rooms { width: 15%; }
+  .column-capacity { width: 20%; }
+
+  // Booking
+  .column-booking_number { width: 15%; }
+  .column-booking_date,
+  .column-booking_status { width: 10%; }
+  .column-booking_check_in,
+  .column-booking_check_out { width: 8%; }
+  .column-booking_total,
+  .column-booking_paid { width: 5%; }
+  .column-booking_nights { width: 3%; }
+  .booking_summary { width: auto; }
+}
+
+.post-type-awebooking .wp-list-table {
+  td,
+  th {
+    vertical-align: middle;
+  }
+
+  tbody .check-column { padding: 8px 3px; }
+}
+
+/* body.edit-php.post-type-awebooking {
+  ul.subsubsub {
+    display: block;
+    width: 100%;
+    background: #fff;
+    padding: 10px 1em;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+    box-sizing: border-box;
+    float: none;
+    margin-bottom: 1em;
+  }
+
+  #posts-filter {
+    z-index: 1;
+    position: relative;
+
+    p.search-box {
+      top: -50px;
+      right: 0;
+      z-index: 2;
+      position: absolute;
+      padding-right: 1em;
+    }
+  }
+}*/

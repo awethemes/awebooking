@@ -1,0 +1,65 @@
+.checkout-services {
+	border: 1px solid $gray-200;
+	border-radius: 6px;
+	
+	&__header {
+		font-size: 1rem;
+		padding: .8rem;
+		margin: 0;
+	}
+}
+
+.checkout-service {
+	border-top: 1px solid $gray-200;
+	padding: 1.2rem;
+
+	&__media {
+		border-radius: .4rem;
+		overflow: hidden;
+
+		img {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+	
+	&__title {
+		font-size: 1.2rem;
+		color: $blue;
+		text-transform: capitalize;
+		margin-top: 0;
+		margin-bottom: .5rem;
+	}
+	
+	&__description {
+		margin-bottom: .5rem;
+	}
+	
+	&__operation {
+		font-size: .8rem;
+		color: $red;
+	}
+
+	&__pay {
+		text-align: right;
+	}
+
+	&__price {
+		color: $red;
+
+		.awebooking-price {
+			display: block;
+			font-size: 2rem;
+			line-height: 1;
+			color: $dark;
+
+			&__symbol {
+				font-size: 1rem;
+			}
+		}
+
+		.nice-checkbox {
+			
+		}
+	}
+}

@@ -1,11 +1,9 @@
 <?php
 namespace AweBooking\Admin;
 
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-
 class Admin_Template {
 	/**
-	 * Create a full template.
+	 * Returns a template contents.
 	 *
 	 * @param  string $template The template name.
 	 * @param  array  $vars     The data inject to template.
@@ -13,34 +11,34 @@ class Admin_Template {
 	 */
 	public function get( $template, array $vars = [] ) {
 		return $this->evaluate_template(
-			$this->locale_template( $template ), $vars
+			$this->locale_template( $template ), $vars, false
 		);
 	}
 
 	/**
 	 * Display a partial template.
 	 *
-	 * @param  string $template The template name.
-	 * @param  array  $vars     The data inject to template.
+	 * @param  string $partial The partial template.
+	 * @param  array  $vars    The data inject to template.
 	 * @return void
 	 */
-	public function partial( $template, array $vars = [] ) {
+	public function partial( $partial, array $vars = [] ) {
 		print $this->evaluate_template( // @codingStandardsIgnoreLine
-			$this->locale_template( $template ), $vars, false
+			$this->locale_template( $partial ), $vars, false // @codingStandardsIgnoreLine
 		);
 	}
 
 	/**
-	 * Create a callback display a partial template.
+	 * Returns a full page template.
 	 *
-	 * @param  string $template The template name.
-	 * @param  array  $vars     The data inject to template.
-	 * @return \Closure
+	 * @param  string $page The template page.
+	 * @param  array  $vars The data inject to template.
+	 * @return string
 	 */
-	public function partial_callback( $template, array $vars = [] ) {
-		return function () use ( $template, $vars ) {
-			$this->partial( $template, $vars );
-		};
+	public function page( $page, array $vars = [] ) {
+		return $this->evaluate_template(
+			$this->locale_template( $page ), $vars, true
+		);
 	}
 
 	/**
@@ -63,13 +61,13 @@ class Admin_Template {
 	 * @param  bool   $admin_template Should be include admin template?.
 	 * @return string
 	 */
-	protected function evaluate_template( $template, $vars, $admin_template = true ) {
+	protected function evaluate_template( $template, $vars, $admin_template = false ) {
 		$ob_level = ob_get_level();
 
 		// Turn on output buffering.
 		ob_start();
 
-		// @codingStandardsIgnoreLine, Okay, just fine!
+		// @codingStandardsIgnoreLine
 		extract( $vars, EXTR_SKIP );
 
 		// We'll evaluate the contents of the view inside a try/catch block so we can
@@ -79,9 +77,7 @@ class Admin_Template {
 			if ( $admin_template ) {
 				// If see the $page_title in $vars, set the admin_title.
 				if ( isset( $page_title ) && ! empty( $page_title ) ) {
-					add_filter( 'admin_title', function( $admin_title ) use ( $page_title ) {
-						return $page_title . $admin_title;
-					});
+					$this->modify_admin_title( $page_title );
 				}
 
 				require_once ABSPATH . 'wp-admin/admin-header.php';
@@ -94,33 +90,23 @@ class Admin_Template {
 				include ABSPATH . 'wp-admin/admin-footer.php';
 			}
 		} catch ( \Exception $e ) {
-			$this->handle_view_exception( $e, $ob_level );
+			awebooking()->handle_buffering_exception( $e, $ob_level );
 		} catch ( \Throwable $e ) {
-			$this->handle_view_exception( $e, $ob_level );
+			awebooking()->handle_buffering_exception( $e, $ob_level );
 		}
 
 		return ltrim( ob_get_clean() );
 	}
 
 	/**
-	 * Handle a view exception.
+	 * Add a filter to modify the admin title.
 	 *
-	 * @param  \Exception $e        The exception.
-	 * @param  int        $ob_level The ob_get_level().
+	 * @param  string $page_title The page title.
 	 * @return void
-	 *
-	 * @throws \Exception
 	 */
-	protected function handle_view_exception( $e, $ob_level ) {
-		// In PHP7+, throw a FatalThrowableError when we catch an Error.
-		if ( $e instanceof \Error && class_exists( FatalThrowableError::class ) ) {
-			$e = new FatalThrowableError( $e );
-		}
-
-		while ( ob_get_level() > $ob_level ) {
-			ob_end_clean();
-		}
-
-		throw $e;
+	protected function modify_admin_title( $page_title ) {
+		add_filter( 'admin_title', function( $admin_title ) use ( $page_title ) {
+			return $page_title . $admin_title;
+		});
 	}
 }

@@ -45,7 +45,7 @@ class Decimal {
 	 */
 	protected function __construct( $amount, $scale ) {
 		if ( false === filter_var( $amount, FILTER_VALIDATE_INT ) ) {
-			trigger_error( 'The amount should be an integer value' );
+			trigger_error( 'The amount should be an integer value', E_USER_WARNING ); // @codingStandardsIgnoreLine
 		}
 
 		$this->amount = (int) $amount;
@@ -143,7 +143,9 @@ class Decimal {
 	}
 
 	/**
-	 * Creates a value from an raw integer input. No value conversions will be done.
+	 * Creates a value from a raw integer input.
+	 *
+	 * No value conversions will be done.
 	 *
 	 * @param  int      $amount The amount.
 	 * @param  int|null $scale  Optional, the scale.
@@ -185,7 +187,7 @@ class Decimal {
 			// e.g. 123.45 at scale 4 -> 123 (integer) . 4500 (zero padded decimal part) => 1234500.
 			if ( strlen( $captures[3] ) <= $scale ) {
 				$fractional_part = str_pad( $captures[3], $scale, '0', STR_PAD_RIGHT );
-				$result = (int) ( $captures[1] . $captures[2] . $fractional_part );
+				$result          = (int) ( $captures[1] . $captures[2] . $fractional_part );
 			}
 		}
 
@@ -312,12 +314,12 @@ class Decimal {
 			$amount = $string;
 		} elseif ( strlen( $string ) <= $this->scale ) {
 			$fractional_part = str_pad( $string, $this->scale, '0', STR_PAD_LEFT );
-			$amount = '0.' . $fractional_part;
+			$amount          = '0.' . $fractional_part;
 		} else {
 			$fractional_offset = strlen( $string ) - $this->scale;
 			$integer_part      = substr( $string, 0, $fractional_offset );
 			$fractional_part   = substr( $string, $fractional_offset );
-			$amount = $integer_part . '.' . $fractional_part;
+			$amount            = $integer_part . '.' . $fractional_part;
 		}
 
 		if ( null !== $digits ) {
@@ -386,6 +388,7 @@ class Decimal {
 	 * Checks if value is equal to other value.
 	 *
 	 * @param  Decimal $other Other Decimal value.
+	 * @return bool
 	 */
 	public function equals( Decimal $other ) {
 		return $other->scale === $this->scale && $other->amount === $this->amount;
@@ -395,6 +398,7 @@ class Decimal {
 	 * Checks if value is not equal to other value.
 	 *
 	 * @param  Decimal $other Other Decimal value.
+	 * @return bool
 	 */
 	public function not_equals( Decimal $other ) {
 		return ! $this->equals( $other );
@@ -521,7 +525,7 @@ class Decimal {
 	 * @param  Decimal|int|float|string $other Other value.
 	 * @return static
 	 */
-	public function sub( $other ) {
+	public function subtract( $other ) {
 		if ( ! $other instanceof self ) {
 			$other = static::from_numeric( $other, $this->scale );
 		}
@@ -535,6 +539,16 @@ class Decimal {
 	}
 
 	/**
+	 * Subtracts another price amount.
+	 *
+	 * @param  Decimal|int|float|string $other Other value.
+	 * @return static
+	 */
+	public function sub( $other ) {
+		return $this->subtract( $other );
+	}
+
+	/**
 	 * Multiplies by the given factor.
 	 *
 	 * This does NOT have to be a price amount, but can be
@@ -545,7 +559,7 @@ class Decimal {
 	 * @param  int|null          $rounding_mode The rounding mode.
 	 * @return static
 	 */
-	public function mul( $other, $rounding_mode = null ) {
+	public function multiply( $other, $rounding_mode = null ) {
 		$operand = $this->get_scalar_operand( $other );
 
 		$result = $this->amount * $operand;
@@ -554,6 +568,17 @@ class Decimal {
 		$result = static::to_int_value( $result, $rounding_mode );
 
 		return new static( $result, $this->scale );
+	}
+
+	/**
+	 * Multiplies by the given factor.
+	 *
+	 * @param  int|float|Decimal $other         The other value.
+	 * @param  int|null          $rounding_mode The rounding mode.
+	 * @return static
+	 */
+	public function mul( $other, $rounding_mode = null ) {
+		return $this->multiply( $other, $rounding_mode );
 	}
 
 	/**
@@ -569,7 +594,7 @@ class Decimal {
 	 *
 	 * @throws \LogicException
 	 */
-	public function div( $other, $rounding_mode = null ) {
+	public function divide( $other, $rounding_mode = null ) {
 		$operand = $this->get_scalar_operand( $other );
 		$epsilon = pow( 10, -1 * $this->scale );
 
@@ -583,6 +608,19 @@ class Decimal {
 		$result = static::to_int_value( $result, $rounding_mode );
 
 		return new static( $result, $this->scale );
+	}
+
+	/**
+	 * Divides by the given divisor.
+	 *
+	 * @param  int|float|Decimal $other         The other value.
+	 * @param  int|null          $rounding_mode The rounding mode.
+	 * @return static
+	 *
+	 * @throws \LogicException
+	 */
+	public function div( $other, $rounding_mode = null ) {
+		return $this->divide( $other, $rounding_mode );
 	}
 
 	/**
@@ -618,7 +656,7 @@ class Decimal {
 	 *
 	 * @example Decimal::create(100)->discount(15) = 85
 	 *
-	 * @param  int|float $discount      The discount value.
+	 * @param  int|float $discount      The discount (percent) value.
 	 * @param  int|null  $rounding_mode The rounding mode.
 	 * @return static
 	 */
@@ -627,6 +665,23 @@ class Decimal {
 
 		return $this->sub(
 			$this->to_percentage( $discount, $rounding_mode )
+		);
+	}
+
+	/**
+	 * Calculate a surcharge amount.
+	 *
+	 * @example Decimal::create(100)->surcharge(15) = 115
+	 *
+	 * @param  int|float $surcharge     The surcharge (percent) value.
+	 * @param  int|null  $rounding_mode The rounding mode.
+	 * @return static
+	 */
+	public function surcharge( $surcharge, $rounding_mode = null ) {
+		$surcharge = $this->get_scalar_operand( $surcharge );
+
+		return $this->add(
+			$this->to_percentage( $surcharge, $rounding_mode )
 		);
 	}
 

@@ -1,96 +1,76 @@
 <?php
 namespace AweBooking\Support;
 
-use DatePeriod;
 use League\Period\Period as League_Period;
 
 class Period extends League_Period {
 	/**
+	 * Create a period instance.
+	 *
+	 * @param mixed $start_date Starting date point.
+	 * @param mixed $end_date   Ending date point.
+	 * @return static
+	 */
+	public static function create( $start_date, $end_date ) {
+		return new static( $start_date, $end_date );
+	}
+
+	/**
 	 * Create date period.
 	 *
-	 * The date should be a string using
-	 * ISO-8601 "Y-m-d" date format, eg: 2017-05-10.
-	 *
-	 * @param string|Carbonate $start_date Starting date point.
-	 * @param string|Carbonate $end_date   Ending date point.
-	 * @param bool             $strict     Optional, use strict mode.
+	 * @param mixed $start_date Starting date point.
+	 * @param mixed $end_date   Ending date point.
 	 */
-	public function __construct( $start_date, $end_date, $strict = false ) {
-		parent::__construct(
-			Carbonate::create_datetime( $start_date ),
-			Carbonate::create_datetime( $end_date )
-		);
-
-		$this->validate_period( $strict );
+	public function __construct( $start_date, $end_date ) {
+		parent::__construct( abrs_date_time( $start_date ), abrs_date_time( $end_date ) );
 	}
 
 	/**
-	 * Returns the starting date point as Carbon.
+	 * Returns the starting date point.
 	 *
-	 * @return Carbon
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_start_date() {
-		$dt = $this->getStartDate();
-
-		return new Carbonate( $dt->format( 'Y-m-d H:i:s.u' ), $dt->getTimeZone() );
+		return abrs_date_time( $this->getStartDate() );
 	}
 
 	/**
-	 * Returns the ending datepoint as Carbon.
+	 * Returns the ending datepoint.
 	 *
-	 * @return Carbon
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date() {
-		$dt = $this->getEndDate();
-
-		return new Carbonate( $dt->format( 'Y-m-d H:i:s.u' ), $dt->getTimeZone() );
+		return abrs_date_time( $this->getEndDate() );
 	}
 
 	/**
-	 * Get number of nights.
+	 * Format the period at the start datepoint.
 	 *
-	 * @return int
+	 * @param  string $format The date format string.
+	 * @return string
 	 */
-	public function nights() {
-		return (int) $this->getDateInterval()->format( '%r%a' );
+	public function format( $format ) {
+		return $this->get_start_date()->format( $format );
 	}
 
 	/**
-	 * Get DatePeriod object instance.
+	 * Getter class property.
 	 *
-	 * @param  DateInterval|int|string $interval The interval.
-	 * @param  int                     $option   See DatePeriod::EXCLUDE_START_DATE.
-	 * @return DatePeriod
+	 * @param  string $property The property name.
+	 * @return mixed
+	 *
+	 * @throws \InvalidArgumentException
 	 */
-	public function get_period( $interval = '1 DAY', $option = 0 ) {
-		return new DatePeriod( $this->get_start_date(), static::filterDateInterval( $interval ), $this->get_end_date(), $option );
-	}
-
-	/**
-	 * Validate period for require minimum night(s).
-	 *
-	 * @param  integer $nights Minimum night(s) to required, default 1.
-	 * @return void
-	 *
-	 * @throws \LogicException
-	 */
-	public function required_minimum_nights( $nights = 1 ) {
-		if ( $this->nights() < $nights ) {
-			throw new \LogicException( sprintf( esc_html__( 'The date period must be have minimum %d night(s).', 'awebooking' ), esc_html( $nights ) ) );
+	public function __get( $property ) {
+		switch ( $property ) {
+			case 'days':
+				return (int) $this->getDateInterval()->format( '%r%a' );
+			case 'start_date':
+				return $this->get_start_date();
+			case 'end_date':
+				return $this->get_end_date();
 		}
-	}
 
-	/**
-	 * Validate the period in strict.
-	 *
-	 * @param  bool $strict Strict mode validation past date.
-	 * @return void
-	 *
-	 * @throws \RangeException
-	 */
-	protected function validate_period( $strict ) {
-		if ( $strict && $this->isBefore( Carbonate::today() ) ) {
-			throw new \RangeException( esc_html__( 'The date period must be greater or equal to the today.', 'awebooking' ) );
-		}
+		throw new \InvalidArgumentException( "Unknown getter '{$property}'" );
 	}
 }

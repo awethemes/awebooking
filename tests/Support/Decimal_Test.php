@@ -2,6 +2,8 @@
 
 use AweBooking\Support\Decimal;
 
+Decimal::set_default_scale( 4 );
+
 class DecimalTest extends WP_UnitTestCase {
 
 	public function setUp() {
@@ -431,6 +433,12 @@ class DecimalTest extends WP_UnitTestCase {
 		$this->assertEquals( 85, Decimal::create( 100 )->discount( 15 )->as_numeric() );
 		$this->assertEquals( 50, Decimal::create( 100 )->discount( 50 )->as_numeric() );
 		$this->assertEquals( 70, Decimal::create( 100 )->discount( 30 )->as_numeric() );
+	}
+
+	public function testSurcharge() {
+		$this->assertEquals( 115, Decimal::create( 100 )->surcharge( 15 )->as_numeric() );
+		$this->assertEquals( 150, Decimal::create( 100 )->surcharge( 50 )->as_numeric() );
+		$this->assertEquals( 130, Decimal::create( 100 )->surcharge( 30 )->as_numeric() );
 	}
 
 	public function testPercentageOf() {

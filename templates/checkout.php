@@ -1,30 +1,53 @@
 <?php
 /**
- * The Template for checkout page.
+ * The template for displaying search results.
  *
- * This template can be overridden by copying it to yourtheme/awebooking/checkout.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/single-room.php.
  *
- * @author 		Awethemes
- * @package 	Awethemes/Templates
- * @version     3.0.0
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-do_action( 'awebooking/template_notices' ); 
+get_header( 'awebooking' );
 
 /**
- * Hook: "awebooking/checkout/detail_tables"
+ * The opening divs for the content.
  *
- * @hooked awebooking_template_checkout_general_informations - 10
+ * @hooked abrs_content_wrapper_before() - 10 (outputs opening divs for the content).
  */
-do_action( 'awebooking/checkout/detail_tables' );
+do_action( 'abrs_before_main_content' );
 
+// Print the notices messages.
+do_action( 'abrs_print_notices' );
+
+?>
+
+	<div class="awebooking-page awebooking-page--checkout">
+		<?php while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
+
+			do_action( 'abrs_before_checkout_content' );
+
+			abrs_checkout()->output();
+
+			do_action( 'abrs_after_checkout_content' );
+
+		endwhile; // @codingStandardsIgnoreLine. ?>
+	</div><!-- /.awebooking-page--checkout -->
+
+<?php
 /**
- * Hook: "awebooking/checkout/customer_form
+ * Outputs closing divs for the content
  *
- * @hooked awebooking_template_checkout_customer_form - 10
+ * @hooked abrs_content_wrapper_after() - 10 (outputs closing divs for the content).
  */
-do_action( 'awebooking/checkout/customer_form' ); ?>
+do_action( 'abrs_after_main_content' );
+
+get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
+
+/* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */

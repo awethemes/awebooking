@@ -1,0 +1,83 @@
+@mixin clearfix() {
+  &::after {
+    display: block;
+    clear: both;
+    content: "";
+  }
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin text-truncate() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Vertical centering.
+// Note: You should set parent element: transform-style: preserve-3d;
+// @see http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+@mixin vertical-align($position: relative) {
+  top: 50%;
+  position: $position;
+  transform: translateY(-50%);
+}
+
+/// Horizontal, vertical or absolute centering.
+@mixin center($width: null, $height: null) {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+
+  @if not $width and not $height {
+    transform: translate(-50%, -50%);
+  } @else if $width and $height {
+    width: $width;
+    height: $height;
+    margin-top: -($width / 2);
+    margin-left:-($height / 2);
+  } @else if not $height {
+    margin-left: -($width / 2);
+    transform: translateY(-50%);
+    width: $width;
+  } @else {
+    margin-top: -($height / 2);
+    transform: translateX(-50%);
+    height: $height;
+  }
+}
+
+// Shorthand mixin for offset positioning
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+  position: $position;
+}
+
+// Shorthand mixin for absolute positioning
+@mixin absolute($args...) {
+  @include position(absolute, $args...);
+}
+
+// Shorthand mixin for relative positioning
+@mixin relative($args...) {
+  @include position(relative, $args...);
+}
+
+// Shorthand mixin for fixed positioning
+@mixin fixed($args...) {
+  @include position(fixed, $args...);
+}
+
+@function color-level($color, $level: 0) {
+  $color-base: if($level > 0, $black, $white);
+
+  $level: abs($level);
+
+  @return mix($color-base, $color, $level * $theme-color-interval);
+}

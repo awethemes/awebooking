@@ -1,8 +1,8 @@
 {
     "name": "awethemes/awebooking",
-    "description": "Online hotel booking plugin for WordPress",
+    "description": "A simple hotel reservation system for WordPress.",
     "type": "wordpress-plugin",
-    "license": "GPLv2 or later",
+    "license": "GPL-2.0-or-later",
     "minimum-stability": "stable",
     "authors": [
         {
@@ -14,60 +14,36 @@
             "email": "anhskohbo@gmail.com"
         }
     ],
-    "repositories": [
-        { "type": "vcs", "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git" }
-    ],
     "require": {
         "php": ">=5.6.4",
         "a5hleyrich/wp-background-processing": "^1.0",
         "awethemes/container": "5.4.*",
-        "awethemes/skeleton": "^1.2",
         "awethemes/wp-http": "^1.0",
-        "awethemes/wp-object": "dev-master",
-        "awethemes/wp-session": "dev-master",
-        "erusev/parsedown": "^1.6",
-        "league/period": "^3.3",
+        "awethemes/wp-object": "^1.0",
+        "awethemes/wp-session": "^1.0",
+        "league/period": "^3.4",
+        "mexitek/phpcolors": "^0.4.0",
         "monolog/monolog": "^1.23",
-        "nesbot/carbon": "^1.22",
-        "pelago/emogrifier": "^1.2",
-        "roomify/bat": "dev-master",
-        "symfony/http-foundation": "3.3.*",
-        "tightenco/collect": "5.4.*",
-        "webdevstudios/taxonomy_single_term": "dev-master"
+        "nesbot/carbon": "^1.25",
+        "pelago/emogrifier": "^2.0",
+        "roomify/bat": "^1.2",
+        "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
-        "10up/wp_mock": "^0.2.0",
-        "symfony/debug": "^3.3",
-        "symfony/var-dumper": "^3.3"
+        "10up/wp_mock": "0.2.0",
+        "symfony/debug": "3.3.*",
+        "symfony/translation": "3.3.*",
+        "symfony/var-dumper": "3.3.*"
     },
     "autoload": {
         "psr-4": {
-            "AweBooking\\": "inc/"
-        },
-        "files": [
-            "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php"
-        ],
-        "classmap": [
-            "bin/composer-cleaner.php"
-        ]
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "AweBooking_Composer_Cleaner::clean"
-        ],
-        "post-update-cmd": [
-            "AweBooking_Composer_Cleaner::clean"
-        ],
-        "clean": [
-            "AweBooking_Composer_Cleaner::clean"
-        ],
-        "install-unit-tests": [
-            "bash bin/install-wp-tests.sh wptest_awebooking root 'secret' localhost latest"
-        ]
+            "AweBooking\\": "inc/",
+            "AweBooking\\Deprecated\\": "deprecated/"
+        }
     },
     "config": {
         "sort-packages": true,
-        "optimize-autoloader": true,
+        "optimize-autoloader": false,
         "preferred-install": "dist"
     }
 }

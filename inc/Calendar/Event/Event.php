@@ -1,11 +1,13 @@
 <?php
 namespace AweBooking\Calendar\Event;
 
-use AweBooking\Support\Carbonate;
-use AweBooking\Calendar\Period\Period;
+use AweBooking\Support\Period;
+use AweBooking\Support\Traits\Fluent_Getter;
 use AweBooking\Calendar\Resource\Resource_Interface;
 
 class Event implements Event_Interface {
+	use Fluent_Getter;
+
 	/**
 	 * The start date for the event.
 	 *
@@ -92,19 +94,33 @@ class Event implements Event_Interface {
 	 * @param DateTime|string    $start_date The start date of the event.
 	 * @param DateTime|string    $end_date   The end date of the event.
 	 * @param int                $value      The event value.
-	 *
-	 * @throws \LogicException
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = 0 ) {
-		$this->start_date = Carbonate::create_datetime( $start_date );
-		$this->end_date   = Carbonate::create_datetime( $end_date );
+		static::assert_valid_dates(
+			$start_date = abrs_date_time( $start_date ),
+			$end_date   = abrs_date_time( $end_date )
+		);
 
-		if ( $this->start_date > $this->end_date ) {
-			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
-		}
+		$this->start_date = $start_date;
+		$this->end_date = $end_date;
 
 		$this->set_value( $value );
 		$this->set_resource( $resource );
+	}
+
+	/**
+	 * Assert that given valid dates.
+	 *
+	 * @param  \AweBooking\Support\Carbonate $start_date The start date of the event.
+	 * @param  \AweBooking\Support\Carbonate $end_date   The end date of the event.
+	 * @return void
+	 *
+	 * @throws \LogicException
+	 */
+	protected static function assert_valid_dates( $start_date, $end_date ) {
+		if ( $start_date > $end_date ) {
+			throw new \LogicException( 'The ending datepoint must be greater or equal to the starting datepoint.' );
+		}
 	}
 
 	/**
@@ -117,12 +133,40 @@ class Event implements Event_Interface {
 	}
 
 	/**
+	 * Set the start date.
+	 *
+	 * @param DateTime|string $start_date The start date of the event.
+	 * @return void
+	 */
+	public function set_start_date( $start_date ) {
+		$start_date = abrs_date_time( $start_date );
+
+		static::assert_valid_dates( $start_date, $this->end_date );
+
+		$this->start_date = $start_date;
+	}
+
+	/**
 	 * Returns the end date as new instance.
 	 *
 	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_end_date() {
 		return $this->end_date->copy();
+	}
+
+	/**
+	 * Set the end date.
+	 *
+	 * @param  DateTime|string $end_date The end date of the event.
+	 * @return void
+	 */
+	public function set_end_date( $end_date ) {
+		$end_date = abrs_date_time( $end_date );
+
+		static::assert_valid_dates( $this->start_date, $end_date );
+
+		$this->end_date = $end_date;
 	}
 
 	/**
@@ -144,6 +188,15 @@ class Event implements Event_Interface {
 		$this->resource = $resource;
 
 		return $this;
+	}
+
+	/**
+	 * Determines if this event have untrusted resource.
+	 *
+	 * @return boolean
+	 */
+	public function is_untrusted_resource() {
+		return $this->resource && $this->resource->get_id() < 1;
 	}
 
 	/**
@@ -288,7 +341,7 @@ class Event implements Event_Interface {
 	 * @return $this
 	 */
 	public function set_created( $created ) {
-		$this->created = Carbonate::create_datetime( $created );
+		$this->created = abrs_date_time( $created );
 
 		return $this;
 	}
@@ -296,7 +349,7 @@ class Event implements Event_Interface {
 	/**
 	 * Get the event date last modified.
 	 *
-	 * @return DateTimeInterface|string|int
+	 * @return \DateTimeInterface|string|int
 	 */
 	public function get_last_modified() {
 		return $this->last_modified;
@@ -305,11 +358,11 @@ class Event implements Event_Interface {
 	/**
 	 * Set the event last_modified date.
 	 *
-	 * @param  DateTimeInterface|string|int $last_modified The last_modified date.
+	 * @param  \DateTimeInterface|string|int $last_modified The last_modified date.
 	 * @return $this
 	 */
 	public function set_last_modified( $last_modified ) {
-		$this->last_modified = Carbonate::create_datetime( $last_modified );
+		$this->last_modified = abrs_date_time( $last_modified );
 
 		return $this;
 	}
@@ -326,11 +379,11 @@ class Event implements Event_Interface {
 	/**
 	 * Check if the given date is during the event.
 	 *
-	 * @param  DateTimeInterface|string|int $date The datetime given.
+	 * @param  \DateTimeInterface|string|int $date The datetime given.
 	 * @return bool
 	 */
 	public function contains( $date ) {
-		return $this->get_period()->contains( Carbonate::create_datetime( $date ) );
+		return $this->get_period()->contains( abrs_date_time( $date ) );
 	}
 
 	/**
@@ -344,11 +397,9 @@ class Event implements Event_Interface {
 	}
 
 	/**
-	 * Determines if this event have untrusted resource.
-	 *
-	 * @return boolean
+	 * {@inheritdoc}
 	 */
-	public function is_untrusted_resource() {
-		return $this->resource && $this->resource->get_id() < 1;
+	public function format( Formatter $formater ) {
+		return $formater->format( $this );
 	}
 }
