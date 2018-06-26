@@ -1,0 +1,73 @@
+$blue:    #007bff;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #f44336;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
+
+$primary:                     #5392F9;
+$border-radius:               2px;
+$border-radius-lg:            2px;
+$border-radius-sm:            0;
+
+$link-hover-decoration:     none;
+
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "utils/mixins";
+
+.awebooking-popup-theme {
+  color: inherit;
+  background-color: #fff;
+  box-shadow: 1px 3px 25px rgba($black, .08);
+}
+
+.awebooking-container {
+  @include make-container;
+  @include make-container-max-widths;
+}
+
+.awebooking-main {
+  padding: 1.75rem 0;
+}
+
+.awebooking,
+.awebooking-block {
+  //font-family: $font-family-base;
+  a {
+    color: $link-color;
+    text-decoration: $link-decoration;
+    background-color: transparent; // Remove the gray background on active links in IE 10.
+    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
+
+    @include hover {
+      color: $link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: $paragraph-margin-bottom;
+  }
+
+  @import "frontend/elements/form";
+  @import "frontend/elements/button";
+  @import "frontend/elements/notices";
+}
+
+@import "frontend/datepicker";
+@import "frontend/searchbox";
+@import "frontend/layout";
+@import "frontend/roommaster";
+@import "frontend/elements/dialog";
+@import "frontend/elements/checkout";
+@import "frontend/elements/reservation-details";
+@import "frontend/elements/_checkout-services";
+@import "frontend/search-page";
+@import "frontend/list-rooms";

@@ -1,0 +1,139 @@
+.abrs-card {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  border: solid 1px #ddd;
+
+  &--page {
+    width: 780px;
+    max-width: 100%;
+    border-color: #ccc;
+    box-shadow: 1px 2px 30px rgba(0, 0, 0, .25);
+    margin-top: 1em;
+  }
+
+  &__body,
+  &__footer,
+  &__header {
+    padding: 1em;
+  }
+}
+
+.abrs-card__footer {
+  margin: 0;
+  border-top: solid 1px #eee;
+}
+
+.abrs-card__header {
+  background-color: #fbfbfb;
+  border-bottom: solid 1px #eee;
+
+  > h2 {
+    margin: 0 5px 0 0;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 26px;
+    display: inline-block;
+  }
+
+  > span {
+    color: #666;
+  }
+
+  > span > a {
+    color: #666;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: #333;
+    }
+  }
+}
+
+.abrs-cmb2-float,
+.abrs-card__body {
+  select {
+    width: 25em;
+    max-width: 100%;
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cmb2_select.selectize-control {
+    width: 350px;
+  }
+
+  .cmb-row {
+    padding: 1em 0;
+    box-sizing: border-box;
+    @include make-row;
+  }
+
+  .cmb-th,
+  .cmb-td {
+    padding: 0;
+    float: none !important;
+    box-sizing: border-box;
+    @include make-col-ready;
+  }
+
+  .cmb-th {
+    color: #444;
+    font-weight: normal;
+    vertical-align: middle;
+    @include make-col(3);
+  }
+
+  .cmb-th + .cmb-td {
+    @include make-col(9);
+  }
+
+  @include in-small() {
+    .cmb-row {
+      padding: 0;
+      margin-bottom: 1em;
+    }
+
+    .cmb-th,
+    .cmb-th + .cmb-td {
+      @include make-col(12);
+    }
+  }
+
+  .cmb-th > label {
+    padding: 0;
+
+    @include in-small() {
+      margin-bottom: 7px;
+    }
+  }
+
+  // Submit
+  .submit > .button,
+  .submit > .button-link {
+    vertical-align: middle;
+  }
+  .submit > .button-link.abrs-fright {
+    margin-top: 4px;
+  }
+
+  // Table
+  table {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.abrs-cmb2-float {
+  .cmb-th {
+    @include make-col(2);
+  }
+
+  .cmb-th + .cmb-td {
+    @include make-col(10);
+  }
+}

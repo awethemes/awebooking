@@ -1,39 +1,40 @@
 <?php
 namespace AweBooking\Providers;
 
-use AweBooking\Factory;
 use AweBooking\Constants;
+use AweBooking\Model\Room_Type;
 use AweBooking\Support\Service_Provider;
 
 class Logic_Service_Provider extends Service_Provider {
 	/**
 	 * Init service provider.
 	 *
-	 * @param AweBooking $awebooking AweBooking instance.
+	 * @access private
 	 */
-	public function init( $awebooking ) {
-		add_action( 'pre_delete_term', [ $this, 'pre_delete_location' ], 10, 2 );
-
+	public function init() {
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
-
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
+
+		// TODO: ...
+		add_action( 'abrs_room_saved', [ $this, 'update_total_rooms' ] );
+		add_action( 'abrs_room_type_saved', [ $this, 'update_total_rooms' ] );
 	}
 
 	/**
-	 * Prevent delete default hotel location.
+	 * Perform update total rooms of room type.
 	 *
-	 * @param  int    $term     Term ID.
-	 * @param  string $taxonomy Taxonomy Name.
-	 * @return void
+	 * @param  mixed $object The object model.
+	 * @access private
 	 */
-	public function pre_delete_location( $term, $taxonomy ) {
-		if ( Constants::HOTEL_LOCATION !== $taxonomy ) {
-			return;
+	public function update_total_rooms( $object ) {
+		if ( $object instanceof Room_Type ) {
+			$room_type = $object;
+		} else {
+			$room_type = abrs_get_room_type( $object['room_type'] );
 		}
 
-		$default_location = absint( awebooking_option( 'location_default' ) );
-		if ( $default_location && $default_location === $term ) {
-			exit( 1 ); // Prevent delete default location.
+		if ( $room_type && $room_type->exists() ) {
+			$room_type->update_meta( '_cache_total_rooms', count( $room_type->get_rooms() ) );
 		}
 	}
 
@@ -45,25 +46,25 @@ class Logic_Service_Provider extends Service_Provider {
 	 *
 	 * @param  string $postid The booking ID will be delete.
 	 * @return void
+	 *
+	 * @access private
 	 */
 	public function delete_booking_items( $postid ) {
-		global $wpdb;
-
 		if ( get_post_type( $postid ) !== Constants::BOOKING ) {
 			return;
 		}
 
 		// Get booking object.
-		$booking = Factory::get_booking( $postid );
+		$booking = abrs_get_booking( $postid );
 
-		do_action( 'awebooking/delete_booking_items', $postid );
+		do_action( 'abrs_delete_booking_items', $postid );
 
 		// Loop all item and run delete.
-		foreach ( $booking->get_all_items() as $item ) {
+		foreach ( $booking->get_items() as $item ) {
 			$item->delete();
 		}
 
-		do_action( 'awebooking/deleted_booking_items', $postid );
+		do_action( 'abrs_deleted_booking_items', $postid );
 	}
 
 	/**
@@ -89,9 +90,8 @@ class Logic_Service_Provider extends Service_Provider {
 			ARRAY_A
 		);
 
-		// Make sure we don't get query error.
 		if ( ! is_null( $rooms ) && ! empty( $rooms ) ) {
-			$unit_ids = implode( ',', wp_list_pluck( $rooms, 'id' ) );
+			$unit_ids = implode( ',', array_column( $rooms, 'id' ) );
 
 			// @codingStandardsIgnoreStart
 			$wpdb->query( "DELETE FROM `{$wpdb->prefix}awebooking_rooms` WHERE `id` IN ({$unit_ids})" );
@@ -103,6 +103,6 @@ class Logic_Service_Provider extends Service_Provider {
 		// Delete all `rate` in "awebooking_pricing" table.
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_pricing` WHERE `rate_id` = %d", $postid ) );
 
-		do_action( 'awebooking/delete_room_type', $postid );
+		do_action( 'abrs_deleted_room_type', $postid );
 	}
 }

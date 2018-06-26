@@ -1,0 +1,177 @@
+/* Core CSS */
+.wp-badge.awebooking-badge {
+  background-image: url("../img/awebooking.png");
+  background-color: #2196F3;
+}
+
+/* Button */
+.button-secondary.cmb-multicheck-toggle,
+.abrs-button.button {
+  border-color: transparent;
+  border-radius: 25px;
+
+  .dashicons {
+    line-height: 1.3;
+    margin-right: 3px;
+  }
+
+  &:focus,
+  &:active {
+    border: solid 1px #aaa;
+  }
+}
+
+.button.abrs-dashicons-button {
+  line-height: 1;
+}
+
+.button.abrs-delete-button {
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+/* No image */
+.abrs-no-image,
+.abrs-thumb-image {
+  @include size(38px);
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 50px;
+  border: solid 1px #eee;
+  background-color: #f7f7f7;
+
+  overflow: hidden;
+  vertical-align: middle;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+p.awebooking-no-items {
+  color: #676767 !important;
+  text-align: center;
+  margin: 1em 0 !important;
+}
+
+/* CSS Note */
+.abrs-note {
+  display: block;
+  position: relative;
+  padding: 1em;
+
+  background-color: #fbfeff;
+  border: 1px dashed #9fcce0;
+  border-radius: 1px;
+
+  .cmb-td > & {
+    max-width: 780px;
+  }
+
+  > h3,
+  > h4 {
+    margin-top: 0;
+    margin-bottom: .8em;
+  }
+
+  > p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Global */
+.actions > .awebooking-search-customer {
+  width: 180px;
+  min-width: 180px;
+  margin-right: 6px;
+  display: inline-block;
+}
+
+.cmb-type-abrs-amount .abrs-input-addon > input {
+  max-width: 100px;
+}
+
+.abrs-input-addon.group-operator-amount {
+  select { width: 100px; }
+  input { width: 150px; }
+}
+
+/* State Indicator */
+.abrs-state-indicator {
+  background-color: #ddd;
+  display: inline-block;
+  vertical-align: middle;
+
+  border-radius: 8px;
+  @include size(8px);
+
+  &--on {
+    background-color: #71c539;
+  }
+}
+
+// Select booking status with colors.
+.cmb2-id--status .selectize-input > .item:before,
+.cmb2-id--status .selectize-dropdown-content > .option:before,
+.cmb2-id-booking-status .selectize-input > .item:before,
+.cmb2-id-booking-status .selectize-dropdown-content > .option:before {
+  content: '';
+  margin-right: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #898989;
+  @include size(10px, 10px);
+}
+
+.awebooking-pending-color,
+[data-value="awebooking-pending"]:before {
+  color: #634f12 !important;
+  background-color: #FFC107 !important;
+}
+
+.awebooking-inprocess-color,
+[data-value="awebooking-inprocess"]:before {
+  color: #fff !important;
+  background-color: #607d8b !important;
+}
+
+.awebooking-on-hold-color,
+[data-value="awebooking-on-hold"]:before {
+  color: #fff !important;
+  background-color: #673ab7 !important;
+}
+
+.awebooking-deposit-color,
+[data-value="awebooking-deposit"]:before {
+  color: #fff !important;
+  background-color: #cf2eea !important;
+}
+
+.awebooking-completed-color,
+[data-value="awebooking-completed"]:before {
+  color: #fff !important;
+  background-color: #03a9f4 !important;
+}
+
+.checked-in-color,
+.awebooking-checked-in-color,
+[data-value="checked-in"]:before {
+  color: #33481a !important;
+  background-color: #cddc39 !important;
+}
+
+.checked-out-color,
+.awebooking-checked-out-color,
+[data-value="checked-out"]:before {
+  background-color: #8bc34a !important;
+}
+
+.awebooking-cancelled-color,
+[data-value="awebooking-cancelled"]:before {
+  color: #222 !important;
+  background-color: #aaa !important;
+}

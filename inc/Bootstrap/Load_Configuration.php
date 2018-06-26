@@ -1,33 +1,98 @@
 <?php
 namespace AweBooking\Bootstrap;
 
-use AweBooking\Setting;
-use AweBooking\AweBooking;
+use AweBooking\Plugin;
+use AweBooking\Multilingual;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Carbonate;
 
 class Load_Configuration {
 	/**
-	 * Bootstrap the AweBooking.
+	 * The plugin instance.
 	 *
-	 * @param  AweBooking $awebooking The AweBooking instance.
+	 * @var \AweBooking\Plugin
+	 */
+	protected $plugin;
+
+	/**
+	 * Setup environment bootstrapper.
+	 *
+	 * @param \AweBooking\Plugin $plugin The plugin instance.
+	 */
+	public function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
+	}
+
+	/**
+	 * Bootstrap the plugin.
+	 *
 	 * @return void
 	 */
-	public function bootstrap( AweBooking $awebooking ) {
-		$awebooking->instance( 'setting_key', 'awebooking_settings' );
+	public function bootstrap() {
+		add_action( 'setup_theme', [ $this, 'load_configuration' ] );
+	}
 
-		$awebooking->singleton( 'setting', function ( $a ) {
-			return new Setting( $a['setting_key'] );
-		});
+	/**
+	 * Load the configuration.
+	 *
+	 * @access private
+	 */
+	public function load_configuration() {
+		$this->plugin->make( Multilingual::class );
 
-		$awebooking->alias( 'setting', 'config' );
-		$awebooking->alias( 'setting', Setting::class );
+		// Maybe set the option name on multi-language.
+		$this->maybe_modify_options();
+
+		// Decimal default scale.
+		Decimal::set_default_scale( absint( $this->plugin->get_option( 'price_number_decimals', 2 ) ) );
 
 		// Correct the datetime starts and ends of week.
 		Carbonate::setWeekStartsAt( (int) get_option( 'start_of_week' ) );
 		Carbonate::setWeekEndsAt( (int) calendar_week_mod( Carbonate::getWeekStartsAt() - 1 ) );
+	}
 
-		// Set the default scale for Decimal.
-		Decimal::set_default_scale( $awebooking['setting']->get( 'price_number_decimals' ) );
+	/**
+	 * Maybe set the option name on multi-language.
+	 *
+	 * @return void
+	 */
+	protected function maybe_modify_options() {
+		if ( ! abrs_running_on_multilanguage() ) {
+			return;
+		}
+
+		$current_key = $this->plugin->get_option_key();
+		$current_language = $this->plugin['multilingual']->get_current_language();
+
+		// Prevent modify option key if current language is: "en", "" or "all".
+		if ( empty( $current_language ) || in_array( $current_language, [ '', 'en', 'all' ] ) ) {
+			return;
+		}
+
+		// Set new option key, suffix with current language.
+		$this->plugin->set_option_key(
+			$new_key = $current_key . '_' . $current_language
+		);
+
+		// Perform copy options only in admin.
+		if ( is_admin() ) {
+			$this->perform_copy_options( $current_key, $new_key );
+		}
+	}
+
+	/**
+	 * Perform the copy options.
+	 *
+	 * @param  string $current_key The current option key.
+	 * @param  string $new_key     The new option key.
+	 * @return void
+	 */
+	protected function perform_copy_options( $current_key, $new_key ) {
+		$new_options     = (array) get_option( $new_key, [] );
+		$current_options = (array) get_option( $current_key, [] );
+
+		if ( empty( $new_options ) && $current_options ) {
+			update_option( $new_key, $current_options );
+		}
 	}
 }

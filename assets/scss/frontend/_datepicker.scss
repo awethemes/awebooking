@@ -1,0 +1,30 @@
+.awebooking-datepicker {
+  $datepicker-main-color:        #fff;
+  $datepicker-main-background:   #2196F3;
+  $datepicker-hover-background:  #eee;
+  $datepicker-range-background:  #e2f2ff;
+
+  &.flatpickr-calendar {
+    margin-top: 9px;
+
+    &:after {
+      margin: 0 -9px;
+      border-width: 9px;
+    }
+
+    &:before {
+      border-width: 10px;
+      margin: 0 -10px;
+    }
+
+    &.arrowTop:after {
+      border-bottom-color: $datepicker-main-background;
+    }
+
+    &.arrowBottom:after {
+      border-top-color: #fff;
+    }
+  }
+
+  @import "utils/flatpickr";
+}

@@ -1,0 +1,25 @@
+/* Toolbars */
+.abrs-toolbar {
+  @include clearfix;
+
+  margin: 12px 0 25px;
+  padding: 0 1em;
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+
+  color: #555;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.abrs-search-toolbar {
+  .cmb-th label { display: none; }
+  .abrs-input-dates.abrow { width: 100%; }
+}

@@ -1,0 +1,290 @@
+/* Tables */
+table.awebooking-table {
+  font-size: 13px;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
+
+  th,
+  thead td,
+  tfoot td {
+    font-size: inherit;
+  }
+}
+
+table.awebooking-table--bordered {
+  margin: 0;
+  padding: 0;
+  border: solid 1px #eee;
+  border-spacing: 2px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 8px 10px;
+    vertical-align: top;
+    box-sizing: border-box;
+    border: solid 1px #eee;
+  }
+
+  th {
+    width: 30%;
+  }
+
+  td {
+    width: 70%;
+    background: #fff;
+  }
+}
+
+table.debug-rooms__table {
+  // width: 350px;
+  max-width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: solid 1px #eee;
+  }
+
+  th {
+    width: 100px;
+  }
+}
+
+table.abrs-breakdown-table {
+  td,
+  th {
+    padding: 5px 12px;
+    border-top: solid 1px #eee;
+    border-left: solid 1px #eee;
+  }
+}
+
+table.availability-table {
+  td {
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .book-actions {
+    top: 1em;
+    right: 1em;
+    position: absolute;
+    display: none;
+  }
+
+  tr:hover .book-actions {
+    display: block;
+  }
+
+  .wrap-select-occupancy {
+    display: flex;
+    margin-left: -2px;
+    margin-right: -2px;
+
+    > p,
+    > div {
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      flex-basis: 0;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    label {
+      display: block;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    select {
+      width: 100%;
+    }
+  }
+
+  .text-remain-rooms {
+    line-height: 1;
+    font-size: 13px;
+    display: block;
+
+    .dashicons {
+      color: #666;
+      width: auto;
+      height: auto;
+      font-size: 14px;
+    }
+  }
+}
+
+table.awebooking-input-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  th, td {
+    display: table-cell !important;
+  }
+
+  th {
+    padding: 7px 10px;
+    white-space: nowrap;
+    border-right: 1px solid #dfdfdf;
+  }
+
+  thead th {
+    font-weight: 700;
+  }
+
+  td {
+    padding: 0;
+    border-right: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 0;
+    background: #fff;
+    cursor: default;
+
+    input[type=text],
+    input[type=number] {
+      width: 100% !important;
+      min-width: 100px;
+      padding: 8px 10px;
+      margin: 0;
+      border: 0;
+      outline: 0;
+      background: transparent none;
+
+      &:focus {
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+
+    &.compound,
+    &.apply_to_shipping {
+      padding: 5px 7px;
+      vertical-align: middle;
+
+      input {
+        width: auto;
+        padding: 0;
+      }
+    }
+  }
+
+  td:last-child {
+    border-right: 0;
+  }
+
+  tr.current td {
+    background-color: #fefbcc;
+  }
+
+  th.sort {
+    width: 17px;
+    padding: 0 4px;
+  }
+
+  td.sort {
+    padding: 0 4px;
+  }
+
+  .ui-sortable:not( .ui-sortable-disabled ) td.sort {
+    cursor: move;
+    font-size: 15px;
+    background: #f9f9f9;
+    text-align: center;
+    vertical-align: middle;
+
+    &::before {
+      content: '\f333';
+      font-family: 'Dashicons';
+      text-align: center;
+      line-height: 1;
+      color: #999;
+      display: block;
+      width: 17px;
+      float: left;
+      height: 100%;
+    }
+
+    &:hover::before {
+      color: #333;
+    }
+  }
+
+  .button {
+    float: left;
+    margin-right: 5px;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+/* CMB2 flex table */
+.cmb2-flex-table {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: solid 1px #eee;
+
+  .cmb2-flex-tr,
+  .cmb-repeatable-grouping {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cmb2-flex-th,
+  .cmb2-flex-td,
+  .cmb-repeatable-grouping > .cmb-row {
+    flex-grow: 1;
+    flex-basis: 0;
+    white-space: normal;
+    justify-content: center;
+    word-break: break-word;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-left: solid 1px #eee;
+    border-bottom: solid 1px #eee;
+  }
+
+  .cmb-repeatable-grouping {
+    margin: 0;
+    padding: 0;
+    border: none !important;
+
+    &.cmb-row:after {
+      content: none;
+    }
+
+    > .cmb-row > .cmb-th {
+      display: none;
+    }
+
+    > .cmb-row > .cmb-td {
+      float: none;
+      width: 100%;
+    }
+  }
+
+  select,
+  textarea,
+  input.regular-input,
+  input[type=email],
+  input[type=number],
+  input[type=text] {
+    margin: 0;
+    width: 100% !important;
+    border: none;
+    box-shadow: none;
+  }
+}

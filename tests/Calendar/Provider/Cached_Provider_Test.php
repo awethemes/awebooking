@@ -2,7 +2,7 @@
 
 use AweBooking\Support\Carbonate;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Calendar\Provider\WP_Provider;
+use AweBooking\Calendar\Provider\DB_Provider;
 use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Provider\Provider_Interface;
 
@@ -16,7 +16,7 @@ class Cached_Provider_Test extends WP_UnitTestCase {
 	}
 
 	public function test_get_events() {
-		$wp_provider = new WP_Provider( [ new Resource( 100 ) ], 'awebooking_booking', 'room_id' );
+		$wp_provider = new DB_Provider( [ new Resource( 100 ) ], 'awebooking_booking', 'room_id' );
 		$cache_provider = new Cached_Provider( $wp_provider );
 
 		$events1 = $cache_provider->get_events(new Carbonate( '2017-11-01' ), new Carbonate( '2017-11-30' ));

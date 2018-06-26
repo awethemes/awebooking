@@ -1,138 +1,139 @@
 <?php
 namespace AweBooking\Admin\Controllers;
 
-use AweBooking\Assert;
-use AweBooking\Model\Booking;
-use AweBooking\Model\Booking_Payment_Item;
-use AweBooking\Admin\Forms\Create_Payment_Form;
-use AweBooking\Support\Utils as U;
+use WP_Error;
 use Awethemes\Http\Request;
+use AweBooking\Model\Booking\Payment_Item;
+use AweBooking\Admin\Forms\Booking_Payment_Form;
 
 class Booking_Payment_Controller extends Controller {
 	/**
-	 * Handle store the settings.
+	 * Handle create new payment.
 	 *
-	 * @param  \Awethemes\Http\Request   $request The current request.
-	 * @param  \AweBooking\Model\Booking $booking The booking reference.
+	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function create( Request $request, Booking $booking ) {
-		get_current_screen()->action = 'create_payment_item';
+	public function create( Request $request ) {
+		if ( ! $request->filled( 'refer' ) || ! $booking = abrs_get_booking( $request['refer'] ) ) {
+			return $this->whoops();
+		}
 
-		$balance_due = $booking->get_balance_due();
+		// Create an empty form.
+		$form_builder = new Booking_Payment_Form(
+			$payment_item = new Payment_Item
+		);
 
-		$controls = new Create_Payment_Form( $booking );
-		$controls['amount']->set_value( $balance_due->is_positive() ? $balance_due : 0 );
+		// Set the default amount.
+		$balance_due = abrs_decimal( $booking->get( 'balance_due' ) );
+		$form_builder['amount']->set_value( $balance_due->is_positive() ? $balance_due : 0 );
 
-		return $this->response_view( 'booking/payment-form.php', compact( 'booking', 'controls' ) );
+		$page_title = $payment_item->exists()
+			? esc_html__( 'Update Payment', 'awebooking' )
+			: esc_html__( 'Add Payment', 'awebooking' );
+
+		return $this->response( 'booking/payment-form.php', compact( 'page_title', 'booking', 'payment_item', 'form_builder' ) );
 	}
 
 	/**
-	 * Handle store.
+	 * Handle store new booking payment.
 	 *
-	 * @param  \Awethemes\Http\Request   $request The current request.
-	 * @param  \AweBooking\Model\Booking $booking The booking reference.
+	 * @param  \Awethemes\Http\Request $request The current request.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function store( Request $request, Booking $booking ) {
-		$request->verify_nonce( '_wpnonce', 'create_booking_payment' );
+	public function store( Request $request ) {
+		check_admin_referer( 'create_booking_payment', '_wpnonce' );
 
-		try {
-			$input = ( new Create_Payment_Form( $booking ) )->handle( $request->all() );
-		} catch ( \Exception $e ) {
-			$this->notices( 'error', $e->getMessage() );
-
-			return $this->redirect()->back()
-				->only_input( 'amount', 'payment_method', 'comment' );
+		if ( ! $request->filled( '_refer' ) || ! $booking = abrs_get_booking( $request['_refer'] ) ) {
+			return $this->whoops();
 		}
 
-		// Store the payment item.
-		$payment_item = ( new Booking_Payment_Item )->fill(
-			$request->only( 'method', 'amount', 'comment', 'is_deposit', 'transaction_id' )
-		);
-
-		// Map the booking ID to the payment_item ID.
+		// Create new empty payment item.
+		$payment_item = new Payment_Item;
 		$payment_item['booking_id'] = $booking->get_id();
 
-		if ( $payment_item->save() ) {
-			$this->notices()->success( esc_html__( 'Added new payment successfully!', 'awebooking' ) );
+		// Handle the request.
+		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
+		$payment_item->fill( $sanitized->get_attributes() );
+
+		if ( $payment_item['amount'] > 0 && $payment_item->save() ) {
+			abrs_admin_notices( esc_html__( 'Added new payment successfully!', 'awebooking' ), 'success' )->dialog();
 		} else {
-			$this->notices()->warning( esc_html__( 'Error when add payment', 'awebooking' ) );
+			abrs_admin_notices( esc_html__( 'Error when add payment', 'awebooking' ), 'error' )->dialog();
 		}
 
-		return $this->redirect()->to( $booking->get_edit_url() );
+		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 	/**
 	 * Show edit for.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function edit( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
-		Assert::booking_item( $payment_item, $booking );
+	public function edit( Request $request, Payment_Item $payment_item ) {
+		if ( ! $booking = abrs_get_booking( $payment_item->booking_id ) ) {
+			return $this->whoops();
+		}
 
-		$controls = new Create_Payment_Form( $booking );
-		$controls->fill( $payment_item->get_attributes() );
+		// Create the booking payment form.
+		$form_builder = new Booking_Payment_Form( $payment_item );
 
-		get_current_screen()->action = 'edit_payment_item';
-
-		return $this->response_view( 'booking/payment-form.php', compact( 'booking', 'controls', 'payment_item' ) );
+		return $this->response( 'booking/payment-form.php', compact( 'booking', 'payment_item', 'form_builder' ) );
 	}
 
 	/**
 	 * Perform update a payment item.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function update( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
-		Assert::booking_item( $payment_item, $booking );
+	public function update( Request $request, Payment_Item $payment_item ) {
+		check_admin_referer( 'update_payment_' . $payment_item->get_id(), '_wpnonce' );
 
-		$request->verify_nonce( '_wpnonce', 'update_booking_payment_' . $payment_item->get_id() );
-
-		try {
-			$input = ( new Create_Payment_Form( $booking ) )->handle( $request->all() );
-		} catch ( \Exception $e ) {
-			$this->notices( 'error', $e->getMessage() );
-
-			return $this->redirect()
-				->back( $payment_item->get_edit_link() )
-				->with_input();
+		if ( ! $booking = abrs_get_booking( $payment_item->booking_id ) ) {
+			return $this->whoops();
 		}
 
-		$payment_item->fill( $request->only( 'method', 'amount', 'comment', 'transaction_id' ) );
-		$payment_item['is_deposit'] = $request->filled( 'is_deposit' );
+		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
+
+		if ( $sanitized->count() > 0 ) {
+			$payment_item->fill( $sanitized->get_attributes() );
+		}
 
 		$payment_item->save();
 
-		$this->notices( 'info', esc_html__( 'Payment item has been successfully updated!', 'awebooking' ) );
+		abrs_admin_notices( esc_html__( 'Payment item has been updated successfully!', 'awebooking' ), 'success' )->dialog();
 
-		return $this->redirect()->to( $booking->get_edit_url() );
+		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 	/**
 	 * Perform delete a payment item.
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
-	 * @param  \AweBooking\Model\Booking              $booking      The booking reference.
-	 * @param  \AweBooking\Model\Booking_Payment_Item $payment_item The payment item.
+	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return \Awethemes\Http\Response
 	 */
-	public function destroy( Request $request, Booking $booking, Booking_Payment_Item $payment_item ) {
-		Assert::booking_item( $payment_item, $booking );
+	public function destroy( Request $request, Payment_Item $payment_item ) {
+		check_admin_referer( 'delete_payment_' . $payment_item->get_id(), '_wpnonce' );
 
-		$request->verify_nonce( '_wpnonce', 'delete_payment_item_' . $payment_item->get_id() );
+		abrs_delete_booking_item( $payment_item );
 
-		$payment_item->delete();
-		$booking->calculate_totals();
+		abrs_admin_notices( esc_html__( 'The payment has been destroyed!', 'awebooking' ), 'info' )->dialog();
 
-		$this->notices( 'info', esc_html__( 'The payment item has been deleted', 'awebooking' ) );
+		return $this->redirect()->back( get_edit_post_link( $payment_item['booking_id'], 'raw' ) );
+	}
 
-		return $this->redirect()->back( $booking->get_edit_url() );
+	/**
+	 * Just return a WP_Error for request invalid booking ID.
+	 *
+	 * @return \WP_Error
+	 */
+	protected function whoops() {
+		return new WP_Error( 404,
+			esc_html__( 'You attempted to working with a booking that doesn’t exist. Perhaps it was deleted?', 'awebooking' )
+		);
 	}
 }

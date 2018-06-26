@@ -1,183 +1,217 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use AweBooking\Constants;
-use AweBooking\Admin\Admin_Settings;
+use AweBooking\Support\WP_Data;
 
 class General_Setting extends Abstract_Setting {
 	/**
-	 * {@inheritdoc}
+	 * The setting ID.
+	 *
+	 * @var string
 	 */
-	public function registers( Admin_Settings $settings ) {
-		$section = $settings->add_section( 'general', [
-			'title'      => esc_html__( 'General', 'awebooking' ),
-			'capability' => 'manage_awebooking',
+	protected $form_id = 'general';
+
+	/**
+	 * Get the setting label.
+	 *
+	 * @return string
+	 */
+	public function get_label() {
+		return esc_html__( 'General', 'awebooking' );
+	}
+
+	/**
+	 * Setup the fields.
+	 *
+	 * @return void
+	 */
+	public function setup_fields() {
+		$this->add_field([
+			'id'       => '__title_general',
+			'type'     => 'title',
+			'name'     => esc_html__( 'General', 'awebooking' ),
 		]);
 
-		$section->add_field( array(
-			'id'   => '__general_system__',
-			'type' => 'title',
-			'name' => esc_html__( 'AweBooking General', 'awebooking' ),
-		) );
-
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'enable_location',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Multi hotel location?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'enable_location' ),
-		) );
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Multiple Hotels?', 'awebooking' ),
+			'default'  => 'off',
+		]);
 
-		$section->add_field( array(
-			'id'       => 'location_default',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Default location', 'awebooking' ),
-			'description' => esc_html__( 'Select a default location.', 'awebooking' ),
-			'options_cb'  => wp_data_callback( 'terms', array(
-				'taxonomy'   => Constants::HOTEL_LOCATION,
-				'hide_empty' => false,
-			)),
-			'validate' => 'integer',
-			'deps'     => array( 'enable_location', '==', true ),
-		) );
-
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'children_bookable',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Children bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'children_bookable' ),
-			'render_field_cb'   => array( $this, '_children_able_field_callback' ),
-		));
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Children Bookable?', 'awebooking' ),
+			'default'  => 'on',
+		]);
 
-		$section->add_field( array(
-			'type'     => 'text',
-			'id'       => 'children_bookable_description',
-			'name'     => esc_html__( 'Description', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'children_bookable_description' ),
-			'attributes' => [
-				'placeholder' => esc_html__( 'Description', 'awebooking' ),
-			],
-			'deps'     => array( 'children_bookable', '==', true ),
-			'show_on_cb' => '__return_false',
-		) );
+		$this->add_field([
+			'id'        => 'infants_bookable',
+			'type'      => 'abrs_toggle',
+			'name'      => esc_html__( 'Infants Bookable?', 'awebooking' ),
+			'default'   => 'on',
+		]);
 
-		$section->add_field( array(
-			'id'       => 'infants_bookable',
-			'type'     => 'toggle',
-			'name'     => esc_html__( 'Infants bookable?', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable' ),
-			'render_field_cb'   => array( $this, '_infants_able_field_callback' ),
-		) );
+		$this->add_field([
+			'id'               => 'reservation_mode',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Reservation Mode', 'awebooking' ),
+			'default'          => 'multiple_room',
+			'classes'          => 'with-selectize',
+			'options'          => apply_filters( 'abrs_list_reservation_mode', [
+				'single_room'   => esc_html__( 'Single Room', 'awebooking' ),
+				'multiple_room' => esc_html__( 'Multiple Rooms', 'awebooking' ),
+			]),
+		]);
 
-		$section->add_field( array(
-			'type'     => 'text',
-			'id'       => 'infants_bookable_description',
-			'name'     => esc_html__( 'Description', 'awebooking' ),
-			'deps'     => array( 'infants_bookable', '==', true ),
-			'default'  => awebooking( 'setting' )->get_default( 'infants_bookable_description' ),
-			'attributes' => [
-				'placeholder' => esc_html__( 'Description', 'awebooking' ),
-			],
-			'show_on_cb' => '__return_false',
-		) );
+		$this->add_field([
+			'id'       => 'measure_unit',
+			'type'     => 'select',
+			'section'  => 'general',
+			'name'     => esc_html__( 'Measurement Unit', 'awebooking' ),
+			'default'          => 'm2',
+			'classes'          => 'with-selectize',
+			'options'  => apply_filters( 'abrs_measure_units', [
+				'm2'   => esc_html__( 'Square Meters', 'awebooking' ),
+				'ft2'  => esc_html__( 'Square Feet', 'awebooking' ),
+			]),
+		]);
 
-		$section->add_field( array(
-			'id'   => '__general_currency__',
+		// Pages settings.
+		$all_pages_cb = WP_Data::cb( 'pages', [ 'post_status' => 'publish' ] );
+
+		$this->add_field([
+			'id'    => '__display_title',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Pages', 'awebooking' ),
+		]);
+
+		$this->add_field([
+			'id'               => 'page_check_availability',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Availability Results', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+			'after'            => $this->get_external_link_cb(),
+		]);
+
+		$this->add_field([
+			'id'               => 'page_checkout',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Checkout Page', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+			'after'            => $this->get_external_link_cb(),
+		]);
+
+		// Currency options.
+		$this->add_field([
+			'id'   => '__title_currency',
 			'type' => 'title',
 			'name' => esc_html__( 'Currency Options', 'awebooking' ),
-		) );
+		]);
 
-		$section->add_field( array(
-			'id'       => 'currency',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Currency', 'awebooking' ),
-			'default' => awebooking( 'setting' )->get_default( 'currency' ),
-			'options_cb'  => function() {
-				return awebooking( 'currency_manager' )->get_for_dropdown( '%name (%symbol)' );
-			},
-		) );
+		$this->add_field([
+			'id'          => 'currency',
+			'type'        => 'select',
+			'name'        => esc_html__( 'Currency', 'awebooking' ),
+			'default'     => 'USD',
+			'options_cb'  => 'abrs_list_dropdown_currencies',
+			'classes'     => 'with-selectize',
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'id'       => 'currency_position',
 			'type'     => 'select',
-			'name'     => esc_html__( 'Currency position', 'awebooking' ),
-			// 'desc'     => esc_html__( 'Controls the position of the currency symbol.', 'awebooking' ),
-			'default'  => awebooking( 'setting' )->get_default( 'currency_position' ),
-			'validate' => 'required',
-			'options'  => awebooking( 'setting' )->get_currency_positions(),
-		) );
+			'name'     => esc_html__( 'Currency Position', 'awebooking' ),
+			'default'  => 'left',
+			'classes'  => 'with-selectize',
+			'options'  => [
+				'left'        => esc_html__( 'Left', 'awebooking' ),
+				'right'       => esc_html__( 'Right', 'awebooking' ),
+				'left_space'  => esc_html__( 'Left with space', 'awebooking' ),
+				'right_space' => esc_html__( 'Right with space', 'awebooking' ),
+			],
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'type'            => 'text_small',
 			'id'              => 'price_thousand_separator',
-			'name'            => esc_html__( 'Thousand separator', 'awebooking' ),
-			// 'desc'            => esc_html__( 'Sets the thousand separator of displayed prices.', 'awebooking' ),
-			'default'         => awebooking( 'setting' )->get_default( 'price_thousand_separator' ),
-			'validate'        => 'required',
-			'sanitization_cb' => function( $value ) {
-				return sanitize_text_field( wp_unslash( $value ) );
-			},
-		) );
+			'name'            => esc_html__( 'Thousand Separator', 'awebooking' ),
+			'default'         => ',',
+			'sanitization_cb' => 'abrs_sanitize_text',
+		]);
 
-		$section->add_field( array(
+		$this->add_field([
 			'type'            => 'text_small',
 			'id'              => 'price_decimal_separator',
-			'name'            => esc_html__( 'Decimal separator', 'awebooking' ),
-			// 'desc'            => '<div>' . esc_html__( 'Sets the decimal separator of displayed prices.', 'awebooking' ) . '</div>',
-			'default'         => awebooking( 'setting' )->get_default( 'price_decimal_separator' ),
-			'validate'        => 'required',
-			'sanitization_cb' => function( $value ) {
-				return sanitize_text_field( wp_unslash( $value ) );
-			},
-		) );
+			'name'            => esc_html__( 'Decimal Separator', 'awebooking' ),
+			'default'         => '.',
+			'sanitization_cb' => 'abrs_sanitize_text',
+		]);
 
-		$section->add_field( array(
-			'type'       => 'text_small',
-			'id'         => 'price_number_decimals',
-			'name'       => esc_html__( 'Number of decimals', 'awebooking' ),
-			'default'    => awebooking( 'setting' )->get_default( 'price_number_decimals' ),
-			'validate'   => 'required|integer|min:0',
-			'attributes' => array(
+		$this->add_field([
+			'type'            => 'text_small',
+			'id'              => 'price_number_decimals',
+			'name'            => esc_html__( 'Number of Decimals', 'awebooking' ),
+			'default'         => '2',
+			'sanitization_cb' => 'absint',
+			'attributes'      => [
 				'min'  => 0,
+				'step' => 1,
 				'type' => 'number',
-			),
-		) );
+			],
+		]);
+
+		$this->add_field([
+			'id'    => '__admin_calendar',
+			'type'  => 'title',
+			'name'  => esc_html__( 'Admin Calendar', 'awebooking' ),
+		]);
+
+		$this->add_field([
+			'id'              => 'scheduler_display_duration',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Calendar Duration', 'awebooking' ),
+			'classes'         => 'with-selectize',
+			'default'         => 30,
+			'sanitization_cb' => 'absint',
+			'options'         => [
+				14  => esc_html__( '2 Weeks', 'awebooking' ),
+				30  => esc_html__( '1 Month', 'awebooking' ),
+				60  => esc_html__( '2 Months', 'awebooking' ),
+				90  => esc_html__( '3 Months', 'awebooking' ),
+				120 => esc_html__( '4 Months', 'awebooking' ),
+			],
+		]);
 	}
 
 	/**
-	 * Children bookable callback.
+	 * Gets the external link callback.
 	 *
-	 * @return void
+	 * @return \Closure
 	 */
-	public function _children_able_field_callback( $field_args, $field ) {
-		$cmb2 = $field->get_cmb();
-		$children_description = $cmb2->get_field( 'children_bookable_description' );
+	protected function get_external_link_cb() {
+		/**
+		 * Prints the external link a select "page" field.
+		 *
+		 * @param  array       $args  The field args.
+		 * @param  \CMB2_Field $field The field object.
+		 * @return string
+		 */
+		return function ( $args, $field ) {
+			$page_id = $field->escaped_value();
 
-		skeleton_render_field( $field );
+			if ( ! $page_id ) {
+				return '';
+			}
 
-		echo '<div data-fieldtype="input" data-deps="children_bookable" data-deps-condition="==" data-deps-value="1" style="display: none">';
-		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Ages 2 - 12.', 'awebooking' ), '</p>';
-		$children_description->render();
-		echo '</div>';
-
-		$children_description->errors();
-	}
-
-	/**
-	 * Infants bookable callback.
-	 *
-	 * @return void
-	 */
-	public function _infants_able_field_callback( $field_args, $field ) {
-		$cmb2 = $field->get_cmb();
-		$infants_description = $cmb2->get_field( 'infants_bookable_description' );
-
-		skeleton_render_field( $field );
-
-		echo '<div data-fieldtype="input" data-deps="infants_bookable" data-deps-condition="==" data-deps-value="1" style="display: none">';
-		echo '<p class="cmb2-metabox-description">', esc_html__( 'Write some thing about this, eg: Under 2.', 'awebooking' ), '</p>';
-		$infants_description->render();
-		echo '</div>';
-
-		$infants_description->errors();
+			return '<a href="' . esc_url( get_edit_post_link( $page_id ) ) . '" target="_blank"><span class="dashicons dashicons-external"></span></a>';
+		};
 	}
 }

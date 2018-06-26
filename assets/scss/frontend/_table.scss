@@ -1,0 +1,73 @@
+table.abrs-table {
+  margin: 0 -1px 24px 0;
+  text-align: left;
+  width: 100%;
+  border-collapse: separate;
+
+  th {
+    font-weight: 700;
+    padding: 9px 12px;
+  }
+
+  td {
+    padding: 6px 12px;
+    vertical-align: middle;
+
+    small {
+      font-weight: normal;
+    }
+  }
+
+  tbody:first-child tr:first-child {
+    th,
+    td {
+      border-top: 0;
+    }
+  }
+
+  tfoot td,
+  tfoot th,
+  tbody th {
+    font-weight: 700;
+  }
+}
+
+@include media-breakpoint-down('sm') {
+  table.abrs-table--responsive {
+    thead,
+    .empty-td {
+      display: none;
+    }
+
+    tbody {
+      tr:first-child {
+        td:first-child {
+          border-top: 0;
+        }
+      }
+
+      th {
+        display: none;
+      }
+    }
+
+    tr {
+      display: block;
+
+      td {
+        display: block;
+        text-align: right !important; // Important to overwrite order status inline styling
+
+        &.order-actions {
+          text-align: left !important; // This must always align left on handheld
+        }
+
+        &::before {
+          content: attr(data-title) ': ';
+          font-weight: 700;
+          float: left;
+        }
+      }
+    }
+  }
+}

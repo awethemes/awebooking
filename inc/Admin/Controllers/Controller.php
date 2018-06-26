@@ -2,16 +2,14 @@
 namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Response;
-use AweBooking\Http\Controllers\Controller as Base_Controller;
 use Awethemes\Http\Exception\AccessDeniedHttpException;
-use AweBooking\Model\Exceptions\Model_Not_Found_Exception;
 
 abstract class Controller {
 	/**
 	 * Get instance of the Redirector.
 	 *
 	 * @param  string $url Optional URL to redirect.
-	 * @return \AweBooking\Http\Routing\Redirector|\AweBooking\Http\Redirect_Response
+	 * @return \AweBooking\Component\Routing\Redirector|\Awethemes\Http\Redirect_Response
 	 */
 	protected function redirect( $url = null ) {
 		$redirector = awebooking()->make( 'redirector' );
@@ -20,35 +18,18 @@ abstract class Controller {
 	}
 
 	/**
-	 * Get the `admin_notices` instance.
+	 * Create a response of a page.
 	 *
-	 * @param  string $type    Optional, the notice type if provided: 'updated', 'success', 'info', 'error', 'warning'.
-	 * @param  string $message Optional, the notice message.
-	 * @return \AweBooking\Support\Flash_Message
-	 */
-	protected function notices( $type = null, $message = '' ) {
-		$notices = awebooking( 'admin_notices' );
-
-		if ( is_null( $type ) ) {
-			return $notices;
-		}
-
-		return $notices->add_message( $message, $type );
-	}
-
-	/**
-	 * Create a view response.
-	 *
-	 * @param  string  $template The template name.
-	 * @param  array   $vars     The data inject to template.
-	 * @param  integer $status   The response status.
-	 * @param  array   $headers  The response headers.
+	 * @param  string  $page    The page template.
+	 * @param  array   $vars    The data inject to template.
+	 * @param  integer $status  The response status.
+	 * @param  array   $headers The response headers.
 	 * @return \Awethemes\Http\Response
 	 */
-	protected function response_view( $template, $vars = [], $status = 200, $headers = [] ) {
-		$contents = awebooking( 'admin_template' )->get( $template, $vars );
+	protected function response( $page, $vars = [], $status = 200, $headers = [] ) {
+		$content = abrs_admin_template()->page( $page, $vars );
 
-		return Response::create( $contents, $status, $headers );
+		return new Response( $content, $status, $headers );
 	}
 
 	/**
@@ -59,7 +40,7 @@ abstract class Controller {
 	 *
 	 * @throws AccessDeniedHttpException
 	 */
-	protected function check_capability( $capability ) {
+	protected function require_capability( $capability ) {
 		if ( ! current_user_can( $capability ) ) {
 			throw new AccessDeniedHttpException( esc_html__( 'Sorry, you are not allowed to access this page.', 'awebooking' ) );
 		}

@@ -1,0 +1,80 @@
+table.abrs-table--checkout-review-booking {
+  font-size: 14px;
+  margin-bottom: 0;
+
+  p {
+    margin: 0;
+  }
+
+  th {
+    &.room-nights {
+      width: 10%;
+    }
+
+    &.room-arrival,
+    &.room-depature {
+      width: 15%;
+    }
+
+    &.room-guest {
+      width: 20%;
+    }
+
+    &.room-subtotal {
+      width: 100px;
+    }
+  }
+
+  .room-nights,
+  .room-arrival,
+  .room-depature,
+  .room-guest,
+  .room-price,
+  .room-subtotal,
+  .services-price {
+    text-align: center;
+  }
+
+  .room-services {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .room-service {
+    border-bottom: 1px solid #d1d1d1;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .room-service__name,
+  .room-service__price {
+    display: inline-block;
+  }
+
+  .room-service__price {
+    float: right;
+  }
+
+  &:nth-child( 3n ),
+  &:nth-child( 4n ) {
+    td {
+      background-color: rgba(0, 0, 0, 0.025);
+    }
+  }
+}
+
+table.abrs-table--checkout-total-cost {
+  border-top: none;
+
+  .booking-price-name {
+    text-align: right;
+  }
+
+  .booking-price-value {
+    width: 100px;
+    text-align: center;
+  }
+}

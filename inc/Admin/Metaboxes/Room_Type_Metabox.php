@@ -1,420 +1,422 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use AweBooking\Factory;
-use AweBooking\Constants;
-use AweBooking\AweBooking;
+use Awethemes\Http\Request;
+use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
+use AweBooking\Component\Form\Form_Builder;
 
-class Room_Type_Metabox extends Post_Type_Metabox {
+class Room_Type_Metabox {
 	/**
-	 * The main metabox instance.
+	 * The form builder.
 	 *
-	 * @var \Skeleton\CMB2\CMB2
+	 * @var \AweBooking\Component\Form\Form_Builder
 	 */
-	protected $metabox;
-
-	/**
-	 * Post type ID to register meta-boxes.
-	 *
-	 * @var string
-	 */
-	protected $post_type = 'room_type';
+	protected $form_builder;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->metabox = $this->create_metabox( 'room_type', [
-			'title'         => esc_html__( 'Room Type Data', 'awebooking' ),
-			'context'       => 'normal',
-			'priority'      => 'default',
-			'vertical_tabs' => true,
+		$this->form_builder = new Form_Builder( 'room-type' );
+
+		$this->form_fields( $this->form_builder );
+	}
+
+	/**
+	 * Output the metabox.
+	 *
+	 * @param \WP_Post $post The WP_Post object.
+	 */
+	public function output( $post ) {
+		global $the_room_type;
+
+		if ( is_null( $the_room_type ) ) {
+			$the_room_type = abrs_get_room_type( $post->ID );
+		}
+
+		$is_translation = null;
+		if ( abrs_running_on_multilanguage() ) {
+			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
+		}
+
+		// Prepare the Form.
+		$form = $this->form_builder;
+
+		// Add the tabs.
+		foreach ( $this->get_tabs() as $key => $args ) {
+			$form->add_section( $key, $args );
+		}
+
+		$form->object_id( $post->ID );
+		$form->prepare_fields();
+
+		foreach ( $form as $control ) {
+			/* @var \AweBooking\Component\Form\Field_Proxy $control */
+			if ( $is_translation && false === $control->prop( 'translatable' ) ) {
+				$control->set_attribute( 'disabled', 'disabled' );
+			}
+		}
+
+		// Print the core nonce field.
+		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
+
+		// Show the form controls.
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-main.php';
+	}
+
+	/**
+	 * Handle save the the metabox.
+	 *
+	 * @param \WP_Post                $post    The WP_Post object instance.
+	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 */
+	public function save( $post, Request $request ) {
+		// Create the new room-type instance.
+		$room_type = new Room_Type( $post->ID );
+
+		$is_translation = null;
+		if ( abrs_running_on_multilanguage() ) {
+			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
+		}
+
+		// Get the sanitized values.
+		$values = $this->form_builder->handle( $request );
+
+		$rate_services = array_map( 'absint', $request->get( '_rate_services' ) ?: [] );
+
+		// Fill the room type data.
+		$room_type->fill([
+			'beds'                => $values->get( '_beds', [] ),
+			'view'                => $values->get( '_room_view', '' ),
+			'area_size'           => $values->get( '_area_size', '' ),
+			'rack_rate'           => $values->get( 'base_price', 0 ),
+			'rate_inclusions'     => $values->get( '_rate_inclusions', [] ),
+			'rate_policies'       => $values->get( '_rate_policies', [] ),
+			'rate_min_los'        => $values->get( 'minimum_night', 0 ),
+			'rate_max_los'        => $values->get( '_rate_maximum_los', 0 ),
+			'gallery_ids'         => $values->get( 'gallery', [] ),
+			'tax_rate_id'         => $values->get( '_tax_rate_id', 0 ),
+			'rate_services'   => $rate_services,
 		]);
 
-		parent::__construct();
-	}
+		if ( ! $is_translation ) {
+			// Correct the occupancy size.
+			foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
+				if ( ! isset( $values[ $key ] ) ) {
+					continue;
+				}
 
-	/**
-	 * Register hooks.
-	 *
-	 * @access private
-	 */
-	public function register() {
-		parent::register();
+				$max = (int) $values->get( '_maximum_occupancy', 0 );
 
-		$this->register_room_fields();
-		$this->register_occupancy_fields();
-		$this->register_pricing_fields();
-		// $this->register_deposit_fields();
-		$this->register_services_fields();
-		$this->register_amenities_fields();
-		$this->register_description_fields();
+				// Value cannot be greater than maximum occupancy.
+				if ( (int) $values[ $key ] > $max ) {
+					$values[ $key ] = $max;
+				}
+			}
 
-		do_action( 'awebooking/register_metabox/room_type', $this->metabox );
+			$room_type->fill([
+				'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
+				'number_adults'       => $values->get( 'number_adults', 0 ),
+				'number_children'     => $values->get( 'number_children', 0 ),
+				'number_infants'      => $values->get( 'number_infants', 0 ),
+				'calculation_infants' => $values->get( '_infants_in_calculations', 'off' ),
+			]);
+		}
 
-		add_action( 'edit_form_top', [ $this, '_setup_room_type' ] );
-		add_action( 'admin_menu', array( $this, '_remove_meta_box' ) );
-	}
+		// Fire action before save.
+		do_action( 'abrs_process_room_type_data', $room_type, $values, $request );
 
-	/**
-	 * Doing remove metaboxes.
-	 *
-	 * @access private
-	 */
-	public function _remove_meta_box() {
-		remove_meta_box( 'hotel_amenitydiv', $this->post_type, 'side' );
-		remove_meta_box( 'hotel_extra_servicediv', $this->post_type, 'side' );
-	}
+		// Save the data.
+		$saved = $room_type->save();
 
-	/**
-	 * Setup room type object.
-	 *
-	 * @access private
-	 * @see wp-admin/edit-form-advanced.php
-	 *
-	 * @param WP_Post $post Post object.
-	 */
-	public function _setup_room_type( $post ) {
-		if ( $this->is_current_screen() ) {
-			global $room_type;
+		// Handle update rooms data.
+		if ( false === $is_translation ) {
+			if ( 0 === count( $room_type->get_rooms() ) ) {
+				$this->perform_scaffold_rooms( $room_type, $request->input( '_scaffold_rooms', [] ) );
+			} elseif ( $request->filled( '_rooms' ) ) {
+				$this->perform_update_rooms( $room_type, $request->input( '_rooms', [] ) );
+			}
+		}
 
-			$room_type = Factory::get_room_type( $post );
+		// Add successfully notice.
+		if ( $saved ) {
+			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 
 	/**
-	 * Save CPT metadata when a custom post is saved.
+	 * Perform scaffold rooms.
 	 *
-	 * @access private
-	 *
-	 * @param int  $post_id The post ID.
-	 * @param post $post    The post object.
-	 * @param bool $update  Whether this is an existing post being updated or not.
+	 * @param  \AweBooking\Model\Room_Type $room_type      The room type instance.
+	 * @param  array                       $scaffold_rooms The rooms data.
+	 * @return void
 	 */
-	public function doing_save( $post_id, $post, $update ) {
-		// If this is just a revision, don't do anything.
-		if ( wp_is_post_revision( $post_id ) ) {
+	protected function perform_scaffold_rooms( $room_type, $scaffold_rooms ) {
+		$scaffold_rooms = array_filter( (array) $scaffold_rooms );
+
+		if ( empty( $scaffold_rooms ) ) {
 			return;
 		}
 
-		$room_type = new Room_Type( $post_id );
+		foreach ( array_values( $scaffold_rooms ) as $index => $data ) {
+			if ( empty( $data['id'] ) || -1 != $data['id'] ) {
+				continue;
+			}
 
-		if ( isset( $_POST['abkng_rooms'] ) && is_array( $_POST['abkng_rooms'] ) ) {
-			$request_rooms = wp_unslash( $_POST['abkng_rooms'] );
-			$room_type->bulk_sync_rooms( $request_rooms );
-		}
+			$room = ( new Room )->fill([
+				'order'     => $index,
+				'name'      => ! empty( $data['name'] )
+					? sanitize_text_field( wp_unslash( $data['name'] ) )
+					/* translators: 1: Room type name, 2: Room item order */
+					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), ( $index + 1 ) ),
+				'room_type' => $room_type->get_id(),
+			]);
 
-		if ( isset( $_POST['awebooking_services'] ) && is_array( $_POST['awebooking_services'] ) ) {
-			$services = array_unique(
-				array_map( 'intval', $_POST['awebooking_services'] )
-			);
-
-			$term_taxonomy_ids = wp_set_object_terms(
-				$post_id, $services, AweBooking::HOTEL_SERVICE, false
-			);
-		} else {
-			wp_delete_object_term_relationships( $post_id, AweBooking::HOTEL_SERVICE );
+			$room->save();
 		}
 	}
 
 	/**
-	 * Register the room fields.
+	 * Perform update rooms.
 	 *
+	 * @param  \AweBooking\Model\Room_Type $room_type The room type instance.
+	 * @param  array                       $rooms     The rooms data.
 	 * @return void
 	 */
-	protected function register_room_fields() {
-		$room = $this->metabox->add_section( 'room', [
-			'title' => esc_html__( 'Room', 'awebooking' ),
-		]);
+	protected function perform_update_rooms( $room_type, $rooms ) {
+		$index = 0;
 
-		$room->add_field( array(
-			'id'         => '__rooms_numbers__',
-			'type'       => 'title',
-			'name'       => esc_html__( 'Number of rooms', 'awebooking' ),
-			'show_on_cb' => function() {
-				include trailingslashit( __DIR__ ) . 'views/html-room-type-rooms.php';
-			},
-		));
+		foreach ( (array) $rooms as $id => $data ) {
+			if ( empty( $data['id'] ) || $id != $data['id'] ) {
+				continue;
+			}
+
+			if ( ! $room = abrs_get_room( $id ) ) {
+				continue;
+			}
+
+			$room->order = $index;
+			$room->name  = ! empty( $data['name'] )
+				? sanitize_text_field( wp_unslash( $data['name'] ) )
+				/* translators: 1: Room type name, 2: Room item order */
+				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), $index + 1 );
+
+			$room->save();
+
+			$index++;
+		}
 	}
 
 	/**
-	 * Register the occupancy fields.
+	 * Register the fields on the form.
 	 *
+	 * @param  \AweBooking\Component\Form\Form_Builder $form The form builder.
 	 * @return void
 	 */
-	protected function register_occupancy_fields() {
-		$occupancy = $this->metabox->add_section( 'occupancy', [
-			'title' => esc_html__( 'Occupancy', 'awebooking' ),
+	protected function form_fields( $form ) {
+		// General tab.
+		$form->add_field([
+			'id'              => '_beds',
+			'type'            => 'include',
+			'name'            => esc_html__( 'Beds', 'awebooking' ),
+			'text'            => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'include'         => trailingslashit( __DIR__ ) . 'views/html-room-type-bed.php',
+			'repeatable'      => true,
+			'sanitization_cb' => [ $this, 'sanitize_beds' ],
 		]);
 
-		$occupancy->add_field( [
+		$form->add_field([
+			'id'          => '_room_view',
+			'type'        => 'text_medium',
+			'name'        => esc_html__( 'View', 'awebooking' ),
+			'attributes'  => [ 'list' => 'view_datalist' ],
+			'after'       => $this->datalist_view_callback(),
+		]);
+
+		$form->add_field([
+			'name'       => esc_html__( 'Area size', 'awebooking' ),
+			'id'         => '_area_size',
+			'type'       => 'text_small',
+			'validate'   => 'numeric|min:1',
+			'before'     => '<div class="abrs-input-addon">',
+			'after'      => '<label for="area_size">' . abrs_format_measure_unit_label() . '</label></div>',
+		]);
+
+		$form->add_field([
 			'id'              => '_maximum_occupancy',
 			'type'            => 'text_medium',
 			'name'            => esc_html__( 'Maximum occupancy', 'awebooking' ),
 			'default'         => 2,
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'attributes'      => [ 'list' => '_maximum_occupancy_datalist' ],
-			'validate'        => 'required|numeric|min:1',
+			'sanitization_cb' => 'absint',
+			'translatable'    => false,
+		]);
+
+		$form->add_field([
+			'id'              => 'number_adults', // _number_adults
+			'type'            => 'text',
+			'name'            => esc_html__( 'Number Adults', 'awebooking' ),
+			'default'         => 2,
+			'attributes'      => [ 'list' => 'number_adults_datalist' ],
+			'after'           => $this->datalist_number_callback( 1, 20 ),
+			'sanitization_cb' => 'absint',
+			'translatable'    => false,
+		]);
+
+		$form->add_field([
+			'id'              => 'number_children', // _number_children
+			'type'            => 'text',
+			'name'            => esc_html__( 'Number Children', 'awebooking' ),
+			'default'         => 0,
+			'attributes'      => [ 'list' => 'number_children_datalist' ],
+			'after'           => $this->datalist_number_callback( 1, 20 ),
+			'sanitization_cb' => 'absint',
+			'translatable'    => false,
+		]);
+
+		$form->add_field([
+			'id'              => 'number_infants', // _number_infants
+			'type'            => 'text',
+			'name'            => esc_html__( 'Number Infants', 'awebooking' ),
+			'default'         => 0,
+			'attributes'      => [ 'list' => 'number_infants_datalist' ],
+			'after'           => $this->datalist_number_callback( 1, 20 ),
+			'sanitization_cb' => 'absint',
+			'translatable'    => false,
+		]);
+
+		$form->add_field( [
+			'id'              => '_infants_in_calculations',
+			'type'            => 'abrs_toggle',
+			'desc'            => esc_html__( 'Include infants in max calculations?', 'awebooking' ),
+			'default'         => false,
+			'show_names'      => false,
+			'translatable'    => false,
+		]);
+
+		// Pricing.
+		$form->add_field([
+			'id'              => 'base_price', // _rack_rate
+			'type'            => 'abrs_amount',
+			'name'            => esc_html__( 'Rack Single_Rate', 'awebooking' ),
+			'append'          => abrs_currency_symbol(),
+			'tooltip'         => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
+		]);
+
+		$form->add_field([
+			'id'               => '_tax_rate_id',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Tax', 'awebooking' ),
+			'classes'          => 'with-selectize',
+			'options_cb'       => 'abrs_get_tax_rates_for_dropdown',
+			'show_option_none' => esc_html__( 'No Tax', 'awebooking' ),
+			'show_on_cb'       => function () {
+				return abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() );
+			},
+		]);
+
+		$form->add_field([
+			'id'          => '_rate_inclusions',
+			'type'        => 'text',
+			'name'        => esc_html__( 'Inclusions (for display)', 'awebooking' ),
+			'desc'        => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
+			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'repeatable'  => true,
+			'tooltip'     => true,
+		]);
+
+		$form->add_field([
+			'id'          => '_rate_policies',
+			'type'        => 'text',
+			'name'        => esc_html__( 'Policies (for display)', 'awebooking' ),
+			'text'        => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'desc'        => esc_html__( 'What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc.', 'awebooking' ),
+			'repeatable'  => true,
+			'tooltip'     => true,
+		]);
+
+		$form->add_field([
+			'id'              => 'minimum_night', // '_rate_min_los'
+			'type'            => 'text_small',
+			'name'            => esc_html__( 'Min LOS', 'awebooking' ),
+			'desc'            => esc_html__( 'Minimum Length of Stay', 'awebooking' ),
+			'default'         => 1,
+			'tooltip'         => true,
 			'sanitization_cb' => 'absint',
 		]);
 
-		$sanitization_cb = function( $value, $field_args, $field ) {
-			// @codingStandardsIgnoreLine
-			if ( empty( $_POST['_maximum_occupancy'] ) ) {
-				return 0;
-			}
-
-			$value = absint( $value );
-			$maximum_occupancy = absint( $_POST['_maximum_occupancy'] );
-
-			return ( $value > $maximum_occupancy ) ? $maximum_occupancy : $value;
-		};
-
-		$occupancy->add_row( [
-			'id'            => 'maximum-occupancy-row',
-			'flex_columns'  => 5,
-			'fields'        => [
-				[
-					'id'              => 'number_adults',
-					'type'            => 'text',
-					'name'            => esc_html__( 'Number adults', 'awebooking' ),
-					'default'         => 2,
-					'attributes'      => [ 'list' => 'number_adults_datalist' ],
-					'after'           => $this->datalist_number_callback( 1, 20 ),
-					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => $sanitization_cb,
-				],
-				[
-					'id'              => 'number_children',
-					'type'            => 'text',
-					'name'            => esc_html__( 'Number children', 'awebooking' ),
-					'default'         => 0,
-					'attributes'      => [ 'list' => 'number_children_datalist' ],
-					'after'           => $this->datalist_number_callback( 1, 20 ),
-					'show_on_cb'      => [ awebooking( 'setting' ), 'is_children_bookable' ],
-					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => $sanitization_cb,
-				],
-				[
-					'id'              => 'number_infants',
-					'type'            => 'text',
-					'name'            => esc_html__( 'Number infants', 'awebooking' ),
-					'default'         => 0,
-					'attributes'      => [ 'list' => 'number_infants_datalist' ],
-					'after'           => $this->datalist_number_callback( 1, 20 ),
-					'show_on_cb'      => [ awebooking( 'setting' ), 'is_infants_bookable' ],
-					'validate'        => 'required|numeric|min:0',
-					'sanitization_cb' => $sanitization_cb,
-				],
-			],
-		]);
-
-		/*$occupancy->add_field( [
-			'id'              => '_infants_in_calculations',
-			'type'            => 'toggle',
-			'desc'            => esc_html__( 'Include infants in max calculations?', 'awebooking' ),
-			'default'         => true,
-			'show_on_cb'      => [ awebooking( 'setting' ), 'is_infants_bookable' ],
-		]);*/
-
-		$occupancy->add_field( [
-			'id'         => 'some_note',
-			'type'       => 'note',
-			'save_field' => false,
-			'title'       => esc_html__( 'Some notes on setting capacity', 'awebooking' ),
-			// @codingStandardsIgnoreLine: We already escape the output, so just using `__` here.
-			'desc'       => __( "The number of adults, children etc. <b>do not</b> need to add up to the maximum occupancy. A room could sleep a maximum of 4 people, but the max adults may be 2 and max children 3. \n This would allow your guests to choose 2 adults and 2 children, or 1 adult and 3 children. (But never 2 adults and 3 children as this would exceed the max capacity.)", 'awebooking' ),
-		]);
-	}
-
-	/**
-	 * Register the pricing fields.
-	 *
-	 * @return void
-	 */
-	protected function register_pricing_fields() {
-		$pricing = $this->metabox->add_section( 'pricing', [
-			'title' => esc_html__( 'Pricing', 'awebooking' ),
-		] );
-
-		$pricing->add_field( [
-			'id'   => '__standard_rate_title__',
-			'type' => 'title',
-			'name' => esc_html__( 'Standard rate', 'awebooking' ),
-		] );
-
-		$pricing->add_row( [
-			'id'             => '_row_rate_price_',
-			'flex_columns'   => 4,
-			'fields'         => [
-				[
-					'id'              => 'base_price',
-					'type'            => 'text_small',
-					'name'            => esc_html__( 'Base price', 'awebooking' ),
-					/* translators: %s The currency symbol */
-					'append'          => sprintf( esc_html__( '%s / room / night', 'awebooking' ), esc_html( awebooking( 'currency' )->get_symbol() ) ),
-					'validate'        => 'required|price',
-					'sanitization_cb' => 'awebooking_sanitize_price',
-				],
-				/*[
-					'id'              => '_rate_label',
-					'type'            => 'text_medium',
-					'name'            => esc_html__( 'Public name (optional)', 'awebooking' ),
-					'desc'            => esc_html__( 'E.g. Best rate available (BAR), Room only, etc...', 'awebooking' ),
-					'sanitization_cb' => 'sanitize_text_field',
-				],*/
-			],
-		] );
-
-		$pricing->add_row( [
-			'id'             => '_row_length_of_stay_',
-			'flex_columns'   => 4,
-			'fields'         => [
-				[
-					'id'         => 'minimum_night',
-					'type'       => 'text_small',
-					'name'       => esc_html__( 'Min length of stay', 'awebooking' ),
-					'append'     => esc_html__( 'night(s)', 'awebooking' ),
-					'default'    => 1,
-					'validate'   => 'required|numeric|min:1',
-					'sanitization_cb' => 'absint',
-				],
-				/*[
-					'id'         => '_maximum_los',
-					'type'       => 'text_small',
-					'name'       => esc_html__( 'Max length of stay', 'awebooking' ),
-					'append'     => esc_html__( 'night(s)', 'awebooking' ),
-					'default'    => 365,
-					'validate'   => 'required|numeric|min:0',
-					'sanitization_cb' => 'absint',
-				],*/
-			],
-		] );
-
-		/*$pricing->add_field( [
-			'id'              => '_extra_guest_charge',
-			'type'            => 'toggle',
-			'desc'            => esc_html__( 'Charge for additional guest?', 'awebooking' ),
-			'default'         => true,
-		] );
-
-		$pricing->add_field( [
-			'id'   => 'per_person_pricing',
-			'type' => 'per_person_pricing',
-			'deps' => [ '_extra_guest_charge', '==', true ],
-		] );*/
-	}
-
-	/**
-	 * Register the deposit fields.
-	 *
-	 * @return void
-	 */
-	protected function register_deposit_fields() {
-		$pricing = $this->metabox->add_section( 'deposit', [
-			'title' => esc_html__( 'Deposit', 'awebooking' ),
-		] );
-
-		$pricing->add_field([
-			'id'          => '_enable_deposit',
-			'type'        => 'toggle',
-			'name'        => esc_html__( 'Enable deposit', 'awebooking' ),
-		]);
-
-		$pricing->add_field([
-			'id'              => '_deposit_value',
+		$form->add_field([
+			'id'              => '_rate_maximum_los',
 			'type'            => 'text_small',
-			'name'            => esc_html__( 'Deposit value', 'awebooking' ),
-			'append'          => esc_html( awebooking( 'currency' )->get_symbol() ),
-			'validate'        => 'required|price',
-			'sanitization_cb' => 'awebooking_sanitize_price',
-			'deps'            => [ '_enable_deposit', '==', true ],
-		]);
-	}
-
-	/**
-	 * Register the services fields.
-	 *
-	 * @return void
-	 */
-	protected function register_services_fields() {
-		$services = $this->metabox->add_section( 'services', [
-			'title' => esc_html__( 'Services', 'awebooking' ),
+			'name'            => esc_html__( 'Max LOS', 'awebooking' ),
+			'desc'            => esc_html__( 'Maximum Length of Stay', 'awebooking' ),
+			'default'         => 0,
+			'tooltip'         => true,
+			'sanitization_cb' => 'absint',
 		]);
 
-		$services->add_field( [
-			'id'              => '_services',
-			'type'            => '_none_',
-			'name'            => esc_html__( 'Services', 'awebooking' ),
-			'save_field'      => false,
-			'render_field_cb' => function() {
-				include trailingslashit( __DIR__ ) . 'views/html-room-type-services.php';
-			},
-		]);
-	}
-
-	/**
-	 * Register the amenities fields.
-	 *
-	 * @return void
-	 */
-	protected function register_amenities_fields() {
-		$amenities = $this->metabox->add_section( 'amenities', [
-			'title' => esc_html__( 'Amenities', 'awebooking' ),
+		// Desc.
+		$form->add_field([
+			'id'           => 'gallery',
+			'type'         => 'file_list',
+			'name'         => esc_html__( 'Gallery', 'awebooking' ),
+			'query_args'   => [ 'type' => 'image' ],
+			'text'         => [ 'add_upload_files_text' => esc_html__( 'Select Images', 'awebooking' ) ],
+			'preview_size' => 'medium',
 		]);
 
-		$amenities->add_field( [
-			'id'              => '_amenities',
-			'type'            => '_none_',
-			'name'            => esc_html__( 'Amenities', 'awebooking' ),
-			'save_field'      => false,
-			'render_field_cb' => $this->categories_box_callback( Constants::HOTEL_AMENITY ),
-		]);
-	}
-
-	/**
-	 * Register the description fields.
-	 *
-	 * @return void
-	 */
-	protected function register_description_fields() {
-		$description = $this->metabox->add_section( 'description', [
-			'title' => esc_html__( 'Description', 'awebooking' ),
-		]);
-
-		$description->add_field([
-			'id'         => 'gallery',
-			'type'       => 'file_list',
-			'name'       => esc_html__( 'Gallery', 'awebooking' ),
-			'query_args' => [ 'type' => 'image' ],
-			'text'       => [ 'add_upload_files_text' => esc_html__( 'Set gallery', 'awebooking' ) ],
-		]);
-
-		// Please do not change "excerpt" ID.
-		$description->add_field( [
+		$form->add_field([
 			'id'          => 'excerpt',
 			'type'        => 'wysiwyg',
 			'name'        => esc_html__( 'Short Description', 'awebooking' ),
 			'save_field'  => false,
 			'escape_cb'   => false,
-			'options'     => [ 'textarea_rows' => 7 ],
+			'options'     => [ 'textarea_rows' => 80 ],
 			'default_cb'  => function() {
 				return get_post_field( 'post_excerpt', get_the_ID() );
 			},
-		] );
+		]);
 	}
 
 	/**
-	 * Generate `post_categories_meta_box` callback.
+	 * Return array of tabs to show.
 	 *
-	 * @param  string $taxonomy The taxonomy.
-	 * @return Clusure
+	 * @return array
 	 */
-	protected function categories_box_callback( $taxonomy ) {
-		return function() use ( $taxonomy ) {
-			post_categories_meta_box( get_post(), [ 'args' => [ 'taxonomy' => $taxonomy ] ] );
-		};
+	protected function get_tabs() {
+		return apply_filters( 'abrs_room_type_data_tabs', [
+			'general' => [
+				'title'    => esc_html__( 'General', 'awebooking' ),
+				'priority' => 10,
+			],
+			'pricing' => [
+				'title'    => esc_html__( 'Pricing', 'awebooking' ),
+				'priority' => 20,
+			],
+			'amenities' => [
+				'title'    => esc_html__( 'Rooms', 'awebooking' ),
+				'priority' => 40,
+			],
+			'description' => [
+				'title'    => esc_html__( 'Description', 'awebooking' ),
+				'priority' => 50,
+			],
+		]);
+	}
+
+	/**
+	 * Output the sections.
+	 *
+	 * @param \AweBooking\Component\Form\Form_Builder $form The form builder.
+	 * @access private
+	 */
+	protected function output_tabs( $form ) {
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-general.php';
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-pricing.php';
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-amenities.php';
+		include trailingslashit( __DIR__ ) . 'views/html-room-type-description.php';
 	}
 
 	/**
@@ -422,7 +424,7 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 	 *
 	 * @param  int $min Min.
 	 * @param  int $max Max.
-	 * @return Closure
+	 * @return \Closure
 	 */
 	protected function datalist_number_callback( $min, $max ) {
 		return function( $field_args, $field ) use ( $min, $max ) {
@@ -434,5 +436,69 @@ class Room_Type_Metabox extends Post_Type_Metabox {
 
 			echo '</datalist>';
 		};
+	}
+
+	/**
+	 * Generate view datalist HTML callback.
+	 *
+	 * @return \Closure
+	 */
+	protected function datalist_view_callback() {
+		return function() {
+			$view_datalist = apply_filters( 'abrs_list_room_views', [
+				esc_html__( 'Airport view', 'awebooking' ),
+				esc_html__( 'Bay view', 'awebooking' ),
+				esc_html__( 'City view', 'awebooking' ),
+				esc_html__( 'Courtyard view', 'awebooking' ),
+				esc_html__( 'Golf view', 'awebooking' ),
+				esc_html__( 'Harbor view', 'awebooking' ),
+				esc_html__( 'Intercoastal view', 'awebooking' ),
+				esc_html__( 'Lake view', 'awebooking' ),
+				esc_html__( 'Marina view', 'awebooking' ),
+				esc_html__( 'Mountain view', 'awebooking' ),
+				esc_html__( 'Ocean view', 'awebooking' ),
+				esc_html__( 'Pool view', 'awebooking' ),
+				esc_html__( 'River view', 'awebooking' ),
+				esc_html__( 'Water view', 'awebooking' ),
+				esc_html__( 'Beach view', 'awebooking' ),
+				esc_html__( 'Garden view', 'awebooking' ),
+				esc_html__( 'Park view', 'awebooking' ),
+				esc_html__( 'Forest view', 'awebooking' ),
+				esc_html__( 'Rain forest view', 'awebooking' ),
+				esc_html__( 'Various views', 'awebooking' ),
+				esc_html__( 'Limited view', 'awebooking' ),
+				esc_html__( 'Slope view', 'awebooking' ),
+				esc_html__( 'Strip view', 'awebooking' ),
+				esc_html__( 'Countryside view', 'awebooking' ),
+				esc_html__( 'Sea view', 'awebooking' ),
+			]);
+
+			echo '<datalist id="view_datalist">';
+
+			foreach ( $view_datalist as $val ) {
+				echo '<option value="' . esc_attr( $val ) . '">';
+			}
+
+			echo '</datalist>';
+		};
+	}
+
+	/**
+	 * Sanitize beds.
+	 *
+	 * @param  array $beds beds
+	 * @return array
+	 */
+	public function sanitize_beds( $beds ) {
+		$values = [];
+		foreach ( (array) $beds as $key => $val ) {
+			if ( ! isset( $val['type'] ) || ! $val['type'] ) {
+				continue;
+			}
+
+			$values[ $key ] = $val;
+		}
+
+		return array_filter( $values );
 	}
 }

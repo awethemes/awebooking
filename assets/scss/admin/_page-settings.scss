@@ -1,0 +1,49 @@
+.wrap.awebooking-settings {
+  .subsubsub {
+    float: none;
+    margin-bottom: 8px;
+
+    > li:not(:last-child):after {
+      content: '|';
+      color: #aaa;
+      margin: 0 5px;
+      display: inline-block;
+    }
+  }
+
+  .cmb-th {
+    position: relative;
+  }
+
+  select.cmb2_select,
+  input.regular-text,
+  .selectize-control {
+    width: 400px;
+  }
+
+  p.cmb2-metabox-description,
+  span.cmb2-metabox-description {
+    color: #666;
+    padding-top: 5px;
+    font-style: inherit;
+  }
+
+  .cmb-row > .cmb-td {
+    padding: 0;
+  }
+}
+
+.abrs-cmb2-float,
+.wrap.awebooking-settings {
+  .cmb2-tooltip {
+    top: 0;
+    right: 0;
+    cursor: help;
+    position: absolute;
+    color: #585858;
+
+    .dashicons {
+      font-size: 18px;
+    }
+  }
+}

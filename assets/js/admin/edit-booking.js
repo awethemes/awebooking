@@ -1,1 +1,173 @@
-webpackJsonp([2],{1:function(t,n,e){t.exports=e("5bM3")},"5bM3":function(t,n,e){var o=window.jQuery,i=window.TheAweBooking,a=e("Nwyp"),r=e("Zv7P");o(function(){var t=o("#awebooking-add-line-item-form");t.length>0&&new a(t),new r,o(".js-delete-booking-item").on("click",function(){if(!confirm(i.trans("warning")))return!1}),o("#awebooking-booking-notes").on("click",".delete_note",function(t){t.preventDefault();o(this);var n=o(this).closest("li.note");wp.ajax.post("delete_awebooking_note",{note_id:o(n).attr("rel"),booking_id:o("#post_ID").val()}).done(function(t){o(n).remove()})}),o("#awebooking-booking-notes").on("click","button.add_note",function(t){t.preventDefault(),o("textarea#add_booking_note").val()&&wp.ajax.post("add_awebooking_note",{booking_id:o("#post_ID").val(),note:o("textarea#add_booking_note").val(),note_type:o("select#booking_note_type").val()}).done(function(t){o("ul.booking_notes").prepend(t.new_note),o("#add_booking_note").val("")})})})},Nwyp:function(t,n){var e=function(){function t(t,n){for(var e=0;e<n.length;e++){var o=n[e];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(n,e,o){return e&&t(n.prototype,e),o&&t(n,o),n}}();var o=window.jQuery,i=window.TheAweBooking,a=function(){function t(n){!function(t,n){if(!(t instanceof n))throw new TypeError("Cannot call a class as a function")}(this,t),this.form=n instanceof jQuery?n[0]:n,this.$form=o(this.form),this.$form.on("change","#add_room",this.handleAddRoomChanges.bind(this)),this.$form.on("change","#add_check_in_out_0",this.handleDateChanges.bind(this)),this.$form.on("change","#add_check_in_out_1",this.handleDateChanges.bind(this)),this.$form.on("change",'#add_adults, #add_children, #add_infants, [name="add_services[]"]',this.handleCalculateTotal.bind(this)),o('button[type="submit"]',this.$form).prop("disabled",!0),this.$form.on("submit",o.proxy(this.onSubmit,this))}return e(t,[{key:"onSubmit",value:function(t){t.preventDefault(),i.ajaxSubmit(this.form,"add_awebooking_line_item").done(function(t){setTimeout(function(){o("form#post").submit()},250)}).fail(function(t){t.error&&alert(t.error)})}},{key:"handleCalculateTotal",value:function(){var t=this;i.ajaxSubmit(this.form,"awebooking_calculate_line_item_total").done(function(n){n.total&&t.$form.find("#add_price").val(n.total)})}},{key:"handleDateChanges",value:function(){this.ensureInputDates()&&(this.$form.find("#add_room").val(""),this.ajaxUpdateForm())}},{key:"handleAddRoomChanges",value:function(){var t=this;this.ensureInputDates()&&this.ajaxUpdateForm().done(function(){o('button[type="submit"]',t.$form).prop("disabled",!1)})}},{key:"ajaxUpdateForm",value:function(){var t=this.$form.find(".awebooking-dialog-contents");return i.ajaxSubmit(this.form,"get_awebooking_add_item_form").done(function(n){o("#add_check_in_out_0",t).datepicker("destroy"),o("#add_check_in_out_1",t).datepicker("destroy"),t.html(n.html)})}},{key:"ensureInputDates",value:function(){var t=this.$form.find("#add_check_in_out_0"),n=this.$form.find("#add_check_in_out_1");return t.val()&&n.val()}}]),t}();t.exports=a},Zv7P:function(t,n){var e=function(){function t(t,n){for(var e=0;e<n.length;e++){var o=n[e];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(n,e,o){return e&&t(n.prototype,e),o&&t(n,o),n}}();var o=window.jQuery,i=window.TheAweBooking,a=function(){function t(){!function(t,n){if(!(t instanceof n))throw new TypeError("Cannot call a class as a function")}(this,t),this.doingAjax=!1,this.currentAjax=null,this.$popup=o("#awebooking-edit-line-item-popup"),i.Popup.setup(this.$popup),o("form",this.$popup).on("submit",this.submitForm),o(".js-edit-line-item").on("click",this.openPopup.bind(this)),this.$popup.on("change",'#edit_adults, #edit_children, #edit_infants, #edit_check_in_out_0, #edit_check_in_out_1, [name="edit_services[]"]',_.debounce(this.handleCalculateTotal.bind(this),250))}return e(t,[{key:"handleCalculateTotal",value:function(){var t=this;this.doingAjax&&this.currentAjax&&this.currentAjax.abort(),t.doingAjax=!0,this.currentAjax=i.ajaxSubmit(this.$popup.find("form")[0],"awebooking_calculate_update_line_item_total").done(function(n){var e=t.$popup.find("#edit_total");n.total&&e.val()!=n.total&&e.val(n.total).effect("highlight")}).always(function(){t.doingAjax=!1})}},{key:"openPopup",value:function(t){t.preventDefault();var n=this,e=o(t.currentTarget).data("lineItem");return n.$popup.find(".awebooking-dialog-contents").html('<div class="awebooking-static-spinner"><span class="spinner"></span></div>'),n.$popup.dialog("open"),wp.ajax.post("get_awebooking_edit_line_item_form",{line_item_id:e}).done(function(t){n.$popup.find(".awebooking-dialog-contents").html(t.html)})}},{key:"submitForm",value:function(t){t.preventDefault(),i.ajaxSubmit(this,"edit_awebooking_line_item").done(function(t){setTimeout(function(){o("form#post").submit()},250)}).fail(function(t){t.error&&alert(t.error)})}}]),t}();t.exports=a}},[1]);
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function ($, plugin) {
+  'use strict';
+
+  var localize = window._awebookingEditBooking || {};
+  var i18n = localize.i18n || {};
+
+  /**
+   * Handle the xhr fail.
+   *
+   * @param  {jqXHR} xhr
+   * @return {void}
+   */
+  var handleXhrFail = function handleXhrFail(xhr) {
+    xhr.fail(function (xhr) {
+      var res = xhr.responseJSON || $.parseJSON(xhr.responseText);
+
+      if (res.message) {
+        plugin.alert(res.message, res.status);
+      }
+
+      if (plugin.debug) {
+        console.log(xhr);
+      }
+    });
+  };
+
+  var EditBooking = function () {
+    /**
+     * Constructor.
+     *
+     * @return {void}
+     */
+    function EditBooking() {
+      _classCallCheck(this, EditBooking);
+
+      $('.js-editnow').click(this.handleEditAddress);
+
+      $('#js-add-note').click(this.handleAddNote);
+      $(document).on('click', '.js-delete-note', this.handleDeleteNote);
+    }
+
+    /**
+     * Handle toggle edit address.
+     *
+     * @param  {Event} e
+     * @return {void}
+     */
+
+
+    _createClass(EditBooking, [{
+      key: 'handleEditAddress',
+      value: function handleEditAddress(e) {
+        e.preventDefault();
+
+        var focus = $(this).data('focus');
+        var $wrapper = $(this).closest('.js-booking-column');
+
+        $wrapper.find('h3 > a.button-editnow').hide();
+        $wrapper.find('div.js-booking-data').hide();
+        $wrapper.find('div.js-edit-booking-data').show();
+
+        if (focus && $(focus, $wrapper).length) {
+          $(focus, $wrapper).focus();
+        }
+      }
+
+      /**
+       * Handle click add note button.
+       *
+       * @param  {Event} e
+       * @return {void}
+       */
+
+    }, {
+      key: 'handleAddNote',
+      value: function handleAddNote(e) {
+        e.preventDefault();
+
+        var $notes = $('#js-booking-notes');
+        var $noteInput = $('#js-booking-note');
+
+        var content = new String($noteInput.val()).trim();
+        if (content.length === 0) {
+          plugin.alert(i18n.empty_note_warning, 'warning');
+          return;
+        }
+
+        var noteType = '';
+        if ($('#js-customer-note').prop('checked') === true) {
+          noteType = 'customer';
+        }
+
+        var xhr = $.ajax({
+          type: 'POST',
+          url: plugin.route('/ajax/booking-note'),
+          data: {
+            note: content,
+            note_type: noteType,
+            booking: parseInt($('#post_ID').val(), 10),
+            _ajax_nonce: localize.add_note_nonce
+          }
+        });
+
+        xhr.done(function (res) {
+          $noteInput.val('');
+          $(res.data).prependTo($notes);
+
+          if ($notes.find('.awebooking-no-items').length) {
+            $notes.find('.awebooking-no-items').closest('li').remove();
+          }
+        });
+
+        handleXhrFail(xhr);
+      }
+
+      /**
+       * Handle delete note.
+       *
+       * @param  {Event} e
+       * @return {void}
+       */
+
+    }, {
+      key: 'handleDeleteNote',
+      value: function handleDeleteNote(e) {
+        e.preventDefault();
+
+        var $el = $(this).closest('.booking-note');
+        if (!$el.length || !$el.attr('rel')) {
+          return;
+        }
+
+        plugin.confirm(i18n.delete_note_warning, function () {
+          var noteID = parseInt($el.attr('rel'), 10);
+
+          var xhr = $.ajax({
+            type: 'POST',
+            url: plugin.route('/ajax/booking-note/' + noteID),
+            data: { _method: 'DELETE', _ajax_nonce: localize.delete_note_nonce }
+          });
+
+          xhr.done(function () {
+            $el.slideUp(100, function () {
+              $el.remove();
+            });
+          });
+
+          handleXhrFail(xhr);
+        });
+      }
+    }]);
+
+    return EditBooking;
+  }();
+
+  // Document ready!
+
+
+  $(function () {
+    plugin.instances.editBooking = new EditBooking();
+  });
+})(jQuery, window.awebooking || {});
+
+},{}]},{},[1]);
+
+//# sourceMappingURL=edit-booking.js.map
