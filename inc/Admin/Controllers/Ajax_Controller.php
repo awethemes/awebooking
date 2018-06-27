@@ -146,13 +146,7 @@ class Ajax_Controller extends Controller {
 			]);
 		}
 
-		return $services->map(function( $items ) {
-			$items['label'] = '<div>
-			<label class="label">' . $items['name'] . '</label>
-			<div class="description">' . abrs_format_service_price( $items->get( 'value' ), $items->get( 'operation' ) ) . '</div></div>';
-
-			return $items;
-		});
+		return $services;
 	}
 
 	/**
