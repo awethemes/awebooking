@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
-use AweBooking\Model\Pricing\Base_Single_Rate
+use AweBooking\Model\Pricing\Base_Single_Rate;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
