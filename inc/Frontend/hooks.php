@@ -8,6 +8,7 @@ add_action( 'abrs_before_main_content',         'abrs_content_wrapper_before', 1
 add_action( 'abrs_after_main_content',          'abrs_content_wrapper_after', 10        );
 
 add_action( 'abrs_before_search_content',       'abrs_search_form_on_search', 10        );
+add_action( 'abrs_before_search_content',       'abrs_filter_form', 15                  );
 // add_action( 'abrs_before_search_content',       'abrs_search_form_on_search', 10        );
 add_action( 'abrs_display_search_result_item',  'abrs_search_result_item', 10, 4        );
 

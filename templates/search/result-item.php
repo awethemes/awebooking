@@ -216,25 +216,27 @@ $rate_plan = $room_rate->get_rate_plan();
 							<div class="column-3">
 								<div class="roommaster-inventory">
 									<?php
-										switch ( abrs_get_option( 'display_price', 'total' ) ) {
-											case 'total':
-												abrs_price( $room_rate->get_rate() );
-												/* translators: %s nights */
-												printf( esc_html_x( 'Cost for %s', 'total cost', 'awebooking' ),
-													abrs_format_night_counts( $room_rate->timespan->nights() )
-												); // WPCS: xss ok.
-												break;
+									$display_price = ( isset( $_GET['showprice'] ) && in_array( $_GET['showprice'], [ 'total', 'average', 'first_night' ] ) ) ? $_GET['showprice'] : abrs_get_option( 'display_price', 'total' );
 
-											case 'average':
-												abrs_price( $room_rate->get_price( 'rate_average' ) );
-												esc_html_e( 'Average cost per night', 'awebooking' );
-												break;
+									switch ( $display_price ) {
+										case 'total':
+											abrs_price( $room_rate->get_rate() );
+											/* translators: %s nights */
+											printf( esc_html_x( 'Cost for %s', 'total cost', 'awebooking' ),
+												abrs_format_night_counts( $room_rate->timespan->nights() )
+											); // WPCS: xss ok.
+											break;
 
-											case 'first_night':
-												abrs_price( $room_rate->get_price( 'rate_first_night' ) );
-												esc_html_e( 'Cost for first night', 'awebooking' );
-												break;
-										}
+										case 'average':
+											abrs_price( $room_rate->get_price( 'rate_average' ) );
+											esc_html_e( 'Average cost per night', 'awebooking' );
+											break;
+
+										case 'first_night':
+											abrs_price( $room_rate->get_price( 'rate_first_night' ) );
+											esc_html_e( 'Cost for first night', 'awebooking' );
+											break;
+									}
 									?>
 								</div>
 

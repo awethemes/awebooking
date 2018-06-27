@@ -131,6 +131,22 @@ class Search_Query {
 			->add_contraints( $contraints )
 			->search();
 
+		if ( $sortby = $this->get_request()->request->get('sortby') ) {
+			switch ( $sortby ) {
+				case 'cheapest':
+					$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
+						return $item['room_rate']->get_rate();
+					});
+					break;
+
+				case 'highest':
+					$this->results->items = $this->results->get_items()->sortByDesc(function ( $item ) {
+						return $item['room_rate']->get_rate();
+					});
+					break;
+			}
+		}
+
 		do_action( 'abrs_search_complete', $this );
 
 		return $this->results;

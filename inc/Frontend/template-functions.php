@@ -24,6 +24,15 @@ function abrs_search_form_on_search() {
 }
 
 /**
+ * Display the filter form on the search page.
+ *
+ * @return void
+ */
+function abrs_filter_form() {
+	abrs_get_template( 'search/filter-form.php' );
+}
+
+/**
  * Display search result item.
  *
  * @param  \AweBooking\Availability\Request   $res_request    The current reservation request.

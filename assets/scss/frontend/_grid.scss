@@ -13,6 +13,10 @@
   }
 }
 
+.flex-space {
+  flex-grow: 1;
+}
+
 // Common properties for all breakpoints
 %grid-column {
   position: relative;
