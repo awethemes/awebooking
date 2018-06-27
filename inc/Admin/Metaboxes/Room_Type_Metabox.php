@@ -87,16 +87,17 @@ class Room_Type_Metabox {
 
 		// Fill the room type data.
 		$room_type->fill([
-			'beds'                => $values->get( '_beds', [] ),
-			'view'                => $values->get( '_room_view', '' ),
-			'area_size'           => $values->get( '_area_size', '' ),
-			'rack_rate'           => $values->get( 'base_price', 0 ),
-			'rate_inclusions'     => $values->get( '_rate_inclusions', [] ),
-			'rate_policies'       => $values->get( '_rate_policies', [] ),
-			'rate_min_los'        => $values->get( 'minimum_night', 0 ),
-			'rate_max_los'        => $values->get( '_rate_maximum_los', 0 ),
-			'gallery_ids'         => $values->get( 'gallery', [] ),
-			'tax_rate_id'         => $values->get( '_tax_rate_id', 0 ),
+			'beds'            => $values->get( '_beds', [] ),
+			'view'            => $values->get( '_room_view', '' ),
+			'area_size'       => $values->get( '_area_size', '' ),
+			'rack_rate'       => $values->get( 'base_price', 0 ),
+			'rate_inclusions' => $values->get( '_rate_inclusions', [] ),
+			'rate_policies'   => $values->get( '_rate_policies', [] ),
+			'rate_min_los'    => $values->get( 'minimum_night', 0 ),
+			'rate_max_los'    => $values->get( '_rate_maximum_los', 0 ),
+			'gallery_ids'     => $values->get( 'gallery', [] ),
+			'tax_rate_id'     => $values->get( '_tax_rate_id', 0 ),
+			'hotel_id'        => absint( $request->get( '_hotel_id' ) ),
 			'rate_services'   => $rate_services,
 		]);
 
