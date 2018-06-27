@@ -30,9 +30,10 @@ const initSelectize = function(select) {
 
 const initSelectizeServices = function(select) {
   $(select).selectize({
+    plugins: ['remove_button', 'drag_drop'],
     valueField: 'id',
     labelField: 'name',
-    searchField: 'name',
+    searchField: ['name', 'id'],
     dropdownParent: 'body',
     placeholder: $(this).data('placeholder'),
     load: function(query, callback) {
@@ -42,17 +43,6 @@ const initSelectizeServices = function(select) {
         ajaxSearch('services', query, callback);
       }
     },
-    // render: {
-    //   item: function(item, escape) {
-    //     return '<div>' +
-    //         (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
-    //     '</div>';
-    //   },
-    //   option: function(item, escape) {
-    //     var label = item.label ? item.label : '';
-    //     return '<div>' + label + '</div>';
-    //   }
-    // },
   });
 }
 
