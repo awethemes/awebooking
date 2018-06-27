@@ -8,14 +8,14 @@ class Query_Results implements \Countable, \IteratorAggregate {
 	 *
 	 * @var \AweBooking\Availability\Request
 	 */
-	protected $request;
+	public $request;
 
 	/**
 	 * The items.
 	 *
 	 * @var \AweBooking\Support\Collection
 	 */
-	protected $items;
+	public $items;
 
 	/**
 	 * Constructor.

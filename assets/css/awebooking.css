@@ -31,6 +31,11 @@
   padding-left: 0;
 }
 
+.awebooking .flex-space,
+.awebooking-block .flex-space {
+  flex-grow: 1;
+}
+
 .awebooking .column,
 .awebooking .awebooking-block .column,
 .awebooking-block .awebooking .column,
