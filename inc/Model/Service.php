@@ -32,7 +32,16 @@ class Service extends Model {
 	 * @return float
 	 */
 	public function get_amount() {
-		return apply_filters( $this->prefix( 'get_amount' ), $this->attributes['amount'], $this );
+		return $this->get( 'amount' );
+	}
+
+	/**
+	 * Is the quantity selectable?
+	 *
+	 * @return bool
+	 */
+	public function is_quantity_selectable() {
+		return (bool) $this->get( 'quantity_selectable' );
 	}
 
 	/**
@@ -138,7 +147,6 @@ class Service extends Model {
 			'amount'              => '',
 			'operation'           => '',
 			'quantity_selectable' => false,
-			'pricing_model'       => '',
 			'stock_status'        => 'instock',
 			'manage_stock'        => false,
 			'stock_quantity'      => 0,
@@ -155,7 +163,6 @@ class Service extends Model {
 			'thumbnail_id'        => '_thumbnail_id',
 			'icon'                => '_icon',
 			'quantity_selectable' => '_quantity_selectable',
-			'pricing_model'       => '_pricing_model',
 			'stock_status'        => '_stock_status',
 			'manage_stock'        => '_manage_stock',
 			'stock_quantity'      => '_stock_quantity',
