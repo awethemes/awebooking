@@ -44,7 +44,10 @@ function abrs_search_result_item( $res_request, $room_type, $room_rate, $availab
  * @access private
  */
 function abrs_checkout_services() {
-	abrs_get_template( 'checkout/services.php', [ 'services' => abrs_list_services() ] );
+	abrs_get_template( 'checkout/services.php', [
+		'services' => abrs_list_services(),
+		'includes' => abrs_reservation()->get_included_services(),
+	]);
 }
 
 /**

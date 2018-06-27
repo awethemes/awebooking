@@ -6,6 +6,7 @@ use AweBooking\Reservation\Storage\Store;
 
 class Reservation {
 	use Traits\With_Room_Stays,
+		Traits\With_Services,
 		Traits\Handle_Session_Store;
 
 	/**
@@ -96,6 +97,7 @@ class Reservation {
 
 		$this->restore_request();
 		$this->restore_rooms();
+		$this->restore_services();
 
 		do_action( 'abrs_reservation_restored', $this );
 	}

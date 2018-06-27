@@ -33,7 +33,7 @@ interface Rate {
 	/**
 	 * Gets all services inclusions.
 	 *
-	 * @return \AweBooking\Support\Collection
+	 * @return array
 	 */
 	public function get_services();
 
