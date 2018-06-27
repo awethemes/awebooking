@@ -31,7 +31,7 @@ class Booking_Room_Controller extends Controller {
 				return new WP_Error( 400, esc_html__( 'ERR.', 'awebooking' ) ); // TODO: ...
 			}
 
-			$results = $res_request->search( [] );
+			$results = $res_request->search();
 		}
 
 		return $this->response( 'booking/add-room.php', compact(

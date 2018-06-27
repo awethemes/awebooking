@@ -3,7 +3,7 @@
 ?><style type="text/css">
 	#awebooking-booking-data .hndle,
 	#awebooking-booking-data .handlediv,
-	#post-body-content, #titlediv { display:none }
+	#post-body-content, #titlediv { display:none; }
 	#awebooking-booking-data.closed .inside { display: block !important; }
 </style>
 

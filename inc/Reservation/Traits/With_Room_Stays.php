@@ -22,7 +22,7 @@ trait With_Room_Stays {
 	 *
 	 * @var array
 	 */
-	protected $booked_rooms;
+	protected $booked_rooms = [];
 
 	/**
 	 * Gets the room stays.
@@ -60,12 +60,11 @@ trait With_Room_Stays {
 	 * @param \AweBooking\Availability\Request $request   The res request instance.
 	 * @param int                              $room_type The room type ID.
 	 * @param int|null                         $rate_plan The rate ID.
-	 * @param int                              $quantity  The number of room to book.
 	 *
 	 * @return \AweBooking\Reservation\Item
 	 */
-	public function add( Request $request, $room_type, $rate_plan = 0, $quantity = 1 ) {
-		return $this->add_room_stay( $request, $room_type, $rate_plan, $quantity );
+	public function add( Request $request, $room_type, $rate_plan = 0 ) {
+		return $this->add_room_stay( $request, $room_type, $rate_plan );
 	}
 
 	/**
@@ -107,83 +106,66 @@ trait With_Room_Stays {
 	}
 
 	/**
-	 * Gets the booked rooms.
-	 *
-	 * @return array
-	 */
-	public function get_booked_rooms() {
-		return $this->booked_rooms;
-	}
-
-	/**
-	 * Add booked rooms.
-	 *
-	 * @param array $rooms The room IDs.
-	 */
-	protected function add_booked_rooms( array $rooms ) {
-		$this->booked_rooms = wp_parse_id_list(
-			array_merge( $this->booked_rooms, $rooms )
-		);
-	}
-
-	/**
 	 * Add a room stay into the list.
 	 *
 	 * @param \AweBooking\Availability\Request $request   The res request instance.
 	 * @param int                              $room_type The room type ID.
 	 * @param int|null                         $rate_plan The rate ID.
-	 * @param int                              $quantity  The number of room to book.
-	 *
 	 * @return \AweBooking\Reservation\Item
+	 *
+	 * @throws \InvalidArgumentException
 	 */
-	public function add_room_stay( Request $request, $room_type, $rate_plan = 0, $quantity = 1 ) {
+	public function add_room_stay( Request $request, $room_type, $rate_plan = 0 ) {
+		$room_type = abrs_get_room_type( $room_type );
+
+		// Prevent add a trash room type.
+		if ( ! $room_type || 'trash' === $room_type->get( 'status' ) ) {
+			throw new \InvalidArgumentException( esc_html__( 'You\'re trying booking an invalid room. Please try another.', 'awebooking' ) );
+		}
+
+		// Sets the current request.
 		$this->set_current_request( $request );
 
-		// Create the room rate, perform check after.
-		$room_rate = abrs_retrieve_room_rate( compact( 'request', 'room_type', 'rate_plan' ) );
-		$this->check_room_rate( $room_rate, $quantity );
-
-		$request = $room_rate->get_request();
-		list ( $room_type, $rate_plan ) = [ $room_rate->get_room_type(), $room_rate->get_rate_plan() ];
-
-		$options = array_merge( $request->to_array(), [
-			'room_type' => $room_type->get_id(),
-			'rate_plan' => $rate_plan->get_id(),
-		]);
-
-		$row_id = Item::generate_row_id( $room_type->get_id(), $options );
-
-		if ( $this->has( $row_id ) ) {
-			$room_stay = $this->get( $row_id );
-			$room_stay->increment( $quantity );
-		} else {
-			// Create the room stay instance.
-			$room_stay = new Item([
-				'id'       => $room_type->get_id(),
-				'name'     => $room_type->get( 'title' ),
-				'price'    => $room_rate->get_rate()->as_numeric(),
-				'quantity' => $quantity,
-				'options'  => $options,
-			]);
-		}
-
-		$room_stay->set_data( $room_rate );
-		$room_stay->associate( $room_type );
-
-		// In single mode, we'll clear all room stays was added before.
+		// On single mode, we'll clear all room stays was added before.
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
 			$this->room_stays->clear();
+			$this->booked_rooms = [];
 		}
 
-		// Take the room IDs for temporary lock.
-		$take_rooms = $room_rate->get_remain_rooms()
-			->take( $room_stay->get_quantity() )
-			->all();
+		// Retrieve the room rate, perform check after.
+		$room_rate = abrs_retrieve_room_rate( compact( 'request', 'room_type', 'rate_plan' ) );
+		$this->check_room_rate( $room_rate );
 
-		$room_ids = array_keys( $take_rooms );
+		// Generate the row_id.
+		$row_id = Item::generate_row_id( $room_type->get_id(),
+			$options = array_merge( $request->to_array(), [
+				'room_type' => $room_type->get_id(),
+				'rate_plan' => $room_rate->get_rate_plan()->get_id(),
+			])
+		);
 
-		$this->add_booked_rooms( $room_ids );
-		$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
+		// If room_stay is already in the reservation, update that quantity
+		// Otherwise, just new one and put into the list.
+		if ( $this->has( $row_id ) ) {
+			$room_stay = $this->get( $row_id );
+			$room_stay->set( 'quantity', $room_stay->get_quantity() + 1 );
+		} else {
+			$room_stay = new Item([
+				'id'       => $room_type->get_id(),
+				'row_id'   => $row_id,
+				'name'     => $room_type->get( 'title' ),
+				'price'    => $room_rate->get_rate(),
+				'options'  => $options,
+				'quantity' => 1,
+			]);
+
+			$room_stay->associate( $room_type );
+			$this->room_stays->put( $row_id, $room_stay );
+		}
+
+		// Update the room stay data.
+		$room_stay->set_data( $room_rate );
+		$this->set_booked_rooms( $room_stay );
 
 		do_action( 'abrs_room_stay_added', $room_stay );
 
@@ -204,10 +186,34 @@ trait With_Room_Stays {
 		do_action( 'abrs_remove_room_stay', $row_id, $this );
 
 		$removed = $this->room_stays->pull( $row_id );
+		unset( $this->booked_rooms[ $removed->get_id() ][ $row_id ] );
 
 		do_action( 'abrs_room_stay_removed', $removed, $this );
 
 		return $removed;
+	}
+
+	/**
+	 * Gets flatten IDs of the booked rooms.
+	 *
+	 * @return array
+	 */
+	public function get_booked_rooms() {
+		return abrs_collect( $this->booked_rooms )->flatten( 2 )->all();
+	}
+
+	/**
+	 * Take the room IDs and store it for temporary lock.
+	 *
+	 * @param \AweBooking\Reservation\Item $room_stay The room stay instance.
+	 * @return void
+	 */
+	protected function set_booked_rooms( Item $room_stay ) {
+		$this->booked_rooms[ $room_stay->get_id() ][ $room_stay->get_row_id() ] = $room_stay->data()
+			->get_remain_rooms()
+			->take( $room_stay->get_quantity() )
+			->pluck( 'resource.id' )
+			->all();
 	}
 
 	/**
@@ -243,7 +249,7 @@ trait With_Room_Stays {
 			throw new NotEnoughRoomsException( sprintf( esc_html__( 'You cannot book that number of rooms because there are not enough rooms (%1$s remaining)', 'awebooking' ), count( $remaining ) ) );
 		}
 
-		if ( $room_rate->get_rate()->is_negative() || $room_rate->get_rate()->is_zero() ) {
+		if ( $room_rate->get_rate() <= 0 ) {
 			throw new RoomRateException( esc_html__( 'Sorry, the room is not available. Please try another room.', 'awebooking' ) );
 		}
 

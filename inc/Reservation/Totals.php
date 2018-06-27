@@ -46,7 +46,7 @@ class Totals {
 	 * Gets a line total.
 	 *
 	 * @param  string $key Total to get.
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get( $key = 'total' ) {
 		$totals = $this->totals();
@@ -83,13 +83,10 @@ class Totals {
 	protected function prepare_calculate() {
 		/* @var \AweBooking\Reservation\Item $room_stay */
 		foreach ( $this->reservation->get_room_stays() as $room_stay ) {
-			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate_plan */
-			$rate_plan = $room_stay->data()->get_rate_plan();
-
-			// Get total price.
-			$price = abrs_decimal( $room_stay->get( 'price' ) )
-				->mul( $room_stay->get( 'quantity' ) )
-				->as_numeric();
+			// Resolve the rate plan.
+			$rate_plan = $room_stay->get( 'rate_plan' ) > 0
+				? abrs_get_rate( $room_stay->get( 'rate_plan' ) )
+				: abrs_get_base_rate( $room_stay->get( 'room_type' ) );
 
 			$room_stay->set( 'tax', 0 );
 			$room_stay->set( 'price_includes_tax', $rate_plan->price_includes_tax() );

@@ -8,7 +8,7 @@ $payment_items = $the_booking->get_payments()
 ?>
 <style type="text/css">
 	#awebooking-booking-payments .hndle,
-	#awebooking-booking-payments .handlediv { display:none }
+	#awebooking-booking-payments .handlediv { display:none; }
 	#awebooking-booking-payments.closed .inside { display: block !important; }
 </style>
 

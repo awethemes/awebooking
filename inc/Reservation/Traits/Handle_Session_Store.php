@@ -74,6 +74,10 @@ trait Handle_Session_Store {
 	public function set_current_request( Request $current_request ) {
 		$this->current_request = $current_request;
 
+		if ( $this->maybe_flush() ) {
+			$this->flush();
+		}
+
 		return $this;
 	}
 
@@ -99,6 +103,7 @@ trait Handle_Session_Store {
 	 */
 	public function flush() {
 		$this->room_stays->clear();
+		$this->booked_rooms     = [];
 		$this->current_request  = null;
 		$this->previous_request = null;
 
@@ -114,12 +119,32 @@ trait Handle_Session_Store {
 	}
 
 	/**
+	 * Is need flush session data.
+	 *
+	 * @return bool
+	 */
+	public function maybe_flush() {
+		// Flush when session request & current request is different.
+		$previous_request = $this->get_previous_request();
+
+		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
+			return true;
+		}
+
+		if ( abrs_running_on_multilanguage() && abrs_multilingual()->get_current_language() !== $this->language ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Save the reservation state.
 	 *
 	 * @return void
 	 */
 	public function store() {
-		if ( $this->room_stays->isEmpty() ) {
+		if ( $this->is_empty() ) {
 			$this->flush();
 			return;
 		}
@@ -128,8 +153,8 @@ trait Handle_Session_Store {
 			$this->store->put( 'previous_request', $this->current_request );
 		}
 
-		$this->store->put( 'booked_rooms', $this->booked_rooms );
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
+		$this->store->put( 'booked_rooms', $this->booked_rooms );
 
 		do_action( 'abrs_reservation_stored', $this );
 	}
@@ -166,13 +191,8 @@ trait Handle_Session_Store {
 			return;
 		}
 
-		$booked_rooms = $this->store->get( 'booked_rooms' );
-		if ( empty( $booked_rooms ) || ! is_array( $booked_rooms ) ) {
-			return;
-		}
-
-		// Set the booked_rooms.
-		$this->booked_rooms = wp_parse_id_list( $booked_rooms );
+		// Resolve the booked_rooms.
+		$this->booked_rooms = (array) $this->store->get( 'booked_rooms' );
 
 		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
 			$session_room_stays = [ Arr::last( $session_room_stays ) ];
@@ -207,6 +227,7 @@ trait Handle_Session_Store {
 				continue;
 			}
 
+			$room_stay->set( 'price', $room_rate->get_rate() );
 			$room_stay->set_data( $room_rate );
 
 			// Put the room stay into the list.
@@ -218,16 +239,6 @@ trait Handle_Session_Store {
 		// Re-store the session.
 		if ( count( $session_room_stays ) !== count( $this->room_stays ) ) {
 			$this->store();
-		}
-	}
-
-	public function restore_language() {
-		if ( abrs_running_on_multilanguage() ) {
-			if ( $session_lang = $this->store->get( 'reservation_language' ) ) {
-				$this->language = $session_lang;
-			} else {
-				$this->store->put( 'reservation_language', $this->language );
-			}
 		}
 	}
 }

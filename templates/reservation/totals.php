@@ -18,7 +18,7 @@ $reservation = abrs_reservation();
 
 ?>
 
-<div class="roomdetails-price roomdetails-total">
+<div class="reservation__section reservation__section--totals">
 	<dl>
 		<dt><?php esc_html_e( 'Total', 'awebooking' ); ?></dt>
 		<dd><?php abrs_price( $reservation->get_total() ); ?></dd>

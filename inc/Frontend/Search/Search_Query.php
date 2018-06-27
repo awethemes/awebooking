@@ -107,6 +107,7 @@ class Search_Query {
 
 		// Setup the res_request.
 		$this->res_request = $res_request;
+		abrs_reservation()->set_current_request( $this->res_request );
 
 		do_action( 'setup_res_request', $res_request );
 	}

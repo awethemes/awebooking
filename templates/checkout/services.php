@@ -20,8 +20,6 @@ if ( $services->isEmpty() ) {
 	return;
 }
 
-$operations = Service::get_operations();
-
 ?>
 
 <div id="checkout-services" class="checkout-services">
@@ -46,10 +44,6 @@ $operations = Service::get_operations();
 
 								<div class="checkout-service__description">
 									<?php echo esc_html( $service->get( 'description' ) ); ?>
-								</div>
-
-								<div class="checkout-service__operation">
-									<?php echo esc_html( $operations[ $service->get( 'operation' ) ] ); ?>
 								</div>
 							</div>
 

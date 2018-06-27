@@ -240,7 +240,7 @@ class Room_Rate {
 			return false;
 		}
 
-		if ( is_null( $this->room_rate ) || $this->get_rate()->is_zero() ) {
+		if ( is_null( $this->room_rate ) || $this->get_rate() <= 0 ) {
 			return false;
 		}
 
@@ -386,22 +386,22 @@ class Room_Rate {
 	/**
 	 * Gets the rate (total).
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get_rate() {
-		return abrs_decimal( $this->prices['rate'] );
+		return $this->prices['rate'];
 	}
 
 	/**
 	 * Gets the rate.
 	 *
 	 * @param  string $type The price type.
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get_price( $type = 'rate' ) {
 		return array_key_exists( $type, $this->prices )
-			? abrs_decimal( $this->prices[ $type ] )
-			: abrs_decimal( 0 );
+			? $this->prices[ $type ]
+			: 0;
 	}
 
 	/**

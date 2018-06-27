@@ -5,7 +5,6 @@ use WP_Error;
 use Awethemes\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking\Service_Item;
-use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
 
 class Booking_Service_Controller extends Controller {
 	/**

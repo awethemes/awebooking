@@ -1,3 +1,5 @@
+$reservation-border-radius: 6px;
+
 // Reservation
 .reservation-goto-checkout {
   margin-top: 1rem;
@@ -5,7 +7,7 @@
 
 .reservation {
 	padding: 0;
-	border-radius: 6px;
+	border-radius: $reservation-border-radius;
 	background-color: $white;
 	box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
 
@@ -62,6 +64,19 @@
     margin-left: 40%;
     text-align: right;
     box-sizing: border-box;
+  }
+}
+
+.reservation__section {
+  &--totals {
+    background-color: #f7f7f7;
+    border-top: solid 1px $border-color;
+    border-bottom-left-radius: $reservation-border-radius;
+    border-bottom-right-radius: $reservation-border-radius;
+
+    .awebooking-price {
+      font-weight: 700;
+    }
   }
 }
 
@@ -144,54 +159,5 @@
 	&__title,
 	&__text {
 		margin-bottom: .2rem;
-	}
-}
-
-.rooms.rooms--booked {
-	margin-bottom: 3rem;
-
-	.mini-room--booked {
-		font-size: 1.3rem;
-	}
-
-	.mini-room__title {
-		width: 14rem;
-		float: left;
-		clear: left;
-		font-weight: bold;
-		padding-right: .2rem;
-	}
-}
-
-// .box .roomdetails-price {
-// 	margin-left: -1rem;
-// 	margin-right: -1rem;
-// }
-
-.roomdetails-price {
-  	border-top: solid 1px #eee;
-  	padding: 1rem;
-
-
-	&__vat {
-		text-transform: uppercase;
-	}
-}
-
-.roomdetails-total {
-	background-color: #eee;
-	padding: 1rem;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-
-	dt, dd {
-		margin-bottom: 0;
-		font-size: 1rem;
-		font-weight: bold;
-	}
-
-	&__info {
-		font-size: .6rem;
-		margin-bottom: 0 !important;
 	}
 }

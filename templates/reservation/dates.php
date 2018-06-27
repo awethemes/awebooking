@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $reservation = abrs_reservation();
-if ( ! $res_request = $reservation->resolve_res_request() ) {
+if ( ! $res_request = $reservation->get_previous_request() ) {
 	return;
 }
 

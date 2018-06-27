@@ -67,13 +67,23 @@ class Reservation {
 		$this->currency = abrs_current_currency();
 
 		add_action( 'wp_loaded', [ $this, 'restore' ], 20 );
-		add_action( 'setup_res_request', [ $this, 'setup' ], 20 );
 		add_action( 'abrs_room_stay_added', [ $this, 'calculate_totals' ], 20, 0 );
 		add_action( 'abrs_room_stay_removed', [ $this, 'calculate_totals' ], 20, 0 );
 		add_action( 'abrs_reservation_restored', [ $this, 'calculate_totals' ], 20, 0 );
 		add_action( 'abrs_complete_calculate_totals', [ $this, 'store' ], 20, 0 );
 
 		do_action( 'abrs_reservation_init', $this );
+	}
+
+	/**
+	 * Gets the current hotel instance.
+	 *
+	 * @return \AweBooking\Model\Hotel
+	 */
+	public function get_hotel() {
+		return $this->hotel
+			? abrs_get_hotel( $this->hotel )
+			: abrs_get_primary_hotel();
 	}
 
 	/**
@@ -90,59 +100,22 @@ class Reservation {
 		do_action( 'abrs_reservation_restored', $this );
 	}
 
-	public function setup( $res_request ) {
-		$this->set_current_request( $res_request );
-
-		// Flush the session when something change.
-		$this->maybe_flush();
-	}
-
-	/**
-	 * Is need flush session data.
-	 *
-	 * @return bool
-	 */
-	public function maybe_flush() {
-		// When session request & current request is different.
-		$previous_request = $this->get_previous_request();
-		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
-			return true;
-		}
-
-		if ( abrs_running_on_multilanguage() && abrs_multilingual()->get_current_language() !== $this->language ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Calculate the totals.
-	 *
-	 * @return void
-	 */
-	public function calculate_totals() {
-		// $this->reset_totals();
-
-		if ( $this->is_empty() ) {
-			// $this->session->set_session();
-			return;
-		}
-
-		do_action( 'abrs_calculate_totals', $this );
-
-		$this->totals->calculate();
-
-		do_action( 'abrs_complete_calculate_totals', $this );
-	}
-
 	/**
 	 * Gets the total after calculation.
 	 *
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get_total() {
 		return $this->totals->get( 'total' );
+	}
+
+	/**
+	 * Gets the subtotal (before tax and discount).
+	 *
+	 * @return float
+	 */
+	public function get_subtotal() {
+		return $this->totals->get( 'subtotal' );
 	}
 
 	/**
@@ -155,13 +128,20 @@ class Reservation {
 	}
 
 	/**
-	 * Gets the current hotel instance.
+	 * Calculate the totals.
 	 *
-	 * @return \AweBooking\Model\Hotel
+	 * @return void
 	 */
-	public function get_hotel() {
-		return $this->hotel
-			? abrs_get_hotel( $this->hotel )
-			: abrs_get_primary_hotel();
+	public function calculate_totals() {
+		if ( $this->is_empty() ) {
+			$this->flush();
+			return;
+		}
+
+		do_action( 'abrs_calculate_totals', $this );
+
+		$this->totals->calculate();
+
+		do_action( 'abrs_complete_calculate_totals', $this );
 	}
 }

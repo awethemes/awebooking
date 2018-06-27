@@ -530,7 +530,7 @@ function abrs_retrieve_room_rate( $args ) {
 	}
 
 	// Find the rate plan.
-	$rate_plan = 0 === $args['rate_plan']
+	$rate_plan = ! $args['rate_plan']
 		? abrs_get_base_rate( $room_type )
 		: abrs_get_rate( $args['rate_plan'] );
 
