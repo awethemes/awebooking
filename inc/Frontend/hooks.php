@@ -12,7 +12,7 @@ add_action( 'abrs_before_search_content',       'abrs_filter_form', 15          
 // add_action( 'abrs_before_search_content',       'abrs_search_form_on_search', 10        );
 add_action( 'abrs_display_search_result_item',  'abrs_search_result_item', 10, 4        );
 
-add_action( 'abrs_html_checkout_services',      'abrs_checkout_services', 10            );
+add_action( 'abrs_before_checkout_form',        'abrs_checkout_services', 10            );
 add_action( 'abrs_html_checkout_guest_details', 'abrs_checkout_guest_details', 10       );
 add_action( 'abrs_html_checkout_guest_details', 'abrs_checkout_additionals', 20         );
 add_action( 'abrs_html_checkout_payments',      'abrs_checkout_payments', 10            );

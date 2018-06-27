@@ -83,10 +83,8 @@ class Totals {
 	protected function prepare_calculate() {
 		/* @var \AweBooking\Reservation\Item $room_stay */
 		foreach ( $this->reservation->get_room_stays() as $room_stay ) {
-			// Resolve the rate plan.
-			$rate_plan = $room_stay->get( 'rate_plan' ) > 0
-				? abrs_get_rate( $room_stay->get( 'rate_plan' ) )
-				: abrs_get_base_rate( $room_stay->get( 'room_type' ) );
+			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate_plan */
+			$rate_plan = $room_stay->data()->get_rate_plan();
 
 			$room_stay->set( 'tax', 0 );
 			$room_stay->set( 'price_includes_tax', $rate_plan->price_includes_tax() );

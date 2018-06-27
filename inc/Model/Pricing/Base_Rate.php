@@ -2,8 +2,6 @@
 namespace AweBooking\Model\Pricing;
 
 class Base_Rate implements Contracts\Rate {
-	use Traits\Has_Services;
-
 	/**
 	 * The room-type instance.
 	 *
@@ -100,5 +98,14 @@ class Base_Rate implements Contracts\Rate {
 	 */
 	public function get_tax_rate() {
 		return $this->instance->get( 'tax_rate_id' );
+	}
+
+	/**
+	 * Gets all services of the rate.
+	 *
+	 * @return array
+	 */
+	public function get_services() {
+		return (array) $this->instance->get( 'rate_services' );
 	}
 }
