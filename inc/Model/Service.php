@@ -27,6 +27,19 @@ class Service extends Model {
 	}
 
 	/**
+	 * Get all service stock statuses.
+	 *
+	 * @return array
+	 */
+	public static function get_stock_statuses() {
+		return apply_filters( 'abrs_get_service_stock_statuses', [
+			'instock'     => esc_html__( 'In stock', 'awebooking' ),
+			'outofstock'  => esc_html__( 'Out of stock', 'awebooking' ),
+			'onbackorder' => esc_html__( 'On backorder', 'awebooking' ),
+		]);
+	}
+
+	/**
 	 * Gets the service amount.
 	 *
 	 * @return float
