@@ -429,23 +429,33 @@ function abrs_price( $amount, $currency = null ) {
 }
 
 /**
- * Return night counts formating.
+ * Retrieves translated of "room count" in singular or plural.
  *
- * @param  Timespan|int $nights The nights.
+ * @param int $count The number of rooms.
  * @return string
  */
-function abrs_format_night_counts( $nights ) {
-	if ( $nights instanceof Timespan ) {
-		$nights = $nights->get_nights();
+function abrs_ngettext_nights( $count ) {
+	if ( $count instanceof Timespan ) {
+		$count = $count->get_nights();
 	}
 
-	$html = sprintf(
-		'<span class="awebooking-nights">%1$d %2$s</span>',
-		esc_html( $nights ),
-		esc_html( _n( 'night', 'nights', $nights, 'awebooking' ) )
-	);
+	/* translators: Number of nights */
+	$string = sprintf( _n( '%s night', '%s nights', $count, 'awebooking' ), number_format_i18n( $count ) );
 
-	return apply_filters( 'abrs_format_night_counts', $html, $nights );
+	return apply_filters( 'abrs_ngettext_nights', $string, $count );
+}
+
+/**
+ * Retrieves translated of "room count" in singular or plural.
+ *
+ * @param int $count The number of rooms.
+ * @return string
+ */
+function abrs_ngettext_rooms( $count ) {
+	/* translators: Number of rooms */
+	$string = sprintf( _n( '%s room', '%s rooms', $count, 'awebooking' ), number_format_i18n( $count ) );
+
+	return apply_filters( 'abrs_ngettext_rooms', $string, $count );
 }
 
 /**

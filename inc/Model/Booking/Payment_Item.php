@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Model\Booking;
 
-use AweBooking\Dropdown;
-
 class Payment_Item extends Item {
 	/**
 	 * Name of object type.

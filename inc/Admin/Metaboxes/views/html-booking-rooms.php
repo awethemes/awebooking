@@ -5,7 +5,7 @@ $room_items    = $the_booking->get_rooms();
 $service_items = $the_booking->get_services();
 ?><style type="text/css">
 	#awebooking-booking-rooms .hndle,
-	#awebooking-booking-rooms .handlediv { display:none }
+	#awebooking-booking-rooms .handlediv { display: none;}
 	#awebooking-booking-data.closed .inside { display: block !important; }
 </style>
 

@@ -251,7 +251,7 @@ function abrs_delete_tax_rate( $tax_rate_id ) {
  */
 function _abrs_prepare_tax_rate( $tax_rate ) {
 	$tax_rate['name'] = $tax_rate['name'] ?: esc_html__( 'Tax', 'awebooking' );
-	$tax_rate['rate'] = abrs_decimal( $tax_rate['rate'], 4 )->as_string();
+	$tax_rate['rate'] = abrs_decimal( $tax_rate['rate'], 4 )->as_numeric();
 
 	$tax_rate['priority'] = isset( $tax_rate['priority'] ) ? absint( $tax_rate['priority'] ) : 0;
 	$tax_rate['compound'] = isset( $tax_rate['compound'] ) && $tax_rate['compound'] ? 1 : 0;

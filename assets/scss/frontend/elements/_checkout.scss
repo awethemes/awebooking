@@ -27,7 +27,7 @@
     }
 
     &.selected {
-      border: solid 2px lighten($primary, 5%);
+      box-shadow: 0 0 0 2px lighten($primary, 5%);
     }
   }
 

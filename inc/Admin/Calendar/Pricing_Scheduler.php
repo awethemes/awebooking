@@ -76,20 +76,20 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 		}
 
 		// Get back the rate class instance from calendar resource.
+		/* @var \AweBooking\Model\Pricing\Contracts\Single_Rate $rate_unit */
 		$rate_unit = abrs_optional( $loop_calendar->get_resource() )->get_reference();
 		if ( is_null( $rate_unit ) ) {
 			return;
 		}
 
-		// Prepare output amount.
-		$base_amount = $rate_unit->get_rack_rate();
-		$amount = abrs_decimal_raw( $matrix->get( $indexed ) );
+		$rack_amount = abrs_decimal( $rate_unit->get_rack_rate() );
+		$amount      = abrs_decimal_raw( $matrix->get( $indexed ) );
 
 		// Build the state class.
 		$state_class = '';
-		if ( $amount->greater_than( $base_amount ) ) {
+		if ( $amount->greater_than( $rack_amount ) ) {
 			$state_class = 'stateup';
-		} elseif ( $amount->less_than( $base_amount ) ) {
+		} elseif ( $amount->less_than( $rack_amount ) ) {
 			$state_class = 'statedown';
 		}
 

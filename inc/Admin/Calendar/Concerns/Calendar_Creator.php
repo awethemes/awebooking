@@ -41,7 +41,7 @@ trait Calendar_Creator {
 		foreach ( $rates as $rate ) {
 			// Because the Calendar works only with integer,
 			// so we need get the raw value from amount.
-			$amount = $rate->get_rack_rate()->as_raw_value();
+			$amount = abrs_decimal( $rate->get_rack_rate() )->as_raw_value();
 
 			$resources[ $rate->get_id() ] = ( new Resource( $rate->get_id(), $amount ) )
 				->set_reference( $rate )

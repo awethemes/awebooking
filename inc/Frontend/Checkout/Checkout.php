@@ -228,8 +228,8 @@ class Checkout {
 			'customer_company'     => $data->get( 'customer_company', '' ),
 			'customer_phone'       => $data->get( 'customer_phone', '' ),
 			'customer_email'       => $data->get( 'customer_email', '' ),
-			'language'             => $this->reservation->get_language(),
-			'currency'             => $this->reservation->get_currency(),
+			'language'             => $this->reservation->language,
+			'currency'             => $this->reservation->currency,
 			'customer_ip_address'  => abrs_http_request()->ip(),
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
 		]);
