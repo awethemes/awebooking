@@ -17,10 +17,8 @@ $services = abrs_reservation()->get_services();
 	<?php foreach ( $services as $item ) : ?>
 		<div class="servicedetails-service">
 			<dl class="servicedetails-service__list">
-				<dt><?php esc_html_e( 'Service', 'awebooking' ); ?></dt>
-				<dd><?php echo esc_html( $item->get_name() ); ?></dd>
-
-				<dt>
+				<dt><?php echo esc_html( $item->get_name() ); ?></dt>
+				<dd>
 					<span class="screen-reader-text"><?php esc_html_e( 'Price', 'awebooking' ); ?></span>
 					<?php
 					/* translators: %1$s quantity, %2$s service price */
@@ -29,7 +27,9 @@ $services = abrs_reservation()->get_services();
 						abrs_format_price( $item->get_price() )
 					); // WPCS: xss ok.
 					?>
-				</dt>
+				</dd>
+
+				<dt>&nbsp;</dt>
 				<dd><?php abrs_price( $item->get_subtotal() ); ?></dd>
 			</dl>
 
