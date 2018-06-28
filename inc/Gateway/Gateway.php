@@ -237,7 +237,7 @@ abstract class Gateway {
 	 * Validate frontend payment fields.
 	 *
 	 * @param  mixed $data The posted data.
-	 * @return bool
+	 * @return \WP_Error|bool
 	 */
 	public function validate_fields( $data ) {
 		return true;
