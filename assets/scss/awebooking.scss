@@ -3,61 +3,14 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
+// Grid.
+@import "frontend/grid";
+
+.awebooking-container {
+  @include make-container;
+}
+
+// Screen text reader.
 .screen-reader-text {
   @include sr-only;
-}
-
-.awebooking,
-.awebooking-block {
-  @import "frontend/grid";
-}
-
-/* Inline datepicker */
-.abrs-inline-datepicker .flatpickr-calendar.inline {
-  margin-top: 0;
-
-  &,
-  .flatpickr-days {
-    width: 100% !important;
-  }
-
-  .dayContainer {
-    width: 50% !important;
-    max-width: 50% !important;
-  }
-
-  .flatpickr-day {
-    max-width: 14.2857143%;
-  }
-}
-
-/* List room data table */
-.abroom__table {
-  table-layout: auto;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 0;
-  width: 100%;
-  border: none;
-
-  td,
-  th {
-    padding: 0;
-    border: none;
-  }
-
-  .column-room-info {
-    width: auto;
-    vertical-align: top;
-  }
-
-  .column-room-button,
-  .column-room-inventory {
-    width: 1%;
-    vertical-align: middle;
-  }
-
-  .column-room-button {
-    white-space: nowrap;
-  }
 }

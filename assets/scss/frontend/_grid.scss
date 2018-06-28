@@ -1,20 +1,24 @@
-.columns {
-  @include make-row();
-}
-
-.columns.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-
-  > .column,
-  > [class*="column-"] {
-    padding-right: 0;
-    padding-left: 0;
+.awebooking,
+.awebooking-block {
+  .flex-space {
+    flex-grow: 1;
   }
-}
 
-.flex-space {
-  flex-grow: 1;
+  .columns {
+    @include make-row();
+  }
+
+  .columns.no-gutters,
+  .columns.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    > .column,
+    > [class*="column-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
 }
 
 // Common properties for all breakpoints
@@ -29,27 +33,31 @@
 @each $breakpoint in map-keys($grid-breakpoints) {
   $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-  .column#{$infix} {
+  .awebooking .column#{$infix},
+  .awebooking-block .column#{$infix} {
     @extend %grid-column;
   }
 
   // Allow columns to stretch full width below their breakpoints
   @for $i from 1 through $grid-columns {
-    .column#{$infix}-#{$i} {
+    .awebooking .column#{$infix}-#{$i},
+    .awebooking-block .column#{$infix}-#{$i} {
       @extend %grid-column;
     }
   }
 
   @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
     // Provide basic `.col-{bp}` classes for equal-width flexbox columns
-    .column#{$infix} {
+    .awebooking .column#{$infix},
+    .awebooking-block .column#{$infix} {
       flex-basis: 0;
       flex-grow: 1;
       max-width: 100%;
     }
 
     @for $i from 1 through $grid-columns {
-      .column#{$infix}-#{$i} {
+      .awebooking .column#{$infix}-#{$i},
+      .awebooking-block .column#{$infix}-#{$i} {
         @include make-col($i, $grid-columns);
       }
     }
