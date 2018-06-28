@@ -29,6 +29,26 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
+			'id'   => '__search_page',
+			'type' => 'title',
+			'name' => esc_html__( 'Search page', 'awebooking' ),
+		]);
+
+		$general->add_field([
+			'id'       => 'display_search_form_on_search',
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Display search form?', 'awebooking' ),
+			'default'  => 'on',
+		]);
+
+		$general->add_field([
+			'id'       => 'display_filter_form',
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Display filter form?', 'awebooking' ),
+			'default'  => 'on',
+		]);
+
+		$general->add_field([
 			'id'   => '__search_form',
 			'type' => 'title',
 			'name' => esc_html__( 'Search form', 'awebooking' ),
