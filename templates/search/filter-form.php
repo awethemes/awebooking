@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! abrs_get_option( 'display_filter_form', true ) ) {
 	return;
 }
-
+return;
 $url_generator = new Url_Generator( $res_request );
 ?>
 
