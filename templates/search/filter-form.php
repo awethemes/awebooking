@@ -18,11 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! abrs_get_option( 'display_filter_form', true ) ) {
+if ( ! abrs_get_option( 'display_filter_form', true ) || ! $res_request ) {
 	return;
 }
-return;
+
 $url_generator = new Url_Generator( $res_request );
+$http_request = abrs_http_request()->request;
 ?>
 
 <div class="filterbox">
@@ -32,8 +33,12 @@ $url_generator = new Url_Generator( $res_request );
 				<div class="filterbox__box-wrap">
 					<label class="filterbox__label"><?php esc_html_e( 'Sort by:', 'awebooking' ); ?></label>
 					<select name="sortby" class="filterbox__sortby" onChange="window.document.location.href=this.options[this.selectedIndex].value;">
-						<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'cheapest' ] ) ); ?>"><?php esc_html_e( 'Cheapest price first', 'awebooking' ); ?></option>
-						<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'highest' ] ) ); ?>"><?php esc_html_e( 'Highest price first', 'awebooking' ); ?></option>
+						<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'cheapest' ] ) ); ?>" <?php selected( 'cheapest', $http_request->get( 'sortby' ) ); ?>>
+							<?php esc_html_e( 'Cheapest price first', 'awebooking' ); ?>
+						</option>
+						<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'highest' ] ) ); ?>" <?php selected( 'highest', $http_request->get( 'sortby' ) ); ?>>
+							<?php esc_html_e( 'Highest price first', 'awebooking' ); ?>
+						</option>
 					</select>
 				</div>
 			</div>
@@ -42,10 +47,10 @@ $url_generator = new Url_Generator( $res_request );
 				<div class="filterbox__box-wrap">
 					<label class="filterbox__label"><?php esc_html_e( 'Show price:', 'awebooking' ); ?></label>
 					<ul class="filterbox__showprice">
-						<li class="filterbox__showprice-item active">
+						<li class="filterbox__showprice-item <?php echo ( 'average' == $http_request->get( 'showprice' ) ) ? 'active' : ''; ?>">
 							<a href="<?php echo esc_url( $url_generator->get_availability_url( [ 'showprice' => 'average' ] ) ); ?>"><?php esc_html_e( 'Per room per night', 'awebooking' ); ?></a>
 						</li>
-						<li class="filterbox__showprice-item">
+						<li class="filterbox__showprice-item <?php echo ( 'total' == $http_request->get( 'showprice' ) ) ? 'active' : ''; ?>">
 							<a href="<?php echo esc_url( $url_generator->get_availability_url( [ 'showprice' => 'total' ] ) ); ?>"><?php esc_html_e( 'Price for whole stay', 'awebooking' ); ?></a>
 						</li>
 					</ul>
