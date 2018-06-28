@@ -216,7 +216,8 @@ $rate_plan = $room_rate->get_rate_plan();
 							<div class="column-3">
 								<div class="roommaster-inventory">
 									<?php
-									$display_price = ( isset( $_GET['showprice'] ) && in_array( $_GET['showprice'], [ 'total', 'average', 'first_night' ] ) ) ? $_GET['showprice'] : abrs_get_option( 'display_price', 'total' );
+									$http_request = abrs_http_request()->request;
+									$display_price = ( $http_request->get( 'showprice' ) && in_array( $http_request->get( 'showprice' ), [ 'total', 'average', 'first_night' ] ) ) ? $http_request->get( 'showprice' ) : abrs_get_option( 'display_price', 'total' );
 
 									switch ( $display_price ) {
 										case 'total':
