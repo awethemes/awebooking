@@ -27,11 +27,6 @@ class Service_Data_Metabox {
 		foreach ( $form->prop( 'fields' ) as $args ) {
 			$form->show_field( $args['id'] );
 		}
-		?>
-		<script type="text/javascript">
-
-		</script>
-		<?php
 
 		echo '</div></div>';
 	}
