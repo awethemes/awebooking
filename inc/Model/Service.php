@@ -13,20 +13,6 @@ class Service extends Model {
 	protected $object_type = Constants::HOTEL_SERVICE;
 
 	/**
-	 * Get all service operations.
-	 *
-	 * @return array
-	 */
-	public static function get_operations() {
-		return apply_filters( 'abrs_get_service_operations', [
-			'add'       => esc_html__( 'Add to price', 'awebooking' ),
-			'add_daily' => esc_html__( 'Add to price per night', 'awebooking' ),
-			'increase'  => esc_html__( 'Increase price by % amount of room prices', 'awebooking' ),
-			'decrease'  => esc_html__( 'Decrease price by % amount of room prices', 'awebooking' ),
-		]);
-	}
-
-	/**
 	 * Get all service stock statuses.
 	 *
 	 * @return array
@@ -35,7 +21,6 @@ class Service extends Model {
 		return apply_filters( 'abrs_get_service_stock_statuses', [
 			'instock'     => esc_html__( 'In stock', 'awebooking' ),
 			'outofstock'  => esc_html__( 'Out of stock', 'awebooking' ),
-			'onbackorder' => esc_html__( 'On backorder', 'awebooking' ),
 		]);
 	}
 
@@ -45,7 +30,16 @@ class Service extends Model {
 	 * @return float
 	 */
 	public function get_amount() {
-		return apply_filters( $this->prefix( 'get_amount' ), $this->attributes['amount'], $this );
+		return $this->get( 'amount' );
+	}
+
+	/**
+	 * Is the quantity selectable?
+	 *
+	 * @return bool
+	 */
+	public function is_quantity_selectable() {
+		return 'on' === abrs_sanitize_checkbox( $this->get( 'quantity_selectable' ) );
 	}
 
 	/**
@@ -55,7 +49,7 @@ class Service extends Model {
 	 */
 	public function is_purchasable() {
 		return apply_filters( $this->prefix( 'is_purchasable' ),
-			$this->exists() && ( 'publish' === $this->get( 'status' ) || current_user_can( 'edit_post', $this->get_id() ) ) && '' !== $this->get( 'amount' ),
+			$this->exists() && ( 'publish' === $this->get( 'status' ) || current_user_can( 'edit_post', $this->get_id() ) ),
 			$this
 		);
 	}
@@ -151,7 +145,6 @@ class Service extends Model {
 			'amount'              => '',
 			'operation'           => '',
 			'quantity_selectable' => false,
-			'pricing_model'       => '',
 			'stock_status'        => 'instock',
 			'manage_stock'        => false,
 			'stock_quantity'      => 0,
@@ -168,7 +161,6 @@ class Service extends Model {
 			'thumbnail_id'        => '_thumbnail_id',
 			'icon'                => '_icon',
 			'quantity_selectable' => '_quantity_selectable',
-			'pricing_model'       => '_pricing_model',
 			'stock_status'        => '_stock_status',
 			'manage_stock'        => '_manage_stock',
 			'stock_quantity'      => '_stock_quantity',

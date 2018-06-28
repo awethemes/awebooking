@@ -2,12 +2,19 @@
 namespace AweBooking\Reservation;
 
 use AweBooking\Support\Collection;
+use AweBooking\Availability\Request;
 use AweBooking\Reservation\Storage\Store;
 
 class Reservation {
 	use Traits\With_Room_Stays,
-		Traits\With_Services,
-		Traits\Handle_Session_Store;
+		Traits\With_Services;
+
+	/**
+	 * The reservation hotel ID.
+	 *
+	 * @var int
+	 */
+	public $hotel;
 
 	/**
 	 * The reservation source.
@@ -31,11 +38,25 @@ class Reservation {
 	public $language;
 
 	/**
-	 * The reservation hotel ID.
+	 * The store instance.
 	 *
-	 * @var int
+	 * @var \AweBooking\Reservation\Storage\Store
 	 */
-	public $hotel;
+	protected $store;
+
+	/**
+	 * The current res request.
+	 *
+	 * @var \AweBooking\Availability\Request
+	 */
+	protected $current_request;
+
+	/**
+	 * The previous res request.
+	 *
+	 * @var \AweBooking\Availability\Request
+	 */
+	protected $previous_request;
 
 	/**
 	 * The reservation totals.
@@ -85,6 +106,150 @@ class Reservation {
 		return $this->hotel
 			? abrs_get_hotel( $this->hotel )
 			: abrs_get_primary_hotel();
+	}
+
+	/**
+	 * Gets the previous_request store in the session.
+	 *
+	 * @return \AweBooking\Availability\Request|null
+	 */
+	public function get_previous_request() {
+		return $this->previous_request;
+	}
+
+	/**
+	 * Sets the previous_request.
+	 *
+	 * @param \AweBooking\Availability\Request $request The res request.
+	 */
+	public function set_previous_request( Request $request ) {
+		$this->previous_request = $request;
+
+		return $this;
+	}
+
+	/**
+	 * Gets the current res_request.
+	 *
+	 * @return \AweBooking\Availability\Request|null
+	 */
+	public function get_current_request() {
+		return $this->current_request;
+	}
+
+	/**
+	 * Sets the current res_request.
+	 *
+	 * @param  \AweBooking\Availability\Request $current_request The request instance.
+	 * @return $this
+	 */
+	public function set_current_request( Request $current_request ) {
+		$this->current_request = $current_request;
+
+		if ( $this->maybe_flush() ) {
+			$this->flush();
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Resolve the res_request.
+	 *
+	 * @return \AweBooking\Availability\Request|null
+	 */
+	public function resolve_res_request() {
+		$res_request = $this->get_current_request();
+
+		if ( ! $res_request ) {
+			$res_request = $this->get_previous_request();
+		}
+
+		return $res_request;
+	}
+
+	/**
+	 * Flush the session data.
+	 *
+	 * @return void
+	 */
+	public function flush() {
+		$this->services->clear();
+		$this->room_stays->clear();
+
+		$this->booked_rooms     = [];
+		$this->current_request  = null;
+		$this->previous_request = null;
+
+		$this->store->flush( 'room_stays' );
+		$this->store->flush( 'booked_rooms' );
+		$this->store->flush( 'booked_services' );
+		$this->store->flush( 'previous_request' );
+
+		if ( abrs_running_on_multilanguage() ) {
+			$this->store->flush( 'reservation_language' );
+		}
+
+		do_action( 'abrs_reservation_emptied', $this );
+	}
+
+	/**
+	 * Is need flush session data.
+	 *
+	 * @return bool
+	 */
+	public function maybe_flush() {
+		// Flush when session request & current request is different.
+		$previous_request = $this->get_previous_request();
+
+		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
+			return true;
+		}
+
+		if ( abrs_running_on_multilanguage() && abrs_multilingual()->get_current_language() !== $this->language ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Save the reservation state.
+	 *
+	 * @return void
+	 */
+	public function store() {
+		if ( $this->is_empty() ) {
+			$this->flush();
+			return;
+		}
+
+		if ( $this->current_request ) {
+			$this->store->put( 'previous_request', $this->current_request );
+		}
+
+		$this->store->put( 'room_stays', $this->room_stays->to_array() );
+		$this->store->put( 'booked_rooms', $this->booked_rooms );
+		$this->store->put( 'booked_services', $this->get_services( true )->to_array() );
+
+		do_action( 'abrs_reservation_stored', $this );
+	}
+
+	/**
+	 * Restore the res request from the store.
+	 *
+	 * @return void
+	 */
+	protected function restore_request() {
+		$previous_request = $this->store->get( 'previous_request' );
+
+		if ( ! $previous_request || ! $previous_request instanceof Request ) {
+			return;
+		}
+
+		$this->previous_request = $previous_request;
+
+		do_action( 'abrs_res_request_restored', $this );
 	}
 
 	/**

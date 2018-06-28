@@ -28,7 +28,6 @@ $link-hover-decoration:     none;
 }
 
 .awebooking-container {
-  @include make-container;
   @include make-container-max-widths;
 }
 

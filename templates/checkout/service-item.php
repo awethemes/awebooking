@@ -14,23 +14,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* @var array $includes */
 /* @var \AweBooking\Model\Service $service */
-/* @var \AweBooking\Support\Collection $includes */
 
-$includes_ids = $includes->pluck( 'id' )->all();
+$res_request = abrs_reservation()->get_previous_request();
+
+$services = abrs_reservation()->get_services();
 
 $is_checked  = false;
-$is_included = in_array( $service->get_id(), $includes_ids );
+$is_included = in_array( $service->get_id(), $includes );
 
-if ( $is_included ) {
+if ( $is_included || abrs_reservation()->has_service( $service ) ) {
 	$is_checked = true;
 }
+
+$price = abrs_calc_service_price( $service, [
+	'nights'     => $res_request->nights,
+	'base_price' => abrs_reservation()->get_totals()->get( 'rooms_subtotal' ),
+]);
+
+$input_prefix = 'services[' . $service->get_id() . ']';
 
 ?>
 
 <div class="checkout-service">
-	<div class="columns">
+	<input type="hidden" name="<?php echo esc_attr( $input_prefix ); ?>[id]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php disabled( $is_included ); ?>>
 
+	<div class="columns">
 		<div class="column-3">
 			<div class="checkout-service__media">
 				<?php print abrs_get_thumbnail( $service->get_id(), 'awebooking_thumbnail' ); // WPCS: xss ok. ?>
@@ -50,12 +60,16 @@ if ( $is_included ) {
 
 				<div class="checkout-service__pay">
 					<div class="checkout-service__price">
-						<?php print abrs_format_service_price( $service->get( 'amount' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?>
+						<?php if ( $is_included ) : ?>
+							<?php abrs_price( 0 ); ?>
+						<?php else : ?>
+							<?php abrs_price( $price ); ?>
+						<?php endif; ?>
 					</div>
 
 					<div class="nice-checkbox">
-						<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="awebooking_services[]"  value="<?php echo esc_attr( $service->get_id() ); ?>" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
-						<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>"></label>
+						<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]"  value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
+						<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>">sdasdasd</label>
 					</div>
 				</div>
 

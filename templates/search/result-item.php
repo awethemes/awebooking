@@ -223,7 +223,7 @@ $rate_plan = $room_rate->get_rate_plan();
 											abrs_price( $room_rate->get_rate() );
 											/* translators: %s nights */
 											printf( esc_html_x( 'Cost for %s', 'total cost', 'awebooking' ),
-												abrs_format_night_counts( $room_rate->timespan->nights() )
+												abrs_ngettext_nights( $room_rate->timespan->nights() )
 											); // WPCS: xss ok.
 											break;
 

@@ -97,18 +97,10 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @param array $attributes The item attributes.
 	 */
 	public function __construct( array $attributes = [] ) {
-		foreach ( array_keys( $this->attributes() ) as $key ) {
-			if ( array_key_exists( $key, $attributes ) ) {
-				$this->set( $key, $attributes[ $key ] );
-			}
-		}
+		$this->update( $attributes );
 
 		if ( is_null( $this->options ) ) {
 			$this->set_options( [] );
-		}
-
-		if ( ! $this->row_id ) {
-			$this->row_id = static::generate_row_id( $this->id, $this->options );
 		}
 	}
 
@@ -125,7 +117,9 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 			}
 		}
 
-		$this->row_id = static::generate_row_id( $this->id, $this->options );
+		if ( ! $this->row_id ) {
+			$this->row_id = static::generate_row_id( $this->id, $this->options );
+		}
 
 		return $this;
 	}

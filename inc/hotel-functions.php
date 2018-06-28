@@ -3,7 +3,6 @@
 use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Hotel;
-use AweBooking\Model\Service;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Base_Single_Rate;
@@ -181,43 +180,6 @@ function abrs_list_hotels( $args = [], $with_primary = false ) {
 	}
 
 	return $hotels;
-}
-
-/**
- * Retrieves the service object.
- *
- * @param  mixed $service The post object or post ID of the service.
- * @return \AweBooking\Model\Service|false|null
- */
-function abrs_get_service( $service ) {
-	return abrs_rescue( function() use ( $service ) {
-		$service = new Service( $service );
-
-		return $service->exists() ? $service : null;
-	}, false );
-}
-
-/**
- * Gets all services.
- *
- * @param  array $args Optional, the WP_Query args.
- * @return \AweBooking\Support\Collection
- */
-function abrs_list_services( $args = [] ) {
-	$args = wp_parse_args( $args, apply_filters( 'abrs_query_services_args', [
-		'post_type'      => Constants::HOTEL_SERVICE,
-		'post_status'    => 'publish',
-		'posts_per_page' => 500, // Limit max 500.
-		'order'          => 'ASC',
-		'orderby'        => 'menu_order',
-	]));
-
-	$wp_query = new WP_Query( $args );
-
-	$services = abrs_collect( $wp_query->posts )
-		->map_into( Service::class );
-
-	return $services;
 }
 
 /**

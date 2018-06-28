@@ -10,7 +10,7 @@ class Calendar_Controller extends Controller {
 	 * Show the booking scheduler.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function index( Request $request ) {
 		$scheduler = new Booking_Scheduler;
@@ -24,7 +24,7 @@ class Calendar_Controller extends Controller {
 	 * Update state.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function update( Request $request ) {
 		check_admin_referer( 'awebooking_update_state', '_wpnonce' );
@@ -59,7 +59,7 @@ class Calendar_Controller extends Controller {
 	 * Bulk update state.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function bulk_update( Request $request ) {
 		check_admin_referer( 'awebooking_bulk_update_state', '_wpnonce' );

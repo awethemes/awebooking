@@ -12,6 +12,7 @@ require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
 require trailingslashit( __DIR__ ) . 'tax-functions.php';
 require trailingslashit( __DIR__ ) . 'hotel-functions.php';
+require trailingslashit( __DIR__ ) . 'service-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
 

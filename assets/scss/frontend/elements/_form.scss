@@ -119,6 +119,8 @@ select.form-select {
   }
 }
 
+$custom-control-indicator-active-bg:            lighten($component-active-bg, 25%);
+
 .nice-radio,
 .nice-checkbox {
   display: block;
