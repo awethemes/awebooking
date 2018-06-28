@@ -6,6 +6,7 @@ use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Booking\Payment_Item;
+use AweBooking\Model\Booking\Service_Item;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Gateway\Gateways;
 use AweBooking\Gateway\Response as Gateway_Response;
@@ -28,7 +29,7 @@ class Checkout {
 	/**
 	 * The session instance.
 	 *
-	 * @var \Awethemes\WP_Session\WP_Session
+	 * @var \Awethemes\WP_Session\Store
 	 */
 	protected $session;
 
@@ -106,7 +107,6 @@ class Checkout {
 	 * @return \AweBooking\Gateway\Response
 	 *
 	 * @throws \AweBooking\Frontend\Checkout\RuntimeException
-	 * @throws \AweBooking\Component\Http\Exceptions\ValidationFailedException
 	 */
 	public function process( Request $request ) {
 		abrs_set_time_limit( 0 );
@@ -149,7 +149,7 @@ class Checkout {
 			return $this->process_payment( $booking, $this->gateways->get( $data['payment_method'] ) );
 		}
 
-		// return $this->process_without_payment( $booking );
+		return $this->process_without_payment( $booking );
 	}
 
 	/**
@@ -246,6 +246,7 @@ class Checkout {
 
 		// Create the booking items.
 		$this->create_booking_items( $booking, $data );
+		$this->create_service_items( $booking, $data );
 
 		do_action( 'abrs_checkout_update_booking_meta', $booking_id, $data );
 
@@ -318,16 +319,18 @@ class Checkout {
 				->pluck( 'resource' )
 				->values();
 
+			$i = 1;
 			$request = $room_rate->get_request();
 
-			foreach ( $assign_rooms as $i => $room ) {
+			/* @var \AweBooking\Model\Room $room */
+			foreach ( $assign_rooms as $room ) {
 				$item = ( new Room_Item )->fill([
 					'booking_id'   => $booking->get_id(),
 					/* translators: The room number */
-					'name'         => sprintf( esc_html_x( 'Room %s', 'booking room number', 'awebooking' ), esc_html( $i + 1 ) ),
+					'name'         => sprintf( esc_html_x( 'Room %s', 'booking room number', 'awebooking' ), esc_html( $i ) ),
 					'room_id'      => $room->get_id(),
-					'room_type_id' => $room_rate->room_type->get_id(),
-					'rate_plan_id' => $room_rate->rate_plan->get_id(),
+					'room_type_id' => $room_rate->get_room_type()->get_id(),
+					'rate_plan_id' => $room_rate->get_rate_plan()->get_id(),
 					'check_in'     => $request->check_in,
 					'check_out'    => $request->check_out,
 					'adults'       => $request->adults ?: 1,
@@ -344,6 +347,8 @@ class Checkout {
 				} catch ( \Exception $e ) {
 					abrs_report( $e );
 				}
+
+				$i++;
 			}
 
 			do_action( 'abrs_checkout_process_room_stay', $room_stay, $item_key, $booking );
@@ -351,6 +356,37 @@ class Checkout {
 
 		// Re-calculate the totals.
 		$booking->calculate_totals();
+	}
+
+	/**
+	 * Create the booking items.
+	 *
+	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @return void
+	 */
+	public function create_service_items( $booking, $data ) {
+		/* @var \AweBooking\Reservation\Item $res_item */
+		foreach ( $this->reservation->get_services() as $item_key => $res_item ) {
+			/* @var \AweBooking\Model\Service $service */
+			if ( ! $service = $res_item->model() ) {
+				continue;
+			}
+
+			$item = ( new Service_item )->fill([
+				'booking_id' => $booking->get_id(),
+				'service_id' => $service->get_id(),
+				'quantity'   => $res_item->get_quantity(),
+				'subtotal'   => $res_item->get_subtotal(),
+				'total'      => $res_item->get_total(),
+			]);
+
+			try {
+				$item->save();
+			} catch ( \Exception $e ) {
+				abrs_report( $e );
+			}
+		}
 	}
 
 	/**
@@ -416,7 +452,7 @@ class Checkout {
 				$response = $gateway->validate_fields( $data );
 
 				if ( is_wp_error( $response ) ) {
-					$errors->add( 'gateway', $response->get_error_messages() );
+					$errors->add( 'gateway', $response->get_error_message() );
 				}
 			}
 		}
