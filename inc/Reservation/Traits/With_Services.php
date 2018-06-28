@@ -14,27 +14,29 @@ trait With_Services {
 	protected $services;
 
 	/**
-	 * Determine if a service exists in the reservation.
+	 * Gets all includes services have in room stays.
 	 *
-	 * @param  string $service_id The service ID.
-	 * @return bool
+	 * These services come with the room rate, no extra cost charge.
+	 *
+	 * @return array
 	 */
-	public function has_service( $service_id ) {
-		return $this->services->where( 'id', '=', $this->parse_service( $service_id ) )->isNotEmpty();
+	public function get_included_services() {
+		// @see https://github.com/kalessil/phpinspectionsea/blob/master/docs/performance.md#slow-array-function-used-in-loop
+		$services = [ [] ];
+
+		foreach ( $this->get_room_stays() as $room_stay ) {
+			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate */
+			$rate = $room_stay->data()->get_rate_plan();
+
+			$services[] = (array) $rate->get_services();
+		}
+
+		// Merges all items.
+		return wp_parse_id_list( array_merge( ...$services ) );
 	}
 
 	/**
-	 * Parse the service ID.
-	 *
-	 * @param Service|int $service The service ID or instance.
-	 * @return int
-	 */
-	protected function parse_service( $service ) {
-		return $service instanceof Service ? $service->get_id() : (int) $service;
-	}
-
-	/**
-	 * Gets all services.
+	 * Gets all service items.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
@@ -43,8 +45,39 @@ trait With_Services {
 			return $this->services;
 		}
 
+		return $this->services->whereNotIn( 'id', $this->get_included_services() );
+	}
+
+	/**
+	 * Gets a service item by given ID.
+	 *
+	 * @param  string $service_id The service ID.
+	 * @return \AweBooking\Reservation\Item
+	 */
+	public function get_service( $service_id ) {
+		if ( is_string( $service_id ) && $this->services->has( $service_id ) ) {
+			return $this->services->get( $service_id );
+		}
+
 		return $this->services
-			->whereNotIn( 'id', $this->get_included_services() );
+			->where( 'id', '=', $this->parse_service( $service_id ) )
+			->first();
+	}
+
+	/**
+	 * Determine if a service item exists in the reservation.
+	 *
+	 * @param  string $service_id The service ID.
+	 * @return bool
+	 */
+	public function has_service( $service_id ) {
+		if ( is_string( $service_id ) && $this->services->has( $service_id ) ) {
+			return true;
+		}
+
+		return $this->services
+			->where( 'id', '=', $this->parse_service( $service_id ) )
+			->isNotEmpty();
 	}
 
 	/**
@@ -124,32 +157,31 @@ trait With_Services {
 		}
 	}
 
-	public function remove_service( $row_id ) {
-		$this->services->forget( $row_id );
+	/**
+	 * Remove a service item.
+	 *
+	 * @param  string $service The service ID.
+	 * @return void
+	 */
+	public function remove_service( $service ) {
+		$item = $this->get_service( $service );
+
+		if ( $item && ! in_array( $item->get_id(), $this->get_included_services() ) ) {
+			$this->services->forget( $item->get_row_id() );
+		}
 	}
 
 	/**
-	 * Gets all includes services have in room stays.
+	 * Parse the service ID.
 	 *
-	 * These services come with the room rate, no extra cost charge.
-	 *
-	 * @return \AweBooking\Support\Collection
+	 * @param Service|int $service The service ID or instance.
+	 * @return int
 	 */
-	public function get_included_services() {
-		// @see https://github.com/kalessil/phpinspectionsea/blob/master/docs/performance.md#slow-array-function-used-in-loop
-		$services = [ [] ];
-
-		foreach ( $this->get_room_stays() as $room_stay ) {
-			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate */
-			$rate = $room_stay->data()->get_rate_plan();
-
-			$services[] = (array) $rate->get_services();
-		}
-
-		// Merges all items.
-		return wp_parse_id_list( array_merge( ...$services ) );
+	protected function parse_service( $service ) {
+		return $service instanceof Service ? $service->get_id() : (int) $service;
 	}
 
+	// TODO:
 	protected function restore_services() {
 		$this->sets_included_services();
 
