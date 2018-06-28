@@ -8,7 +8,15 @@ use AweBooking\Reservation\Exceptions\PastDateException;
 use AweBooking\Reservation\Exceptions\RoomRateException;
 use AweBooking\Reservation\Exceptions\FullyBookedException;
 use AweBooking\Reservation\Exceptions\NotEnoughRoomsException;
+use Illuminate\Support\Arr;
 
+/**
+ * Trait With_Room_Stays
+ *
+ * @property \AweBooking\Reservation\Storage\Store $store
+ *
+ * @package AweBooking\Reservation\Traits
+ */
 trait With_Room_Stays {
 	/**
 	 * List of booked room stays.
@@ -258,5 +266,71 @@ trait With_Room_Stays {
 		}
 
 		do_action( 'abrs_check_room_rate', $room_rate, compact( 'quantity' ), $this );
+	}
+
+	/**
+	 * Restore the reservation from its saved state.
+	 *
+	 * @return void
+	 */
+	protected function restore_rooms() {
+		if ( is_null( $this->previous_request ) ) {
+			return;
+		}
+
+		$session_room_stays = $this->store->get( 'room_stays' );
+		if ( empty( $session_room_stays ) || ! is_array( $session_room_stays ) ) {
+			return;
+		}
+
+		// Resolve the booked_rooms.
+		$this->booked_rooms = (array) $this->store->get( 'booked_rooms' );
+
+		if ( abrs_is_reservation_mode( Constants::MODE_SINGLE ) ) {
+			$session_room_stays = [ Arr::last( $session_room_stays ) ];
+		}
+
+		// Prime caches to reduce future queries.
+		if ( function_exists( '_prime_post_caches' ) ) {
+			_prime_post_caches( array_keys( wp_list_pluck( $session_room_stays, 'id' ) ) );
+		}
+
+		do_action( 'abrs_prepare_restore_room_stays', $this );
+
+		// Perform filter valid room stays.
+		foreach ( $session_room_stays as $row_id => $values ) {
+			if ( ! Arr::has( $values, [ 'id', 'row_id', 'quantity', 'options' ] )
+				|| $values['quantity'] <= 0 || empty( $values['options'] ) ) {
+				continue;
+			}
+
+			// Transform the room stay array to object.
+			$room_stay = ( new Item )->update( $values );
+			if ( ! hash_equals( $values['row_id'], $room_stay->get_row_id() ) ) {
+				continue;
+			}
+
+			// Re-check the availability of the rate.
+			$room_rate = abrs_retrieve_room_rate( $room_stay->get_options()->all() );
+
+			try {
+				$this->check_room_rate( $room_rate, $room_stay->get_quantity() );
+			} catch ( \Exception $e ) {
+				continue;
+			}
+
+			$room_stay->set( 'price', $room_rate->get_rate() );
+			$room_stay->set_data( $room_rate );
+
+			// Put the room stay into the list.
+			$this->room_stays->put( $row_id, $room_stay );
+		}
+
+		do_action( 'abrs_room_stays_restored', $this );
+
+		// Re-store the session.
+		if ( count( $session_room_stays ) !== count( $this->room_stays ) ) {
+			$this->store();
+		}
 	}
 }

@@ -16,7 +16,7 @@ if ( $services->isEmpty() ) {
 	return;
 }
 
-$operations = Service::get_operations();
+$operations = abrs_get_service_operations();
 
 $services_exist = $booking->get_services();
 $service_ids = $services_exist->pluck( 'service_id' )->all();

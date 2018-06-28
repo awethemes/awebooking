@@ -95,6 +95,29 @@ class Reservation_Controller {
 	}
 
 	/**
+	 * Handle update services on the reservation.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return mixed
+	 */
+	public function services( Request $request ) {
+		$included_ids = $this->reservation->get_included_services();
+
+		$services = abrs_collect( $request->get( 'services', [] ) )
+			->where( 'id', '>', 0 )
+			->where( 'quantity', '>', 0 )
+			->whereNotIn( 'id', $included_ids );
+
+		foreach ( $services as $s ) {
+			$response = $this->reservation->add_service( $s['id'], $s['quantity'] );
+		}
+
+		$this->reservation->calculate_totals();
+
+		return $this->redirector->to( abrs_get_checkout_url() );
+	}
+
+	/**
 	 * Redirect to the search page.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

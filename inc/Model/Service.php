@@ -13,20 +13,6 @@ class Service extends Model {
 	protected $object_type = Constants::HOTEL_SERVICE;
 
 	/**
-	 * Get all service operations.
-	 *
-	 * @return array
-	 */
-	public static function get_operations() {
-		return apply_filters( 'abrs_get_service_operations', [
-			'add'       => esc_html__( 'Add to price', 'awebooking' ),
-			'add_daily' => esc_html__( 'Add to price per night', 'awebooking' ),
-			'increase'  => esc_html__( 'Increase price by % amount of room prices', 'awebooking' ),
-			'decrease'  => esc_html__( 'Decrease price by % amount of room prices', 'awebooking' ),
-		]);
-	}
-
-	/**
 	 * Get all service stock statuses.
 	 *
 	 * @return array
@@ -35,7 +21,6 @@ class Service extends Model {
 		return apply_filters( 'abrs_get_service_stock_statuses', [
 			'instock'     => esc_html__( 'In stock', 'awebooking' ),
 			'outofstock'  => esc_html__( 'Out of stock', 'awebooking' ),
-			'onbackorder' => esc_html__( 'On backorder', 'awebooking' ),
 		]);
 	}
 
@@ -54,7 +39,7 @@ class Service extends Model {
 	 * @return bool
 	 */
 	public function is_quantity_selectable() {
-		return (bool) $this->get( 'quantity_selectable' );
+		return 'on' === abrs_sanitize_checkbox( $this->get( 'quantity_selectable' ) );
 	}
 
 	/**
@@ -64,7 +49,7 @@ class Service extends Model {
 	 */
 	public function is_purchasable() {
 		return apply_filters( $this->prefix( 'is_purchasable' ),
-			$this->exists() && ( 'publish' === $this->get( 'status' ) || current_user_can( 'edit_post', $this->get_id() ) ) && '' !== $this->get( 'amount' ),
+			$this->exists() && ( 'publish' === $this->get( 'status' ) || current_user_can( 'edit_post', $this->get_id() ) ),
 			$this
 		);
 	}

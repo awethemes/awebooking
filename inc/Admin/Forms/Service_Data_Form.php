@@ -27,10 +27,10 @@ class Service_Data_Form extends Form_Builder {
 		}
 
 		$this->add_field([
-			'name'    => esc_html__( 'Operation', 'awebooking' ),
-			'id'      => 'operation',
-			'type'    => 'select',
-			'options' => Service::get_operations(),
+			'name'       => esc_html__( 'Operation', 'awebooking' ),
+			'id'         => 'operation',
+			'type'       => 'select',
+			'options_cb' => 'abrs_get_service_operations',
 		]);
 
 		$this->add_field([
@@ -78,6 +78,7 @@ class Service_Data_Form extends Form_Builder {
 			'validate'   => 'required|numeric:min:0',
 			'attributes' => [
 				'type' => 'number',
+				'data-bind' => 'visible: data.manage_stock()',
 			],
 		]);
 	}
