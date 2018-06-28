@@ -11,7 +11,7 @@ class Booking_Payment_Controller extends Controller {
 	 * Handle create new payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function create( Request $request ) {
 		if ( ! $request->filled( 'refer' ) || ! $booking = abrs_get_booking( $request['refer'] ) ) {
@@ -38,7 +38,7 @@ class Booking_Payment_Controller extends Controller {
 	 * Handle store new booking payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'create_booking_payment', '_wpnonce' );
@@ -69,7 +69,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function edit( Request $request, Payment_Item $payment_item ) {
 		if ( ! $booking = abrs_get_booking( $payment_item->booking_id ) ) {
@@ -87,7 +87,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function update( Request $request, Payment_Item $payment_item ) {
 		check_admin_referer( 'update_payment_' . $payment_item->get_id(), '_wpnonce' );
@@ -114,7 +114,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Payment_Item $payment_item ) {
 		check_admin_referer( 'delete_payment_' . $payment_item->get_id(), '_wpnonce' );

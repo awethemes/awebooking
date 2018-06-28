@@ -12,7 +12,7 @@ class Booking_Room_Controller extends Controller {
 	 * Handle search rooms.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function search( Request $request ) {
 		// Get the check the booking reference.
@@ -43,7 +43,7 @@ class Booking_Room_Controller extends Controller {
 	 * Handle store new booking payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'add_booking_room', '_wpnonce' );
@@ -95,7 +95,7 @@ class Booking_Room_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function edit( Request $request, Room_Item $room_item ) {
 		if ( ! $booking = abrs_get_booking( $room_item->booking_id ) ) {
@@ -111,7 +111,7 @@ class Booking_Room_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function update( Request $request, Room_Item $room_item ) {
 		check_admin_referer( 'update_room_stay', '_wpnonce' );
@@ -165,7 +165,7 @@ class Booking_Room_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The room item instance.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Room_Item $room_item ) {
 		check_admin_referer( 'delete_room_' . $room_item->get_id(), '_wpnonce' );

@@ -24,7 +24,7 @@ class Rate_Controller extends Controller {
 	 * Show room_type rate.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function update( Request $request ) {
 		check_admin_referer( 'awebooking_update_price', '_wpnonce' );
@@ -54,7 +54,7 @@ class Rate_Controller extends Controller {
 	 * Bulk update rate.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function bulk_update( Request $request ) {
 		check_admin_referer( 'awebooking_bulk_update_price', '_wpnonce' );
@@ -86,7 +86,7 @@ class Rate_Controller extends Controller {
 
 		if ( $bulk_counts > 0 ) {
 			/* translators: %s: The rates count */
-			abrs_admin_notices( sprintf( _n( '%s rate updated.', '%s rates updated.', $bulk_counts, 'awebooking' ), $bulk_controls ), 'success' )->dialog();
+			abrs_admin_notices( sprintf( _n( '%s rate updated.', '%s rates updated.', $bulk_counts, 'awebooking' ), $bulk_counts ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );

@@ -8,9 +8,9 @@ class Room_Controller extends Controller {
 	/**
 	 * Delete room.
 	 *
-	 * @param  \Awethemes\Http\Request   $request The current request.
-	 * @param  \AweBooking\Model\Room    $room    Room.
-	 * @return \Awethemes\Http\Response
+	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \AweBooking\Model\Room  $room    Room.
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Room $room ) {
 		check_admin_referer( 'delete_room_' . $room->get_id(), '_wpnonce' );
