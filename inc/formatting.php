@@ -543,34 +543,9 @@ function abrs_format_service_price( $value, $operation = 'add' ) {
 			$label = sprintf( esc_html__( '+ %s x night to price', 'awebooking' ), abrs_format_price( $value ) );
 			break;
 
-		case 'add_person':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '+ %s x person to price', 'awebooking' ), abrs_format_price( $value ) );
-			break;
-
-		case 'add_person_daily':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '+ %s x person x night to price', 'awebooking' ), abrs_format_price( $value ) );
-			break;
-
-		case 'sub':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '- %s from price', 'awebooking' ), abrs_format_price( $value ) );
-			break;
-
-		case 'sub_daily':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '- %s x night from price', 'awebooking' ), abrs_format_price( $value ) );
-			break;
-
 		case 'increase':
 			/* translators: %1$s value */
 			$label = sprintf( __( '+ <span>%1$s%%</span> to price', 'awebooking' ), $value );
-			break;
-
-		case 'decrease':
-			/* translators: %1$s value */
-			$label = sprintf( __( '- <span>%1$s%%</span> from price', 'awebooking' ), $value );
 			break;
 	}
 
