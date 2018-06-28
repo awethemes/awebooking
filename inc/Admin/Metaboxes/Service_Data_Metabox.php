@@ -29,6 +29,24 @@ class Service_Data_Metabox {
 		}
 		?>
 		<script type="text/javascript">
+			jQuery(function($) {
+				var checkbox_deps = function(checkbox, compare, deps) {
+					var a = function() {
+						const $cmb_row = $(deps).closest('.cmb-row');
+						if (compare) {
+							this.checked ? $cmb_row.show() : $cmb_row.hide();
+						} else {
+							this.checked ? $cmb_row.hide() : $cmb_row.show();
+						}
+					};
+
+					$(checkbox).change(a);
+
+					$(document).on('change', checkbox, a());
+				}
+
+				checkbox_deps('#quantity_selectable', true, '#manage_stock, #stock_status, #stock_quantity');
+			});
 
 		</script>
 		<?php
