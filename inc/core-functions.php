@@ -14,6 +14,7 @@ require trailingslashit( __DIR__ ) . 'hotel-functions.php';
 require trailingslashit( __DIR__ ) . 'service-functions.php';
 require trailingslashit( __DIR__ ) . 'booking-functions.php';
 require trailingslashit( __DIR__ ) . 'concierge.php';
+require trailingslashit( __DIR__ ) . 'formatting.php';
 
 /**
  * Returns the multilingual instance.

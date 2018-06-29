@@ -13,7 +13,7 @@ require trailingslashit( __DIR__ ) . 'vendor/webdevstudios/cmb2/init.php';
 
 // Require helpers & functions.
 require trailingslashit( __DIR__ ) . 'inc/Support/helpers.php';
-require trailingslashit( __DIR__ ) . 'inc/formatting.php';
+require trailingslashit( __DIR__ ) . 'inc/sanitizer.php';
 
 /**
  * Then, require the main class.
