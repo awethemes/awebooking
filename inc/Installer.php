@@ -106,6 +106,7 @@ class Installer {
 		$this->setup_environment();
 		$this->create_tables();
 		$this->create_options();
+		$this->remove_roles();
 		$this->create_roles();
 		$this->create_cron_jobs();
 		$this->update_version();
