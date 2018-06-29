@@ -7,6 +7,13 @@ use AweBooking\Admin\Calendar\Pricing_Scheduler;
 
 class Rate_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Show the pricing scheduler.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

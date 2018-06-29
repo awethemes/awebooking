@@ -44,10 +44,10 @@ $awebooking = new AweBooking( __FILE__ );
 
 // Install the awebooking.
 $installer = $awebooking->make( 'installer' );
-register_activation_hook( __FILE__, array( $installer, 'activation' ) );
+register_activation_hook( __FILE__, [ $installer, 'activation' ] );
 
 // Initialize under 'plugins_loaded'.
-add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );
+add_action( 'plugins_loaded', [ $awebooking, 'initialize' ] );
 
 /**
  * Main instance of AweBooking.

@@ -163,7 +163,7 @@ $service_items = $the_booking->get_services();
 								<span class="dp-block"><?php esc_html_e( 'Service', 'awebooking' ); ?></span>
 							</td>
 
-							<td><?php print abrs_format_service_price( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></td>
+							<td><?php print abrs_format_service_price( $service->get( 'amount' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></td>
 
 							<td class="abrs-text-right">
 								<?php if ( $the_booking->is_editable() ) : ?>

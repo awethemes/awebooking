@@ -142,7 +142,7 @@ class Service extends Model {
 			'icon'                => [],
 			'name'                => '',
 			'description'         => '',
-			'amount'              => '',
+			'amount'              => 0,
 			'operation'           => '',
 			'quantity_selectable' => false,
 			'stock_status'        => 'instock',
@@ -157,7 +157,7 @@ class Service extends Model {
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
 			'operation'           => '_operation',
-			'amount'              => '_value',
+			'amount'              => '_amount',
 			'thumbnail_id'        => '_thumbnail_id',
 			'icon'                => '_icon',
 			'quantity_selectable' => '_quantity_selectable',

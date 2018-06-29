@@ -8,6 +8,13 @@ use AweBooking\Model\Booking\Service_Item;
 
 class Booking_Service_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle create new service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
@@ -51,7 +58,7 @@ class Booking_Service_Controller extends Controller {
 			$this->handle_sync_services( $booking, $services );
 		}
 
-		return $this->redirect()->back( get_edit_post_link( $booking->get_id(), 'raw' ) );
+		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 

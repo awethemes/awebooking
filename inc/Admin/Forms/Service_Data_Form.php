@@ -38,6 +38,7 @@ class Service_Data_Form extends Form_Builder {
 			'id'       => 'amount',
 			'type'     => 'text_small',
 			'validate' => 'required|numeric:min:0',
+			'default'  => 0,
 		]);
 
 		$this->add_field([

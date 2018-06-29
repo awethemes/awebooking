@@ -24,7 +24,7 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 	<h1 class="wp-heading-inline screen-reader-text"><?php esc_html_e( 'Add Service', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<div class="abrs-card abrs-card--page">
+	<div class="abrs-card abrs-card--page abrs-booking-services">
 		<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
 			<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
 
@@ -60,7 +60,9 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 							</div>
 
 							<div class="abrs-sortable__body">
-								<span><?php echo esc_html( $service->get( 'name' ) ); ?></span>
+								<a href="<?php echo esc_url( get_edit_post_link( $service->get_id() ) ); ?>" title="<?php echo esc_attr( $service->get( 'name' ) ); ?>" target="_blank">
+									<strong><?php echo esc_html( $service->get( 'name' ) ); ?></strong>
+								</a>
 							</div>
 
 							<div class="abrs-sortable__actions">
@@ -84,3 +86,13 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 
 	</div>
 </div><!-- /.wrap -->
+
+<style type="text/css">
+	.abrs-booking-services .abrs-sortable__order {
+		width: 60px;
+	}
+
+	.abrs-booking-services .abrs-sortable__order input[type="number"] {
+		width: 50px;
+	}
+</style>

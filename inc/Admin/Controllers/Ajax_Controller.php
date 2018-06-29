@@ -6,6 +6,13 @@ use Awethemes\Http\Json_Response;
 
 class Ajax_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle add booking note.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

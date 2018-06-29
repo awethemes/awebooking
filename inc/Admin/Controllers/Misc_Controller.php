@@ -5,6 +5,13 @@ use AweBooking\Email\Templates\Sample_Email;
 
 class Misc_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Output the about page.
 	 *
 	 * @return \Awethemes\Http\Response
