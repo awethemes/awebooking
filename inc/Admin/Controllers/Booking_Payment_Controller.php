@@ -8,6 +8,13 @@ use AweBooking\Admin\Forms\Booking_Payment_Form;
 
 class Booking_Payment_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle create new payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

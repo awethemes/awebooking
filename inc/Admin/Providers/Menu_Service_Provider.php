@@ -16,7 +16,7 @@ class Menu_Service_Provider extends Service_Provider {
 		add_action( 'admin_menu', [ $this, 'register_manager_submenu' ], 20 );
 		add_action( 'admin_menu', [ $this, 'regsiter_settings_submenu' ], 50 );
 
-		add_filter( 'custom_menu_order', '__return_true' );
+		// add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ $this, 'menu_order' ] );
 
 		add_action( 'admin_head', [ $this, 'cleanup_submenu' ] );
@@ -33,11 +33,13 @@ class Menu_Service_Provider extends Service_Provider {
 		global $menu;
 
 		// @codingStandardsIgnoreLine
-		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
+		if ( current_user_can( 'manage_awebooking' ) ) {
+			$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
+		}
 
-		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_options', Constants::PARENT_MENU_SLUG, null, 'dashicons-calendar', 53 );
+		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', Constants::PARENT_MENU_SLUG, null, 'dashicons-calendar', 53 );
 
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/about' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
 	}
 
 	/**
@@ -46,9 +48,9 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/calendar' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
 
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/rates' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
 	/**
@@ -57,9 +59,9 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function regsiter_settings_submenu() {
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/settings' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/settings' );
 
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/tools' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/tools' );
 	}
 
 	/**

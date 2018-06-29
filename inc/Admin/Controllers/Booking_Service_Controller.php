@@ -8,6 +8,13 @@ use AweBooking\Model\Booking\Service_Item;
 
 class Booking_Service_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle create new service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

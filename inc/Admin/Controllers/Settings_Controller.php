@@ -18,6 +18,8 @@ class Settings_Controller extends Controller {
 	 * @param \AweBooking\Admin\Admin_Settings $admin_settings The admin settings.
 	 */
 	public function __construct( Admin_Settings $admin_settings ) {
+		$this->require_capability( 'manage_awebooking' );
+
 		$this->admin_settings = $admin_settings;
 	}
 

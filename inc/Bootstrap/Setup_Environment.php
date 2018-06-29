@@ -32,7 +32,7 @@ class Setup_Environment {
 		add_action( 'init', [ $this, 'register_taxonomies' ], 5 );
 		add_action( 'init', [ $this, 'register_post_types' ], 5 );
 		add_action( 'init', [ $this, 'register_post_status' ], 10 );
-		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
+		add_action( 'after_setup_theme', [ $this, 'add_image_sizes' ] );
 	}
 
 	/**
@@ -68,9 +68,6 @@ class Setup_Environment {
 		add_rewrite_rule( '^' . $endpoint_name . '/(.*)?', 'index.php?awebooking_route=/$matches[1]', 'top' );
 		add_rewrite_rule( '^' . $wp_rewrite->index . '/' . $endpoint_name . '/?$', 'index.php?awebooking_route=/', 'top' );
 		add_rewrite_rule( '^' . $wp_rewrite->index . '/' . $endpoint_name . '/(.*)?', 'index.php?awebooking_route=/$matches[1]', 'top' );
-
-
-
 	}
 
 	/**
@@ -118,7 +115,7 @@ class Setup_Environment {
 			'show_admin_column'   => false,
 			'rewrite'             => false,
 			'query_var'           => false,
-			// 'capabilities'        => $capabilities,
+			'capabilities'        => $capabilities,
 		]));
 
 		do_action( 'abrs_after_register_taxonomy' );
@@ -180,7 +177,7 @@ class Setup_Environment {
 			'show_in_rest'        => true,
 			'menu_position'       => 53,
 			'menu_icon'           => 'dashicons-building',
-			// 'capability_type'     => Constants::ROOM_TYPE,
+			'capability_type'     => Constants::ROOM_TYPE,
 			'supports'            => [ 'title', 'editor', 'thumbnail' ],
 			'has_archive'         => true,
 			'rewrite'             => [
@@ -253,7 +250,7 @@ class Setup_Environment {
 			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => false,
 			'show_in_rest'        => true,
-			// 'capability_type'     => Constants::HOTEL_SERVICE,
+			'capability_type'     => Constants::HOTEL_SERVICE,
 			'supports'            => [ 'title', 'thumbnail' ],
 			'rewrite'             => false,
 			'has_archive'         => false,
@@ -289,7 +286,7 @@ class Setup_Environment {
 				'show_in_nav_menus'   => false,
 				'show_in_admin_bar'   => false,
 				'show_in_rest'        => true,
-				// 'capability_type'     => Constants::HOTEL_LOCATION,
+				'capability_type'     => Constants::HOTEL_LOCATION,
 				'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
 				// 'rewrite'             => true,
 				'has_archive'         => false,

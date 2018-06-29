@@ -6,6 +6,13 @@ use AweBooking\Model\Room;
 
 class Room_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Delete room.
 	 *
 	 * @param \Awethemes\Http\Request $request The current request.

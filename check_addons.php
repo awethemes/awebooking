@@ -51,7 +51,7 @@ if ( version_compare( AweBooking::VERSION, '3.1', '<' ) ) {
 						printf( '<div class="error">%s</div>', wp_kses_post( wpautop( $message ) ) );
 					} );
 
-					deactivate_plugins( array( plugin_basename( $plugin_basename ) ) );
+					deactivate_plugins( [ plugin_basename( $plugin_basename ) ] );
 				}
 			}
 		}

@@ -9,6 +9,13 @@ use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
 
 class Booking_Room_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle search rooms.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

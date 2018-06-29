@@ -7,6 +7,13 @@ use AweBooking\Admin\Calendar\Booking_Scheduler;
 
 class Calendar_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Show the booking scheduler.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
