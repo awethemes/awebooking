@@ -69,7 +69,7 @@ $rate_plan = $room_rate->get_rate_plan();
 										/* translators: %1$s area size, %2$s measure unit */
 										printf( esc_html_x( '%1$s %2$s', 'room area size', 'awebooking' ),
 											esc_html( $room_type->get( 'area_size' ) ),
-											abrs_format_measure_unit_label()
+											abrs_get_measure_unit_label()
 										); // WPCS: xss ok.
 									?>
 								</li>

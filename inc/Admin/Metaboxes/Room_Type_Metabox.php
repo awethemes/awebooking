@@ -241,7 +241,7 @@ class Room_Type_Metabox {
 			'type'       => 'text_small',
 			'validate'   => 'numeric|min:1',
 			'before'     => '<div class="abrs-input-addon">',
-			'after'      => '<label for="area_size">' . abrs_format_measure_unit_label() . '</label></div>',
+			'after'      => '<label for="area_size">' . abrs_get_measure_unit_label() . '</label></div>',
 		]);
 
 		$form->add_field([

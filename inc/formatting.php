@@ -502,11 +502,11 @@ function abrs_format_guest_counts( $adults, $children = 0, $infants = 0 ) {
 }
 
 /**
- * Return measure unit label formating.
+ * Return measure unit label.
  *
  * @return string
  */
-function abrs_format_measure_unit_label() {
+function abrs_get_measure_unit_label() {
 	$measure_unit = abrs_get_option( 'measure_unit', 'm2' );
 
 	switch ( $measure_unit ) {
@@ -521,7 +521,7 @@ function abrs_format_measure_unit_label() {
 			break;
 	}
 
-	return apply_filters( 'abrs_format_measure_unit_label', $format, $measure_unit );
+	return apply_filters( 'abrs_get_measure_unit_label', $format, $measure_unit );
 }
 
 /**
