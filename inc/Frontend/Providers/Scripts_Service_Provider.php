@@ -24,7 +24,8 @@ class Scripts_Service_Provider extends Service_Provider {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$version = $this->plugin->version();
 
-		// Vendor.
+		wp_register_script( 'moment', ABRS_ASSET_URL . 'vendor/moment/moment' . $suffix . '.js', [], '2.22.1', false );
+		wp_register_script( 'knockout', ABRS_ASSET_URL . 'vendor/knockout/knockout-latest' . ( $suffix ? '' : '.debug' ) . '.js', [ 'jquery' ], '3.4.2', false );
 		wp_register_script( 'a11y-dialog', ABRS_ASSET_URL . 'vendor/a11y-dialog/a11y-dialog' . $suffix . '.js', [], '5.1.1', true );
 
 		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.5.0' );
@@ -43,7 +44,7 @@ class Scripts_Service_Provider extends Service_Provider {
 
 		wp_register_script( 'awebooking', ABRS_ASSET_URL . 'js/awebooking.js', [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
 		wp_register_script( 'awebooking-search', ABRS_ASSET_URL . 'js/main-search.js', [ 'awebooking' ], $version, true );
-		wp_register_script( 'awebooking-checkout', ABRS_ASSET_URL . 'js/checkout.js', [ 'awebooking' ], $version, true );
+		wp_register_script( 'awebooking-checkout', ABRS_ASSET_URL . 'js/checkout.js', [ 'awebooking', 'knockout' ], $version, true );
 	}
 
 	/**
@@ -53,19 +54,27 @@ class Scripts_Service_Provider extends Service_Provider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'awebooking' );
+		wp_enqueue_script( 'awebooking' );
 
 		if ( apply_filters( 'abrs_enqueue_default_style', true ) ) {
 			wp_enqueue_style( 'awebooking-colour' );
 		}
 
-		wp_enqueue_script( 'awebooking' );
+		wp_localize_script( 'awebooking', '_awebooking_i18n', [
+			'date_format'        => abrs_get_date_format(),
+			'time_format'        => abrs_get_time_format(),
+
+			'number_decimals'    => abrs_get_option( 'price_number_decimals' ),
+			'decimal_separator'  => abrs_get_option( 'price_decimal_separator' ),
+			'thousand_separator' => abrs_get_option( 'price_thousand_separator' ),
+			'currency_symbol'    => abrs_currency_symbol(),
+			// Format to accounting.js, @see http://openexchangerates.github.io/accounting.js/.
+			'price_format'       => str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], abrs_get_price_format() ),
+		]);
+
 		wp_localize_script( 'awebooking', '_awebooking', [
 			'ajax_url'    => admin_url( 'admin-ajax.php' ),
 			'route'       => $this->plugin['url']->route( '/' ),
-			'i18n'        => [
-				'date_format' => abrs_get_date_format(),
-				'time_format' => abrs_get_time_format(),
-			],
 			'datepicker' => [
 				'min_nights'   => abrs_get_option( 'display_datepicker_minnights' ),
 				'max_nights'   => abrs_get_option( 'display_datepicker_maxnights' ),
