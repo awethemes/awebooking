@@ -34,34 +34,61 @@ class Booking_Service_Controller extends Controller {
 			return $this->whoops();
 		}
 
-		$list_services = $request['list_services'] ? $request['list_services'] : [];
-		$services_item_exist = $booking->get_services();
-		$ids = $services_item_exist->pluck( 'service_id' )->all();
+		$included_ids = $booking->get_services()->pluck( 'id' );
 
-		$ids_deleted = array_diff( $ids, $list_services );
-		$ids_created = array_diff( $list_services, $ids );
+		// Filter valid services.
+		$services = abrs_collect( $request->get( 'services', [] ) )
+			->where( 'id', '>', 0 )
+			->where( 'quantity', '>', 0 )
+			->whereNotIn( 'id', $included_ids );
 
-		if ( ! empty( $ids_deleted ) ) {
-			foreach ( $ids_deleted as $service_id ) {
-				$item_id = $services_item_exist->where( 'service_id', '==', $service_id )->pluck( 'id' )->first();
-				abrs_delete_booking_item( new Service_Item( $item_id ) );
+		// If empty requested services, just clear all.
+		if ( $services->isEmpty() ) {
+			foreach ( $included_ids as $id ) {
+				abrs_delete_booking_item( $id );
 			}
+		} else {
+			$this->handle_sync_services( $booking, $services );
 		}
 
-		if ( ! empty( $ids_created ) ) {
-			foreach ( $ids_created as $service_id ) {
-				$service = new Service( $service_id );
-				$service_item = new Service_Item;
-				$service_item['booking_id']        = $booking->get_id();
-				$service_item['service_id']        = absint( $service->get_id() );
-				$service_item['service_operation'] = abrs_sanitize_html( $service->get( 'operation' ) );
-				$service_item['service_value']     = abrs_sanitize_decimal( $service->get( 'value' ) );
+		return $this->redirect()->back( get_edit_post_link( $booking->get_id(), 'raw' ) );
+	}
 
-				$service_item->save();
+
+	/**
+	 * Delete diff services and add new ones.
+	 *
+	 * @param \AweBooking\Support\Collection $services The services from request.
+	 */
+	protected function handle_sync_services( $booking, $services ) {
+		// Remove diff services.
+		$booking
+			->get_services()->pluck( 'id' )
+			->diff( $services->pluck( 'id' ) )
+			->each( function ( $id ) {
+				abrs_delete_booking_item( $id );
+			});
+
+		// Add new services.
+		foreach ( $services as $s ) {
+			try {
+				$service = new Service( $s['id'] );
+
+				$item = ( new Service_Item )->fill( [
+					'booking_id' => $booking->get_id(),
+					'service_id' => absint( $service->get_id() ),
+					'quantity'   => $s['quantity'],
+					'price'      => abrs_calc_service_price( $service, [
+						'nights'     => 0,
+						'base_price' => 0,
+					]),
+				]);
+
+				$item->save();
+			} catch ( \Exception $e ) {
+				continue;
 			}
 		}
-
-		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 	/**

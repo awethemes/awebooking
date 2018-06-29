@@ -58,11 +58,11 @@ class Service_Data_Form extends Form_Builder {
 			'type' => 'toggle',
 		]);
 
-		$this->add_field([
-			'name' => esc_html__( 'Manage stock', 'awebooking' ),
-			'id'   => 'manage_stock',
-			'type' => 'toggle',
-		]);
+		// $this->add_field([
+		// 	'name' => esc_html__( 'Manage stock', 'awebooking' ),
+		// 	'id'   => 'manage_stock',
+		// 	'type' => 'toggle',
+		// ]);
 
 		$this->add_field([
 			'name'    => esc_html__( 'Stock status', 'awebooking' ),
@@ -71,15 +71,15 @@ class Service_Data_Form extends Form_Builder {
 			'options' => Service::get_stock_statuses(),
 		]);
 
-		$this->add_field([
-			'name'       => esc_html__( 'Stock quantity', 'awebooking' ),
-			'id'         => 'stock_quantity',
-			'type'       => 'text_small',
-			'validate'   => 'required|numeric:min:0',
-			'attributes' => [
-				'type' => 'number',
-				'data-bind' => 'visible: data.manage_stock()',
-			],
-		]);
+		// $this->add_field([
+		// 	'name'       => esc_html__( 'Stock quantity', 'awebooking' ),
+		// 	'id'         => 'stock_quantity',
+		// 	'type'       => 'text_small',
+		// 	'validate'   => 'required|numeric:min:0',
+		// 	'attributes' => [
+		// 		'type' => 'number',
+		// 		'data-bind' => 'visible: data.manage_stock()',
+		// 	],
+		// ]);
 	}
 }

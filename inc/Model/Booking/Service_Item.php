@@ -27,6 +27,7 @@ class Service_Item extends Item {
 			'subtotal_tax' => 0,
 			'total'        => 0,
 			'total_tax'    => 0,
+			'price'        => 0,
 		]));
 	}
 
@@ -41,6 +42,7 @@ class Service_Item extends Item {
 			'subtotal_tax' => '_service_subtotal_tax',
 			'total'        => '_service_total',
 			'total_tax'    => '_service_total_tax',
+			'price'        => '_price',
 		]);
 	}
 
@@ -57,6 +59,7 @@ class Service_Item extends Item {
 			case 'total_tax':
 			case 'subtotal':
 			case 'subtotal_tax':
+			case 'price':
 				$value = abrs_sanitize_decimal( $value );
 				break;
 		}

@@ -1,6 +1,4 @@
 <?php
-use AweBooking\Model\Service;
-
 /* @vars $booking */
 
 $old_input = awebooking( 'session' )->get_old_input();
@@ -40,10 +38,24 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 			<div class="cmb2-wrap awebooking-wrap abrs-card__body">
 				<ul class="abrs-sortable">
 					<?php foreach ( $services as $service ) : ?>
+						<?php $input_prefix = 'services[' . $service->get_id() . ']'; ?>
 						<li class="abrs-sortable__item">
 							<div class="abrs-sortable__head">
 								<span class="abrs-sortable__order">
-									<input type="checkbox" name="list_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php checked( in_array( $service->get_id(), $service_ids ) ); ?>>
+									<input type="hidden" name="<?php echo esc_attr( $input_prefix ); ?>[id]" value="<?php echo esc_attr( $service->get_id() ); ?>">
+
+									<?php if ( $service->is_quantity_selectable() ) : ?>
+										<?php $quantity = $services_exist->where( 'service_id', '=', $service->get_id() )->pluck( 'quantity' )->first(); ?>
+
+										<input type="number" min="0" class="form-input" value="<?php echo $quantity ? absint( $quantity ) : 0; ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
+
+									<?php else : ?>
+
+										<div class="nice-checkbox">
+											<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php checked( in_array( $service->get_id(), $service_ids ) ); ?> />
+										</div>
+
+									<?php endif; ?>
 								</span>
 							</div>
 
@@ -53,9 +65,10 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 
 							<div class="abrs-sortable__actions">
 								<?php if ( isset( $operations[ $service->get( 'operation' ) ] ) ) : ?>
-									<span class="abrs-badge"><?php print abrs_format_service_price( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></span>
-								<?php endif ?>
+									<span class="abrs-badge"><?php print abrs_format_service_price( $service->get( 'amount' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></span>
+								<?php endif; ?>
 							</div>
+
 						</li>
 
 					<?php endforeach ?>
