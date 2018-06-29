@@ -345,6 +345,9 @@ function abrs_format_address( $args ) {
 /**
  * Get the price format depending on the currency position.
  *
+ * %1$s The currency symbol
+ * %2$s The amount.
+ *
  * @return string
  */
 function abrs_get_price_format() {
