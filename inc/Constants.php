@@ -12,6 +12,7 @@ class Constants {
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_service';
 	const HOTEL_SERVICE_CAT = 'hotel_service_cat';
+	const PARENT_MENU_SLUG  = 'awebooking';
 
 	// Booking constants.
 	const STATE_AVAILABLE   = 0;

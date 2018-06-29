@@ -25,6 +25,7 @@ class Http_Service_Provider extends Service_Provider {
 	 */
 	protected $admin_middleware = [
 		\AweBooking\Component\Http\Middleware\Setup_Admin_Screen::class,
+		\AweBooking\Component\Http\Middleware\Check_Capability::class,
 	];
 
 	/**
@@ -170,7 +171,13 @@ class Http_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function admin_dispatch() {
-		if ( defined( 'DOING_AJAX' ) || isset( $_GET['page'] ) || empty( $_REQUEST['awebooking'] ) ) {
+		global $pagenow;
+
+		if ( defined( 'DOING_AJAX' ) || isset( $_GET['page'] ) ) {
+			return;
+		}
+
+		if ( 'admin.php' !== $pagenow || empty( $_REQUEST['awebooking'] ) ) {
 			return;
 		}
 
