@@ -7,7 +7,6 @@ use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
 
 // Requires other core functions.
-require trailingslashit( __DIR__ ) . 'formatting.php';
 require trailingslashit( __DIR__ ) . 'date-functions.php';
 require trailingslashit( __DIR__ ) . 'db-functions.php';
 require trailingslashit( __DIR__ ) . 'tax-functions.php';
