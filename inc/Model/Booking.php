@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Model\Booking\Item;
 use AweBooking\Support\Period_Collection;
 
 class Booking extends Model {
@@ -32,6 +33,30 @@ class Booking extends Model {
 	 * @var boolean
 	 */
 	protected $force_calculate_totals = false;
+
+	public function get_check_in_date() {
+		$items = $this->get_line_items();
+
+		if ( 0 === count( $items ) ) {
+			return '';
+		} elseif ( count( $items ) === 1 ) {
+			return abrs_optional( $items->first() )->get( 'check_in' );
+		}
+
+		return $this->get( 'check_in_date' );
+	}
+
+	public function get_check_out_date() {
+		$items = $this->get_line_items();
+
+		if ( 0 === count( $items ) ) {
+			return '';
+		} elseif ( count( $items ) === 1 ) {
+			return abrs_optional( $items->first() )->get( 'check_out' );
+		}
+
+		return $this->get( 'check_out_date' );
+	}
 
 	/**
 	 * Returns the booking number.
@@ -77,7 +102,7 @@ class Booking extends Model {
 		}
 
 		if ( ! array_key_exists( $type, $this->items ) ) {
-			$items = ! $this->exists() ? [] : abrs_get_booking_items( $this->id, $type );
+			$items = ! $this->exists() ? [] : abrs_query_booking_items( $this->id, $type );
 
 			$this->items[ $type ] = abrs_collect( $items )
 				->pluck( 'booking_item_id' )
@@ -152,8 +177,19 @@ class Booking extends Model {
 		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
 	}
 
-	public function remove_items() {
-		// TODO: ...
+	/**
+	 * Remove all items fromd database.
+	 *
+	 * @return void
+	 */
+	public function remove_items( $type = null ) {
+		$items = abrs_query_booking_items( $this->get_id(), 'all' );
+
+		foreach ( $items as $item ) {
+			abrs_optional( abrs_get_booking_item( $item ) )->delete();
+		}
+
+		$this->flush_items();
 	}
 
 	/**
@@ -438,7 +474,7 @@ class Booking extends Model {
 	 * @return void
 	 */
 	public function setup_dates() {
-		$periods = $this->get_line_items()->map(function( $item ) {
+		$periods = $this->get_line_items()->map(function( Item $item ) {
 			return $item->get_timespan()->get_period();
 		});
 

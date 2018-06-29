@@ -83,7 +83,7 @@ abstract class Model extends WP_Object {
 				break;
 
 			case 'awebooking_item':
-				if ( ! is_null( $booking_item = abrs_db_booking_item( $this->id ) ) ) {
+				if ( ! is_null( $booking_item = abrs_get_booking_item_row( $this->id ) ) ) {
 					$this->set_instance( $booking_item );
 				}
 				break;

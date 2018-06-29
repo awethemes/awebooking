@@ -107,7 +107,7 @@ abstract class Item extends Model {
 	 * {@inheritdoc}
 	 */
 	protected function setup_instance() {
-		$booking_item = abrs_db_booking_item( $this->get_id(), $this->get_type() );
+		$booking_item = abrs_get_booking_item_row( $this->get_id(), $this->get_type() );
 		if ( ! is_null( $booking_item ) ) {
 			$this->set_instance( $booking_item );
 		}

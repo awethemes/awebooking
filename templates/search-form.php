@@ -122,16 +122,17 @@ $form_classes = [
 							<label class="searchbox-spinner">
 								<input type="text" name="adults" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_adults' ) ); ?>" value="1" title="" class="searchbox-spinner__input form-input-transparent" />
 								<span class="searchbox-spinner__title"><?php esc_html_e( 'Adults', 'awebooking' ); ?></span>
-								<span class="searchbox-spinner__decrement"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
-								<span class="searchbox-spinner__increment"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
+
+								<span class="searchbox-spinner__decrement" data-spin="up"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
+								<span class="searchbox-spinner__increment" data-spin="down"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
 							</label>
 
 							<?php if ( abrs_children_bookable() ) : ?>
 								<label class="searchbox-spinner">
 									<input type="text" name="children" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_children' ) ); ?>" value="1" title="" class="searchbox-spinner__input form-input-transparent" />
 									<span class="searchbox-spinner__title"><?php esc_html_e( 'Children', 'awebooking' ); ?></span>
-									<span class="searchbox-spinner__decrement"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
-									<span class="searchbox-spinner__increment"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
+									<span class="searchbox-spinner__decrement" data-spin="up"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
+									<span class="searchbox-spinner__increment" data-spin="down"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
 								</label>
 							<?php endif; ?>
 
@@ -139,8 +140,8 @@ $form_classes = [
 								<label class="searchbox-spinner">
 									<input type="text" name="infants" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_infants' ) ); ?>" value="0" title="" class="searchbox-spinner__input form-input-transparent" />
 									<span class="searchbox-spinner__title"><?php esc_html_e( 'Infants', 'awebooking' ); ?></span>
-									<span class="searchbox-spinner__decrement"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
-									<span class="searchbox-spinner__increment"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
+									<span class="searchbox-spinner__decrement" data-spin="up"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></span>
+									<span class="searchbox-spinner__increment" data-spin="down"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></span>
 								</label>
 							<?php endif; ?>
 						</div>
@@ -157,42 +158,4 @@ $form_classes = [
 		</div><!-- /.searchbox__wrapper-->
 	</div><!-- /.searchbox-->
 
-
 </form>
-<script>
-	(function($) {
-		$('.searchbox-spinner').each(function() {
-			var self = $(this),
-				decrement = $('.searchbox-spinner__decrement', self),
-				increment = $('.searchbox-spinner__increment', self),
-				input = $('.searchbox-spinner__input', self),
-				title = $('.searchbox-spinner__title', self),
-				value = input.val(),
-				index;
-
-			increment.on('click', function() {
-				index = self.index();
-				value =  isNaN(value) ? 0 : value;
-				value++;
-				input.val(value);
-
-				getNumber(index, value);
-
-			});
-
-			decrement.on('click', function() {
-				index = self.index();
-				value =  isNaN(value) ? 0 : value;
-				value > 0 ? value-- : value;
-				input.val(value);
-
-				getNumber(index, value);
-			});
-		});
-
-		function getNumber(index, value) {
-			$('.searchbox-occupancy-info .searchbox-occupancy-info__item:eq('+index+')').find('.searchbox-occupancy-info__number').text(value);
-		}
-
-	})(jQuery);
-</script>

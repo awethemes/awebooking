@@ -5,6 +5,7 @@ use AweBooking\Gateway\Gateway;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form_Builder;
+use Awethemes\WP_Object\WP_Object;
 
 // Requires other core functions.
 require trailingslashit( __DIR__ ) . 'date-functions.php';
@@ -646,4 +647,22 @@ function abrs_get_rounding_precision() {
 	}
 
 	return $precision;
+}
+
+/**
+ * Parse the object_id.
+ *
+ * @param  mixed $object The object.
+ * @return int|null
+ */
+function abrs_parse_object_id( $object ) {
+	if ( is_numeric( $object ) && $object > 0 ) {
+		return (int) $object;
+	} elseif ( ! empty( $object->ID ) ) {
+		return (int) $object->ID;
+	} elseif ( ! empty( $object->term_id ) ) {
+		return (int) $object->term_id;
+	} elseif ( $object instanceof WP_Object ) {
+		return $object->get_id();
+	}
 }

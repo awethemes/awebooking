@@ -293,7 +293,11 @@ class Checkout {
 	 * @return void
 	 */
 	protected function resume_awating_booking( $booking ) {
-		$booking->remove_items();
+		try {
+			$booking->remove_items();
+		} catch ( \Exception $e ) {
+			abrs_report( $e );
+		}
 
 		do_action( 'abrs_resume_booking', $booking );
 	}

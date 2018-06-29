@@ -109,7 +109,6 @@ trait With_Services {
 
 		$row_id = Item::generate_row_id( $service->get_id(), $options );
 
-		// TODO: ...
 		if ( $selectable ) {
 			if ( ! $service->is_in_stock() ) {
 				/* translators: %s: service name */
@@ -118,24 +117,7 @@ trait With_Services {
 
 			if ( ! $service->has_enough_stock( $quantity ) ) {
 				/* translators: 1: service name 2: quantity in stock */
-				return new WP_Error( 'error', sprintf( __( 'You cannot add that amount of &quot;%1$s&quot; to the reservation because there is not enough stock (%2$s remaining).', 'awebooking' ), $service->get_name(), wc_format_stock_quantity_for_display( $service->get_stock_quantity(), $service ) ) );
-			}
-
-			// Stock check - this time accounting for whats already in-cart.
-			if ( $service->managing_stock() ) {
-				$services_qty_in_cart = $this->get_cart_item_quantities();
-
-				if ( isset( $services_qty_in_cart[ $service->get_stock_managed_by_id() ] ) && ! $service->has_enough_stock( $services_qty_in_cart[ $service->get_stock_managed_by_id() ] + $quantity ) ) {
-					return new WP_Error( 'error',
-						sprintf(
-							'<a href="%s" class="button wc-forward">%s</a> %s',
-							wc_get_cart_url(),
-							__( 'View Cart', 'awebooking' ),
-							/* translators: 1: quantity in stock 2: current quantity */
-							sprintf( __( 'You cannot add that amount to the cart &mdash; we have %1$s in stock and you already have %2$s in your cart.', 'awebooking' ), wc_format_stock_quantity_for_display( $service_data->get_stock_quantity(), $service_data ), wc_format_stock_quantity_for_display( $services_qty_in_cart[ $service_data->get_stock_managed_by_id() ], $service_data ) )
-						)
-					);
-				}
+				return new WP_Error( 'error', sprintf( __( 'You cannot add that amount of &quot;%1$s&quot; to the reservation because there is not enough stock (%2$s remaining).', 'awebooking' ), $service->get( 'name' ), number_format_i18n( $service->get( 'stock_quantity' ) ) ) );
 			}
 		}
 

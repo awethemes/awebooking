@@ -41,8 +41,8 @@ $attributes['class'] .= ' ' . $status;
 							<span class="dashicons dashicons-info"></span>
 						</a>
 					<?php else : ?>
-						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
-						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get_check_in_date() ) ); ?></span>
+						<span class="abrs-badge"><?php echo esc_html( abrs_format_date( $the_booking->get_check_out_date() ) ); ?></span>
 					<?php endif; ?>
 				</div>
 			</div>
