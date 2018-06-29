@@ -58,7 +58,7 @@ class Booking_Service_Controller extends Controller {
 			$this->handle_sync_services( $booking, $services );
 		}
 
-		return $this->redirect()->back( get_edit_post_link( $booking->get_id(), 'raw' ) );
+		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
 
 

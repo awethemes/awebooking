@@ -60,7 +60,9 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 							</div>
 
 							<div class="abrs-sortable__body">
-								<span><?php echo esc_html( $service->get( 'name' ) ); ?></span>
+								<a href="<?php echo esc_url( get_edit_post_link( $service->get_id() ) ); ?>" title="<?php echo esc_attr( $service->get( 'name' ) ); ?>" target="_blank">
+									<strong><?php echo esc_html( $service->get( 'name' ) ); ?></strong>
+								</a>
 							</div>
 
 							<div class="abrs-sortable__actions">
