@@ -85,6 +85,7 @@ class Installer {
 	 * @return void
 	 */
 	protected function install() {
+		delete_transient( 'awebooking_installing' );
 		if ( ! is_blog_installed() ) {
 			return;
 		}

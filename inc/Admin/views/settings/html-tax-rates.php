@@ -3,7 +3,7 @@
 		<thead>
 			<tr>
 				<th><?php esc_html_e( 'Name', 'awebooking' ); ?></th>
-				<th><?php esc_html_e( 'Single_Rate (%)', 'awebooking' ); ?></th>
+				<th><?php esc_html_e( 'Single rate (%)', 'awebooking' ); ?></th>
 				<th><?php esc_html_e( 'Priority', 'awebooking' ); ?></th>
 				<th width="10%"><?php esc_html_e( 'Compound', 'awebooking' ); ?></th>
 			</tr>
@@ -51,7 +51,7 @@
 				</td>\
 				<td><input type="text" name="tax_rates[' + size + '][rate]" /></td>\
 				<td><input type="text" name="tax_rates[' + size + '][priority]" /></td>\
-				<td><input type="checkbox" name="tax_rates[' + size + '][compound]" /></td>\
+				<td style="text-align: center;"><input type="checkbox" name="tax_rates[' + size + '][compound]" /></td>\
 			</tr>').appendTo('#tax_rates table tbody');
 
 			return false;
