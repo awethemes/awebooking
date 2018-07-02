@@ -329,30 +329,30 @@ function abrs_get_measure_unit_label() {
 /**
  * Return service describe formating.
  *
- * @param  int|float $value     value
+ * @param  int|float $amount    amount
  * @param  string    $operation operation
  *
  * @return string
  */
-function abrs_format_service_price( $value, $operation = 'add' ) {
+function abrs_format_service_price( $amount, $operation = 'add' ) {
 	$label = '';
 
 	switch ( $operation ) {
 		case 'add':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '+ %s to price', 'awebooking' ), abrs_format_price( $value ) );
+			/* translators: %s amount */
+			$label = sprintf( esc_html__( '+ %s to price', 'awebooking' ), abrs_format_price( $amount ) );
 			break;
 
 		case 'add_daily':
-			/* translators: %s value */
-			$label = sprintf( esc_html__( '+ %s x night to price', 'awebooking' ), abrs_format_price( $value ) );
+			/* translators: %s amount */
+			$label = sprintf( esc_html__( '+ %s x night to price', 'awebooking' ), abrs_format_price( $amount ) );
 			break;
 
 		case 'increase':
-			/* translators: %1$s value */
-			$label = sprintf( __( '+ <span>%1$s%%</span> to price', 'awebooking' ), $value );
+			/* translators: %1$s amount */
+			$label = sprintf( __( '+ <span>%1$s%%</span> to price', 'awebooking' ), $amount );
 			break;
 	}
 
-	return apply_filters( 'abrs_format_service_price', $label, $value, $operation );
+	return apply_filters( 'abrs_format_service_price', $label, $amount, $operation );
 }
