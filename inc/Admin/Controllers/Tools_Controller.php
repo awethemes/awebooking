@@ -9,7 +9,7 @@ class Tools_Controller extends Controller {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->require_capability( 'manage_awebooking' );
+		$this->require_capability( 'manage_awebooking_settings' );
 	}
 
 	/**

@@ -59,9 +59,9 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function regsiter_settings_submenu() {
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/settings' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/settings' );
 
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/tools' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/tools' );
 	}
 
 	/**
