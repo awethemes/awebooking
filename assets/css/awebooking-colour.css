@@ -4,14 +4,6 @@
   box-shadow: 1px 3px 25px rgba(0, 0, 0, 0.08);
 }
 
-.awebooking-container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
 .awebooking-main {
   padding: 1.75rem 0;
 }
@@ -199,7 +191,7 @@
 .awebooking-block .nice-radio > input:active ~ label::before,
 .awebooking-block .nice-checkbox > input:active ~ label::before {
   color: #fff;
-  background-color: white;
+  background-color: #cee0fd;
 }
 
 .awebooking .nice-radio > input:disabled ~ label,
@@ -1538,7 +1530,7 @@ dialog[open] {
 }
 
 .awebooking .payment-method.selected {
-  border: solid 2px #6ca2fa;
+  box-shadow: 0 0 0 2px #6ca2fa;
 }
 
 .awebooking .payment-method__description {
@@ -1667,6 +1659,17 @@ ul.booking_details li:last-of-type {
   box-sizing: border-box;
 }
 
+.reservation__section--totals {
+  background-color: #f7f7f7;
+  border-top: solid 1px #dee2e6;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.reservation__section--totals .awebooking-price {
+  font-weight: 700;
+}
+
 .reservation-dates {
   display: flex;
   align-items: center;
@@ -1742,50 +1745,6 @@ ul.booking_details li:last-of-type {
 .roomdetails-room__title,
 .roomdetails-room__text {
   margin-bottom: .2rem;
-}
-
-.rooms.rooms--booked {
-  margin-bottom: 3rem;
-}
-
-.rooms.rooms--booked .mini-room--booked {
-  font-size: 1.3rem;
-}
-
-.rooms.rooms--booked .mini-room__title {
-  width: 14rem;
-  float: left;
-  clear: left;
-  font-weight: bold;
-  padding-right: .2rem;
-}
-
-.roomdetails-price {
-  border-top: solid 1px #eee;
-  padding: 1rem;
-}
-
-.roomdetails-price__vat {
-  text-transform: uppercase;
-}
-
-.roomdetails-total {
-  background-color: #eee;
-  padding: 1rem;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.roomdetails-total dt,
-.roomdetails-total dd {
-  margin-bottom: 0;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.roomdetails-total__info {
-  font-size: .6rem;
-  margin-bottom: 0 !important;
 }
 
 .checkout-services {
@@ -1864,6 +1823,10 @@ ul.booking_details li:last-of-type {
 
 .search-rooms__box-icon {
   margin-bottom: 1rem;
+}
+
+.search-rooms__box-icon img {
+  display: inline-block;
 }
 
 .search-rooms__box-title {

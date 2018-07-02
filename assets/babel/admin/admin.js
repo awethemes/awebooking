@@ -98,10 +98,39 @@
   };
 
   /**
+   * Send a ajax request to a route.
+   *
+   * @param  {String}   route
+   * @param  {Object}   data
+   * @param  {Function} callback
+   * @return {Object}
+   */
+  awebooking.ajax = function(method, route, data, callback) {
+    return $.ajax({
+      url: awebooking.route(route),
+      data: data,
+      method: method,
+      dataType: 'json',
+    })
+    .done((data) => {
+      if(callback) callback(data);
+    })
+    .fail((xhr) => {
+      const json = xhr.responseJSON;
+
+      if (json && json.message) {
+        awebooking.alert(json.message, 'error');
+      } else {
+        awebooking.alert(awebooking.i18n.error, 'error');
+      }
+    });
+  };
+
+  /**
    * Create a form then append to body.
    *
-   * @param  {string} link   The form action.
-   * @param  {string} method The form method.
+   * @param  {String} link   The form action.
+   * @param  {String} method The form method.
    * @return {Object}
    */
   awebooking.createForm = function(action, method) {

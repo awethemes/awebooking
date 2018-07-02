@@ -3,35 +3,20 @@
 
 window.awebooking = {};
 
+var accounting = require('accounting');
+
 (function ($, plugin) {
   'use strict';
 
-  var _defaults = function _defaults(options, defaults) {
-    return $.extend({}, defaults, options);
-  };
-
-  // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
-  if (!window.location.origin) {
-    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-  }
-
   // Main objects
-  plugin.utils = {};
-  plugin.instances = {};
-  plugin.utils.rangeDates = require('./core/flatpickr-dates.js');
 
-  /**
-   * Configure.
-   *
-   * @type {Object}
-   */
-  plugin.config = _defaults(window._awebooking, {
+  plugin.utils = plugin.instances = {};
+
+  plugin.i18n = window._awebooking_i18n || {};
+
+  plugin.config = Object.assign({}, window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
-    ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
-    i18n: {
-      date_format: 'F j, Y',
-      time_format: 'H:i:s'
-    }
+    ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
   });
 
   /**
@@ -52,7 +37,7 @@ window.awebooking = {};
    * @return {flatpickr}
    */
   plugin.datepicker = function (instance, options) {
-    var i18n = plugin.config.i18n;
+    var i18n = plugin.i18n;
     var defaults = plugin.config.datepicker;
     var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
 
@@ -62,10 +47,10 @@ window.awebooking = {};
       });
     }
 
-    var minDate = new Date().fp_incr(defaults.min_date);
-    var maxDate = defaults.max_date && defaults.max_date !== 0 ? new Date().fp_incr(defaults.max_date) : '';
+    // const minDate = new Date().fp_incr(defaults.min_date);
+    // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
 
-    var fp = flatpickr(instance, _defaults(options, {
+    var fp = flatpickr(instance, Object.assign({}, options, {
       dateFormat: 'Y-m-d',
       ariaDateFormat: i18n.date_format,
       minDate: 'today',
@@ -83,14 +68,27 @@ window.awebooking = {};
   };
 
   /**
+   * Format the price.
+   *
+   * @param amount
+   * @returns {string}
+   */
+  plugin.formatPrice = function (amount) {
+    return accounting.formatMoney(amount, {
+      format: plugin.i18n.priceFormat,
+      symbol: plugin.i18n.currencySymbol,
+      decimal: plugin.i18n.decimalSeparator,
+      thousand: plugin.i18n.priceThousandSeparator,
+      precision: plugin.i18n.numberDecimals
+    });
+  };
+
+  /**
    * Document ready.
    *
    * @return {void}
    */
   $(function () {
-    // Init
-    require('./frontend/search-form').init();
-
     window.tippy('[data-awebooking="tooltip"]', {
       theme: 'awebooking-tooltip'
     });
@@ -111,377 +109,420 @@ window.awebooking = {};
   });
 })(jQuery, window.awebooking);
 
-},{"./core/flatpickr-dates.js":2,"./frontend/search-form":3}],2:[function(require,module,exports){
-'use strict';
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var $ = jQuery;
-var debounce = require('debounce');
-
-var SelectedDates = function () {
-  function SelectedDates(fp, input) {
-    _classCallCheck(this, SelectedDates);
-
-    this.fp = fp;
-    this.input = input;
-    this.dates = { startDate: null, endDate: null };
-  }
-
-  _createClass(SelectedDates, [{
-    key: 'set',
-    value: function set(startDate, endDate) {
-      this.setStartDate(startDate);
-      this.setEndDate(endDate);
-      this.update();
-    }
-  }, {
-    key: 'reset',
-    value: function reset() {
-      var update = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-      this.dates = { startDate: null, endDate: null };
-      update && this.update();
-    }
-  }, {
-    key: 'update',
-    value: function update() {
-      var _this = this;
-
-      var input = this.input;
-      var dateFormat = this.fp.config.dateFormat;
-
-      this.fp.selectedDates = this.toArray();
-
-      var _fp$selectedDates$map = this.fp.selectedDates.map(function (d) {
-        return _this.fp.formatDate(d, dateFormat);
-      });
-
-      var _fp$selectedDates$map2 = _slicedToArray(_fp$selectedDates$map, 2);
-
-      var _fp$selectedDates$map3 = _fp$selectedDates$map2[0];
-      input.start.value = _fp$selectedDates$map3 === undefined ? '' : _fp$selectedDates$map3;
-      var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
-      input.end.value = _fp$selectedDates$map4 === undefined ? '' : _fp$selectedDates$map4;
-    }
-  }, {
-    key: 'setStartDate',
-    value: function setStartDate(startDate) {
-      var parsedDate = this.fp.parseDate(startDate);
-
-      if (!parsedDate) {
-        this.reset();
-        return;
-      }
-
-      this.dates.startDate = parsedDate;
-
-      if (this.dates.endDate && parsedDate >= this.dates.endDate) {
-        this.dates.endDate = null;
-      }
-    }
-  }, {
-    key: 'setEndDate',
-    value: function setEndDate(endDate) {
-      var parsedDate = this.fp.parseDate(endDate);
-
-      if (!parsedDate) {
-        this.reset();
-        return;
-      }
-
-      this.dates.endDate = parsedDate;
-    }
-  }, {
-    key: 'toArray',
-    value: function toArray() {
-      var dates = Object.values(this.dates);
-
-      return dates.filter(function (d) {
-        return d instanceof Date;
-      });
-    }
-  }]);
-
-  return SelectedDates;
-}();
-
-function RangeDatesPlugin(config) {
-  var plugin = this;
-
-  plugin.config = config;
-
-  return function (fp) {
-    var firstInput = config.firstInput;
-    var secondInput = config.secondInput;
-
-    var _minDate = void 0,
-        _firstInputFocused = void 0,
-        _secondInputFocused = void 0;
-
-    var dates = new SelectedDates(fp, {
-      start: firstInput,
-      end: secondInput
-    });
-
-    /**
-     * Handle binding inputs.
-     */
-    function bindingInputs() {
-      firstInput.setAttribute('data-fp-omit', '');
-      secondInput.setAttribute('data-fp-omit', '');
-
-      fp._bind(firstInput, ['focus', 'click'], debounce(function (e) {
-        e.preventDefault();
-
-        _firstInputFocused = true;
-        _secondInputFocused = false;
-
-
-        fp.isOpen = false;
-        fp.open(undefined, firstInput);
-      }, 150, true));
-
-      fp._bind(secondInput, ['focus', 'click'], debounce(function (e) {
-        e.preventDefault();
-
-        _firstInputFocused = false;
-        _secondInputFocused = true;
-
-
-        fp.isOpen = false;
-        fp.open(undefined, firstInput);
-      }, 150, true));
-    }
-
-    return {
-      onParseConfig: function onParseConfig() {
-        fp.config.mode = 'range';
-        fp.config.clickOpens = false;
-        fp.config.closeOnSelect = false;
-
-        _minDate = fp.config.minDate;
-      },
-      onReady: function onReady() {
-        bindingInputs();
-
-        fp.config.ignoredFocusElements.push(firstInput);
-        fp.config.ignoredFocusElements.push(secondInput);
-
-        // dates.set(firstInput.value, secondInput.value);
-      },
-      onOpen: function onOpen() {
-        $([firstInput, secondInput]).removeClass('selected');
-
-        if (_firstInputFocused) {
-          firstInput.classList.add('selected');
-        } else {
-          secondInput.classList.add('selected');
-        }
-
-        if (_secondInputFocused && fp.selectedDates[0]) {
-          fp.config.minDate = fp.selectedDates[0];
-        } else {
-          fp.config.minDate = _minDate;
-        }
-      },
-      onClose: function onClose() {
-        $([firstInput, secondInput]).removeClass('selected');
-        _firstInputFocused = false;
-        _secondInputFocused = false;
-      },
-      onPreCalendarPosition: function onPreCalendarPosition() {
-        fp._positionElement = firstInput;
-        // fp._positionElement = _firstInputFocused ? firstInput : secondInput;
-        setTimeout(function () {
-          fp._positionElement = fp._input;
-        }, 0);
-      },
-      onValueUpdate: function onValueUpdate(selfDates) {
-        if (_firstInputFocused) {
-          dates.setStartDate(selfDates[0]);
-        } else if (_secondInputFocused) {
-          dates.setEndDate(selfDates[1] ? selfDates[1] : selfDates[0]);
-        }
-
-        dates.update();
-        fp.setDate(fp.selectedDates, false);
-      },
-      onChange: function onChange() {
-        // if (_firstInputFocused) {
-        //   setTimeout(() => { $(secondInput).trigger('focus'); }, 0);
-        // } else if (_secondInputFocused && fp.selectedDates.length === 2) {
-        //   setTimeout(fp.close, 0);
-        // }
-      }
-    };
-  };
-}
-
-module.exports = function FlatpickrDates(el) {
-  var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  this.el = el;
-  this.config = config;
-
-  var $checkin = $(el).find('input[name="check_in"]');
-  var $checkout = $(el).find('input[name="check_out"]');
-  var $rangepicker = $(el).find('[data-hotel="rangepicker"]');
-
-  var rangedates = new RangeDatesPlugin({
-    firstInput: $checkin[0],
-    secondInput: $checkout[0]
-  });
-
-  this.datepicker = awebooking.datepicker($rangepicker[0], {
-    mode: 'range',
-    inline: true
-    // static: true,
-    // plugins: [ rangedates ],
-  });
-};
-
-},{"debounce":4}],3:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var $ = window.jQuery;
-var plugin = window.awebooking;
-
-var SearchForm = function () {
-  function SearchForm(el) {
-    var _this = this;
-
-    _classCallCheck(this, SearchForm);
-
-    this.$el = $(el);
-
-    var rangeDates = new plugin.utils.rangeDates('.searchbox', {});
-
-    $('.searchbox__box', this.$el).each(function (i, box) {
-      $(box).data('popup', _this.setuptPopper(box));
-    });
-
-    // console.log(rangeDates);
-    // console.log(this);
-  }
-
-  _createClass(SearchForm, [{
-    key: 'setuptPopper',
-    value: function setuptPopper(el) {
-      var $html = $(el).find('.searchbox__popup');
-      if ($html.length === 0) {
-        return;
-      }
-
-      tippy(el, {
-        theme: 'awebooking-popup',
-        delay: 0,
-        arrow: true,
-        distance: 0,
-        placement: 'bottom',
-        trigger: 'click',
-        interactive: true,
-        performance: true,
-        hideOnClick: true,
-        animation: 'shift-toward',
-        duration: [150, 150],
-        html: $html[0],
-        popperOptions: { modifiers: {
-            hide: { enabled: false },
-            preventOverflow: { enabled: false }
-          } }
-      });
-
-      return el._tippy;
-    }
-  }]);
-
-  return SearchForm;
-}();
-
-module.exports = {
-  init: function init() {
-    $('.searchbox').each(function () {
-      new SearchForm(this);
-    });
-  }
-};
-
-},{}],4:[function(require,module,exports){
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
+},{"accounting":2}],2:[function(require,module,exports){
+/*!
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
  *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
+ * Freely distributable under the MIT license.
+ * Portions of accounting.js are inspired or borrowed from underscore.js
+ *
+ * Full details and documentation:
+ * http://openexchangerates.github.io/accounting.js/
  */
 
-module.exports = function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
+(function(root, undefined) {
 
-  function later() {
-    var last = Date.now() - timestamp;
+	/* --- Setup --- */
 
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
+	// Create the local library object, to be exported or referenced globally later
+	var lib = {};
 
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
+	// Current version
+	lib.version = '0.4.1';
 
-    return result;
-  };
 
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
+	/* --- Exposed settings --- */
 
-  return debounced;
-};
+	// The library's settings configuration object. Contains default parameters for
+	// currency and number formatting
+	lib.settings = {
+		currency: {
+			symbol : "$",		// default currency symbol is '$'
+			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)
+			decimal : ".",		// decimal point separator
+			thousand : ",",		// thousands separator
+			precision : 2,		// decimal places
+			grouping : 3		// digit grouping (not implemented yet)
+		},
+		number: {
+			precision : 0,		// default precision on numbers is 0
+			grouping : 3,		// digit grouping (not implemented yet)
+			thousand : ",",
+			decimal : "."
+		}
+	};
+
+
+	/* --- Internal Helper Methods --- */
+
+	// Store reference to possibly-available ECMAScript 5 methods for later
+	var nativeMap = Array.prototype.map,
+		nativeIsArray = Array.isArray,
+		toString = Object.prototype.toString;
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js
+	 */
+	function isString(obj) {
+		return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+	}
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js, delegates to ECMA5's native Array.isArray
+	 */
+	function isArray(obj) {
+		return nativeIsArray ? nativeIsArray(obj) : toString.call(obj) === '[object Array]';
+	}
+
+	/**
+	 * Tests whether supplied parameter is a true object
+	 */
+	function isObject(obj) {
+		return obj && toString.call(obj) === '[object Object]';
+	}
+
+	/**
+	 * Extends an object with a defaults object, similar to underscore's _.defaults
+	 *
+	 * Used for abstracting parameter handling from API methods
+	 */
+	function defaults(object, defs) {
+		var key;
+		object = object || {};
+		defs = defs || {};
+		// Iterate over object non-prototype properties:
+		for (key in defs) {
+			if (defs.hasOwnProperty(key)) {
+				// Replace values with defaults only if undefined (allow empty/zero values):
+				if (object[key] == null) object[key] = defs[key];
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * Implementation of `Array.map()` for iteration loops
+	 *
+	 * Returns a new Array as a result of calling `iterator` on each array value.
+	 * Defers to native Array.map if available
+	 */
+	function map(obj, iterator, context) {
+		var results = [], i, j;
+
+		if (!obj) return results;
+
+		// Use native .map method if it exists:
+		if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+
+		// Fallback for native .map:
+		for (i = 0, j = obj.length; i < j; i++ ) {
+			results[i] = iterator.call(context, obj[i], i, obj);
+		}
+		return results;
+	}
+
+	/**
+	 * Check and normalise the value of precision (must be positive integer)
+	 */
+	function checkPrecision(val, base) {
+		val = Math.round(Math.abs(val));
+		return isNaN(val)? base : val;
+	}
+
+
+	/**
+	 * Parses a format string or object and returns format obj for use in rendering
+	 *
+	 * `format` is either a string with the default (positive) format, or object
+	 * containing `pos` (required), `neg` and `zero` values (or a function returning
+	 * either a string or object)
+	 *
+	 * Either string or format.pos must contain "%v" (value) to be valid
+	 */
+	function checkCurrencyFormat(format) {
+		var defaults = lib.settings.currency.format;
+
+		// Allow function as format parameter (should return string or object):
+		if ( typeof format === "function" ) format = format();
+
+		// Format can be a string, in which case `value` ("%v") must be present:
+		if ( isString( format ) && format.match("%v") ) {
+
+			// Create and return positive, negative and zero formats:
+			return {
+				pos : format,
+				neg : format.replace("-", "").replace("%v", "-%v"),
+				zero : format
+			};
+
+		// If no format, or object is missing valid positive value, use defaults:
+		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
+
+			// If defaults is a string, casts it to an object for faster checking next time:
+			return ( !isString( defaults ) ) ? defaults : lib.settings.currency.format = {
+				pos : defaults,
+				neg : defaults.replace("%v", "-%v"),
+				zero : defaults
+			};
+
+		}
+		// Otherwise, assume format was fine:
+		return format;
+	}
+
+
+	/* --- API Methods --- */
+
+	/**
+	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
+	 * Alias: `accounting.parse(string)`
+	 *
+	 * Decimal must be included in the regular expression to match floats (defaults to
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * separator, provide it as the second argument.
+	 *
+	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
+	 *
+	 * Doesn't throw any errors (`NaN`s become 0) but this may change in future
+	 */
+	var unformat = lib.unformat = lib.parse = function(value, decimal) {
+		// Recursively unformat arrays:
+		if (isArray(value)) {
+			return map(value, function(val) {
+				return unformat(val, decimal);
+			});
+		}
+
+		// Fails silently (need decent errors):
+		value = value || 0;
+
+		// Return the value as-is if it's already a number:
+		if (typeof value === "number") return value;
+
+		// Default decimal point comes from settings, but could be set to eg. "," in opts:
+		decimal = decimal || lib.settings.number.decimal;
+
+		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
+			unformatted = parseFloat(
+				("" + value)
+				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+				.replace(regex, '')         // strip out any cruft
+				.replace(decimal, '.')      // make sure decimal point is standard
+			);
+
+		// This will fail silently which may cause trouble, let's wait and see:
+		return !isNaN(unformatted) ? unformatted : 0;
+	};
+
+
+	/**
+	 * Implementation of toFixed() that treats floats more like decimals
+	 *
+	 * Fixes binary rounding issues (eg. (0.615).toFixed(2) === "0.61") that present
+	 * problems for accounting- and finance-related software.
+	 */
+	var toFixed = lib.toFixed = function(value, precision) {
+		precision = checkPrecision(precision, lib.settings.number.precision);
+		var power = Math.pow(10, precision);
+
+		// Multiply up by precision, round accurately, then divide and use native toFixed():
+		return (Math.round(lib.unformat(value) * power) / power).toFixed(precision);
+	};
+
+
+	/**
+	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
+	 *
+	 * Localise by overriding the precision and thousand / decimal separators
+	 * 2nd parameter `precision` can be an object matching `settings.number`
+	 */
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val) {
+				return formatNumber(val, precision, thousand, decimal);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(precision) ? precision : {
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal
+				}),
+				lib.settings.number
+			),
+
+			// Clean up precision
+			usePrecision = checkPrecision(opts.precision),
+
+			// Do some calc:
+			negative = number < 0 ? "-" : "",
+			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
+			mod = base.length > 3 ? base.length % 3 : 0;
+
+		// Format the number:
+		return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(/(\d{3})(?=\d)/g, "$1" + opts.thousand) + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
+	};
+
+
+	/**
+	 * Format a number into currency
+	 *
+	 * Usage: accounting.formatMoney(number, symbol, precision, thousandsSep, decimalSep, format)
+	 * defaults: (0, "$", 2, ",", ".", "%s%v")
+	 *
+	 * Localise by overriding the symbol, precision, thousand / decimal separators and format
+	 * Second param can be an object matching `settings.currency` which is the easiest way.
+	 *
+	 * To do: tidy up the parameters
+	 */
+	var formatMoney = lib.formatMoney = function(number, symbol, precision, thousand, decimal, format) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val){
+				return formatMoney(val, symbol, precision, thousand, decimal, format);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero):
+			formats = checkCurrencyFormat(opts.format),
+
+			// Choose which format to use for this value:
+			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
+
+		// Return with currency symbol added:
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+	};
+
+
+	/**
+	 * Format a list of numbers into an accounting column, padding with whitespace
+	 * to line up currency symbols, thousand separators and decimals places
+	 *
+	 * List should be an array of numbers
+	 * Second parameter can be an object containing keys that match the params
+	 *
+	 * Returns array of accouting-formatted number strings of same length
+	 *
+	 * NB: `white-space:pre` CSS rule is required on the list container to prevent
+	 * browsers from collapsing the whitespace in the output strings.
+	 */
+	lib.formatColumn = function(list, symbol, precision, thousand, decimal, format) {
+		if (!list) return [];
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero), only need pos for now:
+			formats = checkCurrencyFormat(opts.format),
+
+			// Whether to pad at start of string or after currency symbol:
+			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
+
+			// Store value for the length of the longest string in the column:
+			maxLength = 0,
+
+			// Format the list according to options, store the length of the longest string:
+			formatted = map(list, function(val, i) {
+				if (isArray(val)) {
+					// Recursively format columns if list is a multi-dimensional array:
+					return lib.formatColumn(val, opts);
+				} else {
+					// Clean up the value
+					val = unformat(val);
+
+					// Choose which format to use for this value (pos, neg or zero):
+					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
+
+						// Format this value, push into formatted list and save the length:
+						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+
+					if (fVal.length > maxLength) maxLength = fVal.length;
+					return fVal;
+				}
+			});
+
+		// Pad each number in the list and send back the column of numbers:
+		return map(formatted, function(val, i) {
+			// Only if this is a string (not a nested array, which would have already been padded):
+			if (isString(val) && val.length < maxLength) {
+				// Depending on symbol position, pad after symbol or at index 0:
+				return padAfterSymbol ? val.replace(opts.symbol, opts.symbol+(new Array(maxLength - val.length + 1).join(" "))) : (new Array(maxLength - val.length + 1).join(" ")) + val;
+			}
+			return val;
+		});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export accounting for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `accounting` to the global object
+	if (typeof exports !== 'undefined') {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = lib;
+		}
+		exports.accounting = lib;
+	} else if (typeof define === 'function' && define.amd) {
+		// Return the library as an AMD module:
+		define([], function() {
+			return lib;
+		});
+	} else {
+		// Use accounting.noConflict to restore `accounting` back to its original value.
+		// Returns a reference to the library's `accounting` object;
+		// e.g. `var numbers = accounting.noConflict();`
+		lib.noConflict = (function(oldAccounting) {
+			return function() {
+				// Reset the value of the root's `accounting` variable:
+				root.accounting = oldAccounting;
+				// Delete the noConflict method:
+				lib.noConflict = undefined;
+				// Return reference to the library to re-assign it:
+				return lib;
+			};
+		})(root.accounting);
+
+		// Declare `fx` on the root (global/window) object:
+		root['accounting'] = lib;
+	}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
 
 },{}]},{},[1]);
 

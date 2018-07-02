@@ -103,10 +103,37 @@
   };
 
   /**
+   * Send a ajax request to a route.
+   *
+   * @param  {String}   route
+   * @param  {Object}   data
+   * @param  {Function} callback
+   * @return {Object}
+   */
+  awebooking.ajax = function (method, route, data, callback) {
+    return $.ajax({
+      url: awebooking.route(route),
+      data: data,
+      method: method,
+      dataType: 'json'
+    }).done(function (data) {
+      if (callback) callback(data);
+    }).fail(function (xhr) {
+      var json = xhr.responseJSON;
+
+      if (json && json.message) {
+        awebooking.alert(json.message, 'error');
+      } else {
+        awebooking.alert(awebooking.i18n.error, 'error');
+      }
+    });
+  };
+
+  /**
    * Create a form then append to body.
    *
-   * @param  {string} link   The form action.
-   * @param  {string} method The form method.
+   * @param  {String} link   The form action.
+   * @param  {String} method The form method.
    * @return {Object}
    */
   awebooking.createForm = function (action, method) {
@@ -213,9 +240,10 @@ var initSelectize = function initSelectize(select) {
 
 var initSelectizeServices = function initSelectizeServices(select) {
   $(select).selectize({
+    plugins: ['remove_button', 'drag_drop'],
     valueField: 'id',
     labelField: 'name',
-    searchField: 'name',
+    searchField: ['name', 'id'],
     dropdownParent: 'body',
     placeholder: $(this).data('placeholder'),
     load: function load(query, callback) {
@@ -225,17 +253,6 @@ var initSelectizeServices = function initSelectizeServices(select) {
         ajaxSearch('services', query, callback);
       }
     }
-    // render: {
-    //   item: function(item, escape) {
-    //     return '<div>' +
-    //         (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
-    //     '</div>';
-    //   },
-    //   option: function(item, escape) {
-    //     var label = item.label ? item.label : '';
-    //     return '<div>' + label + '</div>';
-    //   }
-    // },
   });
 };
 
@@ -414,7 +431,7 @@ module.exports = function (encodedURI) {
 };
 
 },{}],5:[function(require,module,exports){
-/* flatpickr v4.5.0, @license MIT */
+/* flatpickr v4.5.1, @license MIT */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :

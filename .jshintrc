@@ -3,7 +3,7 @@
   "node": true,
   "jquery": true,
   "esversion": 6,
-  "camelcase": true,
+  "camelcase": false,
   "eqeqeq": true,
   "indent": 2,
   "latedef": true,
@@ -11,7 +11,7 @@
   "newcap": true,
   "quotmark": "single",
   "strict": true,
-  "undef": true,
+  "undef": false,
   "unused": true,
   "eqnull": true
 }
