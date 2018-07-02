@@ -98,8 +98,6 @@ class Ajax_Controller extends Controller {
 	 * @return \Awethemes\Http\Response|mixed
 	 */
 	public function search_customers( Request $request ) {
-		$this->require_capability( 'manage_awebookings' );
-
 		$term = abrs_clean( stripslashes( $request->get( 'term' ) ) );
 		if ( empty( $term ) ) {
 			return [];
