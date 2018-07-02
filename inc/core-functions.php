@@ -8,14 +8,16 @@ use AweBooking\Component\Form\Form_Builder;
 use Awethemes\WP_Object\WP_Object;
 
 // Requires other core functions.
-require trailingslashit( __DIR__ ) . 'date-functions.php';
-require trailingslashit( __DIR__ ) . 'db-functions.php';
-require trailingslashit( __DIR__ ) . 'tax-functions.php';
-require trailingslashit( __DIR__ ) . 'hotel-functions.php';
-require trailingslashit( __DIR__ ) . 'service-functions.php';
-require trailingslashit( __DIR__ ) . 'booking-functions.php';
-require trailingslashit( __DIR__ ) . 'concierge.php';
 require trailingslashit( __DIR__ ) . 'formatting.php';
+require trailingslashit( __DIR__ ) . 'concierge.php';
+require trailingslashit( __DIR__ ) . 'date-functions.php';
+require trailingslashit( __DIR__ ) . 'room-functions.php';
+require trailingslashit( __DIR__ ) . 'rate-functions.php';
+require trailingslashit( __DIR__ ) . 'hotel-functions.php';
+require trailingslashit( __DIR__ ) . 'booking-functions.php';
+require trailingslashit( __DIR__ ) . 'service-functions.php';
+require trailingslashit( __DIR__ ) . 'tax-functions.php';
+require trailingslashit( __DIR__ ) . 'customer-functions.php';
 
 /**
  * Returns the multilingual instance.
@@ -666,3 +668,56 @@ function abrs_parse_object_id( $object ) {
 		return $object->get_id();
 	}
 }
+
+/**
+ * Run a MySQL transaction query, if supported.
+ *
+ * @param  string $type The transaction type, start (default), commit, rollback.
+ * @return void
+ */
+function abrs_db_transaction( $type = 'start' ) {
+	global $wpdb;
+
+	// Hide the errros before perform the action.
+	$wpdb->hide_errors();
+
+	switch ( $type ) {
+		case 'commit':
+			$wpdb->query( 'COMMIT' );
+			break;
+		case 'rollback':
+			$wpdb->query( 'ROLLBACK' );
+			break;
+		default:
+			$wpdb->query( 'START TRANSACTION' );
+			break;
+	}
+}
+
+/**
+ * Delete expired transients.
+ *
+ * @see wc_delete_expired_transients()
+ *
+ * @return int
+ */
+function abrs_delete_expired_transients() {
+	global $wpdb;
+
+	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+		WHERE a.option_name LIKE %s
+		AND a.option_name NOT LIKE %s
+		AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
+		AND b.option_value < %d";
+	$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+
+	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+		WHERE a.option_name LIKE %s
+		AND a.option_name NOT LIKE %s
+		AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
+		AND b.option_value < %d";
+	$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+
+	return absint( $rows + $rows2 );
+}
+add_action( 'awebooking_installed', 'abrs_delete_expired_transients' );

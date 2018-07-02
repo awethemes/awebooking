@@ -1,31 +1,7 @@
 <?php
 
-use AweBooking\Model\Model;
-
-/**
- * Run a MySQL transaction query, if supported.
- *
- * @param  string $type The transaction type, start (default), commit, rollback.
- * @return void
- */
-function abrs_db_transaction( $type = 'start' ) {
-	global $wpdb;
-
-	// Hide the errros before perform the action.
-	$wpdb->hide_errors();
-
-	switch ( $type ) {
-		case 'commit':
-			$wpdb->query( 'COMMIT' );
-			break;
-		case 'rollback':
-			$wpdb->query( 'ROLLBACK' );
-			break;
-		default:
-			$wpdb->query( 'START TRANSACTION' );
-			break;
-	}
-}
+use AweBooking\Model\Room;
+use AweBooking\Model\Room_Type;
 
 /**
  * Get a room data by ID in database.
@@ -55,7 +31,7 @@ function abrs_db_room( $room ) {
  * @return array|null
  */
 function abrs_db_rooms_in( $room_type ) {
-	$room_type = Model::parse_object_id( $room_type );
+	$room_type = abrs_parse_object_id( $room_type );
 
 	// Because room type is just is a post type, so
 	// ensure this post exists before doing anything.
@@ -145,84 +121,58 @@ function abrs_clean_room_cache( $room ) {
 	do_action( 'abrs_clean_room_cache', $room );
 }
 
+
 /**
- * Query customers and return customer IDs.
+ * Retrieves the room object.
  *
- * @param  string $term  The search term.
- * @param  int    $limit Limit the search results.
- * @return array
+ * @param  mixed $room The room ID.
+ * @return \AweBooking\Model\Room|false|null
  */
-function abrs_search_customers( $term, $limit = 0 ) {
-	// Apply fillter to allow users custom the results.
-	$results = apply_filters( 'abrs_pre_search_customers', false, $term, $limit );
+function abrs_get_room( $room ) {
+	return abrs_rescue( function() use ( $room ) {
+		$room = new Room( $room );
 
-	// If custom search results available, just return it.
-	if ( is_array( $results ) ) {
-		return $results;
-	}
-
-	$query = new WP_User_Query( apply_filters( 'abrs_customer_search_query', [
-		'fields'         => 'ID',
-		'number'         => $limit,
-		'search'         => '*' . esc_attr( $term ) . '*',
-		'search_columns' => [ 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' ],
-	], $term, $limit, 'main_query' ) );
-
-	$query2 = new WP_User_Query( apply_filters( 'abrs_customer_search_query', [
-		'fields'         => 'ID',
-		'number'         => $limit,
-		'meta_query'     => [
-			'relation' => 'OR',
-			[
-				'key'     => 'first_name',
-				'value'   => $term,
-				'compare' => 'LIKE',
-			],
-			[
-				'key'     => 'last_name',
-				'value'   => $term,
-				'compare' => 'LIKE',
-			],
-		],
-	], $term, $limit, 'meta_query' ) );
-
-	// Merge the both results.
-	$results = wp_parse_id_list(
-		array_merge( (array) $query->get_results(), (array) $query2->get_results() )
-	);
-
-	// Limit the results.
-	if ( $limit && count( $results ) > $limit ) {
-		$results = array_slice( $results, 0, $limit );
-	}
-
-	return $results;
+		return $room->exists() ? $room : null;
+	}, false );
 }
 
 /**
- * Delete expired transients.
+ * Retrieves the room type object.
  *
- * @see wc_delete_expired_transients()
- *
- * @return int
+ * @param  mixed $room_type The post object or post ID of the room type.
+ * @return \AweBooking\Model\Room_Type|false|null
  */
-function abrs_delete_expired_transients() {
-	global $wpdb;
+function abrs_get_room_type( $room_type ) {
+	return abrs_rescue( function() use ( $room_type ) {
+		$room_type = new Room_Type( $room_type );
 
-	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
-		WHERE a.option_name LIKE %s
-		AND a.option_name NOT LIKE %s
-		AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
-		AND b.option_value < %d";
-	$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
-
-	$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
-		WHERE a.option_name LIKE %s
-		AND a.option_name NOT LIKE %s
-		AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
-		AND b.option_value < %d";
-	$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
-
-	return absint( $rows + $rows2 );
+		return $room_type->exists() ? $room_type : null;
+	}, false );
 }
-add_action( 'awebooking_installed', 'abrs_delete_expired_transients' );
+
+/**
+ * Get room beds.
+ *
+ * // TODO: ...
+ *
+ * @param  int    $room_type The room type.
+ * @param  string $separator The separator.
+ * @return string
+ */
+function abrs_get_room_beds( $room_type, $separator = ', ' ) {
+	$room_type = abrs_get_room_type( $room_type );
+
+	if ( ! $room_type ) {
+		return '';
+	}
+
+	$beds = $room_type->get( 'beds' );
+
+	$items = [];
+	foreach ( $beds as $bed ) {
+		/* translators: %1$s number of beds, %2$s bed type */
+		$items[] = sprintf( __( '<span>%1$s %2$s</span>', 'awebooking' ), absint( $bed['number'] ), $bed['type'] );
+	}
+
+	return implode( $items, $separator );
+}
