@@ -70,7 +70,9 @@ class Booking_Room_Controller extends Controller {
 		$room_type = abrs_get_room_type( $request->submit );
 
 		// TODO: ...
-		$rate_plan = isset( $request->rate_plan ) ? abrs_get_rate( $request->rate_plan ) : $room_type->get_standard_plan();
+		$rate_plan = isset( $request->rate_plan )
+			? abrs_get_rate( $request->rate_plan )
+			: abrs_get_base_rate( $room_type );
 
 		// Create the reservation request.
 		$timespan = abrs_timespan( $request->get( 'check_in' ), $request->get( 'check_out' ), 1 );

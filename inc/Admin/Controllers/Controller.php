@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Response;
+use Awethemes\Http\Json_Response;
 use Awethemes\Http\Exception\AccessDeniedHttpException;
 
 abstract class Controller {
@@ -30,6 +31,19 @@ abstract class Controller {
 		$content = abrs_admin_template()->page( $page, $vars );
 
 		return new Response( $content, $status, $headers );
+	}
+
+	/**
+	 * Send a json_response to client.
+	 *
+	 * @param  string $status  The status code or string status (error or success).
+	 * @param  string $message Optional, the messages.
+	 * @param  array  $data    Optional, data send to browser.
+	 * @param  array  $headers Optional, response headers.
+	 * @return \Awethemes\Http\Json_Response
+	 */
+	protected function response_json( $status = 'success', $message = null, $data = null, $headers = [] ) {
+		return new Json_Response( array_filter( compact( 'status', 'message', 'data' ) ), 'error' === $status ? 400 : 200, $headers );
 	}
 
 	/**

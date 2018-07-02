@@ -494,17 +494,17 @@ function abrs_search_booking_by_term( $term ) {
 }
 
 /**
- * Get all bookings by given a room ID.
+ * Get all booking IDs booked by given a room ID.
  *
  * @param  int   $room_id  The Room ID.
  * @param  array $statuses Optional, filter by booking statuses.
  * @return array
  */
-function abrs_get_bookings_by_room( $room_id, $statuses = [] ) {
+function abrs_get_booking_booked_by_room( $room_id, $statuses = [] ) {
 	global $wpdb;
 
 	$where_clause = ! empty( $statuses )
-		? "AND `booking`.`post_status` IN ('" . esc_sql( implode( "', '", $statuses ) ) . "')"
+		? "AND `booking`.`post_status` IN ('" . implode( "', '", array_map( 'esc_sql', $statuses ) ) . "')"
 		: '';
 
 	$results = $wpdb->get_results( $wpdb->prepare( // @codingStandardsIgnoreStart

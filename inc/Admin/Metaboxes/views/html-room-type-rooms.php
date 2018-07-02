@@ -1,106 +1,83 @@
 <?php
+/**
+ * Html displaying rooms in a room type.
+ *
+ * @var \AweBooking\Model\Room_Type $the_room_type
+ *
+ * @package AweBooking
+ */
 
 global $the_room_type, $post_id;
 
 // List all rooms.
 $rooms = $the_room_type->get_rooms();
 
-// In translation, we can not do some tasks
-// like edit or delete room unit.
+$max_scaffold_rooms = abrs_maximum_scaffold_rooms();
+
+// In translation, we can not do some tasks like edit or delete room unit.
 $is_translation = null;
 if ( abrs_running_on_multilanguage() ) {
 	$is_translation = abrs_multilingual()->get_original_post( $post_id ) != $post_id;
 }
 
-$max_scaffold_rooms = abrs_maximum_scaffold_rooms();
+// JS data.
+$js_data = [
+	'rooms'       => $rooms,
+	'deleteNonce' => wp_create_nonce( 'delete_room' ),
+];
 
 ?>
 
-<?php if ( abrs_blank( $rooms ) ) : ?>
-	<label class="block-label"><?php esc_html_e( 'Generate rooms', 'awebooking' ); ?></label>
+<div id="js-rooms-list">
+	<?php if ( $is_translation ) : ?>
 
-	<div class="abrs-input-addon" style="width: 150px;;">
-		<select name="_scaffold_number_rooms" data-title="<?php echo esc_attr( $the_room_type->get( 'title' ) ); ?>">
-			<?php for ( $i = 1; $i <= $max_scaffold_rooms; $i++ ) : ?>
-				<option value="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></option>
-			<?php endfor; ?>
-		</select>
+		<ul class="abrs-sortable">
+			<?php foreach ( $rooms as $i => $room ) : ?>
+				<li class="abrs-sortable__item">
+					<div class="abrs-sortable__head"><span class="abrs-sortable__order"><?php echo esc_html( $i + 1 ); ?></span></div>
+					<div class="abrs-sortable__body"><strong><?php echo esc_html( $room->get( 'name' ) ); ?></strong></div>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 
-		<button type="button" class="button abrs-dashicons-button js-scaffold-rooms" title="<?php echo esc_html__( 'Generate rooms', 'awebooking' ); ?>">
-			<span class="screen-reader-text"><?php echo esc_html__( 'Generate rooms', 'awebooking' ); ?></span>
-			<span class="dashicons dashicons-update"></span>
-		</button>
-	</div>
+		<p><?php echo esc_html__( 'Note: This is a translation of room type, you can not perform any action to this.', 'awebooking' ); ?></p>
 
-	<!-- Content will be generate via JS -->
-	<div class="abrs-sortable js-list-rooms js-sorting-rooms" style="margin-top: 1em; display: none;"></div>
+	<?php else : ?>
+		<div class="abrs-input-addon" data-bind="visible: rooms().length === 0" style="width: 150px; display: none;">
+			<select data-bind="value: scaffoldNumber" data-title="<?php echo esc_attr( $the_room_type->get( 'title' ) ); ?>">
+				<?php for ( $i = 1; $i <= $max_scaffold_rooms; $i++ ) : ?>
+					<option value="<?php echo esc_attr( $i ); ?>" <?php selected( 3, $i ); ?>><?php echo esc_html( $i ); ?></option>
+				<?php endfor; ?>
+			</select>
 
-<?php else : ?>
+			<button type="button" data-bind="click: scaffold" class="button abrs-dashicons-button" title="<?php echo esc_html__( 'Generate rooms', 'awebooking' ); ?>">
+				<span class="screen-reader-text"><?php echo esc_html__( 'Generate rooms', 'awebooking' ); ?></span>
+				<span class="dashicons dashicons-update"></span>
+			</button>
+		</div>
 
-	<ul class="abrs-sortable js-list-rooms js-sorting-rooms abrs-mb1">
-		<?php foreach ( $rooms as $i => $room ) : /* @var \AweBooking\Model\Room $room */ ?>
-
+		<ul data-bind="foreach: rooms, visible: rooms().length > 0" class="abrs-sortable js-sorting-rooms" style="display: none;">
 			<li class="abrs-sortable__item">
 				<div class="abrs-sortable__head">
-					<?php if ( ! $is_translation ) : ?>
-						<span class="abrs-sortable__handle"></span>
-					<?php endif; ?>
-
-					<span class="abrs-sortable__order"><?php echo esc_html( $i + 1 ); ?></span>
+					<span class="abrs-sortable__handle"></span>
+					<span class="abrs-sortable__order" data-bind="text: (-1 == id ? '*' : $index() + 1)"></span>
 				</div>
 
 				<div class="abrs-sortable__body">
-					<?php if ( ! $is_translation ) : ?>
-						<input type="hidden" name="_rooms[<?php echo esc_attr( $room->get_id() ); ?>][id]" value="<?php echo esc_attr( $room->get_id() ); ?>">
-						<input type="text" name="_rooms[<?php echo esc_attr( $room->get_id() ); ?>][name]" value="<?php echo esc_attr( $room->get( 'name' ) ); ?>" class="transparent">
-					<?php else : ?>
-						<strong><?php echo esc_html( $room->get( 'name' ) ); ?></strong>
-					<?php endif; ?>
+					<input type="hidden" data-bind="value: $data.id, attr: { name: '_rooms[' + $index() + '][id]' }">
+					<input type="text" data-bind="value: $data.name, attr: { name: '_rooms[' + $index() + '][name]' }" class="transparent" >
 				</div>
 
-				<?php if ( ! $is_translation ) : ?>
-					<div class="abrs-sortable__actions hidden">
-						<?php /* translators: %s The room name */ ?>
-						<a href="<?php echo esc_url( wp_nonce_url( abrs_admin_route( "/room/{$room->get_id()}" ), 'delete_room_' . $room->get_id() ) ); ?>" data-method="abrs-delete" title="<?php printf( esc_html__( 'Delete: %s', 'awebooking' ), esc_html( $room->get( 'name' ) ) ); ?>">
-							<span class="screen-reader-text"><?php echo esc_html__( 'Delete', 'awebooking' ); ?></span>
-							<span class="dashicons dashicons-no-alt"></span>
-						</a>
-					</div>
-				<?php endif; ?>
+				<div class="abrs-sortable__actions hidden">
+					<a href="#" data-bind="click: $root.remove.bind($root)">
+						<span class="screen-reader-text"><?php echo esc_html__( 'Delete', 'awebooking' ); ?></span>
+						<span class="dashicons dashicons-no-alt"></span>
+					</a>
+				</div>
 			</li>
+		</ul>
 
-		<?php endforeach ?>
-	</ul>
-
-	<?php if ( ! $is_translation ) : ?>
-		<button type="button" class="button js-add-room"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
+		<button type="button" data-bind="click: add.bind($root), visible: rooms().length > 0" class="button button abrs-button abrs-mt1" style="display: none;"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
+		<script>var _awebookingRooms = <?php echo json_encode( $js_data ); ?>;</script>
 	<?php endif; ?>
-
-<?php endif ?>
-
-<?php if ( true === $is_translation ) : ?>
-	<p><?php echo esc_html__( 'Note: This is a translation of room type, you can not perform any action to rooms.', 'awebooking' ); ?></p>
-<?php endif ?>
-
-<script type="text/template" id="tmpl-template-room-item">
-	<li class="abrs-sortable__item">
-		<div class="abrs-sortable__head">
-			<span class="abrs-sortable__handle"></span>
-			<span class="abrs-sortable__order">{{ -1 == data.index ? '*' : data.index }}</span>
-		</div>
-
-		<div class="abrs-sortable__body">
-			<input type="hidden" name="{{ data.prefix }}[id]" value="{{ data.id }}">
-
-			<strong class="screen-reader-text">{{ data.name }}</strong>
-			<input type="text" name="{{ data.prefix }}[name]" value="{{ data.name }}" class="transparent">
-		</div>
-
-		<div class="abrs-sortable__actions hidden">
-			<a href="#" data-method="abrs-delete">
-				<span class="screen-reader-text"><?php echo esc_html__( 'Delete', 'awebooking' ); ?></span>
-				<span class="dashicons dashicons-no-alt"></span>
-			</a>
-		</div>
-	</li>
-</script>
+</div>

@@ -75,7 +75,7 @@ class Room_Type_Metabox {
 		// Create the new room-type instance.
 		$room_type = new Room_Type( $post->ID );
 
-		$is_translation = null;
+		$is_translation = false;
 		if ( abrs_running_on_multilanguage() ) {
 			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
 		}
@@ -134,7 +134,7 @@ class Room_Type_Metabox {
 		// Handle update rooms data.
 		if ( false === $is_translation ) {
 			if ( 0 === count( $room_type->get_rooms() ) ) {
-				$this->perform_scaffold_rooms( $room_type, $request->input( '_scaffold_rooms', [] ) );
+				$this->perform_scaffold_rooms( $room_type, $request->input( '_rooms', [] ) );
 			} elseif ( $request->filled( '_rooms' ) ) {
 				$this->perform_update_rooms( $room_type, $request->input( '_rooms', [] ) );
 			}
@@ -188,23 +188,24 @@ class Room_Type_Metabox {
 	protected function perform_update_rooms( $room_type, $rooms ) {
 		$index = 0;
 
-		foreach ( (array) $rooms as $id => $data ) {
-			if ( empty( $data['id'] ) || $id != $data['id'] ) {
-				continue;
-			}
-
-			if ( ! $room = abrs_get_room( $id ) ) {
-				continue;
-			}
-
-			$room->order = $index;
-			$room->name  = ! empty( $data['name'] )
+		foreach ( (array) $rooms as $data ) {
+			$name = ! empty( $data['name'] )
 				? sanitize_text_field( wp_unslash( $data['name'] ) )
 				/* translators: 1: Room type name, 2: Room item order */
-				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), $index + 1 );
+				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), ( $index + 1 ) );
+
+			if ( $room = abrs_get_room( $data['id'] ) ) {
+				$room->order = $index;
+				$room->name  = $name;
+			} else {
+				$room = ( new Room )->fill([
+					'name'      => $name,
+					'order'     => $index,
+					'room_type' => $room_type->get_id(),
+				]);
+			}
 
 			$room->save();
-
 			$index++;
 		}
 	}
