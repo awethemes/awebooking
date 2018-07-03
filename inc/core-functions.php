@@ -337,14 +337,6 @@ function abrs_sanitize_option( $key, $value ) {
 	}
 
 	/**
-	 * Allow custom sanitize a specified option value.
-	 *
-	 * @param mixed $value Mixed option value.
-	 * @var   mixed
-	 */
-	$value = apply_filters( "abrs_sanitize_option_{$key}", $value );
-
-	/**
 	 * Allow custom sanitize option values.
 	 *
 	 * @param mixed  $value The option value.
@@ -352,6 +344,49 @@ function abrs_sanitize_option( $key, $value ) {
 	 * @var   mixed
 	 */
 	return apply_filters( 'abrs_sanitize_option', $value, $key );
+}
+
+/**
+ * Escaping option value before return.
+ *
+ * @param  string $option The name of the option.
+ * @param  string $value  The unsanitised value.
+ *
+ * @return mixed
+ */
+function abrs_esc_option( $option, $value ) {
+	switch ( $option ) {
+		case 'enable_location':
+		case 'children_bookable':
+		case 'infants_bookable':
+		case 'calc_taxes':
+		case 'prices_include_tax':
+			$value = 'on' === abrs_sanitize_checkbox( $value );
+			break;
+
+		case 'price_decimal_separator':
+		case 'price_thousand_separator':
+			$value = untrailingslashit( $value );
+			break;
+
+		case 'display_datepicker_disabledays':
+			$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
+			break;
+
+		case 'display_datepicker_disabledates':
+			$value = wp_parse_slug_list( $value );
+			$value = array_filter( $value, 'abrs_is_standard_date' );
+			break;
+	}
+
+	/**
+	 * Allow custom escaping option values.
+	 *
+	 * @param mixed  $value  The option value.
+	 * @param string $option The option key name.
+	 * @var   mixed
+	 */
+	return apply_filters( 'abrs_esc_option', $value, $option );
 }
 
 /**

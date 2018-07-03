@@ -46,7 +46,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 */
 	public function save( Request $request ) {
 		// Get the options.
-		$options = cmb2_options( awebooking()->get_option_key() );
+		$options = cmb2_options( awebooking()->get_current_option() );
 
 		// Get the sanitized_values from request.
 		$raw_values = $this->get_sanitized_values( $request->post() );

@@ -40,6 +40,9 @@ class Load_Configuration {
 	public function load_configuration() {
 		$this->plugin->make( Multilingual::class );
 
+		// Sets the plugin options.
+		$this->plugin->sets_options();
+
 		// Maybe set the option name on multi-language.
 		$this->maybe_modify_options();
 
@@ -61,22 +64,16 @@ class Load_Configuration {
 			return;
 		}
 
-		$current_key = $this->plugin->get_option_key();
-		$current_language = $this->plugin['multilingual']->get_current_language();
-
-		// Prevent modify option key if current language is: "en", "" or "all".
-		if ( empty( $current_language ) || in_array( $current_language, [ '', 'en', 'all' ] ) ) {
-			return;
-		}
-
-		// Set new option key, suffix with current language.
-		$this->plugin->set_option_key(
-			$new_key = $current_key . '_' . $current_language
+		$this->plugin->change_options(
+			abrs_multilingual()->get_current_language()
 		);
 
 		// Perform copy options only in admin.
-		if ( is_admin() ) {
-			$this->perform_copy_options( $current_key, $new_key );
+		$current_option  = $this->plugin->get_current_option();
+		$original_option = $this->plugin->get_original_option();
+
+		if ( is_admin() && $current_option !== $original_option ) {
+			$this->perform_copy_options( $original_option, $current_option );
 		}
 	}
 
