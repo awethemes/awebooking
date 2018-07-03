@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Constants;
 use AweBooking\Multilingual;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Bootstrap\Load_Textdomain;
@@ -387,6 +388,20 @@ function abrs_esc_option( $option, $value ) {
 	 * @var   mixed
 	 */
 	return apply_filters( 'abrs_esc_option', $value, $option );
+}
+
+/**
+ * Normalize the option name according to the given language.
+ *
+ * @param  string $language The language name (2 letters).
+ * @return string
+ */
+function abrs_normalize_option_name( $language = null ) {
+	if ( empty( $language ) || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
+		return Constants::OPTION_KEY;
+	}
+
+	return  Constants::OPTION_KEY . '_' . trim( $language );
 }
 
 /**

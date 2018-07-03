@@ -41,7 +41,7 @@ class Load_Configuration {
 		$this->plugin->make( Multilingual::class );
 
 		// Sets the plugin options.
-		$this->plugin->sets_options();
+		$this->plugin->sets_original_options();
 
 		// Maybe set the option name on multi-language.
 		$this->maybe_modify_options();
@@ -64,16 +64,14 @@ class Load_Configuration {
 			return;
 		}
 
-		$this->plugin->change_options(
-			abrs_multilingual()->get_current_language()
-		);
+		$new_option = abrs_normalize_option_name( abrs_multilingual()->get_current_language() );
+		$this->plugin->sets_options( $new_option );
 
 		// Perform copy options only in admin.
-		$current_option  = $this->plugin->get_current_option();
 		$original_option = $this->plugin->get_original_option();
 
-		if ( is_admin() && $current_option !== $original_option ) {
-			$this->perform_copy_options( $original_option, $current_option );
+		if ( is_admin() && $new_option !== $original_option ) {
+			$this->perform_copy_options( $original_option, $new_option );
 		}
 	}
 

@@ -432,6 +432,8 @@ class Checkout {
 	protected function update_session( $data ) {
 		$this->session->put( 'selected_payment_method', $data['payment_method'] );
 
+		$this->reservation->maybe_flush();
+
 		// Update reservation totals.
 		 $this->reservation->calculate_totals();
 	}

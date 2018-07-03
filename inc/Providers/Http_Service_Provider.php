@@ -15,7 +15,7 @@ class Http_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $middleware = [
-		// ...
+		\AweBooking\Component\Http\Middleware\Localizer::class,
 	];
 
 	/**

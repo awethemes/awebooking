@@ -34,16 +34,47 @@ trait Plugin_Options {
 	protected $switched_options = [];
 
 	/**
+	 *
+	 * Gets the current option key name.
+	 *
+	 * @return string
+	 */
+	public function get_current_option() {
+		return $this->current_option;
+	}
+
+	/**
+	 * Gets the original option key name.
+	 *
+	 * @return string
+	 */
+	public function get_original_option() {
+		return $this->original_option;
+	}
+
+	/**
 	 * Sets the options.
 	 *
 	 * @return void
 	 */
-	public function sets_options() {
+	public function sets_original_options() {
 		$this->options = new Fluent( get_option( Constants::OPTION_KEY, [] ) );
 
 		$this->original_option = $this->current_option = Constants::OPTION_KEY;
 
 		do_action( 'abrs_loaded_options', $this );
+	}
+
+	/**
+	 * Change the options to another option.
+	 *
+	 * @param  string $language The language to switch to.
+	 * @return void
+	 */
+	public function change_options( $language ) {
+		if ( abrs_running_on_multilanguage() ) {
+			$this->sets_options( abrs_normalize_option_name( $language ) );
+		}
 	}
 
 	/**
@@ -57,7 +88,7 @@ trait Plugin_Options {
 			return false;
 		}
 
-		$option = $this->normalize_option_key( $language );
+		$option = abrs_normalize_option_name( $language );
 
 		// Prevent switch to same option name.
 		if ( $this->current_option === $option ) {
@@ -66,7 +97,7 @@ trait Plugin_Options {
 
 		$this->switched_options[] = $option;
 
-		$this->change_options( $option );
+		$this->sets_options( $option );
 
 		/**
 		 * Fires when the options is switched.
@@ -98,7 +129,7 @@ trait Plugin_Options {
 			$option = $this->original_option;
 		}
 
-		$this->change_options( $option );
+		$this->sets_options( $option );
 
 		/**
 		 * Fires when the option is restored to the previous one.
@@ -136,53 +167,16 @@ trait Plugin_Options {
 	}
 
 	/**
-	 * Change the options to another language.
+	 * Sets the options using new option key name.
 	 *
-	 * @param  string $language The language to change to.
-	 * @return void
+	 * @param string $option The new option key name.
 	 */
-	public function change_options( $language ) {
-		if ( ! abrs_running_on_multilanguage() ) {
-			return;
-		}
-
-		$this->current_option = $this->normalize_option_key( $language );
+	public function sets_options( $option ) {
+		$this->current_option = $option;
 
 		$this->options = new Fluent( get_option( $this->current_option, [] ) );
 
 		do_action( 'abrs_change_options', $this );
-	}
-
-	/**
-	 * Normalize the option name according to the given language.
-	 *
-	 * @param  string $language The language name (2 letters).
-	 * @return string
-	 */
-	public function normalize_option_key( $language ) {
-		if ( empty( $language ) || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
-			return Constants::OPTION_KEY;
-		}
-
-		return  Constants::OPTION_KEY . '_' . trim( $language );
-	}
-	/**
-	 *
-	 * Gets the current option key name.
-	 *
-	 * @return string
-	 */
-	public function get_current_option() {
-		return $this->current_option;
-	}
-
-	/**
-	 * Gets the original option key name.
-	 *
-	 * @return string
-	 */
-	public function get_original_option() {
-		return $this->original_option;
 	}
 
 	/**
