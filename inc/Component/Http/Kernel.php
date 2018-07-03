@@ -15,13 +15,6 @@ class Kernel extends Http_Kernel {
 	protected $plugin;
 
 	/**
-	 * The HTTP middleware stack.
-	 *
-	 * @var array
-	 */
-	protected $middleware = [];
-
-	/**
 	 * Create a new HTTP kernel instance.
 	 *
 	 * @param \AweBooking\Plugin $plugin The plugin instance.

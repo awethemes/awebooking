@@ -39,6 +39,8 @@ class Reservation_Controller {
 	 * @return mixed
 	 */
 	public function book( Request $request ) {
+		$this->sets_res_headers( $request );
+
 		if ( ! $request->filled( 'room_type', 'check_in', 'check_out' ) ) {
 			abrs_add_notice( 'Invalid request parameters, please try again.', 'error' );
 			return $this->redirector->back();
@@ -82,6 +84,8 @@ class Reservation_Controller {
 	 * @return mixed
 	 */
 	public function remove( Request $request, $row_id ) {
+		$this->sets_res_headers( $request );
+
 		$removed = $this->reservation->remove( $row_id );
 
 		if ( $removed ) {
@@ -92,6 +96,12 @@ class Reservation_Controller {
 		return $this->redirector->back(
 			add_query_arg( 'removed', $removed ? '1' : '0', $this->generator_search_page_url( $request ) )
 		);
+	}
+
+	protected function sets_res_headers( Request $request ) {
+		if ( abrs_running_on_multilanguage() ) {
+			$this->reservation->language = abrs_multilingual()->get_current_language();
+		}
 	}
 
 	/**
@@ -138,6 +148,8 @@ class Reservation_Controller {
 	 * @return mixed
 	 */
 	public function services( Request $request ) {
+		$this->sets_res_headers( $request );
+
 		$included_ids = $this->reservation->get_included_services();
 
 		// Filter valid services.

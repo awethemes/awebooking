@@ -109,6 +109,51 @@ class Reservation {
 	}
 
 	/**
+	 * Gets the total after calculation.
+	 *
+	 * @return float
+	 */
+	public function get_total() {
+		return $this->totals->get( 'total' );
+	}
+
+	/**
+	 * Gets the subtotal (before tax and discount).
+	 *
+	 * @return float
+	 */
+	public function get_subtotal() {
+		return $this->totals->get( 'subtotal' );
+	}
+
+	/**
+	 * Gets the totals instance.
+	 *
+	 * @return Totals
+	 */
+	public function get_totals() {
+		return $this->totals;
+	}
+
+	/**
+	 * Calculate the totals.
+	 *
+	 * @return void
+	 */
+	public function calculate_totals() {
+		if ( $this->is_empty() ) {
+			$this->flush();
+			return;
+		}
+
+		do_action( 'abrs_calculate_totals', $this );
+
+		$this->totals->calculate();
+
+		do_action( 'abrs_complete_calculate_totals', $this );
+	}
+
+	/**
 	 * Gets the previous_request store in the session.
 	 *
 	 * @return \AweBooking\Availability\Request|null
@@ -185,10 +230,7 @@ class Reservation {
 		$this->store->flush( 'booked_rooms' );
 		$this->store->flush( 'booked_services' );
 		$this->store->flush( 'previous_request' );
-
-		if ( abrs_running_on_multilanguage() ) {
-			$this->store->flush( 'reservation_language' );
-		}
+		$this->store->flush( 'reservation_hash' );
 
 		do_action( 'abrs_reservation_emptied', $this );
 	}
@@ -203,10 +245,6 @@ class Reservation {
 		$previous_request = $this->get_previous_request();
 
 		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
-			return true;
-		}
-
-		if ( abrs_running_on_multilanguage() && abrs_multilingual()->get_current_language() !== $this->language ) {
 			return true;
 		}
 
@@ -231,6 +269,7 @@ class Reservation {
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
 		$this->store->put( 'booked_rooms', $this->booked_rooms );
 		$this->store->put( 'booked_services', $this->get_services( true )->to_array() );
+		$this->store->put( 'reservation_hash', $this->generate_hash_id() );
 
 		do_action( 'abrs_reservation_stored', $this );
 	}
@@ -260,55 +299,29 @@ class Reservation {
 	public function restore() {
 		do_action( 'abrs_prepare_restore_reservation', $this );
 
-		$this->restore_request();
-		$this->restore_rooms();
-		$this->restore_services();
+		$hashid = $this->generate_hash_id();
+		$session_hashid = $this->store->get( 'reservation_hash' );
+
+		if ( $session_hashid && hash_equals( $hashid, $session_hashid ) ) {
+			$this->restore_request();
+			$this->restore_rooms();
+			$this->restore_services();
+		}
 
 		do_action( 'abrs_reservation_restored', $this );
 	}
 
 	/**
-	 * Gets the total after calculation.
+	 * Generate the reservation hash ID.
 	 *
-	 * @return float
+	 * @return string
 	 */
-	public function get_total() {
-		return $this->totals->get( 'total' );
-	}
-
-	/**
-	 * Gets the subtotal (before tax and discount).
-	 *
-	 * @return float
-	 */
-	public function get_subtotal() {
-		return $this->totals->get( 'subtotal' );
-	}
-
-	/**
-	 * Gets the totals instance.
-	 *
-	 * @return Totals
-	 */
-	public function get_totals() {
-		return $this->totals;
-	}
-
-	/**
-	 * Calculate the totals.
-	 *
-	 * @return void
-	 */
-	public function calculate_totals() {
-		if ( $this->is_empty() ) {
-			$this->flush();
-			return;
-		}
-
-		do_action( 'abrs_calculate_totals', $this );
-
-		$this->totals->calculate();
-
-		do_action( 'abrs_complete_calculate_totals', $this );
+	protected function generate_hash_id() {
+		return sha1( implode( '-', [
+			$this->hotel,
+			$this->source,
+			$this->currency,
+			$this->language,
+		] ) );
 	}
 }

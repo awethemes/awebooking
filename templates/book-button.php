@@ -1,6 +1,10 @@
 <form method="POST" action="<?php echo esc_url( abrs_route( '/reservation/book-room' ) ); ?>">
 	<?php wp_nonce_field( 'book-room', '_wpnonce', true ); ?>
 
+	<?php if ( abrs_running_on_multilanguage() ) : ?>
+		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
+	<?php endif ?>
+
 	<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request->check_in ); ?>">
 	<input type="hidden" name="check_out" value="<?php echo esc_attr( $res_request->check_out ); ?>">
 	<input type="hidden" name="adults" value="<?php echo esc_attr( $res_request->adults ); ?>">

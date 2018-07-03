@@ -3,6 +3,7 @@ namespace AweBooking;
 
 class Constants {
 	// The core constants.
+	const OPTION_KEY        = 'awebooking_settings';
 	const BOOKING           = 'awebooking';
 	const BOOKING_NOTE      = 'booking_note';
 	const ROOM_TYPE         = 'room_type';

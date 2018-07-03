@@ -7,10 +7,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Illuminate\Container\Container;
-use AweBooking\Support\Fluent;
 
 final class Plugin extends Container {
-	use Support\Traits\Plugin_Provider;
+	use Support\Traits\Plugin_Provider,
+		Support\Traits\Plugin_Options;
 
 	/**
 	 * The plugin version.
@@ -25,20 +25,6 @@ final class Plugin extends Container {
 	 * @var string
 	 */
 	protected $plugin_file;
-
-	/**
-	 * The plugin options.
-	 *
-	 * @var \AweBooking\Support\Fluent
-	 */
-	protected $options;
-
-	/**
-	 * The plugin option key name.
-	 *
-	 * @var string
-	 */
-	protected $option_key = 'awebooking_settings';
 
 	/**
 	 * Indicates if the plugin has "booted".
@@ -358,112 +344,6 @@ final class Plugin extends Container {
 	 */
 	public function endpoint_name() {
 		return apply_filters( 'abrs_endpoint_name', 'awebooking-route' );
-	}
-
-	/**
-	 * Get name for option key storing setting
-	 *
-	 * @return string
-	 */
-	public function get_option_key() {
-		return $this->option_key;
-	}
-
-	/**
-	 * Set the option key name.
-	 *
-	 * @param  string $key_name The option key name.
-	 * @return bool
-	 */
-	public function set_option_key( $key_name ) {
-		// Option name can't be set after plugin booting.
-		if ( did_action( 'awebooking_booting' ) ) {
-			return false;
-		}
-
-		// Set new key-name.
-		$this->option_key = $key_name;
-
-		// Flush the options if set.
-		if ( $this->options ) {
-			$this->options = null;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get all stored options.
-	 *
-	 * @return \AweBooking\Support\Fluent
-	 */
-	public function get_options() {
-		// Load the option in the database.
-		if ( is_null( $this->options ) ) {
-			$this->options = new Fluent( get_option( $this->get_option_key(), [] ) );
-		}
-
-		return $this->options;
-	}
-
-	/**
-	 * Retrieves an option by key-name.
-	 *
-	 * @param  string $option  Option key name.
-	 * @param  mixed  $default The default value.
-	 * @return mixed
-	 */
-	public function get_option( $option, $default = null ) {
-		/**
-		 * Filters the value of an existing option before it is retrieved.
-		 *
-		 * @param mixed  $pre_option The value to return instead of the option value.
-		 * @param string $option     The option name.
-		 * @param mixed  $default    The fallback value to return if the option does not exist.
-		 */
-		$pre = apply_filters( "abrs_pre_option_{$option}", null, $option, $default );
-
-		if ( null !== $pre ) {
-			return $pre;
-		}
-
-		// Retrieve the option value.
-		$value = maybe_unserialize(
-			$this->get_options()->get( $option, $default )
-		);
-
-		// Escape some options before return.
-		switch ( $option ) {
-			case 'enable_location':
-			case 'children_bookable':
-			case 'infants_bookable':
-			case 'calc_taxes':
-			case 'prices_include_tax':
-				$value = 'on' === abrs_sanitize_checkbox( $value );
-				break;
-
-			case 'price_decimal_separator':
-			case 'price_thousand_separator':
-				$value = untrailingslashit( $value );
-				break;
-
-			case 'display_datepicker_disabledays':
-				$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
-				break;
-
-			case 'display_datepicker_disabledates':
-				$value = wp_parse_slug_list( $value );
-				$value = array_filter( $value, 'abrs_is_standard_date' );
-				break;
-		}
-
-		/**
-		 * Filters the value of an existing option.
-		 *
-		 * @param mixed  $value  Value of the option.
-		 * @param string $option Option name.
-		 */
-		return apply_filters( "abrs_option_{$option}", $value, $option );
 	}
 
 	/**
