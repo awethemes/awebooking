@@ -1,23 +1,18 @@
 <?php
 /* @vars $booking */
 
-$old_input = awebooking( 'session' )->get_old_input();
-if ( ! empty( $old_input ) ) {
-	$form_builder->fill( $old_input );
-}
+$booked_services = $booking->get_services();
 
-$action_link = abrs_admin_route( 'booking-service' );
+$services_selection = abrs_services_for_reservation( [
+	'exclude' => $booked_services->pluck( 'id' )->all()
+],
+ 	[],
+ 	[
+		'nights'     => 0,
+		'base_price' => 0,
+	]
+);
 
-$services = abrs_list_services();
-
-if ( $services->isEmpty() ) {
-	return;
-}
-
-$operations = abrs_get_service_operations();
-
-$services_exist = $booking->get_services();
-$service_ids = $services_exist->pluck( 'service_id' )->all();
 ?>
 
 <div class="wrap">
@@ -25,7 +20,7 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 	<hr class="wp-header-end">
 
 	<div class="abrs-card abrs-card--page abrs-booking-services">
-		<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
+		<form method="POST" action="<?php echo esc_url( abrs_admin_route( 'booking-service' ) ); ?>">
 			<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
 
 			<?php wp_nonce_field( 'create_booking_service' ); ?>
@@ -37,41 +32,9 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 
 			<div class="cmb2-wrap awebooking-wrap abrs-card__body">
 				<ul class="abrs-sortable">
-					<?php foreach ( $services as $service ) : ?>
-						<?php $input_prefix = 'services[' . $service->get_id() . ']'; ?>
-						<li class="abrs-sortable__item">
-							<div class="abrs-sortable__head">
-								<span class="abrs-sortable__order">
-									<input type="hidden" name="<?php echo esc_attr( $input_prefix ); ?>[id]" value="<?php echo esc_attr( $service->get_id() ); ?>">
+					<?php foreach ( $services_selection as $service_selection ) : ?>
 
-									<?php if ( $service->is_quantity_selectable() ) : ?>
-										<?php $quantity = $services_exist->where( 'service_id', '=', $service->get_id() )->pluck( 'quantity' )->first(); ?>
-
-										<input type="number" min="0" class="form-input" value="<?php echo $quantity ? absint( $quantity ) : 0; ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
-
-									<?php else : ?>
-
-										<div class="nice-checkbox">
-											<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php checked( in_array( $service->get_id(), $service_ids ) ); ?> />
-										</div>
-
-									<?php endif; ?>
-								</span>
-							</div>
-
-							<div class="abrs-sortable__body">
-								<a href="<?php echo esc_url( get_edit_post_link( $service->get_id() ) ); ?>" title="<?php echo esc_attr( $service->get( 'name' ) ); ?>" target="_blank">
-									<strong><?php echo esc_html( $service->get( 'name' ) ); ?></strong>
-								</a>
-							</div>
-
-							<div class="abrs-sortable__actions">
-								<?php if ( isset( $operations[ $service->get( 'operation' ) ] ) ) : ?>
-									<span class="abrs-badge"><?php print abrs_format_service_price( $service->get( 'amount' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></span>
-								<?php endif; ?>
-							</div>
-
-						</li>
+						<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service_selection', 'booked_services' ) ); ?>
 
 					<?php endforeach ?>
 				</ul><!-- /.abrs-sortable -->

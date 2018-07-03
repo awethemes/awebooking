@@ -32,6 +32,17 @@ function abrs_list_services( $args = [] ) {
 		'orderby'        => 'menu_order',
 	]));
 
+	$transform = [
+		'include' => 'post__in',
+		'exclude' => 'post__not_in',
+	];
+
+	foreach ( $transform as $key => $key1 ) {
+		if ( isset( $args[ $key ] ) ) {
+			$args[ $key1 ] = $args[ $key ];
+		}
+	}
+
 	$wp_query = new WP_Query( $args );
 
 	$services = abrs_collect( $wp_query->posts )
@@ -51,6 +62,31 @@ function abrs_get_service_operations() {
 		'add_daily' => esc_html__( 'Add to price per night', 'awebooking' ),
 		'increase'  => esc_html__( 'Increase price by % amount of room prices', 'awebooking' ),
 	]);
+}
+
+/**
+ * Gets the services with price for selection.
+ *
+ * @param  array  $includes The services with price included.
+ * @param  array  $context  The context to calculate price, see abrs_calc_service_price().
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_services_for_reservation( array $query_args, array $includes, array $context ) {
+	$services = abrs_list_services( $query_args ); // TODO:...
+
+	$includes = abrs_collect( $includes )->transform( function( $s ) {
+		return $s instanceof Service ? $s->get_id() : (int) $a;
+	})->all();
+
+	return $services->transform( function( $service ) use ( $context, $includes ) {
+		$included = in_array( $service->get_id(), $includes );
+
+		return [
+			'service'  => $service,
+			'included' => $included,
+			'price'    => $included ? 0 : abrs_calc_service_price( $service, $context ),
+		];
+	});
 }
 
 /**
