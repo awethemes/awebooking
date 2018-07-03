@@ -40,6 +40,7 @@ function abrs_list_services( $args = [] ) {
 	foreach ( $transform as $key => $key1 ) {
 		if ( isset( $args[ $key ] ) ) {
 			$args[ $key1 ] = $args[ $key ];
+			unset( $args[ $key ] );
 		}
 	}
 
