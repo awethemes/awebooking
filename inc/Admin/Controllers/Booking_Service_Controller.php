@@ -90,8 +90,9 @@ class Booking_Service_Controller extends Controller {
 				$item = new Service_Item( $item_id );
 
 				$item['booking_id'] = $booking->get_id();
-				$item['quantity']   = $s['quantity'];
+				$item['quantity']   = absint( $s['quantity'] );
 				$item['price']      = $s['price'];
+				$item['total']      = absint( $s['quantity'] ) * $s['price'];
 
 				if ( $service->exists() ) {
 					$item['service_id'] = absint( $service->get_id() );
