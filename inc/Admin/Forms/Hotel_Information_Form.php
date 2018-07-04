@@ -19,30 +19,32 @@ class Hotel_Information_Form extends Form_Builder {
 	 */
 	protected function setup_fields() {
 		$this->add_field([
-			'id'           => 'hotel_check_in',
-			'type'         => 'text_time',
-			'name'         => esc_html__( 'Check-in time', 'awebooking' ),
-			'desc'         => esc_html__( 'Guest arrival time', 'awebooking' ),
-			'tooltip'      => true,
-			'default'      => '12:00',
-			'time_format'  => 'H:i',
+			'id'          => 'hotel_check_in',
+			'type'        => 'text_time',
+			'name'        => esc_html__( 'Check-in time', 'awebooking' ),
+			'desc'        => esc_html__( 'Guest arrival time', 'awebooking' ),
+			'tooltip'     => true,
+			'default'     => '12:00',
+			'time_format' => 'H:i',
 		]);
 
 		$this->add_field([
-			'id'           => 'hotel_check_out',
-			'type'         => 'text_time',
-			'name'         => esc_html__( 'Check-out time', 'awebooking' ),
-			'desc'         => esc_html__( 'Guest departure time.', 'awebooking' ),
-			'tooltip'      => true,
-			'time_format'  => 'H:i',
+			'id'          => 'hotel_check_out',
+			'type'        => 'text_time',
+			'name'        => esc_html__( 'Check-out time', 'awebooking' ),
+			'desc'        => esc_html__( 'Guest departure time.', 'awebooking' ),
+			'tooltip'     => true,
+			'time_format' => 'H:i',
 		]);
 
 		$this->add_field([
-			'id'              => 'hotel_star_rating',
-			'type'            => 'select',
-			'name'            => esc_html__( 'Star Rating', 'awebooking' ),
-			'classes'         => 'with-selectize',
-			'options'         => [
+			'id'      => 'hotel_star_rating',
+			'type'    => 'select',
+			'name'    => esc_html__( 'Star Rating', 'awebooking' ),
+			'classes' => 'with-selectize',
+			'desc'    => esc_html__( 'The hotel rating.', 'awebooking' ),
+			'tooltip' => true,
+			'options' => [
 				''  => esc_html__( 'N/A', 'awebooking' ),
 				'1' => '1&nbsp;&#9733;',
 				'2' => '2&nbsp;&#9733;&#9733;',
@@ -50,8 +52,6 @@ class Hotel_Information_Form extends Form_Builder {
 				'4' => '4&nbsp;&#9733;&#9733;&#9733;&#9733;',
 				'5' => '5&nbsp;&#9733;&#9733;&#9733;&#9733;&#9733;',
 			],
-			'desc'            => esc_html__( 'The hotel rating.', 'awebooking' ),
-			'tooltip'         => true,
 		]);
 
 		$this->add_field([
@@ -102,12 +102,12 @@ class Hotel_Information_Form extends Form_Builder {
 		]);
 
 		$this->add_field([
-			'id'           => 'hotel_phone',
-			'type'         => 'text',
-			'name'         => esc_html__( 'Phone number', 'awebooking' ),
-			'attributes'   => [ 'autocomplete' => 'tel' ],
-			'desc'         => esc_html__( 'The hotel telephone number.', 'awebooking' ),
-			'tooltip'      => true,
+			'id'         => 'hotel_phone',
+			'type'       => 'text',
+			'name'       => esc_html__( 'Phone number', 'awebooking' ),
+			'attributes' => [ 'autocomplete' => 'tel' ],
+			'desc'       => esc_html__( 'The hotel telephone number.', 'awebooking' ),
+			'tooltip'    => true,
 		]);
 	}
 }

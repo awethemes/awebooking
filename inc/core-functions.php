@@ -297,7 +297,73 @@ function abrs_normalize_option_name( $language = null ) {
  * @return array
  */
 function abrs_get_translatable_options() {
-	$core_fields = [];
+	$core_fields = apply_filters( 'abrs_get_translatable_options', [
+		// General.
+		'measure_unit',
+		'page_check_availability',
+		'page_checkout',
+		'currency',
+		'currency_position',
+		'price_thousand_separator',
+		'price_decimal_separator',
+		'price_number_decimals',
+
+		// Hotel.
+		'hotel_name',
+		'hotel_check_in',
+		'hotel_check_out',
+		'hotel_star_rating',
+		'hotel_address',
+		'hotel_address_2',
+		'hotel_city',
+		'hotel_country',
+		'hotel_postcode',
+		'hotel_phone',
+
+		// Checkout.
+		'gateway_direct_payment_title',
+		'gateway_direct_payment_description',
+		'gateway_direct_payment_instructions',
+
+		'gateway_bacs_title',
+		'gateway_bacs_description',
+		'gateway_bacs_instructions',
+		'gateway_bacs_accounts',
+
+		// Email.
+		'email_from_name',
+		'email_from_address',
+		'email_header_image',
+		'email_copyright',
+
+		'email_invoice_recipient',
+		'email_invoice_subject',
+		'email_invoice_content',
+
+		'email_new_booking_recipient',
+		'email_new_booking_subject',
+		'email_new_booking_content',
+
+		'email_cancelled_recipient',
+		'email_cancelled_subject',
+		'email_cancelled_content',
+
+		'email_failed_booking_recipient',
+		'email_failed_booking_subject',
+		'email_failed_booking_content',
+
+		'email_reserved_booking_subject',
+		'email_reserved_booking_content',
+
+		'email_processing_booking_subject',
+		'email_processing_booking_content',
+
+		'email_completed_booking_subject',
+		'email_completed_booking_content',
+
+		'email_customer_note_subject',
+		'email_customer_note_content',
+	]);
 
 	$db_fields = get_option( 'awebooking_translatable_fields', [] );
 
