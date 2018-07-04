@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Plugin;
+use AweBooking\Admin\Fluent_Settings;
 use AweBooking\Component\Form\Form_Builder;
 use Awethemes\Http\Request;
 use Illuminate\Support\Arr;
@@ -29,7 +30,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 
-		parent::__construct( $this->form_id, awebooking()->get_options(), 'static' );
+		parent::__construct( $this->form_id, new Fluent_Settings( $plugin ), 'static' );
 	}
 
 	/**

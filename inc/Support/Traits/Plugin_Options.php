@@ -20,6 +20,13 @@ trait Plugin_Options {
 	protected $current_option;
 
 	/**
+	 * The original plugin options.
+	 *
+	 * @var \AweBooking\Support\Fluent
+	 */
+	protected $original_options;
+
+	/**
 	 * The original plugin options key.
 	 *
 	 * @var string
@@ -32,38 +39,6 @@ trait Plugin_Options {
 	 * @var array
 	 */
 	protected $switched_options = [];
-
-	/**
-	 *
-	 * Gets the current option key name.
-	 *
-	 * @return string
-	 */
-	public function get_current_option() {
-		return $this->current_option;
-	}
-
-	/**
-	 * Gets the original option key name.
-	 *
-	 * @return string
-	 */
-	public function get_original_option() {
-		return $this->original_option;
-	}
-
-	/**
-	 * Sets the options.
-	 *
-	 * @return void
-	 */
-	public function sets_original_options() {
-		$this->options = new Fluent( get_option( Constants::OPTION_KEY, [] ) );
-
-		$this->original_option = $this->current_option = Constants::OPTION_KEY;
-
-		do_action( 'abrs_loaded_options', $this );
-	}
 
 	/**
 	 * Change the options to another option.
@@ -172,19 +147,55 @@ trait Plugin_Options {
 	 * @param string $option The new option key name.
 	 */
 	public function sets_options( $option ) {
-		$this->current_option = $option;
+		$this->options = new Fluent( get_option( $option, [] ) );
 
-		$this->options = new Fluent( get_option( $this->current_option, [] ) );
+		$this->current_option = $option;
 
 		do_action( 'abrs_change_options', $this );
 	}
 
 	/**
-	 * Gets the options.
+	 * Sets the options.
+	 *
+	 * @return void
+	 */
+	public function sets_original_options() {
+		$this->options = new Fluent( get_option( $option = Constants::OPTION_KEY, [] ) );
+		$this->original_options = clone $this->options;
+
+		$this->original_option = $this->current_option = $option;
+
+		do_action( 'abrs_loaded_options', $this );
+	}
+
+	/**
+	 * Gets the current option key name.
+	 *
+	 * @return string
+	 */
+	public function get_current_option() {
+		return $this->current_option;
+	}
+
+	/**
+	 * Gets the original option key name.
+	 *
+	 * @return string
+	 */
+	public function get_original_option() {
+		return $this->original_option;
+	}
+
+	/**
+	 * Gets the current options.
 	 *
 	 * @return \AweBooking\Support\Fluent
 	 */
 	public function get_options() {
+		if ( ! did_action( 'after_setup_theme' ) ) {
+			trigger_error( esc_html__( 'Get options should be called after the `after_setup_theme` action.', 'awebooking' ), E_USER_WARNING );
+		}
+
 		$options = ! is_null( $this->options ) ? $this->options : new Fluent;
 
 		return apply_filters( 'abrs_get_options', $options, $this );
@@ -198,6 +209,8 @@ trait Plugin_Options {
 	 * @return mixed
 	 */
 	public function get_option( $option, $default = null ) {
+		static $translatable_options;
+
 		/**
 		 * Filters the value of an existing option before it is retrieved.
 		 *
@@ -211,9 +224,22 @@ trait Plugin_Options {
 			return $pre;
 		}
 
+		// Determines should get the options or original options?
+		$options = $this->get_options();
+
+		if ( abrs_running_on_multilanguage() && $this->original_option !== $this->current_option ) {
+			if ( is_null( $translatable_options ) ) {
+				$translatable_options = abrs_get_translatable_options();
+			}
+
+			if ( ! in_array( $option, (array) $translatable_options ) ) {
+				$options = $this->original_options;
+			}
+		}
+
 		// Retrieve the option value.
 		$value = abrs_esc_option( $option,
-			maybe_unserialize( $this->options->get( $option, $default ) )
+			maybe_unserialize( $options->get( $option, $default ) )
 		);
 
 		/**

@@ -297,7 +297,11 @@ function abrs_normalize_option_name( $language = null ) {
  * @return array
  */
 function abrs_get_translatable_options() {
-	return [];
+	$core_fields = [];
+
+	$db_fields = get_option( 'awebooking_translatable_fields', [] );
+
+	return array_unique( array_merge( $core_fields, $db_fields ) );
 }
 
 /**
