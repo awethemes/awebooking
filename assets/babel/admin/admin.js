@@ -142,6 +142,22 @@
   };
 
   /**
+   * Format the price.
+   *
+   * @param amount
+   * @returns {string}
+   */
+  awebooking.formatPrice = function(amount) {
+    return require('accounting');.formatMoney(amount, {
+      format: awebooking.i18n.priceFormat,
+      symbol: awebooking.i18n.currencySymbol,
+      decimal: awebooking.i18n.decimalSeparator,
+      thousand: awebooking.i18n.priceThousandSeparator,
+      precision: awebooking.i18n.numberDecimals,
+    });
+  };
+
+  /**
    * Retrieves a modified URL query string.
    *
    * @param {object} args
