@@ -3,21 +3,26 @@
 
 $booked_services = $booking->get_services();
 
-$services_selection = abrs_services_for_reservation( [
-	'exclude' => $booked_services->pluck( 'id' )->all()
-],
- 	[],
- 	[
-		'nights'     => 0,
-		'base_price' => 0,
-	]
-);
+$context = [
+	'nights'     => 0,
+	'base_price' => 0,
+];
 
+$services_selection = abrs_services_for_reservation(
+	[
+		'exclude' => $booked_services->pluck( 'service_id' )->all(),
+	],
+ 	[
+ 		// ...
+ 	],
+ 	$context
+);
 ?>
 
 <div class="wrap">
 	<h1 class="wp-heading-inline screen-reader-text"><?php esc_html_e( 'Add Service', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
+
 
 	<div class="abrs-card abrs-card--page abrs-booking-services">
 		<form method="POST" action="<?php echo esc_url( abrs_admin_route( 'booking-service' ) ); ?>">
@@ -30,15 +35,44 @@ $services_selection = abrs_services_for_reservation( [
 				<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
 			</div>
 
-			<div class="cmb2-wrap awebooking-wrap abrs-card__body">
+			<div id="service-items" class="cmb2-wrap awebooking-wrap abrs-card__body">
 				<ul class="abrs-sortable">
-					<?php foreach ( $services_selection as $service_selection ) : ?>
+					<?php foreach ( $booked_services as $booked ) : ?>
+						<?php $service = abrs_get_service( $booked->get( 'service_id' ) ); ?>
 
-						<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service_selection', 'booked_services' ) ); ?>
+						<?php if ( is_null( $service ) ) : ?>
+
+							<?php abrs_admin_template_part( 'booking/html-deleted-service-item.php', compact( 'booked' ) ); ?>
+
+						<?php else : ?>
+
+							<?php $service_data = $booked->only( 'quantity', 'price', 'total' ); ?>
+							<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service', 'service_data' ) ); ?>
+
+						<?php endif ?>
 
 					<?php endforeach ?>
 				</ul><!-- /.abrs-sortable -->
 
+				<hr>
+
+				<ul class="abrs-sortable">
+					<?php foreach ( $services_selection as $selection ) : ?>
+						<?php
+						$service = $selection['service'];
+
+						$service_data = [
+							'quantity' => 0,
+							'price'    => $selection['price'],
+							'total'    => $selection['price'],
+						];
+
+						?>
+
+						<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service', 'service_data' ) ); ?>
+
+					<?php endforeach ?>
+				</ul><!-- /.abrs-sortable -->
 			</div>
 
 			<div class="abrs-card__footer submit abrs-text-right">
@@ -58,4 +92,35 @@ $services_selection = abrs_services_for_reservation( [
 	.abrs-booking-services .abrs-sortable__order input[type="number"] {
 		width: 50px;
 	}
+
+	.abrs-booking-services .abrs-badge {
+		min-width: 30px;
+		text-align: center;
+	}
 </style>
+
+<script type="text/javascript">
+	jQuery(function($) {
+		var ServicePrice = function(data) {
+			var self = this;
+
+			this.price = ko.observable(data.price || 0);
+			this.quantity = ko.observable(data.quantity || 0);
+
+			this.total = ko.pureComputed(function() {
+				var quantity = parseInt(self.quantity(), 10);
+				var price = parseFloat(self.price());
+
+				return (! isNaN(quantity) && ! isNaN(price)) ? quantity * price : 0;
+			});
+		};
+
+		$('#service-items ul > li').each(function(i, el) {
+			ko.applyBindings(new ServicePrice({
+				price: $(el).find('.form-input--price').val(),
+				quantity: $(el).find('.form-input--quantity').val(),
+			}), el);
+		});
+
+	});
+</script>

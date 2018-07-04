@@ -68,9 +68,11 @@ class Booking_Service_Controller extends Controller {
 	 * @param \AweBooking\Support\Collection $services The services from request.
 	 */
 	protected function handle_sync_services( $booking, $services ) {
+		$booked_services = $booking->get_services();
+
 		// Remove diff services.
-		$booking
-			->get_services()->pluck( 'id' )
+		$booked_services
+			->pluck( 'id' )
 			->diff( $services->pluck( 'id' ) )
 			->each( function ( $id ) {
 				abrs_delete_booking_item( $id );
@@ -81,15 +83,21 @@ class Booking_Service_Controller extends Controller {
 			try {
 				$service = new Service( $s['id'] );
 
-				$item = ( new Service_Item )->fill( [
-					'booking_id' => $booking->get_id(),
-					'service_id' => absint( $service->get_id() ),
-					'quantity'   => $s['quantity'],
-					'price'      => abrs_calc_service_price( $service, [
+				$item = new Service_Item;
+
+				$item['booking_id'] = $booking->get_id();
+				$item['quantity']   = $s['quantity'];
+
+				if ( $service->exists() ) {
+					$item['service_id'] = absint( $service->get_id() );
+					$item['name']       = esc_html( $service->get_name() );
+					$item['price']      = abrs_calc_service_price( $service, [
 						'nights'     => 0,
 						'base_price' => 0,
-					]),
-				]);
+					]);
+				}
+
+				dd($item);
 
 				$item->save();
 			} catch ( \Exception $e ) {
