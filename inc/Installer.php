@@ -102,6 +102,10 @@ class Installer {
 			define( 'AWEBOOKING_INSTALLING', true );
 		}
 
+		// Require core functions.
+		require_once trailingslashit( __DIR__ ) . 'core-functions.php';
+		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
+
 		$this->setup_environment();
 		$this->create_tables();
 		$this->create_options();
