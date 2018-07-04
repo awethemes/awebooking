@@ -55,6 +55,8 @@ class Url_Generator {
 	public function route( $path = '/', $parameters = [], $is_ssl = null ) {
 		if ( empty( $path ) ) {
 			$path = '/';
+		} else {
+			$path = '/' . ltrim( $path, '/' );
 		}
 
 		// If scheme not provide, guest by is_ssl().
@@ -68,13 +70,13 @@ class Url_Generator {
 		if ( get_option( 'permalink_structure' ) ) {
 			global $wp_rewrite;
 
-			if ( $wp_rewrite->using_index_permalinks() ) {
-				$url = home_url( $wp_rewrite->index . '/' . $this->plugin->endpoint_name(), $scheme );
-			} else {
-				$url = home_url( $this->plugin->endpoint_name(), $scheme );
-			}
+			$endpoint_path = ltrim( $this->plugin->endpoint_name(), '/' ) . $path;
 
-			$url .= '/' . ltrim( $path, '/' );
+			if ( $wp_rewrite->using_index_permalinks() ) {
+				$url = home_url( $wp_rewrite->index . '/' . $endpoint_path, $scheme );
+			} else {
+				$url = home_url( $endpoint_path, $scheme );
+			}
 		} else {
 			$url = trailingslashit( home_url( '', $scheme ) );
 
@@ -83,8 +85,6 @@ class Url_Generator {
 			if ( 'index.php' !== substr( $url, 9 ) ) {
 				$url .= 'index.php';
 			}
-
-			$path = '/' . ltrim( $path, '/' );
 
 			$url = add_query_arg( 'awebooking_route', $path, $url );
 		}
