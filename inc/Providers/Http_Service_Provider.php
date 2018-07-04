@@ -24,6 +24,7 @@ class Http_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $admin_middleware = [
+		\AweBooking\Component\Http\Middleware\Localizer::class,
 		\AweBooking\Component\Http\Middleware\Setup_Admin_Screen::class,
 		\AweBooking\Component\Http\Middleware\Check_Capability::class,
 	];

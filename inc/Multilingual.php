@@ -118,8 +118,9 @@ class Multilingual {
 		/* @var \Polylang $polylang */
 		$polylang = PLL();
 
-		// No language given, get the preferred language according to the browser preferences.
-		if ( empty( $language ) ) {
+		// In frontend, if no language given, get the preferred language
+		// according to the browser preferences.
+		if ( empty( $language ) && ( ! is_admin() && ! defined( 'DOING_CRON' ) ) ) {
 			$curlang = $polylang->choose_lang->get_preferred_language();
 		} else {
 			$curlang = $polylang->model->get_language( trim( $language ) );
