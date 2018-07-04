@@ -158,6 +158,9 @@ class Http_Service_Provider extends Service_Provider {
 			return;
 		}
 
+		// Tell header no caching.
+		abrs_nocache_headers();
+
 		// Handle the awebooking_route endpoint requests.
 		$this->plugin->make( 'kernel' )
 			->use_request_uri( $wp->query_vars['awebooking_route'] )
