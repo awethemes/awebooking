@@ -16,8 +16,8 @@ class Menu_Service_Provider extends Service_Provider {
 		add_action( 'admin_menu', [ $this, 'register_manager_submenu' ], 20 );
 		add_action( 'admin_menu', [ $this, 'regsiter_settings_submenu' ], 50 );
 
-		// add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ $this, 'menu_order' ] );
+		add_filter( 'custom_menu_order', [ $this, 'allow_menu_order' ] );
 
 		add_action( 'admin_head', [ $this, 'cleanup_submenu' ] );
 		add_action( 'admin_head', [ $this, 'correct_admin_menus' ] );
@@ -32,8 +32,8 @@ class Menu_Service_Provider extends Service_Provider {
 	public function register_admin_menu() {
 		global $menu;
 
-		// @codingStandardsIgnoreLine
 		if ( current_user_can( 'manage_awebooking' ) ) {
+			// @codingStandardsIgnoreLine
 			$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
 		}
 
@@ -62,6 +62,15 @@ class Menu_Service_Provider extends Service_Provider {
 		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/settings' );
 
 		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/tools' );
+	}
+
+	/**
+	 * Is allow custom menu order?
+	 *
+	 * @return bool
+	 */
+	public function allow_menu_order() {
+		return current_user_can( 'manage_awebooking' );
 	}
 
 	/**
