@@ -288,7 +288,7 @@ function abrs_normalize_option_name( $language = null ) {
 		return Constants::OPTION_KEY;
 	}
 
-	return  Constants::OPTION_KEY . '_' . trim( $language );
+	return Constants::OPTION_KEY . '_' . trim( $language );
 }
 
 /**
