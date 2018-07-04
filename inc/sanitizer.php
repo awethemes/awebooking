@@ -197,3 +197,82 @@ function abrs_sanitize_image_size( $size ) {
 
 	return $atts;
 }
+
+/**
+ * Sanitises various option values based on the nature of the option.
+ *
+ * @param  string $key   The name of the option.
+ * @param  string $value The unsanitised value.
+ * @return string
+ */
+function abrs_sanitize_option( $key, $value ) {
+	// Pre-sanitize option by key name.
+	switch ( $key ) {
+		case 'enable_location':
+		case 'children_bookable':
+		case 'infants_bookable':
+		case 'calc_taxes':
+			$value = abrs_sanitize_checkbox( $value );
+			break;
+
+		case 'star_rating':
+		case 'price_number_decimals':
+		case 'page_checkout':
+		case 'page_check_availability':
+		case 'scheduler_display_duration':
+			$value = absint( $value );
+			break;
+	}
+
+	/**
+	 * Allow custom sanitize option values.
+	 *
+	 * @param mixed  $value The option value.
+	 * @param string $key   The option key name.
+	 * @var   mixed
+	 */
+	return apply_filters( 'abrs_sanitize_option', $value, $key );
+}
+
+/**
+ * Escaping option value before return.
+ *
+ * @param  string $option The name of the option.
+ * @param  string $value  The unsanitised value.
+ *
+ * @return mixed
+ */
+function abrs_esc_option( $option, $value ) {
+	switch ( $option ) {
+		case 'enable_location':
+		case 'children_bookable':
+		case 'infants_bookable':
+		case 'calc_taxes':
+		case 'prices_include_tax':
+			$value = 'on' === abrs_sanitize_checkbox( $value );
+			break;
+
+		case 'price_decimal_separator':
+		case 'price_thousand_separator':
+			$value = untrailingslashit( $value );
+			break;
+
+		case 'display_datepicker_disabledays':
+			$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
+			break;
+
+		case 'display_datepicker_disabledates':
+			$value = wp_parse_slug_list( $value );
+			$value = array_filter( $value, 'abrs_is_standard_date' );
+			break;
+	}
+
+	/**
+	 * Allow custom escaping option values.
+	 *
+	 * @param mixed  $value  The option value.
+	 * @param string $option The option key name.
+	 * @var   mixed
+	 */
+	return apply_filters( 'abrs_esc_option', $value, $option );
+}

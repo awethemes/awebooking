@@ -278,6 +278,29 @@ function abrs_list_dropdown_currencies() {
 }
 
 /**
+ * Normalize the option name according to the given language.
+ *
+ * @param  string $language The language name (2 letters).
+ * @return string
+ */
+function abrs_normalize_option_name( $language = null ) {
+	if ( empty( $language ) || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
+		return Constants::OPTION_KEY;
+	}
+
+	return  Constants::OPTION_KEY . '_' . trim( $language );
+}
+
+/**
+ * Gets translatable options.
+ *
+ * @return array
+ */
+function abrs_get_translatable_options() {
+	return [];
+}
+
+/**
  * Retrieves an option by key-name.
  *
  * @param  string $key     The key name.
@@ -309,99 +332,6 @@ function abrs_is_reservation_mode( $modes ) {
 	return in_array( abrs_get_reservation_mode(),
 		is_array( $modes ) ? $modes : func_get_args()
 	);
-}
-
-/**
- * Sanitises various option values based on the nature of the option.
- *
- * @param  string $key   The name of the option.
- * @param  string $value The unsanitised value.
- * @return string
- */
-function abrs_sanitize_option( $key, $value ) {
-	// Pre-sanitize option by key name.
-	switch ( $key ) {
-		case 'enable_location':
-		case 'children_bookable':
-		case 'infants_bookable':
-		case 'calc_taxes':
-			$value = abrs_sanitize_checkbox( $value );
-			break;
-
-		case 'star_rating':
-		case 'price_number_decimals':
-		case 'page_checkout':
-		case 'page_check_availability':
-		case 'scheduler_display_duration':
-			$value = absint( $value );
-			break;
-	}
-
-	/**
-	 * Allow custom sanitize option values.
-	 *
-	 * @param mixed  $value The option value.
-	 * @param string $key   The option key name.
-	 * @var   mixed
-	 */
-	return apply_filters( 'abrs_sanitize_option', $value, $key );
-}
-
-/**
- * Escaping option value before return.
- *
- * @param  string $option The name of the option.
- * @param  string $value  The unsanitised value.
- *
- * @return mixed
- */
-function abrs_esc_option( $option, $value ) {
-	switch ( $option ) {
-		case 'enable_location':
-		case 'children_bookable':
-		case 'infants_bookable':
-		case 'calc_taxes':
-		case 'prices_include_tax':
-			$value = 'on' === abrs_sanitize_checkbox( $value );
-			break;
-
-		case 'price_decimal_separator':
-		case 'price_thousand_separator':
-			$value = untrailingslashit( $value );
-			break;
-
-		case 'display_datepicker_disabledays':
-			$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
-			break;
-
-		case 'display_datepicker_disabledates':
-			$value = wp_parse_slug_list( $value );
-			$value = array_filter( $value, 'abrs_is_standard_date' );
-			break;
-	}
-
-	/**
-	 * Allow custom escaping option values.
-	 *
-	 * @param mixed  $value  The option value.
-	 * @param string $option The option key name.
-	 * @var   mixed
-	 */
-	return apply_filters( 'abrs_esc_option', $value, $option );
-}
-
-/**
- * Normalize the option name according to the given language.
- *
- * @param  string $language The language name (2 letters).
- * @return string
- */
-function abrs_normalize_option_name( $language = null ) {
-	if ( empty( $language ) || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
-		return Constants::OPTION_KEY;
-	}
-
-	return  Constants::OPTION_KEY . '_' . trim( $language );
 }
 
 /**
@@ -717,6 +647,29 @@ function abrs_parse_object_id( $object ) {
 	} elseif ( $object instanceof WP_Object ) {
 		return $object->get_id();
 	}
+}
+
+/**
+ * Sets nocache_headers which also disables page caching.
+ *
+ * @return void
+ */
+function abrs_nocache_headers() {
+	// Do not cache.
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
+		define( 'DONOTCACHEOBJECT', true );
+	}
+
+	if ( ! defined( 'DONOTCACHEDB' ) ) {
+		define( 'DONOTCACHEDB', true );
+	}
+
+	// Set the headers to prevent caching for the different browsers.
+	nocache_headers();
 }
 
 /**
