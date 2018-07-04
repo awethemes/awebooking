@@ -38,9 +38,8 @@ $input_prefix = 'services[' . $service->get_id() . ']';
 			<span>x</span>
 		<?php endif; ?>
 
-		<input type="text" data-bind="value: price" class="form-input--price" name="price" value="<?php echo esc_attr( $service_data['price'] ); ?>">
+		<input type="text" data-bind="value: price" class="form-input--price" name="<?php echo esc_attr( $input_prefix ); ?>[price]" value="<?php echo esc_attr( $service_data['price'] ); ?>">
 		<span class="abrs-badge" data-bind="text: total"></span>
 		<a href="#" class="tippy" style="color: #999;" title="<?php esc_html_e( 'Refresh', 'awebooking' ); ?>"><i class="dashicons dashicons-update"></i></a>
 	</div>
-
 </li>

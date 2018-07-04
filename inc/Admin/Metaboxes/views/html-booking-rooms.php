@@ -128,7 +128,8 @@ $service_items = $the_booking->get_services();
 			<thead>
 				<tr>
 					<th style="width: 20%;"><?php echo esc_html__( 'Service', 'awebooking' ); ?></th>
-					<th style="width: 54%;"><?php echo esc_html__( 'Price description', 'awebooking' ); ?></th>
+					<th style="width: 22%;"><?php echo esc_html__( 'Quantity', 'awebooking' ); ?></th>
+					<th style="width: 22%;"><?php echo esc_html__( 'Unit price', 'awebooking' ); ?></th>
 					<th class="abrs-text-right"><span><?php esc_html_e( 'Price', 'awebooking' ); ?></span></th>
 				</tr>
 			</thead>
@@ -159,11 +160,12 @@ $service_items = $the_booking->get_services();
 								printf( '<div class="abrs-thumb-image abrs-fleft" style="margin-right: 10px;">%2$s</div>', esc_url( '#' ), $thumbnail ); // @wpcs: XSS OK.
 								?>
 
-								<strong class="row-title"><?php echo esc_html( $service->get_name() ); ?></strong>
+								<strong class="row-title"><?php echo esc_html( $service_item->get_name() ); ?></strong>
 								<span class="dp-block"><?php esc_html_e( 'Service', 'awebooking' ); ?></span>
 							</td>
 
-							<td><?php print abrs_format_service_price( $service->get( 'amount' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></td>
+							<td><?php echo absint( $service_item->get( 'quantity' ) ); ?></td>
+							<td><?php echo abrs_format_price( $service_item->get( 'price' ) ); ?></td>
 
 							<td class="abrs-text-right">
 								<?php if ( $the_booking->is_editable() ) : ?>

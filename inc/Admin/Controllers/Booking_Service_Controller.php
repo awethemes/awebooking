@@ -43,11 +43,7 @@ class Booking_Service_Controller extends Controller {
 
 		$included_ids = $booking->get_services()->pluck( 'id' );
 
-		// Filter valid services.
-		$services = abrs_collect( $request->get( 'services', [] ) )
-			->where( 'id', '>', 0 )
-			->where( 'quantity', '>', 0 )
-			->whereNotIn( 'id', $included_ids );
+		$services = abrs_collect( $request->get( 'services', [] ) );
 
 		// If empty requested services, just clear all.
 		if ( $services->isEmpty() ) {
@@ -70,34 +66,37 @@ class Booking_Service_Controller extends Controller {
 	protected function handle_sync_services( $booking, $services ) {
 		$booked_services = $booking->get_services();
 
-		// Remove diff services.
+		// Filter
+		$del = $services->where( 'quantity', '<', 1 )->pluck( 'id' );
+
 		$booked_services
+			->whereIn( 'service_id', $del )
 			->pluck( 'id' )
-			->diff( $services->pluck( 'id' ) )
 			->each( function ( $id ) {
 				abrs_delete_booking_item( $id );
 			});
 
-		// Add new services.
+		$services = $services->where( 'quantity', '>', 0 );
+
+		// Add & edit service items.
 		foreach ( $services as $s ) {
 			try {
+				$booked_id = $booked_services->where( 'service_id', '=', $s['id'] )->pluck( 'id' )->first();
+
+				$item_id = $booked_id ? $booked_id : 0;
+
 				$service = new Service( $s['id'] );
 
-				$item = new Service_Item;
+				$item = new Service_Item( $item_id );
 
 				$item['booking_id'] = $booking->get_id();
 				$item['quantity']   = $s['quantity'];
+				$item['price']      = $s['price'];
 
 				if ( $service->exists() ) {
 					$item['service_id'] = absint( $service->get_id() );
 					$item['name']       = esc_html( $service->get_name() );
-					$item['price']      = abrs_calc_service_price( $service, [
-						'nights'     => 0,
-						'base_price' => 0,
-					]);
 				}
-
-				dd($item);
 
 				$item->save();
 			} catch ( \Exception $e ) {
