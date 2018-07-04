@@ -66,16 +66,17 @@ class General_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
-			'id'       => 'measure_unit',
-			'type'     => 'select',
-			'section'  => 'general',
-			'name'     => esc_html__( 'Measurement Unit', 'awebooking' ),
-			'default'          => 'm2',
-			'classes'          => 'with-selectize',
-			'options'  => apply_filters( 'abrs_measure_units', [
-				'm2'   => esc_html__( 'Square Meters', 'awebooking' ),
-				'ft2'  => esc_html__( 'Square Feet', 'awebooking' ),
-			]),
+			'id'           => 'measure_unit',
+			'type'         => 'select',
+			'section'      => 'general',
+			'name'         => esc_html__( 'Measurement Unit', 'awebooking' ),
+			'default'      => 'm2',
+			'classes'      => 'with-selectize',
+			'translatable' => true,
+			'options'      => apply_filters( 'abrs_measure_units', [
+				'm2'  => esc_html__( 'Square Meters', 'awebooking' ),
+				'ft2' => esc_html__( 'Square Feet', 'awebooking' ),
+			] ),
 		]);
 
 		// Pages settings.
@@ -92,6 +93,7 @@ class General_Setting extends Abstract_Setting {
 			'type'             => 'select',
 			'name'             => esc_html__( 'Availability Results', 'awebooking' ),
 			'options_cb'       => $all_pages_cb,
+			'translatable'     => true,
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
@@ -103,6 +105,7 @@ class General_Setting extends Abstract_Setting {
 			'type'             => 'select',
 			'name'             => esc_html__( 'Checkout Page', 'awebooking' ),
 			'options_cb'       => $all_pages_cb,
+			'translatable'     => true,
 			'sanitization_cb'  => 'absint',
 			'classes'          => 'with-selectize',
 			'show_option_none' => '---',
@@ -117,21 +120,23 @@ class General_Setting extends Abstract_Setting {
 		]);
 
 		$this->add_field([
-			'id'          => 'currency',
-			'type'        => 'select',
-			'name'        => esc_html__( 'Currency', 'awebooking' ),
-			'default'     => 'USD',
-			'options_cb'  => 'abrs_list_dropdown_currencies',
-			'classes'     => 'with-selectize',
+			'id'           => 'currency',
+			'type'         => 'select',
+			'name'         => esc_html__( 'Currency', 'awebooking' ),
+			'default'      => 'USD',
+			'translatable' => true,
+			'options_cb'   => 'abrs_list_dropdown_currencies',
+			'classes'      => 'with-selectize',
 		]);
 
 		$this->add_field([
-			'id'       => 'currency_position',
-			'type'     => 'select',
-			'name'     => esc_html__( 'Currency Position', 'awebooking' ),
-			'default'  => 'left',
-			'classes'  => 'with-selectize',
-			'options'  => [
+			'id'           => 'currency_position',
+			'type'         => 'select',
+			'name'         => esc_html__( 'Currency Position', 'awebooking' ),
+			'default'      => 'left',
+			'translatable' => true,
+			'classes'      => 'with-selectize',
+			'options'      => [
 				'left'        => esc_html__( 'Left', 'awebooking' ),
 				'right'       => esc_html__( 'Right', 'awebooking' ),
 				'left_space'  => esc_html__( 'Left with space', 'awebooking' ),
@@ -144,6 +149,7 @@ class General_Setting extends Abstract_Setting {
 			'id'              => 'price_thousand_separator',
 			'name'            => esc_html__( 'Thousand Separator', 'awebooking' ),
 			'default'         => ',',
+			'translatable'    => true,
 			'sanitization_cb' => 'abrs_sanitize_text',
 		]);
 
@@ -152,6 +158,7 @@ class General_Setting extends Abstract_Setting {
 			'id'              => 'price_decimal_separator',
 			'name'            => esc_html__( 'Decimal Separator', 'awebooking' ),
 			'default'         => '.',
+			'translatable'    => true,
 			'sanitization_cb' => 'abrs_sanitize_text',
 		]);
 
@@ -160,6 +167,7 @@ class General_Setting extends Abstract_Setting {
 			'id'              => 'price_number_decimals',
 			'name'            => esc_html__( 'Number of Decimals', 'awebooking' ),
 			'default'         => '2',
+			'translatable'    => true,
 			'sanitization_cb' => 'absint',
 			'attributes'      => [
 				'min'  => 0,
@@ -178,9 +186,10 @@ class General_Setting extends Abstract_Setting {
 			'id'              => 'scheduler_display_duration',
 			'type'            => 'select',
 			'name'            => esc_html__( 'Calendar Duration', 'awebooking' ),
-			'classes'         => 'with-selectize',
 			'default'         => 30,
+			'translatable'    => true,
 			'sanitization_cb' => 'absint',
+			'classes'         => 'with-selectize',
 			'options'         => [
 				14  => esc_html__( '2 Weeks', 'awebooking' ),
 				30  => esc_html__( '1 Month', 'awebooking' ),

@@ -24,6 +24,7 @@ class Http_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $admin_middleware = [
+		\AweBooking\Component\Http\Middleware\Localizer::class,
 		\AweBooking\Component\Http\Middleware\Setup_Admin_Screen::class,
 		\AweBooking\Component\Http\Middleware\Check_Capability::class,
 	];
@@ -157,6 +158,9 @@ class Http_Service_Provider extends Service_Provider {
 		if ( empty( $wp->query_vars['awebooking_route'] ) ) {
 			return;
 		}
+
+		// Tell header no caching.
+		abrs_nocache_headers();
 
 		// Handle the awebooking_route endpoint requests.
 		$this->plugin->make( 'kernel' )

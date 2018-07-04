@@ -96,6 +96,9 @@ class Multilingual {
 	public function set_language( $language = null ) {
 		if ( static::is_polylang() ) {
 			$this->set_polylang_language( $language );
+		} elseif ( static::is_wpml() ) {
+			global $sitepress;
+			$sitepress->switch_lang( $language, ! headers_sent() );
 		}
 	}
 
@@ -115,8 +118,9 @@ class Multilingual {
 		/* @var \Polylang $polylang */
 		$polylang = PLL();
 
-		// No language given, get the preferred language according to the browser preferences.
-		if ( empty( $language ) ) {
+		// In frontend, if no language given, get the preferred language
+		// according to the browser preferences.
+		if ( empty( $language ) && ( ! is_admin() && ! defined( 'DOING_CRON' ) ) ) {
 			$curlang = $polylang->choose_lang->get_preferred_language();
 		} else {
 			$curlang = $polylang->model->get_language( trim( $language ) );

@@ -248,6 +248,11 @@ class Reservation {
 			return true;
 		}
 
+		$session_hashid = $this->store->get( 'reservation_hash' );
+		if ( $session_hashid && ! hash_equals( $this->generate_hash_id(), $session_hashid ) ) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -299,14 +304,9 @@ class Reservation {
 	public function restore() {
 		do_action( 'abrs_prepare_restore_reservation', $this );
 
-		$hashid = $this->generate_hash_id();
-		$session_hashid = $this->store->get( 'reservation_hash' );
-
-		if ( $session_hashid && hash_equals( $hashid, $session_hashid ) ) {
-			$this->restore_request();
-			$this->restore_rooms();
-			$this->restore_services();
-		}
+		$this->restore_request();
+		$this->restore_rooms();
+		$this->restore_services();
 
 		do_action( 'abrs_reservation_restored', $this );
 	}

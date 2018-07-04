@@ -12,7 +12,7 @@
 $current_setting = $request->get( 'setting', 'general' );
 
 // Build the tabs array.
-$tabs = $settings->all()
+$tabs = abrs_collect( $settings->all() )
 	->map( function( $setting ) {
 		/* @var \AweBooking\Admin\Settings\Setting $setting */
 		return $setting->get_label() ?: $setting->get_id();
@@ -23,8 +23,12 @@ $tabs = $settings->all()
 	<hr class="wp-header-end">
 
 	<form method="POST" enctype="multipart/form-data" action="<?php echo esc_url( abrs_admin_route( '/settings' ) ); ?>">
-		<input type="hidden" name="_setting" value="<?php echo esc_attr( $current_setting ); ?>">
 		<?php wp_nonce_field( 'awebooking-settings' ); ?>
+		<input type="hidden" name="_setting" value="<?php echo esc_attr( $current_setting ); ?>">
+
+		<?php if ( abrs_running_on_multilanguage() ) : ?>
+			<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
+		<?php endif; ?>
 
 		<nav class="nav-tab-wrapper abrs-nav-tab-wrapper">
 			<?php foreach ( $tabs as $key => $label ) : ?>
@@ -33,7 +37,7 @@ $tabs = $settings->all()
 
 			<?php do_action( 'abrs_admin_settings_tabs' ); ?>
 
-			<?php if ( abrs_running_on_multilanguage() && 'awebooking_settings' !== awebooking()->get_current_option() ) : ?>
+			<?php if ( abrs_running_on_multilanguage() ) : ?>
 				<span class="abrs-badge abrs-fright" style="margin-top: 8px;"><?php echo esc_html( abrs_multilingual()->get_current_language() ); ?></span>
 			<?php endif ?>
 		</nav>

@@ -5,6 +5,7 @@ use AweBooking\Plugin;
 use AweBooking\Multilingual;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Carbonate;
+use AweBooking\Admin\Admin_Settings;
 
 class Load_Configuration {
 	/**
@@ -29,7 +30,7 @@ class Load_Configuration {
 	 * @return void
 	 */
 	public function bootstrap() {
-		add_action( 'setup_theme', [ $this, 'load_configuration' ] );
+		add_action( 'after_setup_theme', [ $this, 'load_configuration' ], 5 );
 	}
 
 	/**

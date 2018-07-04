@@ -1,11 +1,20 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use Illuminate\Support\Arr;
-use Awethemes\Http\Request;
+use AweBooking\Plugin;
+use AweBooking\Admin\Fluent_Settings;
 use AweBooking\Component\Form\Form_Builder;
+use Awethemes\Http\Request;
+use Illuminate\Support\Arr;
 
 abstract class Abstract_Setting extends Form_Builder implements Setting {
+	/**
+	 * The plugin instance.
+	 *
+	 * @var \AweBooking\Plugin
+	 */
+	protected $plugin;
+
 	/**
 	 * Current section name in current request.
 	 *
@@ -15,42 +24,33 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param \AweBooking\Plugin $plugin The plugin instance.
 	 */
-	public function __construct() {
-		parent::__construct( $this->form_id, awebooking()->get_options(), 'static' );
+	public function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
+
+		parent::__construct( $this->form_id, new Fluent_Settings( $plugin ), 'static' );
 	}
 
 	/**
-	 * Get the setting ID.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function get_id() {
 		return $this->form_id;
 	}
 
 	/**
-	 * Get the setting label.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function get_label() {
 		return '';
 	}
 
 	/**
-	 * Perform save setting.
-	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function save( Request $request ) {
-		// Get the options.
-		$options = cmb2_options( awebooking()->get_current_option() );
-
-		// Get the sanitized_values from request.
-		$raw_values = $this->get_sanitized_values( $request->post() );
-
 		// Get the fields.
 		$fields = $this->prop( 'fields' );
 
@@ -65,6 +65,17 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 			$fields = $this->sections[ $_section ]['fields'];
 		}
 
+		// Get the sanitized_values from request.
+		$this->set_prop( 'fields', $fields );
+		$raw_values = $this->get_sanitized_values( $request->post() );
+
+		// Get the options.
+		$options = cmb2_options( $this->plugin->get_current_option() );
+		$original_options = cmb2_options( $this->plugin->get_original_option() );
+
+		// Is translation?
+		$is_translation = $this->is_translation();
+
 		// Loop over fields and perform the update option.
 		// If some field missing from $values, we will fallback
 		// fill by an empty string.
@@ -76,24 +87,28 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 				continue;
 			}
 
+			// Sanitize value before save.
 			$raw_value = array_key_exists( $key, $raw_values ) ? $raw_values[ $key ] : '';
-
-			// Re-sanitize value based on the ID.
 			$value = abrs_sanitize_option( $key, $raw_value );
 
 			// Update the field value.
-			$options->update( $key, $value, false, true );
+			if ( $is_translation && isset( $args['translatable'] ) && $args['translatable'] ) {
+				$options->update( $key, $value, false, true );
+			} else {
+				$options->remove( $key, false );
+				$original_options->update( $key, $value, false, true );
+			}
 		}
 
 		// Save the options.
-		return $options->set();
+		$options->set();
+		$original_options->set();
+
+		return true;
 	}
 
 	/**
-	 * Output this setting.
-	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
-	 * @return void
+	 * {@inheritdoc}
 	 */
 	public function output( Request $request ) {
 		$this->prepare_fields();
@@ -136,6 +151,19 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 		}
 
 		echo '</ul><div class="clear"></div>';
+	}
+
+	/**
+	 * Is current screen is a translation.
+	 *
+	 * @return bool
+	 */
+	public function is_translation() {
+		if ( abrs_running_on_multilanguage() && $this->plugin->get_current_option() !== $this->plugin->get_original_option() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

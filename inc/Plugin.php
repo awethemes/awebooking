@@ -187,6 +187,9 @@ final class Plugin extends Container {
 	 * @access private
 	 */
 	protected function bootstrap() {
+		// Require the core functions.
+		require trailingslashit( __DIR__ ) . 'core-functions.php';
+
 		/**
 		 * Fire the action before bootstrap.
 		 *
@@ -217,9 +220,6 @@ final class Plugin extends Container {
 
 		// Filter the service_providers.
 		$providers = apply_filters( 'abrs_service_providers', $providers, $this );
-
-		// Require the core functions before registered providers.
-		require trailingslashit( __DIR__ ) . 'core-functions.php';
 
 		/**
 		 * Fire the init action.

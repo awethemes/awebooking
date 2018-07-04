@@ -74,6 +74,7 @@ class Checkout {
 		}
 
 		if ( $this->reservation->is_empty() ) {
+			abrs_get_template( 'checkout/empty.php' );
 			return;
 		}
 
@@ -113,6 +114,8 @@ class Checkout {
 		Constants::define( 'AWEBOOKING_CHECKOUT', true );
 
 		do_action( 'abrs_prepare_checkout_process', $this );
+
+		$this->reservation->maybe_flush();
 
 		if ( $this->reservation->is_empty() ) {
 			throw new RuntimeException( esc_html__( 'Sorry, your session has expired.', 'awebooking' ) );
@@ -431,8 +434,6 @@ class Checkout {
 	 */
 	protected function update_session( $data ) {
 		$this->session->put( 'selected_payment_method', $data['payment_method'] );
-
-		$this->reservation->maybe_flush();
 
 		// Update reservation totals.
 		 $this->reservation->calculate_totals();

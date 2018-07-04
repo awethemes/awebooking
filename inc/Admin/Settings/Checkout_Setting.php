@@ -119,7 +119,7 @@ class Checkout_Setting extends Abstract_Setting {
 		$sanitized = [];
 
 		foreach ( $controls_ids as $key ) {
-			$sanitized[ $key ] = in_array( $key, $mandatory_ids ) || in_array( $key, $data );
+			$sanitized[ $key ] = in_array( $key, $mandatory_ids ) || in_array( $key, (array) $data );
 		}
 
 		return $sanitized;
