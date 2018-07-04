@@ -96,6 +96,9 @@ class Multilingual {
 	public function set_language( $language = null ) {
 		if ( static::is_polylang() ) {
 			$this->set_polylang_language( $language );
+		} elseif ( static::is_wpml() ) {
+			global $sitepress;
+			$sitepress->switch_lang( $language, ! headers_sent() );
 		}
 	}
 
