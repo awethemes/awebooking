@@ -260,7 +260,7 @@ class Setup_Environment {
 		]));
 
 		// Enable multiple_hotels.
-		if ( $this->plugin->get_option( 'enable_location', false ) ) {
+		if ( abrs_multiple_hotels() ) {
 			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'abrs_register_location_args', [
 				'labels'              => [
 					'name'                  => esc_html_x( 'Hotels', 'Hotel plural name', 'awebooking' ),

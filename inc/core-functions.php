@@ -300,25 +300,17 @@ function abrs_get_translatable_options() {
 	$core_fields = apply_filters( 'abrs_get_translatable_options', [
 		// General.
 		'measure_unit',
-		'page_check_availability',
 		'page_checkout',
+		'page_check_availability',
 		'currency',
 		'currency_position',
 		'price_thousand_separator',
 		'price_decimal_separator',
 		'price_number_decimals',
-
-		// Hotel.
 		'hotel_name',
-		'hotel_check_in',
-		'hotel_check_out',
-		'hotel_star_rating',
 		'hotel_address',
 		'hotel_address_2',
 		'hotel_city',
-		'hotel_country',
-		'hotel_postcode',
-		'hotel_phone',
 
 		// Checkout.
 		'gateway_direct_payment_title',
@@ -365,9 +357,9 @@ function abrs_get_translatable_options() {
 		'email_customer_note_content',
 	]);
 
-	$db_fields = get_option( 'awebooking_translatable_fields', [] );
+	// $db_fields = get_option( 'awebooking_translatable_fields', [] );
 
-	return array_unique( array_merge( $core_fields, $db_fields ) );
+	return array_unique( array_merge( $core_fields, [] ) );
 }
 
 /**
@@ -419,7 +411,7 @@ function abrs_running_on_multilanguage() {
  * @return bool
  */
 function abrs_multiple_hotels() {
-	return apply_filters( 'abrs_is_multiple_hotels', abrs_get_option( 'enable_location', false ) );
+	return apply_filters( 'abrs_is_multiple_hotels', 'on' === abrs_get_option( 'enable_location', 'on' ) );
 }
 
 /**
@@ -428,7 +420,7 @@ function abrs_multiple_hotels() {
  * @return bool
  */
 function abrs_children_bookable() {
-	return apply_filters( 'abrs_is_children_bookable', abrs_get_option( 'children_bookable', true ) );
+	return apply_filters( 'abrs_is_children_bookable', 'on' === abrs_get_option( 'children_bookable', 'on' ) );
 }
 
 /**
@@ -437,7 +429,7 @@ function abrs_children_bookable() {
  * @return bool
  */
 function abrs_infants_bookable() {
-	return apply_filters( 'abrs_is_infants_bookable', abrs_get_option( 'infants_bookable', true ) );
+	return apply_filters( 'abrs_is_infants_bookable', 'on' === abrs_get_option( 'infants_bookable', 'on' ) );
 }
 
 /**

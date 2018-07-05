@@ -51,13 +51,14 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 * {@inheritdoc}
 	 */
 	public function save( Request $request ) {
+		$this->prepare_fields();
+
 		// Get the fields.
 		$fields = $this->prop( 'fields' );
 
 		if ( ! empty( $this->sections ) ) {
-			$this->prepare_fields();
-
 			$_section = $request->get( '_section' );
+
 			if ( ! array_key_exists( $_section, $this->sections ) ) {
 				return false;
 			}
@@ -170,6 +171,8 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 * {@inheritdoc}
 	 */
 	public function prepare_fields() {
+		$this->maybe_sets_translatable();
+
 		parent::prepare_fields();
 
 		if ( empty( $this->sections ) ) {
@@ -179,5 +182,25 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 		$this->current_section = abrs_http_request()->get( 'section',
 			Arr::first( array_keys( $this->sections ) )
 		);
+	}
+
+	/**
+	 * Perform set translatable on each field.
+	 *
+	 * @return void
+	 */
+	protected function maybe_sets_translatable() {
+		$translatable_fields = abrs_get_translatable_options();
+
+		$fields = $this->prop( 'fields' );
+
+		foreach ( $fields as &$args ) {
+			if ( in_array( $args['id'], $translatable_fields ) ) {
+				$args['translatable'] = true;
+			}
+		}
+
+		unset( $args );
+		$this->set_prop( 'fields', $fields );
 	}
 }

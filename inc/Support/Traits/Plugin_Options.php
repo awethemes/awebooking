@@ -238,9 +238,7 @@ trait Plugin_Options {
 		}
 
 		// Retrieve the option value.
-		$value = abrs_esc_option( $option,
-			maybe_unserialize( $options->get( $option, $default ) )
-		);
+		$value = maybe_unserialize( $options->get( $option, $default ) );
 
 		/**
 		 * Filters the value of an existing option.

@@ -6,7 +6,7 @@
  * @return bool
  */
 function abrs_tax_enabled() {
-	return apply_filters( 'abrs_tax_enabled', abrs_get_option( 'calc_taxes' ) );
+	return apply_filters( 'abrs_tax_enabled', 'on' === abrs_get_option( 'calc_taxes', 'on' ) );
 }
 
 /**
