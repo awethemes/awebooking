@@ -43,10 +43,3 @@ $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_book
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );
 $route->delete( '/ajax/delete-room/{room:\d+}',        'Ajax_Controller@delete_room' );
 // @codingStandardsIgnoreEnd
-
-$route->get('aa/{booking}', function ( AweBooking\Model\Booking $booking ) {
-	$a = new AweBooking\Email\Templates\Completed();
-	$a->build($booking);
-
-	echo $a->get_content();
-});

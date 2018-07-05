@@ -50,7 +50,7 @@ function abrs_list_hotels( $args = [], $with_primary = false ) {
 		'posts_per_page' => 500, // Limit max 500.
 		'order'          => 'ASC',
 		'orderby'        => 'menu_order',
-	]));
+	] ) );
 
 	$wp_query = new WP_Query( $args );
 
