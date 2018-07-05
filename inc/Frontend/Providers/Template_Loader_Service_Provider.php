@@ -40,6 +40,9 @@ class Template_Loader_Service_Provider extends Service_Provider {
 	 * @return string
 	 */
 	protected function find_overwrite_template() {
+		$search_page   = abrs_get_page_id( 'search_results' );
+		$checkout_page = abrs_get_page_id( 'checkout' );
+
 		$template = '';
 
 		switch ( true ) {
@@ -51,11 +54,11 @@ class Template_Loader_Service_Provider extends Service_Provider {
 				$template = 'archive-room.php';
 				break;
 
-			case is_page( abrs_get_page_id( 'search_results' ) ):
+			case ( $search_page && is_page( $search_page ) ):
 				$template = 'search.php';
 				break;
 
-			case is_page( abrs_get_page_id( 'checkout' ) ):
+			case ( $checkout_page && is_page( $checkout_page ) ):
 				$template = 'checkout.php';
 				break;
 		}
