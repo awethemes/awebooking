@@ -340,10 +340,6 @@ function abrs_get_translatable_options() {
 		'email_cancelled_subject',
 		'email_cancelled_content',
 
-		'email_failed_booking_recipient',
-		'email_failed_booking_subject',
-		'email_failed_booking_content',
-
 		'email_reserved_booking_subject',
 		'email_reserved_booking_content',
 
@@ -584,7 +580,7 @@ function abrs_get_template_part( $slug, $name = '' ) {
 	}
 
 	// Then try locate in {$slug}.php.
-	if ( ! $template ) {
+	if ( ! $template || ! file_exists( $template ) ) {
 		$template = abrs_locate_template( "{$slug}.php" );
 	}
 

@@ -1,16 +1,9 @@
 <?php
 namespace AweBooking\Email\Templates;
 
-use AweBooking\Email\Mailable;
+use AweBooking\Email\Booking_Mail;
 
-class Cancelled_Booking extends Mailable {
-	/**
-	 * The booking instance.
-	 *
-	 * @var \AweBooking\Model\Booking
-	 */
-	protected $booking;
-
+class Cancelled extends Booking_Mail {
 	/**
 	 * {@inheritdoc}
 	 */
@@ -31,13 +24,12 @@ class Cancelled_Booking extends Mailable {
 	 * @return void
 	 */
 	protected function prepare_data( $booking ) {
-		$this->booking = $booking;
+		parent::prepare_data( $booking );
 
+		// If the booking is not cancelled, don't sent.
 		if ( 'cancelled' !== $booking->get_status() ) {
 			$this->recipient = '';
 		}
-
-		$this->placeholders = ( new Booking_Placeholder( $booking, $this ) )->apply( $this->placeholders );
 	}
 
 	/**
@@ -51,24 +43,6 @@ class Cancelled_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		return "The booking #{booking_id} from {customer_first_name} has been cancelled. The booking was as follows:\n\n{contents}\n\n{customer_details}";
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_content_plain() {
-		return $this->format_string( $this->get_option( 'content' ) );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_content_html() {
-		return abrs_get_template_content( 'emails/cancelled-booking.php', [
-			'email'         => $this,
-			'booking'       => $this->booking,
-			'content'       => $this->format_string( $this->get_option( 'content' ) ),
-		]);
+		return '[{site_title}] The booking #{booking_id} from {customer_first_name} has been cancelled. The booking was as follows:';
 	}
 }

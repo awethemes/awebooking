@@ -10,6 +10,8 @@
  * @version  3.1.0
  */
 
+/* @var \AweBooking\Model\Booking $booking */
+
 ?><table class="table-customer" width="100%" cellpadding="0" cellspacing="0">
 	<tbody>
 		<tr>

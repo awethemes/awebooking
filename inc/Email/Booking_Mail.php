@@ -1,33 +1,56 @@
 <?php
-namespace AweBooking\Email\Templates;
+namespace AweBooking\Email;
 
-use AweBooking\Model\Booking;
-
-class Booking_Placeholder {
+abstract class Booking_Mail extends Mailable {
 	/**
 	 * The booking instance.
 	 *
 	 * @var \AweBooking\Model\Booking
 	 */
 	protected $booking;
-	protected $email;
 
 	/**
-	 * Constructor.
+	 * Prepare data for sending.
 	 *
-	 * @param  Booking $booking Booking.
-	 * @param  boolean $is_customer_email Is customer email.
+	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @return void
 	 */
-	public function __construct( Booking $booking, $email ) {
+	protected function prepare_data( $booking ) {
 		$this->booking = $booking;
-		$this->email   = $email;
+		$this->placeholders = $this->apply_placeholders();
+
+		if ( $this->customer_email ) {
+			$this->recipient = $booking->get( 'customer_email' );
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_content_plain() {
+		return $this->format_string( $this->get_option( 'content' ) );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_content_html() {
+		return $this->get_template( 'content-booking', str_replace( [ '_booking', 'booking_' ], '', $this->id ), [
+			'booking' => $this->booking,
+			'content' => $this->format_string( $this->get_option( 'content' ) ),
+		]);
 	}
 
 	/**
 	 * Set the replacements.
+	 *
+	 * TODO: ...
+	 *
 	 * @return array
 	 */
-	public function apply( $placeholders ) {
+	public function apply_placeholders() {
+		$placeholders = $this->placeholders;
+
 		$new_placeholders = [
 			'{booking_id}'              => $this->booking->get_id(),
 			'{status}'                  => $this->booking->get( 'status' ),
@@ -58,11 +81,6 @@ class Booking_Placeholder {
 			'{customer_company}'        => $this->booking->get( 'customer_company' ),
 			'{customer_phone}'          => $this->booking->get( 'customer_phone' ),
 			'{customer_email}'          => $this->booking->get( 'customer_email' ),
-			/*'{customer_details}'        => abrs_get_template_content( 'emails/line-customer.php', [ 'booking' => $this->booking ] ),
-			'{contents}'                => abrs_get_template_content( 'emails/breakdown.php', [
-				'booking' => $this->booking,
-				'email'   => $this->email,
-			] ),*/
 		];
 
 		return array_merge( $placeholders, $new_placeholders );

@@ -1,9 +1,9 @@
 <?php
 namespace AweBooking\Email\Templates;
 
-use AweBooking\Email\Mailable;
+use AweBooking\Email\Booking_Mail;
 
-class Invoice extends Mailable {
+class Invoice extends Booking_Mail {
 	/**
 	 * {@inheritdoc}
 	 */
@@ -13,12 +13,5 @@ class Invoice extends Mailable {
 		$this->description    = esc_html__( 'Sent to customers containing their booking information and payment links.', 'awebooking' );
 		$this->manually       = true;
 		$this->customer_email = false;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_subject() {
-		return $this->format_string( abrs_get_option( 'email_new_subject' ) );
 	}
 }
