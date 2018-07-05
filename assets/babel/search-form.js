@@ -29,8 +29,9 @@
 
   class SearchForm {
     constructor (el) {
-      this.$el = $(el);
+      const self = this;
 
+      this.$el = $(el);
       this.model = new SearchFormModel();
       ko.applyBindings(this.model, el);
 
@@ -38,23 +39,15 @@
         $(box).data('popup', this.setuptPopper(box));
       });
 
-      const $checkin = this.$el.find('input[name="check_in"]');
-      const $checkout = this.$el.find('input[name="check_out"]');
       const $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
-
-      // const rangedates = new RangeDatesPlugin({
-      //   firstInput: $checkin[0],
-      //   secondInput: $checkout[0]
-      // });
-
       const fp = awebooking.datepicker($rangepicker[0], {
         mode: 'range',
         clickOpens: false,
         closeOnSelect: true,
 
         onReady() {
-          this.config.ignoredFocusElements.push($('.searchbox__box--checkin')[0]);
-          this.config.ignoredFocusElements.push($('.searchbox__box--checkout')[0]);
+          this.config.ignoredFocusElements.push($('.searchbox__box--checkin', self.$el)[0]);
+          this.config.ignoredFocusElements.push($('.searchbox__box--checkout', self.$el)[0]);
         },
 
         onChange: (dates) => {

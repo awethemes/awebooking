@@ -1,6 +1,9 @@
 (function($) {
   'use strict';
 
+  const debounce = require('debounce');
+  const queryString = require('query-string');
+
   const awebooking = window.awebooking || {};
 
   // Create the properties.
@@ -76,8 +79,6 @@
    * @return {Object}
    */
   awebooking.dialog = function(selector) {
-    const debounce = require('debounce');
-
     const $dialog = $(selector).dialog({
       modal: true,
       width: 'auto',
@@ -148,8 +149,6 @@
    * @param {string} url
    */
   awebooking.utils.addQueryArgs =function(args, url) {
-    const queryString = require('query-string');
-
     if (typeof url === 'undefined') {
       url = window.location.href;
     }

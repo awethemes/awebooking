@@ -2181,6 +2181,12 @@ span.flatpickr-weekday {
   border: solid 1px #eee;
 }
 
+.cmb2-wrap.awebooking-wrap .cmb-th > label > .dashicons {
+  color: #1f8fe8;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
 .cmb2-inline-metabox .cmb-th,
 .cmb2-inline-metabox .cmb-td,
 .cmb2-inline-metabox .cmb-th + .cmb-td {
