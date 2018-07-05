@@ -15,19 +15,11 @@ class Failed_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'failed_booking';
+		$this->id             = 'failed';
 		$this->title          = esc_html__( 'Failed booking', 'awebooking' );
 		$this->description    = esc_html__( 'Failed booking emails are sent to chosen recipient(s) when bookings have been marked failed.', 'awebooking' );
 		$this->customer_email = false;
 		$this->placeholders   = [];
-	}
-
-	/**
-	 * Trigger send email.
-	 *
-	 * @return void
-	 */
-	public function trigger( $booking ) {
 	}
 
 	/**

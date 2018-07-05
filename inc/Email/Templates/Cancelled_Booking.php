@@ -25,22 +25,6 @@ class Cancelled_Booking extends Mailable {
 	}
 
 	/**
-	 * Trigger send email.
-	 *
-	 * @param \AweBooking\Model\Booking $booking The booking instance.
-	 * @return void
-	 */
-	public function trigger( $booking ) {
-		if ( 'cancelled' !== $booking->get_status() ) {
-			return;
-		}
-
-		if ( $this->is_enabled() && $this->get_recipient() ) {
-			$this->build( $booking )->send();
-		}
-	}
-
-	/**
 	 * Prepare data for sending.
 	 *
 	 * @param  \AweBooking\Model\Booking $booking       The booking instance.

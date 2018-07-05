@@ -90,6 +90,13 @@ class Scripts_Service_Provider extends Service_Provider {
 					'cancel'      => esc_html__( 'Cancel', 'awebooking' ),
 					'warning'     => esc_html__( 'Are you sure you want to do this?', 'awebooking' ),
 					'error'       => esc_html__( 'Something went wrong. Please try again.', 'awebooking' ),
+
+					'numberDecimals'    => abrs_get_option( 'price_number_decimals' ),
+					'decimalSeparator'  => abrs_get_option( 'price_decimal_separator' ),
+					'thousandSeparator' => abrs_get_option( 'price_thousand_separator' ),
+					'currencySymbol'    => abrs_currency_symbol(),
+					// Format to accounting.js, @see http://openexchangerates.github.io/accounting.js/.
+					'priceFormat'       => str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], abrs_get_price_format() ),
 				],
 			]);
 		}

@@ -38,6 +38,7 @@ class Mailer extends Manager {
 
 		// Trigger send emails.
 		add_action( 'abrs_checkout_processed', [ $this, 'send_new_booking' ], 10, 1 );
+		add_action( 'abrs_checkout_processed', [ $this, 'send_failed_booking' ], 15, 1 );
 		add_action( 'abrs_new_customer_note', [ $this, 'send_customer_note' ], 10, 2 );
 		add_action( 'abrs_booking_status_changed', [ $this, 'trigger_status_changed' ], 10, 3 );
 	}
@@ -97,9 +98,31 @@ class Mailer extends Manager {
 
 		$mail = abrs_mailer( 'new_booking' );
 
-		if ( $mail && $mail->is_enabled() ) {
+		if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
 			$mail->build( $booking )->send();
 		}
+	}
+
+	/**
+	 * Trigger send email when failed booking created.
+	 *
+	 * @param  \AweBooking\Model\Booking|int $booking The booking instance or booking ID.
+	 * @return void
+	 */
+	public function send_failed_booking( $booking ) {
+		if ( ! $booking instanceof Booking ) {
+			$booking = abrs_get_booking( $booking );
+		}
+		// TODO:...
+		// if ( is_null( $booking ) ) {
+		// 	return;
+		// }
+
+		// $mail = abrs_mailer( 'failed_booking' );
+
+		// if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
+		// 	$mail->build( $booking )->send();
+		// }
 	}
 
 	/**
@@ -132,9 +155,21 @@ class Mailer extends Manager {
 			case 'cancelled':
 				$mail = abrs_mailer( 'cancelled' );
 				break;
+
+			case 'inprocess':
+				$mail = abrs_mailer( 'processing' );
+				break;
+
+			case 'on-hold':
+				$mail = abrs_mailer( 'reserved' );
+				break;
+
+			case 'completed':
+				$mail = abrs_mailer( 'completed' );
+				break;
 		}
 
-		if ( $mail && $mail->is_enabled() ) {
+		if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
 			$mail->build( $booking )->send();
 		}
 	}

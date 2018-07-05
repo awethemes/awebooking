@@ -15,26 +15,11 @@ class Processing_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'processing_booking';
+		$this->id             = 'processing';
 		$this->title          = esc_html__( 'Processing booking', 'awebooking' );
 		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after payment.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
-	}
-
-	/**
-	 * Trigger send email.
-	 *
-	 * @return void
-	 */
-	public function trigger( $booking ) {
-		if ( 'awebooking-inprocess' !== $new_status ) {
-			return;
-		}
-
-		if ( $this->is_enabled() ) {
-			$this->build( $booking )->send();
-		}
 	}
 
 	/**

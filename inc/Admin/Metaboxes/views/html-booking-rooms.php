@@ -127,9 +127,7 @@ $service_items = $the_booking->get_services();
 		<table class="awebooking-table abrs-booking-rooms widefat fixed">
 			<thead>
 				<tr>
-					<th style="width: 20%;"><?php echo esc_html__( 'Service', 'awebooking' ); ?></th>
-					<th style="width: 22%;"><?php echo esc_html__( 'Quantity', 'awebooking' ); ?></th>
-					<th style="width: 22%;"><?php echo esc_html__( 'Unit price', 'awebooking' ); ?></th>
+					<th style="width: 80%;"><?php echo esc_html__( 'Service', 'awebooking' ); ?></th>
 					<th class="abrs-text-right"><span><?php esc_html_e( 'Price', 'awebooking' ); ?></span></th>
 				</tr>
 			</thead>
@@ -164,15 +162,23 @@ $service_items = $the_booking->get_services();
 								<span class="dp-block"><?php esc_html_e( 'Service', 'awebooking' ); ?></span>
 							</td>
 
-							<td><?php echo absint( $service_item->get( 'quantity' ) ); ?></td>
-							<td><?php echo abrs_format_price( $service_item->get( 'price' ) ); ?></td>
-
 							<td class="abrs-text-right">
 								<?php if ( $the_booking->is_editable() ) : ?>
 									<div class="row-actions abrs-fleft">
 										<span class="trash"><a href="<?php echo esc_url( wp_nonce_url( $action_link, "delete_service_{$service_item->get_id()}" ) ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
 									</div>
 								<?php endif; ?>
+
+								<p>
+									<?php
+
+									printf( /* translators: %1$s quantity, %2$s unit price */
+										esc_html_x( '%1$s x %2$s', 'admin booking service price', 'awebooking' ),
+										absint( $service_item->get( 'quantity' ) ),
+										abrs_format_price( $service_item->get( 'price' ) )
+									); // WPCS: xss ok.
+									?>
+								</p>
 
 								<?php abrs_price( $service_item->get( 'total' ), $the_booking->get( 'currency' ) ); ?>
 							</td>

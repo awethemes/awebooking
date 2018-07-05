@@ -111,7 +111,9 @@ $services_selection = abrs_services_for_reservation(
 				var quantity = parseInt(self.quantity(), 10);
 				var price = parseFloat(self.price());
 
-				return (! isNaN(quantity) && ! isNaN(price)) ? quantity * price : 0;
+				var total = (! isNaN(quantity) && ! isNaN(price)) ? quantity * price : 0;
+
+				return awebooking.formatPrice(total);
 			});
 		};
 
