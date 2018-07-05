@@ -38,7 +38,6 @@ class Mailer extends Manager {
 
 		// Trigger send emails.
 		add_action( 'abrs_checkout_processed', [ $this, 'send_new_booking' ], 10, 1 );
-		add_action( 'abrs_checkout_processed', [ $this, 'send_failed_booking' ], 15, 1 );
 		add_action( 'abrs_new_customer_note', [ $this, 'send_customer_note' ], 10, 2 );
 		add_action( 'abrs_booking_status_changed', [ $this, 'trigger_status_changed' ], 10, 3 );
 	}
@@ -104,28 +103,6 @@ class Mailer extends Manager {
 	}
 
 	/**
-	 * Trigger send email when failed booking created.
-	 *
-	 * @param  \AweBooking\Model\Booking|int $booking The booking instance or booking ID.
-	 * @return void
-	 */
-	public function send_failed_booking( $booking ) {
-		if ( ! $booking instanceof Booking ) {
-			$booking = abrs_get_booking( $booking );
-		}
-		// TODO:...
-		// if ( is_null( $booking ) ) {
-		// 	return;
-		// }
-
-		// $mail = abrs_mailer( 'failed_booking' );
-
-		// if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
-		// 	$mail->build( $booking )->send();
-		// }
-	}
-
-	/**
 	 * Trigger send email when new_customer_note.
 	 *
 	 * @param  \AweBooking\Model\Booking $booking       The booking instance.
@@ -151,26 +128,26 @@ class Mailer extends Manager {
 	public function trigger_status_changed( $new_status, $old_status, $booking ) {
 		$mail = null;
 
-		switch ( $booking->get_status() ) {
-			case 'cancelled':
+		switch ( $new_status ) {
+			case 'awebooking-cancelled':
 				$mail = abrs_mailer( 'cancelled' );
 				break;
 
-			case 'inprocess':
+			case 'awebooking-inprocess':
 				$mail = abrs_mailer( 'processing' );
 				break;
 
-			case 'on-hold':
+			case 'awebooking-on-hold':
 				$mail = abrs_mailer( 'reserved' );
 				break;
 
-			case 'completed':
+			case 'awebooking-completed':
 				$mail = abrs_mailer( 'completed' );
 				break;
 		}
 
-		if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
-			$mail->build( $booking )->send();
+		if ( $mail && $mail->is_enabled() ) {
+			$sended = $mail->build( $booking )->send();
 		}
 	}
 
@@ -193,7 +170,6 @@ class Mailer extends Manager {
 	public function footer( Mailable $email = null ) {
 		do_action( 'abrs_email_footer', $email );
 	}
-
 
 	/**
 	 * Display default email header.
