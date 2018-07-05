@@ -15,26 +15,11 @@ class Completed_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'completed_booking';
+		$this->id             = 'completed';
 		$this->title          = esc_html__( 'Completed booking', 'awebooking' );
 		$this->description    = esc_html__( 'Booking complete emails are sent to customers when their bookings are marked completed.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
-	}
-
-	/**
-	 * Trigger send email.
-	 *
-	 * @return void
-	 */
-	public function trigger( $new_status, $old_status, $booking ) {
-		if ( 'awebooking-completed' !== $new_status ) {
-			return;
-		}
-
-		if ( $this->is_enabled() ) {
-			$this->build( $booking )->send();
-		}
 	}
 
 	/**

@@ -15,20 +15,11 @@ class Reserved_Booking extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function setup() {
-		$this->id             = 'reserved_booking';
+		$this->id             = 'reserved';
 		$this->title          = esc_html__( 'Reserved booking', 'awebooking' );
 		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after a booking is reserved.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
-	}
-
-	/**
-	 * Trigger send email.
-	 *
-	 * @return void
-	 */
-	public function trigger( $booking ) {
-		$this->build( $booking )->send();
 	}
 
 	/**
