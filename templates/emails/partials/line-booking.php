@@ -13,7 +13,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
+/* @var \AweBooking\Model\Booking $booking */
 ?>
 
 <table class="table-booking" width="100%" cellpadding="0" cellspacing="0">
@@ -46,7 +46,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<td>
 					<?php echo abrs_format_guest_counts( $item->get_guests() ); // WPCS: XSS OK. ?>
 				</td>
-
 				<td class="total-column"><?php abrs_price( $item->get_total() ); ?></td>
 			</tr>
 		<?php endforeach ?>

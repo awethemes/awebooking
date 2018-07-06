@@ -127,22 +127,20 @@ class Mailer extends Manager {
 	public function trigger_status_changed( $new_status, $old_status, $booking ) {
 		$mail = null;
 
-		switch ( $new_status ) {
-			case 'awebooking-cancelled':
-				$mail = abrs_mailer( 'cancelled' );
-				break;
+		if ( in_array( $old_status, [ 'awebooking-inprocess', 'awebooking-on-hold' ] ) && ( 'awebooking-cancelled' == $new_status ) ) {
+			$mail = abrs_mailer( 'cancelled' );
+		}
 
-			case 'awebooking-inprocess':
-				$mail = abrs_mailer( 'processing' );
-				break;
+		if ( in_array( $old_status, [ 'awebooking-on-hold', 'awebooking-pending' ] ) && ( 'awebooking-inprocess' == $new_status ) ) {
+			$mail = abrs_mailer( 'processing' );
+		}
 
-			case 'awebooking-on-hold':
-				$mail = abrs_mailer( 'reserved' );
-				break;
+		if ( ( 'awebooking-pending' == $old_status ) && ( 'awebooking-on-hold' == $new_status ) ) {
+			$mail = abrs_mailer( 'reserved' );
+		}
 
-			case 'awebooking-completed':
-				$mail = abrs_mailer( 'completed' );
-				break;
+		if ( 'awebooking-completed' == $new_status ) {
+			$mail = abrs_mailer( 'completed' );
 		}
 
 		if ( $mail && $mail->is_enabled() ) {
