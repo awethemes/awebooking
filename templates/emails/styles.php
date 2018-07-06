@@ -392,6 +392,11 @@ blockquote {
 	background: #fefefe;
 }
 
+.table-booking-totals .awebooking-price__amount {
+	font-size: 14px;
+	font-weight: 700;
+}
+
 td.total-column,
 th.total-column {
 	width: 80px;
