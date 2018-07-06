@@ -33,9 +33,7 @@ class Url_Generator {
 			return $path;
 		}
 
-		$url = ( false === strpos( $path, '/' ) )
-			? home_url( $path, $scheme )
-			: $path;
+		$url = home_url( $path, $scheme );
 
 		if ( ! empty( $parameters ) ) {
 			$url = add_query_arg( $parameters, $url );

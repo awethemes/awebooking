@@ -76,7 +76,12 @@ class Redirector {
 	 * @return \Awethemes\Http\Redirect_Response
 	 */
 	public function to( $url, $status = 302, $headers = [], $safe_redirect = false ) {
-		return $this->create_redirect( $this->generator->to( $url ), $status, $headers, $safe_redirect );
+		// Allow redirect direct to a relative path.
+		if ( false === strpos( $url, '/' ) ) {
+			$url = $this->generator->to( $url );
+		}
+
+		return $this->create_redirect( $url, $status, $headers, $safe_redirect );
 	}
 
 	/**
