@@ -118,7 +118,7 @@ if ( ! function_exists( 'abrs_get_sidebar' ) ) {
 	 * Get the room type sidebar template.
 	 */
 	function abrs_get_sidebar() {
-		abrs_get_template( 'global/sidebar.php' );
+		abrs_get_template( 'template-parts/global/sidebar.php' );
 	}
 }
 
@@ -148,10 +148,49 @@ if ( ! function_exists( 'abrs_template_room_thumbnail' ) ) {
 
 	/**
 	 * Get the room type thumbnail for the loop.
-	 *
-	 * @subpackage Loop
 	 */
 	function abrs_template_room_thumbnail() {
 		echo abrs_get_thumbnail(); // WPCS: xss ok.
+	}
+}
+
+if ( ! function_exists( 'abrs_search_result_header' ) ) {
+
+	/**
+	 * Gets search result room list.
+	 */
+	function abrs_search_result_header( $room_type, $room_rate ) {
+		abrs_get_template( 'search/result/header.php', compact( 'room_type', 'room_rate' ) );
+	}
+}
+
+/* Search result */
+if ( ! function_exists( 'abrs_search_result_room_type' ) ) {
+
+	/**
+	 * Gets search result room type.
+	 */
+	function abrs_search_result_room_type( $room_type, $room_rate ) {
+		abrs_get_template( 'search/result/room-type.php', compact( 'room_type', 'room_rate' ) );
+	}
+}
+
+if ( ! function_exists( 'abrs_search_result_room_list' ) ) {
+
+	/**
+	 * Gets search result room list.
+	 */
+	function abrs_search_result_room_list( $room_type, $room_rate ) {
+		abrs_get_template( 'search/result/room-list.php', compact( 'room_type', 'room_rate' ) );
+	}
+}
+
+if ( ! function_exists( 'abrs_after_result_item_price' ) ) {
+
+	/**
+	 * Gets search result room list.
+	 */
+	function abrs_after_result_item_price( $room_type, $room_rate ) {
+		abrs_get_template( 'search/result/price.php', compact( 'room_type', 'room_rate' ) );
 	}
 }

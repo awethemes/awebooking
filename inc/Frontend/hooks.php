@@ -11,6 +11,10 @@ add_action( 'abrs_before_search_content',       'abrs_search_form_on_search', 10
 add_action( 'abrs_before_search_content',       'abrs_filter_form', 15                  );
 // add_action( 'abrs_before_search_content',       'abrs_search_form_on_search', 10        );
 add_action( 'abrs_display_search_result_item',  'abrs_search_result_item', 10, 4        );
+add_action( 'abrs_search_result_header',        'abrs_search_result_header', 10, 2   );
+add_action( 'abrs_search_result_room_type',     'abrs_search_result_room_type', 10, 2   );
+add_action( 'abrs_search_result_room_list',     'abrs_search_result_room_list', 10, 2   );
+add_action( 'abrs_after_result_item_price',     'abrs_after_result_item_price', 10, 2   );
 
 add_action( 'abrs_before_checkout_form',        'abrs_checkout_services', 10            );
 add_action( 'abrs_html_checkout_guest_details', 'abrs_checkout_guest_details', 10       );
