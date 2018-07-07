@@ -37,10 +37,6 @@ function abrs_blank( $value ) {
 		return trim( $value ) === '';
 	}
 
-	if ( is_numeric( $value ) || is_bool( $value ) ) {
-		return false;
-	}
-
 	if ( $value instanceof Countable ) {
 		return count( $value ) === 0;
 	}
