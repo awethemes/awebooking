@@ -244,7 +244,7 @@ class Reservation {
 		// Flush when session request & current request is different.
 		$previous_request = $this->get_previous_request();
 
-		if ( $previous_request && ! $this->current_request->same_with( $previous_request ) ) {
+		if ( ( $this->current_request && $previous_request ) && ! $this->current_request->same_with( $previous_request ) ) {
 			return true;
 		}
 

@@ -13,15 +13,14 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
+/* @var \AweBooking\Model\Booking $booking */
 ?>
 
 <table class="table-booking" width="100%" cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?php esc_html_e( 'Arrival - Departure', 'awebooking' ); ?></th>
-			<th><?php esc_html_e( 'Stay', 'awebooking' ); ?></th>
-			<th><?php esc_html_e( 'Guests', 'awebooking' ); ?></th>
+			<th><?php esc_html_e( 'Room', 'awebooking' ); ?></th>
+			<th><?php esc_html_e( 'Reservation', 'awebooking' ); ?></th>
 			<th class="total-column"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
 		</tr>
 	</thead>
@@ -29,7 +28,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php foreach ( $booking->get_line_items() as $item ) : ?>
 			<?php $timespan = $item->get_timespan(); ?>
 			<tr>
+				<td><?php echo esc_html( $item->get_name() ); // WPCS: XSS OK. ?></td>
 				<td>
+					<p>
 					<?php
 					/* translators: %1$s check-in, %2$s check-out */
 					printf( esc_html_x( '%1$s - %2$s', 'booking dates', 'awebooking' ),
@@ -37,14 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						abrs_format_date( $timespan->get_end_date() )
 					); // WPCS: xss ok.
 					?>
-				</td>
-
-				<td>
-					<?php echo abrs_ngettext_nights( $item->get_nights_stayed() ); // WPCS: XSS OK. ?>
-				</td>
-
-				<td>
-					<?php echo abrs_format_guest_counts( $item->get_guests() ); // WPCS: XSS OK. ?>
+					</p>
+					<p><?php echo abrs_ngettext_nights( $item->get_nights_stayed() ); // WPCS: XSS OK. ?></p>
+					<p><?php echo abrs_format_guest_counts( $item->get_guests() ); // WPCS: XSS OK. ?></p>
 				</td>
 
 				<td class="total-column"><?php abrs_price( $item->get_total() ); ?></td>
@@ -57,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<thead>
 		<tr>
 			<th><?php esc_html_e( 'Services', 'awebooking' ); ?></th>
-			<th class="total-column"><?php esc_html_e( 'Price', 'awebooking' ); ?></th>
+			<th class="total-column">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
