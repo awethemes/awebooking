@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Model\Pricing\Base_Single_Rate;
+use AweBooking\Model\Pricing\Base_Rate_Interval;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
@@ -20,7 +20,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 
 		// Pluck the base rate in each room-type.
 		$rates = $this->room_types
-			->map_into( Base_Single_Rate::class );
+			->map_into( Base_Rate_Interval::class );
 
 		$resources = $this->create_rate_resources( $rates )
 			->each( function( Resource $resource ) {
@@ -81,7 +81,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 		}
 
 		// Get back the rate class instance from calendar resource.
-		/* @var \AweBooking\Model\Pricing\Contracts\Single_Rate $rate_unit */
+		/* @var \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate_unit */
 		$rate_unit = abrs_optional( $loop_calendar->get_resource() )->get_reference();
 		if ( is_null( $rate_unit ) ) {
 			return;

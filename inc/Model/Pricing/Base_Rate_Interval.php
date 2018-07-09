@@ -3,7 +3,7 @@ namespace AweBooking\Model\Pricing;
 
 use AweBooking\Model\Room_Type;
 
-class Base_Single_Rate implements Contracts\Single_Rate {
+class Base_Rate_Interval implements Contracts\Rate_Interval {
 	/**
 	 * The room-type instance.
 	 *
@@ -30,7 +30,7 @@ class Base_Single_Rate implements Contracts\Single_Rate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_parent_id() {
+	public function get_rate_id() {
 		return 0;
 	}
 
@@ -38,7 +38,7 @@ class Base_Single_Rate implements Contracts\Single_Rate {
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return $this->instance->get( 'title' );
+		return esc_html__( 'Standard Rate', 'awebooking' );
 	}
 
 	/**

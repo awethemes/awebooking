@@ -146,7 +146,7 @@ class Room_Type extends Model {
 			'calculation_infants' => 'on', // on | off.
 			'tax_rate_id'         => 0,
 
-			// Single_Rate.
+			// Rate.
 			'rack_rate'           => 0,
 			'rate_services'       => [],
 			'rate_inclusions'     => [],

@@ -306,7 +306,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		$form->add_field([
 			'id'              => 'base_price', // _rack_rate
 			'type'            => 'abrs_amount',
-			'name'            => esc_html__( 'Rack Single_Rate', 'awebooking' ),
+			'name'            => esc_html__( 'Rack Rate', 'awebooking' ),
 			'append'          => abrs_currency_symbol(),
 			'tooltip'         => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
 		]);
