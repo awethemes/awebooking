@@ -14,28 +14,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-get_header( 'awebooking' ); ?>
+get_header( 'awebooking' );
 
-	<?php
-	/**
-	 * The opening divs for the content.
-	 *
-	 * @hooked abrs_content_wrapper_before() - 10 (outputs opening divs for the content).
-	 */
-	do_action( 'abrs_before_main_content' );
+/**
+ * The opening divs for the content.
+ *
+ * @hooked abrs_content_wrapper_before() - 10 (outputs opening divs for the content).
+ */
+do_action( 'abrs_before_main_content' );
 
-	while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
-		abrs_get_template_part( 'template-parts/single-room/content', 'single-room' );
-	endwhile;
+while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
+	abrs_get_template_part( 'template-parts/single/content', apply_filters( 'abrs_single_room_layout', '' ) );
+endwhile;
 
-	/**
-	 * Outputs closing divs for the content
-	 *
-	 * @hooked abrs_content_wrapper_after() - 10 (outputs closing divs for the content).
-	 */
-	do_action( 'abrs_after_main_content' );
-	?>
+/**
+ * Outputs closing divs for the content
+ *
+ * @hooked abrs_content_wrapper_after() - 10 (outputs closing divs for the content).
+ */
+do_action( 'abrs_after_main_content' );
 
-<?php get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
+get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
 
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
