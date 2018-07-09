@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use function foo\func;
-
 abstract class Abstract_Metabox {
 	/**
 	 * Meta box ID.
