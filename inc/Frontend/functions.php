@@ -152,6 +152,14 @@ function abrs_body_class( $classes ) {
 		$classes[] = 'awebooking';
 	}
 
+	if ( abrs_is_search_page() ) {
+		$classes[] = 'awebooking-check-availability';
+	}
+
+	if ( abrs_is_checkout_page() ) {
+		$classes[] = 'awebooking-checkout';
+	}
+
 	return array_unique( $classes );
 }
 

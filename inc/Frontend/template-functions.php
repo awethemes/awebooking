@@ -91,6 +91,7 @@ function abrs_checkout_payments() {
 }
 
 if ( ! function_exists( 'abrs_content_wrapper_before' ) ) {
+
 	/**
 	 * Output the start of the page wrapper.
 	 *
@@ -102,6 +103,7 @@ if ( ! function_exists( 'abrs_content_wrapper_before' ) ) {
 }
 
 if ( ! function_exists( 'abrs_content_wrapper_after' ) ) {
+
 	/**
 	 * Output the end of the page wrapper.
 	 *
@@ -118,7 +120,7 @@ if ( ! function_exists( 'abrs_get_sidebar' ) ) {
 	 * Get the room type sidebar template.
 	 */
 	function abrs_get_sidebar() {
-		abrs_get_template( 'template-parts/global/sidebar.php' );
+		get_sidebar( 'awebooking' );
 	}
 }
 
@@ -185,12 +187,134 @@ if ( ! function_exists( 'abrs_search_result_room_list' ) ) {
 	}
 }
 
-if ( ! function_exists( 'abrs_after_result_item_price' ) ) {
+if ( ! function_exists( 'abrs_search_result_room_price' ) ) {
 
 	/**
 	 * Gets search result room list.
 	 */
-	function abrs_after_result_item_price( $room_type, $room_rate ) {
+	function abrs_search_result_room_price( $room_type, $room_rate ) {
 		abrs_get_template( 'search/result/price.php', compact( 'room_type', 'room_rate' ) );
+	}
+}
+
+/* Single room */
+if ( ! function_exists( 'abrs_single_room_description' ) ) {
+
+	/**
+	 * Gets single room description.
+	 */
+	function abrs_single_room_description() {
+		abrs_get_template_part( 'template-parts/single/description' );
+	}
+}
+
+if ( ! function_exists( 'abrs_single_room_amenities' ) ) {
+
+	/**
+	 * Gets single room amenities.
+	 */
+	function abrs_single_room_amenities() {
+		abrs_get_template_part( 'template-parts/single/amenities' );
+	}
+}
+
+if ( ! function_exists( 'abrs_single_room_gallery' ) ) {
+
+	/**
+	 * Gets single room gallery.
+	 */
+	function abrs_single_room_gallery() {
+		abrs_get_template_part( 'template-parts/single/gallery' );
+	}
+}
+
+if ( ! function_exists( 'abrs_single_room_form' ) ) {
+
+	/**
+	 * Gets single room form.
+	 */
+	function abrs_single_room_form() {
+		abrs_get_template_part( 'template-parts/single/form' );
+	}
+}
+
+/* Archive room */
+if ( ! function_exists( 'abrs_pagination' ) ) {
+
+	/**
+	 * Gets archive room thumbnail.
+	 */
+	function abrs_pagination() {
+		abrs_get_template_part( 'template-parts/archive/pagination' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_thumbnail' ) ) {
+
+	/**
+	 * Gets archive room thumbnail.
+	 */
+	function abrs_archive_room_thumbnail() {
+		abrs_get_template_part( 'template-parts/archive/thumbnail' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_title' ) ) {
+
+	/**
+	 * Gets archive room title.
+	 */
+	function abrs_archive_room_title() {
+		abrs_get_template_part( 'template-parts/archive/title' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_price' ) ) {
+
+	/**
+	 * Gets archive room price.
+	 */
+	function abrs_archive_room_price() {
+		abrs_get_template_part( 'template-parts/archive/price' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_description' ) ) {
+
+	/**
+	 * Gets archive room description.
+	 */
+	function abrs_archive_room_description() {
+		abrs_get_template_part( 'template-parts/archive/description' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_information' ) ) {
+
+	/**
+	 * Gets archive room information.
+	 */
+	function abrs_archive_room_information() {
+		abrs_get_template_part( 'template-parts/archive/information' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_occupancy' ) ) {
+
+	/**
+	 * Gets archive room occupancy.
+	 */
+	function abrs_archive_room_occupancy() {
+		abrs_get_template_part( 'template-parts/archive/occupancy' );
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_button' ) ) {
+
+	/**
+	 * Gets archive room button.
+	 */
+	function abrs_archive_room_button() {
+		abrs_get_template_part( 'template-parts/archive/button' );
 	}
 }
