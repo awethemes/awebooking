@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": ">=5.6.4",
+        "ext-pcre": "*",
         "a5hleyrich/wp-background-processing": "^1.0",
         "awethemes/container": "5.4.*",
         "awethemes/wp-http": "^1.0",
@@ -27,6 +28,7 @@
         "nesbot/carbon": "^1.25",
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
+        "ruler/ruler": "^0.3.0",
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
