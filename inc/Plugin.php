@@ -182,6 +182,15 @@ final class Plugin extends Container {
 	}
 
 	/**
+	 * Register a bootstrapper.
+	 *
+	 * @param string $bootstrap The bootstrap class.
+	 */
+	public function bootstrapper( $bootstrap ) {
+		$this->bootstrappers[] = $bootstrap;
+	}
+
+	/**
 	 * Bootstrap the plugin.
 	 *
 	 * @access private
