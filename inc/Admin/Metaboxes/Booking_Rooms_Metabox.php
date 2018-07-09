@@ -1,7 +1,18 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-class Booking_Rooms_Metabox {
+use AweBooking\Constants;
+
+class Booking_Rooms_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id      = 'awebooking-booking-rooms';
+		$this->title   = esc_html__( 'Booking Rooms', 'awebooking' );
+		$this->screen  = Constants::BOOKING;
+	}
+
 	/**
 	 * Output the metabox.
 	 *

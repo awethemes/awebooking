@@ -1,11 +1,21 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
+use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Admin\Forms\Service_Data_Form;
 
-class Service_Data_Metabox {
+class Service_Data_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id     = 'awebooking-service-data';
+		$this->title  = esc_html__( 'Service', 'awebooking' );
+		$this->screen = Constants::HOTEL_SERVICE;
+	}
+
 	/**
 	 * Output the metabox.
 	 *
@@ -22,6 +32,7 @@ class Service_Data_Metabox {
 		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
 
 		$form = new Service_Data_Form( $the_service );
+
 		echo '<div class="cmb2-wrap awebooking-wrap abrs-cmb2-float"><div class="cmb2-metabox">';
 
 		foreach ( $form->prop( 'fields' ) as $args ) {
