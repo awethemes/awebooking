@@ -8,7 +8,7 @@
   &:not(:last-child) {
     margin-bottom: 2rem;
   }
-    
+
 }
 
 .roommaster-header {
@@ -49,7 +49,7 @@
 .roommaster-info {
 	padding-right: .3rem;
 
-	&___list {
+	&__list {
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -73,7 +73,11 @@
 	padding-left: .3rem;
 }
 
-.roommaster-child {
+.roommaster-box {
+	padding: 0 5px;
+}
+
+.roommaster-deal {
 	&__item {
 		&:not(:last-child) {
 			margin-bottom: .7rem;
@@ -102,7 +106,7 @@
 
 .roommaster-inventory {
 	font-size: 1rem;
-	text-align: right;
+	font-style: italic;
 
 	.awebooking-price  {
 		display: block;
@@ -113,6 +117,11 @@
 .roommaster-button {
 	.button {
 		width: 100%;
+	}
+
+	&__remaining-rooms {
+		font-size: 1rem;
+		font-style: italic;
 	}
 }
 
