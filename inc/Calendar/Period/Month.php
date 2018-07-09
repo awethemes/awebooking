@@ -48,6 +48,7 @@ class Month extends Iterator_Period {
 		$initial = new Week( $this->get_start_date()->startOfWeek() );
 
 		return $this->generate_iterator( $initial, function( $current, $_initial ) {
+			/* @var \AweBooking\Calendar\Period\Iterator_Period $current */
 			return $current->sameValueAs( $_initial ) || $this->contains( $current->get_start_date() );
 		});
 	}

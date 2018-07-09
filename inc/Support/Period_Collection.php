@@ -72,7 +72,7 @@ class Period_Collection extends Collection {
 
 		$periods = $sort ? $this->sort() : new static( $this->items );
 
-		$periods = $periods->unique( function( $period ) {
+		$periods = $periods->unique( function( Period $period ) {
 			return $period->get_start_date()->format( 'Y-m-d' ) . '::' . $period->get_end_date()->format( 'Y-m-d' );
 		});
 
@@ -80,6 +80,7 @@ class Period_Collection extends Collection {
 		$last_period = null;
 
 		foreach ( $periods as $period ) {
+			/* @var \AweBooking\Support\Period $last_period */
 			if ( ! is_null( $last_period ) && ! $last_period->abuts( $period ) ) {
 				$abuts = false;
 				break;

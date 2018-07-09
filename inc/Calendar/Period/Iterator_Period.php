@@ -21,6 +21,7 @@ class Iterator_Period extends Period implements IteratorAggregate {
 		$initial = new Day( $this->get_start_date() );
 
 		return $this->generate_iterator( $initial, function( $current, $initial ) {
+			/* @var \AweBooking\Calendar\Period\Iterator_Period $current */
 			return $this->contains( $current->get_start_date() );
 		});
 	}
@@ -47,6 +48,7 @@ class Iterator_Period extends Period implements IteratorAggregate {
 		while ( $callback( $current, $initial ) ) {
 			yield (string) $current => $current;
 
+			/* @var \AweBooking\Calendar\Period\Iterator_Period $current */
 			$current = $current->next( $current->get_interval() );
 		}
 	}

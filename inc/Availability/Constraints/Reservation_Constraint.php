@@ -26,8 +26,6 @@ class Reservation_Constraint extends Constraint {
 	 * {@inheritdoc}
 	 */
 	public function apply( Response $response ) {
-		// dd($this->reservation->get_booked_rooms());
-
 		// No rooms to reject.
 		if ( ( ! $res_request = $this->reservation->resolve_res_request() ) ||
 			 ( ! $booked_rooms = $this->reservation->get_booked_rooms() ) ) {

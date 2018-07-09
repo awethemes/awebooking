@@ -2,6 +2,7 @@
 namespace AweBooking\Calendar\Event;
 
 use AweBooking\Support\Period;
+use AweBooking\Calendar\Resource\Resource_Interface;
 
 interface Event_Interface {
 	/**
@@ -47,6 +48,21 @@ interface Event_Interface {
 	 * @return \AweBooking\Calendar\Resource\Resource_Interface|null
 	 */
 	public function get_resource();
+
+	/**
+	 * Set the event resource.
+	 *
+	 * @param  \AweBooking\Calendar\Resource\Resource_Interface $resource The resource instance.
+	 * @return $this
+	 */
+	public function set_resource( Resource_Interface $resource );
+
+	/**
+	 * Is current event contains untrusted resource?
+	 *
+	 * @return bool
+	 */
+	public function is_untrusted_resource();
 
 	/**
 	 * Returns an unique identifier for the Event.

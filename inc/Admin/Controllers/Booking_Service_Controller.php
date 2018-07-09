@@ -18,7 +18,7 @@ class Booking_Service_Controller extends Controller {
 	 * Handle create new service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function create( Request $request ) {
 		if ( ! $request->filled( 'refer' ) || ! $booking = abrs_get_booking( $request['refer'] ) ) {
@@ -32,7 +32,7 @@ class Booking_Service_Controller extends Controller {
 	 * Handle store new booking service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'create_booking_service', '_wpnonce' );
@@ -111,7 +111,7 @@ class Booking_Service_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Service_Item $service_item The booking service item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Service_Item $service_item ) {
 		check_admin_referer( 'delete_service_' . $service_item->get_id(), '_wpnonce' );
