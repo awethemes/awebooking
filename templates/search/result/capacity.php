@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class="roommaster-occupancy roommaster-box" data-awebooking="tooltip" data-tippy-html="#occupancy-description-<?php echo absint( $room_type->get_id() ); ?>" title="A">
+<ul id="roommaster-occupancy-<?php echo absint( $room_type->get_id() ); ?>" class="roommaster-occupancy roommaster-box" data-awebooking="tooltip" data-tippy-html="#occupancy-description-<?php echo absint( $room_type->get_id() ); ?>">
 	<?php if ( $room_type->get( 'number_adults' ) ) : ?>
-		<span class="roommaster-occupancy__item">
+		<li class="roommaster-occupancy__item">
 			<?php
 				/* translators: %1$s number adults, %2$s adult button */
 				printf( esc_html_x( '%1$s x %2$s', 'number adults', 'awebooking' ),
@@ -29,11 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 					'<i class="aficon aficon-man"></i><span class="screen-reader-text">' . esc_html_x( 'Adult', 'adult button', 'awebooking' ) . '</span>'
 				);
 			?>
-		</span>
+		</li>
 	<?php endif; ?>
 
 	<?php if ( $room_type->get( 'number_children' ) ) : ?>
-		<span class="roommaster-occupancy__item">
+		<li class="roommaster-occupancy__item">
 			<?php
 				/* translators: %1$s number children, %2$s child button */
 				printf( esc_html_x( '%1$s x %2$s', 'number children', 'awebooking' ),
@@ -42,11 +42,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 			?>
 
-		</span>
+		</li>
 	<?php endif; ?>
 
 	<?php if ( $room_type->get( 'number_infants' ) ) : ?>
-		<span class="roommaster-occupancy__item">
+		<li class="roommaster-occupancy__item">
 			<?php
 				/* translators: %1$s number infants, %2$s infant button */
 				printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
@@ -54,10 +54,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 					'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
 				);
 			?>
-		</span>
+		</li>
 	<?php endif; ?>
+</ul><!-- #roommaster-occupancy-<?php the_ID(); ?> -->
 
-</div>
 <div id="occupancy-description-<?php echo absint( $room_type->get_id() ); ?>" class="occupancy-description" style="display: none;">
 	<h4 class="occupancy-description__title">
 		<?php
@@ -91,5 +91,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</li>
 		<?php endif; ?>
 	</ul>
-
-</div>
+</div><!-- #occupancy-description-<?php the_ID(); ?> -->

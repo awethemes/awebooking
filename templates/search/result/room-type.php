@@ -64,6 +64,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</li>
 		<?php endif; ?>
 
-		<?php do_action( 'awebooking/result_item/after_room_informations' ); ?>
+		<?php do_action( 'abrs_after_search_result_room_type_informations' ); ?>
 	</ul>
 </div>
