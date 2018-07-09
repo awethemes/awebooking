@@ -1,4 +1,18 @@
 /* Core CSS */
+.nav-tab--premium {
+  color: #655a00;
+  background: #fdf7c3;
+  border-color: #e0ce2e;
+  position: relative;
+
+  &:before {
+    @include pseudoicon("\f155");
+    margin-right: 5px;
+    position: relative;
+    top: 1px;
+  }
+}
+
 .wp-badge.awebooking-badge {
   background-image: url("../img/awebooking.png");
   background-color: #2196F3;
