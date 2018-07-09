@@ -2,7 +2,7 @@
 /**
  * Sidebar
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/global/sidebar.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/template-parts/global/sidebar.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes

@@ -1,8 +1,8 @@
 <?php
 /**
- * The template part for displaying a message that rooms cannot be found.
+ * The template part for displaying content that rooms cannot be found
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/search/content-none.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/template-parts/archive/content-none.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -25,4 +25,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php esc_html_e( 'No rooms available', 'awebooking' ); ?>
 	</div>
 
-</div><!-- /.search-rooms-timeout -->
+</div><!-- /.list-room__none -->
