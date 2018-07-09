@@ -7,7 +7,7 @@
 		<?php foreach ( $calendar->period as $day ) : ?>
 			<div class="scheduler__column scheduler__column--readonly <?php echo esc_attr( implode( ' ', abrs_date_classes( $day ) ) ); ?>" data-date="<?php echo esc_attr( $day->format( 'Y-m-d' ) ); ?>">
 
-				<?php $calendar->perform_call_method( 'display_divider_column', $day, $loop_scheduler ); ?>
+				<?php $calendar->call( 'display_divider_column', $day, $loop_scheduler ); ?>
 
 			</div>
 		<?php endforeach; ?>

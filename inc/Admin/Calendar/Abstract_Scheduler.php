@@ -14,6 +14,13 @@ abstract class Abstract_Scheduler {
 	use Concerns\Calendar_Creator;
 
 	/**
+	 * Current http request.
+	 *
+	 * @var \Awethemes\Http\Request
+	 */
+	protected $request;
+
+	/**
 	 * The datepoint to begin the scheduler.
 	 *
 	 * @var string
@@ -63,12 +70,50 @@ abstract class Abstract_Scheduler {
 	protected $main_layout = 'scheduler.php';
 
 	/**
+	 * Prepares the Scheduler before it is sent to the client.
+	 *
+	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @return void
+	 */
+	public function prepare( Request $request ) {
+		$this->request = $request;
+
+		$this->datepoint = $this->filter_datepoint(
+			$request->filled( 'date' ) ? $request->get( 'date' ) : 'today'
+		);
+
+		// Create the period for the Calendar.
+		$duration = absint( abrs_get_option( 'scheduler_display_duration', 30 ) );
+
+		// Higher duration can be affected to browser render.
+		if ( $duration > 90 ) { // Limit about 3 months.
+			$duration = 90;
+		}
+
+		// Create the period.
+		$this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
+			->moveStartDate( '-2 days' );
+
+		// Create the scheduler.
+		$this->scheduler = $this->create_scheduler();
+
+		if ( ! is_null( $this->scheduler ) ) {
+			$this->setup();
+		}
+	}
+
+	/**
 	 * Display the Scheduler.
 	 *
 	 * @return void
 	 */
 	public function display() {
 		if ( is_null( $this->period ) || is_null( $this->scheduler ) ) {
+			return;
+		}
+
+		if ( abrs_blank( $this->scheduler ) ) {
+			$this->template( 'empty.php' );
 			return;
 		}
 
@@ -125,7 +170,7 @@ abstract class Abstract_Scheduler {
 	 * @param  mixed  ...$args    Call method args.
 	 * @return void
 	 */
-	public function perform_call_method( $method, ...$args ) {
+	public function call( $method, ...$args ) {
 		if ( ! method_exists( $this, $method ) ) {
 			return;
 		}
@@ -151,37 +196,6 @@ abstract class Abstract_Scheduler {
 		extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
 
 		include trailingslashit( __DIR__ ) . 'views/' . $template;
-	}
-
-	/**
-	 * Prepares the Scheduler before it is sent to the client.
-	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
-	 * @return void
-	 */
-	public function prepare( Request $request ) {
-		$this->datepoint = $this->filter_datepoint(
-			$request->filled( 'date' ) ? $request->get( 'date' ) : 'today'
-		);
-
-		// Create the period for the Calendar.
-		$duration = absint( abrs_get_option( 'scheduler_display_duration', 30 ) );
-
-		// Higher duration can be affected to browser render.
-		if ( $duration > 120 ) { // Limit about 4 months.
-			$duration = 120;
-		}
-
-		// Create the period.
-		$this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
-			->moveStartDate( '-2 days' );
-
-		// Create the scheduler.
-		$this->scheduler = $this->create_scheduler();
-
-		if ( ! is_null( $this->scheduler ) ) {
-			$this->setup();
-		}
 	}
 
 	/**
@@ -217,6 +231,7 @@ abstract class Abstract_Scheduler {
 			if ( $calendar instanceof Scheduler ) {
 				$matrix[ $calendar->get_uid() ] = $this->setup_matrix( $calendar );
 			} else {
+				/* @var \AweBooking\Calendar\Calendar $calendar */
 				$matrix[ $calendar->get_uid() ] = $calendar->get_itemized( $period );
 			}
 		}
@@ -241,6 +256,7 @@ abstract class Abstract_Scheduler {
 			if ( $calendar instanceof Scheduler ) {
 				$events[ $calendar->get_uid() ] = $this->setup_events( $calendar, $options );
 			} else {
+				/* @var \AweBooking\Calendar\Calendar $calendar */
 				$events[ $calendar->get_uid() ] = $this->filter_events( $calendar->get_events( $period, $options ) );
 			}
 		}

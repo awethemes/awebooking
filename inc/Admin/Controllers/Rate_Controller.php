@@ -20,8 +20,10 @@ class Rate_Controller extends Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function index( Request $request ) {
-		$scheduler = new Pricing_Scheduler;
+		$scheduler_class = apply_filters( 'abrs_pricing_scheduler_class', Pricing_Scheduler::class );
 
+		/* @var \AweBooking\Admin\Calendar\Pricing_Scheduler $scheduler */
+		$scheduler = awebooking()->make( $scheduler_class );
 		$scheduler->prepare( $request );
 
 		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls', 'bulk_controls' ) );

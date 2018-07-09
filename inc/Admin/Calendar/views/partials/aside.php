@@ -6,7 +6,7 @@
 		</strong>
 
 		<nav class="scheduler__nav-actions">
-			<?php $calendar->perform_call_method( 'display_nav_actions' ); ?>
+			<?php $calendar->call( 'display_nav_actions' ); ?>
 
 			<a href="<?php echo esc_url( get_edit_post_link( $loop_calendar->get_uid() ) ); ?>" target="_blank">
 				<span class="screen-reader-text"><?php esc_html_e( 'Show', 'awebooking' ); ?></span>

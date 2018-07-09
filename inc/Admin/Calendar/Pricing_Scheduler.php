@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Admin\Calendar;
 
+use AweBooking\Calendar\Resource\Resource;
 use AweBooking\Model\Pricing\Base_Single_Rate;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
@@ -21,8 +22,12 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 		$rates = $this->room_types
 			->map_into( Base_Single_Rate::class );
 
-		return $this->create_scheduler_for(
-			$resources = $this->create_rate_resources( $rates ),
+		$resources = $this->create_rate_resources( $rates )
+			->each( function( Resource $resource ) {
+				$resource->set_title( get_the_title( $resource->get_id() ) );
+			});
+
+		return $this->create_scheduler_for( $resources,
 			abrs_calendar_provider( 'pricing', $resources, true )
 		);
 	}
@@ -34,8 +39,8 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 	 */
 	protected function display_legends() {
 		echo '<span class="tippy" title="' . esc_html__( 'Not Modified', 'awebooking' ) . '"></span>';
-		echo '<span class="tippy" style="background-color: #1565c0;" title="' . esc_html__( 'Modified Higher', 'awebooking' ) . '"></span>';
-		echo '<span class="tippy" style="background-color: #d40e00;" title="' . esc_html__( 'Modified Lower', 'awebooking' ) . '"></span>';
+		echo '<span class="tippy" style="background: #1565c0;" title="' . esc_html__( 'Modified Higher', 'awebooking' ) . '"></span>';
+		echo '<span class="tippy" style="background: #d40e00;" title="' . esc_html__( 'Modified Lower', 'awebooking' ) . '"></span>';
 	}
 
 	/**
@@ -43,7 +48,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 	 *
 	 * @return void
 	 */
-	protected function display_toolbars() {
+	protected function display_toolbar() {
 		echo '<div class="scheduler-flexspace"></div>';
 		$this->template( 'toolbar/datepicker.php' );
 	}

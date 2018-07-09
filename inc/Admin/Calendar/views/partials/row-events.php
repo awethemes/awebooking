@@ -10,7 +10,7 @@ if ( ! isset( $loop_scheduler ) ) {
 
 		<?php foreach ( $calendar->period as $day ) : ?>
 			<div class="scheduler__column scheduler__column--event" data-date="<?php echo esc_attr( $day->format( 'Y-m-d' ) ); ?>">
-				<?php $calendar->perform_call_method( 'display_event_column', $day, $loop_calendar, $loop_scheduler ); ?>
+				<?php $calendar->call( 'display_event_column', $day, $loop_calendar, $loop_scheduler ); ?>
 			</div><!-- /.scheduler__column -->
 		<?php endforeach ?>
 
