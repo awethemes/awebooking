@@ -136,16 +136,6 @@ if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
 	}
 }
 
-if ( ! function_exists( 'abrs_template_room_thumbnail' ) ) {
-
-	/**
-	 * Get the room type thumbnail for the loop.
-	 */
-	function abrs_template_room_thumbnail() {
-		echo abrs_get_thumbnail(); // WPCS: xss ok.
-	}
-}
-
 if ( ! function_exists( 'abrs_search_result_header' ) ) {
 
 	/**
@@ -295,7 +285,7 @@ if ( ! function_exists( 'abrs_archive_room_thumbnail' ) ) {
 	 * Gets archive room thumbnail.
 	 */
 	function abrs_archive_room_thumbnail() {
-		abrs_get_template_part( 'template-parts/archive/thumbnail' );
+		echo abrs_get_thumbnail(); // WPCS: xss ok.
 	}
 }
 

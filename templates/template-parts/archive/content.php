@@ -24,14 +24,18 @@ if ( empty( $room_type ) ) {
 ?>
 
 <article id="room-<?php the_ID(); ?>" <?php post_class( 'list-room' ); ?>>
-	<?php
-	/**
-	 * abrs_before_archive_room hook.
-	 *
-	 * @hooked abrs_archive_room_thumbnail - 10
-	 */
-	do_action( 'abrs_before_archive_room' );
-	?>
+	<div class="list-room__media">
+		<a href="<?php echo esc_url( get_the_permalink() ); ?>">
+			<?php
+			/**
+			 * abrs_before_archive_room hook.
+			 *
+			 * @hooked abrs_archive_room_thumbnail - 10
+			 */
+			do_action( 'abrs_before_archive_room' );
+			?>
+		</a>
+	</div>
 
 	<div class="list-room__info">
 		<header class="list-room__header">
