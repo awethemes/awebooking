@@ -1,3 +1,20 @@
+<?php
+/**
+ * The template for displaying book button.
+ *
+ * This template can be overridden by copying it to {yourtheme}/awebooking/book-button.php.
+ *
+ * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
+ * @author   awethemes
+ * @package  AweBooking
+ * @version  3.1.0
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+?>
 <form method="POST" action="<?php echo esc_url( abrs_route( '/reservation/book-room' ) ); ?>">
 	<?php wp_nonce_field( 'book-room', '_wpnonce', true ); ?>
 
