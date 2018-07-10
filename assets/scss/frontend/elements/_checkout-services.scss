@@ -1,7 +1,8 @@
 .checkout-services {
 	border: 1px solid $gray-200;
 	border-radius: 6px;
-	
+	margin-bottom: 20px;
+
 	&__header {
 		font-size: 1rem;
 		padding: .8rem;
@@ -22,7 +23,7 @@
 			vertical-align: middle;
 		}
 	}
-	
+
 	&__title {
 		font-size: 1.2rem;
 		color: $blue;
@@ -30,11 +31,11 @@
 		margin-top: 0;
 		margin-bottom: .5rem;
 	}
-	
+
 	&__description {
 		margin-bottom: .5rem;
 	}
-	
+
 	&__operation {
 		font-size: .8rem;
 		color: $red;
@@ -59,7 +60,15 @@
 		}
 
 		.nice-checkbox {
-			
+
 		}
 	}
+}
+
+.quantity-input {
+
+}
+
+.checkout-services__submit {
+	text-align: right;
 }
