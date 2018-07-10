@@ -24,5 +24,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="list-room__box-title">
 		<?php esc_html_e( 'No rooms available', 'awebooking' ); ?>
 	</div>
-
 </div><!-- /.list-room__none -->

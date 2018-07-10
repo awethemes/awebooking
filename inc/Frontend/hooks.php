@@ -22,6 +22,7 @@ add_action( 'abrs_single_room_sections',        'abrs_single_room_gallery', 20  
 add_action( 'abrs_single_room_sidebar',         'abrs_single_room_form', 10             );
 
 add_action( 'abrs_after_archive_loop',          'abrs_pagination', 10                   );
+add_action( 'abrs_no_rooms_found',              'abrs_no_rooms_found', 10               );
 add_action( 'abrs_before_archive_room',         'abrs_archive_room_thumbnail', 10       );
 add_action( 'abrs_archive_room_header',         'abrs_archive_room_title', 10           );
 add_action( 'abrs_archive_room_header',         'abrs_archive_room_price', 15           );

@@ -70,24 +70,18 @@ $input_prefix = 'services[' . $service->get_id() . ']';
 					<div>
 						<div>
 							<?php if ( $service->is_quantity_selectable() ) : ?>
-
-								<input type="number" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
-
+								<input type="number" min="0" class="form-input quantity-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
 							<?php else : ?>
-
 								<div class="nice-checkbox">
 									<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
 									<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>">sdasdasd</label>
 								</div>
-
 							<?php endif; ?>
 						</div>
-
 					</div>
 				</div>
 
 			</div>
 		</div>
-
 	</div>
 </div>

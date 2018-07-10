@@ -239,6 +239,56 @@ if ( ! function_exists( 'abrs_pagination' ) ) {
 	}
 }
 
+if ( ! function_exists( 'abrs_archive_room_loop_start' ) ) {
+
+	/**
+	 * Output the start of a room type loop.
+	 *
+	 * @param bool $echo echo.
+	 * @return string
+	 */
+	function abrs_archive_room_loop_start( $echo = true ) {
+		ob_start();
+		abrs_get_template( 'template-parts/archive/loop-start.php' );
+		if ( $echo ) {
+			echo ob_get_clean(); // WPCS: xss ok.
+		} else {
+			return ob_get_clean();
+		}
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_loop_end' ) ) {
+
+	/**
+	 * Output the end of a room_type loop.
+	 *
+	 * @param bool $echo echo.
+	 * @return string
+	 */
+	function abrs_archive_room_loop_end( $echo = true ) {
+		ob_start();
+
+		abrs_get_template( 'template-parts/archive/loop-end.php' );
+
+		if ( $echo ) {
+			echo ob_get_clean(); // WPCS: xss ok.
+		} else {
+			return ob_get_clean();
+		}
+	}
+}
+
+if ( ! function_exists( 'abrs_no_rooms_found' ) ) {
+
+	/**
+	 * No rooms found.
+	 */
+	function abrs_no_rooms_found() {
+		abrs_get_template_part( 'template-parts/archive/content', 'none' );
+	}
+}
+
 if ( ! function_exists( 'abrs_archive_room_thumbnail' ) ) {
 
 	/**

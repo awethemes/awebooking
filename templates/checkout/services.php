@@ -20,16 +20,16 @@ if ( abrs_blank( $services ) ) {
 
 ?>
 
-<form id="checkout-form" method="POST" action="<?php echo esc_url( abrs_route( '/reservation/services' ) ); ?>">
+<form id="checkout-services-form" method="POST" action="<?php echo esc_url( abrs_route( '/reservation/services' ) ); ?>">
 	<div id="checkout-services" class="checkout-services">
 		<h3 class="checkout-services__header"><?php esc_html_e( 'Services', 'awebooking' ); ?></h3>
 
 		<?php foreach ( $services as $service ) : ?>
-
 			<?php abrs_get_template( 'checkout/service-item.php', compact( 'service', 'includes' ) ); ?>
-
 		<?php endforeach; ?>
 	</div>
 
-	<button class="button"><?php echo esc_html__( 'Update', 'awebooking' ); ?></button>
+	<div id="submit_services" class="checkout-services__submit">
+		<button class="button"><?php echo esc_html__( 'Update', 'awebooking' ); ?></button>
+	</div>
 </form>
