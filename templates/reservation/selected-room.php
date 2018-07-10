@@ -4,6 +4,8 @@
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/reservation/selected-room.php.
  *
+ * @var \AweBooking\Reservation\Item $room_stay
+ *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
@@ -14,10 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-/* @var \AweBooking\Reservation\Item $room_stay */
+$res_request = abrs_optional( $room_stay->data() )
+	->get_request();
 
-$res_request = abrs_reservation()->get_previous_request();
-if ( ! $res_request ) {
+if ( empty( $res_request ) ) {
 	return;
 }
 
