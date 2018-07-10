@@ -52,12 +52,7 @@ endif;
  */
 do_action( 'abrs_after_main_content' );
 
-/**
- * awebooking/sidebar hook.
- *
- * @hooked abrs_get_sidebar - 10
- */
-do_action( 'abrs_sidebar' );
+get_sidebar( 'awebooking' );
 
 get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
 

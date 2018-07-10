@@ -2,7 +2,6 @@
 
 // @codingStandardsIgnoreStart
 add_filter( 'body_class',                       'abrs_body_class'                       );
-add_filter( 'abrs_sidebar',                     'abrs_get_sidebar'                      );
 
 add_action( 'abrs_print_notices',               'abrs_print_notices'                    );
 add_action( 'abrs_before_main_content',         'abrs_content_wrapper_before', 10       );

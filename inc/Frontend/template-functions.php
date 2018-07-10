@@ -114,16 +114,6 @@ if ( ! function_exists( 'abrs_content_wrapper_after' ) ) {
 	}
 }
 
-if ( ! function_exists( 'abrs_get_sidebar' ) ) {
-
-	/**
-	 * Get the room type sidebar template.
-	 */
-	function abrs_get_sidebar() {
-		get_sidebar( 'awebooking' );
-	}
-}
-
 if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
 
 	/**
