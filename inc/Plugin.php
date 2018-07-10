@@ -7,6 +7,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Illuminate\Container\Container;
+use Illuminate\Support\Arr;
 
 final class Plugin extends Container {
 	use Support\Traits\Plugin_Provider,
@@ -191,6 +192,25 @@ final class Plugin extends Container {
 	}
 
 	/**
+	 * Register a provider into the plugin.
+	 *
+	 * @param string $provider The provider class name.
+	 * @param string $area     The area (core, admin, frontend).
+	 * @param bool   $prepend  Prepend or append.
+	 */
+	public function provider( $provider, $area = 'core', $prepend = true ) {
+		if ( ! array_key_exists( $area, $this->service_providers ) ) {
+			throw new \OutOfRangeException( 'The area must be one of: core, admin or frontend.' );
+		}
+
+		if ( $prepend ) {
+			$this->service_providers[ $area ] = Arr::prepend( $this->service_providers[ $area ], $provider );
+		} else {
+			$this->service_providers[ $area ][] = $provider;
+		}
+	}
+
+	/**
 	 * Bootstrap the plugin.
 	 *
 	 * @access private
@@ -200,11 +220,11 @@ final class Plugin extends Container {
 		require trailingslashit( __DIR__ ) . 'core-functions.php';
 
 		/**
-		 * Fire the action before bootstrap.
+		 * Fire the bootstrap action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_bootstrapping', $this );
+		do_action( 'awebooking_bootstrap', $this );
 
 		// Run bootstrap classes.
 		array_walk( $this->bootstrappers, function( $bootstrapper ) {
@@ -212,11 +232,11 @@ final class Plugin extends Container {
 		});
 
 		/**
-		 * Fire the bootstrapped action.
+		 * Fire the init action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_bootstrapped', $this );
+		do_action( 'awebooking_init', $this );
 
 		// Build the providers.
 		$providers = $this->service_providers['core'];
@@ -230,13 +250,6 @@ final class Plugin extends Container {
 		// Filter the service_providers.
 		$providers = apply_filters( 'abrs_service_providers', $providers, $this );
 
-		/**
-		 * Fire the init action.
-		 *
-		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
-		 */
-		do_action( 'awebooking_init', $this );
-
 		// Loop each provider then register them.
 		foreach ( $providers as $provider ) {
 			$provider = new $provider( $this );
@@ -249,11 +262,11 @@ final class Plugin extends Container {
 		}
 
 		/**
-		 * Fire the after_init action.
+		 * Fire the loaded action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_after_init', $this );
+		do_action( 'awebooking_loaded', $this );
 	}
 
 	/**
