@@ -1,8 +1,8 @@
 <?php
 
 use AweBooking\Model\Pricing\Base_Rate;
-use AweBooking\Model\Pricing\Base_Rate_Interval;
 use AweBooking\Model\Pricing\Contracts\Rate;
+use AweBooking\Model\Pricing\Base_Rate_Interval;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
 
 /**
@@ -44,16 +44,16 @@ function abrs_get_rate( $rate ) {
 }
 
 /**
- * Retrieves the single_rate object.
+ * Retrieves the rate interval object.
  *
  * Just a placeholder function for pro version.
  *
- * @param  mixed $single_rate The single_rate ID.
+ * @param  mixed $rate The rate interval ID.
  * @return \AweBooking\Model\Pricing\Contracts\Rate_Interval|null
  */
-function abrs_get_rate_interval( $single_rate ) {
-	return ( $single_rate instanceof Base_Rate_Interval ) ? $single_rate
-		: apply_filters( 'abrs_get_single_rate_object', null, $single_rate );
+function abrs_get_rate_interval( $rate ) {
+	return ( $rate instanceof Base_Rate_Interval ) ? $rate
+		: apply_filters( 'abrs_get_rate_object', null, $rate );
 }
 
 /**
