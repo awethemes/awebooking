@@ -54,6 +54,8 @@ class Rate_Controller extends Controller {
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 			abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
+		} elseif ( is_wp_error( $updated ) ) {
+			abrs_admin_notices( $updated->get_error_message(), 'error' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );

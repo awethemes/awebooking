@@ -72,8 +72,8 @@ class Base_Rate implements Contracts\Rate {
 	 */
 	public function get_rate_intervals() {
 		if ( is_null( $this->rates ) ) {
-			$this->rates = abrs_query_rate_intervals( $this )
-				->prepend( abrs_get_base_rate_interval( $this->instance ) );
+			$this->rates = abrs_get_rate_intervals( $this )
+				->prepend( abrs_get_standard_rate_interval( $this->instance ) );
 		}
 
 		return $this->rates;

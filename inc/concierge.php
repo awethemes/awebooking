@@ -544,7 +544,7 @@ function abrs_retrieve_room_rate( $args ) {
 	}
 
 	if ( empty( $res_request ) || is_wp_error( $res_request ) ) {
-		return new WP_Error( 'invalid_rate_plan', esc_html__( 'Unable to create the reservation request.', 'awebooking' ) );
+		return new WP_Error( 'res_request', esc_html__( 'Unable to create the reservation request.', 'awebooking' ) );
 	}
 
 	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
