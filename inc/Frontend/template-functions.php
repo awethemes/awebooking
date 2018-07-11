@@ -114,16 +114,6 @@ if ( ! function_exists( 'abrs_content_wrapper_after' ) ) {
 	}
 }
 
-if ( ! function_exists( 'abrs_get_sidebar' ) ) {
-
-	/**
-	 * Get the room type sidebar template.
-	 */
-	function abrs_get_sidebar() {
-		get_sidebar( 'awebooking' );
-	}
-}
-
 if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
 
 	/**
@@ -143,16 +133,6 @@ if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
 		}
 
 		return get_the_post_thumbnail( $post_id, $size );
-	}
-}
-
-if ( ! function_exists( 'abrs_template_room_thumbnail' ) ) {
-
-	/**
-	 * Get the room type thumbnail for the loop.
-	 */
-	function abrs_template_room_thumbnail() {
-		echo abrs_get_thumbnail(); // WPCS: xss ok.
 	}
 }
 
@@ -249,13 +229,63 @@ if ( ! function_exists( 'abrs_pagination' ) ) {
 	}
 }
 
+if ( ! function_exists( 'abrs_archive_room_loop_start' ) ) {
+
+	/**
+	 * Output the start of a room type loop.
+	 *
+	 * @param bool $echo echo.
+	 * @return string
+	 */
+	function abrs_archive_room_loop_start( $echo = true ) {
+		ob_start();
+		abrs_get_template( 'template-parts/archive/loop-start.php' );
+		if ( $echo ) {
+			echo ob_get_clean(); // WPCS: xss ok.
+		} else {
+			return ob_get_clean();
+		}
+	}
+}
+
+if ( ! function_exists( 'abrs_archive_room_loop_end' ) ) {
+
+	/**
+	 * Output the end of a room_type loop.
+	 *
+	 * @param bool $echo echo.
+	 * @return string
+	 */
+	function abrs_archive_room_loop_end( $echo = true ) {
+		ob_start();
+
+		abrs_get_template( 'template-parts/archive/loop-end.php' );
+
+		if ( $echo ) {
+			echo ob_get_clean(); // WPCS: xss ok.
+		} else {
+			return ob_get_clean();
+		}
+	}
+}
+
+if ( ! function_exists( 'abrs_no_rooms_found' ) ) {
+
+	/**
+	 * No rooms found.
+	 */
+	function abrs_no_rooms_found() {
+		abrs_get_template_part( 'template-parts/archive/content', 'none' );
+	}
+}
+
 if ( ! function_exists( 'abrs_archive_room_thumbnail' ) ) {
 
 	/**
 	 * Gets archive room thumbnail.
 	 */
 	function abrs_archive_room_thumbnail() {
-		abrs_get_template_part( 'template-parts/archive/thumbnail' );
+		echo abrs_get_thumbnail(); // WPCS: xss ok.
 	}
 }
 

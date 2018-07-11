@@ -2,7 +2,6 @@
 
 // @codingStandardsIgnoreStart
 add_filter( 'body_class',                       'abrs_body_class'                       );
-add_filter( 'abrs_sidebar',                     'abrs_get_sidebar'                      );
 
 add_action( 'abrs_print_notices',               'abrs_print_notices'                    );
 add_action( 'abrs_before_main_content',         'abrs_content_wrapper_before', 10       );
@@ -23,6 +22,7 @@ add_action( 'abrs_single_room_sections',        'abrs_single_room_gallery', 20  
 add_action( 'abrs_single_room_sidebar',         'abrs_single_room_form', 10             );
 
 add_action( 'abrs_after_archive_loop',          'abrs_pagination', 10                   );
+add_action( 'abrs_no_rooms_found',              'abrs_no_rooms_found', 10               );
 add_action( 'abrs_before_archive_room',         'abrs_archive_room_thumbnail', 10       );
 add_action( 'abrs_archive_room_header',         'abrs_archive_room_title', 10           );
 add_action( 'abrs_archive_room_header',         'abrs_archive_room_price', 15           );

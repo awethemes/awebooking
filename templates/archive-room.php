@@ -23,15 +23,20 @@ get_header( 'awebooking' );
  */
 do_action( 'abrs_before_main_content' );
 
-/**
- * abrs_before_archive_loop hook.
- */
-do_action( 'abrs_before_archive_loop' );
-
 if ( have_posts() ) :
+
+	/**
+	 * abrs_before_archive_loop hook.
+	 */
+	do_action( 'abrs_before_archive_loop' );
+
+	abrs_archive_room_loop_start();
+
 	while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
 		abrs_get_template_part( 'template-parts/archive/content', apply_filters( 'abrs_archive_room_layout', '' ) );
 	endwhile;
+
+	abrs_archive_room_loop_end();
 
 	/**
 	 * abrs_after_archive_loop hook.
@@ -39,10 +44,13 @@ if ( have_posts() ) :
 	 * @hooked abrs_pagination - 10
 	 */
 	do_action( 'abrs_after_archive_loop' );
-	?>
-<?php
 else :
-	abrs_get_template_part( 'template-parts/archive/content', 'none' );
+	/**
+	 * abrs_no_rooms_found hook.
+	 *
+	 * @hooked abrs_no_rooms_found - 10
+	 */
+	do_action( 'abrs_no_rooms_found' );
 endif;
 
 /**
@@ -52,12 +60,7 @@ endif;
  */
 do_action( 'abrs_after_main_content' );
 
-/**
- * awebooking/sidebar hook.
- *
- * @hooked abrs_get_sidebar - 10
- */
-do_action( 'abrs_sidebar' );
+get_sidebar( 'awebooking' );
 
 get_footer( 'awebooking' ); // @codingStandardsIgnoreLine
 
