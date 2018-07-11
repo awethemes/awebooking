@@ -1,0 +1,29 @@
+# AweBooking - Hotel Booking System for WordPress
+
+Awebooking is a WordPress plugin that helps you to setup hotel booking system quickly, pleasantly and easily.
+
+Get all Awebooking's [premium add-ons](https://awethemes.com/plugins/awebooking#premiumaddons) and a lot of [extras](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
+
+### Plugin features
+
+* Room type and rooms
+* Multi locations
+* Extra services
+* Pricing management
+* Room availablity management
+* By request booking
+* Check available widget
+* Email notification
+* Shortcodes
+
+### Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
+
+### Installing
+
+This is for new feature testing. For stable version, please install from [WordPress.org](https://wordpress.org/plugins/awebooking/)
+
+1. Clone/download source from Github to WP plugin directory
+2. Go to plugin folder, run `composer install`
+3. Go to WP admin and activate plugin

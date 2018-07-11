@@ -26,6 +26,7 @@ class Premium_Setting extends Abstract_Setting {
 			'id'   => '__premium_title',
 			'type' => 'title',
 			'name' => esc_html__( 'Premium', 'awebooking' ),
+			'desc' => abrs_esc_text( 'Join our <a href="https://awethemes.com/join">premium membership</a> to extend your <a href="https://awethemes.com/plugins/awebooking#premiumaddons">AweBooking</a>.', 'awebooking' ),
 		]);
 
 		$this->add_field([

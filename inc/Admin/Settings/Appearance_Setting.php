@@ -285,8 +285,8 @@ class Appearance_Setting extends Abstract_Setting {
 		$datepicker->add_field([
 			'id'              => 'display_datepicker_showmonths',
 			'type'            => 'select',
-			'name'            => esc_html__( 'The number of months displayed', 'awebooking' ),
-			'desc'            => esc_html__( 'Display on month or two months.', 'awebooking' ),
+			'name'            => esc_html__( 'Months displayed', 'awebooking' ),
+			'desc'            => esc_html__( 'Number of months show in date picker.', 'awebooking' ),
 			'options'         => [ '1' => 1, '2' => 2 ],
 			'sanitization_cb' => 'absint',
 		]);
