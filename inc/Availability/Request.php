@@ -57,6 +57,37 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Gets the request property.
+	 *
+	 * @param  string $property The property name.
+	 * @return mixed
+	 */
+	public function get( $property ) {
+		if ( property_exists( $this, $property ) ) {
+			return $this->{$property};
+		}
+
+		switch ( $property ) {
+			case 'nights':
+				return $this->timespan->nights();
+			case 'check_in':
+			case 'start_date':
+				return $this->timespan->get_start_date();
+			case 'check_out':
+			case 'end_date':
+				return $this->timespan->get_end_date();
+			case 'adults':
+			case 'children':
+			case 'infants':
+				return $this->guest_counts->has( $property )
+					? $this->guest_counts[ $property ]->get_count()
+					: null;
+		}
+
+		return $this->options->get( $property );
+	}
+
+	/**
 	 * Gets the Timespan.
 	 *
 	 * @return \AweBooking\Model\Common\Timespan
@@ -279,27 +310,6 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return mixed
 	 */
 	public function __get( $property ) {
-		if ( property_exists( $this, $property ) ) {
-			return $this->{$property};
-		}
-
-		switch ( $property ) {
-			case 'nights':
-				return $this->timespan->nights();
-			case 'check_in':
-			case 'start_date':
-				return $this->timespan->get_start_date();
-			case 'check_out':
-			case 'end_date':
-				return $this->timespan->get_end_date();
-			case 'adults':
-			case 'children':
-			case 'infants':
-				return $this->guest_counts->has( $property )
-					? $this->guest_counts[ $property ]->get_count()
-					: null;
-		}
-
-		return $this->options->get( $property );
+		return $this->get( $property );
 	}
 }
