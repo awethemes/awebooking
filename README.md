@@ -16,9 +16,9 @@ Get all Awebooking's [premium add-ons](https://awethemes.com/plugins/awebooking#
 * Email notification
 * Shortcodes
 
-### Video
+### Intro video
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
+https://www.youtube.com/embed/XNqn4gEakQA
 
 ### Installing
 
