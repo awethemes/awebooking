@@ -35,9 +35,13 @@ $price = abrs_calc_service_price( $service, [
 
 $input_prefix = 'services[' . $service->get_id() . ']';
 
+$js_data = $service->only( 'id', 'name' );
+$js_data['quantity'] = 1;
+$js_data['price']    = $price ?: 0;
+
 ?>
 
-<div class="checkout-service">
+<div class="checkout-service" id="checkout-service-<?php echo esc_attr( $service->get_id() ); ?>">
 	<input type="hidden" name="<?php echo esc_attr( $input_prefix ); ?>[id]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php disabled( $is_included ); ?>>
 
 	<div class="columns">
@@ -59,7 +63,7 @@ $input_prefix = 'services[' . $service->get_id() . ']';
 				</div>
 
 				<div class="checkout-service__pay">
-					<div class="checkout-service__price">
+					<div class="checkout-service__price" data-bind="html: totalHtml">
 						<?php if ( $is_included ) : ?>
 							<?php abrs_price( 0 ); ?>
 						<?php else : ?>
@@ -71,7 +75,7 @@ $input_prefix = 'services[' . $service->get_id() . ']';
 						<div>
 							<?php if ( $service->is_quantity_selectable() ) : ?>
 
-								<input type="number" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
+								<input type="number" data-bind="value: quantity" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
 
 							<?php else : ?>
 
@@ -91,3 +95,29 @@ $input_prefix = 'services[' . $service->get_id() . ']';
 
 	</div>
 </div>
+
+<script>
+	(function ($) {
+		'use strict';
+
+		const Service = function (data) {
+			this.name = data.name;
+			this.price = data.price;
+			this.quantity = ko.observable(data.quantity);
+			this.totalHtml = ko.computed(() => {
+				let quantity = parseInt(this.quantity(), 10);
+
+				if (isNaN(quantity) || quantity === 0) {
+					quantity = 1;
+				}
+
+				return awebooking.formatPrice(quantity * parseFloat(this.price));
+			});
+		}
+
+		$(function () {
+			const data = <?php echo wp_json_encode( $js_data ); ?>;
+			ko.applyBindings(new Service(data), document.getElementById('checkout-service-<?php echo esc_attr( $service->get_id() ); ?>'));
+		})
+	})(jQuery)
+</script>
