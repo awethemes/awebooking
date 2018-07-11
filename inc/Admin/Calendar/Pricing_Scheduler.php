@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Model\Pricing\Base_Rate_Interval;
+use AweBooking\Model\Pricing\Standard_Rate_Interval;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
@@ -20,7 +20,7 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 
 		// Pluck the base rate in each room-type.
 		$rates = $this->room_types
-			->map_into( Base_Rate_Interval::class );
+			->map_into( Standard_Rate_Interval::class );
 
 		$resources = $this->create_rate_resources( $rates )
 			->each( function( Resource $resource ) {
@@ -68,27 +68,41 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
 	 * Display the event column.
 	 *
-	 * @param  \AweBooking\Calendar\Period\Day $day           The day.
-	 * @param  \AweBooking\Calendar\Calendar   $loop_calendar The current calendar.
+	 * @param  \AweBooking\Calendar\Period\Day     $day       The current day.
+	 * @param  \AweBooking\Calendar\Calendar       $calendar  The current loop calendar.
+	 * @param  \AweBooking\Calendar\Scheduler|null $scheduler The current loop scheduler.
 	 * @return  void
 	 */
-	protected function display_day_column( $day, $loop_calendar ) {
-		$indexed = $day->format( 'Y-m-d' );
+	protected function display_day_column( $day, $calendar, $scheduler ) {
+		$itemized = $this->get_matrix( $calendar->get_uid() );
 
-		$matrix = $this->get_matrix( $loop_calendar->get_uid() );
-		if ( is_null( $matrix ) ) {
+		if ( is_null( $itemized ) ) {
 			return;
 		}
 
+		echo $this->retrieve_rate_amount( $itemized, $day, $calendar ); // WPCS: XSS OK.
+	}
+
+	/**
+	 * Retrieve the rate amount as HTML.
+	 *
+	 * @param  \AweBooking\Support\Collection  $itemized The pricing as itemized.
+	 * @param  \AweBooking\Calendar\Period\Day $day      The day.
+	 * @param  \AweBooking\Calendar\Calendar   $calendar The current calendar.
+	 *
+	 * @return string
+	 */
+	protected function retrieve_rate_amount( $itemized, $day, $calendar ) {
 		// Get back the rate class instance from calendar resource.
 		/* @var \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate_unit */
-		$rate_unit = abrs_optional( $loop_calendar->get_resource() )->get_reference();
+		$rate_unit = abrs_optional( $calendar->get_resource() )->get_reference();
+
 		if ( is_null( $rate_unit ) ) {
-			return;
+			return '';
 		}
 
 		$rack_amount = abrs_decimal( $rate_unit->get_rack_rate() );
-		$amount      = abrs_decimal_raw( $matrix->get( $indexed ) );
+		$amount      = abrs_decimal_raw( $itemized->get( $day->format( 'Y-m-d' ) ) );
 
 		// Build the state class.
 		$state_class = '';
@@ -98,7 +112,6 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 			$state_class = 'statedown';
 		}
 
-		// @codingStandardsIgnoreLine
-		echo '<span class="scheduler__rate-amount ' . $state_class . '">' . abrs_format_price( $amount ) . '</span>';
+		return '<span class="scheduler__rate-amount ' . $state_class . '">' . abrs_format_price( $amount ) . '</span>';
 	}
 }

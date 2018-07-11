@@ -1,5 +1,12 @@
 <?php
-/* @vars $calendar, $loop_calendar */
+/**
+ * Template displaying row events.
+ *
+ * @var \AweBooking\Admin\Calendar\Abstract_Scheduler $calendar
+ * @var \AweBooking\Calendar\Calendar                 $loop_calendar
+ *
+ * @package AweBooking\Admin\Calendar
+ */
 
 if ( ! isset( $loop_scheduler ) ) {
 	$loop_scheduler = null;
