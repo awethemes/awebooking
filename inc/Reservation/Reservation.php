@@ -232,6 +232,8 @@ class Reservation {
 		$this->store->flush( 'previous_request' );
 		$this->store->flush( 'reservation_hash' );
 
+		$this->totals->calculate();
+
 		do_action( 'abrs_reservation_emptied', $this );
 	}
 
