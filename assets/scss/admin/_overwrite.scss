@@ -263,6 +263,23 @@
     color: inherit;
     vertical-align: middle;
   }
+
+  .cmb-th > label {
+    padding-top: 0;
+    padding-bottom: 7px;
+    display: inline-block;
+  }
+
+  .cmb2-tooltip {
+    vertical-align: top;
+    display: inline-block;
+
+    .dashicons {
+      font-size: 14px;
+      width: auto;
+      height: auto;
+    }
+  }
 }
 
 .sup-placeholder {

@@ -68,23 +68,6 @@
       width: 100%;
     }
 
-    .cmb-th > label {
-      padding-top: 0;
-      padding-bottom: 7px;
-      display: inline-block;
-    }
-
-    .cmb2-tooltip {
-      vertical-align: top;
-      display: inline-block;
-
-      .dashicons {
-        font-size: 14px;
-        width: auto;
-        height: auto;
-      }
-    }
-
     > .abrow,
     > .cmb-row {
       padding: 0;
@@ -118,6 +101,7 @@
   .category-tabs {
     margin: 12px 0 5px;
   }
+
   .categorychecklist {
     margin-bottom: 7px;
   }

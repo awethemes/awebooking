@@ -1295,20 +1295,20 @@
   padding-right: .3rem;
 }
 
-.roommaster-info___list {
+.roommaster-info__list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.roommaster-info___list .info-item {
+.roommaster-info__list .info-item {
   position: relative;
   font-size: 1rem;
   padding-left: 1.3rem;
   padding-bottom: .8rem;
 }
 
-.roommaster-info___list .info-icon {
+.roommaster-info__list .info-icon {
   position: absolute;
   top: 1px;
   left: 0;
@@ -1318,20 +1318,24 @@
   padding-left: .3rem;
 }
 
-.roommaster-child__item:not(:last-child) {
+.roommaster-box {
+  padding: 0 5px;
+}
+
+.roommaster-deal__item:not(:last-child) {
   margin-bottom: .7rem;
 }
 
-.roommaster-child__bucketspan {
+.roommaster-deal__bucketspan {
   font-size: .8rem;
   font-weight: bold;
 }
 
-.roommaster-child__info {
+.roommaster-deal__info {
   font-size: .8rem;
 }
 
-.roommaster-child__info .info-icon {
+.roommaster-deal__info .info-icon {
   margin-right: .8rem;
 }
 
@@ -1341,7 +1345,7 @@
 
 .roommaster-inventory {
   font-size: 1rem;
-  text-align: right;
+  font-style: italic;
 }
 
 .roommaster-inventory .awebooking-price {
@@ -1351,6 +1355,11 @@
 
 .roommaster-button .button {
   width: 100%;
+}
+
+.roommaster-button__remaining-rooms {
+  font-size: 1rem;
+  font-style: italic;
 }
 
 .roommaster-detail {
@@ -1505,8 +1514,11 @@ dialog[open] {
   color: #6c757d;
 }
 
+.awebooking-checkout .content-area {
+  width: 100%;
+}
+
 #checkout-form {
-  padding: 1em;
   background-color: #fff;
 }
 
@@ -1750,6 +1762,7 @@ ul.booking_details li:last-of-type {
 .checkout-services {
   border: 1px solid #e9ecef;
   border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .checkout-services__header {
@@ -1809,6 +1822,14 @@ ul.booking_details li:last-of-type {
   font-size: 1rem;
 }
 
+.checkout-services__submit {
+  text-align: right;
+}
+
+.awebooking-check-availability .content-area {
+  width: 100%;
+}
+
 .search-rooms__form {
   margin-bottom: 1.5rem;
 }
@@ -1859,7 +1880,7 @@ ul.booking_details li:last-of-type {
 }
 
 .list-room__media {
-  width: 45%;
+  width: 100%;
   float: left;
   padding: 0 15px;
 }
@@ -1869,7 +1890,7 @@ ul.booking_details li:last-of-type {
 }
 
 .list-room__info {
-  width: 55%;
+  width: 100%;
   float: left;
   padding: 0 15px;
 }
@@ -1886,6 +1907,84 @@ ul.booking_details li:last-of-type {
 
 .list-room__desc {
   font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.list-room__info-list,
+.list-room__occupancy {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-room__info-list {
+  margin-bottom: 15px;
+}
+
+.list-room__additional-info {
+  margin-bottom: 20px;
+}
+
+.list-room__additional-info::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.single-room_type .content-area {
+  width: 100%;
+}
+
+.room__title {
+  font-size: 45px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.room__section {
+  border-bottom: 1px solid #d8d8d8;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.room__section-title {
+  margin-bottom: 20px;
+}
+
+.room-amenities,
+.room-gallery {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.room-amenities::after,
+.room-gallery::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.room-amenity {
+  width: 100%;
+  display: block;
+  float: left;
+}
+
+.room-gallery {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.room-gallery__item {
+  width: 100%;
+  display: block;
+  float: left;
+  padding: 0 5px;
+  margin-bottom: 10px;
 }
 
 @media (min-width: 576px) {
@@ -1898,11 +1997,43 @@ ul.booking_details li:last-of-type {
   .awebooking-container {
     max-width: 720px;
   }
+
+  .room-gallery__item {
+    width: 50%;
+  }
 }
 
 @media (min-width: 992px) {
   .awebooking-container {
     max-width: 960px;
+  }
+}
+
+@media (min-width: 996px) {
+  .list-room__media {
+    width: 45%;
+  }
+
+  .list-room__info {
+    width: 55%;
+  }
+
+  .list-room__info-list,
+  .list-room__occupancy {
+    width: 50%;
+  }
+
+  .list-room__info-list {
+    box-shadow: 1px 0 0 rgba(0, 0, 0, 0.07);
+    margin-bottom: 0;
+  }
+
+  .room-amenity {
+    width: 50%;
+  }
+
+  .room-gallery__item {
+    width: 25%;
   }
 }
 
