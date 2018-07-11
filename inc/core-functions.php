@@ -294,6 +294,8 @@ function abrs_normalize_option_name( $language = null ) {
 /**
  * Gets translatable options.
  *
+ * TODO: ...
+ *
  * @return array
  */
 function abrs_get_translatable_options() {
@@ -353,9 +355,7 @@ function abrs_get_translatable_options() {
 		'email_customer_note_content',
 	]);
 
-	// $db_fields = get_option( 'awebooking_translatable_fields', [] );
-
-	return array_unique( array_merge( $core_fields, [] ) );
+	return array_unique( $core_fields );
 }
 
 /**
@@ -693,7 +693,7 @@ function abrs_get_rounding_precision() {
  * Parse the object_id.
  *
  * @param  mixed $object The object.
- * @return int|null
+ * @return int
  */
 function abrs_parse_object_id( $object ) {
 	if ( is_numeric( $object ) && $object > 0 ) {
@@ -705,6 +705,8 @@ function abrs_parse_object_id( $object ) {
 	} elseif ( $object instanceof WP_Object ) {
 		return $object->get_id();
 	}
+
+	return 0;
 }
 
 /**
