@@ -101,6 +101,7 @@ class Availability {
 	 */
 	protected function transform_item_callback() {
 		return function ( $matching ) {
+			/* @var \AweBooking\Calendar\Resource\Resource $matching['resource'] */
 			if ( ! $reference = $matching['resource']->get_reference() ) {
 				throw new \RuntimeException( 'Invalid resource.' );
 			}

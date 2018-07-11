@@ -17,9 +17,8 @@
   a {
     text-decoration: none;
   }
-}
 
-.abrs-search-toolbar {
-  .cmb-th label { display: none; }
-  .abrs-input-dates.abrow { width: 100%; }
+  .filter-links a {
+    padding: 1.24em 1px;
+  }
 }

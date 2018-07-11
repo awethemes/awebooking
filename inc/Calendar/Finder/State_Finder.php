@@ -112,6 +112,7 @@ class State_Finder extends Finder {
 	 */
 	protected function remaining_states( $events ) {
 		$current_states = $events->map( function( $e ) {
+			/* @var \AweBooking\Calendar\Event\Event_Interface $e */
 			return $e->get_value();
 		})->all();
 
@@ -135,6 +136,7 @@ class State_Finder extends Finder {
 	protected function get_events( Period $period ) {
 		return Collection::make( $this->resources )
 			->keyBy( function ( $resource ) {
+				/* @var \AweBooking\Calendar\Resource\Resource_Interface $resource */
 				return $resource->get_id();
 			})
 			->transform( function ( $resource ) use ( $period ) {

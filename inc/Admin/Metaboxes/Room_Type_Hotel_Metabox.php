@@ -1,7 +1,26 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-class Room_Type_Hotel_Metabox {
+use AweBooking\Constants;
+
+class Room_Type_Hotel_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id       = 'awebooking-room-type-hotel';
+		$this->title    = esc_html__( 'Select Hotel', 'awebooking' );
+		$this->screen   = Constants::ROOM_TYPE;
+		$this->context  = 'side';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function should_show() {
+		return abrs_multiple_hotels();
+	}
+
 	/**
 	 * Output the metabox.
 	 *

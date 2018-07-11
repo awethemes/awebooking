@@ -5,7 +5,7 @@ use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
-use AweBooking\Model\Pricing\Contracts\Single_Rate;
+use AweBooking\Model\Pricing\Contracts\Rate_Interval;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Room_Rate {
@@ -56,7 +56,7 @@ class Room_Rate {
 	/**
 	 * The rate to retrieve the room price.
 	 *
-	 * @var \AweBooking\Model\Pricing\Contracts\Single_Rate
+	 * @var \AweBooking\Model\Pricing\Contracts\Rate_Interval
 	 */
 	protected $room_rate;
 
@@ -132,7 +132,7 @@ class Room_Rate {
 		}
 
 		// Check the rates availability.
-		$rate_response = abrs_filter_single_rates( $this->rate_plan->get_single_rates(), $this->get_timespan(), $this->get_guest_counts() );
+		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan(), $this->get_guest_counts() );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
@@ -268,9 +268,9 @@ class Room_Rate {
 	/**
 	 * Sets the room rate (the room price).
 	 *
-	 * @param \AweBooking\Model\Pricing\Contracts\Single_Rate $rate The rate instance.
+	 * @param \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate The rate instance.
 	 */
-	public function using( Single_Rate $rate ) {
+	public function using( Rate_Interval $rate ) {
 		if ( ! $this->rates_availability->remain( $rate->get_id() ) ) {
 			throw new \InvalidArgumentException( esc_html__( 'Invalid single rate.', 'awebooking' ) );
 		}
@@ -286,10 +286,10 @@ class Room_Rate {
 	/**
 	 * Add a additional rate.
 	 *
-	 * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate $rate   The rate instance.
-	 * @param  string                                          $reason The reason message.
+	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate   The rate instance.
+	 * @param  string                                            $reason The reason message.
 	 */
-	public function additional( Single_Rate $rate, $reason = '' ) {
+	public function additional( Rate_Interval $rate, $reason = '' ) {
 		$key = $rate->get_id();
 
 		if ( is_null( $this->room_rate ) ) {
@@ -310,14 +310,14 @@ class Room_Rate {
 	/**
 	 * Retrieve the price breakdown of given rate.
 	 *
-	 * @param  \AweBooking\Model\Pricing\Contracts\Single_Rate $rate The rate instance.
+	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate The rate instance.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 *
 	 * @throws \Exception
 	 */
-	public function retrieve_rate_breakdown( Single_Rate $rate ) {
-		$breakdown = abrs_retrieve_single_rate( $rate, $this->request->get_timespan() );
+	public function retrieve_rate_breakdown( Rate_Interval $rate ) {
+		$breakdown = abrs_retrieve_rate( $rate, $this->request->get_timespan() );
 
 		if ( is_wp_error( $breakdown ) ) {
 			throw new \RuntimeException( $breakdown->get_error_message() );
@@ -359,7 +359,7 @@ class Room_Rate {
 	/**
 	 * Gets the room rate.
 	 *
-	 * @return \AweBooking\Model\Pricing\Contracts\Single_Rate|null
+	 * @return \AweBooking\Model\Pricing\Contracts\Rate_Interval|null
 	 */
 	public function get_room_rate() {
 		return $this->room_rate;

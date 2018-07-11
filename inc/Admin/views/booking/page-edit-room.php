@@ -43,7 +43,7 @@ $rate_plan = abrs_get_rate( $room_item->get( 'rate_plan_id' ) );
 					</div>
 
 					<div class="cmb-row">
-						<div class="cmb-th"><label><?php echo esc_html__( 'Single_Rate Plan', 'awebooking' ); ?></label></div>
+						<div class="cmb-th"><label><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
 							<?php if ( $rate_plan ) : ?>

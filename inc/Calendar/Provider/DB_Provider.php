@@ -92,7 +92,9 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 		$events = abrs_collect( $raw_events )
 			->flatten( 1 )
 			->map( function ( $raw_event ) {
+				/* @var \Roomify\Bat\Event\Event $raw_event */
 				$resource = $this->resources->first( function ( $r ) use ( $raw_event ) {
+					/* @var \AweBooking\Calendar\Resource\Resource_Interface $r */
 					return $r->get_id() === $raw_event->getUnitId();
 				} );
 
@@ -164,9 +166,9 @@ class DB_Provider implements Provider_Interface, Contracts\Storable {
 	 */
 	protected function transform_resources_to_units() {
 		return abrs_collect( $this->resources )
-			->map( function ( $r ) {
+			->map( function ( Resource_Interface $r ) {
 				return new BATUnit( $r->get_id(), $r->get_value() );
-			} )->unique( function ( $u ) {
+			} )->unique( function ( BATUnit $u ) {
 				return $u->getUnitId();
 			} )->all();
 	}

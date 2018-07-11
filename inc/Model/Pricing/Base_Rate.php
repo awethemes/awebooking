@@ -43,7 +43,7 @@ class Base_Rate implements Contracts\Rate {
 	 * {@inheritdoc}
 	 */
 	public function get_private_name() {
-		return esc_html__( 'Base Single_Rate', 'awebooking' );
+		return esc_html__( 'Base Rate', 'awebooking' );
 	}
 
 	/**
@@ -70,10 +70,10 @@ class Base_Rate implements Contracts\Rate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_single_rates() {
+	public function get_rate_intervals() {
 		if ( is_null( $this->rates ) ) {
-			$this->rates = abrs_query_single_rates( $this )
-				->prepend( abrs_get_base_single_rate( $this->instance ) );
+			$this->rates = abrs_get_rate_intervals( $this )
+				->prepend( abrs_get_standard_rate_interval( $this->instance ) );
 		}
 
 		return $this->rates;

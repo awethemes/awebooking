@@ -5,7 +5,6 @@ use AweBooking\Plugin;
 use AweBooking\Multilingual;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Carbonate;
-use AweBooking\Admin\Admin_Settings;
 
 class Load_Configuration {
 	/**

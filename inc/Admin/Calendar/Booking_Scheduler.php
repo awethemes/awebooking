@@ -2,17 +2,18 @@
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use AweBooking\Model\Room_Type;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Event\Core\State_Event;
 use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Calendar\Provider\Aggregate_Provider;
+use Awethemes\Http\Request;
 
 class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * Cache results of room types.
 	 *
-	 * @var string
+	 * @var \AweBooking\Support\Collection
 	 */
 	protected $room_types;
 
@@ -58,6 +59,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * {@inheritdoc}
 	 */
 	protected function filter_events( $events ) {
+		/* @var \AweBooking\Support\Collection $events */
 		return $events->reject( function ( $e ) {
 			if ( ( ! $e instanceof State_Event && ! $e instanceof Booking_Event ) || 0 === (int) $e->get_value() ) {
 				return true;
@@ -70,6 +72,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 			return false;
 		})->each( function( $e ) {
+			/* @var \AweBooking\Calendar\Event\Event $e */
 			$end_date = $e->get_end_date();
 
 			if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
@@ -87,7 +90,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		// Get all rooms indexed by room type ID.
 		$all_rooms = $this->room_types
 			->keyBy( 'id' )
-			->map( function( $r ) {
+			->map( function( Room_Type $r ) {
 				return $r->get_rooms();
 			});
 
@@ -139,7 +142,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 *
 	 * @return void
 	 */
-	protected function display_toolbars() {
+	protected function display_toolbar() {
 		echo '<div class="scheduler-flexspace"></div>';
 		$this->template( 'toolbar/datepicker.php' );
 	}
@@ -170,6 +173,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 		$available = 0;
 		foreach ( $matrix as $item ) {
+			/* @var \AweBooking\Support\Collection $item */
 			if ( 0 === $item->get( $day->format( 'Y-m-d' ) ) ) {
 				$available++;
 			}
@@ -227,6 +231,8 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 */
 	protected function find_events_in_date( $date, $events ) {
 		return $events->filter( function ( $event ) use ( $date ) {
+			/* @var \AweBooking\Calendar\Event\Event $event */
+
 			$date = $date->get_start_date();
 
 			// If the check date same with start date, find event

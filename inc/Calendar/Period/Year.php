@@ -34,6 +34,7 @@ class Year extends Iterator_Period {
 		$initial = new Month( $this->startDate );
 
 		return $this->generate_iterator( $initial, function( $current, $initial ) {
+			/* @var \AweBooking\Calendar\Period\Iterator_Period $current */
 			return $this->contains( $current->get_start_date() );
 		});
 	}

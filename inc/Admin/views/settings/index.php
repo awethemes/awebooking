@@ -32,7 +32,7 @@ $tabs = abrs_collect( $settings->all() )
 
 		<nav class="nav-tab-wrapper abrs-nav-tab-wrapper">
 			<?php foreach ( $tabs as $key => $label ) : ?>
-				<a class="nav-tab <?php echo ( $key === $current_setting ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( abrs_admin_route( '/settings', [ 'setting' => $key ] ) ); ?>"><?php echo esc_html( $label ); ?></a>
+				<a class="nav-tab nav-tab--<?php echo sanitize_html_class( $key ); ?> <?php echo ( $key === $current_setting ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( abrs_admin_route( '/settings', [ 'setting' => $key ] ) ); ?>"><?php echo esc_html( $label ); ?></a>
 			<?php endforeach; ?>
 
 			<?php do_action( 'abrs_admin_settings_tabs' ); ?>

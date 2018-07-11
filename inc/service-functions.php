@@ -76,7 +76,7 @@ function abrs_services_for_reservation( array $query_args, array $includes, arra
 	$services = abrs_list_services( $query_args ); // TODO:...
 
 	$includes = abrs_collect( $includes )->transform( function( $s ) {
-		return $s instanceof Service ? $s->get_id() : (int) $a;
+		return $s instanceof Service ? $s->get_id() : (int) $s;
 	})->all();
 
 	return $services->transform( function( $service ) use ( $context, $includes ) {

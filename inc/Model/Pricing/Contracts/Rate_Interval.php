@@ -1,20 +1,20 @@
 <?php
 namespace AweBooking\Model\Pricing\Contracts;
 
-interface Single_Rate {
-	/**
-	 * Gets the parent ID.
-	 *
-	 * @return int
-	 */
-	public function get_parent_id();
-
+interface Rate_Interval {
 	/**
 	 * Gets the ID.
 	 *
 	 * @return int
 	 */
 	public function get_id();
+
+	/**
+	 * Gets the rate ID.
+	 *
+	 * @return int
+	 */
+	public function get_rate_id();
 
 	/**
 	 * Gets the name.
@@ -52,7 +52,7 @@ interface Single_Rate {
 	public function get_priority();
 
 	/**
-	 * Gets all restrictions.
+	 * Returns the restrictions.
 	 *
 	 * @return array
 	 */

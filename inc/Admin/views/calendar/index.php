@@ -1,12 +1,27 @@
+<?php
+/**
+ * Template displaying the calendar.
+ *
+ * @var \AweBooking\Admin\Calendar\Abstract_Scheduler $scheduler
+ *
+ * @package AweBooking
+ */
+
+?>
+
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Calendar', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<div class="abrs-toolbar abrs-search-toolbar dp-flex">
-		<div class="abrs-ptb1 pricing-left-actions">
-			<button class="button abrs-button js-open-bulk-update"><?php esc_html_e( 'Bulk update', 'awebooking' ); ?></button>
+	<?php if ( ! abrs_blank( $scheduler->scheduler ) ) : ?>
+		<div class="abrs-toolbar abrs-toolbar--calendar dp-flex">
+			<div class="abrs-ptb1">
+				<button class="button abrs-button js-open-bulk-update"><?php esc_html_e( 'Bulk Update', 'awebooking' ); ?></button>
+			</div>
+
+			<?php $scheduler->call( 'display_main_toolbar' ); ?>
 		</div>
-	</div>
+	<?php endif; ?>
 
 	<div id="awebooking-avai-scheduler">
 		<?php $scheduler->display(); ?>

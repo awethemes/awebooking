@@ -30,6 +30,7 @@ class Week extends Iterator_Period {
 		$initial = new Day( $this->startDate );
 
 		return $this->generate_iterator( $initial, function( $current ) {
+			/* @var \AweBooking\Calendar\Period\Iterator_Period $current */
 			return $this->contains( $current->get_start_date() );
 		});
 	}

@@ -45,11 +45,11 @@ interface Rate {
 	public function get_priority();
 
 	/**
-	 * Gets all single rates.
+	 * Gets all rate intervals.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
-	public function get_single_rates();
+	public function get_rate_intervals();
 
 	/**
 	 * Returns whether or not the rate is taxable.

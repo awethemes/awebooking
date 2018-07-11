@@ -20,8 +20,10 @@ class Rate_Controller extends Controller {
 	 * @return \Awethemes\Http\Response
 	 */
 	public function index( Request $request ) {
-		$scheduler = new Pricing_Scheduler;
+		$scheduler_class = apply_filters( 'abrs_pricing_scheduler_class', Pricing_Scheduler::class );
 
+		/* @var \AweBooking\Admin\Calendar\Pricing_Scheduler $scheduler */
+		$scheduler = awebooking()->make( $scheduler_class );
 		$scheduler->prepare( $request );
 
 		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls', 'bulk_controls' ) );
@@ -45,13 +47,15 @@ class Rate_Controller extends Controller {
 			return $timespan;
 		}
 
-		$updated = abrs_apply_single_rate( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
+		$updated = abrs_apply_rate( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
 			'granularity' => Constants::GL_DAILY,
 			'only_days'   => $request->get( 'days' ),
 		]);
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 			abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
+		} elseif ( is_wp_error( $updated ) ) {
+			abrs_admin_notices( $updated->get_error_message(), 'error' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );
@@ -81,7 +85,7 @@ class Rate_Controller extends Controller {
 
 		$bulk_counts = 0;
 		foreach ( $rates as $rate ) {
-			$updated = abrs_apply_single_rate( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
+			$updated = abrs_apply_rate( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
 				'granularity' => Constants::GL_DAILY,
 				'only_days'   => $request->get( 'bulk_days' ),
 			]);

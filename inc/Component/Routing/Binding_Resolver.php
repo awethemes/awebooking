@@ -38,7 +38,7 @@ class Binding_Resolver {
 	public function resolve( array $parameters ) {
 		foreach ( $parameters as $key => $value ) {
 			if ( $callback = $this->get_binding_callback( $key ) ) {
-				$parameters[ $key ] = call_user_func( $callback, $value );
+				$parameters[ $key ] = $callback( $value );
 			}
 		}
 
@@ -79,9 +79,7 @@ class Binding_Resolver {
 	public function get_binding_callback( $key ) {
 		$key = str_replace( '-', '_', $key );
 
-		if ( isset( $this->binders[ $key ] ) ) {
-			return $this->binders[ $key ];
-		}
+		return isset( $this->binders[ $key ] ) ? $this->binders[ $key ] : null;
 	}
 
 	/**
@@ -113,7 +111,7 @@ class Binding_Resolver {
 
 			$callable = [ $this->plugin->make( $class ), $method ];
 
-			return call_user_func( $callable, $value );
+			return $callable( $value );
 		};
 	}
 
@@ -126,8 +124,8 @@ class Binding_Resolver {
 	 */
 	protected function binding_for_model( $class, $callback = null ) {
 		return function ( $value ) use ( $class, $callback ) {
-			if ( is_null( $value ) ) {
-				return;
+			if ( empty( $value ) ) {
+				return null;
 			}
 
 			// For model binders, we will attempt to retrieve the models using the first
@@ -135,6 +133,7 @@ class Binding_Resolver {
 			// throw a not found exception otherwise we will return the instance.
 			$model = new $class( $value );
 
+			/* @var \AweBooking\Model\Model $model */
 			if ( $model->exists() ) {
 				return $model;
 			}
@@ -143,7 +142,7 @@ class Binding_Resolver {
 			// what we should do when the model is not found. This just gives these
 			// developer a little greater flexibility to decide what will happen.
 			if ( $callback instanceof Closure ) {
-				return call_user_func( $callback, $value );
+				return $callback( $value );
 			}
 
 			throw (new ModelNotFoundException())->set_model( $class );

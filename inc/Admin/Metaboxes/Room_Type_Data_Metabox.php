@@ -1,12 +1,13 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-use Awethemes\Http\Request;
+use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Component\Form\Form_Builder;
+use Awethemes\Http\Request;
 
-class Room_Type_Metabox {
+class Room_Type_Data_Metabox extends Abstract_Metabox {
 	/**
 	 * The form builder.
 	 *
@@ -18,8 +19,11 @@ class Room_Type_Metabox {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->form_builder = new Form_Builder( 'room-type' );
+		$this->id      = 'awebooking-room-type-data';
+		$this->title   = esc_html__( 'Room Type Data', 'awebooking' );
+		$this->screen  = Constants::ROOM_TYPE;
 
+		$this->form_builder = new Form_Builder( 'room-type' );
 		$this->form_fields( $this->form_builder );
 	}
 
@@ -302,7 +306,7 @@ class Room_Type_Metabox {
 		$form->add_field([
 			'id'              => 'base_price', // _rack_rate
 			'type'            => 'abrs_amount',
-			'name'            => esc_html__( 'Rack Single_Rate', 'awebooking' ),
+			'name'            => esc_html__( 'Rack Rate', 'awebooking' ),
 			'append'          => abrs_currency_symbol(),
 			'tooltip'         => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
 		]);
@@ -488,7 +492,9 @@ class Room_Type_Metabox {
 	/**
 	 * Sanitize beds.
 	 *
-	 * @param  array $beds beds
+	 * TODO: ...
+	 *
+	 * @param  array $beds Input data.
 	 * @return array
 	 */
 	public function sanitize_beds( $beds ) {

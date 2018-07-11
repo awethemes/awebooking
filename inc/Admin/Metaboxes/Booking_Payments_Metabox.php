@@ -1,7 +1,18 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
-class Booking_Payments_Metabox {
+use AweBooking\Constants;
+
+class Booking_Payments_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id      = 'awebooking-booking-payments';
+		$this->title   = esc_html__( 'Payments', 'awebooking' );
+		$this->screen  = Constants::BOOKING;
+	}
+
 	/**
 	 * Output the metabox.
 	 *

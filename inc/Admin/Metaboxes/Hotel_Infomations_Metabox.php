@@ -1,11 +1,21 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
+use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Model\Hotel;
 use AweBooking\Admin\Forms\Hotel_Information_Form;
 
-class Hotel_Info_Metabox {
+class Hotel_Infomations_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id      = 'awebooking-hotel-info';
+		$this->title   = esc_html__( 'Hotel Information', 'awebooking' );
+		$this->screen  = Constants::HOTEL_LOCATION;
+	}
+
 	/**
 	 * Output the metabox.
 	 *

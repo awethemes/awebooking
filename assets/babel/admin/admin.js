@@ -1,8 +1,13 @@
+const debounce = require('debounce');
+const queryString = require('query-string');
+
 (function($) {
   'use strict';
 
-  const debounce = require('debounce');
-  const queryString = require('query-string');
+
+  debounce(() => {
+
+  });
 
   const awebooking = window.awebooking || {};
 
@@ -207,5 +212,9 @@
       });
     });
   });
+
+  module.exports = function () {
+
+  };
 
 })(jQuery);

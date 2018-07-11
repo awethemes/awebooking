@@ -34,7 +34,7 @@ class Event implements Event_Interface {
 	 *
 	 * This can represent an availability state or a pricing value.
 	 *
-	 * @var int
+	 * @var int|mixed
 	 */
 	protected $value;
 
