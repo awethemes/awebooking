@@ -41,9 +41,9 @@ var accounting = require('accounting');
     var defaults = plugin.config.datepicker;
     var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
 
-    if (Array.isArray(defaults.disable_days)) {
+    if (Array.isArray(defaults.disableDays)) {
       disable.push(function (date) {
-        return defaults.disable_days.indexOf(date.getDay()) !== -1;
+        return defaults.disableDays.indexOf(date.getDay()) !== -1;
       });
     }
 
@@ -52,11 +52,11 @@ var accounting = require('accounting');
 
     var fp = flatpickr(instance, Object.assign({}, options, {
       dateFormat: 'Y-m-d',
-      ariaDateFormat: i18n.date_format,
+      ariaDateFormat: i18n.dateFormat,
       minDate: 'today',
       // maxDate: max_date,
       // disable: disable,
-      showMonths: defaults.show_months,
+      showMonths: defaults.showMonths || 1,
       enableTime: false,
       enableSeconds: false,
       onReady: function onReady(_, __, fp) {

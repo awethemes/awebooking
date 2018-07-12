@@ -1091,6 +1091,14 @@
   font-size: 1.1rem;
 }
 
+.searchbox__popup {
+  display: none;
+}
+
+.tippy-tooltip .searchbox__popup {
+  display: block;
+}
+
 .searchbox-spinner {
   display: flex;
   justify-content: center;

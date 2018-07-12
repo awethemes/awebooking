@@ -8,14 +8,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function ($, ko, plugin) {
   'use strict';
 
-  function formatDate(date) {
+  function formatDate(date, format) {
     var _date = flatpickr.parseDate(date);
 
     if (!_date) {
       return '';
     }
 
-    return flatpickr.formatDate(_date, plugin.i18n.dateFormat);
+    return flatpickr.formatDate(_date, format || plugin.i18n.dateFormat);
   }
 
   function SearchFormModel() {
@@ -23,11 +23,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    this.adult = ko.observable(data.adult || 1);
+    this.adults = ko.observable(data.adult || 1);
     this.children = ko.observable(data.children || 0);
     this.infants = ko.observable(data.infants || 0);
-    this.checkIn = ko.observable(data.checkIn || '2018-07-05');
-    this.checkOut = ko.observable(data.checkOut || '2018-07-10');
+    this.checkIn = ko.observable(data.checkIn || '');
+    this.checkOut = ko.observable(data.checkOut || '');
+
+    this.checkInDate = ko.computed(function () {
+      return formatDate(_this.checkIn(), 'Y-m-d');
+    });
+
+    this.checkOutDate = ko.computed(function () {
+      return formatDate(_this.checkOut(), 'Y-m-d');
+    });
 
     this.checkInFormatted = ko.computed(function () {
       return formatDate(_this.checkIn());
@@ -45,18 +53,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, SearchForm);
 
       var self = this;
-
       this.$el = $(el);
-      this.model = new SearchFormModel();
-      ko.applyBindings(this.model, el);
 
-      $('.searchbox__box', this.$el).each(function (i, box) {
-        $(box).data('popup', _this2.setuptPopper(box));
+      this.model = new SearchFormModel({
+        adults: this.$el.find('input[name="adults"]').val(),
+        children: this.$el.find('input[name="children"]').val(),
+        infants: this.$el.find('input[name="infants"]').val(),
+        checkIn: this.$el.find('input[name="check_in"]').val(),
+        checkOut: this.$el.find('input[name="check_out"]').val()
       });
 
+      ko.applyBindings(this.model, el);
+
       var $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
+      if ($rangepicker.length === 0) {
+        $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
+      }
+
       var fp = awebooking.datepicker($rangepicker[0], {
         mode: 'range',
+        altInput: false,
         clickOpens: false,
         closeOnSelect: true,
 
@@ -95,6 +111,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         fp.isOpen = false;
         fp.open(undefined, this);
       });
+
+      $('.searchbox__box', this.$el).each(function (i, box) {
+        $(box).data('popup', _this2.setuptPopper(box));
+      });
     }
 
     _createClass(SearchForm, [{
@@ -118,6 +138,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           animation: 'shift-toward',
           duration: [150, 150],
           html: $html[0],
+          appendTo: this.$el[0],
           popperOptions: { modifiers: {
               hide: { enabled: false },
               preventOverflow: { enabled: false }
