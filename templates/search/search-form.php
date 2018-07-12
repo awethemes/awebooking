@@ -24,7 +24,8 @@ if ( ! abrs_get_option( 'display_search_form_on_search', true ) ) {
 	<?php
 	// Print the search form.
 	abrs_get_search_form([
-		'layout' => 'horizontal',
+		'layout'    => abrs_get_option( 'search_form_style', 'horizontal' ),
+		'alignment' => abrs_get_option( 'search_form_aligment', 'left' ),
 	]);
 	?>
 </div>

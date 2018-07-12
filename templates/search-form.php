@@ -48,7 +48,7 @@ $form_classes = [
 							</label>
 
 							<div>
-								<select name="hotel" class="input-transparent">
+								<select name="hotel" class="searchbox__input searchbox__input--hotel input-transparent">
 									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
@@ -71,12 +71,11 @@ $form_classes = [
 						</label>
 
 						<div>
-							<span data-bind="text: checkInFormatted"></span>
+							<span class="searchbox__input-display" data-bind="text: checkInFormatted"></span>
 							<input type="hidden" data-bind="value: checkInDate" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<div tabindex="0" class="searchbox__box searchbox__box--checkout">
@@ -91,7 +90,7 @@ $form_classes = [
 						</label>
 
 						<div>
-							<span data-bind="text: checkOutFormatted"></span>
+							<span class="searchbox__input-display" data-bind="text: checkOutFormatted"></span>
 							<input type="hidden" data-bind="value: checkOutDate" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</div>
 					</div>
