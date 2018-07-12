@@ -60,7 +60,7 @@ class Booking_Payment_Controller extends Controller {
 
 		// Handle the request.
 		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
-		$payment_item->fill( $sanitized->get_attributes() );
+		$payment_item->fill( $sanitized->all() );
 
 		if ( $payment_item['amount'] > 0 && $payment_item->save() ) {
 			abrs_admin_notices( esc_html__( 'Added new payment successfully!', 'awebooking' ), 'success' )->dialog();
@@ -106,7 +106,7 @@ class Booking_Payment_Controller extends Controller {
 		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
 
 		if ( $sanitized->count() > 0 ) {
-			$payment_item->fill( $sanitized->get_attributes() );
+			$payment_item->fill( $sanitized->all() );
 		}
 
 		$payment_item->save();
