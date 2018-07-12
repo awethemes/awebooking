@@ -22,6 +22,8 @@ $display_price = ( $http_request->get( 'showprice' ) && in_array( $http_request-
 ?>
 
 <div class="roommaster-inventory roommaster-box">
+	<h4 class="roommaster-content__title"><?php esc_html_e( 'Price', 'awebooking' ); ?></h4>
+
 	<?php
 	switch ( $display_price ) {
 		case 'total':

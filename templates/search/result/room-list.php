@@ -20,31 +20,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="roommaster-list">
-	<div class="columns no-gutters">
-		<div class="column-4">
-			<div class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></div>
+	<div class="columns no-gutters roommaster-list__header">
+		<div class="column-lg-4">
+			<h4 class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></h4>
 		</div>
-		<div class="column-2">
-			<div class="roommaster-content__title"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></div>
+		<div class="column-lg-2">
+			<h4 class="roommaster-content__title"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></h4>
 		</div>
-		<div class="column-3">
-			<div class="roommaster-content__title"><?php esc_html_e( 'Price', 'awebooking' ); ?></div>
+		<div class="column-lg-3">
+			<h4 class="roommaster-content__title"><?php esc_html_e( 'Price', 'awebooking' ); ?></h4>
 		</div>
-		<div class="column-3"></div>
+		<div class="column-lg-3"></div>
 	</div>
 
 	<?php //foreach ($variable as $key => $value) : ?>
-	<div class="columns no-gutters">
-		<div class="column-4">
+	<div class="columns no-gutters roommaster-list__content">
+		<div class="column-lg-4">
 			<?php abrs_get_template( 'search/result/deal.php', compact( 'room_type', 'room_rate' ) ); ?>
 		</div>
-		<div class="column-2">
+		<div class="column-lg-2">
 			<?php abrs_get_template( 'search/result/capacity.php', compact( 'room_type', 'room_rate' ) ); ?>
 		</div>
-		<div class="column-3">
+		<div class="column-lg-3">
 			<?php do_action( 'abrs_search_result_room_price', $room_type, $room_rate ); ?>
 		</div>
-		<div class="column-3">
+		<div class="column-lg-3">
 			<?php abrs_get_template( 'search/result/button.php', compact( 'room_type', 'room_rate' ) ); ?>
 		</div>
 	</div>

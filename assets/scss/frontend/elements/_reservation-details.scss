@@ -82,9 +82,17 @@ $reservation-border-radius: 6px;
 
 // Reservation dates.
 .reservation-dates {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block;
+  align-items: unset;
+  justify-content: unset;
+  text-align: center;
+
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 .reservation-date {
@@ -98,8 +106,13 @@ $reservation-border-radius: 6px;
 
 	&__date {
 		position: relative;
-		padding-left: 4rem;
-		margin-bottom: 0;
+    padding-left: 1rem;
+    margin-bottom: 0;
+
+    @include media-breakpoint-up(xl) {
+      padding-left: 4rem;
+    }
+
 	}
 
 	&__day {

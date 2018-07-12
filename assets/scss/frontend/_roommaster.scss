@@ -12,7 +12,7 @@
 }
 
 .roommaster-header {
-	padding: .75rem 1.25rem;
+	padding: .3rem;
 	border-bottom: solid 1px $gray-200;
 	position: relative;
 
@@ -37,28 +37,27 @@
 	&__title {
 		font-size: 1rem;
 		font-weight: bold;
-		padding: .5rem 0;
+		padding: 5px 5px;
 	}
 }
 
 .roommaster-info,
 .roommaster-list {
-	padding: 0 .6rem;
+	padding: .3rem;
 }
 
 .roommaster-info {
-	padding-right: .3rem;
 
 	&__list {
 		list-style: none;
 		margin: 0;
-		padding: 0;
+		padding: 0.3rem 0;
 
 		.info-item {
 			position: relative;
-			font-size: 1rem;
-			padding-left: 1.3rem;
-			padding-bottom: .8rem;
+			font-size: .8rem;
+			padding-left: 1.2rem;
+			padding-bottom: .5rem;
 		}
 
 		.info-icon {
@@ -73,14 +72,36 @@
 	padding-left: .3rem;
 }
 
+.columns.roommaster-list__header {
+  display: none;
+  background-color: #f7f7f7;
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+  }
+}
+
 .roommaster-box {
-	padding: 0 5px;
+	padding: .3rem;
+  border-bottom: 1px solid #f3f3f3;
+
+  @include media-breakpoint-up(lg) {
+    border-bottom: none;
+  }
+
+  .roommaster-content__title {
+    display: block;
+
+    @include media-breakpoint-up(lg) {
+      display: none;
+    }
+  }
 }
 
 .roommaster-deal {
 	&__item {
 		&:not(:last-child) {
-			margin-bottom: .7rem;
+			margin-bottom: .3rem;
 		}
 	}
 
@@ -93,8 +114,7 @@
 		font-size: .8rem;
 
 		.info-icon {
-			margin-right: .8rem;
-
+			margin-right: .3rem;
 		}
 	}
 }
@@ -120,7 +140,7 @@
 	}
 
 	&__remaining-rooms {
-		font-size: 1rem;
+		font-size: .9rem;
 		font-style: italic;
 	}
 }
@@ -202,4 +222,15 @@
 			}
 		}
 	}
+}
+
+.roommaster-occupancy-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.awebooking .booknow {
+  font-size: .75rem;
+  font-weight: 600;
 }
