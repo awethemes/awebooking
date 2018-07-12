@@ -194,24 +194,6 @@ class Form_Builder extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function render_group_callback( $field_args, $field_group ) {
-		// If field is requesting to be conditionally shown.
-		if ( ! $field_group || ! $field_group->should_show() ) {
-			return;
-		}
-
-		if ( isset( $field_args['options']['table_layout'] ) && $field_args['options']['table_layout'] ) {
-			include trailingslashit( __DIR__ ) . 'views/html-group-fields.php';
-		} else {
-			parent::render_group_callback( $field_args, $field_group );
-		}
-
-		return $field_group;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function getIterator() {
 		foreach ( $this->prop( 'fields' ) as $field_args ) {
 			yield $this->get_field( $field_args['id'] );
