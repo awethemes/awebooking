@@ -36,13 +36,15 @@ class Checkout_Setting extends Abstract_Setting {
 			'id'         => '__payments_title',
 			'type'       => 'title',
 			'name'       => esc_html__( 'Payment Gateways', 'awebooking' ),
-			'desc'       => esc_html__( 'Installed gateways are listed below. Drag and drop gateways to control their display order on the frontend.', 'awebooking' ),
+			'desc'       => abrs_esc_text( 'Installed gateways are listed below. You can find more payment gateways on <a href="https://awethemes.com/plugins/awebooking#premiumaddons">Premium addons</a>.', 'awebooking' ),
 		]);
 
 		$options->add_field([
 			'id'         => 'list_gateway_order',
 			'type'       => 'include',
 			'name'       => esc_html__( 'Gateway Display Order', 'awebooking' ),
+			'desc'       => esc_html__( 'Drag and drop to control display order on the frontend.', 'awebooking' ),
+			'tooltip'	 => true,
 			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-gateways-sorter.php',
 		]);
 

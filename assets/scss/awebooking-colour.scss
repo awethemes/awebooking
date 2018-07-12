@@ -38,17 +38,17 @@ $link-hover-decoration:     none;
 .awebooking,
 .awebooking-block {
   //font-family: $font-family-base;
-  a {
-    color: $link-color;
-    text-decoration: $link-decoration;
-    background-color: transparent; // Remove the gray background on active links in IE 10.
-    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
+  // a {
+  //   color: $link-color;
+  //   text-decoration: $link-decoration;
+  //   background-color: transparent; // Remove the gray background on active links in IE 10.
+  //   -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
 
-    @include hover {
-      color: $link-hover-color;
-      text-decoration: $link-hover-decoration;
-    }
-  }
+  //   @include hover {
+  //     color: $link-hover-color;
+  //     text-decoration: $link-hover-decoration;
+  //   }
+  // }
 
   p {
     margin-top: 0;

@@ -224,6 +224,9 @@ class Form_Controls extends Form_Builder {
 			'type'             => 'textarea',
 			'name'             => esc_html__( 'Special requests', 'awebooking' ),
 			'sanitization_cb'  => 'sanitize_textarea_field',
+			'attributes' => [
+				'rows' => 3,
+			],
 		]);
 
 		do_action( 'abrs_checkout_setup_controls', $this );
