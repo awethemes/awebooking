@@ -43,6 +43,8 @@ $http_request = abrs_http_request()->request;
 				</div>
 			</div>
 
+			<div class="flex-space"></div>
+
 			<div class="column filterbox__box">
 				<div class="filterbox__box-wrap">
 					<label class="filterbox__label"><?php esc_html_e( 'Show price:', 'awebooking' ); ?></label>

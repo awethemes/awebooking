@@ -26,7 +26,8 @@ class Model_Booking_Item_Test extends WP_UnitTestCase {
 
 		// Update Success.
 		$booking_item['name'] = 'Luxury';
-		$booking_item->save();
+		$saved = $booking_item->save();
+		$this->assertTrue( $saved );
 
 		$dbBookingItem = $this->getBookingItemInDB($booking_item->get_id());
 		$this->assertEquals($booking_item['name'], $dbBookingItem['booking_item_name']);
@@ -34,7 +35,8 @@ class Model_Booking_Item_Test extends WP_UnitTestCase {
 		// Update with booking ID.
 		$booking_item['name'] = 'Luxury 1';
 		$booking_item['booking_id'] = 200;
-		$booking_item->save();
+		$saved = $booking_item->save();
+		$this->assertTrue( $saved );
 
 		$dbBookingItem = $this->getBookingItemInDB($booking_item->get_id());
 		$this->assertEquals($booking_item['name'], $dbBookingItem['booking_item_name']);

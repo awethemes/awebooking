@@ -1,17 +1,21 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 (function ($, ko, plugin) {
   'use strict';
 
-  function formatDate(date) {
+  function formatDate(date, format) {
     var _date = flatpickr.parseDate(date);
 
     if (!_date) {
       return '';
     }
 
-    return flatpickr.formatDate(_date, plugin.i18n.dateFormat);
+    return flatpickr.formatDate(_date, format || plugin.i18n.dateFormat);
   }
 
   function SearchFormModel() {
@@ -19,11 +23,19 @@
 
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    this.adult = ko.observable(data.adult || 1);
+    this.adults = ko.observable(data.adult || 1);
     this.children = ko.observable(data.children || 0);
     this.infants = ko.observable(data.infants || 0);
-    this.checkIn = ko.observable(data.checkIn || '2018-07-05');
-    this.checkOut = ko.observable(data.checkOut || '2018-07-10');
+    this.checkIn = ko.observable(data.checkIn || '');
+    this.checkOut = ko.observable(data.checkOut || '');
+
+    this.checkInDate = ko.computed(function () {
+      return formatDate(_this.checkIn(), 'Y-m-d');
+    });
+
+    this.checkOutDate = ko.computed(function () {
+      return formatDate(_this.checkOut(), 'Y-m-d');
+    });
 
     this.checkInFormatted = ko.computed(function () {
       return formatDate(_this.checkIn());
@@ -38,21 +50,29 @@
     function SearchForm(el) {
       var _this2 = this;
 
-      babelHelpers.classCallCheck(this, SearchForm);
+      _classCallCheck(this, SearchForm);
 
       var self = this;
-
       this.$el = $(el);
-      this.model = new SearchFormModel();
-      ko.applyBindings(this.model, el);
 
-      $('.searchbox__box', this.$el).each(function (i, box) {
-        $(box).data('popup', _this2.setuptPopper(box));
+      this.model = new SearchFormModel({
+        adults: this.$el.find('input[name="adults"]').val(),
+        children: this.$el.find('input[name="children"]').val(),
+        infants: this.$el.find('input[name="infants"]').val(),
+        checkIn: this.$el.find('input[name="check_in"]').val(),
+        checkOut: this.$el.find('input[name="check_out"]').val()
       });
 
+      ko.applyBindings(this.model, el);
+
       var $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
+      if ($rangepicker.length === 0) {
+        $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
+      }
+
       var fp = awebooking.datepicker($rangepicker[0], {
         mode: 'range',
+        altInput: false,
         clickOpens: false,
         closeOnSelect: true,
 
@@ -91,9 +111,13 @@
         fp.isOpen = false;
         fp.open(undefined, this);
       });
+
+      $('.searchbox__box', this.$el).each(function (i, box) {
+        $(box).data('popup', _this2.setuptPopper(box));
+      });
     }
 
-    babelHelpers.createClass(SearchForm, [{
+    _createClass(SearchForm, [{
       key: 'setuptPopper',
       value: function setuptPopper(el) {
         var $html = $(el).find('.searchbox__popup');
@@ -114,6 +138,7 @@
           animation: 'shift-toward',
           duration: [150, 150],
           html: $html[0],
+          appendTo: this.$el[0],
           popperOptions: { modifiers: {
               hide: { enabled: false },
               preventOverflow: { enabled: false }
@@ -123,6 +148,7 @@
         return el._tippy;
       }
     }]);
+
     return SearchForm;
   }();
 

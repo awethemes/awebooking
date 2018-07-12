@@ -300,6 +300,13 @@ $searchbox-box--border:      200px !default;
 
 
 
+.searchbox__popup {
+  display: none;
+
+  .tippy-tooltip & {
+    display: block;
+  }
+}
 
 
 

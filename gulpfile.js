@@ -33,6 +33,34 @@ function handleErrors() {
   this.emit('end');
 }
 
+/*
+const rollup = require('gulp-better-rollup');
+const babel = require('rollup-plugin-babel');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('rollup-plugin-node-resolve');
+gulp.task('lib-build', () => {
+  const config = {
+    plugins: [
+      nodeResolve({ jsnext: true }),
+      commonjs(),
+      babel()
+    ]
+  };
+
+  return gulp.src('assets/babel/admin/admin.js')
+    .pipe(plumber({ errorHandler: handleErrors }))
+    .pipe(sourcemaps.init())
+    .pipe(rollup(config, {
+      format: 'iife',
+      name: 'awebooking',
+      extend: true,
+      exports: 'default',
+      globals: { jquery: '$' },
+    }))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist'));
+});*/
+
 gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
     .pipe(plumber({ errorHandler: handleErrors }))
@@ -54,8 +82,7 @@ gulp.task('babel', () => {
       transform: [[ babelify.configure({ presets: ['es2015'] }), { global: true } ]]
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('assets/js'))
-    .pipe(browserSync.stream({ match: '**/*.js' }));
+    .pipe(gulp.dest('assets/js'));
 });
 
 gulp.task('minify:js', () => {
