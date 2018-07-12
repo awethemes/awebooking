@@ -50,10 +50,10 @@ $link-hover-decoration:     none;
   //   }
   // }
 
-  p {
-    margin-top: 0;
-    margin-bottom: $paragraph-margin-bottom;
-  }
+  // p {
+  //   margin-top: 0;
+  //   margin-bottom: $paragraph-margin-bottom;
+  // }
 
   @import "frontend/elements/form";
   @import "frontend/elements/button";

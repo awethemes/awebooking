@@ -32,7 +32,7 @@
   display: block;
   float: left;
 
-  @media (min-width: 996px) {
+  @include media-breakpoint-up(lg) {
     width: 50%;
   }
 }
@@ -49,11 +49,11 @@
   padding: 0 5px;
   margin-bottom: 10px;
 
-  @media (min-width: 768px) {
+  @include media-breakpoint-up(md) {
     width: 50%;
   }
 
-  @media (min-width: 996px) {
+  @include media-breakpoint-up(lg) {
     width: 25%;
   }
 }
