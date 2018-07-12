@@ -8,6 +8,8 @@ $filterbox-bg-color:         #fff !default;
 }
 
 .filterbox__wrap {
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
   min-height: 1px;
@@ -16,10 +18,22 @@ $filterbox-bg-color:         #fff !default;
   border-radius: 4px;
   background-color: $filterbox-bg-color;
   box-shadow: 0 1px 4px 0 rgba(black, .08);
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
 }
 
 .filterbox__box:not(:last-child) {
-  box-shadow: 1px 0 0 rgba(0,0,0,.07);
+  box-shadow: none;
+  padding-bottom: .8rem;
+  border-bottom: solid 1px $gray-200;
+
+  @include media-breakpoint-up(md) {
+    box-shadow: 1px 0 0 rgba(0,0,0,.07);
+    padding-bottom: 0;
+    border-bottom: none;
+  }
 }
 
 .filterbox__label {

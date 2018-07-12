@@ -12,7 +12,7 @@
 }
 
 .roommaster-header {
-	padding: .75rem 1.25rem;
+	padding: .3rem;
 	border-bottom: solid 1px $gray-200;
 	position: relative;
 
@@ -101,7 +101,7 @@
 .roommaster-deal {
 	&__item {
 		&:not(:last-child) {
-			margin-bottom: .7rem;
+			margin-bottom: .3rem;
 		}
 	}
 
@@ -114,8 +114,7 @@
 		font-size: .8rem;
 
 		.info-icon {
-			margin-right: .8rem;
-
+			margin-right: .3rem;
 		}
 	}
 }
@@ -227,4 +226,9 @@
 
 .roommaster-occupancy-list {
   margin: 0;
+}
+
+.awebooking .booknow {
+  font-size: .75rem;
+  font-weight: 600;
 }
