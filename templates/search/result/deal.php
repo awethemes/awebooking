@@ -21,6 +21,8 @@ $rate_plan = $room_rate->get_rate_plan();
 ?>
 
 <div class="roommaster-deal roommaster-box">
+	<h4 class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></h4>
+
 	<?php if ( $rate_inclusions = $rate_plan->get_inclusions() ) : ?>
 		<div class="roommaster-deal__item">
 			<span class="roommaster-deal__bucketspan"><?php esc_html_e( 'Inclusions', 'awebooking' ); ?></span>

@@ -118,43 +118,78 @@ $searchbox-box--border:      200px !default;
 // Layout Horizontal
 .searchbox--horizontal {
   .searchbox__wrap {
-    flex-wrap: nowrap;
-    flex-direction: row;
-
     padding: 10px 12px;
     border-radius: 4px;
     background-color: $searchbox-bg-color;
     box-shadow: 0 1px 4px 0 rgba(black, .08);
+
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+    }
+
+    @include media-breakpoint-up(lg) {
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
   }
 
   .searchbox__box:not(:last-child) {
-    height: 48px;
     padding: 0 12px 0 0;
-    box-shadow: 1px 0 0 rgba(0,0,0,.07);
+
+    @include media-breakpoint-up(md) {
+      height: 48px;
+      box-shadow: 1px 0 0 rgba(0,0,0,.07);
+    }
   }
 
   // Box width.
-  .searchbox__box--hotel {
-    flex-grow: 1;
+  @include media-breakpoint-up(lg) {
+    .searchbox__box--hotel {
+      flex-grow: 1;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 190px;
+      max-width: 190px;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 300px;
+      max-width: 300px;
+    }
+
+    .searchbox__box-wrap {
+      //height: 100%;
+    }
+
+    .button.searchbox__submit {
+      //height: 100%;
+    }
   }
 
-  .searchbox__box--checkin,
-  .searchbox__box--checkout {
-    flex: 0 0 190px;
-    max-width: 190px;
-  }
+  @include media-breakpoint-up(md) {
+    .searchbox__box--hotel {
+      flex-grow: 1;
+    }
 
-  .searchbox__box--occupancy {
-    flex: 0 0 300px;
-    max-width: 300px;
-  }
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
 
-  .searchbox__box-wrap {
-    //height: 100%;
-  }
+    .searchbox__box--occupancy {
+      flex: 0 0 65%;
+      max-width: 65%;
+    }
 
-  .button.searchbox__submit {
-    //height: 100%;
+    .searchbox__box--button {
+      flex-grow: 1;
+    }
   }
 }
 
