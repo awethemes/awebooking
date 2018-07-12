@@ -8,20 +8,6 @@
   padding: 1.75rem 0;
 }
 
-.awebooking a,
-.awebooking-block a {
-  color: #5392F9;
-  text-decoration: none;
-  background-color: transparent;
-  -webkit-text-decoration-skip: objects;
-}
-
-.awebooking a:hover,
-.awebooking-block a:hover {
-  color: #0963f6;
-  text-decoration: none;
-}
-
 .awebooking p,
 .awebooking-block p {
   margin-top: 0;
@@ -36,7 +22,6 @@
   font-size: 1rem;
   line-height: 1.5;
   color: #495057;
-  background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 2px;
@@ -1526,14 +1511,17 @@ dialog[open] {
   width: 100%;
 }
 
-#checkout-form {
-  background-color: #fff;
+.awebooking #checkout-services-form,
+.awebooking .checkout__section--guest-details,
+.awebooking .checkout__section--guest-additional-information {
+  margin-bottom: 1.75em;
 }
 
 .awebooking .payment-methods {
   margin-left: 0;
   padding-left: 0;
   list-style: none;
+  margin-bottom: 1.75em;
 }
 
 .awebooking .payment-method {
@@ -1543,6 +1531,10 @@ dialog[open] {
   background-color: #f7f7f7;
   position: relative;
   box-sizing: border-box;
+}
+
+.awebooking .payment-method .payment-method__label {
+  cursor: pointer;
 }
 
 .awebooking .payment-method:last-child {
@@ -1604,6 +1596,18 @@ ul.booking_details li strong {
 
 ul.booking_details li:last-of-type {
   border: none;
+}
+
+#checkout-form .cmb-row {
+  padding: 3px;
+  margin: 0 0 6px;
+}
+
+#checkout-form .required {
+  color: red;
+  font-weight: 700;
+  border: 0 !important;
+  text-decoration: none;
 }
 
 .reservation-goto-checkout {
@@ -1774,7 +1778,7 @@ ul.booking_details li:last-of-type {
 }
 
 .checkout-services__header {
-  font-size: 1rem;
+  font-size: 1.5rem;
   padding: .8rem;
   margin: 0;
 }
@@ -1796,7 +1800,6 @@ ul.booking_details li:last-of-type {
 
 .checkout-service__title {
   font-size: 1.2rem;
-  color: #007bff;
   text-transform: capitalize;
   margin-top: 0;
   margin-bottom: .5rem;
