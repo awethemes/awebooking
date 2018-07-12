@@ -8,8 +8,7 @@ class Service_Test extends WP_UnitTestCase {
 		$service['name'] = 'Wifi';
 		$service['description'] = 'AAA';
 		$service['operation'] = 'add';
-		$service['value'] = '100';
-		$service['type'] = 'mandatory';
+		$service['amount'] = '100';
 		$service->save();
 		$this->assertService( $service );
 	}
@@ -22,8 +21,7 @@ class Service_Test extends WP_UnitTestCase {
 		$this->assertEquals( $post->post_date, $service->get('date_created') );
 		$this->assertEquals( $post->post_modified, $service->get('date_modified') );
 		$this->assertEquals( $post->post_status, $service->get('status') );
-		$this->assertEquals( get_post_meta( $post->ID, '_service_operation', true), $service->get('operation') );
-		$this->assertEquals( get_post_meta( $post->ID, '_service_value', true), $service->get('value') );
-		$this->assertEquals( get_post_meta( $post->ID, '_service_type', true), $service->get('type') );
+		$this->assertEquals( get_post_meta( $post->ID, '_operation', true), $service->get('operation') );
+		$this->assertEquals( get_post_meta( $post->ID, '_amount', true), $service->get('amount') );
 	}
 }
