@@ -765,6 +765,8 @@ module.exports = function debounce(func, wait, immediate) {
 },{}],5:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
 var multiMatcher = new RegExp('(' + token + ')+', 'gi');
@@ -845,7 +847,7 @@ function customDecodeURIComponent(input) {
 
 module.exports = function (encodedURI) {
 	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + (typeof encodedURI === 'undefined' ? 'undefined' : babelHelpers.typeof(encodedURI)) + '`');
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + (typeof encodedURI === 'undefined' ? 'undefined' : _typeof(encodedURI)) + '`');
 	}
 
 	try {
@@ -862,9 +864,11 @@ module.exports = function (encodedURI) {
 },{}],6:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 /* flatpickr v4.5.1, @license MIT */
 (function (global, factory) {
-  (typeof exports === 'undefined' ? 'undefined' : babelHelpers.typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : global.rangePlugin = factory();
+  (typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : global.rangePlugin = factory();
 })(undefined, function () {
   'use strict';
 
@@ -1011,6 +1015,10 @@ module.exports = function (encodedURI) {
 },{}],7:[function(require,module,exports){
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var strictUriEncode = require('strict-uri-encode');
 var decodeComponent = require('decode-uri-component');
 
@@ -1102,7 +1110,7 @@ function keysSorter(input) {
 		return input.sort();
 	}
 
-	if ((typeof input === 'undefined' ? 'undefined' : babelHelpers.typeof(input)) === 'object') {
+	if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object') {
 		return keysSorter(Object.keys(input)).sort(function (a, b) {
 			return Number(a) - Number(b);
 		}).map(function (key) {
@@ -1148,7 +1156,7 @@ function parse(input, options) {
 			var param = _step.value;
 
 			var _param$replace$split = param.replace(/\+/g, ' ').split('='),
-			    _param$replace$split2 = babelHelpers.slicedToArray(_param$replace$split, 2),
+			    _param$replace$split2 = _slicedToArray(_param$replace$split, 2),
 			    key = _param$replace$split2[0],
 			    value = _param$replace$split2[1];
 
@@ -1177,7 +1185,7 @@ function parse(input, options) {
 
 	return Object.keys(ret).sort().reduce(function (result, key) {
 		var value = ret[key];
-		if (Boolean(value) && (typeof value === 'undefined' ? 'undefined' : babelHelpers.typeof(value)) === 'object' && !Array.isArray(value)) {
+		if (Boolean(value) && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && !Array.isArray(value)) {
 			// Sort object keys, not values
 			result[key] = keysSorter(value);
 		} else {
