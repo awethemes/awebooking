@@ -43,8 +43,8 @@ $all_rates = $scheduler->scheduler->mapWithKeys( function ( $calendar ) {
 							'type'        => 'abrs_dates',
 							'name'        => esc_html__( 'Select dates', 'awebooking' ),
 							'input_names' => [ 'bulk_start_date', 'bulk_end_date' ],
+							'default'     => [],
 							'show_js'     => false,
-							'default'     => [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ],
 						]);
 						?>
 
