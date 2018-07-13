@@ -180,6 +180,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		'container_class' => '',
 		'res_request'     => null,
 		'hotel_location'  => true,
+		'occupancy'       => true,
 	], $atts );
 
 	/**

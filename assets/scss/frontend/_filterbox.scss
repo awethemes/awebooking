@@ -10,6 +10,8 @@ $filterbox-bg-color:         #fff !default;
 .filterbox__wrap {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 100%;
   min-height: 1px;
@@ -64,7 +66,7 @@ $filterbox-bg-color:         #fff !default;
 	&:focus,
 	&:hover {
 		a {
-			color: inherit;
+			color: #1a1a1a;
 		}
 	}
 
