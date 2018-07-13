@@ -59,7 +59,9 @@ function is_room_type_archive() {
  * @return bool
  */
 function abrs_is_search_page() {
-	return is_page( abrs_get_page_id( 'search_results' ) );
+	$page_id = abrs_get_page_id( 'search_results' );
+
+	return $page_id && is_page( $page_id );
 }
 
 /**
@@ -68,7 +70,9 @@ function abrs_is_search_page() {
  * @return bool
  */
 function abrs_is_checkout_page() {
-	return is_page( abrs_get_page_id( 'checkout' ) );
+	$page_id = abrs_get_page_id( 'checkout' );
+
+	return $page_id && is_page( $page_id );
 }
 
 /**
