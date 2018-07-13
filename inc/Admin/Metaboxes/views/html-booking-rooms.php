@@ -136,7 +136,7 @@ $service_items = $the_booking->get_services();
 				<?php if ( abrs_blank( $service_items ) ) : ?>
 
 					<tr>
-						<td colspan="9">
+						<td colspan="2">
 							<p class="awebooking-no-items"><?php esc_html_e( 'No services found', 'awebooking' ); ?></p>
 						</td>
 					</tr>

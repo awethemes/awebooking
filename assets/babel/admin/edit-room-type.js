@@ -73,10 +73,14 @@
     // Apply rooms generator binding.
     ko.applyBindings(new RoomsGenerator(), document.getElementById('js-rooms-list'));
 
-    new Sortable($('.js-sorting-rooms')[0], {
-      handle: '.abrs-sortable__handle',
-      animation: 150,
-    });
+    const $roomSortable = $('.js-sorting-rooms');
+
+    if ($roomSortable.length > 0) {
+      new Sortable($roomSortable[0], {
+        handle: '.abrs-sortable__handle',
+        animation: 150,
+      });
+    }
 
     // Handle click on tabs.
     const $metabox = $('#awebooking-room-type-data');

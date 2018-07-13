@@ -25,90 +25,6 @@ function abrs_get_booking( $booking ) {
 }
 
 /**
- * Retrieves the booking item.
- *
- * @param  mixed $item The item ID or item array.
- * @return \AweBooking\Model\Booking\Item|false|null
- */
-function abrs_get_booking_item( $item ) {
-	// Given a numeric, let's get item from DB.
-	if ( is_numeric( $item ) ) {
-		$item = abrs_get_booking_item_row( $item );
-	}
-
-	// Try to resolve the item type.
-	if ( $item instanceof Item ) {
-		$item_id   = $item->get_id();
-		$item_type = $item->get_type();
-	} elseif ( is_array( $item ) && ! empty( $item['booking_item_type'] ) ) {
-		$item_id   = $item['booking_item_id'];
-		$item_type = $item['booking_item_type'];
-	}
-
-	// If can't resolve the item type, just leave.
-	if ( ! isset( $item_id, $item_type ) ) {
-		return false;
-	}
-
-	$classmap = abrs_booking_item_classmap();
-	if ( ! array_key_exists( $item_type, $classmap ) ) {
-		return false;
-	}
-
-	// Apply filters allow users can overwrite the class name.
-	$classname = apply_filters( 'abrs_get_booking_item_classname', $classmap[ $item_type ], $item_type, $item_id );
-
-	return abrs_rescue( function() use ( $classname, $item_id ) {
-		$item = new $classname( $item_id );
-
-		if ( ! $item instanceof Item ) {
-			return false;
-		}
-
-		return $item->exists() ? $item : null;
-	}, false );
-}
-
-/**
- * Delete a booking item.
- *
- * @param  mixed $item The item ID or item array.
- * @return boolean
- */
-function abrs_delete_booking_item( $item ) {
-	if ( ! $item = abrs_get_booking_item( $item ) ) {
-		return false;
-	}
-
-	// Get the booking reference.
-	$booking_ref = abrs_get_booking( $item->get( 'booking_id' ) );
-
-	// Delete the booking item.
-	$deleted = $item->delete();
-
-	// Recalculate totals of booking.
-	if ( $booking_ref ) {
-		$booking_ref->flush_items();
-		$booking_ref->calculate_totals();
-	}
-
-	return $deleted;
-}
-
-/**
- * Returns an array of booking item classmap.
- *
- * @return array
- */
-function abrs_booking_item_classmap() {
-	return apply_filters( 'abrs_booking_items_classmap', [
-		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
-		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
-		'service_item' => \AweBooking\Model\Booking\Service_Item::class,
-	]);
-}
-
-/**
  * Returns a list of booking statuses.
  *
  * @return array
@@ -159,6 +75,170 @@ function abrs_prefix_booking_status( $status ) {
 	return ( false === strpos( $status, 'awebooking-' ) )
 		? 'awebooking-' . $status
 		: $status;
+}
+
+/**
+ * Retrieves the booking item.
+ *
+ * @param  mixed $item The item ID or item array.
+ * @return \AweBooking\Model\Booking\Item|false|null
+ */
+function abrs_get_booking_item( $item ) {
+	// Given a numeric, let's get item from DB.
+	if ( is_numeric( $item ) ) {
+		$item = abrs_get_raw_booking_item( $item );
+	}
+
+	// Try to resolve the item type.
+	if ( $item instanceof Item ) {
+		$item_id   = $item->get_id();
+		$item_type = $item->get_type();
+	} elseif ( is_array( $item ) && ! empty( $item['booking_item_type'] ) ) {
+		$item_id   = $item['booking_item_id'];
+		$item_type = $item['booking_item_type'];
+	}
+
+	// If can't resolve the item type, just leave.
+	if ( ! isset( $item_id, $item_type ) ) {
+		return false;
+	}
+
+	$classmap = abrs_booking_item_classmap();
+	if ( ! array_key_exists( $item_type, $classmap ) ) {
+		return false;
+	}
+
+	// Apply filters allow users can overwrite the class name.
+	$classname = apply_filters( 'abrs_get_booking_item_classname', $classmap[ $item_type ], $item_type, $item_id );
+
+	return abrs_rescue( function() use ( $classname, $item_id ) {
+		$item = new $classname( $item_id );
+
+		if ( ! $item instanceof Item ) {
+			return false;
+		}
+
+		return $item->exists() ? $item : null;
+	}, false );
+}
+
+/**
+ * Delete a booking item.
+ *
+ * @param  mixed $item The item ID or item array.
+ * @return boolean
+ */
+function abrs_delete_booking_item( $item ) {
+	if ( ! $item = abrs_get_booking_item( $item ) ) {
+		return false;
+	}
+
+	// Get the booking reference.
+	$rel = abrs_get_booking( $item->get( 'booking_id' ) );
+
+	// Delete the booking item.
+	$deleted = $item->delete();
+
+	// Recalculate totals of booking.
+	if ( $rel ) {
+		$rel->flush_items();
+		$rel->calculate_totals();
+	}
+
+	return $deleted;
+}
+
+/**
+ * Returns an array of booking item classmap.
+ *
+ * @return array
+ */
+function abrs_booking_item_classmap() {
+	return apply_filters( 'abrs_booking_items_classmap', [
+		'line_item'    => \AweBooking\Model\Booking\Room_Item::class,
+		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
+		'service_item' => \AweBooking\Model\Booking\Service_Item::class,
+	]);
+}
+
+/**
+ * Get a booking item by ID in database.
+ *
+ * @param  int    $item The booking item ID.
+ * @param  string $type Get only matching booking item type.
+ * @return array|null
+ */
+function abrs_get_raw_booking_item( $item, $type = null ) {
+	// Try to get the item in cache first, otherwise load from database.
+	$db_item = wp_cache_get( $item, 'awebooking_db_booking_item' );
+
+	if ( false === $db_item ) {
+		global $wpdb;
+
+		$where = $type ? ' AND booking_item_type = "' . esc_sql( $type ) . '"' : '';
+		// @codingStandardsIgnoreLine
+		$db_item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}awebooking_booking_items WHERE booking_item_id = %d " . $where . ' LIMIT 1', $item ), ARRAY_A );
+
+		wp_cache_add( (int) $db_item['booking_item_id'], $db_item, 'awebooking_db_booking_item' );
+	}
+
+	return $db_item;
+}
+
+/**
+ * Get the booking items by given a type.
+ *
+ * @param  int    $booking The booking ID.
+ * @param  string $type    Optional, filter only item type.
+ * @return array|null
+ */
+function abrs_get_raw_booking_items( $booking, $type = 'all' ) {
+	$booking = abrs_parse_object_id( $booking );
+
+	// Ensure this booking exists before doing anything.
+	if ( ! get_post( $booking ) ) {
+		return null;
+	}
+
+	// Try to get the items in cache first, otherwise load from database.
+	$items = wp_cache_get( $booking, 'awebooking_booking_items' );
+
+	if ( false === $items ) {
+		global $wpdb;
+
+		$items = $wpdb->get_results(
+			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`", $booking ), ARRAY_A
+		);
+
+		// Cache each item in results.
+		foreach ( $items as $item ) {
+			wp_cache_set( (int) $item['booking_item_id'], $item, 'awebooking_db_booking_item' );
+		}
+
+		// Add this results to cache.
+		wp_cache_add( $booking, $items, 'awebooking_booking_items' );
+	}
+
+	// Filter correct the item type to return.
+	if ( 'all' !== $type ) {
+		$items = wp_list_filter( $items, [ 'booking_item_type' => $type ] );
+	}
+
+	return $items;
+}
+
+/**
+ * Will clean the booking item in the cache.
+ *
+ * @param  int $item The booking item ID or booking item model.
+ * @return void
+ */
+function abrs_flush_booking_item_cache( $item ) {
+	wp_cache_delete( $item, 'awebooking_db_booking_item' );
+
+	wp_cache_delete( $item, 'booking_itemmeta_meta' );
+
+	do_action( 'abrs_clean_booking_item_cache', $item );
 }
 
 /**
@@ -367,86 +447,6 @@ function _abrs_exclude_booking_comments( $clauses ) {
 	return $clauses;
 }
 add_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
-
-/**
- * Get a booking item by ID in database.
- *
- * @param  int    $item The booking item ID.
- * @param  string $type Get only matching booking item type.
- * @return array|null
- */
-function abrs_get_booking_item_row( $item, $type = null ) {
-	// Try to get the item in cache first, otherwise load from database.
-	$db_item = wp_cache_get( $item, 'awebooking_db_booking_item' );
-
-	if ( false === $db_item ) {
-		global $wpdb;
-
-		$where = $type ? ' AND booking_item_type = "' . esc_sql( $type ) . '"' : '';
-		// @codingStandardsIgnoreLine
-		$db_item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}awebooking_booking_items WHERE booking_item_id = %d " . $where . ' LIMIT 1', $item ), ARRAY_A );
-
-		wp_cache_add( (int) $db_item['booking_item_id'], $db_item, 'awebooking_db_booking_item' );
-	}
-
-	return $db_item;
-}
-
-/**
- * Get the booking items by given a type.
- *
- * @param  int    $booking The booking ID.
- * @param  string $type    Optional, filter only item type.
- * @return array|null
- */
-function abrs_query_booking_items( $booking, $type = 'all' ) {
-	$booking = abrs_parse_object_id( $booking );
-
-	// Ensure this booking exists before doing anything.
-	if ( ! get_post( $booking ) ) {
-		return null;
-	}
-
-	// Try to get the items in cache first, otherwise load from database.
-	$items = wp_cache_get( $booking, 'awebooking_booking_items' );
-
-	if ( false === $items ) {
-		global $wpdb;
-
-		$items = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`", $booking ), ARRAY_A
-		);
-
-		// Cache each item in results.
-		foreach ( $items as $item ) {
-			wp_cache_set( (int) $item['booking_item_id'], $item, 'awebooking_db_booking_item' );
-		}
-
-		// Add this results to cache.
-		wp_cache_add( $booking, $items, 'awebooking_booking_items' );
-	}
-
-	// Filter correct the item type to return.
-	if ( 'all' !== $type ) {
-		$items = wp_list_filter( $items, [ 'booking_item_type' => $type ] );
-	}
-
-	return $items;
-}
-
-/**
- * Will clean the booking item in the cache.
- *
- * @param  int $item The booking item ID or booking item model.
- * @return void
- */
-function abrs_clean_booking_item_cache( $item ) {
-	wp_cache_delete( $item, 'awebooking_db_booking_item' );
-
-	wp_cache_delete( $item, 'booking_itemmeta_meta' );
-
-	do_action( 'abrs_clean_booking_item_cache', $item );
-}
 
 /**
  * Query booking data for a term and return IDs.

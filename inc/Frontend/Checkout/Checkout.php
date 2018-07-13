@@ -113,7 +113,7 @@ class Checkout {
 		abrs_set_time_limit( 0 );
 		Constants::define( 'AWEBOOKING_CHECKOUT', true );
 
-		do_action( 'abrs_prepare_checkout_process', $this );
+		do_action( 'abrs_prepare_checkout_process', $this, $request );
 
 		$this->reservation->maybe_flush();
 
@@ -124,14 +124,14 @@ class Checkout {
 		$errors = new WP_Error();
 		$data   = $this->get_posted_data( $request );
 
-		do_action( 'abrs_checkout_processing', $data, $errors, $this );
+		do_action( 'abrs_checkout_processing', $this, $errors, $data, $request );
 
 		// Update session for customer and totals.
 		$this->update_session( $data );
 
 		// Validate posted data.
-		$this->validate_posted_data( $data, $errors );
-		$this->validate_checkout( $data, $errors );
+		$this->validate_posted_data( $errors, $data );
+		$this->validate_checkout( $errors, $data, $request );
 
 		if ( ! empty( $errors->errors ) ) {
 			throw ( new ValidationFailedException )->set_errors( $errors );
@@ -145,14 +145,29 @@ class Checkout {
 			throw new RuntimeException( esc_html__( 'Sorry, we cannot serve your reservation request at this moment.', 'awebooking' ) );
 		}
 
-		do_action( 'abrs_checkout_processed', $booking_id, $data );
+		// Fire checkout processed action.
+		do_action( 'abrs_checkout_processed', $booking, $this, $data );
 
 		// Process with payment.
 		if ( ! empty( $data['payment_method'] ) ) {
-			return $this->process_payment( $booking, $this->gateways->get( $data['payment_method'] ) );
+			$gateway = $this->gateways->get( $data['payment_method'] );
+
+			return $this->process_payment( $booking, $gateway, $request );
 		}
 
 		return $this->process_without_payment( $booking );
+	}
+
+	/**
+	 * Update customer and session data from the posted checkout data.
+	 *
+	 * @param \AweBooking\Support\Fluent $data An array of posted data.
+	 */
+	protected function update_session( $data ) {
+		$this->session->put( 'selected_payment_method', $data['payment_method'] );
+
+		// Update reservation totals.
+		$this->reservation->calculate_totals();
 	}
 
 	/**
@@ -160,20 +175,26 @@ class Checkout {
 	 *
 	 * @param  \AweBooking\Model\Booking   $booking The booking instance.
 	 * @param  \AweBooking\Gateway\Gateway $gateway The payment gateway.
+	 * @param  \Awethemes\Http\Request     $request The http request.
+	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
 	 * @throws GatewayException
 	 */
-	protected function process_payment( Booking $booking, Gateway $gateway ) {
+	protected function process_payment( Booking $booking, Gateway $gateway, $request ) {
 		// Store the booking ID in session so it can be re-used after payment failure.
 		$this->session->put( 'booking_awaiting_payment', $booking->get_id() );
 
+		do_action( 'abrs_payment_processing', $booking, $gateway, $request );
+
 		// Perform process the payment.
-		$response = $gateway->process( $booking );
+		$response = $gateway->process( $booking, $request );
 
 		if ( ! $response instanceof Gateway_Response ) {
 			throw new GatewayException( esc_html__( 'Invalid gateway response.', 'awebooking' ) );
 		}
+
+		do_action( 'abrs_payment_processed', $response, $booking, $gateway, $request );
 
 		return $response->data( $booking );
 	}
@@ -296,11 +317,7 @@ class Checkout {
 	 * @return void
 	 */
 	protected function resume_awating_booking( $booking ) {
-		try {
-			$booking->remove_items();
-		} catch ( \Exception $e ) {
-			abrs_report( $e );
-		}
+		$booking->remove_items();
 
 		do_action( 'abrs_resume_booking', $booking );
 	}
@@ -397,30 +414,10 @@ class Checkout {
 	}
 
 	/**
-	 * Create the booking items.
-	 *
-	 * @param  \AweBooking\Model\Booking $booking        The booking instance.
-	 * @param  string                    $method         The payment method.
-	 * @param  string                    $transaction_id The transaction ID.
-	 * @return \AweBooking\Model\Booking\Payment_Item
-	 */
-	public function create_payment_item( $booking, $method, $transaction_id = '' ) {
-		$payment_item = ( new Payment_Item )->fill([
-			'booking_id'     => $booking->get_id(),
-			'amount'         => $booking->get( 'total' ),
-			'method'         => $method,
-			'transaction_id' => $transaction_id,
-		]);
-
-		$payment_item->save();
-
-		return $payment_item;
-	}
-
-	/**
 	 * Create a new customer account if needed.
 	 *
 	 * @param  \AweBooking\Support\Fluent $data The posted data.
+	 *
 	 * @throws \Exception
 	 */
 	protected function process_customer( $data ) {
@@ -428,24 +425,13 @@ class Checkout {
 	}
 
 	/**
-	 * Update customer and session data from the posted checkout data.
-	 *
-	 * @param \AweBooking\Support\Fluent $data An array of posted data.
-	 */
-	protected function update_session( $data ) {
-		$this->session->put( 'selected_payment_method', $data['payment_method'] );
-
-		// Update reservation totals.
-		 $this->reservation->calculate_totals();
-	}
-
-	/**
 	 * Validates that the checkout has enough info to proceed.
 	 *
-	 * @param  \AweBooking\Support\Fluent $data   The posted data.
-	 * @param  \WP_Error                  $errors WP_Error instance.
+	 * @param  \WP_Error                  $errors  WP_Error instance.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param  \Awethemes\Http\Request    $request The http request.
 	 */
-	protected function validate_checkout( $data, $errors ) {
+	protected function validate_checkout( &$errors, $data, $request ) {
 		if ( empty( $data['terms'] ) && apply_filters( 'awebooking_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
 			$errors->add( 'terms', esc_html__( 'You must accept our Terms &amp; Conditions.', 'awebooking' ) );
 		}
@@ -453,27 +439,29 @@ class Checkout {
 		if ( ! empty( $data['payment_method'] ) ) {
 			$gateway = $this->gateways->get( $data['payment_method'] );
 
-			if ( is_null( $gateway ) ) {
-				$errors->add( 'payment', esc_html__( 'Invalid payment method.', 'awebooking' ) );
-			} else {
-				$response = $gateway->validate_fields( $data );
+			if ( ! is_null( $gateway ) ) {
+				$response = $gateway->validate_fields( $data, $request );
 
 				if ( is_wp_error( $response ) ) {
 					$errors->add( 'gateway', $response->get_error_message() );
+				} elseif ( false === $response ) {
+					$errors->add( 'gateway', esc_html__( 'Sorry, there was an error processing your payment. Please try again later.', 'awebooking' ) );
 				}
+			} else {
+				$errors->add( 'payment', esc_html__( 'Please choose a payment method.', 'awebooking' ) );
 			}
 		}
 
-		do_action( 'abrs_checkout_after_validation', $data, $errors );
+		do_action( 'abrs_validate_checkout', $errors, $data, $request );
 	}
 
 	/**
 	 * Validates the posted checkout data based on field properties.
 	 *
-	 * @param  \AweBooking\Support\Fluent $data   The posted data.
 	 * @param  \WP_Error                  $errors WP_Error instance.
+	 * @param  \AweBooking\Support\Fluent $data   The posted data.
 	 */
-	protected function validate_posted_data( $data, $errors ) {
+	protected function validate_posted_data( &$errors, $data ) {
 		$controls = $this->get_controls();
 
 		foreach ( $controls->prop( 'fields' ) as $args ) {
@@ -486,7 +474,7 @@ class Checkout {
 			}
 		}
 
-		do_action( 'abrs_checkout_validate_posted_data', $data, $errors );
+		do_action( 'abrs_validate_checkout_posted_data', $errors, $data );
 	}
 
 	/**

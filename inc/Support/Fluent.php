@@ -63,7 +63,7 @@ class Fluent implements ArrayAccess, Countable, Arrayable, Jsonable, JsonSeriali
 	 *
 	 * @return array
 	 */
-	public function get_attributes() {
+	public function all() {
 		return $this->attributes;
 	}
 
@@ -82,7 +82,7 @@ class Fluent implements ArrayAccess, Countable, Arrayable, Jsonable, JsonSeriali
 	 * @return array
 	 */
 	public function toArray() {
-		return $this->get_attributes();
+		return $this->all();
 	}
 
 	/**

@@ -440,7 +440,7 @@ CREATE TABLE {$wpdb->prefix}awebooking_pricing (
 ) $collate;
 CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
   booking_item_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_item_name TEXT NOT NULL,
+  booking_item_name VARCHAR(255) NOT NULL,
   booking_item_type VARCHAR(191) NOT NULL DEFAULT '',
   object_id BIGINT UNSIGNED NOT NULL,
   booking_id BIGINT UNSIGNED NOT NULL,

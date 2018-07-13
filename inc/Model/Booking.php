@@ -102,7 +102,7 @@ class Booking extends Model {
 		}
 
 		if ( ! array_key_exists( $type, $this->items ) ) {
-			$items = ! $this->exists() ? [] : abrs_query_booking_items( $this->id, $type );
+			$items = ! $this->exists() ? [] : abrs_get_raw_booking_items( $this->id, $type );
 
 			$this->items[ $type ] = abrs_collect( $items )
 				->pluck( 'booking_item_id' )
@@ -183,23 +183,13 @@ class Booking extends Model {
 	 * @return void
 	 */
 	public function remove_items( $type = null ) {
-		$items = abrs_query_booking_items( $this->get_id(), 'all' );
+		$items = abrs_get_raw_booking_items( $this->get_id(), 'all' );
 
 		foreach ( $items as $item ) {
 			abrs_optional( abrs_get_booking_item( $item ) )->delete();
 		}
 
 		$this->flush_items();
-	}
-
-	/**
-	 * Returns the last payment item.
-	 *
-	 * @param  string $state Optional, filter payment matching with a state.
-	 * @return \AweBooking\Model\Booking\Payment_Item|null
-	 */
-	public function get_last_payment( $state = null ) {
-		return $this->get_payments()->last();
 	}
 
 	/**

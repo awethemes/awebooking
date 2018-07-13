@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Gateway;
 
+use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
 class Direct_Payment_Gateway extends Gateway {
@@ -38,6 +39,18 @@ class Direct_Payment_Gateway extends Gateway {
 	}
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function process( Booking $booking, Request $request ) {
+		$booking->update_status( 'on-hold' );
+
+		// Flush the reservation data.
+		abrs_reservation()->flush();
+
+		return ( new Response( 'success' ) )->data( $booking );
+	}
+
+	/**
 	 * Set the gateway settings fields.
 	 *
 	 * @return void
@@ -69,17 +82,5 @@ class Direct_Payment_Gateway extends Gateway {
 				'attributes'  => [ 'style' => 'height: 80px;' ],
 			],
 		];
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process( Booking $booking ) {
-		$booking->update_status( 'on-hold' );
-
-		// Flush the reservation data.
-		 abrs_reservation()->flush();
-
-		return ( new Response( 'success' ) )->data( $booking );
 	}
 }
