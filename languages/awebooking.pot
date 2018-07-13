@@ -827,7 +827,7 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
-#: inc/Frontend/functions.php:237, inc/Frontend/template-functions.php:89
+#: inc/Frontend/functions.php:184, inc/Frontend/template-functions.php:124
 msgid "Book Now"
 msgstr ""
 
@@ -1029,7 +1029,7 @@ msgctxt "quantity x price service"
 msgid "%1$s x %2$s"
 msgstr ""
 
-#: templates/reservation/totals.php:23, inc/Admin/Forms/Edit_Booking_Room_Form.php:73, inc/Admin/List_Tables/Booking_List_Table.php:62, inc/Admin/Settings/Appearance_Setting.php:130, templates/emails/partials/line-booking.php:84
+#: templates/reservation/totals.php:23, inc/Admin/Forms/Edit_Booking_Room_Form.php:73, inc/Admin/List_Tables/Booking_List_Table.php:62, inc/Admin/Settings/Appearance_Setting.php:130, templates/emails/partials/line-booking.php:85
 msgid "Total"
 msgstr ""
 
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Deposit"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:135, inc/Admin/List_Tables/Booking_List_Table.php:63, templates/emails/partials/line-booking.php:89
+#: inc/Admin/Calendar/Booking_Scheduler.php:135, inc/Admin/List_Tables/Booking_List_Table.php:63, templates/emails/partials/line-booking.php:90
 msgid "Paid"
 msgstr ""
 
@@ -1742,11 +1742,11 @@ msgstr ""
 
 #. translators: 1: Room type name, 2: Room item order
 #. translators: 1: Room type name, 2: Room item order
-#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:158, inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:180
+#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:148, inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:170
 msgid "%1$s - %2$d"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Hotel_Metabox.php:12
+#: inc/Admin/Metaboxes/Room_Type_Hotel_Metabox.php:13
 msgid "Select Hotel"
 msgstr ""
 
@@ -2664,7 +2664,7 @@ msgstr ""
 msgid "The room &ldquo;%s&rdquo; has been removed from your reservation"
 msgstr ""
 
-#: inc/Frontend/Shortcodes/Shortcode_Abstract.php:150
+#: inc/Frontend/Shortcodes/Shortcode_Abstract.php:154
 msgid "Sorry, a fatal error occurred."
 msgstr ""
 
@@ -2677,7 +2677,7 @@ msgid "Dates could not be changed because at least one of the rooms is occupied 
 msgstr ""
 
 #. translators: 1 Room name, 2 change from date, 3 to date.
-#: inc/Model/Booking/Room_Item.php:314
+#: inc/Model/Booking/Room_Item.php:318
 msgid "[%1$s] Timespan change from \"%2$s\" to \"%3$s\"."
 msgstr ""
 
@@ -2723,21 +2723,21 @@ msgstr ""
 msgid "Sorry, some kind of error has occurred. Please try again."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Services.php:95
+#: inc/Reservation/Traits/With_Services.php:97
 msgid "Invalid service ID."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Services.php:99
+#: inc/Reservation/Traits/With_Services.php:101
 msgid "Sorry, this service cannot be purchased."
 msgstr ""
 
 #. translators: %s: service name
-#: inc/Reservation/Traits/With_Services.php:115
+#: inc/Reservation/Traits/With_Services.php:117
 msgid "You cannot add &quot;%s&quot; to the reservation because the service is out of stock."
 msgstr ""
 
 #. translators: 1: service name 2: quantity in stock
-#: inc/Reservation/Traits/With_Services.php:120
+#: inc/Reservation/Traits/With_Services.php:122
 msgid "You cannot add that amount of &quot;%1$s&quot; to the reservation because there is not enough stock (%2$s remaining)."
 msgstr ""
 
@@ -2762,7 +2762,7 @@ msgctxt "admin booking service price"
 msgid "%1$s x %2$s"
 msgstr ""
 
-#: templates/emails/partials/line-booking.php:94, inc/Admin/Metaboxes/views/html-booking-payments.php:99, inc/Admin/views/booking/payment-form.php:52
+#: templates/emails/partials/line-booking.php:95, inc/Admin/Metaboxes/views/html-booking-payments.php:99, inc/Admin/views/booking/payment-form.php:52
 msgid "Balance Due"
 msgstr ""
 
@@ -2912,13 +2912,13 @@ msgctxt "bed button"
 msgid "Bed"
 msgstr ""
 
-#: templates/template-parts/archive/button.php:20
-msgid "View more infomation"
+#. translators: %s room price
+#: templates/template-parts/archive/content.php:42
+msgid "Start from %s/night"
 msgstr ""
 
-#. translators: %s room price
-#: templates/template-parts/archive/price.php:28
-msgid "Start from %s/night"
+#: templates/template-parts/archive/content.php:67
+msgid "View more infomation"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-action.php:5
@@ -2981,8 +2981,12 @@ msgstr ""
 msgid "night stay"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:92, inc/Admin/Metaboxes/views/html-booking-main.php:99
+#: inc/Admin/Metaboxes/views/html-booking-main.php:92
 msgid "Check-in"
+msgstr ""
+
+#: inc/Admin/Metaboxes/views/html-booking-main.php:99
+msgid "Check-out"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-note.php:9, inc/Admin/Metaboxes/views/html-booking-note.php:10

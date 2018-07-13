@@ -1424,12 +1424,19 @@
   text-align: left;
 }
 
+.awebooking-tooltip-theme .occupancy-description {
+  color: #fff;
+}
+
 .awebooking-tooltip-theme .occupancy-description__title {
-  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 !important;
   padding-bottom: .4em;
 }
 
 .awebooking-tooltip-theme .occupancy-description__list {
+  font-size: .75rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1846,6 +1853,12 @@ ul.booking_details li:last-of-type {
 
 .checkout-services__submit {
   text-align: right;
+}
+
+.checkout-service__pay .form-input {
+  width: 80px;
+  text-align: right;
+  float: right;
 }
 
 .awebooking-check-availability .content-area {
