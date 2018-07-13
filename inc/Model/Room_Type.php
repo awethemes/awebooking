@@ -19,6 +19,21 @@ class Room_Type extends Model {
 	protected $rates;
 
 	/**
+	 * Gets the gallery IDs.
+	 *
+	 * @return array|mixed
+	 */
+	public function get_gallery_ids() {
+		$gallery_ids = $this['gallery_ids'];
+
+		if ( $gallery_ids && ! isset( $gallery_ids[0] ) ) {
+			$gallery_ids = array_keys( $gallery_ids );
+		}
+
+		return $gallery_ids;
+	}
+
+	/**
 	 * Gets rooms belongs to this room type.
 	 *
 	 * @return \AweBooking\Support\Collection
@@ -72,11 +87,6 @@ class Room_Type extends Model {
 		$this['short_description'] = $this->instance->post_excerpt;
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
-
-		// Correct the gallery_ids.
-		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
-			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
-		}
 
 		do_action( $this->prefix( 'after_setup' ), $this );
 	}

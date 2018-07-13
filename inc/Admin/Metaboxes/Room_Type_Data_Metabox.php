@@ -42,7 +42,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 
 		$form->prepare_fields();
 		foreach ( $form as $control ) {
-			/* @var \AweBooking\Component\Form\Field_Proxy $control */
+			/* @var $control \AweBooking\Component\Form\Field_Proxy */
 			if ( $is_translation && false === $control->prop( 'translatable' ) ) {
 				$control->set_attribute( 'disabled', 'disabled' );
 			}
@@ -72,43 +72,33 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 
 		$controls = ( new Room_Type_Data_Form( $room_type ) );
 
-		$nontranslatable_fields = abrs_collect( $controls->prop( 'fields' ) )
-			->where( 'translatable', false )
-			->pluck( 'id' )
-			->all();
-
-		dd( $nontranslatable_fields );
-
 		// Get the sanitized values.
-		$values = $controls->handle( $request );
+		$values = $controls->handle( $request )->all();
 
-		$room_type->fill( Arr::except( $values->all(), [
-			'maximum_occupancy',
-		] ) );
-
-		if ( ! $is_translation ) {
-			// Correct the occupancy size.
-			foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
-				if ( ! isset( $values[ $key ] ) ) {
-					continue;
-				}
-
-				$max = (int) $values->get( '_maximum_occupancy', 0 );
+		// Correct the occupancy size.
+		foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
+			if ( isset( $values[ $key ] ) ) {
+				$max = (int) isset( $values['maximum_occupancy'] ) ? absint( $values['maximum_occupancy'] ) : 0;
 
 				// Value cannot be greater than maximum occupancy.
 				if ( (int) $values[ $key ] > $max ) {
 					$values[ $key ] = $max;
 				}
 			}
-
-			$room_type->fill([
-				'maximum_occupancy'   => $values->get( '_maximum_occupancy', 0 ),
-				'number_adults'       => $values->get( 'number_adults', 0 ),
-				'number_children'     => $values->get( 'number_children', 0 ),
-				'number_infants'      => $values->get( 'number_infants', 0 ),
-				'calculation_infants' => $values->get( '_infants_in_calculations', 'off' ),
-			]);
 		}
+
+		// Prevent save the non-translatable fields.
+		if ( ! $is_translation ) {
+			$nontranslatable = abrs_collect( $controls->prop( 'fields' ) )
+				->where( 'translatable', false )
+				->pluck( 'id' )
+				->all();
+
+			Arr::forget( $values, $nontranslatable );
+		}
+
+		// Fill data values.
+		$room_type->fill( $values );
 
 		// Fire action before save.
 		do_action( 'abrs_process_room_type_data', $room_type, $values, $request );

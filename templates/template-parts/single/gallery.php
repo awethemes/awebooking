@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $room_type;
 
-$attachment_ids = $room_type->get( 'gallery_ids' );
+$attachment_ids = $room_type->get_gallery_ids();
 
 if ( ! $attachment_ids ) {
 	return;

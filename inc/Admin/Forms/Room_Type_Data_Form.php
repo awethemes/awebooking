@@ -25,14 +25,14 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$general->add_field([
-			'id'      => '__rooms',
+			'id'      => '_rooms',
 			'type'    => 'include',
 			'name'    => esc_html__( 'Rooms', 'awebooking' ),
 			'include' => dirname( __DIR__ ) . '/Metaboxes/views/html-room-type-rooms.php',
 		]);
 
 		$general->add_field([
-			'id'              => '_maximum_occupancy',
+			'id'              => 'maximum_occupancy',
 			'type'            => 'text_medium',
 			'name'            => esc_html__( 'Maximum occupancy', 'awebooking' ),
 			'default'         => 2,
@@ -83,7 +83,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		/*$general->add_field( [
-			'id'              => '_infants_in_calculations',
+			'id'              => 'calculation_infants',
 			'type'            => 'abrs_toggle',
 			'desc'            => esc_html__( 'Include infants in max calculations?', 'awebooking' ),
 			'default'         => 'off',
@@ -107,7 +107,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'          => 'base_price', // _rack_rate
+			'id'          => 'rack_rate', // _rack_rate
 			'type'        => 'abrs_amount',
 			'name'        => esc_html__( 'Rack Rate', 'awebooking' ),
 			'append'      => abrs_currency_symbol(),
@@ -116,7 +116,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'               => '_tax_rate_id',
+			'id'               => 'tax_rate_id',
 			'type'             => 'select',
 			'name'             => esc_html__( 'Tax', 'awebooking' ),
 			'classes'          => 'with-selectize',
@@ -129,7 +129,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'              => 'minimum_night', // '_rate_min_los'
+			'id'              => 'rate_min_los',
 			'type'            => 'text_small',
 			'name'            => esc_html__( 'Min LOS', 'awebooking' ),
 			'desc'            => esc_html__( 'Minimum Length of Stay', 'awebooking' ),
@@ -141,7 +141,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'              => '_rate_maximum_los',
+			'id'              => 'rate_max_los',
 			'type'            => 'text_small',
 			'name'            => esc_html__( 'Max LOS', 'awebooking' ),
 			'desc'            => esc_html__( 'Maximum Length of Stay', 'awebooking' ),
@@ -152,7 +152,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'         => '_rate_inclusions',
+			'id'         => 'rate_inclusions',
 			'type'       => 'text',
 			'name'       => esc_html__( 'Inclusions (for display)', 'awebooking' ),
 			'desc'       => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
@@ -163,7 +163,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'         => '_rate_policies',
+			'id'         => 'rate_policies',
 			'type'       => 'text',
 			'name'       => esc_html__( 'Policies (for display)', 'awebooking' ),
 			'text'       => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
@@ -181,7 +181,7 @@ class Room_Type_Data_Form extends Form_Builder {
 
 		$rooms->add_field([
 			'name'        => esc_html__( 'Area size', 'awebooking' ),
-			'id'          => '_area_size',
+			'id'          => 'area_size',
 			'type'        => 'text_small',
 			'grid_row'    => true,
 			'grid_column' => 3,
@@ -190,7 +190,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$rooms->add_field([
-			'id'          => '_room_view',
+			'id'          => 'view',
 			'type'        => 'text_medium',
 			'name'        => esc_html__( 'View', 'awebooking' ),
 			'grid_column' => 3,
@@ -199,7 +199,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$rooms->add_field([
-			'id'              => '_beds',
+			'id'              => 'beds',
 			'type'            => 'include',
 			'name'            => esc_html__( 'Beds', 'awebooking' ),
 			'text'            => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
@@ -241,7 +241,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$description->add_field( [
-			'id'           => 'gallery',
+			'id'           => 'gallery_ids',
 			'type'         => 'file_list',
 			'name'         => esc_html__( 'Gallery', 'awebooking' ),
 			'query_args'   => [ 'type' => 'image' ],
@@ -250,7 +250,7 @@ class Room_Type_Data_Form extends Form_Builder {
 			'grid_row'     => true,
 		] );
 
-		/**
+		/*
 		 * Fire action after setup fields.
 		 *
 		 * @param \AweBooking\Component\Form\Form_Builder $form The form instance.
