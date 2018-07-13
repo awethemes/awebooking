@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Constants;
 use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Standard_Rate_Interval;
@@ -27,6 +28,10 @@ function abrs_get_rate( $rate ) {
  * @return \AweBooking\Model\Pricing\Contracts\Rate_Interval|null
  */
 function abrs_get_rate_interval( $rate ) {
+	if ( is_int( $rate ) && Constants::ROOM_TYPE === get_post_type( $rate ) ) {
+		$rate = abrs_get_standard_rate_interval( $rate );
+	}
+
 	return ( $rate instanceof Standard_Rate_Interval ) ? $rate
 		: apply_filters( 'abrs_get_rate_object', null, $rate );
 }
