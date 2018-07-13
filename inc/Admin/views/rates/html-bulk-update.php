@@ -68,7 +68,7 @@ $all_rates = $scheduler->scheduler->mapWithKeys( function ( $calendar ) {
 						</div>
 
 						<?php
-						$controls->add_field([
+						$controls->show_field([
 							'id'                => 'bulk_days',
 							'type'              => 'multicheck_inline',
 							'name'              => esc_html__( 'Apply on days', 'awebooking' ),
