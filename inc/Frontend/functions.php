@@ -177,10 +177,10 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	$atts = shortcode_atts([
 		'layout'          => 'horizontal',
 		'alignment'       => '',
-		'container_class' => '',
 		'res_request'     => null,
 		'hotel_location'  => true,
 		'occupancy'       => true,
+		'container_class' => '',
 	], $atts );
 
 	/**
