@@ -1251,7 +1251,7 @@ msgstr[1] ""
 msgid "Tools"
 msgstr ""
 
-#: inc/Admin/Forms/Booking_Payment_Form.php:24, inc/Admin/Forms/Service_Data_Form.php:37, inc/Admin/Metaboxes/views/html-booking-payments.php:22, inc/Admin/views/rates/html-adjust-price.php:47, inc/Admin/views/rates/html-bulk-update.php:52
+#: inc/Admin/Forms/Booking_Payment_Form.php:24, inc/Admin/Forms/Service_Data_Form.php:37, inc/Admin/Metaboxes/views/html-booking-payments.php:22, inc/Admin/views/rates/html-adjust-price.php:47, inc/Admin/views/rates/html-bulk-update.php:53
 msgid "Amount"
 msgstr ""
 
@@ -3275,11 +3275,11 @@ msgstr ""
 msgid "Block"
 msgstr ""
 
-#: inc/Admin/views/calendar/html-bulk-update.php:77, inc/Admin/views/rates/html-adjust-price.php:68, inc/Admin/views/rates/html-bulk-update.php:73
+#: inc/Admin/views/calendar/html-bulk-update.php:77, inc/Admin/views/rates/html-adjust-price.php:68, inc/Admin/views/rates/html-bulk-update.php:74
 msgid "Apply on days"
 msgstr ""
 
-#: inc/Admin/views/calendar/html-bulk-update.php:93, inc/Admin/views/rates/html-adjust-price.php:20, inc/Admin/views/rates/html-bulk-update.php:87
+#: inc/Admin/views/calendar/html-bulk-update.php:93, inc/Admin/views/rates/html-adjust-price.php:20, inc/Admin/views/rates/html-bulk-update.php:88
 msgid "Submit"
 msgstr ""
 
@@ -3339,7 +3339,7 @@ msgstr ""
 msgid "Set room price"
 msgstr ""
 
-#: inc/Admin/views/rates/html-adjust-price.php:60, inc/Admin/views/rates/html-bulk-update.php:65
+#: inc/Admin/views/rates/html-adjust-price.php:60, inc/Admin/views/rates/html-bulk-update.php:66
 msgid "Note: Replace with zero will be reset custom price."
 msgstr ""
 
