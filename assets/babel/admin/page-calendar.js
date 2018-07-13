@@ -144,7 +144,9 @@
       });
 
       flatpickr('#bulk_date_start', {
+        mode: 'range',
         dateFormat: 'Y-m-d',
+        showMonths: 2,
         plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }) ],
       });
     }
@@ -156,7 +158,7 @@
    * @return {void}
    */
   $(function() {
-    (new BookingScheduler);
+    new BookingScheduler();
   });
 
 })(jQuery, window.awebooking);
