@@ -16,7 +16,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			'metabox.room_type_data'   => \AweBooking\Admin\Metaboxes\Room_Type_Data_Metabox::class,
 			'metabox.room_type_hotel'  => \AweBooking\Admin\Metaboxes\Room_Type_Hotel_Metabox::class,
 			'metabox.booking_main'     => \AweBooking\Admin\Metaboxes\Booking_Main_Metabox::class,
-			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
+			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Items_Metabox::class,
 			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
 			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
