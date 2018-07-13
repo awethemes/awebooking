@@ -43,7 +43,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		$form->prepare_fields();
 		foreach ( $form as $control ) {
 			/* @var $control \AweBooking\Component\Form\Field_Proxy */
-			if ( $is_translation && false === $control->prop( 'translatable' ) ) {
+			if ( $is_translation && ! $control->prop( 'translatable' ) ) {
 				$control->set_attribute( 'disabled', 'disabled' );
 			}
 		}

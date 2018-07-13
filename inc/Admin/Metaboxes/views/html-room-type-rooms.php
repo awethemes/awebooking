@@ -25,7 +25,7 @@ if ( abrs_running_on_multilanguage() ) {
 
 		<ul class="abrs-sortable">
 			<?php foreach ( $rooms as $i => $room ) : ?>
-				<li class="abrs-sortable__item">s
+				<li class="abrs-sortable__item">
 					<div class="abrs-sortable__head"><span class="abrs-sortable__order"><?php echo esc_html( $i + 1 ); ?></span></div>
 					<div class="abrs-sortable__body"><strong><?php echo esc_html( $room->get( 'name' ) ); ?></strong></div>
 				</li>

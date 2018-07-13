@@ -39,7 +39,6 @@ class Room_Type_Data_Form extends Form_Builder {
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 			'attributes'      => [ 'list' => '_maximum_occupancy_datalist' ],
 			'sanitization_cb' => 'absint',
-			'translatable'    => false,
 			'grid_row'        => true,
 			'grid_column'     => '3',
 		]);
@@ -51,7 +50,6 @@ class Room_Type_Data_Form extends Form_Builder {
 			'default'         => 2,
 			'attributes'      => [ 'list' => 'number_adults_datalist' ],
 			'sanitization_cb' => 'absint',
-			'translatable'    => false,
 			'grid_column'     => '3',
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 		]);
@@ -64,7 +62,6 @@ class Room_Type_Data_Form extends Form_Builder {
 			'sanitization_cb' => 'absint',
 			'show_on_cb'      => 'abrs_children_bookable',
 			'attributes'      => [ 'list' => 'number_children_datalist' ],
-			'translatable'    => false,
 			'grid_column'     => '3',
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 		]);
@@ -77,7 +74,6 @@ class Room_Type_Data_Form extends Form_Builder {
 			'sanitization_cb' => 'absint',
 			'show_on_cb'      => 'abrs_children_bookable',
 			'attributes'      => [ 'list' => 'number_infants_datalist' ],
-			'translatable'    => false,
 			'grid_column'     => '3',
 			'after'           => $this->datalist_number_callback( 1, 20 ),
 		]);
@@ -107,12 +103,13 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'          => 'rack_rate', // _rack_rate
-			'type'        => 'abrs_amount',
-			'name'        => esc_html__( 'Rack Rate', 'awebooking' ),
-			'append'      => abrs_currency_symbol(),
-			'tooltip'     => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
-			'grid_column' => 3,
+			'id'           => 'rack_rate', // _rack_rate
+			'type'         => 'abrs_amount',
+			'name'         => esc_html__( 'Rack Rate', 'awebooking' ),
+			'append'       => abrs_currency_symbol(),
+			'tooltip'      => esc_html__( 'Rack rate is the regular everyday rate.', 'awebooking' ),
+			'grid_column'  => 3,
+			'translatable' => true,
 		]);
 
 		$pricing->add_field([
@@ -122,6 +119,7 @@ class Room_Type_Data_Form extends Form_Builder {
 			'classes'          => 'with-selectize',
 			'options_cb'       => 'abrs_get_tax_rates_for_dropdown',
 			'show_option_none' => esc_html__( 'No Tax', 'awebooking' ),
+			'translatable'     => true,
 			'grid_column'      => 3,
 			'show_on_cb'       => function () {
 				return abrs_tax_enabled() && ( 'per_room' === abrs_get_tax_rate_model() );
@@ -152,25 +150,27 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
-			'id'         => 'rate_inclusions',
-			'type'       => 'text',
-			'name'       => esc_html__( 'Inclusions (for display)', 'awebooking' ),
-			'desc'       => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
-			'text'       => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
-			'repeatable' => true,
-			'tooltip'    => true,
-			'grid_row'   => true,
+			'id'           => 'rate_inclusions',
+			'type'         => 'text',
+			'name'         => esc_html__( 'Inclusions (for display)', 'awebooking' ),
+			'desc'         => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
+			'text'         => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'translatable' => true,
+			'repeatable'   => true,
+			'tooltip'      => true,
+			'grid_row'     => true,
 		]);
 
 		$pricing->add_field([
-			'id'         => 'rate_policies',
-			'type'       => 'text',
-			'name'       => esc_html__( 'Policies (for display)', 'awebooking' ),
-			'text'       => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
-			'desc'       => esc_html__( 'What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc.', 'awebooking' ),
-			'repeatable' => true,
-			'tooltip'    => true,
-			'grid_row'   => true,
+			'id'           => 'rate_policies',
+			'type'         => 'text',
+			'name'         => esc_html__( 'Policies (for display)', 'awebooking' ),
+			'text'         => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
+			'desc'         => esc_html__( 'What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc.', 'awebooking' ),
+			'translatable' => true,
+			'repeatable'   => true,
+			'tooltip'      => true,
+			'grid_row'     => true,
 		]);
 
 		// Section rooms.
@@ -180,22 +180,24 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$rooms->add_field([
-			'name'        => esc_html__( 'Area size', 'awebooking' ),
-			'id'          => 'area_size',
-			'type'        => 'text_small',
-			'grid_row'    => true,
-			'grid_column' => 3,
-			'before'      => '<div class="abrs-input-addon">',
-			'after'       => '<label for="area_size">' . abrs_get_measure_unit_label() . '</label></div>',
+			'name'         => esc_html__( 'Area size', 'awebooking' ),
+			'id'           => 'area_size',
+			'type'         => 'text_small',
+			'translatable' => true,
+			'grid_row'     => true,
+			'grid_column'  => 3,
+			'before'       => '<div class="abrs-input-addon">',
+			'after'        => '<label for="area_size">' . abrs_get_measure_unit_label() . '</label></div>',
 		]);
 
 		$rooms->add_field([
-			'id'          => 'view',
-			'type'        => 'text_medium',
-			'name'        => esc_html__( 'View', 'awebooking' ),
-			'grid_column' => 3,
-			'attributes'  => [ 'list' => 'view_datalist' ],
-			'after'       => $this->datalist_view_callback(),
+			'id'           => 'view',
+			'type'         => 'text_medium',
+			'name'         => esc_html__( 'View', 'awebooking' ),
+			'translatable' => true,
+			'grid_column'  => 3,
+			'attributes'   => [ 'list' => 'view_datalist' ],
+			'after'        => $this->datalist_view_callback(),
 		]);
 
 		$rooms->add_field([
@@ -205,16 +207,17 @@ class Room_Type_Data_Form extends Form_Builder {
 			'text'            => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
 			'include'         => dirname( __DIR__ ) . '/Metaboxes/views/html-room-type-bed.php',
 			'repeatable'      => true,
+			'translatable'    => true,
 			'grid_row'        => true,
 			'sanitization_cb' => [ $this, 'sanitize_beds' ],
 		]);
 
 		$rooms->add_field([
-			'id'              => '__amenities',
-			'type'            => '__',
-			'name'            => esc_html__( 'Amenities', 'awebooking' ),
-			'grid_row'        => true,
-			'render_field_cb' => function () {
+			'id'          => '__amenities',
+			'type'        => '__',
+			'name'        => esc_html__( 'Amenities', 'awebooking' ),
+			'grid_row'    => true,
+			'after_field' => function () {
 				post_categories_meta_box( get_post(), [
 					'args' => [ 'taxonomy' => 'hotel_amenity' ],
 				] );
@@ -228,14 +231,15 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$description->add_field( [
-			'id'         => 'excerpt',
-			'type'       => 'wysiwyg',
-			'name'       => esc_html__( 'Short Description', 'awebooking' ),
-			'save_field' => false,
-			'escape_cb'  => false,
-			'grid_row'   => true,
-			'options'    => [ 'textarea_rows' => 80 ],
-			'default_cb' => function () {
+			'id'           => 'excerpt',
+			'type'         => 'wysiwyg',
+			'name'         => esc_html__( 'Short Description', 'awebooking' ),
+			'translatable' => true,
+			'save_field'   => false,
+			'escape_cb'    => false,
+			'grid_row'     => true,
+			'options'      => [ 'textarea_rows' => 80 ],
+			'default_cb'   => function () {
 				return get_post_field( 'post_excerpt', get_the_ID() );
 			},
 		]);
@@ -247,8 +251,9 @@ class Room_Type_Data_Form extends Form_Builder {
 			'query_args'   => [ 'type' => 'image' ],
 			'text'         => [ 'add_upload_files_text' => esc_html__( 'Select Images', 'awebooking' ) ],
 			'preview_size' => 'small',
+			'translatable' => true,
 			'grid_row'     => true,
-		] );
+		]);
 
 		/*
 		 * Fire action after setup fields.
