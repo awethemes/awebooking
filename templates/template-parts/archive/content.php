@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $room_type;
 
 // Ensure visibility.
-if ( empty( $room_type ) ) {
+if ( empty( $room_type ) || ! $room_type->get( 'rack_rate' ) ) {
 	return;
 }
 
@@ -25,63 +25,47 @@ if ( empty( $room_type ) ) {
 
 <article id="room-<?php the_ID(); ?>" <?php post_class( 'list-room' ); ?>>
 	<div class="list-room__media">
+
 		<a href="<?php echo esc_url( get_the_permalink() ); ?>">
-			<?php
-			/**
-			 * abrs_before_archive_room hook.
-			 *
-			 * @hooked abrs_archive_room_thumbnail - 10
-			 */
-			do_action( 'abrs_before_archive_room' );
-			?>
+			<?php echo abrs_get_thumbnail(); // WPCS: xss ok. ?>
 		</a>
+
 	</div>
 
 	<div class="list-room__info">
 		<header class="list-room__header">
-			<?php
-			/**
-			 * abrs_archive_room_header hook.
-			 *
-			 * @hooked abrs_archive_room_title - 10
-			 * @hooked abrs_archive_room_price - 15
-			 */
-			do_action( 'abrs_archive_room_header' );
-			?>
+			<?php the_title( '<h2 class="list-room__title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
+
+			<p class="list-room__price">
+				<?php
+				/* translators: %s room price */
+				printf( esc_html__( 'Start from %s/night', 'awebooking' ), '<span>' . abrs_format_price( $room_type->get( 'rack_rate' ) ) . '</span>' ); // WPCS: xss ok.
+				?>
+			</p>
 		</header><!-- /.list-room__header -->
 
 		<div class="list-room__container">
-			<?php
-			/**
-			 * abrs_archive_room_description hook.
-			 *
-			 * @hooked abrs_archive_room_description - 10
-			 */
-			do_action( 'abrs_archive_room_description' );
-			?>
+			<?php if ( $description = $room_type->get( 'short_description' ) ) : ?>
+
+				<div class="list-room__desc">
+					<?php print wp_trim_words( $description, 55 ); // WPCS: xss ok. ?>
+				</div>
+
+			<?php endif; ?>
 
 			<div class="list-room__additional-info">
 				<?php
-				/**
-				 * abrs_archive_room_information hook.
-				 *
-				 * @hooked abrs_archive_room_information - 10
-				 * @hooked abrs_archive_room_occupancy   - 15
-				 */
-				do_action( 'abrs_archive_room_information' );
+				abrs_archive_room_information();
+
+				abrs_archive_room_occupancy();
 				?>
 			</div><!-- /.list-room__additional-info -->
 		</div><!-- /.list-room__container -->
 
 		<footer class="list-room__footer">
-			<?php
-			/**
-			 * abrs_after_archive_room hook.
-			 *
-			 * @hooked abrs_archive_room_button - 10
-			 */
-			do_action( 'abrs_after_archive_room' );
-			?>
+			<a class="button" href="<?php echo esc_url( get_the_permalink() ); ?>">
+				<?php esc_html_e( 'View more infomation', 'awebooking' ); ?>
+			</a>
 		</footer><!-- /.list-room__footer -->
 	</div><!-- /.list-room__info -->
 

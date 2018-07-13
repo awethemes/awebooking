@@ -1,23 +1,10 @@
 <?php
 
 use AweBooking\Constants;
-use AweBooking\Availability\Request;
-use Illuminate\Support\Arr;
 
 // Require other functions.
-require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 require_once trailingslashit( __DIR__ ) . 'hooks.php';
-
-/**
- * Add a notice message to the flash.
- *
- * @param  string $message The notice message.
- * @param  string $level   The notice level.
- * @return \AweBooking\Component\Flash\Flash_Notifier
- */
-function abrs_add_notice( $message, $level = 'info' ) {
-	return abrs_flash( $message, $level );
-}
+require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 
 /**
  * Gets the checkout instance.
@@ -38,31 +25,33 @@ function abrs_reservation() {
 }
 
 /**
- * Gets the current res request.
+ * Add a notice message to the flash.
  *
- * @return \AweBooking\Availability\Request|null
+ * @param  string $message The notice message.
+ * @param  string $level   The notice level.
+ * @return \AweBooking\Component\Flash\Flash_Notifier
  */
-function abrs_get_res_request() {
-	global $wp;
-
-	return Arr::get( $wp->query_vars, 'res_request' );
+function abrs_add_notice( $message, $level = 'info' ) {
+	return abrs_flash( $message, $level );
 }
 
 /**
- * Sets the res request into the query var.
+ * Determnies if current viewing in a single room type.
  *
- * @param \AweBooking\Availability\Request|null $request The res request instance.
+ * @return bool
  */
-function abrs_set_res_request( Request $request = null ) {
-	global $wp;
-
-	$wp->set_query_var( 'res_request', $request );
+function abrs_is_room_type() {
+	return is_singular( Constants::ROOM_TYPE );
 }
 
-
-
-
-
+/**
+ * Determnies if current page is archive of "room_type".
+ *
+ * @return bool
+ */
+function is_room_type_archive() {
+	return is_post_type_archive( Constants::ROOM_TYPE );
+}
 
 /**
  * Determines if current viewing on "search_results" page.
@@ -70,7 +59,7 @@ function abrs_set_res_request( Request $request = null ) {
  * @return bool
  */
 function abrs_is_search_page() {
-	return is_page( abrs_get_page_id( 'search_results' ) ) || abrs_page_has_shortcode( 'awebooking_search_results' );
+	return is_page( abrs_get_page_id( 'search_results' ) );
 }
 
 /**
@@ -79,16 +68,8 @@ function abrs_is_search_page() {
  * @return bool
  */
 function abrs_is_checkout_page() {
-	return is_page( abrs_get_page_id( 'checkout' ) ) || abrs_page_has_shortcode( 'awebooking_checkout' );
+	return is_page( abrs_get_page_id( 'checkout' ) );
 }
-
-
-
-
-
-
-
-
 
 /**
  * Determines if current page is in awebooking pages.
@@ -96,47 +77,9 @@ function abrs_is_checkout_page() {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( is_room_type_list() || is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
+	$is_awebooking = ( is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
-}
-
-if ( ! function_exists( 'is_room_type' ) ) {
-	/**
-	 * Determnies if current viewing in a single room type.
-	 *
-	 * @return bool
-	 */
-	function is_room_type() {
-		return is_singular( Constants::ROOM_TYPE );
-	}
-}
-
-if ( ! function_exists( 'is_room_type_list' ) ) {
-	/**
-	 * Determnies if current page is archive of "room_type".
-	 *
-	 * @return bool
-	 */
-	function is_room_type_list() {
-		return is_post_type_archive( Constants::ROOM_TYPE );
-	}
-}
-
-
-
-/**
- * Checks whether the content passed contains a specific short code.
- *
- * @param  string $tag Shortcode tag to check.
- * @return bool
- */
-function abrs_page_has_shortcode( $tag = '' ) {
-	global $post;
-
-	return is_singular()
-		&& ( $post instanceof WP_Post )
-		&& has_shortcode( $post->post_content, $tag );
 }
 
 /**
@@ -168,7 +111,7 @@ function abrs_body_class( $classes ) {
  *
  * @param  array   $atts The search form attributes.
  * @param  boolean $echo Is echo or not (return the form).
- * @return string|void
+ * @return string
  */
 function abrs_get_search_form( $atts = [], $echo = true ) {
 	global $wp, $abrs_query;
@@ -225,9 +168,9 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
  *
  * @param  array   $args The args.
  * @param  boolean $echo Is echo or not.
- * @return string|void
+ * @return string
  */
-function abrs_bookroom_button( $args, $echo = true ) {
+function abrs_book_room_button( $args, $echo = true ) {
 	global $wp, $abrs_query;
 
 	$args = wp_parse_args( $args, [
@@ -257,4 +200,26 @@ function abrs_bookroom_button( $args, $echo = true ) {
 	} else {
 		return $button;
 	}
+}
+
+/**
+ * Get the room type thumbnail, or the placeholder if not set.
+ *
+ * @param int|null $post_id The post ID.
+ * @param string   $size    The image size (default: 'awebooking_archive').
+ *
+ * @return string
+ */
+function abrs_get_thumbnail( $post_id = null, $size = 'awebooking_archive' ) {
+	global $post;
+
+	if ( ! $post_id ) {
+		$post_id = $post->ID;
+	}
+
+	if ( ! has_post_thumbnail( $post_id ) ) {
+		return '';
+	}
+
+	return get_the_post_thumbnail( $post_id, $size );
 }

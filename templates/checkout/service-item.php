@@ -80,7 +80,7 @@ $js_data['price']    = $price ?: 0;
 							<?php else : ?>
 								<div class="nice-checkbox">
 									<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
-									<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>">sdasdasd</label>
+									<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>"></label>
 								</div>
 							<?php endif; ?>
 						</div>

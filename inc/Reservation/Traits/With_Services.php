@@ -38,6 +38,8 @@ trait With_Services {
 	/**
 	 * Gets all service items.
 	 *
+	 * @param bool $exclude_included Exclude includes service.
+	 *
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_services( $exclude_included = false ) {
