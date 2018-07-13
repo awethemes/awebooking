@@ -64,10 +64,14 @@
 	}
 }
 
-.quantity-input {
-
-}
-
 .checkout-services__submit {
 	text-align: right;
+}
+
+.checkout-service__pay {
+  .form-input {
+    width: 80px;
+    text-align: right;
+    float: right;
+  }
 }
