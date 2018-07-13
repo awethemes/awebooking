@@ -96,7 +96,7 @@
 
 						<div class="abcol-6">
 							<p>
-								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
+								<strong><?php esc_html_e( 'Check-out', 'awebooking' ); ?></strong>
 								<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_out_date() ) ); ?></span>
 							</p>
 						</div>

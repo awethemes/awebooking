@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<thead>
 		<tr>
 			<th><?php esc_html_e( 'Services', 'awebooking' ); ?></th>
-			<th class="total-column">&nbsp;</th>
+			<th class="total-column"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -71,7 +71,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						abrs_format_price( $item->get( 'price' ) )
 					); // WPCS: xss ok.
 					?>
-					<?php abrs_price( $item->get_total() ); ?>
+
+					<p style="text-align: right;"><?php abrs_price( $item->get_total() ); ?></p>
 				</td>
 			</tr>
 		<?php endforeach ?>
