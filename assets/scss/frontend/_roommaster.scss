@@ -203,6 +203,7 @@
 
 
 .awebooking-tooltip-theme {
+  color: #fff;
 	text-align: left;
 
 	.occupancy-description {
@@ -222,15 +223,4 @@
 			}
 		}
 	}
-}
-
-.roommaster-occupancy-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.awebooking .booknow {
-  font-size: .75rem;
-  font-weight: 600;
 }

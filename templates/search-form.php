@@ -49,7 +49,7 @@ $form_classes = [
 
 							<div class="searchbox__box-input">
 								<select name="hotel" class="searchbox__input searchbox__input--hotel input-transparent">
-									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
+									<?php foreach ( abrs_list_hotels( [], true ) as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
 								</select>

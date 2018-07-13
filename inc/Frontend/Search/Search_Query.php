@@ -124,6 +124,9 @@ class Search_Query {
 			return null;
 		}
 
+		$request = $this->get_request();
+		$this->res_request['query_args'] = $request->only( 'hotel', 'only' );
+
 		$contraints = apply_filters( 'abrs_search_contraints', [
 			new Reservation_Constraint( $this->plugin['reservation'] ),
 		]);
@@ -132,8 +135,9 @@ class Search_Query {
 			->add_contraints( $contraints )
 			->search();
 
-		if ( $sortby = $this->get_request()->request->get('sortby') ) {
-			switch ( $sortby ) {
+		// TODO: ...
+		if ( $request->filled( 'sortby' ) ) {
+			switch ( $request->get( 'sortby' ) ) {
 				case 'cheapest':
 					$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
 						return $item['room_rate']->get_rate();

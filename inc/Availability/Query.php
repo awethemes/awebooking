@@ -72,6 +72,9 @@ class Query {
 	public function query_rooms() {
 		$guestcounts = $this->request->get_guest_counts();
 
+		// Gets the query args.
+		$query_args = (array) $this->request['query_args'];
+
 		// Build the query args.
 		$wp_query_args = [
 			'post_type'        => Constants::ROOM_TYPE,
@@ -81,20 +84,42 @@ class Query {
 			'booking_adults'   => $guestcounts->get_adults()->get_count(),
 			'booking_children' => $guestcounts->has( 'children' ) ? $guestcounts->get_children()->get_count() : -1,
 			'booking_infants'  => $guestcounts->has( 'infants' ) ? $guestcounts->get_infants()->get_count() : -1,
+			'meta_query'       => [],
 		];
 
 		// Filter get only room types.
-		if ( ! empty( $this->request['only'] ) ) {
-			$wp_query_args['post__in'] = wp_parse_id_list( $this->request['only'] );
+		if ( ! empty( $query_args['only'] ) ) {
+			$wp_query_args['post__in'] = wp_parse_id_list( $query_args['only'] );
 		}
 
-		if ( ! empty( $this->request['hotel'] ) ) {
-			$wp_query_args['post_parent'] = absint( $this->request['hotel'] );
+		if ( abrs_multiple_hotels() ) {
+			if ( ! empty( $query_args['hotel'] ) ) {
+				$wp_query_args['meta_query'][] = [
+					'key'     => '_hotel_id',
+					'value'   => absint( $query_args['hotel'] ),
+					'type'    => 'numeric',
+					'compare' => '=',
+				];
+			} else {
+				$wp_query_args['meta_query'][] = [
+					'relation' => 'OR',
+					[
+						'key'     => '_hotel_id',
+						'compare' => 'NOT EXISTS',
+					],
+					[
+						'key'     => '_hotel_id',
+						'value'   => '0',
+						'type'    => 'numeric',
+						'compare' => '=',
+					],
+				];
+			}
 		}
 
 		// Perform query room types.
 		$room_types = ( new WP_Query(
-			apply_filters( 'abrs_query_room_types', $wp_query_args, $this )
+			apply_filters( 'abrs_query_room_types', $wp_query_args, $this->request )
 		) )->posts;
 
 		// Prime caches to reduce future queries.
