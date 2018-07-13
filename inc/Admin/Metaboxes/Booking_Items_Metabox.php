@@ -3,7 +3,7 @@ namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
 
-class Booking_Rooms_Metabox extends Abstract_Metabox {
+class Booking_Items_Metabox extends Abstract_Metabox {
 	/**
 	 * Constructor.
 	 */
@@ -25,6 +25,6 @@ class Booking_Rooms_Metabox extends Abstract_Metabox {
 			$the_booking = abrs_get_booking( $post );
 		}
 
-		include trailingslashit( __DIR__ ) . 'views/html-booking-rooms.php';
+		include trailingslashit( __DIR__ ) . 'views/html-booking-items.php';
 	}
 }
