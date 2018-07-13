@@ -36,7 +36,7 @@ class Checkout_Setting extends Abstract_Setting {
 			'id'         => '__payments_title',
 			'type'       => 'title',
 			'name'       => esc_html__( 'Payment Gateways', 'awebooking' ),
-			'desc'       => abrs_esc_text( 'Installed gateways are listed below. You can find more payment gateways on <a href="https://awethemes.com/plugins/awebooking#premiumaddons">Premium addons</a>.', 'awebooking' ),
+			'desc'       => abrs_esc_text( __( 'Installed gateways are listed below. You can find more payment gateways on <a href="https://awethemes.com/plugins/awebooking#premiumaddons">Premium addons</a>.', 'awebooking' ) ),
 		]);
 
 		$options->add_field([
@@ -44,7 +44,7 @@ class Checkout_Setting extends Abstract_Setting {
 			'type'       => 'include',
 			'name'       => esc_html__( 'Gateway Display Order', 'awebooking' ),
 			'desc'       => esc_html__( 'Drag and drop to control display order on the frontend.', 'awebooking' ),
-			'tooltip'	 => true,
+			'tooltip'    => true,
 			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-gateways-sorter.php',
 		]);
 
@@ -64,6 +64,7 @@ class Checkout_Setting extends Abstract_Setting {
 
 		// Register the gateways custom fields.
 		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
+			/* @var \AweBooking\Gateway\Gateway $gateway */
 			if ( $gateway->has_settings() ) {
 				$this->register_gateway_settings( $gateway );
 			}
