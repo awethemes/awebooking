@@ -47,7 +47,7 @@ $form_classes = [
 								<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>
 							</label>
 
-							<div>
+							<div class="searchbox__box-input">
 								<select name="hotel" class="searchbox__input searchbox__input--hotel input-transparent">
 									<?php foreach ( abrs_list_hotels() as $hotel ) : ?>
 										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
@@ -70,7 +70,7 @@ $form_classes = [
 							<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
 						</label>
 
-						<div>
+						<div class="searchbox__box-input">
 							<span class="searchbox__input-display" data-bind="text: checkInFormatted"></span>
 							<input type="hidden" data-bind="value: checkInDate" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</div>
@@ -89,7 +89,7 @@ $form_classes = [
 							<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
 						</label>
 
-						<div>
+						<div class="searchbox__box-input">
 							<span class="searchbox__input-display" data-bind="text: checkOutFormatted"></span>
 							<input type="hidden" data-bind="value: checkOutDate" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 						</div>
@@ -108,7 +108,7 @@ $form_classes = [
 							<span><?php esc_html_e( 'Customer', 'awebooking' ); ?></span>
 						</label>
 
-						<div class="searchbox-occupancy-info">
+						<div class="searchbox__box-input searchbox-occupancy-info">
 							<span class="searchbox-occupancy-info__item">
 								<span class="searchbox-occupancy-info__number" data-bind="text: adults"><?php echo esc_attr( $res_request['adults'] ); ?></span>
 								<?php esc_html_e( 'adult(s)', 'awebooking' ); ?>
