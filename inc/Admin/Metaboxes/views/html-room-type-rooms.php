@@ -1,6 +1,6 @@
 <?php
 /**
- * Html displaying rooms in a room type.
+ * HTML displaying rooms in a room type.
  *
  * @var \AweBooking\Model\Room_Type $the_room_type
  *
@@ -12,28 +12,20 @@ global $the_room_type, $post_id;
 // List all rooms.
 $rooms = $the_room_type->get_rooms();
 
-$max_scaffold_rooms = abrs_maximum_scaffold_rooms();
-
 // In translation, we can not do some tasks like edit or delete room unit.
 $is_translation = null;
 if ( abrs_running_on_multilanguage() ) {
 	$is_translation = abrs_multilingual()->get_original_post( $post_id ) != $post_id;
 }
 
-// JS data.
-$js_data = [
-	'rooms'       => $rooms,
-	'deleteNonce' => wp_create_nonce( 'delete_room' ),
-];
-
 ?>
 
-<div id="js-rooms-list">
+<div id="js-rooms-list" style="max-width: 500px;">
 	<?php if ( $is_translation ) : ?>
 
 		<ul class="abrs-sortable">
 			<?php foreach ( $rooms as $i => $room ) : ?>
-				<li class="abrs-sortable__item">
+				<li class="abrs-sortable__item">s
 					<div class="abrs-sortable__head"><span class="abrs-sortable__order"><?php echo esc_html( $i + 1 ); ?></span></div>
 					<div class="abrs-sortable__body"><strong><?php echo esc_html( $room->get( 'name' ) ); ?></strong></div>
 				</li>
@@ -45,6 +37,7 @@ $js_data = [
 	<?php else : ?>
 		<div class="abrs-input-addon" data-bind="visible: rooms().length === 0" style="width: 150px; display: none;">
 			<select data-bind="value: scaffoldNumber" data-title="<?php echo esc_attr( $the_room_type->get( 'title' ) ); ?>">
+				<?php $max_scaffold_rooms = abrs_maximum_scaffold_rooms(); ?>
 				<?php for ( $i = 1; $i <= $max_scaffold_rooms; $i++ ) : ?>
 					<option value="<?php echo esc_attr( $i ); ?>" <?php selected( 3, $i ); ?>><?php echo esc_html( $i ); ?></option>
 				<?php endfor; ?>
@@ -78,6 +71,11 @@ $js_data = [
 		</ul>
 
 		<button type="button" data-bind="click: add.bind($root), visible: rooms().length > 0" class="button button abrs-button abrs-mt1" style="display: none;"><?php esc_html_e( 'Add room', 'awebooking' ); ?></button>
-		<script>var _awebookingRooms = <?php echo json_encode( $js_data ); ?>;</script>
+		<script>
+			var _awebookingRooms = <?php echo json_encode( [
+				'rooms'       => $rooms,
+				'deleteNonce' => wp_create_nonce( 'delete_room' ),
+			] ); ?>;
+		</script>
 	<?php endif; ?>
 </div>
