@@ -279,6 +279,10 @@ class Room_Item extends Item {
 		} elseif ( true === $this->force_change_timespan ) {
 			$this->perform_change_timespan( $this->get_timespan() );
 		}
+
+		abrs_rescue( function () {
+			abrs_optional( $this->get_booking() )->setup_dates();
+		});
 	}
 
 	/**
