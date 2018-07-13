@@ -4,12 +4,40 @@ use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 
 /**
+ * Retrieves the room object.
+ *
+ * @param  mixed $room The room ID.
+ * @return \AweBooking\Model\Room|false|null
+ */
+function abrs_get_room( $room ) {
+	return abrs_rescue( function() use ( $room ) {
+		$room = new Room( $room );
+
+		return $room->exists() ? $room : null;
+	}, false );
+}
+
+/**
+ * Retrieves the room type object.
+ *
+ * @param  mixed $room_type The post object or post ID of the room type.
+ * @return \AweBooking\Model\Room_Type|false|null
+ */
+function abrs_get_room_type( $room_type ) {
+	return abrs_rescue( function() use ( $room_type ) {
+		$room_type = new Room_Type( $room_type );
+
+		return $room_type->exists() ? $room_type : null;
+	}, false );
+}
+
+/**
  * Get a room data by ID in database.
  *
  * @param  int $room The room ID.
  * @return array|null
  */
-function abrs_db_room( $room ) {
+function abrs_get_raw_room( $room ) {
 	// Try to get the room in cache first, otherwise load from database.
 	$room_unit = wp_cache_get( $room, 'awebooking_db_room' );
 
@@ -30,7 +58,7 @@ function abrs_db_room( $room ) {
  * @param  int $room_type The room type ID.
  * @return array|null
  */
-function abrs_db_rooms_in( $room_type ) {
+function abrs_get_raw_rooms( $room_type ) {
 	$room_type = abrs_parse_object_id( $room_type );
 
 	// Because room type is just is a post type, so
@@ -115,39 +143,10 @@ function abrs_update_room_caches( array $rooms ) {
  * @param  \AweBooking\Model\Room|int $room The room ID or room model.
  * @return void
  */
-function abrs_clean_room_cache( $room ) {
+function abrs_flush_room_cache( $room ) {
 	wp_cache_delete( $room, 'awebooking_db_room' );
 
 	do_action( 'abrs_clean_room_cache', $room );
-}
-
-
-/**
- * Retrieves the room object.
- *
- * @param  mixed $room The room ID.
- * @return \AweBooking\Model\Room|false|null
- */
-function abrs_get_room( $room ) {
-	return abrs_rescue( function() use ( $room ) {
-		$room = new Room( $room );
-
-		return $room->exists() ? $room : null;
-	}, false );
-}
-
-/**
- * Retrieves the room type object.
- *
- * @param  mixed $room_type The post object or post ID of the room type.
- * @return \AweBooking\Model\Room_Type|false|null
- */
-function abrs_get_room_type( $room_type ) {
-	return abrs_rescue( function() use ( $room_type ) {
-		$room_type = new Room_Type( $room_type );
-
-		return $room_type->exists() ? $room_type : null;
-	}, false );
 }
 
 /**

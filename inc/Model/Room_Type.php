@@ -25,7 +25,7 @@ class Room_Type extends Model {
 	 */
 	public function get_rooms() {
 		// If working on non-exists room type, just create an empty rooms.
-		$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
+		$rooms = $this->exists() ? abrs_get_raw_rooms( $this->id ) : [];
 
 		$rooms = abrs_collect( $rooms )->map_into( Room::class );
 
