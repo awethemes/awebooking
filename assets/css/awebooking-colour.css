@@ -1420,6 +1420,7 @@
 }
 
 .awebooking-tooltip-theme {
+  color: #fff;
   text-align: left;
 }
 
@@ -1437,17 +1438,6 @@
 
 .awebooking-tooltip-theme .occupancy-description__list li {
   padding: .2em 0;
-}
-
-.roommaster-occupancy-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.awebooking .booknow {
-  font-size: .75rem;
-  font-weight: 600;
 }
 
 dialog[open] {
@@ -1945,7 +1935,6 @@ ul.booking_details li:last-of-type {
 .list-room__info-list,
 .list-room__occupancy {
   margin: 0;
-  padding: 0;
   list-style: none;
   width: 100%;
   float: left;

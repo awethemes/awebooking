@@ -46,13 +46,13 @@
     }
 
     &.tab-room-type-general > a:before {
-      content: "\e001";
+      content: "\f116";
     }
     &.tab-room-type-pricing > a:before {
       content: "\f147";
     }
-    &.tab-room-type-amenities > a:before {
-      content: "\f116";
+    &.tab-room-type-rooms > a:before {
+      content: "\f154";
     }
     &.tab-room-type-description > a:before {
       content: "\f13a";
