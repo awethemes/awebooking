@@ -252,13 +252,16 @@ class Booking_List_Table extends Abstract_List_Table {
 		$booked_rooms = $this->booking->get_rooms();
 
 		if ( abrs_blank( $booked_rooms ) ) : ?>
+
 			<?php esc_html_e( 'No rooms found', 'awebooking' ); ?>
+
 		<?php else : ?>
+
 			<?php
 			$first_room = $booked_rooms->first();
 			$rooms_left = absint( count( $booked_rooms ) - 1 );
 
-			$timespan = $first_room->get_timespan();
+			$timespan = abrs_optional( $first_room->get_timespan() );
 
 			$nights = sprintf(
 				'&comma; <span class="">%1$d %2$s</span>',
