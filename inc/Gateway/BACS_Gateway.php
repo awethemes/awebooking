@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Gateway;
 
+use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
 class BACS_Gateway extends Gateway {
@@ -35,6 +36,18 @@ class BACS_Gateway extends Gateway {
 		$this->enabled     = $this->get_option( 'enabled' );
 		$this->title       = esc_html( $this->get_option( 'title' ) );
 		$this->description = esc_textarea( $this->get_option( 'description' ) );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function process( Booking $booking, Request $request ) {
+		$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
+
+		// Flush the reservation data.
+		abrs_reservation()->flush();
+
+		return ( new Response( 'success' ) )->data( $booking );
 	}
 
 	/**
@@ -75,17 +88,5 @@ class BACS_Gateway extends Gateway {
 				'default'     => '',
 			],
 		];
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process( Booking $booking ) {
-		$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
-
-		// Flush the reservation data.
-		abrs_reservation()->flush();
-
-		return ( new Response( 'success' ) )->data( $booking );
 	}
 }

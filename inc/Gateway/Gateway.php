@@ -4,6 +4,7 @@ namespace AweBooking\Gateway;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Frontend\Checkout\Url_Generator;
+use Awethemes\Http\Request;
 
 abstract class Gateway {
 	/**
@@ -153,7 +154,7 @@ abstract class Gateway {
 	 * @return array|null
 	 */
 	public function get_setting_fields() {
-		return apply_filters( 'abrs_gateway_setting_fields', $this->setting_fields, $this );
+		return $this->setting_fields;
 	}
 
 	/**
@@ -193,9 +194,11 @@ abstract class Gateway {
 	 * Process payment.
 	 *
 	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @param  \Awethemes\Http\Request   $request The http request.
+	 *
 	 * @return \AweBooking\Gateway\Response
 	 */
-	abstract public function process( Booking $booking );
+	abstract public function process( Booking $booking, Request $request );
 
 	/**
 	 * Get the return url (thank you page).
@@ -236,10 +239,12 @@ abstract class Gateway {
 	/**
 	 * Validate frontend payment fields.
 	 *
-	 * @param  mixed $data The posted data.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param  \Awethemes\Http\Request    $request The http request.
+	 *
 	 * @return \WP_Error|bool
 	 */
-	public function validate_fields( $data ) {
+	public function validate_fields( $data, Request $request ) {
 		return true;
 	}
 
