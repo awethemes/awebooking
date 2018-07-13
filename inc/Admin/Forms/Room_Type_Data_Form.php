@@ -150,6 +150,15 @@ class Room_Type_Data_Form extends Form_Builder {
 		]);
 
 		$pricing->add_field([
+			'id'           => 'rate_services',
+			'type'         => 'include',
+			'name'         => esc_html__( 'Services (included)', 'awebooking' ),
+			'include'      => dirname( __DIR__ ) . '/Metaboxes/views/html-room-type-services.php',
+			'grid_row'     => true,
+			'translatable' => true,
+		]);
+
+		$pricing->add_field([
 			'id'           => 'rate_inclusions',
 			'type'         => 'text',
 			'name'         => esc_html__( 'Inclusions (for display)', 'awebooking' ),
