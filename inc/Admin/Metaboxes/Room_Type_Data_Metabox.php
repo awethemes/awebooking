@@ -88,7 +88,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		}
 
 		// Prevent save the non-translatable fields.
-		if ( ! $is_translation ) {
+		if ( $is_translation ) {
 			$nontranslatable = abrs_collect( $controls->prop( 'fields' ) )
 				->where( 'translatable', false )
 				->pluck( 'id' )
@@ -107,7 +107,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		$saved = $room_type->save();
 
 		// Handle update rooms data.
-		if ( false === $is_translation ) {
+		if ( ! $is_translation ) {
 			if ( 0 === count( $room_type->get_rooms() ) ) {
 				$this->perform_scaffold_rooms( $room_type, $request->input( '_rooms', [] ) );
 			} elseif ( $request->filled( '_rooms' ) ) {
