@@ -236,41 +236,8 @@ class Booking extends Model {
 			$service_total    += $service->get( 'total' );
 		}
 
-
-		// Sum the service costs.
-		// ...
-
-		// Sum fee costs.
-		/*foreach ( $this->get_fees() as $item ) {
-			$amount = $item->get_amount();
-
-			if ( 0 > $amount ) {
-				$item->set_total( $amount );
-				$max_discount = round( $room_total + $fee_total, wc_get_price_decimals() ) * -1;
-
-				if ( $item->get_total() < $max_discount ) {
-					$item->set_total( $max_discount );
-				}
-			}
-
-			$fee_total += $item->get_total();
-		}*/
-
-		// Calculate taxes for rooms, discounts.
-		// Note: This also triggers save().
-		if ( $with_taxes ) {
-			// $this->calculate_taxes();
-		}
-
-		// Sum the taxes.
-		/*foreach ( $this->get_rooms() as $room ) {
-			$room_subtotal_tax = $room_subtotal_tax->add( $room->get_subtotal_tax() );
-			$room_total_tax    = $room_total_tax->add( $room->get_total_tax() );
-		}*/
-
 		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
 		$this->set_attribute( 'total', $room_total + $service_total + $fee_total );
-		// $this->set_discount_tax( $room_subtotal_tax - $room_total_tax );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );

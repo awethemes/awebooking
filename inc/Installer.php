@@ -114,7 +114,7 @@ class Installer {
 
 		// CHeck for the update DB.
 		if ( $this->needs_db_update() ) {
-			$this->update();
+			// $this->update();
 		} else {
 			$this->update_db_version();
 		}
