@@ -101,6 +101,24 @@ class Form_Builder extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	}
 
 	/**
+	 * Add a field at position after a another field.
+	 *
+	 * @param string $key  The "append" field name.
+	 * @param array  $args The field args.
+	 *
+	 * @return false|string
+	 */
+	public function add_field_after( $key, array $args ) {
+		$fields = $this->prop( 'fields' );
+
+		$posstion = count( $fields ) > 0
+			? array_search( $key, array_keys( $fields ) )
+			: 0;
+
+		return $this->add_field( $args, $posstion ? $posstion + 2 : 0 );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function get_field( $field, $group = null, $reset_cached = false ) {
