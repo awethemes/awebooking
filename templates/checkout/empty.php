@@ -1,6 +1,6 @@
 <?php
 /**
- * Output the checkout form (used for shortcode).
+ * Output the checkout form when empty.
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/checkout/empty.php.
  *
@@ -14,6 +14,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-?>
-
-empty
