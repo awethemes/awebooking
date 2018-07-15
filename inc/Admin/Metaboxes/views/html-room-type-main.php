@@ -2,8 +2,8 @@
 /**
  * HTML displaying the room type form data.
  *
- * @var \AweBooking\Model\Room_Type             $the_room_type
- * @var \AweBooking\Component\Form\Form_Builder $form
+ * @var \AweBooking\Model\Room_Type     $the_room_type
+ * @var \AweBooking\Component\Form\Form $form
  *
  * @package AweBooking\Admin\Metaboxes
  */

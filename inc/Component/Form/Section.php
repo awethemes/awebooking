@@ -31,9 +31,9 @@ class Section implements \ArrayAccess {
 	public $fields = [];
 
 	/**
-	 * The Form_Builder instance.
+	 * The Form instance.
 	 *
-	 * @var \AweBooking\Component\Form\Form_Builder
+	 * @var \AweBooking\Component\Form\Form
 	 */
 	protected $form;
 
@@ -42,11 +42,11 @@ class Section implements \ArrayAccess {
 	 *
 	 * Any supplied $args override class property defaults.
 	 *
-	 * @param Form_Builder $form The Form_Builder instance.
-	 * @param string       $id   An specific ID of the section.
-	 * @param array        $args Section arguments.
+	 * @param Form   $form The Form instance.
+	 * @param string $id   An specific ID of the section.
+	 * @param array  $args Section arguments.
 	 */
-	public function __construct( Form_Builder $form, $id, $args = [] ) {
+	public function __construct( Form $form, $id, $args = [] ) {
 		$this->id   = $id;
 		$this->form = $form;
 

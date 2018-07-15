@@ -2,9 +2,9 @@
 namespace AweBooking\Frontend\Checkout;
 
 use AweBooking\Support\Fluent;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Form_Controls extends Form_Builder {
+class Form_Controls extends Form {
 	/**
 	 * Constructor.
 	 *

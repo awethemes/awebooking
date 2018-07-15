@@ -1,10 +1,10 @@
 <?php
 namespace AweBooking\Admin\Forms;
 
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 use AweBooking\Model\Service;
 
-class Service_Data_Form extends Form_Builder {
+class Service_Data_Form extends Form {
 	/**
 	 * Constructor.
 	 *
