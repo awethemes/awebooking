@@ -21,6 +21,7 @@ $form_classes = [
 ];
 
 $action = abrs_get_page_permalink( 'search_results' );
+
 ?>
 
 <form method="GET" action="<?php echo apply_filters( 'abrs_search_form_action', esc_url( $action ) ); ?>" role="search">
@@ -33,7 +34,11 @@ $action = abrs_get_page_permalink( 'search_results' );
 		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
 	<?php endif ?>
 
-	<?php if ( $atts['only_room'] ) : ?>
+	<?php if ( abrs_is_room_type() ) : ?>
+		<input type="hidden" name="hotel" value="<?php echo esc_attr( abrs_get_room_type( get_the_ID() )->get( 'hotel_id' ) ); ?>">
+	<?php endif; ?>
+
+	<?php if ( ! empty( $atts['only_room'] ) ) : ?>
 		<input type="hidden" name="only" value="<?php echo esc_attr( implode( ',', wp_parse_id_list( $atts['only_room'] ) ) ); ?>">
 	<?php endif ?>
 

@@ -39,14 +39,14 @@ if ( ! $atts['occupancy'] ) {
 				<?php if ( abrs_children_bookable() ) : ?>
 					<span class="searchbox-occupancy-info__item">
 						<span class="searchbox-occupancy-info__number" data-bind="text: children"><?php echo esc_attr( $res_request['children'] ); ?></span>
-						<?php esc_html_e( 'children', 'awebooking' ); ?>
+						<?php esc_html_e( 'child(ren)', 'awebooking' ); ?>
 					</span>
 				<?php endif; ?>
 
 				<?php if ( abrs_infants_bookable() ) : ?>
 					<span class="searchbox-occupancy-info__item">
 						<span class="searchbox-occupancy-info__number" data-bind="text: infants"><?php echo esc_attr( $res_request['infants'] ); ?></span>
-						<?php esc_html_e( 'infants', 'awebooking' ); ?>
+						<?php esc_html_e( 'infant(s)', 'awebooking' ); ?>
 					</span>
 				<?php endif; ?>
 			</div>
