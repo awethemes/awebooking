@@ -33,15 +33,12 @@
 
 	&__description {
 		margin-bottom: .5rem;
+    font-size: .8rem;
 	}
 
 	&__operation {
 		font-size: .8rem;
 		color: $red;
-	}
-
-	&__pay {
-		text-align: right;
 	}
 
 	&__price {
@@ -68,10 +65,23 @@
 	text-align: right;
 }
 
+.checkout-service__info {
+  display: table;
+  width: 100%;
+}
+
+.checkout-service__content {
+  float: left;
+  display: table-cell;
+  width: 100%;
+}
+
 .checkout-service__pay {
-  .form-input {
-    width: 80px;
-    text-align: right;
-    float: right;
-  }
+  display: table-cell;
+  vertical-align: middle;
+  width: 1%;
+}
+
+.checkout-service__input-box {
+  float: right;
 }
