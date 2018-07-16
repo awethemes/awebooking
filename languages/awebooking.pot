@@ -123,37 +123,37 @@ msgstr ""
 msgid "Unable to create the reservation request."
 msgstr ""
 
-#: inc/core-functions.php:188
+#: inc/core-functions.php:189
 msgid "Cash"
 msgstr ""
 
-#: inc/core-functions.php:447
+#: inc/core-functions.php:448
 msgid "Mr."
 msgstr ""
 
-#: inc/core-functions.php:448
+#: inc/core-functions.php:449
 msgid "Ms."
 msgstr ""
 
-#: inc/core-functions.php:449
+#: inc/core-functions.php:450
 msgid "Mrs."
 msgstr ""
 
-#: inc/core-functions.php:450
+#: inc/core-functions.php:451
 msgid "Miss."
 msgstr ""
 
-#: inc/core-functions.php:451
+#: inc/core-functions.php:452
 msgid "Dr."
 msgstr ""
 
-#: inc/core-functions.php:452
+#: inc/core-functions.php:453
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/core-functions.php:523, inc/Email/Mailable.php:352
+#: inc/core-functions.php:524, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -2156,7 +2156,7 @@ msgid "Number of months show in date picker."
 msgstr ""
 
 #: inc/Admin/Settings/Checkout_Setting.php:31
-msgid "Checkout Options"
+msgid "Options"
 msgstr ""
 
 #: inc/Admin/Settings/Checkout_Setting.php:38
