@@ -124,7 +124,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 				$fields = $this->sections[ $this->current_section ]['fields'];
 			}
 
-			$this->output_sections();
+			$this->output_nav_sections();
 			echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
 		}
 
@@ -142,7 +142,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 	 *
 	 * @return void
 	 */
-	protected function output_sections() {
+	protected function output_nav_sections() {
 		echo '<ul class="subsubsub">';
 
 		foreach ( $this->sections as $id => $section ) {
