@@ -161,7 +161,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		$pricing->add_field([
 			'id'           => 'rate_inclusions',
 			'type'         => 'text',
-			'name'         => esc_html__( 'Inclusions (for display)', 'awebooking' ),
+			'name'         => esc_html__( 'Inclusions (display in search result)', 'awebooking' ),
 			'desc'         => esc_html__( 'What does the package/service include? Ex. Breakfast, Shuttle, etc.', 'awebooking' ),
 			'text'         => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
 			'translatable' => true,
@@ -173,7 +173,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		$pricing->add_field([
 			'id'           => 'rate_policies',
 			'type'         => 'text',
-			'name'         => esc_html__( 'Policies (for display)', 'awebooking' ),
+			'name'         => esc_html__( 'Policies (display in search result)', 'awebooking' ),
 			'text'         => [ 'add_row_text' => esc_html__( 'Add More', 'awebooking' ) ],
 			'desc'         => esc_html__( 'What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc.', 'awebooking' ),
 			'translatable' => true,
