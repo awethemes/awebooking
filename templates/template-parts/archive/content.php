@@ -25,11 +25,11 @@ if ( empty( $room_type ) || ! $room_type->get( 'rack_rate' ) ) {
 
 <article id="room-<?php the_ID(); ?>" <?php post_class( 'list-room' ); ?>>
 	<div class="list-room__media">
-
-		<a href="<?php echo esc_url( get_the_permalink() ); ?>">
-			<?php echo abrs_get_thumbnail(); // WPCS: xss ok. ?>
-		</a>
-
+		<?php if ( has_post_thumbnail() ) : ?>
+			<a href="<?php echo esc_url( get_the_permalink() ); ?>">
+				<?php echo abrs_get_thumbnail(); // WPCS: xss ok. ?>
+			</a>
+		<?php endif; ?>
 	</div>
 
 	<div class="list-room__info">
