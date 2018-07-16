@@ -20,6 +20,11 @@ $form_classes = [
 	$atts['container_class'] ? $atts['container_class'] : '',
 ];
 
+$current_hotel = abrs_http_request()->get( 'hotel' );
+if ( ! empty( $atts['only_room'] ) && is_numeric( $atts['only_room'] ) ) {
+	$current_hotel = abrs_optional( abrs_get_room_type( $atts['only_room'] ) )->get( 'hotel_id' );
+}
+
 ?>
 
 <form method="GET" action="<?php echo esc_url( abrs_get_page_permalink( 'search_results' ) ); ?>" role="search">
@@ -31,7 +36,11 @@ $form_classes = [
 		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
 	<?php endif ?>
 
-	<?php if ( $atts['only_room'] ) : ?>
+	<?php if ( abrs_is_room_type() ) : ?>
+		<input type="hidden" name="hotel" value="<?php echo esc_attr( abrs_get_room_type( get_the_ID() )->get( 'hotel_id' ) ); ?>">
+	<?php endif; ?>
+
+	<?php if ( ! empty( $atts['only_room'] ) ) : ?>
 		<input type="hidden" name="only" value="<?php echo esc_attr( implode( ',', wp_parse_id_list( $atts['only_room'] ) ) ); ?>">
 	<?php endif ?>
 
@@ -39,7 +48,7 @@ $form_classes = [
 		<div class="searchbox__wrap">
 			<input type="text" data-hotel="rangepicker" style="display: none;"/>
 
-			<?php if ( abrs_multiple_hotels() && $atts['hotel_location'] ) : ?>
+			<?php if ( abrs_multiple_hotels() && ! abrs_is_room_type() && $atts['hotel_location'] ) : ?>
 				<div tabindex="0" class="searchbox__box searchbox__box--hotel">
 					<div class="searchbox__box-wrap">
 						<div class="searchbox__box-icon">
@@ -54,7 +63,7 @@ $form_classes = [
 							<div class="searchbox__box-input">
 								<select name="hotel" class="searchbox__input searchbox__input--hotel input-transparent">
 									<?php foreach ( abrs_list_hotels( [], true ) as $hotel ) : ?>
-										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>"><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
+										<option value="<?php echo esc_attr( $hotel->get_id() ); ?>" <?php selected( $hotel->get_id(), $current_hotel ); ?>><?php echo esc_html( $hotel->get( 'name' ) ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
