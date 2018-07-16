@@ -28,7 +28,7 @@ class Checkout_Setting extends Abstract_Setting {
 	 */
 	public function setup_fields() {
 		$options = $this->add_section( 'checkout-options', [
-			'title'      => esc_html__( 'Checkout Options', 'awebooking' ),
+			'title'      => esc_html__( 'Options', 'awebooking' ),
 			'priority'   => 0,
 		]);
 

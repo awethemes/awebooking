@@ -43,7 +43,7 @@ class Checkout {
 	/**
 	 * The controls instance.
 	 *
-	 * @var \AweBooking\Component\Form\Form_Builder
+	 * @var \AweBooking\Component\Form\Form
 	 */
 	protected $controls;
 

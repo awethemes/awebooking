@@ -2,9 +2,9 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Support\Fluent;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Hotel_Information_Form extends Form_Builder {
+class Hotel_Information_Form extends Form {
 	/**
 	 * Constructor.
 	 *

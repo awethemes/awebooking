@@ -6,9 +6,9 @@ use CMB2_Types;
 
 class Field_Proxy {
 	/**
-	 * The Form_Builder instance.
+	 * The Form instance.
 	 *
-	 * @var \AweBooking\Component\Form\Form_Builder
+	 * @var \AweBooking\Component\Form\Form
 	 */
 	protected $form;
 
@@ -22,10 +22,10 @@ class Field_Proxy {
 	/**
 	 * Create a new proxy instance.
 	 *
-	 * @param Form_Builder $form  The Form_Builder instance.
-	 * @param CMB2_Field   $field The CMB2_Field instance.
+	 * @param Form       $form  The Form instance.
+	 * @param CMB2_Field $field The CMB2_Field instance.
 	 */
-	public function __construct( Form_Builder $form, CMB2_Field $field ) {
+	public function __construct( Form $form, CMB2_Field $field ) {
 		$this->form  = $form;
 		$this->field = $field;
 	}

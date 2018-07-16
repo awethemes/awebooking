@@ -15,7 +15,7 @@ const queryString = require('query-string');
   awebooking.utils = {};
   awebooking.instances = {};
 
-  awebooking.utils.flatpickrRangePlugin = require('flatpickr/dist/plugins/rangePlugin.js');
+  awebooking.utils.flatpickrRangePlugin = require('../core/range-dates.js');
 
   /**
    * The admin route.
