@@ -380,7 +380,7 @@ class Installer {
 	protected function create_tables() {
 		global $wpdb;
 
-		$wpdb->hide_errors();
+		$wpdb->show_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
@@ -402,88 +402,90 @@ class Installer {
 
 		$days_schema = '';
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$days_schema .= 'd' . $i . ' BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
+			$days_schema .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
 		}
 
 		$days_schema = trim( $days_schema );
 
 		$tables = "
-CREATE TABLE {$wpdb->prefix}awebooking_rooms (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(191) DEFAULT NULL,
-  room_type BIGINT UNSIGNED NOT NULL,
-  order BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  KEY name (name),
-  KEY room_type (room_type)
+CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(191) DEFAULT NULL,
+  `room_type` BIGINT UNSIGNED NOT NULL,
+  `order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `room_type` (`room_type`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking (
-  room_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_booking` (
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (room_id, year, month)
+  PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_availability (
-  room_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_availability` (
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (room_id, year, month)
+  PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_pricing (
-  rate_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
+  `rate_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (rate_id, year, month)
+  PRIMARY KEY (`rate_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
-  booking_item_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_item_name VARCHAR(255) NOT NULL,
-  booking_item_type VARCHAR(191) NOT NULL DEFAULT '',
-  object_id BIGINT UNSIGNED NOT NULL,
-  booking_id BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (booking_item_id),
-  KEY object_id (object_id),
-  KEY booking_id (booking_id)
+CREATE TABLE `{$wpdb->prefix}awebooking_booking_items` (
+  `booking_item_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `booking_item_name` VARCHAR(255) NOT NULL,
+  `booking_item_type` VARCHAR(191) NOT NULL DEFAULT '',
+  `booking_item_parent` BIGINT UNSIGNED NOT NULL,
+  `object_id` BIGINT UNSIGNED NOT NULL,
+  `booking_id` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`booking_item_id`),
+  KEY `booking_item_parent` (`booking_item_parent`),
+  KEY `object_id` (`object_id`),
+  KEY `booking_id` (`booking_id`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
-  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_item_id BIGINT UNSIGNED NOT NULL,
-  meta_key VARCHAR(191) default NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY (meta_id),
-  KEY booking_item_id (booking_item_id),
-  KEY meta_key (meta_key(32))
+CREATE TABLE `{$wpdb->prefix}awebooking_booking_itemmeta` (
+  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `booking_item_id` BIGINT UNSIGNED NOT NULL,
+  `meta_key` VARCHAR(191) DEFAULT NULL,
+  `meta_value` LONGTEXT NULL,
+  PRIMARY KEY (`meta_id`),
+  KEY `booking_item_id` (`booking_item_id`),
+  KEY `meta_key` (meta_key(32))
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  rate VARCHAR(8) NOT NULL DEFAULT '',
-  name VARCHAR(191) NOT NULL DEFAULT '',
-  priority BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  compound INT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  KEY name (name)
+CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `rate` VARCHAR(8) NOT NULL DEFAULT '',
+  `name` VARCHAR(191) NOT NULL DEFAULT '',
+  `priority` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `compound` INT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_relationships (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  type VARCHAR(42) NOT NULL DEFAULT '',
-  rel_from BIGINT UNSIGNED NOT NULL,
-  rel_to BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (id),
-  KEY type (type),
-  KEY rel_from (rel_from),
-  KEY rel_to (rel_to)
+CREATE TABLE `{$wpdb->prefix}awebooking_relationships` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(42) NOT NULL DEFAULT '',
+  `rel_from` BIGINT UNSIGNED NOT NULL,
+  `rel_to` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `rel_from` (`rel_from`),
+  KEY `rel_to` (`rel_to`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_relationshipmeta (
-  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  awebooking_relationship_id BIGINT UNSIGNED NOT NULL,
-  meta_key VARCHAR(191) default NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY (meta_id),
-  KEY awebooking_relationship_id (awebooking_relationship_id),
-  KEY meta_key (meta_key(32))
+CREATE TABLE `{$wpdb->prefix}awebooking_relationshipmeta` (
+  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `awebooking_relationship_id` BIGINT UNSIGNED NOT NULL,
+  `meta_key` VARCHAR(191) DEFAULT NULL,
+  `meta_value` LONGTEXT NULL,
+  PRIMARY KEY (`meta_id`),
+  KEY `awebooking_relationship_id` (`awebooking_relationship_id`),
+  KEY `meta_key` (meta_key(32))
 ) $collate;
 ";
 
