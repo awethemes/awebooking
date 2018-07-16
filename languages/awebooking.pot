@@ -277,7 +277,7 @@ msgstr ""
 msgid "Increase price by % amount of room prices"
 msgstr ""
 
-#: inc/tax-functions.php:253, templates/reservation/selected-room.php:61, inc/Admin/Forms/Room_Type_Data_Form.php:121, inc/Admin/Settings/Taxes_Setting.php:18
+#: inc/tax-functions.php:253, templates/reservation/selected-room.php:61, inc/Admin/Forms/Room_Type_Data_Form.php:118, inc/Admin/Settings/Taxes_Setting.php:18
 msgid "Tax"
 msgstr ""
 
@@ -860,7 +860,7 @@ msgctxt "BACS payment method"
 msgid "Direct bank transfer"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73, inc/Admin/Forms/Room_Type_Data_Form.php:226, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/single/description.php:20
+#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73, inc/Admin/Forms/Room_Type_Data_Form.php:238, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/single/description.php:20
 msgid "Description"
 msgstr ""
 
@@ -905,20 +905,20 @@ msgid "Transaction ID:"
 msgstr ""
 
 #. translators: 1: Old booking status 2: New booking status
-#: inc/Model/Booking.php:397
+#: inc/Model/Booking.php:364
 msgid "Booking status changed from %1$s to %2$s."
 msgstr ""
 
 #. translators: %s: new booking status
-#: inc/Model/Booking.php:402
+#: inc/Model/Booking.php:369
 msgid "Booking status set to %s."
 msgstr ""
 
-#: inc/Model/Booking.php:431
+#: inc/Model/Booking.php:398
 msgid "Booking &ndash; %s"
 msgstr ""
 
-#: inc/Model/Booking.php:431
+#: inc/Model/Booking.php:398
 msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
@@ -1363,19 +1363,19 @@ msgstr ""
 msgid "Maximum occupancy"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:50
+#: inc/Admin/Forms/Room_Type_Data_Form.php:49
 msgid "Number Adults"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:62
+#: inc/Admin/Forms/Room_Type_Data_Form.php:60
 msgid "Number Children"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:75
+#: inc/Admin/Forms/Room_Type_Data_Form.php:72
 msgid "Number Infants"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:98
+#: inc/Admin/Forms/Room_Type_Data_Form.php:94
 msgid ""
 "The number of adults, children etc. <b>do not</b> need to add up to the maximum occupancy.\n"
 " A room could sleep a maximum of 4 people, but the max adults may be 2 and max children 3. \n"
@@ -1383,191 +1383,195 @@ msgid ""
 " (But never 2 adults and 3 children as this would exceed the max capacity.)"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:99
+#: inc/Admin/Forms/Room_Type_Data_Form.php:95
 msgid "Some notes on setting capacity"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:105, inc/Admin/Providers/Menu_Service_Provider.php:53, inc/Admin/views/rates/index.php:12
+#: inc/Admin/Forms/Room_Type_Data_Form.php:101, inc/Admin/Providers/Menu_Service_Provider.php:53, inc/Admin/views/rates/index.php:12
 msgid "Pricing"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:112, inc/Admin/List_Tables/Room_Type_List_Table.php:37
+#: inc/Admin/Forms/Room_Type_Data_Form.php:108, inc/Admin/List_Tables/Room_Type_List_Table.php:37
 msgid "Rack Rate"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:114
+#: inc/Admin/Forms/Room_Type_Data_Form.php:110
 msgid "Rack rate is the regular everyday rate."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:124
+#: inc/Admin/Forms/Room_Type_Data_Form.php:121
 msgid "No Tax"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:134
+#: inc/Admin/Forms/Room_Type_Data_Form.php:132
 msgid "Min LOS"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:135
+#: inc/Admin/Forms/Room_Type_Data_Form.php:133
 msgid "Minimum Length of Stay"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:146
+#: inc/Admin/Forms/Room_Type_Data_Form.php:144
 msgid "Max LOS"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:147
+#: inc/Admin/Forms/Room_Type_Data_Form.php:145
 msgid "Maximum Length of Stay"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:157
+#: inc/Admin/Forms/Room_Type_Data_Form.php:155
+msgid "Services (included)"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:164
 msgid "Inclusions (for display)"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:158
+#: inc/Admin/Forms/Room_Type_Data_Form.php:165
 msgid "What does the package/service include? Ex. Breakfast, Shuttle, etc."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:159, inc/Admin/Forms/Room_Type_Data_Form.php:169, inc/Admin/Forms/Room_Type_Data_Form.php:205
+#: inc/Admin/Forms/Room_Type_Data_Form.php:166, inc/Admin/Forms/Room_Type_Data_Form.php:177, inc/Admin/Forms/Room_Type_Data_Form.php:216
 msgid "Add More"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:168
+#: inc/Admin/Forms/Room_Type_Data_Form.php:176
 msgid "Policies (for display)"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:170
+#: inc/Admin/Forms/Room_Type_Data_Form.php:178
 msgid "What does the policies apply for this room? Ex. Cancelable, Non-refundable., etc."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:178
+#: inc/Admin/Forms/Room_Type_Data_Form.php:187
 msgid "Rooms & Amenities"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:183
+#: inc/Admin/Forms/Room_Type_Data_Form.php:192
 msgid "Area size"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:195
+#: inc/Admin/Forms/Room_Type_Data_Form.php:205
 msgid "View"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:204
+#: inc/Admin/Forms/Room_Type_Data_Form.php:215
 msgid "Beds"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:215, templates/search/result/detail.php:39, templates/template-parts/single/amenities.php:27
+#: inc/Admin/Forms/Room_Type_Data_Form.php:227, templates/search/result/detail.php:39, templates/template-parts/single/amenities.php:27
 msgid "Amenities"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:233
+#: inc/Admin/Forms/Room_Type_Data_Form.php:245
 msgid "Short Description"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:246, templates/template-parts/single/gallery.php:27
+#: inc/Admin/Forms/Room_Type_Data_Form.php:259, templates/template-parts/single/gallery.php:27
 msgid "Gallery"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:248
+#: inc/Admin/Forms/Room_Type_Data_Form.php:261
 msgid "Select Images"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:294
+#: inc/Admin/Forms/Room_Type_Data_Form.php:308
 msgid "Airport view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:295
+#: inc/Admin/Forms/Room_Type_Data_Form.php:309
 msgid "Bay view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:296
+#: inc/Admin/Forms/Room_Type_Data_Form.php:310
 msgid "City view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:297
+#: inc/Admin/Forms/Room_Type_Data_Form.php:311
 msgid "Courtyard view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:298
+#: inc/Admin/Forms/Room_Type_Data_Form.php:312
 msgid "Golf view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:299
+#: inc/Admin/Forms/Room_Type_Data_Form.php:313
 msgid "Harbor view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:300
+#: inc/Admin/Forms/Room_Type_Data_Form.php:314
 msgid "Intercoastal view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:301
+#: inc/Admin/Forms/Room_Type_Data_Form.php:315
 msgid "Lake view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:302
+#: inc/Admin/Forms/Room_Type_Data_Form.php:316
 msgid "Marina view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:303
+#: inc/Admin/Forms/Room_Type_Data_Form.php:317
 msgid "Mountain view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:304
+#: inc/Admin/Forms/Room_Type_Data_Form.php:318
 msgid "Ocean view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:305
+#: inc/Admin/Forms/Room_Type_Data_Form.php:319
 msgid "Pool view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:306
+#: inc/Admin/Forms/Room_Type_Data_Form.php:320
 msgid "River view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:307
+#: inc/Admin/Forms/Room_Type_Data_Form.php:321
 msgid "Water view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:308
+#: inc/Admin/Forms/Room_Type_Data_Form.php:322
 msgid "Beach view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:309
+#: inc/Admin/Forms/Room_Type_Data_Form.php:323
 msgid "Garden view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:310
+#: inc/Admin/Forms/Room_Type_Data_Form.php:324
 msgid "Park view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:311
+#: inc/Admin/Forms/Room_Type_Data_Form.php:325
 msgid "Forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:312
+#: inc/Admin/Forms/Room_Type_Data_Form.php:326
 msgid "Rain forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:313
+#: inc/Admin/Forms/Room_Type_Data_Form.php:327
 msgid "Various views"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:314
+#: inc/Admin/Forms/Room_Type_Data_Form.php:328
 msgid "Limited view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:315
+#: inc/Admin/Forms/Room_Type_Data_Form.php:329
 msgid "Slope view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:316
+#: inc/Admin/Forms/Room_Type_Data_Form.php:330
 msgid "Strip view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:317
+#: inc/Admin/Forms/Room_Type_Data_Form.php:331
 msgid "Countryside view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:318
+#: inc/Admin/Forms/Room_Type_Data_Form.php:332
 msgid "Sea view"
 msgstr ""
 
@@ -3134,18 +3138,6 @@ msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-room-type-bed.php:23
 msgid "Unspecified bed"
-msgstr ""
-
-#: inc/Admin/Metaboxes/views/html-room-type-pricing.php:4
-msgid "Restrictions"
-msgstr ""
-
-#: inc/Admin/Metaboxes/views/html-room-type-pricing.php:5
-msgid "Limit the availability of the rate."
-msgstr ""
-
-#: inc/Admin/Metaboxes/views/html-room-type-pricing.php:20
-msgid "Include services"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-room-type-rooms.php:35
