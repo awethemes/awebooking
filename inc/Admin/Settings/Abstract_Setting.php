@@ -3,11 +3,11 @@ namespace AweBooking\Admin\Settings;
 
 use AweBooking\Plugin;
 use AweBooking\Admin\Fluent_Settings;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 use Awethemes\Http\Request;
 use Illuminate\Support\Arr;
 
-abstract class Abstract_Setting extends Form_Builder implements Setting {
+abstract class Abstract_Setting extends Form implements Setting {
 	/**
 	 * The plugin instance.
 	 *
@@ -30,7 +30,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 
-		parent::__construct( $this->form_id, new Fluent_Settings( $plugin ), 'static' );
+		parent::__construct( $this->get_id(), new Fluent_Settings( $plugin ), 'static' );
 	}
 
 	/**
@@ -124,7 +124,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 				$fields = $this->sections[ $this->current_section ]['fields'];
 			}
 
-			$this->output_sections();
+			$this->output_nav_sections();
 			echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
 		}
 
@@ -142,7 +142,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 *
 	 * @return void
 	 */
-	protected function output_sections() {
+	protected function output_nav_sections() {
 		echo '<ul class="subsubsub">';
 
 		foreach ( $this->sections as $id => $section ) {

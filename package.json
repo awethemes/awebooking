@@ -45,7 +45,7 @@
   "dependencies": {
     "a11y-dialog": "^5.1.2",
     "accounting": "^0.4.1",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.1.2",
     "debounce": "^1.1.0",
     "flatpickr": "^4.5.1",
     "jquery.spinner": "^0.2.1",
@@ -53,10 +53,10 @@
     "knockout": "^3.4.2",
     "moment": "^2.22.2",
     "query-string": "^6.1.0",
-    "selectize": "^0.12.5",
+    "selectize": "^0.12.6",
     "sortablejs": "^1.7.0",
-    "sweetalert2": "^7.25.0",
-    "tippy.js": "^2.5.3",
+    "sweetalert2": "^7.25.3",
+    "tippy.js": "^2.5.4",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {

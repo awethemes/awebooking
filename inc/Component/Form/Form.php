@@ -5,8 +5,8 @@ use Awethemes\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
 
-class Form_Builder extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
-	use With_Sections;
+class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
+	use Form_Sections;
 
 	/**
 	 * The unique form ID.
@@ -75,6 +75,42 @@ class Form_Builder extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 		return new Fluent(
 			$this->get_sanitized_values( $request->all() )
 		);
+	}
+
+	public function init_js_binding() {
+		foreach ( $this as $field ) {
+			$field->set_attribute( 'data-bind', 'value: data.' . $field->prop( 'id' ) );
+		}
+
+		// Gets all fields values.
+		$values = abrs_collect( $this->getIterator() )
+			->mapWithKeys( function ( Field_Proxy $f ) {
+				return [ $f->get_prop( 'id' ) => $f->get_value() ];
+			});
+
+		?>
+
+		The name is <span data-bind="text: data.amount"></span>
+
+		<script>
+		(function ($, ko) {
+			'use strict';
+			const root  = void 0;
+			const _data = <?php echo wp_json_encode( $values ); ?>;
+
+			function FormBuilderModel(data)  {
+				this.data = {};
+
+				$.each(data, function (name, val) {
+					this.data[name] = ko.observable(val);
+				}.bind(this));
+			}
+
+			$(document).ready(function () {
+				ko.applyBindings(new FormBuilderModel(_data), root);
+			});
+		})(jQuery, window.ko)
+		</script><?php
 	}
 
 	/**

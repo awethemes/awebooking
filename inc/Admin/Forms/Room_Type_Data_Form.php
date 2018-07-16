@@ -2,9 +2,9 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Model\Room_Type;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Room_Type_Data_Form extends Form_Builder {
+class Room_Type_Data_Form extends Form {
 	/**
 	 * Constructor.
 	 *
@@ -267,7 +267,7 @@ class Room_Type_Data_Form extends Form_Builder {
 		/*
 		 * Fire action after setup fields.
 		 *
-		 * @param \AweBooking\Component\Form\Form_Builder $form The form instance.
+		 * @param \AweBooking\Component\Form\Form $form The form instance.
 		 */
 		do_action( 'abrs_setup_room_type_fields', $this );
 	}

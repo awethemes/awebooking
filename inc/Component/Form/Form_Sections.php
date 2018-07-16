@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Component\Form;
 
-trait With_Sections {
+trait Form_Sections {
 	/**
 	 * Registered instances of Section.
 	 *

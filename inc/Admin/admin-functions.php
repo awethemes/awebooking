@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
 if ( ! defined( 'ABRS_ADMIN_PATH' ) ) {
 	define( 'ABRS_ADMIN_PATH', awebooking()->plugin_path( 'inc/Admin/' ) );
@@ -88,12 +88,12 @@ function abrs_admin_template_part( $template = null, array $vars = [] ) {
 /**
  * Prints the form controls.
  *
- * @param Form_Builder $controls The form controls.
- * @param string|null  $section  Optional, print a section only.
+ * @param Form        $controls The form controls.
+ * @param string|null $section  Optional, print a section only.
  *
  * @return void
  */
-function abrs_admin_print_form( Form_Builder $controls, $section = null ) {
+function abrs_admin_print_form( Form $controls, $section = null ) {
 	if ( ! is_null( $section ) ) {
 		$fields = abrs_optional( $controls->get_section( $section ) )->fields;
 	} else {

@@ -5,7 +5,7 @@ use AweBooking\Multilingual;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 use Awethemes\WP_Object\WP_Object;
 
 // Requires other core functions.
@@ -163,10 +163,11 @@ function abrs_flash( $message = null, $level = 'info' ) {
  *
  * @param  string      $form_id The form ID.
  * @param  object|null $data    Optional, form data.
- * @return \AweBooking\Component\Form\Form_Builder
+ *
+ * @return \AweBooking\Component\Form\Form
  */
 function abrs_create_form( $form_id = '', $data = null ) {
-	return new Form_Builder( $form_id, $data ?: 0, 'static' );
+	return new Form( $form_id, $data ?: 0, 'static' );
 }
 
 /**

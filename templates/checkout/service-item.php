@@ -45,21 +45,23 @@ $js_data['price']    = $price ?: 0;
 	<input type="hidden" name="<?php echo esc_attr( $input_prefix ); ?>[id]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php disabled( $is_included ); ?>>
 
 	<div class="columns">
-		<div class="column-3">
+		<div class="column-lg-3">
 			<div class="checkout-service__media">
 				<?php print abrs_get_thumbnail( $service->get_id(), 'awebooking_thumbnail' ); // WPCS: xss ok. ?>
 			</div>
 		</div>
 
-		<div class="column-9">
+		<div class="column-lg-9">
 			<div class="checkout-service__info">
 
-				<h3 class="checkout-service__title">
-					<?php echo esc_html( $service->get( 'name' ) ); ?>
-				</h3>
+				<div class="checkout-service__content">
+					<h3 class="checkout-service__title">
+						<?php echo esc_html( $service->get( 'name' ) ); ?>
+					</h3>
 
-				<div class="checkout-service__description">
-					<?php echo esc_html( $service->get( 'description' ) ); ?>
+					<div class="checkout-service__description">
+						<?php echo esc_html( $service->get( 'description' ) ); ?>
+					</div>
 				</div>
 
 				<div class="checkout-service__pay">
@@ -71,22 +73,19 @@ $js_data['price']    = $price ?: 0;
 						<?php endif; ?>
 					</div>
 
-					<div>
-						<div>
-							<?php if ( $service->is_quantity_selectable() ) : ?>
+					<div class="checkout-service__input-box">
+						<?php if ( $service->is_quantity_selectable() ) : ?>
 
-								<input type="number" data-bind="value: quantity" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
+							<input type="number" data-bind="value: quantity" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
 
-							<?php else : ?>
-								<div class="nice-checkbox">
-									<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
-									<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>"></label>
-								</div>
-							<?php endif; ?>
-						</div>
+						<?php else : ?>
+							<div class="nice-checkbox">
+								<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
+								<label for="service_id_<?php echo esc_attr( $service->get_id() ); ?>"></label>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
