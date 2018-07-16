@@ -31,6 +31,10 @@ $form_classes = [
 		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
 	<?php endif ?>
 
+	<?php if ( $atts['only_room'] ) : ?>
+		<input type="hidden" name="only" value="<?php echo esc_attr( implode( ',', wp_parse_id_list( $atts['only_room'] ) ) ); ?>">
+	<?php endif ?>
+
 	<div class="searchbox <?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
 		<div class="searchbox__wrap">
 			<input type="text" data-hotel="rangepicker" style="display: none;"/>

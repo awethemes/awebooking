@@ -20,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 	// Print the search form.
 	abrs_get_search_form([
-		'layout' => 'vertical',
+		'layout'    => 'vertical',
+		'only_room' => get_the_ID(),
 	]);
 	?>
 </div>

@@ -127,6 +127,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		'res_request'     => null,
 		'hotel_location'  => true,
 		'occupancy'       => true,
+		'only_room'       => null,
 		'container_class' => '',
 	], $atts );
 
