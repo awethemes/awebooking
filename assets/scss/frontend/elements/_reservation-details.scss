@@ -52,7 +52,7 @@ $reservation-border-radius: 6px;
   }
 
   dt {
-    width: 40%;
+    width: 60%;
     float: left;
     clear: left;
     font-weight: normal;
@@ -61,7 +61,7 @@ $reservation-border-radius: 6px;
 
   dd {
     margin: 0;
-    margin-left: 40%;
+    margin-left: 60%;
     text-align: right;
     box-sizing: border-box;
   }
@@ -143,6 +143,8 @@ $reservation-border-radius: 6px;
 
 // Room details.
 .roomdetails-room {
+  margin-bottom: .75rem;
+
 	&__content {
 		padding: 1rem;
 	}

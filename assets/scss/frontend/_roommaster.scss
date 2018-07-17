@@ -12,7 +12,7 @@
 }
 
 .roommaster-header {
-	padding: .3rem;
+	padding: .3rem 15px;
 	border-bottom: solid 1px $gray-200;
 	position: relative;
 
@@ -32,18 +32,20 @@
 }
 
 .roommaster-content {
-	@include clearfix;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+  @include clearfix;
+
+  > .columns > .column-lg-3 {
+    padding-right: 0;
+  }
 
 	&__title {
 		font-size: 1rem;
 		font-weight: bold;
 		padding: 5px 5px;
 	}
-}
-
-.roommaster-info,
-.roommaster-list {
-	padding: .3rem;
 }
 
 .roommaster-info {
@@ -69,7 +71,11 @@
 }
 
 .roommaster-list {
-	padding-left: .3rem;
+	padding: 0;
+
+  .roommaster-list__content {
+    margin-bottom: 15px;
+  }
 }
 
 .columns.roommaster-list__header {
