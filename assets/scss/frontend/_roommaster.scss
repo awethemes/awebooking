@@ -72,6 +72,10 @@
 
 .roommaster-list {
 	padding: 0;
+
+  .roommaster-list__content {
+    margin-bottom: 15px;
+  }
 }
 
 .columns.roommaster-list__header {
