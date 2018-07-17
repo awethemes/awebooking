@@ -121,31 +121,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'setuptPopper',
       value: function setuptPopper(el) {
         var $html = $(el).find('.searchbox__popup');
+
         if ($html.length === 0) {
           return;
         }
 
-        tippy(el, {
-          theme: 'awebooking-popup',
-          delay: 0,
-          arrow: true,
-          distance: 0,
-          placement: 'bottom',
-          trigger: 'click',
-          interactive: true,
-          performance: true,
-          hideOnClick: true,
-          animation: 'shift-toward',
-          duration: [150, 150],
-          html: $html[0],
-          appendTo: this.$el[0],
-          popperOptions: { modifiers: {
-              hide: { enabled: false },
-              preventOverflow: { enabled: false }
-            } }
+        plugin.utils.dropdown(el, {
+          dropClass: '.searchbox__popup'
         });
-
-        return el._tippy;
       }
     }]);
 

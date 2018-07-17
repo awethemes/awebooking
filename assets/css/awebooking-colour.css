@@ -842,6 +842,8 @@
 
 .searchbox__box {
   cursor: pointer;
+  z-index: 5;
+  position: relative;
 }
 
 .searchbox__box:focus {
@@ -1064,9 +1066,17 @@
 
 .searchbox__popup {
   display: none;
+  position: absolute;
+  width: 100%;
+  border: solid 1px #eee;
+  top: 100%;
+  background: #fbfbfb;
+  padding: 5px;
+  box-sizing: border-box;
+  z-index: 1001;
 }
 
-.tippy-tooltip .searchbox__popup {
+.searchbox__popup.open {
   display: block;
 }
 
@@ -1250,7 +1260,7 @@
 }
 
 .roommaster-header {
-  padding: .3rem;
+  padding: .3rem 15px;
   border-bottom: solid 1px #e9ecef;
   position: relative;
 }
@@ -1269,21 +1279,26 @@
   border-color: transparent;
 }
 
+.roommaster-content {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+}
+
 .roommaster-content::after {
   display: block;
   clear: both;
   content: "";
 }
 
+.roommaster-content > .columns > .column-lg-3 {
+  padding-right: 0;
+}
+
 .roommaster-content__title {
   font-size: 1rem;
   font-weight: bold;
   padding: 5px 5px;
-}
-
-.roommaster-info,
-.roommaster-list {
-  padding: .3rem;
 }
 
 .roommaster-info__list {
@@ -1306,7 +1321,11 @@
 }
 
 .roommaster-list {
-  padding-left: .3rem;
+  padding: 0;
+}
+
+.roommaster-list .roommaster-list__content {
+  margin-bottom: 15px;
 }
 
 .columns.roommaster-list__header {
@@ -1686,7 +1705,7 @@ ul.booking_details li:last-of-type {
 }
 
 .reservation dt {
-  width: 40%;
+  width: 60%;
   float: left;
   clear: left;
   font-weight: normal;
@@ -1695,7 +1714,7 @@ ul.booking_details li:last-of-type {
 
 .reservation dd {
   margin: 0;
-  margin-left: 40%;
+  margin-left: 60%;
   text-align: right;
   box-sizing: border-box;
 }
@@ -1756,6 +1775,10 @@ ul.booking_details li:last-of-type {
   color: #6c757d;
   font-size: .85rem;
   display: block;
+}
+
+.roomdetails-room {
+  margin-bottom: .75rem;
 }
 
 .roomdetails-room__content {

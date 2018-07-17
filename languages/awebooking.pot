@@ -281,50 +281,6 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: templates/search-form.php:47, inc/Admin/Settings/Hotel_Setting.php:22
-msgid "Hotel"
-msgstr ""
-
-#: templates/search-form.php:70, templates/search-form.php:75, templates/reservation/dates.php:40, inc/Admin/Metaboxes/views/html-booking-rooms.php:26, inc/Component/Form/fields/abrs_dates.php:23
-msgid "Check In"
-msgstr ""
-
-#: templates/search-form.php:89, templates/search-form.php:94, templates/reservation/dates.php:63, inc/Admin/Metaboxes/views/html-booking-rooms.php:27, inc/Component/Form/fields/abrs_dates.php:32
-msgid "Check Out"
-msgstr ""
-
-#: templates/search-form.php:109, inc/Admin/Metaboxes/Booking_Main_Metabox.php:151, inc/Admin/views/settings/html-email-templates.php:29
-msgid "Customer"
-msgstr ""
-
-#: templates/search-form.php:115
-msgid "adult(s)"
-msgstr ""
-
-#: templates/search-form.php:121
-msgid "children"
-msgstr ""
-
-#: templates/search-form.php:128
-msgid "infants"
-msgstr ""
-
-#: templates/search-form.php:136, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:68
-msgid "Adults"
-msgstr ""
-
-#: templates/search-form.php:142, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:31, inc/Admin/views/booking/html-avai-row.php:76
-msgid "Children"
-msgstr ""
-
-#: templates/search-form.php:149, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:35, inc/Admin/views/booking/html-avai-row.php:85
-msgid "Infants"
-msgstr ""
-
-#: templates/search-form.php:160
-msgid "Search"
-msgstr ""
-
 #: inc/Admin/Admin_Settings.php:89
 msgid "Your settings have been saved."
 msgstr ""
@@ -827,7 +783,7 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
-#: inc/Frontend/functions.php:184, inc/Frontend/template-functions.php:124
+#: inc/Frontend/functions.php:185, inc/Frontend/template-functions.php:124
 msgid "Book Now"
 msgstr ""
 
@@ -979,10 +935,18 @@ msgstr ""
 msgid "Total:"
 msgstr ""
 
+#: templates/reservation/dates.php:40, templates/search-form/dates.php:27, templates/search-form/dates.php:32, inc/Admin/Metaboxes/views/html-booking-rooms.php:26, inc/Component/Form/fields/abrs_dates.php:23
+msgid "Check In"
+msgstr ""
+
 #. translators: %s check-in time
 #: templates/reservation/dates.php:52
 msgctxt "check-in time"
 msgid "from %s"
+msgstr ""
+
+#: templates/reservation/dates.php:63, templates/search-form/dates.php:46, templates/search-form/dates.php:51, inc/Admin/Metaboxes/views/html-booking-rooms.php:27, inc/Component/Form/fields/abrs_dates.php:32
+msgid "Check Out"
 msgstr ""
 
 #. translators: %s check-out time
@@ -1075,6 +1039,42 @@ msgstr ""
 
 #: templates/search/welcome.php:7
 msgid "Enter dates to see rooms available."
+msgstr ""
+
+#: templates/search-form/button.php:21
+msgid "Search"
+msgstr ""
+
+#: templates/search-form/hotel.php:36, inc/Admin/Settings/Hotel_Setting.php:22
+msgid "Hotel"
+msgstr ""
+
+#: templates/search-form/occupancy.php:30, inc/Admin/Metaboxes/Booking_Main_Metabox.php:151, inc/Admin/views/settings/html-email-templates.php:29
+msgid "Customer"
+msgstr ""
+
+#: templates/search-form/occupancy.php:36
+msgid "adult(s)"
+msgstr ""
+
+#: templates/search-form/occupancy.php:42
+msgid "child(ren)"
+msgstr ""
+
+#: templates/search-form/occupancy.php:49
+msgid "infant(s)"
+msgstr ""
+
+#: templates/search-form/occupancy.php:59, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:68
+msgid "Adults"
+msgstr ""
+
+#: templates/search-form/occupancy.php:65, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:31, inc/Admin/views/booking/html-avai-row.php:76
+msgid "Children"
+msgstr ""
+
+#: templates/search-form/occupancy.php:72, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:35, inc/Admin/views/booking/html-avai-row.php:85
+msgid "Infants"
 msgstr ""
 
 #: inc/Admin/Calendar/Booking_Scheduler.php:130

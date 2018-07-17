@@ -4,6 +4,7 @@
 window.awebooking = {};
 
 var accounting = require('accounting');
+var Dropdown = require('./core/dropdown');
 
 (function ($, plugin) {
   'use strict';
@@ -11,6 +12,12 @@ var accounting = require('accounting');
   // Main objects
 
   plugin.utils = plugin.instances = {};
+
+  plugin.utils.dropdown = function (el, config) {
+    $(el).each(function () {
+      $(this).data('abrs-dropdown', new Dropdown(this, config));
+    });
+  };
 
   plugin.i18n = window._awebooking_i18n || {};
 
@@ -109,7 +116,327 @@ var accounting = require('accounting');
   });
 })(jQuery, window.awebooking);
 
-},{"accounting":2}],2:[function(require,module,exports){
+},{"./core/dropdown":2,"accounting":4}],2:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Util = require('./util');
+
+var Dropdown = function ($, Popper) {
+  'use strict';
+
+  // Store drops instance.
+
+  var allDrops = [];
+
+  var defaults = {
+    offset: 0,
+    flip: true,
+    openOn: 'click',
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic',
+    dropClass: '.drop-content'
+  };
+
+  var Dropdown = function () {
+    function Dropdown(element, options) {
+      _classCallCheck(this, Dropdown);
+
+      this.element = element;
+      this.options = Object.assign({}, defaults, options);
+      this.drop = this._getDropElement();
+      this.popper = null;
+
+      if (!this.drop || typeof this.drop === 'undefined') {
+        throw new Error('Drop Error: Cannot find the drop element.');
+      }
+
+      if (typeof Popper !== 'undefined' && !this.popper) {
+        var referenceElement = this.element;
+        this.popper = new Popper(referenceElement, this.drop, this._getPopperConfig());
+      }
+
+      this.transitionEndHandler = this._transitionEndHandler.bind(this);
+      this._addEventListeners();
+
+      allDrops.push(this);
+    }
+
+    _createClass(Dropdown, [{
+      key: 'isOpened',
+      value: function isOpened() {
+        return this.drop.classList.contains('open');
+      }
+    }, {
+      key: 'isDisabled',
+      value: function isDisabled() {
+        return this.element.disabled || this.element.classList.contains('disabled');
+      }
+    }, {
+      key: 'toggle',
+      value: function toggle() {
+        if (this.isOpened()) {
+          this.close();
+        } else {
+          this.open();
+        }
+      }
+    }, {
+      key: 'open',
+      value: function open() {
+        var _this = this;
+
+        if (this.isDisabled() || this.isOpened()) {
+          return;
+        }
+
+        // If this is a touch-enabled device we add extra
+        // empty mouseover listeners to the body's immediate children;
+        // only needed because of broken event delegation on iOS
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().on('mouseover', null, $.noop);
+        }
+
+        if (this.popper) {
+          this.popper.update();
+        }
+
+        this.element.focus();
+        this.element.setAttribute('aria-expanded', true);
+
+        this.drop.classList.add('open');
+        this.drop.classList.add('open--transition');
+        setTimeout(function () {
+          _this.drop.classList.add('open--completed');
+        });
+      }
+    }, {
+      key: 'close',
+      value: function close() {
+        if (this.isDisabled() || !this.isOpened()) {
+          return;
+        }
+
+        // If this is a touch-enabled device we remove the extra
+        // empty mouseover listeners we added for iOS support
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().off('mouseover', null, $.noop);
+        }
+
+        this.element.setAttribute('aria-expanded', false);
+
+        this.drop.classList.remove('open');
+        this.drop.classList.remove('open--completed');
+
+        this.drop.addEventListener(Util.TRANSITION_END, this.transitionEndHandler);
+      }
+
+      // TODO: ...
+
+    }, {
+      key: '_transitionEndHandler',
+      value: function _transitionEndHandler(e) {
+        if (e.target !== e.currentTarget) {
+          return;
+        }
+
+        if (!this.drop.classList.contains('open')) {
+          this.drop.classList.remove('open--transition');
+        }
+
+        this.drop.removeEventListener(Util.TRANSITION_END, this.transitionEndHandler);
+      }
+    }, {
+      key: '_addEventListeners',
+      value: function _addEventListeners() {
+        var _this2 = this;
+
+        if (!this.options.openOn) {
+          return;
+        }
+
+        if (this.options.openOn === 'always') {
+          setTimeout(this.open.bind(this));
+          return;
+        }
+
+        var events = this.options.openOn.split(' ');
+
+        if (events.indexOf('click') >= 0) {
+          $(this.element).on('click', function (e) {
+            e.preventDefault();
+            // e.stopPropagation();
+
+            _this2.toggle();
+          });
+
+          $(document).on('click', function (e) {
+            if (!_this2.isOpened()) {
+              return;
+            }
+
+            // Clicking inside dropdown
+            if (e.target === _this2.drop || _this2.drop.contains(e.target)) {
+              return;
+            }
+
+            // Clicking target
+            if (e.target === _this2.element || _this2.element.contains(e.target)) {
+              return;
+            }
+
+            // this.close(e);
+          });
+        }
+
+        if (events.indexOf('hover') >= 0) {
+          // TODO: ...
+        }
+
+        if (events.indexOf('focus') >= 0) {
+          // TODO: ...
+        }
+      }
+    }, {
+      key: '_getDropElement',
+      value: function _getDropElement() {
+        if (!this.drop) {
+          var parent = this.element.parentNode;
+          var target = Util.getTargetFromElement(this.element);
+
+          if (target) {
+            this.drop = document.querySelector(target);
+          } else {
+            this.drop = parent ? parent.querySelector(this.options.dropClass) : null;
+          }
+        }
+
+        return this.drop;
+      }
+    }, {
+      key: '_getPopperConfig',
+      value: function _getPopperConfig() {
+        var _this3 = this;
+
+        var offset = {};
+
+        if (typeof this.options.offset === 'function') {
+          offset.fn = function (data) {
+            data.offsets = Object.assign({}, data.offsets, _this3.options.offset(data.offsets) || {});
+            return data;
+          };
+        } else {
+          offset.offset = this.options.offset;
+        }
+
+        var config = {
+          placement: this._getPlacement(),
+          modifiers: {
+            offset: offset,
+            flip: { enabled: this.options.flip },
+            preventOverflow: { boundariesElement: this.options.boundary }
+          }
+        };
+
+        // Disable Popper.js if we have a static display.
+        if (this.options.display === 'static') {
+          config.modifiers.applyStyle = {
+            enabled: false
+          };
+        }
+
+        return config;
+      }
+    }, {
+      key: '_getPlacement',
+      value: function _getPlacement() {
+        return 'bottom-start';
+      }
+    }]);
+
+    return Dropdown;
+  }();
+
+  return Dropdown;
+}(jQuery, window.Popper);
+
+// Export the module.
+module.exports = Dropdown;
+
+},{"./util":3}],3:[function(require,module,exports){
+'use strict';
+
+var Util = function ($) {
+  'use strict';
+
+  function getTransitionEndEvent() {
+    var transitionEndEvent = '';
+
+    var transitionEndEvents = {
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend',
+      'transition': 'transitionend'
+    };
+
+    for (var name in transitionEndEvents) {
+      if ({}.hasOwnProperty.call(transitionEndEvents, name)) {
+        var tempEl = document.createElement('p');
+        if (typeof tempEl.style[name] !== 'undefined') {
+          transitionEndEvent = transitionEndEvents[name];
+        }
+      }
+    }
+
+    return transitionEndEvent;
+  }
+
+  return {
+    TRANSITION_END: getTransitionEndEvent(),
+
+    getTargetFromElement: function getTargetFromElement(element) {
+      var selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        selector = element.getAttribute('href') || '';
+      }
+
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
+    },
+    getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+      if (!element) {
+        return 0;
+      }
+
+      // Get transition-duration of the element.
+      var transitionDuration = $(element).css('transition-duration');
+      var floatTransitionDuration = parseFloat(transitionDuration);
+
+      // Return 0 if element or transition duration is not found.
+      if (!floatTransitionDuration) {
+        return 0;
+      }
+
+      // If multiple durations are defined, take the first.
+      transitionDuration = transitionDuration.split(',')[0];
+
+      return parseFloat(transitionDuration) * 1000;
+    }
+  };
+}(jQuery);
+
+module.exports = Util;
+
+},{}],4:[function(require,module,exports){
 "use strict";
 
 /*!

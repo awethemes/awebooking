@@ -33,6 +33,8 @@ $searchbox-box--border:      200px !default;
 
 .searchbox__box {
   cursor: pointer;
+  z-index: 5;
+  position: relative;
 
   &:focus {
     outline: 0;
@@ -452,10 +454,19 @@ $searchbox-box--border:      200px !default;
   }
 }
 
+// TODO: Check this CSS.
 .searchbox__popup {
   display: none;
+  position: absolute;
+  width: 100%;
+  border: solid 1px #eee;
+  top: 100%;
+  background: #fbfbfb;
+  padding: 5px;
+  box-sizing: border-box;
+  z-index: 1001;
 
-  .tippy-tooltip & {
+  &.open {
     display: block;
   }
 }
