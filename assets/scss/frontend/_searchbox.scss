@@ -461,7 +461,7 @@ $searchbox-box--border:      200px !default;
   width: 100%;
   border: solid 1px #eee;
   top: 100%;
-  background: #fbfbfb;
+  background-color: #fff;
   padding: 5px;
   box-sizing: border-box;
   z-index: 1001;
@@ -476,15 +476,20 @@ $searchbox-box--border:      200px !default;
 }
 
 .searchbox-spinner {
-  display: flex;
-  justify-content: left;
+  display: block;
   position: relative;
-  padding: 0 30px;
-  height: 40px;
+  padding: 5px 15px;
   line-height: 40px;
+  overflow: hidden;
+}
+
+.searchbox-spinner__title {
+  float: left;
+  line-height: normal;
 }
 
 .searchbox-spinner__input {
+  float: right;
   border: 0 !important;
   font-weight: bold;
   width: auto;
