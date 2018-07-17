@@ -126,7 +126,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return;
         }
 
-        plugin.utils.dropdown(el, {
+        plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
           dropClass: '.searchbox__popup'
         });
       }
