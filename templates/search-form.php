@@ -24,8 +24,7 @@ $action = abrs_get_page_permalink( 'search_results' );
 
 ?>
 
-<form method="GET" action="<?php echo apply_filters( 'abrs_search_form_action', esc_url( $action ) ); ?>" role="search">
-
+<form method="GET" action="<?php echo esc_url( apply_filters( 'abrs_search_form_action', $action ) ); ?>" role="search">
 	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
 		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">
 	<?php endif ?>
