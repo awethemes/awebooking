@@ -290,7 +290,7 @@ var Dropdown = function ($, Popper) {
               return;
             }
 
-            // this.close(e);
+            _this2.close(e);
           });
         }
 

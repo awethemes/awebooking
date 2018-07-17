@@ -146,7 +146,7 @@ const Dropdown = (($, Popper) => {
             return;
           }
 
-          // this.close(e);
+          this.close(e);
         });
       }
 
