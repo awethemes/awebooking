@@ -41,7 +41,24 @@
     "autoload": {
         "psr-4": {
             "AweBooking\\": "inc/"
-        }
+        },
+        "classmap": [
+            "bin/composer-cleaner.php"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "post-update-cmd": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "clean": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "install-wp-test": [
+            "bash bin/install-wp-tests.sh wptest_awebooking awethemes 'secret' localhost latest"
+        ]
     },
     "config": {
         "sort-packages": true,
