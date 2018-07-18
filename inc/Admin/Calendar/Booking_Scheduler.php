@@ -66,7 +66,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			}
 
 			// Only get the "UNAVAILABLE" in state events.
-			if ( $e instanceof State_Event && $e->get_state() !== Constants::STATE_UNAVAILABLE ) {
+			if ( $e instanceof State_Event && in_array( $e->get_state(), [ Constants::STATE_AVAILABLE, Constants::STATE_BOOKING ] ) ) {
 				return true;
 			}
 

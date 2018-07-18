@@ -19,6 +19,7 @@ class Constants {
 	const STATE_AVAILABLE   = 0;
 	const STATE_UNAVAILABLE = 1;
 	const STATE_BOOKING     = 2;
+	const STATE_SYNC        = 3;
 
 	// Granularity levels.
 	const GL_DAILY   = 'daily';

@@ -33,7 +33,8 @@ $attributes['class'] .= ' ' . $status;
 				<a class="" href="<?php echo esc_url( get_edit_post_link( $the_booking->get_id() ) ); ?>" target="_blank">
 					<strong class="">#<?php echo esc_html( $the_booking->get_booking_number() ); ?></strong>
 				</a>&nbsp;
-				<?php printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) )); ?>
+
+				<?php printf( '<mark class="booking-status abrs-label %s"><span>%s</span></mark>', esc_attr( sanitize_html_class( $status . '-color' ) ), esc_html( abrs_get_booking_status_name( $status ) ) ); ?>
 
 				<div class="abrs-fright">
 					<?php if ( ( $nights_stay = $the_booking->get( 'nights_stay' ) ) == -1 ) : ?>
