@@ -217,7 +217,7 @@ final class Plugin extends Container {
 	 */
 	protected function bootstrap() {
 		// Require the core functions.
-		require trailingslashit( __DIR__ ) . 'core-functions.php';
+		require trailingslashit( __DIR__ ) . 'Core/functions.php';
 
 		/**
 		 * Fire the bootstrap action.
