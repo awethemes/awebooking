@@ -8,8 +8,9 @@ use AweBooking\Calendar\Provider\Provider_Interface;
 
 class State_Finder extends Finder {
 	/* The comparison mode */
-	const COMPARISON_DIFF = 'diff';
-	const COMPARISON_INTERSECT = 'intersect';
+	const COMPARISON_ANY = 'any';
+	const COMPARISON_ONLY = 'only';
+	const COMPARISON_WITHOUT = 'without';
 
 	/**
 	 * The provider implementation.
@@ -45,29 +46,17 @@ class State_Finder extends Finder {
 	}
 
 	/**
-	 * Filter resources with only states.
+	 * Filter resources by the comparison.
 	 *
-	 * @param  array $states The states.
+	 * @param  string $comparison The comparison (any, only, without).
+	 * @param  array  $states     The states.
+	 *
 	 * @return $this
 	 */
-	public function only( $states ) {
-		$this->states = is_array( $states ) ? $states : func_get_args();
+	public function filter( $comparison = self::COMPARISON_ONLY, $states ) {
+		$this->states = is_array( $states ) ? $states : [ $states ];
 
-		$this->comparison = static::COMPARISON_DIFF;
-
-		return $this;
-	}
-
-	/**
-	 * Filter resources without states.
-	 *
-	 * @param  array $states The states.
-	 * @return $this
-	 */
-	public function without( $states ) {
-		$this->states = is_array( $states ) ? $states : func_get_args();
-
-		$this->comparison = static::COMPARISON_INTERSECT;
+		$this->comparison = $comparison;
 
 		return $this;
 	}
@@ -116,15 +105,15 @@ class State_Finder extends Finder {
 			return $e->get_value();
 		})->all();
 
-		if ( static::COMPARISON_DIFF === $this->comparison ) {
-			$remaining = array_diff( $current_states, $this->states );
-		} else {
-			$remaining = array_intersect( $current_states, $this->states );
+		if ( static::COMPARISON_ONLY === $this->comparison ) {
+			return count( array_diff( $current_states, $this->states ) ) === 0;
 		}
 
-		return ( static::COMPARISON_INTERSECT === $this->comparison )
-			? count( $remaining ) > 0
-			: count( $remaining ) === 0;
+		if ( static::COMPARISON_WITHOUT === $this->comparison ) {
+			return count( array_intersect( $current_states, $this->states ) ) > 0;
+		}
+
+		return count( array_intersect( $this->states, $current_states ) ) > 0;
 	}
 
 	/**

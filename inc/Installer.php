@@ -102,7 +102,7 @@ class Installer {
 		}
 
 		// Require core functions.
-		require_once trailingslashit( __DIR__ ) . 'core-functions.php';
+		require_once trailingslashit( __DIR__ ) . 'Core/functions.php';
 		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
 
 		$this->setup_environment();

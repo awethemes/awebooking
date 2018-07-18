@@ -140,33 +140,14 @@ class Room_Item extends Item {
 
 		// Force to change the timespan.
 		$this->force_change_timespan   = true;
+
 		$this->attributes['check_in']  = $timespan->get_start_date();
 		$this->attributes['check_out'] = $timespan->get_end_date();
-
-		return true;
-	}
-
-	/**
-	 * Updates timespan of room stay immediately.
-	 *
-	 * @param  Timespan $timespan The timespan change to.
-	 * @return bool
-	 */
-	public function update_timespan( Timespan $timespan ) {
-		if ( ! $this->exists() ) {
-			return false;
-		}
-
-		$changed = $this->change_timespan( $timespan );
-		if ( is_wp_error( $changed ) || ! $changed ) {
-			return false;
-		}
 
 		try {
 			return $this->save();
 		} catch ( \Exception $e ) {
-			abrs_report( $e );
-			return false;
+			return new WP_Error( 'error', $e->getMessage() );
 		}
 	}
 

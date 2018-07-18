@@ -38,7 +38,7 @@ function abrs_room_available( $room, Timespan $timespan ) {
  * @return bool
  */
 function abrs_room_has_states( $room, Timespan $timespan, $states ) {
-	$response = abrs_check_room_states( $room, $timespan, null, $states );
+	$response = abrs_check_room_states( $room, $timespan, $states );
 
 	if ( is_wp_error( $response ) ) {
 		return false;
@@ -52,13 +52,13 @@ function abrs_room_has_states( $room, Timespan $timespan, $states ) {
  *
  * @param  Collection|array|int $room        The room ID to check.
  * @param  Timespan             $timespan    The timespan.
- * @param  Guest_Counts         $guests      The guest counts.
  * @param  array|int            $states      A string or an array of states.
  * @param  array                $constraints AweBooking\Calendar\Finder\Constraint[].
+ * @param  string               $comparison  The comparison mode (any, only, without).
  *
  * @return \AweBooking\Calendar\Finder\Response|WP_Error
  */
-function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests = null, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
+function abrs_check_room_states( $room, Timespan $timespan, $states = Constants::STATE_AVAILABLE, $constraints = [], $comparison = 'only' ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -71,11 +71,11 @@ function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests
 		->all();
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
-		->only( is_array( $states ) ? $states : [ $states ] )
-		->using( apply_filters( 'abrs_check_rooms_constraints', $constraints, $timespan, $guests, $states, $resources ) )
+		->filter( $comparison, $states )
+		->using( $constraints )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'abrs_check_room_state_response', $response, $timespan, $guests, $states, $resources );
+	return apply_filters( 'abrs_check_room_state_response', $response, $resources, $timespan, $states, $constraints, $comparison );
 }
 
 /**
@@ -388,102 +388,6 @@ function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan, G
 }
 
 /**
- * Perform apply the booking state.
- *
- * @param  int      $room     The room ID.
- * @param  int      $booking  The booking ID.
- * @param  Timespan $timespan The timespan.
- * @return bool|WP_Error
- */
-function abrs_apply_booking_event( $room, $booking, Timespan $timespan ) {
-	try {
-		$timespan->requires_minimum_nights( 1 );
-	} catch ( LogicException $e ) {
-		return new WP_Error( 'timespan_error', $e->getMessage() );
-	}
-
-	// Leave if given invalid room ID.
-	if ( ! $room = abrs_get_room( $room ) ) {
-		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
-	}
-
-	// Leave if give room is not available in given timespan.
-	if ( ! abrs_room_available( $room->get_id(), $timespan ) ) {
-		return false;
-	}
-
-	// Start the db transaction.
-	abrs_db_transaction( 'start' );
-
-	$booking  = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
-	$resource = abrs_filter_resource( $room->get_id(), 0 );
-
-	// Store booking state & availability state.
-	try {
-		$period = $timespan->to_period( Constants::GL_NIGHTLY );
-
-		$stored  = abrs_calendar( $resource, 'booking' )->store( new Booking_Event( $resource, $period->get_start_date(), $period->get_end_date(), $booking ) );
-		$stored2 = abrs_apply_room_state( $room->get_id(), $timespan, Constants::STATE_BOOKING );
-
-		if ( ! $stored || ! $stored2 ) {
-			abrs_db_transaction( 'rollback' );
-			return false;
-		}
-	} catch ( Exception $e ) {
-		abrs_db_transaction( 'rollback' );
-		return false;
-	}
-
-	// Everything is ok, commit the transaction.
-	abrs_db_transaction( 'commit' );
-
-	return true;
-}
-
-/**
- * Perform clear the booking state.
- *
- * @param  int      $room     The room ID.
- * @param  int      $booking  The booking ID.
- * @param  Timespan $timespan The timespan.
- * @return bool|WP_Error
- */
-function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
-	try {
-		$timespan->requires_minimum_nights( 1 );
-	} catch ( LogicException $e ) {
-		return new WP_Error( 'timespan_error', $e->getMessage() );
-	}
-
-	// Leave if given invalid room ID.
-	if ( ! $room = abrs_get_room( $room ) ) {
-		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
-	}
-
-	$period  = $timespan->to_period( Constants::GL_NIGHTLY );
-	$booking = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
-
-	$statecal   = abrs_calendar( $room, 'state' );
-	$bookingcal = abrs_calendar( $room, 'booking' );
-
-	foreach ( $bookingcal->get_events( $period ) as $event ) {
-		if ( $event->get_value() == $booking ) {
-			$event->set_value( 0 );
-			$bookingcal->store( $event );
-		}
-	}
-
-	foreach ( $statecal->get_events( $period ) as $event ) {
-		if ( $event->get_state() === Constants::STATE_BOOKING ) {
-			$event->set_value( Constants::STATE_AVAILABLE );
-			$statecal->store( $event );
-		}
-	}
-
-	return true;
-}
-
-/**
  * Retrieve a room rate by given an array args.
  *
  * @param  array $args The query args.
@@ -576,4 +480,95 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 	}
 
 	return apply_filters( 'abrs_reservation_request', new Request( $timespan, $guest_counts, $args['options'] ) );
+}
+
+/**
+ * Perform apply the booking state.
+ *
+ * @param  int      $room     The room ID.
+ * @param  int      $booking  The booking ID.
+ * @param  Timespan $timespan The timespan.
+ * @return bool|WP_Error
+ */
+function abrs_apply_booking_event( $room, $booking, Timespan $timespan ) {
+	try {
+		$timespan->requires_minimum_nights( 1 );
+	} catch ( LogicException $e ) {
+		return new WP_Error( 'timespan_error', $e->getMessage() );
+	}
+
+	// Leave if given invalid room ID.
+	if ( ! $room = abrs_get_room( $room ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
+	}
+
+	// Start the db transaction.
+	abrs_db_transaction( 'start' );
+
+	$booking  = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
+	$resource = abrs_filter_resource( $room->get_id(), 0 );
+
+	// Store booking state & availability state.
+	try {
+		$period = $timespan->to_period( Constants::GL_NIGHTLY );
+
+		$stored  = abrs_calendar( $resource, 'booking' )->store( new Booking_Event( $resource, $period->get_start_date(), $period->get_end_date(), $booking ) );
+		$stored2 = abrs_apply_room_state( $room->get_id(), $timespan, Constants::STATE_BOOKING );
+
+		if ( ! $stored || ! $stored2 ) {
+			abrs_db_transaction( 'rollback' );
+			return false;
+		}
+	} catch ( Exception $e ) {
+		abrs_db_transaction( 'rollback' );
+		return false;
+	}
+
+	// Everything is ok, commit the transaction.
+	abrs_db_transaction( 'commit' );
+
+	return true;
+}
+
+/**
+ * Perform clear the booking state.
+ *
+ * @param  int      $room     The room ID.
+ * @param  int      $booking  The booking ID.
+ * @param  Timespan $timespan The timespan.
+ * @return bool|WP_Error
+ */
+function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
+	try {
+		$timespan->requires_minimum_nights( 1 );
+	} catch ( LogicException $e ) {
+		return new WP_Error( 'timespan_error', $e->getMessage() );
+	}
+
+	// Leave if given invalid room ID.
+	if ( ! $room = abrs_get_room( $room ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
+	}
+
+	$period  = $timespan->to_period( Constants::GL_NIGHTLY );
+	$booking = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
+
+	$statecal   = abrs_calendar( $room, 'state' );
+	$bookingcal = abrs_calendar( $room, 'booking' );
+
+	foreach ( $bookingcal->get_events( $period ) as $event ) {
+		if ( $event->get_value() == $booking ) {
+			$event->set_value( 0 );
+			$bookingcal->store( $event );
+		}
+	}
+
+	foreach ( $statecal->get_events( $period ) as $event ) {
+		if ( $event->get_state() === Constants::STATE_BOOKING ) {
+			$event->set_value( Constants::STATE_AVAILABLE );
+			$statecal->store( $event );
+		}
+	}
+
+	return true;
 }
