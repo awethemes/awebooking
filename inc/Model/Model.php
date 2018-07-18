@@ -112,7 +112,7 @@ abstract class Model extends WP_Object {
 	 * {@inheritdoc}
 	 */
 	protected function prefix( $hook_name ) {
-		return sprintf( 'abrs_%s_%s', $this->prefix, $this->object_type, $hook_name );
+		return sprintf( 'abrs_%s_%s', $this->object_type, $hook_name );
 	}
 
 	/**
