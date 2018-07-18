@@ -33,14 +33,14 @@
     },
     "require-dev": {
         "10up/wp_mock": "0.2.0",
+        "phpunit/phpunit": "4.8.*",
         "symfony/debug": "3.3.*",
         "symfony/translation": "3.3.*",
         "symfony/var-dumper": "3.3.*"
     },
     "autoload": {
         "psr-4": {
-            "AweBooking\\": "inc/",
-            "AweBooking\\Deprecated\\": "deprecated/"
+            "AweBooking\\": "inc/"
         }
     },
     "config": {
