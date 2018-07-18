@@ -36,7 +36,7 @@ if ( have_posts() ) {
 	/**
 	 * The 'abrs_after_archive_loop' hook.
 	 *
-	 * @hooked abrs_pagination - 10
+	 * @hooked abrs_archive_pagination - 10
 	 */
 	do_action( 'abrs_after_archive_loop' );
 
