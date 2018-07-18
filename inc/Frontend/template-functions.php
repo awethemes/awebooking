@@ -186,7 +186,7 @@ function abrs_single_room_form() {
 /* Archive templates */
 
 /**
- * Gets archive room thumbnail.
+ * Gets archive pagination.
  *
  * @access private
  */
