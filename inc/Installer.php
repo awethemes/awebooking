@@ -2,6 +2,7 @@
 namespace AweBooking;
 
 use Psr\Log\LoggerInterface;
+use AweBooking\Admin\Admin_Settings;
 use AweBooking\Bootstrap\Setup_Environment;
 
 class Installer {
@@ -49,8 +50,8 @@ class Installer {
 	public function init() {
 		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
 		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
+		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 5 );
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
-
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 		add_filter( "plugin_action_links_{$this->plugin->plugin_basename()}", [ $this, 'plugin_action_links' ] );
 	}
@@ -107,7 +108,6 @@ class Installer {
 
 		$this->setup_environment();
 		$this->create_tables();
-		$this->create_options();
 		$this->create_roles();
 		$this->create_cron_jobs();
 		$this->update_version();
@@ -182,6 +182,25 @@ class Installer {
 		$this->install();
 
 		do_action( 'awebookin_updated' );
+	}
+
+	/**
+	 * Check to create the default options.
+	 *
+	 * @return void
+	 */
+	public function maybe_create_options() {
+		if ( ! is_admin() || ! did_action( 'admin_init' ) ) {
+			return;
+		}
+
+		if ( ! get_option( Constants::OPTION_KEY ) ) {
+			$admin_settings = $this->plugin->make( Admin_Settings::class );
+
+			$admin_settings->setup();
+
+			add_option( Constants::OPTION_KEY, $admin_settings->get_default_settings(), '', 'yes' );
+		}
 	}
 
 	/**
@@ -260,6 +279,8 @@ class Installer {
 
 	/**
 	 * Update version to current.
+	 *
+	 * @return void
 	 */
 	public function update_version() {
 		delete_option( 'awebooking_version' );
@@ -347,17 +368,6 @@ class Installer {
 	 * @return void
 	 */
 	protected function create_cron_jobs() {
-		// TODO: ...
-	}
-
-	/**
-	 * Default options.
-	 *
-	 * Sets up the default options used on the settings page.
-	 *
-	 * @return void
-	 */
-	protected function create_options() {
 		// TODO: ...
 	}
 

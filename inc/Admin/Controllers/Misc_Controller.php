@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Admin\Controllers;
 
+use AweBooking\Premium;
 use AweBooking\Email\Templates\Sample_Email;
 
 class Misc_Controller extends Controller {
@@ -16,8 +17,14 @@ class Misc_Controller extends Controller {
 	 *
 	 * @return \Awethemes\Http\Response
 	 */
-	public function index() {
-		return $this->response( 'misc/about.php' );
+	public function about() {
+		// delete_transient( 'awebooking_premium_themes' );
+		// delete_transient( 'awebooking_premium_addons' );
+
+		$available_addons = Premium::get_premium_plugins();
+		$available_themes = Premium::get_premium_themes();
+
+		return $this->response( 'misc/about.php', compact( 'available_addons', 'available_themes' ) );
 	}
 
 	/**

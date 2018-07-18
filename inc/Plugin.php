@@ -18,7 +18,7 @@ final class Plugin extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.1.0-dev';
+	const VERSION = '3.1.0';
 
 	/**
 	 * The plugin file path.
@@ -215,7 +215,7 @@ final class Plugin extends Container {
 	 *
 	 * @access private
 	 */
-	protected function bootstrap() {
+	public function bootstrap() {
 		// Require the core functions.
 		require trailingslashit( __DIR__ ) . 'Core/functions.php';
 
