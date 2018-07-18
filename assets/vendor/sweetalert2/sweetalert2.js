@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v7.25.0
+* sweetalert2 v7.25.4
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -186,9 +186,17 @@ var uniqueArray = function uniqueArray(arr) {
 };
 
 /**
- * Converts `inputOptions` into an array of `[value, label]`s
- * @param inputOptions
+ * Convert NodeList to Array
+ * @param nodeList
  */
+var toArray$1 = function toArray$$1(nodeList) {
+  return Array.prototype.slice.call(nodeList);
+};
+
+/**
+* Converts `inputOptions` into an array of `[value, label]`s
+* @param inputOptions
+*/
 var formatInputOptions = function formatInputOptions(inputOptions) {
   var result = [];
   if (typeof Map !== 'undefined' && inputOptions instanceof Map) {
@@ -258,7 +266,7 @@ var DismissReason = Object.freeze({
   timer: 'timer'
 });
 
-var version = "7.25.0";
+var version = "7.25.6";
 
 var argsToParams = function argsToParams(args) {
   var params = {};
@@ -311,7 +319,7 @@ var prefix = function prefix(items) {
   return result;
 };
 
-var swalClasses = prefix(['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'icon-text', 'image', 'input', 'has-input', 'file', 'range', 'select', 'radio', 'checkbox', 'textarea', 'inputerror', 'validationerror', 'progresssteps', 'activeprogressstep', 'progresscircle', 'progressline', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen']);
+var swalClasses = prefix(['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'toast-column', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'icon-text', 'image', 'input', 'file', 'range', 'select', 'radio', 'checkbox', 'label', 'textarea', 'inputerror', 'validationerror', 'progresssteps', 'activeprogressstep', 'progresscircle', 'progressline', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen']);
 
 var iconTypes = prefix(['success', 'warning', 'info', 'question', 'error']);
 
@@ -417,7 +425,7 @@ var getPopup = function getPopup() {
 
 var getIcons = function getIcons() {
   var popup = getPopup();
-  return Array.prototype.slice.call(popup.querySelectorAll('.' + swalClasses.icon));
+  return toArray$1(popup.querySelectorAll('.' + swalClasses.icon));
 };
 
 var getTitle = function getTitle() {
@@ -466,7 +474,7 @@ var getCloseButton = function getCloseButton() {
 };
 
 var getFocusableElements = function getFocusableElements() {
-  var focusableElementsWithTabindex = Array.prototype.slice.call(getPopup().querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])'))
+  var focusableElementsWithTabindex = toArray$1(getPopup().querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])'))
   // sort according to tabindex
   .sort(function (a, b) {
     a = parseInt(a.getAttribute('tabindex'));
@@ -480,7 +488,7 @@ var getFocusableElements = function getFocusableElements() {
   });
 
   // https://github.com/jkup/focusable/blob/master/index.js
-  var otherFocusableElements = Array.prototype.slice.call(getPopup().querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable], audio[controls], video[controls]'));
+  var otherFocusableElements = toArray$1(getPopup().querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable], audio[controls], video[controls]'));
 
   return uniqueArray(focusableElementsWithTabindex.concat(otherFocusableElements));
 };
@@ -512,7 +520,7 @@ var init = function init(params) {
   var c = getContainer();
   if (c) {
     c.parentNode.removeChild(c);
-    removeClass([document.documentElement, document.body], [swalClasses['no-backdrop'], swalClasses['has-input'], swalClasses['toast-shown']]);
+    removeClass([document.documentElement, document.body], [swalClasses['no-backdrop'], swalClasses['toast-shown'], swalClasses['has-column']]);
   }
 
   if (isNodeEnv()) {
@@ -629,6 +637,37 @@ var measureScrollbar = function measureScrollbar() {
   return scrollbarWidth;
 };
 
+var renderProgressSteps = function renderProgressSteps(params) {
+  var progressStepsContainer = getProgressSteps();
+  var currentProgressStep = parseInt(params.currentProgressStep === null ? Swal.getQueueStep() : params.currentProgressStep, 10);
+  if (params.progressSteps && params.progressSteps.length) {
+    show(progressStepsContainer);
+    empty(progressStepsContainer);
+    if (currentProgressStep >= params.progressSteps.length) {
+      warn('Invalid currentProgressStep parameter, it should be less than progressSteps.length ' + '(currentProgressStep like JS arrays starts from 0)');
+    }
+    params.progressSteps.forEach(function (step, index) {
+      var circle = document.createElement('li');
+      addClass(circle, swalClasses.progresscircle);
+      circle.innerHTML = step;
+      if (index === currentProgressStep) {
+        addClass(circle, swalClasses.activeprogressstep);
+      }
+      progressStepsContainer.appendChild(circle);
+      if (index !== params.progressSteps.length - 1) {
+        var line = document.createElement('li');
+        addClass(line, swalClasses.progressline);
+        if (params.progressStepsDistance) {
+          line.style.width = params.progressStepsDistance;
+        }
+        progressStepsContainer.appendChild(line);
+      }
+    });
+  } else {
+    hide(progressStepsContainer);
+  }
+};
+
 var fixScrollbar = function fixScrollbar() {
   // for queues, do not do this more than once
   if (states.previousBodyPadding !== null) {
@@ -715,7 +754,7 @@ var close = function close(onClose, onAfterClose) {
     if (container.parentNode) {
       container.parentNode.removeChild(container);
     }
-    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['has-input'], swalClasses['toast-shown']]);
+    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown'], swalClasses['toast-column']]);
 
     if (isModal()) {
       undoScrollbar();
@@ -1302,6 +1341,28 @@ function resetValidationError() {
   }
 }
 
+function getProgressSteps$1() {
+  var innerParams = privateProps.innerParams.get(this);
+  return innerParams.progressSteps;
+}
+
+function setProgressSteps(progressSteps) {
+  var innerParams = privateProps.innerParams.get(this);
+  var updatedParams = _extends({}, innerParams, { progressSteps: progressSteps });
+  privateProps.innerParams.set(this, updatedParams);
+  renderProgressSteps(updatedParams);
+}
+
+function showProgressSteps() {
+  var domCache = privateProps.domCache.get(this);
+  show(domCache.progressSteps);
+}
+
+function hideProgressSteps() {
+  var domCache = privateProps.domCache.get(this);
+  hide(domCache.progressSteps);
+}
+
 var Timer = function Timer(callback, delay) {
   classCallCheck(this, Timer);
 
@@ -1407,7 +1468,10 @@ function setParameters(params) {
   if (params.titleText) {
     title.innerText = params.titleText;
   } else if (params.title) {
-    title.innerHTML = params.title.split('\n').join('<br />');
+    if (typeof params.title === 'string') {
+      params.title = params.title.split('\n').join('<br />');
+    }
+    parseHtmlToContainer(params.title, title);
   }
 
   if (typeof params.backdrop === 'string') {
@@ -1472,34 +1536,7 @@ function setParameters(params) {
   }
 
   // Progress steps
-  var progressStepsContainer = getProgressSteps();
-  var currentProgressStep = parseInt(params.currentProgressStep === null ? Swal.getQueueStep() : params.currentProgressStep, 10);
-  if (params.progressSteps && params.progressSteps.length) {
-    show(progressStepsContainer);
-    empty(progressStepsContainer);
-    if (currentProgressStep >= params.progressSteps.length) {
-      warn('Invalid currentProgressStep parameter, it should be less than progressSteps.length ' + '(currentProgressStep like JS arrays starts from 0)');
-    }
-    params.progressSteps.forEach(function (step, index) {
-      var circle = document.createElement('li');
-      addClass(circle, swalClasses.progresscircle);
-      circle.innerHTML = step;
-      if (index === currentProgressStep) {
-        addClass(circle, swalClasses.activeprogressstep);
-      }
-      progressStepsContainer.appendChild(circle);
-      if (index !== params.progressSteps.length - 1) {
-        var line = document.createElement('li');
-        addClass(line, swalClasses.progressline);
-        if (params.progressStepsDistance) {
-          line.style.width = params.progressStepsDistance;
-        }
-        progressStepsContainer.appendChild(line);
-      }
-    });
-  } else {
-    hide(progressStepsContainer);
-  }
+  renderProgressSteps(params);
 
   // Icon
   var icons = getIcons();
@@ -1892,7 +1929,6 @@ function _main(userParams) {
         if (innerParams.showConfirmButton || innerParams.showCancelButton || innerParams.showCloseButton || innerParams.input) {
           return;
         }
-        constructor.closePopup(innerParams.onClose, innerParams.onAfterClose);
         dismissWith(constructor.DismissReason.close);
       };
     } else {
@@ -2045,8 +2081,8 @@ function _main(userParams) {
     _this.hideLoading();
     _this.resetValidationError();
 
-    if (innerParams.input) {
-      addClass(document.body, swalClasses['has-input']);
+    if (innerParams.input || innerParams.footer || innerParams.showCloseButton) {
+      addClass(document.body, swalClasses['toast-column']);
     }
 
     // inputs
@@ -2156,8 +2192,11 @@ function _main(userParams) {
             if (innerParams.inputValue.toString() === radioValue.toString()) {
               radioInput.checked = true;
             }
-            radioLabelElement.innerHTML = radioLabel;
-            radioLabelElement.insertBefore(radioInput, radioLabelElement.firstChild);
+            var label = document.createElement('span');
+            label.innerHTML = radioLabel;
+            label.className = swalClasses.label;
+            radioLabelElement.appendChild(radioInput);
+            radioLabelElement.appendChild(label);
             radio.appendChild(radioLabelElement);
           });
           show(radio);
@@ -2179,6 +2218,7 @@ function _main(userParams) {
           checkbox.removeChild(label[0]);
         }
         label = document.createElement('span');
+        label.className = swalClasses.label;
         label.innerHTML = innerParams.inputPlaceholder;
         checkbox.appendChild(label);
         show(checkbox);
@@ -2217,11 +2257,13 @@ function _main(userParams) {
       innerParams.inputValue.then(function (inputValue) {
         input.value = innerParams.input === 'number' ? parseFloat(inputValue) || 0 : inputValue + '';
         show(input);
+        input.focus();
         _this.hideLoading();
       }).catch(function (err) {
         error('Error in inputValue promise: ' + err);
         input.value = '';
         show(input);
+        input.focus();
         _this.hideLoading();
       });
     }
@@ -2261,6 +2303,10 @@ var instanceMethods = Object.freeze({
 	disableInput: disableInput,
 	showValidationError: showValidationError,
 	resetValidationError: resetValidationError,
+	getProgressSteps: getProgressSteps$1,
+	setProgressSteps: setProgressSteps,
+	showProgressSteps: showProgressSteps,
+	hideProgressSteps: hideProgressSteps,
 	_main: _main
 });
 

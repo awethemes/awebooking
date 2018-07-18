@@ -102,7 +102,7 @@
 .awebooking-block select.form-select:focus {
   border-color: #cee0fd;
   outline: 0;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(206, 224, 253, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(206, 224, 253, 0.5);
 }
 
 .awebooking select.form-select:focus::-ms-value,
@@ -1070,7 +1070,7 @@
   width: 100%;
   border: solid 1px #eee;
   top: 100%;
-  background: #fbfbfb;
+  background-color: #fff;
   padding: 5px;
   box-sizing: border-box;
   z-index: 1001;
@@ -1085,15 +1085,20 @@
 }
 
 .searchbox-spinner {
-  display: flex;
-  justify-content: left;
+  display: block;
   position: relative;
-  padding: 0 30px;
-  height: 40px;
+  padding: 5px 15px;
   line-height: 40px;
+  overflow: hidden;
+}
+
+.searchbox-spinner__title {
+  float: left;
+  line-height: normal;
 }
 
 .searchbox-spinner__input {
+  float: right;
   border: 0 !important;
   font-weight: bold;
   width: auto;
