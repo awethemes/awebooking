@@ -17,6 +17,41 @@ use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
 
 /**
+ * Returns list of states represent for blocked.
+ *
+ * @return array
+ */
+function abrs_get_blocked_states() {
+	return apply_filters( 'abrs_blocked_states', [
+		Constants::STATE_SYNC => [
+			'name'  => 'sync',
+			'label' => esc_html__( 'Sync', 'awebooking' ),
+		],
+		Constants::STATE_UNAVAILABLE => [
+			'name'  => 'unavailable',
+			'label' => esc_html__( 'Unavailable', 'awebooking' ),
+		],
+	]);
+}
+
+/**
+ * Returns list of operations.
+ *
+ * @return array
+ */
+function abrs_get_rate_operations() {
+	return apply_filters( 'abrs_rate_operations', [
+		'replace'  => esc_html__( 'Replace', 'awebooking' ),
+		'add'      => esc_html__( 'Add', 'awebooking' ),
+		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
+		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
+		'divide'   => esc_html__( 'Divide', 'awebooking' ),
+		'increase' => esc_html__( 'Increase', 'awebooking' ),
+		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
+	]);
+}
+
+/**
  * Determines if a given room is "available" in a timespan.
  *
  * @param  Collection|array|int $room     The room to check.
