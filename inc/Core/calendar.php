@@ -11,6 +11,23 @@ use AweBooking\Model\Pricing\Contracts\Rate_Interval;
 use AweBooking\Support\Collection;
 
 /**
+ * Returns list of operations.
+ *
+ * @return array
+ */
+function abrs_get_rate_operations() {
+	return apply_filters( 'abrs_rate_operations', [
+		'replace'  => esc_html__( 'Replace', 'awebooking' ),
+		'add'      => esc_html__( 'Add', 'awebooking' ),
+		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
+		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
+		'divide'   => esc_html__( 'Divide', 'awebooking' ),
+		'increase' => esc_html__( 'Increase', 'awebooking' ),
+		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
+	]);
+}
+
+/**
  * Create a Calendar.
  *
  * @param  mixed   $resource The resource.

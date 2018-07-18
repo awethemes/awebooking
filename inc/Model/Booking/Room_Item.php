@@ -275,7 +275,7 @@ class Room_Item extends Item {
 	 */
 	protected function saved() {
 		if ( $this->recently_created ) {
-			abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
+			abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
 		} elseif ( true === $this->force_change_timespan ) {
 			$this->perform_change_timespan( $this->get_timespan() );
 		}
@@ -302,8 +302,8 @@ class Room_Item extends Item {
 		// Start a mysql transaction.
 		abrs_db_transaction( 'start' );
 
-		$updated1 = abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $from_timespan );
-		$updated2 = abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
+		$updated1 = abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $from_timespan );
+		$updated2 = abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
 
 		if ( true !== $updated1 || true !== $updated2 ) {
 			abrs_db_transaction( 'rollback' );
@@ -328,7 +328,7 @@ class Room_Item extends Item {
 		parent::perform_delete( $force );
 
 		if ( $timespan = $this->get_timespan() ) {
-			abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
+			abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
 		}
 	}
 

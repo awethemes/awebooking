@@ -323,23 +323,6 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 }
 
 /**
- * Returns list of operations.
- *
- * @return array
- */
-function abrs_get_rate_operations() {
-	return apply_filters( 'abrs_rate_operations', [
-		'replace'  => esc_html__( 'Replace', 'awebooking' ),
-		'add'      => esc_html__( 'Add', 'awebooking' ),
-		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
-		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
-		'divide'   => esc_html__( 'Divide', 'awebooking' ),
-		'increase' => esc_html__( 'Increase', 'awebooking' ),
-		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
-	]);
-}
-
-/**
  * Filter given rates by request.
  *
  * @param  Collection|array|int $rates       The rates.
@@ -412,7 +395,7 @@ function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan, G
  * @param  Timespan $timespan The timespan.
  * @return bool|WP_Error
  */
-function abrs_apply_booking_state( $room, $booking, Timespan $timespan ) {
+function abrs_apply_booking_event( $room, $booking, Timespan $timespan ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -465,7 +448,7 @@ function abrs_apply_booking_state( $room, $booking, Timespan $timespan ) {
  * @param  Timespan $timespan The timespan.
  * @return bool|WP_Error
  */
-function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
+function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
