@@ -23,7 +23,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    this.adults = ko.observable(data.adult || 1);
+    this.adults = ko.observable(data.adults || 1);
     this.children = ko.observable(data.children || 0);
     this.infants = ko.observable(data.infants || 0);
     this.checkIn = ko.observable(data.checkIn || '');
@@ -53,6 +53,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, SearchForm);
 
       var self = this;
+
       this.$el = $(el);
 
       this.model = new SearchFormModel({
@@ -98,14 +99,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         onPreCalendarPosition: function onPreCalendarPosition() {
           var _this3 = this;
 
-          fp._positionElement = $('.searchbox__box--checkout')[0];
+          fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
           setTimeout(function () {
             _this3._positionElement = _this3._input;
           }, 0);
         }
       });
 
-      $('.searchbox__box--checkin, .searchbox__box--checkout').on('click focus', function (e) {
+      $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el).on('click focus', function (e) {
         e.preventDefault();
 
         fp.isOpen = false;
