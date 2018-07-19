@@ -49,7 +49,7 @@ function abrs_is_room_type() {
  *
  * @return bool
  */
-function is_room_type_archive() {
+function abrs_is_room_type_archive() {
 	return is_post_type_archive( Constants::ROOM_TYPE );
 }
 
@@ -81,7 +81,7 @@ function abrs_is_checkout_page() {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
+	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
@@ -127,6 +127,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		'res_request'     => null,
 		'hotel_location'  => true,
 		'occupancy'       => true,
+		'only_room'       => null,
 		'container_class' => '',
 	], $atts );
 

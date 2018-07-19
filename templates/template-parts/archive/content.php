@@ -48,7 +48,7 @@ if ( empty( $room_type ) || ! $room_type->get( 'rack_rate' ) ) {
 			<?php if ( $description = $room_type->get( 'short_description' ) ) : ?>
 
 				<div class="list-room__desc">
-					<?php print wp_trim_words( $description, 55 ); // WPCS: xss ok. ?>
+					<?php print wp_trim_words( $description, 25 ); // WPCS: xss ok. ?>
 				</div>
 
 			<?php endif; ?>

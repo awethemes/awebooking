@@ -2,7 +2,9 @@
 namespace AweBooking;
 
 use Psr\Log\LoggerInterface;
+use AweBooking\Admin\Admin_Settings;
 use AweBooking\Bootstrap\Setup_Environment;
+use AweBooking\Background_Process\Background_Updater;
 
 class Installer {
 	/**
@@ -15,7 +17,7 @@ class Installer {
 	/**
 	 * The background updater.
 	 *
-	 * @var \AweBooking\Background_Updater
+	 * @var \AweBooking\Background_Process\Background_Updater
 	 */
 	protected $background_updater;
 
@@ -25,7 +27,12 @@ class Installer {
 	 * @var array
 	 */
 	protected $db_updates = [
-		// ...
+		'3.1.0' => [
+			'abrs_update_310_bookings',
+			'abrs_update_310_room_types',
+			'abrs_update_310_migrate_services',
+			'abrs_update_310_db_version',
+		],
 	];
 
 	/**
@@ -35,10 +42,15 @@ class Installer {
 	 */
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
+	}
 
-		// $this->background_updater = $plugin->make( Background_Updater::class );
-
-		$this->init();
+	/**
+	 * Returns the plugin instance.
+	 *
+	 * @return \AweBooking\Plugin
+	 */
+	public function get_plugin() {
+		return $this->plugin;
 	}
 
 	/**
@@ -48,9 +60,10 @@ class Installer {
 	 */
 	public function init() {
 		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
+		add_action( 'init', [ $this, 'init_background_updater' ], 5 );
 		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
+		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 5 );
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
-
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 		add_filter( "plugin_action_links_{$this->plugin->plugin_basename()}", [ $this, 'plugin_action_links' ] );
 	}
@@ -75,92 +88,16 @@ class Installer {
 	 * @return void
 	 */
 	public function deactivation() {
-		// Nothing todo for now.
+		// ...
 	}
 
 	/**
-	 * Doing the install.
+	 * Init background updates.
 	 *
 	 * @return void
 	 */
-	protected function install() {
-		if ( ! is_blog_installed() ) {
-			return;
-		}
-
-		// Check if we are not already running this routine.
-		if ( 'yes' === get_transient( 'awebooking_installing' ) ) {
-			return;
-		}
-
-		// If we made it till here nothing is running yet, let's set the transient now.
-		set_transient( 'awebooking_installing', 'yes', MINUTE_IN_SECONDS * 10 );
-
-		// Begin the installing...
-		if ( ! defined( 'AWEBOOKING_INSTALLING' ) ) {
-			define( 'AWEBOOKING_INSTALLING', true );
-		}
-
-		// Require core functions.
-		require_once trailingslashit( __DIR__ ) . 'core-functions.php';
-		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
-
-		$this->setup_environment();
-		$this->create_tables();
-		$this->create_options();
-		$this->create_roles();
-		$this->create_cron_jobs();
-		$this->update_version();
-
-		// CHeck for the update DB.
-		if ( $this->needs_db_update() ) {
-			// $this->update();
-		} else {
-			$this->update_db_version();
-		}
-
-		// Everything seem done, delete the transient.
-		delete_transient( 'awebooking_installing' );
-
-		// Fire installed action.
-		do_action( 'awebooking_installed' );
-
-		// Remove rewrite rules and then recreate rewrite rules.
-		@flush_rewrite_rules();
-	}
-
-	/**
-	 * Push all needed DB updates to the queue for processing.
-	 *
-	 * @return void
-	 */
-	protected function update() {
-		$logger = $this->plugin->make( LoggerInterface::class );
-
-		$current_db_version = $this->get_current_db_version();
-		$update_queued = false;
-
-		foreach ( $this->db_updates as $version => $update_callbacks ) {
-			// Ignore versions that older than current db version,
-			// they may has been runned.
-			if ( version_compare( $version, $current_db_version, '<' ) ) {
-				continue;
-			}
-
-			// Loop through callbacks and add to queue.
-			foreach ( $update_callbacks as $update_callback ) {
-				$logger->info( sprintf( 'Queuing %1$s - %2$s', $version, $update_callback ), [ 'source' => 'db_updates' ] );
-
-				$this->background_updater->push_to_queue( $update_callback );
-
-				$update_queued = true;
-			}
-		}
-
-		// Only dispatch when update_queued marked true.
-		if ( $update_queued ) {
-			$this->background_updater->save()->dispatch();
-		}
+	public function init_background_updater() {
+		$this->background_updater = new Background_Updater( $this, $this->plugin->get_logger() );
 	}
 
 	/**
@@ -171,17 +108,32 @@ class Installer {
 	 * @access private
 	 */
 	public function maybe_reinstall() {
-		if ( defined( 'IFRAME_REQUEST' ) || $this->get_current_version() === $this->plugin->version() ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( $this->get_current_version(), $this->plugin->version(), '<' ) ) {
+			Constants::define( 'AWEBOOKING_REINSTALLING', true );
+
+			$this->install();
+
+			do_action( 'awebookin_updated' );
+		}
+	}
+
+	/**
+	 * Check to create the default options.
+	 *
+	 * @return void
+	 */
+	public function maybe_create_options() {
+		if ( ! is_admin() || ! did_action( 'admin_init' ) ) {
 			return;
 		}
 
-		if ( ! defined( 'AWEBOOKING_REINSTALLING' ) ) {
-			define( 'AWEBOOKING_REINSTALLING', true );
+		if ( ! get_option( Constants::OPTION_KEY ) ) {
+			$admin_settings = $this->plugin->make( Admin_Settings::class );
+
+			$admin_settings->setup();
+
+			add_option( Constants::OPTION_KEY, $admin_settings->get_default_settings(), '', 'yes' );
 		}
-
-		$this->install();
-
-		do_action( 'awebookin_updated' );
 	}
 
 	/**
@@ -259,7 +211,97 @@ class Installer {
 	}
 
 	/**
+	 * Doing the install.
+	 *
+	 * @return void
+	 */
+	protected function install() {
+		if ( ! is_blog_installed() ) {
+			return;
+		}
+
+		// Check if we are not already running this routine.
+		if ( 'yes' === get_transient( 'awebooking_installing' ) ) {
+			return;
+		}
+
+		// If we made it till here nothing is running yet, let's set the transient now.
+		set_transient( 'awebooking_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
+		// Begin the installing...
+		if ( ! defined( 'AWEBOOKING_INSTALLING' ) ) {
+			define( 'AWEBOOKING_INSTALLING', true );
+		}
+
+		// Require core functions.
+		require_once trailingslashit( __DIR__ ) . 'Core/functions.php';
+		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
+
+		$this->setup_environment();
+		$this->create_tables();
+		$this->create_roles();
+		$this->create_cron_jobs();
+		$this->update_version();
+
+		// CHeck for the update DB.
+		if ( $this->needs_db_update() ) {
+			$this->update();
+		} else {
+			$this->update_db_version();
+		}
+
+		// Everything seem done, delete the transient.
+		delete_transient( 'awebooking_installing' );
+
+		// Fire installed action.
+		do_action( 'awebooking_installed' );
+
+		// Remove rewrite rules and then recreate rewrite rules.
+		@flush_rewrite_rules();
+	}
+
+	/**
+	 * Push all needed DB updates to the queue for processing.
+	 *
+	 * @return void
+	 */
+	protected function update() {
+		$logger = $this->plugin->make( LoggerInterface::class );
+
+		if ( is_null( $this->background_updater ) ) {
+			$this->init_background_updater();
+		}
+
+		$current_db_version = $this->get_current_db_version();
+		$update_queued = false;
+
+		foreach ( $this->db_updates as $version => $update_callbacks ) {
+			// Ignore versions that older than current db version,
+			// they may has been runned.
+			if ( version_compare( $version, $current_db_version, '<' ) ) {
+				continue;
+			}
+
+			// Loop through callbacks and add to queue.
+			foreach ( $update_callbacks as $update_callback ) {
+				$logger->info( sprintf( '[%1$s] Queuing %2$s', $version, $update_callback ), [ 'source' => 'db_updates' ] );
+
+				$this->background_updater->push_to_queue( $update_callback );
+
+				$update_queued = true;
+			}
+		}
+
+		// Only dispatch when update_queued marked true.
+		if ( $update_queued ) {
+			$this->background_updater->save()->dispatch();
+		}
+	}
+
+	/**
 	 * Update version to current.
+	 *
+	 * @return void
 	 */
 	public function update_version() {
 		delete_option( 'awebooking_version' );
@@ -347,18 +389,7 @@ class Installer {
 	 * @return void
 	 */
 	protected function create_cron_jobs() {
-		// TODO: ...
-	}
-
-	/**
-	 * Default options.
-	 *
-	 * Sets up the default options used on the settings page.
-	 *
-	 * @return void
-	 */
-	protected function create_options() {
-		// TODO: ...
+		// ...
 	}
 
 	/**
@@ -380,7 +411,7 @@ class Installer {
 	protected function create_tables() {
 		global $wpdb;
 
-		$wpdb->hide_errors();
+		$wpdb->show_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
@@ -402,88 +433,90 @@ class Installer {
 
 		$days_schema = '';
 		for ( $i = 1; $i <= 31; $i++ ) {
-			$days_schema .= 'd' . $i . ' BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
+			$days_schema .= '`d' . $i . '` BIGINT UNSIGNED NOT NULL DEFAULT 0,' . "\n";
 		}
 
 		$days_schema = trim( $days_schema );
 
 		$tables = "
-CREATE TABLE {$wpdb->prefix}awebooking_rooms (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(191) DEFAULT NULL,
-  room_type BIGINT UNSIGNED NOT NULL,
-  order BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  KEY name (name),
-  KEY room_type (room_type)
+CREATE TABLE `{$wpdb->prefix}awebooking_rooms` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(191) DEFAULT NULL,
+  `room_type` BIGINT UNSIGNED NOT NULL,
+  `order` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `room_type` (`room_type`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking (
-  room_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_booking` (
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (room_id, year, month)
+  PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_availability (
-  room_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_availability` (
+  `room_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (room_id, year, month)
+  PRIMARY KEY (`room_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_pricing (
-  rate_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  year SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  month TINYINT UNSIGNED NOT NULL DEFAULT 0,
+CREATE TABLE `{$wpdb->prefix}awebooking_pricing` (
+  `rate_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `year` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `month` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   {$days_schema}
-  PRIMARY KEY (rate_id, year, month)
+  PRIMARY KEY (`rate_id`, `year`, `month`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking_items (
-  booking_item_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_item_name VARCHAR(255) NOT NULL,
-  booking_item_type VARCHAR(191) NOT NULL DEFAULT '',
-  object_id BIGINT UNSIGNED NOT NULL,
-  booking_id BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (booking_item_id),
-  KEY object_id (object_id),
-  KEY booking_id (booking_id)
+CREATE TABLE `{$wpdb->prefix}awebooking_booking_items` (
+  `booking_item_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `booking_item_name` VARCHAR(255) NOT NULL,
+  `booking_item_type` VARCHAR(191) NOT NULL DEFAULT '',
+  `booking_item_parent` BIGINT UNSIGNED NOT NULL,
+  `object_id` BIGINT UNSIGNED NOT NULL,
+  `booking_id` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`booking_item_id`),
+  KEY `booking_item_parent` (`booking_item_parent`),
+  KEY `object_id` (`object_id`),
+  KEY `booking_id` (`booking_id`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_booking_itemmeta (
-  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_item_id BIGINT UNSIGNED NOT NULL,
-  meta_key VARCHAR(191) default NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY (meta_id),
-  KEY booking_item_id (booking_item_id),
-  KEY meta_key (meta_key(32))
+CREATE TABLE `{$wpdb->prefix}awebooking_booking_itemmeta` (
+  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `booking_item_id` BIGINT UNSIGNED NOT NULL,
+  `meta_key` VARCHAR(191) DEFAULT NULL,
+  `meta_value` LONGTEXT NULL,
+  PRIMARY KEY (`meta_id`),
+  KEY `booking_item_id` (`booking_item_id`),
+  KEY `meta_key` (meta_key(32))
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_tax_rates (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  rate VARCHAR(8) NOT NULL DEFAULT '',
-  name VARCHAR(191) NOT NULL DEFAULT '',
-  priority BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  compound INT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  KEY name (name)
+CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `rate` VARCHAR(8) NOT NULL DEFAULT '',
+  `name` VARCHAR(191) NOT NULL DEFAULT '',
+  `priority` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  `compound` INT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_relationships (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  type VARCHAR(42) NOT NULL DEFAULT '',
-  rel_from BIGINT UNSIGNED NOT NULL,
-  rel_to BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (id),
-  KEY type (type),
-  KEY rel_from (rel_from),
-  KEY rel_to (rel_to)
+CREATE TABLE `{$wpdb->prefix}awebooking_relationships` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(42) NOT NULL DEFAULT '',
+  `rel_from` BIGINT UNSIGNED NOT NULL,
+  `rel_to` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `rel_from` (`rel_from`),
+  KEY `rel_to` (`rel_to`)
 ) $collate;
-CREATE TABLE {$wpdb->prefix}awebooking_relationshipmeta (
-  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  awebooking_relationship_id BIGINT UNSIGNED NOT NULL,
-  meta_key VARCHAR(191) default NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY (meta_id),
-  KEY awebooking_relationship_id (awebooking_relationship_id),
-  KEY meta_key (meta_key(32))
+CREATE TABLE `{$wpdb->prefix}awebooking_relationshipmeta` (
+  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `awebooking_relationship_id` BIGINT UNSIGNED NOT NULL,
+  `meta_key` VARCHAR(191) DEFAULT NULL,
+  `meta_value` LONGTEXT NULL,
+  PRIMARY KEY (`meta_id`),
+  KEY `awebooking_relationship_id` (`awebooking_relationship_id`),
+  KEY `meta_key` (meta_key(32))
 ) $collate;
 ";
 

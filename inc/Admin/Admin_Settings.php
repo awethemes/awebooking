@@ -82,9 +82,6 @@ class Admin_Settings extends Manager {
 		do_action( 'abrs_update_setting_' . $setting, $this );
 		do_action( 'abrs_update_settings', $setting, $this );
 
-		// Update translatable fields.
-		$this->update_translatable_fields();
-
 		// Add an success notices.
 		abrs_admin_notices( esc_html__( 'Your settings have been saved.', 'awebooking' ), 'success' )->dialog();
 
@@ -96,7 +93,28 @@ class Admin_Settings extends Manager {
 	}
 
 	/**
-	 * Extracts translatable fields.
+	 * Gets the default settings.
+	 *
+	 * @return array
+	 */
+	public function get_default_settings() {
+		$defaults = [ [] ];
+
+		foreach ( $this->all() as $setting ) {
+			if ( $setting instanceof Abstract_Setting ) {
+				$defaults[] = abrs_collect( $setting->prop( 'fields' ) )
+					->whereNotIn( 'type', [ 'title', 'include' ] )
+					->where( 'default', '!==', null )
+					->pluck( 'default', 'id' )
+					->all();
+			}
+		}
+
+		return array_merge( ...$defaults );
+	}
+
+	/**
+	 * Returns all translatable fields.
 	 *
 	 * @return array
 	 */
@@ -104,30 +122,14 @@ class Admin_Settings extends Manager {
 		$translatable = [ [] ];
 
 		foreach ( $this->all() as $setting ) {
-			if ( ! $setting instanceof Abstract_Setting ) {
-				continue;
+			if ( $setting instanceof Abstract_Setting ) {
+				$translatable[] = abrs_collect( $setting->prop( 'fields' ) )
+					->where( 'translatable', '=', true )
+					->pluck( 'id' )
+					->all();
 			}
-
-			$translatable[] = abrs_collect( $setting->prop( 'fields' ) )
-				->where( 'translatable', '=', true )
-				->pluck( 'id' )
-				->all();
 		}
 
 		return array_unique( array_merge( ... $translatable ) );
-	}
-
-	/**
-	 * Update translatable fields.
-	 *
-	 * @return void
-	 */
-	public function update_translatable_fields() {
-		$translatable = $this->get_translatable_fields();
-		$db_values = get_option( 'awebooking_translatable_fields', [] );
-
-		if ( empty( $option ) || array_diff( $translatable, $db_values ) ) {
-			update_option( 'awebooking_translatable_fields', $translatable, true );
-		}
 	}
 }

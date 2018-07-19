@@ -1,12 +1,19 @@
 window.awebooking = {};
 
 const accounting = require('accounting');
+const Dropdown = require('./core/dropdown');
 
 (function ($, plugin) {
   'use strict';
 
   // Main objects
   plugin.utils = plugin.instances = {};
+
+  plugin.utils.dropdown = function (el, config) {
+    $(el).each(function () {
+      $(this).data('abrs-dropdown', new Dropdown(this, config));
+    });
+  };
 
   plugin.i18n = window._awebooking_i18n || {};
 

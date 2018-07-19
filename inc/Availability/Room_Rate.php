@@ -120,10 +120,11 @@ class Room_Rate {
 			return;
 		}
 
+		// TODO: ...
 		$constraints = $this->request->get_constraints();
 
 		// First, check the rooms availability.
-		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), $this->get_guest_counts(), Constants::STATE_AVAILABLE, $constraints );
+		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), Constants::STATE_AVAILABLE, $constraints );
 		$this->rooms_availability = new Availability( $this->room_type, $room_response );
 
 		// Leave if no rooms remain.

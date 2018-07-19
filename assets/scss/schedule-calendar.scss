@@ -604,6 +604,10 @@ $schedule-border-color2:       #ccc;
   &:hover { background-color: rgba(black, .03); }
 }
 
+.scheduler__state-event.sync {
+  background: url('../img/blocked-pattern.png') rgba(154, 222, 253, 0.5);
+}
+
 .scheduler__booking-event {
   &.pending,
   &.awebooking-pending {

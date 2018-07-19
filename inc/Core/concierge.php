@@ -1,16 +1,11 @@
 <?php
 
 use AweBooking\Constants;
-use AweBooking\Model\Room;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
-use AweBooking\Calendar\Calendar;
 use AweBooking\Calendar\Resource\Resource;
-use AweBooking\Calendar\Resource\Resource_Interface;
-use AweBooking\Calendar\Provider\Provider_Interface;
-use AweBooking\Calendar\Provider\Cached_Provider;
 use AweBooking\Calendar\Finder\Finder;
 use AweBooking\Calendar\Finder\State_Finder;
 use AweBooking\Calendar\Event\Core\Booking_Event;
@@ -20,6 +15,41 @@ use AweBooking\Availability\Constraints\Night_Stay_Constraint;
 use Awethemes\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
+
+/**
+ * Returns list of states represent for blocked.
+ *
+ * @return array
+ */
+function abrs_get_blocked_states() {
+	return apply_filters( 'abrs_blocked_states', [
+		Constants::STATE_SYNC => [
+			'name'  => 'sync',
+			'label' => esc_html__( 'Sync', 'awebooking' ),
+		],
+		Constants::STATE_UNAVAILABLE => [
+			'name'  => 'unavailable',
+			'label' => esc_html__( 'Unavailable', 'awebooking' ),
+		],
+	]);
+}
+
+/**
+ * Returns list of operations.
+ *
+ * @return array
+ */
+function abrs_get_rate_operations() {
+	return apply_filters( 'abrs_rate_operations', [
+		'replace'  => esc_html__( 'Replace', 'awebooking' ),
+		'add'      => esc_html__( 'Add', 'awebooking' ),
+		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
+		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
+		'divide'   => esc_html__( 'Divide', 'awebooking' ),
+		'increase' => esc_html__( 'Increase', 'awebooking' ),
+		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
+	]);
+}
 
 /**
  * Determines if a given room is "available" in a timespan.
@@ -43,7 +73,7 @@ function abrs_room_available( $room, Timespan $timespan ) {
  * @return bool
  */
 function abrs_room_has_states( $room, Timespan $timespan, $states ) {
-	$response = abrs_check_room_states( $room, $timespan, null, $states );
+	$response = abrs_check_room_states( $room, $timespan, $states );
 
 	if ( is_wp_error( $response ) ) {
 		return false;
@@ -57,13 +87,13 @@ function abrs_room_has_states( $room, Timespan $timespan, $states ) {
  *
  * @param  Collection|array|int $room        The room ID to check.
  * @param  Timespan             $timespan    The timespan.
- * @param  Guest_Counts         $guests      The guest counts.
  * @param  array|int            $states      A string or an array of states.
  * @param  array                $constraints AweBooking\Calendar\Finder\Constraint[].
+ * @param  string               $comparison  The comparison mode (any, only, without).
  *
  * @return \AweBooking\Calendar\Finder\Response|WP_Error
  */
-function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests = null, $states = Constants::STATE_AVAILABLE, $constraints = [] ) {
+function abrs_check_room_states( $room, Timespan $timespan, $states = Constants::STATE_AVAILABLE, $constraints = [], $comparison = 'only' ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -76,11 +106,11 @@ function abrs_check_room_states( $room, Timespan $timespan, Guest_Counts $guests
 		->all();
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
-		->only( is_array( $states ) ? $states : [ $states ] )
-		->using( apply_filters( 'abrs_check_rooms_constraints', $constraints, $timespan, $guests, $states, $resources ) )
+		->filter( $comparison, $states )
+		->using( $constraints )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'abrs_check_room_state_response', $response, $timespan, $guests, $states, $resources );
+	return apply_filters( 'abrs_check_room_state_response', $response, $resources, $timespan, $states, $constraints, $comparison );
 }
 
 /**
@@ -328,23 +358,6 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 }
 
 /**
- * Returns list of operations.
- *
- * @return array
- */
-function abrs_get_rate_operations() {
-	return apply_filters( 'abrs_rate_operations', [
-		'replace'  => esc_html__( 'Replace', 'awebooking' ),
-		'add'      => esc_html__( 'Add', 'awebooking' ),
-		'subtract' => esc_html__( 'Subtract', 'awebooking' ),
-		'multiply' => esc_html__( 'Multiply', 'awebooking' ),
-		'divide'   => esc_html__( 'Divide', 'awebooking' ),
-		'increase' => esc_html__( 'Increase', 'awebooking' ),
-		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
-	]);
-}
-
-/**
  * Filter given rates by request.
  *
  * @param  Collection|array|int $rates       The rates.
@@ -407,102 +420,6 @@ function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan, G
 	}
 
 	return apply_filters( 'abrs_rate_constraints', $constraints, $rate );
-}
-
-/**
- * Perform apply the booking state.
- *
- * @param  int      $room     The room ID.
- * @param  int      $booking  The booking ID.
- * @param  Timespan $timespan The timespan.
- * @return bool|WP_Error
- */
-function abrs_apply_booking_state( $room, $booking, Timespan $timespan ) {
-	try {
-		$timespan->requires_minimum_nights( 1 );
-	} catch ( LogicException $e ) {
-		return new WP_Error( 'timespan_error', $e->getMessage() );
-	}
-
-	// Leave if given invalid room ID.
-	if ( ! $room = abrs_get_room( $room ) ) {
-		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
-	}
-
-	// Leave if give room is not available in given timespan.
-	if ( ! abrs_room_available( $room->get_id(), $timespan ) ) {
-		return false;
-	}
-
-	// Start the db transaction.
-	abrs_db_transaction( 'start' );
-
-	$booking  = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
-	$resource = abrs_filter_resource( $room->get_id(), 0 );
-
-	// Store booking state & availability state.
-	try {
-		$period = $timespan->to_period( Constants::GL_NIGHTLY );
-
-		$stored  = abrs_calendar( $resource, 'booking' )->store( new Booking_Event( $resource, $period->get_start_date(), $period->get_end_date(), $booking ) );
-		$stored2 = abrs_apply_room_state( $room->get_id(), $timespan, Constants::STATE_BOOKING );
-
-		if ( ! $stored || ! $stored2 ) {
-			abrs_db_transaction( 'rollback' );
-			return false;
-		}
-	} catch ( Exception $e ) {
-		abrs_db_transaction( 'rollback' );
-		return false;
-	}
-
-	// Everything is ok, commit the transaction.
-	abrs_db_transaction( 'commit' );
-
-	return true;
-}
-
-/**
- * Perform clear the booking state.
- *
- * @param  int      $room     The room ID.
- * @param  int      $booking  The booking ID.
- * @param  Timespan $timespan The timespan.
- * @return bool|WP_Error
- */
-function abrs_clear_booking_state( $room, $booking, Timespan $timespan ) {
-	try {
-		$timespan->requires_minimum_nights( 1 );
-	} catch ( LogicException $e ) {
-		return new WP_Error( 'timespan_error', $e->getMessage() );
-	}
-
-	// Leave if given invalid room ID.
-	if ( ! $room = abrs_get_room( $room ) ) {
-		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
-	}
-
-	$period  = $timespan->to_period( Constants::GL_NIGHTLY );
-	$booking = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
-
-	$statecal   = abrs_calendar( $room, 'state' );
-	$bookingcal = abrs_calendar( $room, 'booking' );
-
-	foreach ( $bookingcal->get_events( $period ) as $event ) {
-		if ( $event->get_value() == $booking ) {
-			$event->set_value( 0 );
-			$bookingcal->store( $event );
-		}
-	}
-
-	foreach ( $statecal->get_events( $period ) as $event ) {
-		if ( $event->get_state() === Constants::STATE_BOOKING ) {
-			$event->set_value( Constants::STATE_AVAILABLE );
-			$statecal->store( $event );
-		}
-	}
-
-	return true;
 }
 
 /**
@@ -601,138 +518,92 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 }
 
 /**
- * Create a Calendar.
+ * Perform apply the booking state.
  *
- * @param  mixed   $resource The resource.
- * @param  string  $provider The provider name.
- * @param  boolean $cached   If true, wrap the provider in Cached_Provider.
- * @return \AweBooking\Calendar\Calendar
+ * @param  int      $room     The room ID.
+ * @param  int      $booking  The booking ID.
+ * @param  Timespan $timespan The timespan.
+ * @return bool|WP_Error
  */
-function abrs_calendar( $resource, $provider, $cached = false ) {
-	$resource = abrs_filter_resource( $resource );
-
-	if ( ! $provider instanceof Provider_Interface ) {
-		$provider = abrs_calendar_provider( $provider, $resource, $cached );
+function abrs_apply_booking_event( $room, $booking, Timespan $timespan ) {
+	try {
+		$timespan->requires_minimum_nights( 1 );
+	} catch ( LogicException $e ) {
+		return new WP_Error( 'timespan_error', $e->getMessage() );
 	}
 
-	return new Calendar( $resource, $provider );
+	// Leave if given invalid room ID.
+	if ( ! $room = abrs_get_room( $room ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
+	}
+
+	// Start the db transaction.
+	abrs_db_transaction( 'start' );
+
+	$booking  = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
+	$resource = abrs_filter_resource( $room->get_id(), 0 );
+
+	// Store booking state & availability state.
+	try {
+		$period = $timespan->to_period( Constants::GL_NIGHTLY );
+
+		$stored  = abrs_calendar( $resource, 'booking' )->store( new Booking_Event( $resource, $period->get_start_date(), $period->get_end_date(), $booking ) );
+		$stored2 = abrs_apply_room_state( $room->get_id(), $timespan, Constants::STATE_BOOKING );
+
+		if ( ! $stored || ! $stored2 ) {
+			abrs_db_transaction( 'rollback' );
+			return false;
+		}
+	} catch ( Exception $e ) {
+		abrs_db_transaction( 'rollback' );
+		return false;
+	}
+
+	// Everything is ok, commit the transaction.
+	abrs_db_transaction( 'commit' );
+
+	return true;
 }
 
 /**
- * Create a calendar provider.
+ * Perform clear the booking state.
  *
- * @param  string  $provider The provider name.
- * @param  mixed   $resource The resource.
- * @param  boolean $cached   If true, wrap the provider in Cached_Provider.
- * @return \AweBooking\Calendar\Provider\Provider_Interface
- *
- * @throws OutOfBoundsException
+ * @param  int      $room     The room ID.
+ * @param  int      $booking  The booking ID.
+ * @param  Timespan $timespan The timespan.
+ * @return bool|WP_Error
  */
-function abrs_calendar_provider( $provider, $resource, $cached = false ) {
-	static $providers;
-
-	if ( is_null( $providers ) ) {
-		$providers = apply_filters( 'abrs_calendar_providers_classmap', [
-			'state'   => \AweBooking\Calendar\Provider\Core\State_Provider::class,
-			'booking' => \AweBooking\Calendar\Provider\Core\Booking_Provider::class,
-			'pricing' => \AweBooking\Calendar\Provider\Core\Pricing_Provider::class,
-		]);
+function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
+	try {
+		$timespan->requires_minimum_nights( 1 );
+	} catch ( LogicException $e ) {
+		return new WP_Error( 'timespan_error', $e->getMessage() );
 	}
 
-	if ( ! array_key_exists( $provider, $providers ) ) {
-		throw new OutOfBoundsException( 'Invalid calendar provider' );
+	// Leave if given invalid room ID.
+	if ( ! $room = abrs_get_room( $room ) ) {
+		return new WP_Error( 'invalid_room', esc_html__( 'Invalid Room ID', 'awebooking' ) );
 	}
 
-	// Filter the resources.
-	if ( $resource instanceof Collection ) {
-		$resource = $resource->all();
+	$period  = $timespan->to_period( Constants::GL_NIGHTLY );
+	$booking = ( $booking instanceof Booking ) ? $booking->get_id() : (int) $booking;
+
+	$statecal   = abrs_calendar( $room, 'state' );
+	$bookingcal = abrs_calendar( $room, 'booking' );
+
+	foreach ( $bookingcal->get_events( $period ) as $event ) {
+		if ( $event->get_value() == $booking ) {
+			$event->set_value( 0 );
+			$bookingcal->store( $event );
+		}
 	}
 
-	$resource = ( is_array( $resource ) )
-		? array_map( 'abrs_filter_resource', $resource )
-		: [ abrs_filter_resource( $resource ) ];
-
-	// Create the provider instance.
-	$instance = new $providers[ $provider ]( $resource );
-
-	// Wrap in cached provider.
-	if ( $cached ) {
-		$instance = new Cached_Provider( $instance );
+	foreach ( $statecal->get_events( $period ) as $event ) {
+		if ( $event->get_state() === Constants::STATE_BOOKING ) {
+			$event->set_value( Constants::STATE_AVAILABLE );
+			$statecal->store( $event );
+		}
 	}
 
-	return apply_filters( 'abrs_calendar_provider', $instance, $provider, $resource, $cached );
-}
-
-/**
- * Gets the calendar resource.
- *
- * @param  mixed $resource The resource ID or model represent of resource (Room, Rate_Interval, etc.).
- * @param  mixed $value    The resource value.
- * @return \AweBooking\Calendar\Resource\Resource_Interface
- */
-function abrs_filter_resource( $resource, $value = null ) {
-	// Leave if $resource already instance of Resource_Interface.
-	if ( $resource instanceof Resource_Interface ) {
-		return $resource;
-	}
-
-	if ( $resource instanceof Room ) {
-		return abrs_resource_room( $resource );
-	} elseif ( $resource instanceof Rate_Interval ) {
-		return abrs_resource_rate( $resource );
-	}
-
-	return new Resource( (int) $resource, (int) $value );
-}
-
-/**
- * Returns a resource of room.
- *
- * @param  mixed $room The room ID.
- * @return \AweBooking\Calendar\Resource\Resource_Interface|null
- */
-function abrs_resource_room( $room ) {
-	$room = ( ! $room instanceof Room ) ? abrs_get_room( $room ) : $room;
-
-	// Leave if room not found.
-	if ( empty( $room ) ) {
-		return null;
-	}
-
-	// By default rooms in awebooking is alway available
-	// but you can apply filters to here to change that.
-	$resource = new Resource( $room->get_id(),
-		apply_filters( 'abrs_default_room_state', Constants::STATE_AVAILABLE )
-	);
-
-	$resource->set_reference( $room );
-	$resource->set_title( $room->get( 'name' ) );
-
-	return apply_filters( 'abrs_calendar_room_resource', $resource, $room );
-}
-
-/**
- * Returns a resource of rate.
- *
- * @param  mixed $rate The rate interval ID.
- * @return \AweBooking\Calendar\Resource\Resource_Interface|null
- */
-function abrs_resource_rate( $rate ) {
-	$rate = ( ! $rate instanceof Rate_Interval ) ? abrs_get_rate_interval( $rate ) : $rate;
-
-	// Leave if rate not found.
-	if ( empty( $rate ) ) {
-		return null;
-	}
-
-	// In calendar we store as resource integer,
-	// so we need convert rate amount to int value (e.g 10.9 -> 1090).
-	$resource = new Resource( $rate->get_id(),
-		abrs_decimal( $rate->get_rack_rate() )->as_raw_value()
-	);
-
-	$resource->set_reference( $rate );
-	$resource->set_title( $rate->get_name() );
-
-	return apply_filters( 'abrs_calendar_rate_resource', $resource, $rate );
+	return true;
 }

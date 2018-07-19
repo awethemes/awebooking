@@ -4,11 +4,6 @@ const queryString = require('query-string');
 (function($) {
   'use strict';
 
-
-  debounce(() => {
-
-  });
-
   const awebooking = window.awebooking || {};
 
   // Create the properties.
@@ -212,9 +207,5 @@ const queryString = require('query-string');
       });
     });
   });
-
-  module.exports = function () {
-
-  };
 
 })(jQuery);

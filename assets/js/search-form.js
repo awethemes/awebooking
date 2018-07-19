@@ -23,7 +23,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    this.adults = ko.observable(data.adult || 1);
+    this.adults = ko.observable(data.adults || 1);
     this.children = ko.observable(data.children || 0);
     this.infants = ko.observable(data.infants || 0);
     this.checkIn = ko.observable(data.checkIn || '');
@@ -53,6 +53,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, SearchForm);
 
       var self = this;
+
       this.$el = $(el);
 
       this.model = new SearchFormModel({
@@ -98,14 +99,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         onPreCalendarPosition: function onPreCalendarPosition() {
           var _this3 = this;
 
-          fp._positionElement = $('.searchbox__box--checkout')[0];
+          fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
           setTimeout(function () {
             _this3._positionElement = _this3._input;
           }, 0);
         }
       });
 
-      $('.searchbox__box--checkin, .searchbox__box--checkout').on('click focus', function (e) {
+      $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el).on('click focus', function (e) {
         e.preventDefault();
 
         fp.isOpen = false;
@@ -121,31 +122,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'setuptPopper',
       value: function setuptPopper(el) {
         var $html = $(el).find('.searchbox__popup');
+
         if ($html.length === 0) {
           return;
         }
 
-        tippy(el, {
-          theme: 'awebooking-popup',
-          delay: 0,
-          arrow: true,
-          distance: 0,
-          placement: 'bottom',
-          trigger: 'click',
-          interactive: true,
-          performance: true,
-          hideOnClick: true,
-          animation: 'shift-toward',
-          duration: [150, 150],
-          html: $html[0],
-          appendTo: this.$el[0],
-          popperOptions: { modifiers: {
-              hide: { enabled: false },
-              preventOverflow: { enabled: false }
-            } }
+        plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
+          dropClass: '.searchbox__popup'
         });
-
-        return el._tippy;
       }
     }]);
 

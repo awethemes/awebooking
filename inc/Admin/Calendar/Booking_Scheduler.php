@@ -57,16 +57,18 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @var \AweBooking\Support\Collection $events
 	 */
 	protected function filter_events( $events ) {
-		/* @var \AweBooking\Support\Collection $events */
 		return $events->reject( function ( $e ) {
 			if ( ( ! $e instanceof State_Event && ! $e instanceof Booking_Event ) || 0 === (int) $e->get_value() ) {
 				return true;
 			}
 
-			// Only get the "UNAVAILABLE" in state events.
-			if ( $e instanceof State_Event && $e->get_state() !== Constants::STATE_UNAVAILABLE ) {
+			// Only display the "blocked" in state events.
+			$blocked_state = array_keys( abrs_get_blocked_states() );
+			if ( $e instanceof State_Event && ! in_array( $e->get_state(), $blocked_state ) ) {
 				return true;
 			}
 
@@ -205,6 +207,9 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			return;
 		}
 
+		// Gets the states name.
+		$states = wp_list_pluck( abrs_get_blocked_states(), 'name' );
+
 		// Loop all events and display them.
 		foreach ( $day_events as $event ) {
 			// Calculate the event attributes.
@@ -214,8 +219,10 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			$_data = compact( 'event', 'day', 'calendar', 'scheduler', 'attributes' );
 			$_data['calr'] = $this;
 
+			$_name = isset( $states[ $event->get_value() ] ) ? $states[ $event->get_value() ] : 'unavailable';
+
 			$contents = ( $event instanceof State_Event )
-				? abrs_admin_template( 'calendar/html-blocked-state.php', $_data )
+				? abrs_admin_template( 'calendar/html-' . $_name . '-state.php', $_data )
 				: abrs_admin_template( 'calendar/html-booking-state.php', $_data );
 
 			print $contents; // WPCS: XSS OK.
@@ -259,8 +266,11 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		$classes = [];
 		$total_days = (int) $period->days;
 
+		$states = wp_list_pluck( abrs_get_blocked_states(), 'name' );
+
 		if ( $event instanceof State_Event ) {
-			$classes[] = 'scheduler__state-event unavailable';
+			$classes[] = 'scheduler__state-event';
+			$classes[] = isset( $states[ $event->get_value() ] ) ? $states[ $event->get_value() ] : '';
 		} elseif ( $event instanceof Booking_Event ) {
 			$classes[] = 'scheduler__booking-event';
 		}

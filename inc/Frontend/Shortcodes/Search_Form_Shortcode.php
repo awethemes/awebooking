@@ -13,6 +13,7 @@ class Search_Form_Shortcode extends Shortcode_Abstract {
 		'res_request'     => null,
 		'hotel_location'  => true,
 		'occupancy'       => true,
+		'only_room'       => null,
 		'container_class' => '',
 	];
 

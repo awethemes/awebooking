@@ -11,14 +11,15 @@ use Illuminate\Support\Arr;
 
 final class Plugin extends Container {
 	use Support\Traits\Plugin_Provider,
-		Support\Traits\Plugin_Options;
+		Support\Traits\Plugin_Options,
+		Deprecated\AweBooking;
 
 	/**
 	 * The plugin version.
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.1.0-dev';
+	const VERSION = '3.1.0';
 
 	/**
 	 * The plugin file path.
@@ -215,9 +216,9 @@ final class Plugin extends Container {
 	 *
 	 * @access private
 	 */
-	protected function bootstrap() {
+	public function bootstrap() {
 		// Require the core functions.
-		require trailingslashit( __DIR__ ) . 'core-functions.php';
+		require trailingslashit( __DIR__ ) . 'Core/functions.php';
 
 		/**
 		 * Fire the bootstrap action.

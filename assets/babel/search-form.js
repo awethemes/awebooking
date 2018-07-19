@@ -12,7 +12,7 @@
   }
 
   function SearchFormModel(data = {}) {
-    this.adults    = ko.observable(data.adult || 1);
+    this.adults    = ko.observable(data.adults || 1);
     this.children = ko.observable(data.children || 0);
     this.infants  = ko.observable(data.infants || 0);
     this.checkIn  = ko.observable(data.checkIn || '');
@@ -38,6 +38,7 @@
   class SearchForm {
     constructor (el) {
       const self = this;
+
       this.$el = $(el);
 
       this.model = new SearchFormModel({
@@ -80,12 +81,12 @@
         },
 
         onPreCalendarPosition() {
-          fp._positionElement = $('.searchbox__box--checkout')[0];
+          fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
           setTimeout(() => { this._positionElement = this._input; }, 0);
         },
       });
 
-      $('.searchbox__box--checkin, .searchbox__box--checkout')
+      $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el)
         .on('click focus', function(e) {
           e.preventDefault();
 
@@ -100,31 +101,14 @@
 
     setuptPopper(el) {
       const $html = $(el).find('.searchbox__popup');
+
       if ($html.length === 0) {
         return;
       }
 
-      tippy(el, {
-        theme: 'awebooking-popup',
-        delay: 0,
-        arrow: true,
-        distance: 0,
-        placement: 'bottom',
-        trigger: 'click',
-        interactive: true,
-        performance: true,
-        hideOnClick: true,
-        animation: 'shift-toward',
-        duration: [150, 150],
-        html: $html[0],
-        appendTo: this.$el[0],
-        popperOptions: { modifiers: {
-            hide: { enabled: false },
-            preventOverflow: { enabled: false },
-          }}
+      plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
+        dropClass: '.searchbox__popup',
       });
-
-      return el._tippy;
     }
   }
 

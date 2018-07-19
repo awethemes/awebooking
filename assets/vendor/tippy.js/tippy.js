@@ -1,5 +1,5 @@
 /*!
-* Tippy.js v2.5.3
+* Tippy.js v2.5.4
 * (c) 2017-2018 atomiks
 * MIT
 */
@@ -9,7 +9,7 @@
 	(global.tippy = factory());
 }(this, (function () { 'use strict';
 
-var version = "2.5.3";
+var version = "2.5.4";
 
 var isBrowser = typeof window !== 'undefined';
 
@@ -3985,7 +3985,7 @@ function _onTransitionEnd(duration, callback) {
 
   var toggleListeners = function toggleListeners(action, listener) {
     if (!listener) return;
-    tooltip[action + 'EventListener']('ontransitionend' in window ? 'transitionend' : 'webkitTransitionEnd', listener);
+    tooltip[action + 'EventListener']('transition' in document.body.style ? 'transitionend' : 'webkitTransitionEnd', listener);
   };
 
   var listener = function listener(e) {

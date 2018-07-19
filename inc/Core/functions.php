@@ -8,17 +8,21 @@ use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form;
 use Awethemes\WP_Object\WP_Object;
 
-// Requires other core functions.
-require trailingslashit( __DIR__ ) . 'formatting.php';
-require trailingslashit( __DIR__ ) . 'concierge.php';
-require trailingslashit( __DIR__ ) . 'date-functions.php';
-require trailingslashit( __DIR__ ) . 'room-functions.php';
-require trailingslashit( __DIR__ ) . 'rate-functions.php';
-require trailingslashit( __DIR__ ) . 'hotel-functions.php';
-require trailingslashit( __DIR__ ) . 'booking-functions.php';
-require trailingslashit( __DIR__ ) . 'service-functions.php';
-require trailingslashit( __DIR__ ) . 'tax-functions.php';
-require trailingslashit( __DIR__ ) . 'customer-functions.php';
+foreach ( [ // Requires other core functions.
+	'dates.php',
+	'formatting.php',
+	'calendar.php',
+	'concierge.php',
+	'rooms.php',
+	'rates.php',
+	'hotels.php',
+	'bookings.php',
+	'services.php',
+	'taxes.php',
+	'customers.php',
+] as $core_file ) {
+	require trailingslashit( __DIR__ ) . $core_file;
+}
 
 /**
  * Returns the multilingual instance.

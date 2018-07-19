@@ -67,7 +67,7 @@ class Binding_Resolver {
 	 * @throws \AweBooking\Component\Http\Exceptions\ModelNotFoundException
 	 */
 	public function model( $key, $class, Closure $callback = null ) {
-		$this->bind( $key, $this->binding_for_model( $class, $callback ) );
+		$this->bind( str_replace( '-', '_', $key ), $this->binding_for_model( $class, $callback ) );
 	}
 
 	/**
@@ -124,10 +124,6 @@ class Binding_Resolver {
 	 */
 	protected function binding_for_model( $class, $callback = null ) {
 		return function ( $value ) use ( $class, $callback ) {
-			if ( empty( $value ) ) {
-				return null;
-			}
-
 			// For model binders, we will attempt to retrieve the models using the first
 			// method on the model instance. If we cannot retrieve the models we'll
 			// throw a not found exception otherwise we will return the instance.

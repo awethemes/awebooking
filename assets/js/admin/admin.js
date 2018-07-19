@@ -7,8 +7,6 @@ var queryString = require('query-string');
 (function ($) {
   'use strict';
 
-  debounce(function () {});
-
   var awebooking = window.awebooking || {};
 
   // Create the properties.
@@ -212,8 +210,6 @@ var queryString = require('query-string');
       });
     });
   });
-
-  module.exports = function () {};
 })(jQuery);
 
 },{"../core/range-dates.js":3,"./utils/search-customer.js":2,"accounting":4,"debounce":5,"query-string":7}],2:[function(require,module,exports){

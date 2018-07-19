@@ -33,6 +33,7 @@
     },
     "require-dev": {
         "10up/wp_mock": "0.2.0",
+        "phpunit/phpunit": "5.7.*",
         "symfony/debug": "3.3.*",
         "symfony/translation": "3.3.*",
         "symfony/var-dumper": "3.3.*"
@@ -41,7 +42,24 @@
         "psr-4": {
             "AweBooking\\": "inc/",
             "AweBooking\\Deprecated\\": "deprecated/"
-        }
+        },
+        "classmap": [
+            "bin/composer-cleaner.php"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "post-update-cmd": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "clean": [
+            "AweBooking_Composer_Cleaner::clean"
+        ],
+        "install-wp-test": [
+            "bash bin/install-wp-tests.sh wptest_awebooking awethemes 'secret' localhost latest"
+        ]
     },
     "config": {
         "sort-packages": true,

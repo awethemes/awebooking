@@ -10,3 +10,5 @@ node_modules/
 *.sql
 *.tar.gz
 *.zip
+composer.lock
+package-lock.json

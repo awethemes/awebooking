@@ -35,7 +35,7 @@ $route->get(    '/booking-service',                    'Booking_Service_Controll
 $route->post(   '/booking-service',                    'Booking_Service_Controller@store' );
 $route->delete( '/booking-service/{service_item:\d+}', 'Booking_Service_Controller@destroy' );
 
-$route->get(    '/about',                              'Misc_Controller@index' );
+$route->get(    '/about',                              'Misc_Controller@about' );
 $route->get(    '/preview-email',                      'Misc_Controller@preview_email' );
 $route->get(    '/search/customers',                   'Ajax_Controller@search_customers' );
 $route->get(    '/search/services',                    'Ajax_Controller@search_services' );

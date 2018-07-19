@@ -102,7 +102,7 @@
 .awebooking-block select.form-select:focus {
   border-color: #cee0fd;
   outline: 0;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(206, 224, 253, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(206, 224, 253, 0.5);
 }
 
 .awebooking select.form-select:focus::-ms-value,
@@ -842,6 +842,8 @@
 
 .searchbox__box {
   cursor: pointer;
+  z-index: 5;
+  position: relative;
 }
 
 .searchbox__box:focus {
@@ -1064,9 +1066,17 @@
 
 .searchbox__popup {
   display: none;
+  position: absolute;
+  width: 100%;
+  border: solid 1px #eee;
+  top: 100%;
+  background-color: #fff;
+  padding: 5px;
+  box-sizing: border-box;
+  z-index: 1001;
 }
 
-.tippy-tooltip .searchbox__popup {
+.searchbox__popup.open {
   display: block;
 }
 
@@ -1075,15 +1085,20 @@
 }
 
 .searchbox-spinner {
-  display: flex;
-  justify-content: left;
+  display: block;
   position: relative;
-  padding: 0 30px;
-  height: 40px;
+  padding: 5px 15px;
   line-height: 40px;
+  overflow: hidden;
+}
+
+.searchbox-spinner__title {
+  float: left;
+  line-height: normal;
 }
 
 .searchbox-spinner__input {
+  float: right;
   border: 0 !important;
   font-weight: bold;
   width: auto;
@@ -1250,7 +1265,7 @@
 }
 
 .roommaster-header {
-  padding: .3rem;
+  padding: .3rem 15px;
   border-bottom: solid 1px #e9ecef;
   position: relative;
 }
@@ -1269,21 +1284,26 @@
   border-color: transparent;
 }
 
+.roommaster-content {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+}
+
 .roommaster-content::after {
   display: block;
   clear: both;
   content: "";
 }
 
+.roommaster-content > .columns > .column-lg-3 {
+  padding-right: 0;
+}
+
 .roommaster-content__title {
   font-size: 1rem;
   font-weight: bold;
   padding: 5px 5px;
-}
-
-.roommaster-info,
-.roommaster-list {
-  padding: .3rem;
 }
 
 .roommaster-info__list {
@@ -1306,7 +1326,11 @@
 }
 
 .roommaster-list {
-  padding-left: .3rem;
+  padding: 0;
+}
+
+.roommaster-list .roommaster-list__content {
+  margin-bottom: 15px;
 }
 
 .columns.roommaster-list__header {
@@ -1686,7 +1710,7 @@ ul.booking_details li:last-of-type {
 }
 
 .reservation dt {
-  width: 40%;
+  width: 60%;
   float: left;
   clear: left;
   font-weight: normal;
@@ -1695,7 +1719,7 @@ ul.booking_details li:last-of-type {
 
 .reservation dd {
   margin: 0;
-  margin-left: 40%;
+  margin-left: 60%;
   text-align: right;
   box-sizing: border-box;
 }
@@ -1756,6 +1780,10 @@ ul.booking_details li:last-of-type {
   color: #6c757d;
   font-size: .85rem;
   display: block;
+}
+
+.roomdetails-room {
+  margin-bottom: .75rem;
 }
 
 .roomdetails-room__content {

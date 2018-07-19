@@ -140,33 +140,14 @@ class Room_Item extends Item {
 
 		// Force to change the timespan.
 		$this->force_change_timespan   = true;
+
 		$this->attributes['check_in']  = $timespan->get_start_date();
 		$this->attributes['check_out'] = $timespan->get_end_date();
-
-		return true;
-	}
-
-	/**
-	 * Updates timespan of room stay immediately.
-	 *
-	 * @param  Timespan $timespan The timespan change to.
-	 * @return bool
-	 */
-	public function update_timespan( Timespan $timespan ) {
-		if ( ! $this->exists() ) {
-			return false;
-		}
-
-		$changed = $this->change_timespan( $timespan );
-		if ( is_wp_error( $changed ) || ! $changed ) {
-			return false;
-		}
 
 		try {
 			return $this->save();
 		} catch ( \Exception $e ) {
-			abrs_report( $e );
-			return false;
+			return new WP_Error( 'error', $e->getMessage() );
 		}
 	}
 
@@ -275,7 +256,7 @@ class Room_Item extends Item {
 	 */
 	protected function saved() {
 		if ( $this->recently_created ) {
-			abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
+			abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
 		} elseif ( true === $this->force_change_timespan ) {
 			$this->perform_change_timespan( $this->get_timespan() );
 		}
@@ -302,8 +283,8 @@ class Room_Item extends Item {
 		// Start a mysql transaction.
 		abrs_db_transaction( 'start' );
 
-		$updated1 = abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $from_timespan );
-		$updated2 = abrs_apply_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
+		$updated1 = abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $from_timespan );
+		$updated2 = abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $to_timespan );
 
 		if ( true !== $updated1 || true !== $updated2 ) {
 			abrs_db_transaction( 'rollback' );
@@ -328,7 +309,7 @@ class Room_Item extends Item {
 		parent::perform_delete( $force );
 
 		if ( $timespan = $this->get_timespan() ) {
-			abrs_clear_booking_state( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
+			abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
 		}
 	}
 
