@@ -11,7 +11,8 @@ use Illuminate\Support\Arr;
 
 final class Plugin extends Container {
 	use Support\Traits\Plugin_Provider,
-		Support\Traits\Plugin_Options;
+		Support\Traits\Plugin_Options,
+		Deprecated\AweBooking;
 
 	/**
 	 * The plugin version.
