@@ -37,10 +37,6 @@ function abrs_blank( $value ) {
 		return trim( $value ) === '';
 	}
 
-	if ( is_numeric( $value ) || is_bool( $value ) ) {
-		return false;
-	}
-
 	if ( $value instanceof Countable ) {
 		return count( $value ) === 0;
 	}
@@ -141,29 +137,6 @@ function abrs_html_class( $classes ) {
 	}
 
 	return implode( ' ', array_map( 'sanitize_html_class', $classes ) );
-}
-
-/**
- * Sets nocache_headers which also disables page caching.
- *
- * @return void
- */
-function abrs_nocache_headers() {
-	// Do not cache.
-	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-		define( 'DONOTCACHEPAGE', true );
-	}
-
-	if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
-		define( 'DONOTCACHEOBJECT', true );
-	}
-
-	if ( ! defined( 'DONOTCACHEDB' ) ) {
-		define( 'DONOTCACHEDB', true );
-	}
-
-	// Set the headers to prevent caching for the different browsers.
-	nocache_headers();
 }
 
 /**
@@ -275,9 +248,7 @@ function abrs_valid_url( $path ) {
  * @return void
  */
 function abrs_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' )
-		&& false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' )
-		&& ! ini_get( 'safe_mode' ) ) {
+	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
 }

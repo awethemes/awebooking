@@ -5,14 +5,20 @@ use WP_Error;
 use Awethemes\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking\Service_Item;
-use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
 
 class Booking_Service_Controller extends Controller {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
 	/**
 	 * Handle create new service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function create( Request $request ) {
 		if ( ! $request->filled( 'refer' ) || ! $booking = abrs_get_booking( $request['refer'] ) ) {
@@ -26,7 +32,7 @@ class Booking_Service_Controller extends Controller {
 	 * Handle store new booking service.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'create_booking_service', '_wpnonce' );
@@ -35,34 +41,69 @@ class Booking_Service_Controller extends Controller {
 			return $this->whoops();
 		}
 
-		$list_services = $request['list_services'] ? $request['list_services'] : [];
-		$services_item_exist = $booking->get_services();
-		$ids = $services_item_exist->pluck( 'service_id' )->all();
+		$included_ids = $booking->get_services()->pluck( 'id' );
 
-		$ids_deleted = array_diff( $ids, $list_services );
-		$ids_created = array_diff( $list_services, $ids );
+		$services = abrs_collect( $request->get( 'services', [] ) );
 
-		if ( ! empty( $ids_deleted ) ) {
-			foreach ( $ids_deleted as $service_id ) {
-				$item_id = $services_item_exist->where( 'service_id', '==', $service_id )->pluck( 'id' )->first();
-				abrs_delete_booking_item( new Service_Item( $item_id ) );
+		// If empty requested services, just clear all.
+		if ( $services->isEmpty() ) {
+			foreach ( $included_ids as $id ) {
+				abrs_delete_booking_item( $id );
 			}
-		}
-
-		if ( ! empty( $ids_created ) ) {
-			foreach ( $ids_created as $service_id ) {
-				$service = new Service( $service_id );
-				$service_item = new Service_Item;
-				$service_item['booking_id']        = $booking->get_id();
-				$service_item['service_id']        = absint( $service->get_id() );
-				$service_item['service_operation'] = abrs_sanitize_html( $service->get( 'operation' ) );
-				$service_item['service_value']     = abrs_sanitize_decimal( $service->get( 'value' ) );
-
-				$service_item->save();
-			}
+		} else {
+			$this->handle_sync_services( $booking, $services );
 		}
 
 		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
+	}
+
+
+	/**
+	 * Delete diff services and add new ones.
+	 *
+	 * @param \AweBooking\Support\Collection $services The services from request.
+	 */
+	protected function handle_sync_services( $booking, $services ) {
+		$booked_services = $booking->get_services();
+
+		// Filter
+		$del = $services->where( 'quantity', '<', 1 )->pluck( 'id' );
+
+		$booked_services
+			->whereIn( 'service_id', $del )
+			->pluck( 'id' )
+			->each( function ( $id ) {
+				abrs_delete_booking_item( $id );
+			});
+
+		$services = $services->where( 'quantity', '>', 0 );
+
+		// Add & edit service items.
+		foreach ( $services as $s ) {
+			try {
+				$booked_id = $booked_services->where( 'service_id', '=', $s['id'] )->pluck( 'id' )->first();
+
+				$item_id = $booked_id ? $booked_id : 0;
+
+				$service = new Service( $s['id'] );
+
+				$item = new Service_Item( $item_id );
+
+				$item['booking_id'] = $booking->get_id();
+				$item['quantity']   = absint( $s['quantity'] );
+				$item['price']      = $s['price'];
+				$item['total']      = absint( $s['quantity'] ) * $s['price'];
+
+				if ( $service->exists() ) {
+					$item['service_id'] = absint( $service->get_id() );
+					$item['name']       = esc_html( $service->get_name() );
+				}
+
+				$item->save();
+			} catch ( \Exception $e ) {
+				continue;
+			}
+		}
 	}
 
 	/**
@@ -70,7 +111,7 @@ class Booking_Service_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Service_Item $service_item The booking service item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Service_Item $service_item ) {
 		check_admin_referer( 'delete_service_' . $service_item->get_id(), '_wpnonce' );

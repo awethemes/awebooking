@@ -1,8 +1,6 @@
 <?php
 namespace AweBooking\Model\Booking;
 
-use AweBooking\Dropdown;
-
 class Payment_Item extends Item {
 	/**
 	 * Name of object type.
@@ -72,12 +70,13 @@ class Payment_Item extends Item {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), array_merge( $this->attributes, [
-			'method'         => '',
-			'amount'         => 0,
-			'comment'        => '',
-			'is_deposit'     => 'off',
-			'date_paid'      => null,
-			'transaction_id' => '',
+			'method'          => '',
+			'amount'          => 0,
+			'comment'         => '',
+			'is_deposit'      => 'off',
+			'date_paid'       => null,
+			'transaction_id'  => '',
+			'transaction_log' => [],
 		]));
 	}
 
@@ -86,12 +85,13 @@ class Payment_Item extends Item {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'method'         => '_payment_method',
-			'amount'         => '_payment_amount',
-			'comment'        => '_payment_comment',
-			'is_deposit'     => '_payment_is_deposit',
-			'date_paid'      => '_payment_date_paid',
-			'transaction_id' => '_payment_transaction_id',
+			'method'          => '_payment_method',
+			'amount'          => '_payment_amount',
+			'comment'         => '_payment_comment',
+			'is_deposit'      => '_payment_is_deposit',
+			'date_paid'       => '_payment_date_paid',
+			'transaction_id'  => '_payment_transaction_id',
+			'transaction_log' => '_payment_transaction_log',
 		]);
 	}
 

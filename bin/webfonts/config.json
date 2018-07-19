@@ -1,5 +1,5 @@
 {
-  "lastCodepoint": 61793,
+  "lastCodepoint": 61798,
   "icons": {
     "add-circle-outline": 61697,
     "add-circle": 61698,
@@ -75,7 +75,6 @@
     "logo-whatsapp": 61768,
     "logo-wordpress": 61769,
     "logo-yahoo": 61770,
-    "logo-yen": 61771,
     "male": 61772,
     "man": 61773,
     "moon": 61774,
@@ -97,6 +96,11 @@
     "water": 61790,
     "wifi": 61791,
     "wine": 61792,
-    "woman": 61793
+    "woman": 61793,
+    "baby": 61794,
+    "menu": 61795,
+    "people": 61796,
+    "person": 61797,
+    "trash": 61798
   }
 }

@@ -333,6 +333,21 @@ blockquote {
 	border-bottom: solid 1px #eee;
 }
 
+.line-hotel-address {
+	padding-right: 10px;
+	border-right: solid 3px <?php echo esc_attr( $main_color ); ?>;
+}
+
+.booking-id {
+	margin-top: 5px;
+	padding: 5px 20px;
+	border: dashed 2px #9BA2AB;
+	display: inline-block;
+	text-align: center;
+	border-radius: 2px;
+}
+
+/* Table CSS */
 .table-hotel,
 .table-customer,
 .table-booking,
@@ -355,6 +370,7 @@ blockquote {
 .table-booking td,
 .table-booking-totals th,
 .table-booking-totals td {
+	font-size: 13px;
 	text-align: left;
 	padding: 7px 10px;
 	vertical-align: top;
@@ -366,16 +382,23 @@ blockquote {
 	width: 150px;
 }
 
-.line-hotel-address {
-	padding-right: 10px;
-	border-right: solid 3px <?php echo esc_attr( $main_color ); ?>;
+
+.table-booking-totals {
+	width: 50%;
+	float: right;
 }
 
-.booking-id {
-	margin-top: 5px;
-	padding: 5px 20px;
-	border: dashed 2px #9BA2AB;
-	display: inline-block;
-	text-align: center;
-	border-radius: 2px;
+.table-booking-totals th {
+	background: #fefefe;
+}
+
+.table-booking-totals .awebooking-price__amount {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+td.total-column,
+th.total-column {
+	width: 80px;
+	text-align: right !important;
 }

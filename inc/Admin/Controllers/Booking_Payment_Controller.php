@@ -8,10 +8,17 @@ use AweBooking\Admin\Forms\Booking_Payment_Form;
 
 class Booking_Payment_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking' );
+	}
+
+	/**
 	 * Handle create new payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function create( Request $request ) {
 		if ( ! $request->filled( 'refer' ) || ! $booking = abrs_get_booking( $request['refer'] ) ) {
@@ -38,7 +45,7 @@ class Booking_Payment_Controller extends Controller {
 	 * Handle store new booking payment.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'create_booking_payment', '_wpnonce' );
@@ -53,7 +60,7 @@ class Booking_Payment_Controller extends Controller {
 
 		// Handle the request.
 		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
-		$payment_item->fill( $sanitized->get_attributes() );
+		$payment_item->fill( $sanitized->all() );
 
 		if ( $payment_item['amount'] > 0 && $payment_item->save() ) {
 			abrs_admin_notices( esc_html__( 'Added new payment successfully!', 'awebooking' ), 'success' )->dialog();
@@ -69,7 +76,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function edit( Request $request, Payment_Item $payment_item ) {
 		if ( ! $booking = abrs_get_booking( $payment_item->booking_id ) ) {
@@ -87,7 +94,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function update( Request $request, Payment_Item $payment_item ) {
 		check_admin_referer( 'update_payment_' . $payment_item->get_id(), '_wpnonce' );
@@ -99,7 +106,7 @@ class Booking_Payment_Controller extends Controller {
 		$sanitized = ( new Booking_Payment_Form( $payment_item ) )->handle( $request );
 
 		if ( $sanitized->count() > 0 ) {
-			$payment_item->fill( $sanitized->get_attributes() );
+			$payment_item->fill( $sanitized->all() );
 		}
 
 		$payment_item->save();
@@ -114,7 +121,7 @@ class Booking_Payment_Controller extends Controller {
 	 *
 	 * @param  \Awethemes\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
-	 * @return \Awethemes\Http\Response
+	 * @return mixed
 	 */
 	public function destroy( Request $request, Payment_Item $payment_item ) {
 		check_admin_referer( 'delete_payment_' . $payment_item->get_id(), '_wpnonce' );

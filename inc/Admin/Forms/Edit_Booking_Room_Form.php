@@ -2,9 +2,9 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Model\Booking\Room_Item;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Edit_Booking_Room_Form extends Form_Builder {
+class Edit_Booking_Room_Form extends Form {
 	/**
 	 * Constructor.
 	 *

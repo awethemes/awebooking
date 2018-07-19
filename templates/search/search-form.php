@@ -1,8 +1,8 @@
 <?php
 /**
- * This template show the search results.
+ * This template show the search form.
  *
- * This template can be overridden by copying it to {yourtheme}/awebooking/search/results.php.
+ * This template can be overridden by copying it to {yourtheme}/awebooking/search/search-form.php.
  *
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
@@ -24,7 +24,8 @@ if ( ! abrs_get_option( 'display_search_form_on_search', true ) ) {
 	<?php
 	// Print the search form.
 	abrs_get_search_form([
-		'layout' => 'horizontal',
+		'layout'    => abrs_get_option( 'search_form_style', 'horizontal' ),
+		'alignment' => abrs_get_option( 'search_form_aligment', 'left' ),
 	]);
 	?>
 </div>

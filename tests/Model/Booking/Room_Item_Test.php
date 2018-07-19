@@ -28,7 +28,7 @@ class Model_Booking_Room_Item_Test extends WP_UnitTestCase {
 		// False.
 		$this->assertFalse( $booking_item->set_timespan( abrs_timespan( '2018-05-11', '2018-05-15' ) ) );
 
-		$changed = $booking_item->update_timespan( abrs_timespan( '2018-05-11', '2018-05-15' ) );
+		$changed = $booking_item->change_timespan( abrs_timespan( '2018-05-11', '2018-05-15' ) );
 		$this->assertTrue( $changed );
 
 		$this->assertStateData($this->room->get_id(), 2018, 5, [

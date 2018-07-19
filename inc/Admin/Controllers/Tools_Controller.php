@@ -6,6 +6,13 @@ use AweBooking\Admin\Admin_Tools;
 
 class Tools_Controller extends Controller {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->require_capability( 'manage_awebooking_settings' );
+	}
+
+	/**
 	 * Display the tools page.
 	 *
 	 * @param  \Awethemes\Http\Request $request The current request.

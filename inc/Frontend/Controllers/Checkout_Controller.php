@@ -41,7 +41,7 @@ class Checkout_Controller {
 			abrs_add_notice( $e->getMessage(), 'error' );
 		}
 
-		return abrs_redirector()->back( $checkout_url )->with_input();
+		return abrs_redirector()->to( $checkout_url )->with_input();
 	}
 
 	/**

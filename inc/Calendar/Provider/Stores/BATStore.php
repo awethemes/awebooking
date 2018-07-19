@@ -125,6 +125,7 @@ class BATStore extends Store {
 		$existing_events = $this->getEventData( $event->getStartDate(), $event->getEndDate(), [ $event->getUnitId() ] );
 
 		// Itemize an event so we can save it.
+		/* @var \Roomify\Bat\Event\AbstractEvent $event */
 		$itemized = $event->itemize( new EventItemizer( $event, Event::BAT_DAILY ) );
 
 		$stored = true;

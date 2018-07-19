@@ -2,10 +2,10 @@
 
 $controls = abrs_create_form( 'search-rooms' );
 
-$selected_dates = [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ];
+$selected_dates = [];
 
-if ( $request->filled( 'check_in', 'check_out' ) ) {
-	$selected_dates = array_values( $request->only( 'check_in', 'check_out' ) );
+if ( $request->filled( 'check-in', 'check-out' ) ) {
+	$selected_dates = array_values( $request->only( 'check-in', 'check-out' ) );
 }
 
 ?>

@@ -19,13 +19,28 @@ class Room_Type extends Model {
 	protected $rates;
 
 	/**
+	 * Gets the gallery IDs.
+	 *
+	 * @return array|mixed
+	 */
+	public function get_gallery_ids() {
+		$gallery_ids = $this['gallery_ids'];
+
+		if ( $gallery_ids && ! isset( $gallery_ids[0] ) ) {
+			$gallery_ids = array_keys( $gallery_ids );
+		}
+
+		return $gallery_ids;
+	}
+
+	/**
 	 * Gets rooms belongs to this room type.
 	 *
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_rooms() {
 		// If working on non-exists room type, just create an empty rooms.
-		$rooms = $this->exists() ? abrs_db_rooms_in( $this->id ) : [];
+		$rooms = $this->exists() ? abrs_get_raw_rooms( $this->id ) : [];
 
 		$rooms = abrs_collect( $rooms )->map_into( Room::class );
 
@@ -72,12 +87,6 @@ class Room_Type extends Model {
 		$this['short_description'] = $this->instance->post_excerpt;
 		$this['date_created']      = $this->instance->post_date;
 		$this['date_modified']     = $this->instance->post_modified;
-		$this['hotel_id']          = $this->instance->post_parent;
-
-		// Correct the gallery_ids.
-		if ( $this['gallery_ids'] && ! isset( $this['gallery_ids'][0] ) ) {
-			$this['gallery_ids'] = array_keys( $this['gallery_ids'] );
-		}
 
 		do_action( $this->prefix( 'after_setup' ), $this );
 	}
@@ -93,7 +102,6 @@ class Room_Type extends Model {
 			'post_excerpt' => $this['short_description'],
 			'post_status'  => $this['status'] ? $this['status'] : 'publish',
 			'post_date'    => $this['post_date'] ? $this['post_date'] : current_time( 'mysql' ),
-			'post_parent'  => $this['hotel_id'] ? $this['hotel_id'] : 0,
 		], true );
 
 		if ( ! is_wp_error( $insert_id ) ) {
@@ -114,7 +122,6 @@ class Room_Type extends Model {
 			'post_excerpt'  => $this['short_description'],
 			'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this['date_created'] ) : '',
 			'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this['date_modified'] ) : '',
-			'post_parent'   => $this['hotel_id'] ? absint( $this['hotel_id'] ) : 0,
 		]);
 
 		// Allow continue save meta-data if nothing to update post.
@@ -149,7 +156,7 @@ class Room_Type extends Model {
 			'calculation_infants' => 'on', // on | off.
 			'tax_rate_id'         => 0,
 
-			// Single_Rate.
+			// Rate.
 			'rack_rate'           => 0,
 			'rate_services'       => [],
 			'rate_inclusions'     => [],
@@ -166,6 +173,7 @@ class Room_Type extends Model {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
 			'gallery_ids'         => 'gallery',
 			'thumbnail_id'        => '_thumbnail_id',
+			'hotel_id'            => '_hotel_id',
 
 			'beds'                => '_beds',
 			'view'                => '_room_view',

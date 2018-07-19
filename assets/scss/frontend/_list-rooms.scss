@@ -1,19 +1,24 @@
-.list-room {
-	margin-left: -15px;
+.list-room,
+.list-room.hentry, {
+  margin-left: -15px;
   margin-right: -15px;
   margin-bottom: 50px;
 
-	@include clearfix;
+  @include clearfix;
 }
 
 .list-room__title {
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .list-room__media {
-	width: 45%;
-	float: left;
-	padding: 0 15px;
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  @include media-breakpoint-up(lg) {
+    width: 45%;
+  }
 
   img {
     width: 100%;
@@ -21,21 +26,57 @@
 }
 
 .list-room__info {
-	width: 55%;
-	float: left;
-	padding: 0 15px;
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  @include media-breakpoint-up(lg) {
+    width: 55%;
+  }
 }
 
 .list-room__price {
-	font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
   line-height: 1;
 
   span {
-    font-size: 30px;
+    font-size: 24px;
   }
 }
 
 .list-room__desc {
-	font-size: 14px;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+}
+
+.list-room__info-list,
+.list-room__occupancy {
+  margin: 0;
+  list-style: none;
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  @include media-breakpoint-up(lg) {
+    width: 50%;
+  }
+}
+
+.list-room__info-list {
+  font-size: 0.75rem;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f3f3f3;
+
+  @include media-breakpoint-up(lg) {
+    box-shadow: 1px 0 0 rgba(0, 0, 0, .07);
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.list-room__additional-info {
+  margin-bottom: 5px;
+
+  @include clearfix;
 }

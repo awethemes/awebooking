@@ -107,6 +107,15 @@ abstract class Mailable {
 	}
 
 	/**
+	 * Gets blog name formatted for emails.
+	 *
+	 * @return string
+	 */
+	public function get_blogname() {
+		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+	}
+
+	/**
 	 * Gets the email template title.
 	 *
 	 * @return string
@@ -299,6 +308,52 @@ abstract class Mailable {
 	}
 
 	/**
+	 * Returns a email template content.
+	 *
+	 * @param  string $slug The template slug name (without .php extension).
+	 * @param  string $name Optional. The name of the specified template.
+	 * @param  array  $vars The vars inject to the template.
+	 * @return string
+	 */
+	public function get_template( $slug, $name = '', $vars = [] ) {
+		$slug = 'emails/' . $slug;
+
+		if ( is_array( $name ) && empty( $vars ) ) {
+			$vars = $name;
+			$name = '';
+		}
+
+		// Try locate {$slug}-{$name}.php first.
+		$located = '';
+		if ( '' !== $name ) {
+			$located = abrs_locate_template( "{$slug}-{$name}.php" );
+		}
+
+		// Then try locate in {$slug}.php.
+		if ( ! $located || ! file_exists( $located ) ) {
+			$located = abrs_locate_template( "{$slug}.php" );
+		}
+
+		if ( file_exists( $located ) ) {
+			// Extract $vars to variables.
+			if ( ! empty( $vars ) && is_array( $vars ) ) {
+				extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
+			}
+
+			// This email.
+			$email = $this;
+
+			ob_start();
+			include $located;
+			return trim( ob_get_clean() );
+		}
+
+		/* translators: %s template */
+		_doing_it_wrong( __FUNCTION__, sprintf( wp_kses_post( __( '%s does not exist.', 'awebooking' ) ), '<code>' . esc_html( $located ) . '</code>' ), '3.1' );
+		return '';
+	}
+
+	/**
 	 * Gets the setting fields.
 	 *
 	 * @return array|null
@@ -438,14 +493,5 @@ abstract class Mailable {
 		}
 
 		return abrs_get_option( "email_{$this->id}_{$key}", $default );
-	}
-
-	/**
-	 * Gets blog name formatted for emails.
-	 *
-	 * @return string
-	 */
-	public function get_blogname() {
-		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 	}
 }

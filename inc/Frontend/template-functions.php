@@ -8,7 +8,7 @@
 /**
  * Prints messages and errors which are stored in the flash.
  *
- * @return void
+ * @access private
  */
 function abrs_print_notices() {
 	abrs_get_template( 'notices.php', [ 'messages' => abrs_flash()->all() ] );
@@ -17,10 +17,19 @@ function abrs_print_notices() {
 /**
  * Display the search form on the search page.
  *
- * @return void
+ * @access private
  */
 function abrs_search_form_on_search() {
 	abrs_get_template( 'search/search-form.php' );
+}
+
+/**
+ * Display the filter form on the search page.
+ *
+ * @access private
+ */
+function abrs_filter_form() {
+	abrs_get_template( 'search/filter-form.php' );
 }
 
 /**
@@ -31,11 +40,46 @@ function abrs_search_form_on_search() {
  * @param  \AweBooking\Availability\Room_Rate $room_rate      The room rate instance.
  * @param  array                              $availabilities An array of availabilities.
  *
- * @return void
  * @access private
  */
 function abrs_search_result_item( $res_request, $room_type, $room_rate, $availabilities ) {
 	abrs_get_template( 'search/result-item.php', get_defined_vars() );
+}
+
+/**
+ * Gets search result room list.
+ *
+ * @access private
+ */
+function abrs_search_result_header( $room_type, $room_rate ) {
+	abrs_get_template( 'search/result/header.php', compact( 'room_type', 'room_rate' ) );
+}
+
+/**
+ * Gets search result room type.
+ *
+ * @access private
+ */
+function abrs_search_result_room_type( $room_type, $room_rate ) {
+	abrs_get_template( 'search/result/room-type.php', compact( 'room_type', 'room_rate' ) );
+}
+
+/**
+ * Gets search result room list.
+ *
+ * @access private
+ */
+function abrs_search_result_room_list( $room_type, $room_rate ) {
+	abrs_get_template( 'search/result/room-list.php', compact( 'room_type', 'room_rate' ) );
+}
+
+/**
+ * Gets search result room list.
+ *
+ * @access private
+ */
+function abrs_search_result_room_price( $room_type, $room_rate ) {
+	abrs_get_template( 'search/result/price.php', compact( 'room_type', 'room_rate' ) );
 }
 
 /**
@@ -44,7 +88,10 @@ function abrs_search_result_item( $res_request, $room_type, $room_rate, $availab
  * @access private
  */
 function abrs_checkout_services() {
-	abrs_get_template( 'checkout/services.php', [ 'services' => abrs_list_services() ] );
+	abrs_get_template( 'checkout/services.php', [
+		'services' => abrs_list_services(),
+		'includes' => abrs_reservation()->get_included_services(),
+	]);
 }
 
 /**
@@ -78,68 +125,85 @@ function abrs_checkout_payments() {
 	]);
 }
 
-if ( ! function_exists( 'abrs_content_wrapper_before' ) ) {
-	/**
-	 * Output the start of the page wrapper.
-	 *
-	 * @access private
-	 */
-	function abrs_content_wrapper_before() {
-		abrs_get_template( 'template-parts/global/wrapper-start.php' );
-	}
+/* Globals */
+
+/**
+ * Output the start of the page wrapper.
+ *
+ * @access private
+ */
+function abrs_content_wrapper_before() {
+	abrs_get_template( 'template-parts/global/wrapper-start.php' );
 }
 
-if ( ! function_exists( 'abrs_content_wrapper_after' ) ) {
-	/**
-	 * Output the end of the page wrapper.
-	 *
-	 * @access private
-	 */
-	function abrs_content_wrapper_after() {
-		abrs_get_template( 'template-parts/global/wrapper-end.php' );
-	}
+/**
+ * Output the end of the page wrapper.
+ *
+ * @access private
+ */
+function abrs_content_wrapper_after() {
+	abrs_get_template( 'template-parts/global/wrapper-end.php' );
 }
 
-if ( ! function_exists( 'abrs_get_sidebar' ) ) {
+/* Single templates */
 
-	/**
-	 * Get the room type sidebar template.
-	 */
-	function abrs_get_sidebar() {
-		abrs_get_template( 'global/sidebar.php' );
-	}
+/**
+ * Gets single room description.
+ *
+ * @access private
+ */
+function abrs_single_room_description() {
+	abrs_get_template_part( 'template-parts/single/description' );
 }
 
-if ( ! function_exists( 'abrs_get_thumbnail' ) ) {
-
-	/**
-	 * Get the room type thumbnail, or the placeholder if not set.
-	 *
-	 * @param string $size (default: 'awebooking_archive').
-	 * @return string
-	 */
-	function abrs_get_thumbnail( $post_id = null, $size = 'awebooking_archive' ) {
-		global $post;
-		if ( ! $post_id ) {
-			$post_id = $post->ID;
-		}
-
-		if ( ! has_post_thumbnail( $post_id ) ) {
-			return;
-		}
-
-		return get_the_post_thumbnail( $post_id, $size );
-	}
+/**
+ * Gets single room amenities.
+ *
+ * @access private
+ */
+function abrs_single_room_amenities() {
+	abrs_get_template_part( 'template-parts/single/amenities' );
 }
 
-if ( ! function_exists( 'abrs_template_room_thumbnail' ) ) {
+/**
+ * Gets single room gallery.
+ *
+ * @access private
+ */
+function abrs_single_room_gallery() {
+	abrs_get_template_part( 'template-parts/single/gallery' );
+}
 
-	/**
-	 * Get the room type thumbnail for the loop.
-	 *
-	 * @subpackage Loop
-	 */
-	function abrs_template_room_thumbnail() {
-		echo abrs_get_thumbnail(); // WPCS: xss ok.
-	}
+/**
+ * Gets single room form.
+ *
+ * @access private
+ */
+function abrs_single_room_form() {
+	abrs_get_template_part( 'template-parts/single/form' );
+}
+
+/* Archive templates */
+
+/**
+ * Gets archive pagination.
+ *
+ * @access private
+ */
+function abrs_archive_pagination() {
+	abrs_get_template_part( 'template-parts/archive/pagination' );
+}
+
+/**
+ * Gets archive room information.
+ */
+function abrs_archive_room_information() {
+	abrs_get_template_part( 'template-parts/archive/information' );
+}
+
+/**
+ * Gets archive room occupancy.
+ */
+function abrs_archive_room_occupancy() {
+	abrs_get_template_part( 'template-parts/archive/occupancy' );
 }

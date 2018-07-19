@@ -103,7 +103,7 @@ class Custom_Fields {
 		 * @return mixed
 		 */
 		return function( $check, $value, $object_id, $field_args, $sanitizer ) use ( $sanitize_cb ) {
-			return call_user_func( $sanitize_cb, $value );
+			return $sanitize_cb( $value );
 		};
 	}
 

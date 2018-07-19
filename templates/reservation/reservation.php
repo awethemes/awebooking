@@ -27,13 +27,25 @@ $room_stays = abrs_reservation()->get_room_stays();
 		<?php abrs_get_template( 'reservation/dates.php' ); ?>
 
 		<?php if ( 'single_room' === abrs_get_reservation_mode() ) : ?>
-			<?php abrs_get_template( 'reservation/selected-room.php', compact( 'room_stays' ) ); ?>
+
+			<div class="reservation__section reservation__section--room">
+				<?php abrs_get_template( 'reservation/selected-room.php', [ 'room_stay' => $room_stays->first() ] ); ?>
+			</div><!-- /.reservation__section -->
+
 		<?php else : ?>
-			<?php abrs_get_template( 'reservation/selected-rooms.php', compact( 'room_stays' ) ); ?>
+
+			<div class="reservation__section reservation__section--room">
+				<?php foreach ( $room_stays as $room_stay ) : ?>
+					<?php abrs_get_template( 'reservation/selected-room.php', compact( 'room_stay' ) ); ?>
+				<?php endforeach ?>
+			</div><!-- /.reservation__section -->
+
 		<?php endif; ?>
+
+		<?php abrs_get_template( 'reservation/services.php' ); ?>
 
 		<?php abrs_get_template( 'reservation/totals.php' ); ?>
 
 	<?php endif; ?>
 
-</div><!-- .reservation -->
+</div><!-- /.reservation -->

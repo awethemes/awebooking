@@ -1,106 +1,107 @@
-(function($, plugin) {
+(function($, plugin, document) {
   'use strict';
 
-  /**
-   * Main room type meta-box class.
-   */
-  class RoomTypeMetabox {
-    /**
-     * Constructor
-     *
-     * @return {void}
-     */
+  const data = window._awebookingRooms || {};
+
+  class RoomsGenerator {
     constructor() {
-      this.$metabox = $('#awebooking-room-type-data');
+      this.rooms = ko.observableArray(data.rooms || []);
+      this.scaffoldNumber = ko.observable(0);
+    }
 
-      // Handle click on tabs.
-      this.$metabox.on('click', '.awebooking-tabs a', this.handleClickTab.bind(this));
-      $('.awebooking-tabs > li:first > a', this.$metabox).trigger('click');
+    add() {
+      const title = this.getCurrentTitle();
+      const length = this.rooms().length;
 
-      // Handle rooms.
-      this.sortableRooms = new Sortable($('.js-sorting-rooms')[0], {
-        handle: '.abrs-sortable__handle',
-        animation: 150,
+      this.rooms.push({
+        id: -1,
+        name: `${title} ${length + 1}`,
       });
-
-      this.$metabox.on('click', '.js-add-room', this.handleAddRoom.bind(this));
-      this.$metabox.on('click', '.js-scaffold-rooms', this.handleScaffoldRooms.bind(this));
     }
 
-    /**
-     * Handle click on tab.
-     *
-     * @param  {Event]} e
-     * @return {void}
-     */
-    handleClickTab(e) {
-      e.preventDefault();
+    remove(item, e) {
+      const self = this;
 
-      const $target = $(e.target);
-
-      $('.awebooking-tabs > li.active', this.$metabox).removeClass('active');
-      $target.parent().addClass('active');
-
-      $('.awebooking-tabs-panels > div', this.$metabox).hide();
-      $($target.attr('href'), this.$metabox).show();
-    }
-
-    handleAddRoom(e) {
-      e.preventDefault();
-
-      const title = (new String($('#title').val())).trim();
-      const template = wp.template('template-room-item');
-
-      const i = -1;
-      $('.js-list-rooms').append(template({
-        index:   i,
-        id:      -1,
-        name:   `${title} ${i+1}`,
-        prefix: `_rooms[${i}]`,
-      }));
-    }
-
-    /**
-     * Handle scaffold rooms.
-     *
-     * @param  {Event]} e
-     * @return {void}
-     */
-    handleScaffoldRooms(e) {
-      e.preventDefault();
-
-      let title = (new String($('#title').val())).trim();
-
-      let total = $('[name="_scaffold_number_rooms"]', this.$metabox).val();
-      total = parseInt(total, 10);
-
-      let htmlRooms = '';
-      const template = wp.template('template-room-item');
-
-      for (var i = 0; i < total; i++) {
-        htmlRooms = htmlRooms + template({
-          index:   i,
-          id:      -1,
-          name:   `${title} ${i+1}`,
-          prefix: `_scaffold_rooms[${i}]`,
-        });
+      if (item.id < 0) {
+        this._removeItemEffect(item, e);
+        return;
       }
 
-      $('.js-list-rooms').show().html(htmlRooms);
+      const ajaxDelete = function() {
+        return plugin.ajax('DELETE', `/ajax/delete-room/${item.id}`, {
+          _method: 'DELETE',
+          _wpnonce: data.deleteNonce,
+        }, function (data) {
+          self._removeItemEffect(item, e);
+          plugin.alert(data.message, 'success');
+        });
+      };
+
+      plugin.confirm(plugin.i18n.warning, () => {
+        ajaxDelete();
+      });
+    }
+
+    _removeItemEffect(item, e) {
+      $(e.currentTarget).closest('li').effect('highlight', {}, 150, () => {
+        this.rooms.remove(item);
+      });
+    }
+
+    scaffold() {
+      const title = this.getCurrentTitle();
+      const total = parseInt(this.scaffoldNumber(), 10) || 1;
+
+      // Clear the rooms.
+      this.rooms([]);
+
+      for (var i = 0; i < total; i++) {
+        this.rooms.push({
+          id: -1,
+          name: `${title} ${i + 1}`,
+        });
+      }
+    }
+
+    getCurrentTitle() {
+      let titleEl = document.getElementById('title');
+      return titleEl ? titleEl.value.trim() : 'R';
     }
   }
 
-  // Document ready!
   $(function() {
-    plugin.instances.roomtype_metabox = new RoomTypeMetabox;
-  });
+    // Apply rooms generator binding.
+    ko.applyBindings(new RoomsGenerator(), document.getElementById('js-rooms-list'));
 
-  /**
-   * Scroll to first checked category.
-   *
-   * @link https://github.com/scribu/wp-category-checklist-tree/blob/master/category-checklist-tree.php
-   */
-  $(function() {
+    const $roomSortable = $('.js-sorting-rooms');
+
+    if ($roomSortable.length > 0) {
+      new Sortable($roomSortable[0], {
+        handle: '.abrs-sortable__handle',
+        animation: 150,
+      });
+    }
+
+    // Handle click on tabs.
+    const $metabox = $('#awebooking-room-type-data');
+    $('.awebooking-tabs > li:first > a', $metabox).trigger('click');
+
+    $metabox.on('click', '.awebooking-tabs a', (e) => {
+      e.preventDefault();
+      const $target = $(e.target);
+
+      $('.awebooking-tabs > li.active', $metabox).removeClass('active');
+      $target.parent().addClass('active');
+
+      $('.awebooking-tabs-panels > div', $metabox).hide();
+      $($target.attr('href'), this.$metabox).show();
+    });
+
+    /**
+     * Scroll to first checked category.
+     *
+     * @link https://github.com/scribu/wp-category-checklist-tree/blob/master/category-checklist-tree.php
+     */
     $('[id$="-all"] > ul.categorychecklist').each(function() {
       const $list = $(this);
       const $firstChecked = $list.find(':checked').first();
@@ -116,4 +117,4 @@
     });
   });
 
-})(jQuery, window.awebooking);
+})(jQuery, window.awebooking, document);

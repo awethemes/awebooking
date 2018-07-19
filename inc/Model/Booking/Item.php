@@ -100,14 +100,15 @@ abstract class Item extends Model {
 	protected function clean_cache() {
 		wp_cache_delete( $this->get( 'booking_id' ), 'awebooking_booking_items' );
 
-		abrs_clean_booking_item_cache( $this->id );
+		abrs_flush_booking_item_cache( $this->id );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup_instance() {
-		$booking_item = abrs_db_booking_item( $this->get_id(), $this->get_type() );
+		$booking_item = abrs_get_raw_booking_item( $this->get_id(), $this->get_type() );
+
 		if ( ! is_null( $booking_item ) ) {
 			$this->set_instance( $booking_item );
 		}

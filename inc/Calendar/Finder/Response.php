@@ -184,6 +184,8 @@ class Response {
 		foreach ( $constraints as $constraint ) {
 			if ( $constraint instanceof Constraint ) {
 				$constraint->apply( $this );
+			} else {
+				$constraint( $this );
 			}
 		}
 

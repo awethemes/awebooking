@@ -2,6 +2,7 @@
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
+use AweBooking\Model\Booking\Item;
 use AweBooking\Support\Period_Collection;
 
 class Booking extends Model {
@@ -32,6 +33,30 @@ class Booking extends Model {
 	 * @var boolean
 	 */
 	protected $force_calculate_totals = false;
+
+	public function get_check_in_date() {
+		$items = $this->get_line_items();
+
+		if ( 0 === count( $items ) ) {
+			return '';
+		} elseif ( count( $items ) === 1 ) {
+			return abrs_optional( $items->first() )->get( 'check_in' );
+		}
+
+		return $this->get( 'check_in_date' );
+	}
+
+	public function get_check_out_date() {
+		$items = $this->get_line_items();
+
+		if ( 0 === count( $items ) ) {
+			return '';
+		} elseif ( count( $items ) === 1 ) {
+			return abrs_optional( $items->first() )->get( 'check_out' );
+		}
+
+		return $this->get( 'check_out_date' );
+	}
 
 	/**
 	 * Returns the booking number.
@@ -77,7 +102,7 @@ class Booking extends Model {
 		}
 
 		if ( ! array_key_exists( $type, $this->items ) ) {
-			$items = ! $this->exists() ? [] : abrs_get_booking_items( $this->id, $type );
+			$items = ! $this->exists() ? [] : abrs_get_raw_booking_items( $this->id, $type );
 
 			$this->items[ $type ] = abrs_collect( $items )
 				->pluck( 'booking_item_id' )
@@ -152,18 +177,19 @@ class Booking extends Model {
 		wp_cache_delete( $this->get_id(), 'awebooking_booking_items' );
 	}
 
-	public function remove_items() {
-		// TODO: ...
-	}
-
 	/**
-	 * Returns the last payment item.
+	 * Remove all items fromd database.
 	 *
-	 * @param  string $state Optional, filter payment matching with a state.
-	 * @return \AweBooking\Model\Booking\Payment_Item|null
+	 * @return void
 	 */
-	public function get_last_payment( $state = null ) {
-		return $this->get_payments()->last();
+	public function remove_items( $type = null ) {
+		$items = abrs_get_raw_booking_items( $this->get_id(), 'all' );
+
+		foreach ( $items as $item ) {
+			abrs_optional( abrs_get_booking_item( $item ) )->delete();
+		}
+
+		$this->flush_items();
 	}
 
 	/**
@@ -192,6 +218,8 @@ class Booking extends Model {
 
 		$room_subtotal_tax  = 0;
 		$room_total_tax     = 0;
+
+		$service_subtotal      = 0;
 		$service_total      = 0;
 
 		$fee_total          = 0;
@@ -203,39 +231,13 @@ class Booking extends Model {
 		}
 
 		// Sum the service costs.
-		// ...
-
-		// Sum fee costs.
-		/*foreach ( $this->get_fees() as $item ) {
-			$amount = $item->get_amount();
-
-			if ( 0 > $amount ) {
-				$item->set_total( $amount );
-				$max_discount = round( $room_total + $fee_total, wc_get_price_decimals() ) * -1;
-
-				if ( $item->get_total() < $max_discount ) {
-					$item->set_total( $max_discount );
-				}
-			}
-
-			$fee_total += $item->get_total();
-		}*/
-
-		// Calculate taxes for rooms, discounts.
-		// Note: This also triggers save().
-		if ( $with_taxes ) {
-			// $this->calculate_taxes();
+		foreach ( $this->get_services() as $service ) {
+			$service_subtotal += $service->get( 'subtotal' );
+			$service_total    += $service->get( 'total' );
 		}
 
-		// Sum the taxes.
-		/*foreach ( $this->get_rooms() as $room ) {
-			$room_subtotal_tax = $room_subtotal_tax->add( $room->get_subtotal_tax() );
-			$room_total_tax    = $room_total_tax->add( $room->get_total_tax() );
-		}*/
-
 		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
-		$this->set_attribute( 'total', $room_total + $fee_total );
-		// $this->set_discount_tax( $room_subtotal_tax - $room_total_tax );
+		$this->set_attribute( 'total', $room_total + $service_total + $fee_total );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );
@@ -438,7 +440,7 @@ class Booking extends Model {
 	 * @return void
 	 */
 	public function setup_dates() {
-		$periods = $this->get_line_items()->map(function( $item ) {
+		$periods = $this->get_line_items()->map(function( Item $item ) {
 			return $item->get_timespan()->get_period();
 		});
 

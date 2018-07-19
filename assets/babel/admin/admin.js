@@ -1,3 +1,6 @@
+const debounce = require('debounce');
+const queryString = require('query-string');
+
 (function($) {
   'use strict';
 
@@ -7,7 +10,7 @@
   awebooking.utils = {};
   awebooking.instances = {};
 
-  awebooking.utils.flatpickrRangePlugin = require('flatpickr/dist/plugins/rangePlugin.js');
+  awebooking.utils.flatpickrRangePlugin = require('../core/range-dates.js');
 
   /**
    * The admin route.
@@ -76,8 +79,6 @@
    * @return {Object}
    */
   awebooking.dialog = function(selector) {
-    const debounce = require('debounce');
-
     const $dialog = $(selector).dialog({
       modal: true,
       width: 'auto',
@@ -98,10 +99,39 @@
   };
 
   /**
+   * Send a ajax request to a route.
+   *
+   * @param  {String}   route
+   * @param  {Object}   data
+   * @param  {Function} callback
+   * @return {Object}
+   */
+  awebooking.ajax = function(method, route, data, callback) {
+    return $.ajax({
+      url: awebooking.route(route),
+      data: data,
+      method: method,
+      dataType: 'json',
+    })
+    .done((data) => {
+      if(callback) callback(data);
+    })
+    .fail((xhr) => {
+      const json = xhr.responseJSON;
+
+      if (json && json.message) {
+        awebooking.alert(json.message, 'error');
+      } else {
+        awebooking.alert(awebooking.i18n.error, 'error');
+      }
+    });
+  };
+
+  /**
    * Create a form then append to body.
    *
-   * @param  {string} link   The form action.
-   * @param  {string} method The form method.
+   * @param  {String} link   The form action.
+   * @param  {String} method The form method.
    * @return {Object}
    */
   awebooking.createForm = function(action, method) {
@@ -113,14 +143,28 @@
   };
 
   /**
+   * Format the price.
+   *
+   * @param amount
+   * @returns {string}
+   */
+  awebooking.formatPrice = function(amount) {
+    return require('accounting').formatMoney(amount, {
+      format: awebooking.i18n.priceFormat,
+      symbol: awebooking.i18n.currencySymbol,
+      decimal: awebooking.i18n.decimalSeparator,
+      thousand: awebooking.i18n.priceThousandSeparator,
+      precision: awebooking.i18n.numberDecimals,
+    });
+  };
+
+  /**
    * Retrieves a modified URL query string.
    *
    * @param {object} args
    * @param {string} url
    */
   awebooking.utils.addQueryArgs =function(args, url) {
-    const queryString = require('query-string');
-
     if (typeof url === 'undefined') {
       url = window.location.href;
     }

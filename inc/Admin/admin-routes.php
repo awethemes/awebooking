@@ -19,8 +19,6 @@ $route->post(   '/settings',                           'Settings_Controller@stor
 $route->get(    '/tools[/{tab}]',                      'Tools_Controller@index' );
 $route->post(   '/tools/execute',                      'Tools_Controller@execute' );
 
-$route->delete( '/room/{room:\d+}',                    'Room_Controller@destroy' );
-
 $route->get(    '/booking-room',                       'Booking_Room_Controller@search' );
 $route->post(   '/booking-room',                       'Booking_Room_Controller@store' );
 $route->get(    '/booking-room/{room_item:\d+}',       'Booking_Room_Controller@edit' );
@@ -37,10 +35,11 @@ $route->get(    '/booking-service',                    'Booking_Service_Controll
 $route->post(   '/booking-service',                    'Booking_Service_Controller@store' );
 $route->delete( '/booking-service/{service_item:\d+}', 'Booking_Service_Controller@destroy' );
 
-$route->get(    '/about',                              'Misc_Controller@index' );
+$route->get(    '/about',                              'Misc_Controller@about' );
 $route->get(    '/preview-email',                      'Misc_Controller@preview_email' );
 $route->get(    '/search/customers',                   'Ajax_Controller@search_customers' );
 $route->get(    '/search/services',                    'Ajax_Controller@search_services' );
 $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_booking_note' );
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );
+$route->delete( '/ajax/delete-room/{room:\d+}',        'Ajax_Controller@delete_room' );
 // @codingStandardsIgnoreEnd

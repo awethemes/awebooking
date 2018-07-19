@@ -28,7 +28,6 @@ $link-hover-decoration:     none;
 }
 
 .awebooking-container {
-  @include make-container;
   @include make-container-max-widths;
 }
 
@@ -38,24 +37,6 @@ $link-hover-decoration:     none;
 
 .awebooking,
 .awebooking-block {
-  //font-family: $font-family-base;
-  a {
-    color: $link-color;
-    text-decoration: $link-decoration;
-    background-color: transparent; // Remove the gray background on active links in IE 10.
-    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
-
-    @include hover {
-      color: $link-hover-color;
-      text-decoration: $link-hover-decoration;
-    }
-  }
-
-  p {
-    margin-top: 0;
-    margin-bottom: $paragraph-margin-bottom;
-  }
-
   @import "frontend/elements/form";
   @import "frontend/elements/button";
   @import "frontend/elements/notices";
@@ -63,6 +44,7 @@ $link-hover-decoration:     none;
 
 @import "frontend/datepicker";
 @import "frontend/searchbox";
+@import "frontend/filterbox";
 @import "frontend/layout";
 @import "frontend/roommaster";
 @import "frontend/elements/dialog";
@@ -71,3 +53,4 @@ $link-hover-decoration:     none;
 @import "frontend/elements/_checkout-services";
 @import "frontend/search-page";
 @import "frontend/list-rooms";
+@import "frontend/single-room";

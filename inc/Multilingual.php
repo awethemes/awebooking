@@ -88,6 +88,51 @@ class Multilingual {
 	}
 
 	/**
+	 * Sets the specified language.
+	 *
+	 * @param  string|null $language The language name.
+	 * @return void
+	 */
+	public function set_language( $language = null ) {
+		if ( static::is_polylang() ) {
+			$this->set_polylang_language( $language );
+		} elseif ( static::is_wpml() ) {
+			global $sitepress;
+			$sitepress->switch_lang( $language, ! headers_sent() );
+		}
+	}
+
+	/**
+	 * Sets the specified language on PLL.
+	 *
+	 * @sse \PLL_Choose_Lang::set_language()
+	 *
+	 * @param  string|null $language The language name.
+	 * @return void
+	 */
+	public function set_polylang_language( $language = null ) {
+		if ( ! static::is_polylang() ) {
+			return;
+		}
+
+		/* @var \Polylang $polylang */
+		$polylang = PLL();
+
+		// In frontend, if no language given, get the preferred language
+		// according to the browser preferences.
+		if ( empty( $language ) && ( ! is_admin() && ! defined( 'DOING_CRON' ) ) ) {
+			$curlang = $polylang->choose_lang->get_preferred_language();
+		} else {
+			$curlang = $polylang->model->get_language( trim( $language ) );
+		}
+
+		if ( $curlang instanceof \PLL_Language ) {
+			$polylang->curlang = $curlang;
+			$GLOBALS['text_direction'] = $curlang->is_rtl ? 'rtl' : 'ltr'; // @codingStandardsIgnoreLine
+		}
+	}
+
+	/**
 	 * Determine if we're using WPML.
 	 *
 	 * Since PolyLang has a compatibility layer for WPML, we'll have to consider that too.

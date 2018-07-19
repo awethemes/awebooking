@@ -37,13 +37,13 @@ $rate_plan = abrs_get_rate( $room_item->get( 'rate_plan_id' ) );
 						<div class="cmb-th"><label><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
-							<strong><?php echo esc_html( $room_type->get( 'title' ) ); ?></strong>
-							<span>(<?php echo esc_html( $room_item->get( 'name' ) ); ?>)</span>
+							<strong><?php echo esc_html( abrs_optional( $room_type )->get( 'title' ) ); ?></strong>
+							<span>(<?php echo esc_html( abrs_optional( $room_item )->get( 'name' ) ); ?>)</span>
 						</div>
 					</div>
 
 					<div class="cmb-row">
-						<div class="cmb-th"><label><?php echo esc_html__( 'Single_Rate Plan', 'awebooking' ); ?></label></div>
+						<div class="cmb-th"><label><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></label></div>
 
 						<div class="cmb-td">
 							<?php if ( $rate_plan ) : ?>

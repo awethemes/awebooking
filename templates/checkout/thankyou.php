@@ -26,10 +26,11 @@ if ( ! $booking instanceof AweBooking\Model\Booking ) {
 
 	<?php else : ?>
 
-		<p class="awebooking-notice awebooking-notice--success awebooking-thankyou-booking-received"><?php echo apply_filters( 'awebooking_thankyou_booking_received_text', __( 'Thank you. Your booking has been received.', 'awebooking' ), $booking ); ?></p>
+		<div class="notification notification--success">
+			<p><?php esc_html_e( 'Thank you. Your booking has been received.', 'awebooking' ); ?></p>
+		</div>
 
 		<ul class="awebooking-booking-overview awebooking-thankyou-booking-details booking_details">
-
 			<li class="awebooking-booking-overview__booking booking">
 				<span><?php esc_html_e( 'Reservation ID:', 'awebooking' ); ?></span>
 				<strong><?php echo esc_html( $booking->get_booking_number() ); ?></strong>
@@ -47,7 +48,7 @@ if ( ! $booking instanceof AweBooking\Model\Booking ) {
 				</li>
 			<?php endif; ?>
 
-			<?php if ( $payment_item = $booking->get_last_payment() ) : ?>
+			<?php if ( $payment_item = $booking->get_payments()->last() ) : ?>
 				<li class="awebooking-booking-overview__payment-method method">
 					<?php esc_html_e( 'Payment method:', 'awebooking' ); ?>
 					<strong><?php echo wp_kses_post( $payment_item->get_method_title() ); ?></strong>

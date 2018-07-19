@@ -2,6 +2,7 @@
 namespace AweBooking\Admin\Providers;
 
 use AweBooking\Constants;
+use AweBooking\Admin\Metaboxes\Abstract_Metabox;
 use AweBooking\Support\Service_Provider;
 
 class Metaboxes_Service_Provider extends Service_Provider {
@@ -12,16 +13,15 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	 */
 	public function register() {
 		foreach ([ // @codingStandardsIgnoreLine
-			'metabox.room_type'        => \AweBooking\Admin\Metaboxes\Room_Type_Metabox::class,
+			'metabox.room_type_data'   => \AweBooking\Admin\Metaboxes\Room_Type_Data_Metabox::class,
 			'metabox.room_type_hotel'  => \AweBooking\Admin\Metaboxes\Room_Type_Hotel_Metabox::class,
 			'metabox.booking_main'     => \AweBooking\Admin\Metaboxes\Booking_Main_Metabox::class,
-			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Rooms_Metabox::class,
+			'metabox.booking_rooms'    => \AweBooking\Admin\Metaboxes\Booking_Items_Metabox::class,
 			'metabox.booking_payments' => \AweBooking\Admin\Metaboxes\Booking_Payments_Metabox::class,
 			'metabox.booking_actions'  => \AweBooking\Admin\Metaboxes\Booking_Actions_Metabox::class,
 			'metabox.booking_notes'    => \AweBooking\Admin\Metaboxes\Booking_Notes_Metabox::class,
-			'metabox.booking_calendar' => \AweBooking\Admin\Metaboxes\Booking_Calendar_Metabox::class,
-			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Info_Metabox::class,
-			'metabox.service'          => \AweBooking\Admin\Metaboxes\Service_Data_Metabox::class,
+			'metabox.hotel_info'       => \AweBooking\Admin\Metaboxes\Hotel_Infomations_Metabox::class,
+			'metabox.service_data'     => \AweBooking\Admin\Metaboxes\Service_Data_Metabox::class,
 		] as $abstract => $concrete ) {
 			$this->plugin->bind( $abstract, $concrete );
 			$this->plugin->tag( $abstract, 'metaboxes' );
@@ -72,18 +72,11 @@ class Metaboxes_Service_Provider extends Service_Provider {
 			require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
 		}
 
-		add_meta_box( 'awebooking-booking-data', esc_html__( 'Booking Data', 'awebooking' ), $this->metaboxcb( 'metabox.booking_main' ), Constants::BOOKING, 'normal', 'high' );
-		add_meta_box( 'awebooking-booking-rooms', esc_html__( 'Booking Rooms', 'awebooking' ), $this->metaboxcb( 'metabox.booking_rooms' ), Constants::BOOKING, 'normal' );
-		add_meta_box( 'awebooking-booking-payments', esc_html__( 'Booking Payments', 'awebooking' ), $this->metaboxcb( 'metabox.booking_payments' ), Constants::BOOKING, 'normal' );
-		add_meta_box( 'awebooking-booking-actions', esc_html__( 'Actions', 'awebooking' ), $this->metaboxcb( 'metabox.booking_actions' ), Constants::BOOKING, 'side', 'high' );
-		add_meta_box( 'awebooking-booking-notes', esc_html__( 'Notes', 'awebooking' ), $this->metaboxcb( 'metabox.booking_notes' ), Constants::BOOKING, 'side', 'default' );
-
-		add_meta_box( 'awebooking-room-type-data', esc_html__( 'Room Type Data', 'awebooking' ), $this->metaboxcb( 'metabox.room_type' ), Constants::ROOM_TYPE, 'normal' );
-		add_meta_box( 'awebooking-room-type-hotel', esc_html__( 'Hotel location', 'awebooking' ), $this->metaboxcb( 'metabox.room_type_hotel' ), Constants::ROOM_TYPE, 'side' );
-
-		add_meta_box( 'awebooking-hotel-info', esc_html__( 'Hotel Information', 'awebooking' ), $this->metaboxcb( 'metabox.hotel_info' ), Constants::HOTEL_LOCATION, 'normal' );
-
-		add_meta_box( 'awebooking-service-data', esc_html__( 'Service Data', 'awebooking' ), $this->metaboxcb( 'metabox.service' ), Constants::HOTEL_SERVICE, 'normal' );
+		foreach ( $this->plugin->tagged( 'metaboxes' ) as $box ) {
+			if ( $box instanceof Abstract_Metabox && $box->should_show() ) {
+				add_meta_box( $box->id, $box->title, $box->callback(), $box->screen, $box->context, $box->priority );
+			}
+		}
 	}
 
 	/**
@@ -131,24 +124,26 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		// Make the HTTP request.
 		$request = $this->plugin->make( 'request' );
 
-		// Call the proccess based on post_type.
-		switch ( $post->post_type ) {
-			case 'room_type':
-				$this->plugin->make( 'metabox.room_type' )->save( $post, $request );
-				break;
+		// Filter boxes to perform save action.
+		$current_screen = get_current_screen();
 
-			case 'hotel_location':
-				$this->plugin->make( 'metabox.hotel_info' )->save( $post, $request );
-				break;
+		if ( $current_screen && ! empty( $current_screen->id ) ) {
+			$boxes = abrs_collect( $this->plugin->tagged( 'metaboxes' ) )
+				->filter( function ( $box ) {
+					return $box instanceof Abstract_Metabox && method_exists( $box, 'save' );
+				})
+				->filter( function ( Abstract_Metabox $box ) use ( $current_screen ) {
+					return in_array( $current_screen->id, $box->get_screen_ids() );
+				});
 
-			case 'hotel_service':
-				$this->plugin->make( 'metabox.service' )->save( $post, $request );
-				break;
-
-			case 'awebooking':
-				$this->plugin->make( 'metabox.booking_main' )->save( $post, $request );
-				$this->plugin->make( 'metabox.booking_actions' )->save( $post, $request );
-				break;
+			// Handle save the boxes.
+			foreach ( $boxes as $box ) {
+				try {
+					$box->save( $post, $request );
+				} catch ( \Exception $e ) {
+					abrs_report( $e );
+				}
+			}
 		}
 
 		/**

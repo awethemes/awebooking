@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking\Admin;
 
+use AweBooking\Roles;
+
 class Admin_Tools {
 	/**
 	 * Run a task.
@@ -20,6 +22,11 @@ class Admin_Tools {
 				$this->optimize_database();
 				$message = 'Optimized database!';
 				break;
+
+			case 'reset_roles':
+				$this->reset_roles();
+				$message = 'Roles successfully reset';
+				break;
 		}
 
 		return compact( 'message' );
@@ -31,11 +38,14 @@ class Admin_Tools {
 	 * @return int
 	 */
 	public function clear_expired_transients() {
+		delete_transient( 'awebooking_premium_themes' );
+		delete_transient( 'awebooking_premium_addons' );
+
 		return abrs_delete_expired_transients();
 	}
 
 	/**
-	 * Delete all orphan rows in AweBooking tables
+	 * Delete all orphan rows in AweBooking tables.
 	 *
 	 * @return void
 	 */
@@ -59,6 +69,19 @@ class Admin_Tools {
 	}
 
 	/**
+	 * Reset capabilities.
+	 *
+	 * @return void
+	 */
+	public function reset_roles() {
+		$roles = new Roles;
+
+		// Remove then re-add caps and roles.
+		$roles->remove();
+		$roles->create();
+	}
+
+	/**
 	 * A list of available tools for use in the system status section.
 	 *
 	 * @return array
@@ -75,6 +98,11 @@ class Admin_Tools {
 				'button' => esc_html__( 'Optimize', 'awebooking' ),
 				'desc'   => esc_html__( 'This tool will delete all orphan rows in AweBooking tables.', 'awebooking' ),
 			],
+			'reset_roles' => array(
+				'name'   => esc_html__( 'Capabilities', 'awebooking' ),
+				'button' => esc_html__( 'Reset capabilities', 'awebooking' ),
+				'desc'   => esc_html__( 'This tool will reset the admin, customer, receptionist and hotel manager roles to default.', 'awebooking' ),
+			),
 		]);
 	}
 }

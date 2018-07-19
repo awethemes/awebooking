@@ -2,9 +2,9 @@
 namespace AweBooking\Frontend\Checkout;
 
 use AweBooking\Support\Fluent;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Form_Controls extends Form_Builder {
+class Form_Controls extends Form {
 	/**
 	 * Constructor.
 	 *
@@ -224,6 +224,9 @@ class Form_Controls extends Form_Builder {
 			'type'             => 'textarea',
 			'name'             => esc_html__( 'Special requests', 'awebooking' ),
 			'sanitization_cb'  => 'sanitize_textarea_field',
+			'attributes' => [
+				'rows' => 3,
+			],
 		]);
 
 		do_action( 'abrs_checkout_setup_controls', $this );

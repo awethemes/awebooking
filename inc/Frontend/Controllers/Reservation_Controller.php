@@ -8,18 +8,18 @@ use AweBooking\Component\Routing\Redirector;
 
 class Reservation_Controller {
 	/**
-	 * The reservation instance.
-	 *
-	 * @var \AweBooking\Reservation\Reservation
-	 */
-	protected $reservation;
-
-	/**
 	 * The redirector.
 	 *
 	 * @var \AweBooking\Component\Routing\Redirector
 	 */
 	protected $redirector;
+
+	/**
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
+	 */
+	protected $reservation;
 
 	/**
 	 * Constructor.
@@ -39,6 +39,8 @@ class Reservation_Controller {
 	 * @return mixed
 	 */
 	public function book( Request $request ) {
+		$this->sets_res_headers( $request );
+
 		if ( ! $request->filled( 'room_type', 'check_in', 'check_out' ) ) {
 			abrs_add_notice( 'Invalid request parameters, please try again.', 'error' );
 			return $this->redirector->back();
@@ -59,7 +61,7 @@ class Reservation_Controller {
 			$item = $this->reservation->add_room_stay( $res_request,
 				absint( $request->get( 'room_type' ) ), absint( $request->get( 'rate_plan', 0 ) )
 			);
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			abrs_add_notice( $e->getMessage(), 'error' );
 
 			// Redirect back to the search availability page.
@@ -82,6 +84,8 @@ class Reservation_Controller {
 	 * @return mixed
 	 */
 	public function remove( Request $request, $row_id ) {
+		$this->sets_res_headers( $request );
+
 		$removed = $this->reservation->remove( $row_id );
 
 		if ( $removed ) {
@@ -92,6 +96,12 @@ class Reservation_Controller {
 		return $this->redirector->back(
 			add_query_arg( 'removed', $removed ? '1' : '0', $this->generator_search_page_url( $request ) )
 		);
+	}
+
+	protected function sets_res_headers( Request $request ) {
+		if ( abrs_running_on_multilanguage() ) {
+			$this->reservation->language = abrs_multilingual()->get_current_language();
+		}
 	}
 
 	/**
@@ -129,5 +139,59 @@ class Reservation_Controller {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Handle update services on the reservation.
+	 *
+	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @return mixed
+	 */
+	public function services( Request $request ) {
+		$this->sets_res_headers( $request );
+
+		$included_ids = $this->reservation->get_included_services();
+
+		// Filter valid services.
+		$services = abrs_collect( $request->get( 'services', [] ) )
+			->where( 'id', '>', 0 )
+			->where( 'quantity', '>', 0 )
+			->whereNotIn( 'id', $included_ids );
+
+		// If empty requested services, just clear all.
+		if ( $services->isEmpty() ) {
+			$this->reservation->get_services()->clear();
+		} else {
+			$this->handle_sync_services( $services );
+		}
+
+		// Re-calculator after done.
+		$this->reservation->calculate_totals();
+
+		return $this->redirector->to( abrs_get_checkout_url() );
+	}
+
+	/**
+	 * Delete diff services and add new ones.
+	 *
+	 * @param \AweBooking\Support\Collection $services The services from request.
+	 */
+	protected function handle_sync_services( $services ) {
+		// Remove diff services.
+		$this->reservation
+			->get_services( true )->pluck( 'id' )
+			->diff( $services->pluck( 'id' ) )
+			->each( function ( $id ) {
+				$this->reservation->remove_service( $id );
+			});
+
+		// Add new services.
+		foreach ( $services as $s ) {
+			try {
+				$response = $this->reservation->add_service( $s['id'], $s['quantity'] );
+			} catch ( \Exception $e ) {
+				continue;
+			}
+		}
 	}
 }

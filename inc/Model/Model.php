@@ -77,13 +77,13 @@ abstract class Model extends WP_Object {
 	protected function setup_instance() {
 		switch ( $this->wp_type ) {
 			case 'awebooking_rooms':
-				if ( ! is_null( $room = abrs_db_room( $this->id ) ) ) {
+				if ( ! is_null( $room = abrs_get_raw_room( $this->id ) ) ) {
 					$this->set_instance( $room );
 				}
 				break;
 
 			case 'awebooking_item':
-				if ( ! is_null( $booking_item = abrs_db_booking_item( $this->id ) ) ) {
+				if ( ! is_null( $booking_item = abrs_get_raw_booking_item( $this->id ) ) ) {
 					$this->set_instance( $booking_item );
 				}
 				break;
@@ -112,7 +112,7 @@ abstract class Model extends WP_Object {
 	 * {@inheritdoc}
 	 */
 	protected function prefix( $hook_name ) {
-		return sprintf( 'abrs_%s_%s', $this->prefix, $this->object_type, $hook_name );
+		return sprintf( 'abrs_%s_%s', $this->object_type, $hook_name );
 	}
 
 	/**

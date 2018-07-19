@@ -1,34 +1,25 @@
 window.awebooking = {};
 
+const accounting = require('accounting');
+const Dropdown = require('./core/dropdown');
+
 (function ($, plugin) {
   'use strict';
 
-  const _defaults = function (options, defaults) {
-    return $.extend( {}, defaults, options );
+  // Main objects
+  plugin.utils = plugin.instances = {};
+
+  plugin.utils.dropdown = function (el, config) {
+    $(el).each(function () {
+      $(this).data('abrs-dropdown', new Dropdown(this, config));
+    });
   };
 
-  // Polyfill location.origin in IE, @see https://stackoverflow.com/a/25495161
-  if (!window.location.origin) {
-    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-  }
+  plugin.i18n = window._awebooking_i18n || {};
 
-  // Main objects
-  plugin.utils = {};
-  plugin.instances = {};
-  plugin.utils.rangeDates = require('./core/flatpickr-dates.js');
-
-  /**
-   * Configure.
-   *
-   * @type {Object}
-   */
-  plugin.config = _defaults(window._awebooking, {
+  plugin.config = Object.assign( {}, window._awebooking, {
     route: window.location.origin + '?awebooking_route=/',
     ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
-    i18n: {
-      date_format: 'F j, Y',
-      time_format: 'H:i:s',
-    }
   });
 
   /**
@@ -49,26 +40,26 @@ window.awebooking = {};
    * @return {flatpickr}
    */
   plugin.datepicker = function (instance, options) {
-    const i18n = plugin.config.i18n;
+    const i18n = plugin.i18n;
     const defaults = plugin.config.datepicker;
     const disable = Array.isArray(defaults.disable) ? defaults.disable : [];
 
-    if (Array.isArray(defaults.disable_days)) {
+    if (Array.isArray(defaults.disableDays)) {
       disable.push(function (date) {
-        return defaults.disable_days.indexOf(date.getDay()) !== -1;
+        return defaults.disableDays.indexOf(date.getDay()) !== -1;
       });
     }
 
-    const minDate = new Date().fp_incr(defaults.min_date);
-    const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+    // const minDate = new Date().fp_incr(defaults.min_date);
+    // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
 
-    const fp = flatpickr(instance, _defaults(options, {
+    const fp = flatpickr(instance, Object.assign({}, options, {
       dateFormat: 'Y-m-d',
-      ariaDateFormat: i18n.date_format,
+      ariaDateFormat: i18n.dateFormat,
       minDate: 'today',
       // maxDate: max_date,
       // disable: disable,
-      showMonths: defaults.show_months,
+      showMonths: defaults.showMonths || 1,
       enableTime: false,
       enableSeconds: false,
       onReady(_, __, fp) {
@@ -80,14 +71,27 @@ window.awebooking = {};
   };
 
   /**
+   * Format the price.
+   *
+   * @param amount
+   * @returns {string}
+   */
+  plugin.formatPrice = function(amount) {
+    return accounting.formatMoney(amount, {
+      format: plugin.i18n.priceFormat,
+      symbol: plugin.i18n.currencySymbol,
+      decimal: plugin.i18n.decimalSeparator,
+      thousand: plugin.i18n.priceThousandSeparator,
+      precision: plugin.i18n.numberDecimals,
+    });
+  };
+
+  /**
    * Document ready.
    *
    * @return {void}
    */
   $(function () {
-    // Init
-    require('./frontend/search-form').init();
-
     window.tippy('[data-awebooking="tooltip"]', {
       theme: 'awebooking-tooltip'
     });
@@ -105,7 +109,6 @@ window.awebooking = {};
         el.setAttribute('aria-hidden', true);
       });
     });
-
   });
 
 })(jQuery, window.awebooking);

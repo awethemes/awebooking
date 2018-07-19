@@ -1,17 +1,20 @@
-.checkout__section {
-
-}
-
-#checkout-form {
-  padding: 1em;
-  background-color: #fff;
+.awebooking-checkout .content-area {
+  width: 100%;
 }
 
 .awebooking {
+  #checkout-services-form,
+  #checkout-form,
+  .checkout__section--guest-details,
+  .checkout__section--guest-additional-information {
+    margin-bottom: 1.75em;
+  }
+
   .payment-methods {
     margin-left: 0;
     padding-left: 0;
     list-style: none;
+    margin-bottom: 1.75em;
   }
 
   .payment-method {
@@ -22,12 +25,16 @@
     position: relative;
     box-sizing: border-box;
 
+    .payment-method__label {
+      cursor: pointer;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
 
     &.selected {
-      border: solid 2px lighten($primary, 5%);
+      box-shadow: 0 0 0 2px lighten($primary, 5%);
     }
   }
 
@@ -76,5 +83,19 @@ ul.booking_details {
     &:last-of-type {
       border: none;
     }
+  }
+}
+
+#checkout-form {
+  .cmb-row {
+    padding: 3px;
+    margin: 0 0 6px;
+  }
+
+  .required {
+    color: red;
+    font-weight: 700;
+    border: 0!important;
+    text-decoration: none;
   }
 }

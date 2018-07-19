@@ -176,7 +176,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         });
 
         flatpickr('#bulk_date_start', {
+          mode: 'range',
           dateFormat: 'Y-m-d',
+          showMonths: 2,
           plugins: [new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' })]
         });
       }

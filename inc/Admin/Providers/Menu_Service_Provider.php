@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Admin\Providers;
 
+use AweBooking\Constants;
 use Illuminate\Support\Arr;
 use AweBooking\Support\Service_Provider;
 
@@ -15,11 +16,11 @@ class Menu_Service_Provider extends Service_Provider {
 		add_action( 'admin_menu', [ $this, 'register_manager_submenu' ], 20 );
 		add_action( 'admin_menu', [ $this, 'regsiter_settings_submenu' ], 50 );
 
-		add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ $this, 'menu_order' ] );
-		add_action( 'admin_head', [ $this, 'cleanup_submenu' ] );
+		add_filter( 'custom_menu_order', [ $this, 'allow_menu_order' ] );
 
-		add_action( 'admin_head', [ $this, 'correct_admin_menus' ], 5 );
+		add_action( 'admin_head', [ $this, 'cleanup_submenu' ] );
+		add_action( 'admin_head', [ $this, 'correct_admin_menus' ] );
 		add_filter( 'admin_title', [ $this, 'correct_admin_title' ], 5, 2 );
 	}
 
@@ -31,12 +32,14 @@ class Menu_Service_Provider extends Service_Provider {
 	public function register_admin_menu() {
 		global $menu;
 
-		// @codingStandardsIgnoreLine
-		$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
+		if ( current_user_can( 'manage_awebooking' ) ) {
+			// @codingStandardsIgnoreLine
+			$menu[] = [ '', 'read', 'separator-awebooking', '', 'wp-menu-separator awebooking' ];
+		}
 
-		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_options', 'awebooking', null, 'dashicons-calendar', 53 );
+		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', Constants::PARENT_MENU_SLUG, null, 'dashicons-calendar', 53 );
 
-		add_submenu_page( 'awebooking', esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/about' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
 	}
 
 	/**
@@ -45,9 +48,9 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_manager_submenu() {
-		add_submenu_page( 'awebooking', esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/calendar' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Calendar', 'awebooking' ), esc_html_x( 'Calendar', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/calendar' );
 
-		add_submenu_page( 'awebooking', esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/rates' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Pricing', 'awebooking' ), esc_html_x( 'Pricing', 'dashboard menu', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/rates' );
 	}
 
 	/**
@@ -56,8 +59,18 @@ class Menu_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function regsiter_settings_submenu() {
-		add_submenu_page( 'awebooking', esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/settings' );
-		add_submenu_page( 'awebooking', esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_options', 'admin.php?awebooking=/tools' );
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/settings' );
+
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/tools' );
+	}
+
+	/**
+	 * Is allow custom menu order?
+	 *
+	 * @return bool
+	 */
+	public function allow_menu_order() {
+		return current_user_can( 'manage_awebooking' );
 	}
 
 	/**
@@ -74,7 +87,7 @@ class Menu_Service_Provider extends Service_Provider {
 
 		$new_menu = [];
 		foreach ( $menu_order as $index => $item ) {
-			if ( 'awebooking' == $item ) {
+			if ( Constants::PARENT_MENU_SLUG == $item ) {
 				$new_menu[] = 'separator-awebooking';
 				$new_menu[] = $item;
 				$new_menu[] = 'edit.php?post_type=room_type';
@@ -98,8 +111,8 @@ class Menu_Service_Provider extends Service_Provider {
 		global $submenu;
 
 		// Remove 'AweBooking' sub menu item.
-		if ( isset( $submenu['awebooking'] ) ) {
-			unset( $submenu['awebooking'][0] );
+		if ( isset( $submenu[ Constants::PARENT_MENU_SLUG ] ) ) {
+			unset( $submenu[ Constants::PARENT_MENU_SLUG ][0] );
 		}
 
 		remove_submenu_page( 'edit.php?post_type=room_type', 'post-new.php?post_type=room_type' );
@@ -117,7 +130,7 @@ class Menu_Service_Provider extends Service_Provider {
 
 		if ( $current_screen && 'awebooking_route' === $current_screen->base ) {
 			// @codingStandardsIgnoreStart
-			$parent_file  = 'awebooking';
+			$parent_file = Constants::PARENT_MENU_SLUG;
 
 			$segments = explode( '/', trim( $this->plugin['request']->route_path(), '/' ) );
 			$submenu_file = 'admin.php?awebooking=/' . $segments[0];

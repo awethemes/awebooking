@@ -3,7 +3,7 @@
 ?><style type="text/css">
 	#awebooking-booking-data .hndle,
 	#awebooking-booking-data .handlediv,
-	#post-body-content, #titlediv { display:none }
+	#post-body-content, #titlediv { display:none; }
 	#awebooking-booking-data.closed .inside { display: block !important; }
 </style>
 
@@ -90,14 +90,14 @@
 						<div class="abcol-6">
 							<p>
 								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
-								<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_in_date' ) ) ); ?></span>
+								<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_in_date() ) ); ?></span>
 							</p>
 						</div>
 
 						<div class="abcol-6">
 							<p>
-								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
-								<span><?php echo esc_html( abrs_format_date( $the_booking->get( 'check_out_date' ) ) ); ?></span>
+								<strong><?php esc_html_e( 'Check-out', 'awebooking' ); ?></strong>
+								<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_out_date() ) ); ?></span>
 							</p>
 						</div>
 					</div>

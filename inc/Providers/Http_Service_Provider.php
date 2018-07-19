@@ -15,7 +15,7 @@ class Http_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $middleware = [
-		// ...
+		\AweBooking\Component\Http\Middleware\Localizer::class,
 	];
 
 	/**
@@ -24,7 +24,9 @@ class Http_Service_Provider extends Service_Provider {
 	 * @var array
 	 */
 	protected $admin_middleware = [
+		\AweBooking\Component\Http\Middleware\Localizer::class,
 		\AweBooking\Component\Http\Middleware\Setup_Admin_Screen::class,
+		\AweBooking\Component\Http\Middleware\Check_Capability::class,
 	];
 
 	/**
@@ -157,6 +159,9 @@ class Http_Service_Provider extends Service_Provider {
 			return;
 		}
 
+		// Tell header no caching.
+		abrs_nocache_headers();
+
 		// Handle the awebooking_route endpoint requests.
 		$this->plugin->make( 'kernel' )
 			->use_request_uri( $wp->query_vars['awebooking_route'] )
@@ -170,7 +175,13 @@ class Http_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function admin_dispatch() {
-		if ( defined( 'DOING_AJAX' ) || isset( $_GET['page'] ) || empty( $_REQUEST['awebooking'] ) ) {
+		global $pagenow;
+
+		if ( defined( 'DOING_AJAX' ) || isset( $_GET['page'] ) ) {
+			return;
+		}
+
+		if ( 'admin.php' !== $pagenow || empty( $_REQUEST['awebooking'] ) ) {
 			return;
 		}
 

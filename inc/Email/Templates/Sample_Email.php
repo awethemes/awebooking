@@ -22,6 +22,6 @@ class Sample_Email extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/sample.php', [ 'email' => $this ] );
+		return $this->get_template( 'sample' );
 	}
 }

@@ -3,13 +3,6 @@ namespace AweBooking\Component\Form;
 
 class Section implements \ArrayAccess {
 	/**
-	 * The CMB2 instance.
-	 *
-	 * @var \CMB2
-	 */
-	protected $cmb2;
-
-	/**
 	 * Unique identifier.
 	 *
 	 * @var string
@@ -38,17 +31,24 @@ class Section implements \ArrayAccess {
 	public $fields = [];
 
 	/**
+	 * The Form instance.
+	 *
+	 * @var \AweBooking\Component\Form\Form
+	 */
+	protected $form;
+
+	/**
 	 * Constructor.
 	 *
 	 * Any supplied $args override class property defaults.
 	 *
-	 * @param \CMB2  $cmb2 The CMB2 instance.
+	 * @param Form   $form The Form instance.
 	 * @param string $id   An specific ID of the section.
 	 * @param array  $args Section arguments.
 	 */
-	public function __construct( $cmb2, $id, $args = [] ) {
-		$this->id = $id;
-		$this->cmb2 = $cmb2;
+	public function __construct( Form $form, $id, $args = [] ) {
+		$this->id   = $id;
+		$this->form = $form;
 
 		$keys = array_keys( get_object_vars( $this ) );
 		foreach ( $keys as $key ) {
@@ -71,7 +71,21 @@ class Section implements \ArrayAccess {
 	public function add_field( array $field, $position = 0 ) {
 		$field['section'] = $this->id;
 
-		return $this->cmb2->add_field( $field );
+		return $this->form->add_field( $field, $position );
+	}
+
+	/**
+	 * Add a field at position after a another field.
+	 *
+	 * @param string $key  The "append" field name.
+	 * @param array  $args The field args.
+	 *
+	 * @return false|string
+	 */
+	public function add_field_after( $key, array $args ) {
+		$args['section'] = $this->id;
+
+		return $this->form->add_field_after( $key, $args );
 	}
 
 	/**
@@ -126,7 +140,7 @@ class Section implements \ArrayAccess {
 	public function __get( $property ) {
 		switch ( $property ) {
 			case 'uid':
-				return $this->cmb2->prop( 'id' ) . '-' . $this->id;
+				return $this->form->prop( 'id' ) . '-' . $this->id;
 			default:
 				return $this->{$property};
 		}

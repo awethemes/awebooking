@@ -10,11 +10,14 @@ class Totals {
 	 * @var array
 	 */
 	protected $totals = [
-		'total'           => 0,
-		'subtotal'        => 0,
-		'rooms_total'     => 0,
-		'rooms_subtotal'  => 0,
-		'rooms_total_tax' => 0,
+		'total'              => 0,
+		'subtotal'           => 0,
+		'rooms_total'        => 0,
+		'rooms_subtotal'     => 0,
+		'rooms_total_tax'    => 0,
+		'services_total'     => 0,
+		'services_subtotal'  => 0,
+		'services_total_tax' => 0,
 	];
 
 	/**
@@ -46,7 +49,7 @@ class Totals {
 	 * Gets a line total.
 	 *
 	 * @param  string $key Total to get.
-	 * @return \AweBooking\Support\Decimal
+	 * @return float
 	 */
 	public function get( $key = 'total' ) {
 		$totals = $this->totals();
@@ -72,6 +75,7 @@ class Totals {
 	public function calculate() {
 		$this->prepare_calculate();
 		$this->calculate_rooms();
+		$this->calculate_services();
 		$this->calculate_totals();
 	}
 
@@ -85,11 +89,6 @@ class Totals {
 		foreach ( $this->reservation->get_room_stays() as $room_stay ) {
 			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate_plan */
 			$rate_plan = $room_stay->data()->get_rate_plan();
-
-			// Get total price.
-			$price = abrs_decimal( $room_stay->get( 'price' ) )
-				->mul( $room_stay->get( 'quantity' ) )
-				->as_numeric();
 
 			$room_stay->set( 'tax', 0 );
 			$room_stay->set( 'price_includes_tax', $rate_plan->price_includes_tax() );
@@ -132,13 +131,45 @@ class Totals {
 	}
 
 	/**
+	 * Calculate services costs.
+	 *
+	 * @return void
+	 */
+	private function calculate_services() {
+		$services = $this->reservation->get_services();
+
+		$res_request = $this->reservation->get_previous_request();
+
+		/* @var \AweBooking\Reservation\Item $item */
+		foreach ( $services as $item ) {
+			/* @var \AweBooking\Model\Service $service */
+			$service = $item->model();
+
+			if ( $item['included'] ) {
+				$item->set( 'price', 0 );
+			} else {
+				$price = abrs_calc_service_price( $service, [
+					'nights'     => $res_request->nights,
+					'base_price' => $this->get( 'rooms_subtotal' ),
+				]);
+
+				$item->set( 'price', $price );
+			}
+		}
+
+		$this->set( 'services_total', $services->sum( 'total' ) );
+		$this->set( 'services_subtotal', $services->sum( 'subtotal' ) );
+		$this->set( 'services_total_tax', $services->sum( 'total_tax' ) );
+	}
+
+	/**
 	 * Main cart totals.
 	 *
 	 * @return void
 	 */
 	protected function calculate_totals() {
-		$this->set( 'subtotal', $this->get( 'rooms_subtotal' ) );
-		$this->set( 'total', $this->get( 'rooms_total' ) );
+		$this->set( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) );
+		$this->set( 'total', $this->get( 'rooms_total' ) + $this->get( 'services_total' ) );
 	}
 
 	/**

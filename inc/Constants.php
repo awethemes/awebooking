@@ -3,6 +3,7 @@ namespace AweBooking;
 
 class Constants {
 	// The core constants.
+	const OPTION_KEY        = 'awebooking_settings';
 	const BOOKING           = 'awebooking';
 	const BOOKING_NOTE      = 'booking_note';
 	const ROOM_TYPE         = 'room_type';
@@ -12,11 +13,13 @@ class Constants {
 	const HOTEL_AMENITY     = 'hotel_amenity';
 	const HOTEL_SERVICE     = 'hotel_service';
 	const HOTEL_SERVICE_CAT = 'hotel_service_cat';
+	const PARENT_MENU_SLUG  = 'awebooking';
 
 	// Booking constants.
 	const STATE_AVAILABLE   = 0;
 	const STATE_UNAVAILABLE = 1;
 	const STATE_BOOKING     = 2;
+	const STATE_SYNC        = 3;
 
 	// Granularity levels.
 	const GL_DAILY   = 'daily';

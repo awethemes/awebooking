@@ -1,9 +1,21 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
+use AweBooking\Constants;
 use Awethemes\Http\Request;
 
-class Booking_Actions_Metabox {
+class Booking_Actions_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id       = 'awebooking-booking-actions';
+		$this->title    = esc_html__( 'Actions', 'awebooking' );
+		$this->screen   = Constants::BOOKING;
+		$this->context  = 'side';
+		$this->priority = 'high';
+	}
+
 	/**
 	 * Output the metabox.
 	 *

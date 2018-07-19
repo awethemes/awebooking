@@ -2,11 +2,11 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?d1c2c4c465b038b2af416408f02fdaef?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?d1c2c4c465b038b2af416408f02fdaef") format("woff2"),
-url("awebooking-webfont.woff?d1c2c4c465b038b2af416408f02fdaef") format("woff"),
-url("awebooking-webfont.ttf?d1c2c4c465b038b2af416408f02fdaef") format("truetype"),
-url("awebooking-webfont.svg?d1c2c4c465b038b2af416408f02fdaef#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?96a6443bbe4d20b31ab0b90afaf14aac?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?96a6443bbe4d20b31ab0b90afaf14aac") format("woff2"),
+url("awebooking-webfont.woff?96a6443bbe4d20b31ab0b90afaf14aac") format("woff"),
+url("awebooking-webfont.ttf?96a6443bbe4d20b31ab0b90afaf14aac") format("truetype"),
+url("awebooking-webfont.svg?96a6443bbe4d20b31ab0b90afaf14aac#awebooking-webfont") format("svg");
 }
 
 .aficon {
@@ -245,9 +245,6 @@ url("awebooking-webfont.svg?d1c2c4c465b038b2af416408f02fdaef#awebooking-webfont"
 .aficon-logo-yahoo:before {
 	content: "\f14a";
 }
-.aficon-logo-yen:before {
-	content: "\f14b";
-}
 .aficon-male:before {
 	content: "\f14c";
 }
@@ -313,4 +310,19 @@ url("awebooking-webfont.svg?d1c2c4c465b038b2af416408f02fdaef#awebooking-webfont"
 }
 .aficon-woman:before {
 	content: "\f161";
+}
+.aficon-baby:before {
+	content: "\f162";
+}
+.aficon-menu:before {
+	content: "\f163";
+}
+.aficon-people:before {
+	content: "\f164";
+}
+.aficon-person:before {
+	content: "\f165";
+}
+.aficon-trash:before {
+	content: "\f166";
 }

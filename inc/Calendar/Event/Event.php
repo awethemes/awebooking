@@ -34,7 +34,7 @@ class Event implements Event_Interface {
 	 *
 	 * This can represent an availability state or a pricing value.
 	 *
-	 * @var int
+	 * @var int|mixed
 	 */
 	protected $value;
 
@@ -76,14 +76,14 @@ class Event implements Event_Interface {
 	/**
 	 * The created date of the event.
 	 *
-	 * @var Carbonate|null
+	 * @var \AweBooking\Support\Carbonate|null
 	 */
 	protected $created;
 
 	/**
 	 * The last modified of the event.
 	 *
-	 * @var Carbonate|null
+	 * @var \AweBooking\Support\Carbonate|null
 	 */
 	protected $last_modified;
 
@@ -91,8 +91,8 @@ class Event implements Event_Interface {
 	 * Create an event.
 	 *
 	 * @param Resource_Interface $resource   The resource implementation.
-	 * @param DateTime|string    $start_date The start date of the event.
-	 * @param DateTime|string    $end_date   The end date of the event.
+	 * @param \DateTime|string   $start_date The start date of the event.
+	 * @param \DateTime|string   $end_date   The end date of the event.
 	 * @param int                $value      The event value.
 	 */
 	public function __construct( Resource_Interface $resource, $start_date, $end_date, $value = 0 ) {
@@ -135,7 +135,7 @@ class Event implements Event_Interface {
 	/**
 	 * Set the start date.
 	 *
-	 * @param DateTime|string $start_date The start date of the event.
+	 * @param \DateTime|string $start_date The start date of the event.
 	 * @return void
 	 */
 	public function set_start_date( $start_date ) {
@@ -158,7 +158,7 @@ class Event implements Event_Interface {
 	/**
 	 * Set the end date.
 	 *
-	 * @param  DateTime|string $end_date The end date of the event.
+	 * @param  \DateTime|string $end_date The end date of the event.
 	 * @return void
 	 */
 	public function set_end_date( $end_date ) {
@@ -328,7 +328,7 @@ class Event implements Event_Interface {
 	/**
 	 * Get the event date created.
 	 *
-	 * @return Carbonate
+	 * @return \AweBooking\Support\Carbonate
 	 */
 	public function get_created() {
 		return $this->created;
@@ -337,7 +337,7 @@ class Event implements Event_Interface {
 	/**
 	 * Set the event created date.
 	 *
-	 * @param  Carbonate $created The created date.
+	 * @param  \AweBooking\Support\Carbonate $created The created date.
 	 * @return $this
 	 */
 	public function set_created( $created ) {

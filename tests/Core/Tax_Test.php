@@ -1,6 +1,6 @@
 <?php
 
-class Concierge_Test extends WP_UnitTestCase {
+class Tax_Test extends WP_UnitTestCase {
 	public function testApi() {
 		$tax_id = abrs_insert_tax_rate( ['name' => 'VAT', 'rate' => 10 ] );
 

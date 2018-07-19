@@ -43,9 +43,9 @@ $bulk_controls = abrs_create_form( 'bulk_state_form' );
 							'id'          => 'bulk_date',
 							'type'        => 'abrs_dates',
 							'name'        => esc_html__( 'Select dates', 'awebooking' ),
+							// 'attributes'  => [ 'tabindex' => '-1' ],
+							// 'default'     => [ abrs_date( 'today' )->toDateString(), abrs_date( 'tomorrow' )->toDateString() ],
 							'show_js'     => false,
-							'default'     => [ abrs_date( 'today' )->format( 'Y-m-d' ), abrs_date( 'tomorrow' )->format( 'Y-m-d' ) ],
-							'attributes'  => [ 'tabindex' => '-1' ],
 						]);
 						?>
 

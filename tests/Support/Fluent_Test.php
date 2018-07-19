@@ -17,7 +17,7 @@ class Support_Fluent_Test extends WP_UnitTestCase {
 		$attributes->setAccessible( true );
 
 		$this->assertEquals( $array, $attributes->getValue( $fluent ) );
-		$this->assertEquals( $array, $fluent->get_attributes() );
+		$this->assertEquals( $array, $fluent->all() );
 	}
 
 	public function testAttributesAreSetByConstructorGivenstdClass() {
@@ -33,7 +33,7 @@ class Support_Fluent_Test extends WP_UnitTestCase {
 		$attributes->setAccessible( true );
 
 		$this->assertEquals( $array, $attributes->getValue( $fluent ) );
-		$this->assertEquals( $array, $fluent->get_attributes() );
+		$this->assertEquals( $array, $fluent->all() );
 	}
 
 	public function testAttributesAreSetByConstructorGivenArrayIterator() {
@@ -49,7 +49,7 @@ class Support_Fluent_Test extends WP_UnitTestCase {
 		$attributes->setAccessible( true );
 
 		$this->assertEquals( $array, $attributes->getValue( $fluent ) );
-		$this->assertEquals( $array, $fluent->get_attributes() );
+		$this->assertEquals( $array, $fluent->all() );
 	}
 
 	public function testGetMethodReturnsAttribute() {

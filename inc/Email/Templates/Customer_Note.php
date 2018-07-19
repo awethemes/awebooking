@@ -78,11 +78,10 @@ class Customer_Note extends Mailable {
 	 * {@inheritdoc}
 	 */
 	public function get_content_html() {
-		return abrs_get_template_content( 'emails/customer-note.php', [
-			'email'         => $this,
+		return $this->get_template( 'customer-note', [
 			'booking'       => $this->booking,
-			'customer_note' => $this->customer_note,
 			'content'       => $this->format_string( $this->get_option( 'content' ) ),
+			'customer_note' => $this->customer_note,
 		]);
 	}
 }

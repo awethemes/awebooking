@@ -1,33 +1,31 @@
 <?php
-use AweBooking\Model\Service;
-
 /* @vars $booking */
 
-$old_input = awebooking( 'session' )->get_old_input();
-if ( ! empty( $old_input ) ) {
-	$form_builder->fill( $old_input );
-}
+$booked_services = $booking->get_services();
 
-$action_link = abrs_admin_route( 'booking-service' );
+$context = [
+	'nights'     => 0,
+	'base_price' => 0,
+];
 
-$services = abrs_list_services();
-
-if ( $services->isEmpty() ) {
-	return;
-}
-
-$operations = Service::get_operations();
-
-$services_exist = $booking->get_services();
-$service_ids = $services_exist->pluck( 'service_id' )->all();
+$services_selection = abrs_services_for_reservation(
+	[
+		'exclude' => $booked_services->pluck( 'service_id' )->all(),
+	],
+ 	[
+ 		// ...
+ 	],
+ 	$context
+);
 ?>
 
 <div class="wrap">
 	<h1 class="wp-heading-inline screen-reader-text"><?php esc_html_e( 'Add Service', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<div class="abrs-card abrs-card--page">
-		<form method="POST" action="<?php echo esc_url( $action_link ); ?>">
+
+	<div class="abrs-card abrs-card--page abrs-booking-services">
+		<form method="POST" action="<?php echo esc_url( abrs_admin_route( 'booking-service' ) ); ?>">
 			<input type="hidden" name="_refer" value="<?php echo esc_attr( $booking->get_id() ); ?>">
 
 			<?php wp_nonce_field( 'create_booking_service' ); ?>
@@ -37,30 +35,44 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 				<span><?php esc_html_e( 'Reference', 'awebooking' ); ?> <a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>">#<?php echo esc_html( $booking->get_booking_number() ); ?></a></span>
 			</div>
 
-			<div class="cmb2-wrap awebooking-wrap abrs-card__body">
+			<div id="service-items" class="cmb2-wrap awebooking-wrap abrs-card__body">
 				<ul class="abrs-sortable">
-					<?php foreach ( $services as $service ) : ?>
-						<li class="abrs-sortable__item">
-							<div class="abrs-sortable__head">
-								<span class="abrs-sortable__order">
-									<input type="checkbox" name="list_services[]" value="<?php echo esc_attr( $service->get_id() ); ?>" <?php checked( in_array( $service->get_id(), $service_ids ) ); ?>>
-								</span>
-							</div>
+					<?php foreach ( $booked_services as $booked ) : ?>
+						<?php $service = abrs_get_service( $booked->get( 'service_id' ) ); ?>
 
-							<div class="abrs-sortable__body">
-								<span><?php echo esc_html( $service->get( 'name' ) ); ?></span>
-							</div>
+						<?php if ( is_null( $service ) ) : ?>
 
-							<div class="abrs-sortable__actions">
-								<?php if ( isset( $operations[ $service->get( 'operation' ) ] ) ) : ?>
-									<span class="abrs-badge"><?php print abrs_format_service_price( $service->get( 'value' ), $service->get( 'operation' ) ); // WPCS: xss ok. ?></span>
-								<?php endif ?>
-							</div>
-						</li>
+							<?php abrs_admin_template_part( 'booking/html-deleted-service-item.php', compact( 'booked' ) ); ?>
+
+						<?php else : ?>
+
+							<?php $service_data = $booked->only( 'quantity', 'price', 'total' ); ?>
+							<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service', 'service_data' ) ); ?>
+
+						<?php endif ?>
 
 					<?php endforeach ?>
 				</ul><!-- /.abrs-sortable -->
 
+				<hr>
+
+				<ul class="abrs-sortable">
+					<?php foreach ( $services_selection as $selection ) : ?>
+						<?php
+						$service = $selection['service'];
+
+						$service_data = [
+							'quantity' => 0,
+							'price'    => $selection['price'],
+							'total'    => $selection['price'],
+						];
+
+						?>
+
+						<?php abrs_admin_template_part( 'booking/html-service-item.php', compact( 'service', 'service_data' ) ); ?>
+
+					<?php endforeach ?>
+				</ul><!-- /.abrs-sortable -->
 			</div>
 
 			<div class="abrs-card__footer submit abrs-text-right">
@@ -71,3 +83,46 @@ $service_ids = $services_exist->pluck( 'service_id' )->all();
 
 	</div>
 </div><!-- /.wrap -->
+
+<style type="text/css">
+	.abrs-booking-services .abrs-sortable__order {
+		width: 60px;
+	}
+
+	.abrs-booking-services .abrs-sortable__order input[type="number"] {
+		width: 50px;
+	}
+
+	.abrs-booking-services .abrs-badge {
+		min-width: 30px;
+		text-align: center;
+	}
+</style>
+
+<script type="text/javascript">
+	jQuery(function($) {
+		var ServicePrice = function(data) {
+			var self = this;
+
+			this.price = ko.observable(data.price || 0);
+			this.quantity = ko.observable(data.quantity || 0);
+
+			this.total = ko.pureComputed(function() {
+				var quantity = parseInt(self.quantity(), 10);
+				var price = parseFloat(self.price());
+
+				var total = (! isNaN(quantity) && ! isNaN(price)) ? quantity * price : 0;
+
+				return awebooking.formatPrice(total);
+			});
+		};
+
+		$('#service-items ul > li').each(function(i, el) {
+			ko.applyBindings(new ServicePrice({
+				price: $(el).find('.form-input--price').val(),
+				quantity: $(el).find('.form-input--quantity').val(),
+			}), el);
+		});
+
+	});
+</script>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Output the checkout form (used for shortcode).
+ * Output the checkout form.
  *
  * This template can be overridden by copying it to {yourtheme}/awebooking/checkout/checkout.php.
  *

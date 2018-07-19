@@ -29,6 +29,26 @@ class Appearance_Setting extends Abstract_Setting {
 		]);
 
 		$general->add_field([
+			'id'   => '__search_page',
+			'type' => 'title',
+			'name' => esc_html__( 'Search page', 'awebooking' ),
+		]);
+
+		$general->add_field([
+			'id'       => 'display_search_form_on_search',
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Display search form?', 'awebooking' ),
+			'default'  => 'on',
+		]);
+
+		$general->add_field([
+			'id'       => 'display_filter_form',
+			'type'     => 'abrs_toggle',
+			'name'     => esc_html__( 'Display filter form?', 'awebooking' ),
+			'default'  => 'on',
+		]);
+
+		$general->add_field([
 			'id'   => '__search_form',
 			'type' => 'title',
 			'name' => esc_html__( 'Search form', 'awebooking' ),
@@ -265,8 +285,8 @@ class Appearance_Setting extends Abstract_Setting {
 		$datepicker->add_field([
 			'id'              => 'display_datepicker_showmonths',
 			'type'            => 'select',
-			'name'            => esc_html__( 'The number of months displayed', 'awebooking' ),
-			'desc'            => esc_html__( 'Display on month or two months.', 'awebooking' ),
+			'name'            => esc_html__( 'Months displayed', 'awebooking' ),
+			'desc'            => esc_html__( 'Number of months show in date picker.', 'awebooking' ),
 			'options'         => [ '1' => 1, '2' => 2 ],
 			'sanitization_cb' => 'absint',
 		]);

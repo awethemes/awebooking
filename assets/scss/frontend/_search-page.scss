@@ -1,3 +1,7 @@
+.awebooking-check-availability .content-area {
+  width: 100%;
+}
+
 .search-rooms__form {
   margin-bottom: 1.5rem;
 }
@@ -11,6 +15,10 @@
 
   &-icon {
     margin-bottom: 1rem;
+
+    img {
+      display: inline-block;
+    }
   }
 
   &-title {

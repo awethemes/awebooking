@@ -10,9 +10,11 @@ class Search_Form_Shortcode extends Shortcode_Abstract {
 	protected $defaults = [
 		'layout'          => 'horizontal',
 		'alignment'       => '',
-		'container_class' => '',
 		'res_request'     => null,
 		'hotel_location'  => true,
+		'occupancy'       => true,
+		'only_room'       => null,
+		'container_class' => '',
 	];
 
 	/**

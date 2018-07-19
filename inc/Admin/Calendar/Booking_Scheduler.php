@@ -2,17 +2,18 @@
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use AweBooking\Model\Room_Type;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Event\Core\State_Event;
 use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Calendar\Provider\Aggregate_Provider;
+use Awethemes\Http\Request;
 
 class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * Cache results of room types.
 	 *
-	 * @var string
+	 * @var \AweBooking\Support\Collection
 	 */
 	protected $room_types;
 
@@ -56,6 +57,8 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @var \AweBooking\Support\Collection $events
 	 */
 	protected function filter_events( $events ) {
 		return $events->reject( function ( $e ) {
@@ -63,13 +66,15 @@ class Booking_Scheduler extends Abstract_Scheduler {
 				return true;
 			}
 
-			// Only get the "UNAVAILABLE" in state events.
-			if ( $e instanceof State_Event && $e->get_state() !== Constants::STATE_UNAVAILABLE ) {
+			// Only display the "blocked" in state events.
+			$blocked_state = array_keys( abrs_get_blocked_states() );
+			if ( $e instanceof State_Event && ! in_array( $e->get_state(), $blocked_state ) ) {
 				return true;
 			}
 
 			return false;
 		})->each( function( $e ) {
+			/* @var \AweBooking\Calendar\Event\Event $e */
 			$end_date = $e->get_end_date();
 
 			if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
@@ -87,7 +92,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		// Get all rooms indexed by room type ID.
 		$all_rooms = $this->room_types
 			->keyBy( 'id' )
-			->map( function( $r ) {
+			->map( function( Room_Type $r ) {
 				return $r->get_rooms();
 			});
 
@@ -139,7 +144,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 *
 	 * @return void
 	 */
-	protected function display_toolbars() {
+	protected function display_toolbar() {
 		echo '<div class="scheduler-flexspace"></div>';
 		$this->template( 'toolbar/datepicker.php' );
 	}
@@ -170,6 +175,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 		$available = 0;
 		foreach ( $matrix as $item ) {
+			/* @var \AweBooking\Support\Collection $item */
 			if ( 0 === $item->get( $day->format( 'Y-m-d' ) ) ) {
 				$available++;
 			}
@@ -201,6 +207,9 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			return;
 		}
 
+		// Gets the states name.
+		$states = wp_list_pluck( abrs_get_blocked_states(), 'name' );
+
 		// Loop all events and display them.
 		foreach ( $day_events as $event ) {
 			// Calculate the event attributes.
@@ -210,8 +219,10 @@ class Booking_Scheduler extends Abstract_Scheduler {
 			$_data = compact( 'event', 'day', 'calendar', 'scheduler', 'attributes' );
 			$_data['calr'] = $this;
 
+			$_name = isset( $states[ $event->get_value() ] ) ? $states[ $event->get_value() ] : 'unavailable';
+
 			$contents = ( $event instanceof State_Event )
-				? abrs_admin_template( 'calendar/html-blocked-state.php', $_data )
+				? abrs_admin_template( 'calendar/html-' . $_name . '-state.php', $_data )
 				: abrs_admin_template( 'calendar/html-booking-state.php', $_data );
 
 			print $contents; // WPCS: XSS OK.
@@ -227,6 +238,8 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 */
 	protected function find_events_in_date( $date, $events ) {
 		return $events->filter( function ( $event ) use ( $date ) {
+			/* @var \AweBooking\Calendar\Event\Event $event */
+
 			$date = $date->get_start_date();
 
 			// If the check date same with start date, find event
@@ -253,8 +266,11 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		$classes = [];
 		$total_days = (int) $period->days;
 
+		$states = wp_list_pluck( abrs_get_blocked_states(), 'name' );
+
 		if ( $event instanceof State_Event ) {
-			$classes[] = 'scheduler__state-event unavailable';
+			$classes[] = 'scheduler__state-event';
+			$classes[] = isset( $states[ $event->get_value() ] ) ? $states[ $event->get_value() ] : '';
 		} elseif ( $event instanceof Booking_Event ) {
 			$classes[] = 'scheduler__booking-event';
 		}

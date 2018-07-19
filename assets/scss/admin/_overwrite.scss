@@ -241,6 +241,12 @@
   .cmb-type-textarea-code .CodeMirror-wrap {
     border: solid 1px #eee;
   }
+
+  .cmb-th > label > .dashicons {
+    color: #1f8fe8;
+    font-size: 16px;
+    vertical-align: middle;
+  }
 }
 
 // Inline form.
@@ -256,6 +262,23 @@
   .cmb-th {
     color: inherit;
     vertical-align: middle;
+  }
+
+  .cmb-th > label {
+    padding-top: 0;
+    padding-bottom: 7px;
+    display: inline-block;
+  }
+
+  .cmb2-tooltip {
+    vertical-align: top;
+    display: inline-block;
+
+    .dashicons {
+      font-size: 14px;
+      width: auto;
+      height: auto;
+    }
   }
 }
 

@@ -7,17 +7,18 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Illuminate\Container\Container;
-use AweBooking\Support\Fluent;
+use Illuminate\Support\Arr;
 
 final class Plugin extends Container {
-	use Support\Traits\Plugin_Provider;
+	use Support\Traits\Plugin_Provider,
+		Support\Traits\Plugin_Options;
 
 	/**
 	 * The plugin version.
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.1.0-dev';
+	const VERSION = '3.1.0';
 
 	/**
 	 * The plugin file path.
@@ -25,20 +26,6 @@ final class Plugin extends Container {
 	 * @var string
 	 */
 	protected $plugin_file;
-
-	/**
-	 * The plugin options.
-	 *
-	 * @var \AweBooking\Support\Fluent
-	 */
-	protected $options;
-
-	/**
-	 * The plugin option key name.
-	 *
-	 * @var string
-	 */
-	protected $option_key = 'awebooking_settings';
 
 	/**
 	 * Indicates if the plugin has "booted".
@@ -196,17 +183,48 @@ final class Plugin extends Container {
 	}
 
 	/**
+	 * Register a bootstrapper.
+	 *
+	 * @param string $bootstrap The bootstrap class.
+	 */
+	public function bootstrapper( $bootstrap ) {
+		$this->bootstrappers[] = $bootstrap;
+	}
+
+	/**
+	 * Register a provider into the plugin.
+	 *
+	 * @param string $provider The provider class name.
+	 * @param string $area     The area (core, admin, frontend).
+	 * @param bool   $prepend  Prepend or append.
+	 */
+	public function provider( $provider, $area = 'core', $prepend = true ) {
+		if ( ! array_key_exists( $area, $this->service_providers ) ) {
+			throw new \OutOfRangeException( 'The area must be one of: core, admin or frontend.' );
+		}
+
+		if ( $prepend ) {
+			$this->service_providers[ $area ] = Arr::prepend( $this->service_providers[ $area ], $provider );
+		} else {
+			$this->service_providers[ $area ][] = $provider;
+		}
+	}
+
+	/**
 	 * Bootstrap the plugin.
 	 *
 	 * @access private
 	 */
-	protected function bootstrap() {
+	public function bootstrap() {
+		// Require the core functions.
+		require trailingslashit( __DIR__ ) . 'Core/functions.php';
+
 		/**
-		 * Fire the action before bootstrap.
+		 * Fire the bootstrap action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_bootstrapping', $this );
+		do_action( 'awebooking_bootstrap', $this );
 
 		// Run bootstrap classes.
 		array_walk( $this->bootstrappers, function( $bootstrapper ) {
@@ -214,11 +232,11 @@ final class Plugin extends Container {
 		});
 
 		/**
-		 * Fire the bootstrapped action.
+		 * Fire the init action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_bootstrapped', $this );
+		do_action( 'awebooking_init', $this );
 
 		// Build the providers.
 		$providers = $this->service_providers['core'];
@@ -232,16 +250,6 @@ final class Plugin extends Container {
 		// Filter the service_providers.
 		$providers = apply_filters( 'abrs_service_providers', $providers, $this );
 
-		// Require the core functions before registered providers.
-		require trailingslashit( __DIR__ ) . 'core-functions.php';
-
-		/**
-		 * Fire the init action.
-		 *
-		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
-		 */
-		do_action( 'awebooking_init', $this );
-
 		// Loop each provider then register them.
 		foreach ( $providers as $provider ) {
 			$provider = new $provider( $this );
@@ -254,11 +262,11 @@ final class Plugin extends Container {
 		}
 
 		/**
-		 * Fire the after_init action.
+		 * Fire the loaded action.
 		 *
 		 * @param \AweBooking\Plugin $awebooking The awebooking class instance.
 		 */
-		do_action( 'awebooking_after_init', $this );
+		do_action( 'awebooking_loaded', $this );
 	}
 
 	/**
@@ -358,112 +366,6 @@ final class Plugin extends Container {
 	 */
 	public function endpoint_name() {
 		return apply_filters( 'abrs_endpoint_name', 'awebooking-route' );
-	}
-
-	/**
-	 * Get name for option key storing setting
-	 *
-	 * @return string
-	 */
-	public function get_option_key() {
-		return $this->option_key;
-	}
-
-	/**
-	 * Set the option key name.
-	 *
-	 * @param  string $key_name The option key name.
-	 * @return bool
-	 */
-	public function set_option_key( $key_name ) {
-		// Option name can't be set after plugin booting.
-		if ( did_action( 'awebooking_booting' ) ) {
-			return false;
-		}
-
-		// Set new key-name.
-		$this->option_key = $key_name;
-
-		// Flush the options if set.
-		if ( $this->options ) {
-			$this->options = null;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get all stored options.
-	 *
-	 * @return \AweBooking\Support\Fluent
-	 */
-	public function get_options() {
-		// Load the option in the database.
-		if ( is_null( $this->options ) ) {
-			$this->options = new Fluent( get_option( $this->get_option_key(), [] ) );
-		}
-
-		return $this->options;
-	}
-
-	/**
-	 * Retrieves an option by key-name.
-	 *
-	 * @param  string $option  Option key name.
-	 * @param  mixed  $default The default value.
-	 * @return mixed
-	 */
-	public function get_option( $option, $default = null ) {
-		/**
-		 * Filters the value of an existing option before it is retrieved.
-		 *
-		 * @param mixed  $pre_option The value to return instead of the option value.
-		 * @param string $option     The option name.
-		 * @param mixed  $default    The fallback value to return if the option does not exist.
-		 */
-		$pre = apply_filters( "abrs_pre_option_{$option}", null, $option, $default );
-
-		if ( null !== $pre ) {
-			return $pre;
-		}
-
-		// Retrieve the option value.
-		$value = maybe_unserialize(
-			$this->get_options()->get( $option, $default )
-		);
-
-		// Escape some options before return.
-		switch ( $option ) {
-			case 'enable_location':
-			case 'children_bookable':
-			case 'infants_bookable':
-			case 'calc_taxes':
-			case 'prices_include_tax':
-				$value = 'on' === abrs_sanitize_checkbox( $value );
-				break;
-
-			case 'price_decimal_separator':
-			case 'price_thousand_separator':
-				$value = untrailingslashit( $value );
-				break;
-
-			case 'display_datepicker_disabledays':
-				$value = is_array( $value ) ? abrs_sanitize_days_of_week( $value ) : [];
-				break;
-
-			case 'display_datepicker_disabledates':
-				$value = wp_parse_slug_list( $value );
-				$value = array_filter( $value, 'abrs_is_standard_date' );
-				break;
-		}
-
-		/**
-		 * Filters the value of an existing option.
-		 *
-		 * @param mixed  $value  Value of the option.
-		 * @param string $option Option name.
-		 */
-		return apply_filters( "abrs_option_{$option}", $value, $option );
 	}
 
 	/**

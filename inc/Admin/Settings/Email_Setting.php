@@ -21,7 +21,7 @@ class Email_Setting extends Abstract_Setting {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function output_sections() {}
+	protected function output_nav_sections() {}
 
 	/**
 	 * {@inheritdoc}

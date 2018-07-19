@@ -2,9 +2,9 @@
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Model\Booking\Payment_Item;
-use AweBooking\Component\Form\Form_Builder;
+use AweBooking\Component\Form\Form;
 
-class Booking_Payment_Form extends Form_Builder {
+class Booking_Payment_Form extends Form {
 	/**
 	 * Constructor.
 	 *

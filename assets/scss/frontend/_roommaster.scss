@@ -8,11 +8,11 @@
   &:not(:last-child) {
     margin-bottom: 2rem;
   }
-    
+
 }
 
 .roommaster-header {
-	padding: .75rem 1.25rem;
+	padding: .3rem 15px;
 	border-bottom: solid 1px $gray-200;
 	position: relative;
 
@@ -32,33 +32,34 @@
 }
 
 .roommaster-content {
-	@include clearfix;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+  @include clearfix;
+
+  > .columns > .column-lg-3 {
+    padding-right: 0;
+  }
 
 	&__title {
 		font-size: 1rem;
 		font-weight: bold;
-		padding: .5rem 0;
+		padding: 5px 5px;
 	}
 }
 
-.roommaster-info,
-.roommaster-list {
-	padding: 0 .6rem;
-}
-
 .roommaster-info {
-	padding-right: .3rem;
 
-	&___list {
+	&__list {
 		list-style: none;
 		margin: 0;
-		padding: 0;
+		padding: 0.3rem 0;
 
 		.info-item {
 			position: relative;
-			font-size: 1rem;
-			padding-left: 1.3rem;
-			padding-bottom: .8rem;
+			font-size: .8rem;
+			padding-left: 1.2rem;
+			padding-bottom: .5rem;
 		}
 
 		.info-icon {
@@ -70,13 +71,43 @@
 }
 
 .roommaster-list {
-	padding-left: .3rem;
+	padding: 0;
+
+  .roommaster-list__content {
+    margin-bottom: 15px;
+  }
 }
 
-.roommaster-child {
+.columns.roommaster-list__header {
+  display: none;
+  background-color: #f7f7f7;
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+  }
+}
+
+.roommaster-box {
+	padding: .3rem;
+  border-bottom: 1px solid #f3f3f3;
+
+  @include media-breakpoint-up(lg) {
+    border-bottom: none;
+  }
+
+  .roommaster-content__title {
+    display: block;
+
+    @include media-breakpoint-up(lg) {
+      display: none;
+    }
+  }
+}
+
+.roommaster-deal {
 	&__item {
 		&:not(:last-child) {
-			margin-bottom: .7rem;
+			margin-bottom: .3rem;
 		}
 	}
 
@@ -89,8 +120,7 @@
 		font-size: .8rem;
 
 		.info-icon {
-			margin-right: .8rem;
-
+			margin-right: .3rem;
 		}
 	}
 }
@@ -102,7 +132,7 @@
 
 .roommaster-inventory {
 	font-size: 1rem;
-	text-align: right;
+	font-style: italic;
 
 	.awebooking-price  {
 		display: block;
@@ -113,6 +143,11 @@
 .roommaster-button {
 	.button {
 		width: 100%;
+	}
+
+	&__remaining-rooms {
+		font-size: .9rem;
+		font-style: italic;
 	}
 }
 
@@ -174,15 +209,21 @@
 
 
 .awebooking-tooltip-theme {
+  color: #fff;
 	text-align: left;
 
 	.occupancy-description {
+    color: #fff;
+
 		&__title {
-			margin: 0;
+      font-size: 1rem;
+      color: #fff;
+			margin: 0 !important;
 			padding-bottom: .4em;
 		}
 
 		&__list {
+      font-size: .75rem;
 			list-style: none;
 			margin: 0;
 			padding: 0;

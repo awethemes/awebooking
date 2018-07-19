@@ -15,13 +15,6 @@ class Kernel extends Http_Kernel {
 	protected $plugin;
 
 	/**
-	 * The HTTP middleware stack.
-	 *
-	 * @var array
-	 */
-	protected $middleware = [];
-
-	/**
 	 * Create a new HTTP kernel instance.
 	 *
 	 * @param \AweBooking\Plugin $plugin The plugin instance.
@@ -79,7 +72,7 @@ class Kernel extends Http_Kernel {
 			case 404:
 				return esc_html__( 'Sorry, the page you are looking for could not be found.', 'awebooking' );
 			default:
-				return esc_html__( 'Whoops, looks like something went wrong.', 'awebooking' );
+				return $e->getMessage() ?: esc_html__( 'Whoops, looks like something went wrong.', 'awebooking' );
 		}
 	}
 }

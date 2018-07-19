@@ -11,14 +11,13 @@ class Mailer extends Manager {
 	 * @var array
 	 */
 	protected $templates = [
-		'invoice'            => \AweBooking\Email\Templates\Invoice::class,
-		'new_booking'        => \AweBooking\Email\Templates\New_Booking::class,
-		'cancelled'          => \AweBooking\Email\Templates\Cancelled_Booking::class,
-		'failed_booking'     => \AweBooking\Email\Templates\Failed_Booking::class,
-		'reserved_booking'   => \AweBooking\Email\Templates\Reserved_Booking::class,
-		'processing_booking' => \AweBooking\Email\Templates\Processing_Booking::class,
-		'completed_booking'  => \AweBooking\Email\Templates\Completed_Booking::class,
-		'customer_note'      => \AweBooking\Email\Templates\Customer_Note::class,
+		'invoice'       => \AweBooking\Email\Templates\Invoice::class,
+		'new_booking'   => \AweBooking\Email\Templates\New_Booking::class,
+		'cancelled'     => \AweBooking\Email\Templates\Cancelled::class,
+		'reserved'      => \AweBooking\Email\Templates\Reserved::class,
+		'processing'    => \AweBooking\Email\Templates\Processing::class,
+		'completed'     => \AweBooking\Email\Templates\Completed::class,
+		'customer_note' => \AweBooking\Email\Templates\Customer_Note::class,
 	];
 
 	/**
@@ -97,7 +96,7 @@ class Mailer extends Manager {
 
 		$mail = abrs_mailer( 'new_booking' );
 
-		if ( $mail && $mail->is_enabled() ) {
+		if ( $mail && $mail->is_enabled() && $mail->get_recipient() ) {
 			$mail->build( $booking )->send();
 		}
 	}
@@ -128,14 +127,24 @@ class Mailer extends Manager {
 	public function trigger_status_changed( $new_status, $old_status, $booking ) {
 		$mail = null;
 
-		switch ( $booking->get_status() ) {
-			case 'cancelled':
-				$mail = abrs_mailer( 'cancelled' );
-				break;
+		if ( in_array( $old_status, [ 'awebooking-inprocess', 'awebooking-on-hold' ] ) && ( 'awebooking-cancelled' == $new_status ) ) {
+			$mail = abrs_mailer( 'cancelled' );
+		}
+
+		if ( in_array( $old_status, [ 'awebooking-on-hold', 'awebooking-pending' ] ) && ( 'awebooking-inprocess' == $new_status ) ) {
+			$mail = abrs_mailer( 'processing' );
+		}
+
+		if ( ( 'awebooking-pending' == $old_status ) && ( 'awebooking-on-hold' == $new_status ) ) {
+			$mail = abrs_mailer( 'reserved' );
+		}
+
+		if ( 'awebooking-completed' == $new_status ) {
+			$mail = abrs_mailer( 'completed' );
 		}
 
 		if ( $mail && $mail->is_enabled() ) {
-			$mail->build( $booking )->send();
+			$sended = $mail->build( $booking )->send();
 		}
 	}
 
@@ -158,7 +167,6 @@ class Mailer extends Manager {
 	public function footer( Mailable $email = null ) {
 		do_action( 'abrs_email_footer', $email );
 	}
-
 
 	/**
 	 * Display default email header.

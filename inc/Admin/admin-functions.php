@@ -1,5 +1,7 @@
 <?php
 
+use AweBooking\Component\Form\Form;
+
 if ( ! defined( 'ABRS_ADMIN_PATH' ) ) {
 	define( 'ABRS_ADMIN_PATH', awebooking()->plugin_path( 'inc/Admin/' ) );
 }
@@ -81,6 +83,72 @@ function abrs_admin_template( $template = null, array $vars = [] ) {
  */
 function abrs_admin_template_part( $template = null, array $vars = [] ) {
 	abrs_admin_template()->partial( $template, $vars );
+}
+
+/**
+ * Prints the form controls.
+ *
+ * @param Form        $controls The form controls.
+ * @param string|null $section  Optional, print a section only.
+ *
+ * @return void
+ */
+function abrs_admin_print_form( Form $controls, $section = null ) {
+	if ( ! is_null( $section ) ) {
+		$fields = abrs_optional( $controls->get_section( $section ) )->fields;
+	} else {
+		$fields = $controls->prop( 'fields' );
+	}
+
+	// Empty fields, leave.
+	if ( empty( $fields ) ) {
+		return;
+	}
+
+	$new_row = false;
+
+	// Output the row.
+	echo '<div class="abrow">';
+
+	foreach ( $fields as $field ) {
+		// Close current row, then open new one.
+		if ( $new_row || ( isset( $field['grid_row'] ) && $field['grid_row'] ) ) {
+			echo '</div><div class="abrow">';
+		}
+
+		$column = ! empty( $field['grid_column'] ) ? $field['grid_column'] : null;
+
+		if ( in_array( $column, [ '0', '', 'auto' ] ) ) {
+			$column_class = 'abcol';
+		} else {
+			$column_class = 'abcol-sm-12 abcol-' . $column;
+		}
+
+		echo '<div class="' . esc_attr( $column_class ) . '">';
+
+		switch ( $field['type'] ) {
+			case 'title':
+				$new_row = true;
+				echo '<div class="abrs-postbox-title"><h3>' . abrs_esc_text( $field['name'] ) . '</h3></div>'; // WPCS: XSS OK.
+				break;
+
+			case 'note':
+				echo '<div class="abrs-note">';
+				echo isset( $field['heading'] ) ? '<h4>' . abrs_esc_text( $field['heading'] ) . '</h4>' : ''; // WPCS: XSS OK.
+				echo wp_kses_post( wpautop( $field['note'] ) );
+				echo '</div>';
+				break;
+
+			default:
+				$controls->show_field( $field );
+				break;
+		}
+
+		echo '</div>';
+	}
+
+	// Close the row.
+	echo '</div>';
 }
 
 /**

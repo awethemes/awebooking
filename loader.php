@@ -11,13 +11,14 @@
 require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
 require trailingslashit( __DIR__ ) . 'vendor/webdevstudios/cmb2/init.php';
 
+// Require helpers & functions.
+require trailingslashit( __DIR__ ) . 'inc/Support/helpers.php';
+require trailingslashit( __DIR__ ) . 'inc/Core/sanitizer.php';
+
 /**
  * Then, require the main class.
  */
 require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
-
-// Require helpers & functions.
-require trailingslashit( __DIR__ ) . 'inc/Support/helpers.php';
 
 /**
  * Alias the class "AweBooking\Plugin" to "AweBooking".

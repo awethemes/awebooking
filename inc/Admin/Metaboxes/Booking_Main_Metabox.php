@@ -1,10 +1,21 @@
 <?php
 namespace AweBooking\Admin\Metaboxes;
 
+use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Frontend\Checkout\Form_Controls;
 
-class Booking_Main_Metabox {
+class Booking_Main_Metabox extends Abstract_Metabox {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->id       = 'awebooking-booking-data';
+		$this->title    = esc_html__( 'Booking Data', 'awebooking' );
+		$this->screen   = Constants::BOOKING;
+		$this->priority = 'high';
+	}
+
 	/**
 	 * Output the metabox.
 	 *

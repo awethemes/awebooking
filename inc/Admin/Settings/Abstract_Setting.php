@@ -1,11 +1,20 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use Illuminate\Support\Arr;
+use AweBooking\Plugin;
+use AweBooking\Admin\Fluent_Settings;
+use AweBooking\Component\Form\Form;
 use Awethemes\Http\Request;
-use AweBooking\Component\Form\Form_Builder;
+use Illuminate\Support\Arr;
 
-abstract class Abstract_Setting extends Form_Builder implements Setting {
+abstract class Abstract_Setting extends Form implements Setting {
+	/**
+	 * The plugin instance.
+	 *
+	 * @var \AweBooking\Plugin
+	 */
+	protected $plugin;
+
 	/**
 	 * Current section name in current request.
 	 *
@@ -15,55 +24,58 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param \AweBooking\Plugin $plugin The plugin instance.
 	 */
-	public function __construct() {
-		parent::__construct( $this->form_id, awebooking()->get_options(), 'static' );
+	public function __construct( Plugin $plugin ) {
+		$this->plugin = $plugin;
+
+		parent::__construct( $this->get_id(), new Fluent_Settings( $plugin ), 'static' );
 	}
 
 	/**
-	 * Get the setting ID.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function get_id() {
 		return $this->form_id;
 	}
 
 	/**
-	 * Get the setting label.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function get_label() {
 		return '';
 	}
 
 	/**
-	 * Perform save setting.
-	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function save( Request $request ) {
-		// Get the options.
-		$options = cmb2_options( awebooking()->get_option_key() );
-
-		// Get the sanitized_values from request.
-		$raw_values = $this->get_sanitized_values( $request->post() );
+		$this->prepare_fields();
 
 		// Get the fields.
 		$fields = $this->prop( 'fields' );
 
 		if ( ! empty( $this->sections ) ) {
-			$this->prepare_fields();
-
 			$_section = $request->get( '_section' );
+
 			if ( ! array_key_exists( $_section, $this->sections ) ) {
 				return false;
 			}
 
 			$fields = $this->sections[ $_section ]['fields'];
 		}
+
+		// Get the sanitized_values from request.
+		$this->set_prop( 'fields', $fields );
+		$raw_values = $this->get_sanitized_values( $request->post() );
+
+		// Get the options.
+		$options = cmb2_options( $this->plugin->get_current_option() );
+		$original_options = cmb2_options( $this->plugin->get_original_option() );
+
+		// Is translation?
+		$is_translation = $this->is_translation();
 
 		// Loop over fields and perform the update option.
 		// If some field missing from $values, we will fallback
@@ -76,24 +88,28 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 				continue;
 			}
 
+			// Sanitize value before save.
 			$raw_value = array_key_exists( $key, $raw_values ) ? $raw_values[ $key ] : '';
-
-			// Re-sanitize value based on the ID.
 			$value = abrs_sanitize_option( $key, $raw_value );
 
 			// Update the field value.
-			$options->update( $key, $value, false, true );
+			if ( $is_translation && isset( $args['translatable'] ) && $args['translatable'] ) {
+				$options->update( $key, $value, false, true );
+			} else {
+				$options->remove( $key, false );
+				$original_options->update( $key, $value, false, true );
+			}
 		}
 
 		// Save the options.
-		return $options->set();
+		$options->set();
+		$original_options->set();
+
+		return true;
 	}
 
 	/**
-	 * Output this setting.
-	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
-	 * @return void
+	 * {@inheritdoc}
 	 */
 	public function output( Request $request ) {
 		$this->prepare_fields();
@@ -108,7 +124,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 				$fields = $this->sections[ $this->current_section ]['fields'];
 			}
 
-			$this->output_sections();
+			$this->output_nav_sections();
 			echo '<input type="hidden" name="_section" value="' . esc_attr( $this->current_section ) . '" />';
 		}
 
@@ -126,7 +142,7 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	 *
 	 * @return void
 	 */
-	protected function output_sections() {
+	protected function output_nav_sections() {
 		echo '<ul class="subsubsub">';
 
 		foreach ( $this->sections as $id => $section ) {
@@ -139,9 +155,24 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 	}
 
 	/**
+	 * Is current screen is a translation.
+	 *
+	 * @return bool
+	 */
+	public function is_translation() {
+		if ( abrs_running_on_multilanguage() && $this->plugin->get_current_option() !== $this->plugin->get_original_option() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function prepare_fields() {
+		$this->maybe_sets_translatable();
+
 		parent::prepare_fields();
 
 		if ( empty( $this->sections ) ) {
@@ -151,5 +182,25 @@ abstract class Abstract_Setting extends Form_Builder implements Setting {
 		$this->current_section = abrs_http_request()->get( 'section',
 			Arr::first( array_keys( $this->sections ) )
 		);
+	}
+
+	/**
+	 * Perform set translatable on each field.
+	 *
+	 * @return void
+	 */
+	protected function maybe_sets_translatable() {
+		$translatable_fields = abrs_get_translatable_options();
+
+		$fields = $this->prop( 'fields' );
+
+		foreach ( $fields as &$args ) {
+			if ( in_array( $args['id'], $translatable_fields ) ) {
+				$args['translatable'] = true;
+			}
+		}
+
+		unset( $args );
+		$this->set_prop( 'fields', $fields );
 	}
 }

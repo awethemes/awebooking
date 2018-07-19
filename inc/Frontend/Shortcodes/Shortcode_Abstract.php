@@ -35,7 +35,11 @@ abstract class Shortcode_Abstract {
 	/**
 	 * Build the shortcode.
 	 *
+	 * @param array  $atts     The shortcode atts.
+	 * @param string $contents The shortcode contents.
+	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function build( $atts, $contents = '' ) {
 		$this->atts     = $this->parse_atts( $atts );

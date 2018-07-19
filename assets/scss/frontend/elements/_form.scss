@@ -5,7 +5,6 @@
   font-size: $font-size-base;
   line-height: $input-line-height;
   color: $input-color;
-  background-color: $input-bg;
   background-clip: padding-box;
   border: $input-border-width solid $input-border-color;
 
@@ -118,6 +117,8 @@ select.form-select {
     opacity: 0;
   }
 }
+
+$custom-control-indicator-active-bg:            lighten($component-active-bg, 25%);
 
 .nice-radio,
 .nice-checkbox {

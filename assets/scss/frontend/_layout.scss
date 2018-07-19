@@ -8,9 +8,17 @@
 }
 
 .hotel-content__main {
-  @include make-col(8);
+  @include make-col(12);
+
+  @include media-breakpoint-up(lg) {
+    @include make-col(8);
+  }
 }
 
 .hotel-content__aside {
-  @include make-col(4);
+  @include make-col(12);
+
+  @include media-breakpoint-up(lg) {
+    @include make-col(4);
+  }
 }

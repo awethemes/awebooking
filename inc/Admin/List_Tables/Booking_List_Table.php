@@ -168,7 +168,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 * @return void
 	 */
 	protected function display_booking_check_in_column() {
-		echo esc_html( abrs_format_date( $this->booking->get( 'check_in_date' ) ) );
+		echo esc_html( abrs_format_date( $this->booking->get_check_in_date() ) );
 	}
 
 	/**
@@ -177,7 +177,7 @@ class Booking_List_Table extends Abstract_List_Table {
 	 * @return void
 	 */
 	protected function display_booking_check_out_column() {
-		echo esc_html( abrs_format_date( $this->booking->get( 'check_out_date' ) ) );
+		echo esc_html( abrs_format_date( $this->booking->get_check_out_date() ) );
 	}
 
 	/**
@@ -252,13 +252,16 @@ class Booking_List_Table extends Abstract_List_Table {
 		$booked_rooms = $this->booking->get_rooms();
 
 		if ( abrs_blank( $booked_rooms ) ) : ?>
+
 			<?php esc_html_e( 'No rooms found', 'awebooking' ); ?>
+
 		<?php else : ?>
+
 			<?php
 			$first_room = $booked_rooms->first();
 			$rooms_left = absint( count( $booked_rooms ) - 1 );
 
-			$timespan = $first_room->get_timespan();
+			$timespan = abrs_optional( $first_room->get_timespan() );
 
 			$nights = sprintf(
 				'&comma; <span class="">%1$d %2$s</span>',
@@ -340,7 +343,7 @@ class Booking_List_Table extends Abstract_List_Table {
 		if ( ! empty( $_GET['_room'] ) ) {
 			$room_id = absint( $_GET['_room'] );
 
-			$bookings = abrs_get_bookings_by_room( $room_id );
+			$bookings = abrs_get_booking_booked_by_room( $room_id );
 
 			$query_vars['post__in'] = array_merge( (array) $bookings, [ 0 ] );
 		}
@@ -397,7 +400,7 @@ class Booking_List_Table extends Abstract_List_Table {
 			return;
 		}
 
-		$post_ids = abrs_search_booking( abrs_clean( wp_unslash( $_GET['s'] ) ) ); // WPCS: input var ok, sanitization ok.
+		$post_ids = abrs_search_booking_by_term( abrs_clean( wp_unslash( $_GET['s'] ) ) ); // WPCS: input var ok, sanitization ok.
 
 		if ( ! empty( $post_ids ) ) {
 			// Remove "s" - we don't want to search order name.

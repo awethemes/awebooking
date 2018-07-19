@@ -1,26 +1,12 @@
 <?php
 namespace AweBooking\Admin;
 
-use AweBooking\Plugin;
-use AweBooking\Support\Collection;
-use AweBooking\Admin\Settings\Setting;
 use Awethemes\Http\Request;
+use AweBooking\Support\Manager;
+use AweBooking\Admin\Settings\Setting;
+use AweBooking\Admin\Settings\Abstract_Setting;
 
-class Admin_Settings {
-	/**
-	 * The plugin instance.
-	 *
-	 * @var \AweBooking\Plugin
-	 */
-	protected $plugin;
-
-	/**
-	 * All registerd settings.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $settings;
-
+class Admin_Settings extends Manager {
 	/**
 	 * The core settings.
 	 *
@@ -37,73 +23,21 @@ class Admin_Settings {
 	];
 
 	/**
-	 * Constructor.
-	 *
-	 * @param \AweBooking\Plugin $plugin The plugin instance.
-	 */
-	public function __construct( Plugin $plugin ) {
-		$this->plugin = $plugin;
-		$this->settings = new Collection;
-	}
-
-	/**
-	 * Get all registerd settings.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function all() {
-		return $this->settings;
-	}
-
-	/**
-	 * Get a registered setting.
-	 *
-	 * @param  string $setting The setting ID.
-	 * @return \AweBooking\Admin\Settings\Setting|null
-	 */
-	public function get( $setting ) {
-		return $this->settings->get( $setting );
-	}
-
-	/**
-	 * Determines if a given setting ID is registered.
-	 *
-	 * @param  string $setting The setting ID.
-	 * @return bool
-	 */
-	public function registered( $setting ) {
-		return $this->settings->has(
-			$setting instanceof Setting ? $setting->get_id() : $setting
-		);
-	}
-
-	/**
 	 * Register a setting.
 	 *
 	 * @param  \AweBooking\Admin\Settings\Setting $setting The setting instance.
-	 * @param  boolean                            $force   Force to register.
 	 * @return \AweBooking\Admin\Settings\Setting|false
 	 */
-	public function register( Setting $setting, $force = false ) {
+	public function register( $setting ) {
+		if ( ! $setting instanceof Setting ) {
+			return false;
+		}
+
 		if ( ! $setting->get_id() ) {
 			return false;
 		}
 
-		if ( $this->registered( $setting ) && ! $force ) {
-			return $setting;
-		}
-
-		return $this->settings[ $setting->get_id() ] = $setting;
-	}
-
-	/**
-	 * Unregister a registered setting.
-	 *
-	 * @param  string $setting The setting ID.
-	 * @return void
-	 */
-	public function unregister( $setting ) {
-		unset( $this->settings[ $setting ] );
+		return $this->drivers[ $setting->get_id() ] = $setting;
 	}
 
 	/**
@@ -112,9 +46,6 @@ class Admin_Settings {
 	 * @access private
 	 */
 	public function setup() {
-		// Clear the settings before.
-		$this->settings->clear();
-
 		$settings = apply_filters( 'abrs_admin_settings', $this->core_settings );
 
 		foreach ( $settings as $setting ) {
@@ -159,5 +90,46 @@ class Admin_Settings {
 
 		// Fire abrs_settings_updated action.
 		do_action( 'abrs_settings_updated', $this );
+	}
+
+	/**
+	 * Gets the default settings.
+	 *
+	 * @return array
+	 */
+	public function get_default_settings() {
+		$defaults = [ [] ];
+
+		foreach ( $this->all() as $setting ) {
+			if ( $setting instanceof Abstract_Setting ) {
+				$defaults[] = abrs_collect( $setting->prop( 'fields' ) )
+					->whereNotIn( 'type', [ 'title', 'include' ] )
+					->where( 'default', '!==', null )
+					->pluck( 'default', 'id' )
+					->all();
+			}
+		}
+
+		return array_merge( ...$defaults );
+	}
+
+	/**
+	 * Returns all translatable fields.
+	 *
+	 * @return array
+	 */
+	public function get_translatable_fields() {
+		$translatable = [ [] ];
+
+		foreach ( $this->all() as $setting ) {
+			if ( $setting instanceof Abstract_Setting ) {
+				$translatable[] = abrs_collect( $setting->prop( 'fields' ) )
+					->where( 'translatable', '=', true )
+					->pluck( 'id' )
+					->all();
+			}
+		}
+
+		return array_unique( array_merge( ... $translatable ) );
 	}
 }

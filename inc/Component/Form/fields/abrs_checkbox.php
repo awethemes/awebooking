@@ -8,4 +8,4 @@
  */
 
 // @codingStandardsIgnoreLine
-echo $types->checkbox( [], 'on' === $escaped_value );
+echo $types->checkbox( [], 'on' === abrs_sanitize_checkbox( $escaped_value ) );

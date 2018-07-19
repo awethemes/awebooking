@@ -107,6 +107,7 @@ class Search_Query {
 
 		// Setup the res_request.
 		$this->res_request = $res_request;
+		abrs_reservation()->set_current_request( $this->res_request );
 
 		do_action( 'setup_res_request', $res_request );
 	}
@@ -123,6 +124,9 @@ class Search_Query {
 			return null;
 		}
 
+		$request = $this->get_request();
+		$this->res_request['query_args'] = $request->only( 'hotel', 'only' );
+
 		$contraints = apply_filters( 'abrs_search_contraints', [
 			new Reservation_Constraint( $this->plugin['reservation'] ),
 		]);
@@ -130,6 +134,23 @@ class Search_Query {
 		$this->results = $this->res_request
 			->add_contraints( $contraints )
 			->search();
+
+		// TODO: ...
+		if ( $request->filled( 'sortby' ) ) {
+			switch ( $request->get( 'sortby' ) ) {
+				case 'cheapest':
+					$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
+						return $item['room_rate']->get_rate();
+					});
+					break;
+
+				case 'highest':
+					$this->results->items = $this->results->get_items()->sortByDesc(function ( $item ) {
+						return $item['room_rate']->get_rate();
+					});
+					break;
+			}
+		}
 
 		do_action( 'abrs_search_complete', $this );
 
