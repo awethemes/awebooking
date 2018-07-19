@@ -3287,55 +3287,55 @@ msgstr ""
 msgid "Bulk Update"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:32
+#: inc/Admin/views/misc/about.php:41
 msgid "Welcome to AweBooking"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:34
+#: inc/Admin/views/misc/about.php:43
 msgid "AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:35
+#: inc/Admin/views/misc/about.php:44
 msgid "Version %s"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:39
+#: inc/Admin/views/misc/about.php:48
 msgid "What' news"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:40
+#: inc/Admin/views/misc/about.php:49
 msgid "Always stay up-to-date with the latest version of AweBooking by checking our <a href=\"%s\">change log</a> regularly."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:42
+#: inc/Admin/views/misc/about.php:51
 msgid "How to use"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:43
+#: inc/Admin/views/misc/about.php:52
 msgid "Check out <a href=\"%s\">the plugin's documentation</a> if you need more information on how to use AweBooking."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:47
+#: inc/Admin/views/misc/about.php:56
 msgid "Get Support and Pro Features?"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:48
+#: inc/Admin/views/misc/about.php:57
 msgid "Find help in our forum and get free updates when purchasing the PRO version which boats a lot more advanced features"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:55
+#: inc/Admin/views/misc/about.php:64
 msgid "Premium addons"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:56
+#: inc/Admin/views/misc/about.php:65
 msgid "The PRO version will never fail to impress you. With a bunch of premium features added, your online booking system will be pushed to the next level"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:78
-msgid "Premium themes"
+#: inc/Admin/views/misc/about.php:87
+msgid "AweBooking themes"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:100
+#: inc/Admin/views/misc/about.php:108
 msgid "Go to Settings &rarr;"
 msgstr ""
 
