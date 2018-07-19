@@ -26,6 +26,15 @@
 		color: #fff;
 		font-size: 1.2em;
 	}
+
+	h3.awebooking-theme-name {
+		margin-top: 0;
+	}
+
+	.awebooking-theme-name a {
+		color: #333;
+		text-decoration: none;
+	}
 </style>
 
 <div class="wrap about-wrap">
@@ -75,21 +84,20 @@
 
 	<?php if ( ! abrs_blank( $available_themes ) ) : ?>
 		<hr>
-		<h2 style="text-align: left;"><?php esc_html_e( 'Premium themes', 'awebooking' ); ?></h2>
+		<h2 style="text-align: left;"><?php esc_html_e( 'AweBooking themes', 'awebooking' ); ?></h2>
 
-		<div class="under-the-hood three-col">
+		<div class="under-the-hood two-col">
 			<?php foreach ( $available_themes as $_theme ) : ?>
-
 				<div class="col">
-					<a class="awebooking-plugin-cover" href="<?php echo esc_url( 'https://awethemes.com/plugins/awebooking?ref=plugin-core' ); ?>" target="_blank">
-						<img src="<?php echo esc_url( $_theme['thumbnail'] ); ?>">
-
-						<h3>
-							<?php echo esc_html( $_theme['label'] ); ?>
-						</h3>
+					<a href="<?php echo esc_url( isset( $_theme['link'] ) ? $_theme['link'] : 'https://awethemes.com/themes' ); ?>" target="_blank">
+						<img src="<?php echo esc_url( isset( $_theme['label'] ) ? $_theme['thumbnail'] : '' ); ?>">
 					</a>
 
-					<p><?php echo wp_kses_post( $_theme['description'] ); ?></p>
+					<h3 class="awebooking-theme-name">
+						<a href="<?php echo esc_url( isset( $_theme['link'] ) ? $_theme['link'] : 'https://awethemes.com/themes' ); ?>" target="_blank">
+							<?php echo esc_html( isset( $_theme['label'] ) ? $_theme['label'] : '' ); ?>
+						</a>
+					</h3>
 				</div>
 			<?php endforeach ?>
 		</div>

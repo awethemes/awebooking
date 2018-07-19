@@ -3,8 +3,8 @@ namespace AweBooking;
 
 class Premium {
 	/* Constants */
-	const ADDONS_URL = 'http://update.awethemes.local/addons.json';
-	const THEMES_URL = 'http://update.awethemes.local/themes.json';
+	const ADDONS_URL = 'http://update.awethemes.com/addons.json';
+	const THEMES_URL = 'http://update.awethemes.com/themes.json';
 
 	/**
 	 * Gets the premium plugins.
