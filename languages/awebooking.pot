@@ -27,31 +27,31 @@ msgstr ""
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
-#: inc/Installer.php:255
+#: inc/Installer.php:188
 msgid "View settings"
 msgstr ""
 
-#: inc/Installer.php:255, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
+#: inc/Installer.php:188, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
 msgid "Settings"
 msgstr ""
 
-#: inc/Installer.php:274
+#: inc/Installer.php:207
 msgid "View documentation"
 msgstr ""
 
-#: inc/Installer.php:274
+#: inc/Installer.php:207
 msgid "Docs"
 msgstr ""
 
-#: inc/Installer.php:275
+#: inc/Installer.php:208
 msgid "Visit demo"
 msgstr ""
 
-#: inc/Installer.php:275
+#: inc/Installer.php:208
 msgid "Demo"
 msgstr ""
 
-#: inc/Installer.php:276, inc/Installer.php:276
+#: inc/Installer.php:209, inc/Installer.php:209
 msgid "Contribute"
 msgstr ""
 
@@ -76,39 +76,39 @@ msgstr ""
 msgid "%d transients rows cleared"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:88
+#: inc/Admin/Admin_Tools.php:92
 msgid "Expired transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:89
+#: inc/Admin/Admin_Tools.php:93
 msgid "Clear transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:90
+#: inc/Admin/Admin_Tools.php:94
 msgid "This tool will clear ALL expired transients from WordPress."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:93
+#: inc/Admin/Admin_Tools.php:97
 msgid "Optimize database"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:94
+#: inc/Admin/Admin_Tools.php:98
 msgid "Optimize"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:95
+#: inc/Admin/Admin_Tools.php:99
 msgid "This tool will delete all orphan rows in AweBooking tables."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:98
+#: inc/Admin/Admin_Tools.php:102
 msgid "Capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:99
+#: inc/Admin/Admin_Tools.php:103
 msgid "Reset capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:100
+#: inc/Admin/Admin_Tools.php:104
 msgid "This tool will reset the admin, customer, receptionist and hotel manager roles to default."
 msgstr ""
 
