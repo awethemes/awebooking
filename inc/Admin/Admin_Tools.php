@@ -38,6 +38,9 @@ class Admin_Tools {
 	 * @return int
 	 */
 	public function clear_expired_transients() {
+		delete_transient( 'awebooking_premium_themes' );
+		delete_transient( 'awebooking_premium_addons' );
+
 		return abrs_delete_expired_transients();
 	}
 
@@ -72,7 +75,8 @@ class Admin_Tools {
 	 */
 	public function reset_roles() {
 		$roles = new Roles;
-		// Remove then re-add caps and roles
+
+		// Remove then re-add caps and roles.
 		$roles->remove();
 		$roles->create();
 	}
