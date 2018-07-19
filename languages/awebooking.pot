@@ -27,31 +27,31 @@ msgstr ""
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
-#: inc/Installer.php:236
+#: inc/Installer.php:255
 msgid "View settings"
 msgstr ""
 
-#: inc/Installer.php:236, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
+#: inc/Installer.php:255, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
 msgid "Settings"
 msgstr ""
 
-#: inc/Installer.php:255
+#: inc/Installer.php:274
 msgid "View documentation"
 msgstr ""
 
-#: inc/Installer.php:255
+#: inc/Installer.php:274
 msgid "Docs"
 msgstr ""
 
-#: inc/Installer.php:256
+#: inc/Installer.php:275
 msgid "Visit demo"
 msgstr ""
 
-#: inc/Installer.php:256
+#: inc/Installer.php:275
 msgid "Demo"
 msgstr ""
 
-#: inc/Installer.php:257, inc/Installer.php:257
+#: inc/Installer.php:276, inc/Installer.php:276
 msgid "Contribute"
 msgstr ""
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Hotel Manager"
 msgstr ""
 
-#: inc/Admin/Admin_Settings.php:89
+#: inc/Admin/Admin_Settings.php:86
 msgid "Your settings have been saved."
 msgstr ""
 
@@ -571,51 +571,59 @@ msgstr ""
 msgid "Invalid Booking ID."
 msgstr ""
 
-#: inc/Core/calendar.php:20
+#: inc/Core/concierge.php:28
+msgid "Sync"
+msgstr ""
+
+#: inc/Core/concierge.php:32
+msgid "Unavailable"
+msgstr ""
+
+#: inc/Core/concierge.php:44
 msgid "Replace"
 msgstr ""
 
-#: inc/Core/calendar.php:21
+#: inc/Core/concierge.php:45
 msgid "Add"
 msgstr ""
 
-#: inc/Core/calendar.php:22
+#: inc/Core/concierge.php:46
 msgid "Subtract"
 msgstr ""
 
-#: inc/Core/calendar.php:23
+#: inc/Core/concierge.php:47
 msgid "Multiply"
 msgstr ""
 
-#: inc/Core/calendar.php:24
+#: inc/Core/concierge.php:48
 msgid "Divide"
 msgstr ""
 
-#: inc/Core/calendar.php:25
+#: inc/Core/concierge.php:49
 msgid "Increase"
 msgstr ""
 
-#: inc/Core/calendar.php:26
+#: inc/Core/concierge.php:50
 msgid "Decrease"
 msgstr ""
 
-#: inc/Core/concierge.php:143, inc/Core/concierge.php:502, inc/Core/concierge.php:550
+#: inc/Core/concierge.php:178, inc/Core/concierge.php:537, inc/Core/concierge.php:585
 msgid "Invalid Room ID"
 msgstr ""
 
-#: inc/Core/concierge.php:225, inc/Core/concierge.php:267
+#: inc/Core/concierge.php:260, inc/Core/concierge.php:302
 msgid "Invalid rate ID"
 msgstr ""
 
-#: inc/Core/concierge.php:410
+#: inc/Core/concierge.php:445
 msgid "Invalid room type."
 msgstr ""
 
-#: inc/Core/concierge.php:419
+#: inc/Core/concierge.php:454
 msgid "Invalid rate plan."
 msgstr ""
 
-#: inc/Core/concierge.php:429
+#: inc/Core/concierge.php:464
 msgid "Unable to create the reservation request."
 msgstr ""
 
@@ -1077,48 +1085,48 @@ msgstr ""
 msgid "Infants"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:130
+#: inc/Admin/Calendar/Booking_Scheduler.php:132
 msgid "Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:131
+#: inc/Admin/Calendar/Booking_Scheduler.php:133
 msgid "Pending"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:132
+#: inc/Admin/Calendar/Booking_Scheduler.php:134
 msgid "Processing"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:133
+#: inc/Admin/Calendar/Booking_Scheduler.php:135
 msgid "Reserved"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:134, inc/Admin/Forms/Booking_Payment_Form.php:47
+#: inc/Admin/Calendar/Booking_Scheduler.php:136, inc/Admin/Forms/Booking_Payment_Form.php:47
 msgid "Deposit"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:135, inc/Admin/List_Tables/Booking_List_Table.php:63, templates/emails/partials/line-booking.php:90
+#: inc/Admin/Calendar/Booking_Scheduler.php:137, inc/Admin/List_Tables/Booking_List_Table.php:63, templates/emails/partials/line-booking.php:90
 msgid "Paid"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:136
+#: inc/Admin/Calendar/Booking_Scheduler.php:138
 msgid "Checked In"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:137
+#: inc/Admin/Calendar/Booking_Scheduler.php:139
 msgid "Checked Out"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:156
+#: inc/Admin/Calendar/Booking_Scheduler.php:158
 msgid "Set as Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:157
+#: inc/Admin/Calendar/Booking_Scheduler.php:159
 msgid "Clear Blocked"
 msgstr ""
 
 #. translators: Available rooms
-#: inc/Admin/Calendar/Booking_Scheduler.php:183
+#: inc/Admin/Calendar/Booking_Scheduler.php:185
 msgctxt "awebooking"
 msgid "%s room available"
 msgid_plural "%s rooms available"
@@ -3239,14 +3247,6 @@ msgstr ""
 msgid "Add Service"
 msgstr ""
 
-#: inc/Admin/views/calendar/html-blocked-state.php:14
-msgid "Period is blocked"
-msgstr ""
-
-#: inc/Admin/views/calendar/html-blocked-state.php:15, inc/Admin/views/calendar/html-bulk-update.php:64
-msgid "Unblock"
-msgstr ""
-
 #: inc/Admin/views/calendar/html-bulk-update.php:7
 msgid "Bulk Update State"
 msgstr ""
@@ -3267,6 +3267,10 @@ msgstr ""
 msgid "Block"
 msgstr ""
 
+#: inc/Admin/views/calendar/html-bulk-update.php:64, inc/Admin/views/calendar/html-unavailable-state.php:15
+msgid "Unblock"
+msgstr ""
+
 #: inc/Admin/views/calendar/html-bulk-update.php:77, inc/Admin/views/rates/html-adjust-price.php:68, inc/Admin/views/rates/html-bulk-update.php:74
 msgid "Apply on days"
 msgstr ""
@@ -3275,55 +3279,63 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
+#: inc/Admin/views/calendar/html-unavailable-state.php:14
+msgid "Period is blocked"
+msgstr ""
+
 #: inc/Admin/views/calendar/index.php:19
 msgid "Bulk Update"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:73
+#: inc/Admin/views/misc/about.php:32
 msgid "Welcome to AweBooking"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:75
+#: inc/Admin/views/misc/about.php:34
 msgid "AweBooking is both simple and powerful when it comes to its purpose: booking hotel room. It allows you to setup any reservations quickly, pleasantly and easily."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:76
+#: inc/Admin/views/misc/about.php:35
 msgid "Version %s"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:80
+#: inc/Admin/views/misc/about.php:39
 msgid "What' news"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:81
+#: inc/Admin/views/misc/about.php:40
 msgid "Always stay up-to-date with the latest version of AweBooking by checking our <a href=\"%s\">change log</a> regularly."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:83
+#: inc/Admin/views/misc/about.php:42
 msgid "How to use"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:84
+#: inc/Admin/views/misc/about.php:43
 msgid "Check out <a href=\"%s\">the plugin's documentation</a> if you need more information on how to use AweBooking."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:88
+#: inc/Admin/views/misc/about.php:47
 msgid "Get Support and Pro Features?"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:89
+#: inc/Admin/views/misc/about.php:48
 msgid "Find help in our forum and get free updates when purchasing the PRO version which boats a lot more advanced features"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:96
-msgid "Premium features"
+#: inc/Admin/views/misc/about.php:55
+msgid "Premium addons"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:97
+#: inc/Admin/views/misc/about.php:56
 msgid "The PRO version will never fail to impress you. With a bunch of premium features added, your online booking system will be pushed to the next level"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:119
+#: inc/Admin/views/misc/about.php:78
+msgid "Premium themes"
+msgstr ""
+
+#: inc/Admin/views/misc/about.php:100
 msgid "Go to Settings &rarr;"
 msgstr ""
 
