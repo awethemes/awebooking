@@ -40,7 +40,8 @@
     },
     "autoload": {
         "psr-4": {
-            "AweBooking\\": "inc/"
+            "AweBooking\\": "inc/",
+            "AweBooking\\Deprecated\\": "deprecated/"
         },
         "classmap": [
             "bin/composer-cleaner.php"
