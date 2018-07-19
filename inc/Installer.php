@@ -4,6 +4,7 @@ namespace AweBooking;
 use Psr\Log\LoggerInterface;
 use AweBooking\Admin\Admin_Settings;
 use AweBooking\Bootstrap\Setup_Environment;
+use AweBooking\Background_Process\Background_Updater;
 
 class Installer {
 	/**
@@ -16,7 +17,7 @@ class Installer {
 	/**
 	 * The background updater.
 	 *
-	 * @var \AweBooking\Background_Updater
+	 * @var \AweBooking\Background_Process\Background_Updater
 	 */
 	protected $background_updater;
 
@@ -26,7 +27,12 @@ class Installer {
 	 * @var array
 	 */
 	protected $db_updates = [
-		// ...
+		'3.1.0' => [
+			'abrs_update_310_bookings',
+			'abrs_update_310_room_types',
+			'abrs_update_310_migrate_services',
+			'abrs_update_310_db_version',
+		],
 	];
 
 	/**
@@ -36,10 +42,15 @@ class Installer {
 	 */
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
+	}
 
-		// $this->background_updater = $plugin->make( Background_Updater::class );
-
-		$this->init();
+	/**
+	 * Returns the plugin instance.
+	 *
+	 * @return \AweBooking\Plugin
+	 */
+	public function get_plugin() {
+		return $this->plugin;
 	}
 
 	/**
@@ -49,6 +60,7 @@ class Installer {
 	 */
 	public function init() {
 		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
+		add_action( 'init', [ $this, 'init_background_updater' ], 5 );
 		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
 		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 5 );
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
@@ -76,91 +88,16 @@ class Installer {
 	 * @return void
 	 */
 	public function deactivation() {
-		// Nothing todo for now.
+		// ...
 	}
 
 	/**
-	 * Doing the install.
+	 * Init background updates.
 	 *
 	 * @return void
 	 */
-	protected function install() {
-		if ( ! is_blog_installed() ) {
-			return;
-		}
-
-		// Check if we are not already running this routine.
-		if ( 'yes' === get_transient( 'awebooking_installing' ) ) {
-			return;
-		}
-
-		// If we made it till here nothing is running yet, let's set the transient now.
-		set_transient( 'awebooking_installing', 'yes', MINUTE_IN_SECONDS * 10 );
-
-		// Begin the installing...
-		if ( ! defined( 'AWEBOOKING_INSTALLING' ) ) {
-			define( 'AWEBOOKING_INSTALLING', true );
-		}
-
-		// Require core functions.
-		require_once trailingslashit( __DIR__ ) . 'Core/functions.php';
-		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
-
-		$this->setup_environment();
-		$this->create_tables();
-		$this->create_roles();
-		$this->create_cron_jobs();
-		$this->update_version();
-
-		// CHeck for the update DB.
-		if ( $this->needs_db_update() ) {
-			// $this->update();
-		} else {
-			$this->update_db_version();
-		}
-
-		// Everything seem done, delete the transient.
-		delete_transient( 'awebooking_installing' );
-
-		// Fire installed action.
-		do_action( 'awebooking_installed' );
-
-		// Remove rewrite rules and then recreate rewrite rules.
-		@flush_rewrite_rules();
-	}
-
-	/**
-	 * Push all needed DB updates to the queue for processing.
-	 *
-	 * @return void
-	 */
-	protected function update() {
-		$logger = $this->plugin->make( LoggerInterface::class );
-
-		$current_db_version = $this->get_current_db_version();
-		$update_queued = false;
-
-		foreach ( $this->db_updates as $version => $update_callbacks ) {
-			// Ignore versions that older than current db version,
-			// they may has been runned.
-			if ( version_compare( $version, $current_db_version, '<' ) ) {
-				continue;
-			}
-
-			// Loop through callbacks and add to queue.
-			foreach ( $update_callbacks as $update_callback ) {
-				$logger->info( sprintf( 'Queuing %1$s - %2$s', $version, $update_callback ), [ 'source' => 'db_updates' ] );
-
-				$this->background_updater->push_to_queue( $update_callback );
-
-				$update_queued = true;
-			}
-		}
-
-		// Only dispatch when update_queued marked true.
-		if ( $update_queued ) {
-			$this->background_updater->save()->dispatch();
-		}
+	public function init_background_updater() {
+		$this->background_updater = new Background_Updater( $this, $this->plugin->get_logger() );
 	}
 
 	/**
@@ -171,17 +108,13 @@ class Installer {
 	 * @access private
 	 */
 	public function maybe_reinstall() {
-		if ( defined( 'IFRAME_REQUEST' ) || $this->get_current_version() === $this->plugin->version() ) {
-			return;
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( $this->get_current_version(), $this->plugin->version(), '<' ) ) {
+			Constants::define( 'AWEBOOKING_REINSTALLING', true );
+
+			$this->install();
+
+			do_action( 'awebookin_updated' );
 		}
-
-		if ( ! defined( 'AWEBOOKING_REINSTALLING' ) ) {
-			define( 'AWEBOOKING_REINSTALLING', true );
-		}
-
-		$this->install();
-
-		do_action( 'awebookin_updated' );
 	}
 
 	/**
@@ -278,6 +211,94 @@ class Installer {
 	}
 
 	/**
+	 * Doing the install.
+	 *
+	 * @return void
+	 */
+	protected function install() {
+		if ( ! is_blog_installed() ) {
+			return;
+		}
+
+		// Check if we are not already running this routine.
+		if ( 'yes' === get_transient( 'awebooking_installing' ) ) {
+			return;
+		}
+
+		// If we made it till here nothing is running yet, let's set the transient now.
+		set_transient( 'awebooking_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
+		// Begin the installing...
+		if ( ! defined( 'AWEBOOKING_INSTALLING' ) ) {
+			define( 'AWEBOOKING_INSTALLING', true );
+		}
+
+		// Require core functions.
+		require_once trailingslashit( __DIR__ ) . 'Core/functions.php';
+		require_once trailingslashit( __DIR__ ) . 'Admin/admin-functions.php';
+
+		$this->setup_environment();
+		$this->create_tables();
+		$this->create_roles();
+		$this->create_cron_jobs();
+		$this->update_version();
+
+		// CHeck for the update DB.
+		if ( $this->needs_db_update() ) {
+			$this->update();
+		} else {
+			$this->update_db_version();
+		}
+
+		// Everything seem done, delete the transient.
+		delete_transient( 'awebooking_installing' );
+
+		// Fire installed action.
+		do_action( 'awebooking_installed' );
+
+		// Remove rewrite rules and then recreate rewrite rules.
+		@flush_rewrite_rules();
+	}
+
+	/**
+	 * Push all needed DB updates to the queue for processing.
+	 *
+	 * @return void
+	 */
+	protected function update() {
+		$logger = $this->plugin->make( LoggerInterface::class );
+
+		if ( is_null( $this->background_updater ) ) {
+			$this->init_background_updater();
+		}
+
+		$current_db_version = $this->get_current_db_version();
+		$update_queued = false;
+
+		foreach ( $this->db_updates as $version => $update_callbacks ) {
+			// Ignore versions that older than current db version,
+			// they may has been runned.
+			if ( version_compare( $version, $current_db_version, '<' ) ) {
+				continue;
+			}
+
+			// Loop through callbacks and add to queue.
+			foreach ( $update_callbacks as $update_callback ) {
+				$logger->info( sprintf( '[%1$s] Queuing %2$s', $version, $update_callback ), [ 'source' => 'db_updates' ] );
+
+				$this->background_updater->push_to_queue( $update_callback );
+
+				$update_queued = true;
+			}
+		}
+
+		// Only dispatch when update_queued marked true.
+		if ( $update_queued ) {
+			$this->background_updater->save()->dispatch();
+		}
+	}
+
+	/**
 	 * Update version to current.
 	 *
 	 * @return void
@@ -368,7 +389,7 @@ class Installer {
 	 * @return void
 	 */
 	protected function create_cron_jobs() {
-		// TODO: ...
+		// ...
 	}
 
 	/**

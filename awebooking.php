@@ -44,6 +44,9 @@ $awebooking = new AweBooking( __FILE__ );
 
 // Install the awebooking.
 $installer = $awebooking->make( 'installer' );
+
+$installer->init();
+
 register_activation_hook( __FILE__, [ $installer, 'activation' ] );
 
 // Initialize under 'plugins_loaded'.
