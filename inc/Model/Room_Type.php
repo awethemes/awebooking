@@ -146,6 +146,7 @@ class Room_Type extends Model {
 			'gallery_ids'       => [],
 
 			// Room data.
+			'bedrooms'            => 0,
 			'beds'                => [],
 			'view'                => '',
 			'area_size'           => '',
@@ -175,6 +176,7 @@ class Room_Type extends Model {
 			'thumbnail_id'        => '_thumbnail_id',
 			'hotel_id'            => '_hotel_id',
 
+			'bedrooms'            => '_bedrooms',
 			'beds'                => '_beds',
 			'view'                => '_room_view',
 			'area_size'           => '_area_size',
@@ -226,6 +228,7 @@ class Room_Type extends Model {
 				break;
 
 			case 'thumbnail_id':
+			case 'bedrooms':
 			case 'maximum_occupancy':
 			case 'number_adults':
 			case 'number_children':
