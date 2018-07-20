@@ -50,6 +50,10 @@ class Scripts_Service_Provider extends Service_Provider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'awebooking' );
+		if ( $styles = apply_filters( 'abrs_custom_css', trim( abrs_get_option( 'custom_css' ) ) ) ) {
+			wp_add_inline_style( 'awebooking', $styles );
+		}
+
 		if ( apply_filters( 'abrs_enqueue_default_style', true ) ) {
 			wp_enqueue_style( 'awebooking-colour' );
 		}
