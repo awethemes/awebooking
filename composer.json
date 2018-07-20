@@ -29,7 +29,6 @@
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
         "ruler/ruler": "^0.3.0",
-        "symfony/http-foundation": "3.3.*",
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
