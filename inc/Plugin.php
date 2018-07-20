@@ -155,6 +155,8 @@ final class Plugin extends Container {
 	 * Get the Monolog handler for the application.
 	 *
 	 * @return \Monolog\Handler\HandlerInterface
+	 *
+	 * @throws \Exception
 	 */
 	protected function get_monolog_handler() {
 		return ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )

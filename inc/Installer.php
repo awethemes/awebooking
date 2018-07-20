@@ -268,7 +268,7 @@ class Installer {
 	protected function update() {
 		$logger = $this->plugin->make( LoggerInterface::class );
 
-		if ( is_null( $this->background_updater ) ) {
+		if ( $this->background_updater === null ) {
 			$this->init_background_updater();
 		}
 
@@ -361,7 +361,7 @@ class Installer {
 		$current_db_version = $this->get_current_db_version();
 
 		// If no db_version found, there's nothing to update.
-		if ( is_null( $current_db_version ) || empty( $this->db_updates ) ) {
+		if (  empty( $this->db_updates ) || is_null( $current_db_version ) ) {
 			return false;
 		}
 
