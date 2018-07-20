@@ -61,5 +61,8 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
-### [3.1.0] - [2018-07-19]
+### [v3.1.1] - [2018-07-20]
+- Minor bug fixes
+
+### [v3.1.0] - [2018-07-19]
 - Release v3.1.0
