@@ -210,6 +210,21 @@ class Room_Type_Data_Form extends Form {
 		]);
 
 		$rooms->add_field([
+			'id'              => 'bedrooms',
+			'type'            => 'select',
+			'name'            => esc_html__( 'Bedrooms', 'awebooking' ),
+			'grid_column'     => 3,
+			'sanitization_cb' => 'absint',
+			'options'         => [
+				1 => esc_html__( 'Single bedroom', 'awebooking' ),
+				2 => esc_html__( 'Double bedrooms', 'awebooking' ),
+				3 => esc_html__( '3 bedrooms', 'awebooking' ),
+				4 => esc_html__( '4 bedrooms', 'awebooking' ),
+				5 => esc_html__( '5 bedrooms', 'awebooking' ),
+			],
+		]);
+
+		$rooms->add_field([
 			'id'              => 'beds',
 			'type'            => 'include',
 			'name'            => esc_html__( 'Beds', 'awebooking' ),
