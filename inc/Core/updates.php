@@ -14,7 +14,7 @@ function abrs_update_310_migrate_services( $installer ) {
 
 	$terms = get_terms([
 		'hide_empty' => false,
-		'taxonomy' => 'hotel_amenity',
+		'taxonomy'   => 'hotel_extra_service',
 	]);
 
 	foreach ( $terms as $term ) {
