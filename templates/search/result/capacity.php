@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					/* translators: %1$s number infants, %2$s infant button */
 					printf( esc_html_x( '%1$s x %2$s', 'number infants', 'awebooking' ),
 						absint( $room_type->get( 'number_infants' ) ),
-						'<i class="aficon aficon-infant"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
+						'<i class="aficon aficon-baby"></i><span class="screen-reader-text">' . esc_html_x( 'Infant', 'infant button', 'awebooking' ) . '</span>'
 					);
 				?>
 			</li>

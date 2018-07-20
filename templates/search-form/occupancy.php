@@ -22,7 +22,7 @@ if ( ! $atts['occupancy'] ) {
 <div tabindex="0" class="searchbox__box searchbox__box--occupancy">
 	<div class="searchbox__box-wrap">
 		<div class="searchbox__box-icon">
-			<i class="aficon aficon-men"></i>
+			<i class="aficon aficon-people"></i>
 		</div>
 
 		<div class="searchbox__box-line">
@@ -56,20 +56,20 @@ if ( ! $atts['occupancy'] ) {
 	<div class="searchbox__popup">
 		<label class="searchbox-spinner">
 			<span class="searchbox-spinner__title"><?php esc_html_e( 'Adults', 'awebooking' ); ?></span>
-			<input type="number" data-bind="value: adults" name="adults" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_adults' ) ); ?>" value="<?php echo esc_attr( $res_request['adults'] ); ?>" class="searchbox-spinner__input form-input-transparent" />
+			<input type="number" data-bind="value: adults" name="adults" min="1" max="<?php echo absint( abrs_get_option( 'search_form_max_adults' ) ); ?>" value="<?php echo esc_attr( $res_request['adults'] ); ?>" class="searchbox-spinner__input form-input-transparent" />
 		</label>
 
 		<?php if ( abrs_children_bookable() ) : ?>
 			<label class="searchbox-spinner">
 				<span class="searchbox-spinner__title"><?php esc_html_e( 'Children', 'awebooking' ); ?></span>
-				<input type="number" data-bind="value: children" name="children" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_children' ) ); ?>" value="<?php echo esc_attr( $res_request['children'] ); ?>" class="searchbox-spinner__input form-input-transparent" />
+				<input type="number" data-bind="value: children" min="0" name="children" max="<?php echo absint( abrs_get_option( 'search_form_max_children' ) ); ?>" value="<?php echo esc_attr( $res_request['children'] ); ?>" class="searchbox-spinner__input form-input-transparent" />
 			</label>
 		<?php endif; ?>
 
 		<?php if ( abrs_infants_bookable() ) : ?>
 			<label class="searchbox-spinner">
 				<span class="searchbox-spinner__title"><?php esc_html_e( 'Infants', 'awebooking' ); ?></span>
-				<input type="number" data-bind="value: infants" name="infants" maxlength="<?php echo absint( abrs_get_option( 'search_form_max_infants' ) ); ?>" value="<?php echo esc_attr( $res_request['infants'] ); ?>"  class="searchbox-spinner__input form-input-transparent" />
+				<input type="number" data-bind="value: infants" name="infants" min="0" max="<?php echo absint( abrs_get_option( 'search_form_max_infants' ) ); ?>" value="<?php echo esc_attr( $res_request['infants'] ); ?>"  class="searchbox-spinner__input form-input-transparent" />
 			</label>
 		<?php endif; ?>
 	</div>

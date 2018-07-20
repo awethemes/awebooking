@@ -18,12 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! abrs_get_option( 'display_filter_form', true ) || ! $res_request ) {
+if ( ! $res_request || 'off' === abrs_get_option( 'display_filter_form' ) ) {
 	return;
 }
 
 $url_generator = new Url_Generator( $res_request );
-$http_request = abrs_http_request()->request;
+$http_request  = abrs_http_request();
+
 ?>
 
 <div class="filterbox">
