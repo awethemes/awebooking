@@ -138,7 +138,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 */
 	do_action( 'abrs_pre_get_search_form', $atts );
 
-	if ( $abrs_query->res_request && is_null( $atts['res_request'] ) && $abrs_query ) {
+	if ( ! $atts['res_request'] && ( $abrs_query && $abrs_query->res_request ) ) {
 		$res_request = $abrs_query->res_request;
 	} else {
 		$res_request = abrs_create_res_request([
