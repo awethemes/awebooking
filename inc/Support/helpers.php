@@ -194,22 +194,22 @@ function abrs_str_is( $pattern, $value ) {
 		return false;
 	}
 
-	foreach ( $patterns as $pattern ) {
+	foreach ( $patterns as $_pattern ) {
 		// If the given value is an exact match we can of course return true right
 		// from the beginning. Otherwise, we will translate asterisks and do an
 		// actual pattern match against the two strings to see if they match.
-		if ( $pattern == $value ) {
+		if ( $_pattern == $value ) {
 			return true;
 		}
 
-		$pattern = preg_quote( $pattern, '#' );
+		$_pattern = preg_quote( $_pattern, '#' );
 
 		// Asterisks are translated into zero-or-more regular expression wildcards
 		// to make it convenient to check if the strings starts with the given
 		// pattern such as "library/*", making any string check convenient.
-		$pattern = str_replace( '\*', '.*', $pattern );
+		$_pattern = str_replace( '\*', '.*', $_pattern );
 
-		if ( 1 === preg_match( '#^' . $pattern . '\z#u', $value ) ) {
+		if ( 1 === preg_match( '#^' . $_pattern . '\z#u', $value ) ) {
 			return true;
 		}
 	}
@@ -248,7 +248,7 @@ function abrs_valid_url( $path ) {
  * @return void
  */
 function abrs_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
 }

@@ -60,6 +60,8 @@ class Resource implements Resource_Interface {
 	 * Set the resource ID.
 	 *
 	 * @param int $id The new ID.
+	 *
+	 * @return $this
 	 */
 	public function set_id( $id ) {
 		$this->id = (int) $id;
@@ -80,6 +82,8 @@ class Resource implements Resource_Interface {
 	 * Set the resource value.
 	 *
 	 * @param int $value The new value.
+	 *
+	 * @return $this
 	 */
 	public function set_value( $value ) {
 		$this->value = (int) $value;
@@ -100,6 +104,8 @@ class Resource implements Resource_Interface {
 	 * Set the resource title.
 	 *
 	 * @param int $title The new title.
+	 *
+	 * @return $this
 	 */
 	public function set_title( $title ) {
 		$this->title = $title;
@@ -120,6 +126,8 @@ class Resource implements Resource_Interface {
 	 * Set the resource description.
 	 *
 	 * @param int $description The new description.
+	 *
+	 * @return $this
 	 */
 	public function set_description( $description ) {
 		$this->description = $description;

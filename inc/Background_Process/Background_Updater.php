@@ -7,13 +7,6 @@ use Psr\Log\LoggerInterface;
 
 class Background_Updater extends Background_Process {
 	/**
-	 * The action name.
-	 *
-	 * @var string
-	 */
-	protected $action = 'background_process';
-
-	/**
 	 * The installer instance.
 	 *
 	 * @var \AweBooking\Installer

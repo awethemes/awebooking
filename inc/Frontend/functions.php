@@ -81,7 +81,7 @@ function abrs_is_checkout_page() {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
+	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() );
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
@@ -118,7 +118,7 @@ function abrs_body_class( $classes ) {
  * @return string
  */
 function abrs_get_search_form( $atts = [], $echo = true ) {
-	global $wp, $abrs_query;
+	global $abrs_query;
 
 	// Pairs the input atts.
 	$atts = shortcode_atts([
@@ -138,7 +138,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 */
 	do_action( 'abrs_pre_get_search_form', $atts );
 
-	if ( is_null( $atts['res_request'] ) && $abrs_query && $abrs_query->res_request ) {
+	if ( $abrs_query->res_request && is_null( $atts['res_request'] ) && $abrs_query ) {
 		$res_request = $abrs_query->res_request;
 	} else {
 		$res_request = abrs_create_res_request([
@@ -176,7 +176,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
  * @return string
  */
 function abrs_book_room_button( $args, $echo = true ) {
-	global $wp, $abrs_query;
+	global $abrs_query;
 
 	$args = wp_parse_args( $args, [
 		'room_type'   => 0,

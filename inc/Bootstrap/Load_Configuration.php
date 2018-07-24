@@ -70,7 +70,7 @@ class Load_Configuration {
 		// Perform copy options only in admin.
 		$original_option = $this->plugin->get_original_option();
 
-		if ( is_admin() && $new_option !== $original_option ) {
+		if ( $new_option !== $original_option && is_admin() ) {
 			$this->perform_copy_options( $original_option, $new_option );
 		}
 	}

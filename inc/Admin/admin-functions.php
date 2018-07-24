@@ -33,7 +33,7 @@ function abrs_admin_route_is( $pattern ) {
 	$screen = get_current_screen();
 
 	// Check the screen isset first.
-	if ( is_null( $screen ) || 'awebooking_route' !== $screen->base ) {
+	if ( 'awebooking_route' !== $screen->base || is_null( $screen ) ) {
 		return false;
 	}
 

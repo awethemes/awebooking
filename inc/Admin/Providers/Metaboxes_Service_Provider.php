@@ -91,7 +91,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		static $is_saving;
 
 		// The $post_id and $post are required.
-		if ( empty( $post_id ) || empty( $post ) && $is_saving ) {
+		if ( empty( $post_id ) || $is_saving ) {
 			return;
 		}
 
@@ -114,7 +114,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 
 		// Check the post being saved == the $post_id to
 		// prevent triggering this call for other save_post events.
-		if ( empty( $_POST['post_ID'] ) || $_POST['post_ID'] != $post_id ) {
+		if ( empty( $_POST['post_ID'] ) || (int) $_POST['post_ID'] !== (int) $post_id ) {
 			return;
 		}
 
@@ -138,6 +138,10 @@ class Metaboxes_Service_Provider extends Service_Provider {
 
 			// Handle save the boxes.
 			foreach ( $boxes as $box ) {
+				if ( ! method_exists( $box, 'save' ) ) {
+					continue;
+				}
+
 				try {
 					$box->save( $post, $request );
 				} catch ( \Exception $e ) {

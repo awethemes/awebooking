@@ -31,7 +31,7 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6', '<' ) ) {
 /**
  * And only works with PHP 5.6.4 or later.
  */
-if ( version_compare( phpversion(), '5.6.4', '<' ) ) {
+if ( PHP_VERSION_ID < 50604 ) {
 	add_action( 'admin_notices', 'awebooking_php_upgrade_notice' );
 	return;
 }

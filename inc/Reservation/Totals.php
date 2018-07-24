@@ -63,7 +63,7 @@ class Totals {
 	 * @param string $key The total name.
 	 * @param int    $total Total to set.
 	 */
-	protected function set( $key = 'total', $total ) {
+	protected function set( $key, $total ) {
 		$this->totals[ $key ] = $total instanceof Decimal ? $total->as_numeric() : $total;
 	}
 

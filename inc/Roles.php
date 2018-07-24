@@ -14,7 +14,7 @@ class Roles {
 			return;
 		}
 
-		if ( ! isset( $wp_roles ) ) {
+		if ( null === $wp_roles ) {
 			$wp_roles = new \WP_Roles(); // @codingStandardsIgnoreLine
 		}
 
@@ -116,7 +116,7 @@ class Roles {
 			return;
 		}
 
-		if ( ! isset( $wp_roles ) ) {
+		if ( null === $wp_roles ) {
 			$wp_roles = new \WP_Roles(); // @codingStandardsIgnoreLine
 		}
 

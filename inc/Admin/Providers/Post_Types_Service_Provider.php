@@ -170,6 +170,7 @@ class Post_Types_Service_Provider extends Service_Provider {
 	 * @param array    $post_states An array of post display states.
 	 * @param \WP_Post $post        The current post object.
 	 *
+	 * @return array
 	 * @access private
 	 */
 	public function display_post_states( $post_states, $post ) {

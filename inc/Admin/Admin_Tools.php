@@ -7,7 +7,8 @@ class Admin_Tools {
 	/**
 	 * Run a task.
 	 *
-	 * @param string $task The task name.
+	 * @param  string $task The task name.
+	 * @return array
 	 */
 	public function run( $task ) {
 		$message = '';

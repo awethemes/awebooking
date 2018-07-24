@@ -51,7 +51,7 @@ class Taxonomies_Service_Provider extends Service_Provider {
 	 * @return array
 	 */
 	public function disable_checked_ontop( $args ) {
-		if ( ! empty( $args['taxonomy'] ) && 'hotel_amenity' == $args['taxonomy'] ) {
+		if ( ! empty( $args['taxonomy'] ) && 'hotel_amenity' === $args['taxonomy'] ) {
 			$args['checked_ontop'] = false;
 		}
 

@@ -16,7 +16,7 @@ final class ISO4217 implements \Countable, \IteratorAggregate {
 	 *
 	 * @var array
 	 */
-	protected $currencies = [];
+	private $currencies;
 
 	/**
 	 * Constructor.
@@ -27,7 +27,7 @@ final class ISO4217 implements \Countable, \IteratorAggregate {
 		static::$instance = $this;
 
 		if ( empty( $currencies ) ) {
-			$currencies = apply_filters( 'awebooking_currencies_dataset', include( __DIR__ . '/dataset.php' ) );
+			$currencies = apply_filters( 'awebooking_currencies_dataset', include __DIR__ . '/dataset.php' );
 		}
 
 		$this->currencies = $currencies;

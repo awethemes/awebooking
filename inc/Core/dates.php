@@ -51,7 +51,7 @@ function abrs_get_wp_timezone() {
 	}
 
 	// Get UTC offset, if it isn't set then return UTC.
-	if ( 0 === ( $utc_offset = intval( get_option( 'gmt_offset', 0 ) ) ) ) {
+	if ( 0 === ( $utc_offset = (int) get_option( 'gmt_offset', 0 ) ) ) {
 		return $timezone = 'UTC';
 	}
 
@@ -66,7 +66,7 @@ function abrs_get_wp_timezone() {
 	// Last try, guess timezone string manually.
 	foreach ( timezone_abbreviations_list() as $abbr ) {
 		foreach ( $abbr as $city ) {
-			if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
+			if ( $city['timezone_id'] && (int) $city['offset'] === $utc_offset && (bool) date( 'I' ) === (bool) $city['dst'] ) {
 				return $timezone = $city['timezone_id'];
 			}
 		}
@@ -190,7 +190,7 @@ function abrs_days_of_week( $day_label = 'full' ) {
 	$week_begins = (int) get_option( 'start_of_week' );
 
 	for ( $i = 0; $i <= 6; $i++ ) {
-		$wd = (int) ( $i + $week_begins ) % 7;
+		$wd = ( $i + $week_begins ) % 7;
 		$wd_name = $wp_locale->get_weekday( $wd );
 
 		if ( 'initial' === $day_label ) {

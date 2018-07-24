@@ -7,7 +7,7 @@
  * @package AweBooking
  */
 
-global $wpdb, $wp_version;
+global $wpdb;
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;

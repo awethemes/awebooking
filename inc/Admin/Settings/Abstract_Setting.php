@@ -160,11 +160,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 	 * @return bool
 	 */
 	public function is_translation() {
-		if ( abrs_running_on_multilanguage() && $this->plugin->get_current_option() !== $this->plugin->get_original_option() ) {
-			return true;
-		}
-
-		return false;
+		return $this->plugin->get_current_option() !== $this->plugin->get_original_option() && abrs_running_on_multilanguage();
 	}
 
 	/**

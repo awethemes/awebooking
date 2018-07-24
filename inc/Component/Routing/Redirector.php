@@ -167,11 +167,11 @@ class Redirector {
 	protected function create_redirect( $url, $status, $headers, $safe_redirect ) {
 		$redirect = new Redirect_Response( $url, $status, $headers, $safe_redirect );
 
-		if ( isset( $this->request ) ) {
+		if ( null !== $this->request ) {
 			$redirect->set_request( $this->request );
 		}
 
-		if ( isset( $this->session ) ) {
+		if ( null !== $this->session ) {
 			$redirect->set_session( $this->session );
 		}
 

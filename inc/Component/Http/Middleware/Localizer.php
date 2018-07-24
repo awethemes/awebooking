@@ -9,6 +9,8 @@ class Localizer {
 	 *
 	 * @param \Awethemes\Http\Request $request The request instance.
 	 * @param \Closure                $next    Next.
+	 *
+	 * @return \Closure
 	 */
 	public function handle( Request $request, $next ) {
 		if ( abrs_running_on_multilanguage() ) {

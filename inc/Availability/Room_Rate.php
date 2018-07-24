@@ -133,7 +133,7 @@ class Room_Rate {
 		}
 
 		// Check the rates availability.
-		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan(), $this->get_guest_counts() );
+		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan() );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {

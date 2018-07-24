@@ -31,7 +31,9 @@ class Carbonate extends Carbon {
 		// Same as DateTime object, but we'll convert to Carbon object.
 		if ( $datetime instanceof \DateTime ) {
 			return static::instance( $datetime );
-		} elseif ( $datetime instanceof \DateTimeImmutable ) {
+		}
+
+		if ( $datetime instanceof \DateTimeImmutable ) {
 			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
 		}
 
@@ -45,7 +47,9 @@ class Carbonate extends Carbon {
 		// Carbon instances from that format. And reset the time to 00:00:00.
 		if ( is_string( $datetime ) && abrs_is_standard_date( $datetime ) ) {
 			return static::createFromFormat( 'Y-m-d', $datetime, $tz )->startOfDay();
-		} elseif ( is_string( $datetime ) && in_array( $datetime, [ 'now', 'today', 'yesterday', 'tomorrow' ] ) ) {
+		}
+
+		if ( is_string( $datetime ) && in_array( $datetime, [ 'now', 'today', 'yesterday', 'tomorrow' ] ) ) {
 			return static::parse( $datetime, $tz );
 		}
 

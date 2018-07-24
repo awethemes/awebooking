@@ -26,4 +26,4 @@ require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
 /**
  * Alias the class "AweBooking\Plugin" to "AweBooking".
  */
-class_alias( 'AweBooking\Plugin', 'AweBooking', false );
+class_alias( \AweBooking\Plugin::class, 'AweBooking', false );

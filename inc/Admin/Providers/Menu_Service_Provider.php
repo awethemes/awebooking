@@ -87,14 +87,13 @@ class Menu_Service_Provider extends Service_Provider {
 
 		$new_menu = [];
 		foreach ( $menu_order as $index => $item ) {
-			if ( Constants::PARENT_MENU_SLUG == $item ) {
+			if ( Constants::PARENT_MENU_SLUG === $item ) {
 				$new_menu[] = 'separator-awebooking';
 				$new_menu[] = $item;
 				$new_menu[] = 'edit.php?post_type=room_type';
 
-				unset( $menu_order[ $room_type_index ] );
-				unset( $menu_order[ $separator_index ] );
-			} elseif ( 'separator-awebooking' != $item ) {
+				unset( $menu_order[ $room_type_index ], $menu_order[ $separator_index ] );
+			} elseif ( 'separator-awebooking' !== $item ) {
 				$new_menu[] = $item;
 			}
 		}

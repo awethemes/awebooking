@@ -95,15 +95,14 @@ class Calendar {
 	 */
 	public function get_events( Period $period, array $options = [] ) {
 		return Events::make( $this->get_provider_events( $period, $options ) )
-			->reject(function( Event_Interface $e ) {
-				return $this->get_resource()->get_id() !== $e->get_resource()->get_id();
+			->filter(function( Event_Interface $e ) {
+				return $this->get_resource()->get_id() == $e->get_resource()->get_id();
 			})
 			->each(function( Event_Interface $e ) {
 				if ( $e->is_untrusted_resource() ) {
 					$e->set_resource( $this->get_resource() );
 				}
-			})
-			->values();
+			})->values();
 	}
 
 	/**
