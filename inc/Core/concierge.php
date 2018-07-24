@@ -93,7 +93,7 @@ function abrs_room_has_states( $room, Timespan $timespan, $states ) {
  *
  * @return \AweBooking\Calendar\Finder\Response|WP_Error
  */
-function abrs_check_room_states( $room, Timespan $timespan, $states = Constants::STATE_AVAILABLE, $constraints = [], $comparison = 'only' ) {
+function abrs_check_room_states( $room, Timespan $timespan, $states = Constants::STATE_AVAILABLE, array $constraints = [], $comparison = 'only' ) {
 	try {
 		$timespan->requires_minimum_nights( 1 );
 	} catch ( LogicException $e ) {
@@ -362,24 +362,23 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
  *
  * @param  Collection|array|int $rates       The rates.
  * @param  Timespan             $timespan    The timespan.
- * @param  Guest_Counts         $guests      The guest counts.
  * @param  array                $constraints Array of constraints.
  * @return \AweBooking\Calendar\Finder\Response
  */
-function abrs_filter_rate_intervals( $rates, Timespan $timespan, Guest_Counts $guests, $constraints = [] ) {
+function abrs_filter_rate_intervals( $rates, Timespan $timespan, $constraints = [] ) {
 	$resources = abrs_collect( $rates )
 		->transform( 'abrs_resource_rate' )
 		->filter( /* Remove empty items */ )
-		->each(function( Resource $r ) use ( $timespan, $guests ) {
-			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan, $guests ) );
+		->each(function( Resource $r ) use ( $timespan ) {
+			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan ) );
 		});
 
 	$response = ( new Finder( $resources->all() ) )
 		->callback( '_abrs_filter_rates_callback' )
-		->using( apply_filters( 'abrs_filter_rate_intervals_constraints', $constraints, $timespan, $guests, $resources ) )
+		->using( apply_filters( 'abrs_filter_rate_intervals_constraints', $constraints, $timespan, $resources ) )
 		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
 
-	return apply_filters( 'abrs_filter_rate_intervals', $response, $timespan, $guests, $resources );
+	return apply_filters( 'abrs_filter_rate_intervals', $response, $timespan, $resources );
 }
 
 /**
@@ -407,10 +406,9 @@ function _abrs_filter_rates_callback( $resource, $response ) {
  *
  * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate     The rate instance.
  * @param  \AweBooking\Model\Common\Timespan                 $timespan The timespan.
- * @param  \AweBooking\Model\Common\Guest_Counts             $guests   The guest counts.
  * @return array
  */
-function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan, Guest_Counts $guests ) {
+function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan ) {
 	// Get rate restrictions.
 	$restrictions = $rate->get_restrictions();
 
