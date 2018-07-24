@@ -18,7 +18,6 @@
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
-		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" />
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
 	</rule>
 
@@ -28,5 +27,11 @@
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
 		<exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing" />
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="awebooking" />
+		</properties>
 	</rule>
 </ruleset>
