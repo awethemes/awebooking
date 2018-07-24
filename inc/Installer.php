@@ -268,7 +268,7 @@ class Installer {
 	protected function update() {
 		$logger = $this->plugin->make( LoggerInterface::class );
 
-		if ( $this->background_updater === null ) {
+		if ( null === $this->background_updater ) {
 			$this->init_background_updater();
 		}
 
@@ -361,7 +361,7 @@ class Installer {
 		$current_db_version = $this->get_current_db_version();
 
 		// If no db_version found, there's nothing to update.
-		if (  empty( $this->db_updates ) || is_null( $current_db_version ) ) {
+		if ( empty( $this->db_updates ) || is_null( $current_db_version ) ) {
 			return false;
 		}
 
@@ -500,12 +500,12 @@ CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
   KEY `name` (`name`)
 ) $collate;
 CREATE TABLE `{$wpdb->prefix}awebooking_relationships` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(42) NOT NULL DEFAULT '',
+  `rel_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `rel_type` VARCHAR(42) NOT NULL DEFAULT '',
   `rel_from` BIGINT UNSIGNED NOT NULL,
   `rel_to` BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `type` (`type`),
+  PRIMARY KEY (`rel_id`),
+  KEY `rel_type` (`rel_type`),
   KEY `rel_from` (`rel_from`),
   KEY `rel_to` (`rel_to`)
 ) $collate;
