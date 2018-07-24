@@ -50,7 +50,7 @@ class General_Setting extends Abstract_Setting {
 			'id'        => 'infants_bookable',
 			'type'      => 'abrs_toggle',
 			'name'      => esc_html__( 'Infants Bookable?', 'awebooking' ),
-			'default'   => 'on',
+			'default'   => 'off',
 		]);
 
 		$this->add_field([
