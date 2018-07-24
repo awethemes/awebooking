@@ -57,17 +57,12 @@ function abrs_logger() {
  *
  * @param  Exception $e Report the exception.
  * @return void
- *
- * @throws Exception
  */
 function abrs_report( $e ) {
 	try {
 		$logger = awebooking()->make( 'logger' );
-	} catch ( \Exception $ex ) {
-		throw $e; // Throw the original exception.
-	}
-
-	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+		$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+	} catch ( \Exception $ex ) {} // @codingStandardsIgnoreLine
 }
 
 /**
@@ -552,6 +547,7 @@ function abrs_get_template( $template_name, $vars = [] ) {
  *
  * @param  string $template_name Template name.
  * @param  array  $vars          Optional, the data send to template.
+ *
  * @return string
  */
 function abrs_get_template_content( $template_name, $vars = [] ) {
