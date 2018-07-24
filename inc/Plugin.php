@@ -176,6 +176,8 @@ final class Plugin extends Container {
 	 * Initialize the plugin when `plugins_loaded`.
 	 *
 	 * @access private
+	 *
+	 * @throws \Exception
 	 */
 	public function initialize() {
 		try {
@@ -246,7 +248,7 @@ final class Plugin extends Container {
 
 		if ( is_admin() ) {
 			$providers = array_merge( $providers, $this->service_providers['admin'] );
-		} elseif ( ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) ) {
+		} elseif ( ! defined( 'DOING_CRON' ) && ( ! is_admin() || defined( 'DOING_AJAX' ) ) ) {
 			$providers = array_merge( $providers, $this->service_providers['frontend'] );
 		}
 
