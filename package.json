@@ -10,6 +10,9 @@
     "knockout": [
       "node_modules/knockout/build/output/knockout*.js"
     ],
+    "js-cookie": [
+      "node_modules/js-cookie/src/js.cookie.js"
+    ],
     "a11y-dialog": [
       "node_modules/a11y-dialog/a11y-dialog*.js"
     ],
@@ -36,10 +39,14 @@
       "node_modules/selectize/dist/css/selectize.css",
       "node_modules/selectize/dist/js/standalone/selectize*.js"
     ],
+    "popper.js": [
+      "node_modules/popper.js/dist/umd/popper.js",
+      "node_modules/popper.js/dist/umd/popper.min.js"
+    ],
     "tippy.js": [
       "node_modules/tippy.js/dist/tippy.css",
-      "node_modules/tippy.js/dist/tippy.js",
-      "node_modules/tippy.js/dist/tippy.min.js"
+      "node_modules/tippy.js/dist/tippy.standalone.js",
+      "node_modules/tippy.js/dist/tippy.standalone.min.js"
     ]
   },
   "dependencies": {
@@ -65,7 +72,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^8.0.0",
-    "browser-sync": "^2.24.5",
+    "browser-sync": "^2.24.6",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
@@ -76,7 +83,7 @@
     "gulp-if": "^2.0.2",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-rename": "^1.3.0",
+    "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
