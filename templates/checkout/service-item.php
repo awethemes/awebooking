@@ -17,9 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* @var array $includes */
 /* @var \AweBooking\Model\Service $service */
 
-$res_request = abrs_reservation()->get_previous_request();
-
 $services = abrs_reservation()->get_services();
+$res_request = abrs_reservation()->get_previous_request();
 
 $is_checked  = false;
 $is_included = in_array( $service->get_id(), $includes );
@@ -31,7 +30,7 @@ if ( $is_included || abrs_reservation()->has_service( $service ) ) {
 $price = abrs_calc_service_price( $service, [
 	'nights'     => $res_request->nights,
 	'base_price' => abrs_reservation()->get_totals()->get( 'rooms_subtotal' ),
-]);
+] );
 
 $input_prefix = 'services[' . $service->get_id() . ']';
 
@@ -95,12 +94,12 @@ $js_data['price']    = $price ?: 0;
 	(function ($) {
 		'use strict';
 
-		const Service = function (data) {
+		var Service = function (data) {
 			this.name = data.name;
 			this.price = data.price;
 			this.quantity = ko.observable(data.quantity);
 			this.totalHtml = ko.computed(() => {
-				let quantity = parseInt(this.quantity(), 10);
+				var quantity = parseInt(this.quantity(), 10);
 
 				if (isNaN(quantity) || quantity === 0) {
 					quantity = 1;
@@ -111,7 +110,7 @@ $js_data['price']    = $price ?: 0;
 		}
 
 		$(function () {
-			const data = <?php echo wp_json_encode( $js_data ); ?>;
+			var data = <?php echo wp_json_encode( $js_data ); ?>;
 			ko.applyBindings(new Service(data), document.getElementById('checkout-service-<?php echo esc_attr( $service->get_id() ); ?>'));
 		})
 	})(jQuery)
