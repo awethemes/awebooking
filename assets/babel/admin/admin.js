@@ -1,5 +1,6 @@
 const debounce = require('debounce');
 const queryString = require('query-string');
+const Dropdown = require('../core/dropdown');
 
 (function($) {
   'use strict';
@@ -206,6 +207,13 @@ const queryString = require('query-string');
         awebooking.createForm(link, 'DELETE').submit();
       });
     });
+
+    $('[data-init="abrs-dropdown"]').each(function () {
+      $(this).data('abrs-dropdown', new Dropdown(this, {
+        drop: '.abrs-drop',
+      }));
+    });
+
   });
 
 })(jQuery);

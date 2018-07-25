@@ -3,23 +3,10 @@ const Util = require('./util');
 const Dropdown = (($, Popper) => {
   'use strict';
 
-  // Store drops instance.
-  let allDrops = [];
-
-  const defaults = {
-    offset: 0,
-    flip: true,
-    openOn: 'click',
-    boundary: 'scrollParent',
-    reference: 'toggle',
-    display: 'dynamic',
-    dropClass: '.drop-content',
-  };
-
   class Dropdown {
     constructor(element, options) {
       this.element = element;
-      this.options = Object.assign({}, defaults, options);
+      this.options = Object.assign({}, Dropdown.defaults, options);
       this.drop    = this._getDropElement();
       this.popper  = null;
 
@@ -32,10 +19,8 @@ const Dropdown = (($, Popper) => {
         this.popper = new Popper(referenceElement, this.drop, this._getPopperConfig());
       }
 
-      this.transitionEndHandler = this._transitionEndHandler.bind(this);
       this._addEventListeners();
-
-      allDrops.push(this);
+      Dropdown.allDrops.push(this);
     }
 
     isOpened() {
@@ -59,6 +44,9 @@ const Dropdown = (($, Popper) => {
         return;
       }
 
+      this.element.focus();
+      this.element.setAttribute('aria-expanded', true);
+
       // If this is a touch-enabled device we add extra
       // empty mouseover listeners to the body's immediate children;
       // only needed because of broken event delegation on iOS
@@ -67,16 +55,14 @@ const Dropdown = (($, Popper) => {
         $(document.body).children().on('mouseover', null, $.noop);
       }
 
+      this.drop.classList.add('open');
+      this.drop.setAttribute('aria-hidden', true);
+
       if (this.popper) {
         this.popper.update();
       }
 
-      this.element.focus();
-      this.element.setAttribute('aria-expanded', true);
-
-      this.drop.classList.add('open');
-      this.drop.classList.add('open--transition');
-      setTimeout(() => { this.drop.classList.add('open--completed'); });
+      setTimeout(() => { this.drop.classList.add('open--transition'); });
     }
 
     close() {
@@ -90,25 +76,13 @@ const Dropdown = (($, Popper) => {
         $(document.body).children().off('mouseover', null, $.noop);
       }
 
-      this.element.setAttribute('aria-expanded', false);
+      this.element.setAttribute('aria-expanded', false)
+      this.drop.removeAttribute('aria-hidden');
+      this.drop.classList.remove('open--transition')
 
-      this.drop.classList.remove('open');
-      this.drop.classList.remove('open--completed');
-
-      this.drop.addEventListener(Util.TRANSITION_END, this.transitionEndHandler);
-    }
-
-    // TODO: ...
-    _transitionEndHandler(e) {
-      if (e.target !== e.currentTarget) {
-        return;
-      }
-
-      if (! this.drop.classList.contains('open')) {
-        this.drop.classList.remove('open--transition');
-      }
-
-      this.drop.removeEventListener(Util.TRANSITION_END, this.transitionEndHandler);
+      Util.onTransitionEnd(this.drop, () => {
+        this.drop.classList.remove('open');
+      })
     }
 
     _addEventListeners() {
@@ -167,7 +141,7 @@ const Dropdown = (($, Popper) => {
         if (target) {
           this.drop = document.querySelector(target);
         } else {
-          this.drop = parent ? parent.querySelector(this.options.dropClass) : null;
+          this.drop = parent ? parent.querySelector(this.options.drop) : null;
         }
       }
 
@@ -209,6 +183,19 @@ const Dropdown = (($, Popper) => {
       return 'bottom-start';
     }
   }
+
+  // Store dropdown instances.
+  Dropdown.allDrops = [];
+
+  Dropdown.defaults = {
+    drop: '[data-drop]',
+    offset: 0,
+    flip: true,
+    openOn: 'click',
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic',
+  };
 
   return Dropdown;
 })(jQuery, window.Popper);

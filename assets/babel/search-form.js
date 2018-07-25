@@ -2,13 +2,13 @@
   'use strict';
 
   function formatDate(date, format) {
-    const _date = flatpickr.parseDate(date);
+    const _date = plugin.utils.dates.parse(date, format || plugin.i18n.dateFormat);
 
     if (!_date) {
       return '';
     }
 
-    return flatpickr.formatDate(_date, format || plugin.i18n.dateFormat);
+    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
   }
 
   function SearchFormModel(data = {}) {
@@ -107,7 +107,7 @@
       }
 
       plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
-        dropClass: '.searchbox__popup',
+        drop: '.searchbox__popup',
       });
     }
   }

@@ -7,7 +7,13 @@ const Dropdown = require('./core/dropdown');
   'use strict';
 
   // Main objects
-  plugin.utils = plugin.instances = {};
+  plugin.utils = {};
+  plugin.instances = {};
+
+  plugin.utils.dates = require('./core/date-utils');
+  if (typeof window.flatpickr !== 'undefined') {
+    plugin.utils.dates.l10n = flatpickr.l10ns.default;
+  }
 
   plugin.utils.dropdown = function (el, config) {
     $(el).each(function () {
