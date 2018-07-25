@@ -200,7 +200,7 @@ function abrs_format_price( $amount, $currency = null ) {
 	$formatted = number_format( $amount->abs()->as_numeric(), $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
 	$formatted = apply_filters( 'abrs_price_formatted', $formatted, $amount, $args );
 
-	if ( apply_filters( 'abrs_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+	if ( $args['decimals'] > 0 && apply_filters( 'abrs_price_trim_zeros', false ) ) {
 		$formatted = preg_replace( '/' . preg_quote( $args['decimal_separator'], '/' ) . '0++$/', '', $formatted );
 	}
 
@@ -266,9 +266,9 @@ function abrs_ngettext_rooms( $count ) {
 /**
  * Return guest counts formating.
  *
- * @param  Guest_Counts|int $adults   adults
- * @param  int              $children children
- * @param  int              $infants  infants
+ * @param  Guest_Counts|int $adults   The number of adults.
+ * @param  int              $children The number of children.
+ * @param  int              $infants  The number of infants.
  * @return string
  */
 function abrs_format_guest_counts( $adults, $children = 0, $infants = 0 ) {
@@ -329,8 +329,8 @@ function abrs_get_measure_unit_label() {
 /**
  * Return service describe formating.
  *
- * @param  int|float $amount    amount
- * @param  string    $operation operation
+ * @param  int|float $amount    The amount.
+ * @param  string    $operation The operation.
  *
  * @return string
  */

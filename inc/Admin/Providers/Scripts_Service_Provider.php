@@ -13,7 +13,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	 */
 	public function init() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ], 9 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 11 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 		add_action( 'admin_enqueue_scripts', 'abrs_localize_flatpickr', 1000 );
 	}
 
@@ -23,48 +23,35 @@ class Scripts_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_scripts() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$min     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$version = $this->plugin->version();
 
-		wp_register_script( 'moment', ABRS_ASSET_URL . 'vendor/moment/moment' . $min . '.js', [], '2.22.1', false );
-		wp_register_script( 'knockout', ABRS_ASSET_URL . 'vendor/knockout/knockout-latest' . ( $min ? '' : '.debug' ) . '.js', [], '3.4.2', false );
-		wp_register_script( 'sortable', ABRS_ASSET_URL . 'vendor/sortable/Sortable' . $min . '.js', [], '1.7.0', false );
-		wp_register_script( 'jquery.waypoints', ABRS_ASSET_URL . 'vendor/waypoints/jquery.waypoints' . $min . '.js', [ 'jquery' ], '4.0.1', true );
-
-		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.5.0' );
-		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $min . '.js', [], '4.5.0', true );
-
-		wp_register_style( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy.css', [], '2.5.2' );
-		wp_register_script( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy' . $min . '.js', [], '2.5.2', true );
-
-		wp_register_style( 'selectize', ABRS_ASSET_URL . 'vendor/selectize/selectize.css', [], '0.12.4' );
-		wp_register_script( 'selectize', ABRS_ASSET_URL . 'vendor/selectize/selectize' . $min . '.js', [], '0.12.4', true );
-
-		wp_register_style( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.css', [], '7.21' );
-		wp_register_script( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $min . '.js', [], '7.21', true );
+		// Vendor JS.
+		abrs_register_vendor_js();
 
 		// Core styles & scripts.
-		wp_register_style( 'awebooking-iconfont', ABRS_ASSET_URL . 'fonts/awebooking-webfont.css', [], $version );
-		wp_register_style( 'awebooking-admin', ABRS_ASSET_URL . 'css/admin' . $min . '.css', [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
-		wp_register_style( 'awebooking-scheduler', ABRS_ASSET_URL . 'css/schedule-calendar' . $min . '.css', [ 'awebooking-admin' ], $version );
+		wp_register_style( 'awebooking-iconfont', abrs_asset_url( 'fonts/awebooking-webfont.css' ), [], $version );
+		wp_register_style( 'awebooking-admin', abrs_asset_url( 'css/admin' . $min . '.css' ), [ 'awebooking-iconfont', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version );
+		wp_register_style( 'awebooking-scheduler', abrs_asset_url( 'css/schedule-calendar' . $min . '.css' ), [ 'awebooking-admin' ], $version );
 
-		wp_register_script( 'awebooking-admin', ABRS_ASSET_URL . 'js/admin/admin' . $min . '.js', [ 'jquery', 'knockout', 'wp-util', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
-		wp_register_script( 'awebooking-scheduler', ABRS_ASSET_URL . 'js/admin/schedule-calendar' . $min . '.js', [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
-		wp_register_script( 'awebooking-settings', ABRS_ASSET_URL . 'js/admin/settings' . $min . '.js', [ 'awebooking-admin', 'sortable' ], $version, true );
-		wp_register_script( 'awebooking-edit-booking', ABRS_ASSET_URL . 'js/admin/edit-booking' . $min . '.js', [ 'awebooking-admin' ], $version, true );
-		wp_register_script( 'awebooking-edit-room-type', ABRS_ASSET_URL . 'js/admin/edit-room-type' . $min . '.js', [ 'awebooking-admin', 'sortable', 'jquery-effects-highlight' ], $version, true );
-		wp_register_script( 'awebooking-page-rates', ABRS_ASSET_URL . 'js/admin/page-pricing' . $min . '.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
-		wp_register_script( 'awebooking-page-calendar', ABRS_ASSET_URL . 'js/admin/page-calendar' . $min . '.js', [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
+		wp_register_script( 'awebooking-admin', abrs_asset_url( 'js/admin/admin' . $min . '.js' ), [ 'jquery', 'knockout', 'wp-util', 'flatpickr', 'tippy', 'selectize', 'sweetalert2' ], $version, true );
+		wp_register_script( 'awebooking-scheduler', abrs_asset_url( 'js/admin/schedule-calendar' . $min . '.js' ), [ 'backbone', 'moment', 'jquery.waypoints', 'awebooking-admin' ], $version, true );
+		wp_register_script( 'awebooking-settings', abrs_asset_url( 'js/admin/settings' . $min . '.js' ), [ 'awebooking-admin', 'sortable' ], $version, true );
+		wp_register_script( 'awebooking-edit-booking', abrs_asset_url( 'js/admin/edit-booking' . $min . '.js' ), [ 'awebooking-admin' ], $version, true );
+		wp_register_script( 'awebooking-edit-room-type', abrs_asset_url( 'js/admin/edit-room-type' . $min . '.js' ), [ 'awebooking-admin', 'sortable', 'jquery-effects-highlight' ], $version, true );
+		wp_register_script( 'awebooking-page-rates', abrs_asset_url( 'js/admin/page-pricing' . $min . '.js' ), [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
+		wp_register_script( 'awebooking-page-calendar', abrs_asset_url( 'js/admin/page-calendar' . $min . '.js' ), [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
 	}
 
 	/**
 	 * Enqueue admin scripts.
 	 *
-	 * @param  string $hook_suffix The current admin page.
 	 * @access private
 	 */
-	public function enqueue_scripts( $hook_suffix ) {
-		$screen = get_current_screen();
+	public function enqueue_scripts() {
+		if ( ! $screen = get_current_screen() ) {
+			return;
+		}
 
 		// Enqueue global awebooking admin JS & CSS.
 		if ( 'awebooking_route' === $screen->base || in_array( $screen->id, abrs_admin_screens() ) ) {
@@ -80,7 +67,7 @@ class Scripts_Service_Provider extends Service_Provider {
 			wp_enqueue_script( 'awebooking-admin' );
 
 			wp_localize_script( 'awebooking-admin', 'awebooking', [
-				'debug'       => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+				'debug'       => defined( 'WP_DEBUG' ) && WP_DEBUG,
 				'ajax_url'    => admin_url( 'admin-ajax.php' ),
 				'admin_route' => $this->plugin['url']->admin_route(),
 				'i18n'        => [
