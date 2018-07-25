@@ -3,6 +3,7 @@
 
 var debounce = require('debounce');
 var queryString = require('query-string');
+var Dropdown = require('../core/dropdown');
 
 (function ($) {
   'use strict';
@@ -209,10 +210,16 @@ var queryString = require('query-string');
         awebooking.createForm(link, 'DELETE').submit();
       });
     });
+
+    $('[data-init="abrs-dropdown"]').each(function () {
+      $(this).data('abrs-dropdown', new Dropdown(this, {
+        drop: '.abrs-drop'
+      }));
+    });
   });
 })(jQuery);
 
-},{"../core/range-dates.js":3,"./utils/search-customer.js":2,"accounting":4,"debounce":5,"query-string":7}],2:[function(require,module,exports){
+},{"../core/dropdown":3,"../core/range-dates.js":4,"./utils/search-customer.js":2,"accounting":6,"debounce":7,"query-string":9}],2:[function(require,module,exports){
 'use strict';
 
 var $ = jQuery;
@@ -282,6 +289,245 @@ module.exports = function () {
 };
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Util = require('./util');
+
+var Dropdown = function ($, Popper) {
+  'use strict';
+
+  var Dropdown = function () {
+    function Dropdown(element, options) {
+      _classCallCheck(this, Dropdown);
+
+      this.element = element;
+      this.options = Object.assign({}, Dropdown.defaults, options);
+      this.drop = this._getDropElement();
+      this.popper = null;
+
+      if (!this.drop || typeof this.drop === 'undefined') {
+        throw new Error('Drop Error: Cannot find the drop element.');
+      }
+
+      if (typeof Popper !== 'undefined' && !this.popper) {
+        var referenceElement = this.element;
+        this.popper = new Popper(referenceElement, this.drop, this._getPopperConfig());
+      }
+
+      this._addEventListeners();
+      Dropdown.allDrops.push(this);
+    }
+
+    _createClass(Dropdown, [{
+      key: 'isOpened',
+      value: function isOpened() {
+        return this.drop.classList.contains('open');
+      }
+    }, {
+      key: 'isDisabled',
+      value: function isDisabled() {
+        return this.element.disabled || this.element.classList.contains('disabled');
+      }
+    }, {
+      key: 'toggle',
+      value: function toggle() {
+        if (this.isOpened()) {
+          this.close();
+        } else {
+          this.open();
+        }
+      }
+    }, {
+      key: 'open',
+      value: function open() {
+        var _this = this;
+
+        if (this.isDisabled() || this.isOpened()) {
+          return;
+        }
+
+        this.element.focus();
+        this.element.setAttribute('aria-expanded', true);
+
+        // If this is a touch-enabled device we add extra
+        // empty mouseover listeners to the body's immediate children;
+        // only needed because of broken event delegation on iOS
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().on('mouseover', null, $.noop);
+        }
+
+        this.drop.classList.add('open');
+        this.drop.setAttribute('aria-hidden', true);
+
+        if (this.popper) {
+          this.popper.update();
+        }
+
+        setTimeout(function () {
+          _this.drop.classList.add('open--transition');
+        });
+      }
+    }, {
+      key: 'close',
+      value: function close() {
+        var _this2 = this;
+
+        if (this.isDisabled() || !this.isOpened()) {
+          return;
+        }
+
+        // If this is a touch-enabled device we remove the extra
+        // empty mouseover listeners we added for iOS support
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().off('mouseover', null, $.noop);
+        }
+
+        this.element.setAttribute('aria-expanded', false);
+        this.drop.removeAttribute('aria-hidden');
+        this.drop.classList.remove('open--transition');
+
+        Util.onTransitionEnd(this.drop, function () {
+          _this2.drop.classList.remove('open');
+        });
+      }
+    }, {
+      key: '_addEventListeners',
+      value: function _addEventListeners() {
+        var _this3 = this;
+
+        if (!this.options.openOn) {
+          return;
+        }
+
+        if (this.options.openOn === 'always') {
+          setTimeout(this.open.bind(this));
+          return;
+        }
+
+        var events = this.options.openOn.split(' ');
+
+        if (events.indexOf('click') >= 0) {
+          $(this.element).on('click', function (e) {
+            e.preventDefault();
+            // e.stopPropagation();
+
+            _this3.toggle();
+          });
+
+          $(document).on('click', function (e) {
+            if (!_this3.isOpened()) {
+              return;
+            }
+
+            // Clicking inside dropdown
+            if (e.target === _this3.drop || _this3.drop.contains(e.target)) {
+              return;
+            }
+
+            // Clicking target
+            if (e.target === _this3.element || _this3.element.contains(e.target)) {
+              return;
+            }
+
+            _this3.close(e);
+          });
+        }
+
+        if (events.indexOf('hover') >= 0) {
+          // TODO: ...
+        }
+
+        if (events.indexOf('focus') >= 0) {
+          // TODO: ...
+        }
+      }
+    }, {
+      key: '_getDropElement',
+      value: function _getDropElement() {
+        if (!this.drop) {
+          var parent = this.element.parentNode;
+          var target = Util.getTargetFromElement(this.element);
+
+          if (target) {
+            this.drop = document.querySelector(target);
+          } else {
+            this.drop = parent ? parent.querySelector(this.options.drop) : null;
+          }
+        }
+
+        return this.drop;
+      }
+    }, {
+      key: '_getPopperConfig',
+      value: function _getPopperConfig() {
+        var _this4 = this;
+
+        var offset = {};
+
+        if (typeof this.options.offset === 'function') {
+          offset.fn = function (data) {
+            data.offsets = Object.assign({}, data.offsets, _this4.options.offset(data.offsets) || {});
+            return data;
+          };
+        } else {
+          offset.offset = this.options.offset;
+        }
+
+        var config = {
+          placement: this._getPlacement(),
+          modifiers: {
+            offset: offset,
+            flip: { enabled: this.options.flip },
+            preventOverflow: { boundariesElement: this.options.boundary }
+          }
+        };
+
+        // Disable Popper.js if we have a static display.
+        if (this.options.display === 'static') {
+          config.modifiers.applyStyle = {
+            enabled: false
+          };
+        }
+
+        return config;
+      }
+    }, {
+      key: '_getPlacement',
+      value: function _getPlacement() {
+        return 'bottom-start';
+      }
+    }]);
+
+    return Dropdown;
+  }();
+
+  // Store dropdown instances.
+
+
+  Dropdown.allDrops = [];
+
+  Dropdown.defaults = {
+    drop: '[data-drop]',
+    offset: 0,
+    flip: true,
+    openOn: 'click',
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic'
+  };
+
+  return Dropdown;
+}(jQuery, window.Popper);
+
+// Export the module.
+module.exports = Dropdown;
+
+},{"./util":5}],4:[function(require,module,exports){
 'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -437,7 +683,87 @@ module.exports = function rangePlugin() {
   };
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+'use strict';
+
+module.exports = function ($) {
+  'use strict';
+
+  function getTransitionEndEvent() {
+    var transitionEndEvent = '';
+
+    var transitionEndEvents = {
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend',
+      'transition': 'transitionend'
+    };
+
+    for (var name in transitionEndEvents) {
+      if ({}.hasOwnProperty.call(transitionEndEvents, name)) {
+        var tempEl = document.createElement('p');
+        if (typeof tempEl.style[name] !== 'undefined') {
+          transitionEndEvent = transitionEndEvents[name];
+        }
+      }
+    }
+
+    return transitionEndEvent;
+  }
+
+  return {
+    TRANSITION_END: getTransitionEndEvent(),
+
+    onTransitionEnd: function onTransitionEnd(el, callback) {
+      var _this = this;
+
+      var called = false;
+
+      $(el).one(this.TRANSITION_END, function () {
+        callback();
+        called = true;
+      });
+
+      setTimeout(function () {
+        if (!called) $(el).trigger(_this.TRANSITION_END);
+      }, this.getTransitionDurationFromElement(el));
+    },
+    getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+      if (!element) {
+        return 0;
+      }
+
+      // Get transition-duration of the element.
+      var transitionDuration = $(element).css('transition-duration');
+      var floatTransitionDuration = parseFloat(transitionDuration);
+
+      // Return 0 if element or transition duration is not found.
+      if (!floatTransitionDuration) {
+        return 0;
+      }
+
+      // If multiple durations are defined, take the first.
+      transitionDuration = transitionDuration.split(',')[0];
+
+      return parseFloat(transitionDuration) * 1000;
+    },
+    getTargetFromElement: function getTargetFromElement(element) {
+      var selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        selector = element.getAttribute('href') || '';
+      }
+
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
+    }
+  };
+}(jQuery);
+
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /*!
@@ -844,7 +1170,7 @@ module.exports = function rangePlugin() {
 	// Root will be `window` in browser or `global` on the server:
 })(undefined);
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /**
@@ -914,7 +1240,7 @@ module.exports = function debounce(func, wait, immediate) {
   return debounced;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -1013,7 +1339,7 @@ module.exports = function (encodedURI) {
 	}
 };
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -1274,7 +1600,7 @@ exports.parseUrl = function (input, options) {
 	};
 };
 
-},{"decode-uri-component":6,"strict-uri-encode":8}],8:[function(require,module,exports){
+},{"decode-uri-component":8,"strict-uri-encode":10}],10:[function(require,module,exports){
 'use strict';
 
 module.exports = function (str) {

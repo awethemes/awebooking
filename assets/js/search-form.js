@@ -9,13 +9,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   'use strict';
 
   function formatDate(date, format) {
-    var _date = flatpickr.parseDate(date);
+    var _date = plugin.utils.dates.parse(date, format || plugin.i18n.dateFormat);
 
     if (!_date) {
       return '';
     }
 
-    return flatpickr.formatDate(_date, format || plugin.i18n.dateFormat);
+    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
   }
 
   function SearchFormModel() {
@@ -128,7 +128,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
-          dropClass: '.searchbox__popup'
+          drop: '.searchbox__popup'
         });
       }
     }]);

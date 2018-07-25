@@ -23,7 +23,7 @@ msgid "AweBooking requires at least PHP version 5.6.4 to works, you are running 
 msgstr ""
 
 #. translators: %s Your current WordPress version
-#: precheck.php:79
+#: precheck.php:81
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
@@ -72,43 +72,43 @@ msgid "Your settings have been saved."
 msgstr ""
 
 #. translators: %d: amount of expired transients
-#: inc/Admin/Admin_Tools.php:18
+#: inc/Admin/Admin_Tools.php:19
 msgid "%d transients rows cleared"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:92
+#: inc/Admin/Admin_Tools.php:93
 msgid "Expired transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:93
+#: inc/Admin/Admin_Tools.php:94
 msgid "Clear transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:94
+#: inc/Admin/Admin_Tools.php:95
 msgid "This tool will clear ALL expired transients from WordPress."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:97
+#: inc/Admin/Admin_Tools.php:98
 msgid "Optimize database"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:98
+#: inc/Admin/Admin_Tools.php:99
 msgid "Optimize"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:99
+#: inc/Admin/Admin_Tools.php:100
 msgid "This tool will delete all orphan rows in AweBooking tables."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:102
+#: inc/Admin/Admin_Tools.php:103
 msgid "Capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:103
+#: inc/Admin/Admin_Tools.php:104
 msgid "Reset capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:104
+#: inc/Admin/Admin_Tools.php:105
 msgid "This tool will reset the admin, customer, receptionist and hotel manager roles to default."
 msgstr ""
 
@@ -607,7 +607,7 @@ msgstr ""
 msgid "Decrease"
 msgstr ""
 
-#: inc/Core/concierge.php:178, inc/Core/concierge.php:537, inc/Core/concierge.php:585
+#: inc/Core/concierge.php:178, inc/Core/concierge.php:535, inc/Core/concierge.php:583
 msgid "Invalid Room ID"
 msgstr ""
 
@@ -615,15 +615,15 @@ msgstr ""
 msgid "Invalid rate ID"
 msgstr ""
 
-#: inc/Core/concierge.php:445
+#: inc/Core/concierge.php:443
 msgid "Invalid room type."
 msgstr ""
 
-#: inc/Core/concierge.php:454
+#: inc/Core/concierge.php:452
 msgid "Invalid rate plan."
 msgstr ""
 
-#: inc/Core/concierge.php:464
+#: inc/Core/concierge.php:462
 msgid "Unable to create the reservation request."
 msgstr ""
 
@@ -690,37 +690,37 @@ msgstr ""
 msgid "+ <span>%1$s%%</span> to price"
 msgstr ""
 
-#: inc/Core/functions.php:193
+#: inc/Core/functions.php:200
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:452
+#: inc/Core/functions.php:459
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:453
+#: inc/Core/functions.php:460
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:454
+#: inc/Core/functions.php:461
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:455
+#: inc/Core/functions.php:462
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:456
+#: inc/Core/functions.php:463
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:457
+#: inc/Core/functions.php:464
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/Core/functions.php:528, inc/Email/Mailable.php:352
+#: inc/Core/functions.php:535, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -824,7 +824,7 @@ msgctxt "BACS payment method"
 msgid "Direct bank transfer"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73, inc/Admin/Forms/Room_Type_Data_Form.php:238, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/single/description.php:20
+#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73, inc/Admin/Forms/Room_Type_Data_Form.php:253, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/single/description.php:20
 msgid "Description"
 msgstr ""
 
@@ -1005,27 +1005,27 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: templates/search/filter-form.php:33
+#: templates/search/filter-form.php:34
 msgid "Sort by:"
 msgstr ""
 
-#: templates/search/filter-form.php:36
+#: templates/search/filter-form.php:37
 msgid "Cheapest price first"
 msgstr ""
 
-#: templates/search/filter-form.php:39
+#: templates/search/filter-form.php:40
 msgid "Highest price first"
 msgstr ""
 
-#: templates/search/filter-form.php:49
+#: templates/search/filter-form.php:50
 msgid "Show price:"
 msgstr ""
 
-#: templates/search/filter-form.php:52
+#: templates/search/filter-form.php:53
 msgid "Per room per night"
 msgstr ""
 
-#: templates/search/filter-form.php:55
+#: templates/search/filter-form.php:56
 msgid "Price for whole stay"
 msgstr ""
 
@@ -1153,7 +1153,7 @@ msgstr ""
 msgid "Revert Price"
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:20, inc/Admin/Providers/Scripts_Service_Provider.php:92
+#: inc/Admin/Controllers/Ajax_Controller.php:20, inc/Admin/Providers/Scripts_Service_Provider.php:79
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Sorry, the request room does not exists."
 msgstr ""
 
-#: inc/Admin/Controllers/Controller.php:59, inc/Component/Http/Middleware/Check_Capability.php:29
+#: inc/Admin/Controllers/Controller.php:59, inc/Component/Http/Middleware/Check_Capability.php:31
 msgid "Sorry, you are not allowed to access this page."
 msgstr ""
 
@@ -1439,7 +1439,7 @@ msgstr ""
 msgid "What does the package/service include? Ex. Breakfast, Shuttle, etc."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:166, inc/Admin/Forms/Room_Type_Data_Form.php:177, inc/Admin/Forms/Room_Type_Data_Form.php:216
+#: inc/Admin/Forms/Room_Type_Data_Form.php:166, inc/Admin/Forms/Room_Type_Data_Form.php:177, inc/Admin/Forms/Room_Type_Data_Form.php:231
 msgid "Add More"
 msgstr ""
 
@@ -1464,122 +1464,146 @@ msgid "View"
 msgstr ""
 
 #: inc/Admin/Forms/Room_Type_Data_Form.php:215
+msgid "Bedrooms"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:219
+msgid "Single bedroom"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:220
+msgid "Double bedrooms"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:221
+msgid "3 bedrooms"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:222
+msgid "4 bedrooms"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:223
+msgid "5 bedrooms"
+msgstr ""
+
+#: inc/Admin/Forms/Room_Type_Data_Form.php:230
 msgid "Beds"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:227, templates/search/result/detail.php:39, templates/template-parts/single/amenities.php:27
+#: inc/Admin/Forms/Room_Type_Data_Form.php:242, templates/search/result/detail.php:39, templates/template-parts/single/amenities.php:27
 msgid "Amenities"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:245
+#: inc/Admin/Forms/Room_Type_Data_Form.php:260
 msgid "Short Description"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:259, templates/template-parts/single/gallery.php:27
+#: inc/Admin/Forms/Room_Type_Data_Form.php:274, templates/template-parts/single/gallery.php:27
 msgid "Gallery"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:261
+#: inc/Admin/Forms/Room_Type_Data_Form.php:276
 msgid "Select Images"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:308
+#: inc/Admin/Forms/Room_Type_Data_Form.php:323
 msgid "Airport view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:309
+#: inc/Admin/Forms/Room_Type_Data_Form.php:324
 msgid "Bay view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:310
+#: inc/Admin/Forms/Room_Type_Data_Form.php:325
 msgid "City view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:311
+#: inc/Admin/Forms/Room_Type_Data_Form.php:326
 msgid "Courtyard view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:312
+#: inc/Admin/Forms/Room_Type_Data_Form.php:327
 msgid "Golf view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:313
+#: inc/Admin/Forms/Room_Type_Data_Form.php:328
 msgid "Harbor view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:314
+#: inc/Admin/Forms/Room_Type_Data_Form.php:329
 msgid "Intercoastal view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:315
+#: inc/Admin/Forms/Room_Type_Data_Form.php:330
 msgid "Lake view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:316
+#: inc/Admin/Forms/Room_Type_Data_Form.php:331
 msgid "Marina view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:317
+#: inc/Admin/Forms/Room_Type_Data_Form.php:332
 msgid "Mountain view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:318
+#: inc/Admin/Forms/Room_Type_Data_Form.php:333
 msgid "Ocean view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:319
+#: inc/Admin/Forms/Room_Type_Data_Form.php:334
 msgid "Pool view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:320
+#: inc/Admin/Forms/Room_Type_Data_Form.php:335
 msgid "River view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:321
+#: inc/Admin/Forms/Room_Type_Data_Form.php:336
 msgid "Water view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:322
+#: inc/Admin/Forms/Room_Type_Data_Form.php:337
 msgid "Beach view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:323
+#: inc/Admin/Forms/Room_Type_Data_Form.php:338
 msgid "Garden view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:324
+#: inc/Admin/Forms/Room_Type_Data_Form.php:339
 msgid "Park view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:325
+#: inc/Admin/Forms/Room_Type_Data_Form.php:340
 msgid "Forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:326
+#: inc/Admin/Forms/Room_Type_Data_Form.php:341
 msgid "Rain forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:327
+#: inc/Admin/Forms/Room_Type_Data_Form.php:342
 msgid "Various views"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:328
+#: inc/Admin/Forms/Room_Type_Data_Form.php:343
 msgid "Limited view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:329
+#: inc/Admin/Forms/Room_Type_Data_Form.php:344
 msgid "Slope view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:330
+#: inc/Admin/Forms/Room_Type_Data_Form.php:345
 msgid "Strip view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:331
+#: inc/Admin/Forms/Room_Type_Data_Form.php:346
 msgid "Countryside view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:332
+#: inc/Admin/Forms/Room_Type_Data_Form.php:347
 msgid "Sea view"
 msgstr ""
 
@@ -1936,37 +1960,37 @@ msgstr[1] ""
 msgid "Room Type Name"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:178
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:179
 msgctxt "Page states"
 msgid "Query Results"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:182
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:183
 msgctxt "Page states"
 msgid "Checkout"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:89
+#: inc/Admin/Providers/Scripts_Service_Provider.php:76
 msgid "OK"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:90, inc/Admin/views/booking/page-edit-room.php:94, inc/Admin/views/booking/payment-form.php:69, inc/Admin/views/booking/service-form.php:79
+#: inc/Admin/Providers/Scripts_Service_Provider.php:77, inc/Admin/views/booking/page-edit-room.php:94, inc/Admin/views/booking/payment-form.php:69, inc/Admin/views/booking/service-form.php:79
 msgid "Cancel"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:91
+#: inc/Admin/Providers/Scripts_Service_Provider.php:78
 msgid "Are you sure you want to do this?"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:116
+#: inc/Admin/Providers/Scripts_Service_Provider.php:103
 msgid "Are you sure you wish to delete this note?"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:117
+#: inc/Admin/Providers/Scripts_Service_Provider.php:104
 msgid "Please enter some content into note"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:138
+#: inc/Admin/Providers/Scripts_Service_Provider.php:125
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
@@ -2402,6 +2426,10 @@ msgstr ""
 
 #: inc/Admin/Settings/Premium_Setting.php:18, inc/Admin/Settings/Premium_Setting.php:28
 msgid "Premium"
+msgstr ""
+
+#: inc/Admin/Settings/Premium_Setting.php:29
+msgid "Join our <a href=\"https://awethemes.com/join\">membership</a> to extend your <a href=\"https://awethemes.com/plugins/awebooking#premiumaddons\">AweBooking</a>."
 msgstr ""
 
 #: inc/Admin/Settings/Premium_Setting.php:35

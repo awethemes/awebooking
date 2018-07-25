@@ -11,7 +11,13 @@ var Dropdown = require('./core/dropdown');
 
   // Main objects
 
-  plugin.utils = plugin.instances = {};
+  plugin.utils = {};
+  plugin.instances = {};
+
+  plugin.utils.dates = require('./core/date-utils');
+  if (typeof window.flatpickr !== 'undefined') {
+    plugin.utils.dates.l10n = flatpickr.l10ns.default;
+  }
 
   plugin.utils.dropdown = function (el, config) {
     $(el).each(function () {
@@ -116,7 +122,356 @@ var Dropdown = require('./core/dropdown');
   });
 })(jQuery, window.awebooking);
 
-},{"./core/dropdown":2,"accounting":4}],2:[function(require,module,exports){
+},{"./core/date-utils":2,"./core/dropdown":3,"accounting":5}],2:[function(require,module,exports){
+'use strict';
+
+module.exports = function () {
+  var pad = function pad(number) {
+    return ('0' + number).slice(-2);
+  };
+  var int = function int(bool) {
+    return bool === true ? 1 : 0;
+  };
+  var monthToStr = function monthToStr(monthNumber, shorthand, locale) {
+    return locale.months[shorthand ? 'shorthand' : 'longhand'][monthNumber];
+  };
+
+  var tokenRegex = {
+    D: "(\\w+)",
+    F: "(\\w+)",
+    G: "(\\d\\d|\\d)",
+    H: "(\\d\\d|\\d)",
+    J: "(\\d\\d|\\d)\\w+",
+    K: "",
+    M: "(\\w+)",
+    S: "(\\d\\d|\\d)",
+    U: "(.+)",
+    W: "(\\d\\d|\\d)",
+    Y: "(\\d{4})",
+    Z: "(.+)",
+    d: "(\\d\\d|\\d)",
+    h: "(\\d\\d|\\d)",
+    i: "(\\d\\d|\\d)",
+    j: "(\\d\\d|\\d)",
+    l: "(\\w+)",
+    m: "(\\d\\d|\\d)",
+    n: "(\\d\\d|\\d)",
+    s: "(\\d\\d|\\d)",
+    w: "(\\d\\d|\\d)",
+    y: "(\\d{2})"
+  };
+
+  var revFormat = {
+    D: function D() {
+      return undefined;
+    },
+
+    F: function F(date, monthName, locale) {
+      date.setMonth(locale.months.longhand.indexOf(monthName));
+    },
+
+    G: function G(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+
+    H: function H(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+
+    J: function J(date, day) {
+      date.setDate(parseFloat(day));
+    },
+
+    K: function K(date, amPM, locale) {
+      date.setHours(date.getHours() % 12 + 12 * int(new RegExp(locale.amPM[1], 'i').test(amPM)));
+    },
+
+    M: function M(date, shortMonth, locale) {
+      date.setMonth(locale.months.shorthand.indexOf(shortMonth));
+    },
+
+    S: function S(date, seconds) {
+      date.setSeconds(parseFloat(seconds));
+    },
+
+    U: function U(_, unixSeconds) {
+      return new Date(parseFloat(unixSeconds) * 1000);
+    },
+
+    W: function W(date, weekNum) {
+      var weekNumber = parseInt(weekNum);
+      return new Date(date.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
+    },
+
+    Y: function Y(date, year) {
+      date.setFullYear(parseFloat(year));
+    },
+
+    Z: function Z(_, ISODate) {
+      return new Date(ISODate);
+    },
+
+    d: function d(date, day) {
+      date.setDate(parseFloat(day));
+    },
+
+    h: function h(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+
+    i: function i(date, minutes) {
+      date.setMinutes(parseFloat(minutes));
+    },
+
+    j: function j(date, day) {
+      date.setDate(parseFloat(day));
+    },
+
+    l: function l() {
+      return undefined;
+    },
+
+    m: function m(date, month) {
+      date.setMonth(parseFloat(month) - 1);
+    },
+
+    n: function n(date, month) {
+      date.setMonth(parseFloat(month) - 1);
+    },
+
+    s: function s(date, seconds) {
+      date.setSeconds(parseFloat(seconds));
+    },
+
+    w: function w() {
+      return undefined;
+    },
+
+    y: function y(date, year) {
+      date.setFullYear(2000 + parseFloat(year));
+    }
+  };
+
+  var formats = {
+    // Get the date in UTC
+    Z: function Z(date) {
+      return date.toISOString();
+    },
+
+    // Weekday name, short, e.g. Thu
+    D: function D(date, locale) {
+      return locale.weekdays.shorthand[formats.w(date, locale)];
+    },
+
+    // Full month name e.g. January
+    F: function F(date, locale) {
+      return monthToStr(formats.n(date, locale) - 1, false, locale);
+    },
+
+    // Padded hour 1-12
+    G: function G(date, locale) {
+      return pad(formats.h(date, locale));
+    },
+
+    // Hours with leading zero e.g. 03
+    H: function H(date) {
+      return pad(date.getHours());
+    },
+
+    // Day (1-30) with ordinal suffix e.g. 1st, 2nd
+    J: function J(date, locale) {
+      return locale.ordinal !== undefined ? date.getDate() + locale.ordinal(date.getDate()) : date.getDate();
+    },
+
+    // AM/PM
+    K: function K(date, locale) {
+      return locale.amPM[int(date.getHours() > 11)];
+    },
+
+    // Shorthand month e.g. Jan, Sep, Oct, etc
+    M: function M(date, locale) {
+      return monthToStr(date.getMonth(), true, locale);
+    },
+
+    // Seconds 00-59
+    S: function S(date) {
+      return pad(date.getSeconds());
+    },
+
+    // Unix timestamp
+    U: function U(date) {
+      return date.getTime() / 1000;
+    },
+
+    // ISO-8601 week number of year
+    W: function W(date) {
+      return DateUtils.getWeek(date);
+    },
+
+    // Full year e.g. 2016
+    Y: function Y(date) {
+      return date.getFullYear();
+    },
+
+    // Day in month, padded (01-30)
+    d: function d(date) {
+      return pad(date.getDate());
+    },
+
+    // Hour from 1-12 (am/pm)
+    h: function h(date) {
+      return date.getHours() % 12 ? date.getHours() % 12 : 12;
+    },
+
+    // Minutes, padded with leading zero e.g. 09
+    i: function i(date) {
+      return pad(date.getMinutes());
+    },
+
+    // Day in month (1-30)
+    j: function j(date) {
+      return date.getDate();
+    },
+
+    // Weekday name, full, e.g. Thursday
+    l: function l(date, locale) {
+      return locale.weekdays.longhand[date.getDay()];
+    },
+
+    // Padded month number (01-12)
+    m: function m(date) {
+      return pad(date.getMonth() + 1);
+    },
+
+    // The month number (1-12)
+    n: function n(date) {
+      return date.getMonth() + 1;
+    },
+
+    // Seconds 0-59
+    s: function s(date) {
+      return date.getSeconds();
+    },
+
+    // Number of the day of the week
+    w: function w(date) {
+      return date.getDay();
+    },
+
+    // Last two digits of year e.g. 16 for 2016
+    y: function y(date) {
+      return String(date.getFullYear()).substring(2);
+    }
+  };
+
+  var DateUtils = {
+    l10n: {
+      amPM: ['AM', 'PM'],
+      weekdays: {
+        shorthand: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        longhand: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      },
+      months: {
+        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        longhand: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      }
+    },
+
+    getWeek: function getWeek(givenDate) {
+      var date = new Date(givenDate.getTime());
+      date.setHours(0, 0, 0, 0);
+
+      // Thursday in current week decides the year.
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+
+      // January 4 is always in week 1.
+      var week1 = new Date(date.getFullYear(), 0, 4);
+
+      // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+      return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    },
+    format: function format(date, _format, locale) {
+      locale = locale || this.l10n;
+
+      return _format.split('').map(function (c, i, arr) {
+        return formats[c] && arr[i - 1] !== '\\' ? formats[c](date, locale) : c !== '\\' ? c : '';
+      }).join('');
+    },
+    parse: function parse(date, format, timeless, locale) {
+      locale = locale || this.l10n;
+
+      if (date !== 0 && !date) {
+        return undefined;
+      }
+
+      var parsedDate = void 0;
+      var dateOrig = date;
+
+      if (date instanceof Date) {
+        parsedDate = new Date(date.getTime());
+      } else if (typeof date !== 'string' && date.toFixed !== undefined) {
+        parsedDate = new Date(date);
+      } else if (typeof date === 'string') {
+        var datestr = String(date).trim();
+
+        if (datestr === 'today') {
+          parsedDate = new Date();
+          timeless = true;
+        } else if (/Z$/.test(datestr) || /GMT$/.test(datestr)) {
+          parsedDate = new Date(date);
+        } else {
+          parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
+
+          var matched = void 0,
+              ops = [];
+          for (var i = 0, matchIndex = 0, regexStr = ''; i < format.length; i++) {
+            var token = format[i];
+            var isBackSlash = token === '\\';
+            var escaped = format[i - 1] === '\\' || isBackSlash;
+
+            if (tokenRegex[token] && !escaped) {
+              regexStr += tokenRegex[token];
+              var match = new RegExp(regexStr).exec(date);
+
+              if (match && (matched = true)) {
+                ops[token !== 'Y' ? 'push' : 'unshift']({
+                  fn: revFormat[token],
+                  val: match[++matchIndex]
+                });
+              }
+            } else if (!isBackSlash) {
+              regexStr += '.'; // don't really care
+            }
+
+            ops.forEach(function (_ref) {
+              var fn = _ref.fn,
+                  val = _ref.val;
+              return parsedDate = fn(parsedDate, val, locale) || parsedDate;
+            });
+          }
+
+          parsedDate = matched ? parsedDate : undefined;
+        }
+      }
+
+      /* istanbul ignore next */
+      if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
+        // config.errorHandler(new Error(`Invalid date provided: ${dateOrig}`))
+        return undefined;
+      }
+
+      if (timeless === true) {
+        parsedDate.setHours(0, 0, 0, 0);
+      }
+
+      return parsedDate;
+    }
+  };
+
+  return DateUtils;
+}();
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -128,26 +483,12 @@ var Util = require('./util');
 var Dropdown = function ($, Popper) {
   'use strict';
 
-  // Store drops instance.
-
-  var allDrops = [];
-
-  var defaults = {
-    offset: 0,
-    flip: true,
-    openOn: 'click',
-    boundary: 'scrollParent',
-    reference: 'toggle',
-    display: 'dynamic',
-    dropClass: '.drop-content'
-  };
-
   var Dropdown = function () {
     function Dropdown(element, options) {
       _classCallCheck(this, Dropdown);
 
       this.element = element;
-      this.options = Object.assign({}, defaults, options);
+      this.options = Object.assign({}, Dropdown.defaults, options);
       this.drop = this._getDropElement();
       this.popper = null;
 
@@ -160,10 +501,8 @@ var Dropdown = function ($, Popper) {
         this.popper = new Popper(referenceElement, this.drop, this._getPopperConfig());
       }
 
-      this.transitionEndHandler = this._transitionEndHandler.bind(this);
       this._addEventListeners();
-
-      allDrops.push(this);
+      Dropdown.allDrops.push(this);
     }
 
     _createClass(Dropdown, [{
@@ -194,6 +533,9 @@ var Dropdown = function ($, Popper) {
           return;
         }
 
+        this.element.focus();
+        this.element.setAttribute('aria-expanded', true);
+
         // If this is a touch-enabled device we add extra
         // empty mouseover listeners to the body's immediate children;
         // only needed because of broken event delegation on iOS
@@ -202,22 +544,22 @@ var Dropdown = function ($, Popper) {
           $(document.body).children().on('mouseover', null, $.noop);
         }
 
+        this.drop.classList.add('open');
+        this.drop.setAttribute('aria-hidden', true);
+
         if (this.popper) {
           this.popper.update();
         }
 
-        this.element.focus();
-        this.element.setAttribute('aria-expanded', true);
-
-        this.drop.classList.add('open');
-        this.drop.classList.add('open--transition');
         setTimeout(function () {
-          _this.drop.classList.add('open--completed');
+          _this.drop.classList.add('open--transition');
         });
       }
     }, {
       key: 'close',
       value: function close() {
+        var _this2 = this;
+
         if (this.isDisabled() || !this.isOpened()) {
           return;
         }
@@ -229,32 +571,17 @@ var Dropdown = function ($, Popper) {
         }
 
         this.element.setAttribute('aria-expanded', false);
+        this.drop.removeAttribute('aria-hidden');
+        this.drop.classList.remove('open--transition');
 
-        this.drop.classList.remove('open');
-        this.drop.classList.remove('open--completed');
-
-        this.drop.addEventListener(Util.TRANSITION_END, this.transitionEndHandler);
-      }
-
-      // TODO: ...
-
-    }, {
-      key: '_transitionEndHandler',
-      value: function _transitionEndHandler(e) {
-        if (e.target !== e.currentTarget) {
-          return;
-        }
-
-        if (!this.drop.classList.contains('open')) {
-          this.drop.classList.remove('open--transition');
-        }
-
-        this.drop.removeEventListener(Util.TRANSITION_END, this.transitionEndHandler);
+        Util.onTransitionEnd(this.drop, function () {
+          _this2.drop.classList.remove('open');
+        });
       }
     }, {
       key: '_addEventListeners',
       value: function _addEventListeners() {
-        var _this2 = this;
+        var _this3 = this;
 
         if (!this.options.openOn) {
           return;
@@ -272,25 +599,25 @@ var Dropdown = function ($, Popper) {
             e.preventDefault();
             // e.stopPropagation();
 
-            _this2.toggle();
+            _this3.toggle();
           });
 
           $(document).on('click', function (e) {
-            if (!_this2.isOpened()) {
+            if (!_this3.isOpened()) {
               return;
             }
 
             // Clicking inside dropdown
-            if (e.target === _this2.drop || _this2.drop.contains(e.target)) {
+            if (e.target === _this3.drop || _this3.drop.contains(e.target)) {
               return;
             }
 
             // Clicking target
-            if (e.target === _this2.element || _this2.element.contains(e.target)) {
+            if (e.target === _this3.element || _this3.element.contains(e.target)) {
               return;
             }
 
-            _this2.close(e);
+            _this3.close(e);
           });
         }
 
@@ -312,7 +639,7 @@ var Dropdown = function ($, Popper) {
           if (target) {
             this.drop = document.querySelector(target);
           } else {
-            this.drop = parent ? parent.querySelector(this.options.dropClass) : null;
+            this.drop = parent ? parent.querySelector(this.options.drop) : null;
           }
         }
 
@@ -321,13 +648,13 @@ var Dropdown = function ($, Popper) {
     }, {
       key: '_getPopperConfig',
       value: function _getPopperConfig() {
-        var _this3 = this;
+        var _this4 = this;
 
         var offset = {};
 
         if (typeof this.options.offset === 'function') {
           offset.fn = function (data) {
-            data.offsets = Object.assign({}, data.offsets, _this3.options.offset(data.offsets) || {});
+            data.offsets = Object.assign({}, data.offsets, _this4.options.offset(data.offsets) || {});
             return data;
           };
         } else {
@@ -362,16 +689,31 @@ var Dropdown = function ($, Popper) {
     return Dropdown;
   }();
 
+  // Store dropdown instances.
+
+
+  Dropdown.allDrops = [];
+
+  Dropdown.defaults = {
+    drop: '[data-drop]',
+    offset: 0,
+    flip: true,
+    openOn: 'click',
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic'
+  };
+
   return Dropdown;
 }(jQuery, window.Popper);
 
 // Export the module.
 module.exports = Dropdown;
 
-},{"./util":3}],3:[function(require,module,exports){
+},{"./util":4}],4:[function(require,module,exports){
 'use strict';
 
-var Util = function ($) {
+module.exports = function ($) {
   'use strict';
 
   function getTransitionEndEvent() {
@@ -399,18 +741,19 @@ var Util = function ($) {
   return {
     TRANSITION_END: getTransitionEndEvent(),
 
-    getTargetFromElement: function getTargetFromElement(element) {
-      var selector = element.getAttribute('data-target');
+    onTransitionEnd: function onTransitionEnd(el, callback) {
+      var _this = this;
 
-      if (!selector || selector === '#') {
-        selector = element.getAttribute('href') || '';
-      }
+      var called = false;
 
-      try {
-        return document.querySelector(selector) ? selector : null;
-      } catch (err) {
-        return null;
-      }
+      $(el).one(this.TRANSITION_END, function () {
+        callback();
+        called = true;
+      });
+
+      setTimeout(function () {
+        if (!called) $(el).trigger(_this.TRANSITION_END);
+      }, this.getTransitionDurationFromElement(el));
     },
     getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
       if (!element) {
@@ -430,13 +773,24 @@ var Util = function ($) {
       transitionDuration = transitionDuration.split(',')[0];
 
       return parseFloat(transitionDuration) * 1000;
+    },
+    getTargetFromElement: function getTargetFromElement(element) {
+      var selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        selector = element.getAttribute('href') || '';
+      }
+
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
     }
   };
 }(jQuery);
 
-module.exports = Util;
-
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 /*!
