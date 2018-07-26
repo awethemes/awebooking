@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php abrs_get_template( 'search/result/deal.php', compact( 'room_type', 'room_rate' ) ); ?>
 		</div>
 		<div class="column-lg-2">
-			<?php abrs_get_template( 'search/result/capacity.php', compact( 'room_type', 'room_rate' ) ); ?>
+			<?php abrs_get_template( 'search/result/occupancy.php', compact( 'room_type', 'room_rate' ) ); ?>
 		</div>
 		<div class="column-lg-3">
 			<?php do_action( 'abrs_search_result_room_price', $room_type, $room_rate ); ?>
