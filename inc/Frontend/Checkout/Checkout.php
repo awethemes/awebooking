@@ -146,7 +146,7 @@ class Checkout {
 		}
 
 		// Fire checkout processed action.
-		do_action( 'abrs_checkout_processed', $booking, $this, $data );
+		do_action( 'abrs_checkout_processed', $booking->get_id(), $this, $data );
 
 		// Process with payment.
 		if ( ! empty( $data['payment_method'] ) ) {
@@ -222,8 +222,8 @@ class Checkout {
 	 */
 	public function create_booking( $data ) {
 		// Give plugins the opportunity to create an booking themselves.
-		if ( $booking_id = apply_filters( 'abrs_checkout_create_booking', null, $this ) ) {
-			return $booking_id;
+		if ( $_booking_id = apply_filters( 'abrs_checkout_create_booking', null, $this ) ) {
+			return $_booking_id;
 		}
 
 		// If there is an booking pending payment, we can resume it here so
@@ -258,7 +258,7 @@ class Checkout {
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
 		]);
 
-		do_action( 'abrs_checkout_creating_booking', $booking, $data, $this );
+		do_action( 'abrs_checkout_creating_booking', $booking->get_id(), $data, $this );
 
 		// Save the booking.
 		$saved = $booking->save();
@@ -272,7 +272,7 @@ class Checkout {
 		$this->create_booking_items( $booking, $data );
 		$this->create_service_items( $booking, $data );
 
-		do_action( 'abrs_checkout_update_booking_meta', $booking_id, $data );
+		do_action( 'abrs_checkout_update_booking_meta', $booking->get_id(), $data );
 
 		return $booking->get_id();
 	}
