@@ -779,7 +779,8 @@ function abrs_register_vendor_js() {
 	wp_register_style( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.css' ), [], '7.25.6' );
 	wp_register_script( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.js' ), [], '7.25.6', true );
 
-	wp_register_script( 'jquery.waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
+	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery.spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
+	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
 }
 
 /**
