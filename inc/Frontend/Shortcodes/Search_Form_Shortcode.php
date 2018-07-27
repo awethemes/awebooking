@@ -2,20 +2,20 @@
 namespace AweBooking\Frontend\Shortcodes;
 
 class Search_Form_Shortcode extends Shortcode_Abstract {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->defaults = abrs_search_form_default_atts();
+	}
+
 	/**
 	 * Default attributes.
 	 *
 	 * @var array
 	 */
-	protected $defaults = [
-		'layout'          => 'horizontal',
-		'alignment'       => '',
-		'res_request'     => null,
-		'hotel_location'  => true,
-		'occupancy'       => true,
-		'only_room'       => null,
-		'container_class' => '',
-	];
+	protected $defaults = [];
 
 	/**
 	 * {@inheritdoc}

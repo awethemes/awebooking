@@ -890,8 +890,6 @@
 .searchbox__box-line {
   display: block;
   margin-left: 48px;
-  padding-top: 3px;
-  padding-bottom: 3px;
 }
 
 .searchbox__input.input-transparent,
@@ -902,6 +900,10 @@
 
 .button--search.searchbox__submit {
   min-width: 130px;
+}
+
+.searchbox__box--occupancy {
+  z-index: 6;
 }
 
 /* Styles */
@@ -1064,6 +1066,8 @@
   font-size: 1.1rem;
 }
 
+/* Pop-up */
+
 .searchbox__popup {
   display: none;
   position: absolute;
@@ -1071,7 +1075,6 @@
   border: solid 1px #eee;
   top: 100%;
   background-color: #fff;
-  padding: 5px;
   box-sizing: border-box;
   z-index: 1001;
 }
@@ -1084,83 +1087,78 @@
   font-size: 1rem;
 }
 
-.searchbox-spinner {
-  display: block;
-  position: relative;
-  padding: 5px 15px;
-  line-height: 40px;
-  overflow: hidden;
-}
-
-.searchbox-spinner__title {
-  float: left;
-  line-height: normal;
-}
-
-.searchbox-spinner__input {
-  float: right;
-  border: 0 !important;
-  font-weight: bold;
-  width: auto;
-  text-align: right;
-  max-width: 50px;
-  color: #000 !important;
-  padding: 0 !important;
-  margin-right: 5px;
-}
-
-.searchbox-spinner__input:focus {
-  outline: none;
-}
-
-.searchbox-spinner__title {
-  margin-left: 3px;
-}
-
-.searchbox-spinner__decrement,
-.searchbox-spinner__increment {
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 50%;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-.searchbox-spinner__decrement:hover,
-.searchbox-spinner__increment:hover {
-  background-color: #eee;
-}
-
-.searchbox-spinner__decrement::-moz-selection,
-.searchbox-spinner__increment::-moz-selection {
-  background-color: transparent;
-}
-
-.searchbox-spinner__decrement::selection,
-.searchbox-spinner__increment::selection {
-  background-color: transparent;
-}
-
-.searchbox-spinner__decrement {
-  left: 5px;
-}
-
-.searchbox-spinner__increment {
-  right: 5px;
-}
-
 .searchbox-occupancy-info__item:not(:last-child):after {
   content: ',';
 }
 
 .searchbox__input--hotel {
   height: auto;
+}
+
+.searchbox__spinner {
+  padding: 10px 0 10px 48px;
+}
+
+.searchbox__spinner:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.searchbox__spinner:hover .searchbox__spinner-button {
+  visibility: visible;
+  opacity: 1;
+}
+
+.searchbox__spinner-box {
+  position: relative;
+  padding: 5px 0;
+}
+
+.searchbox__spinner-title {
+  display: inline-block;
+  line-height: 1;
+}
+
+.searchbox__spinner-wrap {
+  display: inline-block;
+  float: right;
+  padding-right: 40px;
+}
+
+.searchbox__spinner-wrap input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="number"].searchbox__spinner-input {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  display: inline-block;
+  text-align: right;
+  max-width: 100px;
+}
+
+.searchbox__spinner-button {
+  position: absolute;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  color: #d8d8d8;
+  font-weight: 300;
+  border: 1px solid #d8d8d8;
+  background-color: transparent;
+  border-radius: 50%;
+  visibility: visible;
+  opacity: 1;
+  transition: all .3s ease;
+}
+
+.searchbox__spinner-button--increment {
+  top: 0;
+}
+
+.searchbox__spinner-button--decrement {
+  bottom: 0;
 }
 
 .filterbox {
@@ -1938,22 +1936,23 @@ ul.booking_details li:last-of-type {
   color: #737d85;
 }
 
-.list-room,
-.list-room.hentry {
-  margin-left: -15px;
-  margin-right: -15px;
+.awebooking .list-room {
   margin-bottom: 50px;
-}
-
-.list-room::after,
-.list-room.hentry::after {
-  display: block;
-  clear: both;
-  content: "";
 }
 
 .list-room__title {
   margin-bottom: 0;
+}
+
+.list-room__wrap {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.list-room__wrap::after {
+  display: block;
+  clear: both;
+  content: "";
 }
 
 .list-room__media {
@@ -2016,16 +2015,32 @@ ul.booking_details li:last-of-type {
   width: 100%;
 }
 
+.room__header {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d8d8d8;
+}
+
 .room__title {
   font-size: 45px;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+}
+
+.room__price {
+  font-weight: bold;
+  margin-bottom: 5px;
+  line-height: 1;
+}
+
+.room__price span {
+  font-size: 24px;
 }
 
 .room__section {
-  border-bottom: 1px solid #d8d8d8;
   padding-bottom: 20px;
   margin-bottom: 20px;
+  border-bottom: 1px solid #d8d8d8;
 }
 
 .room__section-title {
@@ -2190,8 +2205,6 @@ ul.booking_details li:last-of-type {
     flex: 0 0 15%;
     max-width: 15%;
     text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
   }
 
   .searchbox--horizontal-agoda .searchbox__box--hotel {
@@ -2212,6 +2225,11 @@ ul.booking_details li:last-of-type {
 
   .searchbox--horizontal-agoda .searchbox-occupancy-info {
     font-size: 0.75rem;
+  }
+
+  .searchbox__spinner-button {
+    visibility: hidden;
+    opacity: 0;
   }
 
   .hotel-content__main {
