@@ -2,7 +2,7 @@
   'use strict';
 
   function formatDate(date, format) {
-    const _date = plugin.utils.dates.parse(date, format || plugin.i18n.dateFormat);
+    const _date = plugin.utils.dates.parse(date, 'Y-m-d');
 
     if (!_date) {
       return '';
