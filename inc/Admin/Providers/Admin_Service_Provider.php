@@ -12,6 +12,19 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register() {
+		foreach ( [
+			'setting.general'    => \AweBooking\Admin\Settings\General_Setting::class,
+			'setting.hotel'      => \AweBooking\Admin\Settings\Hotel_Setting::class,
+			'setting.taxes'      => \AweBooking\Admin\Settings\Taxes_Setting::class,
+			'setting.checkout'   => \AweBooking\Admin\Settings\Checkout_Setting::class,
+			'setting.appearance' => \AweBooking\Admin\Settings\Appearance_Setting::class,
+			'setting.email'      => \AweBooking\Admin\Settings\Email_Setting::class,
+			'setting.premium'    => \AweBooking\Admin\Settings\Premium_Setting::class,
+		] as $abstract => $concrete ) {
+			$this->plugin->bind( $abstract, $concrete );
+			$this->plugin->tag( $abstract, 'settings' );
+		}
+
 		$this->plugin->singleton( 'admin_template', function() {
 			return new Admin_Template;
 		});
@@ -52,11 +65,37 @@ class Admin_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Register admin settings.
+	 * Perform register admin settings.
 	 *
 	 * @access private
 	 */
 	public function register_admin_settings() {
-		$this->plugin->make( 'admin_settings' )->setup();
+		/* @var $settings \AweBooking\Admin\Admin_Settings  */
+		$settings = $this->plugin->make( Admin_Settings::class );
+
+		foreach ( $this->plugin->tagged( 'settings' ) as $name => $setting ) {
+			$registered = $settings->register( $setting );
+
+			if ( $registered ) {
+				$this->register_setting_modifiers( $setting );
+			}
+		}
+
+		do_action( 'abrs_register_admin_settings', $settings );
+	}
+
+	/**
+	 * Perform register modifiers a setting.
+	 *
+	 * @param \AweBooking\Admin\Settings\Setting $setting The setting instance.
+	 */
+	protected function register_setting_modifiers( $setting ) {
+		$modifiers = $this->plugin->tagged( "setting.{$setting->get_id()}" );
+
+		foreach ( $modifiers as $modifier ) {
+			abrs_optional( $modifier )->register();
+		}
+
+		do_action( "abrs_register_{$setting->get_id()}_admin_setting", $setting );
 	}
 }

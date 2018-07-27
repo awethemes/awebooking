@@ -8,21 +8,6 @@ use AweBooking\Admin\Settings\Abstract_Setting;
 
 class Admin_Settings extends Manager {
 	/**
-	 * The core settings.
-	 *
-	 * @var array
-	 */
-	protected $core_settings = [
-		\AweBooking\Admin\Settings\General_Setting::class,
-		\AweBooking\Admin\Settings\Hotel_Setting::class,
-		\AweBooking\Admin\Settings\Taxes_Setting::class,
-		\AweBooking\Admin\Settings\Checkout_Setting::class,
-		\AweBooking\Admin\Settings\Appearance_Setting::class,
-		\AweBooking\Admin\Settings\Email_Setting::class,
-		\AweBooking\Admin\Settings\Premium_Setting::class,
-	];
-
-	/**
 	 * Register a setting.
 	 *
 	 * @param  \AweBooking\Admin\Settings\Setting $setting The setting instance.
@@ -38,21 +23,6 @@ class Admin_Settings extends Manager {
 		}
 
 		return $this->drivers[ $setting->get_id() ] = $setting;
-	}
-
-	/**
-	 * Setup the settings.
-	 *
-	 * @access private
-	 */
-	public function setup() {
-		$settings = apply_filters( 'abrs_admin_settings', $this->core_settings );
-
-		foreach ( $settings as $setting ) {
-			$this->register( $this->plugin->make( $setting ) );
-		}
-
-		do_action( 'abrs_register_admin_settings', $this );
 	}
 
 	/**
