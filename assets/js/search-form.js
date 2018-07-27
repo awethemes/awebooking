@@ -128,7 +128,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
-          drop: '.searchbox__popup'
+          drop: '.searchbox__popup',
+          display: 'static'
         });
       }
     }]);
