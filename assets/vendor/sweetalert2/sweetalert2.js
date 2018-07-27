@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v7.26.0
+* sweetalert2 v7.26.1
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -127,48 +127,6 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-
-
-
-
-var slicedToArray = function () {
-  function sliceIterator(arr, i) {
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"]) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-
-    return _arr;
-  }
-
-  return function (arr, i) {
-    if (Array.isArray(arr)) {
-      return arr;
-    } else if (Symbol.iterator in Object(arr)) {
-      return sliceIterator(arr, i);
-    } else {
-      throw new TypeError("Invalid attempt to destructure non-iterable instance");
-    }
-  };
-}();
-
 var consolePrefix = 'SweetAlert2:';
 
 /**
@@ -266,7 +224,7 @@ var DismissReason = Object.freeze({
   timer: 'timer'
 });
 
-var version = "7.26.0";
+var version = "7.26.2";
 
 var argsToParams = function argsToParams(args) {
   var params = {};
@@ -290,8 +248,7 @@ var argsToParams = function argsToParams(args) {
       break;
 
     default:
-      error('Unexpected type of argument! Expected "string" or "object", got ' + _typeof(args[0]));
-      return false;
+      error('Unexpected type of argument! Expected "string" or "object", got "' + _typeof(args[0]) + '"');
   }
   return params;
 };
@@ -329,10 +286,7 @@ var states = {
 };
 
 var hasClass = function hasClass(elem, className) {
-  if (elem.classList) {
-    return elem.classList.contains(className);
-  }
-  return false;
+  return elem.classList.contains(className);
 };
 
 var focusInput = function focusInput(input) {
@@ -389,12 +343,6 @@ var show = function show(elem) {
 var hide = function hide(elem) {
   elem.style.opacity = '';
   elem.style.display = 'none';
-};
-
-var empty = function empty(elem) {
-  while (elem.firstChild) {
-    elem.removeChild(elem.firstChild);
-  }
 };
 
 // borrowed from jquery $(elem).is(':visible') implementation
@@ -456,6 +404,8 @@ var getCancelButton = function getCancelButton() {
   return elementByClass(swalClasses.cancel);
 };
 
+/* @deprecated */
+/* istanbul ignore next */
 var getButtonsWrapper = function getButtonsWrapper() {
   warnOnce('swal.getButtonsWrapper() is deprecated and will be removed in the next major release, use swal.getActions() instead');
   return elementByClass(swalClasses.actions);
@@ -641,12 +591,32 @@ var measureScrollbar = function measureScrollbar() {
   return scrollbarWidth;
 };
 
+var renderIcon = function renderIcon(params) {
+  var icons = getIcons();
+  for (var i = 0; i < icons.length; i++) {
+    hide(icons[i]);
+  }
+  if (params.type) {
+    if (Object.keys(iconTypes).indexOf(params.type) !== -1) {
+      var icon = Swal.getPopup().querySelector('.' + swalClasses.icon + '.' + iconTypes[params.type]);
+      show(icon);
+
+      // Animate icon
+      if (params.animation) {
+        addClass(icon, 'swal2-animate-' + params.type + '-icon');
+      }
+    } else {
+      error('Unknown type! Expected "success", "error", "warning", "info" or "question", got "' + params.type + '"');
+    }
+  }
+};
+
 var renderProgressSteps = function renderProgressSteps(params) {
   var progressStepsContainer = getProgressSteps();
   var currentProgressStep = parseInt(params.currentProgressStep === null ? Swal.getQueueStep() : params.currentProgressStep, 10);
   if (params.progressSteps && params.progressSteps.length) {
     show(progressStepsContainer);
-    empty(progressStepsContainer);
+    progressStepsContainer.innerHTML = '';
     if (currentProgressStep >= params.progressSteps.length) {
       warn('Invalid currentProgressStep parameter, it should be less than progressSteps.length ' + '(currentProgressStep like JS arrays starts from 0)');
     }
@@ -1398,9 +1368,6 @@ var Timer = function Timer(callback, delay) {
     }
     return remaining;
   };
-  this.getStateRunning = function () {
-    return running;
-  };
   this.start();
 };
 
@@ -1552,30 +1519,7 @@ function setParameters(params) {
   renderProgressSteps(params);
 
   // Icon
-  var icons = getIcons();
-  for (var _i = 0; _i < icons.length; _i++) {
-    hide(icons[_i]);
-  }
-  if (params.type) {
-    var validType = false;
-    for (var iconType in iconTypes) {
-      if (params.type === iconType) {
-        validType = true;
-        break;
-      }
-    }
-    if (!validType) {
-      error('Unknown alert type: ' + params.type);
-      return false;
-    }
-    var icon = popup.querySelector('.' + swalClasses.icon + '.' + iconTypes[params.type]);
-    show(icon);
-
-    // Animate icon
-    if (params.animation) {
-      addClass(icon, 'swal2-animate-' + params.type + '-icon');
-    }
-  }
+  renderIcon(params);
 
   // Custom image
   var image = getImage();
@@ -2174,11 +2118,9 @@ function _main(userParams) {
             select.appendChild(placeholder);
           }
           populateInputOptions = function populateInputOptions(inputOptions) {
-            inputOptions.forEach(function (_ref) {
-              var _ref2 = slicedToArray(_ref, 2),
-                  optionValue = _ref2[0],
-                  optionLabel = _ref2[1];
-
+            inputOptions.forEach(function (inputOption) {
+              var optionValue = inputOption[0];
+              var optionLabel = inputOption[1];
               var option = document.createElement('option');
               option.value = optionValue;
               option.innerHTML = optionLabel;
@@ -2197,11 +2139,9 @@ function _main(userParams) {
           var radio = getChildByClass(domCache.content, swalClasses.radio);
           radio.innerHTML = '';
           populateInputOptions = function populateInputOptions(inputOptions) {
-            inputOptions.forEach(function (_ref3) {
-              var _ref4 = slicedToArray(_ref3, 2),
-                  radioValue = _ref4[0],
-                  radioLabel = _ref4[1];
-
+            inputOptions.forEach(function (inputOption) {
+              var radioValue = inputOption[0];
+              var radioLabel = inputOption[1];
               var radioInput = document.createElement('input');
               var radioLabelElement = document.createElement('label');
               radioInput.type = 'radio';

@@ -46,7 +46,7 @@ const initSelectizeServices = function(select) {
   });
 }
 
-module.exports = function() {
+export default function() {
   $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select' ).each(function() {
     initSelectize(this);
   });

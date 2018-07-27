@@ -6,6 +6,11 @@
     "watch": "NODE_ENV=development gulp watch",
     "makeicon": "node bin/make-iconfont.js"
   },
+  "globals": {
+    "ko": "ko",
+    "jquery": "jQuery",
+    "awebooking": "window.awebooking"
+  },
   "copyFiles": {
     "knockout": [
       "node_modules/knockout/build/output/knockout*.js"
@@ -63,21 +68,19 @@
     "query-string": "^6.1.0",
     "selectize": "^0.12.6",
     "sortablejs": "^1.7.0",
-    "sweetalert2": "^7.25.6",
+    "sweetalert2": "^7.26.2",
     "tippy.js": "^2.5.4",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babelify": "^8.0.0",
+    "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.24.6",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-better-rollup": "^3.3.0",
-    "gulp-bro": "^1.0.3",
     "gulp-clean-css": "^3.9.4",
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-if": "^2.0.2",
@@ -90,8 +93,9 @@
     "gulp-wp-pot": "^2.3.2",
     "icon.font": "^1.1.0",
     "lodash.map": "^4.6.0",
+    "rollup": "^0.63.4",
     "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0"
   }
 }

@@ -8,8 +8,10 @@ const sass         = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const gcmq         = require('gulp-group-css-media-queries');
 const cleanCSS     = require('gulp-clean-css');
-const bro          = require('gulp-bro');
-const babelify     = require('babelify');
+const rollup       = require('gulp-better-rollup');
+const babel        = require('rollup-plugin-babel');
+const commonjs     = require('rollup-plugin-commonjs');
+const resolve      = require('rollup-plugin-node-resolve');
 const uglify       = require('gulp-uglify');
 const rename       = require('gulp-rename');
 const potgen       = require('gulp-wp-pot');
@@ -22,7 +24,7 @@ const pkg          = require('./package.json');
  * Handle errors and alert the user.
  */
 function handleErrors() {
-  var args = Array.prototype.slice.call(arguments);
+  const args = Array.prototype.slice.call(arguments);
 
   notify.onError({
     title: 'Task Failed! See console.',
@@ -32,34 +34,6 @@ function handleErrors() {
   // Prevent the 'watch' task from stopping
   this.emit('end');
 }
-
-/*
-const rollup = require('gulp-better-rollup');
-const babel = require('rollup-plugin-babel');
-const commonjs = require('rollup-plugin-commonjs');
-const nodeResolve = require('rollup-plugin-node-resolve');
-gulp.task('lib-build', () => {
-  const config = {
-    plugins: [
-      nodeResolve({ jsnext: true }),
-      commonjs(),
-      babel()
-    ]
-  };
-
-  return gulp.src('assets/babel/admin/admin.js')
-    .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(sourcemaps.init())
-    .pipe(rollup(config, {
-      format: 'iife',
-      name: 'awebooking',
-      extend: true,
-      exports: 'default',
-      globals: { jquery: '$' },
-    }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist'));
-});*/
 
 gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
@@ -74,15 +48,23 @@ gulp.task('scss', () => {
 });
 
 gulp.task('babel', () => {
+  const config = {
+    plugins: [
+      resolve({ jsnext: true }),
+      commonjs(),
+      babel()
+    ]
+  };
+
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
-    .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(sourcemaps.init())
-    .pipe(bro({
-      error: 'emit',
-      transform: [[ babelify.configure({ presets: ['es2015'] }), { global: true } ]]
-    }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('assets/js'));
+  .pipe(plumber({ errorHandler: handleErrors }))
+  .pipe(sourcemaps.init())
+  .pipe(rollup(config, {
+    format: 'iife',
+    globals: pkg.globals
+  }))
+  .pipe(sourcemaps.write('./'))
+  .pipe(gulp.dest('assets/js'));
 });
 
 gulp.task('minify:js', () => {
@@ -129,8 +111,8 @@ gulp.task('watch', () => {
     proxy: 'awebooking.local',
   });
 
-  gulp.watch('assets/scss/**/*.scss', gulp.parallel('scss'));
-  gulp.watch('assets/babel/**/*.js', gulp.parallel('babel'));
+  gulp.watch('assets/scss/**/*.scss', gulp.series('scss'));
+  gulp.watch('assets/babel/**/*.js', gulp.series('babel'));
 });
 
 gulp.task('js', gulp.series(['babel', 'minify:js']));
