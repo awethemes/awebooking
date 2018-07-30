@@ -12,28 +12,30 @@ function formatDate(date, format) {
   return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
 }
 
-function SearchFormModel(data = {}) {
-  this.adults    = ko.observable(data.adults || 1);
-  this.children = ko.observable(data.children || 0);
-  this.infants  = ko.observable(data.infants || 0);
-  this.checkIn  = ko.observable(data.checkIn || '');
-  this.checkOut = ko.observable(data.checkOut || '');
+class SearchFormModel {
+  constructor(data = {}) {
+    this.adults = ko.observable(data.adults || 1)
+    this.children = ko.observable(data.children || 0)
+    this.infants = ko.observable(data.infants || 0)
+    this.checkIn = ko.observable(data.checkIn || '')
+    this.checkOut = ko.observable(data.checkOut || '')
 
-  this.checkInDate = ko.computed(() => {
-    return formatDate(this.checkIn(), 'Y-m-d');
-  });
+    this.checkInDate = ko.computed(() => {
+      return formatDate(this.checkIn(), 'Y-m-d')
+    })
 
-  this.checkOutDate = ko.computed(() => {
-    return formatDate(this.checkOut(), 'Y-m-d');
-  });
+    this.checkOutDate = ko.computed(() => {
+      return formatDate(this.checkOut(), 'Y-m-d')
+    })
+  }
 
-  this.checkInFormatted = ko.computed(() => {
-    return formatDate(this.checkIn());
-  });
+  checkInFormatted(format) {
+    return formatDate(this.checkIn(), format)
+  }
 
-  this.checkOutFormatted = ko.computed(() => {
-    return formatDate(this.checkOut());
-  });
+  checkOutFormatted(format) {
+    return formatDate(this.checkOut(), format)
+  }
 }
 
 class SearchForm {

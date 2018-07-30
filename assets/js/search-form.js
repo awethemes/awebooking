@@ -39,33 +39,41 @@
     return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
   }
 
-  function SearchFormModel() {
-    var _this = this;
+  var SearchFormModel = function () {
+    function SearchFormModel() {
+      var _this = this;
 
-    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      classCallCheck(this, SearchFormModel);
 
-    this.adults = ko.observable(data.adults || 1);
-    this.children = ko.observable(data.children || 0);
-    this.infants = ko.observable(data.infants || 0);
-    this.checkIn = ko.observable(data.checkIn || '');
-    this.checkOut = ko.observable(data.checkOut || '');
+      this.adults = ko.observable(data.adults || 1);
+      this.children = ko.observable(data.children || 0);
+      this.infants = ko.observable(data.infants || 0);
+      this.checkIn = ko.observable(data.checkIn || '');
+      this.checkOut = ko.observable(data.checkOut || '');
 
-    this.checkInDate = ko.computed(function () {
-      return formatDate(_this.checkIn(), 'Y-m-d');
-    });
+      this.checkInDate = ko.computed(function () {
+        return formatDate(_this.checkIn(), 'Y-m-d');
+      });
 
-    this.checkOutDate = ko.computed(function () {
-      return formatDate(_this.checkOut(), 'Y-m-d');
-    });
+      this.checkOutDate = ko.computed(function () {
+        return formatDate(_this.checkOut(), 'Y-m-d');
+      });
+    }
 
-    this.checkInFormatted = ko.computed(function () {
-      return formatDate(_this.checkIn());
-    });
-
-    this.checkOutFormatted = ko.computed(function () {
-      return formatDate(_this.checkOut());
-    });
-  }
+    createClass(SearchFormModel, [{
+      key: 'checkInFormatted',
+      value: function checkInFormatted(format) {
+        return formatDate(this.checkIn(), format);
+      }
+    }, {
+      key: 'checkOutFormatted',
+      value: function checkOutFormatted(format) {
+        return formatDate(this.checkOut(), format);
+      }
+    }]);
+    return SearchFormModel;
+  }();
 
   var SearchForm = function () {
     function SearchForm(el) {
