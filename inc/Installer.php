@@ -62,7 +62,7 @@ class Installer {
 		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
 		add_action( 'init', [ $this, 'init_background_updater' ], 5 );
 		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
-		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 5 );
+		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 10 );
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 		add_filter( "plugin_action_links_{$this->plugin->plugin_basename()}", [ $this, 'plugin_action_links' ] );
@@ -129,8 +129,6 @@ class Installer {
 
 		if ( ! get_option( Constants::OPTION_KEY ) ) {
 			$admin_settings = $this->plugin->make( Admin_Settings::class );
-
-			$admin_settings->setup();
 
 			add_option( Constants::OPTION_KEY, $admin_settings->get_default_settings(), '', 'yes' );
 		}

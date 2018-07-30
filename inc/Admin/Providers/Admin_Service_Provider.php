@@ -48,7 +48,7 @@ class Admin_Service_Provider extends Service_Provider {
 
 		// Register the admin routes.
 		add_action( 'abrs_register_admin_routes', [ $this, 'register_admin_routes' ], 1 );
-		add_action( 'admin_init', [ $this, 'register_admin_settings' ] );
+		add_action( 'admin_init', [ $this, 'register_admin_settings' ], 1 );
 
 		// Trim price zeros in admin area.
 		add_filter( 'abrs_price_trim_zeros', '__return_true' );
