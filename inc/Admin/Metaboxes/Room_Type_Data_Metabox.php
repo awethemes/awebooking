@@ -4,11 +4,12 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Constants;
 use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
+use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Room_Type_Data_Form;
 use Awethemes\Http\Request;
 use Illuminate\Support\Arr;
 
-class Room_Type_Data_Metabox extends Abstract_Metabox {
+class Room_Type_Data_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */
@@ -34,7 +35,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		// Is current room type is translation or not?
 		$is_translation = null;
 		if ( abrs_running_on_multilanguage() ) {
-			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
+			$is_translation = (int) abrs_multilingual()->get_original_post( $post->ID ) !== (int) $post->ID;
 		}
 
 		// Setup the form.
@@ -67,10 +68,10 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 
 		$is_translation = false;
 		if ( abrs_running_on_multilanguage() ) {
-			$is_translation = abrs_multilingual()->get_original_post( $post->ID ) != $post->ID;
+			$is_translation = (int) abrs_multilingual()->get_original_post( $post->ID ) !== (int) $post->ID;
 		}
 
-		$controls = ( new Room_Type_Data_Form( $room_type ) );
+		$controls = new Room_Type_Data_Form( $room_type );
 
 		// Get the sanitized values.
 		$values = $controls->handle( $request )->all();
@@ -136,7 +137,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 		}
 
 		foreach ( array_values( $scaffold_rooms ) as $index => $data ) {
-			if ( empty( $data['id'] ) || -1 != $data['id'] ) {
+			if ( empty( $data['id'] ) || -1 !== (int) $data['id'] ) {
 				continue;
 			}
 
@@ -145,7 +146,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 				'name'      => ! empty( $data['name'] )
 					? sanitize_text_field( wp_unslash( $data['name'] ) )
 					/* translators: 1: Room type name, 2: Room item order */
-					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), ( $index + 1 ) ),
+					: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), $index + 1 ),
 				'room_type' => $room_type->get_id(),
 			]);
 
@@ -167,7 +168,7 @@ class Room_Type_Data_Metabox extends Abstract_Metabox {
 			$name = ! empty( $data['name'] )
 				? sanitize_text_field( wp_unslash( $data['name'] ) )
 				/* translators: 1: Room type name, 2: Room item order */
-				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), ( $index + 1 ) );
+				: sprintf( esc_html__( '%1$s - %2$d', 'awebooking' ), $room_type->get( 'title' ), $index + 1 );
 
 			if ( $room = abrs_get_room( $data['id'] ) ) {
 				$room->order = $index;

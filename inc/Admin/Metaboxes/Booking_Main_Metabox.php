@@ -3,9 +3,10 @@ namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
 use Awethemes\Http\Request;
+use AweBooking\Admin\Metabox;
 use AweBooking\Frontend\Checkout\Form_Controls;
 
-class Booking_Main_Metabox extends Abstract_Metabox {
+class Booking_Main_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */

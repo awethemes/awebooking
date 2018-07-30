@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\Admin\Metaboxes;
+namespace AweBooking\Admin;
 
-abstract class Abstract_Metabox {
+abstract class Metabox {
 	/**
 	 * Meta box ID.
 	 *
@@ -21,7 +21,7 @@ abstract class Abstract_Metabox {
 	 *
 	 * @var array|string|null
 	 */
-	public $screen = null;
+	public $screen;
 
 	/**
 	 * The context within the screen.
@@ -38,11 +38,11 @@ abstract class Abstract_Metabox {
 	public $priority = 'default';
 
 	/**
-	 * Output the metabox.
+	 * The array of taxonomies.
 	 *
-	 * @param \WP_Post $post The WP_Post object.
+	 * @var array
 	 */
-	abstract public function output( $post );
+	public $taxonomies = [];
 
 	/**
 	 * Returns the output callback.
@@ -77,6 +77,23 @@ abstract class Abstract_Metabox {
 				return convert_to_screen( $screen )->id;
 			}, (array) $this->screen )
 		);
+	}
+
+	/**
+	 * Output the form controls.
+	 *
+	 * @param \AweBooking\Component\Form\Form $form The form controls.
+	 */
+	protected function output_controls( $form ) {
+		wp_nonce_field( 'awebooking_save_data', '_awebooking_nonce' );
+
+		echo '<div class="cmb2-wrap awebooking-wrap"><div class="cmb2-metabox">';
+
+		foreach ( $form->prop( 'fields' ) as $args ) {
+			$form->show_field( $args['id'] );
+		}
+
+		echo '</div></div>';
 	}
 
 	/**

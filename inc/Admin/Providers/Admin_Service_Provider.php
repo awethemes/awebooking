@@ -13,16 +13,16 @@ class Admin_Service_Provider extends Service_Provider {
 	 */
 	public function register() {
 		foreach ( [
-			'setting.general'    => \AweBooking\Admin\Settings\General_Setting::class,
-			'setting.hotel'      => \AweBooking\Admin\Settings\Hotel_Setting::class,
-			'setting.taxes'      => \AweBooking\Admin\Settings\Taxes_Setting::class,
-			'setting.checkout'   => \AweBooking\Admin\Settings\Checkout_Setting::class,
-			'setting.appearance' => \AweBooking\Admin\Settings\Appearance_Setting::class,
-			'setting.email'      => \AweBooking\Admin\Settings\Email_Setting::class,
-			'setting.premium'    => \AweBooking\Admin\Settings\Premium_Setting::class,
-		] as $abstract => $concrete ) {
-			$this->plugin->bind( $abstract, $concrete );
-			$this->plugin->tag( $abstract, 'settings' );
+			\AweBooking\Admin\Settings\General_Setting::class,
+			\AweBooking\Admin\Settings\Hotel_Setting::class,
+			\AweBooking\Admin\Settings\Taxes_Setting::class,
+			\AweBooking\Admin\Settings\Checkout_Setting::class,
+			\AweBooking\Admin\Settings\Appearance_Setting::class,
+			\AweBooking\Admin\Settings\Email_Setting::class,
+			\AweBooking\Admin\Settings\Premium_Setting::class,
+		] as $_class ) {
+			$this->plugin->singleton( $_class );
+			$this->plugin->tag( $_class, 'settings' );
 		}
 
 		$this->plugin->singleton( 'admin_template', function() {
@@ -74,11 +74,9 @@ class Admin_Service_Provider extends Service_Provider {
 		$settings = $this->plugin->make( Admin_Settings::class );
 
 		foreach ( $this->plugin->tagged( 'settings' ) as $name => $setting ) {
-			$registered = $settings->register( $setting );
+			$settings->register( $setting );
 
-			if ( $registered ) {
-				$this->register_setting_modifiers( $setting );
-			}
+			$this->register_setting_modifiers( $setting );
 		}
 
 		do_action( 'abrs_register_admin_settings', $settings );
@@ -90,7 +88,14 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @param \AweBooking\Admin\Settings\Setting $setting The setting instance.
 	 */
 	protected function register_setting_modifiers( $setting ) {
+		if ( ! $setting ) {
+			return;
+		}
+
 		$modifiers = $this->plugin->tagged( "setting.{$setting->get_id()}" );
+		if ( empty( $modifiers ) ) {
+			return;
+		}
 
 		foreach ( $modifiers as $modifier ) {
 			abrs_optional( $modifier )->register();
