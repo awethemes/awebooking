@@ -19,7 +19,7 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	 * Constructor.
 	 *
 	 * @param string $form_id     The form ID.
-	 * @param mixed  $object_id   The object ID (post ID, option-key or even a model).
+	 * @param mixed  $object_id   The object ID (post ID, option-key or a object).
 	 * @param string $object_type The object type (post type slug, or 'user', 'term', 'comment', or 'options-page').
 	 */
 	public function __construct( $form_id, $object_id = 0, $object_type = '' ) {
@@ -95,8 +95,8 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 		<script>
 		(function ($, ko) {
 			'use strict';
-			const root  = void 0;
-			const _data = <?php echo wp_json_encode( $values ); ?>;
+			var root  = void 0;
+			var _data = <?php echo wp_json_encode( $values ); ?>;
 
 			function FormBuilderModel(data)  {
 				this.data = {};

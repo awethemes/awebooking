@@ -4,6 +4,14 @@ namespace AweBooking\Component\Form;
 use CMB2_Field;
 use CMB2_Types;
 
+/**
+ * The Field Proxy.
+ *
+ * @method integer object_id( $object_id = 0 ) Returns the object ID.
+ * @method mixed prop( $property, $fallback = null ) Get object property and optionally set a fallback
+ *
+ * @package AweBooking\Component\Form
+ */
 class Field_Proxy {
 	/**
 	 * The Form instance.
