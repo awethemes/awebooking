@@ -49,6 +49,7 @@ gulp.task('scss', () => {
 
 gulp.task('babel', () => {
   const config = {
+    external: Object.keys(pkg.globals),
     plugins: [
       resolve({ jsnext: true }),
       commonjs(),
@@ -57,14 +58,14 @@ gulp.task('babel', () => {
   };
 
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
-  .pipe(plumber({ errorHandler: handleErrors }))
-  .pipe(sourcemaps.init())
-  .pipe(rollup(config, {
-    format: 'iife',
-    globals: pkg.globals
-  }))
-  .pipe(sourcemaps.write('./'))
-  .pipe(gulp.dest('assets/js'));
+    .pipe(plumber({ errorHandler: handleErrors }))
+    .pipe(sourcemaps.init())
+    .pipe(rollup(config, {
+      format: 'iife',
+      globals: pkg.globals
+    }))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('assets/js'));
 });
 
 gulp.task('minify:js', () => {
