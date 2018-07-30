@@ -23,8 +23,8 @@ if ( empty( $additionals->fields ) ) {
 ?>
 
 <div id="guest-additional-information" class="checkout__section checkout__section--guest-additional-information">
-	<header class="section-header">
-		<h3 class="section-header__title"><?php esc_html_e( 'Additional information', 'awebooking' ); ?></h3>
+	<header class="checkout__section-header">
+		<h3 class="checkout__section__title"><?php esc_html_e( 'Additional information', 'awebooking' ); ?></h3>
 	</header>
 
 	<?php do_action( 'abrs_before_additional_information' ); ?>

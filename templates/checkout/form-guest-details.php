@@ -23,8 +23,8 @@ if ( empty( $customer_controls->fields ) ) {
 ?>
 
 <div id="guest-details" class="checkout__section checkout__section--guest-details">
-	<header class="section-header">
-		<h3 class="section-header__title"><?php esc_html_e( 'Guest details', 'awebooking' ); ?></h3>
+	<header class="checkout__section-header">
+		<h3 class="checkout__section__title"><?php esc_html_e( 'Guest details', 'awebooking' ); ?></h3>
 	</header>
 
 	<?php do_action( 'abrs_before_guest_details' ); ?>
