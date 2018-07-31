@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import debounce from 'debounce'
+import isMobile from 'is-mobile'
 import queryString from 'query-string'
 import Dropdown from '../core/dropdown'
 import rangePlugin from '../core/range-dates'
@@ -12,6 +13,7 @@ let awebooking = window.awebooking || {};
 awebooking.utils = {};
 awebooking.instances = {};
 
+awebooking.isMobile = isMobile
 awebooking.utils.flatpickrRangePlugin = rangePlugin;
 
 /**

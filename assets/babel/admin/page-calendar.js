@@ -146,7 +146,7 @@ class BookingScheduler {
     flatpickr('#bulk_date_start', {
       mode: 'range',
       dateFormat: 'Y-m-d',
-      showMonths: 2,
+      showMonths: plugin.isMobile() ? 1 : 2,
       plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }) ],
     });
   }
