@@ -1123,19 +1123,16 @@
 	    minDate: 'today',
 	    // maxDate: max_date,
 	    // disable: disable,
-	    showMonths: 1,
+	    showMonths: defaults.showMonths || 1,
 	    enableTime: false,
 	    enableSeconds: false,
-	    disableMobile: false
+	    disableMobile: false,
+	    onReady: function onReady(_, __, fp) {
+	      fp.calendarContainer.classList.add('awebooking-datepicker');
+	    }
 	  };
 
-	  var fp = flatpickr(instance, $.extend({}, _defaults, options));
-
-	  fp.config.onReady.push(function (_, __, fp) {
-	    fp.calendarContainer.classList.add('awebooking-datepicker');
-	  });
-
-	  return fp;
+	  return flatpickr(instance, $.extend({}, _defaults, options));
 	};
 
 	/**

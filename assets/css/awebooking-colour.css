@@ -629,6 +629,10 @@
   border-top-color: #fff;
 }
 
+.awebooking-datepicker .flatpickr-day.hidden {
+  display: block !important;
+}
+
 .awebooking-datepicker .flatpickr-days,
 .awebooking-datepicker .flatpickr-innerContainer {
   border: none;

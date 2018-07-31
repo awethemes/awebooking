@@ -106,7 +106,8 @@
         clickOpens: false,
         closeOnSelect: true,
 
-        onReady: function onReady() {
+        onReady: function onReady(_, __, fp) {
+          fp.calendarContainer.classList.add('awebooking-datepicker');
           this.config.ignoredFocusElements.push($('.searchbox__box--checkin', self.$el)[0]);
           this.config.ignoredFocusElements.push($('.searchbox__box--checkout', self.$el)[0]);
         },
@@ -125,7 +126,7 @@
           }
         },
 
-        onPreCalendarPosition: function onPreCalendarPosition() {
+        onPreCalendarPosition: function onPreCalendarPosition(_, __, fp) {
           var _this3 = this;
 
           fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
@@ -144,6 +145,10 @@
 
       $('.searchbox__box', this.$el).each(function (i, box) {
         $(box).data('popup', _this2.setuptPopper(box));
+      });
+
+      $('[data-trigger="spinner"]', this.$el).on('changed.spinner', function () {
+        $(this).find('[data-spin="spinner"]').trigger('change');
       });
     }
 
