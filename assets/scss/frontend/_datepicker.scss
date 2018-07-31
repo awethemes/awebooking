@@ -26,5 +26,10 @@
     }
   }
 
+  // Fix conflict with bootstrap.
+  .flatpickr-day.hidden {
+    display: block !important;
+  }
+
   @import "utils/flatpickr";
 }
