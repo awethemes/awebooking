@@ -2,20 +2,12 @@
 namespace AweBooking\Core\Shortcode;
 
 class Search_Form_Shortcode extends Shortcode {
-
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->defaults = abrs_search_form_default_atts();
 	}
-
-	/**
-	 * Default attributes.
-	 *
-	 * @var array
-	 */
-	protected $defaults = [];
 
 	/**
 	 * {@inheritdoc}

@@ -111,7 +111,7 @@ function abrs_body_class( $classes ) {
 }
 
 /**
- * Gets search form default attributes.
+ * Returns the search form default attributes.
  *
  * @return array
  */
@@ -120,7 +120,6 @@ function abrs_search_form_default_atts() {
 		'template'        => '',
 		'layout'          => 'horizontal',
 		'alignment'       => '',
-		'res_request'     => null,
 		'hotel_location'  => true,
 		'occupancy'       => true,
 		'only_room'       => null,
@@ -139,7 +138,8 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	global $abrs_query;
 
 	// Pairs the input atts.
-	$atts = shortcode_atts( abrs_search_form_default_atts(), $atts );
+	$atts = wp_parse_args( $atts, abrs_search_form_default_atts() );
+	$atts['res_request'] = isset( $atts['res_request'] ) ? $atts['res_request'] : null;
 
 	/**
 	 * Fires before the search form is retrieved.
@@ -161,7 +161,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		$res_request = null;
 	}
 
-	$template = $atts['template'] ? "search-form-{$atts['template']}.php" : "search-form.php";
+	$template = $atts['template'] ? "search-form-{$atts['template']}.php" : 'search-form.php';
 
 	$form = abrs_get_template_content( $template, compact( 'atts', 'res_request' ) );
 
