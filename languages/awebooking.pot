@@ -27,31 +27,31 @@ msgstr ""
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
-#: inc/Installer.php:188
+#: inc/Installer.php:186
 msgid "View settings"
 msgstr ""
 
-#: inc/Installer.php:188, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
+#: inc/Installer.php:186, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:22
 msgid "Settings"
 msgstr ""
 
-#: inc/Installer.php:207
+#: inc/Installer.php:205
 msgid "View documentation"
 msgstr ""
 
-#: inc/Installer.php:207
+#: inc/Installer.php:205
 msgid "Docs"
 msgstr ""
 
-#: inc/Installer.php:208
+#: inc/Installer.php:206
 msgid "Visit demo"
 msgstr ""
 
-#: inc/Installer.php:208
+#: inc/Installer.php:206
 msgid "Demo"
 msgstr ""
 
-#: inc/Installer.php:209, inc/Installer.php:209
+#: inc/Installer.php:207, inc/Installer.php:207
 msgid "Contribute"
 msgstr ""
 
@@ -65,6 +65,14 @@ msgstr ""
 
 #: inc/Roles.php:57
 msgid "Hotel Manager"
+msgstr ""
+
+#: component/Http/Kernel.php:73
+msgid "Sorry, the page you are looking for could not be found."
+msgstr ""
+
+#: component/Http/Kernel.php:75
+msgid "Whoops, looks like something went wrong."
 msgstr ""
 
 #: inc/Admin/Admin_Settings.php:56
@@ -120,448 +128,45 @@ msgstr ""
 msgid "Invalid single rate."
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:94
-msgctxt "Amenity plural name"
-msgid "Amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:95
-msgctxt "Amenity singular name"
-msgid "Amenity"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:96
-msgctxt "Admin menu name"
-msgid "Amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:97
-msgid "Query amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:98
-msgid "Popular amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:99
-msgid "All amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:100, inc/Bootstrap/Setup_Environment.php:101
-msgid "Parent amenity"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:102
-msgid "Edit amenity"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:103
-msgid "Update amenity"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:104
-msgid "Add New Amenity"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:105
-msgid "New Amenity Name"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:106
-msgid "Add or remove amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:107
-msgid "Choose from most used amenities"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:143
-msgctxt "Room type plural name"
-msgid "Room Types"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:144
-msgctxt "Room type singular name"
-msgid "Room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:145
-msgctxt "Admin menu name"
-msgid "Hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:146
-msgid "Room Types"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:147
-msgid "Add New"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:148
-msgid "Add new room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:149, inc/Bootstrap/Setup_Environment.php:197, inc/Bootstrap/Setup_Environment.php:233, inc/Bootstrap/Setup_Environment.php:271, inc/Admin/Metaboxes/views/html-booking-main.php:46, inc/Admin/Metaboxes/views/html-booking-main.php:61, inc/Admin/Metaboxes/views/html-booking-main.php:66, inc/Admin/Metaboxes/views/html-booking-main.php:110, inc/Admin/Metaboxes/views/html-booking-payments.php:66, inc/Admin/Metaboxes/views/html-booking-rooms.php:121
-msgid "Edit"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:150
-msgid "Edit room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:151
-msgid "New room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:152
-msgid "View room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:153
-msgid "View room types"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:154
-msgid "Query room types"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:155
-msgid "No room types found"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:156
-msgid "No room types found in trash"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:157
-msgid "Parent room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:158
-msgid "Room type image"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:159
-msgid "Set room type image"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:160
-msgid "Remove room type image"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:161
-msgid "Use as room type image"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:162
-msgid "Insert into room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:163
-msgid "Uploaded to this room type"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:164
-msgid "Filter room types"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:165
-msgid "Room Types navigation"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:166
-msgid "Room Types list"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:168
-msgid "This is where you can add new room type to your hotel."
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:192
-msgctxt "Booking plural name"
-msgid "Bookings"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:193
-msgctxt "Booking singular name"
-msgid "Booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:194
-msgctxt "Admin menu name"
-msgid "Bookings"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:195
-msgid "Add booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:196
-msgid "Add new booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:198
-msgid "Edit booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:199, inc/Email/Templates/New_Booking.php:12
-msgid "New booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:200
-msgid "View booking"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:201
-msgid "Query bookings"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:202
-msgid "No bookings found"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:203
-msgid "No bookings found in trash"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:204
-msgid "Parent bookings"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:205
-msgid "Filter bookings"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:206
-msgid "Bookings navigation"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:207
-msgid "Bookings List"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:209
-msgid "This is where store bookings are stored."
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:228
-msgctxt "Service plural name"
-msgid "Services"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:229
-msgctxt "Service singular name"
-msgid "Service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:230
-msgctxt "Admin menu name"
-msgid "Services"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:231, inc/Admin/Metaboxes/views/html-booking-items.php:45
-msgid "Add service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:232
-msgid "Add new service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:234
-msgid "Edit service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:235
-msgid "New service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:236
-msgid "View service"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:237
-msgid "Query services"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:238
-msgid "No services found"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:239
-msgid "No services found in trash"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:240
-msgid "Parent services"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:241
-msgid "Filter services"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:242
-msgid "Services navigation"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:243
-msgid "Services List"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:245
-msgid "This is where store services are stored."
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:266
-msgctxt "Hotel plural name"
-msgid "Hotels"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:267
-msgctxt "Hotel singular name"
-msgid "Hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:268
-msgctxt "Admin menu name"
-msgid "Hotels"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:269
-msgid "Add hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:270
-msgid "Add new hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:272
-msgid "Edit hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:273
-msgid "New hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:274
-msgid "View hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:275
-msgid "Query hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:276
-msgid "No hotel found"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:277
-msgid "No hotel found in trash"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:278
-msgid "Parent hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:279
-msgid "Filter hotel"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:280
-msgid "Hotels navigation"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:281
-msgid "Hotels List"
-msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:310, inc/Core/bookings.php:34
+#: inc/Core/bookings.php:34, inc/Core/Bootstrap/Setup_Environment.php:310
 msgctxt "Booking status"
 msgid "Pending"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:315
-msgid "Pending <span class=\"count\">(%s)</span>"
-msgid_plural "Pending <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:319, inc/Core/bookings.php:35
+#: inc/Core/bookings.php:35, inc/Core/Bootstrap/Setup_Environment.php:319
 msgctxt "Booking status"
 msgid "Processing"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:324
-msgid "Processing <span class=\"count\">(%s)</span>"
-msgid_plural "Processing <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:328, inc/Core/bookings.php:36
+#: inc/Core/bookings.php:36, inc/Core/Bootstrap/Setup_Environment.php:328
 msgctxt "Booking status"
 msgid "Reserved"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:333
-msgid "Reserved <span class=\"count\">(%s)</span>"
-msgid_plural "Reserved <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:337, inc/Core/bookings.php:37
+#: inc/Core/bookings.php:37, inc/Core/Bootstrap/Setup_Environment.php:337
 msgctxt "Booking status"
 msgid "Deposit"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:342
-msgid "Deposit <span class=\"count\">(%s)</span>"
-msgid_plural "Deposit <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:346, inc/Core/bookings.php:38
+#: inc/Core/bookings.php:38, inc/Core/Bootstrap/Setup_Environment.php:346
 msgctxt "Booking status"
 msgid "Paid"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:351
-msgid "Paid <span class=\"count\">(%s)</span>"
-msgid_plural "Paid <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:355, inc/Core/bookings.php:39
+#: inc/Core/bookings.php:39, inc/Core/Bootstrap/Setup_Environment.php:355
 msgctxt "Booking status"
 msgid "Checked In"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:360
-msgid "Checked In <span class=\"count\">(%s)</span>"
-msgid_plural "Checked In <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:364, inc/Core/bookings.php:40
+#: inc/Core/bookings.php:40, inc/Core/Bootstrap/Setup_Environment.php:364
 msgctxt "Booking status"
 msgid "Checked Out"
 msgstr ""
 
-#: inc/Bootstrap/Setup_Environment.php:369
-msgid "Checked Out <span class=\"count\">(%s)</span>"
-msgid_plural "Checked Out <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/Bootstrap/Setup_Environment.php:373, inc/Core/bookings.php:41
+#: inc/Core/bookings.php:41, inc/Core/Bootstrap/Setup_Environment.php:373
 msgctxt "Booking status"
 msgid "Cancelled"
 msgstr ""
-
-#: inc/Bootstrap/Setup_Environment.php:378
-msgid "Cancelled <span class=\"count\">(%s)</span>"
-msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
 
 #: inc/Core/bookings.php:266, inc/Core/bookings.php:387, inc/Core/bookings.php:388, inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
 msgid "AweBooking"
@@ -690,37 +295,37 @@ msgstr ""
 msgid "+ <span>%1$s%%</span> to price"
 msgstr ""
 
-#: inc/Core/functions.php:200
+#: inc/Core/functions.php:203
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:459
+#: inc/Core/functions.php:462
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:460
+#: inc/Core/functions.php:463
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:461
+#: inc/Core/functions.php:464
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:462
+#: inc/Core/functions.php:465
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:463
+#: inc/Core/functions.php:466
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:464
+#: inc/Core/functions.php:467
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/Core/functions.php:535, inc/Email/Mailable.php:352
+#: inc/Core/functions.php:538, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -811,7 +416,7 @@ msgstr ""
 msgid "Enable check payments"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:67, inc/Gateway/Direct_Payment_Gateway.php:67, inc/Admin/List_Tables/Room_Type_List_Table.php:35, inc/Frontend/Checkout/Form_Controls.php:89
+#: inc/Gateway/BACS_Gateway.php:67, inc/Gateway/Direct_Payment_Gateway.php:67, inc/Admin/List_Tables/Room_Type_List_Table.php:35, inc/Core/Widget/Search_Form_Widget.php:48, inc/Frontend/Checkout/Form_Controls.php:89
 msgid "Title"
 msgstr ""
 
@@ -943,7 +548,7 @@ msgstr ""
 msgid "Total:"
 msgstr ""
 
-#: templates/reservation/dates.php:40, templates/search-form/dates.php:27, templates/search-form/dates.php:32, inc/Admin/Metaboxes/views/html-booking-rooms.php:26, inc/Component/Form/fields/abrs_dates.php:23
+#: templates/reservation/dates.php:40, templates/search-form/dates.php:27, templates/search-form/dates.php:32, component/Form/fields/abrs_dates.php:23, inc/Admin/Metaboxes/views/html-booking-rooms.php:26
 msgid "Check In"
 msgstr ""
 
@@ -953,7 +558,7 @@ msgctxt "check-in time"
 msgid "from %s"
 msgstr ""
 
-#: templates/reservation/dates.php:63, templates/search-form/dates.php:46, templates/search-form/dates.php:51, inc/Admin/Metaboxes/views/html-booking-rooms.php:27, inc/Component/Form/fields/abrs_dates.php:32
+#: templates/reservation/dates.php:63, templates/search-form/dates.php:46, templates/search-form/dates.php:51, component/Form/fields/abrs_dates.php:32, inc/Admin/Metaboxes/views/html-booking-rooms.php:27
 msgid "Check Out"
 msgstr ""
 
@@ -1095,6 +700,14 @@ msgstr ""
 msgid "Infants"
 msgstr ""
 
+#: component/Form/fields/abrs_image_size.php:46
+msgid "Hard crop?"
+msgstr ""
+
+#: component/Http/Middleware/Check_Capability.php:31, inc/Admin/Controllers/Controller.php:59
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
 #: inc/Admin/Calendar/Booking_Scheduler.php:132
 msgid "Blocked"
 msgstr ""
@@ -1163,7 +776,7 @@ msgstr ""
 msgid "Revert Price"
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:20, inc/Admin/Providers/Scripts_Service_Provider.php:79
+#: inc/Admin/Controllers/Ajax_Controller.php:20, inc/Admin/Providers/Scripts_Service_Provider.php:81
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -1248,10 +861,6 @@ msgstr ""
 
 #: inc/Admin/Controllers/Calendar_Controller.php:44
 msgid "Sorry, the request room does not exists."
-msgstr ""
-
-#: inc/Admin/Controllers/Controller.php:59, inc/Component/Http/Middleware/Check_Capability.php:31
-msgid "Sorry, you are not allowed to access this page."
 msgstr ""
 
 #: inc/Admin/Controllers/Rate_Controller.php:56
@@ -1980,27 +1589,27 @@ msgctxt "Page states"
 msgid "Checkout"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:76
+#: inc/Admin/Providers/Scripts_Service_Provider.php:78
 msgid "OK"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:77, inc/Admin/views/booking/page-edit-room.php:94, inc/Admin/views/booking/payment-form.php:69, inc/Admin/views/booking/service-form.php:79
+#: inc/Admin/Providers/Scripts_Service_Provider.php:79, inc/Admin/views/booking/page-edit-room.php:94, inc/Admin/views/booking/payment-form.php:69, inc/Admin/views/booking/service-form.php:79
 msgid "Cancel"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:78
+#: inc/Admin/Providers/Scripts_Service_Provider.php:80
 msgid "Are you sure you want to do this?"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:103
+#: inc/Admin/Providers/Scripts_Service_Provider.php:105
 msgid "Are you sure you wish to delete this note?"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:104
+#: inc/Admin/Providers/Scripts_Service_Provider.php:106
 msgid "Please enter some content into note"
 msgstr ""
 
-#: inc/Admin/Providers/Scripts_Service_Provider.php:125
+#: inc/Admin/Providers/Scripts_Service_Provider.php:127
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
@@ -2028,7 +1637,7 @@ msgstr ""
 msgid "Search form style"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:62
+#: inc/Admin/Settings/Appearance_Setting.php:62, inc/Core/Widget/Search_Form_Widget.php:58
 msgid "Horizontal"
 msgstr ""
 
@@ -2530,12 +2139,435 @@ msgstr ""
 msgid "Booked in the current session."
 msgstr ""
 
-#: inc/Component/Http/Kernel.php:73
-msgid "Sorry, the page you are looking for could not be found."
+#: inc/Core/Bootstrap/Setup_Environment.php:94
+msgctxt "Amenity plural name"
+msgid "Amenities"
 msgstr ""
 
-#: inc/Component/Http/Kernel.php:75
-msgid "Whoops, looks like something went wrong."
+#: inc/Core/Bootstrap/Setup_Environment.php:95
+msgctxt "Amenity singular name"
+msgid "Amenity"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:96
+msgctxt "Admin menu name"
+msgid "Amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:97
+msgid "Query amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:98
+msgid "Popular amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:99
+msgid "All amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:100, inc/Core/Bootstrap/Setup_Environment.php:101
+msgid "Parent amenity"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:102
+msgid "Edit amenity"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:103
+msgid "Update amenity"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:104
+msgid "Add New Amenity"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:105
+msgid "New Amenity Name"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:106
+msgid "Add or remove amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:107
+msgid "Choose from most used amenities"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:143
+msgctxt "Room type plural name"
+msgid "Room Types"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:144
+msgctxt "Room type singular name"
+msgid "Room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:145
+msgctxt "Admin menu name"
+msgid "Hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:146
+msgid "Room Types"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:147
+msgid "Add New"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:148
+msgid "Add new room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:149, inc/Core/Bootstrap/Setup_Environment.php:197, inc/Core/Bootstrap/Setup_Environment.php:233, inc/Core/Bootstrap/Setup_Environment.php:271, inc/Admin/Metaboxes/views/html-booking-main.php:46, inc/Admin/Metaboxes/views/html-booking-main.php:61, inc/Admin/Metaboxes/views/html-booking-main.php:66, inc/Admin/Metaboxes/views/html-booking-main.php:110, inc/Admin/Metaboxes/views/html-booking-payments.php:66, inc/Admin/Metaboxes/views/html-booking-rooms.php:121
+msgid "Edit"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:150
+msgid "Edit room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:151
+msgid "New room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:152
+msgid "View room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:153
+msgid "View room types"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:154
+msgid "Query room types"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:155
+msgid "No room types found"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:156
+msgid "No room types found in trash"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:157
+msgid "Parent room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:158
+msgid "Room type image"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:159
+msgid "Set room type image"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:160
+msgid "Remove room type image"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:161
+msgid "Use as room type image"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:162
+msgid "Insert into room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:163
+msgid "Uploaded to this room type"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:164
+msgid "Filter room types"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:165
+msgid "Room Types navigation"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:166
+msgid "Room Types list"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:168
+msgid "This is where you can add new room type to your hotel."
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:192
+msgctxt "Booking plural name"
+msgid "Bookings"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:193
+msgctxt "Booking singular name"
+msgid "Booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:194
+msgctxt "Admin menu name"
+msgid "Bookings"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:195
+msgid "Add booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:196
+msgid "Add new booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:198
+msgid "Edit booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:199, inc/Email/Templates/New_Booking.php:12
+msgid "New booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:200
+msgid "View booking"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:201
+msgid "Query bookings"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:202
+msgid "No bookings found"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:203
+msgid "No bookings found in trash"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:204
+msgid "Parent bookings"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:205
+msgid "Filter bookings"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:206
+msgid "Bookings navigation"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:207
+msgid "Bookings List"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:209
+msgid "This is where store bookings are stored."
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:228
+msgctxt "Service plural name"
+msgid "Services"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:229
+msgctxt "Service singular name"
+msgid "Service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:230
+msgctxt "Admin menu name"
+msgid "Services"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:231, inc/Admin/Metaboxes/views/html-booking-items.php:45
+msgid "Add service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:232
+msgid "Add new service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:234
+msgid "Edit service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:235
+msgid "New service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:236
+msgid "View service"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:237
+msgid "Query services"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:238
+msgid "No services found"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:239
+msgid "No services found in trash"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:240
+msgid "Parent services"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:241
+msgid "Filter services"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:242
+msgid "Services navigation"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:243
+msgid "Services List"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:245
+msgid "This is where store services are stored."
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:266
+msgctxt "Hotel plural name"
+msgid "Hotels"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:267
+msgctxt "Hotel singular name"
+msgid "Hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:268
+msgctxt "Admin menu name"
+msgid "Hotels"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:269
+msgid "Add hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:270
+msgid "Add new hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:272
+msgid "Edit hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:273
+msgid "New hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:274
+msgid "View hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:275
+msgid "Query hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:276
+msgid "No hotel found"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:277
+msgid "No hotel found in trash"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:278
+msgid "Parent hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:279
+msgid "Filter hotel"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:280
+msgid "Hotels navigation"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:281
+msgid "Hotels List"
+msgstr ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:315
+msgid "Pending <span class=\"count\">(%s)</span>"
+msgid_plural "Pending <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:324
+msgid "Processing <span class=\"count\">(%s)</span>"
+msgid_plural "Processing <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:333
+msgid "Reserved <span class=\"count\">(%s)</span>"
+msgid_plural "Reserved <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:342
+msgid "Deposit <span class=\"count\">(%s)</span>"
+msgid_plural "Deposit <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:351
+msgid "Paid <span class=\"count\">(%s)</span>"
+msgid_plural "Paid <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:360
+msgid "Checked In <span class=\"count\">(%s)</span>"
+msgid_plural "Checked In <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:369
+msgid "Checked Out <span class=\"count\">(%s)</span>"
+msgid_plural "Checked Out <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Bootstrap/Setup_Environment.php:378
+msgid "Cancelled <span class=\"count\">(%s)</span>"
+msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Core/Shortcode/Shortcode.php:154
+msgid "Sorry, a fatal error occurred."
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:11
+msgid "AweBooking: Check Availability"
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:14
+msgid "Display the check availability form."
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:54
+msgid "Layout"
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:57
+msgid "Vertical"
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:64
+msgid "Show Location?"
+msgstr ""
+
+#: inc/Core/Widget/Search_Form_Widget.php:70
+msgid "Container class"
 msgstr ""
 
 #: inc/Email/Templates/Cancelled.php:12
@@ -2712,10 +2744,6 @@ msgstr ""
 #. translators: Item name in quotes
 #: inc/Frontend/Controllers/Reservation_Controller.php:93
 msgid "The room &ldquo;%s&rdquo; has been removed from your reservation"
-msgstr ""
-
-#: inc/Frontend/Shortcodes/Shortcode_Abstract.php:154
-msgid "Sorry, a fatal error occurred."
 msgstr ""
 
 #: inc/Model/Booking/Room_Item.php:60
@@ -3440,10 +3468,6 @@ msgstr ""
 
 #: inc/Admin/views/settings/index.php:57, inc/Admin/views/settings/index.php:57
 msgid "Save changes"
-msgstr ""
-
-#: inc/Component/Form/fields/abrs_image_size.php:46
-msgid "Hard crop?"
 msgstr ""
 
 #: inc/Admin/Calendar/views/partials/aside-nested.php:11, inc/Admin/Calendar/views/partials/aside.php:12
