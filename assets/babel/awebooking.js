@@ -57,7 +57,7 @@ plugin.datepicker = function (instance, options) {
   // const minDate = new Date().fp_incr(defaults.min_date);
   // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
 
-  const fp = flatpickr(instance, Object.assign({}, options, {
+  const _defaults = {
     dateFormat: 'Y-m-d',
     ariaDateFormat: i18n.dateFormat,
     minDate: 'today',
@@ -66,10 +66,14 @@ plugin.datepicker = function (instance, options) {
     showMonths: defaults.showMonths || 1,
     enableTime: false,
     enableSeconds: false,
-    onReady(_, __, fp) {
-      fp.calendarContainer.classList.add('awebooking-datepicker');
-    }
-  }));
+    disableMobile: false,
+  };
+
+  const fp = flatpickr(instance, $.extend({}, _defaults, options))
+
+  fp.config.onReady.push((_, __, fp) => {
+    fp.calendarContainer.classList.add('awebooking-datepicker')
+  })
 
   return fp;
 };

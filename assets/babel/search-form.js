@@ -59,7 +59,7 @@ class SearchForm {
       $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
     }
 
-    const fp = awebooking.datepicker($rangepicker[0], {
+    const fp = plugin.datepicker($rangepicker[0], {
       mode: 'range',
       altInput: false,
       clickOpens: false,
@@ -89,13 +89,12 @@ class SearchForm {
       },
     });
 
-    $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el)
-      .on('click focus', function(e) {
-        e.preventDefault();
+    $(this.$el).on('click', '.searchbox__box--checkin, .searchbox__box--checkout', (e) => {
+      e.preventDefault();
 
-        fp.isOpen = false;
-        fp.open(undefined, this);
-      });
+      fp.isOpen = false;
+      fp.open(undefined, e.currentTarget);
+    });
 
     $('.searchbox__box', this.$el).each((i, box) => {
       $(box).data('popup', this.setuptPopper(box));
