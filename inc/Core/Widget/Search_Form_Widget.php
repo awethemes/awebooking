@@ -32,7 +32,7 @@ class Search_Form_Widget extends Widget {
 			echo $args['before_title'] . $title . $args['after_title']; // @WPCS: XSS OK.
 		}
 
-		echo do_shortcode( '[awebooking_check_form ' . abrs_html_attributes( $instance ) . ']' );
+		echo @do_shortcode( '[awebooking_check_form ' . abrs_html_attributes( $instance ) . ']' );
 
 		echo $args['after_widget']; // WPCS: XSS OK.
 	}
