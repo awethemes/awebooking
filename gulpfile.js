@@ -56,7 +56,7 @@ gulp.task('babel', (done) => {
     ]
   };
 
-  return gulp.src(['assets/babel/*.js', 'assets/babel/admin/!*.js'], { base: 'assets/babel' })
+  return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
