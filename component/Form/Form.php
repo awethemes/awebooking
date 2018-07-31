@@ -302,6 +302,8 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	 *
 	 * @param  string $property Object property.
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
 	public function __get( $property ) {
 		switch ( $property ) {

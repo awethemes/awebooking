@@ -54,7 +54,9 @@ class Scripts_Service_Provider extends Service_Provider {
 		}
 
 		// Enqueue global awebooking admin JS & CSS.
-		if ( 'awebooking_route' === $screen->base || in_array( $screen->id, abrs_admin_screens() ) ) {
+		if ( 'widgets' === $screen->id
+			|| 'awebooking_route' === $screen->base
+			|| in_array( $screen->id, abrs_admin_screens() ) ) {
 			CMB2_hookup::enqueue_cmb_js();
 			CMB2_hookup::enqueue_cmb_css();
 
