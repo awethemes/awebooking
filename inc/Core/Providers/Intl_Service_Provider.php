@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Providers;
+namespace AweBooking\Core\Providers;
 
 use AweBooking\Support\Service_Provider;
 use AweBooking\Component\Country\ISO3166;

@@ -41,11 +41,11 @@ final class Plugin extends Container {
 	 * @var array
 	 */
 	protected $bootstrappers = [
-		\AweBooking\Bootstrap\Load_Textdomain::class,
-		\AweBooking\Bootstrap\Load_Configuration::class,
-		\AweBooking\Bootstrap\Setup_Environment::class,
-		\AweBooking\Bootstrap\Start_Session::class,
-		\AweBooking\Bootstrap\Boot_Providers::class,
+		\AweBooking\Core\Bootstrap\Load_Textdomain::class,
+		\AweBooking\Core\Bootstrap\Load_Configuration::class,
+		\AweBooking\Core\Bootstrap\Setup_Environment::class,
+		\AweBooking\Core\Bootstrap\Start_Session::class,
+		\AweBooking\Core\Bootstrap\Boot_Providers::class,
 	];
 
 	/**
@@ -55,13 +55,15 @@ final class Plugin extends Container {
 	 */
 	protected $service_providers = [
 		'core' => [
-			\AweBooking\Providers\Intl_Service_Provider::class,
-			\AweBooking\Providers\Form_Service_Provider::class,
-			\AweBooking\Providers\Http_Service_Provider::class,
-			\AweBooking\Providers\Query_Service_Provider::class,
-			\AweBooking\Providers\Logic_Service_Provider::class,
-			\AweBooking\Providers\Payment_Service_Provider::class,
-			\AweBooking\Providers\Email_Service_Provider::class,
+			\AweBooking\Core\Providers\Intl_Service_Provider::class,
+			\AweBooking\Core\Providers\Form_Service_Provider::class,
+			\AweBooking\Core\Providers\Http_Service_Provider::class,
+			\AweBooking\Core\Providers\Query_Service_Provider::class,
+			\AweBooking\Core\Providers\Logic_Service_Provider::class,
+			\AweBooking\Core\Providers\Payment_Service_Provider::class,
+			\AweBooking\Core\Providers\Email_Service_Provider::class,
+			\AweBooking\Core\Providers\Shortcode_Service_Provider::class,
+			\AweBooking\Core\Providers\Widget_Service_Provider::class,
 		],
 		'admin' => [
 			\AweBooking\Admin\Providers\Admin_Service_Provider::class,
@@ -78,7 +80,6 @@ final class Plugin extends Container {
 			\AweBooking\Frontend\Providers\Template_Loader_Service_Provider::class,
 			\AweBooking\Frontend\Providers\Scripts_Service_Provider::class,
 			\AweBooking\Frontend\Providers\Reservation_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Shortcode_Service_Provider::class,
 		],
 	];
 

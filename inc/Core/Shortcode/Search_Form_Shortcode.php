@@ -1,7 +1,7 @@
 <?php
-namespace AweBooking\Frontend\Shortcodes;
+namespace AweBooking\Core\Shortcode;
 
-class Search_Form_Shortcode extends Shortcode_Abstract {
+class Search_Form_Shortcode extends Shortcode {
 
 	/**
 	 * Constructor.

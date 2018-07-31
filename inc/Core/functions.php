@@ -3,7 +3,7 @@
 use AweBooking\Constants;
 use AweBooking\Multilingual;
 use AweBooking\Gateway\Gateway;
-use AweBooking\Bootstrap\Load_Textdomain;
+use AweBooking\Core\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form;
 use Awethemes\WP_Object\WP_Object;

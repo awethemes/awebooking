@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Providers;
+namespace AweBooking\Core\Providers;
 
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;

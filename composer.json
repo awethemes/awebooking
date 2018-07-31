@@ -41,6 +41,7 @@
     "autoload": {
         "psr-4": {
             "AweBooking\\": "inc/",
+            "AweBooking\\Component\\": "component/",
             "AweBooking\\Deprecated\\": "deprecated/"
         },
         "classmap": [

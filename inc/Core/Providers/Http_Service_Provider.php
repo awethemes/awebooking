@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Providers;
+namespace AweBooking\Core\Providers;
 
 use Awethemes\Http\Request;
 use AweBooking\Component\Http\Kernel;

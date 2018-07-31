@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Providers;
+namespace AweBooking\Core\Providers;
 
 use AweBooking\Gateway\Gateways;
 use AweBooking\Support\Service_Provider;

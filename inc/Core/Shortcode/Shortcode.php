@@ -1,9 +1,9 @@
 <?php
-namespace AweBooking\Frontend\Shortcodes;
+namespace AweBooking\Core\Shortcode;
 
 use Illuminate\Support\Arr;
 
-abstract class Shortcode_Abstract {
+abstract class Shortcode {
 	/**
 	 * The shortcode tag name.
 	 *

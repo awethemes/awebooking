@@ -3,7 +3,7 @@ namespace AweBooking;
 
 use Psr\Log\LoggerInterface;
 use AweBooking\Admin\Admin_Settings;
-use AweBooking\Bootstrap\Setup_Environment;
+use AweBooking\Core\Bootstrap\Setup_Environment;
 use AweBooking\Background_Process\Background_Updater;
 
 class Installer {

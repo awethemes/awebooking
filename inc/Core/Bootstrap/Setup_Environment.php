@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Bootstrap;
+namespace AweBooking\Core\Bootstrap;
 
 use AweBooking\Plugin;
 use AweBooking\Constants;

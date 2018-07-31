@@ -43,9 +43,9 @@ wp_enqueue_script( 'flatpickr' );
 	$(function() {
 		flatpickr('#<?php echo esc_attr( $types->_id( '_start' ) ); ?>', {
 			mode: 'range',
-			dateFormat: 'Y-m-d',
-			showMonths: 2,
 			minDate: 'today',
+			dateFormat: 'Y-m-d',
+			showMonths: awebooking.isMobile() ? 1 : 2,
 			plugins: [ new awebooking.utils.flatpickrRangePlugin({ input: '#<?php echo esc_attr( $types->_id( '_end' ) ); ?>' }) ],
 		});
 	});
