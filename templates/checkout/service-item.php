@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* @var array $includes */
 /* @var \AweBooking\Model\Service $service */
 
-$services = abrs_reservation()->get_services();
 $res_request = abrs_reservation()->get_previous_request();
 
 $is_checked  = false;
@@ -33,9 +32,10 @@ $price = abrs_calc_service_price( $service, [
 ] );
 
 $input_prefix = 'services[' . $service->get_id() . ']';
+$booked_service = abrs_reservation()->get_service( $service->get_id() );
 
 $js_data = $service->only( 'id', 'name' );
-$js_data['quantity'] = 1;
+$js_data['quantity'] = $service->is_quantity_selectable() && $booked_service ? $booked_service->get_quantity() : 0;
 $js_data['price']    = $price ?: 0;
 
 ?>
@@ -74,9 +74,7 @@ $js_data['price']    = $price ?: 0;
 
 					<div class="checkout-service__input-box">
 						<?php if ( $service->is_quantity_selectable() ) : ?>
-
-							<input type="number" data-bind="value: quantity" min="0" class="form-input" value="0" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]">
-
+							<input type="number" data-bind="value: quantity" min="0" class="form-input" value="<?php echo esc_attr( $js_data['quantity'] ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" />
 						<?php else : ?>
 							<div class="nice-checkbox">
 								<input type="checkbox" id="service_id_<?php echo esc_attr( $service->get_id() ); ?>" name="<?php echo esc_attr( $input_prefix ); ?>[quantity]" value="1" <?php disabled( $is_included ); ?> <?php checked( $is_checked ); ?> />
