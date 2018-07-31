@@ -87,7 +87,7 @@ gulp.task('minify:css', () => {
 });
 
 gulp.task('i18n', () => {
-  return gulp.src(['*.php', 'inc/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
+  return gulp.src(['*.php', 'inc/**/*.php', 'component/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
     .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(potgen({ domain: 'awebooking', package: 'AweBooking' }))
