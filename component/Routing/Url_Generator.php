@@ -47,22 +47,13 @@ class Url_Generator {
 	 *
 	 * @param  string $path       Optional. The route. Default '/'.
 	 * @param  array  $parameters The additional parameters.
-	 * @param  bool   $is_ssl     Force the SSL in return URL.
 	 * @return string
 	 */
-	public function route( $path = '/', $parameters = [], $is_ssl = null ) {
+	public function route( $path = '/', $parameters = [] ) {
 		if ( empty( $path ) ) {
 			$path = '/';
 		} else {
 			$path = '/' . ltrim( $path, '/' );
-		}
-
-		// If scheme not provide, guest by is_ssl().
-		$scheme = ( is_null( $is_ssl ) && is_ssl() ) ? 'https' : 'http';
-
-		// Force to https.
-		if ( 'http' === $scheme && true === $is_ssl ) {
-			$scheme = 'https';
 		}
 
 		if ( get_option( 'permalink_structure' ) ) {
@@ -71,12 +62,12 @@ class Url_Generator {
 			$endpoint_path = ltrim( $this->plugin->endpoint_name(), '/' ) . $path;
 
 			if ( $wp_rewrite->using_index_permalinks() ) {
-				$url = home_url( $wp_rewrite->index . '/' . $endpoint_path, $scheme );
+				$url = home_url( $wp_rewrite->index . '/' . $endpoint_path );
 			} else {
-				$url = home_url( $endpoint_path, $scheme );
+				$url = home_url( $endpoint_path );
 			}
 		} else {
-			$url = trailingslashit( home_url( '', $scheme ) );
+			$url = trailingslashit( home_url( '' ) );
 
 			// Nginx only allows HTTP/1.0 methods when redirecting from / to /index.php
 			// To work around this, we manually add index.php to the URL, avoiding the redirect.
@@ -92,7 +83,7 @@ class Url_Generator {
 			$url = add_query_arg( $parameters, $url );
 		}
 
-		return apply_filters( 'abrs_route_url', rawurldecode( $url ), $path, $parameters, $scheme );
+		return rawurldecode( $url );
 	}
 
 	/**
@@ -117,6 +108,6 @@ class Url_Generator {
 			$url = add_query_arg( $parameters, $url );
 		}
 
-		return apply_filters( 'abrs_admin_route_url', rawurldecode( $url ), $path, $parameters );
+		return rawurldecode( $url );
 	}
 }

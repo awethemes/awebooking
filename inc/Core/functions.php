@@ -151,11 +151,12 @@ function abrs_asset_url( $path = null ) {
  *
  * @param  string $path       Optional, the admin route.
  * @param  array  $parameters The additional parameters.
- * @param  bool   $is_ssl     Force the SSL in return URL.
  * @return string
  */
-function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
-	return abrs_url()->route( $path, $parameters, $is_ssl );
+function abrs_route( $path = '/', $parameters = [] ) {
+	$url = abrs_url()->route( $path, $parameters );
+
+	return apply_filters( 'abrs_route_url', $url, $path, $parameters );
 }
 
 /**
@@ -166,7 +167,9 @@ function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
  * @return string
  */
 function abrs_admin_route( $path = '/', $parameters = [] ) {
-	return abrs_url()->admin_route( $path, $parameters );
+	$url = abrs_url()->admin_route( $path, $parameters );
+
+	return apply_filters( 'abrs_admin_route_url', $url, $path, $parameters );
 }
 
 /**
