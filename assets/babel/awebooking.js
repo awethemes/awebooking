@@ -67,15 +67,12 @@ plugin.datepicker = function (instance, options) {
     enableTime: false,
     enableSeconds: false,
     disableMobile: false,
+    onReady(_, __, fp) {
+      fp.calendarContainer.classList.add('awebooking-datepicker')
+    },
   };
 
-  const fp = flatpickr(instance, $.extend({}, _defaults, options))
-
-  fp.config.onReady.push((_, __, fp) => {
-    fp.calendarContainer.classList.add('awebooking-datepicker')
-  })
-
-  return fp;
+  return flatpickr(instance, $.extend({}, _defaults, options));
 };
 
 /**

@@ -65,7 +65,8 @@ class SearchForm {
       clickOpens: false,
       closeOnSelect: true,
 
-      onReady() {
+      onReady(_, __, fp) {
+        fp.calendarContainer.classList.add('awebooking-datepicker')
         this.config.ignoredFocusElements.push($('.searchbox__box--checkin', self.$el)[0]);
         this.config.ignoredFocusElements.push($('.searchbox__box--checkout', self.$el)[0]);
       },
@@ -83,7 +84,7 @@ class SearchForm {
         }
       },
 
-      onPreCalendarPosition() {
+      onPreCalendarPosition(_, __, fp) {
         fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
         setTimeout(() => { this._positionElement = this._input; }, 0);
       },
@@ -98,6 +99,10 @@ class SearchForm {
 
     $('.searchbox__box', this.$el).each((i, box) => {
       $(box).data('popup', this.setuptPopper(box));
+    });
+
+    $('[data-trigger="spinner"]', this.$el).on('changed.spinner', function () {
+      $(this).find('[data-spin="spinner"]').trigger('change');
     });
   }
 
