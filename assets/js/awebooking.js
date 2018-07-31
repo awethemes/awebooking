@@ -1117,19 +1117,23 @@
 	  // const minDate = new Date().fp_incr(defaults.min_date);
 	  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
 
-	  var fp = flatpickr(instance, Object.assign({}, options, {
+	  var _defaults = {
 	    dateFormat: 'Y-m-d',
 	    ariaDateFormat: i18n.dateFormat,
 	    minDate: 'today',
 	    // maxDate: max_date,
 	    // disable: disable,
-	    showMonths: defaults.showMonths || 1,
+	    showMonths: 1,
 	    enableTime: false,
 	    enableSeconds: false,
-	    onReady: function onReady(_, __, fp) {
-	      fp.calendarContainer.classList.add('awebooking-datepicker');
-	    }
-	  }));
+	    disableMobile: false
+	  };
+
+	  var fp = flatpickr(instance, $.extend({}, _defaults, options));
+
+	  fp.config.onReady.push(function (_, __, fp) {
+	    fp.calendarContainer.classList.add('awebooking-datepicker');
+	  });
 
 	  return fp;
 	};

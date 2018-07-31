@@ -100,7 +100,7 @@
         $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
       }
 
-      var fp = awebooking.datepicker($rangepicker[0], {
+      var fp = plugin.datepicker($rangepicker[0], {
         mode: 'range',
         altInput: false,
         clickOpens: false,
@@ -135,11 +135,11 @@
         }
       });
 
-      $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el).on('click focus', function (e) {
+      $(this.$el).on('click', '.searchbox__box--checkin, .searchbox__box--checkout', function (e) {
         e.preventDefault();
 
         fp.isOpen = false;
-        fp.open(undefined, this);
+        fp.open(undefined, e.currentTarget);
       });
 
       $('.searchbox__box', this.$el).each(function (i, box) {
