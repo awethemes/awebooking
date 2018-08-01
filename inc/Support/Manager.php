@@ -12,7 +12,7 @@ abstract class Manager implements \ArrayAccess {
 	/**
 	 * The array of "drivers".
 	 *
-	 * @var array
+	 * @var \AweBooking\Support\Collection|array
 	 */
 	protected $drivers = [];
 
@@ -38,7 +38,7 @@ abstract class Manager implements \ArrayAccess {
 	/**
 	 * Get all of the registered "drivers".
 	 *
-	 * @return array
+	 * @return \AweBooking\Support\Collection|array
 	 */
 	public function get_drivers() {
 		return $this->drivers;
@@ -59,7 +59,7 @@ abstract class Manager implements \ArrayAccess {
 	 * @return bool
 	 */
 	public function registered( $driver ) {
-		return array_key_exists( $driver, $this->drivers );
+		return isset( $this->drivers[ $driver ] );
 	}
 
 	/**

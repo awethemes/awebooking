@@ -73,9 +73,8 @@ class Admin_Service_Provider extends Service_Provider {
 		/* @var $settings \AweBooking\Admin\Admin_Settings  */
 		$settings = $this->plugin->make( Admin_Settings::class );
 
-		foreach ( $this->plugin->tagged( 'settings' ) as $name => $setting ) {
+		foreach ( $this->plugin->tagged( 'settings' ) as $setting ) {
 			$settings->register( $setting );
-
 			$this->register_setting_modifiers( $setting );
 		}
 
