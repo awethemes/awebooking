@@ -45,6 +45,7 @@ $searchbox-box--border:      200px !default;
 .searchbox__box-wrap {
   z-index: 10;
   position: relative;
+  padding: 10px 0;
 }
 
 .searchbox__box-label,
@@ -501,7 +502,7 @@ $searchbox-box--border:      200px !default;
 
 .searchbox__spinner-box {
   position: relative;
-  padding: 5px 0;
+  padding: 10px 0;
 }
 
 .searchbox__spinner-title {
@@ -522,7 +523,7 @@ $searchbox-box--border:      200px !default;
 input[type="number"].searchbox__spinner-input {
   border: none;
   background-color: transparent;
-  padding: 0;
+  padding: 0 15px;
   display: inline-block;
   text-align: right;
   max-width: 100px;
