@@ -248,7 +248,51 @@ function abrs_valid_url( $path ) {
  * @return void
  */
 function abrs_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
+	if ( function_exists( 'set_time_limit' ) &&
+		false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
+}
+
+/**
+ * Sort the array by given a arbitrary ordering.
+ *
+ * @param array $array    The array to sort.
+ * @param array $ordering The ordering.
+ *
+ * @return array
+ */
+function abrs_sort_by_keys( array $array, $ordering = [] ) {
+	// Since we don't have any ordering, return the original array.
+	if ( empty( $ordering ) ) {
+		return $array;
+	}
+
+	$is_assoc = array_values( $array ) !== $array;
+
+	$bottom = count( $array ) + 10001;
+	$sorted = [];
+
+	foreach ( $array as $key => $value ) {
+		if ( ! $is_assoc ) {
+			$key = $value;
+		}
+
+		// Found the possiton in $ordering.
+		$index = array_search( $key, $ordering );
+
+		// Found in $ordering, just add by that position,
+		// otherwise we will add to end of the $sorted.
+		if ( false !== $index ) {
+			$sorted[ $index ] = $value;
+		} else {
+			$sorted[ $bottom ] = $value;
+			$bottom++;
+		}
+	}
+
+	// Sort by index.
+	ksort( $sorted );
+
+	return array_values( $sorted );
 }

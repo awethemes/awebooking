@@ -204,7 +204,8 @@ function abrs_list_payment_methods() {
 	]);
 
 	$gateways = abrs_payment_gateways()
-		->enabled()->map( function( Gateway $gateway ) {
+		->get_enabled()
+		->map( function( Gateway $gateway ) {
 			return $gateway->get_method_title();
 		})->all();
 
