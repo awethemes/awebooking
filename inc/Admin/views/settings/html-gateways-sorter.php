@@ -1,5 +1,5 @@
 <ul class="abrs-sortable" id="js-sorting-gateways">
-	<?php foreach ( awebooking( 'gateways' )->all() as $key => $gateway ) : ?>
+	<?php foreach ( abrs_payment_gateways()->get_sorted() as $key => $gateway ) : ?>
 		<li class="abrs-sortable__item">
 			<input type="hidden" name="list_gateway_order[]" value="<?php echo esc_attr( $gateway->get_method() ); ?>">
 

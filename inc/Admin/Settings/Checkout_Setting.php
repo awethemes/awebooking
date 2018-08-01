@@ -63,7 +63,7 @@ class Checkout_Setting extends Abstract_Setting {
 		]);
 
 		// Register the gateways custom fields.
-		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
+		foreach ( abrs_payment_gateways()->all() as $gateway ) {
 			/* @var \AweBooking\Gateway\Gateway $gateway */
 			if ( $gateway->has_settings() ) {
 				$this->register_gateway_settings( $gateway );

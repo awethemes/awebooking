@@ -66,7 +66,8 @@ class Booking_Payment_Form extends Form {
 	 * @return string
 	 */
 	protected function get_gateways_support( $type = 'transaction_id' ) {
-		$gateways = awebooking()->make( 'gateways' )->enabled()
+		$gateways = abrs_payment_gateways()
+			->get_enabled()
 			->filter( function( $gateway ) use ( $type ) {
 				return $gateway->is_support( $type );
 			})->keys();
