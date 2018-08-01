@@ -45,7 +45,7 @@ $searchbox-box--border:      200px !default;
 .searchbox__box-wrap {
   z-index: 10;
   position: relative;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .searchbox__box-label,
@@ -94,6 +94,10 @@ $searchbox-box--border:      200px !default;
 
 .button--search.searchbox__submit {
   min-width: 130px;
+}
+
+.searchbox__input--hotel {
+  cursor: pointer;
 }
 
 .searchbox__box--occupancy {
