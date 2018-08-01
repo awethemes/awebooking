@@ -124,10 +124,10 @@
 		}
 	}
 }
-.roommaster-occupancy {
-	&__item {
-		display: block;
-	}
+
+.roommaster-occupancy__item {
+  display: block;
+  padding: 0;
 }
 
 .roommaster-inventory {
