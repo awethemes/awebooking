@@ -25,21 +25,7 @@ $action = abrs_get_page_permalink( 'search_results' );
 ?>
 
 <form method="GET" action="<?php echo esc_url( apply_filters( 'abrs_search_form_action', $action ) ); ?>" role="search">
-	<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
-		<input type="hidden" name="p" value="<?php echo esc_attr( abrs_get_page_id( 'check_availability' ) ); ?>">
-	<?php endif ?>
-
-	<?php if ( abrs_running_on_multilanguage() ) : ?>
-		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
-	<?php endif ?>
-
-	<?php if ( abrs_is_room_type() ) : ?>
-		<input type="hidden" name="hotel" value="<?php echo esc_attr( abrs_get_room_type( get_the_ID() )->get( 'hotel_id' ) ); ?>">
-	<?php endif; ?>
-
-	<?php if ( ! empty( $atts['only_room'] ) ) : ?>
-		<input type="hidden" name="only" value="<?php echo esc_attr( implode( ',', wp_parse_id_list( $atts['only_room'] ) ) ); ?>">
-	<?php endif ?>
+	<?php abrs_search_form_hidden_fields( $atts ); ?>
 
 	<div class="searchbox <?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
 		<div class="searchbox__wrap">
