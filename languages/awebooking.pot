@@ -55,6 +55,14 @@ msgstr ""
 msgid "Contribute"
 msgstr ""
 
+#: inc/Premium.php:75
+msgid "Sorry, we can't verify your API code right now. Please try again later."
+msgstr ""
+
+#: inc/Premium.php:86
+msgid "Sorry, your API code is invalid. Please enter again."
+msgstr ""
+
 #: inc/Roles.php:22
 msgid "Hotel Customer"
 msgstr ""
@@ -75,7 +83,7 @@ msgstr ""
 msgid "Whoops, looks like something went wrong."
 msgstr ""
 
-#: inc/Admin/Admin_Settings.php:56
+#: inc/Admin/Admin_Settings.php:57
 msgid "Your settings have been saved."
 msgstr ""
 
@@ -299,33 +307,33 @@ msgstr ""
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:462
+#: inc/Core/functions.php:463
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:463
+#: inc/Core/functions.php:464
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:464
+#: inc/Core/functions.php:465
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:465
+#: inc/Core/functions.php:466
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:466
+#: inc/Core/functions.php:467
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:467
+#: inc/Core/functions.php:468
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/Core/functions.php:538, inc/Email/Mailable.php:352
+#: inc/Core/functions.php:539, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -2043,16 +2051,20 @@ msgstr ""
 msgid "Hotels"
 msgstr ""
 
-#: inc/Admin/Settings/Premium_Setting.php:18, inc/Admin/Settings/Premium_Setting.php:28
+#: inc/Admin/Settings/Premium_Setting.php:21, inc/Admin/Settings/Premium_Setting.php:31
 msgid "Premium"
 msgstr ""
 
-#: inc/Admin/Settings/Premium_Setting.php:29
+#: inc/Admin/Settings/Premium_Setting.php:32
 msgid "Join our <a href=\"https://awethemes.com/join\">membership</a> to extend your <a href=\"https://awethemes.com/plugins/awebooking#premiumaddons\">AweBooking</a>."
 msgstr ""
 
-#: inc/Admin/Settings/Premium_Setting.php:35
+#: inc/Admin/Settings/Premium_Setting.php:38
 msgid "API Code"
+msgstr ""
+
+#: inc/Admin/Settings/Premium_Setting.php:39
+msgid "Please enter your API code to get addons updates."
 msgstr ""
 
 #: inc/Admin/Settings/Taxes_Setting.php:28
@@ -2998,6 +3010,14 @@ msgstr ""
 
 #: templates/template-parts/archive/content.php:68
 msgid "View more infomation"
+msgstr ""
+
+#: inc/Admin/Calendar/views/empty.php:3
+msgid "No room types found to display the calendar"
+msgstr ""
+
+#: inc/Admin/Calendar/views/empty.php:4
+msgid "Create new room type"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-action.php:5

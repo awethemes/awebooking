@@ -2803,6 +2803,29 @@ table.wp-list-table .booking_summary {
   font-size: 18px;
 }
 
+.awebooking-blank {
+  margin-top: 1em;
+  padding: 5em 1em;
+  text-align: center;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.awebooking-blank__icon {
+  color: #ddd;
+  font-size: 6em;
+  margin-bottom: 14px;
+}
+
+.awebooking-blank__message {
+  color: #aaa;
+  font-weight: 400;
+  margin: 0 auto 1.5em;
+  line-height: 1.5em;
+  font-size: 1.2em;
+}
+
 @media (max-width: 782.98px) {
   .dp-sm-none {
     display: none !important;

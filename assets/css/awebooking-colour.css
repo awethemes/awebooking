@@ -1601,6 +1601,14 @@ dialog[open] {
   margin-bottom: 0;
 }
 
+.awebooking .payment-method__controls {
+  display: none;
+}
+
+.awebooking .selected .payment-method__controls {
+  display: block !important;
+}
+
 /**
    * Order page
    */
