@@ -43,8 +43,8 @@ class Admin_Settings extends Manager {
 
 		// Handle save the setting.
 		if ( apply_filters( 'abrs_handle_save_setting_' . $setting, true ) && $instance = $this->get( $setting ) ) {
-			abrs_rescue( function () use ( $instance, $request ) {
-				$instance->save( $request );
+			$saved = abrs_rescue( function () use ( $instance, $request ) {
+				return $instance->save( $request );
 			});
 		}
 
@@ -53,9 +53,12 @@ class Admin_Settings extends Manager {
 		do_action( 'abrs_update_settings', $setting, $this );
 
 		// Add an success notices.
-		abrs_admin_notices( esc_html__( 'Your settings have been saved.', 'awebooking' ), 'success' )->dialog();
+		if ( false !== $saved ) {
+			abrs_admin_notices( esc_html__( 'Your settings have been saved.', 'awebooking' ), 'success' )->dialog();
+		}
 
 		// Force flush_rewrite_rules.
+		// TODO: ...
 		@flush_rewrite_rules();
 
 		// Fire abrs_settings_updated action.

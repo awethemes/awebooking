@@ -64,6 +64,7 @@ final class Plugin extends Container {
 			\AweBooking\Core\Providers\Email_Service_Provider::class,
 			\AweBooking\Core\Providers\Shortcode_Service_Provider::class,
 			\AweBooking\Core\Providers\Widget_Service_Provider::class,
+			\AweBooking\Core\Providers\Addons_Service_Provider::class,
 		],
 		'admin' => [
 			\AweBooking\Admin\Providers\Admin_Service_Provider::class,
