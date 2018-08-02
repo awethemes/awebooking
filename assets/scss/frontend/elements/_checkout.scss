@@ -50,6 +50,13 @@
       margin-bottom: 0;
     }
   }
+
+  .payment-method__controls {
+    display: none;
+  }
+  .selected .payment-method__controls {
+    display: block !important;
+  }
 }
 
 /**
