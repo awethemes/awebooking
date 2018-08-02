@@ -82,6 +82,7 @@
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-better-rollup": "^3.3.0",
+    "gulp-changed": "^3.2.0",
     "gulp-clean-css": "^3.9.4",
     "gulp-debug": "^4.0.0",
     "gulp-group-css-media-queries": "^1.2.2",
