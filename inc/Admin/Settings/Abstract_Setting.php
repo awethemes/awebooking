@@ -16,6 +16,20 @@ abstract class Abstract_Setting extends Form implements Setting {
 	protected $plugin;
 
 	/**
+	 * The setting label.
+	 *
+	 * @var string
+	 */
+	protected $label = '';
+
+	/**
+	 * The setting priority.
+	 *
+	 * @var string
+	 */
+	protected $priority = 55;
+
+	/**
 	 * Current section name in current request.
 	 *
 	 * @var string
@@ -30,8 +44,17 @@ abstract class Abstract_Setting extends Form implements Setting {
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 
+		$this->setup();
+
 		parent::__construct( $this->get_id(), new Fluent_Settings( $plugin ), 'static' );
 	}
+
+	/**
+	 * Setup the setting.
+	 *
+	 * @return void
+	 */
+	protected function setup() {}
 
 	/**
 	 * {@inheritdoc}
@@ -44,7 +67,14 @@ abstract class Abstract_Setting extends Form implements Setting {
 	 * {@inheritdoc}
 	 */
 	public function get_label() {
-		return '';
+		return $this->label;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_priority() {
+		return $this->priority;
 	}
 
 	/**
@@ -75,7 +105,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 		$original_options = cmb2_options( $this->plugin->get_original_option() );
 
 		// Is translation?
-		$is_translation = $this->is_translation();
+		$is_translation = $this->current_screen_is_translation();
 
 		// Loop over fields and perform the update option.
 		// If some field missing from $values, we will fallback
@@ -148,7 +178,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 		foreach ( $this->sections as $id => $section ) {
 			$id = sanitize_title( $id );
 			// @codingStandardsIgnoreLine
-			echo '<li><a href="' . esc_url( abrs_admin_route( '/settings', [ 'setting' => $this->get_id(), 'section' => $id ] ) ) . '" class="' . ( $this->current_section == $id ? 'current' : '' ) . '">' . esc_html( $section['title'] ) . '</a></li>';
+			echo '<li><a href="' . esc_url( abrs_admin_route( '/settings', [ 'setting' => $this->get_id(), 'section' => $id ] ) ) . '" class="' . ( $this->current_section === $id ? 'current' : '' ) . '">' . esc_html( $section['title'] ) . '</a></li>';
 		}
 
 		echo '</ul><div class="clear"></div>';
@@ -159,7 +189,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 	 *
 	 * @return bool
 	 */
-	public function is_translation() {
+	protected function current_screen_is_translation() {
 		return $this->plugin->get_current_option() !== $this->plugin->get_original_option() && abrs_running_on_multilanguage();
 	}
 

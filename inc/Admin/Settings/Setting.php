@@ -19,6 +19,13 @@ interface Setting {
 	public function get_label();
 
 	/**
+	 * Get the setting priority.
+	 *
+	 * @return int
+	 */
+	public function get_priority();
+
+	/**
 	 * Perform save setting.
 	 *
 	 * @param  \Awethemes\Http\Request $request The HTTP request.
