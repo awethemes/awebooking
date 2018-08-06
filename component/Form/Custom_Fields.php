@@ -5,17 +5,19 @@ use CMB2_Types;
 
 class Custom_Fields {
 	/**
+	 * The fields template.
+	 *
+	 * @var string|null
+	 */
+	protected $template_path;
+
+	/**
 	 * Init the fields.
 	 *
-	 * @return void
+	 * @param string|null $template_path The template path.
 	 */
-	public function init() {
-		$this->register( 'abrs_dates' );
-		$this->register( 'abrs_amount', 'abrs_sanitize_decimal' );
-		$this->register( 'abrs_toggle', 'abrs_sanitize_checkbox' );
-		$this->register( 'abrs_checkbox', 'abrs_sanitize_checkbox' );
-		$this->register( 'abrs_image_size', 'abrs_sanitize_image_size' );
-		$this->register( 'include', 'abrs_clean', true );
+	public function __construct( $template_path = null ) {
+		$this->template_path = $template_path;
 	}
 
 	/**
@@ -70,6 +72,8 @@ class Custom_Fields {
 	 * @return \Closure
 	 */
 	protected function get_render_callback( $_type ) {
+		$_template_path = $this->template_path ?: trailingslashit( __DIR__ ) . 'fields/';
+
 		/**
 		 * Rendering the field.
 		 *
@@ -79,8 +83,8 @@ class Custom_Fields {
 		 * @param string     $object_type   The type of object you are working with.
 		 * @param CMB2_Types $types         The `CMB2_Types` object.
 		 */
-		return function( $field, $escaped_value, $object_id, $object_type, $types ) use ( $_type ) {
-			include trailingslashit( __DIR__ ) . "fields/{$_type}.php";
+		return function( $field, $escaped_value, $object_id, $object_type, $types ) use ( $_type, $_template_path ) {
+			include trailingslashit( $_template_path ) . "{$_type}.php";
 		};
 	}
 

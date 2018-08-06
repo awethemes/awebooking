@@ -14,7 +14,16 @@ class Form_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
-		add_action( 'cmb2_init', [ new Custom_Fields, 'init' ] );
+		add_action( 'cmb2_init', function () {
+			$cf = new Custom_Fields;
+
+			$cf->register( 'abrs_dates' );
+			$cf->register( 'abrs_amount', 'abrs_sanitize_decimal' );
+			$cf->register( 'abrs_toggle', 'abrs_sanitize_checkbox' );
+			$cf->register( 'abrs_checkbox', 'abrs_sanitize_checkbox' );
+			$cf->register( 'abrs_image_size', 'abrs_sanitize_image_size' );
+			$cf->register( 'include', 'abrs_clean', true );
+		});
 	}
 
 	/**
