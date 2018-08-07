@@ -413,6 +413,22 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
+		// Before updating with DBDELTA, remove any primary keys which could be
+		// modified due to schema updates. TODO: Remove in v3.2.
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}awebooking_relationships';" ) ) {
+			if ( $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'rel_id';" ) ) {
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_id`;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_type`;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP PRIMARY KEY;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP INDEX `rel_type`;" );
+			}
+
+			if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'id';" ) ) {
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `type` VARCHAR(42) NOT NULL DEFAULT '';" );
+			}
+		}
+
 		dbDelta( $this->get_db_schema() );
 	}
 
@@ -498,12 +514,12 @@ CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
   KEY `name` (`name`)
 ) $collate;
 CREATE TABLE `{$wpdb->prefix}awebooking_relationships` (
-  `rel_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `rel_type` VARCHAR(42) NOT NULL DEFAULT '',
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(42) NOT NULL DEFAULT '',
   `rel_from` BIGINT UNSIGNED NOT NULL,
   `rel_to` BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`rel_id`),
-  KEY `rel_type` (`rel_type`),
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
   KEY `rel_from` (`rel_from`),
   KEY `rel_to` (`rel_to`)
 ) $collate;
