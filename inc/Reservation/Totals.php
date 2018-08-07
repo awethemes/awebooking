@@ -171,57 +171,7 @@ class Totals {
 	 * @return void
 	 */
 	protected function calculate_fees() {
-		$fee_running_total = 0;
-
-		$fees = $this->reservation->get_fees();
-
-		foreach ( $fees as $fee_key => $fee ) {
-			/* @var $fee \AweBooking\Reservation\Item */
-			$fee['quantity'] = 1; // Force the quantity is alway 1.
-
-			// Negative fees should not make the order total go negative.
-			/*if ( $fee->total < 0 ) {
-				$max_discount = round( $this->get_total( 'items_total', true ) + $fee_running_total + $this->get_total( 'shipping_total', true ) ) * -1;
-
-				if ( $fee->total < $max_discount ) {
-					$fee->total = $max_discount;
-				}
-			}*/
-
-			$fee_running_total += $fee->total;
-
-			/*if ( $this->calculate_tax ) {
-				if ( 0 > $fee->total ) {
-					// Negative fees should have the taxes split between all items so it works as a true discount.
-					$tax_class_costs = $this->get_tax_class_costs();
-					$total_cost      = array_sum( $tax_class_costs );
-
-					if ( $total_cost ) {
-						foreach ( $tax_class_costs as $tax_class => $tax_class_cost ) {
-							if ( 'non-taxable' === $tax_class ) {
-								continue;
-							}
-							$proportion               = $tax_class_cost / $total_cost;
-							$cart_discount_proportion = $fee->total * $proportion;
-							$fee->taxes               = wc_array_merge_recursive_numeric( $fee->taxes, WC_Tax::calc_tax( $fee->total * $proportion, WC_Tax::get_rates( $tax_class ) ) );
-						}
-					}
-				} elseif ( $fee->object->taxable ) {
-					$fee->taxes = WC_Tax::calc_tax( $fee->total, WC_Tax::get_rates( $fee->tax_class, $this->cart->get_customer() ), false );
-				}
-			}*/
-
-			/*$fee->taxes     = apply_filters( 'woocommerce_cart_totals_get_fees_from_cart_taxes', $fee->taxes, $fee, $this );
-			$fee->total_tax = array_sum( array_map( array( $this, 'round_line_tax' ), $fee->taxes ) );*/
-
-			// Set totals within object.
-			// $fee->object->total    = wc_remove_number_precision_deep( $fee->total );
-			// $fee->object->tax_data = wc_remove_number_precision_deep( $fee->taxes );
-			// $fee->object->tax      = wc_remove_number_precision_deep( $fee->total_tax );
-		}
-
-		$this->set( 'fees_total', $fees->sum( 'total' ) );
-		// $this->set( 'fees_tax', $fees->sum( 'total_tax' ) );
+		// TODO: ...
 	}
 
 	/**

@@ -9,7 +9,7 @@ if ( ! function_exists( 'awebooking_print_fatal_error' ) ) {
 	/**
 	 * Print a fatal error, then deactivate AweBooking.
 	 *
-	 * NOTE: Careful when call this function, this will/maybe
+	 * NOTE: Be careful when call this function, this will/maybe
 	 * deactivate current running AweBooking without any confirms.
 	 *
 	 * @param  mixed   $error      The error message, WP_Error, Exception or Throwable.
