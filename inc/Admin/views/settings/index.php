@@ -13,6 +13,9 @@ $current_setting = $request->get( 'setting', 'general' );
 
 // Build the tabs array.
 $tabs = abrs_collect( $settings->all() )
+	->sortBy( function ( $setting ) {
+		return $setting->get_priority();
+	})
 	->map( function( $setting ) {
 		/* @var \AweBooking\Admin\Settings\Setting $setting */
 		return $setting->get_label() ?: $setting->get_id();

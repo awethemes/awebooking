@@ -6,19 +6,12 @@ use AweBooking\Frontend\Checkout\Form_Controls;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'checkout';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Checkout', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'checkout';
+		$this->label    = esc_html__( 'Checkout', 'awebooking' );
+		$this->priority = 40;
 	}
 
 	/**

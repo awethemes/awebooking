@@ -6,19 +6,12 @@ use Awethemes\Http\Request;
 
 class Premium_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'premium';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Premium', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'premium';
+		$this->label    = esc_html__( 'Premium', 'awebooking' );
+		$this->priority = 1000;
 	}
 
 	/**

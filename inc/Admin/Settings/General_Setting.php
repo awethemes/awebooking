@@ -5,19 +5,12 @@ use AweBooking\Support\WP_Data;
 
 class General_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'general';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'General', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'general';
+		$this->label    = esc_html__( 'General', 'awebooking' );
+		$this->priority = 5;
 	}
 
 	/**

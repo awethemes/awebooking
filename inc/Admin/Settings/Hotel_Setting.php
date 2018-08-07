@@ -7,19 +7,12 @@ use AweBooking\Model\Hotel;
 
 class Hotel_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'hotel';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Hotel', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'hotel';
+		$this->label    = esc_html__( 'Hotel', 'awebooking' );
+		$this->priority = 10;
 	}
 
 	/**
