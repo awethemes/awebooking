@@ -62,4 +62,8 @@ if ( empty( $res_request ) ) {
 			<dd><?php abrs_price( $room_stay->get_total_tax() ); ?></dd>
 		<?php endif; ?>
 	</dl>
+
+	<div class="roomdetails-room__actions">
+		<a href="<?php echo esc_url( abrs_route( "reservation/remove/{$room_stay->get_row_id()}" ) ); ?>" class="remove-selected-room"><?php esc_html_e( 'Remove', 'awebooking' ); ?></a>
+	</div>
 </div><!-- /.roomdetails-room -->
