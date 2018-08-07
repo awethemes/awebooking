@@ -9,7 +9,7 @@ require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 /**
  * Gets the checkout instance.
  *
- * @return \AweBooking\Frontend\Checkout\Checkout
+ * @return \AweBooking\Checkout\Checkout
  */
 function abrs_checkout() {
 	return awebooking()->make( 'checkout' );

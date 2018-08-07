@@ -2,8 +2,8 @@
 namespace AweBooking\Frontend\Controllers;
 
 use Awethemes\Http\Request;
-use AweBooking\Frontend\Checkout\Checkout;
-use AweBooking\Frontend\Checkout\Url_Generator;
+use AweBooking\Checkout\Checkout;
+use AweBooking\Checkout\Url_Generator;
 
 class Checkout_Controller {
 	/**

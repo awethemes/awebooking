@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Frontend\Checkout;
+namespace AweBooking\Checkout;
 
 use AweBooking\Model\Booking;
 

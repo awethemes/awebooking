@@ -1,4 +1,4 @@
 <?php
-namespace AweBooking\Frontend\Checkout;
+namespace AweBooking\Checkout;
 
 class RuntimeException extends \RuntimeException {}

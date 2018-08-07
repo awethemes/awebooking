@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Gateway\Gateway;
-use AweBooking\Frontend\Checkout\Form_Controls;
+use AweBooking\Checkout\Form_Controls;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**

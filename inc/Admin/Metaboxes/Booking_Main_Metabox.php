@@ -4,7 +4,7 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Admin\Metabox;
-use AweBooking\Frontend\Checkout\Form_Controls;
+use AweBooking\Checkout\Form_Controls;
 
 class Booking_Main_Metabox extends Metabox {
 	/**
@@ -102,7 +102,8 @@ class Booking_Main_Metabox extends Metabox {
 	/**
 	 * Register the fields on the form.
 	 *
-	 * @param  \AweBooking\Frontend\Checkout\Form_Controls $form The form builder.
+	 * @param  \AweBooking\Checkout\Form_Controls $form The form builder.
+	 *
 	 * @return void
 	 */
 	protected function additional_fields( $form ) {

@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Frontend\Providers;
 
-use AweBooking\Frontend\Checkout\Checkout;
+use AweBooking\Checkout\Checkout;
 use AweBooking\Frontend\Search\Search_Query;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Storage\Session_Store;

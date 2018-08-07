@@ -1,11 +1,10 @@
 <?php
-namespace AweBooking\Frontend\Checkout;
+namespace AweBooking\Checkout;
 
 use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Room_Item;
-use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Model\Booking\Service_Item;
 use AweBooking\Gateway\Gateway;
 use AweBooking\Gateway\Gateways;
@@ -105,9 +104,10 @@ class Checkout {
 	 * Process the checkout request.
 	 *
 	 * @param  \Awethemes\Http\Request $request The http request.
+	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
-	 * @throws \AweBooking\Frontend\Checkout\RuntimeException
+	 * @throws \AweBooking\Checkout\RuntimeException
 	 */
 	public function process( Request $request ) {
 		abrs_set_time_limit( 0 );
@@ -497,7 +497,8 @@ class Checkout {
 	 * Gets the checkout controls.
 	 *
 	 * @param  string $fieldset to get.
-	 * @return \AweBooking\Frontend\Checkout\Form_Controls
+	 *
+	 * @return \AweBooking\Checkout\Form_Controls
 	 */
 	public function get_controls( $fieldset = '' ) {
 		if ( is_null( $this->controls ) ) {

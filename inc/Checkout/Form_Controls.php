@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Frontend\Checkout;
+namespace AweBooking\Checkout;
 
 use AweBooking\Support\Fluent;
 use AweBooking\Component\Form\Form;
