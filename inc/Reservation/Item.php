@@ -92,6 +92,23 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected static $resolved_models = [];
 
 	/**
+	 * Generate a unique ID of the item.
+	 *
+	 * @param int              $id      The ID.
+	 * @param array|Collection $options The options.
+	 * @return string
+	 */
+	public static function generate_row_id( $id, $options ) {
+		$options = array_filter(
+			$options instanceof Collection ? $options->all() : (array) $options
+		);
+
+		ksort( $options );
+
+		return sha1( $id . serialize( $options ) );
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param array $attributes The item attributes.
@@ -386,23 +403,6 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 		}
 
 		return static::$resolved_models[ $row_id ] = $resolved;
-	}
-
-	/**
-	 * Generate a unique ID of the item.
-	 *
-	 * @param int              $id      The ID.
-	 * @param array|Collection $options The options.
-	 * @return string
-	 */
-	public static function generate_row_id( $id, $options ) {
-		$options = array_filter(
-			$options instanceof Collection ? $options->all() : (array) $options
-		);
-
-		ksort( $options );
-
-		return sha1( $id . serialize( $options ) );
 	}
 
 	/**

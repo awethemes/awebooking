@@ -76,7 +76,7 @@ class Tools_Controller extends Controller {
 	 * @return void
 	 */
 	public function display_status() {
-		// TODO: ...
+		abrs_admin_template_part( 'tools/html-system-status.php' );
 	}
 
 	/**
