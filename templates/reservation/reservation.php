@@ -44,6 +44,8 @@ $room_stays = abrs_reservation()->get_room_stays();
 
 		<?php abrs_get_template( 'reservation/services.php' ); ?>
 
+		<?php abrs_get_template( 'reservation/fees.php' ); ?>
+
 		<?php abrs_get_template( 'reservation/totals.php' ); ?>
 
 	<?php endif; ?>

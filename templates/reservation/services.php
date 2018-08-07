@@ -11,6 +11,11 @@
  */
 
 $services = abrs_reservation()->get_services();
+
+if ( abrs_blank( $services ) ) {
+	return;
+}
+
 ?>
 
 <div class="reservation__section reservation__section--service">
