@@ -20,6 +20,7 @@ foreach ( [ // Requires other core functions.
 	'services.php',
 	'taxes.php',
 	'customers.php',
+	'templates.php',
 ] as $core_file ) {
 	require trailingslashit( __DIR__ ) . $core_file;
 }
