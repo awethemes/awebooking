@@ -87,7 +87,11 @@ function abrs_sanitize_decimal( $number ) {
 	$number = abrs_decimal( $number )->as_string();
 
 	// Trim the zeros.
-	return rtrim( rtrim( $number, '0' ), '.' );
+	if ( false !== strpos( $number, '.' ) ) {
+		$number = rtrim( rtrim( $number, '0' ), '.' );
+	}
+
+	return $number;
 }
 
 /**
