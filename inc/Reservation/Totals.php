@@ -5,6 +5,20 @@ use AweBooking\Support\Decimal;
 
 class Totals {
 	/**
+	 * The reservation instance.
+	 *
+	 * @var \AweBooking\Reservation\Reservation
+	 */
+	protected $reservation;
+
+	/**
+	 * Should taxes be calculated?
+	 *
+	 * @var boolean
+	 */
+	protected $calculate_tax = true;
+
+	/**
 	 * Stores totals.
 	 *
 	 * @var array
@@ -23,28 +37,13 @@ class Totals {
 	];
 
 	/**
-	 * The reservation instance.
-	 *
-	 * @var \AweBooking\Reservation\Reservation
-	 */
-	protected $reservation;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Reservation\Reservation $reservation The reservation instance.
 	 */
 	public function __construct( Reservation $reservation ) {
-		$this->reservation = $reservation;
-	}
-
-	/**
-	 * Get all totals.
-	 *
-	 * @return array
-	 */
-	public function totals() {
-		return $this->totals;
+		$this->reservation   = $reservation;
+		$this->calculate_tax = abrs_tax_enabled();
 	}
 
 	/**
@@ -60,13 +59,12 @@ class Totals {
 	}
 
 	/**
-	 * Sets a single total.
+	 * Get all totals.
 	 *
-	 * @param string $key The total name.
-	 * @param int    $total Total to set.
+	 * @return array
 	 */
-	protected function set( $key, $total ) {
-		$this->totals[ $key ] = $total instanceof Decimal ? $total->as_numeric() : $total;
+	public function totals() {
+		return $this->totals;
 	}
 
 	/**
@@ -128,9 +126,9 @@ class Totals {
 			}
 		}
 
-		$this->set( 'rooms_total', $room_stays->sum( 'total' ) );
-		$this->set( 'rooms_subtotal', $room_stays->sum( 'subtotal' ) );
-		$this->set( 'rooms_total_tax', $room_stays->sum( 'total_tax' ) );
+		$this->set_total( 'rooms_total', $this->sum_items( $room_stays, 'total' ) );
+		$this->set_total( 'rooms_subtotal', $this->sum_items( $room_stays, 'subtotal' ) );
+		$this->set_total( 'rooms_total_tax', $this->sum_items( $room_stays, 'total_tax' ) );
 	}
 
 	/**
@@ -145,24 +143,23 @@ class Totals {
 
 		/* @var \AweBooking\Reservation\Item $item */
 		foreach ( $services as $item ) {
+			if ( $item['included'] ) {
+				$item->set( 'price', 0 );
+				continue;
+			}
+
 			/* @var \AweBooking\Model\Service $service */
 			$service = $item->model();
 
-			if ( $item['included'] ) {
-				$item->set( 'price', 0 );
-			} else {
-				$price = abrs_calc_service_price( $service, [
-					'nights'     => $res_request->nights,
-					'base_price' => $this->get( 'rooms_subtotal' ),
-				]);
+			$price = abrs_calc_service_price( $service, [
+				'nights'     => $res_request->nights,
+				'base_price' => $this->get( 'rooms_subtotal' ),
+			]);
 
-				$item->set( 'price', $price );
-			}
+			$item->set( 'price', $price );
 		}
-
-		$this->set( 'services_total', $services->sum( 'total' ) );
-		$this->set( 'services_subtotal', $services->sum( 'subtotal' ) );
-		$this->set( 'services_total_tax', $services->sum( 'total_tax' ) );
+		$this->set_total( 'services_total', $this->sum_items( $services, 'total' ) );
+		$this->set_total( 'services_total_tax', $this->sum_items( $services, 'total_tax' ) );
 	}
 
 	/**
@@ -171,7 +168,30 @@ class Totals {
 	 * @return void
 	 */
 	protected function calculate_fees() {
-		// TODO: ...
+		$this->reservation->calculate_fees();
+		$fees = $this->reservation->get_fees();
+
+		$fee_running_total = 0;
+
+		foreach ( $fees as $key => $fee ) {
+			// Correct some property.
+			$fee->quantity           = 1;
+			$fee->price_includes_tax = false;
+
+			// Negative fees should not make the total go negative.
+			if ( $fee->price < 0 ) {
+				$max_discount = ( $this->get( 'rooms_total' ) + $this->get( 'services_total' ) + $fee_running_total ) * - 1;
+
+				if ( $fee->price < $max_discount ) {
+					$fee->price = $max_discount;
+				}
+			}
+
+			$fee_running_total += $fee->price;
+		}
+
+		$this->set_total( 'fees_total', $this->sum_items( $fees, 'price' ) );
+		$this->set_total( 'fees_total_tax', $this->sum_items( $fees, 'total_tax' ) );
 	}
 
 	/**
@@ -180,8 +200,43 @@ class Totals {
 	 * @return void
 	 */
 	protected function calculate_totals() {
-		$this->set( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) + $this->get( 'fees_total' ) );
-		$this->set( 'total', $this->get( 'rooms_total' ) + $this->get( 'services_total' ) + $this->get( 'fees_total' ) );
+		$this->set_total( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) + $this->get( 'fees_total' ) );
+		$this->set_total( 'total', $this->get( 'rooms_total' ) + $this->get( 'services_total' ) + $this->get( 'fees_total' ) );
+	}
+
+	/**
+	 * Sets a single total.
+	 *
+	 * @param string $key   The total name.
+	 * @param int    $total Total to set.
+	 *
+	 * @return $this
+	 */
+	protected function set_total( $key, $total ) {
+		$this->totals[ $key ] = $total instanceof Decimal ? $total->as_numeric() : $total;
+
+		return $this;
+	}
+
+	/**
+	 * Sum the items costs.
+	 *
+	 * @param \AweBooking\Support\Collection $items The items.
+	 * @param string                         $key   The string of key.
+	 *
+	 * @return int|float
+	 */
+	protected function sum_items( $items, $key = 'total' ) {
+		if ( $items->isEmpty() ) {
+			return 0;
+		}
+
+		/* @var $total \AweBooking\Support\Decimal */
+		$total = $items->reduce( function ( Decimal $total, $item ) use ( $key ) {
+			return $total->add( $item->{$key} );
+		}, abrs_decimal( 0 ) );
+
+		return $total->as_numeric();
 	}
 
 	/**

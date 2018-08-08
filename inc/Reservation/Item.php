@@ -465,6 +465,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 */
 	public function to_array() {
 		$arr = $this->attributes();
+
 		foreach ( $this->get_virtual_attributes() as $attribute ) {
 			$arr[ $attribute ] = $this->get( $attribute );
 		}

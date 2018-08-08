@@ -13,6 +13,15 @@ trait With_Fees {
 	protected $fees;
 
 	/**
+	 * Trigger an action so 3rd parties can add custom fees.
+	 *
+	 * @return void
+	 */
+	public function calculate_fees() {
+		do_action( 'abrs_reservation_fees', $this );
+	}
+
+	/**
 	 * Add a fee. Fee IDs must be unique.
 	 *
 	 * @param array $args Array of fee properties.
@@ -25,17 +34,18 @@ trait With_Fees {
 			'amount' => 0,
 		] );
 
-		$fee = new Item( [
-			'id'    => $args['id'],
-			'name'  => $args['name'] ?: esc_html__( 'Fee', 'awebooking' ),
-			'price' => abrs_sanitize_decimal( $args['amount'] ),
-		] );
-
-		$row_id = $fee->get_row_id();
+		$row_id = Item::generate_row_id( $args['id'], [] );
 
 		if ( $this->fees->has( $row_id ) ) {
 			return new WP_Error( 'fee_exists', esc_html__( 'Fee has already been added.', 'awebooking' ) );
 		}
+
+		$fee = new Item( [
+			'id'     => $args['id'],
+			'name'   => $args['name'] ?: esc_html__( 'Fee', 'awebooking' ),
+			'price'  => abrs_sanitize_decimal( $args['amount'] ),
+			'row_id' => $row_id,
+		] );
 
 		// Put the fees into the store.
 		$this->fees->put( $row_id, $fee );
