@@ -96,7 +96,7 @@
     "gulp-wp-pot": "^2.3.2",
     "icon.font": "^1.1.0",
     "lodash.map": "^4.6.0",
-    "rollup": "^0.64.0",
+    "rollup": "^0.64.1",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0"
