@@ -24,7 +24,7 @@ class Carbonate extends Carbon {
 	 */
 	public static function create_date_time( $datetime, $tz = null ) {
 		// If this value is already a Carbon instance, we shall just return it as new instance.
-		if ( $datetime instanceof Carbonate ) {
+		if ( $datetime instanceof self ) {
 			return $datetime->copy();
 		}
 
@@ -34,7 +34,7 @@ class Carbonate extends Carbon {
 		}
 
 		if ( $datetime instanceof \DateTimeImmutable ) {
-			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
+			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimezone() );
 		}
 
 		// If this value is an integer, we will assume it is a UNIX timestamp's value

@@ -27,6 +27,10 @@ tests_add_filter( 'muplugins_loaded', function () {
 
 	WP_Mock::bootstrap();
 
+	add_action( 'abrs_pre_option_price_decimal_separator', function() {
+		return ',';
+	});
+
 	require dirname( __DIR__ ) . '/awebooking.php';
 });
 
