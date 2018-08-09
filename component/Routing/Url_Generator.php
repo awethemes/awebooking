@@ -100,7 +100,6 @@ class Url_Generator {
 
 		$path = '/' . ltrim( $path, '/' );
 
-		// http://awebooking.com/wp-admin/admin.php?awebooking=/example-path.
 		$url = add_query_arg( 'awebooking', $path, admin_url( 'admin.php' ) );
 
 		// Add the additional parameters.
