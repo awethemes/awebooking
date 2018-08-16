@@ -108,7 +108,7 @@ class Message {
 	 * @return bool
 	 */
 	public function send() {
-		$to = is_string( $this->to ) ? explode( ',', $this->to ) : $this->to;
+		$to = is_string( $this->to ) ? array_map( 'trim', explode( ',', $this->to ) ) : $this->to;
 		$to = array_unique( array_filter( $to, 'is_email' ) );
 
 		if ( empty( $to ) ) {
