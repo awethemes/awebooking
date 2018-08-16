@@ -46,7 +46,7 @@ gulp.task('scss', () => {
     .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
-gulp.task('babel', (done) => {
+gulp.task('babel', () => {
   const config = {
     external: Object.keys(pkg.globals),
     plugins: [
