@@ -38,7 +38,7 @@
 
       input.checked = !element.classList.contains(SELECTED);
 
-      input.focus();
+      input.focus({ preventScroll: true });
       $(input).trigger('change');
 
       $(element).addClass(SELECTED);

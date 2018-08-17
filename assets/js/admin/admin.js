@@ -17,8 +17,7 @@
    * @param {Boolean} whether to execute at the beginning (`false`)
    * @api public
    */
-
-  var debounce = function debounce(func, wait, immediate) {
+  function debounce(func, wait, immediate) {
     var timeout, args, context, timestamp, result;
     if (null == wait) wait = 100;
 
@@ -67,7 +66,11 @@
     };
 
     return debounced;
-  };
+  }
+  // Adds compatibility for ES modules
+  debounce.debounce = debounce;
+
+  var debounce_1 = debounce;
 
   var isMobile_1 = isMobile;
   var isMobile_2 = isMobile;
@@ -1112,7 +1115,7 @@
       position: { my: 'center', at: 'center center-15%', of: window }
     });
 
-    $(window).resize(debounce(function () {
+    $(window).resize(debounce_1(function () {
       $dialog.dialog('option', 'position', { my: 'center', at: 'center center-15%', of: window });
     }, 150));
 
