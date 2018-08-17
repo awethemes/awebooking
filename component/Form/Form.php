@@ -16,6 +16,13 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	protected $form_id;
 
 	/**
+	 * The render row callback.
+	 *
+	 * @var mixed
+	 */
+	protected $render_callback;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $form_id     The form ID.
@@ -56,6 +63,15 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 
 		// Call the register controls.
 		$this->setup_fields();
+	}
+
+	/**
+	 * Custom the render row callback.
+	 *
+	 * @param callable $callback The render callback.
+	 */
+	public function render_callback( callable $callback ) {
+		$this->render_callback = $callback;
 	}
 
 	/**
@@ -217,6 +233,11 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 			$field['type'] = 'abrs_checkbox';
 		} elseif ( 'toggle' === $field['type'] ) {
 			$field['type'] = 'abrs_toggle';
+		}
+
+		// Render field callback.
+		if ( $this->render_callback && 'group' !== $field['type'] && empty( $field['render_row_cb'] ) ) {
+			$field['render_row_cb'] = $this->render_callback;
 		}
 
 		// Field label callback.

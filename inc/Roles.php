@@ -143,7 +143,7 @@ class Roles {
 	 *
 	 * @return array
 	 */
-	private function get_core_manager_capabilities() {
+	protected function get_core_manager_capabilities() {
 		$capabilities = [];
 
 		$capabilities['core'] = [
@@ -191,7 +191,7 @@ class Roles {
 	 *
 	 * @return array
 	 */
-	private function get_core_receptionist_capabilities() {
+	protected function get_core_receptionist_capabilities() {
 		$capabilities = [];
 
 		$capabilities['core'] = [
