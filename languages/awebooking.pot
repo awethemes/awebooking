@@ -136,38 +136,32 @@ msgstr ""
 msgid "Invalid single rate."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:121
+#: inc/Checkout/Checkout.php:123
 msgid "Sorry, your session has expired."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:145
+#: inc/Checkout/Checkout.php:147
 msgid "Sorry, we cannot serve your reservation request at this moment."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:194
+#: inc/Checkout/Checkout.php:196
 msgid "Invalid gateway response."
 msgstr ""
 
-#. translators: The room number
-#: inc/Checkout/Checkout.php:354
-msgctxt "booking room number"
-msgid "Room %s"
-msgstr ""
-
-#: inc/Checkout/Checkout.php:436
+#: inc/Checkout/Checkout.php:465
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:448
+#: inc/Checkout/Checkout.php:477
 msgid "Sorry, there was an error processing your payment. Please try again later."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:451
+#: inc/Checkout/Checkout.php:480
 msgid "Please choose a payment method."
 msgstr ""
 
 #. translators: %s Field name
-#: inc/Checkout/Checkout.php:473
+#: inc/Checkout/Checkout.php:502
 msgid "%s is a required field."
 msgstr ""
 
@@ -287,11 +281,11 @@ msgctxt "Booking status"
 msgid "Cancelled"
 msgstr ""
 
-#: inc/Core/bookings.php:266, inc/Core/bookings.php:387, inc/Core/bookings.php:388, inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
+#: inc/Core/bookings.php:267, inc/Core/bookings.php:388, inc/Core/bookings.php:389, inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
 msgid "AweBooking"
 msgstr ""
 
-#: inc/Core/bookings.php:374
+#: inc/Core/bookings.php:375
 msgid "Invalid Booking ID."
 msgstr ""
 
@@ -589,20 +583,20 @@ msgid "Transaction ID:"
 msgstr ""
 
 #. translators: 1: Old booking status 2: New booking status
-#: inc/Model/Booking.php:364
+#: inc/Model/Booking.php:370
 msgid "Booking status changed from %1$s to %2$s."
 msgstr ""
 
 #. translators: %s: new booking status
-#: inc/Model/Booking.php:369
+#: inc/Model/Booking.php:375
 msgid "Booking status set to %s."
 msgstr ""
 
-#: inc/Model/Booking.php:398
+#: inc/Model/Booking.php:404
 msgid "Booking &ndash; %s"
 msgstr ""
 
-#: inc/Model/Booking.php:398
+#: inc/Model/Booking.php:404
 msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
@@ -659,7 +653,7 @@ msgstr ""
 msgid "Payment method:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:59, inc/Admin/Metaboxes/views/html-booking-items.php:20, inc/Admin/views/calendar/html-booking-state.php:56
+#: templates/checkout/thankyou.php:59, inc/Admin/Metaboxes/views/html-booking-items.php:24, inc/Admin/views/calendar/html-booking-state.php:56
 msgid "Total:"
 msgstr ""
 
@@ -705,7 +699,7 @@ msgctxt "room stay"
 msgid "%1$s, %2$s"
 msgstr ""
 
-#: templates/reservation/selected-room.php:47, templates/reservation/services.php:27, templates/emails/partials/line-booking.php:24, templates/search/result/price.php:25, templates/search/result/room-list.php:31, inc/Admin/Metaboxes/views/html-booking-rooms.php:38, inc/Admin/Metaboxes/views/html-booking-services.php:14, inc/Admin/views/booking/add-room.php:65
+#: templates/reservation/selected-room.php:47, templates/reservation/services.php:27, templates/emails/partials/line-booking.php:24, templates/search/result/price.php:25, templates/search/result/room-list.php:31, inc/Admin/Metaboxes/views/html-booking-fees.php:18, inc/Admin/Metaboxes/views/html-booking-rooms.php:38, inc/Admin/Metaboxes/views/html-booking-services.php:14, inc/Admin/views/booking/add-room.php:65
 msgid "Price"
 msgstr ""
 
@@ -922,7 +916,7 @@ msgstr ""
 #. translators: 1: user display name 2: user ID 3: user email
 #. translators: 1: user display name 2: user ID 3: user email
 #. translators: 1: user display name 2: user ID 3: user email
-#: inc/Admin/Controllers/Ajax_Controller.php:148, inc/Admin/List_Tables/Booking_List_Table.php:304, inc/Admin/Metaboxes/Booking_Main_Metabox.php:176
+#: inc/Admin/Controllers/Ajax_Controller.php:148, inc/Admin/List_Tables/Booking_List_Table.php:306, inc/Admin/Metaboxes/Booking_Main_Metabox.php:176
 msgid "%1$s (#%2$s - %3$s)"
 msgstr ""
 
@@ -1404,44 +1398,44 @@ msgstr ""
 msgid "Show more details"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:157, inc/Admin/Metaboxes/views/html-booking-main.php:83, inc/Admin/views/calendar/html-booking-state.php:41
+#: inc/Admin/List_Tables/Booking_List_Table.php:159, inc/Admin/Metaboxes/views/html-booking-main.php:83, inc/Admin/views/calendar/html-booking-state.php:41
 msgid "Length of stay varies, see each room."
 msgstr ""
 
 #. translators: %s: human-readable time difference
 #. translators: %s: human-readable time difference
-#: inc/Admin/List_Tables/Booking_List_Table.php:199, inc/Admin/Metaboxes/views/html-booking-note.php:27
+#: inc/Admin/List_Tables/Booking_List_Table.php:201, inc/Admin/Metaboxes/views/html-booking-note.php:27
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:238
+#: inc/Admin/List_Tables/Booking_List_Table.php:240
 msgid "Balance due: "
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:256
+#: inc/Admin/List_Tables/Booking_List_Table.php:258
 msgid "No rooms found"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:269
+#: inc/Admin/List_Tables/Booking_List_Table.php:271
 msgid "night"
 msgid_plural "nights"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: number of rooms
-#: inc/Admin/List_Tables/Booking_List_Table.php:278
+#: inc/Admin/List_Tables/Booking_List_Table.php:280
 msgctxt "rooms left"
 msgid "&comma; more %1$s room"
 msgid_plural "&comma; more %1$s rooms"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:289
+#: inc/Admin/List_Tables/Booking_List_Table.php:291
 msgid "%1$s%2$s%3$s%4$s "
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:308
+#: inc/Admin/List_Tables/Booking_List_Table.php:310
 msgid "Query for a customer&hellip;"
 msgstr ""
 
@@ -2490,7 +2484,7 @@ msgctxt "Admin menu name"
 msgid "Services"
 msgstr ""
 
-#: inc/Core/Bootstrap/Setup_Environment.php:231, inc/Admin/Metaboxes/views/html-booking-items.php:45
+#: inc/Core/Bootstrap/Setup_Environment.php:231, inc/Admin/Metaboxes/views/html-booking-items.php:49
 msgid "Add service"
 msgstr ""
 
@@ -2788,12 +2782,12 @@ msgstr ""
 msgid "Standard Rate"
 msgstr ""
 
-#: inc/Reservation/Traits/With_Fees.php:30
-msgid "Fee"
+#: inc/Reservation/Traits/With_Fees.php:40
+msgid "Fee has already been added."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Fees.php:37
-msgid "Fee has already been added."
+#: inc/Reservation/Traits/With_Fees.php:45, inc/Admin/Metaboxes/views/html-booking-fees.php:17
+msgid "Fee"
 msgstr ""
 
 #: inc/Reservation/Traits/With_Room_Stays.php:131
@@ -3052,23 +3046,23 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:25, inc/Admin/views/calendar/html-booking-state.php:61
+#: inc/Admin/Metaboxes/views/html-booking-items.php:29, inc/Admin/views/calendar/html-booking-state.php:61
 msgid "Paid:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:30, inc/Admin/views/calendar/html-booking-state.php:66
+#: inc/Admin/Metaboxes/views/html-booking-items.php:34, inc/Admin/views/calendar/html-booking-state.php:66
 msgid "Balance Due:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:41, inc/Admin/Metaboxes/views/html-room-type-rooms.php:73
+#: inc/Admin/Metaboxes/views/html-booking-items.php:45, inc/Admin/Metaboxes/views/html-room-type-rooms.php:73
 msgid "Add room"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:50
+#: inc/Admin/Metaboxes/views/html-booking-items.php:54
 msgid "Change the booking status back to \"Pending\" to edit this"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:50
+#: inc/Admin/Metaboxes/views/html-booking-items.php:54
 msgid "This booking is no longer editable"
 msgstr ""
 
