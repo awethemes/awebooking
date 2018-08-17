@@ -159,6 +159,6 @@ abstract class Shortcode {
 		}
 
 		// Print the error message.
-		printf( '<div class="awebooking-user-error">%s</div>', wp_kses_post( wpautop( $message ) ) );
+		printf( '<div class="notification notification--error">%s</div>', wp_kses_post( wpautop( $message ) ) );
 	}
 }
