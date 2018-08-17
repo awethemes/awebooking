@@ -153,7 +153,9 @@ class Booking_List_Table extends Abstract_List_Table {
 	protected function display_booking_nights_column() {
 		$nights_stay = $this->booking->get( 'nights_stay' );
 
-		if ( $nights_stay == -1 ) : ?>
+		?>
+
+		<?php if ( - 1 === $nights_stay ) : ?>
 			<span title="<?php esc_attr_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>">
 				<span class="dashicons dashicons-info"></span>
 			</span>

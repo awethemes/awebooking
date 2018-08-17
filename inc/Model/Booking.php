@@ -39,7 +39,9 @@ class Booking extends Model {
 
 		if ( 0 === count( $items ) ) {
 			return '';
-		} elseif ( count( $items ) === 1 ) {
+		}
+
+		if ( count( $items ) === 1 ) {
 			return abrs_optional( $items->first() )->get( 'check_in' );
 		}
 
@@ -51,7 +53,9 @@ class Booking extends Model {
 
 		if ( 0 === count( $items ) ) {
 			return '';
-		} elseif ( count( $items ) === 1 ) {
+		}
+
+		if ( count( $items ) === 1 ) {
 			return abrs_optional( $items->first() )->get( 'check_out' );
 		}
 
@@ -154,7 +158,7 @@ class Booking extends Model {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_fees() {
-		return $this->get_items( 'fee' );
+		return $this->get_items( 'fee_item' );
 	}
 
 	/**
@@ -163,7 +167,7 @@ class Booking extends Model {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function get_taxes() {
-		return $this->get_items( 'tax' );
+		return $this->get_items( 'tax_item' );
 	}
 
 	/**
@@ -216,9 +220,6 @@ class Booking extends Model {
 		$room_subtotal      = 0;
 		$room_total         = 0;
 
-		$room_subtotal_tax  = 0;
-		$room_total_tax     = 0;
-
 		$service_subtotal      = 0;
 		$service_total      = 0;
 
@@ -234,6 +235,11 @@ class Booking extends Model {
 		foreach ( $this->get_services() as $service ) {
 			$service_subtotal += $service->get( 'subtotal' );
 			$service_total    += $service->get( 'total' );
+		}
+
+		// Sun the fees.
+		foreach ( $this->get_fees() as $fee ) {
+			$fee_total += $fee->get( 'amount' );
 		}
 
 		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );

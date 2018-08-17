@@ -4,6 +4,7 @@ namespace AweBooking\Checkout;
 use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
+use AweBooking\Model\Booking\Fee_Item;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Booking\Service_Item;
 use AweBooking\Gateway\Gateway;
@@ -107,6 +108,7 @@ class Checkout {
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
+	 * @throws \Exception
 	 * @throws \AweBooking\Checkout\RuntimeException
 	 */
 	public function process( Request $request ) {
@@ -271,6 +273,7 @@ class Checkout {
 		// Create the booking items.
 		$this->create_booking_items( $booking, $data );
 		$this->create_service_items( $booking, $data );
+		$this->create_fees_items( $booking, $data );
 
 		do_action( 'abrs_checkout_update_booking_meta', $booking->get_id(), $data );
 
@@ -351,7 +354,7 @@ class Checkout {
 				$item = ( new Room_Item )->fill([
 					'booking_id'   => $booking->get_id(),
 					/* translators: The room number */
-					'name'         => sprintf( esc_html_x( 'Room %s', 'booking room number', 'awebooking' ), esc_html( $i ) ),
+					'name'         => $room->get( 'name' ),
 					'room_id'      => $room->get_id(),
 					'room_type_id' => $room_rate->get_room_type()->get_id(),
 					'rate_plan_id' => $room_rate->get_rate_plan()->get_id(),
@@ -398,11 +401,37 @@ class Checkout {
 			}
 
 			$item = ( new Service_item )->fill([
+				'name'       => $service->get( 'name' ),
 				'booking_id' => $booking->get_id(),
 				'service_id' => $service->get_id(),
 				'quantity'   => $res_item->get_quantity(),
 				'subtotal'   => $res_item->get_subtotal(),
 				'total'      => $res_item->get_total(),
+			]);
+
+			try {
+				$item->save();
+			} catch ( \Exception $e ) {
+				abrs_report( $e );
+			}
+		}
+	}
+
+	/**
+	 * Create the booking fee items.
+	 *
+	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @return void
+	 */
+	protected function create_fees_items( $booking, $data ) {
+		/* @var \AweBooking\Reservation\Item $res_item */
+		foreach ( $this->reservation->get_fees() as $item_key => $res_item ) {
+			$item = ( new Fee_Item )->fill([
+				'name'       => $res_item->get_name(),
+				'booking_id' => $booking->get_id(),
+				'total'      => $res_item->get_total(),
+				'amount'     => $res_item->get_price(),
 			]);
 
 			try {

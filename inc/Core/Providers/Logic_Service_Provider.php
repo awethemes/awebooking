@@ -17,6 +17,7 @@ class Logic_Service_Provider extends Service_Provider {
 
 		// TODO: ...
 		add_action( 'abrs_room_saved', [ $this, 'update_total_rooms' ] );
+		add_action( 'abrs_room_deleted', [ $this, 'update_total_rooms' ] );
 		add_action( 'abrs_room_type_saved', [ $this, 'update_total_rooms' ] );
 	}
 
@@ -59,10 +60,7 @@ class Logic_Service_Provider extends Service_Provider {
 
 		do_action( 'abrs_delete_booking_items', $postid );
 
-		// Loop all item and run delete.
-		foreach ( $booking->get_items() as $item ) {
-			$item->delete();
-		}
+		$booking->remove_items();
 
 		do_action( 'abrs_deleted_booking_items', $postid );
 	}
