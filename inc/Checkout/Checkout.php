@@ -141,6 +141,7 @@ class Checkout {
 
 		// Process booking.
 		$this->process_customer( $data );
+
 		$booking_id = $this->create_booking( $data );
 
 		if ( ! $booking_id || is_wp_error( $booking_id ) || ! $booking = abrs_get_booking( $booking_id ) ) {
@@ -260,7 +261,7 @@ class Checkout {
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
 		]);
 
-		do_action( 'abrs_checkout_creating_booking', $booking->get_id(), $data, $this );
+		do_action( 'abrs_checkout_creating_booking', $booking, $data, $this );
 
 		// Save the booking.
 		$saved = $booking->save();
@@ -274,6 +275,9 @@ class Checkout {
 		$this->create_booking_items( $booking, $data );
 		$this->create_service_items( $booking, $data );
 		$this->create_fees_items( $booking, $data );
+
+		// // Re-calculate the totals.
+		$booking->calculate_totals();
 
 		do_action( 'abrs_checkout_update_booking_meta', $booking->get_id(), $data );
 
@@ -380,9 +384,6 @@ class Checkout {
 
 			do_action( 'abrs_checkout_process_room_stay', $room_stay, $item_key, $booking );
 		}
-
-		// Re-calculate the totals.
-		$booking->calculate_totals();
 	}
 
 	/**
