@@ -55,6 +55,7 @@ class Search_Query {
 	 * Prepare the query.
 	 *
 	 * @param \Awethemes\Http\Request $request The request instance.
+	 * @return $this
 	 */
 	public function prepare( Request $request ) {
 		$this->request = $request;
@@ -136,20 +137,18 @@ class Search_Query {
 			->search();
 
 		// TODO: ...
-		if ( $request->filled( 'sortby' ) ) {
-			switch ( $request->get( 'sortby' ) ) {
-				case 'cheapest':
-					$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
-						return $item['room_rate']->get_rate();
-					});
-					break;
+		switch ( $request->get( 'sortby', 'cheapest' ) ) {
+			case 'cheapest':
+				$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
+					return $item['room_rate']->get_rate();
+				});
+				break;
 
-				case 'highest':
-					$this->results->items = $this->results->get_items()->sortByDesc(function ( $item ) {
-						return $item['room_rate']->get_rate();
-					});
-					break;
-			}
+			case 'highest':
+				$this->results->items = $this->results->get_items()->sortByDesc(function ( $item ) {
+					return $item['room_rate']->get_rate();
+				});
+				break;
 		}
 
 		do_action( 'abrs_search_complete', $this );
