@@ -88,7 +88,9 @@ function abrs_filter_resource( $resource, $value = null ) {
 
 	if ( $resource instanceof Room ) {
 		return abrs_resource_room( $resource );
-	} elseif ( $resource instanceof Rate_Interval ) {
+	}
+
+	if ( $resource instanceof Rate_Interval ) {
 		return abrs_resource_rate( $resource );
 	}
 
