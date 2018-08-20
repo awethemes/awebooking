@@ -28,7 +28,7 @@
         "nesbot/carbon": "^1.25",
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
-        "ruler/ruler": "^0.3.0",
+        "ruler/ruler": "dev-master",
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
