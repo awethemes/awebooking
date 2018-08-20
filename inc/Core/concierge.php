@@ -204,13 +204,13 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 		$event_state = (int) $event->get_value();
 
 		// Ignore update same state.
-		if ( $event_state == $state ) {
+		if ( $event_state === (int) $state ) {
 			continue;
 		}
 
 		// If we apply a "available" or "unavailable" state, but current
 		// event is "booking" state, ignore the perform update.
-		if ( in_array( $state, [ Constants::STATE_AVAILABLE, Constants::STATE_UNAVAILABLE ] ) && Constants::STATE_BOOKING == $event_state ) {
+		if ( Constants::STATE_BOOKING === $event_state && in_array( $state, [ Constants::STATE_AVAILABLE, Constants::STATE_UNAVAILABLE ] ) ) {
 			continue;
 		}
 
@@ -243,10 +243,10 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 /**
  * Retrieve breakdown of rate interval in a timespan.
  *
- * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval|int $rate     The rate ID to retrieve.
- * @param  \AweBooking\Model\Common\Timespan                     $timespan The timespan.
+ * @param  int|mixed                         $rate     The rate ID to retrieve.
+ * @param  \AweBooking\Model\Common\Timespan $timespan The timespan.
  *
- * @return \AweBooking\Support\Collection|WP_Error
+ * @return \AweBooking\Calendar\Event\Itemized|WP_Error
  */
 function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 	try {
@@ -255,19 +255,29 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 		return new WP_Error( 'timespan_error', $e->getMessage() );
 	}
 
-	// Leave if given invalid rate ID.
+	// Allow 3thirty plugins custom retrieve rate method.
+	if ( $_result = apply_filters( 'abrs_prepare_retrieve_rate', null, $rate, $timespan ) ) {
+		return $_result;
+	}
+
 	if ( ! $rate instanceof Rate_Interval || ! $rate = abrs_get_rate_interval( $rate ) ) {
 		return new WP_Error( 'invalid_rate', esc_html__( 'Invalid rate ID', 'awebooking' ) );
 	}
 
+	// Transform the rate to the calendar resource.
+	$resource = abrs_filter_resource( $rate );
+
 	// Get all events as itemized.
-	$itemized = abrs_calendar( $rate, 'pricing', true )
+	$itemized = abrs_calendar( $resource, 'pricing', true )
 		->get_events( $timespan->to_period( Constants::GL_NIGHTLY ) )
 		->itemize();
 
-	return abrs_collect( $itemized )->transform( function( $a ) {
+	// Correct the amount.
+	$breakdown = $itemized->transform( function( $a ) {
 		return abrs_decimal_raw( $a )->as_numeric();
 	});
+
+	return apply_filters( 'abrs_retrieve_rate_breakdown', $breakdown, $rate, $timespan );
 }
 
 /**
@@ -424,7 +434,7 @@ function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan ) 
  * Retrieve a room rate by given an array args.
  *
  * @param  array $args The query args.
- * @return \AweBooking\Availability\Room_Rate|\WP_Error|null
+ * @return \AweBooking\Availability\Room_Rate|\WP_Error
  */
 function abrs_retrieve_room_rate( $args ) {
 	$args = wp_parse_args( $args, [
@@ -458,15 +468,15 @@ function abrs_retrieve_room_rate( $args ) {
 		$res_request = abrs_create_res_request( Arr::except( $args, 'request' ) );
 	}
 
-	if ( empty( $res_request ) || is_wp_error( $res_request ) ) {
+	if ( ! $res_request || is_wp_error( $res_request ) ) {
 		return new WP_Error( 'res_request', esc_html__( 'Unable to create the reservation request.', 'awebooking' ) );
 	}
 
-	$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
-
-	// Setup the room rate costs.
-	if ( ! $room_rate->has_error() ) {
+	try {
+		$room_rate = new Room_Rate( $res_request, $room_type, $rate_plan );
 		$room_rate->setup();
+	} catch ( \Exception $e ) {
+		return new WP_Error( 'room_rate', $e->getMessage() );
 	}
 
 	return $room_rate;
@@ -504,11 +514,11 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 	// Create the guest counts.
 	$guest_counts = new Guest_Counts( $args['adults'] );
 
-	if ( abrs_children_bookable() && $args['children'] > 0 ) {
+	if ( $args['children'] > 0 && abrs_children_bookable() ) {
 		$guest_counts->set_children( $args['children'] );
 	}
 
-	if ( abrs_infants_bookable() && $args['infants'] > 0 ) {
+	if ( $args['infants'] > 0 && abrs_infants_bookable() ) {
 		$guest_counts->set_infants( $args['infants'] );
 	}
 
@@ -590,7 +600,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	$bookingcal = abrs_calendar( $room, 'booking' );
 
 	foreach ( $bookingcal->get_events( $period ) as $event ) {
-		if ( $event->get_value() == $booking ) {
+		if ( $event->get_value() === (int) $booking ) {
 			$event->set_value( 0 );
 			$bookingcal->store( $event );
 		}

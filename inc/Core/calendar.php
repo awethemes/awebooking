@@ -58,7 +58,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 		$resource = $resource->all();
 	}
 
-	$resource = ( is_array( $resource ) )
+	$resource = is_array( $resource )
 		? array_map( 'abrs_filter_resource', $resource )
 		: [ abrs_filter_resource( $resource ) ];
 

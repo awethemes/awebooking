@@ -1,6 +1,8 @@
 <?php
 namespace AweBooking\Model\Pricing\Contracts;
 
+use AweBooking\Model\Common\Timespan;
+
 interface Rate_Interval {
 	/**
 	 * Gets the ID.
@@ -57,4 +59,13 @@ interface Rate_Interval {
 	 * @return array
 	 */
 	public function get_restrictions();
+
+	/**
+	 * Gets the rate breakdown.
+	 *
+	 * @param  \AweBooking\Model\Common\Timespan $timespan The timespan.
+	 *
+	 * @return \AweBooking\Model\Pricing\Breakdown|\WP_Error
+	 */
+	public function get_breakdown( Timespan $timespan );
 }
