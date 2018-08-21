@@ -128,11 +128,11 @@ msgstr ""
 msgid "This tool will reset the admin, customer, receptionist and hotel manager roles to default."
 msgstr ""
 
-#: inc/Availability/Room_Rate.php:161
+#: inc/Availability/Room_Rate.php:139
 msgid "Error: maximum occupancy."
 msgstr ""
 
-#: inc/Availability/Room_Rate.php:276
+#: inc/Availability/Room_Rate.php:251
 msgid "Invalid single rate."
 msgstr ""
 
@@ -140,28 +140,28 @@ msgstr ""
 msgid "Sorry, your session has expired."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:147
+#: inc/Checkout/Checkout.php:148
 msgid "Sorry, we cannot serve your reservation request at this moment."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:196
+#: inc/Checkout/Checkout.php:197
 msgid "Invalid gateway response."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:465
+#: inc/Checkout/Checkout.php:466
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:477
+#: inc/Checkout/Checkout.php:478
 msgid "Sorry, there was an error processing your payment. Please try again later."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:480
+#: inc/Checkout/Checkout.php:481
 msgid "Please choose a payment method."
 msgstr ""
 
 #. translators: %s Field name
-#: inc/Checkout/Checkout.php:502
+#: inc/Checkout/Checkout.php:503
 msgid "%s is a required field."
 msgstr ""
 
@@ -325,23 +325,23 @@ msgstr ""
 msgid "Decrease"
 msgstr ""
 
-#: inc/Core/concierge.php:178, inc/Core/concierge.php:535, inc/Core/concierge.php:583
+#: inc/Core/concierge.php:178, inc/Core/concierge.php:545, inc/Core/concierge.php:593
 msgid "Invalid Room ID"
 msgstr ""
 
-#: inc/Core/concierge.php:260, inc/Core/concierge.php:302
+#: inc/Core/concierge.php:264, inc/Core/concierge.php:312
 msgid "Invalid rate ID"
 msgstr ""
 
-#: inc/Core/concierge.php:443
+#: inc/Core/concierge.php:453
 msgid "Invalid room type."
 msgstr ""
 
-#: inc/Core/concierge.php:452
+#: inc/Core/concierge.php:462
 msgid "Invalid rate plan."
 msgstr ""
 
-#: inc/Core/concierge.php:462
+#: inc/Core/concierge.php:472
 msgid "Unable to create the reservation request."
 msgstr ""
 
@@ -633,27 +633,27 @@ msgstr ""
 msgid "Unfortunately, your booking has been cancelled."
 msgstr ""
 
-#: templates/checkout/thankyou.php:30
+#: templates/checkout/thankyou.php:32
 msgid "Thank you. Your booking has been received."
 msgstr ""
 
-#: templates/checkout/thankyou.php:35
+#: templates/checkout/thankyou.php:39
 msgid "Reservation ID:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:40
+#: templates/checkout/thankyou.php:44
 msgid "Date:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:46
+#: templates/checkout/thankyou.php:50
 msgid "Email:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:53
+#: templates/checkout/thankyou.php:57
 msgid "Payment method:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:59, inc/Admin/Metaboxes/views/html-booking-items.php:24, inc/Admin/views/calendar/html-booking-state.php:56
+#: templates/checkout/thankyou.php:63, inc/Admin/Metaboxes/views/html-booking-items.php:24, inc/Admin/views/calendar/html-booking-state.php:56
 msgid "Total:"
 msgstr ""
 
@@ -2778,7 +2778,7 @@ msgstr ""
 msgid "Base Rate"
 msgstr ""
 
-#: inc/Model/Pricing/Standard_Rate_Interval.php:41
+#: inc/Model/Pricing/Standard_Rate_Interval.php:43
 msgid "Standard Rate"
 msgstr ""
 
@@ -2794,28 +2794,28 @@ msgstr ""
 msgid "You're trying booking an invalid room. Please try another."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:241
+#: inc/Reservation/Traits/With_Room_Stays.php:242
 msgid "We are unable to find the room rate match with your request. Please try again."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:248
+#: inc/Reservation/Traits/With_Room_Stays.php:249
 msgid "You cannot perform reservation in the past! Please re-enter dates."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:252
+#: inc/Reservation/Traits/With_Room_Stays.php:253
 msgid "Sorry, the room is fully booked, please try another date."
 msgstr ""
 
 #. translators: Number of remaining rooms
-#: inc/Reservation/Traits/With_Room_Stays.php:257
+#: inc/Reservation/Traits/With_Room_Stays.php:258
 msgid "You cannot book that number of rooms because there are not enough rooms (%1$s remaining)"
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:261
+#: inc/Reservation/Traits/With_Room_Stays.php:262
 msgid "Sorry, the room is not available. Please try another room."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:265
+#: inc/Reservation/Traits/With_Room_Stays.php:266
 msgid "Sorry, some kind of error has occurred. Please try again."
 msgstr ""
 
