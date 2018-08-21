@@ -38,7 +38,7 @@ class Frontend_Service_Provider extends Service_Provider {
 			return;
 		}
 
-		if ( Constants::ROOM_TYPE == $post->post_type ) {
+		if ( Constants::ROOM_TYPE === $post->post_type ) {
 			unset( $GLOBALS['room_type'] );
 			$GLOBALS['room_type'] = abrs_get_room_type( $post );
 		}
