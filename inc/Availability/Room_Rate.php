@@ -343,6 +343,15 @@ class Room_Rate {
 	}
 
 	/**
+	 * Gets the additional rates.
+	 *
+	 * @return array
+	 */
+	public function get_additional_rates() {
+		return $this->additional_rates;
+	}
+
+	/**
 	 * Gets the additional breakdowns.
 	 *
 	 * @return array \AweBooking\Support\Collection[]
