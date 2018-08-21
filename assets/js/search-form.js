@@ -1,9 +1,9 @@
-(function (ko,$,plugin) {
+(function (plugin,ko$1,$) {
   'use strict';
 
-  ko = ko && ko.hasOwnProperty('default') ? ko['default'] : ko;
-  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
   plugin = plugin && plugin.hasOwnProperty('default') ? plugin['default'] : plugin;
+  ko$1 = ko$1 && ko$1.hasOwnProperty('default') ? ko$1['default'] : ko$1;
+  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
   var classCallCheck = function (instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -29,55 +29,60 @@
     };
   }();
 
-  function formatDate(date, format) {
-    var _date = plugin.utils.dates.parse(date, 'Y-m-d');
+  var SearchModel = function ($$$1) {
 
-    if (!_date) {
-      return '';
+    function formatDate(date, format) {
+      var _date = plugin.utils.dates.parse(date, 'Y-m-d');
+
+      if (!_date) {
+        return '';
+      }
+
+      return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
     }
 
-    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
-  }
+    var Model = function () {
+      function Model() {
+        var _this = this;
 
-  var SearchFormModel = function () {
-    function SearchFormModel() {
-      var _this = this;
+        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        classCallCheck(this, Model);
 
-      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      classCallCheck(this, SearchFormModel);
+        this.adults = ko.observable(data.adults || 1);
+        this.children = ko.observable(data.children || 0);
+        this.infants = ko.observable(data.infants || 0);
+        this.checkIn = ko.observable(data.checkIn || '');
+        this.checkOut = ko.observable(data.checkOut || '');
 
-      this.adults = ko.observable(data.adults || 1);
-      this.children = ko.observable(data.children || 0);
-      this.infants = ko.observable(data.infants || 0);
-      this.checkIn = ko.observable(data.checkIn || '');
-      this.checkOut = ko.observable(data.checkOut || '');
+        this.checkInDate = ko.computed(function () {
+          return formatDate(_this.checkIn(), 'Y-m-d');
+        });
 
-      this.checkInDate = ko.computed(function () {
-        return formatDate(_this.checkIn(), 'Y-m-d');
-      });
-
-      this.checkOutDate = ko.computed(function () {
-        return formatDate(_this.checkOut(), 'Y-m-d');
-      });
-    }
-
-    createClass(SearchFormModel, [{
-      key: 'checkInFormatted',
-      value: function checkInFormatted(format) {
-        return formatDate(this.checkIn(), format);
+        this.checkOutDate = ko.computed(function () {
+          return formatDate(_this.checkOut(), 'Y-m-d');
+        });
       }
-    }, {
-      key: 'checkOutFormatted',
-      value: function checkOutFormatted(format) {
-        return formatDate(this.checkOut(), format);
-      }
-    }]);
-    return SearchFormModel;
-  }();
+
+      createClass(Model, [{
+        key: 'checkInFormatted',
+        value: function checkInFormatted(format) {
+          return formatDate(this.checkIn(), format);
+        }
+      }, {
+        key: 'checkOutFormatted',
+        value: function checkOutFormatted(format) {
+          return formatDate(this.checkOut(), format);
+        }
+      }]);
+      return Model;
+    }();
+
+    return Model;
+  }(jQuery);
 
   var SearchForm = function () {
     function SearchForm(el) {
-      var _this2 = this;
+      var _this = this;
 
       classCallCheck(this, SearchForm);
 
@@ -85,7 +90,7 @@
 
       this.$el = $(el);
 
-      this.model = new SearchFormModel({
+      this.model = new SearchModel({
         adults: this.$el.find('input[name="adults"]').val(),
         children: this.$el.find('input[name="children"]').val(),
         infants: this.$el.find('input[name="infants"]').val(),
@@ -93,7 +98,7 @@
         checkOut: this.$el.find('input[name="check_out"]').val()
       });
 
-      ko.applyBindings(this.model, el);
+      ko$1.applyBindings(this.model, el);
 
       var $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
       if ($rangepicker.length === 0) {
@@ -102,9 +107,11 @@
 
       var fp = plugin.datepicker($rangepicker[0], {
         mode: 'range',
+        inline: true,
         altInput: false,
         clickOpens: false,
         closeOnSelect: true,
+        appendTo: self.$el.find('.searchbox__popup')[0],
 
         onReady: function onReady(_, __, fp) {
           fp.calendarContainer.classList.add('awebooking-datepicker');
@@ -115,23 +122,23 @@
 
         onChange: function onChange(dates) {
           if (dates.length === 0) {
-            _this2.model.checkIn(null);
-            _this2.model.checkIn(null);
+            _this.model.checkIn(null);
+            _this.model.checkIn(null);
           } else if (dates.length === 1) {
-            _this2.model.checkIn(dates[0]);
-            _this2.model.checkOut(null);
+            _this.model.checkIn(dates[0]);
+            _this.model.checkOut(null);
           } else {
-            _this2.model.checkIn(dates[0]);
-            _this2.model.checkOut(dates[1]);
+            _this.model.checkIn(dates[0]);
+            _this.model.checkOut(dates[1]);
           }
         },
 
         onPreCalendarPosition: function onPreCalendarPosition(_, __, fp) {
-          var _this3 = this;
+          var _this2 = this;
 
           fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
           setTimeout(function () {
-            _this3._positionElement = _this3._input;
+            _this2._positionElement = _this2._input;
           }, 0);
         }
       });
@@ -144,7 +151,7 @@
       });
 
       $('.searchbox__box', this.$el).each(function (i, box) {
-        $(box).data('popup', _this2.setuptPopper(box));
+        $(box).data('popup', _this.setuptPopper(box));
       });
 
       $('[data-trigger="spinner"]', this.$el).on('changed.spinner', function () {
@@ -171,11 +178,11 @@
   }();
 
   $(function () {
-    $('.searchbox').each(function () {
-      new SearchForm(this);
+    $('.awebooking .searchbox, .awebooking-block .searchbox').each(function (i, el) {
+      new SearchForm(el);
     });
   });
 
-}(ko,jQuery,window.awebooking));
+}(window.awebooking,ko,jQuery));
 
 //# sourceMappingURL=search-form.js.map
