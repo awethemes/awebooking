@@ -5,6 +5,7 @@ import queryString from 'query-string'
 import Dropdown from '../core/dropdown'
 import rangePlugin from '../core/range-dates'
 import customerSearch from './utils/search-customer'
+import accounting from 'accounting'
 
 // Instance the awebooking object.
 let awebooking = window.awebooking || {};
@@ -153,7 +154,7 @@ awebooking.createForm = function(action, method) {
  * @returns {string}
  */
 awebooking.formatPrice = function(amount) {
-  return require('accounting').formatMoney(amount, {
+  return accounting.formatMoney(amount, {
     format: awebooking.i18n.priceFormat,
     symbol: awebooking.i18n.currencySymbol,
     decimal: awebooking.i18n.decimalSeparator,
