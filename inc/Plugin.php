@@ -40,7 +40,7 @@ final class Plugin extends Container {
 	 *
 	 * @var array
 	 */
-	protected $bootstrappers = [
+	protected static $bootstrappers = [
 		\AweBooking\Core\Bootstrap\Load_Textdomain::class,
 		\AweBooking\Core\Bootstrap\Load_Configuration::class,
 		\AweBooking\Core\Bootstrap\Setup_Environment::class,
@@ -54,7 +54,7 @@ final class Plugin extends Container {
 	 *
 	 * @var array
 	 */
-	protected $service_providers = [
+	protected static $service_providers = [
 		'core' => [
 			\AweBooking\Core\Providers\Intl_Service_Provider::class,
 			\AweBooking\Core\Providers\Form_Service_Provider::class,
@@ -196,7 +196,7 @@ final class Plugin extends Container {
 	 * @param string $bootstrap The bootstrap class.
 	 */
 	public function bootstrapper( $bootstrap ) {
-		$this->bootstrappers[] = $bootstrap;
+		static::$bootstrappers[] = $bootstrap;
 	}
 
 	/**
@@ -207,14 +207,14 @@ final class Plugin extends Container {
 	 * @param bool   $prepend  Prepend or append.
 	 */
 	public function provider( $provider, $area = 'core', $prepend = true ) {
-		if ( ! array_key_exists( $area, $this->service_providers ) ) {
+		if ( ! array_key_exists( $area, static::$service_providers ) ) {
 			throw new \OutOfRangeException( 'The area must be one of: core, admin or frontend.' );
 		}
 
 		if ( $prepend ) {
-			$this->service_providers[ $area ] = Arr::prepend( $this->service_providers[ $area ], $provider );
+			static::$service_providers[ $area ] = Arr::prepend( static::$service_providers[ $area ], $provider );
 		} else {
-			$this->service_providers[ $area ][] = $provider;
+			static::$service_providers[ $area ][] = $provider;
 		}
 	}
 
@@ -232,7 +232,7 @@ final class Plugin extends Container {
 		do_action( 'awebooking_bootstrap', $this );
 
 		// Run bootstrap classes.
-		array_walk( $this->bootstrappers, function( $bootstrapper ) {
+		array_walk( static::$bootstrappers, function( $bootstrapper ) {
 			$this->make( $bootstrapper )->bootstrap( $this );
 		});
 
@@ -244,12 +244,12 @@ final class Plugin extends Container {
 		do_action( 'awebooking_init', $this );
 
 		// Build the providers.
-		$providers = $this->service_providers['core'];
+		$providers = static::$service_providers['core'];
 
 		if ( is_admin() ) {
-			$providers = array_merge( $providers, $this->service_providers['admin'] );
+			$providers = array_merge( $providers, static::$service_providers['admin'] );
 		} elseif ( ! defined( 'DOING_CRON' ) && ( ! is_admin() || defined( 'DOING_AJAX' ) ) ) {
-			$providers = array_merge( $providers, $this->service_providers['frontend'] );
+			$providers = array_merge( $providers, static::$service_providers['frontend'] );
 		}
 
 		// Filter the service_providers.
