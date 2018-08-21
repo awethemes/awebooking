@@ -6,15 +6,6 @@ use AweBooking\Support\Service_Provider;
 
 class Frontend_Service_Provider extends Service_Provider {
 	/**
-	 * Registers services on the plugin.
-	 *
-	 * @return void
-	 */
-	public function register() {
-		add_action( 'after_setup_theme', [ $this, 'include_functions' ], 11 );
-	}
-
-	/**
 	 * Init (boot) the service provider.
 	 *
 	 * @return void
@@ -24,17 +15,6 @@ class Frontend_Service_Provider extends Service_Provider {
 
 		// Setup the awebooking objects into the main query.
 		add_action( 'the_post', [ $this, 'setup_awebooking_objects' ] );
-	}
-
-	/**
-	 * Function used to init AwweBooking template functions.
-	 *
-	 * This makes them pluggable by plugins and themes.
-	 *
-	 * @access private
-	 */
-	public function include_functions() {
-		include_once dirname( __DIR__ ) . '/functions.php';
 	}
 
 	/**

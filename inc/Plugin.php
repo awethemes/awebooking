@@ -46,6 +46,7 @@ final class Plugin extends Container {
 		\AweBooking\Core\Bootstrap\Setup_Environment::class,
 		\AweBooking\Core\Bootstrap\Start_Session::class,
 		\AweBooking\Core\Bootstrap\Boot_Providers::class,
+		\AweBooking\Core\Bootstrap\Include_Functions::class,
 	];
 
 	/**
@@ -223,9 +224,6 @@ final class Plugin extends Container {
 	 * @access private
 	 */
 	public function bootstrap() {
-		// Require the core functions.
-		require trailingslashit( __DIR__ ) . 'Core/functions.php';
-
 		/**
 		 * Fire the bootstrap action.
 		 *
