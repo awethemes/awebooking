@@ -13,7 +13,7 @@ Awebooking helps you to setup hotel booking system quickly, pleasantly and easil
 
 == Description ==
 
-> Get all Awebooking's [premium add-ons](https://awethemes.com/plugins/awebooking#premiumaddons) and a lot of [extras](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
+> Get all Awebooking's [premium add-ons](https://awethemes.com/awebooking) and a lot of [extras](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
 
 Awebooking is a well-coded plugin with an excellent user interface, perfect for any hotel, hostel, motel, BnB or any kind of accommodation website. Awebooking brings you easiest way to setup any reservations quickly, pleasantly and easily, rent accommodations with detail services, receive online reservations.
 
@@ -26,12 +26,21 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Room type and rooms
 * Multi locations
 * Extra services
+* Amentities
 * Pricing management
 * Room availablity management
-* By request booking
+* Multiple Rooms Booking
+* Booking Management
+* Booking Note
 * Check available widget
 * Email notification
+* Minimum/Maximum Nights
+* Tax
 * Shortcodes
+* Multilingual Ready
+* Fit With Your Theme
+* Developer Friendly
+* More features are on the way!
 
 You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
 
