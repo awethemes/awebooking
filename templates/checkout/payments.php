@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<h3 class="checkout__section__title"><?php esc_html_e( 'Payment method', 'awebooking' ); ?></h3>
 		</header>
 
-		<ul class="payment-methods">
+		<ul id="payment-methods" class="payment-methods">
 			<?php foreach ( $gateways as $gateway ) : ?>
 				<?php abrs_get_template( 'checkout/payment-method.php', compact( 'gateway', 'gateways' ) ); ?>
 			<?php endforeach ?>
@@ -40,4 +40,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 	do_action( 'abrs_after_submit_button' );
 	?>
 </div>
-

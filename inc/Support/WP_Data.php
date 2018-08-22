@@ -82,7 +82,7 @@ class WP_Data {
 			case 'term':
 			case 'terms':
 				$terms = get_terms( $args );
-				if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+				if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 					$data = wp_list_pluck( $terms, 'name', 'term_id' );
 				}
 				break;

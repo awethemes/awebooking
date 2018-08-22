@@ -2237,6 +2237,16 @@ span.flatpickr-weekday {
   height: auto;
 }
 
+.widget-content .cmb2-inline-metabox > .cmb-row {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.widget-content .cmb2-inline-metabox .cmb-th > label {
+  font-weight: 400;
+  padding-bottom: 3px;
+}
+
 .sup-placeholder {
   color: #999;
   font-size: 11px;
@@ -2791,6 +2801,29 @@ table.wp-list-table .booking_summary {
 .abrs-cmb2-float .cmb2-tooltip .dashicons,
 .wrap.awebooking-settings .cmb2-tooltip .dashicons {
   font-size: 18px;
+}
+
+.awebooking-blank {
+  margin-top: 1em;
+  padding: 5em 1em;
+  text-align: center;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.awebooking-blank__icon {
+  color: #ddd;
+  font-size: 6em;
+  margin-bottom: 14px;
+}
+
+.awebooking-blank__message {
+  color: #aaa;
+  font-weight: 400;
+  margin: 0 auto 1.5em;
+  line-height: 1.5em;
+  font-size: 1.2em;
 }
 
 @media (max-width: 782.98px) {

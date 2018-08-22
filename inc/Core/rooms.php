@@ -108,7 +108,7 @@ function abrs_prime_room_caches( $ids ) {
 
 	if ( ! empty( $non_cached_ids ) ) {
 		// @codingStandardsIgnoreLine
-		$fresh_rooms = $wpdb->get_results( sprintf( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN (%s) ORDER BY `order` ASC LIMIT 1000", join( ',', $non_cached_ids ) ), ARRAY_A );
+		$fresh_rooms = $wpdb->get_results( sprintf( "SELECT * FROM `{$wpdb->prefix}awebooking_rooms` WHERE `room_type` IN (%s) ORDER BY `order` ASC LIMIT 1000", implode( ',', $non_cached_ids ) ), ARRAY_A );
 
 		abrs_update_room_caches( $fresh_rooms );
 	}
@@ -127,11 +127,11 @@ function abrs_update_room_caches( array $rooms ) {
 
 	$group_rooms = abrs_collect( $rooms )->groupBy( 'room_type' );
 
-	foreach ( $group_rooms as $room_type => $rooms ) {
-		/* @var \AweBooking\Support\Collection $rooms */
-		wp_cache_add( (int) $room_type, $rooms->all(), 'awebooking_rooms' );
+	foreach ( $group_rooms as $room_type => $_rooms ) {
+		/* @var \AweBooking\Support\Collection $_rooms */
+		wp_cache_add( (int) $room_type, $_rooms->all(), 'awebooking_rooms' );
 
-		foreach ( $rooms as $item ) {
+		foreach ( $_rooms as $item ) {
 			wp_cache_set( (int) $item['id'], $item, 'awebooking_db_room' );
 		}
 	}

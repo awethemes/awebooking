@@ -3,7 +3,7 @@ namespace AweBooking\Gateway;
 
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
-use AweBooking\Frontend\Checkout\Url_Generator;
+use AweBooking\Checkout\Url_Generator;
 use Awethemes\Http\Request;
 
 abstract class Gateway {
@@ -176,7 +176,7 @@ abstract class Gateway {
 	public function get_option( $key, $default = null ) {
 		$prefix = sanitize_key( 'gateway_' . $this->get_method() );
 
-		if ( is_null( $default ) && isset( $this->setting_fields[ $key ]['default'] ) ) {
+		if ( isset( $this->setting_fields[ $key ]['default'] ) && is_null( $default ) ) {
 			$default = $this->setting_fields[ $key ]['default'];
 		}
 
@@ -209,7 +209,7 @@ abstract class Gateway {
 	public function get_return_url( $booking ) {
 		$booking = abrs_get_booking( $booking );
 
-		if ( is_null( $booking ) ) {
+		if ( ! $booking ) {
 			return '';
 		}
 

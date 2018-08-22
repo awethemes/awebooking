@@ -24,10 +24,19 @@ if ( post_password_required() ) {
 }
 ?>
 
-<article id="room-<?php the_ID(); ?>" <?php post_class( 'single-room' ); ?>>
+<article id="room-<?php the_ID(); ?>" <?php post_class( 'room' ); ?>>
 	<div class="hotel-content">
 		<div class="hotel-content__main">
-			<?php the_title( '<h1 class="room__title">', '</h1>' ); ?>
+			<header class="room__header">
+				<?php the_title( '<h1 class="room__title">', '</h1>' ); ?>
+
+				<p class="room__price">
+					<?php
+					/* translators: %s room price */
+					printf( esc_html__( 'Start from %s/night', 'awebooking' ), '<span>' . abrs_format_price( $room_type->get( 'rack_rate' ) ) . '</span>' ); // WPCS: xss ok.
+					?>
+				</p>
+			</header>
 
 			<div class="room__sections">
 				<?php

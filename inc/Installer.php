@@ -3,7 +3,7 @@ namespace AweBooking;
 
 use Psr\Log\LoggerInterface;
 use AweBooking\Admin\Admin_Settings;
-use AweBooking\Bootstrap\Setup_Environment;
+use AweBooking\Core\Bootstrap\Setup_Environment;
 use AweBooking\Background_Process\Background_Updater;
 
 class Installer {
@@ -62,7 +62,7 @@ class Installer {
 		add_action( 'init', [ $this, 'maybe_reinstall' ], 5 );
 		add_action( 'init', [ $this, 'init_background_updater' ], 5 );
 		add_action( 'init', [ $this, 'register_metadata_table' ], 0 );
-		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 5 );
+		add_action( 'admin_init', [ $this, 'maybe_create_options' ], 10 );
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 		add_filter( "plugin_action_links_{$this->plugin->plugin_basename()}", [ $this, 'plugin_action_links' ] );
@@ -129,8 +129,6 @@ class Installer {
 
 		if ( ! get_option( Constants::OPTION_KEY ) ) {
 			$admin_settings = $this->plugin->make( Admin_Settings::class );
-
-			$admin_settings->setup();
 
 			add_option( Constants::OPTION_KEY, $admin_settings->get_default_settings(), '', 'yes' );
 		}
@@ -268,7 +266,7 @@ class Installer {
 	protected function update() {
 		$logger = $this->plugin->make( LoggerInterface::class );
 
-		if ( is_null( $this->background_updater ) ) {
+		if ( null === $this->background_updater ) {
 			$this->init_background_updater();
 		}
 
@@ -361,7 +359,7 @@ class Installer {
 		$current_db_version = $this->get_current_db_version();
 
 		// If no db_version found, there's nothing to update.
-		if ( is_null( $current_db_version ) || empty( $this->db_updates ) ) {
+		if ( empty( $this->db_updates ) || is_null( $current_db_version ) ) {
 			return false;
 		}
 
@@ -414,6 +412,22 @@ class Installer {
 		$wpdb->show_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		// Before updating with DBDELTA, remove any primary keys which could be
+		// modified due to schema updates. TODO: Remove in v3.2.
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}awebooking_relationships';" ) ) {
+			if ( $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'rel_id';" ) ) {
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_id`;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_type`;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP PRIMARY KEY;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP INDEX `rel_type`;" );
+			}
+
+			if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'id';" ) ) {
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;" );
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `type` VARCHAR(42) NOT NULL DEFAULT '';" );
+			}
+		}
 
 		dbDelta( $this->get_db_schema() );
 	}

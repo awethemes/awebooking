@@ -32,7 +32,7 @@ global $room_type;
 	<?php if ( $room_type->get( 'area_size' ) ) : ?>
 		<li class="info-item">
 			<span class="info-icon">
-				<i class="aficon aficon-elevator"></i>
+				<i class="aficon aficon-sqm"></i>
 				<span class="screen-reader-text"><?php echo esc_html_x( 'Area size', 'area size button', 'awebooking' ); ?></span>
 			</span>
 			<?php

@@ -6,6 +6,9 @@ if ( ! defined( 'ABRS_ADMIN_PATH' ) ) {
 	define( 'ABRS_ADMIN_PATH', awebooking()->plugin_path( 'inc/Admin/' ) );
 }
 
+// Back compat.
+class_alias( \AweBooking\Admin\Metabox::class, 'AweBooking\Admin\Metaboxes\Abstract_Metabox' );
+
 /**
  * List all screens by awebooking.
  *
@@ -20,6 +23,7 @@ function abrs_admin_screens() {
 		'edit-awebooking',
 		'hotel_service',
 		'edit-hotel_service',
+		'edit-hotel_amenity',
 	]);
 }
 
@@ -33,7 +37,7 @@ function abrs_admin_route_is( $pattern ) {
 	$screen = get_current_screen();
 
 	// Check the screen isset first.
-	if ( is_null( $screen ) || 'awebooking_route' !== $screen->base ) {
+	if ( 'awebooking_route' !== $screen->base || is_null( $screen ) ) {
 		return false;
 	}
 

@@ -12,6 +12,19 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register() {
+		foreach ( [
+			\AweBooking\Admin\Settings\General_Setting::class,
+			\AweBooking\Admin\Settings\Hotel_Setting::class,
+			\AweBooking\Admin\Settings\Taxes_Setting::class,
+			\AweBooking\Admin\Settings\Checkout_Setting::class,
+			\AweBooking\Admin\Settings\Appearance_Setting::class,
+			\AweBooking\Admin\Settings\Email_Setting::class,
+			\AweBooking\Admin\Settings\Premium_Setting::class,
+		] as $_class ) {
+			$this->plugin->singleton( $_class );
+			$this->plugin->tag( $_class, 'settings' );
+		}
+
 		$this->plugin->singleton( 'admin_template', function() {
 			return new Admin_Template;
 		});
@@ -35,7 +48,7 @@ class Admin_Service_Provider extends Service_Provider {
 
 		// Register the admin routes.
 		add_action( 'abrs_register_admin_routes', [ $this, 'register_admin_routes' ], 1 );
-		add_action( 'admin_init', [ $this, 'register_admin_settings' ] );
+		add_action( 'admin_init', [ $this, 'register_admin_settings' ], 1 );
 
 		// Trim price zeros in admin area.
 		add_filter( 'abrs_price_trim_zeros', '__return_true' );
@@ -52,11 +65,41 @@ class Admin_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Register admin settings.
+	 * Perform register admin settings.
 	 *
 	 * @access private
 	 */
 	public function register_admin_settings() {
-		$this->plugin->make( 'admin_settings' )->setup();
+		/* @var $settings \AweBooking\Admin\Admin_Settings  */
+		$settings = $this->plugin->make( Admin_Settings::class );
+
+		foreach ( $this->plugin->tagged( 'settings' ) as $setting ) {
+			$settings->register( $setting );
+			$this->register_setting_modifiers( $setting );
+		}
+
+		do_action( 'abrs_register_admin_settings', $settings );
+	}
+
+	/**
+	 * Perform register modifiers a setting.
+	 *
+	 * @param \AweBooking\Admin\Settings\Setting $setting The setting instance.
+	 */
+	protected function register_setting_modifiers( $setting ) {
+		if ( ! $setting ) {
+			return;
+		}
+
+		$modifiers = $this->plugin->tagged( "setting.{$setting->get_id()}" );
+		if ( empty( $modifiers ) ) {
+			return;
+		}
+
+		foreach ( $modifiers as $modifier ) {
+			abrs_optional( $modifier )->register();
+		}
+
+		do_action( "abrs_register_{$setting->get_id()}_admin_setting", $setting );
 	}
 }

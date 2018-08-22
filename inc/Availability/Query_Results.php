@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Availability;
 
 class Query_Results implements \Countable, \IteratorAggregate {
@@ -56,14 +55,12 @@ class Query_Results implements \Countable, \IteratorAggregate {
 	}
 
 	/**
-	 * Getter property.
+	 * Get an iterator for the items.
 	 *
-	 * @param  string $key Property name.
-	 *
-	 * @return mixed
+	 * @return \ArrayIterator
 	 */
-	public function __get( $key ) {
-		return $this->{$key};
+	public function getIterator() {
+		return $this->items->getIterator();
 	}
 
 	/**
@@ -76,11 +73,13 @@ class Query_Results implements \Countable, \IteratorAggregate {
 	}
 
 	/**
-	 * Get an iterator for the items.
+	 * Getter property.
 	 *
-	 * @return \ArrayIterator
+	 * @param  string $key Property name.
+	 *
+	 * @return mixed
 	 */
-	public function getIterator() {
-		return $this->items->getIterator();
+	public function __get( $key ) {
+		return $this->{$key};
 	}
 }

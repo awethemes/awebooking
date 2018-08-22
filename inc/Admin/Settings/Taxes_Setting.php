@@ -7,15 +7,10 @@ class Taxes_Setting extends Abstract_Setting {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_id() {
-		return 'taxes';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_label() {
-		return esc_html__( 'Tax', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'taxes';
+		$this->label    = esc_html__( 'Tax', 'awebooking' );
+		$this->priority = 30;
 	}
 
 	/**

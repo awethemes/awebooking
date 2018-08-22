@@ -17,7 +17,7 @@ trait Plugin_Provider {
 	 * @return \AweBooking\Support\Service_Provider
 	 */
 	public function register( $provider, $force = false ) {
-		if ( ( $registered = $this->get_provider( $provider ) ) && ! $force ) {
+		if ( ! $force && ( $registered = $this->get_provider( $provider ) ) ) {
 			return $registered;
 		}
 

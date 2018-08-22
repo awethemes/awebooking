@@ -49,6 +49,7 @@ class Guest_Count {
 	 * Set the age code.
 	 *
 	 * @param string|int $age_code The age code.
+	 * @return $this
 	 */
 	public function set_age_code( $age_code ) {
 		$this->age_code = $age_code;
@@ -90,6 +91,7 @@ class Guest_Count {
 	 * Set the count.
 	 *
 	 * @param int $count The count.
+	 * @return $this
 	 */
 	public function set_count( $count ) {
 		$this->count = absint( $count );

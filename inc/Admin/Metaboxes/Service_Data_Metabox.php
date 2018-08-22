@@ -4,9 +4,10 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Model\Service;
+use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Service_Data_Form;
 
-class Service_Data_Metabox extends Abstract_Metabox {
+class Service_Data_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */

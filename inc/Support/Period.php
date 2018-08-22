@@ -54,6 +54,20 @@ class Period extends League_Period {
 	}
 
 	/**
+	 * Check a property exists.
+	 *
+	 * @param  string $name The property name.
+	 * @return bool
+	 */
+	public function __isset( $name ) {
+		if ( in_array( $name, [ 'start_date', 'end_date' ] ) ) {
+			return true;
+		}
+
+		return property_exists( $this, $name );
+	}
+
+	/**
 	 * Getter class property.
 	 *
 	 * @param  string $property The property name.
@@ -72,5 +86,15 @@ class Period extends League_Period {
 		}
 
 		throw new \InvalidArgumentException( "Unknown getter '{$property}'" );
+	}
+
+	/**
+	 * Setter.
+	 *
+	 * @param string $name  The property name.
+	 * @param mixed  $value The value.
+	 */
+	public function __set( $name, $value ) {
+		// ...
 	}
 }

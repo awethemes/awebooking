@@ -27,5 +27,7 @@ function _abrs_310_load_deprecated( $plugin ) {
 	class_alias( 'AweBooking\Model\Room_Type', 'AweBooking\Hotel\Room_Type' );
 	class_alias( 'AweBooking\Model\Service', 'AweBooking\Hotel\Service' );
 	class_alias( 'AweBooking\Model\Booking', 'AweBooking\Booking\Booking' );
+
+	class_alias( 'AweBooking\Checkout\Checkout', 'AweBooking\Frontend\Checkout\Checkout' );
 }
 add_action( 'awebooking_booting', '_abrs_310_load_deprecated' );

@@ -15,7 +15,7 @@ function abrs_tax_enabled() {
  * @return bool
  */
 function abrs_prices_includes_tax() {
-	return abrs_tax_enabled() && abrs_get_option( 'prices_include_tax' );
+	return abrs_tax_enabled() && 'yes' === abrs_get_option( 'prices_include_tax', 'no' );
 }
 
 /**
@@ -86,8 +86,8 @@ function abrs_calc_inclusive_tax( $price, array $rates ) {
 
 	foreach ( $compound_rates as $key => $compound_rate ) {
 		$tax_amount         = apply_filters( 'abrs_price_inc_tax_amount', $non_compound_price - ( $non_compound_price / ( 1 + ( $compound_rate / 100 ) ) ), $key, $rates[ $key ], $price );
-		$taxes[ $key ]     += $tax_amount;
-		$non_compound_price = $non_compound_price - $tax_amount;
+		$taxes[ $key ]      += $tax_amount;
+		$non_compound_price -= $tax_amount;
 	}
 
 	// Regular taxes.
@@ -137,7 +137,7 @@ function abrs_calc_exclusive_tax( $price, array $rates ) {
 				continue;
 			}
 
-			$the_price_inc_tax = $price + ( $pre_compound_total );
+			$the_price_inc_tax = $price + $pre_compound_total;
 			$tax_amount        = $the_price_inc_tax * ( $rate['rate'] / 100 );
 			$tax_amount        = apply_filters( 'abrs_price_ex_tax_amount', $tax_amount, $key, $rate, $price, $the_price_inc_tax, $pre_compound_total );
 
@@ -178,7 +178,7 @@ function abrs_get_tax_rates_for_dropdown() {
 	return abrs_get_tax_rates()
 		->keyBy( 'id' )
 		->map( function ( $rate ) {
-			return $rate['name'] . ' (' . floatval( $rate['rate'] ) . '%)';
+			return $rate['name'] . ' (' . (float) $rate['rate'] . '%)';
 		})->all();
 }
 

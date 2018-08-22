@@ -7,7 +7,8 @@ use AweBooking\Reservation\Storage\Store;
 
 class Reservation {
 	use Traits\With_Room_Stays,
-		Traits\With_Services;
+		Traits\With_Services,
+		Traits\With_Fees;
 
 	/**
 	 * The reservation hotel ID.
@@ -72,6 +73,7 @@ class Reservation {
 	 */
 	public function __construct( Store $store ) {
 		$this->store        = $store;
+		$this->fees         = new Collection;
 		$this->services     = new Collection;
 		$this->room_stays   = new Collection;
 		$this->booked_rooms = [];
@@ -166,6 +168,7 @@ class Reservation {
 	 * Sets the previous_request.
 	 *
 	 * @param \AweBooking\Availability\Request $request The res request.
+	 * @return $this
 	 */
 	public function set_previous_request( Request $request ) {
 		$this->previous_request = $request;
@@ -219,6 +222,7 @@ class Reservation {
 	 * @return void
 	 */
 	public function flush() {
+		$this->fees->clear();
 		$this->services->clear();
 		$this->room_stays->clear();
 
@@ -251,11 +255,8 @@ class Reservation {
 		}
 
 		$session_hashid = $this->store->get( 'reservation_hash' );
-		if ( $session_hashid && ! hash_equals( $this->generate_hash_id(), $session_hashid ) ) {
-			return true;
-		}
 
-		return false;
+		return $session_hashid && ! hash_equals( $this->generate_hash_id(), $session_hashid );
 	}
 
 	/**

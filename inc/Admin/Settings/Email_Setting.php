@@ -3,25 +3,13 @@ namespace AweBooking\Admin\Settings;
 
 class Email_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
-	 */
-	protected $form_id = 'email';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Emails', 'awebooking' );
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
-	protected function output_nav_sections() {}
+	protected function setup() {
+		$this->form_id  = 'email';
+		$this->label    = esc_html__( 'Emails', 'awebooking' );
+		$this->priority = 50;
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -158,4 +146,9 @@ class Email_Setting extends Abstract_Setting {
 			);
 		}
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function output_nav_sections() {}
 }

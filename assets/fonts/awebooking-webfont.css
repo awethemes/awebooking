@@ -2,11 +2,11 @@
 	font-family: "awebooking-webfont";
 	font-style: normal;
 	font-weight: normal;
-	src: url("awebooking-webfont.eot?96a6443bbe4d20b31ab0b90afaf14aac?#iefix") format("embedded-opentype"),
-url("awebooking-webfont.woff2?96a6443bbe4d20b31ab0b90afaf14aac") format("woff2"),
-url("awebooking-webfont.woff?96a6443bbe4d20b31ab0b90afaf14aac") format("woff"),
-url("awebooking-webfont.ttf?96a6443bbe4d20b31ab0b90afaf14aac") format("truetype"),
-url("awebooking-webfont.svg?96a6443bbe4d20b31ab0b90afaf14aac#awebooking-webfont") format("svg");
+	src: url("awebooking-webfont.eot?3675bd5ec419e84cd2467c6ea0261aab?#iefix") format("embedded-opentype"),
+url("awebooking-webfont.woff2?3675bd5ec419e84cd2467c6ea0261aab") format("woff2"),
+url("awebooking-webfont.woff?3675bd5ec419e84cd2467c6ea0261aab") format("woff"),
+url("awebooking-webfont.ttf?3675bd5ec419e84cd2467c6ea0261aab") format("truetype"),
+url("awebooking-webfont.svg?3675bd5ec419e84cd2467c6ea0261aab#awebooking-webfont") format("svg");
 }
 
 .aficon {
@@ -325,4 +325,7 @@ url("awebooking-webfont.svg?96a6443bbe4d20b31ab0b90afaf14aac#awebooking-webfont"
 }
 .aficon-trash:before {
 	content: "\f166";
+}
+.aficon-sqm:before {
+	content: "\f167";
 }

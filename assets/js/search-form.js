@@ -1,56 +1,85 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-(function ($, ko, plugin) {
+(function (ko,$,plugin) {
   'use strict';
 
+  ko = ko && ko.hasOwnProperty('default') ? ko['default'] : ko;
+  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
+  plugin = plugin && plugin.hasOwnProperty('default') ? plugin['default'] : plugin;
+
+  var classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  };
+
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
   function formatDate(date, format) {
-    var _date = flatpickr.parseDate(date);
+    var _date = plugin.utils.dates.parse(date, 'Y-m-d');
 
     if (!_date) {
       return '';
     }
 
-    return flatpickr.formatDate(_date, format || plugin.i18n.dateFormat);
+    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
   }
 
-  function SearchFormModel() {
-    var _this = this;
+  var SearchFormModel = function () {
+    function SearchFormModel() {
+      var _this = this;
 
-    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      classCallCheck(this, SearchFormModel);
 
-    this.adults = ko.observable(data.adults || 1);
-    this.children = ko.observable(data.children || 0);
-    this.infants = ko.observable(data.infants || 0);
-    this.checkIn = ko.observable(data.checkIn || '');
-    this.checkOut = ko.observable(data.checkOut || '');
+      this.adults = ko.observable(data.adults || 1);
+      this.children = ko.observable(data.children || 0);
+      this.infants = ko.observable(data.infants || 0);
+      this.checkIn = ko.observable(data.checkIn || '');
+      this.checkOut = ko.observable(data.checkOut || '');
 
-    this.checkInDate = ko.computed(function () {
-      return formatDate(_this.checkIn(), 'Y-m-d');
-    });
+      this.checkInDate = ko.computed(function () {
+        return formatDate(_this.checkIn(), 'Y-m-d');
+      });
 
-    this.checkOutDate = ko.computed(function () {
-      return formatDate(_this.checkOut(), 'Y-m-d');
-    });
+      this.checkOutDate = ko.computed(function () {
+        return formatDate(_this.checkOut(), 'Y-m-d');
+      });
+    }
 
-    this.checkInFormatted = ko.computed(function () {
-      return formatDate(_this.checkIn());
-    });
-
-    this.checkOutFormatted = ko.computed(function () {
-      return formatDate(_this.checkOut());
-    });
-  }
+    createClass(SearchFormModel, [{
+      key: 'checkInFormatted',
+      value: function checkInFormatted(format) {
+        return formatDate(this.checkIn(), format);
+      }
+    }, {
+      key: 'checkOutFormatted',
+      value: function checkOutFormatted(format) {
+        return formatDate(this.checkOut(), format);
+      }
+    }]);
+    return SearchFormModel;
+  }();
 
   var SearchForm = function () {
     function SearchForm(el) {
       var _this2 = this;
 
-      _classCallCheck(this, SearchForm);
+      classCallCheck(this, SearchForm);
 
       var self = this;
 
@@ -71,13 +100,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
       }
 
-      var fp = awebooking.datepicker($rangepicker[0], {
+      var fp = plugin.datepicker($rangepicker[0], {
         mode: 'range',
         altInput: false,
         clickOpens: false,
         closeOnSelect: true,
 
-        onReady: function onReady() {
+        onReady: function onReady(_, __, fp) {
+          fp.calendarContainer.classList.add('awebooking-datepicker');
           this.config.ignoredFocusElements.push($('.searchbox__box--checkin', self.$el)[0]);
           this.config.ignoredFocusElements.push($('.searchbox__box--checkout', self.$el)[0]);
         },
@@ -96,7 +126,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
         },
 
-        onPreCalendarPosition: function onPreCalendarPosition() {
+        onPreCalendarPosition: function onPreCalendarPosition(_, __, fp) {
           var _this3 = this;
 
           fp._positionElement = $('.searchbox__box--checkout', self.$el)[0];
@@ -106,19 +136,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       });
 
-      $('.searchbox__box--checkin, .searchbox__box--checkout', this.$el).on('click focus', function (e) {
+      $(this.$el).on('click', '.searchbox__box--checkin, .searchbox__box--checkout', function (e) {
         e.preventDefault();
 
         fp.isOpen = false;
-        fp.open(undefined, this);
+        fp.open(undefined, e.currentTarget);
       });
 
       $('.searchbox__box', this.$el).each(function (i, box) {
         $(box).data('popup', _this2.setuptPopper(box));
       });
+
+      $('[data-trigger="spinner"]', this.$el).on('changed.spinner', function () {
+        $(this).find('[data-spin="spinner"]').trigger('change');
+      });
     }
 
-    _createClass(SearchForm, [{
+    createClass(SearchForm, [{
       key: 'setuptPopper',
       value: function setuptPopper(el) {
         var $html = $(el).find('.searchbox__popup');
@@ -128,11 +162,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         plugin.utils.dropdown($(el).find('.searchbox__box-wrap'), {
-          dropClass: '.searchbox__popup'
+          drop: '.searchbox__popup',
+          display: 'static'
         });
       }
     }]);
-
     return SearchForm;
   }();
 
@@ -141,8 +175,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       new SearchForm(this);
     });
   });
-})(jQuery, window.ko, window.awebooking);
 
-},{}]},{},[1]);
+}(ko,jQuery,window.awebooking));
 
 //# sourceMappingURL=search-form.js.map

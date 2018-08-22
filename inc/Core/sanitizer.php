@@ -24,11 +24,11 @@ function abrs_recursive_sanitizer( $values, $sanitizer ) {
 		return is_scalar( $values ) ? $sanitizer( $values ) : $values;
 	}
 
-	foreach ( $values as $key => &$value ) {
+	foreach ( $values as $key => $value ) {
 		if ( is_array( $value ) ) {
-			$value = abrs_recursive_sanitizer( $value, $sanitizer );
+			$values[ $key ] = abrs_recursive_sanitizer( $value, $sanitizer );
 		} else {
-			$value = is_scalar( $value ) ? $sanitizer( $value ) : $value;
+			$values[ $key ] = is_scalar( $value ) ? $sanitizer( $value ) : $value;
 		}
 	}
 
@@ -72,12 +72,12 @@ function abrs_sanitize_checkbox( $value ) {
  * @return string
  */
 function abrs_sanitize_decimal( $number ) {
-	$locale = localeconv();
-	$decimals = [ abrs_get_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] ];
-
 	// If not float number, clean input number and remove locale decimals.
 	// Then keep only numeric, '-', comma and dot character.
 	if ( ! is_float( $number ) ) {
+		$locale = localeconv();
+		$decimals = [ abrs_get_option( 'price_decimal_separator', '.' ), $locale['decimal_point'], $locale['mon_decimal_point'] ];
+
 		$number = str_replace( $decimals, '.', sanitize_text_field( $number ) );
 		$number = preg_replace( '/[^0-9\.,-]/', '', $number );
 	}
@@ -87,7 +87,25 @@ function abrs_sanitize_decimal( $number ) {
 	$number = abrs_decimal( $number )->as_string();
 
 	// Trim the zeros.
-	return rtrim( rtrim( $number, '0' ), '.' );
+	if ( false !== strpos( $number, '.' ) ) {
+		$number = rtrim( rtrim( $number, '0' ), '.' );
+	}
+
+	return $number;
+}
+
+/**
+ * Sanitize a amount (keep the percent).
+ *
+ * @param  mixed $amount The amount.
+ * @return string
+ */
+function abrs_sanitize_amount( $amount ) {
+	$is_percent = ( is_string( $amount ) && substr( $amount, -1 ) === '%' );
+
+	$amount = abrs_sanitize_decimal( $amount );
+
+	return $is_percent ? $amount . '%' : $amount;
 }
 
 /**

@@ -10,7 +10,7 @@ use AweBooking\Model\Hotel;
  * @return \AweBooking\Model\Hotel|false|null
  */
 function abrs_get_hotel( $hotel = 0 ) {
-	if ( 0 == $hotel ) {
+	if ( is_int( $hotel ) && 0 === (int) $hotel ) {
 		return abrs_get_primary_hotel();
 	}
 

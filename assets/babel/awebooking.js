@@ -1,114 +1,118 @@
-window.awebooking = {};
+import $ from 'jquery'
+import accounting from 'accounting'
+import Dropdown from './core/dropdown'
+import Utils from './core/date-utils'
 
-const accounting = require('accounting');
-const Dropdown = require('./core/dropdown');
+let plugin = window.awebooking = {};
 
-(function ($, plugin) {
-  'use strict';
+// Main objects
+plugin.utils = {};
+plugin.instances = {};
+plugin.i18n = window._awebooking_i18n || {};
 
-  // Main objects
-  plugin.utils = plugin.instances = {};
+plugin.config = Object.assign( {}, window._awebooking, {
+  route: window.location.origin + '?awebooking_route=/',
+  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
+});
 
-  plugin.utils.dropdown = function (el, config) {
-    $(el).each(function () {
-      $(this).data('abrs-dropdown', new Dropdown(this, config));
+plugin.utils.dates = Utils;
+if (typeof window.flatpickr !== 'undefined') {
+  plugin.utils.dates.l10n = flatpickr.l10ns.default;
+}
+
+plugin.utils.dropdown = function (el, config) {
+  $(el).each(function () {
+    $(this).data('abrs-dropdown', new Dropdown(this, config));
+  });
+};
+
+/**
+ * The admin route.
+ *
+ * @param  {string} route
+ * @return {string}
+ */
+plugin.route = function (route) {
+  return this.config.route + (route || '').replace(/^\//g, '');
+};
+
+/**
+ * Create new datepicker.
+ *
+ * @see https://flatpickr.js.org/options/
+ *
+ * @return {flatpickr}
+ */
+plugin.datepicker = function (instance, options) {
+  const i18n = plugin.i18n;
+  const defaults = plugin.config.datepicker;
+  const disable = Array.isArray(defaults.disable) ? defaults.disable : [];
+
+  if (Array.isArray(defaults.disableDays)) {
+    disable.push(function (date) {
+      return defaults.disableDays.indexOf(date.getDay()) !== -1;
     });
+  }
+
+  // const minDate = new Date().fp_incr(defaults.min_date);
+  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+
+  const _defaults = {
+    dateFormat: 'Y-m-d',
+    ariaDateFormat: i18n.dateFormat,
+    minDate: 'today',
+    // maxDate: max_date,
+    // disable: disable,
+    showMonths: defaults.showMonths || 1,
+    enableTime: false,
+    enableSeconds: false,
+    disableMobile: false,
+    onReady(_, __, fp) {
+      fp.calendarContainer.classList.add('awebooking-datepicker')
+    },
   };
 
-  plugin.i18n = window._awebooking_i18n || {};
+  return flatpickr(instance, $.extend({}, _defaults, options));
+};
 
-  plugin.config = Object.assign( {}, window._awebooking, {
-    route: window.location.origin + '?awebooking_route=/',
-    ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
+/**
+ * Format the price.
+ *
+ * @param amount
+ * @returns {string}
+ */
+plugin.formatPrice = function(amount) {
+  return accounting.formatMoney(amount, {
+    format: plugin.i18n.priceFormat,
+    symbol: plugin.i18n.currencySymbol,
+    decimal: plugin.i18n.decimalSeparator,
+    thousand: plugin.i18n.priceThousandSeparator,
+    precision: plugin.i18n.numberDecimals,
+  });
+};
+
+/**
+ * Document ready.
+ *
+ * @return {void}
+ */
+$(function () {
+  window.tippy('[data-awebooking="tooltip"]', {
+    theme: 'awebooking-tooltip'
   });
 
-  /**
-   * The admin route.
-   *
-   * @param  {string} route
-   * @return {string}
-   */
-  plugin.route = function (route) {
-    return this.config.route + (route || '').replace(/^\//g, '');
-  };
+  $('[data-init="awebooking-dialog"]').each( (e, el) => {
+    const dialog = new window.A11yDialog(el);
 
-  /**
-   * Create new datepicker.
-   *
-   * @see https://flatpickr.js.org/options/
-   *
-   * @return {flatpickr}
-   */
-  plugin.datepicker = function (instance, options) {
-    const i18n = plugin.i18n;
-    const defaults = plugin.config.datepicker;
-    const disable = Array.isArray(defaults.disable) ? defaults.disable : [];
-
-    if (Array.isArray(defaults.disableDays)) {
-      disable.push(function (date) {
-        return defaults.disableDays.indexOf(date.getDay()) !== -1;
-      });
-    }
-
-    // const minDate = new Date().fp_incr(defaults.min_date);
-    // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
-
-    const fp = flatpickr(instance, Object.assign({}, options, {
-      dateFormat: 'Y-m-d',
-      ariaDateFormat: i18n.dateFormat,
-      minDate: 'today',
-      // maxDate: max_date,
-      // disable: disable,
-      showMonths: defaults.showMonths || 1,
-      enableTime: false,
-      enableSeconds: false,
-      onReady(_, __, fp) {
-        fp.calendarContainer.classList.add('awebooking-datepicker');
-      }
-    }));
-
-    return fp;
-  };
-
-  /**
-   * Format the price.
-   *
-   * @param amount
-   * @returns {string}
-   */
-  plugin.formatPrice = function(amount) {
-    return accounting.formatMoney(amount, {
-      format: plugin.i18n.priceFormat,
-      symbol: plugin.i18n.currencySymbol,
-      decimal: plugin.i18n.decimalSeparator,
-      thousand: plugin.i18n.priceThousandSeparator,
-      precision: plugin.i18n.numberDecimals,
-    });
-  };
-
-  /**
-   * Document ready.
-   *
-   * @return {void}
-   */
-  $(function () {
-    window.tippy('[data-awebooking="tooltip"]', {
-      theme: 'awebooking-tooltip'
+    dialog.on('show', () => {
+      el.classList.add('open');
+      el.removeAttribute('aria-hidden');
     });
 
-    $('[data-init="awebooking-dialog"]').each( (e, el) => {
-      const dialog = new window.A11yDialog(el);
-
-      dialog.on('show', () => {
-        el.classList.add('open');
-        el.removeAttribute('aria-hidden');
-      });
-
-      dialog.on('hide', () => {
-        el.classList.remove('open');
-        el.setAttribute('aria-hidden', true);
-      });
+    dialog.on('hide', () => {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', true);
     });
   });
 
-})(jQuery, window.awebooking);
+});

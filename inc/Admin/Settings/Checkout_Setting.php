@@ -2,23 +2,16 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Gateway\Gateway;
-use AweBooking\Frontend\Checkout\Form_Controls;
+use AweBooking\Checkout\Form_Controls;
 
 class Checkout_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'checkout';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Checkout', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'checkout';
+		$this->label    = esc_html__( 'Checkout', 'awebooking' );
+		$this->priority = 40;
 	}
 
 	/**
@@ -63,7 +56,7 @@ class Checkout_Setting extends Abstract_Setting {
 		]);
 
 		// Register the gateways custom fields.
-		foreach ( awebooking( 'gateways' )->all() as $gateway ) {
+		foreach ( abrs_payment_gateways()->all() as $gateway ) {
 			/* @var \AweBooking\Gateway\Gateway $gateway */
 			if ( $gateway->has_settings() ) {
 				$this->register_gateway_settings( $gateway );

@@ -13,6 +13,10 @@
 		<?php include trailingslashit( __DIR__ ) . 'html-booking-services.php'; ?>
 	</div>
 
+	<div class="booking-section booking-section--fees">
+		<?php include trailingslashit( __DIR__ ) . 'html-booking-fees.php'; ?>
+	</div>
+
 	<div class="booking-section booking-section--totals abrs-clearfix">
 		<table class="awebooking-table abrs-booking-totals">
 			<tbody>

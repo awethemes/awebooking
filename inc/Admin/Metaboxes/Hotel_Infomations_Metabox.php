@@ -4,9 +4,10 @@ namespace AweBooking\Admin\Metaboxes;
 use AweBooking\Constants;
 use Awethemes\Http\Request;
 use AweBooking\Model\Hotel;
+use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Hotel_Information_Form;
 
-class Hotel_Infomations_Metabox extends Abstract_Metabox {
+class Hotel_Infomations_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */

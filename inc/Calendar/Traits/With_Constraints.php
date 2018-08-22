@@ -22,6 +22,7 @@ trait With_Constraints {
 	 * Set the constraints.
 	 *
 	 * @param array $constraints The array of constraints.
+	 * @return $this
 	 */
 	public function set_constraints( array $constraints ) {
 		$this->constraints = $constraints;

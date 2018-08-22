@@ -3,19 +3,12 @@ namespace AweBooking\Admin\Settings;
 
 class Appearance_Setting extends Abstract_Setting {
 	/**
-	 * The setting ID.
-	 *
-	 * @var string
+	 * {@inheritdoc}
 	 */
-	protected $form_id = 'appearance';
-
-	/**
-	 * Get the setting label.
-	 *
-	 * @return string
-	 */
-	public function get_label() {
-		return esc_html__( 'Appearance', 'awebooking' );
+	protected function setup() {
+		$this->form_id  = 'appearance';
+		$this->label    = esc_html__( 'Appearance', 'awebooking' );
+		$this->priority = 20;
 	}
 
 	/**

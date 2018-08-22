@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Frontend\Checkout\Form_Controls;
+use AweBooking\Checkout\Form_Controls;
 
 $controls = new Form_Controls;
 $controls->prepare_fields();

@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = function rangePlugin(config = {}) {
+export default function rangePlugin(config = {}) {
   return function (fp) {
     let dateFormat = '',
       secondInput,
@@ -140,4 +138,4 @@ module.exports = function rangePlugin(config = {}) {
 
     return plugin;
   };
-};
+}

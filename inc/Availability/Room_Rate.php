@@ -1,15 +1,16 @@
 <?php
 namespace AweBooking\Availability;
 
-use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
 use AweBooking\Support\Traits\Fluent_Getter;
+use AweBooking\Deprecated\Availability\Room_Rate_Deprecated;
 
 class Room_Rate {
-	use Fluent_Getter;
+	use Fluent_Getter,
+		Room_Rate_Deprecated;
 
 	/**
 	 * The res request.
@@ -45,13 +46,6 @@ class Room_Rate {
 	 * @var \AweBooking\Availability\Availability
 	 */
 	protected $rates_availability;
-
-	/**
-	 * The errors logging.
-	 *
-	 * @var \WP_Error
-	 */
-	protected $errors;
 
 	/**
 	 * The rate to retrieve the room price.
@@ -105,7 +99,6 @@ class Room_Rate {
 		$this->request   = $request;
 		$this->room_type = $room_type;
 		$this->rate_plan = $rate_plan;
-		$this->errors    = new WP_Error;
 		$this->precheck();
 	}
 
@@ -115,25 +108,14 @@ class Room_Rate {
 	 * @return void
 	 */
 	public function setup() {
-		// If we got any errors from precheck, just leave.
-		if ( $this->has_error() ) {
-			return;
-		}
-
-		// TODO: ...
 		$constraints = $this->request->get_constraints();
 
 		// First, check the rooms availability.
 		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), Constants::STATE_AVAILABLE, $constraints );
 		$this->rooms_availability = new Availability( $this->room_type, $room_response );
 
-		// Leave if no rooms remain.
-		if ( count( $this->rooms_availability->remains() ) === 0 ) {
-			return;
-		}
-
 		// Check the rates availability.
-		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan(), $this->get_guest_counts() );
+		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan() );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
@@ -146,22 +128,18 @@ class Room_Rate {
 	}
 
 	/**
-	 * Validate the the request before create the room rate.
+	 * Pre-validate the the request.
 	 *
 	 * @return void
 	 */
 	protected function precheck() {
-		try {
-			$this->request->get_timespan()->requires_minimum_nights( 1 );
-		} catch ( \Exception $e ) {
-			$this->errors->add( 'minimum_nights', $e->getMessage() );
-		}
+		$this->request->get_timespan()->requires_minimum_nights( 1 );
 
 		if ( $this->request->get_guest_counts()->get_totals() > $this->room_type->get( 'maximum_occupancy' ) ) {
-			$this->errors->add( 'overflow_occupancy', esc_html__( 'Error: maximum occupancy.', 'awebooking' ) );
+			throw new \RuntimeException( esc_html__( 'Error: maximum occupancy.', 'awebooking' ) );
 		}
 
-		do_action( 'abrs_precheck_room_rate', $this->errors, $this );
+		do_action( 'abrs_precheck_room_rate', $this );
 	}
 
 	/**
@@ -233,10 +211,6 @@ class Room_Rate {
 	 * @return bool
 	 */
 	public function is_visible() {
-		if ( $this->has_error() ) {
-			return false;
-		}
-
 		if ( count( $this->get_remain_rooms() ) === 0 ) {
 			return false;
 		}
@@ -269,15 +243,21 @@ class Room_Rate {
 	/**
 	 * Sets the room rate (the room price).
 	 *
-	 * @param \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate The rate instance.
+	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate The rate instance.
+	 * @return $this
 	 */
 	public function using( Rate_Interval $rate ) {
 		if ( ! $this->rates_availability->remain( $rate->get_id() ) ) {
 			throw new \InvalidArgumentException( esc_html__( 'Invalid single rate.', 'awebooking' ) );
 		}
 
+		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
+		if ( is_wp_error( $breakdown ) ) {
+			throw new \RuntimeException( $breakdown->get_error_message() );
+		}
+
 		$this->room_rate = $rate;
-		$this->breakdown = $this->retrieve_rate_breakdown( $rate );
+		$this->breakdown = $breakdown;
 
 		$this->calculate_costs();
 
@@ -289,6 +269,7 @@ class Room_Rate {
 	 *
 	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate   The rate instance.
 	 * @param  string                                            $reason The reason message.
+	 * @return $this
 	 */
 	public function additional( Rate_Interval $rate, $reason = '' ) {
 		$key = $rate->get_id();
@@ -301,30 +282,16 @@ class Room_Rate {
 			throw new \InvalidArgumentException( 'Can not add a duplicate rate.' );
 		}
 
-		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
-		$this->additional_breakdowns[ $key ] = $this->retrieve_rate_breakdown( $rate );
-		$this->calculate_costs();
-
-		return $this;
-	}
-
-	/**
-	 * Retrieve the price breakdown of given rate.
-	 *
-	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate The rate instance.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 *
-	 * @throws \Exception
-	 */
-	public function retrieve_rate_breakdown( Rate_Interval $rate ) {
-		$breakdown = abrs_retrieve_rate( $rate, $this->request->get_timespan() );
-
+		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
 		if ( is_wp_error( $breakdown ) ) {
 			throw new \RuntimeException( $breakdown->get_error_message() );
 		}
 
-		return $breakdown;
+		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
+		$this->additional_breakdowns[ $key ] = $breakdown;
+		$this->calculate_costs();
+
+		return $this;
 	}
 
 	/**
@@ -333,7 +300,7 @@ class Room_Rate {
 	 * @return void
 	 */
 	public function calculate_costs() {
-		if ( $this->has_error() || empty( $this->room_rate ) ) {
+		if ( null === $this->room_rate ) {
 			return;
 		}
 
@@ -376,6 +343,15 @@ class Room_Rate {
 	}
 
 	/**
+	 * Gets the additional rates.
+	 *
+	 * @return array
+	 */
+	public function get_additional_rates() {
+		return $this->additional_rates;
+	}
+
+	/**
 	 * Gets the additional breakdowns.
 	 *
 	 * @return array \AweBooking\Support\Collection[]
@@ -403,38 +379,5 @@ class Room_Rate {
 		return array_key_exists( $type, $this->prices )
 			? $this->prices[ $type ]
 			: 0;
-	}
-
-	/**
-	 * Gets the errors.
-	 *
-	 * @return WP_Error
-	 */
-	public function get_errors() {
-		return $this->errors;
-	}
-
-	/**
-	 * Determines if current room rate have any errors.
-	 *
-	 * @param  string $code Check for specified error code.
-	 * @return boolean
-	 */
-	public function has_error( $code = null ) {
-		if ( is_null( $code ) ) {
-			return count( $this->errors->errors ) > 0;
-		}
-
-		return ! empty( $this->errors->errors[ $code ] );
-	}
-
-	/**
-	 * Get a single error message.
-	 *
-	 * @param  string $code Optional. Error code to retrieve message.
-	 * @return string
-	 */
-	public function get_error_message( $code = null ) {
-		return $this->errors->get_error_message( $code );
 	}
 }

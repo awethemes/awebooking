@@ -28,8 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</label>
 
 			<div class="searchbox__box-input">
-				<span class="searchbox__input-display" data-bind="text: checkInFormatted"></span>
-				<input type="hidden" data-bind="value: checkInDate" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php echo esc_html__( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+				<span class="searchbox__input-display" data-bind="text: checkInFormatted()"></span>
+				<input type="hidden" data-bind="value: checkInDate" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php esc_attr_e( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 			</div>
 		</div>
 	</div>
@@ -47,8 +47,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</label>
 
 			<div class="searchbox__box-input">
-				<span class="searchbox__input-display" data-bind="text: checkOutFormatted"></span>
-				<input type="hidden" data-bind="value: checkOutDate" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php echo esc_html__( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+				<span class="searchbox__input-display" data-bind="text: checkOutFormatted()"></span>
+				<input type="hidden" data-bind="value: checkOutDate" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php esc_attr_e( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
 			</div>
 		</div>
 	</div>

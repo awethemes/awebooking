@@ -194,22 +194,22 @@ function abrs_str_is( $pattern, $value ) {
 		return false;
 	}
 
-	foreach ( $patterns as $pattern ) {
+	foreach ( $patterns as $_pattern ) {
 		// If the given value is an exact match we can of course return true right
 		// from the beginning. Otherwise, we will translate asterisks and do an
 		// actual pattern match against the two strings to see if they match.
-		if ( $pattern == $value ) {
+		if ( $_pattern == $value ) {
 			return true;
 		}
 
-		$pattern = preg_quote( $pattern, '#' );
+		$_pattern = preg_quote( $_pattern, '#' );
 
 		// Asterisks are translated into zero-or-more regular expression wildcards
 		// to make it convenient to check if the strings starts with the given
 		// pattern such as "library/*", making any string check convenient.
-		$pattern = str_replace( '\*', '.*', $pattern );
+		$_pattern = str_replace( '\*', '.*', $_pattern );
 
-		if ( 1 === preg_match( '#^' . $pattern . '\z#u', $value ) ) {
+		if ( 1 === preg_match( '#^' . $_pattern . '\z#u', $value ) ) {
 			return true;
 		}
 	}
@@ -248,7 +248,51 @@ function abrs_valid_url( $path ) {
  * @return void
  */
 function abrs_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+	if ( function_exists( 'set_time_limit' ) &&
+		false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
+}
+
+/**
+ * Sort the array by given a arbitrary ordering.
+ *
+ * @param array $array    The array to sort.
+ * @param array $ordering The ordering.
+ *
+ * @return array
+ */
+function abrs_sort_by_keys( array $array, $ordering = [] ) {
+	// Since we don't have any ordering, return the original array.
+	if ( empty( $ordering ) ) {
+		return $array;
+	}
+
+	$is_assoc = array_values( $array ) !== $array;
+
+	$bottom = count( $array ) + 10001;
+	$sorted = [];
+
+	foreach ( $array as $key => $value ) {
+		if ( ! $is_assoc ) {
+			$key = $value;
+		}
+
+		// Found the possiton in $ordering.
+		$index = array_search( $key, $ordering );
+
+		// Found in $ordering, just add by that position,
+		// otherwise we will add to end of the $sorted.
+		if ( false !== $index ) {
+			$sorted[ $index ] = $value;
+		} else {
+			$sorted[ $bottom ] = $value;
+			$bottom++;
+		}
+	}
+
+	// Sort by index.
+	ksort( $sorted );
+
+	return array_values( $sorted );
 }

@@ -58,7 +58,7 @@ function abrs_calendar_provider( $provider, $resource, $cached = false ) {
 		$resource = $resource->all();
 	}
 
-	$resource = ( is_array( $resource ) )
+	$resource = is_array( $resource )
 		? array_map( 'abrs_filter_resource', $resource )
 		: [ abrs_filter_resource( $resource ) ];
 
@@ -88,7 +88,9 @@ function abrs_filter_resource( $resource, $value = null ) {
 
 	if ( $resource instanceof Room ) {
 		return abrs_resource_room( $resource );
-	} elseif ( $resource instanceof Rate_Interval ) {
+	}
+
+	if ( $resource instanceof Rate_Interval ) {
 		return abrs_resource_rate( $resource );
 	}
 

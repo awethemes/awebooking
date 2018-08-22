@@ -282,6 +282,19 @@
   }
 }
 
+// Widget area.
+.widget-content .cmb2-inline-metabox {
+  > .cmb-row {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .cmb-th > label {
+    font-weight: 400;
+    padding-bottom: 3px;
+  }
+}
+
 .sup-placeholder {
   color: #999;
   font-size: 11px;

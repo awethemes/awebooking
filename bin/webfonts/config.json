@@ -1,5 +1,5 @@
 {
-  "lastCodepoint": 61798,
+  "lastCodepoint": 61799,
   "icons": {
     "add-circle-outline": 61697,
     "add-circle": 61698,
@@ -101,6 +101,7 @@
     "menu": 61795,
     "people": 61796,
     "person": 61797,
-    "trash": 61798
+    "trash": 61798,
+    "sqm": 61799
   }
 }

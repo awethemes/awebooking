@@ -22,6 +22,8 @@ trait With_Reference {
 	 * Set the reference.
 	 *
 	 * @param mixed $reference The reference.
+	 *
+	 * @return $this
 	 */
 	public function set_reference( $reference ) {
 		$this->reference = $reference;

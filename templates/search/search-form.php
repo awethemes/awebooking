@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! abrs_get_option( 'display_search_form_on_search', true ) ) {
+if ( 'off' === abrs_get_option( 'display_search_form_on_search' ) ) {
 	return;
 }
 

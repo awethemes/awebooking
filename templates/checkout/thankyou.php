@@ -7,7 +7,7 @@
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
- * @version  3.1.0
+ * @version  3.1.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,9 +26,13 @@ if ( ! $booking instanceof AweBooking\Model\Booking ) {
 
 	<?php else : ?>
 
-		<div class="notification notification--success">
-			<p><?php esc_html_e( 'Thank you. Your booking has been received.', 'awebooking' ); ?></p>
-		</div>
+		<?php if ( ! isset( $_REQUEST['error'] ) ) : ?>
+
+			<div class="notification notification--success">
+				<p><?php esc_html_e( 'Thank you. Your booking has been received.', 'awebooking' ); ?></p>
+			</div>
+
+		<?php endif; ?>
 
 		<ul class="awebooking-booking-overview awebooking-thankyou-booking-details booking_details">
 			<li class="awebooking-booking-overview__booking booking">

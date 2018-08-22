@@ -121,7 +121,7 @@ trait With_Room_Stays {
 	 * @param int|null                         $rate_plan The rate ID.
 	 * @return \AweBooking\Reservation\Item
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws mixed
 	 */
 	public function add_room_stay( Request $request, $room_type, $rate_plan = 0 ) {
 		$room_type = abrs_get_room_type( $room_type );
@@ -227,8 +227,9 @@ trait With_Room_Stays {
 	/**
 	 * Perform validate the room rate.
 	 *
-	 * @param \AweBooking\Availability\Room_Rate|null $room_rate The room rate.
-	 * @param int|null                                $quantity  Optional, check with quantity.
+	 * @param \AweBooking\Availability\Room_Rate|mixed $room_rate The room rate.
+	 * @param int|null                                 $quantity  Optional, check with quantity.
+	 *
 	 * @return void
 	 *
 	 * @throws \AweBooking\Reservation\Exceptions\RoomRateException
@@ -237,7 +238,7 @@ trait With_Room_Stays {
 	 * @throws \AweBooking\Reservation\Exceptions\NotEnoughRoomsException
 	 */
 	protected function check_room_rate( $room_rate, $quantity = null ) {
-		if ( is_null( $room_rate ) || is_wp_error( $room_rate ) ) {
+		if ( ! $room_rate || is_wp_error( $room_rate ) ) {
 			throw new RoomRateException( esc_html__( 'We are unable to find the room rate match with your request. Please try again.', 'awebooking' ) );
 		}
 

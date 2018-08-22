@@ -89,7 +89,9 @@ class Decimal {
 	protected static function validate_integer_bounds( $amount ) {
 		if ( $amount > ( PHP_INT_MAX - 1 ) ) {
 			throw new \OverflowException( 'The maximum allowed integer (PHP_INT_MAX) was reached' );
-		} elseif ( $amount < ( ~PHP_INT_MAX + 1 ) ) {
+		}
+
+		if ( $amount < ( ~PHP_INT_MAX + 1 ) ) {
 			throw new \UnderflowException( 'The minimum allowed integer (PHP_INT_MAX) was reached' );
 		}
 	}
@@ -133,9 +135,13 @@ class Decimal {
 	public static function create( $amount, $scale = null, $rounding_mode = null ) {
 		if ( is_string( $amount ) ) {
 			return static::from_string( $amount, $scale, $rounding_mode );
-		} elseif ( is_numeric( $amount ) ) {
+		}
+
+		if ( is_numeric( $amount ) ) {
 			return static::from_numeric( $amount, $scale, $rounding_mode );
-		} elseif ( $amount instanceof self ) {
+		}
+
+		if ( $amount instanceof self ) {
 			return static::from_decimal( $amount, $scale );
 		}
 
@@ -224,7 +230,7 @@ class Decimal {
 		$scale = ! is_null( $scale ) ? $scale : static::$default_scale;
 		static::validate_scale( $scale );
 
-		$result = $amount * pow( 10, $scale );
+		$result = $amount * ( 10 ** $scale );
 		static::validate_integer_bounds( $result );
 
 		$result = static::to_int_value( $result, $rounding_mode );
@@ -292,7 +298,7 @@ class Decimal {
 	 * @return int|float
 	 */
 	public function as_numeric() {
-		return $this->amount / pow( 10, $this->scale );
+		return $this->amount / ( 10 ** $this->scale );
 	}
 
 	/**
@@ -307,7 +313,7 @@ class Decimal {
 	public function as_string( $digits = null ) {
 		$signum = $this->amount < 0 ? '-' : '';
 
-		$string = strval( abs( $this->amount ) );
+		$string = (string) abs( $this->amount );
 		$amount = null;
 
 		if ( 0 === $this->scale ) {
@@ -376,7 +382,7 @@ class Decimal {
 
 		$diff = $scale - $this->scale;
 
-		$result = $this->amount * pow( 10, $diff );
+		$result = $this->amount * ( 10 ** $diff );
 		static::validate_integer_bounds( $result );
 
 		$result = static::to_int_value( $result, $rounding_mode );
@@ -596,7 +602,7 @@ class Decimal {
 	 */
 	public function divide( $other, $rounding_mode = null ) {
 		$operand = $this->get_scalar_operand( $other );
-		$epsilon = pow( 10, -1 * $this->scale );
+		$epsilon = 10 ** ( - 1 * $this->scale );
 
 		if ( abs( 0 - $operand ) < $epsilon ) {
 			throw new \LogicException( 'Division by zero is not allowed' );
@@ -648,7 +654,7 @@ class Decimal {
 	public function to_percentage( $percentage, $rounding_mode = null ) {
 		$percentage = $this->get_scalar_operand( $percentage );
 
-		return $this->mul( ( $percentage / 100 ), $rounding_mode );
+		return $this->mul( $percentage / 100, $rounding_mode );
 	}
 
 	/**
@@ -733,7 +739,9 @@ class Decimal {
 	protected function get_scalar_operand( $operand ) {
 		if ( is_numeric( $operand ) ) {
 			return $operand;
-		} elseif ( $operand instanceof self ) {
+		}
+
+		if ( $operand instanceof static ) {
 			return $operand->as_numeric();
 		}
 

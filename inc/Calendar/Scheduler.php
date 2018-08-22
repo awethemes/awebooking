@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Calendar;
 
+use AweBooking\Support\Period;
 use AweBooking\Support\Collection;
 
 class Scheduler extends Collection {
@@ -26,6 +27,23 @@ class Scheduler extends Collection {
 	 * @var string
 	 */
 	protected $description;
+
+	/**
+	 * Get events available in a period.
+	 *
+	 * @param  Period $period  The period.
+	 * @param  array  $options Optional, something pass to provider to get events.
+	 * @return \AweBooking\Support\Collection \AweBooking\Calendar\Event\Events[]
+	 */
+	public function get_events( Period $period, array $options = [] ) {
+		return ( new Collection( $this ) )
+			->keyBy( function ( Calendar $calendar ) {
+				return $calendar->get_uid();
+			})
+			->map( function ( Calendar $calendar ) use ( $period, $options ) {
+				return $calendar->get_events( $period, $options );
+			});
+	}
 
 	/**
 	 * Returns an unique identifier for the Scheduler.

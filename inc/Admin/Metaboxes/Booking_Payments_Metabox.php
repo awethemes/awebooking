@@ -2,8 +2,9 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
+use AweBooking\Admin\Metabox;
 
-class Booking_Payments_Metabox extends Abstract_Metabox {
+class Booking_Payments_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */

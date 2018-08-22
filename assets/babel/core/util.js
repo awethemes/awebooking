@@ -1,4 +1,4 @@
-const Util = (($) => {
+module.exports = (($) => {
   'use strict';
 
   function getTransitionEndEvent() {
@@ -26,18 +26,17 @@ const Util = (($) => {
   return {
     TRANSITION_END: getTransitionEndEvent(),
 
-    getTargetFromElement(element) {
-      let selector = element.getAttribute('data-target');
+    onTransitionEnd(el, callback) {
+      let called = false
 
-      if (!selector || selector === '#') {
-        selector = element.getAttribute('href') || '';
-      }
+      $(el).one(this.TRANSITION_END, () => {
+        callback()
+        called = true
+      })
 
-      try {
-        return document.querySelector(selector) ? selector : null;
-      } catch (err) {
-        return null;
-      }
+      setTimeout(() => {
+        if (!called) $(el).trigger(this.TRANSITION_END)
+      }, this.getTransitionDurationFromElement(el))
     },
 
     getTransitionDurationFromElement(element) {
@@ -59,7 +58,20 @@ const Util = (($) => {
 
       return parseFloat(transitionDuration) * 1000;
     },
-  };
-})(jQuery);
 
-module.exports = Util
+    getTargetFromElement(element) {
+      let selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        selector = element.getAttribute('href') || '';
+      }
+
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
+    },
+  };
+
+})(jQuery)

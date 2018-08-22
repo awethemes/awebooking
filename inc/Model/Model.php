@@ -65,7 +65,7 @@ abstract class Model extends WP_Object {
 		$call_method = $this->exists() ? 'updating' : 'inserting';
 
 		if ( method_exists( $this, $call_method ) ) {
-			call_user_func( [ $this, $call_method ] );
+			$this->$call_method();
 		}
 	}
 

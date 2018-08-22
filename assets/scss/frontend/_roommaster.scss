@@ -124,10 +124,10 @@
 		}
 	}
 }
-.roommaster-occupancy {
-	&__item {
-		display: block;
-	}
+
+.roommaster-occupancy__item {
+  display: block;
+  padding: 0;
 }
 
 .roommaster-inventory {
@@ -210,6 +210,7 @@
 
 .awebooking-tooltip-theme {
   color: #fff;
+  padding: 15px;
 	text-align: left;
 
 	.occupancy-description {
@@ -227,9 +228,9 @@
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			padding-left: 1rem;
 
 			li {
+        color: #fff;
 				padding: .2em 0;
 			}
 		}

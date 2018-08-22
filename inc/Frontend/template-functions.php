@@ -120,7 +120,7 @@ function abrs_checkout_additionals() {
 function abrs_checkout_payments() {
 	abrs_get_template( 'checkout/payments.php', [
 		'checkout'    => abrs_checkout(),
-		'gateways'    => awebooking( 'gateways' )->enabled(),
+		'gateways'    => abrs_payment_gateways()->get_enabled(),
 		'button_text' => apply_filters( 'abrs_booking_button_text', esc_html__( 'Book Now', 'awebooking' ) ),
 	]);
 }

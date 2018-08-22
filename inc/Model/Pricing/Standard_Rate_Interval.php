@@ -1,7 +1,9 @@
 <?php
+
 namespace AweBooking\Model\Pricing;
 
 use AweBooking\Model\Room_Type;
+use AweBooking\Model\Common\Timespan;
 
 class Standard_Rate_Interval implements Contracts\Rate_Interval {
 	/**
@@ -73,9 +75,20 @@ class Standard_Rate_Interval implements Contracts\Rate_Interval {
 	 * {@inheritdoc}
 	 */
 	public function get_restrictions() {
-		return apply_filters( 'abrs_get_rate_restrictions', [
+		return apply_filters( 'abrs_rate_restrictions', [
 			'min_los' => $this->instance->get( 'rate_min_los' ),
 			'max_los' => $this->instance->get( 'rate_max_los' ),
 		], $this );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_breakdown( Timespan $timespan ) {
+		$breakdown = new Breakdown( $timespan, $this->get_rack_rate() );
+
+		$itemized = abrs_retrieve_rate( $this, $timespan );
+
+		return apply_filters( 'abrs_rate_breakdown', $breakdown->merge( $itemized ), $this );
 	}
 }

@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Providers;
 
 use AweBooking\Constants;
-use AweBooking\Admin\Metaboxes\Abstract_Metabox;
+use AweBooking\Admin\Metabox;
 use AweBooking\Support\Service_Provider;
 
 class Metaboxes_Service_Provider extends Service_Provider {
@@ -40,16 +40,6 @@ class Metaboxes_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Make a callable for metabox output.
-	 *
-	 * @param  string $binding The binding in the plugin.
-	 * @return array
-	 */
-	protected function metaboxcb( $binding ) {
-		return [ $this->plugin->make( $binding ), 'output' ];
-	}
-
-	/**
 	 * Remove unnecessary metaboxes.
 	 *
 	 * @access private
@@ -73,7 +63,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		}
 
 		foreach ( $this->plugin->tagged( 'metaboxes' ) as $box ) {
-			if ( $box instanceof Abstract_Metabox && $box->should_show() ) {
+			if ( $box instanceof Metabox && $box->should_show() ) {
 				add_meta_box( $box->id, $box->title, $box->callback(), $box->screen, $box->context, $box->priority );
 			}
 		}
@@ -91,7 +81,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		static $is_saving;
 
 		// The $post_id and $post are required.
-		if ( empty( $post_id ) || empty( $post ) && $is_saving ) {
+		if ( empty( $post_id ) || $is_saving ) {
 			return;
 		}
 
@@ -114,7 +104,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 
 		// Check the post being saved == the $post_id to
 		// prevent triggering this call for other save_post events.
-		if ( empty( $_POST['post_ID'] ) || $_POST['post_ID'] != $post_id ) {
+		if ( empty( $_POST['post_ID'] ) || (int) $_POST['post_ID'] !== (int) $post_id ) {
 			return;
 		}
 
@@ -130,9 +120,9 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		if ( $current_screen && ! empty( $current_screen->id ) ) {
 			$boxes = abrs_collect( $this->plugin->tagged( 'metaboxes' ) )
 				->filter( function ( $box ) {
-					return $box instanceof Abstract_Metabox && method_exists( $box, 'save' );
+					return $box instanceof Metabox && method_exists( $box, 'save' );
 				})
-				->filter( function ( Abstract_Metabox $box ) use ( $current_screen ) {
+				->filter( function ( Metabox $box ) use ( $current_screen ) {
 					return in_array( $current_screen->id, $box->get_screen_ids() );
 				});
 

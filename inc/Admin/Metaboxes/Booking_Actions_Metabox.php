@@ -3,8 +3,9 @@ namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
 use Awethemes\Http\Request;
+use AweBooking\Admin\Metabox;
 
-class Booking_Actions_Metabox extends Abstract_Metabox {
+class Booking_Actions_Metabox extends Metabox {
 	/**
 	 * Constructor.
 	 */

@@ -9,7 +9,7 @@ if ( ! function_exists( 'awebooking_print_fatal_error' ) ) {
 	/**
 	 * Print a fatal error, then deactivate AweBooking.
 	 *
-	 * NOTE: Careful when call this function, this will/maybe
+	 * NOTE: Be careful when call this function, this will/maybe
 	 * deactivate current running AweBooking without any confirms.
 	 *
 	 * @param  mixed   $error      The error message, WP_Error, Exception or Throwable.
@@ -31,7 +31,7 @@ if ( ! function_exists( 'awebooking_print_fatal_error' ) ) {
 			}
 
 			$message  = esc_html__( 'Sorry, a fatal error occurred. AweBooking will be deactivate to ensure your website is safe.', 'awebooking' );
-			$message .= '<pre>' . (string) $error . '</pre>';
+			$message .= '<pre>' . $error . '</pre>';
 
 			// Force the plugin deactivate when catched an exception.
 			$deactivate = true;
@@ -57,11 +57,11 @@ if ( ! function_exists( 'awebooking_php_upgrade_notice' ) ) {
 	/**
 	 * Adds a message for outdate PHP version.
 	 *
-	 * @return void
+	 * @throws Exception|Throwable
 	 */
 	function awebooking_php_upgrade_notice() {
 		/* translators: %s Your current PHP version */
-		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.6.4 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), phpversion() );
+		$message = sprintf( esc_html__( 'AweBooking requires at least PHP version 5.6.4 to works, you are running version %s. Please contact to your administrator to upgrade PHP version!', 'awebooking' ), PHP_VERSION );
 
 		awebooking_print_fatal_error( $message, true );
 	}
@@ -73,6 +73,8 @@ if ( ! function_exists( 'awebooking_wordpress_upgrade_notice' ) ) {
 	 * AweBooking on WordPress versions prior to 4.6.
 	 *
 	 * @global string $wp_version WordPress version.
+	 *
+	 * @throws Exception|Throwable
 	 */
 	function awebooking_wordpress_upgrade_notice() {
 		/* translators: %s Your current WordPress version */

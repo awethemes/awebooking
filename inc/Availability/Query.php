@@ -54,7 +54,7 @@ class Query {
 			$room_rate = apply_filters( 'abrs_search_room_rate', $room_rate, $this->request );
 
 			// Ignore invalid room rates.
-			if ( is_null( $room_rate ) || is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
+			if ( is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
 				continue;
 			}
 

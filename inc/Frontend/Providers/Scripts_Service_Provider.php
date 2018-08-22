@@ -10,7 +10,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 4 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9 );
 		add_action( 'wp_enqueue_scripts', 'abrs_localize_flatpickr', 1000 );
 	}
@@ -21,26 +21,19 @@ class Scripts_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function register_scripts() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$suffix  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$version = $this->plugin->version();
 
-		wp_register_script( 'moment', ABRS_ASSET_URL . 'vendor/moment/moment' . $suffix . '.js', [], '2.22.1', false );
-		wp_register_script( 'knockout', ABRS_ASSET_URL . 'vendor/knockout/knockout-latest' . ( $suffix ? '' : '.debug' ) . '.js', [ 'jquery' ], '3.4.2', false );
-		wp_register_script( 'a11y-dialog', ABRS_ASSET_URL . 'vendor/a11y-dialog/a11y-dialog' . $suffix . '.js', [], '5.1.1', true );
-		wp_register_style( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr.css', [], '4.5.0' );
-		wp_register_script( 'flatpickr', ABRS_ASSET_URL . 'vendor/flatpickr/flatpickr' . $suffix . '.js', [], '4.5.0', true );
-		wp_register_style( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $suffix . '.css', [], '7.21' );
-		wp_register_script( 'sweetalert2', ABRS_ASSET_URL . 'vendor/sweetalert2/sweetalert2' . $suffix . '.js', [], '7.21', true );
-		wp_register_style( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy.css', [], '2.5.2' );
-		wp_register_script( 'tippy', ABRS_ASSET_URL . 'vendor/tippy.js/tippy' . $suffix . '.js', [], '2.5.2', true );
+		// Register core JS.
+		abrs_register_vendor_js();
 
 		// Core JS & CSS.
-		wp_register_style( 'awebooking', ABRS_ASSET_URL . 'css/awebooking.css', [ 'flatpickr', 'tippy' ], $version );
-		wp_register_style( 'awebooking-iconfont', ABRS_ASSET_URL . 'fonts/awebooking-webfont.css', [], $version );
-		wp_register_style( 'awebooking-colour', ABRS_ASSET_URL . 'css/awebooking-colour.css', [ 'awebooking-iconfont', 'awebooking' ], $version );
-		wp_register_script( 'awebooking', ABRS_ASSET_URL . 'js/awebooking' . $suffix . '.js', [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
-		wp_register_script( 'awebooking-search-form', ABRS_ASSET_URL . 'js/search-form' . $suffix . '.js', [ 'awebooking', 'knockout' ], $version, true );
-		wp_register_script( 'awebooking-checkout', ABRS_ASSET_URL . 'js/checkout' . $suffix . '.js', [ 'awebooking', 'knockout' ], $version, true );
+		wp_register_style( 'awebooking', abrs_asset_url( 'css/awebooking.css' ), [ 'flatpickr', 'tippy' ], $version );
+		wp_register_style( 'awebooking-iconfont', abrs_asset_url( 'fonts/awebooking-webfont.css' ), [], $version );
+		wp_register_style( 'awebooking-colour', abrs_asset_url( 'css/awebooking-colour.css' ), [ 'awebooking-iconfont', 'awebooking' ], $version );
+		wp_register_script( 'awebooking', abrs_asset_url( 'js/awebooking' . $suffix . '.js' ), [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
+		wp_register_script( 'awebooking-search-form', abrs_asset_url( 'js/search-form' . $suffix . '.js' ), [ 'awebooking', 'knockout', 'jquery-spinner' ], $version, true );
+		wp_register_script( 'awebooking-checkout', abrs_asset_url( 'js/checkout' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
 	}
 
 	/**
@@ -50,6 +43,10 @@ class Scripts_Service_Provider extends Service_Provider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'awebooking' );
+		if ( $styles = apply_filters( 'abrs_custom_css', trim( abrs_get_option( 'custom_css' ) ) ) ) {
+			wp_add_inline_style( 'awebooking', $styles );
+		}
+
 		if ( apply_filters( 'abrs_enqueue_default_style', true ) ) {
 			wp_enqueue_style( 'awebooking-colour' );
 		}
@@ -70,7 +67,7 @@ class Scripts_Service_Provider extends Service_Provider {
 
 		wp_localize_script( 'awebooking', '_awebooking', [
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-			'route'      => $this->plugin['url']->route( '/' ),
+			'route'      => abrs_route( '/' ),
 			'datepicker' => [
 				'minNights'   => abrs_get_option( 'display_datepicker_minnights' ),
 				'maxMights'   => abrs_get_option( 'display_datepicker_maxnights' ),

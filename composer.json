@@ -25,10 +25,10 @@
         "league/period": "^3.4",
         "mexitek/phpcolors": "^0.4.0",
         "monolog/monolog": "^1.23",
-        "nesbot/carbon": "^1.25",
+        "nesbot/carbon": "1.25.*",
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
-        "ruler/ruler": "^0.3.0",
+        "ruler/ruler": "dev-master",
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
@@ -41,6 +41,7 @@
     "autoload": {
         "psr-4": {
             "AweBooking\\": "inc/",
+            "AweBooking\\Component\\": "component/",
             "AweBooking\\Deprecated\\": "deprecated/"
         },
         "classmap": [

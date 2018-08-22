@@ -1,6 +1,7 @@
 'use strict';
 
 const gulp         = require('gulp');
+const debug        = require('gulp-debug');
 const plumber      = require('gulp-plumber');
 const notify       = require('gulp-notify');
 const sourcemaps   = require('gulp-sourcemaps');
@@ -8,8 +9,7 @@ const sass         = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const gcmq         = require('gulp-group-css-media-queries');
 const cleanCSS     = require('gulp-clean-css');
-const bro          = require('gulp-bro');
-const babelify     = require('babelify');
+const rollup       = require('gulp-better-rollup');
 const uglify       = require('gulp-uglify');
 const rename       = require('gulp-rename');
 const potgen       = require('gulp-wp-pot');
@@ -22,7 +22,7 @@ const pkg          = require('./package.json');
  * Handle errors and alert the user.
  */
 function handleErrors() {
-  var args = Array.prototype.slice.call(arguments);
+  const args = Array.prototype.slice.call(arguments);
 
   notify.onError({
     title: 'Task Failed! See console.',
@@ -33,36 +33,9 @@ function handleErrors() {
   this.emit('end');
 }
 
-/*
-const rollup = require('gulp-better-rollup');
-const babel = require('rollup-plugin-babel');
-const commonjs = require('rollup-plugin-commonjs');
-const nodeResolve = require('rollup-plugin-node-resolve');
-gulp.task('lib-build', () => {
-  const config = {
-    plugins: [
-      nodeResolve({ jsnext: true }),
-      commonjs(),
-      babel()
-    ]
-  };
-
-  return gulp.src('assets/babel/admin/admin.js')
-    .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(sourcemaps.init())
-    .pipe(rollup(config, {
-      format: 'iife',
-      name: 'awebooking',
-      extend: true,
-      exports: 'default',
-      globals: { jquery: '$' },
-    }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist'));
-});*/
-
 gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
+    .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
@@ -74,19 +47,30 @@ gulp.task('scss', () => {
 });
 
 gulp.task('babel', () => {
+  const config = {
+    external: Object.keys(pkg.globals),
+    plugins: [
+      require('rollup-plugin-node-resolve')(),
+      require('rollup-plugin-commonjs')(),
+      require('rollup-plugin-babel')(),
+    ]
+  };
+
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
+    .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
-    .pipe(bro({
-      error: 'emit',
-      transform: [[ babelify.configure({ presets: ['es2015'] }), { global: true } ]]
+    .pipe(rollup(config, {
+      format: 'iife',
+      globals: pkg.globals
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('assets/js'));
+    .pipe(gulp.dest('assets/js'))
 });
 
 gulp.task('minify:js', () => {
   return gulp.src(['assets/js/**/*.js', '!assets/js/**/*.min.js'])
+    .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
@@ -95,6 +79,7 @@ gulp.task('minify:js', () => {
 
 gulp.task('minify:css', () => {
   return gulp.src(['assets/css/*.css', '!assets/css/*.min.css'])
+    .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(cleanCSS())
     .pipe(rename({ suffix: '.min' }))
@@ -102,8 +87,9 @@ gulp.task('minify:css', () => {
 });
 
 gulp.task('i18n', () => {
-  return gulp.src(['*.php', 'inc/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
-    .pipe(plumber())
+  return gulp.src(['*.php', 'inc/**/*.php', 'component/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
+    .pipe(debug())
+    .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(potgen({ domain: 'awebooking', package: 'AweBooking' }))
     .pipe(gulp.dest('languages/awebooking.pot'));
 });
@@ -126,11 +112,12 @@ gulp.task('clean', () => {
 
 gulp.task('watch', () => {
   browserSync.init({
+    open: false,
     proxy: 'awebooking.local',
   });
 
-  gulp.watch('assets/scss/**/*.scss', gulp.parallel('scss'));
-  gulp.watch('assets/babel/**/*.js', gulp.parallel('babel'));
+  gulp.watch('assets/scss/**/*.scss', gulp.series(['scss']));
+  gulp.watch('assets/babel/**/*.js', gulp.series(['babel']));
 });
 
 gulp.task('js', gulp.series(['babel', 'minify:js']));

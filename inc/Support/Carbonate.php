@@ -24,15 +24,17 @@ class Carbonate extends Carbon {
 	 */
 	public static function create_date_time( $datetime, $tz = null ) {
 		// If this value is already a Carbon instance, we shall just return it as new instance.
-		if ( $datetime instanceof Carbonate ) {
+		if ( $datetime instanceof self ) {
 			return $datetime->copy();
 		}
 
 		// Same as DateTime object, but we'll convert to Carbon object.
 		if ( $datetime instanceof \DateTime ) {
 			return static::instance( $datetime );
-		} elseif ( $datetime instanceof \DateTimeImmutable ) {
-			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimeZone() );
+		}
+
+		if ( $datetime instanceof \DateTimeImmutable ) {
+			return new static( $datetime->format( 'Y-m-d H:i:s.u' ), $datetime->getTimezone() );
 		}
 
 		// If this value is an integer, we will assume it is a UNIX timestamp's value
@@ -45,7 +47,9 @@ class Carbonate extends Carbon {
 		// Carbon instances from that format. And reset the time to 00:00:00.
 		if ( is_string( $datetime ) && abrs_is_standard_date( $datetime ) ) {
 			return static::createFromFormat( 'Y-m-d', $datetime, $tz )->startOfDay();
-		} elseif ( is_string( $datetime ) && in_array( $datetime, [ 'now', 'today', 'yesterday', 'tomorrow' ] ) ) {
+		}
+
+		if ( is_string( $datetime ) && in_array( $datetime, [ 'now', 'today', 'yesterday', 'tomorrow' ] ) ) {
 			return static::parse( $datetime, $tz );
 		}
 

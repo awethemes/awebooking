@@ -3,7 +3,7 @@
 use AweBooking\Constants;
 use AweBooking\Multilingual;
 use AweBooking\Gateway\Gateway;
-use AweBooking\Bootstrap\Load_Textdomain;
+use AweBooking\Core\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form;
 use Awethemes\WP_Object\WP_Object;
@@ -20,27 +20,9 @@ foreach ( [ // Requires other core functions.
 	'services.php',
 	'taxes.php',
 	'customers.php',
+	'templates.php',
 ] as $core_file ) {
 	require trailingslashit( __DIR__ ) . $core_file;
-}
-
-/**
- * Returns the multilingual instance.
- *
- * @return \AweBooking\Multilingual
- */
-function abrs_multilingual() {
-	return awebooking()->make( 'multilingual' );
-}
-
-/**
- * Gets the plugin URL.
- *
- * @param  string $path Optional, extra path to added.
- * @return string
- */
-function abrs_plugin_url( $path = null ) {
-	return awebooking()->plugin_url( $path );
 }
 
 /**
@@ -53,21 +35,12 @@ function abrs_logger() {
 }
 
 /**
- * Report an exception.
+ * Returns the multilingual instance.
  *
- * @param  Exception $e Report the exception.
- * @return void
- *
- * @throws Exception
+ * @return \AweBooking\Multilingual
  */
-function abrs_report( $e ) {
-	try {
-		$logger = awebooking()->make( 'logger' );
-	} catch ( \Exception $ex ) {
-		throw $e; // Throw the original exception.
-	}
-
-	$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+function abrs_multilingual() {
+	return awebooking()->make( 'multilingual' );
 }
 
 /**
@@ -89,35 +62,25 @@ function abrs_redirector() {
 }
 
 /**
+ * Report an exception.
+ *
+ * @param  Exception $e Report the exception.
+ * @return void
+ */
+function abrs_report( $e ) {
+	try {
+		$logger = awebooking()->make( 'logger' );
+		$logger->error( $e->getMessage(), [ 'exception' => $e ] );
+	} catch ( \Exception $ex ) {} // @codingStandardsIgnoreLine
+}
+
+/**
  * Returns the Url_Generator.
  *
  * @return \AweBooking\Component\Routing\Url_Generator
  */
 function abrs_url() {
 	return awebooking()->make( 'url' );
-}
-
-/**
- * Retrieves the route URL.
- *
- * @param  string $path       Optional, the admin route.
- * @param  array  $parameters The additional parameters.
- * @param  bool   $is_ssl     Force the SSL in return URL.
- * @return string
- */
-function abrs_route( $path = '/', $parameters = [], $is_ssl = false ) {
-	return abrs_url()->route( $path, $parameters, $is_ssl );
-}
-
-/**
- * Retrieves the admin route URL.
- *
- * @param  string $path       Optional, the admin route.
- * @param  array  $parameters The additional parameters.
- * @return string
- */
-function abrs_admin_route( $path = '/', $parameters = [] ) {
-	return abrs_url()->admin_route( $path, $parameters );
 }
 
 /**
@@ -163,6 +126,54 @@ function abrs_flash( $message = null, $level = 'info' ) {
 }
 
 /**
+ * Gets the plugin URL.
+ *
+ * @param  string $path Optional. The path append to.
+ * @return string
+ */
+function abrs_plugin_url( $path = null ) {
+	return awebooking()->plugin_url( $path );
+}
+
+/**
+ * Returns the asset URL.
+ *
+ * @param  string $path Optional. The path append to.
+ * @return string
+ */
+function abrs_asset_url( $path = null ) {
+	$asset = abrs_plugin_url( 'assets/' . ( $path ? ltrim( $path, '/' ) : '' ) );
+
+	return apply_filters( 'abrs_get_asset_url', $asset );
+}
+
+/**
+ * Retrieves the route URL.
+ *
+ * @param  string $path       Optional, the admin route.
+ * @param  array  $parameters The additional parameters.
+ * @return string
+ */
+function abrs_route( $path = '/', $parameters = [] ) {
+	$url = abrs_url()->route( $path, $parameters );
+
+	return apply_filters( 'abrs_route_url', $url, $path, $parameters );
+}
+
+/**
+ * Retrieves the admin route URL.
+ *
+ * @param  string $path       Optional, the admin route.
+ * @param  array  $parameters The additional parameters.
+ * @return string
+ */
+function abrs_admin_route( $path = '/', $parameters = [] ) {
+	$url = abrs_url()->admin_route( $path, $parameters );
+
+	return apply_filters( 'abrs_admin_route_url', $url, $path, $parameters );
+}
+
+/**
  * Create a new form builder.
  *
  * @param  string      $form_id The form ID.
@@ -194,7 +205,8 @@ function abrs_list_payment_methods() {
 	]);
 
 	$gateways = abrs_payment_gateways()
-		->enabled()->map( function( Gateway $gateway ) {
+		->get_enabled()
+		->map( function( Gateway $gateway ) {
 			return $gateway->get_method_title();
 		})->all();
 
@@ -289,7 +301,7 @@ function abrs_list_dropdown_currencies() {
  * @return string
  */
 function abrs_normalize_option_name( $language = null ) {
-	if ( empty( $language ) || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
+	if ( ! $language || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
 		return Constants::OPTION_KEY;
 	}
 
@@ -552,6 +564,7 @@ function abrs_get_template( $template_name, $vars = [] ) {
  *
  * @param  string $template_name Template name.
  * @param  array  $vars          Optional, the data send to template.
+ *
  * @return string
  */
 function abrs_get_template_content( $template_name, $vars = [] ) {
@@ -663,17 +676,17 @@ function abrs_get_image_size( $image_size ) {
 
 		$image_size = $width . '_' . $height;
 
-	} elseif ( in_array( $image_size, array( 'thumbnail', 'archive', 'single' ) ) ) {
+	} elseif ( in_array( $image_size, [ 'thumbnail', 'archive', 'single' ] ) ) {
 		$size           = abrs_get_option( $image_size . '_image_size', [] );
 		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
 		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
 		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
 	} else {
-		$size = array(
+		$size = [
 			'width'  => '300',
 			'height' => '300',
 			'crop'   => 1,
-		);
+		];
 	}
 
 	return apply_filters( 'abrs_get_image_size_' . $image_size, $size );
@@ -703,11 +716,17 @@ function abrs_get_rounding_precision() {
 function abrs_parse_object_id( $object ) {
 	if ( is_numeric( $object ) && $object > 0 ) {
 		return (int) $object;
-	} elseif ( ! empty( $object->ID ) ) {
+	}
+
+	if ( ! empty( $object->ID ) ) {
 		return (int) $object->ID;
-	} elseif ( ! empty( $object->term_id ) ) {
+	}
+
+	if ( ! empty( $object->term_id ) ) {
 		return (int) $object->term_id;
-	} elseif ( $object instanceof WP_Object ) {
+	}
+
+	if ( $object instanceof WP_Object ) {
 		return $object->get_id();
 	}
 
@@ -735,6 +754,38 @@ function abrs_nocache_headers() {
 
 	// Set the headers to prevent caching for the different browsers.
 	nocache_headers();
+}
+
+/**
+ * Register the vendor JS.
+ *
+ * @return void
+ */
+function abrs_register_vendor_js() {
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+	wp_register_script( 'js-cookie', abrs_asset_url( 'vendor/js-cookie/js.cookie.js' ), [], '2.2.0' );
+	wp_register_script( 'knockout', abrs_asset_url( 'vendor/knockout/knockout-latest' . ( $min ? '' : '.debug' ) . '.js' ), [], '3.4.2' );
+	wp_register_script( 'moment', abrs_asset_url( 'vendor/moment/moment' . $min . '.js' ), [], '2.22.2' );
+	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper.js/popper' . $min . '.js' ), [], '1.14.3' );
+	wp_register_script( 'sortable', abrs_asset_url( 'vendor/sortable/Sortable' . $min . '.js' ), [], '1.7.0' );
+	wp_register_script( 'a11y-dialog', abrs_asset_url( 'vendor/a11y-dialog/a11y-dialog' . $min . '.js' ), [], '5.1.2' );
+
+	wp_register_style( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr.css' ), [], '4.5.1' );
+	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
+
+	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.css' ), [], '2.5.4' );
+	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.5.4', true );
+
+	wp_register_style( 'selectize', abrs_asset_url( 'vendor/selectize/selectize.css' ), [], '0.12.6' );
+	wp_register_script( 'selectize', abrs_asset_url( 'vendor/selectize/selectize' . $min . '.js' ), [], '0.12.6', true );
+
+	wp_register_style( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.css' ), [], '7.25.6' );
+	wp_register_script( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.js' ), [], '7.25.6', true );
+
+	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery.spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
+	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
 }
 
 /**

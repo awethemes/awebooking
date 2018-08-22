@@ -9,7 +9,7 @@ require_once trailingslashit( __DIR__ ) . 'template-functions.php';
 /**
  * Gets the checkout instance.
  *
- * @return \AweBooking\Frontend\Checkout\Checkout
+ * @return \AweBooking\Checkout\Checkout
  */
 function abrs_checkout() {
 	return awebooking()->make( 'checkout' );
@@ -81,7 +81,7 @@ function abrs_is_checkout_page() {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() ) ? true : false;
+	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() );
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
@@ -108,103 +108,6 @@ function abrs_body_class( $classes ) {
 	}
 
 	return array_unique( $classes );
-}
-
-/**
- * Display the search rooms form.
- *
- * @param  array   $atts The search form attributes.
- * @param  boolean $echo Is echo or not (return the form).
- * @return string
- */
-function abrs_get_search_form( $atts = [], $echo = true ) {
-	global $wp, $abrs_query;
-
-	// Pairs the input atts.
-	$atts = shortcode_atts([
-		'layout'          => 'horizontal',
-		'alignment'       => '',
-		'res_request'     => null,
-		'hotel_location'  => true,
-		'occupancy'       => true,
-		'only_room'       => null,
-		'container_class' => '',
-	], $atts );
-
-	/**
-	 * Fires before the search form is retrieved.
-	 *
-	 * @param array $atts The form attributes.
-	 */
-	do_action( 'abrs_pre_get_search_form', $atts );
-
-	if ( is_null( $atts['res_request'] ) && $abrs_query && $abrs_query->res_request ) {
-		$res_request = $abrs_query->res_request;
-	} else {
-		$res_request = abrs_create_res_request([
-			'check_in'  => 'today',
-			'check_out' => 'tomorrow',
-		]);
-	}
-
-	if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
-		$res_request = null;
-	}
-
-	$form = abrs_get_template_content( 'search-form.php', compact( 'atts', 'res_request' ) );
-
-	/**
-	 * Filters the HTML output of the search form.
-	 *
-	 * @param string $form The search form HTML output.
-	 * @param array  $atts The form attributes.
-	 */
-	$result = apply_filters( 'abrs_get_search_form', $form, $atts );
-
-	if ( $echo ) {
-		echo $result; // WPCS: XSS OK.
-	} else {
-		return $result;
-	}
-}
-
-/**
- * Display the "book now" button.
- *
- * @param  array   $args The args.
- * @param  boolean $echo Is echo or not.
- * @return string
- */
-function abrs_book_room_button( $args, $echo = true ) {
-	global $wp, $abrs_query;
-
-	$args = wp_parse_args( $args, [
-		'room_type'   => 0,
-		'rate_plan'   => 0,
-		'show_button' => true,
-		'button_text' => esc_html__( 'Book Now', 'awebooking' ),
-		'button_atts' => [],
-	]);
-
-	$res_request = ( $abrs_query && $abrs_query->res_request )
-		? $abrs_query->res_request
-		: null;
-
-	$button = abrs_get_template_content( 'book-button.php', compact( 'args', 'res_request' ) );
-
-	/**
-	 * Filters the HTML output of the search form.
-	 *
-	 * @param string $form The search form HTML output.
-	 * @param array  $atts The form attributes.
-	 */
-	$button = apply_filters( 'abrs_book_room_button', $button, $args );
-
-	if ( $echo ) {
-		echo $button; // WPCS: XSS OK.
-	} else {
-		return $button;
-	}
 }
 
 /**
