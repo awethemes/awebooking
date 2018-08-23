@@ -29,6 +29,7 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Amentities
 * Pricing management
 * Room availablity management
+* Block dates
 * Multiple Rooms Booking
 * Booking Management
 * Booking Note

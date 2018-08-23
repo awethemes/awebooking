@@ -12,6 +12,7 @@ Get all Awebooking's [premium add-ons](https://awethemes.com/awebooking) and a l
 * Amentities
 * Pricing management
 * Room availablity management
+* Block dates
 * Multiple Rooms Booking
 * Booking Management
 * Booking Note
