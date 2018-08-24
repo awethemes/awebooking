@@ -13,6 +13,28 @@ class Query_Service_Provider extends Service_Provider {
 	public function init() {
 		// Apply query clauses in the WP_Query.
 		add_filter( 'posts_clauses', [ $this, 'apply_query_clauses' ], 10, 2 );
+
+		// Setup the awebooking objects into the main query.
+		add_action( 'the_post', [ $this, 'setup_awebooking_objects' ] );
+	}
+
+	/**
+	 * When `the_post()` is called, setup the awebooking objects.
+	 *
+	 * @param  \WP_Post $post The WP_Post object (passed by reference).
+	 * @return void
+	 */
+	public function setup_awebooking_objects( $post ) {
+		if ( empty( $post->post_type ) ) {
+			return;
+		}
+
+		if ( Constants::ROOM_TYPE === $post->post_type ) {
+			unset( $GLOBALS['room_type'] );
+			$GLOBALS['room_type'] = abrs_get_room_type( $post );
+		}
+
+		do_action( 'abrs_setup_global_objects', $post );
 	}
 
 	/**
