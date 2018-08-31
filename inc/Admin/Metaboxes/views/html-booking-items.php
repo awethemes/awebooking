@@ -49,6 +49,10 @@
 				<span><?php esc_html_e( 'Add service', 'awebooking' ); ?></span>
 			</a>
 
+			<button class="button abrs-button abrs-fright" name="awebooking-calculate-totals" type="submit">
+				<span><?php esc_html_e( 'Recalculate', 'awebooking' ); ?></span>
+			</button>
+
 		<?php else : ?>
 
 			<span class="abrs-label tippy" title="<?php esc_html_e( 'Change the booking status back to "Pending" to edit this', 'awebooking' ); ?>"><?php esc_html_e( 'This booking is no longer editable', 'awebooking' ); ?></span>

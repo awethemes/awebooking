@@ -86,26 +86,7 @@ class Totals {
 	 * @return void
 	 */
 	protected function prepare_calculate() {
-		/* @var \AweBooking\Reservation\Item $room_stay */
-		foreach ( $this->reservation->get_room_stays() as $room_stay ) {
-			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate_plan */
-			$rate_plan = $room_stay->data()->get_rate_plan();
-
-			$room_stay->set( 'tax', 0 );
-			$room_stay->set( 'price_includes_tax', $rate_plan->price_includes_tax() );
-
-			if ( abrs_tax_enabled() && $rate_plan->is_taxable() ) {
-				if ( 'single' === abrs_get_tax_rate_model() ) {
-					$tax_rate_id = abrs_get_option( 'single_tax_rate' );
-				} else {
-					$tax_rate_id = $rate_plan->get_tax_rate();
-				}
-
-				$room_stay->set( 'tax_rates', $this->filter_tax_rates(
-					apply_filters( 'abrs_room_stay_tax_rates', [ $tax_rate_id ], $room_stay )
-				));
-			}
-		}
+		// ...
 	}
 
 	/**
@@ -120,8 +101,26 @@ class Totals {
 
 		/* @var \AweBooking\Reservation\Item $room_stay */
 		foreach ( $room_stays as $room_stay ) {
-			if ( abrs_tax_enabled() && count( $room_stay['tax_rates'] ) > 0 ) {
-				$total_taxes = abrs_calc_tax( $room_stay->get( 'price' ), $room_stay->get( 'tax_rates' ), $room_stay->is_price_includes_tax() );
+			/* @var \AweBooking\Model\Pricing\Contracts\Rate $rate_plan */
+			$rate_plan = $room_stay->data()->get_rate_plan();
+
+			$room_stay->set( 'tax', 0 );
+			$room_stay->set( 'price_includes_tax', $rate_plan->price_includes_tax() );
+
+			if ( abrs_tax_enabled() && $rate_plan->is_taxable() ) {
+				if ( 'single' === abrs_get_tax_rate_model() ) {
+					$tax_rate_id = abrs_get_option( 'single_tax_rate' );
+				} else {
+					$tax_rate_id = $rate_plan->get_tax_rate();
+				}
+
+				$taxes = $this->filter_tax_rates(
+					apply_filters( 'abrs_room_stay_tax_rates', [ $tax_rate_id ], $room_stay )
+				);
+
+				$total_taxes = abrs_calc_tax( $room_stay->get( 'price' ), $taxes, $room_stay->is_price_includes_tax() );
+
+				$room_stay->set( 'tax_rates', $total_taxes );
 				$room_stay->set( 'tax', array_sum( array_map( 'abrs_round_tax', $total_taxes ) ) );
 			}
 		}

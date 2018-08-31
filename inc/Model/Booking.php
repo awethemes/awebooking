@@ -217,13 +217,11 @@ class Booking extends Model {
 	public function calculate_totals( $with_taxes = true ) {
 		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
 
-		$room_subtotal      = 0;
-		$room_total         = 0;
-
-		$service_subtotal      = 0;
-		$service_total      = 0;
-
-		$fee_total          = 0;
+		$room_subtotal    = 0;
+		$room_total       = 0;
+		$service_subtotal = 0;
+		$service_total    = 0;
+		$fee_total        = 0;
 
 		// Sum the room costs.
 		foreach ( $this->get_rooms() as $room ) {
@@ -242,6 +240,7 @@ class Booking extends Model {
 			$fee_total += $fee->get( 'amount' );
 		}
 
+		$this->set_attribute( 'tax_total', $this->get_rooms()->sum( 'total_tax' ) );
 		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
 		$this->set_attribute( 'total', $room_total + $service_total + $fee_total );
 

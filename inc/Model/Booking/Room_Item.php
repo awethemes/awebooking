@@ -332,6 +332,7 @@ class Room_Item extends Item {
 			'subtotal_tax'   => 0,
 			'total'          => 0,
 			'total_tax'      => 0,
+			'taxes'          => [], // ['total' => [ 1 => 100 ]].
 		]));
 	}
 
@@ -354,6 +355,7 @@ class Room_Item extends Item {
 			'subtotal_tax'   => '_line_subtotal_tax',
 			'total'          => '_line_total',
 			'total_tax'      => '_line_total_tax',
+			'taxes'          => '_taxes',
 			'breakdowns'     => [], // Cache the price breakdowns.
 		]);
 	}

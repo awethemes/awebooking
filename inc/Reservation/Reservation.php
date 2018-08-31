@@ -100,6 +100,23 @@ class Reservation {
 	}
 
 	/**
+	 * Return all taxes.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_taxes() {
+		$taxes = [ [] ];
+
+		foreach ( $this->room_stays as $room_stay ) {
+			$taxes[] = array_keys( $room_stay->get_tax_rates() );
+		}
+
+		return abrs_collect( array_merge( ...$taxes ) )
+			->map( 'abrs_get_tax_rate' )
+			->filter();
+	}
+
+	/**
 	 * Gets the current hotel instance.
 	 *
 	 * @return \AweBooking\Model\Hotel

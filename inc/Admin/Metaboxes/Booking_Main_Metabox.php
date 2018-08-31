@@ -91,11 +91,6 @@ class Booking_Main_Metabox extends Metabox {
 		// Fire action before save.
 		do_action( 'abrs_process_booking_data', $booking, $values, $request );
 
-		// Save the data.
-		if ( $booking->save() ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
-		}
-
 		$booking->setup_dates();
 	}
 

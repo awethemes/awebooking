@@ -5,6 +5,7 @@ use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Fee_Item;
+use AweBooking\Model\Booking\Tax_Item;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Booking\Service_Item;
 use AweBooking\Gateway\Gateway;
@@ -275,6 +276,7 @@ class Checkout {
 		$this->create_booking_items( $booking, $data );
 		$this->create_service_items( $booking, $data );
 		$this->create_fees_items( $booking, $data );
+		$this->create_taxes_items( $booking, $data );
 
 		// // Re-calculate the totals.
 		$booking->calculate_totals();
@@ -367,8 +369,10 @@ class Checkout {
 					'adults'       => $request->adults ?: 1,
 					'children'     => $request->children ?: 0,
 					'infants'      => $request->infants ?: 0,
-					'subtotal'     => $room_rate->get_rate(),
-					'total'        => $room_rate->get_rate(),
+					'subtotal'     => $room_stay->get_subtotal(),
+					'total_tax'    => $room_stay->get_tax(),
+					'total'        => $room_stay->get_price_tax(),
+					'taxes'        => [ 'total' => $room_stay->get_tax_rates() ],
 				]);
 
 				do_action( 'abrs_checkout_creating_booking_room_item', $item, $room_stay, $item_key, $booking );
@@ -425,7 +429,7 @@ class Checkout {
 	 * @param  \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
-	protected function create_fees_items( $booking, $data ) {
+	public function create_fees_items( $booking, $data ) {
 		/* @var \AweBooking\Reservation\Item $res_item */
 		foreach ( $this->reservation->get_fees() as $item_key => $res_item ) {
 			$item = ( new Fee_Item )->fill([
@@ -433,6 +437,31 @@ class Checkout {
 				'booking_id' => $booking->get_id(),
 				'total'      => $res_item->get_total(),
 				'amount'     => $res_item->get_price(),
+			]);
+
+			try {
+				$item->save();
+			} catch ( \Exception $e ) {
+				abrs_report( $e );
+			}
+		}
+	}
+
+	/**
+	 * Create the booking tax items.
+	 *
+	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @return void
+	 */
+	public function create_taxes_items( $booking, $data ) {
+		foreach ( $this->reservation->get_taxes() as $tax_rate ) {
+			$item = ( new Tax_Item )->fill([
+				'name'          => $tax_rate['name'],
+				'booking_id'    => $booking->get_id(),
+				'rate_id'       => $tax_rate['id'],
+				'rate_amount'   => $tax_rate['rate'],
+				'rate_compound' => $tax_rate['compound'],
 			]);
 
 			try {
@@ -469,7 +498,7 @@ class Checkout {
 		if ( ! empty( $data['payment_method'] ) ) {
 			$gateway = $this->gateways->get( $data['payment_method'] );
 
-			if ( ! is_null( $gateway ) ) {
+			if ( $gateway ) {
 				$response = $gateway->validate_fields( $data, $request );
 
 				if ( is_wp_error( $response ) ) {
@@ -526,11 +555,9 @@ class Checkout {
 	/**
 	 * Gets the checkout controls.
 	 *
-	 * @param  string $fieldset to get.
-	 *
 	 * @return \AweBooking\Checkout\Form_Controls
 	 */
-	public function get_controls( $fieldset = '' ) {
+	public function get_controls() {
 		if ( is_null( $this->controls ) ) {
 			$this->controls = apply_filters( 'abrs_checkout_controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
 			$this->controls->enabled()->prepare_fields();

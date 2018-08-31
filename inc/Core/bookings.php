@@ -159,6 +159,7 @@ function abrs_booking_item_classmap() {
 		'payment_item' => \AweBooking\Model\Booking\Payment_Item::class,
 		'service_item' => \AweBooking\Model\Booking\Service_Item::class,
 		'fee_item'     => \AweBooking\Model\Booking\Fee_Item::class,
+		'tax_item'     => \AweBooking\Model\Booking\Tax_Item::class,
 	]);
 }
 

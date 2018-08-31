@@ -299,7 +299,7 @@ trait With_Room_Stays {
 		do_action( 'abrs_prepare_restore_room_stays', $this );
 
 		// Perform filter valid room stays.
-		foreach ( $session_room_stays as $row_id => $values ) {
+		foreach ( $session_room_stays as $values ) {
 			if ( ! Arr::has( $values, [ 'id', 'row_id', 'quantity', 'options' ] )
 				|| $values['quantity'] <= 0 || empty( $values['options'] ) ) {
 				continue;
@@ -324,7 +324,7 @@ trait With_Room_Stays {
 			$room_stay->set_data( $room_rate );
 
 			// Put the room stay into the list.
-			$this->room_stays->put( $row_id, $room_stay );
+			$this->room_stays->put( $room_stay->get_row_id(), $room_stay );
 		}
 
 		do_action( 'abrs_room_stays_restored', $this );
