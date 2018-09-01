@@ -657,7 +657,7 @@ msgstr ""
 msgid "Total:"
 msgstr ""
 
-#: templates/reservation/dates.php:40, templates/search-form/dates.php:27, templates/search-form/dates.php:32, component/Form/fields/abrs_dates.php:23, inc/Admin/Metaboxes/views/html-booking-rooms.php:26
+#: templates/reservation/dates.php:40, templates/search-form/dates.php:25, templates/search-form/dates.php:28, component/Form/fields/abrs_dates.php:23, inc/Admin/Metaboxes/views/html-booking-rooms.php:26
 msgid "Check In"
 msgstr ""
 
@@ -667,7 +667,7 @@ msgctxt "check-in time"
 msgid "from %s"
 msgstr ""
 
-#: templates/reservation/dates.php:63, templates/search-form/dates.php:46, templates/search-form/dates.php:51, component/Form/fields/abrs_dates.php:32, inc/Admin/Metaboxes/views/html-booking-rooms.php:27
+#: templates/reservation/dates.php:63, templates/search-form/dates.php:38, templates/search-form/dates.php:41, component/Form/fields/abrs_dates.php:32, inc/Admin/Metaboxes/views/html-booking-rooms.php:27
 msgid "Check Out"
 msgstr ""
 
@@ -775,7 +775,7 @@ msgstr ""
 msgid "Enter dates to see rooms available."
 msgstr ""
 
-#: templates/search-form/button.php:21
+#: templates/search-form/button.php:19
 msgid "Search"
 msgstr ""
 
@@ -783,41 +783,41 @@ msgstr ""
 msgid "Hotel"
 msgstr ""
 
-#: templates/search-form/occupancy.php:30, inc/Admin/Metaboxes/Booking_Main_Metabox.php:148, inc/Admin/views/settings/html-email-templates.php:29
+#: templates/search-form/occupancy.php:25, inc/Admin/Metaboxes/Booking_Main_Metabox.php:148, inc/Admin/views/settings/html-email-templates.php:29
 msgid "Customer"
 msgstr ""
 
-#: templates/search-form/occupancy.php:36
+#: templates/search-form/occupancy.php:30
 msgid "adult(s)"
 msgstr ""
 
-#: templates/search-form/occupancy.php:42
+#: templates/search-form/occupancy.php:36
 msgid "child(ren)"
 msgstr ""
 
-#: templates/search-form/occupancy.php:49
+#: templates/search-form/occupancy.php:43
 msgid "infant(s)"
 msgstr ""
 
-#: templates/search-form/occupancy.php:59, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:68
+#: templates/search-form/occupancy.php:53, inc/Admin/Forms/Edit_Booking_Room_Form.php:35, inc/Admin/Metaboxes/views/html-booking-rooms.php:28, inc/Admin/views/booking/html-avai-row.php:68
 msgid "Adults"
 msgstr ""
 
-#: templates/search-form/occupancy.php:62, templates/search-form/occupancy.php:74, templates/search-form/occupancy.php:87
+#: templates/search-form/occupancy.php:56, templates/search-form/occupancy.php:68, templates/search-form/occupancy.php:81
 msgctxt "plus button"
 msgid "+"
 msgstr ""
 
-#: templates/search-form/occupancy.php:63, templates/search-form/occupancy.php:75, templates/search-form/occupancy.php:88
+#: templates/search-form/occupancy.php:57, templates/search-form/occupancy.php:69, templates/search-form/occupancy.php:82
 msgctxt "minus button"
 msgid "-"
 msgstr ""
 
-#: templates/search-form/occupancy.php:71, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:31, inc/Admin/views/booking/html-avai-row.php:76
+#: templates/search-form/occupancy.php:65, inc/Admin/Forms/Edit_Booking_Room_Form.php:45, inc/Admin/Metaboxes/views/html-booking-rooms.php:31, inc/Admin/views/booking/html-avai-row.php:76
 msgid "Children"
 msgstr ""
 
-#: templates/search-form/occupancy.php:84, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:35, inc/Admin/views/booking/html-avai-row.php:85
+#: templates/search-form/occupancy.php:78, inc/Admin/Forms/Edit_Booking_Room_Form.php:56, inc/Admin/Metaboxes/views/html-booking-rooms.php:35, inc/Admin/views/booking/html-avai-row.php:85
 msgid "Infants"
 msgstr ""
 

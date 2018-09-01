@@ -16,40 +16,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div tabindex="0" class="searchbox__box searchbox__box--checkin">
+<div class="searchbox__box searchbox__box--dates">
 	<div class="searchbox__box-wrap">
-		<div class="searchbox__box-icon">
-			<i class="aficon aficon-calendar"></i>
-		</div>
-
 		<div class="searchbox__box-line">
-			<label class="searchbox__box-label">
-				<span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span>
-			</label>
+			<div tabindex="0" class="searchbox__box--checkin">
+				<div class="searchbox__box-wrap">
+					<div class="searchbox__box-line">
+						<label class="searchbox__box-label"><span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span></label>
 
-			<div class="searchbox__box-input">
-				<span class="searchbox__input-display" data-bind="text: checkInFormatted()"></span>
-				<input type="hidden" data-bind="value: checkInDate" class="searchbox__input searchbox__input--checkin input-transparent" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>" placeholder="<?php esc_attr_e( 'Check In', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
+						<div class="searchbox__box-input">
+							<input type="text" data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin" value="<?php echo esc_attr( abrs_format_date( $res_request['check_in'] ) ); ?>" placeholder="<?php esc_attr_e( 'Check In', 'awebooking' ); ?>" readonly autocomplete="off" aria-haspopup="true">
+							<input type="hidden" data-bind="value: checkInDate" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div tabindex="0" class="searchbox__box--checkout">
+				<div class="searchbox__box-wrap">
+					<div class="searchbox__box-line">
+						<label class="searchbox__box-label"><span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span></label>
+
+						<div class="searchbox__box-input">
+							<input type="text" data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout" value="<?php echo esc_attr( abrs_format_date( $res_request['check_out'] ) ); ?>" placeholder="<?php esc_attr_e( 'Check Out', 'awebooking' ); ?>" readonly autocomplete="off" aria-haspopup="true">
+							<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div tabindex="0" class="searchbox__box searchbox__box--checkout">
-	<div class="searchbox__box-wrap">
-		<div class="searchbox__box-icon">
-			<i class="aficon aficon-calendar"></i>
-		</div>
-
-		<div class="searchbox__box-line">
-			<label class="searchbox__box-label">
-				<span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span>
-			</label>
-
-			<div class="searchbox__box-input">
-				<span class="searchbox__input-display" data-bind="text: checkOutFormatted()"></span>
-				<input type="hidden" data-bind="value: checkOutDate" class="searchbox__input searchbox__input--checkout input-transparent" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>" placeholder="<?php esc_attr_e( 'Check Out', 'awebooking' ); ?>" autocomplete="off" aria-haspopup="true">
-			</div>
-		</div>
-	</div>
+	<div class="searchbox__popup"></div>
 </div>

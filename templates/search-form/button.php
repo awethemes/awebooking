@@ -16,8 +16,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div tabindex="0" class="searchbox__box searchbox__box--button">
-	<div class="searchbox__box-wrap">
-		<button class="button button--search searchbox__submit"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
-	</div>
-</div>
+<button class="button button--search searchbox__submit"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
