@@ -1,28 +1,42 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards for Plugins">
-	<description>Generally-applicable sniffs for WordPress plugins</description>
+<ruleset name="WordPress Coding Standards based custom ruleset for your plugin">
+	<description>Generally-applicable sniffs for WordPress plugins.</description>
 
-	<arg value="n"/>
+	<!-- What to scan -->
+	<file>.</file>
+	<exclude-pattern>/tests/</exclude-pattern>
+	<exclude-pattern>/vendor/</exclude-pattern>
+
+	<!-- How to scan -->
+	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
+	<!-- Annotated ruleset: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<arg value="sp"/>
 	<arg name="colors"/>
+	<arg name="warning-severity" value="0"/>
+	<arg name="basepath" value="./"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
 
-	<exclude-pattern>*/tests/**</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<!-- Rules: Check PHP version compatibility -->
+	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
+	<config name="testVersion" value="5.6-7.2"/>
+	<rule ref="PHPCompatibilityWP"/>
 
-	<config name="testVersion" value="5.6-7.1" />
-	<rule ref="PHPCompatibility" />
-	<rule ref="WordPress-Core" />
+	<!-- Rules: WordPress Coding Standards -->
+	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
+	<config name="minimum_supported_wp_version" value="4.6"/>
 
-	<rule ref="WordPress-Extra">
+	<rule ref="WordPress">
+		<exclude name="WordPress.VIP"/>
+
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
-	</rule>
 
-	<rule ref="WordPress-Docs">
 		<exclude name="Squiz.Commenting.FileComment.Missing" />
 		<exclude name="Squiz.Commenting.ClassComment.Missing" />
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
@@ -32,7 +46,13 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="awebooking" />
+			<property name="text_domain" type="array" value="awebooking"/>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+		<properties>
+			<property name="blank_line_check" value="true"/>
 		</properties>
 	</rule>
 </ruleset>
