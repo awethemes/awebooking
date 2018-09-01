@@ -43,7 +43,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<p><?php echo abrs_format_guest_counts( $item->get_guests() ); // WPCS: XSS OK. ?></p>
 				</td>
 
-				<td class="total-column"><?php abrs_price( $item->get_total() ); ?></td>
+				<td class="total-column">
+					<?php abrs_price( $item->get_subtotal() ); ?>
+
+					<?php if ( $item->get( 'total_tax' ) ) : ?>
+						<br><?php esc_html_e( 'TAX:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'total_tax' ) ); ?>
+					<?php endif; ?>
+				</td>
 			</tr>
 		<?php endforeach ?>
 	</tbody>
