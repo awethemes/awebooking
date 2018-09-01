@@ -98,6 +98,10 @@ class Admin_Service_Provider extends Service_Provider {
 
 		foreach ( $modifiers as $modifier ) {
 			abrs_optional( $modifier )->register();
+
+			if ( method_exists( $modifier, 'save' ) ) {
+				add_action( 'abrs_update_setting_' . $setting->get_id(), [ $modifier, 'save' ], 20, 2 );
+			}
 		}
 
 		do_action( "abrs_register_{$setting->get_id()}_admin_setting", $setting );
