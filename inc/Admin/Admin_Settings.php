@@ -49,8 +49,8 @@ class Admin_Settings extends Manager {
 		}
 
 		// Fire update_setting actions.
-		do_action( 'abrs_update_setting_' . $setting, $this );
-		do_action( 'abrs_update_settings', $setting, $this );
+		do_action( 'abrs_update_setting_' . $setting, $this, $request );
+		do_action( 'abrs_update_settings', $setting, $this, $request );
 
 		// Add an success notices.
 		if ( false !== $saved ) {
