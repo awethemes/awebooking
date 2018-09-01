@@ -34,6 +34,7 @@ $rate_plan = $room_rate->get_rate_plan();
 				<div class="column-lg-3">
 					<?php do_action( 'abrs_search_result_room_type', $room_type, $room_rate ); ?>
 				</div>
+
 				<div class="column-lg-9">
 					<?php do_action( 'abrs_search_result_room_list', $room_type, $room_rate ); ?>
 				</div>
