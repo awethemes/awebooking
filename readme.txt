@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.1.6
+Stable tag:        3.1.7
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.7] - [2018-09-01]
+- Fixed tax issues.
+- Minor bug fixes.
+
 ### [v3.1.6] - [2018-08-21]
 - Fixed some template issues.
 - Fixed send email issue.
