@@ -33,8 +33,11 @@ class Form_Controls extends Form {
 	 * @return array
 	 */
 	public function get_enable_controls() {
-		$ids = array_column( $this->prop( 'fields' ), 'id' );
+		if ( $_controls = apply_filters( 'abrs_checkout_pre_enable_controls', null, $this ) ) {
+			return $_controls;
+		}
 
+		$ids = array_column( $this->prop( 'fields' ), 'id' );
 		$data_controls = (array) abrs_get_option( 'list_checkout_controls', [] );
 
 		if ( empty( $data_controls ) ) {
@@ -49,7 +52,7 @@ class Form_Controls extends Form {
 			return array_key_exists( $key, $data_controls ) && $data_controls[ $key ];
 		});
 
-		return apply_filters( 'abrs_checkout_enable_controls', $controls );
+		return apply_filters( 'abrs_checkout_enable_controls', $controls, $this );
 	}
 
 	/**
