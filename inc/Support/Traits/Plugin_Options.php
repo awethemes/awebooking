@@ -48,7 +48,7 @@ trait Plugin_Options {
 	 */
 	public function change_options( $language ) {
 		if ( abrs_running_on_multilanguage() ) {
-			$this->sets_options( abrs_normalize_option_name( $language ) );
+			$this->set_options( abrs_normalize_option_name( $language ) );
 		}
 	}
 
@@ -72,7 +72,7 @@ trait Plugin_Options {
 
 		$this->switched_options[] = $option;
 
-		$this->sets_options( $option );
+		$this->set_options( $option );
 
 		/**
 		 * Fires when the options is switched.
@@ -104,7 +104,7 @@ trait Plugin_Options {
 			$option = $this->original_option;
 		}
 
-		$this->sets_options( $option );
+		$this->set_options( $option );
 
 		/**
 		 * Fires when the option is restored to the previous one.
@@ -146,7 +146,7 @@ trait Plugin_Options {
 	 *
 	 * @param string $option The new option key name.
 	 */
-	public function sets_options( $option ) {
+	public function set_options( $option ) {
 		$this->options = new Fluent( get_option( $option, [] ) );
 
 		$this->current_option = $option;
@@ -159,7 +159,7 @@ trait Plugin_Options {
 	 *
 	 * @return void
 	 */
-	public function sets_original_options() {
+	public function set_original_options() {
 		$this->options = new Fluent( get_option( $option = Constants::OPTION_KEY, [] ) );
 		$this->original_options = clone $this->options;
 
