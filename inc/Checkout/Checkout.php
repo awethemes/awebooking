@@ -79,7 +79,10 @@ class Checkout {
 			return;
 		}
 
-		abrs_get_template( 'checkout/checkout.php', compact( 'request' ) );
+		// Setup the controls.
+		$controls = $this->get_controls();
+
+		abrs_get_template( 'checkout/checkout.php', compact( 'request', 'controls' ) );
 	}
 
 	/**
