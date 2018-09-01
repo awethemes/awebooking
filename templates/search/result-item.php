@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* @var \AweBooking\Availability\Room_Rate $room_rate */
 
 $remain_rooms = $room_rate->get_remain_rooms();
-
 $rate_plan = $room_rate->get_rate_plan();
 
 ?>
@@ -30,16 +29,49 @@ $rate_plan = $room_rate->get_rate_plan();
 
 	<div class="roommaster-wrapper">
 		<div class="roommaster-content">
-			<div class="columns">
-				<div class="column-lg-3">
-					<?php do_action( 'abrs_search_result_room_type', $room_type, $room_rate ); ?>
+			<div class="">
+				<?php do_action( 'abrs_search_result_room_type', $room_type, $room_rate ); ?>
+			</div>
+
+			<div class="">
+				<div class="roommaster-list">
+					<div class="columns no-gutters roommaster-list__header">
+						<div class="column-lg-4">
+							<h4 class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></h4>
+						</div>
+
+						<div class="column-lg-2">
+							<h4 class="roommaster-content__title"><?php esc_html_e( 'Capacity', 'awebooking' ); ?></h4>
+						</div>
+
+						<div class="column-lg-3">
+							<h4 class="roommaster-content__title"><?php esc_html_e( 'Price', 'awebooking' ); ?></h4>
+						</div>
+
+						<div class="column-lg-3"></div>
+					</div>
+
+					<div class="columns no-gutters roommaster-list__content">
+						<div class="column-lg-4">
+							<?php abrs_get_template( 'search/result/deal.php', compact( 'room_type', 'room_rate' ) ); ?>
+						</div>
+
+						<div class="column-lg-2">
+							<?php abrs_get_template( 'search/result/occupancy.php', compact( 'room_type', 'room_rate' ) ); ?>
+						</div>
+
+						<div class="column-lg-3">
+							<?php do_action( 'abrs_search_result_room_price', $room_type, $room_rate ); ?>
+						</div>
+
+						<div class="column-lg-3">
+							<?php abrs_get_template( 'search/result/button.php', compact( 'room_type', 'room_rate' ) ); ?>
+						</div>
+					</div>
 				</div>
 
-				<div class="column-lg-9">
-					<?php do_action( 'abrs_search_result_room_list', $room_type, $room_rate ); ?>
-				</div>
+				<?php do_action( 'abrs_search_result_room_list', $room_type, $room_rate ); ?>
 			</div>
 		</div>
-
 	</div>
 </div>

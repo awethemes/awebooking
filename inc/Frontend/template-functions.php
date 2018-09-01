@@ -69,15 +69,6 @@ function abrs_search_result_room_type( $room_type, $room_rate ) {
  *
  * @access private
  */
-function abrs_search_result_room_list( $room_type, $room_rate ) {
-	abrs_get_template( 'search/result/room-list.php', compact( 'room_type', 'room_rate' ) );
-}
-
-/**
- * Gets search result room list.
- *
- * @access private
- */
 function abrs_search_result_room_price( $room_type, $room_rate ) {
 	abrs_get_template( 'search/result/price.php', compact( 'room_type', 'room_rate' ) );
 }
