@@ -1070,10 +1070,10 @@
 	plugin.instances = {};
 	plugin.i18n = window._awebooking_i18n || {};
 
-	plugin.config = Object.assign({}, window._awebooking, {
+	plugin.config = Object.assign({}, {
 	  route: window.location.origin + '?awebooking_route=/',
 	  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
-	});
+	}, window._awebooking);
 
 	plugin.utils.dates = dateUtils;
 	if (typeof window.flatpickr !== 'undefined') {

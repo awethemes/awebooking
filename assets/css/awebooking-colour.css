@@ -1400,6 +1400,11 @@ input[type="number"].searchbox__spinner-input {
   padding: 1.2rem .8rem;
 }
 
+.roommaster-occupancy-list {
+  padding: 0;
+  margin-left: 0;
+}
+
 .tabs-main {
   overflow: hidden;
 }
