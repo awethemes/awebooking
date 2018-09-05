@@ -87,14 +87,7 @@ class Admin_Service_Provider extends Service_Provider {
 	 * @param \AweBooking\Admin\Settings\Setting $setting The setting instance.
 	 */
 	protected function register_setting_modifiers( $setting ) {
-		if ( ! $setting ) {
-			return;
-		}
-
 		$modifiers = $this->plugin->tagged( "setting.{$setting->get_id()}" );
-		if ( empty( $modifiers ) ) {
-			return;
-		}
 
 		foreach ( $modifiers as $modifier ) {
 			abrs_optional( $modifier )->register();
