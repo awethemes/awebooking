@@ -261,6 +261,10 @@ class Setup_Environment {
 
 		// Enable multiple_hotels.
 		if ( abrs_multiple_hotels() ) {
+			$hotel_slug = apply_filters( 'abrs_hotel_slug',
+				get_option( 'awebooking_hotel_permalink', 'hotel_location' )
+			);
+
 			register_post_type( Constants::HOTEL_LOCATION, apply_filters( 'abrs_register_location_args', [
 				'labels'              => [
 					'name'                  => esc_html_x( 'Hotels', 'Hotel plural name', 'awebooking' ),
@@ -292,8 +296,11 @@ class Setup_Environment {
 				'map_meta_cap'        => true,
 				'capability_type'     => Constants::HOTEL_LOCATION,
 				'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
-				// 'rewrite'             => true,
 				'has_archive'         => false,
+				'rewrite'             => [
+					'slug'       => $hotel_slug,
+					'with_front' => false,
+				],
 			]));
 		}
 

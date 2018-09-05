@@ -4,9 +4,6 @@ namespace AweBooking\Admin\Providers;
 use AweBooking\Support\Service_Provider;
 
 class Permalink_Service_Provider extends Service_Provider {
-	/* Constants */
-	const ROOM_TYPE_SLUG = 'awebooking_room_type_permalink';
-
 	/**
 	 * Init the hooks.
 	 *
@@ -18,29 +15,14 @@ class Permalink_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Initialize the permalink settings.
-	 *
-	 * @access private
-	 */
-	public function settings() {
-		add_settings_field(
-			static::ROOM_TYPE_SLUG,
-			esc_html__( 'Room type base', 'awebooking' ),
-			$this->input_callback( 'room_type_slug', get_option( static::ROOM_TYPE_SLUG ), 'room_type' ),
-			'permalink',
-			'optional'
-		);
-	}
-
-	/**
 	 * Handle save the permalink settings.
 	 *
+	 * @param \WP_Screen $current_screen The current screen.
+	 *
 	 * @access private
 	 */
-	public function save() {
-		$screen = get_current_screen();
-
-		if ( 'options-permalink' !== $screen->id || ! isset( $_POST['permalink_structure'], $_POST['room_type_slug'] ) ) {
+	public function save( $current_screen ) {
+		if ( 'options-permalink' !== $current_screen->id || ! isset( $_POST['permalink_structure'] ) ) {
 			return;
 		}
 
@@ -48,9 +30,37 @@ class Permalink_Service_Provider extends Service_Provider {
 
 		if ( ! empty( $_POST['room_type_slug'] ) ) {
 			$permalink = sanitize_title( wp_unslash( $_POST['room_type_slug'] ) );
-			update_option( static::ROOM_TYPE_SLUG, $permalink, true );
+			update_option( 'awebooking_room_type_permalink', $permalink, true );
 		} else {
-			delete_option( static::ROOM_TYPE_SLUG );
+			delete_option( 'awebooking_room_type_permalink' );
+		}
+
+		if ( ! empty( $_POST['hotel_slug'] ) ) {
+			$permalink = sanitize_title( wp_unslash( $_POST['hotel_slug'] ) );
+			update_option( 'awebooking_hotel_permalink', $permalink, true );
+		} else {
+			delete_option( 'awebooking_hotel_permalink' );
+		}
+	}
+
+	/**
+	 * Initialize the permalink settings.
+	 *
+	 * @access private
+	 */
+	public function settings() {
+		add_settings_field( 'awebooking_room_type_permalink',
+			esc_html__( 'Room type base', 'awebooking' ),
+			$this->input_callback( 'room_type_slug', get_option( 'awebooking_room_type_permalink' ), 'room_type' ),
+			'permalink', 'optional'
+		);
+
+		if ( abrs_multiple_hotels() ) {
+			add_settings_field( 'awebooking_hotel_permalink',
+				esc_html__( 'Hotel base', 'awebooking' ),
+				$this->input_callback( 'hotel_slug', get_option( 'awebooking_hotel_permalink' ), 'hotel_location' ),
+				'permalink', 'optional'
+			);
 		}
 	}
 
