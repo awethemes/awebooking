@@ -29,12 +29,14 @@ $rate_plan = $room_rate->get_rate_plan();
 
 	<div class="roommaster-wrapper">
 		<div class="roommaster-content">
-			<div class="">
-				<?php do_action( 'abrs_search_result_room_type', $room_type, $room_rate ); ?>
-			</div>
 
-			<div class="">
-				<div class="roommaster-list">
+			<div class="columns">
+				<div class="column-lg-3">
+					<?php do_action( 'abrs_search_result_room_type', $room_type, $room_rate ); ?>
+				</div>
+
+				<div class="column-lg-9">
+					<div class="roommaster-list">
 					<div class="columns no-gutters roommaster-list__header">
 						<div class="column-lg-4">
 							<h4 class="roommaster-content__title"><?php esc_html_e( 'Choose your deal', 'awebooking' ); ?></h4>
@@ -69,9 +71,9 @@ $rate_plan = $room_rate->get_rate_plan();
 						</div>
 					</div>
 				</div>
-
-				<?php do_action( 'abrs_search_result_room_list', $room_type, $room_rate ); ?>
+				</div>
 			</div>
+
 		</div>
 	</div>
 </div>

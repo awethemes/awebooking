@@ -46,6 +46,10 @@ class Template_Loader_Service_Provider extends Service_Provider {
 		$template = '';
 
 		switch ( true ) {
+			case is_singular( Constants::HOTEL_LOCATION ):
+				$template = 'hotel.php';
+				break;
+
 			case is_singular( Constants::ROOM_TYPE ):
 				$template = 'single-room.php';
 				break;
