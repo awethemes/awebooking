@@ -36,6 +36,6 @@ class Form_Service_Provider extends Service_Provider {
 			return ( $object instanceof Model || $object instanceof Request || $object instanceof Fluent )
 				? @$object->get( $args['field_id'] )
 				: $check;
-		}, 1001, 3 );
+		}, PHP_INT_MAX, 3 );
 	}
 }
