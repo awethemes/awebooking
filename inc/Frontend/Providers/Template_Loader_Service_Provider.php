@@ -50,6 +50,10 @@ class Template_Loader_Service_Provider extends Service_Provider {
 				$template = 'hotel.php';
 				break;
 
+			case is_post_type_archive( Constants::HOTEL_LOCATION ):
+				$template = 'archive-hotel.php';
+				break;
+
 			case is_singular( Constants::ROOM_TYPE ):
 				$template = 'single-room.php';
 				break;

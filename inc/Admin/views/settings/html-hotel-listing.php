@@ -18,6 +18,10 @@ if ( $hotels->isEmpty() ) {
 
 			<div class="abrs-sortable__body">
 				<span><?php echo esc_html( $hotel->get_name() ); ?></span>
+
+				<?php if ( $hotel->get_id() === abrs_get_page_id( 'primary_hotel' ) ) : ?>
+					<small class="dashicons dashicons-star-filled" style="font-size: 12px; color: #FFC107;"></small>
+				<?php endif; ?>
 			</div>
 
 			<div class="abrs-sortable__actions">
@@ -29,15 +33,15 @@ if ( $hotels->isEmpty() ) {
 </ul><!-- /.abrs-sortable -->
 
 <script type="text/javascript">
-(function($) {
-	'use strict';
+	(function($) {
+		'use strict';
 
-	$(function() {
-		Sortable.create($('#js-sorting-hotels')[0], {
-			handle: '.abrs-sortable__handle',
-			animation: 150,
+		$(function() {
+			Sortable.create($('#js-sorting-hotels')[0], {
+				handle: '.abrs-sortable__handle',
+				animation: 150,
+			});
 		});
-	});
 
-})(jQuery);
+	})(jQuery);
 </script>

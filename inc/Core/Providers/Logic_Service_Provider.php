@@ -12,6 +12,7 @@ class Logic_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function init() {
+		add_action( 'delete_post', [ $this, 'delete_hotel' ] );
 		add_action( 'delete_post', [ $this, 'delete_room_type' ] );
 		add_action( 'before_delete_post', [ $this, 'delete_booking_items' ] );
 
@@ -22,47 +23,19 @@ class Logic_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * Perform update total rooms of room type.
+	 * Fire actions after a hotel has been deleted.
 	 *
-	 * @param  mixed $object The object model.
-	 * @access private
-	 */
-	public function update_total_rooms( $object ) {
-		if ( $object instanceof Room_Type ) {
-			$room_type = $object;
-		} else {
-			$room_type = abrs_get_room_type( $object['room_type'] );
-		}
-
-		if ( $room_type && $room_type->exists() ) {
-			$room_type->update_meta( '_cache_total_rooms', count( $room_type->get_rooms() ) );
-		}
-	}
-
-	/**
-	 * Before a booking deleted, we have somethings todo.
-	 *
-	 * 1. Restore available state of booking room.
-	 * 2. Remove booking event in `awebooking_booking` table.
-	 *
-	 * @param  string $postid The booking ID will be delete.
+	 * @param  int $postid The hotel ID.
 	 * @return void
-	 *
-	 * @access private
 	 */
-	public function delete_booking_items( $postid ) {
-		if ( get_post_type( $postid ) !== Constants::BOOKING ) {
+	public function delete_hotel( $postid ) {
+		if ( get_post_type( $postid ) !== Constants::HOTEL_LOCATION ) {
 			return;
 		}
 
-		// Get booking object.
-		$booking = abrs_get_booking( $postid );
-
-		do_action( 'abrs_delete_booking_items', $postid );
-
-		$booking->remove_items();
-
-		do_action( 'abrs_deleted_booking_items', $postid );
+		if ( abrs_get_page_id( 'primary_hotel' ) === (int) $postid ) {
+			abrs_update_option( 'primary_hotel', null );
+		}
 	}
 
 	/**
@@ -102,5 +75,49 @@ class Logic_Service_Provider extends Service_Provider {
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}awebooking_pricing` WHERE `rate_id` = %d", $postid ) );
 
 		do_action( 'abrs_deleted_room_type', $postid );
+	}
+
+	/**
+	 * Before a booking deleted, we have somethings todo.
+	 *
+	 * 1. Restore available state of booking room.
+	 * 2. Remove booking event in `awebooking_booking` table.
+	 *
+	 * @param  string $postid The booking ID will be delete.
+	 * @return void
+	 *
+	 * @access private
+	 */
+	public function delete_booking_items( $postid ) {
+		if ( get_post_type( $postid ) !== Constants::BOOKING ) {
+			return;
+		}
+
+		// Get booking object.
+		$booking = abrs_get_booking( $postid );
+
+		do_action( 'abrs_delete_booking_items', $postid );
+
+		$booking->remove_items();
+
+		do_action( 'abrs_deleted_booking_items', $postid );
+	}
+
+	/**
+	 * Perform update total rooms of room type.
+	 *
+	 * @param  mixed $object The object model.
+	 * @access private
+	 */
+	public function update_total_rooms( $object ) {
+		if ( $object instanceof Room_Type ) {
+			$room_type = $object;
+		} else {
+			$room_type = abrs_get_room_type( $object['room_type'] );
+		}
+
+		if ( $room_type && $room_type->exists() ) {
+			$room_type->update_meta( '_cache_total_rooms', count( $room_type->get_rooms() ) );
+		}
 	}
 }

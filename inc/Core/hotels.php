@@ -63,3 +63,26 @@ function abrs_list_hotels( $args = [], $with_primary = false ) {
 
 	return $hotels;
 }
+
+/**
+ * Returns un-mapped room types ids (used in settings).
+ *
+ * @param  int $limit Max number of room types. Defaults to -1 (no limit).
+ * @return array
+ */
+function abrs_get_orphan_room_types( $limit = -1 ) {
+	return get_posts( [
+		'post_type'      => Constants::ROOM_TYPE,
+		'post_status'    => 'any',
+		'fields'         => 'ids',
+		'posts_per_page' => $limit,
+		'nopaging'       => $limit <= 0,
+		'meta_query' => [
+			[
+				'key'     => '_hotel_id',
+				'value'   => wp_list_pluck( get_pages( [ 'post_type' => Constants::HOTEL_LOCATION ] ), 'ID' ),
+				'compare' => 'NOT IN',
+			],
+		],
+	] );
+}

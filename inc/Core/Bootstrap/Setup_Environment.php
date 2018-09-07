@@ -296,7 +296,7 @@ class Setup_Environment {
 				'map_meta_cap'        => true,
 				'capability_type'     => Constants::HOTEL_LOCATION,
 				'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
-				'has_archive'         => false,
+				'has_archive'         => true,
 				'rewrite'             => [
 					'slug'       => $hotel_slug,
 					'with_front' => false,

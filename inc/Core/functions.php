@@ -386,6 +386,24 @@ function abrs_get_option( $key, $default = null ) {
 	return awebooking()->get_option( $key, $default );
 }
 
+function abrs_update_option( $key, $value = null, $lang = null ) {
+	if ( ! function_exists( 'cmb2_options' ) ) {
+		return;
+	}
+
+	$data = is_array( $key ) ? $key : [ $key => $value ];
+
+	// Get the options.
+	$options = cmb2_options( awebooking()->get_current_option() );
+
+	foreach ( $data as $_key => $_value ) {
+		$options->update( $_key, $_value, false, true );
+	}
+
+	// Save the options.
+	$options->set();
+}
+
 /**
  * Gets the current reservation mode.
  *

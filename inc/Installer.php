@@ -239,6 +239,7 @@ class Installer {
 		$this->create_tables();
 		$this->create_roles();
 		$this->create_cron_jobs();
+		$this->create_default_hotel();
 		$this->update_version();
 
 		// CHeck for the update DB.
@@ -367,7 +368,7 @@ class Installer {
 	}
 
 	/**
-	 * Setup AweBooking environment - post-types, taxonomies, endpoints.
+	 * Setup environment - post-types, taxonomies, endpoints.
 	 *
 	 * @return void
 	 */
@@ -387,7 +388,39 @@ class Installer {
 	 * @return void
 	 */
 	protected function create_cron_jobs() {
-		// ...
+	}
+
+	/**
+	 * Check to create the default hotel.
+	 *
+	 * @return void
+	 */
+	protected function create_default_hotel() {
+		global $wpdb;
+
+		if ( abrs_get_page_id( 'primary_hotel' ) > 0 ) {
+			return;
+		}
+
+		// Default category name.
+		$hotel_name = esc_html__( 'Default Hotel', 'awebooking' );
+
+		/* translators: Default hotel slug */
+		$hotel_slug = sanitize_title( _x( 'Default Hotel', 'Default hotel slug', 'awebooking' ) );
+
+		// Find the default hotel in the database.
+		$hotel_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = %s", $hotel_name, Constants::HOTEL_LOCATION ) );
+
+		if ( is_null( $hotel_id ) ) {
+			$hotel_id = wp_insert_post([
+				'post_title'  => $hotel_name,
+				'post_name'   => $hotel_slug,
+				'post_type'   => Constants::HOTEL_LOCATION,
+				'post_status' => 'publish',
+			] );
+		}
+
+		abrs_update_option( [ 'page_primary_hotel' => $hotel_id ] );
 	}
 
 	/**
@@ -395,7 +428,7 @@ class Installer {
 	 *
 	 * @access private
 	 */
-	public function create_roles() {
+	protected function create_roles() {
 		( new Roles )->create();
 	}
 

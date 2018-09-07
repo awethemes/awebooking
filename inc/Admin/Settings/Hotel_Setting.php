@@ -2,8 +2,9 @@
 namespace AweBooking\Admin\Settings;
 
 use Awethemes\Http\Request;
-use AweBooking\Admin\Forms\Hotel_Information_Form;
 use AweBooking\Model\Hotel;
+use AweBooking\Support\WP_Data;
+use AweBooking\Admin\Forms\Hotel_Information_Form;
 
 class Hotel_Setting extends Abstract_Setting {
 	/**
@@ -23,7 +24,7 @@ class Hotel_Setting extends Abstract_Setting {
 			'id'       => '__hotel_title',
 			'type'     => 'title',
 			'name'     => esc_html__( 'Hotel & Address', 'awebooking' ),
-			'desc'     => esc_html__( 'This is where your hotel is located. Tax rates will use this address.', 'awebooking' ),
+			'desc'     => esc_html__( 'This is where your hotel is located. Tax rates (if applicable) will use this address.', 'awebooking' ),
 		]);
 
 		// Prevent in some case we have a value called like: "awebooking".
@@ -39,12 +40,25 @@ class Hotel_Setting extends Abstract_Setting {
 			'default'         => $hotel_name,
 			'required'        => true,
 			'sanitization_cb' => 'abrs_sanitize_text',
-			'desc'            => esc_html__( 'The hotel name.', 'awebooking' ),
+			'desc'            => esc_html__( 'The primary hotel name.', 'awebooking' ),
 			'tooltip'         => true,
 		]);
 
-		foreach ( ( new Hotel_Information_Form )->prop( 'fields' ) as $args ) {
-			$this->add_field( $args );
+		if ( ! abrs_multiple_hotels() ) {
+			foreach ( ( new Hotel_Information_Form )->prop( 'fields' ) as $args ) {
+				$this->add_field( $args );
+			}
+		} else {
+			$this->add_field([
+				'id'               => 'page_primary_hotel',
+				'type'             => 'select',
+				'name'             => esc_html__( 'Primary Hotel', 'awebooking' ),
+				'options_cb'       => WP_Data::cb( 'pages', [ 'post_type' => 'hotel_location' ] ),
+				'tooltip'          => esc_html__( 'Select the primary hotel.', 'awebooking' ),
+				'sanitization_cb'  => 'absint',
+				'classes'          => 'with-selectize',
+				'show_option_none' => false,
+			]);
 		}
 
 		// Enable multiple_hotels.
