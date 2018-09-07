@@ -6,18 +6,18 @@ use AweBooking\Model\Common\Guest_Counts;
 
 class Room_Type_List_Table extends Abstract_List_Table {
 	/**
-	 * The room type instance in current loop.
-	 *
-	 * @var \AweBooking\Model\Room_Type
-	 */
-	protected $room_type;
-
-	/**
 	 * The post type name.
 	 *
 	 * @var string
 	 */
 	protected $list_table = Constants::ROOM_TYPE;
+
+	/**
+	 * The room type instance in current loop.
+	 *
+	 * @var \AweBooking\Model\Room_Type
+	 */
+	protected $room_type;
 
 	/**
 	 * {@inheritdoc}
@@ -130,6 +130,20 @@ class Room_Type_List_Table extends Abstract_List_Table {
 	}
 
 	/**
+	 * {@inheritdoc}
+	 */
+	protected function render_filters() {
+		if ( abrs_multiple_hotels() ) {
+			wp_dropdown_pages([
+				'post_type'        => Constants::HOTEL_LOCATION,
+				'name'             => 'hotel_id',
+				'selected'         => isset( $_GET['hotel_id'] ) ? absint( $_GET['hotel_id'] ) : 0,
+				'show_option_none' => esc_html__( 'All hotels', 'awebooking' ),
+			]);
+		}
+	}
+
+	/**
 	 * Handle any custom filters.
 	 *
 	 * @param  array $query_vars Query vars.
@@ -160,6 +174,17 @@ class Room_Type_List_Table extends Abstract_List_Table {
 					]);
 					break;
 			}
+		}
+
+		// Filter by the hotel ID.
+		if ( ! empty( $_GET['hotel_id'] ) ) {
+			$query_vars['meta_query'] = [
+				[
+					'key'     => '_hotel_id',
+					'value'   => absint( $_GET['hotel_id'] ),
+					'compare' => '=',
+				],
+			];
 		}
 
 		return $query_vars;
