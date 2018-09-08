@@ -18,51 +18,61 @@ const del          = require('del');
 const map          = require('lodash.map');
 const pkg          = require('./package.json');
 
+const resolve      = require('rollup-plugin-node-resolve')
+const commonjs     = require('rollup-plugin-commonjs')
+const babel        = require('rollup-plugin-babel')
+
+const rollupConfig = {
+  rollup: require('rollup'),
+  external: Object.keys(pkg.globals),
+  plugins: [
+    resolve(),
+    commonjs(),
+    babel({
+      babelrc: false,
+      runtimeHelpers: true,
+      externalHelpers: true,
+      presets: ['@babel/preset-env']
+    }),
+  ]
+}
+
 /**
  * Handle errors and alert the user.
  */
 function handleErrors() {
-  const args = Array.prototype.slice.call(arguments);
+  const args = Array.prototype.slice.call(arguments)
 
   notify.onError({
     title: 'Task Failed! See console.',
     message: '<%= error.message %>',
-  }).apply(this, args);
+  }).apply(this, args)
 
   // Prevent the 'watch' task from stopping
-  this.emit('end');
+  this.emit('end')
 }
 
 gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
-    .pipe(debug())
-    .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(sourcemaps.init())
-    .pipe(sass().on('error', sass.logError))
-    .pipe(autoprefixer())
-    .pipe(gcmq())
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('assets/css'))
-    .pipe(browserSync.stream({ match: '**/*.css' }));
-});
+     .pipe(debug())
+     .pipe(plumber({ errorHandler: handleErrors }))
+     .pipe(sourcemaps.init())
+     .pipe(sass().on('error', sass.logError))
+     .pipe(autoprefixer())
+     .pipe(gcmq())
+     .pipe(sourcemaps.write('./'))
+     .pipe(gulp.dest('assets/css'))
+     .pipe(browserSync.stream({ match: '**/*.css' }))
+})
 
 gulp.task('babel', () => {
-  const config = {
-    external: Object.keys(pkg.globals),
-    plugins: [
-      require('rollup-plugin-node-resolve')(),
-      require('rollup-plugin-commonjs')(),
-      require('rollup-plugin-babel')(),
-    ]
-  };
-
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(sourcemaps.init())
-    .pipe(rollup(config, {
+    .pipe(rollup(rollupConfig, {
       format: 'iife',
-      globals: pkg.globals
+      globals: pkg.globals || {}
     }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('assets/js'))
@@ -70,12 +80,12 @@ gulp.task('babel', () => {
 
 gulp.task('minify:js', () => {
   return gulp.src(['assets/js/**/*.js', '!assets/js/**/*.min.js'])
-    .pipe(debug())
-    .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('assets/js'));
-});
+     .pipe(debug())
+     .pipe(plumber())
+     .pipe(uglify())
+     .pipe(rename({ suffix: '.min' }))
+     .pipe(gulp.dest('assets/js'))
+})
 
 gulp.task('minify:css', () => {
   return gulp.src(['assets/css/*.css', '!assets/css/*.min.css'])
@@ -83,43 +93,42 @@ gulp.task('minify:css', () => {
     .pipe(plumber({ errorHandler: handleErrors }))
     .pipe(cleanCSS())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('assets/css'));
-});
+    .pipe(gulp.dest('assets/css'))
+})
 
 gulp.task('i18n', () => {
   return gulp.src(['*.php', 'inc/**/*.php', 'component/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
-    .pipe(debug())
     .pipe(plumber({ errorHandler: handleErrors }))
-    .pipe(potgen({ domain: 'awebooking', package: 'AweBooking' }))
-    .pipe(gulp.dest('languages/awebooking.pot'));
-});
+    .pipe(potgen({ domain: pkg.name, package: 'AweBooking' }))
+    .pipe(gulp.dest(`languages/${pkg.name}.pot`))
+})
 
 gulp.task('copy', (done) => {
   map(pkg.copyFiles, (files, vendor) => {
-    return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor));
-  });
+    return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor))
+  })
 
-  done();
-});
+  done()
+})
 
 gulp.task('clean', () => {
   return del([
     'assets/vendor',
     'assets/js/**/*.{js,map}',
     'assets/css/**/*.{css,map}',
-  ]);
-});
+  ])
+})
 
 gulp.task('watch', () => {
   browserSync.init({
     open: false,
     proxy: 'awebooking.local',
-  });
+  })
 
-  gulp.watch('assets/scss/**/*.scss', gulp.series(['scss']));
-  gulp.watch('assets/babel/**/*.js', gulp.series(['babel']));
-});
+  gulp.watch('assets/scss/**/*.scss', gulp.series(['scss']))
+  gulp.watch('assets/babel/**/*.js', gulp.series(['babel']))
+})
 
-gulp.task('js', gulp.series(['babel', 'minify:js']));
-gulp.task('css', gulp.series(['scss', 'minify:css']));
-gulp.task('default', gulp.series(['clean', 'css', 'js', 'i18n', 'copy']));
+gulp.task('js', gulp.series(['babel', 'minify:js']))
+gulp.task('css', gulp.series(['scss', 'minify:css']))
+gulp.task('default', gulp.series(['clean', 'css', 'js', 'i18n', 'copy']))
