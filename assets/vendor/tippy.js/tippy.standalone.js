@@ -1,5 +1,5 @@
 /*!
-* Tippy.js v2.5.4
+* Tippy.js v2.6.0
 * (c) 2017-2018 atomiks
 * MIT
 */
@@ -11,7 +11,7 @@
 
 Popper = Popper && Popper.hasOwnProperty('default') ? Popper['default'] : Popper;
 
-var version = "2.5.4";
+var version = "2.6.0";
 
 var isBrowser = typeof window !== 'undefined';
 
@@ -49,7 +49,7 @@ var defaults = {
   html: false,
   animateFill: true,
   arrow: false,
-  delay: 0,
+  delay: [0, 20],
   duration: [350, 300],
   interactive: false,
   interactiveBorder: 2,
@@ -667,16 +667,6 @@ function getOffsetDistanceInPx(distance) {
   return -(distance - defaults.distance) + 'px';
 }
 
-/**
- * Waits until next repaint to execute a fn
- * @param {Function} fn
- */
-function defer(fn) {
-  requestAnimationFrame(function () {
-    setTimeout(fn, 1);
-  });
-}
-
 var matches = {};
 
 if (isBrowser) {
@@ -954,31 +944,23 @@ var Tippy = function () {
         focus(reference);
       }
 
-      /*
-      * This call is deferred because sometimes when the tooltip is still transitioning in but hide()
-      * is called before it finishes, the CSS transition won't reverse quickly enough, meaning
-      * the CSS transition will finish 1-2 frames later, and onHidden() will run since the JS set it
-      * more quickly. It should actually be onShown(). Seems to be something Chrome does, not Safari
-      */
-      defer(function () {
-        _onTransitionEnd.call(_this2, duration, function () {
-          if (_this2.state.visible || !options.appendTo.contains(popper)) return;
+      _onTransitionEnd.call(this, duration, function () {
+        if (_this2.state.visible || !options.appendTo.contains(popper)) return;
 
-          if (!_this2._(key).isPreparingToShow) {
-            document.removeEventListener('mousemove', _this2._(key).followCursorListener);
-            _this2._(key).lastMouseMoveEvent = null;
-          }
+        if (!_this2._(key).isPreparingToShow) {
+          document.removeEventListener('mousemove', _this2._(key).followCursorListener);
+          _this2._(key).lastMouseMoveEvent = null;
+        }
 
-          if (_this2.popperInstance) {
-            _this2.popperInstance.disableEventListeners();
-          }
+        if (_this2.popperInstance) {
+          _this2.popperInstance.disableEventListeners();
+        }
 
-          reference.removeAttribute('aria-describedby');
+        reference.removeAttribute('aria-describedby');
 
-          options.appendTo.removeChild(popper);
+        options.appendTo.removeChild(popper);
 
-          options.onHidden.call(popper, _this2);
-        });
+        options.onHidden.call(popper, _this2);
       });
     }
 
@@ -1599,7 +1581,7 @@ function hideAllPoppers(excludeTippy) {
 /**
  * Adds the needed event listeners
  */
-function bindEventListeners() {
+function bindEventListeners(useCapture) {
   var onDocumentTouch = function onDocumentTouch() {
     if (browser.usingTouch) return;
 
@@ -1686,7 +1668,7 @@ function bindEventListeners() {
     });
   };
 
-  document.addEventListener('click', onDocumentClick);
+  document.addEventListener('click', onDocumentClick, useCapture);
   document.addEventListener('touchstart', onDocumentTouch);
   window.addEventListener('blur', onWindowBlur);
   window.addEventListener('resize', onWindowResize);
@@ -1697,6 +1679,7 @@ function bindEventListeners() {
 }
 
 var eventListenersBound = false;
+var useCapture = false;
 
 /**
  * Exported module
@@ -1707,7 +1690,7 @@ var eventListenersBound = false;
  */
 function tippy$1(selector, options, one) {
   if (browser.supported && !eventListenersBound) {
-    bindEventListeners();
+    bindEventListeners(useCapture);
     eventListenersBound = true;
   }
 
@@ -1742,6 +1725,9 @@ tippy$1.one = function (selector, options) {
 tippy$1.disableAnimations = function () {
   defaults.updateDuration = defaults.duration = 0;
   defaults.animateFill = false;
+};
+tippy$1.useCapture = function () {
+  useCapture = true;
 };
 
 return tippy$1;

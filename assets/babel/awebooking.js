@@ -1,7 +1,8 @@
 import $ from 'jquery'
 import accounting from 'accounting'
 import Dropdown from './core/dropdown'
-import Utils from './core/date-utils'
+import Utils from './core/util'
+import DateUtils from './core/date-utils'
 
 let plugin = window.awebooking = {};
 
@@ -15,7 +16,7 @@ plugin.config = Object.assign( {}, {
   ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
 }, window._awebooking);
 
-plugin.utils.dates = Utils;
+plugin.utils.dates = DateUtils;
 if (typeof window.flatpickr !== 'undefined') {
   plugin.utils.dates.l10n = flatpickr.l10ns.default;
 }

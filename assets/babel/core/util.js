@@ -1,6 +1,8 @@
-module.exports = (($) => {
-  'use strict';
+import debounce from 'debounce'
+import isMobile from 'is-mobile'
+import * as queryString from 'query-string'
 
+const Utils = (function($) {
   function getTransitionEndEvent() {
     let transitionEndEvent = '';
 
@@ -24,6 +26,11 @@ module.exports = (($) => {
   }
 
   return {
+    isMobile: isMobile,
+    debounce: debounce,
+
+    queryString: queryString,
+
     TRANSITION_END: getTransitionEndEvent(),
 
     onTransitionEnd(el, callback) {
@@ -72,6 +79,7 @@ module.exports = (($) => {
         return null;
       }
     },
-  };
-
+  }
 })(jQuery)
+
+export default Utils

@@ -1,5 +1,3 @@
-const Util = require('./util');
-
 const Dropdown = (($, Popper) => {
   'use strict';
 
@@ -200,5 +198,4 @@ const Dropdown = (($, Popper) => {
   return Dropdown;
 })(jQuery, window.Popper);
 
-// Export the module.
-module.exports = Dropdown;
+export default Dropdown;

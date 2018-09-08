@@ -4,20 +4,18 @@
   (function ($, plugin) {
 
     var settings = window._awebookingSettings || {};
-
     /**
      * Handle leaving using window.onbeforeunload.
      *
      * @return {void}
      */
-    function handleLeaving() {
-      var changed = false;
 
-      // Set the changed if any controls fire change.
+    function handleLeaving() {
+      var changed = false; // Set the changed if any controls fire change.
+
       $('input, textarea, select').on('change', function () {
         changed = true;
       });
-
       $('.awebooking-settings').on('click', '.nav-tab-wrapper a', function () {
         if (changed) {
           window.onbeforeunload = function () {
@@ -30,32 +28,30 @@
         window.onbeforeunload = null;
       });
     }
-
     /**
      * Init the datepicker.
      *
      * @return {void}
      */
+
+
     function initDatepicker() {
       $('#display_datepicker_disabledates').flatpickr({
         mode: 'multiple',
         dateFormat: 'Y-m-d'
       });
     }
-
     /**
      * Setup input table bindings.
      *
      * @return {void}
      */
+
+
     function setupInputTable() {
       var $table = $('.awebooking-input-table');
-
-      var shifted = void 0,
-          controlled = void 0,
-          hasFocus = void 0;
+      var shifted, controlled, hasFocus;
       shifted = controlled = hasFocus = false;
-
       $(document).bind('keyup keydown', function (e) {
         shifted = e.shiftKey;
         controlled = e.ctrlKey || e.metaKey;
@@ -87,6 +83,7 @@
             $elRow.addClass('last-selected');
           } else {
             $('tr', $elTable).removeClass('last-selected');
+
             if (controlled && $(el).closest('tr').is('.current')) {
               $elRow.removeClass('current');
             } else {
@@ -103,7 +100,6 @@
 
         if ($tbody.find('tr.current').length > 0) {
           var $current = $tbody.find('tr.current');
-
           $current.each(function () {
             $(this).remove();
           });
@@ -140,14 +136,13 @@
       $(this).focus();
     });*/
 
-
     /** Document ready */
+
+
     $(function () {
       handleLeaving();
       initDatepicker();
-
-      setupInputTable();
-      // setupInputTableSortable();
+      setupInputTable(); // setupInputTableSortable();
     });
   })(jQuery, window.awebooking);
 

@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import debounce from 'debounce'
 import isMobile from 'is-mobile'
-import queryString from 'query-string'
+import * as queryString from 'query-string'
 import Dropdown from '../core/dropdown'
 import rangePlugin from '../core/range-dates'
 import customerSearch from './utils/search-customer'

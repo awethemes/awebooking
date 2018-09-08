@@ -1,4 +1,4 @@
-module.exports = function () {
+const DateUtils = (function () {
   const pad = (number) => `0${number}`.slice(-2)
   const int = (bool) => (bool === true ? 1 : 0)
   const monthToStr = (monthNumber, shorthand, locale) => locale.months[shorthand ? 'shorthand' : 'longhand'][monthNumber]
@@ -193,7 +193,7 @@ module.exports = function () {
     y: (date) => String(date.getFullYear()).substring(2),
   };
 
-  const DateUtils = {
+  return {
     l10n: {
       amPM: ['AM', 'PM'],
       weekdays: {
@@ -294,6 +294,6 @@ module.exports = function () {
       return parsedDate;
     }
   }
+})()
 
-  return DateUtils
-}()
+export default DateUtils

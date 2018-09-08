@@ -4,71 +4,63 @@
   $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
   plugin = plugin && plugin.hasOwnProperty('default') ? plugin['default'] : plugin;
 
-  var classCallCheck = function (instance, Constructor) {
+  function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
-  };
+  }
 
-  var createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
     }
+  }
 
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
 
   var DATE_FORMAT = 'YYYY-MM-DD';
 
-  var BookingScheduler = function () {
+  var BookingScheduler =
+  /*#__PURE__*/
+  function () {
     /**
      * Constructor.
      *
      * @return {void}
      */
     function BookingScheduler() {
-      classCallCheck(this, BookingScheduler);
+      _classCallCheck(this, BookingScheduler);
 
       var self = this;
-
       this.initBulkUpdate();
-
       this.scheduler = new ScheduleCalendar({
         el: '.scheduler',
         debug: plugin.debug,
         granularity: 'nightly'
       });
-
       this.scheduler.on('clear', this.handleClearSelected.bind(this));
       this.scheduler.on('action:block', this.handleBlockRoom.bind(this));
       this.scheduler.on('action:unblock', this.handleUnblockRoom.bind(this));
-
       $('.js-unlock-period').on('click', function (e) {
         e.preventDefault();
         var $el = $(this);
-
         self.scheduler.model.set('calendar', $el.data('room'));
         self.scheduler.model.set('startDate', moment($el.data('startDate')));
         self.scheduler.model.set('endDate', moment($el.data('endDate')));
-
         self.scheduler.trigger('action:unblock');
       });
-
       $('.scheduler__state-event, .scheduler__booking-event').each(function () {
         self.setupEventPopper(this);
       });
     }
-
     /**
      * Handle on clear selected.
      *
@@ -76,12 +68,11 @@
      */
 
 
-    createClass(BookingScheduler, [{
-      key: 'handleClearSelected',
+    _createClass(BookingScheduler, [{
+      key: "handleClearSelected",
       value: function handleClearSelected() {
         window.swal && swal.close();
       }
-
       /**
        * Handle set price action.
        *
@@ -91,16 +82,16 @@
        */
 
     }, {
-      key: 'handleBlockRoom',
+      key: "handleBlockRoom",
       value: function handleBlockRoom(e, model) {
         var _this = this;
 
         plugin.confirm(plugin.i18n.warning, function () {
           var $controls = _this.compileHtmlControls('block', model);
+
           $controls.closest('form').submit();
         });
       }
-
       /**
        * Handle reset price action.
        *
@@ -110,16 +101,16 @@
        */
 
     }, {
-      key: 'handleUnblockRoom',
+      key: "handleUnblockRoom",
       value: function handleUnblockRoom(e, model) {
         var _this2 = this;
 
         plugin.confirm(plugin.i18n.warning, function () {
           var $controls = _this2.compileHtmlControls('unblock', model);
+
           $controls.closest('form').submit();
         });
       }
-
       /**
        * Compile html form controls.
        *
@@ -128,7 +119,7 @@
        */
 
     }, {
-      key: 'compileHtmlControls',
+      key: "compileHtmlControls",
       value: function compileHtmlControls(action, model) {
         var template = wp.template('scheduler-pricing-controls');
 
@@ -142,10 +133,8 @@
           startDate: model.get('startDate').format(DATE_FORMAT),
           calendar: model.get('calendar')
         };
-
         return $('#js-scheduler-form-controls').html(template(data));
       }
-
       /**
        * Setup event popper.
        *
@@ -154,10 +143,9 @@
        */
 
     }, {
-      key: 'setupEventPopper',
+      key: "setupEventPopper",
       value: function setupEventPopper(el) {
         var $html = $(el).find('.js-tippy-html');
-
         tippy(el, {
           theme: 'booking-popup',
           delay: 150,
@@ -172,40 +160,44 @@
           animation: 'shift-toward',
           duration: [150, 150],
           html: $html.length ? $html[0] : false,
-          popperOptions: { modifiers: {
-              hide: { enabled: false },
-              preventOverflow: { enabled: false }
-            } }
+          popperOptions: {
+            modifiers: {
+              hide: {
+                enabled: false
+              },
+              preventOverflow: {
+                enabled: false
+              }
+            }
+          }
         });
-
         return el._tippy;
       }
-
       /**
        * Handle bulk update action.
        */
 
     }, {
-      key: 'initBulkUpdate',
+      key: "initBulkUpdate",
       value: function initBulkUpdate() {
         var $dialog = plugin.dialog('#bulk-update-dialog');
-
         $('.js-open-bulk-update').on('click', function (e) {
           e.preventDefault();
           $dialog.dialog('open');
         });
-
         flatpickr('#bulk_date_start', {
           mode: 'range',
           dateFormat: 'Y-m-d',
           showMonths: plugin.isMobile() ? 1 : 2,
-          plugins: [new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' })]
+          plugins: [new plugin.utils.flatpickrRangePlugin({
+            input: '#bulk_date_end'
+          })]
         });
       }
     }]);
+
     return BookingScheduler;
   }();
-
   /**
    * Document ready!
    *
