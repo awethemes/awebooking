@@ -1,19 +1,23 @@
-.awebooking .list-room {
+.awebooking .list-room,
+.awebooking .list-hotel {
   margin-bottom: 50px;
 }
 
-.list-room__title {
+.list-room__title,
+.list-hotel__title {
   margin-bottom: 0;
 }
 
-.list-room__wrap {
+.list-room__wrap,
+.list-hotel__wrap {
   margin-left: -15px;
   margin-right: -15px;
 
   @include clearfix;
 }
 
-.list-room__media {
+.list-room__media,
+.list-hotel__media {
   width: 100%;
   float: left;
   padding: 0 15px;
@@ -27,7 +31,8 @@
   }
 }
 
-.list-room__info {
+.list-room__info,
+.list-hotel__info {
   width: 100%;
   float: left;
   padding: 0 15px;
