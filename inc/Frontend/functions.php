@@ -54,6 +54,24 @@ function abrs_is_room_type_archive() {
 }
 
 /**
+ * Determnies if current viewing in a single hotel.
+ *
+ * @return bool
+ */
+function abrs_is_hotel() {
+	return is_singular( Constants::HOTEL_LOCATION );
+}
+
+/**
+ * Determnies if current page is archive of "hotel".
+ *
+ * @return bool
+ */
+function abrs_is_hotel_archive() {
+	return is_post_type_archive( Constants::HOTEL_LOCATION );
+}
+
+/**
  * Determines if current viewing on "search_results" page.
  *
  * @return bool
@@ -81,7 +99,7 @@ function abrs_is_checkout_page() {
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() );
+	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() || abrs_is_hotel() || abrs_is_hotel_archive() );
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
