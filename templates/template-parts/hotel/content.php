@@ -33,7 +33,7 @@ if ( post_password_required() ) {
 		 * abrs_single_hotel_sections hook.
 		 *
 		 * @hooked abrs_single_hotel_description() - 10.
-		 * @hooked abrs_single_hotel_rooms()       - 15.
+		 * @hooked abrs_single_hotel_rooms()       - 20.
 		 */
 		do_action( 'abrs_single_hotel_sections' );
 		?>

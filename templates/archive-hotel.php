@@ -42,7 +42,7 @@ if ( have_posts() ) {
 
 } else {
 
-	abrs_get_template_part( 'template-parts/archive/content', 'none' );
+	abrs_get_template_part( 'template-parts/hotel/content', 'none' );
 }
 
 /**
