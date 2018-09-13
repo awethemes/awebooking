@@ -1,3 +1,5 @@
+import Util from './util'
+
 const Dropdown = (($, Popper) => {
   'use strict';
 

@@ -434,6 +434,9 @@
     }, Object.create(null));
   }
 
+  var extract_1 = extract;
+  var parse_1 = parse;
+
   var stringify = function stringify(obj, options) {
     var defaults = {
       encode: true,
@@ -504,6 +507,95 @@
       query: parse(extract(input), options)
     };
   };
+
+  var queryString = {
+    extract: extract_1,
+    parse: parse_1,
+    stringify: stringify,
+    parseUrl: parseUrl
+  };
+
+  var queryString$1 = /*#__PURE__*/Object.freeze({
+    default: queryString,
+    __moduleExports: queryString,
+    extract: extract_1,
+    parse: parse_1,
+    stringify: stringify,
+    parseUrl: parseUrl
+  });
+
+  var Utils = function ($$$1) {
+    function getTransitionEndEvent() {
+      var transitionEndEvent = '';
+      var transitionEndEvents = {
+        'WebkitTransition': 'webkitTransitionEnd',
+        'MozTransition': 'transitionend',
+        'OTransition': 'otransitionend',
+        'transition': 'transitionend'
+      };
+
+      for (var name in transitionEndEvents) {
+        if ({}.hasOwnProperty.call(transitionEndEvents, name)) {
+          var tempEl = document.createElement('p');
+
+          if (typeof tempEl.style[name] !== 'undefined') {
+            transitionEndEvent = transitionEndEvents[name];
+          }
+        }
+      }
+
+      return transitionEndEvent;
+    }
+
+    return {
+      isMobile: isMobile_1,
+      debounce: debounce_1,
+      queryString: queryString$1,
+      TRANSITION_END: getTransitionEndEvent(),
+      onTransitionEnd: function onTransitionEnd(el, callback) {
+        var _this = this;
+
+        var called = false;
+        $$$1(el).one(this.TRANSITION_END, function () {
+          callback();
+          called = true;
+        });
+        setTimeout(function () {
+          if (!called) $$$1(el).trigger(_this.TRANSITION_END);
+        }, this.getTransitionDurationFromElement(el));
+      },
+      getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+        if (!element) {
+          return 0;
+        } // Get transition-duration of the element.
+
+
+        var transitionDuration = $$$1(element).css('transition-duration');
+        var floatTransitionDuration = parseFloat(transitionDuration); // Return 0 if element or transition duration is not found.
+
+        if (!floatTransitionDuration) {
+          return 0;
+        } // If multiple durations are defined, take the first.
+
+
+        transitionDuration = transitionDuration.split(',')[0];
+        return parseFloat(transitionDuration) * 1000;
+      },
+      getTargetFromElement: function getTargetFromElement(element) {
+        var selector = element.getAttribute('data-target');
+
+        if (!selector || selector === '#') {
+          selector = element.getAttribute('href') || '';
+        }
+
+        try {
+          return document.querySelector(selector) ? selector : null;
+        } catch (err) {
+          return null;
+        }
+      }
+    };
+  }(jQuery);
 
   var Dropdown = function ($$$1, Popper) {
 
@@ -599,7 +691,7 @@
           this.element.setAttribute('aria-expanded', false);
           this.drop.removeAttribute('aria-hidden');
           this.drop.classList.remove('open--transition');
-          Util.onTransitionEnd(this.drop, function () {
+          Utils.onTransitionEnd(this.drop, function () {
             _this2.drop.classList.remove('open');
           });
         }
@@ -653,7 +745,7 @@
         value: function _getDropElement() {
           if (!this.drop) {
             var parent = this.element.parentNode;
-            var target = Util.getTargetFromElement(this.element);
+            var target = Utils.getTargetFromElement(this.element);
 
             if (target) {
               this.drop = document.querySelector(target);
