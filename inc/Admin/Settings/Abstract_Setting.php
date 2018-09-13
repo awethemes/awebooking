@@ -120,7 +120,7 @@ abstract class Abstract_Setting extends Form implements Setting {
 
 			// Sanitize value before save.
 			$raw_value = array_key_exists( $key, $raw_values ) ? $raw_values[ $key ] : '';
-			$value = abrs_sanitize_option( $key, $raw_value );
+			$value     = abrs_sanitize_option( $key, $raw_value );
 
 			// Update the field value.
 			if ( $is_translation && isset( $args['translatable'] ) && $args['translatable'] ) {
@@ -177,6 +177,11 @@ abstract class Abstract_Setting extends Form implements Setting {
 
 		foreach ( $this->sections as $id => $section ) {
 			$id = sanitize_title( $id );
+
+			if ( isset( $section->hidden ) && $section->hidden ) {
+				continue;
+			}
+
 			// @codingStandardsIgnoreLine
 			echo '<li><a href="' . esc_url( abrs_admin_route( '/settings', [ 'setting' => $this->get_id(), 'section' => $id ] ) ) . '" class="' . ( $this->current_section === $id ? 'current' : '' ) . '">' . esc_html( $section['title'] ) . '</a></li>';
 		}
