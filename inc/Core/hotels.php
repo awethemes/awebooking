@@ -54,14 +54,8 @@ function abrs_list_hotels( $args = [], $with_primary = false ) {
 
 	$wp_query = new WP_Query( $args );
 
-	$hotels = abrs_collect( $wp_query->posts )
+	return abrs_collect( $wp_query->posts )
 		->map_into( Hotel::class );
-
-	if ( $with_primary ) {
-		$hotels = $hotels->prepend( abrs_get_primary_hotel() );
-	}
-
-	return $hotels;
 }
 
 /**
