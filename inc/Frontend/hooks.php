@@ -24,4 +24,7 @@ add_action( 'abrs_single_room_sections',        'abrs_single_room_amenities', 15
 add_action( 'abrs_single_room_sections',        'abrs_single_room_gallery', 20          );
 add_action( 'abrs_single_room_sidebar',         'abrs_single_room_form', 10             );
 add_action( 'abrs_after_archive_loop',          'abrs_archive_pagination', 10           );
+
+add_action( 'abrs_single_hotel_sections',       'abrs_single_hotel_description', 10     );
+add_action( 'abrs_single_hotel_sections',       'abrs_single_hotel_rooms', 15           );
 // @codingStandardsIgnoreEnd

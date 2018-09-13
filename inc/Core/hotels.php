@@ -78,3 +78,25 @@ function abrs_get_orphan_room_types( $limit = -1 ) {
 		],
 	] );
 }
+
+/**
+ * Reuturns WP_Query of room types by hotel.
+ *
+ * @param int $hotel_id The hotel ID.
+ *
+ * @return \WP_Query
+ */
+function abrs_get_room_types_by_hotel( $hotel_id ) {
+	return new WP_Query( [
+		'post_type'      => Constants::ROOM_TYPE,
+		'post_status'    => 'publish',
+		'posts_per_page' => - 1,
+		'meta_query'     => [
+			[
+				'key'     => '_hotel_id',
+				'value'   => $hotel_id,
+				'compare' => '=',
+			],
+		],
+	] );
+}

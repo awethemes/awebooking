@@ -215,3 +215,23 @@ function abrs_archive_room_information() {
 function abrs_archive_room_occupancy() {
 	abrs_get_template_part( 'template-parts/archive/occupancy' );
 }
+
+/* Hotel templates */
+
+/**
+ * Gets single hotel description.
+ *
+ * @access private
+ */
+function abrs_single_hotel_description() {
+	abrs_get_template_part( 'template-parts/hotel/description' );
+}
+
+/**
+ * Gets single hotel description.
+ *
+ * @access private
+ */
+function abrs_single_hotel_rooms() {
+	abrs_get_template_part( 'template-parts/hotel/rooms' );
+}

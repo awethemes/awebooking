@@ -1,0 +1,43 @@
+.awebooking .list-hotel {
+  margin-bottom: 50px;
+}
+
+.list-hotel__title {
+  margin-bottom: 0;
+}
+
+.list-hotel__wrap {
+  margin-left: -15px;
+  margin-right: -15px;
+
+  @include clearfix;
+}
+
+.list-hotel__media {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  @include media-breakpoint-up(lg) {
+    width: 45%;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.list-hotel__info {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+
+  @include media-breakpoint-up(lg) {
+    width: 55%;
+  }
+}
+
+.list-hotel__additional-info {
+  font-style: italic;
+  margin-bottom: 15px;
+}
