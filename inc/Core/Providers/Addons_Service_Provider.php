@@ -11,7 +11,7 @@ class Addons_Service_Provider extends Service_Provider {
 	 *
 	 * @var string
 	 */
-	protected $when = 'wp_loaded';
+	protected $when = 'admin_init';
 
 	/**
 	 * Init (boot) the service provider.
@@ -19,11 +19,7 @@ class Addons_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		if ( ! Premium::get_api_code() ) {
+		if ( ! is_admin() || ! Premium::get_api_code() ) {
 			return;
 		}
 
