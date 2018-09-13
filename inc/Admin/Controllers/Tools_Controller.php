@@ -30,17 +30,17 @@ class Tools_Controller extends Controller {
 	/**
 	 * Perform execute tools task.
 	 *
-	 * @param \Awethemes\Http\Request       $request The http request.
-	 * @param \AweBooking\Admin\Admin_Tools $tools   The admin tools instance.
-	 *
+	 * @param \Awethemes\Http\Request $request The http request.
 	 * @return mixed
 	 */
-	public function execute( Request $request, Admin_Tools $tools ) {
+	public function execute( Request $request ) {
 		if ( $request->filled( 'task' ) ) {
-			$response = $tools->run( $request->task );
+			check_admin_referer( 'awebooking_execute_task' );
 
-			if ( ! empty( $response['message'] ) ) {
-				abrs_admin_notices( $response['message'], 'info' );
+			$response = Admin_Tools::run( $request->task );
+
+			if ( ! is_wp_error( $response ) && isset( $response->message ) ) {
+				abrs_admin_notices( $response->message, 'info' );
 			}
 		}
 
@@ -50,14 +50,12 @@ class Tools_Controller extends Controller {
 	/**
 	 * Output the tools content.
 	 *
-	 * @param \Awethemes\Http\Request       $request The http request.
-	 * @param \AweBooking\Admin\Admin_Tools $tools   The admin tools instance.
-	 *
+	 * @param \Awethemes\Http\Request $request The http request.
 	 * @return void
 	 */
-	public function display_tools( Request $request, Admin_Tools $tools ) {
+	public function display_tools( Request $request ) {
 		abrs_admin_template_part( 'tools/html-tools.php', [
-			'tools' => $tools->get_tools(),
+			'tools' => Admin_Tools::all(),
 		]);
 	}
 

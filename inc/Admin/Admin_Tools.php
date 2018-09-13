@@ -1,56 +1,105 @@
 <?php
 namespace AweBooking\Admin;
 
+use WP_Error;
 use AweBooking\Roles;
+use Illuminate\Support\Arr;
 
 class Admin_Tools {
+	/**
+	 * A list of available tools for use in the system status section.
+	 *
+	 * @return array
+	 */
+	public static function all() {
+		return apply_filters( 'abrs_debug_tools', [
+			'clear_expired_transients' => [
+				'name'     => esc_html__( 'Expired transients', 'awebooking' ),
+				'button'   => esc_html__( 'Clear transients', 'awebooking' ),
+				'desc'     => esc_html__( 'This tool will clear ALL expired transients from WordPress.', 'awebooking' ),
+				'callback' => [ __CLASS__, 'clear_expired_transients' ],
+			],
+			'optimize_database'        => [
+				'name'     => esc_html__( 'Optimize database', 'awebooking' ),
+				'button'   => esc_html__( 'Optimize', 'awebooking' ),
+				'desc'     => esc_html__( 'This tool will delete all orphan rows in AweBooking tables.', 'awebooking' ),
+				'callback' => [ __CLASS__, 'optimize_database' ],
+			],
+			'reset_roles' => array(
+				'name'     => esc_html__( 'Capabilities', 'awebooking' ),
+				'button'   => esc_html__( 'Reset capabilities', 'awebooking' ),
+				'desc'     => esc_html__( 'This tool will reset the admin, customer, receptionist and hotel manager roles to default.', 'awebooking' ),
+				'callback' => [ __CLASS__, 'reset_roles' ],
+			),
+			/*'set_orphan_rooms' => array(
+				'name'     => esc_html__( 'Update room types missing Hotel', 'awebooking' ),
+				'button'   => esc_html__( 'Update', 'awebooking' ),
+				'desc'     => esc_html__( '...', 'awebooking' ),
+				'callback' => [ __CLASS__, 'set_orphan_rooms' ],
+			),*/
+		]);
+	}
+
 	/**
 	 * Run a task.
 	 *
 	 * @param  string $task The task name.
-	 * @return array
+	 * @return \stdClass|\WP_Error
 	 */
-	public function run( $task ) {
-		$message = '';
+	public static function run( $task ) {
+		$tasks = static::all();
 
-		switch ( $task ) {
-			case 'clear_expired_transients':
-				/* translators: %d: amount of expired transients */
-				$message = sprintf( esc_html__( '%d transients rows cleared', 'awebooking' ), $this->clear_expired_transients() );
-				break;
-
-			case 'optimize_database':
-				$this->optimize_database();
-				$message = 'Optimized database!';
-				break;
-
-			case 'reset_roles':
-				$this->reset_roles();
-				$message = 'Roles successfully reset';
-				break;
+		if ( ! array_key_exists( $task, $tasks ) ) {
+			return new WP_Error( 'invalid', esc_html__( 'Task is not registered', 'awebooking' ), $task );
 		}
 
-		return compact( 'message' );
+		$callback = Arr::get( $tasks, $task . '.callback' );
+
+		if ( ! is_callable( $callback ) ) {
+			return new WP_Error( 'callable', esc_html__( 'Task is not supported action', 'awebooking' ), $task );
+		}
+
+		return $callback( false );
+	}
+
+	/**
+	 * Reset capabilities.
+	 *
+	 * @param bool $silent Prevent message or not.
+	 * @return \stdClass
+	 */
+	public static function reset_roles( $silent = false ) {
+		$roles = new Roles;
+
+		$roles->remove();
+		$roles->create();
+
+		return static::response( esc_html__( 'The roles has been reset successfully!', 'awebooking' ), $silent );
 	}
 
 	/**
 	 * Clear expired transients.
 	 *
-	 * @return int
+	 * @param bool $silent Prevent message or not.
+	 * @return \stdClass
 	 */
-	public function clear_expired_transients() {
+	public static function clear_expired_transients( $silent = false ) {
 		delete_transient( 'awebooking_premium_themes' );
 		delete_transient( 'awebooking_premium_addons' );
 
-		return abrs_delete_expired_transients();
+		$deleted = abrs_delete_expired_transients();
+
+		/* translators: %d: amount of expired transients */
+		return static::response( sprintf( esc_html__( '%d transients rows cleared', 'awebooking' ), $deleted ), $silent );
 	}
 
 	/**
 	 * Delete all orphan rows in AweBooking tables.
 	 *
-	 * @return void
+	 * @param bool $silent Prevent message or not.
+	 * @return \stdClass
 	 */
-	public function optimize_database() {
+	public static function optimize_database( $silent = false ) {
 		global $wpdb;
 
 		// Delete orphaned data. @codingStandardsIgnoreStart
@@ -67,43 +116,48 @@ class Admin_Tools {
 		$wpdb->query( "DELETE FROM {$wpdb->prefix}awebooking_pricing WHERE ({$sum_days}) = 0" );
 		$wpdb->query( "DELETE FROM {$wpdb->prefix}awebooking_availability WHERE ({$sum_days}) = 0" );
 		// @codingStandardsIgnoreEnd
+
+		return static::response( esc_html__( 'Optimized database!', 'awebooking' ), $silent );
 	}
 
 	/**
-	 * Reset capabilities.
+	 * Delete all orphan rows in AweBooking tables.
 	 *
-	 * @return void
+	 * @param bool $silent Prevent message or not.
+	 * @return \stdClass|null
 	 */
-	public function reset_roles() {
-		$roles = new Roles;
+	public static function set_orphan_rooms( $silent = false ) {
+		if ( ! abrs_multiple_hotels() ) {
+			return null;
+		}
 
-		// Remove then re-add caps and roles.
-		$roles->remove();
-		$roles->create();
+		$primary_hotel = abrs_get_page_id( 'primary_hotel' );
+		$updated = 0;
+
+		foreach ( abrs_get_orphan_room_types() as $room_id ) {
+			$_updated = update_post_meta( $room_id, '_hotel_id', $primary_hotel );
+
+			if ( $_updated ) {
+				$updated++;
+			}
+		}
+
+		return static::response( sprintf( esc_html__( '%d room type(s) has been updated!', 'awebooking' ), $updated ), $silent );
 	}
 
 	/**
-	 * A list of available tools for use in the system status section.
+	 * Response a message.
 	 *
-	 * @return array
+	 * @param string $message The message.
+	 * @param bool   $silent  Prevent message or not.
+	 *
+	 * @return \stdClass
 	 */
-	public function get_tools() {
-		return apply_filters( 'abrs_debug_tools', [
-			'clear_expired_transients' => [
-				'name'   => esc_html__( 'Expired transients', 'awebooking' ),
-				'button' => esc_html__( 'Clear transients', 'awebooking' ),
-				'desc'   => esc_html__( 'This tool will clear ALL expired transients from WordPress.', 'awebooking' ),
-			],
-			'optimize_database'        => [
-				'name'   => esc_html__( 'Optimize database', 'awebooking' ),
-				'button' => esc_html__( 'Optimize', 'awebooking' ),
-				'desc'   => esc_html__( 'This tool will delete all orphan rows in AweBooking tables.', 'awebooking' ),
-			],
-			'reset_roles' => array(
-				'name'   => esc_html__( 'Capabilities', 'awebooking' ),
-				'button' => esc_html__( 'Reset capabilities', 'awebooking' ),
-				'desc'   => esc_html__( 'This tool will reset the admin, customer, receptionist and hotel manager roles to default.', 'awebooking' ),
-			),
-		]);
+	protected static function response( $message, $silent = false ) {
+		$msg = new \stdClass;
+
+		$msg->message = ! $silent ? $message : null;
+
+		return $msg;
 	}
 }

@@ -1,5 +1,5 @@
 <form method="POST" action="<?php echo esc_url( abrs_admin_route( '/tools/execute' ) ); ?>">
-	<?php wp_nonce_field( 'awebooking_execute_tools' ); ?>
+	<?php wp_nonce_field( 'awebooking_execute_task' ); ?>
 
 	<table class="widefat fixed striped" cellspacing="0">
 		<tbody>
