@@ -32,6 +32,7 @@
 
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
+
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Classes.ClassInstantiation.MissingParenthesis" />
@@ -42,6 +43,10 @@
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
 		<exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing" />
+
+		<exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
