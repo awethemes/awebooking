@@ -116,6 +116,23 @@ function abrs_checkout_payments() {
 	]);
 }
 
+/**
+ * Get the terms and conditons checkbox text.
+ *
+ * @since 3.1.8
+ *
+ * @return string
+ */
+function abrs_get_terms_and_conditions_checkbox_text() {
+	$terms_page_id = abrs_get_page_id( 'terms' );
+	$terms_link    = $terms_page_id ? '<a href="' . esc_url( get_permalink( $terms_page_id ) ) . '" target="_blank">' . esc_html__( 'terms and conditions', 'awebooking' ) . '</a>' : esc_html__( 'terms and conditions', 'awebooking' );
+
+	/* translators: %s terms and conditions page name and link */
+	$text = sprintf( __( 'I have read and agree to the website %s', 'awebooking' ), '[terms]' );
+
+	return trim( apply_filters( 'abrs_get_terms_and_conditions_checkbox_text', str_replace( '[terms]', $terms_link, $text ) ) );
+}
+
 /* Globals */
 
 /**

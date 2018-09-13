@@ -31,6 +31,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php endif ?>
 
+<?php abrs_get_template( 'checkout/terms.php' ); ?>
+
 <div id="submit_booking" class="checkout__section checkout__section--submit">
 	<?php
 	do_action( 'abrs_before_submit_button' );

@@ -102,6 +102,16 @@ class General_Setting extends Abstract_Setting {
 			'after'            => $this->get_external_link_cb(),
 		]);
 
+		$this->add_field([
+			'id'               => 'page_terms',
+			'type'             => 'select',
+			'name'             => esc_html__( 'Terms and Conditions', 'awebooking' ),
+			'options_cb'       => $all_pages_cb,
+			'sanitization_cb'  => 'absint',
+			'classes'          => 'with-selectize',
+			'show_option_none' => '---',
+		]);
+
 		// Currency options.
 		$this->add_field([
 			'id'   => '__title_currency',

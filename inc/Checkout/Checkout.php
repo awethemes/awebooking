@@ -174,7 +174,7 @@ class Checkout {
 		$this->session->put( 'selected_payment_method', $data['payment_method'] );
 
 		// Update reservation totals.
-		$this->reservation->calculate_totals();
+		// $this->reservation->calculate_totals();
 	}
 
 	/**
@@ -494,7 +494,7 @@ class Checkout {
 	 * @param  \Awethemes\Http\Request    $request The http request.
 	 */
 	protected function validate_checkout( &$errors, $data, $request ) {
-		if ( empty( $data['terms'] ) && apply_filters( 'awebooking_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
+		if ( empty( $data['terms'] ) && apply_filters( 'abrs_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
 			$errors->add( 'terms', esc_html__( 'You must accept our Terms &amp; Conditions.', 'awebooking' ) );
 		}
 
