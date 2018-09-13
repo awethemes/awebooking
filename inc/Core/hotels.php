@@ -27,13 +27,11 @@ function abrs_get_hotel( $hotel = 0 ) {
  * @return \AweBooking\Model\Hotel
  */
 function abrs_get_primary_hotel() {
-	if ( ! awebooking()->bound( 'default_hotel' ) ) {
-		awebooking()->singleton( 'default_hotel', function () {
-			return new Hotel( 'default' );
-		});
+	if ( abrs_multiple_hotels() ) {
+		return new Hotel( abrs_get_page_id( 'primary_hotel' ) );
 	}
 
-	return awebooking()->make( 'default_hotel' );
+	return new Hotel( 'default' );
 }
 
 /**

@@ -23,7 +23,8 @@ class Notices_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'admin_notices', [ $this, 'display_admin_notices' ] );
+		add_action( 'admin_notices', [ $this, 'display_flash_notices' ] );
+		// add_action( 'admin_notices', [ $this, 'notice_objects_with_no_lang' ] );
 	}
 
 	/**
@@ -33,11 +34,27 @@ class Notices_Service_Provider extends Service_Provider {
 	 *
 	 * @access private
 	 */
-	public function display_admin_notices() {
+	public function display_flash_notices() {
 		$messages = $this->plugin['admin_notices']->all();
 
 		if ( $messages && $messages->isNotEmpty() ) {
 			include dirname( __DIR__ ) . '/views/admin-notices.php';
+		}
+	}
+
+	/**
+	 * Displays a notice when there are objects with no language assigned
+	 *
+	 * @access private
+	 */
+	public function notice_objects_with_no_lang() {
+		if ( abrs_multiple_hotels() && ( ! abrs_get_page_id( 'primary_hotel' ) || abrs_get_orphan_room_types( 1 ) ) ) {
+			printf(
+				'<div class="notice error"><p>%s <a href="%s">%s</a></p></div>',
+				esc_html__( 'There are room types without hotel.', 'awebooking' ),
+				'#',
+				esc_html__( 'You can set them all to the default language.', 'awebooking' )
+			);
 		}
 	}
 }
