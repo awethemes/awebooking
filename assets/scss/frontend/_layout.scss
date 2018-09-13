@@ -9,16 +9,20 @@
 
 .hotel-content__main {
   @include make-col(12);
+  order: 1;
 
   @include media-breakpoint-up(lg) {
     @include make-col(8);
+    order: 0;
   }
 }
 
 .hotel-content__aside {
   @include make-col(12);
+  order: 0;
 
   @include media-breakpoint-up(lg) {
     @include make-col(4);
+    order: 1;
   }
 }
