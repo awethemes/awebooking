@@ -26,11 +26,9 @@ class SearchForm {
 
     const fp = plugin.datepicker($rangepicker[0], {
       mode: 'range',
-      inline: true,
       altInput: false,
       clickOpens: false,
       closeOnSelect: true,
-      appendTo: self.$el.find('.searchbox__popup')[0],
 
       onReady(_, __, fp) {
         fp.calendarContainer.classList.add('awebooking-datepicker')

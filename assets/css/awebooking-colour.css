@@ -826,9 +826,17 @@
   box-sizing: border-box;
 }
 
+.searchbox {
+  margin: 0;
+  width: 100%;
+  display: block;
+}
+
 .searchbox__wrap {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   width: 100%;
   min-height: 1px;
   position: relative;
@@ -837,6 +845,8 @@
 }
 
 .searchbox__box {
+  cursor: pointer;
+  z-index: 5;
   position: relative;
 }
 
@@ -845,28 +855,320 @@
   box-shadow: none;
 }
 
-.searchbox__box--dates {
-  display: flex;
-  flex-wrap: wrap;
+.searchbox__box-wrap {
+  z-index: 10;
+  position: relative;
+  padding: 5px 0;
 }
 
-.searchbox__box--dates .searchbox__box--checkin,
-.searchbox__box--dates .searchbox__box--checkout {
-  flex: 1 1 50%;
+.searchbox__box-label,
+.searchbox--box-line-occupancy {
+  font-weight: 600;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+.searchbox__box-input {
+  line-height: 1;
+}
+
+.searchbox__box-icon {
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  padding: 0;
+  margin: auto 0;
+  overflow: hidden;
+  display: inline-block;
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+}
+
+.searchbox__box-line {
+  display: block;
+  margin-left: 48px;
+}
+
+.searchbox__input.input-transparent,
+.searchbox__input-display {
+  line-height: 1;
+  display: inline-block;
+}
+
+.button--search.searchbox__submit {
+  min-width: 130px;
+}
+
+.searchbox__input--hotel {
+  cursor: pointer;
+}
+
+.searchbox__box--occupancy {
+  z-index: 6;
+}
+
+/* Styles */
+
+.searchbox--inline {
+  display: flex;
+}
+
+.searchbox--inline .searchbox__wrap {
+  width: auto;
+  display: inline-flex;
+}
+
+.searchbox--align-center.searchbox--inline {
+  justify-content: center;
+}
+
+.searchbox--align-center:not(.searchbox--inline) .searchbox__wrap {
+  justify-content: center;
+}
+
+.searchbox--align-right.searchbox--inline {
+  justify-content: flex-end;
+}
+
+.searchbox--align-right:not(.searchbox--inline) .searchbox__wrap {
+  justify-content: flex-end;
+}
+
+.searchbox--horizontal .searchbox__wrap {
+  padding: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.searchbox--horizontal .searchbox__box {
+  padding: .3rem;
+  margin: 0 0 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.searchbox--horizontal .searchbox__box--button {
+  padding: 0;
+}
+
+.searchbox--horizontal .button.searchbox__submit {
+  width: 100%;
+}
+
+.searchbox--horizontal-agoda .searchbox__wrap {
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.searchbox--horizontal-agoda .searchbox__box-wrap {
+  margin: 0 5px 0 0;
+  padding: .3rem;
+  background-color: #fff;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.07);
+}
+
+.searchbox--horizontal-agoda .searchbox__box--checkin .searchbox__box-wrap {
+  margin-right: 0;
+}
+
+.searchbox--horizontal-agoda .searchbox__box--button {
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  background-color: transparent;
+  min-width: 130px;
+}
+
+.searchbox--horizontal-agoda .searchbox__box--button .searchbox__box-wrap {
+  padding: 0;
+  height: 100%;
+  margin-right: 0;
+}
+
+.searchbox--horizontal-agoda .button.searchbox__submit {
+  width: 100%;
+  height: 100%;
+  display: block;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.07);
+}
+
+.searchbox--vertical .searchbox__box,
+.searchbox--vertical-agoda .searchbox__box {
+  padding: 0;
+  margin: 0 0 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.searchbox--vertical .searchbox__box--button.searchbox__box,
+.searchbox--vertical-agoda .searchbox__box--button.searchbox__box {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.searchbox--vertical .searchbox__box {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.searchbox--vertical .button.searchbox__submit {
+  width: 100%;
+}
+
+.searchbox--vertical-agoda .searchbox__box {
+  height: 64px;
+}
+
+.searchbox--vertical-agoda .searchbox__box--hotel {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.searchbox--vertical-agoda .searchbox__box--checkin,
+.searchbox--vertical-agoda .searchbox__box--checkout {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.searchbox--vertical-agoda .searchbox__box--occupancy {
+  flex: 0 0 66.66667%;
+  max-width: 66.66667%;
+}
+
+.searchbox--vertical-agoda .searchbox__box--button {
+  flex: 0 0 33.33333%;
+  max-width: 33.33333%;
+}
+
+.searchbox--vertical-agoda .searchbox__box:not(.searchbox__box--button) .searchbox__box-wrap {
+  padding: 8px 12px;
+}
+
+.searchbox--vertical-agoda .searchbox__box--button .searchbox__box-wrap {
+  padding-left: 12px;
+}
+
+.searchbox--vertical-agoda .searchbox__box-icon {
+  top: 8px;
+  left: 12px;
+  font-size: 26px;
+}
+
+.searchbox--vertical-agoda .searchbox__box-line {
+  margin-left: 48px;
+}
+
+.searchbox--vertical-agoda .button.searchbox__submit {
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+}
+
+/* Pop-up */
 
 .searchbox__popup {
   display: none;
   position: absolute;
-  z-index: 9994;
   width: 100%;
+  border: solid 1px #eee;
+  top: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  z-index: 1001;
 }
 
 .searchbox__popup.open {
   display: block;
 }
 
-/* Styles */
+.searchbox-occupancy-info {
+  font-size: 1rem;
+}
+
+.searchbox-occupancy-info__item:not(:last-child):after {
+  content: ',';
+}
+
+.searchbox__input--hotel {
+  height: auto;
+}
+
+.searchbox__spinner {
+  padding: 10px 0 10px 48px;
+}
+
+.searchbox__spinner:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.searchbox__spinner:hover .searchbox__spinner-button {
+  visibility: visible;
+  opacity: 1;
+}
+
+.searchbox__spinner-box {
+  position: relative;
+  padding: 10px 0;
+}
+
+.searchbox__spinner-title {
+  display: inline-block;
+  line-height: 1;
+}
+
+.searchbox__spinner-wrap {
+  display: inline-block;
+  float: right;
+  padding-right: 40px;
+}
+
+.searchbox__spinner-wrap input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="number"].searchbox__spinner-input {
+  border: none;
+  background-color: transparent;
+  padding: 0 15px;
+  display: inline-block;
+  text-align: right;
+  max-width: 100px;
+}
+
+.searchbox__spinner-button {
+  position: absolute;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  color: #d8d8d8;
+  font-weight: 300;
+  border: 1px solid #d8d8d8;
+  background-color: transparent;
+  border-radius: 50%;
+  visibility: visible;
+  opacity: 1;
+  transition: all .3s ease;
+}
+
+.searchbox__spinner-button--increment {
+  top: 0;
+}
+
+.searchbox__spinner-button--decrement {
+  bottom: 0;
+}
 
 .filterbox {
   margin: 0;
@@ -951,11 +1253,13 @@
 .hotel-content__main {
   flex: 0 0 100%;
   max-width: 100%;
+  order: 1;
 }
 
 .hotel-content__aside {
   flex: 0 0 100%;
   max-width: 100%;
+  order: 0;
 }
 
 .roommaster {
@@ -1373,6 +1677,7 @@ ul.booking_details li:last-of-type {
 
 .reservation-goto-checkout {
   margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .reservation {
@@ -1802,6 +2107,46 @@ ul.booking_details li:last-of-type {
   margin-bottom: 10px;
 }
 
+.awebooking .list-hotel {
+  margin-bottom: 50px;
+}
+
+.list-hotel__title {
+  margin-bottom: 0;
+}
+
+.list-hotel__wrap {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.list-hotel__wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.list-hotel__media {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-hotel__media img {
+  width: 100%;
+}
+
+.list-hotel__info {
+  width: 100%;
+  float: left;
+  padding: 0 15px;
+}
+
+.list-hotel__additional-info {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
 @media (min-width: 576px) {
   .awebooking-container {
     max-width: 540px;
@@ -1811,6 +2156,52 @@ ul.booking_details li:last-of-type {
 @media (min-width: 768px) {
   .awebooking-container {
     max-width: 720px;
+  }
+
+  .searchbox--horizontal .searchbox__wrap {
+    flex-direction: row;
+  }
+
+  .searchbox--horizontal .searchbox__box--hotel {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .searchbox--horizontal .searchbox__box--checkin,
+  .searchbox--horizontal .searchbox__box--checkout {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .searchbox--horizontal .searchbox__box--occupancy {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .searchbox--horizontal .searchbox__box--button {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 10px 0 10px 10px;
+  }
+
+  .searchbox--horizontal .button.searchbox__submit {
+    width: auto;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--hotel {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--checkin,
+  .searchbox--horizontal-agoda .searchbox__box--checkout {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--occupancy {
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 
   .filterbox__wrap {
@@ -1833,22 +2224,91 @@ ul.booking_details li:last-of-type {
     max-width: 960px;
   }
 
-  .searchbox.searchbox--horizontal .searchbox__wrap {
+  .searchbox--horizontal .searchbox__wrap {
     flex-direction: row;
+    flex-wrap: nowrap;
   }
 
-  .searchbox.searchbox--horizontal .searchbox__box {
-    flex: 1 1 50%;
+  .searchbox--horizontal .searchbox__box--hotel {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal .searchbox__box--checkin,
+  .searchbox--horizontal .searchbox__box--checkout {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal .searchbox__box--occupancy {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .searchbox--horizontal .searchbox-occupancy-info {
+    font-size: 0.75rem;
+  }
+
+  .searchbox--horizontal .searchbox__wrap {
+    align-items: center;
+    background-color: #fff;
+    padding: .3rem;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .searchbox--horizontal .searchbox__box {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .searchbox--horizontal .searchbox__box:not(:last-child) {
+    padding: 0 12px 0 0;
+    box-shadow: 1px 0 0 rgba(0, 0, 0, 0.07);
+  }
+
+  .searchbox--horizontal .searchbox__box--button {
+    flex: 0 0 15%;
+    max-width: 15%;
+    text-align: center;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--hotel {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--checkin,
+  .searchbox--horizontal-agoda .searchbox__box--checkout {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--occupancy {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox-occupancy-info {
+    font-size: 0.75rem;
+  }
+
+  .searchbox__spinner-button {
+    visibility: hidden;
+    opacity: 0;
   }
 
   .hotel-content__main {
     flex: 0 0 66.66667%;
     max-width: 66.66667%;
+    order: 0;
   }
 
   .hotel-content__aside {
     flex: 0 0 33.33333%;
     max-width: 33.33333%;
+    order: 1;
   }
 
   .columns.roommaster-list__header {
@@ -1889,11 +2349,69 @@ ul.booking_details li:last-of-type {
   .room-gallery__item {
     width: 25%;
   }
+
+  .list-hotel__media {
+    width: 45%;
+  }
+
+  .list-hotel__info {
+    width: 55%;
+  }
 }
 
 @media (min-width: 1200px) {
   .awebooking-container {
     max-width: 1140px;
+  }
+
+  .searchbox--horizontal .searchbox__box--hotel {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal .searchbox__box--checkin,
+  .searchbox--horizontal .searchbox__box--checkout {
+    flex: 0 0 15%;
+    max-width: 15%;
+  }
+
+  .searchbox--horizontal .searchbox__box--occupancy {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+
+  .searchbox--horizontal .searchbox__box--button {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal .searchbox-occupancy-info {
+    font-size: 1rem;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--hotel {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--checkin,
+  .searchbox--horizontal-agoda .searchbox__box--checkout {
+    flex: 0 0 15%;
+    max-width: 15%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--occupancy {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox__box--button {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .searchbox--horizontal-agoda .searchbox-occupancy-info {
+    font-size: 1rem;
   }
 
   .reservation-dates {

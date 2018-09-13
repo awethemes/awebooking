@@ -106,11 +106,9 @@
 
       var fp = plugin.datepicker($rangepicker[0], {
         mode: 'range',
-        inline: true,
         altInput: false,
         clickOpens: false,
         closeOnSelect: true,
-        appendTo: self.$el.find('.searchbox__popup')[0],
         onReady: function onReady(_, __, fp) {
           fp.calendarContainer.classList.add('awebooking-datepicker');
           this.config.ignoredFocusElements.push($('.searchbox__box--checkin', self.$el)[0]);
