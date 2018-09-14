@@ -274,7 +274,7 @@ class Room_Type_Data_Form extends Form {
 			'name'         => esc_html__( 'Gallery', 'awebooking' ),
 			'query_args'   => [ 'type' => 'image' ],
 			'text'         => [ 'add_upload_files_text' => esc_html__( 'Select Images', 'awebooking' ) ],
-			'preview_size' => 'small',
+			'preview_size' => [ 125, 125 ],
 			'translatable' => true,
 			'grid_row'     => true,
 		]);
