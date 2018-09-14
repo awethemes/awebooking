@@ -1444,15 +1444,16 @@
     }
 
     var confirm = window.swal({
-      toast: true,
       text: message || this.i18n.warning,
-      type: 'warning',
+      customClass: 'awebooking-confirm-dialog',
       position: 'center',
+      animation: false,
+      backdrop: 'rgba(0,0,0,.8)',
       reverseButtons: true,
       buttonsStyling: false,
       showCancelButton: true,
-      cancelButtonClass: 'button',
-      confirmButtonClass: 'button button-primary',
+      cancelButtonClass: '',
+      confirmButtonClass: '',
       cancelButtonText: this.i18n.cancel,
       confirmButtonText: this.i18n.ok
     });
