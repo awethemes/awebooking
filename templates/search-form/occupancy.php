@@ -21,14 +21,8 @@ if ( ! $atts['occupancy'] ) {
 
 <div tabindex="0" class="searchbox__box searchbox__box--occupancy">
 	<div class="searchbox__box-wrap">
-		<div class="searchbox__box-icon">
-			<i class="aficon aficon-people"></i>
-		</div>
-
 		<div class="searchbox__box-line">
-			<label class="searchbox__box-label">
-				<span><?php esc_html_e( 'Customer', 'awebooking' ); ?></span>
-			</label>
+			<label class="searchbox__box-label"><span><?php esc_html_e( 'Customer', 'awebooking' ); ?></span></label>
 
 			<div class="searchbox__box-input searchbox-occupancy-info">
 				<span class="searchbox-occupancy-info__item">

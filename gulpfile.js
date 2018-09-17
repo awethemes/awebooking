@@ -1,61 +1,56 @@
 'use strict';
 
-const gulp         = require('gulp');
-const debug        = require('gulp-debug');
-const plumber      = require('gulp-plumber');
-const notify       = require('gulp-notify');
-const sourcemaps   = require('gulp-sourcemaps');
-const sass         = require('gulp-sass');
+const gulp         = require('gulp')
+const debug        = require('gulp-debug')
+const plumber      = require('gulp-plumber')
+const notify       = require('gulp-notify')
+const sourcemaps   = require('gulp-sourcemaps')
+const sass         = require('gulp-sass')
+const postcss      = require('gulp-postcss')
 const autoprefixer = require('gulp-autoprefixer');
-const gcmq         = require('gulp-group-css-media-queries');
-const cleanCSS     = require('gulp-clean-css');
-const rollup       = require('gulp-better-rollup');
-const uglify       = require('gulp-uglify');
-const rename       = require('gulp-rename');
-const potgen       = require('gulp-wp-pot');
-const browserSync  = require('browser-sync').create();
-const del          = require('del');
-const map          = require('lodash.map');
-const pkg          = require('./package.json');
+const gcmq         = require('gulp-group-css-media-queries')
+const cleanCSS     = require('gulp-clean-css')
+const rollup       = require('gulp-better-rollup')
+const uglify       = require('gulp-uglify')
+const rename       = require('gulp-rename')
+const potgen       = require('gulp-wp-pot')
+const browserSync  = require('browser-sync').create()
+const del          = require('del')
+const map          = require('lodash.map')
+const pkg          = require('./package.json')
 
-const resolve      = require('rollup-plugin-node-resolve')
-const commonjs     = require('rollup-plugin-commonjs')
-const babel        = require('rollup-plugin-babel')
+const rollupConfig = () => {
+  const resolve  = require('rollup-plugin-node-resolve')
+  const commonjs = require('rollup-plugin-commonjs')
+  const babel    = require('rollup-plugin-babel')
 
-const rollupConfig = {
-  rollup: require('rollup'),
-  external: Object.keys(pkg.globals),
-  plugins: [
-    resolve(),
-    commonjs(),
-    babel({
-      babelrc: false,
-      runtimeHelpers: true,
-      externalHelpers: true,
-      presets: ['@babel/preset-env']
-    }),
-  ]
+  return {
+    rollup: require('rollup'),
+    external: Object.keys(pkg.globals),
+    plugins: [
+      resolve(),
+      commonjs(),
+      babel({
+        babelrc: false,
+        runtimeHelpers: true,
+        externalHelpers: true,
+        presets: ['@babel/preset-env']
+      }),
+    ]
+  }
 }
 
 /**
  * Handle errors and alert the user.
  */
-function handleErrors() {
-  const args = Array.prototype.slice.call(arguments)
-
-  notify.onError({
-    title: 'Task Failed! See console.',
-    message: '<%= error.message %>',
-  }).apply(this, args)
-
-  // Prevent the 'watch' task from stopping
-  this.emit('end')
+const handleErrors = (r) => {
+  notify.onError('ERROR: <%= error.message %>\n')(r)
 }
 
 gulp.task('scss', () => {
   return gulp.src('assets/scss/*.scss')
      .pipe(debug())
-     .pipe(plumber({ errorHandler: handleErrors }))
+     .pipe(plumber(handleErrors))
      .pipe(sourcemaps.init())
      .pipe(sass().on('error', sass.logError))
      .pipe(autoprefixer())
@@ -68,9 +63,9 @@ gulp.task('scss', () => {
 gulp.task('babel', () => {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(debug())
-    .pipe(plumber({ errorHandler: handleErrors }))
+    .pipe(plumber(handleErrors))
     .pipe(sourcemaps.init())
-    .pipe(rollup(rollupConfig, {
+    .pipe(rollup(rollupConfig(), {
       format: 'iife',
       globals: pkg.globals || {}
     }))
@@ -90,7 +85,7 @@ gulp.task('minify:js', () => {
 gulp.task('minify:css', () => {
   return gulp.src(['assets/css/*.css', '!assets/css/*.min.css'])
     .pipe(debug())
-    .pipe(plumber({ errorHandler: handleErrors }))
+    .pipe(plumber(handleErrors))
     .pipe(cleanCSS())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('assets/css'))
@@ -98,13 +93,13 @@ gulp.task('minify:css', () => {
 
 gulp.task('i18n', () => {
   return gulp.src(['*.php', 'inc/**/*.php', 'component/**/*.php', 'templates/**/*.php', '!vendor/**', '!tests/**'])
-    .pipe(plumber({ errorHandler: handleErrors }))
+    .pipe(plumber(handleErrors))
     .pipe(potgen({ domain: pkg.name, package: 'AweBooking' }))
     .pipe(gulp.dest(`languages/${pkg.name}.pot`))
 })
 
 gulp.task('copy', (done) => {
-  map(pkg.copyFiles, (files, vendor) => {
+  map(pkg.copyFiles || {}, (files, vendor) => {
     return gulp.src(files).pipe(gulp.dest('assets/vendor/' + vendor))
   })
 
