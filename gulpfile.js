@@ -40,19 +40,6 @@ const rollupConfig = () => {
   }
 }
 
-const postcssConfig = () => {
-  const tailwindcss  = require('tailwindcss')
-
-  return {
-    plugins: [
-      tailwindcss('./assets/scss/tailwind.js')
-    ],
-    options: {
-      syntax: require('postcss-scss'),
-    }
-  }
-}
-
 /**
  * Handle errors and alert the user.
  */
@@ -65,7 +52,6 @@ gulp.task('scss', () => {
      .pipe(debug())
      .pipe(plumber(handleErrors))
      .pipe(sourcemaps.init())
-     .pipe(postcss(postcssConfig))
      .pipe(sass().on('error', sass.logError))
      .pipe(autoprefixer())
      .pipe(gcmq())

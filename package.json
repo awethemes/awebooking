@@ -70,8 +70,7 @@
     "query-string": "^6.1.0",
     "selectize": "^0.12.6",
     "sortablejs": "^1.7.0",
-    "sweetalert2": "^7.26.28",
-    "tailwindcss": "^0.6.5",
+    "sweetalert2": "^7.26.29",
     "tippy.js": "^2.6.0",
     "waypoints": "^4.0.1"
   },
@@ -91,7 +90,6 @@
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
@@ -99,8 +97,7 @@
     "gulp-wp-pot": "^2.3.2",
     "icon.font": "^1.1.0",
     "lodash.map": "^4.6.0",
-    "postcss-scss": "^2.0.0",
-    "rollup": "^0.65.2",
+    "rollup": "^0.66.0",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-node-resolve": "^3.4.0"
