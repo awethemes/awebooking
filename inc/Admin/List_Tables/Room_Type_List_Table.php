@@ -33,6 +33,7 @@ class Room_Type_List_Table extends Abstract_List_Table {
 		$show_columns              = [];
 		$show_columns['thumb']     = '<span class="tippy" title="' . esc_attr__( 'Image', 'awebooking' ) . '"><span class="dashicons dashicons-format-image"></span><span class="screen-reader-text">' . esc_html__( 'Image', 'awebooking' ) . '</span></span>';
 		$show_columns['title']     = esc_html__( 'Title', 'awebooking' );
+		$show_columns['hotel']     = esc_html__( 'Hotel', 'awebooking' );
 		$show_columns['rooms']     = esc_html__( 'Rooms', 'awebooking' );
 		$show_columns['rate']      = esc_html__( 'Rack Rate', 'awebooking' );
 		$show_columns['occupancy'] = esc_html__( 'Occupancy', 'awebooking' );
@@ -78,6 +79,24 @@ class Room_Type_List_Table extends Abstract_List_Table {
 		}
 
 		printf( '<a href="%1$s">%2$s</a>', esc_url( get_edit_post_link( $post_id ) ), $thumbnail ); // @wpcs: XSS OK.
+	}
+
+	/**
+	 * Display the hotel column.
+	 *
+	 * @return void
+	 */
+	protected function display_hotel_column() {
+		global $the_room_type;
+
+		$hotel = abrs_get_hotel( $the_room_type->get( 'hotel_id' ) );
+
+		$hotel_name = '';
+		if ( $hotel ) {
+			$hotel_name = sprintf( '<a href="%1$s">%2$s</a>', esc_url( admin_url( 'edit.php??s&post_status=all&post_type=room_type&action=-1&m=0&hotel_id=' . $the_room_type->get( 'hotel_id' ) ) ), esc_html( $hotel->get( 'name' ) ) ); // @wpcs: XSS OK.
+		}
+
+		print $hotel_name; // WPCS: XSS OK.
 	}
 
 	/**
