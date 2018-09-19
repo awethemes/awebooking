@@ -9,7 +9,7 @@ class Processing extends Booking_Mail {
 	 */
 	public function setup() {
 		$this->id             = 'processing';
-		$this->title          = esc_html__( 'Processing booking', 'awebooking' );
+		$this->title          = esc_html__( 'Processing', 'awebooking' );
 		$this->description    = esc_html__( 'This is a booking notification sent to customers containing booking details after payment.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];
