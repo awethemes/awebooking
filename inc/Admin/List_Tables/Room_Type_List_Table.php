@@ -33,7 +33,11 @@ class Room_Type_List_Table extends Abstract_List_Table {
 		$show_columns              = [];
 		$show_columns['thumb']     = '<span class="tippy" title="' . esc_attr__( 'Image', 'awebooking' ) . '"><span class="dashicons dashicons-format-image"></span><span class="screen-reader-text">' . esc_html__( 'Image', 'awebooking' ) . '</span></span>';
 		$show_columns['title']     = esc_html__( 'Title', 'awebooking' );
-		$show_columns['hotel']     = esc_html__( 'Hotel', 'awebooking' );
+
+		if ( abrs_multiple_hotels() ) {
+			$show_columns['hotel']     = esc_html__( 'Hotel', 'awebooking' );
+		}
+
 		$show_columns['rooms']     = esc_html__( 'Rooms', 'awebooking' );
 		$show_columns['rate']      = esc_html__( 'Rack Rate', 'awebooking' );
 		$show_columns['occupancy'] = esc_html__( 'Occupancy', 'awebooking' );

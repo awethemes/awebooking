@@ -43,6 +43,20 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Developer Friendly
 * More features are on the way!
 
+== Premium features ==
+
+* [Online payment](https://awethemes.com/awebooking/addon/online-payment)
+* [Booking form builder](https://awethemes.com/awebooking/addon/booking-form-builder)
+* [Price breakdown](https://awethemes.com/awebooking/addon/price-breakdown)
+* [Enhanced calendar](https://awethemes.com/awebooking/addon/enhanced-calendar)
+* [Image gallery](https://awethemes.com/awebooking/addon/image-gallery)
+* [iCalendar](https://awethemes.com/awebooking/addon/icalendar)
+* [Simple reservation](https://awethemes.com/awebooking/addon/simple-reservation)
+* [reCAPTCHA](https://awethemes.com/awebooking/addon/recaptcha)
+* [Fast book](https://awethemes.com/awebooking/addon/fast-book)
+* [User profile](https://awethemes.com/awebooking/addon/user-profile)
+* [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
+
 You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
 
 == Screenshots ==
