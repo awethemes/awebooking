@@ -493,7 +493,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: inc/Core/templates.php:112, inc/Frontend/template-functions.php:115
+#: inc/Core/templates.php:116, inc/Frontend/template-functions.php:115
 msgid "Book Now"
 msgstr ""
 
@@ -818,7 +818,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates/search-form/hotel.php:36, inc/Admin/Settings/Hotel_Setting.php:15
+#: templates/search-form/hotel.php:36, inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/Settings/Hotel_Setting.php:15
 msgid "Hotel"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:30, inc/Admin/List_Tables/Room_Type_List_Table.php:36, templates/template-parts/hotel/rooms.php:25
+#: inc/Admin/Forms/Room_Type_Data_Form.php:30, inc/Admin/List_Tables/Room_Type_List_Table.php:41, templates/template-parts/hotel/rooms.php:25
 msgid "Rooms"
 msgstr ""
 
@@ -1166,7 +1166,7 @@ msgstr ""
 msgid "Pricing"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:108, inc/Admin/List_Tables/Room_Type_List_Table.php:37
+#: inc/Admin/Forms/Room_Type_Data_Form.php:108, inc/Admin/List_Tables/Room_Type_List_Table.php:42
 msgid "Rack Rate"
 msgstr ""
 
@@ -1418,7 +1418,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:64, inc/Admin/List_Tables/Room_Type_List_Table.php:39
+#: inc/Admin/List_Tables/Booking_List_Table.php:64, inc/Admin/List_Tables/Room_Type_List_Table.php:44
 msgid "Date"
 msgstr ""
 
@@ -1490,16 +1490,16 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/views/booking/add-room.php:64
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:43, inc/Admin/views/booking/add-room.php:64
 msgid "Occupancy"
 msgstr ""
 
 #. translators: %s Max occupancy
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:128
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:151
 msgid "Max %d"
 msgstr ""
 
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:141
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:164
 msgid "All hotels"
 msgstr ""
 
@@ -2002,11 +2002,7 @@ msgstr ""
 msgid "Email Options"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:31
-msgid "Email Notifications"
-msgstr ""
-
-#: inc/Admin/Settings/Email_Setting.php:37
+#: inc/Admin/Settings/Email_Setting.php:31, inc/Admin/Settings/Email_Setting.php:37
 msgid "Email templates"
 msgstr ""
 

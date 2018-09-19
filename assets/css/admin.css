@@ -1248,6 +1248,87 @@ table.awebooking-input-table tr:last-child td {
   margin-bottom: 1rem;
 }
 
+/* SweetAlert2 confirm dialog */
+
+.swal2-popup.awebooking-confirm-dialog {
+  padding: 0;
+  border-radius: 6px;
+  background-color: #fff;
+  min-width: 320px;
+  max-width: 360px;
+  /*
+  animation-name: _zoomIn;
+  animation-duration: .25s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+  */
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-header,
+.swal2-popup.awebooking-confirm-dialog .swal2-footer {
+  display: none !important;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-content {
+  color: #444;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 30px;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-actions {
+  margin: 0;
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-actions > [type="button"] {
+  color: #444;
+  font-size: 13px;
+  background: #fff;
+  font-weight: 700;
+  line-height: 50px;
+  flex: 1 1;
+  border: 0;
+  cursor: pointer;
+  padding: 0 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-actions > [type="button"]:focus {
+  outline: none;
+  background: #f2f2f2;
+  transition: background-color 0.24s ease-out;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-actions > [type="button"]:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.swal2-popup.awebooking-confirm-dialog .swal2-actions > [type="button"]:last-child {
+  color: #0095ff;
+  border-left: 1px solid #eee;
+  border-bottom-right-radius: 6px;
+}
+
+/*
+@keyframes _zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(.95);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+*/
+
 /* Input addon */
 
 .abrs-input-addon {
