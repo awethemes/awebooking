@@ -5,9 +5,11 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Illuminate\Container\Container;
+use Awethemes\Relationships\Manager;
+use Awethemes\Relationships\Storage;
 use Illuminate\Support\Arr;
+use Illuminate\Container\Container;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 final class Plugin extends Container {
 	use Support\Traits\Plugin_Provider,
@@ -141,12 +143,16 @@ final class Plugin extends Container {
 			return new Installer( $this );
 		});
 
-		$this->singleton( 'logger', function () {
-			return new Logger( 'awebooking', [ $this->get_monolog_handler() ] );
-		});
-
 		$this->singleton( 'multilingual', function() {
 			return new Multilingual;
+		});
+
+		$this->singleton( 'relationships', function () {
+			return new Manager( new Storage( 'awebooking_' ) );
+		} );
+
+		$this->singleton( 'logger', function () {
+			return new Logger( 'awebooking', [ $this->get_monolog_handler() ] );
 		});
 
 		$this->alias( 'logger', Logger::class );

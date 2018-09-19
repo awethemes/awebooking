@@ -66,6 +66,10 @@ class Installer {
 		add_filter( 'wpmu_drop_tables', [ $this, 'wpmu_drop_tables' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 		add_filter( "plugin_action_links_{$this->plugin->plugin_basename()}", [ $this, 'plugin_action_links' ] );
+
+		if ( $this->plugin->bound( 'relationships' ) ) {
+			$this->plugin['relationships']->init();
+		}
 	}
 
 	/**
@@ -446,23 +450,9 @@ class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		// Before updating with DBDELTA, remove any primary keys which could be
-		// modified due to schema updates. TODO: Remove in v3.2.
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}awebooking_relationships';" ) ) {
-			if ( $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'rel_id';" ) ) {
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_id`;" );
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP `rel_type`;" );
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP PRIMARY KEY;" );
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` DROP INDEX `rel_type`;" );
-			}
-
-			if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}awebooking_relationships` LIKE 'id';" ) ) {
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;" );
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}awebooking_relationships` ADD `type` VARCHAR(42) NOT NULL DEFAULT '';" );
-			}
-		}
-
 		dbDelta( $this->get_db_schema() );
+
+		$this->plugin['relationships']->install();
 	}
 
 	/**
