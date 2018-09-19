@@ -13,10 +13,10 @@ class Mailer extends Manager {
 	protected $templates = [
 		'invoice'       => \AweBooking\Email\Templates\Invoice::class,
 		'new_booking'   => \AweBooking\Email\Templates\New_Booking::class,
-		'cancelled'     => \AweBooking\Email\Templates\Cancelled::class,
 		'reserved'      => \AweBooking\Email\Templates\Reserved::class,
 		'processing'    => \AweBooking\Email\Templates\Processing::class,
 		'completed'     => \AweBooking\Email\Templates\Completed::class,
+		'cancelled'     => \AweBooking\Email\Templates\Cancelled::class,
 		'customer_note' => \AweBooking\Email\Templates\Customer_Note::class,
 	];
 
