@@ -33,6 +33,11 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	$atts = wp_parse_args( $atts, abrs_search_form_default_atts() );
 	$atts['res_request'] = isset( $atts['res_request'] ) ? $atts['res_request'] : null;
 
+	// TODO: Consider improve this!
+	if ( ! empty( $_GET['only'] ) && empty( $atts['only_room'] ) && abrs_is_search_page() ) {
+		$atts['only_room'] = sanitize_text_field( wp_unslash( $_GET['only'] ) );
+	}
+
 	/**
 	 * Fires before the search form is retrieved.
 	 *
