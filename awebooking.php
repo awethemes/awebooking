@@ -42,7 +42,7 @@ require_once dirname( __FILE__ ) . '/loader.php';
 // Create the AweBooking.
 $awebooking = new AweBooking( __FILE__ );
 
-// Install the awebooking.
+/* @var $installer \AweBooking\Installer */
 $installer = $awebooking->make( 'installer' );
 
 $installer->init();

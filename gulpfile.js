@@ -6,7 +6,6 @@ const plumber      = require('gulp-plumber')
 const notify       = require('gulp-notify')
 const sourcemaps   = require('gulp-sourcemaps')
 const sass         = require('gulp-sass')
-const postcss      = require('gulp-postcss')
 const autoprefixer = require('gulp-autoprefixer');
 const gcmq         = require('gulp-group-css-media-queries')
 const cleanCSS     = require('gulp-clean-css')
