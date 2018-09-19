@@ -239,7 +239,7 @@ class Installer {
 		$this->create_tables();
 		$this->create_roles();
 		$this->create_cron_jobs();
-		$this->create_default_hotel();
+		// $this->create_default_hotel();
 		$this->update_version();
 
 		// CHeck for the update DB.
