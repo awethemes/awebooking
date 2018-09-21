@@ -5,11 +5,10 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
-use Awethemes\Relationships\Manager;
-use Awethemes\Relationships\Storage;
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Awethemes\Relationships\Manager as Relationships;
 
 final class Plugin extends Container {
 	use Support\Traits\Plugin_Provider,
@@ -148,7 +147,7 @@ final class Plugin extends Container {
 		});
 
 		$this->singleton( 'relationships', function () {
-			return new Manager( new Storage( 'awebooking_' ) );
+			return Relationships::get_instance();
 		} );
 
 		$this->singleton( 'logger', function () {
