@@ -9,7 +9,7 @@ class Completed extends Booking_Mail {
 	 */
 	public function setup() {
 		$this->id             = 'completed';
-		$this->title          = esc_html__( 'Completed booking', 'awebooking' );
+		$this->title          = esc_html__( 'Completed', 'awebooking' );
 		$this->description    = esc_html__( 'Booking complete emails are sent to customers when their bookings are marked completed.', 'awebooking' );
 		$this->customer_email = true;
 		$this->placeholders   = [];

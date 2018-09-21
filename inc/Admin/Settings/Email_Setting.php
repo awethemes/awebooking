@@ -28,7 +28,7 @@ class Email_Setting extends Abstract_Setting {
 		$options->add_field([
 			'id'         => '__title_email_templates',
 			'type'       => 'title',
-			'name'       => esc_html__( 'Email Notifications', 'awebooking' ),
+			'name'       => esc_html__( 'Email templates', 'awebooking' ),
 		]);
 
 		$options->add_field([
@@ -36,7 +36,7 @@ class Email_Setting extends Abstract_Setting {
 			'type'       => 'include',
 			'name'       => esc_html__( 'Email templates', 'awebooking' ),
 			'include'    => trailingslashit( dirname( __DIR__ ) ) . 'views/settings/html-email-templates.php',
-			'show_names' => true,
+			'show_names' => false,
 		]);
 
 		$options->add_field([

@@ -27,6 +27,13 @@ class Url_Generator {
 	 * @return string
 	 */
 	public function get_availability_url( $query = [] ) {
+		// TODO: Consider improve this!
+		$http_request = abrs_http_request();
+
+		if ( $keeps = $http_request->only( [ 'hotel', 'only' ] ) ) {
+			$query = array_merge( $query, $keeps );
+		}
+
 		$availability_url = add_query_arg(
 			array_merge( (array) $query, $this->request->to_array() ),
 			abrs_get_page_permalink( 'search_results' )

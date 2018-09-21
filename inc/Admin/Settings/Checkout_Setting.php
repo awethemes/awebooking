@@ -75,7 +75,8 @@ class Checkout_Setting extends Abstract_Setting {
 		$prefix = sanitize_key( 'gateway_' . $gateway->get_method() );
 
 		$section = $this->add_section( $prefix, [
-			'title' => $gateway->get_method_title(),
+			'title'    => $gateway->get_method_title(),
+			'priority' => 100,
 		]);
 
 		// TODO: ...

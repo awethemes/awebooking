@@ -493,7 +493,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: inc/Core/templates.php:112, inc/Frontend/template-functions.php:115
+#: inc/Core/templates.php:121, inc/Frontend/template-functions.php:115
 msgid "Book Now"
 msgstr ""
 
@@ -770,19 +770,19 @@ msgstr ""
 msgid "Cheapest price first"
 msgstr ""
 
-#: templates/search/filter-form.php:40
+#: templates/search/filter-form.php:41
 msgid "Highest price first"
 msgstr ""
 
-#: templates/search/filter-form.php:50
+#: templates/search/filter-form.php:51
 msgid "Show price:"
 msgstr ""
 
-#: templates/search/filter-form.php:53
+#: templates/search/filter-form.php:54
 msgid "Per room per night"
 msgstr ""
 
-#: templates/search/filter-form.php:56
+#: templates/search/filter-form.php:57
 msgid "Price for whole stay"
 msgstr ""
 
@@ -818,7 +818,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates/search-form/hotel.php:36, inc/Admin/Settings/Hotel_Setting.php:15
+#: templates/search-form/hotel.php:36, inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/Settings/Hotel_Setting.php:15
 msgid "Hotel"
 msgstr ""
 
@@ -876,11 +876,11 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:134
+#: inc/Admin/Calendar/Booking_Scheduler.php:134, inc/Email/Templates/Processing.php:12
 msgid "Processing"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:135
+#: inc/Admin/Calendar/Booking_Scheduler.php:135, inc/Email/Templates/Reserved.php:12
 msgid "Reserved"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:30, inc/Admin/List_Tables/Room_Type_List_Table.php:36, templates/template-parts/hotel/rooms.php:25
+#: inc/Admin/Forms/Room_Type_Data_Form.php:30, inc/Admin/List_Tables/Room_Type_List_Table.php:41, templates/template-parts/hotel/rooms.php:25
 msgid "Rooms"
 msgstr ""
 
@@ -1166,7 +1166,7 @@ msgstr ""
 msgid "Pricing"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:108, inc/Admin/List_Tables/Room_Type_List_Table.php:37
+#: inc/Admin/Forms/Room_Type_Data_Form.php:108, inc/Admin/List_Tables/Room_Type_List_Table.php:42
 msgid "Rack Rate"
 msgstr ""
 
@@ -1418,7 +1418,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:64, inc/Admin/List_Tables/Room_Type_List_Table.php:39
+#: inc/Admin/List_Tables/Booking_List_Table.php:64, inc/Admin/List_Tables/Room_Type_List_Table.php:44
 msgid "Date"
 msgstr ""
 
@@ -1490,16 +1490,16 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:38, inc/Admin/views/booking/add-room.php:64
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:43, inc/Admin/views/booking/add-room.php:64
 msgid "Occupancy"
 msgstr ""
 
 #. translators: %s Max occupancy
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:128
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:151
 msgid "Max %d"
 msgstr ""
 
-#: inc/Admin/List_Tables/Room_Type_List_Table.php:141
+#: inc/Admin/List_Tables/Room_Type_List_Table.php:164
 msgid "All hotels"
 msgstr ""
 
@@ -2002,11 +2002,7 @@ msgstr ""
 msgid "Email Options"
 msgstr ""
 
-#: inc/Admin/Settings/Email_Setting.php:31
-msgid "Email Notifications"
-msgstr ""
-
-#: inc/Admin/Settings/Email_Setting.php:37
+#: inc/Admin/Settings/Email_Setting.php:31, inc/Admin/Settings/Email_Setting.php:37
 msgid "Email templates"
 msgstr ""
 
@@ -2751,19 +2747,19 @@ msgid "Container class"
 msgstr ""
 
 #: inc/Email/Templates/Cancelled.php:12
-msgid "Cancelled booking"
+msgid "Cancelled"
 msgstr ""
 
 #: inc/Email/Templates/Cancelled.php:13
-msgid "Cancelled booking emails are sent to chosen recipient(s) when bookings have been marked cancelled."
+msgid "Cancelled emails are sent to customers when bookings have been marked cancelled."
 msgstr ""
 
 #: inc/Email/Templates/Cancelled.php:39
-msgid "Cancelled booking #{booking_id}"
+msgid "Cancelled booking #{booking_number}"
 msgstr ""
 
 #: inc/Email/Templates/Completed.php:12
-msgid "Completed booking"
+msgid "Completed"
 msgstr ""
 
 #: inc/Email/Templates/Completed.php:13
@@ -2802,20 +2798,12 @@ msgstr ""
 msgid "[{site_title}] New customer booking #{booking_number} - {booking_date}"
 msgstr ""
 
-#: inc/Email/Templates/Processing.php:12
-msgid "Processing booking"
-msgstr ""
-
 #: inc/Email/Templates/Processing.php:13
 msgid "This is a booking notification sent to customers containing booking details after payment."
 msgstr ""
 
 #: inc/Email/Templates/Processing.php:29, inc/Email/Templates/Reserved.php:22
 msgid "Your {site_title} booking receipt from {date_created}"
-msgstr ""
-
-#: inc/Email/Templates/Reserved.php:12
-msgid "Reserved booking"
 msgstr ""
 
 #: inc/Email/Templates/Reserved.php:13

@@ -53,10 +53,12 @@ abstract class Booking_Mail extends Mailable {
 
 		$new_placeholders = [
 			'{booking_id}'              => $this->booking->get_id(),
+			'{booking_number}'          => $this->booking->get_id(),
 			'{status}'                  => $this->booking->get( 'status' ),
 			'{source}'                  => $this->booking->get( 'source' ),
 			'{created_via}'             => $this->booking->get( 'created_via' ),
 			'{date_created}'            => $this->booking->get( 'date_created' ),
+			'{booking_date}'            => $this->booking->get( 'date_created' ),
 			'{date_modified}'           => $this->booking->get( 'date_modified' ),
 			'{arrival_time}'            => $this->booking->get( 'arrival_time' ),
 			'{customer_note}'           => $this->booking->get( 'customer_note' ),

@@ -22,8 +22,8 @@ if ( ! $res_request || 'off' === abrs_get_option( 'display_filter_form' ) ) {
 	return;
 }
 
-$url_generator = new Url_Generator( $res_request );
 $http_request  = abrs_http_request();
+$url_generator = new Url_Generator( $res_request );
 
 ?>
 
@@ -36,6 +36,7 @@ $http_request  = abrs_http_request();
 					<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'cheapest' ] ) ); ?>" <?php selected( 'cheapest', $http_request->get( 'sortby' ) ); ?>>
 						<?php esc_html_e( 'Cheapest price first', 'awebooking' ); ?>
 					</option>
+
 					<option value="<?php echo esc_url( $url_generator->get_availability_url( [ 'sortby' => 'highest' ] ) ); ?>" <?php selected( 'highest', $http_request->get( 'sortby' ) ); ?>>
 						<?php esc_html_e( 'Highest price first', 'awebooking' ); ?>
 					</option>

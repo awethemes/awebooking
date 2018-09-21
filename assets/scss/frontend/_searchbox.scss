@@ -2,6 +2,8 @@ $searchbox-bg-color:         #fff !default;
 $searchbox-button-font-size: 1.1rem !default;
 $searchbox-button-min-width: 130px !default;
 
+$searchbox-box--border:      200px !default;
+
 /* Searchbox Layout */
 .searchbox,
 .searchbox__wrap,
@@ -12,9 +14,17 @@ $searchbox-button-min-width: 130px !default;
   box-sizing: border-box;
 }
 
+.searchbox {
+  margin: 0;
+  width: 100%;
+  display: block;
+}
+
 .searchbox__wrap {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   width: 100%;
   min-height: 1px;
   position: relative;
@@ -22,6 +32,8 @@ $searchbox-button-min-width: 130px !default;
 }
 
 .searchbox__box {
+  cursor: pointer;
+  z-index: 5;
   position: relative;
 
   &:focus {
@@ -30,38 +42,523 @@ $searchbox-button-min-width: 130px !default;
   }
 }
 
-.searchbox__box--dates {
-  display: flex;
-  flex-wrap: wrap;
+.searchbox__box-wrap {
+  z-index: 10;
+  position: relative;
+  padding: 5px 0;
+}
 
-  .searchbox__box--checkin,
-  .searchbox__box--checkout {
-    flex: 1 1 50%;
+.searchbox__box-label,
+.searchbox--box-line-occupancy {
+  font-weight: 600;
+  margin-bottom: 0;
+
+  @include text-truncate;
+}
+
+.searchbox__box-input {
+  line-height: 1;
+}
+
+.searchbox__box-icon {
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+
+  padding: 0;
+  margin: auto 0;
+  overflow: hidden;
+  display: inline-block;
+
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+}
+
+.searchbox__box-line {
+  display: block;
+  margin-left: 48px;
+}
+
+.searchbox__input.input-transparent,
+.searchbox__input-display {
+  line-height: 1;
+  display: inline-block;
+}
+
+.button--search.searchbox__submit {
+  min-width: 130px;
+}
+
+.searchbox__input--hotel {
+  cursor: pointer;
+}
+
+.searchbox__box--occupancy {
+  z-index: 6;
+}
+
+/* Styles */
+.searchbox--inline {
+  display: flex;
+
+  .searchbox__wrap {
+    width: auto;
+    display: inline-flex;
   }
 }
 
+.searchbox--align-center {
+  &.searchbox--inline {
+    justify-content: center;
+  }
+
+  &:not(.searchbox--inline) .searchbox__wrap {
+    justify-content: center;
+  }
+}
+
+.searchbox--align-right {
+  &.searchbox--inline{
+    justify-content: flex-end;
+  }
+
+  &:not(.searchbox--inline) .searchbox__wrap {
+    justify-content: flex-end;
+  }
+}
+
+// Layout Horizontal
+.searchbox--horizontal {
+  .searchbox__wrap {
+    padding: 0;
+    border-radius: 4px;
+    background-color: transparent;
+
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+    }
+
+    @include media-breakpoint-up(lg) {
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+
+  .searchbox__box {
+    padding: .3rem;
+    margin: 0 0 12px;
+    background-color: $searchbox-bg-color;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .searchbox__box--button {
+    padding: 0;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+  }
+
+  // Box width.
+  @include media-breakpoint-up(xl) {
+    .searchbox__box--hotel {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 15%;
+      max-width: 15%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 30%;
+      max-width: 30%;
+    }
+
+    .searchbox__box--button {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox-occupancy-info {
+      font-size: 1rem;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .searchbox__box--hotel {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+
+    .searchbox-occupancy-info {
+      font-size: 0.75rem;
+    }
+
+    .searchbox__wrap {
+      align-items: center;
+      background-color: $searchbox-bg-color;
+      padding: .3rem;
+      box-shadow: 0 1px 4px 0 rgba(black, .08);
+    }
+
+    .searchbox__box {
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+      box-shadow: none;
+
+      &:not(:last-child) {
+        padding: 0 12px 0 0;
+        box-shadow: 1px 0 0 rgba(0,0,0,.07);
+      }
+    }
+
+    .searchbox__box--button {
+      flex: 0 0 15%;
+      max-width: 15%;
+      text-align: center;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .searchbox__box--hotel {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .searchbox__box--button {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 10px 0 10px 10px;
+    }
+
+    .button.searchbox__submit {
+      width: auto;
+    }
+  }
+}
+
+.searchbox--horizontal-agoda {
+  .searchbox__wrap {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .searchbox__box-wrap {
+    margin: 0 5px 0 0;
+    padding: .3rem;
+    background-color: #fff;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+  }
+
+  // Box width.
+  .searchbox__box--hotel {
+    // flex-grow: 1;
+  }
+
+  .searchbox__box--checkin .searchbox__box-wrap {
+    margin-right: 0;
+  }
+
+  .searchbox__box--button {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background-color: transparent;
+    min-width: 130px;
+
+    .searchbox__box-wrap {
+      padding: 0;
+      height: 100%;
+      margin-right: 0;
+    }
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+    height: 100%;
+    display: block;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
+  }
+
+  // Box width.
+  @include media-breakpoint-up(xl) {
+    .searchbox__box--hotel {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 15%;
+      max-width: 15%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 30%;
+      max-width: 30%;
+    }
+
+    .searchbox__box--button {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox-occupancy-info {
+      font-size: 1rem;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .searchbox__box--hotel {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+
+    .searchbox-occupancy-info {
+      font-size: 0.75rem;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .searchbox__box--hotel {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .searchbox__box--occupancy {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+}
+
+// Layout Vertical
+%vertical-searchbox-box {
+  padding: 0;
+  margin: 0 0 12px;
+  background-color: $searchbox-bg-color;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+
+  &.searchbox__box--button {
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+.searchbox--vertical {
+  .searchbox__box {
+    @include make-col(12);
+    @extend %vertical-searchbox-box;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+  }
+}
+
+.searchbox--vertical-agoda {
+  .searchbox__box {
+    height: 64px;
+    @extend %vertical-searchbox-box;
+  }
+
+  .searchbox__box--hotel {
+    @include make-col(12);
+  }
+  .searchbox__box--checkin,
+  .searchbox__box--checkout {
+    @include make-col(6);
+  }
+  .searchbox__box--occupancy {
+    @include make-col(8);
+  }
+  .searchbox__box--button {
+    @include make-col(4);
+  }
+
+  .searchbox__box:not(.searchbox__box--button) .searchbox__box-wrap {
+    padding: 8px 12px; // height 65px.
+  }
+  .searchbox__box--button .searchbox__box-wrap {
+    padding-left: 12px;
+  }
+
+  .searchbox__box-wrap {
+    //height: 100%;
+  }
+
+  .searchbox__box-icon {
+    top: 8px;
+    left: 12px;
+    font-size: 26px;
+  }
+
+  .searchbox__box-line {
+    margin-left: 48px;
+  }
+
+  .button.searchbox__submit {
+    width: 100%;
+    //height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: $searchbox-button-font-size;
+  }
+}
+
+/* Pop-up */
 .searchbox__popup {
   display: none;
   position: absolute;
-  z-index: 9994;
   width: 100%;
+  border: solid 1px #eee;
+  top: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  z-index: 1001;
 
   &.open {
     display: block;
   }
 }
 
-/* Styles */
-.searchbox.searchbox--horizontal {
-  @include media-breakpoint-up(lg) {
-    .searchbox__wrap {
-      flex-direction: row;
-    }
+.searchbox-occupancy-info {
+  font-size: 1rem
+}
+
+.searchbox-occupancy-info__item {
+  &:not(:last-child):after {
+    content: ',';
+  }
+}
+
+.searchbox__input--hotel {
+  height: auto;
+}
+
+.searchbox__spinner {
+  padding: 10px 0 10px 48px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #eee;
   }
 
-  @include media-breakpoint-up(lg) {
-    .searchbox__box {
-      flex: 1 1 50%;
+  &:hover {
+    .searchbox__spinner-button {
+      visibility: visible;
+      opacity: 1;
     }
   }
 }
+
+.searchbox__spinner-box {
+  position: relative;
+  padding: 10px 0;
+}
+
+.searchbox__spinner-title {
+  display: inline-block;
+  line-height: 1;
+}
+
+.searchbox__spinner-wrap {
+  display: inline-block;
+  float: right;
+  padding-right: 40px;
+
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+}
+
+input[type="number"].searchbox__spinner-input {
+  border: none;
+  background-color: transparent;
+  padding: 0 15px;
+  display: inline-block;
+  text-align: right;
+  max-width: 100px;
+}
+
+.searchbox__spinner-button {
+  position: absolute;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  color: #d8d8d8;
+  font-weight: 300;
+  border: 1px solid #d8d8d8;
+  background-color: transparent;
+  border-radius: 50%;
+  visibility: visible;
+  opacity: 1;
+  transition: all .3s ease;
+
+  @include media-breakpoint-up(lg) {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.searchbox__spinner-button--increment {
+  top: 0;
+}
+
+.searchbox__spinner-button--decrement {
+  bottom: 0;
+}
+

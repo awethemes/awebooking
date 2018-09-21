@@ -9,11 +9,11 @@ class Cancelled extends Booking_Mail {
 	 */
 	public function setup() {
 		$this->id             = 'cancelled';
-		$this->title          = esc_html__( 'Cancelled booking', 'awebooking' );
-		$this->description    = esc_html__( 'Cancelled booking emails are sent to chosen recipient(s) when bookings have been marked cancelled.', 'awebooking' );
-		$this->customer_email = false;
+		$this->title          = esc_html__( 'Cancelled', 'awebooking' );
+		$this->description    = esc_html__( 'Cancelled emails are sent to customers when bookings have been marked cancelled.', 'awebooking' );
+		$this->customer_email = true;
 		$this->placeholders   = [
-			'{booking_id}' => '',
+			'{booking_number}' => '',
 		];
 	}
 
@@ -36,13 +36,13 @@ class Cancelled extends Booking_Mail {
 	 * {@inheritdoc}
 	 */
 	public function get_default_subject() {
-		return esc_html__( 'Cancelled booking #{booking_id}', 'awebooking' );
+		return esc_html__( 'Cancelled booking #{booking_number}', 'awebooking' );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_default_content() {
-		return '[{site_title}] The booking #{booking_id} from {customer_first_name} has been cancelled. The booking was as follows:';
+		return 'Your booking #{booking_number} has been cancelled!';
 	}
 }
