@@ -9,6 +9,7 @@
  * First, we need autoload via Composer to make everything works.
  */
 require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
+require trailingslashit( __DIR__ ) . 'awethemes/relationships/vendor/autoload.php';
 require trailingslashit( __DIR__ ) . 'vendor/webdevstudios/cmb2/init.php';
 
 // Require helpers & functions.

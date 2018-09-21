@@ -92,7 +92,7 @@ class Installer {
 	 * @return void
 	 */
 	public function deactivation() {
-		// ...
+		delete_transient( 'awebooking_installing' );
 	}
 
 	/**
@@ -171,8 +171,6 @@ class Installer {
 		$tables[] = $wpdb->prefix . 'awebooking_booking_items';
 		$tables[] = $wpdb->prefix . 'awebooking_booking_itemmeta';
 		$tables[] = $wpdb->prefix . 'awebooking_tax_rates';
-		$tables[] = $wpdb->prefix . 'awebooking_relationships';
-		$tables[] = $wpdb->prefix . 'awebooking_relationshipmeta';
 
 		return $tables;
 	}
@@ -452,7 +450,9 @@ class Installer {
 
 		dbDelta( $this->get_db_schema() );
 
-		$this->plugin['relationships']->install();
+		if ( $this->plugin->bound( 'relationships' ) ) {
+			$this->plugin['relationships']->get_storage()->install();
+		}
 	}
 
 	/**
@@ -535,25 +535,6 @@ CREATE TABLE `{$wpdb->prefix}awebooking_tax_rates` (
   `compound` INT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) $collate;
-CREATE TABLE `{$wpdb->prefix}awebooking_relationships` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(42) NOT NULL DEFAULT '',
-  `rel_from` BIGINT UNSIGNED NOT NULL,
-  `rel_to` BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `type` (`type`),
-  KEY `rel_from` (`rel_from`),
-  KEY `rel_to` (`rel_to`)
-) $collate;
-CREATE TABLE `{$wpdb->prefix}awebooking_relationshipmeta` (
-  `meta_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `awebooking_relationship_id` BIGINT UNSIGNED NOT NULL,
-  `meta_key` VARCHAR(191) DEFAULT NULL,
-  `meta_value` LONGTEXT NULL,
-  PRIMARY KEY (`meta_id`),
-  KEY `awebooking_relationship_id` (`awebooking_relationship_id`),
-  KEY `meta_key` (meta_key(32))
 ) $collate;
 ";
 
