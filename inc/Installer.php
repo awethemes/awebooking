@@ -33,6 +33,10 @@ class Installer {
 			'abrs_update_310_migrate_services',
 			'abrs_update_310_db_version',
 		],
+		'3.1.10' => [
+			'abrs_update_3110_remove_table_relationship',
+			'abrs_update_3110_db_version',
+		],
 	];
 
 	/**

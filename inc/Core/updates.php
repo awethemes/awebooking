@@ -92,3 +92,29 @@ function abrs_update_310_bookings() {
 function abrs_update_310_db_version( $installer ) {
 	$installer->update_db_version( '3.1.0' );
 }
+
+/**
+ * Remove awebooking_relationships table.
+ *
+ * @return void
+ */
+function abrs_update_3110_remove_table_relationship() {
+	global $wpdb;
+
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}awebooking_relationships';" ) ) {
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_relationships" );
+	}
+
+	if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}awebooking_relationships';" ) ) {
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}awebooking_relationships" );
+	}
+}
+
+/**
+ * Update DB Version for 3.1.10.
+ *
+ * @param \AweBooking\Installer $installer The installer instance.
+ */
+function abrs_update_3110_db_version( $installer ) {
+	$installer->update_db_version( '3.1.10' );
+}
