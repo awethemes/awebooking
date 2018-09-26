@@ -50,10 +50,12 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "AweBooking_Composer_Cleaner::clean"
+            "AweBooking_Composer_Cleaner::clean",
+            "@composer dump-autoload -d ./awethemes/relationships"
         ],
         "post-update-cmd": [
-            "AweBooking_Composer_Cleaner::clean"
+            "AweBooking_Composer_Cleaner::clean",
+            "@composer dump-autoload -d ./awethemes/relationships"
         ],
         "clean": [
             "AweBooking_Composer_Cleaner::clean"
