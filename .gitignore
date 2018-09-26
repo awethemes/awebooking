@@ -2,7 +2,6 @@
 Thumbs.db
 wp-cli.local.yml
 node_modules/
-/awethemes/
 /vendor/
 /.idea/
 *.sql

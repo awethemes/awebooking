@@ -1,0 +1,29 @@
+{
+    "name": "awethemes/relationships",
+    "description": "Create relationships between posts in WordPress",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "awethemes",
+            "email": "support@awethemes.com"
+        },
+        {
+            "name": "Nguyen Van Anh",
+            "email": "anhskohbo@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Awethemes\\Relationships\\": "inc/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.4"
+    },
+    "require-dev": {
+        "10up/wp_mock": "0.2.0",
+        "phpunit/phpunit": "5.7.*"
+    }
+}
