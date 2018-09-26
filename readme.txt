@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.1.9
+Stable tag:        3.1.10
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.10] - [2018-09-26]
+- API: Added relationships API.
+
 ### [v3.1.9] - [2018-09-19]
 - Change: Cancelled email now send to customer instead to admin.
 - New style for confirm dialog in admin area.
