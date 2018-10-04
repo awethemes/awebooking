@@ -46,10 +46,8 @@ function abrs_list_services( $args = [] ) {
 
 	$wp_query = new WP_Query( $args );
 
-	$services = abrs_collect( $wp_query->posts )
+	return abrs_collect( $wp_query->posts )
 		->map_into( Service::class );
-
-	return $services;
 }
 
 /**
@@ -68,8 +66,9 @@ function abrs_get_service_operations() {
 /**
  * Gets the services with price for selection.
  *
- * @param  array  $includes The services with price included.
- * @param  array  $context  The context to calculate price, see abrs_calc_service_price().
+ * @param array $query_args The query arguments.
+ * @param array $includes   The services with price included.
+ * @param array $context    The context to calculate price, see abrs_calc_service_price().
  * @return \AweBooking\Support\Collection
  */
 function abrs_services_for_reservation( array $query_args, array $includes, array $context ) {
