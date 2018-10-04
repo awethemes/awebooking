@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Core\Shortcode;
 
 use AweBooking\Constants;
@@ -18,13 +17,11 @@ class Single_Room_Shortcode extends Shortcode {
 	 * {@inheritdoc}
 	 */
 	public function output( $request ) {
-		$atts = $this->atts;
-
 		$args = [
 			'post_type'      => Constants::ROOM_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => 1,
-			'page_id'        => $atts['id'],
+			'page_id'        => $this->get_atts( 'id' ),
 		];
 
 		$query = new \WP_Query( $args );

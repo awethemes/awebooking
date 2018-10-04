@@ -1,5 +1,4 @@
 <?php
-
 namespace AweBooking\Core\Shortcode;
 
 use AweBooking\Constants;
@@ -11,6 +10,7 @@ class Rooms_Shortcode extends Shortcode {
 	 * @var array
 	 */
 	protected $defaults = [
+		'hotel'          => 0,
 		'orderby'        => '',
 		'order'          => '',
 		'posts_per_page' => 6,
@@ -23,11 +23,23 @@ class Rooms_Shortcode extends Shortcode {
 	public function output( $request ) {
 		// Pairs the input atts.
 		$args = [
-			'post_type'   => Constants::ROOM_TYPE,
-			'post_status' => 'publish',
+			'post_type'      => Constants::ROOM_TYPE,
+			'post_status'    => 'publish',
+			'orderby'        => $this->get_atts( 'orderby' ),
+			'order'          => $this->get_atts( 'order' ),
+			'posts_per_page' => $this->get_atts( 'posts_per_page' ),
+			'offset'         => $this->get_atts( 'offset' ),
 		];
 
-		$args = array_merge( $args, $this->atts );
+		if ( $this->get_atts( 'hotel' ) ) {
+			$args['meta_query'] = [
+				[
+					'key'     => '_hotel_id',
+					'value'   => $this->get_atts( 'hotel' ),
+					'compare' => '=',
+				],
+			];
+		}
 
 		$query = new \WP_Query( $args );
 
