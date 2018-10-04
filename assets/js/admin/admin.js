@@ -73,6 +73,25 @@
   debounce.debounce = debounce;
   var debounce_1 = debounce;
 
+  var isMobile_1 = isMobile;
+  var isMobile_2 = isMobile;
+  var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
+  var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
+
+  function isMobile(opts) {
+    if (!opts) opts = {};
+    var ua = opts.ua;
+    if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
+
+    if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
+      ua = ua.headers['user-agent'];
+    }
+
+    if (typeof ua !== 'string') return false;
+    return opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua);
+  }
+  isMobile_1.isMobile = isMobile_2;
+
   function _typeof(obj) {
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
@@ -146,25 +165,6 @@
   function _nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance");
   }
-
-  var isMobile_1 = isMobile;
-  var isMobile_2 = isMobile;
-  var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
-  var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
-
-  function isMobile(ua, opts) {
-    if (!opts && ua !== null && _typeof(ua) === 'object') opts = ua;
-    if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
-
-    if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-      ua = ua.headers['user-agent'];
-    }
-
-    if (typeof ua !== 'string') return false;
-    if (!opts) opts = {};
-    return opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua);
-  }
-  isMobile_1.isMobile = isMobile_2;
 
   var strictUriEncode = function strictUriEncode(str) {
     return encodeURIComponent(str).replace(/[!'()*]/g, function (x) {
@@ -442,19 +442,23 @@
   var parse_1 = parse;
 
   var stringify = function stringify(obj, options) {
-    var defaults = {
+    if (!obj) {
+      return '';
+    }
+
+    options = Object.assign({
       encode: true,
       strict: true,
       arrayFormat: 'none'
-    };
-    options = Object.assign(defaults, options);
+    }, options);
+    var formatter = encoderForArrayFormat(options);
+    var keys = Object.keys(obj);
 
-    if (options.sort === false) {
-      options.sort = function () {};
+    if (options.sort !== false) {
+      keys.sort(options.sort);
     }
 
-    var formatter = encoderForArrayFormat(options);
-    return obj ? Object.keys(obj).sort(options.sort).map(function (key) {
+    return keys.map(function (key) {
       var value = obj[key];
 
       if (value === undefined) {
@@ -502,10 +506,16 @@
       return encode(key, options) + '=' + encode(value, options);
     }).filter(function (x) {
       return x.length > 0;
-    }).join('&') : '';
+    }).join('&');
   };
 
   var parseUrl = function parseUrl(input, options) {
+    var hashStart = input.indexOf('#');
+
+    if (hashStart !== -1) {
+      input = input.slice(0, hashStart);
+    }
+
     return {
       url: input.split('?')[0] || '',
       query: parse(extract(input), options)

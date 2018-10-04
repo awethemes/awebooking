@@ -1963,7 +1963,8 @@ ul.booking_details li:last-of-type {
   color: #737d85;
 }
 
-.awebooking .list-room {
+.awebooking .list-room,
+.awebooking-block .list-room {
   margin-bottom: 50px;
 }
 

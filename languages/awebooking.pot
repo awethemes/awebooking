@@ -27,40 +27,40 @@ msgstr ""
 msgid "AweBooking requires at least WordPress version 4.6, you are running version %s. Please upgrade and try again!"
 msgstr ""
 
-#: inc/Installer.php:186
+#: inc/Installer.php:192
 msgid "View settings"
 msgstr ""
 
-#: inc/Installer.php:186, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:25
+#: inc/Installer.php:192, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/Providers/Menu_Service_Provider.php:62, inc/Admin/views/settings/index.php:25
 msgid "Settings"
 msgstr ""
 
-#: inc/Installer.php:205
+#: inc/Installer.php:211
 msgid "View documentation"
 msgstr ""
 
-#: inc/Installer.php:205
+#: inc/Installer.php:211
 msgid "Docs"
 msgstr ""
 
-#: inc/Installer.php:206
+#: inc/Installer.php:212
 msgid "Visit demo"
 msgstr ""
 
-#: inc/Installer.php:206
+#: inc/Installer.php:212
 msgid "Demo"
 msgstr ""
 
-#: inc/Installer.php:207, inc/Installer.php:207
+#: inc/Installer.php:213, inc/Installer.php:213
 msgid "Contribute"
 msgstr ""
 
-#: inc/Installer.php:406
+#: inc/Installer.php:412
 msgid "Default Hotel"
 msgstr ""
 
 #. translators: Default hotel slug
-#: inc/Installer.php:409
+#: inc/Installer.php:415
 msgctxt "Default hotel slug"
 msgid "Default Hotel"
 msgstr ""
@@ -355,23 +355,23 @@ msgstr ""
 msgid "Decrease"
 msgstr ""
 
-#: inc/Core/concierge.php:178, inc/Core/concierge.php:545, inc/Core/concierge.php:593
+#: inc/Core/concierge.php:178, inc/Core/concierge.php:551, inc/Core/concierge.php:599
 msgid "Invalid Room ID"
 msgstr ""
 
-#: inc/Core/concierge.php:264, inc/Core/concierge.php:312
+#: inc/Core/concierge.php:265, inc/Core/concierge.php:313
 msgid "Invalid rate ID"
 msgstr ""
 
-#: inc/Core/concierge.php:453
+#: inc/Core/concierge.php:456
 msgid "Invalid room type."
 msgstr ""
 
-#: inc/Core/concierge.php:462
+#: inc/Core/concierge.php:465
 msgid "Invalid rate plan."
 msgstr ""
 
-#: inc/Core/concierge.php:472
+#: inc/Core/concierge.php:475
 msgid "Unable to create the reservation request."
 msgstr ""
 
@@ -438,37 +438,37 @@ msgstr ""
 msgid "+ <span>%1$s%%</span> to price"
 msgstr ""
 
-#: inc/Core/functions.php:204
+#: inc/Core/functions.php:205
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:482
+#: inc/Core/functions.php:483
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:483
+#: inc/Core/functions.php:484
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:484
+#: inc/Core/functions.php:485
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:485
+#: inc/Core/functions.php:486
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:486
+#: inc/Core/functions.php:487
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:487
+#: inc/Core/functions.php:488
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/Core/functions.php:558, inc/Email/Mailable.php:352
+#: inc/Core/functions.php:559, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -477,15 +477,15 @@ msgstr ""
 msgid "<span>%1$s %2$s</span>"
 msgstr ""
 
-#: inc/Core/services.php:62
+#: inc/Core/services.php:60
 msgid "Add to price"
 msgstr ""
 
-#: inc/Core/services.php:63
+#: inc/Core/services.php:61
 msgid "Add to price per night"
 msgstr ""
 
-#: inc/Core/services.php:64
+#: inc/Core/services.php:62
 msgid "Increase price by % amount of room prices"
 msgstr ""
 
