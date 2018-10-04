@@ -38,10 +38,9 @@ function abrs_get_primary_hotel() {
  * Gets all hotels.
  *
  * @param array $args         Optional, the WP_Query args.
- * @param bool  $with_primary Return with primary hotel?.
  * @return \AweBooking\Support\Collection
  */
-function abrs_list_hotels( $args = [], $with_primary = false ) {
+function abrs_list_hotels( $args = [] ) {
 	$args = wp_parse_args( $args, apply_filters( 'abrs_query_hotels_args', [
 		'post_type'      => Constants::HOTEL_LOCATION,
 		'post_status'    => 'publish',
