@@ -7,6 +7,7 @@ use AweBooking\Core\Bootstrap\Load_Textdomain;
 use AweBooking\Component\Currency\Symbol;
 use AweBooking\Component\Form\Form;
 use Awethemes\WP_Object\WP_Object;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 foreach ( [ // Requires other core functions.
 	'dates.php',
@@ -593,9 +594,9 @@ function abrs_get_template_content( $template_name, $vars = [] ) {
 	try {
 		abrs_get_template( $template_name, $vars );
 	} catch ( Exception $e ) {
-		awebooking()->handle_buffering_exception( $e, $level );
+		abrs_handle_buffering_exception( $e, $level );
 	} catch ( Throwable $e ) {
-		awebooking()->handle_buffering_exception( $e, $level );
+		abrs_handle_buffering_exception( $e, $level );
 	}
 
 	return trim( ob_get_clean() );
@@ -693,7 +694,6 @@ function abrs_get_image_size( $image_size ) {
 		$size = compact( 'width', 'height', 'crop' );
 
 		$image_size = $width . '_' . $height;
-
 	} elseif ( in_array( $image_size, [ 'thumbnail', 'archive', 'single' ] ) ) {
 		$size           = abrs_get_option( $image_size . '_image_size', [] );
 		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
@@ -772,6 +772,39 @@ function abrs_nocache_headers() {
 
 	// Set the headers to prevent caching for the different browsers.
 	nocache_headers();
+}
+
+/**
+ * Handle output buffering exception.
+ *
+ * @see http://php.net/manual/en/function.ob-get-level.php#117325
+ *
+ * @param  \Exception $e        The exception.
+ * @param  int        $ob_level The ob_get_level().
+ * @param  callable   $callback Optional, run callback after.
+ * @return void
+ *
+ * @throws mixed
+ */
+function abrs_handle_buffering_exception( $e, $ob_level, $callback = null ) {
+	// In PHP7+, throw a FatalThrowableError when we catch an Error.
+	if ( $e instanceof \Error && class_exists( FatalThrowableError::class ) ) {
+		$e = new FatalThrowableError( $e );
+	}
+
+	while ( ob_get_level() > $ob_level ) {
+		ob_end_clean();
+	}
+
+	// When current site in DEBUG mode, just throw that exception.
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		throw $e;
+	}
+
+	// Call the callback.
+	if ( is_callable( $callback ) ) {
+		$callback( $e );
+	}
 }
 
 /**

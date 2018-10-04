@@ -53,9 +53,9 @@ abstract class Shortcode {
 		try {
 			$this->output( $this->resolve_http_request() );
 		} catch ( \Exception $e ) {
-			awebooking()->handle_buffering_exception( $e, $ob_level );
+			abrs_handle_buffering_exception( $e, $ob_level );
 		} catch ( \Throwable $e ) {
-			awebooking()->handle_buffering_exception( $e, $ob_level );
+			abrs_handle_buffering_exception( $e, $ob_level );
 		}
 
 		return $this->wrap( ltrim( ob_get_clean() ) );

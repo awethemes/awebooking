@@ -90,9 +90,9 @@ class Admin_Template {
 				include ABSPATH . 'wp-admin/admin-footer.php';
 			}
 		} catch ( \Exception $e ) {
-			awebooking()->handle_buffering_exception( $e, $ob_level );
+			abrs_handle_buffering_exception( $e, $ob_level );
 		} catch ( \Throwable $e ) {
-			awebooking()->handle_buffering_exception( $e, $ob_level );
+			abrs_handle_buffering_exception( $e, $ob_level );
 		}
 
 		return ltrim( ob_get_clean() );

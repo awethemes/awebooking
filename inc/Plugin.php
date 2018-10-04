@@ -7,7 +7,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Awethemes\Relationships\Manager as Relationships;
 
 final class Plugin extends Container {
@@ -406,38 +405,5 @@ final class Plugin extends Container {
 		add_action( 'admin_notices', function() use ( $e ) {
 			awebooking_print_fatal_error( $e );
 		});
-	}
-
-	/**
-	 * Handle output buffering exception.
-	 *
-	 * @see http://php.net/manual/en/function.ob-get-level.php#117325
-	 *
-	 * @param  \Exception $e        The exception.
-	 * @param  int        $ob_level The ob_get_level().
-	 * @param  callable   $callback Optional, run callback after.
-	 * @return void
-	 *
-	 * @throws \Exception
-	 */
-	public function handle_buffering_exception( $e, $ob_level, $callback = null ) {
-		// In PHP7+, throw a FatalThrowableError when we catch an Error.
-		if ( $e instanceof \Error && class_exists( FatalThrowableError::class ) ) {
-			$e = new FatalThrowableError( $e );
-		}
-
-		while ( ob_get_level() > $ob_level ) {
-			ob_end_clean();
-		}
-
-		// When current site in DEBUG mode, just throw that exception.
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			throw $e;
-		}
-
-		// Call the callback.
-		if ( is_callable( $callback ) ) {
-			$callback( $e );
-		}
 	}
 }

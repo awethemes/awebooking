@@ -201,6 +201,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 	// We will perform set the state on each piece of events,
 	// this make sure we can't touch to "booking" state in some case.
 	foreach ( $events as $event ) {
+		/* @var $event \AweBooking\Calendar\Event\Event|\AweBooking\Calendar\Event\Core\State_Event */
 		$event_state = (int) $event->get_value();
 
 		// Ignore update same state.
@@ -335,6 +336,8 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 
 	// We will perform set the price on each piece of events.
 	foreach ( $events as $event ) {
+		/* @var $event \AweBooking\Calendar\Event\Core\Pricing_Event */
+
 		// Apply filters for another custom the evaluate room price.
 		$evaluated = apply_filters( 'abrs_evaluate_room_price', null, $event->get_amount(), $amount, $operation, $rate, $timespan, $options );
 
@@ -600,6 +603,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	$bookingcal = abrs_calendar( $room, 'booking' );
 
 	foreach ( $bookingcal->get_events( $period ) as $event ) {
+		/* @var $event \AweBooking\Calendar\Event\Event */
 		if ( $event->get_value() === (int) $booking ) {
 			$event->set_value( 0 );
 			$bookingcal->store( $event );
@@ -607,6 +611,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	}
 
 	foreach ( $statecal->get_events( $period ) as $event ) {
+		/* @var $event \AweBooking\Calendar\Event\Core\State_Event  */
 		if ( $event->get_state() === Constants::STATE_BOOKING ) {
 			$event->set_value( Constants::STATE_AVAILABLE );
 			$statecal->store( $event );
