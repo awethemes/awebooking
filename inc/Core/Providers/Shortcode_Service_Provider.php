@@ -13,6 +13,8 @@ class Shortcode_Service_Provider extends Service_Provider {
 		$shortcodes = apply_filters( 'abrs_shortcodes', [
 			'awebooking_search_form' => \AweBooking\Core\Shortcode\Search_Form_Shortcode::class,
 			'awebooking_check_form'  => \AweBooking\Core\Shortcode\Search_Form_Shortcode::class, // Alias of [awebooking_search_form].
+			'awebooking_rooms'       => \AweBooking\Core\Shortcode\Rooms_Shortcode::class,
+			'awebooking_single_room' => \AweBooking\Core\Shortcode\Single_Room_Shortcode::class,
 		]);
 
 		foreach ( $shortcodes as $tag => $class ) {
