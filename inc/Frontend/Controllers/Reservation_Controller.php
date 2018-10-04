@@ -58,22 +58,22 @@ class Reservation_Controller {
 			->get_availability_url();
 
 		try {
-			$item = $this->reservation->add_room_stay( $res_request,
+			$this->reservation->add_room_stay( $res_request,
 				absint( $request->get( 'room_type' ) ), absint( $request->get( 'rate_plan', 0 ) )
 			);
+
+			// Continue the reservation.
+			if ( $this->is_continue_reservation( $request ) ) {
+				return $this->redirector->to( add_query_arg( 'res', $res_request->get_hash(), $availability_url ) );
+			}
+
+			return $this->redirector->to( abrs_get_page_permalink( 'checkout' ) );
 		} catch ( \Exception $e ) {
 			abrs_add_notice( $e->getMessage(), 'error' );
 
 			// Redirect back to the search availability page.
 			return $this->redirector->to( $availability_url );
 		}
-
-		// Continue the reservation.
-		if ( $this->is_continue_reservation( $request ) ) {
-			return $this->redirector->to( add_query_arg( 'res', $res_request->get_hash(), $availability_url ) );
-		}
-
-		return $this->redirector->to( abrs_get_page_permalink( 'checkout' ) );
 	}
 
 	/**

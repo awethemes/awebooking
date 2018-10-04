@@ -15,11 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
+
 <form method="POST" action="<?php echo esc_url( abrs_route( '/reservation/book-room' ) ); ?>">
 	<?php wp_nonce_field( 'book-room', '_wpnonce', true ); ?>
 
 	<?php if ( abrs_running_on_multilanguage() ) : ?>
 		<input type="hidden" name="lang" value="<?php echo esc_attr( abrs_multilingual()->get_current_language() ); ?>">
+	<?php endif ?>
+
+	<?php if ( abrs_multiple_hotels() && $res_request->get_hotel() ) : ?>
+		<input type="hidden" name="hotel" value="<?php echo esc_attr( $res_request->get_hotel()->get_id() ); ?>">
 	<?php endif ?>
 
 	<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request->check_in ); ?>">

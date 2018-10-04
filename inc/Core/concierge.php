@@ -499,6 +499,7 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 
 	$args = wp_parse_args( $args, [
 		'strict'     => is_admin() ? false : true,
+		'hotel'      => 0,
 		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
 		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
 		'adults'     => 1,
@@ -516,7 +517,6 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 
 	// Create the guest counts.
 	$guest_counts = new Guest_Counts( $args['adults'] );
-
 	if ( $args['children'] > 0 && abrs_children_bookable() ) {
 		$guest_counts->set_children( $args['children'] );
 	}
@@ -525,7 +525,10 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 		$guest_counts->set_infants( $args['infants'] );
 	}
 
-	return apply_filters( 'abrs_reservation_request', new Request( $timespan, $guest_counts, $args['options'] ) );
+	$res_request = ( new Request( $timespan, $guest_counts, $args['options'] ) )
+		->set_hotel( abrs_get_hotel( (int) $args['hotel'] ) );
+
+	return apply_filters( 'abrs_reservation_request', $res_request );
 }
 
 /**

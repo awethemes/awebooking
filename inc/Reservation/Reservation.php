@@ -67,6 +67,13 @@ class Reservation {
 	protected $totals;
 
 	/**
+	 * Determines the reservation has been restored.
+	 *
+	 * @var bool
+	 */
+	protected $restored = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Reservation\Storage\Store $store The store instance.
@@ -97,23 +104,6 @@ class Reservation {
 		add_action( 'abrs_complete_calculate_totals', [ $this, 'store' ], 20, 0 );
 
 		do_action( 'abrs_reservation_init', $this );
-	}
-
-	/**
-	 * Return all taxes.
-	 *
-	 * @return \AweBooking\Support\Collection
-	 */
-	public function get_taxes() {
-		$taxes = [ [] ];
-
-		foreach ( $this->room_stays as $room_stay ) {
-			$taxes[] = array_keys( $room_stay->get_tax_rates() );
-		}
-
-		return abrs_collect( array_merge( ...$taxes ) )
-			->map( 'abrs_get_tax_rate' )
-			->filter();
 	}
 
 	/**
@@ -161,7 +151,6 @@ class Reservation {
 	 */
 	public function calculate_totals() {
 		if ( $this->is_empty() ) {
-			$this->flush();
 			return;
 		}
 
@@ -170,6 +159,23 @@ class Reservation {
 		$this->totals->calculate();
 
 		do_action( 'abrs_complete_calculate_totals', $this );
+	}
+
+	/**
+	 * Return all taxes.
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_taxes() {
+		$taxes = [ [] ];
+
+		foreach ( $this->room_stays as $room_stay ) {
+			$taxes[] = array_keys( $room_stay->get_tax_rates() );
+		}
+
+		return abrs_collect( array_merge( ...$taxes ) )
+			->map( 'abrs_get_tax_rate' )
+			->filter();
 	}
 
 	/**
@@ -210,6 +216,10 @@ class Reservation {
 	 */
 	public function set_current_request( Request $current_request ) {
 		$this->current_request = $current_request;
+
+		if ( $hotel = $current_request->get_hotel() ) {
+			$this->hotel = $hotel->get_id();
+		}
 
 		if ( $this->maybe_flush() ) {
 			$this->flush();
@@ -264,16 +274,18 @@ class Reservation {
 	 * @return bool
 	 */
 	public function maybe_flush() {
-		// Flush when session request & current request is different.
-		$previous_request = $this->get_previous_request();
+		if ( ! $session_hashid = $this->store->get( 'reservation_hash' ) ) {
+			return false;
+		}
 
-		if ( ( $this->current_request && $previous_request ) && ! $this->current_request->same_with( $previous_request ) ) {
+		if ( ! hash_equals( $this->generate_hash_id(), $session_hashid ) ) {
 			return true;
 		}
 
-		$session_hashid = $this->store->get( 'reservation_hash' );
+		// Flush when session request & current request is different.
+		$previous_request = $this->get_previous_request();
 
-		return $session_hashid && ! hash_equals( $this->generate_hash_id(), $session_hashid );
+		return ( $this->current_request && $previous_request ) && ! $this->current_request->same_with( $previous_request );
 	}
 
 	/**
@@ -283,7 +295,6 @@ class Reservation {
 	 */
 	public function store() {
 		if ( $this->is_empty() ) {
-			$this->flush();
 			return;
 		}
 
@@ -322,11 +333,18 @@ class Reservation {
 	 * @return void
 	 */
 	public function restore() {
+		if ( defined( 'DOING_AJAX' ) || defined( 'DOING_CRON' ) ) {
+			return;
+		}
+
 		do_action( 'abrs_prepare_restore_reservation', $this );
 
 		$this->restore_request();
 		$this->restore_rooms();
 		$this->restore_services();
+
+		// Indicator the reservation has been restored.
+		$this->restored = true;
 
 		do_action( 'abrs_reservation_restored', $this );
 	}
@@ -338,7 +356,7 @@ class Reservation {
 	 */
 	protected function generate_hash_id() {
 		return sha1( implode( '-', [
-			$this->hotel,
+			// $this->hotel,
 			$this->source,
 			$this->currency,
 			$this->language,

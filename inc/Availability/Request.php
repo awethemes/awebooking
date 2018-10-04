@@ -1,11 +1,19 @@
 <?php
 namespace AweBooking\Availability;
 
+use AweBooking\Model\Hotel;
 use AweBooking\Support\Fluent;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 
 class Request implements \ArrayAccess, \JsonSerializable {
+	/**
+	 * The hotel instance.
+	 *
+	 * @var \AweBooking\Model\Hotel|null
+	 */
+	protected $hotel;
+
 	/**
 	 * The Timespan instance.
 	 *
@@ -85,6 +93,27 @@ class Request implements \ArrayAccess, \JsonSerializable {
 		}
 
 		return $this->options->get( $property );
+	}
+
+	/**
+	 * Return the current hotel.
+	 *
+	 * @return \AweBooking\Model\Hotel|null
+	 */
+	public function get_hotel() {
+		return $this->hotel;
+	}
+
+	/**
+	 * Set the current hotel request for.
+	 *
+	 * @param \AweBooking\Model\Hotel $hotel The hotel ID.
+	 * @return $this
+	 */
+	public function set_hotel( Hotel $hotel ) {
+		$this->hotel = $hotel;
+
+		return $this;
 	}
 
 	/**
@@ -204,7 +233,10 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return string
 	 */
 	public function get_hash() {
-		return sha1( serialize( $this->get_timespan()->to_array() ) );
+		return sha1( serialize( [
+			$this->hotel,
+			$this->get_timespan()->to_array(),
+		] ) );
 	}
 
 	/**
@@ -225,18 +257,21 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return array
 	 */
 	public function to_array() {
-		$arr = [
-			'check_in'  => $this->timespan->get_start_date(),
-			'check_out' => $this->timespan->get_end_date(),
-		];
+		$arr = [];
+
+		if ( $this->hotel && $this->hotel->get_id() ) {
+			$arr['hotel'] = $this->hotel->get_id();
+		}
+
+		$arr['check_in']  = $this->timespan->get_start_date();
+		$arr['check_out'] = $this->timespan->get_end_date();
 
 		$arr['adults'] = $this->guest_counts['adults']->get_count();
-
-		if ( abrs_children_bookable() && isset( $this->guest_counts['children'] ) ) {
+		if ( isset( $this->guest_counts['children'] ) && abrs_children_bookable() ) {
 			$arr['children'] = $this->guest_counts['children']->get_count();
 		}
 
-		if ( abrs_infants_bookable() && isset( $this->guest_counts['infants'] ) ) {
+		if ( isset( $this->guest_counts['infants'] ) && abrs_infants_bookable() ) {
 			$arr['infants'] = $this->guest_counts['infants']->get_count();
 		}
 
