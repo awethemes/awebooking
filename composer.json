@@ -29,6 +29,7 @@
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
         "ruler/ruler": "dev-master",
+        "vlucas/valitron": "^1.4",
         "webdevstudios/cmb2": "^2.3"
     },
     "require-dev": {
