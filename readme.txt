@@ -59,6 +59,13 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 
 You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
 
+== Premium themes ==
+
+* [The Chains](https://awethemes.com/themes/the-chains)
+* [Awemotel](https://awethemes.com/themes/awemotel)
+* [Rosewood](https://awethemes.com/themes/rosewood)
+
+
 == Screenshots ==
 
 1. Room type list
@@ -82,7 +89,7 @@ In v3.1 we perform major upgrade.
 
 ## Video
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XNqn4gEakQA" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
 ### [v3.1.11] - [2018-10-04]
