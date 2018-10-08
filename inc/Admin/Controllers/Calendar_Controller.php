@@ -87,11 +87,11 @@ class Calendar_Controller extends Controller {
 
 			switch ( $action ) {
 				case 'block':
-					$updated = abrs_block_room( absint( $room ), $timespan, $only_days );
+					$updated = abrs_block_room( absint( $room ), $timespan, compact( 'only_days' ) );
 					break;
 
 				case 'unblock':
-					$updated = abrs_unblock_room( absint( $room ), $timespan, $only_days );
+					$updated = abrs_unblock_room( absint( $room ), $timespan, compact( 'only_days' ) );
 					break;
 			}
 		}
