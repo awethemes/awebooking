@@ -66,21 +66,30 @@ class Component_Validation_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'in', $parsed1['email'][2][0] );
 		$this->assertEquals( [[ 'other', 'name' ]], $parsed1['email'][2][1] );
 
-		$this->assertEquals( 'creditcard', $parsed1['email'][3][0] );
+		$this->assertEquals( 'creditCard', $parsed1['email'][3][0] );
 		$this->assertEquals( [[ 'visa', 'mastercard' ]], $parsed1['email'][3][1] );
 	}
 
 	public function testEqualsValid() {
 		$v = new Validator( [ 'foo' => 'bar', 'bar' => 'bar' ], [ 'foo' => 'equals:bar' ] );
 		$this->assertTrue( $v->validate() );
+
+		$v = new Validator( [ 'foo' => 'bar', 'bar' => 'bar' ], [ 'foo' => [ 'equals' => 'bar' ] ] );
+		$this->assertTrue( $v->validate() );
 	}
 
 	public function testEqualsInvalid() {
 		$v = new Validator( [ 'foo' => 'foo', 'bar' => 'bar' ], [ 'foo' => 'equals:bar' ] );
 		$this->assertFalse( $v->validate() );
+
+		$v = new Validator( [ 'foo' => 'foo', 'bar' => 'bar' ], [ 'foo' => [ 'equals' => 'bar' ] ] );
+		$this->assertFalse( $v->validate() );
 	}
 
 	public function testLengthValid() {
+		$v = new Validator( [ 'str' => 'happy' ], [ 'str' => 'length:5' ] );
+		$this->assertTrue( $v->passes() );
+
 		$v = new Validator( [ 'str' => 'happy' ], [ 'str' => [ 'length' => 5 ] ] );
 		$this->assertTrue( $v->passes() );
 	}
@@ -88,11 +97,11 @@ class Component_Validation_Test extends WP_UnitTestCase {
 	public function testInValid() {
 		$v = new Validator( [ 'color' => 'green' ], [ 'color' => 'in:red,green,blue' ] );
 		$this->assertTrue( $v->passes() );
-	}
 
-	public function testInValidAssociativeArray() {
+		$v = new Validator( [ 'color' => 'green' ], [ 'color' => [ 'in' => ['green', 'blue'] ] ] );
+		$this->assertTrue( $v->passes() );
+
 		$v = new Validator( [ 'color' => 'green' ] );
-
 		$v->add_rule( 'color', [
 			'in' => [
 				'red'   => 'Red',
@@ -100,17 +109,10 @@ class Component_Validation_Test extends WP_UnitTestCase {
 				'blue'  => 'Blue',
 			],
 		] );
-
 		$this->assertTrue( $v->validate() );
 	}
 
-	public function testLengthBetweenValid() {
-		$v = new Validator( [ 'str' => 'happy' ] );
-		$v->add_rule( 'str', 'lengthBetween:2,8' );
-		$this->assertTrue( $v->passes() );
-	}
-
-	/*public function testCreditCardValid() {
+	public function testCreditCardValid() {
 		$visa       = 4539511619543489;
 		$mastercard = 5162057048081965;
 		$amex       = 371442067262027;
@@ -126,17 +128,40 @@ class Component_Validation_Test extends WP_UnitTestCase {
 			$v->add_rule( 'test', 'required|creditcard:' . $type );
 			$this->assertTrue( $v->passes() );
 
-			$v = new Validator( [ 'test' => $number ] );
-			$v->add_rule( 'test', 'required|creditcard:visa,mastercard' );
+			$v = new Validator( [ 'test' => $number ], ['test' => ['creditcard' => [$type, 'visa', 'mastercard']]]);
 			$this->assertTrue( $v->passes() );
 
 			unset( $v);
 		}
 
-		$v = new Validator( [ 'test' => $discover ], [ 'test' => 'required|creditCard:mastercard' ] );
-		$this->assertTrue( $v->fails() );
+		$v = new Validator( [ 'test' => $visa ], [ 'test' => 'required|creditcard:visa,mastercard' ] );
+		$this->assertTrue( $v->passes() );
+		$v = new Validator( [ 'test' => $mastercard ], [ 'test' => 'required|creditcard:visa,mastercard' ] );
+		$this->assertTrue( $v->passes() );
 
-		$v = new Validator( [ 'test' => $amex ], [ 'test' => 'required|creditCard:visa' ] );
+		$v = new Validator( [ 'test' => $discover ], [ 'test' => 'required|creditcard:mastercard' ] );
 		$this->assertTrue( $v->fails() );
-	}*/
+		$v = new Validator( [ 'test' => $amex ], [ 'test' => 'required|creditcard:visa' ] );
+		$this->assertTrue( $v->fails() );
+	}
+
+	public function testBetweenValid() {
+		$v = new Validator( [ 'num' => 5 ] );
+		$v->add_rule( 'num', 'between:3,7' );
+		$this->assertTrue( $v->validate() );
+
+		$v = new Validator( [ 'num' => 5 ] );
+		$v->add_rule( 'num', ['between' => [3, 7]] );
+		$this->assertTrue( $v->validate() );
+	}
+
+	public function testLengthBetweenValid() {
+		$v = new Validator( [ 'str' => 'happy' ] );
+		$v->add_rule( 'str', 'lengthBetween:2,8' );
+		$this->assertTrue( $v->passes() );
+
+		$v = new Validator( [ 'str' => 'happy' ] );
+		$v->add_rule( 'str', [ 'lengthBetween' => [2, 8] ] );
+		$this->assertTrue( $v->passes() );
+	}
 }

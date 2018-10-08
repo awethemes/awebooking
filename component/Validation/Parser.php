@@ -3,6 +3,13 @@ namespace AweBooking\Component\Validation;
 
 class Parser {
 	/**
+	 * Some rules must be passed an array as first parameter.
+	 *
+	 * @var array
+	 */
+	public static $array_wrap = [ 'in', 'notin', 'between', 'creditcard' ];
+
+	/**
 	 * Parse the rules into an array of rules.
 	 *
 	 * @param  string|array $rules The initial rules set.
@@ -45,6 +52,8 @@ class Parser {
 		$rule = lcfirst( str_replace( ' ', '', $rule ) );
 
 		switch ( $rule ) {
+			case 'creditcard':
+				return 'creditCard';
 			case 'int':
 				return 'integer';
 			case 'bool':
@@ -66,9 +75,16 @@ class Parser {
 		foreach ( $rules as $key => $value ) {
 			if ( is_int( $key ) ) {
 				$parse_rules[] = [ $this->normalize( $value ), [] ];
-			} else {
-				$parse_rules[] = [ $this->normalize( $key ), [ $value ] ];
+				continue;
 			}
+
+			$key = $this->normalize( $key );
+
+			if ( ! is_array( $value ) ) {
+				$value = [ $value ];
+			}
+
+			$parse_rules[] = [ $key, $this->wrap_parameters( $key, $value ) ];
 		}
 
 		return $parse_rules;
@@ -105,14 +121,14 @@ class Parser {
 	}
 
 	/**
-	 * Wrap a parameter in array.
+	 * Maybe wrap the parameter in an array.
 	 *
 	 * @param  string $rule      The rule name.
 	 * @param  mixed  $parameter The rule parameter.
 	 * @return array
 	 */
 	protected function wrap_parameters( $rule, $parameter ) {
-		return in_array( strtolower( $rule ), [ 'in', 'notin', 'creditcard' ] )
+		return in_array( strtolower( $rule ), static::$array_wrap )
 			? [ $parameter ]
 			: $parameter;
 	}
