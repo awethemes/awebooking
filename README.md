@@ -40,10 +40,15 @@ Get all Awebooking's [premium add-ons](https://awethemes.com/awebooking) and a l
 * [User profile](https://awethemes.com/awebooking/addon/user-profile)
 * [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
 
+### Premium themes
+
+* [The Chains](https://awethemes.com/themes/the-chains)
+* [Awemotel](https://awethemes.com/themes/awemotel)
+* [Rosewood](https://awethemes.com/themes/rosewood)
 
 ### Intro video
 
-https://www.youtube.com/embed/XNqn4gEakQA
+https://www.youtube.com/embed/UqRMIl9ISLw
 
 ### Installing
 
