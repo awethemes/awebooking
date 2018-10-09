@@ -39,6 +39,8 @@ Get all Awebooking's [premium add-ons](https://awethemes.com/awebooking) and a l
 * [Fast book](https://awethemes.com/awebooking/addon/fast-book)
 * [User profile](https://awethemes.com/awebooking/addon/user-profile)
 * [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
+* [Fees](https://awethemes.com/awebooking/addon/fees)
+* [Rules](https://awethemes.com/awebooking/addon/rules)
 * [Elementor integration](https://wordpress.org/plugins/awebooking-elementor-integration/)
 
 ### Premium themes
