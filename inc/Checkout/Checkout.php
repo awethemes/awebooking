@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Checkout;
 
+use Illuminate\Support\Arr;
 use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
@@ -14,6 +15,7 @@ use AweBooking\Gateway\Response as Gateway_Response;
 use AweBooking\Gateway\GatewayException;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Reservation\Reservation;
+use AweBooking\Component\Validation\Validator;
 use AweBooking\Component\Http\Exceptions\ValidationFailedException;
 use AweBooking\Support\Fluent;
 use Awethemes\WP_Session\WP_Session;
@@ -526,14 +528,24 @@ class Checkout {
 	protected function validate_posted_data( &$errors, $data ) {
 		$controls = $this->get_controls();
 
+		$validate = new Validator( $data->all() );
+
 		foreach ( $controls->prop( 'fields' ) as $args ) {
 			$key     = $args['id'];
 			$control = $controls->get_field( $key );
 
 			if ( $control->prop( 'required' ) && abrs_blank( $data[ $key ] ) ) {
 				/* translators: %s Field name */
-				$errors->add( 'required-field', sprintf( __( '%s is a required field.', 'awebooking' ), '<strong>' . esc_html( $control->prop( 'name' ) ) . '</strong>' ) );
+				$errors->add( 'required', sprintf( __( '%s is a required field.', 'awebooking' ), '<strong>' . esc_html( $control->prop( 'name' ) ) . '</strong>' ) );
 			}
+
+			if ( $control->prop( 'validate' ) ) {
+				$validate->add_rule( $key, $control->prop( 'validate' ) );
+			}
+		}
+
+		if ( $validate->fails() ) {
+			$errors->add( 'validate', Arr::first( Arr::first( $validate->errors() ) ) );
 		}
 
 		do_action( 'abrs_validate_checkout_posted_data', $errors, $data );
