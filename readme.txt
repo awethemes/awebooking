@@ -56,6 +56,7 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * [Fast book](https://awethemes.com/awebooking/addon/fast-book)
 * [User profile](https://awethemes.com/awebooking/addon/user-profile)
 * [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
+* [Elementor integration](https://wordpress.org/plugins/awebooking-elementor-integration/)
 
 You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
 
