@@ -199,6 +199,7 @@ class Form_Controls extends Form {
 			'type'             => 'text',
 			'name'             => esc_html__( 'Email address', 'awebooking' ),
 			'required'         => true,
+			'validate'         => 'email',
 			'sanitization_cb'  => 'sanitize_email',
 			'col-half'         => true,
 			'attributes'       => [
