@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      4.9
 Requires PHP:      5.6
-Stable tag:        3.1.11
+Stable tag:        3.1.12
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,11 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.12] - [2018-10-10]
+- Added: Validation on checkout.
+- Fixed: Bulk update availability calendar not work with `only_days`.
+- API Added: New class `AweBooking\Component\Validation\Validator` for the validation.
+
 ### [v3.1.11] - [2018-10-04]
 - Fixed: Minor issues in the reservation.
 - Added: Intro `[awebooking_rooms]` and `[awebooking_single_room]` shortcode.
