@@ -98,9 +98,9 @@ plugin.formatPrice = function(amount) {
  * @return {void}
  */
 $(function () {
-  window.tippy('[data-awebooking="tooltip"]', {
+  tippy('[data-awebooking="tooltip"]', {
     theme: 'awebooking-tooltip'
-  });
+  })
 
   $('[data-init="awebooking-dialog"]').each( (e, el) => {
     const dialog = new window.A11yDialog(el);
