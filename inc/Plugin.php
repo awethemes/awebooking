@@ -4,6 +4,7 @@ namespace AweBooking;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\StreamHandler;
+use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
@@ -42,11 +43,11 @@ final class Plugin extends Container {
 	 */
 	protected static $bootstrappers = [
 		\AweBooking\Core\Bootstrap\Load_Textdomain::class,
-		\AweBooking\Core\Bootstrap\Load_Configuration::class,
 		\AweBooking\Core\Bootstrap\Setup_Environment::class,
+		\AweBooking\Core\Bootstrap\Load_Configuration::class,
+		\AweBooking\Core\Bootstrap\Include_Functions::class,
 		\AweBooking\Core\Bootstrap\Start_Session::class,
 		\AweBooking\Core\Bootstrap\Boot_Providers::class,
-		\AweBooking\Core\Bootstrap\Include_Functions::class,
 	];
 
 	/**
@@ -150,7 +151,7 @@ final class Plugin extends Container {
 		} );
 
 		$this->singleton( 'logger', function () {
-			return new Logger( 'awebooking', [ $this->get_monolog_handler() ] );
+			return new Logger( 'awebooking', [ new BufferHandler( $this->get_monolog_handler() ) ] );
 		});
 
 		$this->alias( 'logger', Logger::class );
@@ -390,7 +391,7 @@ final class Plugin extends Container {
 	 * Catch an exception during running the plugin.
 	 *
 	 * @param  mixed $e The Exception or Throwable.
-	 * @throws \Exception
+	 * @throws mixed
 	 */
 	public function catch_exception( $e ) {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {

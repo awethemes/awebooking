@@ -46,12 +46,11 @@ class Load_Configuration {
 		// Maybe set the option name on multi-language.
 		$this->maybe_modify_options();
 
-		// Decimal default scale.
-		Decimal::set_default_scale( absint( $this->plugin->get_option( 'price_number_decimals', 2 ) ) );
-
 		// Correct the datetime starts and ends of week.
 		Carbonate::setWeekStartsAt( (int) get_option( 'start_of_week' ) );
 		Carbonate::setWeekEndsAt( (int) calendar_week_mod( Carbonate::getWeekStartsAt() - 1 ) );
+
+		Decimal::set_default_scale( absint( $this->plugin->get_option( 'price_number_decimals', 2 ) ) );
 	}
 
 	/**

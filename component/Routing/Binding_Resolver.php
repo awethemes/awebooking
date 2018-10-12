@@ -141,7 +141,7 @@ class Binding_Resolver {
 				return $callback( $value );
 			}
 
-			throw (new ModelNotFoundException())->set_model( $class );
+			throw (new ModelNotFoundException)->set_model( $class );
 		};
 	}
 }
