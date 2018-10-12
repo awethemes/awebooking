@@ -4,6 +4,7 @@ wp-cli.local.yml
 node_modules/
 /vendor/
 /.idea/
+/awethemes/
 *.sql
 *.tar.gz
 *.zip
