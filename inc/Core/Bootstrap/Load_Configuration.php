@@ -40,8 +40,8 @@ class Load_Configuration {
 	public function load_configuration() {
 		$this->plugin->make( Multilingual::class );
 
-		// Sets the plugin options.
-		$this->plugin->set_original_options();
+		// Retrieve the plugin options.
+		$this->plugin->retrieve_options();
 
 		// Maybe set the option name on multi-language.
 		$this->maybe_modify_options();
