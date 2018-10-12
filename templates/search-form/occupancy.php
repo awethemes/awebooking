@@ -58,7 +58,7 @@ if ( ! $atts['occupancy'] ) {
 			<div class="searchbox__spinner-box">
 				<label class="searchbox__spinner-title"><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
 				<div class="searchbox__spinner-wrap" data-trigger="spinner">
-					<input type="number" data-spin="spinner" data-ruler="quantity" data-bind="value: adults" name="adults" data-min="1" data-max="<?php echo absint( abrs_get_option( 'search_form_max_adults' ) ); ?>" value="<?php echo esc_attr( $res_request['adults'] ); ?>" class="searchbox__spinner-input form-input-transparent" />
+					<input type="number" name="adults" data-spin="spinner" data-ruler="quantity" data-bind="value: adults" data-min="1" data-max="<?php echo absint( abrs_get_option( 'search_form_max_adults' ) ); ?>" value="<?php echo esc_attr( $res_request['adults'] ); ?>" class="searchbox__spinner-input form-input-transparent" />
 					<button type="button" class="searchbox__spinner-button searchbox__spinner-button--increment" data-spin="up"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></button>
 					<button type="button" class="searchbox__spinner-button searchbox__spinner-button--decrement" data-spin="down"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></button>
 				</div>
@@ -70,7 +70,7 @@ if ( ! $atts['occupancy'] ) {
 				<div class="searchbox__spinner-box">
 					<label class="searchbox__spinner-title"><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
 					<div class="searchbox__spinner-wrap" data-trigger="spinner">
-						<input type="number" data-spin="spinner" data-ruler="quantity" data-bind="value: children" data-min="0" name="children" data-max="<?php echo absint( abrs_get_option( 'search_form_max_children' ) ); ?>" value="<?php echo esc_attr( $res_request['children'] ); ?>" class="searchbox__spinner-input form-input-transparent" />
+						<input type="number" name="children" data-spin="spinner" data-ruler="quantity" data-bind="value: children" data-min="0" data-max="<?php echo absint( abrs_get_option( 'search_form_max_children' ) ); ?>" value="<?php echo esc_attr( $res_request['children'] ); ?>" class="searchbox__spinner-input form-input-transparent" />
 						<button type="button" class="searchbox__spinner-button searchbox__spinner-button--increment" data-spin="up"><?php echo esc_html_x( '+', 'plus button', 'awebooking' ); ?></button>
 						<button type="button" class="searchbox__spinner-button searchbox__spinner-button--decrement" data-spin="down"><?php echo esc_html_x( '-', 'minus button', 'awebooking' ); ?></button>
 					</div>
