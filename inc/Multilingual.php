@@ -22,7 +22,11 @@ class Multilingual {
 	public function __construct() {
 		// Make sure to create class after/within 'setup_theme' action.
 		if ( ! did_action( 'setup_theme' ) ) {
-			trigger_error( 'The class must be call after "setup_theme" has been fire.', E_USER_WARNING );
+			_doing_it_wrong(
+				__CLASS__ . '::' . __FUNCTION__,
+				'The class must be call after "setup_theme" has been fire.',
+				'3.10'
+			);
 		} else {
 			$this->check();
 		}

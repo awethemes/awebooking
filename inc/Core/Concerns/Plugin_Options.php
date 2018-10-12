@@ -193,7 +193,13 @@ trait Plugin_Options {
 	 */
 	public function get_options() {
 		if ( ! did_action( 'after_setup_theme' ) ) {
-			trigger_error( esc_html__( 'Get options should be called after the `after_setup_theme` action.', 'awebooking' ), E_USER_WARNING );
+			_doing_it_wrong(
+				__CLASS__ . '::' . __FUNCTION__,
+				esc_html__( 'Get options should be called after the `after_setup_theme` action.', 'awebooking' ),
+				'3.1.0'
+			);
+
+			return new Fluent( [] );
 		}
 
 		$options = ! is_null( $this->options ) ? $this->options : new Fluent;

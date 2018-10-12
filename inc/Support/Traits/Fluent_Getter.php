@@ -25,6 +25,10 @@ trait Fluent_Getter {
 			return $this->{$method}();
 		}
 
-		trigger_error( sprintf( "Unknown getter '%s'", esc_html( $name ) ), E_USER_WARNING );
+		_doing_it_wrong(
+			get_class( $this ) . '::$' . $name, // @codingStandardsIgnoreLine
+			sprintf( "Unknown getter '%s'", esc_html( $name ) ),
+			'3.1.0'
+		);
 	}
 }

@@ -35,7 +35,11 @@ abstract class Model extends WP_Object {
 			return apply_filters( $this->prefix( "get_{$key}" ), $this->get_attribute( $key ), $this );
 		}
 
-		trigger_error( sprintf( "Unknown attribute '%s' of %s", esc_html( $key ), esc_html( static::class ) ), E_USER_WARNING );
+		_doing_it_wrong(
+			__CLASS__ . '::' . __FUNCTION__,
+			sprintf( "Unknown attribute '%s' of %s", esc_html( $key ), esc_html( static::class ) ),
+			'3.1.0'
+		);
 	}
 
 	/**
