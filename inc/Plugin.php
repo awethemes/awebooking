@@ -146,13 +146,15 @@ final class Plugin extends Container {
 			return new Multilingual;
 		});
 
-		$this->singleton( 'relationships', function () {
-			return Relationships::get_instance();
-		} );
-
 		$this->singleton( 'logger', function () {
 			return new Logger( 'awebooking', [ new BufferHandler( $this->get_monolog_handler() ) ] );
 		});
+
+		if ( class_exists( Relationships::class ) ) {
+			$this->singleton( 'relationships', function () {
+				return Relationships::get_instance();
+			} );
+		}
 
 		$this->alias( 'logger', Logger::class );
 		$this->alias( 'logger', LoggerInterface::class );
