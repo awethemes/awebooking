@@ -1,5 +1,5 @@
 <?php
-namespace AweBooking\Support\Traits;
+namespace AweBooking\Core\Concerns;
 
 trait Plugin_Provider {
 	/**
@@ -85,9 +85,7 @@ trait Plugin_Provider {
 	public function get_provider( $provider ) {
 		$name = is_string( $provider ) ? $provider : get_class( $provider );
 
-		if ( array_key_exists( $name, $this->loaded_providers ) ) {
-			return $this->loaded_providers[ $name ];
-		}
+		return array_key_exists( $name, $this->loaded_providers ) ? $this->loaded_providers[ $name ] : null;
 	}
 
 	/**

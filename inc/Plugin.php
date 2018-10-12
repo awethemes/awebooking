@@ -10,8 +10,8 @@ use Illuminate\Container\Container;
 use Awethemes\Relationships\Manager as Relationships;
 
 final class Plugin extends Container {
-	use Support\Traits\Plugin_Provider,
-		Support\Traits\Plugin_Options,
+	use Core\Concerns\Plugin_Provider,
+		Core\Concerns\Plugin_Options,
 		Deprecated\AweBooking;
 
 	/**
