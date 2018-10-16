@@ -53,6 +53,12 @@
       "node_modules/tippy.js/dist/tippy.css",
       "node_modules/tippy.js/dist/tippy.standalone.js",
       "node_modules/tippy.js/dist/tippy.standalone.min.js"
+    ],
+    "fecha": [
+      "node_modules/fecha/fecha*.js"
+    ],
+    "hotel-datepicker": [
+      "node_modules/hotel-datepicker/dist/js/hotel-datepicker*.js"
     ]
   },
   "dependencies": {
@@ -62,6 +68,7 @@
     "debounce": "^1.2.0",
     "event-source-polyfill": "0.0.16",
     "flatpickr": "^4.5.2",
+    "hotel-datepicker": "^3.6.4",
     "is-mobile": "^2.0.0",
     "jquery.spinner": "^0.2.1",
     "js-cookie": "^2.2.0",
