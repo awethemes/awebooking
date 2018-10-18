@@ -34,13 +34,6 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function setup() {
-		$this->events = $this->setup_events( $this->scheduler );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	protected function create_scheduler() {
 		// Query the list of room type to display.
 		$this->room_types = $this->query_room_types();
@@ -164,22 +157,25 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @return void
 	 */
 	protected function display_divider_column( $day, $scheduler ) {
-		$matrix = $this->get_matrix( $scheduler->get_uid() );
-		if ( empty( $matrix ) ) {
+		$matrices = $this->get_matrix( $scheduler->get_uid() );
+
+		if ( empty( $matrices ) ) {
 			return;
 		}
 
-		$available = 0;
-		foreach ( $matrix as $item ) {
+		$left = $scheduler->count();
+		foreach ( $matrices as $item ) {
 			/* @var \AweBooking\Support\Collection $item */
 			if ( 0 === $item->get( $day->format( 'Y-m-d' ) ) ) {
-				$available++;
+				$left--;
 			}
 		}
 
+		$available = $scheduler->count() - $left;
+
 		/* translators: Available rooms */
 		$title = sprintf( _nx( '%s room available', '%s rooms available', $available, 'awebooking' ), esc_html( $available ) );
-		echo sprintf( '<div class="scheduler-flex--center"><strong title="' . esc_attr( $title ) . '">%1$s/%2$s</strong></div>', esc_html( $available ), esc_html( $scheduler->count() ) );
+		echo sprintf( '<div class="scheduler-flex--center"><strong class="tippy" title="' . esc_attr( $title ) . '">%1$s/%2$s</strong></div>', esc_html( $left ), esc_html( $scheduler->count() ) );
 	}
 
 	/**
