@@ -54,6 +54,16 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 	}
 
 	/**
+	 * Display the main toolbars.
+	 *
+	 * @return void
+	 */
+	protected function display_main_toolbar() {
+		echo '<div class="abrs-spacer"></div>';
+		$this->template( 'main-toolbar/hotel-filter.php' );
+	}
+
+	/**
 	 * Display the actions.
 	 *
 	 * @return void

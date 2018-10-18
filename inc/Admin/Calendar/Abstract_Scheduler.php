@@ -281,11 +281,24 @@ abstract class Abstract_Scheduler {
 	 * @return \AweBooking\Support\Collection
 	 */
 	protected function query_room_types( $query = [] ) {
+		if ( $this->request->filled( 'only' ) ) {
+			$query['post__in'] = wp_parse_id_list( $this->request->get( 'only' ) );
+		}
+
+		if ( $this->request->filled( 'hotel' ) ) {
+			$query['meta_query'][] = [
+				'key'     => '_hotel_id',
+				'value'   => absint( $this->request->get( 'hotel' ) ),
+				'type'    => 'numeric',
+				'compare' => '=',
+			];
+		}
+
 		$wp_query_args = apply_filters( 'abrs_scheduler_query_room_types', wp_parse_args( $query, [
-			'post_type'        => Constants::ROOM_TYPE,
-			'post_status'      => 'publish',
-			'no_found_rows'    => true,
-			'posts_per_page'   => 250,
+			'post_type'      => Constants::ROOM_TYPE,
+			'post_status'    => 'publish',
+			'no_found_rows'  => true,
+			'posts_per_page' => 250,
 		]), $this );
 
 		// Create the WP_Query room types.
