@@ -34,61 +34,17 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function prepare( Request $request ) {
-		$rooms_only = null;
-		if ( $request->filled( 'only' ) ) {
-			$rooms_only = wp_parse_id_list( $request['only'] );
-		}
-
-		// Query the list of room type to display.
-		$this->room_types = $this->query_room_types([
-			'post__in' => $rooms_only,
-		]);
-
-		parent::prepare( $request );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	protected function setup() {
 		$this->events = $this->setup_events( $this->scheduler );
 	}
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @var \AweBooking\Support\Collection $events
-	 */
-	protected function filter_events( $events ) {
-		return $events->reject( function ( $e ) {
-			if ( ( ! $e instanceof State_Event && ! $e instanceof Booking_Event ) || 0 === (int) $e->get_value() ) {
-				return true;
-			}
-
-			// Only display the "blocked" in state events.
-			$blocked_state = array_keys( abrs_get_blocked_states() );
-			if ( $e instanceof State_Event && ! in_array( $e->get_state(), $blocked_state ) ) {
-				return true;
-			}
-
-			return false;
-		})->each( function( $e ) {
-			/* @var \AweBooking\Calendar\Event\Event $e */
-			$end_date = $e->get_end_date();
-
-			if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
-				$e->set_end_date( $end_date->addMinute() );
-			}
-
-			return $e;
-		})->values();
-	}
-
-	/**
-	 * {@inheritdoc}
 	 */
 	protected function create_scheduler() {
+		// Query the list of room type to display.
+		$this->room_types = $this->query_room_types();
+
 		// Get all rooms indexed by room type ID.
 		$all_rooms = $this->room_types
 			->keyBy( 'id' )
@@ -124,6 +80,36 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	}
 
 	/**
+	 * {@inheritdoc}
+	 *
+	 * @var \AweBooking\Support\Collection $events
+	 */
+	protected function filter_events( $events ) {
+		return $events->reject( function ( $e ) {
+			if ( ( ! $e instanceof State_Event && ! $e instanceof Booking_Event ) || 0 === (int) $e->get_value() ) {
+				return true;
+			}
+
+			// Only display the "blocked" in state events.
+			$blocked_state = array_keys( abrs_get_blocked_states() );
+			if ( $e instanceof State_Event && ! in_array( $e->get_state(), $blocked_state ) ) {
+				return true;
+			}
+
+			return false;
+		})->each( function( $e ) {
+			/* @var \AweBooking\Calendar\Event\Event $e */
+			$end_date = $e->get_end_date();
+
+			if ( '23:59:00' === $end_date->format( 'H:i:s' ) ) {
+				$e->set_end_date( $end_date->addMinute() );
+			}
+
+			return $e;
+		})->values();
+	}
+
+	/**
 	 * Display the legends.
 	 *
 	 * @return void
@@ -147,6 +133,16 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	protected function display_toolbar() {
 		echo '<div class="scheduler-flexspace"></div>';
 		$this->template( 'toolbar/datepicker.php' );
+	}
+
+	/**
+	 * Display the main toolbars.
+	 *
+	 * @return void
+	 */
+	protected function display_main_toolbar() {
+		echo '<div class="abrs-spacer"></div>';
+		$this->template( 'main-toolbar/hotel-filter.php' );
 	}
 
 	/**
