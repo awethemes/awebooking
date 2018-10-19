@@ -66,7 +66,7 @@ function abrs_admin_notices( $message = null, $level = 'info' ) {
  *
  * @param  string $template The template relative path.
  * @param  array  $vars     The data inject to template.
- * @return \AweBooking\Admin\Admin_Template|string
+ * @return \AweBooking\Admin\Template|string
  */
 function abrs_admin_template( $template = null, array $vars = [] ) {
 	$admin_template = awebooking()->make( 'admin_template' );

@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin;
 
-class Admin_Template {
+class Template {
 	/**
 	 * Returns a template contents.
 	 *

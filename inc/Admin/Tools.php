@@ -5,7 +5,7 @@ use WP_Error;
 use AweBooking\Roles;
 use Illuminate\Support\Arr;
 
-class Admin_Tools {
+class Tools {
 	/**
 	 * A list of available tools for use in the system status section.
 	 *

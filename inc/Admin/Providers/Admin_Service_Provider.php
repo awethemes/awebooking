@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Providers;
 
-use AweBooking\Admin\Admin_Template;
+use AweBooking\Admin\Template;
 use AweBooking\Admin\Admin_Settings;
 use AweBooking\Support\Service_Provider;
 
@@ -26,14 +26,14 @@ class Admin_Service_Provider extends Service_Provider {
 		}
 
 		$this->plugin->singleton( 'admin_template', function() {
-			return new Admin_Template;
+			return new Template;
 		});
 
 		$this->plugin->singleton( 'admin_settings', function() {
 			return new Admin_Settings( $this->plugin );
 		});
 
-		$this->plugin->alias( 'admin_template', Admin_Template::class );
+		$this->plugin->alias( 'admin_template', Template::class );
 		$this->plugin->alias( 'admin_settings', Admin_Settings::class );
 	}
 
