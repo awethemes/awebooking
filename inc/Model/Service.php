@@ -34,6 +34,15 @@ class Service extends Model {
 	}
 
 	/**
+	 * Gets the service operation.
+	 *
+	 * @return string
+	 */
+	public function get_operation() {
+		return $this->get( 'operation' );
+	}
+
+	/**
 	 * Is the quantity selectable?
 	 *
 	 * @return bool
