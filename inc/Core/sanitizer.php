@@ -9,7 +9,9 @@
  * @return string|array
  */
 function abrs_clean( $var ) {
-	return abrs_recursive_sanitizer( $var, 'sanitize_text_field' );
+	return abrs_recursive_sanitizer( $var, function ( $value ) {
+		return sanitize_text_field( wp_unslash( $value ) );
+	});
 }
 
 /**
