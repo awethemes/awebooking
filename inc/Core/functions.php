@@ -360,14 +360,14 @@ function abrs_get_translatable_options() {
 		'email_cancelled_subject',
 		'email_cancelled_content',
 
-		'email_reserved_booking_subject',
-		'email_reserved_booking_content',
+		'email_reserved_subject',
+		'email_reserved_content',
 
-		'email_processing_booking_subject',
-		'email_processing_booking_content',
+		'email_processing_subject',
+		'email_processing_content',
 
-		'email_completed_booking_subject',
-		'email_completed_booking_content',
+		'email_completed_subject',
+		'email_completed_content',
 
 		'email_customer_note_subject',
 		'email_customer_note_content',

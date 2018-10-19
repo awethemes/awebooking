@@ -98,6 +98,31 @@ abstract class Mailable {
 	abstract public function setup();
 
 	/**
+	 * Set the locale to the store locale for customer emails
+	 * to make sure emails are in the store language.
+	 *
+	 * @return void
+	 */
+	public function setup_locale() {
+		if ( $this->is_customer_email() && apply_filters( 'abrs_email_setup_locale', true ) ) {
+			abrs_switch_to_site_locale();
+		}
+	}
+
+	/**
+	 * Restore the locale to the default locale.
+	 *
+	 * Use after finished with setup_locale.
+	 *
+	 * @eturn void
+	 */
+	public function restore_locale() {
+		if ( $this->is_customer_email() && apply_filters( 'abrs_email_restore_locale', true ) ) {
+			abrs_restore_locale();
+		}
+	}
+
+	/**
 	 * Gets template ID.
 	 *
 	 * @return string
@@ -275,15 +300,21 @@ abstract class Mailable {
 	 * @return \AweBooking\Email\Message
 	 */
 	public function build( $data ) {
+		$this->setup_locale();
+
 		if ( method_exists( $this, 'prepare_data' ) ) {
 			$this->prepare_data( ...func_get_args() );
 		}
 
-		return ( new Message( $this->get_recipient() ) )
+		$message = ( new Message( $this->get_recipient() ) )
 			->content( $this->get_content() )
 			->subject( $this->get_subject() )
 			->attachments( $this->get_attachments() )
 			->headers( $this->get_headers() );
+
+		$this->restore_locale();
+
+		return $message;
 	}
 
 	/**
