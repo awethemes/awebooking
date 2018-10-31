@@ -1600,9 +1600,8 @@
   };
 
   $(function () {
-    // Init tippy.
     if (window.tippy) {
-      window.tippy('.tippy', {
+      tippy('.tippy', {
         arrow: true,
         animation: 'shift-toward',
         duration: [200, 150]

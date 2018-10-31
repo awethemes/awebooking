@@ -1589,7 +1589,7 @@
 
 
 	$(function () {
-	  window.tippy('[data-awebooking="tooltip"]', {
+	  tippy('[data-awebooking="tooltip"]', {
 	    theme: 'awebooking-tooltip'
 	  });
 	  $('[data-init="awebooking-dialog"]').each(function (e, el) {
