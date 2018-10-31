@@ -101,7 +101,6 @@ class Reservation {
 		add_action( 'abrs_room_stay_added', [ $this, 'calculate_totals' ], 20, 0 );
 		add_action( 'abrs_room_stay_removed', [ $this, 'calculate_totals' ], 20, 0 );
 		add_action( 'abrs_reservation_restored', [ $this, 'calculate_totals' ], 20, 0 );
-		add_action( 'abrs_complete_calculate_totals', [ $this, 'store' ], 20, 0 );
 
 		do_action( 'abrs_reservation_init', $this );
 	}
@@ -294,10 +293,6 @@ class Reservation {
 	 * @return void
 	 */
 	public function store() {
-		if ( $this->is_empty() ) {
-			return;
-		}
-
 		if ( $this->current_request ) {
 			$this->store->put( 'previous_request', $this->current_request );
 		}

@@ -177,6 +177,8 @@ trait With_Room_Stays {
 
 		do_action( 'abrs_room_stay_added', $room_stay );
 
+		$this->store();
+
 		return $room_stay;
 	}
 
@@ -197,6 +199,8 @@ trait With_Room_Stays {
 		unset( $this->booked_rooms[ $removed->get_id() ][ $row_id ] );
 
 		do_action( 'abrs_room_stay_removed', $removed, $this );
+
+		$this->store();
 
 		return $removed;
 	}
