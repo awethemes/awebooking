@@ -3,7 +3,6 @@
 namespace AweBooking\Component\View;
 
 use Twig_Environment;
-use Twig_Loader_Filesystem;
 use AweBooking\Support\Service_Provider;
 
 class View_Service_Provider extends Service_Provider {
@@ -13,21 +12,29 @@ class View_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
+		$this->register_view_finder();
+		$this->register_twig_environment();
 		$this->register_engine_resolver();
-		$this->registerTwigEnvironment();
-		$this->registerViewFactory();
+		$this->register_view_factory();
 	}
 
 	/**
-	 * Register the EngineResolver instance to the application.
+	 * Register the View Finder instance to the plugin.
+	 *
+	 * @return void
+	 */
+	protected function register_view_finder() {
+		$this->plugin->singleton( 'view.finder', function ( $container ) {
+			return new File_Finder( [ $this->plugin->plugin_path( 'templates/' ) ] );
+		} );
+	}
+
+	/**
+	 * Register the Engine_Resolver instance to the plugin.
 	 *
 	 * @return void
 	 */
 	protected function register_engine_resolver() {
-		$this->plugin->singleton( 'view.finder', function ( $container ) {
-			return new File_Finder( [ $this->plugin->plugin_path( 'templates/' ) ] );
-		} );
-
 		$this->plugin->singleton( 'view.engine_resolver', function () {
 			$resolver = new Engine_Resolver;
 
@@ -56,34 +63,35 @@ class View_Service_Provider extends Service_Provider {
 	 */
 	protected function register_twig_engine( Engine_Resolver $resolver ) {
 		$resolver->register( 'twig', function () {
-			// Set the loader main namespace (paths).
-			// $plugin['twig.loader']->setPaths( $plugin['view.finder']->getPaths() );
-
 			return new Engines\Twig_Engine( $this->plugin['twig'] );
 		} );
 	}
 
 	/**
 	 * Register Twig environment and its loader.
+	 *
+	 * @return void
 	 */
-	protected function registerTwigEnvironment() {
+	protected function register_twig_environment() {
 		$this->plugin->singleton( 'twig.loader', function () {
 			return new Twig\Loader( $this->plugin['view.finder'] );
 		} );
 
-		$this->plugin->singleton( 'twig', function ( $container ) {
-			return new Twig_Environment( $container['twig.loader'], [
-				'auto_reload' => true,
+		$this->plugin->singleton( 'twig', function ( $plugin ) {
+			return new Twig_Environment( $plugin['twig.loader'], [
+				'debug'       => defined( 'WP_DEBUG' ) && WP_DEBUG,
 				'cache'       => false,
+				'auto_reload' => true,
 			] );
 		} );
 	}
 
 	/**
-	 * Register the view factory. The factory is
-	 * available in all views.
+	 * Register the view factory.
+	 *
+	 * @return void
 	 */
-	protected function registerViewFactory() {
+	protected function register_view_factory() {
 		$this->plugin->singleton( 'view', function ( $plugin ) {
 			$factory = new Factory( $plugin['view.engine_resolver'], $plugin['view.finder'] );
 
