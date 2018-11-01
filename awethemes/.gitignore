@@ -1,3 +1,4 @@
 /wp-object/
 /relationships/.git/
 !/relationships/
+*
