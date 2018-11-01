@@ -2,6 +2,7 @@
 
 namespace AweBooking\Component\View;
 
+use Twig_Environment;
 use Twig_Loader_Filesystem;
 use AweBooking\Support\Service_Provider;
 
@@ -12,49 +13,53 @@ class View_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
+		$this->register_engine_resolver();
 		$this->registerTwigEnvironment();
-		$this->registerEngineResolver();
 		$this->registerViewFactory();
 	}
 
 	/**
 	 * Register the EngineResolver instance to the application.
+	 *
+	 * @return void
 	 */
-	protected function registerEngineResolver() {
+	protected function register_engine_resolver() {
+		$this->plugin->singleton( 'view.finder', function ( $container ) {
+			return new File_Finder( [ $this->plugin->plugin_path( 'templates/' ) ] );
+		} );
+
 		$this->plugin->singleton( 'view.engine_resolver', function () {
 			$resolver = new Engine_Resolver;
 
-			$this->registerPhpEngine( $resolver );
+			$this->register_php_engine( $resolver );
+			$this->register_twig_engine( $resolver );
 
 			return $resolver;
 		} );
 	}
 
 	/**
-	 * Register the PHP engine to the EngineResolver.
+	 * Register the PHP engine to the Engine_Resolver.
 	 *
-	 * @param string                                  $engine Name of the engine.
-	 * @param \Illuminate\View\Engines\EngineResolver $resolver
+	 * @param \AweBooking\Component\View\Engine_Resolver $resolver
 	 */
-	protected function registerPhpEngine( $resolver ) {
+	protected function register_php_engine( Engine_Resolver $resolver ) {
 		$resolver->register( 'php', function () {
-			return new Engines\Php_Engine();
+			return new Engines\Php_Engine;
 		} );
 	}
 
 	/**
-	 * Register the Twig engine to the EngineResolver.
+	 * Register the Twig engine to the Engine_Resolver.
 	 *
-	 * @param string         $engine
-	 * @param EngineResolver $resolver
+	 * @param \AweBooking\Component\View\Engine_Resolver $resolver
 	 */
-	protected function registerTwigEngine( $engine, EngineResolver $resolver ) {
-		$container = $this->app;
-		$resolver->register( $engine, function () use ( $container ) {
+	protected function register_twig_engine( Engine_Resolver $resolver ) {
+		$resolver->register( 'twig', function () {
 			// Set the loader main namespace (paths).
-			$container['twig.loader']->setPaths( $container['view.finder']->getPaths() );
+			// $plugin['twig.loader']->setPaths( $plugin['view.finder']->getPaths() );
 
-			return new TwigEngine( $container['twig'], $container['view.finder'] );
+			return new Engines\Twig_Engine( $this->plugin['twig'] );
 		} );
 	}
 
@@ -63,13 +68,13 @@ class View_Service_Provider extends Service_Provider {
 	 */
 	protected function registerTwigEnvironment() {
 		$this->plugin->singleton( 'twig.loader', function () {
-			return new Twig_Loader_Filesystem();
+			return new Twig\Loader( $this->plugin['view.finder'] );
 		} );
 
 		$this->plugin->singleton( 'twig', function ( $container ) {
-			return new Twig\Environment( $container['twig.loader'], [
+			return new Twig_Environment( $container['twig.loader'], [
 				'auto_reload' => true,
-				'cache'       => $container['path.storage'] . 'twig',
+				'cache'       => false,
 			] );
 		} );
 	}
@@ -79,10 +84,6 @@ class View_Service_Provider extends Service_Provider {
 	 * available in all views.
 	 */
 	protected function registerViewFactory() {
-		$this->plugin->singleton( 'view.finder', function ( $container ) {
-			return new File_Finder( [ $this->plugin->plugin_path( 'templates/' ) ] );
-		} );
-
 		$this->plugin->singleton( 'view', function ( $plugin ) {
 			$factory = new Factory( $plugin['view.engine_resolver'], $plugin['view.finder'] );
 
@@ -90,7 +91,5 @@ class View_Service_Provider extends Service_Provider {
 
 			return $factory;
 		} );
-
-		// dd( $this->plugin['view']->make( 'hotel' ) );
 	}
 }

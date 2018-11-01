@@ -112,10 +112,10 @@ class File_Finder implements Finder {
 	protected function find_in_paths( $name, $paths ) {
 		$paths = ! is_array( $paths ) ? [ $paths ] : $paths;
 
-		$names = $this->get_possible_view_files( $name );
+		$files = $this->get_possible_view_files( $name );
 
 		foreach ( $paths as $path ) {
-			foreach ( $names as $file ) {
+			foreach ( $files as $file ) {
 				if ( file_exists( $view_path = trailingslashit( $path ) . $file ) ) {
 					return $view_path;
 				}
@@ -132,6 +132,12 @@ class File_Finder implements Finder {
 	 * @return array
 	 */
 	protected function get_possible_view_files( $name ) {
+		$extension = pathinfo( $name, PATHINFO_EXTENSION );
+
+		if ( $extension && in_array( $extension, $this->extensions ) ) {
+			return [ $name ];
+		}
+
 		return array_map( function ( $extension ) use ( $name ) {
 			return str_replace( '.', '/', $name ) . '.' . $extension;
 		}, $this->extensions );

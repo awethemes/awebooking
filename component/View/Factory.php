@@ -55,11 +55,10 @@ class Factory {
 	 *
 	 * @param  string $path
 	 * @param  array  $data
-	 * @param  array  $merge_data
 	 * @return \AweBooking\Component\View\View
 	 */
-	public function file( $path, $data = [], $merge_data = [] ) {
-		return $this->view_instance( $path, $path, array_merge( $merge_data, $data ) );
+	public function file( $path, $data = [] ) {
+		return $this->view_instance( $path, $path, $data );
 	}
 
 	/**
@@ -67,15 +66,14 @@ class Factory {
 	 *
 	 * @param  string $view
 	 * @param  array  $data
-	 * @param  array  $merge_data
 	 * @return \AweBooking\Component\View\View
 	 */
-	public function make( $view, $data = [], $merge_data = [] ) {
+	public function make( $view, $data = [] ) {
 		$path = $this->finder->find(
 			$view = $this->normalize_name( $view )
 		);
 
-		return $this->view_instance( $view, $path, array_merge( $merge_data, $data ) );
+		return $this->view_instance( $view, $path, $data );
 	}
 
 	/**
