@@ -1,4 +1,8 @@
 <?php
+/**
+ *
+ * @var $this \AweBooking\Admin\Metabox
+ */
 
 ?><style type="text/css">
 	#awebooking-booking-data .hndle,
@@ -43,7 +47,10 @@
 			<div class="js-booking-column abcol-4 abcol-sm-12">
 				<h3>
 					<?php esc_html_e( 'Summary', 'awebooking' ); ?>
-					<a href="#" class="button-editnow js-editnow tippy" title="<?php esc_html_e( 'Edit', 'awebooking' ); ?>"><span class="dashicons dashicons-edit"></span></a>
+
+					<?php if ( $this->on_edit_screen() ) : ?>
+						<a href="#" class="button-editnow js-editnow tippy" title="<?php esc_html_e( 'Edit', 'awebooking' ); ?>"><span class="dashicons dashicons-edit"></span></a>
+					<?php endif; ?>
 				</h3>
 
 				<div class="reservation-summary-block">
@@ -55,7 +62,7 @@
 					<?php endif ?>
 				</div>
 
-				<div class="js-booking-data reservation-summary-block">
+				<div class="js-booking-data reservation-summary-block" <?php $this->show_on_edit(); ?>>
 					<p>
 						<strong><?php esc_html_e( 'Estimated time of arrival', 'awebooking' ); ?>:</strong>
 						<span class="abrs-badge js-editnow" title="<?php esc_html_e( 'Edit', 'awebooking' ); ?>"><?php echo abrs_fluent( abrs_list_hours() )->get( $the_booking['arrival_time'], esc_html__( 'N/A', 'awebooking' ) ); // WPCS: XSS OK. ?></span>
@@ -71,51 +78,55 @@
 					<?php endif ?>
 				</div>
 
-				<div class="js-edit-booking-data" style="display: none;">
+				<div class="js-edit-booking-data" <?php $this->show_on_add(); ?>>
 					<?php $controls->show_field( 'arrival_time' ); ?>
 
 					<?php $controls->show_field( 'customer_note' ); ?>
 				</div>
 
-				<div class="reservation-details">
-					<p class="night-stay">
-						<?php if ( ( $nights_stay = $the_booking->get( 'nights_stay' ) ) == -1 ) : ?>
-							<?php esc_html_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>
-						<?php else : ?>
-							<strong><span class="aficon aficon-moon" style="vertical-align: middle;"></span> <?php echo esc_html( $nights_stay ); ?> <?php esc_html_e( 'night stay', 'awebooking' ); ?></strong>
-						<?php endif; ?>
-					</p>
+				<?php if ( $this->on_edit_screen() ) : ?>
+					<div class="reservation-details">
+						<p class="night-stay">
+							<?php if ( ( $nights_stay = $the_booking->get( 'nights_stay' ) ) === -1 ) : ?>
+								<?php esc_html_e( 'Length of stay varies, see each room.', 'awebooking' ); ?>
+							<?php else : ?>
+								<strong><span class="aficon aficon-moon" style="vertical-align: middle;"></span> <?php echo esc_html( $nights_stay ); ?> <?php esc_html_e( 'night stay', 'awebooking' ); ?></strong>
+							<?php endif; ?>
+						</p>
 
-					<div class="abrow no-gutters">
-						<div class="abcol-6">
-							<p>
-								<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
-								<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_in_date() ) ); ?></span>
-							</p>
-						</div>
+						<div class="abrow no-gutters">
+							<div class="abcol-6">
+								<p>
+									<strong><?php esc_html_e( 'Check-in', 'awebooking' ); ?></strong>
+									<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_in_date() ) ); ?></span>
+								</p>
+							</div>
 
-						<div class="abcol-6">
-							<p>
-								<strong><?php esc_html_e( 'Check-out', 'awebooking' ); ?></strong>
-								<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_out_date() ) ); ?></span>
-							</p>
+							<div class="abcol-6">
+								<p>
+									<strong><?php esc_html_e( 'Check-out', 'awebooking' ); ?></strong>
+									<span><?php echo esc_html( abrs_format_date( $the_booking->get_check_out_date() ) ); ?></span>
+								</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="js-booking-column abcol-4 abcol-sm-12">
 				<h3>
 					<?php esc_html_e( 'Customer Details', 'awebooking' ); ?>
-					<a href="#" class="button-editnow js-editnow tippy" title="<?php esc_html_e( 'Edit', 'awebooking' ); ?>"><span class="dashicons dashicons-edit"></span></a>
+
+					<?php if ( $this->on_edit_screen() ) : ?>
+						<a href="#" class="button-editnow js-editnow tippy" title="<?php esc_html_e( 'Edit', 'awebooking' ); ?>"><span class="dashicons dashicons-edit"></span></a>
+					<?php endif; ?>
 				</h3>
 
-				<div class="js-booking-data">
+				<div class="js-booking-data" <?php $this->show_on_edit(); ?>>
 					<?php abrs_admin_template_part( 'booking/html-customer-details.php', [ 'booking' => $the_booking ] ); ?>
-
 				</div>
 
-				<div class="js-edit-booking-data" style="display: none;">
+				<div class="js-edit-booking-data" <?php $this->show_on_add(); ?>>
 					<div class="abrow">
 						<?php foreach ( $controls->sections['customer']['fields'] as $field => $args ) : ?>
 							<div class="abrs-mb1 abcol-sm-12 <?php echo ( isset( $args['col-half'] ) && $args['col-half'] ) ? 'abcol-6' : 'abcol-12'; ?>">

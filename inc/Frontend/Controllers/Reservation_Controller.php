@@ -168,6 +168,8 @@ class Reservation_Controller {
 		// Re-calculator after done.
 		$this->reservation->calculate_totals();
 
+		$this->reservation->store();
+
 		return $this->redirector->to( abrs_get_checkout_url() );
 	}
 
@@ -193,5 +195,7 @@ class Reservation_Controller {
 				continue;
 			}
 		}
+
+		$this->reservation->store();
 	}
 }

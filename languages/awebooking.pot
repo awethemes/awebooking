@@ -93,68 +93,200 @@ msgstr ""
 msgid "Whoops, looks like something went wrong."
 msgstr ""
 
+#: component/Validation/lang.php:4
+msgid "is required"
+msgstr ""
+
+#: component/Validation/lang.php:5
+msgid "must be the same as '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:6
+msgid "must be different than '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:7
+msgid "must be accepted"
+msgstr ""
+
+#: component/Validation/lang.php:8
+msgid "must be numeric"
+msgstr ""
+
+#: component/Validation/lang.php:9
+msgid "must be an integer"
+msgstr ""
+
+#: component/Validation/lang.php:10
+msgid "must be %d characters long"
+msgstr ""
+
+#: component/Validation/lang.php:11
+msgid "must be at least %s"
+msgstr ""
+
+#: component/Validation/lang.php:12
+msgid "must be no more than %s"
+msgstr ""
+
+#: component/Validation/lang.php:13, component/Validation/lang.php:14
+msgid "contains invalid value"
+msgstr ""
+
+#: component/Validation/lang.php:15
+msgid "is not a valid IP address"
+msgstr ""
+
+#: component/Validation/lang.php:16
+msgid "is not a valid IPv4 address"
+msgstr ""
+
+#: component/Validation/lang.php:17
+msgid "is not a valid IPv6 address"
+msgstr ""
+
+#: component/Validation/lang.php:18
+msgid "is not a valid email address"
+msgstr ""
+
+#: component/Validation/lang.php:19
+msgid "is not a valid URL"
+msgstr ""
+
+#: component/Validation/lang.php:20
+msgid "must be an active domain"
+msgstr ""
+
+#: component/Validation/lang.php:21
+msgid "must contain only letters a-z"
+msgstr ""
+
+#: component/Validation/lang.php:22
+msgid "must contain only letters a-z and/or numbers 0-9"
+msgstr ""
+
+#: component/Validation/lang.php:23
+msgid "must contain only letters a-z, numbers 0-9, dashes and underscores"
+msgstr ""
+
+#: component/Validation/lang.php:24
+msgid "contains invalid characters"
+msgstr ""
+
+#: component/Validation/lang.php:25
+msgid "is not a valid date"
+msgstr ""
+
+#: component/Validation/lang.php:26
+msgid "must be date with format '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:27
+msgid "must be date before '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:28
+msgid "must be date after '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:29
+msgid "must contain %s"
+msgstr ""
+
+#: component/Validation/lang.php:30
+msgid "must be a boolean"
+msgstr ""
+
+#: component/Validation/lang.php:31
+msgid "must be between %d and %d characters"
+msgstr ""
+
+#: component/Validation/lang.php:32
+msgid "must be a valid credit card number"
+msgstr ""
+
+#: component/Validation/lang.php:33
+msgid "must be at least %d characters long"
+msgstr ""
+
+#: component/Validation/lang.php:34
+msgid "must not exceed %d characters"
+msgstr ""
+
+#: component/Validation/lang.php:35
+msgid "must be an instance of '%s'"
+msgstr ""
+
+#: component/Validation/lang.php:36
+msgid "must contain unique elements only"
+msgstr ""
+
+#: component/Validation/lang.php:37
+msgid "contains an item that is not in the list"
+msgstr ""
+
 #: inc/Admin/Admin_Settings.php:57
 msgid "Your settings have been saved."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:17
+#: inc/Admin/Tools.php:17
 msgid "Expired transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:18
+#: inc/Admin/Tools.php:18
 msgid "Clear transients"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:19
+#: inc/Admin/Tools.php:19
 msgid "This tool will clear ALL expired transients from WordPress."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:23
+#: inc/Admin/Tools.php:23
 msgid "Optimize database"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:24
+#: inc/Admin/Tools.php:24
 msgid "Optimize"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:25
+#: inc/Admin/Tools.php:25
 msgid "This tool will delete all orphan rows in AweBooking tables."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:29
+#: inc/Admin/Tools.php:29
 msgid "Capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:30
+#: inc/Admin/Tools.php:30
 msgid "Reset capabilities"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:31
+#: inc/Admin/Tools.php:31
 msgid "This tool will reset the admin, customer, receptionist and hotel manager roles to default."
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:53
+#: inc/Admin/Tools.php:53
 msgid "Task is not registered"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:59
+#: inc/Admin/Tools.php:59
 msgid "Task is not supported action"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:77
+#: inc/Admin/Tools.php:77
 msgid "The roles has been reset successfully!"
 msgstr ""
 
 #. translators: %d: amount of expired transients
-#: inc/Admin/Admin_Tools.php:93
+#: inc/Admin/Tools.php:93
 msgid "%d transients rows cleared"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:120
+#: inc/Admin/Tools.php:120
 msgid "Optimized database!"
 msgstr ""
 
-#: inc/Admin/Admin_Tools.php:145
+#: inc/Admin/Tools.php:145
 msgid "%d room type(s) has been updated!"
 msgstr ""
 
@@ -166,33 +298,33 @@ msgstr ""
 msgid "Invalid single rate."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:127
+#: inc/Checkout/Checkout.php:129
 msgid "Sorry, your session has expired."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:152
+#: inc/Checkout/Checkout.php:154
 msgid "Sorry, we cannot serve your reservation request at this moment."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:201
+#: inc/Checkout/Checkout.php:203
 msgid "Invalid gateway response."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:498
+#. translators: %s Field name
+#: inc/Checkout/Checkout.php:508
+msgid "%s is a required field."
+msgstr ""
+
+#: inc/Checkout/Checkout.php:534
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:510
+#: inc/Checkout/Checkout.php:546
 msgid "Sorry, there was an error processing your payment. Please try again later."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:513
+#: inc/Checkout/Checkout.php:549
 msgid "Please choose a payment method."
-msgstr ""
-
-#. translators: %s Field name
-#: inc/Checkout/Checkout.php:535
-msgid "%s is a required field."
 msgstr ""
 
 #: inc/Checkout/Form_Controls.php:85, inc/Admin/Metaboxes/views/html-booking-main.php:109
@@ -255,19 +387,19 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:211
+#: inc/Checkout/Form_Controls.php:212
 msgid "Additionals"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:218, inc/Admin/Metaboxes/views/html-booking-main.php:60
+#: inc/Checkout/Form_Controls.php:219, inc/Admin/Metaboxes/views/html-booking-main.php:60
 msgid "Estimated time of arrival"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:221
+#: inc/Checkout/Form_Controls.php:222
 msgid "I don't know"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:228, inc/Admin/Metaboxes/views/html-booking-main.php:65
+#: inc/Checkout/Form_Controls.php:229, inc/Admin/Metaboxes/views/html-booking-main.php:65
 msgid "Special requests"
 msgstr ""
 
@@ -2718,6 +2850,10 @@ msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
+#: inc/Core/Concerns/Plugin_Options.php:198
+msgid "Get options should be called after the `after_setup_theme` action."
+msgstr ""
+
 #: inc/Core/Shortcode/Shortcode.php:154
 msgid "Sorry, a fatal error occurred."
 msgstr ""
@@ -2857,28 +2993,28 @@ msgstr ""
 msgid "You're trying booking an invalid room. Please try another."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:242
+#: inc/Reservation/Traits/With_Room_Stays.php:246
 msgid "We are unable to find the room rate match with your request. Please try again."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:249
+#: inc/Reservation/Traits/With_Room_Stays.php:253
 msgid "You cannot perform reservation in the past! Please re-enter dates."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:253
+#: inc/Reservation/Traits/With_Room_Stays.php:257
 msgid "Sorry, the room is fully booked, please try another date."
 msgstr ""
 
 #. translators: Number of remaining rooms
-#: inc/Reservation/Traits/With_Room_Stays.php:258
+#: inc/Reservation/Traits/With_Room_Stays.php:262
 msgid "You cannot book that number of rooms because there are not enough rooms (%1$s remaining)"
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:262
+#: inc/Reservation/Traits/With_Room_Stays.php:266
 msgid "Sorry, the room is not available. Please try another room."
 msgstr ""
 
-#: inc/Reservation/Traits/With_Room_Stays.php:266
+#: inc/Reservation/Traits/With_Room_Stays.php:270
 msgid "Sorry, some kind of error has occurred. Please try again."
 msgstr ""
 
@@ -2898,10 +3034,6 @@ msgstr ""
 #. translators: 1: service name 2: quantity in stock
 #: inc/Reservation/Traits/With_Services.php:122
 msgid "You cannot add that amount of &quot;%1$s&quot; to the reservation because there is not enough stock (%2$s remaining)."
-msgstr ""
-
-#: inc/Support/Traits/Plugin_Options.php:196
-msgid "Get options should be called after the `after_setup_theme` action."
 msgstr ""
 
 #: templates/emails/partials/line-booking.php:23
