@@ -1,6 +1,6 @@
 <?php
 
-namespace AweBooking\Component\View;
+namespace AweBooking\Component\View\Twig;
 
 class Environment extends \Twig_Environment {
 	/**

@@ -3,7 +3,6 @@
 namespace AweBooking\Component\View;
 
 use Illuminate\Support\Arr;
-use AweBooking\Component\View\Engines\Php_Engine;
 
 class Factory {
 	/**
@@ -52,30 +51,15 @@ class Factory {
 	}
 
 	/**
-	 * Register default engines.
-	 *
-	 * @return void
-	 */
-	public function register_default_engines() {
-		$this->engines->register( 'php', function () {
-			return new Php_Engine;
-		} );
-	}
-
-	/**
 	 * Get the evaluated view contents for the given view.
 	 *
 	 * @param  string $path
 	 * @param  array  $data
 	 * @param  array  $merge_data
-	 * @return \Illuminate\Contracts\View\View
+	 * @return \AweBooking\Component\View\View
 	 */
 	public function file( $path, $data = [], $merge_data = [] ) {
-		$data = array_merge( $merge_data, $this->parseData( $data ) );
-
-		return tap( $this->view_instance( $path, $path, $data ), function ( $view ) {
-			$this->callCreator( $view );
-		} );
+		return $this->view_instance( $path, $path, array_merge( $merge_data, $data ) );
 	}
 
 	/**
@@ -83,22 +67,15 @@ class Factory {
 	 *
 	 * @param  string $view
 	 * @param  array  $data
-	 * @param  array  $mergeData
-	 * @return \Illuminate\Contracts\View\View
+	 * @param  array  $merge_data
+	 * @return \AweBooking\Component\View\View
 	 */
-	public function make( $view, $data = [], $mergeData = [] ) {
+	public function make( $view, $data = [], $merge_data = [] ) {
 		$path = $this->finder->find(
 			$view = $this->normalize_name( $view )
 		);
 
-		// Next, we will create the view instance and call the view creator for the view
-		// which can set any data, etc. Then we will return the view instance back to
-		// the caller for rendering or performing other view manipulations on this.
-		$data = array_merge( $mergeData, $this->parseData( $data ) );
-
-		return tap( $this->view_instance( $view, $path, $data ), function ( $view ) {
-			$this->callCreator( $view );
-		} );
+		return $this->view_instance( $view, $path, array_merge( $merge_data, $data ) );
 	}
 
 	/**
@@ -110,7 +87,7 @@ class Factory {
 	 * @param  string $empty
 	 * @return string
 	 */
-	public function renderEach( $view, $data, $iterator, $empty = 'raw|' ) {
+	public function render_each( $view, $data, $iterator, $empty = '' ) {
 		$result = '';
 
 		// If is actually data in the array, we will loop through the data and append
@@ -118,19 +95,12 @@ class Factory {
 		// iterated value of this data array, allowing the views to access them.
 		if ( count( $data ) > 0 ) {
 			foreach ( $data as $key => $value ) {
-				$result .= $this->make(
-					$view, [ 'key' => $key, $iterator => $value ]
-				)->render();
+				// @codingStandardsIgnoreLine
+				$result .= $this->make( $view, [ 'key' => $key, $iterator => $value ] )->render();
 			}
-		}
-
-		// If there is no data in the array, we will render the contents of the empty
-		// view. Alternatively, the "empty view" could be a raw string that begins
-		// with "raw|" for convenience and to let this know that it is a string.
-		else {
-			$result = Str::startsWith( $empty, 'raw|' )
-				? substr( $empty, 4 )
-				: $this->make( $empty )->render();
+		} else {
+			// If there is no data in the array, we will render the contents of the empty view.
+			$result = $empty ? $this->make( $empty )->render() : '';
 		}
 
 		return $result;
@@ -152,16 +122,6 @@ class Factory {
 		list( $namespace, $name ) = explode( $delimiter, $name );
 
 		return $namespace . $delimiter . str_replace( '/', '.', $name );
-	}
-
-	/**
-	 * Parse the given data into a raw array.
-	 *
-	 * @param  mixed $data
-	 * @return array
-	 */
-	protected function parseData( $data ) {
-		return $data instanceof Arrayable ? $data->toArray() : $data;
 	}
 
 	/**
@@ -219,9 +179,15 @@ class Factory {
 	protected function get_extension( $path ) {
 		$extensions = array_keys( $this->extensions );
 
-		return Arr::first( $extensions, function ( $value ) use ( $path ) {
-			return Str::endsWith( $path, '.' . $value );
-		} );
+		$extension = pathinfo( $path, PATHINFO_EXTENSION );
+
+		foreach ( $extensions as $_extension ) {
+			if ( $extension === $_extension ) {
+				return $_extension;
+			}
+		}
+
+		return null;
 	}
 
 	/**

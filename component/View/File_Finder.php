@@ -1,10 +1,8 @@
 <?php
 
-namespace AweBooking\Component\View\Finders;
+namespace AweBooking\Component\View;
 
-use AweBooking\Component\View\Finder;
-
-class Directory_Finder implements Finder {
+class File_Finder implements Finder {
 	/**
 	 * The array of active view paths.
 	 *
@@ -114,9 +112,11 @@ class Directory_Finder implements Finder {
 	protected function find_in_paths( $name, $paths ) {
 		$paths = ! is_array( $paths ) ? [ $paths ] : $paths;
 
+		$names = $this->get_possible_view_files( $name );
+
 		foreach ( $paths as $path ) {
-			foreach ( $this->get_possible_view_files( $name ) as $file ) {
-				if ( file_exists( $view_path = $path . '/' . $file ) ) {
+			foreach ( $names as $file ) {
+				if ( file_exists( $view_path = trailingslashit( $path ) . $file ) ) {
 					return $view_path;
 				}
 			}

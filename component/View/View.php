@@ -2,8 +2,6 @@
 
 namespace AweBooking\Component\View;
 
-use Illuminate\Contracts\Support\Arrayable;
-
 class View implements \ArrayAccess {
 	/**
 	 * The view factory instance.
@@ -55,7 +53,7 @@ class View implements \ArrayAccess {
 		$this->engine  = $engine;
 		$this->view    = $view;
 		$this->path    = $path;
-		$this->data    = $data instanceof Arrayable ? $data->toArray() : (array) $data;
+		$this->data    = (array) $data;
 	}
 
 	/**
