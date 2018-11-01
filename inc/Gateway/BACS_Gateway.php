@@ -36,6 +36,8 @@ class BACS_Gateway extends Gateway {
 		$this->enabled     = $this->get_option( 'enabled' );
 		$this->title       = esc_html( $this->get_option( 'title' ) );
 		$this->description = esc_textarea( $this->get_option( 'description' ) );
+
+		add_action( 'abrs_email_booking_details', [ $this, 'email_instructions' ], 20, 2 );
 	}
 
 	/**
@@ -88,5 +90,24 @@ class BACS_Gateway extends Gateway {
 				'default'     => '',
 			],
 		];
+	}
+
+	/**
+	 * Add content to the emails.
+	 *
+	 * @param \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param \AweBooking\Email\Mailable $email   The mailable instance.
+	 *
+	 * @return void
+	 */
+	public function email_instructions( $booking, $email ) {
+		/* @var $last_payment \AweBooking\Model\Booking\Payment_Item */
+		$last_payment = $booking->get_payments()->last();
+
+		$instructions = $this->get_option( 'instructions' );
+
+		if ( $instructions && $email->is_customer_email() && ( $last_payment && $this->get_method() === $last_payment->get( 'method' ) ) ) {
+			echo wp_kses_post( wpautop( wptexturize( $instructions ) ) . PHP_EOL );
+		}
 	}
 }
