@@ -32,9 +32,9 @@ final class Plugin extends Container {
 	/**
 	 * Store the static configuration.
 	 *
-	 * @var array
+	 * @var \AweBooking\Support\Fluent
 	 */
-	protected $configuration = [];
+	protected $configuration;
 
 	/**
 	 * Indicates if the plugin has "booted".

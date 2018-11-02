@@ -3,8 +3,9 @@
 namespace AweBooking\Component\View\Engines;
 
 use Twig_Environment;
+use AweBooking\Component\View\Engine;
 
-class Twig_Engine extends Php_Engine {
+class Twig_Engine implements Engine {
 	/**
 	 * The Twig Environment instance.
 	 *

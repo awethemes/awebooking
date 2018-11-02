@@ -12,37 +12,66 @@ class View_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
-		$this->register_view_finder();
 		$this->register_twig_environment();
-		$this->register_engine_resolver();
 		$this->register_view_factory();
 	}
 
 	/**
-	 * Register the View Finder instance to the plugin.
+	 * Register Twig environment and its loader.
 	 *
 	 * @return void
 	 */
-	protected function register_view_finder() {
-		$this->plugin->singleton( 'view.finder', function ( $container ) {
-			return new File_Finder( [ $this->plugin->plugin_path( 'templates/' ) ] );
+	protected function register_twig_environment() {
+		$this->plugin->singleton( 'twig', function ( $plugin ) {
+			$loader = new Twig\Loader( $this->plugin['view.finder'] );
+
+			return new Twig_Environment( $plugin['twig.loader'], [
+				'debug'       => defined( 'WP_DEBUG' ) && WP_DEBUG,
+				'cache'       => false,
+				'auto_reload' => true,
+			] );
+		} );
+	}
+
+	/**
+	 * Register the view factory.
+	 *
+	 * @return void
+	 */
+	protected function register_view_factory() {
+		$this->plugin->singleton( 'view', function ( $plugin ) {
+			$finder = new File_Finder( $plugin['config']['view']['paths'] );
+
+			$factory = new Factory( $this->create_engine_resolver( 'php' ), $finder );
+			$factory->share( 'awebooking', $plugin );
+
+			return $factory;
+		} );
+
+		$this->plugin->singleton( 'admin_view', function ( $plugin ) {
+			$finder = new File_Finder( $plugin['config']['admin_view']['paths'] );
+
+			$factory = new Factory( $this->create_engine_resolver( 'php', 'twig' ), $finder );
+			$factory->share( 'awebooking', $plugin );
+
+			return $factory;
 		} );
 	}
 
 	/**
 	 * Register the Engine_Resolver instance to the plugin.
 	 *
-	 * @return void
+	 * @param array|string $engines
+	 * @return \AweBooking\Component\View\Engine_Resolver
 	 */
-	protected function register_engine_resolver() {
-		$this->plugin->singleton( 'view.engine_resolver', function () {
-			$resolver = new Engine_Resolver;
+	protected function create_engine_resolver( $engines ) {
+		$resolver = new Engine_Resolver;
 
-			$this->register_php_engine( $resolver );
-			$this->register_twig_engine( $resolver );
+		foreach ( is_array( $engines ) ? $engines : func_get_args() as $engine ) {
+			$this->{"register_{$engine}_engine"}( $resolver );
+		}
 
-			return $resolver;
-		} );
+		return $resolver;
 	}
 
 	/**
@@ -63,41 +92,7 @@ class View_Service_Provider extends Service_Provider {
 	 */
 	protected function register_twig_engine( Engine_Resolver $resolver ) {
 		$resolver->register( 'twig', function () {
-			return new Engines\Twig_Engine( $this->plugin['twig'] );
-		} );
-	}
-
-	/**
-	 * Register Twig environment and its loader.
-	 *
-	 * @return void
-	 */
-	protected function register_twig_environment() {
-		$this->plugin->singleton( 'twig.loader', function () {
-			return new Twig\Loader( $this->plugin['view.finder'] );
-		} );
-
-		$this->plugin->singleton( 'twig', function ( $plugin ) {
-			return new Twig_Environment( $plugin['twig.loader'], [
-				'debug'       => defined( 'WP_DEBUG' ) && WP_DEBUG,
-				'cache'       => false,
-				'auto_reload' => true,
-			] );
-		} );
-	}
-
-	/**
-	 * Register the view factory.
-	 *
-	 * @return void
-	 */
-	protected function register_view_factory() {
-		$this->plugin->singleton( 'view', function ( $plugin ) {
-			$factory = new Factory( $plugin['view.engine_resolver'], $plugin['view.finder'] );
-
-			$factory->share( 'awebooking', $plugin );
-
-			return $factory;
+			return new Engines\Twig_Engine( $this->plugin->make( 'twig' ) );
 		} );
 	}
 }

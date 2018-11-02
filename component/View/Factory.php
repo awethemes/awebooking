@@ -142,12 +142,10 @@ class Factory {
 	 */
 	public function exists( $view ) {
 		try {
-			$this->finder->find( $view );
+			return (bool) $this->finder->find( $view );
 		} catch ( \InvalidArgumentException $e ) {
 			return false;
 		}
-
-		return true;
 	}
 
 	/**

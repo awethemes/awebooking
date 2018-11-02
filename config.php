@@ -1,6 +1,11 @@
 <?php
 
 return [
+	'view' => [
+		'paths' => [
+			__DIR__ . '/templates/',
+		],
+	],
 
 	'bootstrappers' => [
 		\AweBooking\Core\Bootstrap\Load_Textdomain::class,
@@ -38,5 +43,4 @@ return [
 		\AweBooking\Admin\Providers\Taxonomies_Service_Provider::class,
 		\AweBooking\Admin\Providers\Notices_Service_Provider::class,
 	],
-
 ];
