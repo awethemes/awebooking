@@ -8,12 +8,12 @@ use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
+use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
 
 final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
-		Core\Concerns\Plugin_Options,
-		Deprecated\AweBooking;
+		Core\Concerns\Plugin_Options;
 
 	/**
 	 * The plugin version.
@@ -30,62 +30,18 @@ final class Plugin extends Container {
 	protected $plugin_file;
 
 	/**
+	 * Store the static configuration.
+	 *
+	 * @var array
+	 */
+	protected $configuration = [];
+
+	/**
 	 * Indicates if the plugin has "booted".
 	 *
 	 * @var bool
 	 */
 	protected $booted = false;
-
-	/**
-	 * The bootstrap classes.
-	 *
-	 * @var array
-	 */
-	protected static $bootstrappers = [
-		\AweBooking\Core\Bootstrap\Load_Textdomain::class,
-		\AweBooking\Core\Bootstrap\Setup_Environment::class,
-		\AweBooking\Core\Bootstrap\Load_Configuration::class,
-		\AweBooking\Core\Bootstrap\Include_Functions::class,
-		\AweBooking\Core\Bootstrap\Start_Session::class,
-		\AweBooking\Core\Bootstrap\Boot_Providers::class,
-	];
-
-	/**
-	 * The core service providers.
-	 *
-	 * @var array
-	 */
-	protected static $service_providers = [
-		'core' => [
-			\AweBooking\Core\Providers\Intl_Service_Provider::class,
-			\AweBooking\Core\Providers\Http_Service_Provider::class,
-			\AweBooking\Core\Providers\Form_Service_Provider::class,
-			\AweBooking\Component\View\View_Service_Provider::class,
-			\AweBooking\Core\Providers\Query_Service_Provider::class,
-			\AweBooking\Core\Providers\Logic_Service_Provider::class,
-			\AweBooking\Core\Providers\Payment_Service_Provider::class,
-			\AweBooking\Core\Providers\Email_Service_Provider::class,
-			\AweBooking\Core\Providers\Shortcode_Service_Provider::class,
-			\AweBooking\Core\Providers\Widget_Service_Provider::class,
-			\AweBooking\Core\Providers\Addons_Service_Provider::class,
-		],
-		'admin' => [
-			\AweBooking\Admin\Providers\Admin_Service_Provider::class,
-			\AweBooking\Admin\Providers\Menu_Service_Provider::class,
-			\AweBooking\Admin\Providers\Permalink_Service_Provider::class,
-			\AweBooking\Admin\Providers\Scripts_Service_Provider::class,
-			\AweBooking\Admin\Providers\Metaboxes_Service_Provider::class,
-			\AweBooking\Admin\Providers\Post_Types_Service_Provider::class,
-			\AweBooking\Admin\Providers\Taxonomies_Service_Provider::class,
-			\AweBooking\Admin\Providers\Notices_Service_Provider::class,
-		],
-		'frontend' => [
-			\AweBooking\Frontend\Providers\Frontend_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Template_Loader_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Scripts_Service_Provider::class,
-			\AweBooking\Frontend\Providers\Reservation_Service_Provider::class,
-		],
-	];
 
 	/**
 	 * Get the instance of the plugin.
@@ -107,7 +63,7 @@ final class Plugin extends Container {
 		$this->binding_paths();
 		$this->register_base_bindings();
 
-		Constants::defines();
+		Constants::defines( $this );
 	}
 
 	/**
@@ -117,6 +73,19 @@ final class Plugin extends Container {
 	 */
 	public function version() {
 		return static::VERSION;
+	}
+
+	/**
+	 * Load the static configuration.
+	 *
+	 * @param string $path The absolute path to the config file.
+	 */
+	public function load_config( $path ) {
+		$config = require $path;
+
+		$this->configuration = new Fluent( $config );
+
+		$this->instance( 'config', $this->configuration );
 	}
 
 	/**
@@ -211,25 +180,20 @@ final class Plugin extends Container {
 	 * @param string $bootstrap The bootstrap class.
 	 */
 	public function bootstrapper( $bootstrap ) {
-		static::$bootstrappers[] = $bootstrap;
+		$this->configuration['bootstrappers'][] = $bootstrap;
 	}
 
 	/**
 	 * Register a provider into the plugin.
 	 *
 	 * @param string $provider The provider class name.
-	 * @param string $area     The area (core, admin, frontend).
 	 * @param bool   $prepend  Prepend or append.
 	 */
-	public function provider( $provider, $area = 'core', $prepend = true ) {
-		if ( ! array_key_exists( $area, static::$service_providers ) ) {
-			throw new \OutOfRangeException( 'The area must be one of: core, admin or frontend.' );
-		}
-
+	public function provider( $provider, $prepend = true ) {
 		if ( $prepend ) {
-			static::$service_providers[ $area ] = Arr::prepend( static::$service_providers[ $area ], $provider );
+			$this->configuration['service_providers'] = Arr::prepend( $this->configuration['service_providers'], $provider );
 		} else {
-			static::$service_providers[ $area ][] = $provider;
+			$this->configuration['service_providers'][] = $provider;
 		}
 	}
 
@@ -247,9 +211,9 @@ final class Plugin extends Container {
 		do_action( 'awebooking_bootstrap', $this );
 
 		// Run bootstrap classes.
-		array_walk( static::$bootstrappers, function( $bootstrapper ) {
+		foreach ( $this->configuration['bootstrappers'] as $bootstrapper ) {
 			$this->make( $bootstrapper )->bootstrap( $this );
-		});
+		}
 
 		/**
 		 * Fire the init action.
@@ -258,17 +222,8 @@ final class Plugin extends Container {
 		 */
 		do_action( 'awebooking_init', $this );
 
-		// Build the providers.
-		$providers = static::$service_providers['core'];
-
-		if ( is_admin() ) {
-			$providers = array_merge( $providers, static::$service_providers['admin'] );
-		} elseif ( ! defined( 'DOING_CRON' ) && ( ! is_admin() || defined( 'DOING_AJAX' ) ) ) {
-			$providers = array_merge( $providers, static::$service_providers['frontend'] );
-		}
-
 		// Filter the service_providers.
-		$providers = apply_filters( 'abrs_service_providers', $providers, $this );
+		$providers = apply_filters( 'abrs_service_providers', $this->configuration['service_providers'], $this );
 
 		// Loop each provider then register them.
 		foreach ( $providers as $provider ) {

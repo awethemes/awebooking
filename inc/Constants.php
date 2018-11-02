@@ -32,11 +32,12 @@ class Constants {
 	/**
 	 * Defines constants.
 	 *
+	 * @param \AweBooking\Plugin $plugin
 	 * @return void
 	 */
-	public static function defines() {
-		static::define( 'ABRS_ABSPATH', awebooking()->plugin_path() );
-		static::define( 'ABRS_ASSET_URL', awebooking()->plugin_url( 'assets/' ) );
+	public static function defines( $plugin ) {
+		static::define( 'ABRS_ABSPATH', $plugin->plugin_path() );
+		static::define( 'ABRS_ASSET_URL', $plugin->plugin_url( 'assets/' ) );
 		static::define( 'ABRS_ROUNDING_PRECISION', 6 );
 		static::define( 'ABRS_TEMPLATE_DEBUG', false );
 	}

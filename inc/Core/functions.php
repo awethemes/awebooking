@@ -27,6 +27,22 @@ foreach ( [ // Requires other core functions.
 }
 
 /**
+ * Main instance of AweBooking.
+ *
+ * @param  string|null $make Optional, get specified binding in the container.
+ * @return AweBooking\Plugin|mixed
+ */
+function awebooking( $make = null ) {
+	$plugin = AweBooking::get_instance();
+
+	if ( ! is_null( $make ) ) {
+		return $plugin->make( $make );
+	}
+
+	return $plugin;
+}
+
+/**
  * Returns the logger.
  *
  * @return \Psr\Log\LoggerInterface
