@@ -16,6 +16,19 @@
 		</div>
 	</div>
 
+	<?php if ( isset( $checkout_scheduled ) && $checkout_scheduled ) : ?>
+		<div class="abrs-plr1 abrs-label abrs-label--warning squared">
+			<p>
+				<?php
+				printf( 'Auto update checkout status at %1$s (%2$s)',
+					esc_html( abrs_date_time( $checkout_scheduled )->toDateTimeString() ),
+					esc_html( human_time_diff( current_time( 'timestamp' ), $checkout_scheduled ) )
+				)
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
 	<div id="major-publishing-actions">
 		<div id="delete-action">
 			<?php

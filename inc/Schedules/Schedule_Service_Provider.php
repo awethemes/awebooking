@@ -1,0 +1,59 @@
+<?php
+
+namespace AweBooking\Schedules;
+
+use AweBooking\Support\Service_Provider;
+
+class Schedule_Service_Provider extends Service_Provider {
+	/**
+	 * Init (boot) the service provider.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		add_action( 'abrs_booking_status_changed', [ $this, 'handle_status_changes' ], 10, 3 );
+		add_action( 'abrs_schedule_update_checkout_status', [ $this, 'schedule_update_checkout_status' ] );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param string                    $new_status The new status.
+	 * @param string                    $old_status The old status.
+	 * @param \AweBooking\Model\Booking $booking    The booking instance.
+	 * @return void
+	 */
+	public function handle_status_changes( $new_status, $old_status, $booking ) {
+		$old_status = ( 0 === strpos( $old_status, 'awebooking-' ) ) ? substr( $old_status, 11 ) : $old_status;
+
+		if ( ! $check_out = $booking->get_check_out_date() ) {
+			return;
+		}
+
+		$args = [ $booking->get_id() ];
+
+		$schedule_date = abrs_date( $check_out )->endOfDay();
+
+		if ( 'checked-in' === $new_status && in_array( $old_status, [ 'on-hold', 'inprocess', 'completed', 'deposit' ] ) ) {
+			wp_schedule_single_event( $schedule_date->timestamp, 'abrs_schedule_update_checkout_status', $args );
+			return;
+		}
+
+		if ( wp_next_scheduled( 'abrs_schedule_update_checkout_status', $args ) ) {
+			wp_unschedule_event( $schedule_date->timestamp, 'abrs_schedule_update_checkout_status', $args );
+		}
+	}
+
+	/**
+	 * //
+	 *
+	 * @param int $booking_id The booking ID.
+	 */
+	public function schedule_update_checkout_status( $booking_id ) {
+		$booking = abrs_get_booking( $booking_id );
+
+		if ( $booking && 'checked-out' !== $booking->get_status() ) {
+			$booking->update_status( 'checked-out', esc_html__( 'Cron: Auto update status to checked-out.', 'awebooking' ) );
+		}
+	}
+}

@@ -23,6 +23,7 @@ return [
 		\AweBooking\Core\Providers\Shortcode_Service_Provider::class,
 		\AweBooking\Core\Providers\Widget_Service_Provider::class,
 		\AweBooking\Core\Providers\Addons_Service_Provider::class,
+		\AweBooking\Schedules\Schedule_Service_Provider::class,
 
 		\AweBooking\Frontend\Providers\Frontend_Service_Provider::class,
 		\AweBooking\Frontend\Providers\Template_Loader_Service_Provider::class,

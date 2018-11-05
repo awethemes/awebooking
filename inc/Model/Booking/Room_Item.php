@@ -26,7 +26,7 @@ class Room_Item extends Item {
 	 *
 	 * @var boolean
 	 */
-	protected $force_change_timespan = false;
+	public $force_change_timespan = false;
 
 	/**
 	 * Gets the Guest_Counts.
@@ -256,7 +256,7 @@ class Room_Item extends Item {
 	 */
 	protected function saved() {
 		if ( $this->recently_created ) {
-			abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
+			$this->apply_booking_event();
 		} elseif ( true === $this->force_change_timespan ) {
 			$this->perform_change_timespan( $this->get_timespan() );
 		}
@@ -308,9 +308,27 @@ class Room_Item extends Item {
 	protected function perform_delete( $force ) {
 		parent::perform_delete( $force );
 
+		$this->clear_booking_event();
+	}
+
+	/**
+	 * Perform clear booking & availability event data.
+	 *
+	 * @return bool|WP_Error|null
+	 */
+	public function clear_booking_event() {
 		if ( $timespan = $this->get_timespan() ) {
-			abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
+			return abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
 		}
+	}
+
+	/**
+	 * Apply booking event.
+	 *
+	 * @return bool|\WP_Error
+	 */
+	public function apply_booking_event() {
+		return abrs_apply_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $this->get_timespan() );
 	}
 
 	/**

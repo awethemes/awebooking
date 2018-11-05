@@ -119,7 +119,7 @@ class Booking extends Model {
 	/**
 	 * Get rooms of this booking.
 	 *
-	 * @return \AweBooking\Support\Collection
+	 * @return \AweBooking\Support\Collection \AweBooking\Model\Booking\Room_Item[]
 	 */
 	public function get_line_items() {
 		return $this->get_rooms();
@@ -360,8 +360,6 @@ class Booking extends Model {
 		// Retrive the status transition then flush it.
 		list( $old_status, $new_status ) = $this->status_transition;
 
-		$this->status_transition = null;
-
 		do_action( $this->prefix( 'status_change' ), $new_status, $old_status, $this );
 
 		if ( ! empty( $old_status ) ) {
@@ -437,6 +435,19 @@ class Booking extends Model {
 		parent::finish_save();
 
 		$this->apply_status_transition();
+
+		if ( $this->status_transition ) {
+			foreach ( $this->get_line_items() as $line_item ) {
+				/* @var $line_item \AweBooking\Model\Booking\Room_Item */
+				if ( in_array( $this->get_status(), [ 'checked-out', 'cancelled' ] ) ) {
+					$line_item->clear_booking_event();
+				} else {
+					$line_item->apply_booking_event();
+				}
+			}
+		}
+
+		$this->status_transition = null;
 	}
 
 	/**

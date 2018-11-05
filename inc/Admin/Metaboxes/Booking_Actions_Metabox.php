@@ -34,6 +34,8 @@ class Booking_Actions_Metabox extends Metabox {
 			'send_booking_details_admin' => esc_html__( 'Resend new booking notification (admin)', 'awebooking' ),
 		]);
 
+		$checkout_scheduled = wp_next_scheduled( 'abrs_schedule_update_checkout_status', [ $the_booking->get_id() ] );
+
 		include trailingslashit( __DIR__ ) . 'views/html-booking-action.php';
 	}
 
