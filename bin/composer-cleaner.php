@@ -108,6 +108,7 @@ class AweBooking_Composer_Cleaner {
 			'symfony/http-foundation'              => [ $docs, $tests ],
 			'symfony/translation'                  => [ $docs, $tests ],
 			'ruler/ruler'                          => [ $docs, $tests ],
+			'twig/twig'                            => [ $docs, $tests, 'ext/', '.php_cs.dist' ],
 		];
 	}
 }
