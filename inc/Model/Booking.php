@@ -377,6 +377,24 @@ class Booking extends Model {
 	}
 
 	/**
+	 * Set the public view token.
+	 *
+	 * @param string $token
+	 */
+	public function set_public_token( $token ) {
+		$this->update_meta( '_public_token', $token );
+	}
+
+	/**
+	 * Return the public view token.
+	 *
+	 * @return string
+	 */
+	public function get_public_token() {
+		return $this->get_meta( '_public_token' );
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setup() {

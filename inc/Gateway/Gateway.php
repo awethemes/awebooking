@@ -261,4 +261,32 @@ abstract class Gateway {
 			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
 		}
 	}
+
+	/**
+	 * Create the payment item.
+	 *
+	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @param  mixed                     $data    The reservation data.
+	 * @return Payment_Item
+	 */
+	public function create_new_payment( $booking, $data = [] ) {
+		if ( ! $booking instanceof Booking ) {
+			$booking = abrs_get_booking( $booking );
+		}
+
+		$payment_item = ( new Payment_Item )->fill( [
+			'booking_id' => $booking->get_id(),
+			'method'     => $this->get_method(),
+			'amount'     => 0,
+			'is_deposit' => 'off',
+		] );
+
+		try {
+			$payment_item->save();
+		} catch ( \Exception $e ) {
+			abrs_report( $e );
+		}
+
+		return $payment_item;
+	}
 }
