@@ -298,40 +298,40 @@ msgstr ""
 msgid "Invalid single rate."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:129
+#: inc/Checkout/Checkout.php:134
 msgid "Sorry, your session has expired."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:154
+#: inc/Checkout/Checkout.php:159
 msgid "Sorry, we cannot serve your reservation request at this moment."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:203
+#: inc/Checkout/Checkout.php:208
 msgid "Invalid gateway response."
 msgstr ""
 
 #. translators: %s Field name
-#: inc/Checkout/Checkout.php:508
+#: inc/Checkout/Checkout.php:537
 msgid "%s is a required field."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:534
+#: inc/Checkout/Checkout.php:563
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:546
+#: inc/Checkout/Checkout.php:575
 msgid "Sorry, there was an error processing your payment. Please try again later."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:549
+#: inc/Checkout/Checkout.php:578
 msgid "Please choose a payment method."
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:85, inc/Admin/Metaboxes/views/html-booking-main.php:109
+#: inc/Checkout/Form_Controls.php:85, inc/Admin/Metaboxes/views/html-booking-main.php:118
 msgid "Customer Details"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:92, inc/Gateway/BACS_Gateway.php:67, inc/Gateway/Direct_Payment_Gateway.php:67, inc/Admin/List_Tables/Room_Type_List_Table.php:35, inc/Core/Widget/Search_Form_Widget.php:48
+#: inc/Checkout/Form_Controls.php:92, inc/Gateway/BACS_Gateway.php:77, inc/Gateway/Direct_Payment_Gateway.php:77, inc/Admin/List_Tables/Room_Type_List_Table.php:35, inc/Core/Widget/Search_Form_Widget.php:48
 msgid "Title"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Additionals"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:219, inc/Admin/Metaboxes/views/html-booking-main.php:60
+#: inc/Checkout/Form_Controls.php:219, inc/Admin/Metaboxes/views/html-booking-main.php:67
 msgid "Estimated time of arrival"
 msgstr ""
 
@@ -399,55 +399,59 @@ msgstr ""
 msgid "I don't know"
 msgstr ""
 
-#: inc/Checkout/Form_Controls.php:229, inc/Admin/Metaboxes/views/html-booking-main.php:65
+#: inc/Checkout/Form_Controls.php:229, inc/Admin/Metaboxes/views/html-booking-main.php:72
 msgid "Special requests"
 msgstr ""
 
-#: inc/Core/bookings.php:34, inc/Core/Bootstrap/Setup_Environment.php:317
+#: inc/Core/bookings.php:35, inc/Core/Bootstrap/Setup_Environment.php:317
 msgctxt "Booking status"
 msgid "Pending"
 msgstr ""
 
-#: inc/Core/bookings.php:35, inc/Core/Bootstrap/Setup_Environment.php:326
+#: inc/Core/bookings.php:36, inc/Core/Bootstrap/Setup_Environment.php:326
 msgctxt "Booking status"
 msgid "Processing"
 msgstr ""
 
-#: inc/Core/bookings.php:36, inc/Core/Bootstrap/Setup_Environment.php:335
+#: inc/Core/bookings.php:37, inc/Core/Bootstrap/Setup_Environment.php:335
 msgctxt "Booking status"
 msgid "Reserved"
 msgstr ""
 
-#: inc/Core/bookings.php:37, inc/Core/Bootstrap/Setup_Environment.php:344
+#: inc/Core/bookings.php:38, inc/Core/Bootstrap/Setup_Environment.php:344
 msgctxt "Booking status"
 msgid "Deposit"
 msgstr ""
 
-#: inc/Core/bookings.php:38, inc/Core/Bootstrap/Setup_Environment.php:353
+#: inc/Core/bookings.php:39, inc/Core/Bootstrap/Setup_Environment.php:353
 msgctxt "Booking status"
 msgid "Paid"
 msgstr ""
 
-#: inc/Core/bookings.php:39, inc/Core/Bootstrap/Setup_Environment.php:362
+#: inc/Core/bookings.php:40, inc/Core/Bootstrap/Setup_Environment.php:362
 msgctxt "Booking status"
 msgid "Checked In"
 msgstr ""
 
-#: inc/Core/bookings.php:40, inc/Core/Bootstrap/Setup_Environment.php:371
+#: inc/Core/bookings.php:41, inc/Core/Bootstrap/Setup_Environment.php:371
 msgctxt "Booking status"
 msgid "Checked Out"
 msgstr ""
 
-#: inc/Core/bookings.php:41, inc/Core/Bootstrap/Setup_Environment.php:380
+#: inc/Core/bookings.php:42, inc/Core/Bootstrap/Setup_Environment.php:380
 msgctxt "Booking status"
 msgid "Cancelled"
 msgstr ""
 
-#: inc/Core/bookings.php:268, inc/Core/bookings.php:389, inc/Core/bookings.php:390, inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
+#: inc/Core/bookings.php:244
+msgid "Invalid booking ID."
+msgstr ""
+
+#: inc/Core/bookings.php:294, inc/Core/bookings.php:415, inc/Core/bookings.php:416, inc/Admin/Providers/Menu_Service_Provider.php:40, inc/Admin/Providers/Menu_Service_Provider.php:40
 msgid "AweBooking"
 msgstr ""
 
-#: inc/Core/bookings.php:376
+#: inc/Core/bookings.php:402
 msgid "Invalid Booking ID."
 msgstr ""
 
@@ -570,37 +574,37 @@ msgstr ""
 msgid "+ <span>%1$s%%</span> to price"
 msgstr ""
 
-#: inc/Core/functions.php:205
+#: inc/Core/functions.php:221
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:483
+#: inc/Core/functions.php:499
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:484
+#: inc/Core/functions.php:500
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:485
+#: inc/Core/functions.php:501
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:486
+#: inc/Core/functions.php:502
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:487
+#: inc/Core/functions.php:503
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:488
+#: inc/Core/functions.php:504
 msgid "Prof."
 msgstr ""
 
 #. translators: %s template
 #. translators: %s template
-#: inc/Core/functions.php:559, inc/Email/Mailable.php:352
+#: inc/Core/functions.php:575, inc/Email/Mailable.php:352
 msgid "%s does not exist."
 msgstr ""
 
@@ -629,7 +633,7 @@ msgstr ""
 msgid "Book Now"
 msgstr ""
 
-#: inc/Email/Mailable.php:374, inc/Gateway/BACS_Gateway.php:61, inc/Gateway/Direct_Payment_Gateway.php:61
+#: inc/Email/Mailable.php:374, inc/Gateway/BACS_Gateway.php:71, inc/Gateway/Direct_Payment_Gateway.php:71
 msgid "Enable / Disable"
 msgstr ""
 
@@ -692,48 +696,48 @@ msgstr ""
 msgid "Allows payments by BACS, more commonly known as direct bank/wire transfer."
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:45
+#: inc/Gateway/BACS_Gateway.php:48
 msgid "Awaiting BACS payment"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:63, inc/Gateway/Direct_Payment_Gateway.php:63
+#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73
 msgid "Enable check payments"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:69, inc/Gateway/Direct_Payment_Gateway.php:69
+#: inc/Gateway/BACS_Gateway.php:79, inc/Gateway/Direct_Payment_Gateway.php:79
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:70
+#: inc/Gateway/BACS_Gateway.php:80
 msgctxt "BACS payment method"
 msgid "Direct bank transfer"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:73, inc/Gateway/Direct_Payment_Gateway.php:73, inc/Admin/Forms/Room_Type_Data_Form.php:253, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/hotel/description.php:20, templates/template-parts/single/description.php:20
+#: inc/Gateway/BACS_Gateway.php:83, inc/Gateway/Direct_Payment_Gateway.php:83, inc/Admin/Forms/Room_Type_Data_Form.php:253, inc/Admin/Forms/Service_Data_Form.php:45, templates/template-parts/hotel/description.php:20, templates/template-parts/single/description.php:20
 msgid "Description"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:75, inc/Gateway/Direct_Payment_Gateway.php:75
+#: inc/Gateway/BACS_Gateway.php:85, inc/Gateway/Direct_Payment_Gateway.php:85
 msgid "Payment method description that the customer will see on your checkout."
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:76
+#: inc/Gateway/BACS_Gateway.php:86
 msgid "Make your payment directly into our bank account. Please use your Booking ID as the payment reference."
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:79, inc/Gateway/Direct_Payment_Gateway.php:79
+#: inc/Gateway/BACS_Gateway.php:89, inc/Gateway/Direct_Payment_Gateway.php:89
 msgid "Instructions"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:81, inc/Gateway/Direct_Payment_Gateway.php:81
+#: inc/Gateway/BACS_Gateway.php:91, inc/Gateway/Direct_Payment_Gateway.php:91
 msgid "Instructions that will be added to the thank you page and emails."
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:85
+#: inc/Gateway/BACS_Gateway.php:95
 msgid "Account Details"
 msgstr ""
 
-#: inc/Gateway/BACS_Gateway.php:86
+#: inc/Gateway/BACS_Gateway.php:96
 msgid "Add account details that will be added to the thank you page."
 msgstr ""
 
@@ -745,7 +749,7 @@ msgstr ""
 msgid "Payment directly at the hotel."
 msgstr ""
 
-#: inc/Gateway/Direct_Payment_Gateway.php:70
+#: inc/Gateway/Direct_Payment_Gateway.php:80
 msgid "Pay at Hotel"
 msgstr ""
 
@@ -754,20 +758,20 @@ msgid "Transaction ID:"
 msgstr ""
 
 #. translators: 1: Old booking status 2: New booking status
-#: inc/Model/Booking.php:369
+#: inc/Model/Booking.php:367
 msgid "Booking status changed from %1$s to %2$s."
 msgstr ""
 
 #. translators: %s: new booking status
-#: inc/Model/Booking.php:374
+#: inc/Model/Booking.php:372
 msgid "Booking status set to %s."
 msgstr ""
 
-#: inc/Model/Booking.php:403
+#: inc/Model/Booking.php:419
 msgid "Booking &ndash; %s"
 msgstr ""
 
-#: inc/Model/Booking.php:403
+#: inc/Model/Booking.php:419
 msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
@@ -778,6 +782,10 @@ msgstr ""
 
 #: inc/Model/Service.php:23
 msgid "Out of stock"
+msgstr ""
+
+#: inc/Schedules/Schedule_Service_Provider.php:56
+msgid "Cron: Auto update status to checked-out."
 msgstr ""
 
 #: templates/checkout/form-additionals.php:27
@@ -796,35 +804,35 @@ msgstr ""
 msgid "Services"
 msgstr ""
 
-#: templates/checkout/services.php:33, inc/Admin/Metaboxes/views/html-booking-action.php:37
+#: templates/checkout/services.php:33, inc/Admin/Metaboxes/views/html-booking-action.php:49
 msgid "Update"
 msgstr ""
 
-#: templates/checkout/thankyou.php:25
+#: templates/checkout/thankyou.php:27
 msgid "Unfortunately, your booking has been cancelled."
 msgstr ""
 
-#: templates/checkout/thankyou.php:32
+#: templates/checkout/thankyou.php:34
 msgid "Thank you. Your booking has been received."
 msgstr ""
 
-#: templates/checkout/thankyou.php:39
+#: templates/checkout/thankyou.php:41
 msgid "Reservation ID:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:44
+#: templates/checkout/thankyou.php:46
 msgid "Date:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:50
+#: templates/checkout/thankyou.php:52
 msgid "Email:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:57
+#: templates/checkout/thankyou.php:59
 msgid "Payment method:"
 msgstr ""
 
-#: templates/checkout/thankyou.php:63, inc/Admin/Metaboxes/views/html-booking-items.php:24, inc/Admin/views/calendar/html-booking-state.php:56
+#: templates/checkout/thankyou.php:65, inc/Admin/Metaboxes/views/html-booking-items.php:24, inc/Admin/views/calendar/html-booking-state.php:56
 msgid "Total:"
 msgstr ""
 
@@ -1174,7 +1182,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: inc/Admin/Forms/Booking_Payment_Form.php:33, inc/Admin/Forms/Hotel_Information_Form.php:48, inc/Model/Booking/Payment_Item.php:37, inc/Admin/Metaboxes/views/html-booking-main.php:61
+#: inc/Admin/Forms/Booking_Payment_Form.php:33, inc/Admin/Forms/Hotel_Information_Form.php:48, inc/Model/Booking/Payment_Item.php:37, inc/Admin/Metaboxes/views/html-booking-main.php:68
 msgid "N/A"
 msgstr ""
 
@@ -1258,7 +1266,7 @@ msgstr ""
 msgid "The hotel telephone number."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:23, inc/Admin/Settings/Appearance_Setting.php:21, inc/Admin/Settings/General_Setting.php:12, inc/Admin/Settings/General_Setting.php:25, inc/Admin/Metaboxes/views/html-booking-main.php:21
+#: inc/Admin/Forms/Room_Type_Data_Form.php:23, inc/Admin/Settings/Appearance_Setting.php:21, inc/Admin/Settings/General_Setting.php:12, inc/Admin/Settings/General_Setting.php:25, inc/Admin/Metaboxes/views/html-booking-main.php:25
 msgid "General"
 msgstr ""
 
@@ -1526,7 +1534,7 @@ msgstr ""
 msgid "Stock status"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:56, inc/Admin/Metaboxes/views/html-booking-main.php:12
+#: inc/Admin/List_Tables/Booking_List_Table.php:56, inc/Admin/Metaboxes/views/html-booking-main.php:16
 msgid "Booking"
 msgstr ""
 
@@ -1546,7 +1554,7 @@ msgstr ""
 msgid "Check-Out"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:61, inc/Admin/Metaboxes/views/html-booking-main.php:45
+#: inc/Admin/List_Tables/Booking_List_Table.php:61, inc/Admin/Metaboxes/views/html-booking-main.php:49
 msgid "Summary"
 msgstr ""
 
@@ -1577,7 +1585,7 @@ msgstr ""
 msgid "Show more details"
 msgstr ""
 
-#: inc/Admin/List_Tables/Booking_List_Table.php:159, inc/Admin/Metaboxes/views/html-booking-main.php:83, inc/Admin/views/calendar/html-booking-state.php:41
+#: inc/Admin/List_Tables/Booking_List_Table.php:159, inc/Admin/Metaboxes/views/html-booking-main.php:91, inc/Admin/views/calendar/html-booking-state.php:41
 msgid "Length of stay varies, see each room."
 msgstr ""
 
@@ -1681,7 +1689,7 @@ msgstr ""
 
 #. translators: 1: Room type name, 2: Room item order
 #. translators: 1: Room type name, 2: Room item order
-#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:149, inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:171
+#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:152, inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:174
 msgid "%1$s - %2$d"
 msgstr ""
 
@@ -2259,7 +2267,7 @@ msgstr ""
 msgid "Currency Options"
 msgstr ""
 
-#: inc/Admin/Settings/General_Setting.php:125, inc/Admin/Metaboxes/views/html-booking-main.php:52
+#: inc/Admin/Settings/General_Setting.php:125, inc/Admin/Metaboxes/views/html-booking-main.php:59
 msgid "Currency"
 msgstr ""
 
@@ -2529,7 +2537,7 @@ msgstr ""
 msgid "Add new room type"
 msgstr ""
 
-#: inc/Core/Bootstrap/Setup_Environment.php:149, inc/Core/Bootstrap/Setup_Environment.php:197, inc/Core/Bootstrap/Setup_Environment.php:233, inc/Core/Bootstrap/Setup_Environment.php:275, inc/Admin/Metaboxes/views/html-booking-main.php:46, inc/Admin/Metaboxes/views/html-booking-main.php:61, inc/Admin/Metaboxes/views/html-booking-main.php:66, inc/Admin/Metaboxes/views/html-booking-main.php:110, inc/Admin/Metaboxes/views/html-booking-payments.php:66, inc/Admin/Metaboxes/views/html-booking-rooms.php:121
+#: inc/Core/Bootstrap/Setup_Environment.php:149, inc/Core/Bootstrap/Setup_Environment.php:197, inc/Core/Bootstrap/Setup_Environment.php:233, inc/Core/Bootstrap/Setup_Environment.php:275, inc/Admin/Metaboxes/views/html-booking-main.php:52, inc/Admin/Metaboxes/views/html-booking-main.php:68, inc/Admin/Metaboxes/views/html-booking-main.php:73, inc/Admin/Metaboxes/views/html-booking-main.php:121, inc/Admin/Metaboxes/views/html-booking-payments.php:66, inc/Admin/Metaboxes/views/html-booking-rooms.php:121
 msgid "Edit"
 msgstr ""
 
@@ -3233,15 +3241,19 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-action.php:25
-msgid "Delete permanently"
-msgstr ""
-
-#: inc/Admin/Metaboxes/views/html-booking-action.php:27
-msgid "Move to trash"
+#: inc/Admin/Metaboxes/views/html-booking-action.php:23
+msgid "Auto update checkout status at %1$s (%2$s)"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-action.php:37
+msgid "Delete permanently"
+msgstr ""
+
+#: inc/Admin/Metaboxes/views/html-booking-action.php:39
+msgid "Move to trash"
+msgstr ""
+
+#: inc/Admin/Metaboxes/views/html-booking-action.php:49
 msgid "Create"
 msgstr ""
 
@@ -3269,31 +3281,31 @@ msgstr ""
 msgid "This booking is no longer editable"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:16
+#: inc/Admin/Metaboxes/views/html-booking-main.php:20
 msgid "Booking #%1$s"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:35
+#: inc/Admin/Metaboxes/views/html-booking-main.php:39
 msgid "View other bookings &rarr;"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:36
+#: inc/Admin/Metaboxes/views/html-booking-main.php:40
 msgid "Profile &rarr;"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:66
+#: inc/Admin/Metaboxes/views/html-booking-main.php:73
 msgid "None"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:85
+#: inc/Admin/Metaboxes/views/html-booking-main.php:93
 msgid "night stay"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:92
+#: inc/Admin/Metaboxes/views/html-booking-main.php:100
 msgid "Check-in"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-main.php:99
+#: inc/Admin/Metaboxes/views/html-booking-main.php:107
 msgid "Check-out"
 msgstr ""
 
