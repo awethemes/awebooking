@@ -191,6 +191,10 @@ trait With_Services {
 		foreach ( $this->get_included_services() as $service ) {
 			$service = abrs_get_service( $service );
 
+			if ( ! $service ) {
+				continue;
+			}
+
 			$item = new Item( [
 				'id'               => $service->get_id(),
 				'name'             => $service->get( 'name' ),
