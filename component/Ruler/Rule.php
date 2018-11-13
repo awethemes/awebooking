@@ -2,7 +2,7 @@
 namespace AweBooking\Component\Ruler;
 
 use Ruler\Proposition;
-use Ruler\Context as Ruler_Context;
+use Ruler\Context as RContext;
 
 class Rule implements Proposition {
 	/**
@@ -24,20 +24,24 @@ class Rule implements Proposition {
 	/**
 	 * Evaluate the Rule with the given Context.
 	 *
-	 * @param  Ruler_Context $context Context with which to evaluate this Rule.
+	 * @param  \Ruler\Context|array $context Context with which to evaluate this Rule.
 	 * @return boolean
 	 */
-	public function apply( Ruler_Context $context ) {
+	public function apply( $context ) {
+		if ( ! $context instanceof RContext ) {
+			$context = new Context( $context );
+		}
+
 		return $this->evaluate( $context );
 	}
 
 	/**
 	 * Evaluate the Rule with the given Context.
 	 *
-	 * @param  Ruler_Context $context Context with which to evaluate this Rule.
+	 * @param  RContext $context Context with which to evaluate this Rule.
 	 * @return boolean
 	 */
-	public function evaluate( Ruler_Context $context ) {
+	public function evaluate( RContext $context ) {
 		return $this->condition->evaluate( $context );
 	}
 }

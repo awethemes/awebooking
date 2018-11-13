@@ -11,25 +11,6 @@ class Variable extends Ruler_Variable implements \ArrayAccess {
 	 * @var array
 	 */
 	public static $operators = [
-		// Mathematical operators.
-		'add'                   => \Ruler\Operator\Addition::class,
-		'subtract'              => \Ruler\Operator\Subtraction::class,
-		'multiply'              => \Ruler\Operator\Multiplication::class,
-		'divide'                => \Ruler\Operator\Division::class,
-		'modulo'                => \Ruler\Operator\Modulo::class,
-		'exponentiate'          => \Ruler\Operator\Exponentiate::class,
-		'negate'                => \Ruler\Operator\Negation::class,
-		'ceil'                  => \Ruler\Operator\Ceil::class,
-		'floor'                 => \Ruler\Operator\Floor::class,
-
-		// Array (Set) operators.
-		'min'                   => \Ruler\Operator\Min::class,
-		'max'                   => \Ruler\Operator\Max::class,
-		'union'                 => \Ruler\Operator\Union::class,
-		'intersect'             => \Ruler\Operator\Intersect::class,
-		'complement'            => \Ruler\Operator\Complement::class,
-		'symmetric_Difference'  => \Ruler\Operator\SymmetricDifference::class,
-
 		// Compare operators.
 		'equal'                 => \AweBooking\Component\Ruler\Operator\Equal::class,
 		'not_equal'             => \AweBooking\Component\Ruler\Operator\Not_Equal::class,
