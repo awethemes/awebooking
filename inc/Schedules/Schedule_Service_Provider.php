@@ -34,6 +34,13 @@ class Schedule_Service_Provider extends Service_Provider {
 
 		$schedule_date = abrs_date( $check_out )->endOfDay();
 
+		// Modify run time at the time hotel checkout.
+		$checkout_time = abrs_get_option( 'hotel_check_out' );
+
+		if ( $checkout_time && preg_match( '/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/', $checkout_time, $matches ) ) {
+			$schedule_date = $schedule_date->hour( $matches[1] )->minute( $matches[2] )->second( 0 );
+		}
+
 		if ( 'checked-in' === $new_status && in_array( $old_status, [ 'on-hold', 'inprocess', 'completed', 'deposit' ] ) ) {
 			wp_schedule_single_event( $schedule_date->timestamp, 'abrs_schedule_update_checkout_status', $args );
 			return;
