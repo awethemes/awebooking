@@ -97,22 +97,42 @@ abstract class Metabox {
 	}
 
 	/**
-	 * Getter the box property.
+	 * Determines if current screen is "add" screen.
 	 *
-	 * @param  string $name The property name.
-	 * @return mixed
+	 * @return bool
 	 */
-	public function __get( $name ) {
-		return $this->{$name};
+	public function on_add_screen() {
+		$screen = get_current_screen();
+
+		return $screen && 'post' === $screen->base && 'add' === $screen->action;
 	}
 
 	/**
-	 * Checks if the object has a property
+	 * Determines if current screen is "edit" screen.
 	 *
-	 * @param string $property The property name.
 	 * @return bool
 	 */
-	public function __isset( $property ) {
-		return property_exists( $this, $property );
+	public function on_edit_screen() {
+		$screen = get_current_screen();
+
+		return $screen && 'post' === $screen->base && '' === $screen->action;
+	}
+
+	/**
+	 * Hide a element on "add" screen.
+	 *
+	 * @return void
+	 */
+	public function show_on_add() {
+		printf( 'style="display: %s;"', $this->on_add_screen() ? 'block' : 'none' );
+	}
+
+	/**
+	 * Hide a element on "edit" screen.
+	 *
+	 * @return void
+	 */
+	public function show_on_edit() {
+		printf( 'style="display: %s;"', $this->on_edit_screen() ? 'block' : 'none' );
 	}
 }

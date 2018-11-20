@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</td>
 
 				<td class="total-column">
-					<?php abrs_price( $item->get_subtotal() ); ?>
+					<?php abrs_price( $item->get_total() ); ?>
 
 					<?php if ( $item->get( 'total_tax' ) ) : ?>
 						<br><?php esc_html_e( 'TAX:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'total_tax' ) ); ?>

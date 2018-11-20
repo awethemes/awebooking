@@ -18,6 +18,8 @@ if ( ! $booking instanceof AweBooking\Model\Booking ) {
 	return;
 }
 
+$last_payment = abrs_get_last_booking_payment( $booking );
+
 ?><div class="awebooking-booking">
 
 	<?php if ( 'cancelled' === $booking->get_status() ) : ?>
@@ -67,6 +69,6 @@ if ( ! $booking instanceof AweBooking\Model\Booking ) {
 
 	<?php endif; ?>
 
-	<?php do_action( 'awebooking_thankyou', $booking->get_id() ); ?>
+	<?php do_action( 'awebooking_thankyou', $booking->get_id(), $last_payment ); ?>
 
 </div>

@@ -39,9 +39,12 @@ class Room_Type_Data_Metabox extends Metabox {
 		}
 
 		// Setup the form.
-		$form = new Room_Type_Data_Form( $the_room_type );
+		$form = new Room_Type_Data_Form(
+			$this->on_edit_screen() ? $the_room_type : null
+		);
 
 		$form->prepare_fields();
+
 		foreach ( $form as $control ) {
 			/* @var $control \AweBooking\Component\Form\Field_Proxy */
 			if ( $is_translation && ! $control->prop( 'translatable' ) ) {

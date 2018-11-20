@@ -22,6 +22,7 @@
         "awethemes/wp-http": "^1.0",
         "awethemes/wp-object": "^1.0",
         "awethemes/wp-session": "^1.0",
+        "cmb2/cmb2": "^2.4",
         "league/period": "^3.4",
         "mexitek/phpcolors": "^0.4.0",
         "monolog/monolog": "^1.23",
@@ -29,8 +30,8 @@
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
         "ruler/ruler": "dev-master",
-        "vlucas/valitron": "^1.4",
-        "webdevstudios/cmb2": "^2.3"
+        "twig/twig": "~1.0",
+        "vlucas/valitron": "^1.4"
     },
     "require-dev": {
         "10up/wp_mock": "0.2.0",
@@ -49,6 +50,11 @@
             "bin/composer-cleaner.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AweBooking\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "post-install-cmd": [
             "AweBooking_Composer_Cleaner::clean"
@@ -60,7 +66,7 @@
             "AweBooking_Composer_Cleaner::clean"
         ],
         "install-wp-test": [
-            "bash bin/install-wp-tests.sh wptest_awebooking awethemes 'secret' localhost latest"
+            "bash bin/install-wp-tests.sh wptest_awebooking root 'secret' localhost latest"
         ]
     },
     "config": {

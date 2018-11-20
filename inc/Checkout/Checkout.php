@@ -1,7 +1,7 @@
 <?php
+
 namespace AweBooking\Checkout;
 
-use Illuminate\Support\Arr;
 use WP_Error;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
@@ -20,6 +20,7 @@ use AweBooking\Component\Http\Exceptions\ValidationFailedException;
 use AweBooking\Support\Fluent;
 use Awethemes\WP_Session\WP_Session;
 use Awethemes\Http\Request;
+use Illuminate\Support\Arr;
 
 class Checkout {
 	/**
@@ -97,6 +98,10 @@ class Checkout {
 		$booking_id = apply_filters( 'abrs_thankyou_booking_id', absint( $request->get( 'booking-received' ) ) );
 
 		$booking = abrs_get_booking( $booking_id );
+
+		if ( ! $request->has( 'token' ) || ! hash_equals( (string) $request->token, (string) $booking->get_public_token() ) ) {
+			return;
+		}
 
 		// Empty the awaiting payment in the session.
 		abrs_session()->remove( 'booking_awaiting_payment' );
@@ -282,9 +287,14 @@ class Checkout {
 		$this->create_service_items( $booking, $data );
 		$this->create_fees_items( $booking, $data );
 		$this->create_taxes_items( $booking, $data );
+		$this->create_payment_item( $booking, $data );
 
-		// // Re-calculate the totals.
+		// Re-calculate the totals.
 		$booking->calculate_totals();
+
+		// Sets the public token for user viewing.
+		$public_token = sha1( $booking->get_id() . uniqid( time(), true ) );
+		$booking->set_public_token( $public_token );
 
 		do_action( 'abrs_checkout_update_booking_meta', $booking->get_id(), $data );
 
@@ -474,6 +484,25 @@ class Checkout {
 			} catch ( \Exception $e ) {
 				abrs_report( $e );
 			}
+		}
+	}
+
+	/**
+	 * Create the booking tax items.
+	 *
+	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @return void
+	 */
+	public function create_payment_item( $booking, $data ) {
+		if ( empty( $data['payment_method'] ) ) {
+			return;
+		}
+
+		$gateway = $this->gateways->get( $data['payment_method'] );
+
+		if ( $gateway && method_exists( $gateway, 'new_payment' ) ) {
+			$gateway->new_payment( $booking, $data );
 		}
 	}
 

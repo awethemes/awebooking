@@ -26,7 +26,10 @@ class Url_Generator {
 	 * @return string
 	 */
 	public function get_booking_received_url() {
-		$received_url = add_query_arg( 'booking-received', $this->booking->get_id(), abrs_get_page_permalink( 'checkout' ) );
+		$received_url = add_query_arg([
+			'booking-received' => $this->booking->get_id(),
+			'token'            => $this->booking->get_public_token(),
+		], abrs_get_page_permalink( 'checkout' ) );
 
 		if ( abrs_get_option( 'force_ssl_checkout' ) || is_ssl() ) {
 			$received_url = str_replace( 'http:', 'https:', $received_url );

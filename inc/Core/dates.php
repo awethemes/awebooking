@@ -9,7 +9,7 @@ use AweBooking\Model\Common\Timespan;
  *
  * @param  mixed $date The date format.
  * @param  mixed $tz   The timezone string or DateTimeZone instance.
- * @return \AweBooking\Support\Carbonate|null
+ * @return \AweBooking\Support\Carbonate
  */
 function abrs_date( $date, $tz = null ) {
 	return abrs_rescue( function() use ( $date, $tz ) {
@@ -22,7 +22,7 @@ function abrs_date( $date, $tz = null ) {
  *
  * @param  mixed $datetime The date time format.
  * @param  mixed $tz       The timezone string or DateTimeZone instance.
- * @return \AweBooking\Support\Carbonate|null
+ * @return \AweBooking\Support\Carbonate
  */
 function abrs_date_time( $datetime, $tz = null ) {
 	return abrs_rescue( function() use ( $datetime, $tz ) {

@@ -107,20 +107,46 @@ function abrs_fluent( $value = null ) {
 function abrs_html_attributes( $attributes ) {
 	$html = [];
 
-	// For numeric keys we will assume that the key and the value are the same
-	// as this will convert HTML attributes such as "required" to a correct
-	// form like required="required" instead of using incorrect numerics.
 	foreach ( (array) $attributes as $key => $value ) {
-		if ( is_numeric( $key ) ) {
-			$key = $value;
-		}
+		$element = _abrs_build_attribute_element( $key, $value );
 
-		if ( ! is_null( $value ) ) {
-			$html[] = $key . '="' . esc_attr( $value ) . '"';
+		if ( ! is_null( $element ) ) {
+			$html[] = $element;
 		}
 	}
 
 	return count( $html ) > 0 ? ' ' . implode( ' ', $html ) : '';
+}
+
+/**
+ * Build a single attribute element.
+ *
+ * @param string $key
+ * @param string $value
+ * @return string|null
+ */
+function _abrs_build_attribute_element( $key, $value ) {
+	// For numeric keys we will assume that the value is a boolean attribute
+	// where the presence of the attribute represents a true value and the
+	// absence represents a false value.
+	if ( is_numeric( $key ) ) {
+		return $value;
+	}
+
+	// Treat boolean attributes as HTML properties.
+	if ( is_bool( $value ) && 'value' !== $key ) {
+		return $value ? $key : '';
+	}
+
+	if ( is_array( $value ) && 'class' === $key ) {
+		return 'class="' . abrs_html_class( $value ) . '"';
+	}
+
+	if ( ! is_null( $value ) ) {
+		return $key . '="' . abrs_clean( $value ) . '"';
+	}
+
+	return null;
 }
 
 /**

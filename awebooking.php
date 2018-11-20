@@ -7,7 +7,7 @@
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /languages
- * Version:         3.1.12
+ * Version:         3.1.15
  *
  * @package         AweBooking
  */
@@ -42,29 +42,15 @@ require_once dirname( __FILE__ ) . '/loader.php';
 // Create the AweBooking.
 $awebooking = new AweBooking( __FILE__ );
 
+// Load the static config.
+$awebooking->load_config( dirname( __FILE__ ) . '/config.php' );
+
 /* @var $installer \AweBooking\Installer */
 $installer = $awebooking->make( 'installer' );
-
 $installer->init();
 
 register_activation_hook( __FILE__, [ $installer, 'activation' ] );
 register_deactivation_hook( __FILE__, [ $installer, 'deactivation' ] );
 
 // Initialize under 'plugins_loaded'.
-add_action( 'plugins_loaded', [ $awebooking, 'initialize' ] );
-
-/**
- * Main instance of AweBooking.
- *
- * @param  string|null $make Optional, get specified binding in the container.
- * @return AweBooking\Plugin|mixed
- */
-function awebooking( $make = null ) {
-	$plugin = AweBooking::get_instance();
-
-	if ( ! is_null( $make ) ) {
-		return $plugin->make( $make );
-	}
-
-	return $plugin;
-}
+add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );

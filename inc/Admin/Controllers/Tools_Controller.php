@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use Awethemes\Http\Request;
-use AweBooking\Admin\Admin_Tools;
+use AweBooking\Admin\Tools;
 
 class Tools_Controller extends Controller {
 	/**
@@ -37,7 +37,7 @@ class Tools_Controller extends Controller {
 		if ( $request->filled( 'task' ) ) {
 			check_admin_referer( 'awebooking_execute_task' );
 
-			$response = Admin_Tools::run( $request->task );
+			$response = Tools::run( $request->task );
 
 			if ( ! is_wp_error( $response ) && isset( $response->message ) ) {
 				abrs_admin_notices( $response->message, 'info' );
@@ -55,7 +55,7 @@ class Tools_Controller extends Controller {
 	 */
 	public function display_tools( Request $request ) {
 		abrs_admin_template_part( 'tools/html-tools.php', [
-			'tools' => Admin_Tools::all(),
+			'tools' => Tools::all(),
 		]);
 	}
 

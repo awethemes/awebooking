@@ -16,11 +16,23 @@
 		</div>
 	</div>
 
+	<?php if ( isset( $checkout_scheduled ) && $checkout_scheduled ) : ?>
+		<div class="abrs-plr1 abrs-label abrs-label--warning squared">
+			<p>
+				<?php
+				printf( esc_html__( 'Auto update checkout status at %1$s (%2$s)', 'awebooking' ),
+					esc_html( abrs_date_time( $checkout_scheduled )->toDateTimeString() ),
+					esc_html( abrs_date_time( $checkout_scheduled )->diffForHumans( null, true, false, 2 ) )
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
 	<div id="major-publishing-actions">
 		<div id="delete-action">
 			<?php
 			if ( current_user_can( 'delete_post', $post->ID ) ) {
-
 				if ( ! EMPTY_TRASH_DAYS ) {
 					$delete_text = esc_html__( 'Delete permanently', 'awebooking' );
 				} else {

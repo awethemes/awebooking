@@ -11,7 +11,7 @@ class Room_Type_Data_Form extends Form {
 	 * @param \AweBooking\Model\Room_Type $room_type The room type instance.
 	 */
 	public function __construct( Room_Type $room_type = null ) {
-		parent::__construct( 'room-type', $room_type ?: new Room_Type( 0 ), 'static' );
+		parent::__construct( 'room-type', $room_type, 'static' );
 	}
 
 	/**

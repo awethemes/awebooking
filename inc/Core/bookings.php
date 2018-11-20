@@ -4,6 +4,7 @@ use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Item;
 use AweBooking\Model\Booking\Note as Booking_Note;
+use AweBooking\Model\Booking\Payment_Item;
 use Illuminate\Support\Arr;
 
 /**
@@ -227,6 +228,31 @@ function abrs_get_raw_booking_items( $booking, $type = 'all' ) {
 	}
 
 	return $items;
+}
+
+/**
+ * Gets the last payment item in a booking.
+ *
+ * @param  \AweBooking\Model\Booking|int $booking The booking ID.
+ * @return Payment_Item|WP_Error|null
+ */
+function abrs_get_last_booking_payment( $booking ) {
+	global $wpdb;
+
+	// Returns a WP_Error if given a invalid booking.
+	if ( ! get_post( $booking = abrs_parse_object_id( $booking ) ) ) {
+		return new WP_Error( 'booking-error', esc_html__( 'Invalid booking ID.', 'awebooking' ) );
+	}
+
+	$db_item = $wpdb->get_row(
+		$wpdb->prepare( "SELECT `booking_item_id` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d AND `booking_item_type` = 'payment_item' ORDER BY `booking_item_id` DESC LIMIT 1", $booking ), ARRAY_A
+	);
+
+	if ( ! $db_item || empty( $db_item['booking_item_id'] ) ) {
+		return null;
+	}
+
+	return new Payment_Item( $db_item['booking_item_id'] );
 }
 
 /**
