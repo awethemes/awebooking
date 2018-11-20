@@ -328,7 +328,7 @@ class Reservation {
 	 * @return void
 	 */
 	public function restore() {
-		if ( defined( 'DOING_AJAX' ) || defined( 'DOING_CRON' ) ) {
+		if ( defined( 'DOING_CRON' ) ) {
 			return;
 		}
 

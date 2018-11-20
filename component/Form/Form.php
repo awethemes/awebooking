@@ -165,9 +165,9 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 
 		$posstion = count( $fields ) > 0
 			? array_search( $key, array_keys( $fields ) )
-			: 0;
+			: null;
 
-		return $this->add_field( $args, $posstion ? $posstion + 2 : 0 );
+		return $this->add_field( $args, null !== $posstion ? $posstion + 2 : 0 );
 	}
 
 	/**
