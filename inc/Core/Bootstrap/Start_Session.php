@@ -58,7 +58,7 @@ class Start_Session {
 	 */
 	protected function register_session_binding() {
 		$this->plugin->singleton( 'session', function() {
-			return new WP_Session( 'awebooking_session', [
+			return new WP_Session( 'awebooking', [
 				'lifetime'        => 120,
 				'expire_on_close' => true,
 			]);
