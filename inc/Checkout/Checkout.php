@@ -222,9 +222,6 @@ class Checkout {
 	protected function process_without_payment( Booking $booking ) {
 		$booking->update_status( apply_filters( 'abrs_booking_status_without_payment', 'on-hold' ) );
 
-		// flush the reservation data.
-		$this->reservation->flush();
-
 		return ( new Gateway_Response( 'success' ) )->data( $booking );
 	}
 
