@@ -30,7 +30,6 @@
         "pelago/emogrifier": "^2.0",
         "roomify/bat": "^1.2",
         "ruler/ruler": "dev-master",
-        "twig/twig": "~1.0",
         "vlucas/valitron": "^1.4"
     },
     "require-dev": {
