@@ -60,7 +60,7 @@ class Hotel_Infomations_Metabox extends Metabox {
 		$saved = $hotel->save();
 
 		if ( $saved ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+			abrs_admin_notices( esc_html__( 'Successfully updated', 'awebooking' ), 'success' )->dialog();
 		}
 	}
 }
