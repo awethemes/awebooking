@@ -99,6 +99,10 @@ class Checkout {
 
 		$booking = abrs_get_booking( $booking_id );
 
+		if ( ! $booking ) {
+			return;
+		}
+
 		if ( ! $request->has( 'token' ) || ! hash_equals( (string) $request->token, (string) $booking->get_public_token() ) ) {
 			return;
 		}
@@ -125,6 +129,11 @@ class Checkout {
 	public function process( Request $request ) {
 		abrs_set_time_limit( 0 );
 		Constants::define( 'AWEBOOKING_CHECKOUT', true );
+
+		// Resolve the current request.
+		if ( $res_request = $this->reservation->get_previous_request() ) {
+			$this->reservation->set_current_request( $res_request );
+		}
 
 		do_action( 'abrs_prepare_checkout_process', $this, $request );
 
@@ -265,6 +274,7 @@ class Checkout {
 			'customer_email'       => $data->get( 'customer_email', '' ),
 			'language'             => $this->reservation->language,
 			'currency'             => $this->reservation->currency,
+			'hotel_id'             => $this->reservation->hotel,
 			'customer_ip_address'  => abrs_http_request()->ip(),
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
 		]);
