@@ -24,7 +24,7 @@ $action = abrs_get_page_permalink( 'search_results' );
 
 ?>
 
-<form method="GET" action="<?php echo esc_url( apply_filters( 'abrs_search_form_action', $action ) ); ?>" role="search">
+<form method="GET" action="<?php echo esc_url( apply_filters( 'abrs_search_form_action', $action ) ); ?>" role="search" novalidate>
 	<?php abrs_search_form_hidden_fields( $atts ); ?>
 
 	<div class="searchbox <?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
