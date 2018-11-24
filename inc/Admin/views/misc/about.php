@@ -35,6 +35,56 @@
 		color: #333;
 		text-decoration: none;
 	}
+
+	.joinnow {
+		background: #f7e974;
+		font-weight: 700;
+		padding: 1.5em;
+		color: #776c0a;
+		position: relative;
+	}
+
+	.joinnow .dashicons {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		font-size: 72px;
+		width: auto;
+		height: auto;
+		color: #fffcde;
+		animation: jello-horizontal 2s linear infinite;
+	}
+
+	@keyframes jello-horizontal {
+		0% {
+			-webkit-transform: scale3d(1, 1, 1);
+			transform: scale3d(1, 1, 1);
+		}
+		30% {
+			-webkit-transform: scale3d(1.25, 0.75, 1);
+			transform: scale3d(1.25, 0.75, 1);
+		}
+		40% {
+			-webkit-transform: scale3d(0.75, 1.25, 1);
+			transform: scale3d(0.75, 1.25, 1);
+		}
+		50% {
+			-webkit-transform: scale3d(1.15, 0.85, 1);
+			transform: scale3d(1.15, 0.85, 1);
+		}
+		65% {
+			-webkit-transform: scale3d(0.95, 1.05, 1);
+			transform: scale3d(0.95, 1.05, 1);
+		}
+		75% {
+			-webkit-transform: scale3d(1.05, 0.95, 1);
+			transform: scale3d(1.05, 0.95, 1);
+		}
+		100% {
+			-webkit-transform: scale3d(1, 1, 1);
+			transform: scale3d(1, 1, 1);
+		}
+	}
 </style>
 
 <div class="wrap about-wrap">
@@ -46,13 +96,15 @@
 	<div class="feature-section two-col">
 		<div class="col">
 			<h3><?php esc_html_e( 'What\' news', 'awebooking' ); ?></h3>
-			<p><?php printf( __( 'Always stay up-to-date with the latest version of AweBooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/change-logs/' ) ); ?></p>
+			<p><?php printf( __( 'Always stay up-to-date with the latest version of AweBooking by checking our <a href="%s">change log</a> regularly.', 'awebooking' ), esc_url( 'https://docs.awethemes.com/awebooking/changelog/awebooking/' ) ); ?></p>
 
 			<h3><?php esc_html_e( 'How to use', 'awebooking' ); ?></h3>
-			<p><?php printf( __( 'Check out <a href="%s">the plugin\'s documentation</a> if you need more information on how to use AweBooking.', 'awebooking' ), esc_url( 'http://docs.awethemes.com/awebooking/' ) ); // TODO: "and video tutorial" if video exist. ?></p>
+			<p><?php printf( __( 'Check out <a href="%s">the plugin\'s documentation</a> if you need more information on how to use AweBooking.', 'awebooking' ), esc_url( 'https://docs.awethemes.com/awebooking/' ) ); // TODO: "and video tutorial" if video exist. ?></p>
 		</div>
 
 		<div class="col">
+			<p class="joinnow">CYBER MONDAY SALE: 35% OFF YEARLY ACCESS & $80 OFF LIFE TIME PACKAGE. <br><br> <a href="https://awethemes.com/join" class="button-primary">JOIN NOW!</a> <span class="dashicons dashicons-warning"></span></p>
+
 			<h3><?php esc_html_e( 'Get Support and Pro Features?', 'awebooking' ); ?></h3>
 			<p><?php esc_html_e( 'Find help in our forum and get free updates when purchasing the PRO version which boats a lot more advanced features', 'awebooking' ); ?></p>
 			<p><a class="button-primary" href="https://awethemes.com/plugins/awebooking" target="_blank">Get Support and Pro Features</a></p>
