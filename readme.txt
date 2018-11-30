@@ -13,7 +13,7 @@ Awebooking helps you to setup hotel booking system quickly, pleasantly and easil
 
 == Description ==
 
-> CYBER MONDAY SALE: 35% OFF YEARLY ACCESS & $80 OFF LIFE TIME PACKAGE. [JOIN NOW!](https://awethemes.com/join)
+> Extend AweBooking's features with [premium add-ons](https://awethemes.com/awebooking) and high quality [themes](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
 
 Awebooking is a well-coded plugin with an excellent user interface, perfect for any hotel, hostel, motel, BnB or any kind of accommodation website. Awebooking brings you easiest way to setup any reservations quickly, pleasantly and easily, rent accommodations with detail services, receive online reservations.
 

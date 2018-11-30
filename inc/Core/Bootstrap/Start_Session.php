@@ -43,6 +43,10 @@ class Start_Session {
 	 * @return void
 	 */
 	protected function start_session() {
+		if ( defined( 'DOING_CRON' ) ) {
+			return;
+		}
+
 		// Start the session.
 		$this->plugin->make( 'session' )->hooks();
 
