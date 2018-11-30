@@ -36,6 +36,10 @@ class Reservation_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
+		if ( is_admin() ) {
+			return;
+		}
+
 		// Init the reservation hooks.
 		$this->plugin['reservation']->init();
 
