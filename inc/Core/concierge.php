@@ -405,9 +405,11 @@ function _abrs_filter_rates_callback( $resource, $response ) {
 	$effective_date = $resource->get_reference()->get_effective_date();
 	$expires_date   = $resource->get_reference()->get_expires_date();
 
-	if ( $effective_date && abrs_date_time( 'today' ) < abrs_date_time( $effective_date ) ) {
+	$today = abrs_date_time( 'today' );
+
+	if ( $effective_date && $today < abrs_date_time( $effective_date ) ) {
 		$response->add_miss( $resource, 'rate_effective_date' );
-	} elseif ( $expires_date && abrs_date_time( 'today' ) > abrs_date_time( $expires_date ) ) {
+	} elseif ( $expires_date && $today > abrs_date_time( $expires_date ) ) {
 		$response->add_miss( $resource, 'rate_expired_date' );
 	} else {
 		$response->add_match( $resource, 'rate_valid_dates' );
@@ -430,7 +432,7 @@ function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan ) 
 		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
 
-	return apply_filters( 'abrs_rate_constraints', $constraints, $rate );
+	return apply_filters( 'abrs_rate_constraints', $constraints, $rate, $timespan );
 }
 
 /**

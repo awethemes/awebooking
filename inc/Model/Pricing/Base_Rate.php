@@ -29,7 +29,7 @@ class Base_Rate implements Contracts\Rate {
 	 * {@inheritdoc}
 	 */
 	public function get_id() {
-		return 0;
+		return $this->instance->get_id();
 	}
 
 	/**

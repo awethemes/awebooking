@@ -119,7 +119,7 @@ class Room_Rate {
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
-			$this->using( apply_filters( 'abrs_select_room_rate', $this->rates_availability->select( 'first' ), $this->rates_availability, $this ) );
+			$this->using( apply_filters( 'abrs_select_room_rate', $this->rates_availability->select( 'last' ), $this->rates_availability, $this ) );
 
 			do_action( 'abrs_setup_room_rate', $this );
 

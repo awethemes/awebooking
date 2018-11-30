@@ -33,7 +33,7 @@ function abrs_get_rate_interval( $rate ) {
 	}
 
 	return ( $rate instanceof Standard_Rate_Interval ) ? $rate
-		: apply_filters( 'abrs_get_rate_object', null, $rate );
+		: apply_filters( 'abrs_get_rate_interval_object', null, $rate );
 }
 
 /**
