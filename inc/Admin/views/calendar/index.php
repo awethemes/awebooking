@@ -28,7 +28,7 @@
 	</div>
 </div>
 
-<?php $this->partial( 'calendar/html-bulk-update.php', compact( 'bulk_controls', 'scheduler' ) ); ?>
+<?php abrs_admin_template()->partial( 'calendar/html-bulk-update.php', compact( 'bulk_controls', 'scheduler' ) ); ?>
 
 <form method="POST" action="<?php echo esc_url( abrs_admin_route( '/calendar' ) ); ?>" style="display: none;">
 	<?php wp_nonce_field( 'awebooking_update_state' ); ?>

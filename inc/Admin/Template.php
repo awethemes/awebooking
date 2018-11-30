@@ -1,7 +1,25 @@
 <?php
 namespace AweBooking\Admin;
 
+use WPLibs\View\Factory;
+
 class Template {
+	/**
+	 * The view factory instance.
+	 *
+	 * @var \WPLibs\View\View_Factory
+	 */
+	protected $factory;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->factory = Factory::create( [
+			'paths' => [ __DIR__ . '/views/' ],
+		] );
+	}
+
 	/**
 	 * Returns a template contents.
 	 *
@@ -50,7 +68,7 @@ class Template {
 	protected function locale_template( $template ) {
 		return file_exists( realpath( $template ) )
 			? realpath( $template )
-			: trailingslashit( __DIR__ ) . 'views/' . $template;
+			: str_replace( '/', '.', rtrim( $template, '.php' ) );
 	}
 
 	/**
@@ -62,37 +80,27 @@ class Template {
 	 * @return string
 	 */
 	protected function evaluate_template( $template, $vars, $admin_template = false ) {
-		$ob_level = ob_get_level();
-
 		// Turn on output buffering.
 		ob_start();
 
-		// @codingStandardsIgnoreLine
-		extract( $vars, EXTR_SKIP );
-
-		// We'll evaluate the contents of the view inside a try/catch block so we can
-		// flush out any stray output that might get out before an error occurs or
-		// an exception is thrown. This prevents any partial views from leaking.
-		try {
-			if ( $admin_template ) {
-				// If see the $page_title in $vars, set the admin_title.
-				if ( isset( $page_title ) && ! empty( $page_title ) ) {
-					$this->modify_admin_title( $page_title );
-				}
-
-				require_once ABSPATH . 'wp-admin/admin-header.php';
+		if ( $admin_template ) {
+			// If see the $page_title in $vars, set the admin_title.
+			if ( ! empty( $vars['page_title'] ) ) {
+				$this->modify_admin_title( $vars['page_title'] );
 			}
 
-			// Include the template.
-			include $template;
+			require_once ABSPATH . 'wp-admin/admin-header.php';
+		}
 
-			if ( $admin_template ) {
-				include ABSPATH . 'wp-admin/admin-footer.php';
-			}
-		} catch ( \Exception $e ) {
-			abrs_handle_buffering_exception( $e, $ob_level );
-		} catch ( \Throwable $e ) {
-			abrs_handle_buffering_exception( $e, $ob_level );
+		// Include the template.
+		if ( file_exists( $template ) ) {
+			echo $this->factory->file( $template, $vars )->render(); // @WPCS: XSS OK.
+		} else {
+			echo $this->factory->make( $template, $vars )->render(); // @WPCS: XSS OK.
+		}
+
+		if ( $admin_template ) {
+			include ABSPATH . 'wp-admin/admin-footer.php';
 		}
 
 		return ltrim( ob_get_clean() );
@@ -105,8 +113,8 @@ class Template {
 	 * @return void
 	 */
 	protected function modify_admin_title( $page_title ) {
-		add_filter( 'admin_title', function( $admin_title ) use ( $page_title ) {
+		add_filter( 'admin_title', function ( $admin_title ) use ( $page_title ) {
 			return $page_title . $admin_title;
-		});
+		} );
 	}
 }

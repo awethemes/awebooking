@@ -67,7 +67,7 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 							</thead>
 							<tbody>
 								<?php foreach ( $results as $avai ) : ?>
-									<?php $this->partial( 'booking/html-avai-row.php', compact( 'avai', 'res_request' ) ); ?>
+									<?php abrs_admin_template()->partial( 'booking/html-avai-row.php', compact( 'avai', 'res_request' ) ); ?>
 								<?php endforeach ?>
 							</tbody>
 						</table>

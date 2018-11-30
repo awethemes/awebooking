@@ -31,5 +31,5 @@
 	var _listRoomTypes = <?php echo $scheduler->room_types ? json_encode( $scheduler->room_types ) : '[]'; ?>;
 </script>
 
-<?php $this->partial( 'rates/html-adjust-price.php' ); ?>
-<?php $this->partial( 'rates/html-bulk-update.php', compact( 'scheduler' ) ); ?>
+<?php abrs_admin_template()->partial( 'rates/html-adjust-price.php' ); ?>
+<?php abrs_admin_template()->partial( 'rates/html-bulk-update.php', compact( 'scheduler' ) ); ?>
