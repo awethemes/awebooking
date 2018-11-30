@@ -25,6 +25,10 @@ class Base_Rate implements Contracts\Rate {
 		$this->instance = abrs_get_room_type( $instance );
 	}
 
+	public function get_instance() {
+		return $this->instance;
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
