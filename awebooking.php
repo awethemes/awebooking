@@ -7,7 +7,7 @@
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /languages
- * Version:         3.1.18-dev
+ * Version:         3.1.18
  *
  * @package         AweBooking
  */
@@ -49,8 +49,8 @@ $awebooking->load_config( dirname( __FILE__ ) . '/config.php' );
 $installer = $awebooking->make( 'installer' );
 $installer->init();
 
-register_activation_hook( __FILE__, [ $installer, 'activation' ] );
-register_deactivation_hook( __FILE__, [ $installer, 'deactivation' ] );
+register_activation_hook( __FILE__, array( $installer, 'activation' ) );
+register_deactivation_hook( __FILE__, array( $installer, 'deactivation' ) );
 
 // Initialize under 'plugins_loaded'.
 add_action( 'plugins_loaded', array( $awebooking, 'initialize' ) );
