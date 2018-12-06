@@ -82,9 +82,9 @@ function abrs_get_rate_intervals( $rate ) {
 	return abrs_collect( apply_filters( 'abrs_get_rate_intervals', [], $rate ) )
 		->filter( function ( $plan ) {
 			return $plan instanceof Rate_Interval;
-		})->sortBy( function ( Rate_Interval $rate ) {
+		} )->sortBy( function ( Rate_Interval $rate ) {
 			return $rate->get_priority();
-		})->values();
+		} )->values();
 }
 
 /**
