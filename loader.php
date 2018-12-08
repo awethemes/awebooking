@@ -26,9 +26,6 @@ foreach ( $_dev_packages as $_package ) {
 require trailingslashit( __DIR__ ) . 'inc/Support/helpers.php';
 require trailingslashit( __DIR__ ) . 'inc/Core/sanitizer.php';
 
-// Load deprecated.
-require trailingslashit( __DIR__ ) . 'deprecated/deprecated.php';
-
 /**
  * Then, require the main class.
  */
