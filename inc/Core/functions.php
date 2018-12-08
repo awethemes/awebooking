@@ -63,7 +63,7 @@ function abrs_multilingual() {
 /**
  * Returns the Http request.
  *
- * @return \Awethemes\Http\Request
+ * @return \WPLibs\Http\Request
  */
 function abrs_http_request() {
 	return awebooking()->make( 'request' );
@@ -117,7 +117,7 @@ function abrs_mailer( $email = null ) {
  *
  * @param  string|null $key     Optional, get a specified session key.
  * @param  mixed       $default Optional, default value if $key is not exists.
- * @return \Awethemes\WP_Session\WP_Session|mixed
+ * @return \WPLibs\Session\WP_Session|mixed
  */
 function abrs_session( $key = null, $default = null ) {
 	return is_null( $key )
@@ -130,7 +130,7 @@ function abrs_session( $key = null, $default = null ) {
  *
  * @param  string $message The notice message.
  * @param  string $level   The notice level.
- * @return \AweBooking\Component\Flash\Flash_Notifier
+ * @return \WPLibs\Session\Flash\Flash_Notifier
  */
 function abrs_flash( $message = null, $level = 'info' ) {
 	$flash = awebooking()->make( 'flash' );

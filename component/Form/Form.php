@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Component\Form;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
 
@@ -84,7 +84,7 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	/**
 	 * Get sanitized values from an HTTP request.
 	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @param  \WPLibs\Http\Request $request The request instance.
 	 * @return \AweBooking\Support\Fluent
 	 */
 	public function handle( Request $request ) {

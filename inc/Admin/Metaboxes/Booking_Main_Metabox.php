@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Metabox;
 use AweBooking\Checkout\Form_Controls;
 
@@ -54,7 +54,7 @@ class Booking_Main_Metabox extends Metabox {
 	 * Handle save the the metabox.
 	 *
 	 * @param \WP_Post                $post    The WP_Post object instance.
-	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
 		$booking = abrs_get_booking( $post );

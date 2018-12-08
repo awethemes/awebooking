@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Premium;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 
 class Premium_Setting extends Abstract_Setting {
 	/**

@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Calendar\Pricing_Scheduler;
 
 class Rate_Controller extends Controller {
@@ -16,8 +16,8 @@ class Rate_Controller extends Controller {
 	/**
 	 * Show the pricing scheduler.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response
 	 */
 	public function index( Request $request ) {
 		$scheduler_class = apply_filters( 'abrs_pricing_scheduler_class', Pricing_Scheduler::class );
@@ -32,7 +32,7 @@ class Rate_Controller extends Controller {
 	/**
 	 * Show room_type rate.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function update( Request $request ) {
@@ -64,7 +64,7 @@ class Rate_Controller extends Controller {
 	/**
 	 * Bulk update rate.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function bulk_update( Request $request ) {

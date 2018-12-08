@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
@@ -18,7 +18,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Handle search rooms.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function search( Request $request ) {
@@ -51,7 +51,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Handle store new booking payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -104,7 +104,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Display the edit form.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
@@ -120,7 +120,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform update the room stay.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
@@ -174,7 +174,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform delete a booking room.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The room item instance.
 	 * @return mixed
 	 */

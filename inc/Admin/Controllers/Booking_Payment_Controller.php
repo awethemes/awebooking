@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Admin\Forms\Booking_Payment_Form;
 
@@ -17,7 +17,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Handle create new payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function create( Request $request ) {
@@ -44,7 +44,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Handle store new booking payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -74,7 +74,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Show edit for.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */
@@ -92,7 +92,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Perform update a payment item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */
@@ -119,7 +119,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Perform delete a payment item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */

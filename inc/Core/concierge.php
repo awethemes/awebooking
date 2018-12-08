@@ -12,7 +12,7 @@ use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Availability\Request;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Availability\Constraints\Night_Stay_Constraint;
-use Awethemes\Http\Request as Http_Request;
+use WPLibs\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
 
@@ -490,7 +490,7 @@ function abrs_retrieve_room_rate( $args ) {
 /**
  * Create new reservation request.
  *
- * @param  \Awethemes\Http\Request|array $args     The query args.
+ * @param  \WPLibs\Http\Request|array $args     The query args.
  * @param  bool                          $wp_error Optional. Whether to return a WP_Error on failure.
  * @return \AweBooking\Availability\Request|\WP_Error|null
  */

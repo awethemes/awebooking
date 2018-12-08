@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Hotel;
 use AweBooking\Support\WP_Data;
 use AweBooking\Admin\Forms\Hotel_Information_Form;

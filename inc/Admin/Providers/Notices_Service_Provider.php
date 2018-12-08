@@ -2,8 +2,8 @@
 namespace AweBooking\Admin\Providers;
 
 use AweBooking\Support\Service_Provider;
-use AweBooking\Component\Flash\Session_Store;
-use AweBooking\Component\Flash\Flash_Notifier;
+use WPLibs\Session\Flash\Flash_Notifier;
+use WPLibs\Session\Flash\Session_Store;
 
 class Notices_Service_Provider extends Service_Provider {
 	/**

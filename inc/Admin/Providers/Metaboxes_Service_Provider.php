@@ -140,7 +140,7 @@ class Metaboxes_Service_Provider extends Service_Provider {
 		 * Fire the process event based on current post type.
 		 *
 		 * @param \WP_Post                $post    The WP_Post object instance.
-		 * @param \Awethemes\Http\Request $request The HTTP Request.
+		 * @param \WPLibs\Http\Request $request The HTTP Request.
 		 */
 		do_action( "abrs_process_{$post->post_type}_meta", $post, $request );
 	}

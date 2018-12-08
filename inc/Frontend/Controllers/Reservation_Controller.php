@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Frontend\Controllers;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Reservation\Reservation;
 use AweBooking\Reservation\Url_Generator;
 use AweBooking\Component\Routing\Redirector;
@@ -35,7 +35,7 @@ class Reservation_Controller {
 	/**
 	 * Handle book a room from request.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function book( Request $request ) {
@@ -79,7 +79,7 @@ class Reservation_Controller {
 	/**
 	 * Handle book a room from request.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @param  string                  $row_id  The row ID.
 	 * @return mixed
 	 */
@@ -107,8 +107,8 @@ class Reservation_Controller {
 	/**
 	 * Redirect to the search page.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Redirect_Response
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Redirect_Response
 	 */
 	protected function generator_search_page_url( Request $request ) {
 		$res_request = $this->reservation->resolve_res_request();
@@ -125,7 +125,7 @@ class Reservation_Controller {
 	/**
 	 * Determines if need redirect to the checkout page or not.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return bool
 	 */
 	protected function is_continue_reservation( Request $request ) {
@@ -144,7 +144,7 @@ class Reservation_Controller {
 	/**
 	 * Handle update services on the reservation.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function services( Request $request ) {

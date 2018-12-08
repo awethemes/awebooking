@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin\Settings;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 
 interface Setting {
 	/**
@@ -28,7 +28,7 @@ interface Setting {
 	/**
 	 * Perform save setting.
 	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
+	 * @param  \WPLibs\Http\Request $request The HTTP request.
 	 * @return bool
 	 */
 	public function save( Request $request );
@@ -36,7 +36,7 @@ interface Setting {
 	/**
 	 * Output this setting.
 	 *
-	 * @param  \Awethemes\Http\Request $request The HTTP request.
+	 * @param  \WPLibs\Http\Request $request The HTTP request.
 	 * @return void
 	 */
 	public function output( Request $request );

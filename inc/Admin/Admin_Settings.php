@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Admin;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Support\Manager;
 use AweBooking\Admin\Settings\Setting;
 use AweBooking\Admin\Settings\Abstract_Setting;
@@ -29,7 +29,7 @@ class Admin_Settings extends Manager {
 	 * Perform handle save a setting.
 	 *
 	 * @param  string                  $setting The setting name.
-	 * @param  \Awethemes\Http\Request $request The http request instance.
+	 * @param  \WPLibs\Http\Request $request The http request instance.
 	 * @return void
 	 */
 	public function save( $setting, Request $request ) {

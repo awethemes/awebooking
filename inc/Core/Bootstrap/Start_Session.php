@@ -2,10 +2,11 @@
 namespace AweBooking\Core\Bootstrap;
 
 use AweBooking\Plugin;
-use Awethemes\WP_Session\WP_Session;
-use AweBooking\Component\Flash\Session_Store;
-use AweBooking\Component\Flash\WP_Sesstion_Store;
-use AweBooking\Component\Flash\Flash_Notifier;
+use WPLibs\Session\Store;
+use WPLibs\Session\WP_Session;
+use WPLibs\Session\Flash\Session_Store;
+use WPLibs\Session\Flash\WP_Sesstion_Store;
+use WPLibs\Session\Flash\Flash_Notifier;
 
 class Start_Session {
 	/**
@@ -73,6 +74,7 @@ class Start_Session {
 		});
 
 		$this->plugin->alias( 'session', WP_Session::class );
+		$this->plugin->alias( 'session.store', Store::class );
 	}
 
 	/**
@@ -85,6 +87,6 @@ class Start_Session {
 
 		$this->plugin->singleton( 'flash', function () {
 			return new Flash_Notifier( $this->plugin->make( Session_Store::class ) );
-		});
+		} );
 	}
 }

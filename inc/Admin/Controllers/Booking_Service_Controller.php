@@ -2,7 +2,7 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking\Service_Item;
 
@@ -17,7 +17,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Handle create new service.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function create( Request $request ) {
@@ -31,7 +31,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Handle store new booking service.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -109,7 +109,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Perform delete a service item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Service_Item $service_item The booking service item.
 	 * @return mixed
 	 */

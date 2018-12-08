@@ -15,11 +15,11 @@ use AweBooking\Gateway\Response as Gateway_Response;
 use AweBooking\Gateway\GatewayException;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Reservation\Reservation;
-use AweBooking\Component\Validation\Validator;
+use WPLibs\Validation\Validator;
 use AweBooking\Component\Http\Exceptions\ValidationFailedException;
 use AweBooking\Support\Fluent;
-use Awethemes\WP_Session\WP_Session;
-use Awethemes\Http\Request;
+use WPLibs\Session\WP_Session;
+use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
 
 class Checkout {
@@ -33,7 +33,7 @@ class Checkout {
 	/**
 	 * The session instance.
 	 *
-	 * @var \Awethemes\WP_Session\Store
+	 * @var \WPLibs\Session\Store
 	 */
 	protected $session;
 
@@ -55,7 +55,7 @@ class Checkout {
 	 * Create a new session store instance.
 	 *
 	 * @param \AweBooking\Gateway\Gateways        $gateways    The Gateways instance.
-	 * @param \Awethemes\WP_Session\WP_Session    $session     The WP_Session instance.
+	 * @param \WPLibs\Session\WP_Session          $session     The WP_Session instance.
 	 * @param \AweBooking\Reservation\Reservation $reservation The Reservation instance.
 	 */
 	public function __construct( Gateways $gateways, WP_Session $session, Reservation $reservation ) {
@@ -91,7 +91,7 @@ class Checkout {
 	/**
 	 * Show the booking received.
 	 *
-	 * @param \Awethemes\Http\Request $request Current http request.
+	 * @param \WPLibs\Http\Request $request Current http request.
 	 * @return void
 	 */
 	protected function output_received( $request ) {
@@ -119,7 +119,7 @@ class Checkout {
 	/**
 	 * Process the checkout request.
 	 *
-	 * @param  \Awethemes\Http\Request $request The http request.
+	 * @param  \WPLibs\Http\Request $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
@@ -198,7 +198,7 @@ class Checkout {
 	 *
 	 * @param  \AweBooking\Model\Booking   $booking The booking instance.
 	 * @param  \AweBooking\Gateway\Gateway $gateway The payment gateway.
-	 * @param  \Awethemes\Http\Request     $request The http request.
+	 * @param  \WPLibs\Http\Request        $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
@@ -563,7 +563,7 @@ class Checkout {
 	 *
 	 * @param  \WP_Error                  $errors  WP_Error instance.
 	 * @param  \AweBooking\Support\Fluent $data    The posted data.
-	 * @param  \Awethemes\Http\Request    $request The http request.
+	 * @param  \WPLibs\Http\Request    $request The http request.
 	 */
 	protected function validate_checkout( &$errors, $data, $request ) {
 		if ( empty( $data['terms'] ) && apply_filters( 'abrs_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
@@ -592,7 +592,7 @@ class Checkout {
 	/**
 	 * Get posted data from the checkout form.
 	 *
-	 * @param  \Awethemes\Http\Request $request The http request.
+	 * @param  \WPLibs\Http\Request $request The http request.
 	 * @return \AweBooking\Support\Fluent
 	 */
 	public function get_posted_data( $request ) {
