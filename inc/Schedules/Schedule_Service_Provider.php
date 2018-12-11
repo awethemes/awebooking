@@ -13,14 +13,18 @@ class Schedule_Service_Provider extends Service_Provider {
 	public function init() {
 		add_action( 'abrs_booking_status_changed', [ $this, 'handle_status_changes' ], 10, 3 );
 		add_action( 'abrs_schedule_update_checkout_status', [ $this, 'schedule_update_checkout_status' ] );
+
+		add_action( 'abrs_checkout_processed', [ $this, 'handle_checkout_processed' ] );
+		add_action( 'abrs_schedule_clean_booking', [ $this, 'schedule_clean_booking' ] );
 	}
 
 	/**
-	 * //
+	 * Handle status changes.
 	 *
 	 * @param string                    $new_status The new status.
 	 * @param string                    $old_status The old status.
 	 * @param \AweBooking\Model\Booking $booking    The booking instance.
+	 *
 	 * @return void
 	 */
 	public function handle_status_changes( $new_status, $old_status, $booking ) {
@@ -43,6 +47,7 @@ class Schedule_Service_Provider extends Service_Provider {
 
 		if ( 'checked-in' === $new_status && in_array( $old_status, [ 'on-hold', 'inprocess', 'completed', 'deposit' ] ) ) {
 			wp_schedule_single_event( $schedule_date->timestamp, 'abrs_schedule_update_checkout_status', $args );
+
 			return;
 		}
 
@@ -52,7 +57,7 @@ class Schedule_Service_Provider extends Service_Provider {
 	}
 
 	/**
-	 * //
+	 * Update checkout status.
 	 *
 	 * @param int $booking_id The booking ID.
 	 */
@@ -61,6 +66,37 @@ class Schedule_Service_Provider extends Service_Provider {
 
 		if ( $booking && 'checked-out' !== $booking->get_status() ) {
 			$booking->update_status( 'checked-out', esc_html__( 'Cron: Auto update status to checked-out.', 'awebooking' ) );
+		}
+	}
+
+	/**
+	 * Handle checkout processed after 30 minutes.
+	 *
+	 * @param int $booking_id Booking ID.
+	 */
+	public function handle_checkout_processed( $booking_id ) {
+		$booking = abrs_get_booking( $booking_id );
+
+		$date = abrs_date_time( 'now' )->addMinutes( 30 );
+		$args = [ $booking->get_id() ];
+
+		if ( wp_next_scheduled( 'abrs_schedule_clean_booking', $args ) ) {
+			wp_unschedule_event( $date->timestamp, 'abrs_schedule_clean_booking', $args );
+		}
+
+		wp_schedule_single_event( $date->timestamp, 'abrs_schedule_clean_booking', $args );
+	}
+
+	/**
+	 * Clean booking when booking status is `pending`.
+	 *
+	 * @param int $booking_id The booking ID.
+	 */
+	public function schedule_clean_booking( $booking_id ) {
+		$booking = abrs_get_booking( $booking_id );
+
+		if ( $booking && 'pending' === $booking->get_status() ) {
+			$booking->delete( true );
 		}
 	}
 }
