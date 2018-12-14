@@ -34,6 +34,8 @@ class Booking_Room_Controller extends Controller {
 		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
+			$res_request['query_args'] = $request->only( 'hotel', 'only' );
+
 			if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
 				return new WP_Error( 400, esc_html__( 'ERR.', 'awebooking' ) ); // TODO: ...
 			}
