@@ -3,9 +3,9 @@ Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
-Tested up to:      4.9
+Tested up to:      5.0
 Requires PHP:      5.6
-Stable tag:        3.1.18
+Stable tag:        3.1.19
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,13 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.19] - [2018-12-14]
+- WordPress 5.0 with Gutenberg compatibility
+- Frontend: Force to showing single month in the datepicker in mobile
+- Auto delete "pending" bookings after 30 minutes from time created
+- Fixed add new booking in the backend when multi-hotels enabled
+- Minor bug fixes
+
 ### [v3.1.18] - [2018-12-01]
 - Minor bug fixes
 
