@@ -73,6 +73,10 @@ plugin.datepicker = function (instance, options) {
     },
   };
 
+  if (Utils.isMobile()) {
+    _defaults.showMonths = 1
+  }
+
   return flatpickr(instance, $.extend({}, _defaults, options));
 };
 

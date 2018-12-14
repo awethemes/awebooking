@@ -1562,6 +1562,11 @@
 	      fp.calendarContainer.classList.add('awebooking-datepicker');
 	    }
 	  };
+
+	  if (Utils.isMobile()) {
+	    _defaults.showMonths = 1;
+	  }
+
 	  return flatpickr(instance, $.extend({}, _defaults, options));
 	};
 	/**
