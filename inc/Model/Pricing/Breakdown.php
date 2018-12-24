@@ -78,7 +78,7 @@ class Breakdown implements \ArrayAccess, \IteratorAggregate {
 		$period = $this->timespan
 			->to_period( $this->granularity );
 
-		if ( $period->contains( $index ) ) {
+		if ( $period->contains( abrs_date( $index ) ) ) {
 			$this->data[ $index ] = $this->format_amount( $amount );
 
 			return true;
