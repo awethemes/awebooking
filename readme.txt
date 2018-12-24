@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.0
 Requires PHP:      5.6
-Stable tag:        3.1.19
+Stable tag:        3.1.20
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,12 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.20] - [2018-12-24]
+- Merry Christmas!
+- Correct some warning in PHP 7.3
+- Fixed: Bookings not showing in "All" tab in the list table.
+- Fixed: Wrong price in reservation when timezone is not UTC.
+
 ### [v3.1.19] - [2018-12-14]
 - WordPress 5.0 with Gutenberg compatibility
 - Frontend: Force to showing single month in the datepicker in mobile
