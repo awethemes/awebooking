@@ -26,7 +26,7 @@ class Rate_Controller extends Controller {
 		$scheduler = awebooking()->make( $scheduler_class );
 		$scheduler->prepare( $request );
 
-		return $this->response( 'rates/index.php', compact( 'scheduler', 'controls', 'bulk_controls' ) );
+		return $this->response( 'rates/index.php', compact( 'scheduler' ) );
 	}
 
 	/**

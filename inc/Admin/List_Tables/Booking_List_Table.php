@@ -351,7 +351,7 @@ class Booking_List_Table extends Abstract_List_Table {
 		}
 
 		// Merge booking statuses on "All".
-		if ( ! isset( $query_vars['post_status'] ) ) {
+		if ( empty( $query_vars['post_status'] ) ) {
 			$statuses = abrs_get_booking_statuses();
 			unset( $statuses['awebooking-cancelled'] );
 
