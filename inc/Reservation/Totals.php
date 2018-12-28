@@ -211,7 +211,7 @@ class Totals {
 	 *
 	 * @return $this
 	 */
-	protected function set_total( $key, $total ) {
+	public function set_total( $key, $total ) {
 		$this->totals[ $key ] = $total instanceof Decimal ? $total->as_numeric() : $total;
 
 		return $this;
