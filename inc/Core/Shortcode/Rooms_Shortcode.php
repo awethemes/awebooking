@@ -50,5 +50,7 @@ class Rooms_Shortcode extends Shortcode {
 		} else {
 			abrs_get_template_part( 'template-parts/archive/content', 'none' );
 		}
+
+		wp_reset_postdata();
 	}
 }
