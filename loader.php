@@ -8,8 +8,11 @@
 /**
  * First, we need autoload via Composer to make everything works.
  */
-require trailingslashit( __DIR__ ) . 'vendor/autoload.php';
-require trailingslashit( __DIR__ ) . 'vendor/cmb2/cmb2/init.php';
+require __DIR__ . '/vendor/autoload.php';
+
+require_once __DIR__ . '/vendor/wplibs/form/functions.php';
+require_once __DIR__ . '/vendor/wplibs/http/functions.php';
+require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 // For dev only, will be remove in the future when packages stable.
 $_dev_packages = [

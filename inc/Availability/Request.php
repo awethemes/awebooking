@@ -17,7 +17,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * The http request instance.
 	 *
-	 * @var \WPLibs\Http\Request
+	 * @var Http_Request
 	 */
 	protected $http_request;
 
@@ -83,9 +83,9 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * Constructor.
 	 *
-	 * @param \AweBooking\Model\Common\Timespan|null     $timespan
-	 * @param \AweBooking\Model\Common\Guest_Counts|null $guest_counts
-	 * @param \WPLibs\Http\Request|null               $http_request
+	 * @param Timespan|null     $timespan
+	 * @param Guest_Counts|null $guest_counts
+	 * @param Http_Request|null $http_request
 	 */
 	public function __construct(
 		Timespan $timespan = null,
@@ -94,7 +94,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	) {
 		$this->instance = ++static::$instances;
 
-		$this->errors = new WP_Error;
+		$this->errors       = new WP_Error;
 		$this->http_request = $http_request;
 
 		$this->initialize( compact( 'timespan', 'guest_counts' ) );
@@ -365,6 +365,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 
 		if ( is_null( $date ) ) {
 			$this->errors->add( 'check_in', esc_html__( 'Please enter a valid arrival date.', 'awebooking' ) );
+
 			return;
 		}
 
@@ -497,7 +498,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * Returns the HTTP request.
 	 *
-	 * @return \WPLibs\Http\Request|null
+	 * @return Http_Request|null
 	 */
 	public function get_http_request() {
 		return $this->http_request;
@@ -533,11 +534,11 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @param  string $hash The hash string.
 	 * @return $this
 	 *
-	 * @throws \AweBooking\Availability\Exceptions\InvalidHashException
+	 * @throws \InvalidArgumentException
 	 */
 	public function set_hash( $hash ) {
 		if ( strlen( $hash ) !== 40 ) {
-			throw new Exceptions\InvalidHashException( esc_html__( 'The hash must be have 40 characters of length.', 'awebooking' ) );
+			throw new \InvalidArgumentException( esc_html__( 'The hash must be have 40 characters of length.', 'awebooking' ) );
 		}
 
 		$this->hash = $hash;

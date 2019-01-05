@@ -84,17 +84,6 @@ function abrs_admin_notices( $message = null, $level = 'info' ) {
 }
 
 /**
- * Alias of abrs_flash_notices function.
- *
- * @param  string $message The notice message.
- * @param  string $level   The notice level.
- * @return \WPLibs\Session\Flash\Flash_Notifier
- */
-function abrs_admin_notices( $message = null, $level = 'info' ) {
-	return abrs_flash_notices( $message, $level );
-}
-
-/**
  * Load a admin template.
  *
  * @param  string $template The template relative path.

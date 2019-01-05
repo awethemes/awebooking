@@ -21,17 +21,15 @@ $rooms_left = $room_rate->get_remain_rooms()->count();
 ?>
 
 <div class="roommaster-button roommaster-box">
-	<?php if ( ! $room_rate->has_error() ) : ?>
-		<?php
-		abrs_book_room_button([
-			'room_type'   => $room_type->get_id(),
-			'show_button' => true,
-			'button_atts' => [
-				'class' => 'booknow button is-primary',
-			],
-		]);
-		?>
-	<?php endif ?>
+	<?php
+	abrs_book_room_button([
+		'room_type'   => $room_type->get_id(),
+		'show_button' => true,
+		'button_atts' => [
+			'class' => 'booknow button is-primary',
+		],
+	]);
+	?>
 
 	<span class="roommaster-button__remaining-rooms">
 		<?php

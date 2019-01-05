@@ -23,7 +23,7 @@ use Illuminate\Support\Arr;
  */
 function abrs_get_blocked_states() {
 	return apply_filters( 'abrs_blocked_states', [
-		Constants::STATE_SYNC => [
+		Constants::STATE_SYNC        => [
 			'name'  => 'sync',
 			'label' => esc_html__( 'Sync', 'awebooking' ),
 		],
@@ -31,7 +31,7 @@ function abrs_get_blocked_states() {
 			'name'  => 'unavailable',
 			'label' => esc_html__( 'Unavailable', 'awebooking' ),
 		],
-	]);
+	] );
 }
 
 /**
@@ -48,7 +48,7 @@ function abrs_get_rate_operations() {
 		'divide'   => esc_html__( 'Divide', 'awebooking' ),
 		'increase' => esc_html__( 'Increase', 'awebooking' ),
 		'decrease' => esc_html__( 'Decrease', 'awebooking' ),
-	]);
+	] );
 }
 
 /**
@@ -116,13 +116,13 @@ function abrs_check_room_states( $room, Timespan $timespan, $states = Constants:
 /**
  * Set a room as blocked in a timespan.
  *
- * @param int      $room     The room ID to apply.
- * @param Timespan $timespan The timespan.
- * @param array    $options {
- *     Optional. Options to apply the state.
+ * @param int      $room        The room ID to apply.
+ * @param Timespan $timespan    The timespan.
+ * @param array    $options     {
+ *                              Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in specified days of week.
- *     @type string $granularity Granularity by nightly or daily.
+ * @type array     $only_days   Apply only in specified days of week.
+ * @type string    $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
  */
@@ -133,13 +133,13 @@ function abrs_block_room( $room, Timespan $timespan, $options = [] ) {
 /**
  * Unblock a room in a timespan.
  *
- * @param int      $room     The room ID to apply.
- * @param Timespan $timespan The timespan.
- * @param array    $options {
- *     Optional. Options to apply the state.
+ * @param int      $room        The room ID to apply.
+ * @param Timespan $timespan    The timespan.
+ * @param array    $options     {
+ *                              Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in specified days of week.
- *     @type string $granularity Granularity by nightly or daily.
+ * @type array     $only_days   Apply only in specified days of week.
+ * @type string    $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
  */
@@ -150,14 +150,14 @@ function abrs_unblock_room( $room, Timespan $timespan, $options = [] ) {
 /**
  * Perform apply a state of given room in a timespan.
  *
- * @param int      $room     The room ID to apply.
- * @param Timespan $timespan The timespan.
- * @param int      $state    The state to apply.
- * @param array    $options {
- *     Optional. Options to apply the state.
+ * @param int      $room        The room ID to apply.
+ * @param Timespan $timespan    The timespan.
+ * @param int      $state       The state to apply.
+ * @param array    $options     {
+ *                              Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in specified days of week.
- *     @type string $granularity Granularity by nightly or daily.
+ * @type array     $only_days   Apply only in specified days of week.
+ * @type string    $granularity Granularity by nightly or daily.
  * }
  * @return bool|null|WP_Error
  */
@@ -165,7 +165,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 	$options = wp_parse_args( $options, [
 		'only_days'   => null,
 		'granularity' => Constants::GL_NIGHTLY,
-	]);
+	] );
 
 	try {
 		$timespan->requires_minimum_nights( Constants::GL_NIGHTLY === $options['granularity'] ? 1 : 0 );
@@ -274,9 +274,9 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 		->itemize();
 
 	// Correct the amount.
-	$breakdown = $itemized->transform( function( $a ) {
+	$breakdown = $itemized->transform( function ( $a ) {
 		return abrs_decimal_raw( $a )->as_numeric();
-	});
+	} );
 
 	return apply_filters( 'abrs_retrieve_rate_breakdown', $breakdown, $rate, $timespan );
 }
@@ -284,15 +284,15 @@ function abrs_retrieve_rate( $rate, Timespan $timespan ) {
 /**
  * Apply custom price for a rate in a timespan.
  *
- * @param int      $rate      The rate ID to retrieve.
- * @param Timespan $timespan  The timespan.
- * @param mixed    $amount    The amount to apply.
- * @param mixed    $operation The operation apply amount @see abrs_get_rate_operations().
- * @param array    $options {
- *     Optional. Options to apply the state.
+ * @param int      $rate        The rate ID to retrieve.
+ * @param Timespan $timespan    The timespan.
+ * @param mixed    $amount      The amount to apply.
+ * @param mixed    $operation   The operation apply amount @see abrs_get_rate_operations().
+ * @param array    $options     {
+ *                              Optional. Options to apply the state.
  *
- *     @type array  $only_days   Apply only in specified days of week.
- *     @type string $granularity Granularity by nightly or daily.
+ * @type array     $only_days   Apply only in specified days of week.
+ * @type string    $granularity Granularity by nightly or daily.
  * }
  * @return bool|WP_Error
  */
@@ -300,7 +300,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 	$options = wp_parse_args( $options, [
 		'only_days'   => null,
 		'granularity' => Constants::GL_NIGHTLY,
-	]);
+	] );
 
 	try {
 		$timespan->requires_minimum_nights( Constants::GL_NIGHTLY === $options['granularity'] ? 1 : 0 );
@@ -382,9 +382,9 @@ function abrs_filter_rate_intervals( $rates, Timespan $timespan, $constraints = 
 	$resources = abrs_collect( $rates )
 		->transform( 'abrs_resource_rate' )
 		->filter( /* Remove empty items */ )
-		->each(function( Resource $r ) use ( $timespan ) {
+		->each( function ( Resource $r ) use ( $timespan ) {
 			$r->set_constraints( abrs_build_rate_constraints( $r->get_reference(), $timespan ) );
-		});
+		} );
 
 	$response = ( new Finder( $resources->all() ) )
 		->callback( '_abrs_filter_rates_callback' )
@@ -451,7 +451,7 @@ function abrs_retrieve_room_rate( $args ) {
 		'adults'    => 1,
 		'children'  => 0,
 		'infants'   => 0,
-	]);
+	] );
 
 	// Find the room type.
 	if ( ! $room_type = abrs_get_room_type( $args['room_type'] ) ) {
@@ -491,7 +491,7 @@ function abrs_retrieve_room_rate( $args ) {
  * Create new reservation request.
  *
  * @param  \WPLibs\Http\Request|array $args     The query args.
- * @param  bool                          $wp_error Optional. Whether to return a WP_Error on failure.
+ * @param  bool                       $wp_error Optional. Whether to return a WP_Error on failure.
  * @return \AweBooking\Availability\Request|\WP_Error|null
  */
 function abrs_create_res_request( $args, $wp_error = false ) {
@@ -500,15 +500,15 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 	}
 
 	$args = wp_parse_args( $args, [
-		'strict'     => is_admin() ? false : true,
-		'hotel'      => 0,
-		'check_in'   => isset( $args['check-in'] ) ? $args['check-in'] : '',
-		'check_out'  => isset( $args['check-out'] ) ? $args['check-out'] : '',
-		'adults'     => 1,
-		'children'   => 0,
-		'infants'    => 0,
-		'options'    => [],
-	]);
+		'strict'    => is_admin() ? false : true,
+		'hotel'     => 0,
+		'check_in'  => isset( $args['check-in'] ) ? $args['check-in'] : '',
+		'check_out' => isset( $args['check-out'] ) ? $args['check-out'] : '',
+		'adults'    => 1,
+		'children'  => 0,
+		'infants'   => 0,
+		'options'   => [],
+	] );
 
 	// Create the timespan.
 	$timespan = abrs_timespan( $args['check_in'], $args['check_out'], 1, $args['strict'] );
@@ -527,7 +527,9 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 		$guest_counts->set_infants( $args['infants'] );
 	}
 
-	$res_request = ( new Request( $timespan, $guest_counts, $args['options'] ) )
+	$http_request = abrs_http_request();
+
+	$res_request = ( new Request( $timespan, $guest_counts, $http_request ) )
 		->set_hotel( abrs_get_hotel( (int) $args['hotel'] ) );
 
 	return apply_filters( 'abrs_reservation_request', $res_request );
@@ -568,10 +570,12 @@ function abrs_apply_booking_event( $room, $booking, Timespan $timespan ) {
 
 		if ( ! $stored || ! $stored2 ) {
 			abrs_db_transaction( 'rollback' );
+
 			return false;
 		}
 	} catch ( Exception $e ) {
 		abrs_db_transaction( 'rollback' );
+
 		return false;
 	}
 
@@ -616,7 +620,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	}
 
 	foreach ( $statecal->get_events( $period ) as $event ) {
-		/* @var $event \AweBooking\Calendar\Event\Core\State_Event  */
+		/* @var $event \AweBooking\Calendar\Event\Core\State_Event */
 		if ( $event->get_state() === Constants::STATE_BOOKING ) {
 			$event->set_value( Constants::STATE_AVAILABLE );
 			$statecal->store( $event );
