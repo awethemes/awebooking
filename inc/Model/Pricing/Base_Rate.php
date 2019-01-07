@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Pricing;
 
 class Base_Rate implements Contracts\Rate {

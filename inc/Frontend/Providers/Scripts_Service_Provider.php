@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Frontend\Providers;
 
 use AweBooking\Support\Service_Provider;

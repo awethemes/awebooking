@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Settings;
 
 class Appearance_Setting extends Abstract_Setting {

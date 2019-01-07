@@ -15,7 +15,7 @@ use AweBooking\Gateway\Response as Gateway_Response;
 use AweBooking\Gateway\GatewayException;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Reservation\Reservation;
-use WPLibs\Validation\Validator;
+use WPLibs\Form\Helper\Validator;
 use AweBooking\Component\Http\Exceptions\ValidationFailedException;
 use AweBooking\Support\Fluent;
 use WPLibs\Session\WP_Session;

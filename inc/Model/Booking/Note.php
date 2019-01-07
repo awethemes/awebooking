@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Booking;
 
 class Note implements \ArrayAccess {

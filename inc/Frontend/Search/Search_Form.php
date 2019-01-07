@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Frontend\Search;
 
 use WPLibs\Form\Html_Form;

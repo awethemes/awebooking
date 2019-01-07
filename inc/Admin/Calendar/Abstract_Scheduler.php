@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Calendar;
 
 use WP_Query;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Support\Traits;
 
 trait Fluent_Getter {

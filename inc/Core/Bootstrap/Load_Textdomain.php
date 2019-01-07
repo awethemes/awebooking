@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Bootstrap;
 
 class Load_Textdomain {

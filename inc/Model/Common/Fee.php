@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Common;
 
 class Fee implements \ArrayAccess {

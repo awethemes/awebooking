@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Background_Process;
 
 use Psr\Log\LoggerInterface;

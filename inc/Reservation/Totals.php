@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Reservation;
 
 use AweBooking\Support\Decimal;

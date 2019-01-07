@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Bootstrap;
 
 use AweBooking\Plugin;

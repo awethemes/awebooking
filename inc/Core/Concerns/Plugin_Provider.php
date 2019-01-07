@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Concerns;
 
 trait Plugin_Provider {

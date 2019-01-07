@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability\Search;
 
 use AweBooking\Availability\Request;

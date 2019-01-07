@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Providers;
 
 use WPLibs\Http\Request;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Event;
 
 use AweBooking\Support\Collection;

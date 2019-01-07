@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Widget;
 
 use AweBooking\Component\Form\Form;

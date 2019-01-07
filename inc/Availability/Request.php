@@ -17,7 +17,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * The http request instance.
 	 *
-	 * @var Http_Request
+	 * @var \WPLibs\Http\Request
 	 */
 	protected $http_request;
 
@@ -498,7 +498,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * Returns the HTTP request.
 	 *
-	 * @return Http_Request|null
+	 * @return \WPLibs\Http\Request|null
 	 */
 	public function get_http_request() {
 		return $this->http_request;

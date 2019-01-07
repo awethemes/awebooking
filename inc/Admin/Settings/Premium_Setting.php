@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Premium;

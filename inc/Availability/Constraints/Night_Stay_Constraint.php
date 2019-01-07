@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability\Constraints;
 
 use AweBooking\Model\Common\Timespan;

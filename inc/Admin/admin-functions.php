@@ -73,14 +73,25 @@ function abrs_admin_route_is( $pattern ) {
  * @param  string $level   The notice level.
  * @return \WPLibs\Session\Flash\Flash_Notifier
  */
-function abrs_admin_notices( $message = null, $level = 'info' ) {
-	$notices = awebooking()->make( 'admin_notices' );
+function abrs_flash_notices( $message = null, $level = 'info' ) {
+	$notices = awebooking()->make( 'flash_notices' );
 
 	if ( is_null( $message ) ) {
 		return $notices;
 	}
 
 	return $notices->add_message( $message, $level );
+}
+
+/**
+ * Alias of abrs_flash_notices function.
+ *
+ * @param  string $message The notice message.
+ * @param  string $level   The notice level.
+ * @return \WPLibs\Session\Flash\Flash_Notifier
+ */
+function abrs_admin_notices( $message = null, $level = 'info' ) {
+	return abrs_flash_notices( $message, $level );
 }
 
 /**

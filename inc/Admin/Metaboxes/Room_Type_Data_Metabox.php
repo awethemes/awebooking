@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
@@ -121,7 +122,7 @@ class Room_Type_Data_Metabox extends Metabox {
 
 		// Add successfully notice.
 		if ( $saved ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+			abrs_flash_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 

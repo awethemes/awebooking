@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Gateway;
 
 use AweBooking\Model\Booking;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Reservation;
 
 use AweBooking\Support\Collection;
@@ -217,7 +218,7 @@ class Reservation {
 		$this->current_request = $current_request;
 
 		if ( $hotel = $current_request->get_hotel() ) {
-			$this->hotel = $hotel->get_id();
+			$this->hotel = $hotel;
 		}
 
 		if ( $this->maybe_flush() ) {

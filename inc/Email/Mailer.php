@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Email;
 
 use AweBooking\Model\Booking;

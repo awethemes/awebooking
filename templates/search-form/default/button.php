@@ -7,7 +7,7 @@
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
- * @version  3.1.0
+ * @version  3.2.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,8 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div tabindex="0" class="searchbox__box searchbox__box--button">
-	<div class="searchbox__box-wrap">
-		<button type="submit" class="button button--search searchbox__submit"><?php esc_html_e( 'Search', 'awebooking' ); ?></button>
-	</div>
-</div>
+<button type="submit" class="button button--primary searchbox__submit">
+	<?php esc_html_e( 'Check Availability', 'awebooking' ); ?>
+</button>

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Event;
 
 trait With_Only_Days {

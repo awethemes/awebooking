@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* @var \AweBooking\Availability\Room_Rate $room_rate */
 
 $rooms_left = $room_rate->get_remain_rooms()->count();
+
 ?>
 
 <div class="roommaster-button roommaster-box">

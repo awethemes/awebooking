@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Support;
 
 use League\Period\Period as League_Period;

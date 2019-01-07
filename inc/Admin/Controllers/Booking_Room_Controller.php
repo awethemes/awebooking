@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
@@ -141,7 +142,7 @@ class Booking_Room_Controller extends Controller {
 					$to_timespan = abrs_timespan( $request->get( 'change_check_in' ), $request->get( 'change_check_out' ), 1 );
 
 					if ( is_wp_error( $to_timespan ) ) {
-						abrs_admin_notices( $to_timespan->get_error_message(), 'error' );
+						abrs_flash_notices( $to_timespan->get_error_message(), 'error' );
 						return $this->redirect()->back( $redirect_fallback );
 					}
 
@@ -149,7 +150,7 @@ class Booking_Room_Controller extends Controller {
 					$changed = $room_item->change_timespan( $to_timespan );
 
 					if ( is_wp_error( $changed ) ) {
-						abrs_admin_notices( $changed->get_error_message(), 'error' );
+						abrs_flash_notices( $changed->get_error_message(), 'error' );
 						return $this->redirect()->back( $redirect_fallback );
 					}
 				}
@@ -183,7 +184,7 @@ class Booking_Room_Controller extends Controller {
 
 		abrs_delete_booking_item( $room_item );
 
-		abrs_admin_notices( esc_html__( 'The booking room has been destroyed', 'awebooking' ), 'info' )->dialog();
+		abrs_flash_notices( esc_html__( 'The booking room has been destroyed', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $room_item->get( 'booking_id' ), 'raw' ) );
 	}

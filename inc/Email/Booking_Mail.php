@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Email;
 
 abstract class Booking_Mail extends Mailable {

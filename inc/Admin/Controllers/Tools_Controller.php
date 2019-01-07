@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WPLibs\Http\Request;
@@ -40,7 +41,7 @@ class Tools_Controller extends Controller {
 			$response = Tools::run( $request->task );
 
 			if ( ! is_wp_error( $response ) && isset( $response->message ) ) {
-				abrs_admin_notices( $response->message, 'info' );
+				abrs_flash_notices( $response->message, 'info' );
 			}
 		}
 

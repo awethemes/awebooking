@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
@@ -118,7 +119,7 @@ class Booking_Service_Controller extends Controller {
 
 		abrs_delete_booking_item( $service_item );
 
-		abrs_admin_notices( esc_html__( 'The service has been destroyed!', 'awebooking' ), 'info' )->dialog();
+		abrs_flash_notices( esc_html__( 'The service has been destroyed!', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $service_item['booking_id'], 'raw' ) );
 	}

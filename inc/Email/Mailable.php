@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Email;
 
 use Pelago\Emogrifier;

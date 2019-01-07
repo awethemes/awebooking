@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Concerns;
 
 use AweBooking\Constants;

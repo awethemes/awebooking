@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
@@ -61,7 +62,7 @@ class Service_Data_Metabox extends Metabox {
 		$saved = $service->save();
 
 		if ( $saved ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+			abrs_flash_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 }

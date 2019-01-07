@@ -1,6 +1,8 @@
 <?php
+
 namespace AweBooking\Admin\Providers;
 
+use AweBooking\Admin\Notices;
 use AweBooking\Support\Service_Provider;
 use WPLibs\Session\Flash\Flash_Notifier;
 use WPLibs\Session\Flash\Session_Store;
@@ -12,9 +14,11 @@ class Notices_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function register() {
-		$this->plugin->singleton( 'admin_notices', function() {
+		$this->plugin->singleton( 'flash_notices', function() {
 			return new Flash_Notifier( $this->plugin->make( Session_Store::class ), '_admin_notices' );
 		});
+
+		$this->plugin->alias( 'flash_notices', 'admin_notices' );
 	}
 
 	/**
@@ -23,6 +27,9 @@ class Notices_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
+		// Init the core notices.
+		Notices::init();
+
 		add_action( 'admin_notices', [ $this, 'display_flash_notices' ] );
 		// add_action( 'admin_notices', [ $this, 'notice_objects_with_no_lang' ] );
 	}
@@ -35,10 +42,10 @@ class Notices_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function display_flash_notices() {
-		$messages = $this->plugin['admin_notices']->all();
+		$messages = $this->plugin['flash_notices']->all();
 
 		if ( $messages && $messages->isNotEmpty() ) {
-			include dirname( __DIR__ ) . '/views/admin-notices.php';
+			include dirname( __DIR__ ) . '/views/notices/html-flash-notices.php';
 		}
 	}
 

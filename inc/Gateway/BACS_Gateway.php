@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Gateway;
 
 use WPLibs\Http\Request;

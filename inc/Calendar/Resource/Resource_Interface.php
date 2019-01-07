@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Resource;
 
 interface Resource_Interface {
