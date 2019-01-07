@@ -1,0 +1,100 @@
+// Core template Layout.
+.searchbox,
+.searchbox__wrap,
+.searchbox__box,
+.searchbox__box-wrap,
+.searchbox__box-icon,
+.searchbox__box-child {
+  box-sizing: border-box;
+}
+
+.searchbox {
+  .searchbox__input {
+    margin: 0;
+
+    &[readonly] {
+      background-color: #fff;
+    }
+  }
+
+  .searchbox__submit:focus {
+    outline: 0;
+  }
+}
+
+// Vertical layout.
+.searchbox--vertical {
+  .searchbox__box {
+    margin-bottom: 0.5em;
+  }
+
+  .searchbox__box-label {
+    font-size: 0.875em;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+
+  .searchbox__submit {
+    width: 100%;
+    display: block;
+  }
+}
+
+// Horizontal layout.
+.searchbox--horizontal {
+  .searchbox__wrap {
+    padding: 1em;
+    border-radius: 6px;
+    border: solid 1px #dae1e7;
+    box-shadow: 1px 4px 16px rgba(0,0,0,0.1);
+    margin-left: -0.5em;
+    margin-right: -0.5em;
+  }
+
+  .searchbox__wrap > .searchbox__box,
+  .searchbox__wrap > .searchbox__group {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .searchbox__wrap,
+  .searchbox__group-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-end;
+
+    width: 100%;
+    min-height: 1px;
+    position: relative;
+    backface-visibility: hidden;
+  }
+
+  .searchbox__wrap > .searchbox__box,
+  .searchbox__wrap > .searchbox__group {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  .searchbox__group--dates > .searchbox__group-wrap > .searchbox__box {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .searchbox__box-input {
+    width: 100%;
+    display: block;
+  }
+
+  .searchbox__input--adults,
+  .searchbox__input--children,
+  .searchbox__input--infants {
+    max-width: 100px;
+  }
+
+  .searchbox__submit {
+    align-self: flex-end;
+  }
+}

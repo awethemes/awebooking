@@ -9,7 +9,7 @@ const sass         = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer');
 const gcmq         = require('gulp-group-css-media-queries')
 const cleanCSS     = require('gulp-clean-css')
-const rollup       = require('gulp-better-rollup')
+const brollup      = require('gulp-better-rollup')
 const uglify       = require('gulp-uglify')
 const rename       = require('gulp-rename')
 const potgen       = require('gulp-wp-pot')
@@ -24,7 +24,7 @@ const rollupConfig = () => {
   const babel    = require('rollup-plugin-babel')
 
   return {
-    rollup: require('rollup'),
+    // rollup: require('rollup'),
     external: Object.keys(pkg.globals),
     plugins: [
       resolve(),
@@ -62,9 +62,9 @@ gulp.task('scss', () => {
 gulp.task('babel', () => {
   return gulp.src(['assets/babel/*.js', 'assets/babel/admin/*.js'], { base: 'assets/babel' })
     .pipe(debug())
-    .pipe(plumber(handleErrors))
+    .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(rollup(rollupConfig(), {
+    .pipe(brollup(rollupConfig(), {
       format: 'iife',
       globals: pkg.globals || {}
     }))

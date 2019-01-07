@@ -76,7 +76,7 @@
     "moment": "^2.23.0",
     "query-string": "^6.2.0",
     "selectize": "^0.12.6",
-    "sortablejs": "^1.8.0-rc1",
+    "sortablejs": "^1.7.0",
     "sweetalert2": "^7.33.1",
     "tippy.js": "^3.3.0",
     "waypoints": "^4.0.1"
