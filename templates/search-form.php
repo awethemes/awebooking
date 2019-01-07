@@ -22,8 +22,6 @@ $form_classes = [
 	$atts['container_class'] ? $atts['container_class'] : '',
 ];
 
-$action = abrs_get_page_permalink( 'search_results' );
-
 ?>
 
 <form id="<?php echo esc_attr( $search_form->id() ); ?>" action="<?php echo esc_url( $search_form->action() ); ?>" method="GET" role="search">

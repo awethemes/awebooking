@@ -2,7 +2,7 @@
 
 namespace AweBooking\Frontend\Search;
 
-use WPLibs\Form\Html_Form;
+use WPLibs\Form\Helper\Html_Form;
 use AweBooking\Availability\Search\Search_Form as Form;
 
 class Search_Form extends Form {
@@ -33,7 +33,7 @@ class Search_Form extends Form {
 	 * @param array $atts
 	 */
 	public function __construct( $atts = [] ) {
-		$this->builder = new Form_Builder;
+		$this->builder = new Html_Form;
 		$this->atts = $atts;
 	}
 

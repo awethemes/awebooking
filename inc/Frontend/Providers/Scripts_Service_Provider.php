@@ -33,7 +33,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking-iconfont', abrs_asset_url( 'fonts/awebooking-webfont.css' ), [], $version );
 		wp_register_style( 'awebooking-colour', abrs_asset_url( 'css/awebooking-colour.css' ), [ 'awebooking-iconfont', 'awebooking' ], $version );
 		wp_register_script( 'awebooking', abrs_asset_url( 'js/awebooking' . $suffix . '.js' ), [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
-		wp_register_script( 'awebooking-search-form', abrs_asset_url( 'js/search-form' . $suffix . '.js' ), [ 'awebooking', 'knockout', 'jquery-spinner' ], $version, true );
+		wp_register_script( 'awebooking-search-form', abrs_asset_url( 'js/search-form' . $suffix . '.js' ), [ 'awebooking', 'hotel-datepicker', 'knockout', 'jquery-spinner' ], $version, true );
 		wp_register_script( 'awebooking-checkout', abrs_asset_url( 'js/checkout' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
 	}
 
