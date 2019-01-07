@@ -33,27 +33,9 @@ class Start_Session {
 	public function bootstrap() {
 		$this->register_session_binding();
 
-		$this->start_session();
-
 		$this->register_flash_binding();
-	}
 
-	/**
-	 * Start the session.
-	 *
-	 * @return void
-	 */
-	protected function start_session() {
-		if ( defined( 'DOING_CRON' ) ) {
-			return;
-		}
-
-		// Start the session.
 		$this->plugin->make( 'session' )->hooks();
-
-		if ( did_action( 'plugins_loaded' ) ) {
-			$this->plugin['session']->start_session();
-		}
 	}
 
 	/**

@@ -266,7 +266,7 @@ trait With_Room_Stays {
 			throw new RoomRateException( esc_html__( 'Sorry, the room is not available. Please try another room.', 'awebooking' ) );
 		}
 
-		if ( $room_rate->is_visible() ) {
+		if ( ! $room_rate->is_visible() ) {
 			throw new RoomRateException( esc_html__( 'Sorry, some kind of error has occurred. Please try again.', 'awebooking' ) );
 		}
 
