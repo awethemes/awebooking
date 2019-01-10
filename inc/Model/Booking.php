@@ -240,9 +240,11 @@ class Booking extends Model {
 			$fee_total += $fee->get( 'amount' );
 		}
 
-		$this->set_attribute( 'tax_total', $this->get_rooms()->sum( 'total_tax' ) );
+		$this->set_attribute( 'subtotal', $room_subtotal + $service_total + $fee_total );
 		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
-		$this->set_attribute( 'total', $room_total + $service_total + $fee_total );
+		$this->set_attribute( 'total', $this->get( 'subtotal' ) - $this->get( 'discount_total' ) );
+
+		$this->set_attribute( 'tax_total', $this->get_rooms()->sum( 'total_tax' ) );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );
@@ -524,6 +526,7 @@ class Booking extends Model {
 			'total_tax'               => 0,
 			'discount_total'          => 0,
 			'total'                   => 0,
+			'subtotal'                => 0,
 			'paid'                    => 0,
 			'balance_due'             => 0,
 			'customer_id'             => 0,
@@ -562,6 +565,7 @@ class Booking extends Model {
 			'discount_total'          => '_discount_total',
 			'discount_tax'            => '_discount_tax',
 			'total'                   => '_total',
+			'subtotal'                => '_subtotal',
 			'total_tax'               => '_total_tax',
 			'paid'                    => '_paid',
 			'balance_due'             => '_balance_due',

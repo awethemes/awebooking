@@ -47,6 +47,15 @@ class Totals {
 	}
 
 	/**
+	 * //
+	 *
+	 * @return \AweBooking\Reservation\Reservation
+	 */
+	public function get_reservation() {
+		return $this->reservation;
+	}
+
+	/**
 	 * Gets a line total.
 	 *
 	 * @param  string $key Total to get.

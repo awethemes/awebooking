@@ -20,6 +20,8 @@
 	<div class="booking-section booking-section--totals abrs-clearfix">
 		<table class="awebooking-table abrs-booking-totals">
 			<tbody>
+				<?php do_action( 'abrs_before_booking_total', $the_booking ); ?>
+
 				<tr>
 					<th><?php echo esc_html__( 'Total:', 'awebooking' ); ?></th>
 					<td><?php abrs_price( $the_booking->get( 'total' ), $the_booking->get( 'currency' ) ); ?></td>
@@ -48,6 +50,8 @@
 			<a class="button abrs-button" href="<?php echo esc_url( abrs_admin_route( '/booking-service', [ 'refer' => $the_booking->get_id() ] ) ); ?>">
 				<span><?php esc_html_e( 'Add service', 'awebooking' ); ?></span>
 			</a>
+		
+			<?php do_action( 'abrs_booking_room_buttons' ); ?>
 
 			<button class="button abrs-button abrs-fright" name="awebooking-calculate-totals" type="submit">
 				<span><?php esc_html_e( 'Recalculate', 'awebooking' ); ?></span>
