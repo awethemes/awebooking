@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.0
 Requires PHP:      5.6
-Stable tag:        3.1.20
+Stable tag:        3.1.21
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,10 @@ In v3.1 we perform major upgrade.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.1.21] - [2019-01-10]
+- Fixed: Missing `wp_reset_postdata` after call the WP_Query that confusing to Elementor.
+- Fixed: Calculate booking costs.
+
 ### [v3.1.20] - [2018-12-24]
 - Merry Christmas!
 - Correct some warning in PHP 7.3
