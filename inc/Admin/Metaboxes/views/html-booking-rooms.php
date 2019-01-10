@@ -124,7 +124,7 @@ $room_items = $the_booking->get_rooms();
 
 					<?php endif; ?>
 
-					<?php abrs_price( $item->get( 'total' ), $the_booking->get( 'currency' ) ); ?>
+					<?php abrs_price( $item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
 					<br>
 					<?php esc_html_e( 'TAX:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'total_tax' ) ); ?>
 				</td>
