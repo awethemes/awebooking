@@ -1,21 +1,20 @@
 .checkout-services {
 	border: 1px solid $gray-200;
-	border-radius: 6px;
+	border-radius: 1px;
 	margin-bottom: 20px;
 
 	&__header {
-		font-size: 1.5rem;
-		padding: .8rem;
+		font-size: 1.5em;
+		padding: .8em;
 		margin: 0;
 	}
 }
 
 .checkout-service {
 	border-top: 1px solid $gray-200;
-	padding: 1.2rem;
+	padding: 1.2em;
 
 	&__media {
-		border-radius: .4rem;
 		overflow: hidden;
 
 		img {
@@ -25,19 +24,19 @@
 	}
 
 	&__title {
-		font-size: 1.2rem;
+		font-size: 1.2em;
 		text-transform: capitalize;
 		margin-top: 0;
-		margin-bottom: .5rem;
+		margin-bottom: .5em;
 	}
 
 	&__description {
-		margin-bottom: .5rem;
-    font-size: .8rem;
+		margin-bottom: .5em;
+    font-size: .8em;
 	}
 
 	&__operation {
-		font-size: .8rem;
+		font-size: .8em;
 		color: $red;
 	}
 
@@ -46,12 +45,12 @@
 
 		.awebooking-price {
 			display: block;
-			font-size: 2rem;
+			font-size: 2em;
 			line-height: 1;
 			color: $dark;
 
 			&__symbol {
-				font-size: 1rem;
+				font-size: 1em;
 			}
 		}
 

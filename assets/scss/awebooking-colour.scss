@@ -1,8 +1,5 @@
 // Keywords: .disabled, .focus, .hover, .open
-// Default line-height: 1.25
-
 $primary-color:    #f2f5f7;
-
 $base-color:       #3d4852;
 $border-color:     #dae1e7;
 $background-color: #f2f5f7;
@@ -10,13 +7,28 @@ $background-color: #f2f5f7;
 // Import mixins, functions, etc.
 @import "utils/mixins";
 
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.awebooking-container {
+  margin: auto;
+  max-width: 1140px;
+}
+
 /* Font-size base */
 .awebooking-block {
   font-size: 1rem;
+  //font-size: inherit;
+
+  form {
+    margin-bottom: 0;
+  }
 }
 
 // Import components under `.awebooking-block` namespace
-.awebooking-block {
+.awebooking-block,
+.awebooking-page {
   @import "shine/reset";
   @import "shine/form";
   @import "shine/button";
@@ -25,10 +37,22 @@ $background-color: #f2f5f7;
   @import "shine/card";
   @import "shine/datepicker";
   @import "shine/searchbox";
+
+  @import "shine/searchbox";
+
+  @import "frontend/elements/notices";
 }
 
-.awebooking-container {
-  margin: auto;
-  max-width: 1140px;
-}
+@import "frontend/layout";
 
+@import "frontend/datepicker";
+@import "frontend/filterbox";
+@import "frontend/roommaster";
+@import "frontend/elements/dialog";
+@import "frontend/elements/checkout";
+@import "frontend/elements/reservation-details";
+@import "frontend/elements/_checkout-services";
+@import "frontend/search-page";
+@import "frontend/list-rooms";
+@import "frontend/single-room";
+@import "frontend/list-hotels";

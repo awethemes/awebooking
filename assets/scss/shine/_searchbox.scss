@@ -8,6 +8,7 @@
   box-sizing: border-box;
 }
 
+// Input and Button need to wrap in the .searchbox
 .searchbox {
   .searchbox__input {
     margin: 0;
@@ -22,17 +23,20 @@
   }
 }
 
+.searchbox__box-label {
+  font-size: 0.875em;
+  font-weight: 600;
+  display: block;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
 // Vertical layout.
 .searchbox--vertical {
-  .searchbox__box {
-    margin-bottom: 0.5em;
-  }
-
-  .searchbox__box-label {
-    font-size: 0.875em;
-    font-weight: 600;
-    display: inline-block;
-    text-transform: uppercase;
+  .searchbox__wrap > .searchbox__box,
+  .searchbox__wrap > .searchbox__group {
+    margin-bottom: 1em;
   }
 
   .searchbox__submit {
@@ -44,18 +48,15 @@
 // Horizontal layout.
 .searchbox--horizontal {
   .searchbox__wrap {
-    padding: 1em;
-    border-radius: 6px;
+    border-radius: 1px;
     border: solid 1px #dae1e7;
-    box-shadow: 1px 4px 16px rgba(0,0,0,0.1);
-    margin-left: -0.5em;
-    margin-right: -0.5em;
+    box-shadow: 0 1px 1px rgba(0,0,0,.075);
+    background-color: #fff;
   }
 
   .searchbox__wrap > .searchbox__box,
   .searchbox__wrap > .searchbox__group {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    padding: 0.75em 0.75em 0;
   }
 
   .searchbox__wrap,
@@ -73,28 +74,38 @@
   }
 
   .searchbox__wrap > .searchbox__box,
-  .searchbox__wrap > .searchbox__group {
+  .searchbox__wrap > .searchbox__group,
+  .searchbox__group-wrap .searchbox__box {
     flex-grow: 1;
     flex-basis: 0;
   }
 
-  .searchbox__group--dates > .searchbox__group-wrap > .searchbox__box {
-    flex: 0 0 50%;
-    max-width: 50%;
+  .searchbox__box-label {
+    color: #9e9e9e;
   }
 
-  .searchbox__box-input {
+  .searchbox__input {
+    color: inherit;
     width: 100%;
     display: block;
-  }
 
-  .searchbox__input--adults,
-  .searchbox__input--children,
-  .searchbox__input--infants {
-    max-width: 100px;
+    padding: 0 0 0.75em 0;
+    height: auto;
+    box-shadow: none;
+    border: none;
+    background-color: transparent !important;
+
+    &:focus {
+      box-shadow: 0 2px 0 0 #333 !important;
+    }
   }
 
   .searchbox__submit {
-    align-self: flex-end;
+    align-self: center;
+    margin-right: 0.75em;
   }
+}
+
+.DayPickerPopper {
+  z-index: 10001;
 }

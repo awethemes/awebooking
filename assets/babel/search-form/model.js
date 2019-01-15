@@ -1,20 +1,21 @@
-import plugin from 'awebooking'
+const plugin = window.awebooking
 
 const SearchModel = (($) => {
-  'use strict';
+  'use strict'
 
   function formatDate(date, format) {
-    const _date = plugin.utils.dates.parse(date, 'Y-m-d');
+    const _date = plugin.utils.dates.parse(date, 'Y-m-d')
 
     if (!_date) {
-      return '';
+      return ''
     }
 
-    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat);
+    return plugin.utils.dates.format(_date, format || plugin.i18n.dateFormat)
   }
 
   class Model {
     constructor(data = {}) {
+      this.hotel = ko.observable(data.adults || 0)
       this.adults = ko.observable(data.adults || 1)
       this.children = ko.observable(data.children || 0)
       this.infants = ko.observable(data.infants || 0)
@@ -28,6 +29,9 @@ const SearchModel = (($) => {
       this.checkOutDate = ko.computed(() => {
         return formatDate(this.checkOut(), 'Y-m-d')
       })
+
+      this.checkInFormatted = ko.computed(this.checkInFormatted.bind(this))
+      this.checkOutFormatted = ko.computed(this.checkOutFormatted.bind(this))
     }
 
     checkInFormatted(format) {
@@ -39,7 +43,7 @@ const SearchModel = (($) => {
     }
   }
 
-  return Model;
-})(jQuery);
+  return Model
+})(jQuery)
 
 export default SearchModel

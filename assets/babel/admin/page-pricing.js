@@ -1,5 +1,6 @@
-import $ from 'jquery';
-import plugin from 'awebooking';
+import $ from 'jquery'
+
+const plugin = window.awebooking
 
 const DATE_FORMAT  = 'YYYY-MM-DD';
 

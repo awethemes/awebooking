@@ -138,7 +138,7 @@ $searchbox-box--border:      200px !default;
 .searchbox--horizontal {
   .searchbox__wrap {
     padding: 0;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: transparent;
 
     flex-wrap: wrap;
@@ -155,7 +155,7 @@ $searchbox-box--border:      200px !default;
   }
 
   .searchbox__box {
-    padding: .3rem;
+    padding: .3em;
     margin: 0 0 12px;
     background-color: $searchbox-bg-color;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
@@ -193,7 +193,7 @@ $searchbox-box--border:      200px !default;
     }
 
     .searchbox-occupancy-info {
-      font-size: 1rem;
+      font-size: 1em;
     }
   }
 
@@ -215,13 +215,13 @@ $searchbox-box--border:      200px !default;
     }
 
     .searchbox-occupancy-info {
-      font-size: 0.75rem;
+      font-size: 0.75em;
     }
 
     .searchbox__wrap {
       align-items: center;
       background-color: $searchbox-bg-color;
-      padding: .3rem;
+      padding: .3em;
       box-shadow: 0 1px 4px 0 rgba(black, .08);
     }
 
@@ -281,7 +281,7 @@ $searchbox-box--border:      200px !default;
 
   .searchbox__box-wrap {
     margin: 0 5px 0 0;
-    padding: .3rem;
+    padding: .3em;
     background-color: #fff;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
   }
@@ -340,7 +340,7 @@ $searchbox-box--border:      200px !default;
     }
 
     .searchbox-occupancy-info {
-      font-size: 1rem;
+      font-size: 1em;
     }
   }
 
@@ -362,7 +362,7 @@ $searchbox-box--border:      200px !default;
     }
 
     .searchbox-occupancy-info {
-      font-size: 0.75rem;
+      font-size: 0.75em;
     }
   }
 

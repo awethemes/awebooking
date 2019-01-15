@@ -1,6 +1,5 @@
 import ko from 'ko'
 import $ from 'jquery'
-import plugin from 'awebooking'
 import SearchFormModel from './model'
 
 class SearchForm {
@@ -24,8 +23,8 @@ class SearchForm {
       $rangepicker = $('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
     }
 
-    const fp = plugin.datepicker($rangepicker[0], {
-      mode: 'range',
+    /*const fp = plugin.datepicker($rangepicker[0], {
+      mode: 'range',a
       altInput: false,
       clickOpens: false,
       closeOnSelect: true,
@@ -60,7 +59,7 @@ class SearchForm {
 
       fp.isOpen = false;
       fp.open(undefined, e.currentTarget);
-    });
+    });*/
 
     $('.searchbox__box', this.$el).each((i, box) => {
       $(box).data('popup', this.setuptPopper(box));
