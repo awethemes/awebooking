@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Reservation\Traits;
 
 use WP_Error;

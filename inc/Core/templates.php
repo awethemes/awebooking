@@ -1,5 +1,7 @@
 <?php
 
+use AweBooking\Frontend\Search\Search_Form;
+
 /**
  * Returns the search form default attributes.
  *
@@ -58,9 +60,9 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 		$res_request = null;
 	}
 
-	$template = $atts['template'] ? "search-form-{$atts['template']}.php" : 'search-form.php';
+	$search_form = new Search_Form( $atts );
 
-	$form = abrs_get_template_content( $template, compact( 'atts', 'res_request' ) );
+	$result = $res_request->display( $search_form );
 
 	/**
 	 * Filters the HTML output of the search form.
@@ -68,9 +70,7 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	 * @param string $form The search form HTML output.
 	 * @param array  $atts The form attributes.
 	 */
-	$result = apply_filters( 'abrs_get_search_form', $form, $atts );
-
-	$instance++;
+	$result = apply_filters( 'abrs_get_search_form', $result, $atts );
 
 	if ( $echo ) {
 		echo $result; // WPCS: XSS OK.

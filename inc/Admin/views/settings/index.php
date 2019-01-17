@@ -3,7 +3,7 @@
  * Display the main setting layout.
  *
  * @var \AweBooking\Admin\Admin_Settings $settings
- * @var \Awethemes\Http\Request          $request
+ * @var \WPLibs\Http\Request          $request
  *
  * @package AweBooking
  */

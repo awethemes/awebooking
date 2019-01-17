@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar;
 
 use AweBooking\Support\Period;

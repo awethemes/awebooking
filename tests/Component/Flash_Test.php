@@ -1,6 +1,6 @@
 <?php
 
-use AweBooking\Component\Flash\Flash_Notifier;
+use WPLibs\Session\Flash\Flash_Notifier;
 use AweBooking\Component\Flash\WP_Sesstion_Store;
 
 class Support_Flash_Test extends WP_UnitTestCase {

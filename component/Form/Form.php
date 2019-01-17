@@ -1,7 +1,7 @@
 <?php
 namespace AweBooking\Component\Form;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
 
@@ -84,49 +84,13 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	/**
 	 * Get sanitized values from an HTTP request.
 	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @param  \WPLibs\Http\Request $request The request instance.
 	 * @return \AweBooking\Support\Fluent
 	 */
 	public function handle( Request $request ) {
 		return new Fluent(
 			$this->get_sanitized_values( $request->all() )
 		);
-	}
-
-	public function init_js_binding() {
-		foreach ( $this as $field ) {
-			$field->set_attribute( 'data-bind', 'value: data.' . $field->prop( 'id' ) );
-		}
-
-		// Gets all fields values.
-		$values = abrs_collect( $this->getIterator() )
-			->mapWithKeys( function ( Field_Proxy $f ) {
-				return [ $f->get_prop( 'id' ) => $f->get_value() ];
-			});
-
-		?>
-
-		The name is <span data-bind="text: data.amount"></span>
-
-		<script>
-		(function ($, ko) {
-			'use strict';
-			var root  = void 0;
-			var _data = <?php echo wp_json_encode( $values ); ?>;
-
-			function FormBuilderModel(data)  {
-				this.data = {};
-
-				$.each(data, function (name, val) {
-					this.data[name] = ko.observable(val);
-				}.bind(this));
-			}
-
-			$(document).ready(function () {
-				ko.applyBindings(new FormBuilderModel(_data), root);
-			});
-		})(jQuery, window.ko)
-		</script><?php
 	}
 
 	/**

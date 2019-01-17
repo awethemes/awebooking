@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Finder;
 
 interface Constraint {

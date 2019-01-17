@@ -1,7 +1,8 @@
 <?php
+
 namespace AweBooking\Gateway;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Booking;
 
 class Direct_Payment_Gateway extends Gateway {

@@ -2,27 +2,27 @@ import debounce from 'debounce'
 import isMobile from 'is-mobile'
 import * as queryString from 'query-string'
 
-const Utils = (function($) {
+const Utils = (function ($) {
   function getTransitionEndEvent() {
-    let transitionEndEvent = '';
+    let transitionEndEvent = ''
 
     const transitionEndEvents = {
-      'WebkitTransition' : 'webkitTransitionEnd',
-      'MozTransition'    : 'transitionend',
-      'OTransition'      : 'otransitionend',
-      'transition'       : 'transitionend'
-    };
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend',
+      'transition': 'transitionend'
+    }
 
     for (let name in transitionEndEvents) {
       if ({}.hasOwnProperty.call(transitionEndEvents, name)) {
-        let tempEl = document.createElement('p');
+        let tempEl = document.createElement('p')
         if (typeof tempEl.style[name] !== 'undefined') {
-          transitionEndEvent = transitionEndEvents[name];
+          transitionEndEvent = transitionEndEvents[name]
         }
       }
     }
 
-    return transitionEndEvent;
+    return transitionEndEvent
   }
 
   return {
@@ -48,35 +48,35 @@ const Utils = (function($) {
 
     getTransitionDurationFromElement(element) {
       if (!element) {
-        return 0;
+        return 0
       }
 
       // Get transition-duration of the element.
-      let transitionDuration = $(element).css('transition-duration');
-      const floatTransitionDuration = parseFloat(transitionDuration);
+      let transitionDuration = $(element).css('transition-duration')
+      const floatTransitionDuration = parseFloat(transitionDuration)
 
       // Return 0 if element or transition duration is not found.
       if (!floatTransitionDuration) {
-        return 0;
+        return 0
       }
 
       // If multiple durations are defined, take the first.
-      transitionDuration = transitionDuration.split(',')[0];
+      transitionDuration = transitionDuration.split(',')[0]
 
-      return parseFloat(transitionDuration) * 1000;
+      return parseFloat(transitionDuration) * 1000
     },
 
     getTargetFromElement(element) {
-      let selector = element.getAttribute('data-target');
+      let selector = element.getAttribute('data-target')
 
       if (!selector || selector === '#') {
-        selector = element.getAttribute('href') || '';
+        selector = element.getAttribute('href') || ''
       }
 
       try {
-        return document.querySelector(selector) ? selector : null;
+        return document.querySelector(selector) ? selector : null
       } catch (err) {
-        return null;
+        return null
       }
     },
   }

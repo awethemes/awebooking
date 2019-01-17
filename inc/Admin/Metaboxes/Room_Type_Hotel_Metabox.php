@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Metabox;
 
 class Room_Type_Hotel_Metabox extends Metabox {
@@ -51,7 +52,7 @@ class Room_Type_Hotel_Metabox extends Metabox {
 	 * Handle save the the metabox.
 	 *
 	 * @param \WP_Post                $post    The WP_Post object instance.
-	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
 		$room_type = abrs_get_room_type( $post->ID );

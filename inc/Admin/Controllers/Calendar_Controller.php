@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Calendar\Booking_Scheduler;
 
 class Calendar_Controller extends Controller {
@@ -16,7 +17,7 @@ class Calendar_Controller extends Controller {
 	/**
 	 * Show the booking scheduler.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function index( Request $request ) {
@@ -30,7 +31,7 @@ class Calendar_Controller extends Controller {
 	/**
 	 * Update state.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function update( Request $request ) {
@@ -65,7 +66,7 @@ class Calendar_Controller extends Controller {
 	/**
 	 * Bulk update state.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function bulk_update( Request $request ) {

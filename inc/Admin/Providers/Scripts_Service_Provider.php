@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Providers;
 
 use CMB2_hookup;
@@ -12,7 +13,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	 * @access private
 	 */
 	public function init() {
-		add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ], 9 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 		add_action( 'admin_enqueue_scripts', 'abrs_localize_flatpickr', 1000 );
 	}

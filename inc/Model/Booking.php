@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model;
 
 use AweBooking\Constants;

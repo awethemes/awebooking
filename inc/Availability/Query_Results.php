@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability;
 
 class Query_Results implements \Countable, \IteratorAggregate {

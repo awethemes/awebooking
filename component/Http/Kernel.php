@@ -1,9 +1,9 @@
 <?php
+
 namespace AweBooking\Component\Http;
 
 use AweBooking\Plugin;
-use Awethemes\Http\Kernel as Http_Kernel;
-use Awethemes\Http\Resolver\Container_Resolver;
+use AweBooking\Component\Http\Resolver\Container_Resolver;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class Kernel extends Http_Kernel {

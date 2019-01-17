@@ -1,11 +1,13 @@
 <?php
+
 namespace AweBooking\Core\Bootstrap;
 
 use AweBooking\Plugin;
-use Awethemes\WP_Session\WP_Session;
-use AweBooking\Component\Flash\Session_Store;
-use AweBooking\Component\Flash\WP_Sesstion_Store;
-use AweBooking\Component\Flash\Flash_Notifier;
+use WPLibs\Session\Store;
+use WPLibs\Session\WP_Session;
+use WPLibs\Session\Flash\Session_Store;
+use WPLibs\Session\Flash\WP_Sesstion_Store;
+use WPLibs\Session\Flash\Flash_Notifier;
 
 class Start_Session {
 	/**
@@ -32,27 +34,9 @@ class Start_Session {
 	public function bootstrap() {
 		$this->register_session_binding();
 
-		$this->start_session();
-
 		$this->register_flash_binding();
-	}
 
-	/**
-	 * Start the session.
-	 *
-	 * @return void
-	 */
-	protected function start_session() {
-		if ( defined( 'DOING_CRON' ) ) {
-			return;
-		}
-
-		// Start the session.
 		$this->plugin->make( 'session' )->hooks();
-
-		if ( did_action( 'plugins_loaded' ) ) {
-			$this->plugin['session']->start_session();
-		}
 	}
 
 	/**
@@ -73,6 +57,7 @@ class Start_Session {
 		});
 
 		$this->plugin->alias( 'session', WP_Session::class );
+		$this->plugin->alias( 'session.store', Store::class );
 	}
 
 	/**
@@ -85,6 +70,6 @@ class Start_Session {
 
 		$this->plugin->singleton( 'flash', function () {
 			return new Flash_Notifier( $this->plugin->make( Session_Store::class ) );
-		});
+		} );
 	}
 }

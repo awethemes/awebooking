@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Provider\Stores;
 
 use DateTime;

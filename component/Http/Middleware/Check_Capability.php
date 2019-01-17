@@ -3,14 +3,14 @@
 namespace AweBooking\Component\Http\Middleware;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
-use Awethemes\Http\Exception\AccessDeniedHttpException;
+use WPLibs\Http\Request;
+use WPLibs\Http\Exception\AccessDeniedHttpException;
 
 class Check_Capability {
 	/**
 	 * Handle the incoming request.
 	 *
-	 * @param \Awethemes\Http\Request $request The request instance.
+	 * @param \WPLibs\Http\Request $request The request instance.
 	 * @param \Closure                $next    Next.
 	 *
 	 * @return \Closure

@@ -1,51 +1,52 @@
-$blue:    #007bff;
-$indigo:  #6610f2;
-$purple:  #6f42c1;
-$pink:    #e83e8c;
-$red:     #f44336;
-$orange:  #fd7e14;
-$yellow:  #ffc107;
-$green:   #28a745;
-$teal:    #20c997;
-$cyan:    #17a2b8;
+// Keywords: .disabled, .focus, .hover, .open
+$primary-color:    #f2f5f7;
+$base-color:       #3d4852;
+$border-color:     #dae1e7;
+$background-color: #f2f5f7;
 
-$primary:                     #5392F9;
-$border-radius:               2px;
-$border-radius-lg:            2px;
-$border-radius-sm:            0;
-
-$link-hover-decoration:     none;
-
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+// Import mixins, functions, etc.
 @import "utils/mixins";
 
-.awebooking-popup-theme {
-  color: inherit;
-  background-color: #fff;
-  box-shadow: 1px 3px 25px rgba($black, .08);
-}
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 
 .awebooking-container {
-  @include make-container-max-widths;
+  margin: auto;
+  max-width: 1140px;
 }
 
-.awebooking-main {
-  padding: 1.75rem 0;
-}
-
-.awebooking,
+/* Font-size base */
 .awebooking-block {
-  @import "frontend/elements/form";
-  @import "frontend/elements/button";
+  font-size: 1rem;
+  //font-size: inherit;
+
+  form {
+    margin-bottom: 0;
+  }
+}
+
+// Import components under `.awebooking-block` namespace
+.awebooking-block,
+.awebooking-page {
+  @import "shine/reset";
+  @import "shine/form";
+  @import "shine/button";
+  @import "shine/table";
+
+  @import "shine/card";
+  @import "shine/datepicker";
+  @import "shine/searchbox";
+
+  @import "shine/searchbox";
+
   @import "frontend/elements/notices";
 }
 
-@import "frontend/datepicker";
-@import "frontend/searchbox";
-@import "frontend/filterbox";
 @import "frontend/layout";
+
+@import "frontend/datepicker";
+@import "frontend/filterbox";
 @import "frontend/roommaster";
 @import "frontend/elements/dialog";
 @import "frontend/elements/checkout";

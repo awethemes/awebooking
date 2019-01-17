@@ -1,16 +1,17 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
-use Awethemes\Http\Response;
-use Awethemes\Http\Json_Response;
-use Awethemes\Http\Exception\AccessDeniedHttpException;
+use WPLibs\Http\Response;
+use WPLibs\Http\Json_Response;
+use WPLibs\Http\Exception\AccessDeniedHttpException;
 
 abstract class Controller {
 	/**
 	 * Get instance of the Redirector.
 	 *
 	 * @param  string $url Optional URL to redirect.
-	 * @return \AweBooking\Component\Routing\Redirector|\Awethemes\Http\Redirect_Response
+	 * @return \AweBooking\Component\Routing\Redirector|\WPLibs\Http\Redirect_Response
 	 */
 	protected function redirect( $url = null ) {
 		$redirector = awebooking()->make( 'redirector' );
@@ -25,7 +26,7 @@ abstract class Controller {
 	 * @param  array   $vars    The data inject to template.
 	 * @param  integer $status  The response status.
 	 * @param  array   $headers The response headers.
-	 * @return \Awethemes\Http\Response
+	 * @return \WPLibs\Http\Response
 	 */
 	protected function response( $page, $vars = [], $status = 200, $headers = [] ) {
 		$content = abrs_admin_template()->page( $page, $vars );
@@ -40,7 +41,7 @@ abstract class Controller {
 	 * @param  string $message Optional, the messages.
 	 * @param  array  $data    Optional, data send to browser.
 	 * @param  array  $headers Optional, response headers.
-	 * @return \Awethemes\Http\Json_Response
+	 * @return \WPLibs\Http\Json_Response
 	 */
 	protected function response_json( $status = 'success', $message = null, $data = null, $headers = [] ) {
 		return new Json_Response( array_filter( compact( 'status', 'message', 'data' ) ), 'error' === $status ? 400 : 200, $headers );

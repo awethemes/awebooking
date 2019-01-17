@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\List_Tables;
 
 abstract class Abstract_List_Table {

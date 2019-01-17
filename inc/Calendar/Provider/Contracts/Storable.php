@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Provider\Contracts;
 
 use AweBooking\Calendar\Event\Event_Interface;

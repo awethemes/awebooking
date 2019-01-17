@@ -25,6 +25,8 @@ global $abrs_query, $res_request, $abrs_results;
 
 get_header( 'awebooking' );
 
+//include __DIR__ . '/_docs.php';
+
 /**
  * The opening divs for the content.
  *
@@ -37,7 +39,7 @@ do_action( 'abrs_print_notices' );
 
 ?>
 
-<div class="awebooking-page awebooking-page--search">
+<div class="awebooking-block awebooking-page awebooking-page--search">
 	<div class="search-rooms">
 
 		<?php while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine

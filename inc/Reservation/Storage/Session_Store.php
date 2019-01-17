@@ -1,20 +1,21 @@
 <?php
+
 namespace AweBooking\Reservation\Storage;
 
-use Awethemes\WP_Session\Session;
+use WPLibs\Session\Session;
 
 class Session_Store implements Store {
 	/**
 	 * The WP session instance.
 	 *
-	 * @var \Awethemes\WP_Session\Session
+	 * @var \WPLibs\Session\Session
 	 */
 	protected $session;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \Awethemes\WP_Session\Session $session The session store instance.
+	 * @param \WPLibs\Session\Session $session The session store instance.
 	 */
 	public function __construct( Session $session ) {
 		$this->session = $session;

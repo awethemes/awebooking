@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Period;
 
 class Day extends Iterator_Period {

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Provider;
 
 use AweBooking\Support\Carbonate;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Widget;
 
 class Search_Form_Widget extends Widget {

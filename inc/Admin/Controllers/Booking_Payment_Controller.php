@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Admin\Forms\Booking_Payment_Form;
 
@@ -17,7 +18,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Handle create new payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function create( Request $request ) {
@@ -44,7 +45,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Handle store new booking payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -63,9 +64,9 @@ class Booking_Payment_Controller extends Controller {
 		$payment_item->fill( $sanitized->all() );
 
 		if ( $payment_item['amount'] > 0 && $payment_item->save() ) {
-			abrs_admin_notices( esc_html__( 'Added new payment successfully!', 'awebooking' ), 'success' )->dialog();
+			abrs_flash_notices( esc_html__( 'Added new payment successfully!', 'awebooking' ), 'success' )->dialog();
 		} else {
-			abrs_admin_notices( esc_html__( 'Error when add payment', 'awebooking' ), 'error' )->dialog();
+			abrs_flash_notices( esc_html__( 'Error when add payment', 'awebooking' ), 'error' )->dialog();
 		}
 
 		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
@@ -74,7 +75,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Show edit for.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */
@@ -92,7 +93,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Perform update a payment item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */
@@ -111,7 +112,7 @@ class Booking_Payment_Controller extends Controller {
 
 		$payment_item->save();
 
-		abrs_admin_notices( esc_html__( 'Payment item has been updated successfully!', 'awebooking' ), 'success' )->dialog();
+		abrs_flash_notices( esc_html__( 'Payment item has been updated successfully!', 'awebooking' ), 'success' )->dialog();
 
 		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
@@ -119,7 +120,7 @@ class Booking_Payment_Controller extends Controller {
 	/**
 	 * Perform delete a payment item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Payment_Item $payment_item The booking payment item.
 	 * @return mixed
 	 */
@@ -128,7 +129,7 @@ class Booking_Payment_Controller extends Controller {
 
 		abrs_delete_booking_item( $payment_item );
 
-		abrs_admin_notices( esc_html__( 'The payment has been destroyed!', 'awebooking' ), 'info' )->dialog();
+		abrs_flash_notices( esc_html__( 'The payment has been destroyed!', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $payment_item['booking_id'], 'raw' ) );
 	}

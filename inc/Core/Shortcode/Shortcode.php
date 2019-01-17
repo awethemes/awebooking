@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Shortcode;
 
 use Illuminate\Support\Arr;
@@ -82,7 +83,7 @@ abstract class Shortcode {
 	/**
 	 * Output the shortcode.
 	 *
-	 * @param \Awethemes\Http\Request $request Current http request.
+	 * @param \WPLibs\Http\Request $request Current http request.
 	 * @return void
 	 */
 	abstract public function output( $request );
@@ -119,7 +120,7 @@ abstract class Shortcode {
 	/**
 	 * Resolve the http_request.
 	 *
-	 * @return \Awethemes\Http\Request
+	 * @return \WPLibs\Http\Request
 	 */
 	protected function resolve_http_request() {
 		$awebooking = awebooking()->get_instance();

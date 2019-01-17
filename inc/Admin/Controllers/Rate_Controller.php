@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Calendar\Pricing_Scheduler;
 
 class Rate_Controller extends Controller {
@@ -16,8 +17,8 @@ class Rate_Controller extends Controller {
 	/**
 	 * Show the pricing scheduler.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response
 	 */
 	public function index( Request $request ) {
 		$scheduler_class = apply_filters( 'abrs_pricing_scheduler_class', Pricing_Scheduler::class );
@@ -32,7 +33,7 @@ class Rate_Controller extends Controller {
 	/**
 	 * Show room_type rate.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function update( Request $request ) {
@@ -53,9 +54,9 @@ class Rate_Controller extends Controller {
 		]);
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
-			abrs_admin_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
+			abrs_flash_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
 		} elseif ( is_wp_error( $updated ) ) {
-			abrs_admin_notices( $updated->get_error_message(), 'error' )->dialog();
+			abrs_flash_notices( $updated->get_error_message(), 'error' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );
@@ -64,7 +65,7 @@ class Rate_Controller extends Controller {
 	/**
 	 * Bulk update rate.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function bulk_update( Request $request ) {
@@ -97,7 +98,7 @@ class Rate_Controller extends Controller {
 
 		if ( $bulk_counts > 0 ) {
 			/* translators: %s: The rates count */
-			abrs_admin_notices( sprintf( _n( '%s rate updated.', '%s rates updated.', $bulk_counts, 'awebooking' ), $bulk_counts ), 'success' )->dialog();
+			abrs_flash_notices( sprintf( _n( '%s rate updated.', '%s rates updated.', $bulk_counts, 'awebooking' ), $bulk_counts ), 'success' )->dialog();
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/rates' ) );

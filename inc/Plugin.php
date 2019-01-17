@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking;
 
 use Monolog\Logger;
@@ -20,7 +21,7 @@ final class Plugin extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.1.21';
+	const VERSION = '3.2.0-dev';
 
 	/**
 	 * The plugin file path.

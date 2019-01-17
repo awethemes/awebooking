@@ -1,7 +1,8 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Admin_Settings;
 
 class Settings_Controller extends Controller {
@@ -26,8 +27,8 @@ class Settings_Controller extends Controller {
 	/**
 	 * Display the settings.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response
 	 */
 	public function index( Request $request ) {
 		$settings = $this->admin_settings;
@@ -38,8 +39,8 @@ class Settings_Controller extends Controller {
 	/**
 	 * Handle store the settings.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response|mixed
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response|mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'awebooking-settings', '_wpnonce' );

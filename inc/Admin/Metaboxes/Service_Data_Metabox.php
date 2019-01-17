@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Service_Data_Form;
@@ -47,7 +48,7 @@ class Service_Data_Metabox extends Metabox {
 	 * Handle save the the metabox.
 	 *
 	 * @param \WP_Post                $post    The WP_Post object instance.
-	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
 		$service = new Service( $post->ID );
@@ -61,7 +62,7 @@ class Service_Data_Metabox extends Metabox {
 		$saved = $service->save();
 
 		if ( $saved ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+			abrs_flash_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 }

@@ -1,7 +1,8 @@
 <?php
+
 namespace AweBooking\Core\Providers;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Component\Http\Kernel;
 use AweBooking\Component\Routing\Redirector;
 use AweBooking\Component\Routing\Url_Generator;

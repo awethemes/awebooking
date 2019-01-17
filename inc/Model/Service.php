@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model;
 
 use AweBooking\Constants;
@@ -31,6 +32,15 @@ class Service extends Model {
 	 */
 	public function get_amount() {
 		return $this->get( 'amount' );
+	}
+
+	/**
+	 * Gets the service operation.
+	 *
+	 * @return string
+	 */
+	public function get_operation() {
+		return $this->get( 'operation' );
 	}
 
 	/**
