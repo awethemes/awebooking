@@ -7,7 +7,7 @@
  * @see      http://docs.awethemes.com/awebooking/developers/theme-developers/
  * @author   awethemes
  * @package  AweBooking
- * @version  3.1.0
+ * @version  3.2.0
  *
  * @var $search_form \AweBooking\Frontend\Search\Search_Form
  */
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $form_classes = [
 	$atts['layout'] ? 'searchbox--' . $atts['layout'] : '',
 	$atts['alignment'] ? 'searchbox--align-' . $atts['alignment'] : '',
-	$atts['container_class'] ? $atts['container_class'] : '',
+	$atts['container_class'] ?: '',
 ];
 
 ?>
@@ -32,7 +32,6 @@ $form_classes = [
 			<?php $search_form->components(); ?>
 		</div><!-- /.searchbox__wrapper-->
 
-		<pre data-bind="text: ko.toJSON($root)"></pre>
+		<div class="searchbox__dates"></div>
 	</div><!-- /.searchbox-->
 </form>
-

@@ -163,15 +163,17 @@ class Search_Form extends Form {
 	public function check_in( $attributes = [], $alt_attributes = [] ) {
 		$value = $this->parameter( 'check_in' );
 
-		print $this->builder->hidden( 'check_in', $value, $attributes ); // @WPCS: XSS OK.
+		$this->input( 'hidden', 'check_in', $attributes + [
+			'value' => $value,
+		] );
 
-		$this->input( 'text', 'check_in_alt', array_merge( $alt_attributes, [
+		$this->input( 'text', 'check_in_alt', $alt_attributes + [
 			'name'          => false, // Remove "name" attribute.
 			'value'         => $value ? abrs_format_date( $value ) : '',
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
-		] ) );
+		] );
 	}
 
 	/**
@@ -183,7 +185,9 @@ class Search_Form extends Form {
 	public function check_out( $attributes = [], $alt_attributes = [] ) {
 		$value = $this->parameter( 'check_out' );
 
-		print $this->builder->hidden( 'check_out', $value, $attributes ); // @WPCS: XSS OK.
+		$this->input( 'hidden', 'check_out', $attributes + [
+			'value' => $value,
+		] );
 
 		$this->input( 'text', 'check_out_alt', array_merge( $alt_attributes, [
 			'name'          => false, // Remove "name" attribute.
@@ -204,6 +208,7 @@ class Search_Form extends Form {
 		//
 		// echo $this->builder->select_range( 'adults', 1, absint( abrs_get_option( 'search_form_max_adults', 6 ) ), null, $attributes );
 		// return;
+
 		$this->input( 'number', 'adults', wp_parse_args( $attributes, [
 			'step' => 1,
 			'min'  => 1,
@@ -249,6 +254,10 @@ class Search_Form extends Form {
 
 		if ( isset( $attributes['type'] ) ) {
 			$type = $attributes['type'];
+		}
+
+		if ( ! isset( $attributes['data-element'] ) ) {
+			$attributes['data-element'] = $name;
 		}
 
 		$value = isset( $attributes['value'] )
