@@ -30,6 +30,10 @@
     }
   }
 
+  &.ui-dialog .ui-dialog-titlebar-close span {
+    display: none !important;
+  }
+
   .awebooking-dialog-contents {
     padding: 15px 15px 0 15px;
   }
