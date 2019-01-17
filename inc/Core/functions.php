@@ -837,17 +837,16 @@ function abrs_register_vendor_js() {
 	wp_register_script( 'js-cookie', abrs_asset_url( 'vendor/js-cookie/js.cookie.js' ), [], '2.2.0' );
 	wp_register_script( 'knockout', abrs_asset_url( 'vendor/knockout/knockout-latest' . ( $min ? '' : '.debug' ) . '.js' ), [], '3.4.2' );
 	wp_register_script( 'moment', abrs_asset_url( 'vendor/moment/moment' . $min . '.js' ), [], '2.22.2' );
-	wp_register_script( 'fecha', abrs_asset_url( 'vendor/fecha/fecha' . $min . '.js' ), [], '2.3.3' );
-	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper.js/popper' . $min . '.js' ), [], '1.14.3' );
+	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper-js/popper' . $min . '.js' ), [], '1.14.3' );
 	wp_register_script( 'sortable', abrs_asset_url( 'vendor/sortable/Sortable' . $min . '.js' ), [], '1.7.0' );
 	wp_register_script( 'a11y-dialog', abrs_asset_url( 'vendor/a11y-dialog/a11y-dialog' . $min . '.js' ), [], '5.1.2' );
-	wp_register_script( 'hotel-datepicker', abrs_asset_url( 'vendor/hotel-datepicker/hotel-datepicker' . $min . '.js' ), [ 'fecha' ], '3.6.5', true );
 
 	wp_register_style( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr.css' ), [], '4.5.1' );
 	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
+	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
 
-	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.css' ), [], '2.5.4' );
-	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.5.4', true );
+	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.css' ), [], '2.6.0' );
+	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.6.0', true );
 
 	wp_register_style( 'selectize', abrs_asset_url( 'vendor/selectize/selectize.css' ), [], '0.12.6' );
 	wp_register_script( 'selectize', abrs_asset_url( 'vendor/selectize/selectize' . $min . '.js' ), [], '0.12.6', true );
@@ -855,8 +854,11 @@ function abrs_register_vendor_js() {
 	wp_register_style( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.css' ), [], '7.25.6' );
 	wp_register_script( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.js' ), [], '7.25.6', true );
 
-	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery.spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
+	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery-spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
 	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
+
+	wp_register_style( 'react-calendar', abrs_asset_url( 'css/react-datepicker' . $min . '.css' ), [], '1.0.0' );
+	wp_enqueue_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'lodash' ], '1.0.0', true );
 }
 
 /**
