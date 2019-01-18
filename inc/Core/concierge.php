@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Availability\Constraints\Checkin_Days_Constraint;
 use AweBooking\Constants;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Common\Timespan;
@@ -104,6 +105,9 @@ function abrs_check_room_states( $room, Timespan $timespan, $states = Constants:
 		->transform( 'abrs_resource_room' )
 		->filter()
 		->all();
+
+	$constraints   = apply_filters( 'abrs_room_contraints', $constraints, $room, $timespan );
+	$constraints[] = new Checkin_Days_Constraint( $resources, $timespan );
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->filter( $comparison, $states )

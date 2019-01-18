@@ -134,36 +134,38 @@ class Room_Type extends Model {
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
 			// Basic infomations.
-			'title'             => '',
-			'slug'              => '',
-			'status'            => '',
-			'date_created'      => null,
-			'date_modified'     => null,
-			'hotel_id'          => 0,
-			'description'       => '',
-			'short_description' => '',
-			'thumbnail_id'      => 0,
-			'gallery_ids'       => [],
+			'title'                             => '',
+			'slug'                              => '',
+			'status'                            => '',
+			'date_created'                      => null,
+			'date_modified'                     => null,
+			'hotel_id'                          => 0,
+			'description'                       => '',
+			'short_description'                 => '',
+			'thumbnail_id'                      => 0,
+			'gallery_ids'                       => [],
 
 			// Room data.
-			'bedrooms'            => 0,
-			'beds'                => [],
-			'view'                => '',
-			'area_size'           => '',
-			'maximum_occupancy'   => 0,
-			'number_adults'       => 0,
-			'number_children'     => 0,
-			'number_infants'      => 0,
-			'calculation_infants' => 'on', // on | off.
-			'tax_rate_id'         => 0,
+			'bedrooms'                          => 0,
+			'beds'                              => [],
+			'view'                              => '',
+			'area_size'                         => '',
+			'maximum_occupancy'                 => 0,
+			'number_adults'                     => 0,
+			'number_children'                   => 0,
+			'number_infants'                    => 0,
+			'calculation_infants'               => 'on', // on | off.
+			'tax_rate_id'                       => 0,
+			'availability_allowed_checkin_days' => [],
+			'availability_period_bookable'      => '',
 
 			// Rate.
-			'rack_rate'           => 0,
-			'rate_services'       => [],
-			'rate_inclusions'     => [],
-			'rate_policies'       => [],
-			'rate_min_los'        => 0,
-			'rate_max_los'        => 0,
+			'rack_rate'                         => 0,
+			'rate_services'                     => [],
+			'rate_inclusions'                   => [],
+			'rate_policies'                     => [],
+			'rate_min_los'                      => 0,
+			'rate_max_los'                      => 0,
 		]);
 	}
 
@@ -172,27 +174,29 @@ class Room_Type extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'gallery_ids'         => 'gallery',
-			'thumbnail_id'        => '_thumbnail_id',
-			'hotel_id'            => '_hotel_id',
+			'gallery_ids'                       => 'gallery',
+			'thumbnail_id'                      => '_thumbnail_id',
+			'hotel_id'                          => '_hotel_id',
+			'bedrooms'                          => '_bedrooms',
 
-			'bedrooms'            => '_bedrooms',
-			'beds'                => '_beds',
-			'view'                => '_room_view',
-			'area_size'           => '_area_size',
-			'maximum_occupancy'   => '_maximum_occupancy',
-			'number_adults'       => 'number_adults',
-			'number_children'     => 'number_children',
-			'number_infants'      => 'number_infants',
-			'calculation_infants' => '_infants_in_calculations',
-			'tax_rate_id'         => '_tax_rate_id',
+			'beds'                              => '_beds',
+			'view'                              => '_room_view',
+			'area_size'                         => '_area_size',
+			'maximum_occupancy'                 => '_maximum_occupancy',
+			'number_adults'                     => 'number_adults',
+			'number_children'                   => 'number_children',
+			'number_infants'                    => 'number_infants',
+			'calculation_infants'               => '_infants_in_calculations',
+			'tax_rate_id'                       => '_tax_rate_id',
+			'availability_allowed_checkin_days' => '_availability_allowed_checkin_days',
+			'availability_period_bookable'      => '_availability_period_bookable',
 
-			'rack_rate'           => 'base_price',
-			'rate_services'       => '_rate_services',
-			'rate_inclusions'     => '_rate_inclusions',
-			'rate_policies'       => '_rate_policies',
-			'rate_min_los'        => 'minimum_night',
-			'rate_max_los'        => '_rate_maximum_los',
+			'rack_rate'                         => 'base_price',
+			'rate_services'                     => '_rate_services',
+			'rate_inclusions'                   => '_rate_inclusions',
+			'rate_policies'                     => '_rate_policies',
+			'rate_min_los'                      => 'minimum_night',
+			'rate_max_los'                      => '_rate_maximum_los',
 		]);
 	}
 

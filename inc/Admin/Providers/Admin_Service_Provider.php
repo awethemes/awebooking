@@ -18,6 +18,7 @@ class Admin_Service_Provider extends Service_Provider {
 			\AweBooking\Admin\Settings\Taxes_Setting::class,
 			\AweBooking\Admin\Settings\Checkout_Setting::class,
 			\AweBooking\Admin\Settings\Appearance_Setting::class,
+			\AweBooking\Admin\Settings\Availability_Setting::class,
 			\AweBooking\Admin\Settings\Email_Setting::class,
 			\AweBooking\Admin\Settings\Premium_Setting::class,
 		] as $_class ) {
