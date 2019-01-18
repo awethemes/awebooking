@@ -38,3 +38,14 @@ require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
  * Alias the class "AweBooking\Plugin" to "AweBooking".
  */
 class_alias( \AweBooking\Plugin::class, 'AweBooking', false );
+
+// Back-compat.
+class_alias( \WPLibs\Http\Request::class, 'Awethemes\\Http\\Request' );
+class_alias( \WPLibs\Http\Response::class, 'Awethemes\\Http\\Response' );
+class_alias( \WPLibs\Http\Json_Response::class, 'Awethemes\\Http\\Json_Response' );
+class_alias( \WPLibs\Http\Exception\HttpException::class, 'Awethemes\\Http\\Exception\\HttpException' );
+class_alias( \WPLibs\Http\Exception\BadRequestException::class, 'Awethemes\\Http\\Exception\\BadRequestException' );
+
+class_alias( \WPLibs\Rules\Rule::class, 'AweBooking\\Component\\Ruler\\Rule' );
+class_alias( \WPLibs\Rules\Context::class, 'AweBooking\\Component\\Ruler\\Context' );
+class_alias( \WPLibs\Rules\Variable::class, 'AweBooking\\Component\\Ruler\\Variable' );
