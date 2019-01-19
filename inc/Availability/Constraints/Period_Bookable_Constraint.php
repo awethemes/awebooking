@@ -1,10 +1,11 @@
 <?php
+
 namespace AweBooking\Availability\Constraints;
 
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Calendar\Finder\Response;
 
-class Checkin_Days_Constraint extends Constraint {
+class Period_Bookable_Constraint extends Constraint {
 	/**
 	 * The Timespan instance.
 	 *
@@ -41,20 +42,23 @@ class Checkin_Days_Constraint extends Constraint {
 			return;
 		}
 
-		$checkin_day = $timespan
-			->to_period()
-			->get_start_date()
-			->format( 'w' );
+		$checkout_day = $timespan->to_period()->get_end_date();
 
 		foreach ( $response->get_included() as $resource => $include ) {
 			$room_type = $include['resource']
 				->get_reference()
 				->get( 'room_type' );
 
-			$room_type    = abrs_get_room_type( $room_type );
-			$allowed_days = (array) $room_type->get( 'availability_allowed_checkin_days' );
+			$room_type       = abrs_get_room_type( $room_type );
+			$period_bookable = absint( $room_type->get( 'availability_period_bookable' ) );
 
-			if ( count( $allowed_days ) > 0 && ! in_array( $checkin_day, $allowed_days ) ) {
+			if ( $period_bookable <= 0 ) {
+				continue;
+			}
+
+			$future = abrs_date( 'now' )->addDays( $period_bookable );
+
+			if ( $checkout_day->gt( $future ) ) {
 				$response->reject( $include['resource'], Response::CONSTRAINT, $this );
 			}
 		}
