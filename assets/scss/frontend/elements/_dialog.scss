@@ -12,19 +12,21 @@ dialog[open] {
 .awebooking-dialog {
   @include fixed(0, 0, 0, 0);
   z-index: 9999;
-  display: none;
+  display: flex;
   overflow: hidden;
   outline: 0;
+  opacity: 0;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in .5s forwards;
 
-  &.open {
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
+  &:not(.open) {
+    display: none !important;
   }
 
   &__overlay,
   dialog::backdrop {
-    z-index: 9999;
+    z-index: 9998;
     background-color: rgba($black, .35);
   }
 
@@ -37,13 +39,16 @@ dialog[open] {
     @include relative(0, 0, 0, 0);
 
     display: block;
-    margin: 2.5rem auto;
+    margin: 0 auto;
     padding: 1em;
     min-width: 320px;
-    max-width: 500px;
+    width: 500px;
     border: solid 1px transparent;
     background: $white;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+
+    //animation: fade-in-fly-up .3s forwards;
+    //animation-delay: .25s;
   }
 
   .button#{&}__close {
@@ -56,5 +61,27 @@ dialog[open] {
     line-height: 1;
     font-weight: 300;
     color: $gray-600;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fade-in-fly-up {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 130px, 0);
+    transform: translate3d(0, 130px, 0)
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0)
   }
 }
