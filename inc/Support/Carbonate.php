@@ -2,15 +2,26 @@
 
 namespace AweBooking\Support;
 
-use Carbon\Carbon;
+use Cake\Chronos\MutableDateTime;
 
-class Carbonate extends Carbon {
+class Carbonate extends MutableDateTime {
+	/**
+	 * The day constants.
+	 */
+	const SUNDAY = 0;
+	const MONDAY = 1;
+	const TUESDAY = 2;
+	const WEDNESDAY = 3;
+	const THURSDAY = 4;
+	const FRIDAY = 5;
+	const SATURDAY = 6;
+
 	/**
 	 * Return a datetime as Carbon object with time set to 00:00:00.
 	 *
 	 * @param  mixed $date The date format or UNIX timestamp.
 	 * @param  mixed $tz   The timezone string or DateTimeZone instance.
-	 * @return Carbon
+	 * @return static
 	 */
 	public static function create_date( $date, $tz = null ) {
 		return static::create_date_time( $date, $tz )->startOfDay();
@@ -21,7 +32,7 @@ class Carbonate extends Carbon {
 	 *
 	 * @param  mixed $datetime The datetime format or UNIX timestamp.
 	 * @param  mixed $tz       The timezone string or DateTimeZone instance.
-	 * @return Carbon
+	 * @return static
 	 */
 	public static function create_date_time( $datetime, $tz = null ) {
 		// If this value is already a Carbon instance, we shall just return it as new instance.
@@ -66,5 +77,16 @@ class Carbonate extends Carbon {
 	 */
 	public function date_i18n( $fomrat ) {
 		return date_i18n( $fomrat, $this->getTimestamp() + $this->getOffset() );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __get( $name ) {
+		if ( 'dayOfWeek' === $name ) {
+			return (int) $this->format( 'w' );
+		}
+
+		return parent::__get( $name );
 	}
 }
