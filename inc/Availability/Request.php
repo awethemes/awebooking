@@ -143,16 +143,39 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return \WP_Error|bool
 	 */
 	public function validate() {
-		$errors = new WP_Error;
+		$errors = $this->errors;
 
 		try {
-			$timespan = $this->get_timespan();
-			$timespan->requires_minimum_nights( 1 );
+			$this->validate_timespan( $this->get_parameter( 'check_in' ), $this->get_parameter( 'check_out' ) );
 		} catch ( \Exception $e ) {
 			$errors->add( 'timespan', $e->getMessage() );
 		}
 
 		return count( $errors->errors ) > 0 ? $errors : true;
+	}
+
+	/**
+	 * //
+	 *
+	 * @param string|\DateTimeInterface $check_in
+	 * @param string|\DateTimeInterface $check_out
+	 */
+	protected function validate_timespan( $check_in, $check_out ) {
+		if ( empty( $check_in ) ) {
+			throw new \InvalidArgumentException( esc_html__( 'Please enter a valid arrival date.', 'awebooking' ) );
+		}
+
+		if ( empty( $check_out ) ) {
+			throw new \InvalidArgumentException( esc_html__( 'Please enter a valid departure date.', 'awebooking' ) );
+		}
+
+		$timespan = new Timespan( $check_in, $check_out );
+
+		if ( abrs_date( $check_in )->lt( abrs_date( 'today' ) ) ) {
+			throw new \LogicException( esc_html__( 'You cannot perform reservation in the past! Please re-enter dates.', 'awebooking' ) );
+		}
+
+		$timespan->requires_minimum_nights( 1 );
 	}
 
 	/**
@@ -363,21 +386,30 @@ class Request implements \ArrayAccess, \JsonSerializable {
 			$date = abrs_date( $date );
 		}
 
-		if ( is_null( $date ) ) {
-			$this->errors->add( 'check_in', esc_html__( 'Please enter a valid arrival date.', 'awebooking' ) );
-
-			return;
-		}
-
-		if ( $check_out = $this->parameters->has( 'check_out' ) ) {
-			$this->validate_timespan( $date, $check_out );
-		}
-
-		$this->set_parameter( 'check_in', $date->format( 'Y-m-d' ) );
+		$this->set_parameter( 'check_in', $date ? $date->format( 'Y-m-d' ) : null );
 	}
 
-	protected function validate_timespan() {
-		$timespan = $this->get_timespan();
+	/**
+	 * Return the "check_out" date string.
+	 *
+	 * @return string|null
+	 */
+	public function get_check_out() {
+		return $this->get_parameter( 'check_out' );
+	}
+
+	/**
+	 * Set the check_out date.
+	 *
+	 * @param  string|\DateTimeInterface $date
+	 * @return void
+	 */
+	public function set_check_out( $date ) {
+		if ( ! $date instanceof \DateTimeInterface ) {
+			$date = abrs_date( $date );
+		}
+
+		$this->set_parameter( 'check_out', $date ? $date->format( 'Y-m-d' ) : null );
 	}
 
 	/**

@@ -63,12 +63,6 @@ class Search_Query {
 	 * @return void
 	 */
 	public function setup_res_request() {
-		if ( ! $this->res_request->get_parameter( 'check_in' ) ||
-		     ! $this->res_request->get_parameter( 'check_out' ) ) {
-			return;
-		}
-
-		// Create the res_request.
 		$validate = $this->res_request->validate();
 
 		if ( is_wp_error( $validate ) ) {
