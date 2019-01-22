@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;

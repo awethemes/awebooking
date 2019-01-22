@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Core\Shortcode;
 
 class Search_Form_Shortcode extends Shortcode {

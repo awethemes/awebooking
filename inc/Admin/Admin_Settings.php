@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin;
 
 use Awethemes\Http\Request;

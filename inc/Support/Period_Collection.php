@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Support;
 
 class Period_Collection extends Collection {

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking;
 
 use WP_Error;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Support;
 
 abstract class Service_Provider {

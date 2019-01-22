@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Reservation\Storage;
 
 use Awethemes\WP_Session\Session;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking;
 
 use Monolog\Logger;
