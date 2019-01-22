@@ -29,7 +29,7 @@ if ( ! abrs_multiple_hotels() || abrs_is_room_type() ) {
 		</label>
 
 		<div class="searchbox__box-input">
-			<?php $search_form->hotels( [ 'data-bind' => 'value: hotel' ] ); ?>
+			<?php $search_form->hotels(); ?>
 		</div>
 	</div>
 </div>

@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 	do_action( 'abrs_before_submit_button' );
 
-	echo apply_filters( 'abrs_booking_button_html', '<button type="submit" class="button" name="awebooking_submit">' . esc_html( $button_text ) . '</button>' ); // @codingStandardsIgnoreLine
+	echo apply_filters( 'abrs_booking_button_html', '<button type="submit" class="button button--primary" name="awebooking_submit">' . esc_html( $button_text ) . '</button>' ); // @codingStandardsIgnoreLine
 
 	do_action( 'abrs_after_submit_button' );
 	?>

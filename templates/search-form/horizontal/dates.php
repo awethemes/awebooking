@@ -27,12 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</label>
 
 				<div class="searchbox__box-input">
-					<?php
-					$search_form->check_in(
-						[ 'data-bind' => 'value: checkInDate' ],
-						[ 'data-bind' => 'value: checkInFormatted()' ]
-					);
-					?>
+					<?php $search_form->check_in(); ?>
 				</div>
 			</div>
 		</div>
@@ -44,12 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</label>
 
 				<div class="searchbox__box-input">
-					<?php
-					$search_form->check_out(
-						[ 'data-bind' => 'value: checkOutDate' ],
-						[ 'data-bind' => 'value: checkOutFormatted()' ]
-					);
-					?>
+					<?php $search_form->check_out(); ?>
 				</div>
 			</div>
 		</div>

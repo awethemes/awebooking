@@ -5,7 +5,7 @@ namespace AweBooking\Gateway;
 use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Payment_Item;
 use AweBooking\Checkout\Url_Generator;
-use WPLibs\Http\Request;
+use Awethemes\Http\Request;
 
 abstract class Gateway {
 	/**

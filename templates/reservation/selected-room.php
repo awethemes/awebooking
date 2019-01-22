@@ -49,7 +49,7 @@ if ( empty( $res_request ) ) {
 				<?php
 				/* translators: %1$s rooms, %2$s nights */
 				printf( _x( '(%1$s x %2$s)', 'price details rooms x nights', 'awebooking' ),
-					abrs_ngettext_nights( $res_request['nights'] ),
+					abrs_ngettext_nights( $res_request->get( 'nights' ) ),
 					abrs_ngettext_rooms( $room_stay->get_quantity() )
 				); // WPCS: XSS OK.
 				?>
@@ -64,6 +64,8 @@ if ( empty( $res_request ) ) {
 	</dl>
 
 	<div class="roomdetails-room__actions">
-		<a href="<?php echo esc_url( abrs_route( "reservation/remove/{$room_stay->get_row_id()}" ) ); ?>" class="remove-selected-room"><?php esc_html_e( 'Remove', 'awebooking' ); ?></a>
+		<?php if ( ! abrs_is_checkout_page() ) : ?>
+			<a href="<?php echo esc_url( abrs_route( "reservation/remove/{$room_stay->get_row_id()}" ) ); ?>" class="remove-selected-room"><?php esc_html_e( 'Remove', 'awebooking' ); ?></a>
+		<?php endif; ?>
 	</div>
 </div><!-- /.roomdetails-room -->

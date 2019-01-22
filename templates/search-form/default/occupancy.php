@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</label>
 
 		<div class="searchbox__box-input">
-			<?php $search_form->adults( [ 'data-bind' => 'value: adults' ] ); ?>
+			<?php $search_form->adults(); ?>
 		</div>
 	</div>
 </div>
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</label>
 
 			<div class="searchbox__box-input">
-				<?php $search_form->children( [ 'data-bind' => 'value: children' ] ); ?>
+				<?php $search_form->children(); ?>
 			</div>
 		</div>
 	</div>
@@ -52,7 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</label>
 
 			<div class="searchbox__box-input">
-				<?php $search_form->infants( [ 'data-bind' => 'value: infants' ] ); ?>
+				<?php $search_form->infants(); ?>
 			</div>
 		</div>
 	</div>
