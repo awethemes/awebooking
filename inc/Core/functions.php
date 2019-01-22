@@ -843,7 +843,6 @@ function abrs_register_vendor_js() {
 
 	wp_register_style( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr.css' ), [], '4.5.1' );
 	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
-	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
 
 	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.css' ), [], '2.6.0' );
 	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.6.0', true );
@@ -858,7 +857,7 @@ function abrs_register_vendor_js() {
 	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
 
 	wp_register_style( 'react-calendar', abrs_asset_url( 'css/react-datepicker' . $min . '.css' ), [], '1.0.0' );
-	wp_enqueue_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'lodash' ], '1.0.0', true );
+	wp_register_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'lodash' ], '1.0.0', true );
 }
 
 /**

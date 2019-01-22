@@ -629,7 +629,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return mixed
 	 */
 	public function offsetGet( $offset ) {
-		return $this->get_parameter( $offset );
+		return $this->get( $offset );
 	}
 
 	/**

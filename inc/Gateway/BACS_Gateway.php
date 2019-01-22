@@ -2,7 +2,7 @@
 
 namespace AweBooking\Gateway;
 
-use WPLibs\Http\Request;
+use Awethemes\Http\Request;
 use AweBooking\Model\Booking;
 
 class BACS_Gateway extends Gateway {
