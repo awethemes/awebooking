@@ -1,7 +1,7 @@
 <?php
 
 use AweBooking\Plugin;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Component\Routing\Url_Generator;
 
 class Component_Routing_Uri_Generator_Test extends WP_UnitTestCase {

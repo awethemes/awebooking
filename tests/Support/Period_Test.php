@@ -1,13 +1,12 @@
 <?php
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use AweBooking\Support\Period;
-use AweBooking\Support\Period_Collection;
 
 class Period_Test extends WP_UnitTestCase {
 	function test_working_right() {
 		$days = new Period( '2017-05-10', '2017-05-20' );
-		$days2 = new Period( Carbon::create(2017, 05, 10)->startOfDay(), Carbon::create(2017, 05, 20)->startOfDay() );
+		$days2 = new Period( Chronos::create(2017, 05, 10)->startOfDay(), Chronos::create(2017, 05, 20)->startOfDay() );
 
 		// Same timestamp start and end days.
 		$this->assertEquals($days->get_start_date()->getTimestamp(), $days2->get_start_date()->getTimestamp());

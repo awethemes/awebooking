@@ -1,7 +1,7 @@
 <?php
 
-use Awethemes\Http\Request;
-use Awethemes\Http\Redirect_Response;
+use WPLibs\Http\Request;
+use WPLibs\Http\Redirect_Response;
 use AweBooking\Component\Routing\Redirector;
 use AweBooking\Component\Routing\Url_Generator;
 
@@ -15,7 +15,7 @@ class Component_Routing_Redirector_Test extends WP_UnitTestCase {
 		$this->request->headers = $this->headers;
 
 		$this->url = $this->create_url_generator( $this->request );
-		$this->session = Mockery::mock('Awethemes\WP_Session\Session');
+		$this->session = Mockery::mock('WPLibs\Session\Session');
 
 		$this->redirect = new Redirector($this->url);
 		$this->redirect->set_wp_session($this->session);
