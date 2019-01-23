@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Calendar;
 
 use WP_Query;
@@ -7,7 +8,7 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Period\Iterator_Period;
 use AweBooking\Support\Carbonate;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
 
 abstract class Abstract_Scheduler {
@@ -16,7 +17,7 @@ abstract class Abstract_Scheduler {
 	/**
 	 * Current http request.
 	 *
-	 * @var \Awethemes\Http\Request
+	 * @var \WPLibs\Http\Request
 	 */
 	protected $request;
 
@@ -72,7 +73,7 @@ abstract class Abstract_Scheduler {
 	/**
 	 * Prepares the Scheduler before it is sent to the client.
 	 *
-	 * @param  \Awethemes\Http\Request $request The request instance.
+	 * @param  \WPLibs\Http\Request $request The request instance.
 	 * @return void
 	 */
 	public function prepare( Request $request ) {

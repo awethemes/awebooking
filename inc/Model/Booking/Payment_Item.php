@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Booking;
 
 class Payment_Item extends Item {

@@ -1,0 +1,28 @@
+// TODO: Refactoring this!!
+.vivre-card {
+  padding: 2.5em 0;
+  text-align: center;
+  border-radius: 1px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  margin-bottom: 1em;
+
+  &__icon {
+    margin-bottom: 1em;
+
+    img {
+      display: inline-block;
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  &__text {
+    color: #898989;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

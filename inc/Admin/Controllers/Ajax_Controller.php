@@ -3,14 +3,14 @@
 namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Model\Room;
-use Awethemes\Http\Json_Response;
-use Awethemes\Http\Request;
+use WPLibs\Http\Json_Response;
+use WPLibs\Http\Request;
 
 class Ajax_Controller extends Controller {
 	/**
 	 * Delete room.
 	 *
-	 * @param \Awethemes\Http\Request $request The current request.
+	 * @param \WPLibs\Http\Request $request The current request.
 	 * @param \AweBooking\Model\Room  $room    Room.
 	 * @return mixed
 	 */
@@ -41,7 +41,7 @@ class Ajax_Controller extends Controller {
 	/**
 	 * Handle add booking note.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function add_booking_note( Request $request ) {
@@ -76,7 +76,7 @@ class Ajax_Controller extends Controller {
 	/**
 	 * Handle add booking note.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @param  int                     $note    The booking note ID to delete.
 	 * @return mixed
 	 */
@@ -95,8 +95,8 @@ class Ajax_Controller extends Controller {
 	/**
 	 * Query for customers.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response|mixed
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response|mixed
 	 */
 	public function search_customers( Request $request ) {
 		$term = abrs_clean( stripslashes( $request->get( 'term' ) ) );
@@ -156,8 +156,8 @@ class Ajax_Controller extends Controller {
 	/**
 	 * Query for services.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
-	 * @return \Awethemes\Http\Response|mixed
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response|mixed
 	 */
 	public function search_services( Request $request ) {
 		$term = abrs_clean( stripslashes( $request->get( 'term' ) ) );

@@ -1,8 +1,8 @@
-(function($, plugin) {
-  'use strict';
+(function ($, plugin) {
+  'use strict'
 
-  const localize = window._awebookingEditBooking || {};
-  const i18n     = localize.i18n || {};
+  const localize = window._awebookingEditBooking || {}
+  const i18n = localize.i18n || {}
 
   /**
    * Handle the xhr fail.
@@ -10,19 +10,19 @@
    * @param  {jqXHR} xhr
    * @return {void}
    */
-  const handleXhrFail = function(xhr) {
-    xhr.fail(function(xhr) {
-      const res = xhr.responseJSON || $.parseJSON(xhr.responseText);
+  const handleXhrFail = function (xhr) {
+    xhr.fail(function (xhr) {
+      const res = xhr.responseJSON || $.parseJSON(xhr.responseText)
 
       if (res.message) {
-        plugin.alert(res.message, res.status);
+        plugin.alert(res.message, res.status)
       }
 
       if (plugin.debug) {
-        console.log(xhr);
+        console.log(xhr)
       }
-    });
-  };
+    })
+  }
 
   class EditBooking {
     /**
@@ -31,10 +31,10 @@
      * @return {void}
      */
     constructor() {
-      $('.js-editnow').click(this.handleEditAddress);
+      $('.js-editnow').click(this.handleEditAddress)
 
-      $('#js-add-note').click(this.handleAddNote);
-      $(document).on( 'click', '.js-delete-note', this.handleDeleteNote);
+      $('#js-add-note').click(this.handleAddNote)
+      $(document).on('click', '.js-delete-note', this.handleDeleteNote)
     }
 
     /**
@@ -44,17 +44,17 @@
      * @return {void}
      */
     handleEditAddress(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      const focus = $(this).data('focus');
-      const $wrapper = $(this).closest('.js-booking-column');
+      const focus = $(this).data('focus')
+      const $wrapper = $(this).closest('.js-booking-column')
 
-      $wrapper.find('h3 > a.button-editnow').hide();
-      $wrapper.find('div.js-booking-data').hide();
-      $wrapper.find('div.js-edit-booking-data').show();
+      $wrapper.find('h3 > a.button-editnow').hide()
+      $wrapper.find('div.js-booking-data').hide()
+      $wrapper.find('div.js-edit-booking-data').show()
 
       if (focus && $(focus, $wrapper).length) {
-        $(focus, $wrapper).focus();
+        $(focus, $wrapper).focus()
       }
     }
 
@@ -65,43 +65,43 @@
      * @return {void}
      */
     handleAddNote(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      const $notes = $('#js-booking-notes');
-      const $noteInput = $('#js-booking-note');
+      const $notes = $('#js-booking-notes')
+      const $noteInput = $('#js-booking-note')
 
-      let content = (new String($noteInput.val())).trim();
+      let content = (new String($noteInput.val())).trim()
       if (content.length === 0) {
-        plugin.alert(i18n.empty_note_warning, 'warning');
-        return;
+        plugin.alert(i18n.empty_note_warning, 'warning')
+        return
       }
 
-      let noteType = '';
+      let noteType = ''
       if ($('#js-customer-note').prop('checked') === true) {
-        noteType = 'customer';
+        noteType = 'customer'
       }
 
       const xhr = $.ajax({
         type: 'POST',
-        url:  plugin.route('/ajax/booking-note'),
+        url: plugin.route('/ajax/booking-note'),
         data: {
-          note:        content,
-          note_type:   noteType,
-          booking:     parseInt($('#post_ID').val(), 10),
+          note: content,
+          note_type: noteType,
+          booking: parseInt($('#post_ID').val(), 10),
           _ajax_nonce: localize.add_note_nonce,
         }
-      });
+      })
 
-      xhr.done(function(res) {
-        $noteInput.val('');
-        $(res.data).prependTo($notes);
+      xhr.done(function (res) {
+        $noteInput.val('')
+        $(res.data).prependTo($notes)
 
         if ($notes.find('.awebooking-no-items').length) {
-          $notes.find('.awebooking-no-items').closest('li').remove();
+          $notes.find('.awebooking-no-items').closest('li').remove()
         }
-      });
+      })
 
-      handleXhrFail(xhr);
+      handleXhrFail(xhr)
     }
 
     /**
@@ -111,34 +111,34 @@
      * @return {void}
      */
     handleDeleteNote(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      const $el = $(this).closest('.booking-note');
-      if (! $el.length || !$el.attr('rel')) {
-        return;
+      const $el = $(this).closest('.booking-note')
+      if (!$el.length || !$el.attr('rel')) {
+        return
       }
 
-      plugin.confirm(i18n.delete_note_warning, function() {
-        const noteID = parseInt($el.attr('rel'), 10);
+      plugin.confirm(i18n.delete_note_warning, function () {
+        const noteID = parseInt($el.attr('rel'), 10)
 
         const xhr = $.ajax({
           type: 'POST',
-          url:   plugin.route('/ajax/booking-note/' + noteID),
+          url: plugin.route('/ajax/booking-note/' + noteID),
           data: { _method: 'DELETE', _ajax_nonce: localize.delete_note_nonce }
-        });
+        })
 
-        xhr.done(function() {
-          $el.slideUp(100, function() { $el.remove() });
-        });
+        xhr.done(function () {
+          $el.slideUp(100, function () { $el.remove() })
+        })
 
-        handleXhrFail(xhr);
-      });
+        handleXhrFail(xhr)
+      })
     }
   }
 
   // Document ready!
-  $(function() {
-    plugin.instances.editBooking = new EditBooking;
-  });
+  $(function () {
+    plugin.instances.editBooking = new EditBooking
+  })
 
-})(jQuery, window.awebooking || {});
+})(jQuery, window.awebooking || {})

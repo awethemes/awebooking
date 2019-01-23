@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability;
 
 use AweBooking\Calendar\Finder\Response;

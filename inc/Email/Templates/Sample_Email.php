@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Email\Templates;
 
 use AweBooking\Email\Mailable;

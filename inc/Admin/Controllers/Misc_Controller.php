@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use AweBooking\Premium;
@@ -15,7 +16,7 @@ class Misc_Controller extends Controller {
 	/**
 	 * Output the about page.
 	 *
-	 * @return \Awethemes\Http\Response
+	 * @return \WPLibs\Http\Response
 	 */
 	public function about() {
 		// delete_transient( 'awebooking_premium_themes' );

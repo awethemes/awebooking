@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Forms;
 
 use AweBooking\Support\Fluent;

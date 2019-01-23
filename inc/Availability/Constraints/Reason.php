@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability\Constraints;
 
 class Reason {

@@ -1,76 +1,83 @@
-$filterbox-bg-color:         #fff !default;
+$filterbox-bg-color: #fff !default;
 
 .filterbox {
-	margin: 0;
+  margin: 0;
   width: 100%;
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5em;
 }
 
 .filterbox__wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: relative;
+
   width: 100%;
-  min-height: 1px;
-  backface-visibility: hidden;
-  padding: 10px 12px;
-  border-radius: 4px;
+  padding: 1em;
+  border-radius: 1px;
+
   background-color: $filterbox-bg-color;
-  box-shadow: 0 1px 4px 0 rgba(black, .08);
+  border: solid 1px $border-color;
+  box-shadow: 0 1px 2px rgba(black, .08);
 
   @include media-breakpoint-up(md) {
     flex-direction: row;
+    justify-content: center;
   }
 }
 
 .filterbox__box:not(:last-child) {
-  box-shadow: none;
-  padding-bottom: .8rem;
-  border-bottom: solid 1px $gray-200;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: solid 1px #eeeeee;
 
   @include media-breakpoint-up(md) {
-    box-shadow: 1px 0 0 rgba(0,0,0,.07);
+    margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;
   }
 }
 
-.filterbox__label {
-	display: inline-block;
-	margin-right: 10px;
-}
+.filterbox__box-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
 
-.filterbox__sortby {
-	display: inline-block;
-	width: auto;
+  > .filterbox__label {
+    flex-grow: 1;
+    display: block;
+    margin-right: 7px;
+    line-height: 1.4;
+  }
+
+  select.input-transparent {
+    width: auto !important;
+    line-height: 1.4;
+  }
 }
 
 .filterbox__showprice {
-  display: inline-block;
-	margin: 0;
+  margin: 0;
   padding: 0;
-	list-style: none;
+  list-style: none;
 }
 
 .filterbox__showprice-item {
-	display: inline-block;
+  float: left;
+  line-height: 1.4;
 
-	&:not(:last-child) {
-		margin-right: 10px;
-	}
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
 
-	&.active,
-	&:focus,
-	&:hover {
-		a {
-			color: #1a1a1a;
-		}
-	}
+  a {
+    color: #888;
+  }
 
-	a {
-		color: #888;
-	}
+  a:hover,
+  a:focus,
+  &.active > a {
+    color: #1a1a1a;
+  }
 }

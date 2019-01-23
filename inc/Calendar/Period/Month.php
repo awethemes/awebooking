@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Period;
 
 class Month extends Iterator_Period {

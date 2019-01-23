@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
@@ -18,7 +19,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Handle search rooms.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function search( Request $request ) {
@@ -51,7 +52,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Handle store new booking payment.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -104,7 +105,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Display the edit form.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
@@ -120,7 +121,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform update the room stay.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
@@ -141,7 +142,7 @@ class Booking_Room_Controller extends Controller {
 					$to_timespan = abrs_timespan( $request->get( 'change_check_in' ), $request->get( 'change_check_out' ), 1 );
 
 					if ( is_wp_error( $to_timespan ) ) {
-						abrs_admin_notices( $to_timespan->get_error_message(), 'error' );
+						abrs_flash_notices( $to_timespan->get_error_message(), 'error' );
 						return $this->redirect()->back( $redirect_fallback );
 					}
 
@@ -149,7 +150,7 @@ class Booking_Room_Controller extends Controller {
 					$changed = $room_item->change_timespan( $to_timespan );
 
 					if ( is_wp_error( $changed ) ) {
-						abrs_admin_notices( $changed->get_error_message(), 'error' );
+						abrs_flash_notices( $changed->get_error_message(), 'error' );
 						return $this->redirect()->back( $redirect_fallback );
 					}
 				}
@@ -174,7 +175,7 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform delete a booking room.
 	 *
-	 * @param  \Awethemes\Http\Request             $request   The current request.
+	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The room item instance.
 	 * @return mixed
 	 */
@@ -183,7 +184,7 @@ class Booking_Room_Controller extends Controller {
 
 		abrs_delete_booking_item( $room_item );
 
-		abrs_admin_notices( esc_html__( 'The booking room has been destroyed', 'awebooking' ), 'info' )->dialog();
+		abrs_flash_notices( esc_html__( 'The booking room has been destroyed', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $room_item->get( 'booking_id' ), 'raw' ) );
 	}

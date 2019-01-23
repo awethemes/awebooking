@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Traits;
 
 trait With_Reference {

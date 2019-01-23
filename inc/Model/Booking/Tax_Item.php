@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Booking;
 
 class Tax_Item extends Item {

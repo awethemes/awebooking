@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php endif ?>
 
 	<?php if ( abrs_multiple_hotels() && $res_request->get_hotel() ) : ?>
-		<input type="hidden" name="hotel" value="<?php echo esc_attr( $res_request->get_hotel()->get_id() ); ?>">
+		<input type="hidden" name="hotel" value="<?php echo esc_attr( $res_request->get_hotel() ); ?>">
 	<?php endif ?>
 
 	<input type="hidden" name="check_in" value="<?php echo esc_attr( $res_request->check_in ); ?>">

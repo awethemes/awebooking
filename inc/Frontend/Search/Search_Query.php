@@ -2,32 +2,10 @@
 
 namespace AweBooking\Frontend\Search;
 
-use AweBooking\Plugin;
-use Awethemes\Http\Request;
+use AweBooking\Availability\Request;
 use AweBooking\Availability\Constraints\Reservation_Constraint;
 
 class Search_Query {
-	/**
-	 * The plugin instance.
-	 *
-	 * @var \AweBooking\Plugin
-	 */
-	protected $plugin;
-
-	/**
-	 * The http request instance.
-	 *
-	 * @var \Awethemes\Http\Request
-	 */
-	protected $request;
-
-	/**
-	 * The errors.
-	 *
-	 * @var \WP_Error
-	 */
-	public $errors;
-
 	/**
 	 * The res request instance.
 	 *
@@ -43,26 +21,19 @@ class Search_Query {
 	public $results;
 
 	/**
-	 * Constructor.
+	 * The errors.
 	 *
-	 * @param \AweBooking\Plugin $plugin The plugin instance.
+	 * @var \WP_Error
 	 */
-	public function __construct( Plugin $plugin ) {
-		$this->plugin = $plugin;
-	}
+	public $errors;
 
 	/**
-	 * Prepare the query.
+	 * Constructor.
 	 *
-	 * @param \Awethemes\Http\Request $request The request instance.
-	 * @return $this
+	 * @param \AweBooking\Availability\Request $res_request
 	 */
-	public function prepare( Request $request ) {
-		$this->request = $request;
-
-		$this->plugin->instance( 'request', $request );
-
-		return $this;
+	public function __construct( Request $res_request ) {
+		$this->res_request = $res_request;
 	}
 
 	/**
@@ -77,6 +48,7 @@ class Search_Query {
 
 		if ( abrs_is_search_page() ) {
 			$this->setup_res_request();
+
 			$this->search_rooms();
 			$this->register_globals();
 
@@ -91,53 +63,47 @@ class Search_Query {
 	 * @return void
 	 */
 	public function setup_res_request() {
-		$request = $this->get_request();
+		$validate = $this->res_request->validate();
 
-		if ( ! $request->filled( 'check_in', 'check_out' ) &&
-			 ! $request->filled( 'check-in', 'check-out' ) ) {
+		if ( is_wp_error( $validate ) ) {
+			$this->errors = $validate;
 			return;
 		}
 
-		// Create the res_request.
-		$res_request = abrs_create_res_request( $request, true );
-
-		if ( is_wp_error( $res_request ) ) {
-			$this->errors = $res_request;
-			return;
-		}
-
-		// Setup the res_request.
-		$this->res_request = $res_request;
+		// TODO: ...
 		abrs_reservation()->set_current_request( $this->res_request );
 
-		do_action( 'setup_res_request', $res_request );
+		awebooking()->instance( Request::class, $this->res_request );
+
+		do_action( 'setup_res_request', $this->res_request );
 	}
 
 	/**
 	 * Perform search rooms.
 	 *
-	 * @return \AweBooking\Availability\Query_Results|null
+	 * @return void
 	 */
 	public function search_rooms() {
 		do_action( 'abrs_prepare_search', $this );
 
-		if ( ! $this->res_request ) {
-			return null;
+		if ( $this->is_error() ) {
+			return;
 		}
 
-		$request = $this->get_request();
-		$this->res_request['query_args'] = $request->only( 'hotel', 'only' );
+		$reservation = abrs_reservation();
 
 		$contraints = apply_filters( 'abrs_search_contraints', [
-			new Reservation_Constraint( $this->plugin['reservation'] ),
-		]);
+			new Reservation_Constraint( $reservation ),
+		] );
 
 		$this->results = $this->res_request
 			->add_contraints( $contraints )
 			->search();
 
 		// TODO: ...
-		switch ( $request->get( 'sortby', 'cheapest' ) ) {
+		$http_request = $this->res_request->get_http_request();
+
+		switch ( $http_request->get( 'sortby', 'cheapest' ) ) {
 			case 'cheapest':
 				$this->results->items = $this->results->get_items()->sortBy(function ( $item ) {
 					return $item['room_rate']->get_rate();
@@ -152,19 +118,6 @@ class Search_Query {
 		}
 
 		do_action( 'abrs_search_complete', $this );
-
-		return $this->results;
-	}
-
-	/**
-	 * Setup the search results to globals.
-	 *
-	 * @return void
-	 */
-	public function register_globals() {
-		$GLOBALS['abrs_query']   = $this;
-		$GLOBALS['res_request']  = $this->res_request;
-		$GLOBALS['abrs_results'] = $this->results;
 	}
 
 	/**
@@ -177,22 +130,13 @@ class Search_Query {
 	}
 
 	/**
-	 * Gets the plugin instance.
+	 * Setup the search results to globals.
 	 *
-	 * @return \AweBooking\Plugin
+	 * @return void
 	 */
-	public function get_plugin() {
-		return $this->plugin;
-	}
-
-	/**
-	 * Gets the http request instance.
-	 *
-	 * @return \Awethemes\Http\Request
-	 */
-	public function get_request() {
-		return ! is_null( $this->request )
-			? $this->request
-			: $this->plugin->make( 'request' );
+	public function register_globals() {
+		$GLOBALS['abrs_query']   = $this;
+		$GLOBALS['res_request']  = $this->res_request;
+		$GLOBALS['abrs_results'] = $this->results;
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Resource;
 
 use AweBooking\Support\Traits\Fluent_Getter;

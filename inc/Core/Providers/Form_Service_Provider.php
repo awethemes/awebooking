@@ -2,7 +2,7 @@
 
 namespace AweBooking\Core\Providers;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
 use AweBooking\Support\Service_Provider;

@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model;
 
 use Awethemes\WP_Object\WP_Object;

@@ -2,6 +2,7 @@
 
 namespace AweBooking\Frontend\Providers;
 
+use AweBooking\Availability\Request;
 use AweBooking\Checkout\Checkout;
 use AweBooking\Frontend\Search\Search_Query;
 use AweBooking\Reservation\Reservation;
@@ -29,6 +30,9 @@ class Reservation_Service_Provider extends Service_Provider {
 
 		$this->plugin->alias( 'checkout', Checkout::class );
 		$this->plugin->alias( 'reservation', Reservation::class );
+
+		$this->plugin->alias( Request::class, 'res_request' );
+		$this->plugin->alias( Request::class, 'reservation.request' );
 	}
 
 	/**
@@ -42,7 +46,7 @@ class Reservation_Service_Provider extends Service_Provider {
 		}
 
 		// Init the reservation hooks.
-		$this->plugin['reservation']->init();
+		$this->plugin->make( 'reservation' )->init();
 
 		// Init the search rooms.
 		add_action( 'wp', [ $this, 'init_search_rooms' ] );
@@ -59,8 +63,10 @@ class Reservation_Service_Provider extends Service_Provider {
 			return;
 		}
 
-		( new Search_Query( $this->plugin ) )
-			->prepare( $this->plugin['request'] )
-			->init();
+		$request = Request::create_from_request(
+			$this->plugin->make( 'request' )
+		);
+
+		( new Search_Query( $request ) )->init();
 	}
 }

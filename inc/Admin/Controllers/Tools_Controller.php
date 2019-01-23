@@ -2,7 +2,7 @@
 
 namespace AweBooking\Admin\Controllers;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Admin\Tools;
 
 class Tools_Controller extends Controller {
@@ -16,7 +16,7 @@ class Tools_Controller extends Controller {
 	/**
 	 * Display the tools page.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @param  string                  $tab     The current tab.
 	 * @return mixed
 	 */
@@ -31,7 +31,7 @@ class Tools_Controller extends Controller {
 	/**
 	 * Perform execute tools task.
 	 *
-	 * @param \Awethemes\Http\Request $request The http request.
+	 * @param \WPLibs\Http\Request $request The http request.
 	 * @return mixed
 	 */
 	public function execute( Request $request ) {
@@ -41,7 +41,7 @@ class Tools_Controller extends Controller {
 			$response = Tools::run( $request->task );
 
 			if ( ! is_wp_error( $response ) && isset( $response->message ) ) {
-				abrs_admin_notices( $response->message, 'info' );
+				abrs_flash_notices( $response->message, 'info' );
 			}
 		}
 
@@ -51,7 +51,7 @@ class Tools_Controller extends Controller {
 	/**
 	 * Output the tools content.
 	 *
-	 * @param \Awethemes\Http\Request $request The http request.
+	 * @param \WPLibs\Http\Request $request The http request.
 	 * @return void
 	 */
 	public function display_tools( Request $request ) {

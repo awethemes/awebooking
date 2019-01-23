@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model\Common;
 
 class Guest_Counts implements \ArrayAccess, \JsonSerializable {

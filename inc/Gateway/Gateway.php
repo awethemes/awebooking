@@ -195,7 +195,7 @@ abstract class Gateway {
 	 * Process payment.
 	 *
 	 * @param  \AweBooking\Model\Booking $booking The booking instance.
-	 * @param  \Awethemes\Http\Request   $request The http request.
+	 * @param  \WPLibs\Http\Request   $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 */
@@ -241,7 +241,7 @@ abstract class Gateway {
 	 * Validate frontend payment fields.
 	 *
 	 * @param  \AweBooking\Support\Fluent $data    The posted data.
-	 * @param  \Awethemes\Http\Request    $request The http request.
+	 * @param  \WPLibs\Http\Request    $request The http request.
 	 *
 	 * @return \WP_Error|bool
 	 */

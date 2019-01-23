@@ -11,7 +11,7 @@ class Scripts_Service_Provider extends Service_Provider {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 4 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ], 5 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9 );
 		add_action( 'wp_enqueue_scripts', 'abrs_localize_flatpickr', 1000 );
 	}
@@ -29,12 +29,18 @@ class Scripts_Service_Provider extends Service_Provider {
 		abrs_register_vendor_js();
 
 		// Core JS & CSS.
-		wp_register_style( 'awebooking', abrs_asset_url( 'css/awebooking.css' ), [ 'flatpickr', 'tippy' ], $version );
+		wp_register_style( 'awebooking', abrs_asset_url( 'css/awebooking.css' ), [ 'flatpickr', 'tippy', 'react-calendar' ], $version );
 		wp_register_style( 'awebooking-iconfont', abrs_asset_url( 'fonts/awebooking-webfont.css' ), [], $version );
 		wp_register_style( 'awebooking-colour', abrs_asset_url( 'css/awebooking-colour.css' ), [ 'awebooking-iconfont', 'awebooking' ], $version );
 		wp_register_script( 'awebooking', abrs_asset_url( 'js/awebooking' . $suffix . '.js' ), [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
-		wp_register_script( 'awebooking-search-form', abrs_asset_url( 'js/search-form' . $suffix . '.js' ), [ 'awebooking', 'knockout', 'jquery-spinner' ], $version, true );
 		wp_register_script( 'awebooking-checkout', abrs_asset_url( 'js/checkout' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
+
+		$deps = [ 'awebooking', 'knockout', 'moment' ];
+		if ( 'on' === abrs_get_option( 'use_experiment_style', 'off' ) ) {
+			$deps[] = 'react-calendar';
+		}
+
+		wp_register_script( 'awebooking-search-form', abrs_asset_url( 'js/search-form' . $suffix . '.js' ), $deps, $version, true );
 	}
 
 	/**
@@ -70,13 +76,13 @@ class Scripts_Service_Provider extends Service_Provider {
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
 			'route'      => abrs_route( '/' ),
 			'datepicker' => [
-				'minNights'   => abrs_get_option( 'display_datepicker_minnights' ),
-				'maxMights'   => abrs_get_option( 'display_datepicker_maxnights' ),
-				'minDate'     => abrs_get_option( 'display_datepicker_mindate' ),
-				'maxDate'     => abrs_get_option( 'display_datepicker_maxdate' ),
-				'disable'     => abrs_get_option( 'display_datepicker_disabledates' ),
-				'disableDays' => abrs_get_option( 'display_datepicker_disabledays' ),
-				'showMonths'  => abrs_get_option( 'display_datepicker_showmonths', 1 ),
+				'minNights'    => abrs_get_option( 'display_datepicker_minnights', 1 ),
+				'maxNights'    => abrs_get_option( 'display_datepicker_maxnights', 0 ),
+				'minDate'      => abrs_get_option( 'display_datepicker_mindate', 0 ),
+				'maxDate'      => abrs_get_option( 'display_datepicker_maxdate', 0 ),
+				'disableDates' => abrs_get_option( 'display_datepicker_disabledates', '' ),
+				'disableDays'  => abrs_get_option( 'display_datepicker_disabledays', [] ),
+				'showMonths'   => abrs_get_option( 'display_datepicker_showmonths', 1 ),
 			],
 		]);
 

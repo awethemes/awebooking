@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Component\Routing;
 
 use Closure;

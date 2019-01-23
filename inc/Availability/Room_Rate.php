@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Availability;
 
 use AweBooking\Constants;
@@ -6,11 +7,10 @@ use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
 use AweBooking\Support\Traits\Fluent_Getter;
-use AweBooking\Deprecated\Availability\Room_Rate_Deprecated;
 
 class Room_Rate {
 	use Fluent_Getter,
-		Room_Rate_Deprecated;
+		Deprecated\Room_Rate;
 
 	/**
 	 * The res request.

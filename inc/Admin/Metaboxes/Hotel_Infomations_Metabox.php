@@ -3,7 +3,7 @@
 namespace AweBooking\Admin\Metaboxes;
 
 use AweBooking\Constants;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Hotel;
 use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Hotel_Information_Form;
@@ -47,7 +47,7 @@ class Hotel_Infomations_Metabox extends Metabox {
 	 * Handle save the the metabox.
 	 *
 	 * @param \WP_Post                $post    The WP_Post object instance.
-	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
 		$hotel = new Hotel( $post->ID );
@@ -61,7 +61,7 @@ class Hotel_Infomations_Metabox extends Metabox {
 		$saved = $hotel->save();
 
 		if ( $saved ) {
-			abrs_admin_notices( esc_html__( 'Successfully updated', 'awebooking' ), 'success' )->dialog();
+			abrs_flash_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 }

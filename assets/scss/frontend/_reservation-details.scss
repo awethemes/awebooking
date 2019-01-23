@@ -1,0 +1,179 @@
+$reservation-border-radius: 1px;
+
+// Reservation
+.reservation-goto-checkout {
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+}
+
+.reservation {
+	padding: 0;
+	border-radius: $reservation-border-radius;
+	background-color: $white;
+	box-shadow: 0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.05);
+
+	&__title {
+		@include sr-only;
+	}
+
+	&__section {
+		padding: 1em;
+	}
+
+  &__section--dates {
+    border-bottom: solid 1px $border-color;
+  }
+
+  &__empty {
+    color: $gray-600;
+    padding: 1em;
+    text-align: center;
+
+    > span {
+      color: $gray-400;
+      display: block;
+      line-height: 1;
+      font-size: 2em;
+    }
+
+    > p {
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+  }
+
+  dl {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    &:not(:last-child) {
+      border-bottom: solid 1px $gray-100;
+    }
+  }
+
+  dt {
+    width: 60%;
+    float: left;
+    clear: left;
+    font-weight: normal;
+    box-sizing: border-box;
+  }
+
+  dd {
+    margin: 0;
+    margin-left: 60%;
+    text-align: right;
+    box-sizing: border-box;
+  }
+}
+
+.reservation__section {
+  &--totals {
+    background-color: #f7f7f7;
+    border-top: solid 1px $border-color;
+    border-bottom-left-radius: $reservation-border-radius;
+    border-bottom-right-radius: $reservation-border-radius;
+
+    .awebooking-price {
+      font-weight: 700;
+    }
+  }
+}
+
+// Reservation dates.
+.reservation-dates {
+  display: block;
+  align-items: unset;
+  justify-content: unset;
+  text-align: center;
+
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.reservation-date {
+	&__title {
+    color: $gray-600;
+    font-size: .75em;
+    display: block;
+    margin-bottom: .3em;
+    text-transform: uppercase;
+  }
+
+	&__date {
+		position: relative;
+    padding-left: 1em;
+    margin-bottom: 0;
+
+    @include media-breakpoint-up(xl) {
+      padding-left: 4em;
+    }
+
+	}
+
+	&__day {
+		top: 50%;
+    left: 0;
+    position: absolute;
+    transform: translateY(-50%);
+    font-size: 3em;
+    line-height: 1;
+  }
+
+  &__arrow {
+    font-size: 2em;
+    line-height: 1;
+  }
+
+	&__week,
+	&__year {
+		display: block;
+	}
+
+	&__time {
+    color: $gray-600;
+    font-size: .85em;
+    display: block;
+	}
+}
+
+// Room details.
+.roomdetails-room {
+  margin-bottom: .75em;
+
+	&__content {
+		padding: 1em;
+	}
+
+	&__list {
+		margin: 0;
+	}
+
+	&__title {
+		float: left;
+		clear: left;
+		font-size: 1em;
+		width: 7em;
+	}
+
+	&__text {
+		margin: 0;
+		margin-left: 8em;
+
+		&:after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+	}
+
+	&__title,
+	&__text {
+		margin-bottom: .2em;
+	}
+}

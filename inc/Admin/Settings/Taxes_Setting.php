@@ -1,7 +1,8 @@
 <?php
+
 namespace AweBooking\Admin\Settings;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 
 class Taxes_Setting extends Abstract_Setting {
 	/**

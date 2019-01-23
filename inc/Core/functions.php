@@ -63,7 +63,7 @@ function abrs_multilingual() {
 /**
  * Returns the Http request.
  *
- * @return \Awethemes\Http\Request
+ * @return \WPLibs\Http\Request
  */
 function abrs_http_request() {
 	return awebooking()->make( 'request' );
@@ -117,7 +117,7 @@ function abrs_mailer( $email = null ) {
  *
  * @param  string|null $key     Optional, get a specified session key.
  * @param  mixed       $default Optional, default value if $key is not exists.
- * @return \Awethemes\WP_Session\WP_Session|mixed
+ * @return \WPLibs\Session\WP_Session|mixed
  */
 function abrs_session( $key = null, $default = null ) {
 	return is_null( $key )
@@ -130,7 +130,7 @@ function abrs_session( $key = null, $default = null ) {
  *
  * @param  string $message The notice message.
  * @param  string $level   The notice level.
- * @return \AweBooking\Component\Flash\Flash_Notifier
+ * @return \WPLibs\Session\Flash\Flash_Notifier
  */
 function abrs_flash( $message = null, $level = 'info' ) {
 	$flash = awebooking()->make( 'flash' );
@@ -376,14 +376,14 @@ function abrs_get_translatable_options() {
 		'email_cancelled_subject',
 		'email_cancelled_content',
 
-		'email_reserved_booking_subject',
-		'email_reserved_booking_content',
+		'email_reserved_subject',
+		'email_reserved_content',
 
-		'email_processing_booking_subject',
-		'email_processing_booking_content',
+		'email_processing_subject',
+		'email_processing_content',
 
-		'email_completed_booking_subject',
-		'email_completed_booking_content',
+		'email_completed_subject',
+		'email_completed_content',
 
 		'email_customer_note_subject',
 		'email_customer_note_content',
@@ -812,6 +812,8 @@ function abrs_handle_buffering_exception( $e, $ob_level, $callback = null ) {
 		ob_end_clean();
 	}
 
+	abrs_report( $e );
+
 	// When current site in DEBUG mode, just throw that exception.
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		throw $e;
@@ -829,21 +831,54 @@ function abrs_handle_buffering_exception( $e, $ob_level, $callback = null ) {
  * @return void
  */
 function abrs_register_vendor_js() {
+	global $wp_version;
+
 	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+	if ( version_compare( $wp_version, '5.0', '<' ) ) {
+		$fallback_vendors = [
+			'react'     => [ 'wp-polyfill' ],
+			'react-dom' => [ 'react' ],
+			'moment',
+			'lodash',
+			'wp-polyfill',
+		];
+
+		$fallback_vendors_version = [
+			'react'       => '16.6.3',
+			'react-dom'   => '16.6.3',
+			'moment'      => '2.22.2',
+			'lodash'      => '4.17.11',
+			'wp-polyfill' => '7.0.0',
+		];
+
+		foreach ( $fallback_vendors as $handle => $dependencies ) {
+			if ( is_string( $dependencies ) ) {
+				$handle       = $dependencies;
+				$dependencies = [];
+			}
+
+			$src     = abrs_asset_url( "/vendor/fallback/$handle$min.js" );
+			$version = $fallback_vendors_version[ $handle ];
+
+			wp_register_script( $handle, $src, $dependencies, $version, true );
+		}
+
+		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();' );
+	}
+
 	wp_register_script( 'js-cookie', abrs_asset_url( 'vendor/js-cookie/js.cookie.js' ), [], '2.2.0' );
 	wp_register_script( 'knockout', abrs_asset_url( 'vendor/knockout/knockout-latest' . ( $min ? '' : '.debug' ) . '.js' ), [], '3.4.2' );
-	wp_register_script( 'moment', abrs_asset_url( 'vendor/moment/moment' . $min . '.js' ), [], '2.22.2' );
-	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper.js/popper' . $min . '.js' ), [], '1.14.3' );
+	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper-js/popper' . $min . '.js' ), [], '1.14.3' );
 	wp_register_script( 'sortable', abrs_asset_url( 'vendor/sortable/Sortable' . $min . '.js' ), [], '1.7.0' );
 	wp_register_script( 'a11y-dialog', abrs_asset_url( 'vendor/a11y-dialog/a11y-dialog' . $min . '.js' ), [], '5.1.2' );
 
 	wp_register_style( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr.css' ), [], '4.5.1' );
 	wp_register_script( 'flatpickr', abrs_asset_url( 'vendor/flatpickr/flatpickr' . $min . '.js' ), [], '4.5.1', true );
 
-	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.css' ), [], '2.5.4' );
-	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy.js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.5.4', true );
+	wp_register_style( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.css' ), [], '2.6.0' );
+	wp_register_script( 'tippy', abrs_asset_url( 'vendor/tippy-js/tippy.standalone' . $min . '.js' ), [ 'popper' ], '2.6.0', true );
 
 	wp_register_style( 'selectize', abrs_asset_url( 'vendor/selectize/selectize.css' ), [], '0.12.6' );
 	wp_register_script( 'selectize', abrs_asset_url( 'vendor/selectize/selectize' . $min . '.js' ), [], '0.12.6', true );
@@ -851,8 +886,11 @@ function abrs_register_vendor_js() {
 	wp_register_style( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.css' ), [], '7.25.6' );
 	wp_register_script( 'sweetalert2', abrs_asset_url( 'vendor/sweetalert2/sweetalert2' . $min . '.js' ), [], '7.25.6', true );
 
-	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery.spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
+	wp_register_script( 'jquery-spinner', abrs_asset_url( 'vendor/jquery-spinner/jquery.spinner' . $min . '.js' ), [ 'jquery' ], '0.2.1', true );
 	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
+
+	wp_register_style( 'react-calendar', abrs_asset_url( 'css/react-datepicker' . $min . '.css' ), [], '1.0.0' );
+	wp_register_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'lodash' ], '1.0.0', true );
 }
 
 /**

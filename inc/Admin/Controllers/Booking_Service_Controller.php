@@ -1,8 +1,9 @@
 <?php
+
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use AweBooking\Model\Service;
 use AweBooking\Model\Booking\Service_Item;
 
@@ -17,7 +18,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Handle create new service.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function create( Request $request ) {
@@ -31,7 +32,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Handle store new booking service.
 	 *
-	 * @param  \Awethemes\Http\Request $request The current request.
+	 * @param  \WPLibs\Http\Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
@@ -109,7 +110,7 @@ class Booking_Service_Controller extends Controller {
 	/**
 	 * Perform delete a service item.
 	 *
-	 * @param  \Awethemes\Http\Request                $request      The current request.
+	 * @param  \WPLibs\Http\Request                $request      The current request.
 	 * @param  \AweBooking\Model\Booking\Service_Item $service_item The booking service item.
 	 * @return mixed
 	 */
@@ -118,7 +119,7 @@ class Booking_Service_Controller extends Controller {
 
 		abrs_delete_booking_item( $service_item );
 
-		abrs_admin_notices( esc_html__( 'The service has been destroyed!', 'awebooking' ), 'info' )->dialog();
+		abrs_flash_notices( esc_html__( 'The service has been destroyed!', 'awebooking' ), 'info' )->dialog();
 
 		return $this->redirect()->back( get_edit_post_link( $service_item['booking_id'], 'raw' ) );
 	}

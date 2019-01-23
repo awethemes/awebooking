@@ -1,0 +1,108 @@
+$input-bg:                 #fff !default;
+$input-disabled-bg:        #f2f5f7 !default;
+$input-color:              $base-color !default;
+$input-border-color:       $border-color !default;
+$input-focus-border-color: darken($input-border-color, 7%) !default;
+$input-font-size:          1em !default;
+$input-padding-size:       0.5em 0.75em !default;
+
+.form-input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(2.25em + 2px);
+
+  line-height: 1.25;
+  padding: $input-padding-size;
+  font-size: $input-font-size;
+  color: $input-color;
+  border: 1px solid $input-border-color;
+  background-clip: padding-box;
+  background-color: $input-bg;
+
+  border-radius: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .075);
+  transition: border 0.3s ease;
+
+  &:focus {
+    outline: 0;
+    background-color: $input-bg;
+    border-color: $input-focus-border-color;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  }
+
+  &::placeholder {
+    opacity: 0.5;
+    color: inherit;
+  }
+
+  &:disabled,
+  &[readonly] {
+    opacity: 1;
+    background-color: $input-disabled-bg;
+  }
+
+  &::-ms-expand {
+    border: 0;
+    background-color: transparent;
+  }
+}
+
+select.form-input {
+  &[size],
+  &[multiple] {
+    height: auto;
+  }
+
+  &:focus::-ms-value {
+    color: $input-color;
+    background-color: $input-bg;
+  }
+}
+
+textarea.form-input {
+  height: auto;
+}
+
+.cmb2_select,
+.cmb2_textarea,
+.regular-text {
+  @extend .form-input
+}
+
+
+.input-transparent {
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  background-color: transparent !important;
+
+  color: $input-color;
+  font-size: $font-size-base;
+  line-height: 1;
+
+  &:focus {
+    outline: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  &:disabled,
+  &[readonly] {
+    opacity: 1;
+  }
+
+  &::placeholder {
+    opacity: 1;
+    color: $input-placeholder-color;
+  }
+}
+
+select.input-transparent {
+  appearance: none;
+}

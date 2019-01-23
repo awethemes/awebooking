@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Admin\Calendar;
 
 use AweBooking\Constants;
@@ -7,7 +8,7 @@ use AweBooking\Calendar\Scheduler;
 use AweBooking\Calendar\Event\Core\State_Event;
 use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Calendar\Provider\Aggregate_Provider;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 
 class Booking_Scheduler extends Abstract_Scheduler {
 	/**

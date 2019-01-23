@@ -6,6 +6,7 @@ use AweBooking\Constants;
 use AweBooking\Support\Service_Provider;
 use AweBooking\Admin\List_Tables\Booking_List_Table;
 use AweBooking\Admin\List_Tables\Room_Type_List_Table;
+use AweBooking\Admin\List_Tables\Service_List_Table;
 
 class Post_Types_Service_Provider extends Service_Provider {
 	/**
@@ -45,6 +46,10 @@ class Post_Types_Service_Provider extends Service_Provider {
 
 			case 'edit-awebooking':
 				$this->plugin->make( Booking_List_Table::class );
+				break;
+
+			case 'edit-hotel_service':
+				$this->plugin->make( Service_List_Table::class );
 				break;
 		}
 	}

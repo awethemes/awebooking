@@ -7,7 +7,7 @@ use AweBooking\Model\Room;
 use AweBooking\Model\Room_Type;
 use AweBooking\Admin\Metabox;
 use AweBooking\Admin\Forms\Room_Type_Data_Form;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
 
 class Room_Type_Data_Metabox extends Metabox {
@@ -64,7 +64,7 @@ class Room_Type_Data_Metabox extends Metabox {
 	 * Handle save the the metabox.
 	 *
 	 * @param \WP_Post                $post    The WP_Post object instance.
-	 * @param \Awethemes\Http\Request $request The HTTP Request.
+	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
 		// Create the new room-type instance.
@@ -122,7 +122,7 @@ class Room_Type_Data_Metabox extends Metabox {
 
 		// Add successfully notice.
 		if ( $saved ) {
-			abrs_admin_notices( 'Successfully updated', 'success' )->dialog();
+			abrs_flash_notices( 'Successfully updated', 'success' )->dialog();
 		}
 	}
 

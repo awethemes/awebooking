@@ -218,7 +218,7 @@ class Reservation {
 		$this->current_request = $current_request;
 
 		if ( $hotel = $current_request->get_hotel() ) {
-			$this->hotel = $hotel->get_id();
+			$this->hotel = $hotel;
 		}
 
 		if ( $this->maybe_flush() ) {
@@ -295,11 +295,11 @@ class Reservation {
 	 */
 	public function store() {
 		if ( $this->current_request ) {
-			$this->store->put( 'previous_request', $this->current_request );
+			$this->store->put( 'previous_request', $this->current_request->to_array() );
 		}
 
 		$this->store->put( 'room_stays', $this->room_stays->to_array() );
-		$this->store->put( 'booked_rooms', $this->booked_rooms );
+		$this->store->put( 'booked_rooms', (array) $this->booked_rooms );
 		$this->store->put( 'booked_services', $this->get_services( true )->to_array() );
 		$this->store->put( 'reservation_hash', $this->generate_hash_id() );
 
@@ -314,11 +314,11 @@ class Reservation {
 	protected function restore_request() {
 		$previous_request = $this->store->get( 'previous_request' );
 
-		if ( ! $previous_request || ! $previous_request instanceof Request ) {
+		if ( ! $previous_request || ! is_array( $previous_request ) ) {
 			return;
 		}
 
-		$this->previous_request = $previous_request;
+		$this->previous_request = ( new Request() )->initialize( $previous_request );
 
 		do_action( 'abrs_res_request_restored', $this );
 	}

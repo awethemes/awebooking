@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Model;
 
 class Room extends Model {

@@ -25,12 +25,8 @@ if ( ! empty( $atts['only_room'] ) && is_numeric( $atts['only_room'] ) ) {
 
 ?>
 
-<div tabindex="0" class="searchbox__box searchbox__box--hotel">
+<div class="searchbox__box searchbox__box--hotel">
 	<div class="searchbox__box-wrap">
-		<div class="searchbox__box-icon">
-			<i class="aficon aficon-search"></i>
-		</div>
-
 		<div class="searchbox__box-line">
 			<label class="searchbox__box-label">
 				<span><?php esc_html_e( 'Hotel', 'awebooking' ); ?></span>

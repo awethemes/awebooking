@@ -37,17 +37,17 @@ do_action( 'abrs_print_notices' );
 
 ?>
 
-<div class="awebooking-page awebooking-page--search">
+<div class="awebooking-block awebooking-page awebooking-page--search">
 	<div class="search-rooms">
 
 		<?php while ( have_posts() ) : the_post(); // @codingStandardsIgnoreLine
 
 			do_action( 'abrs_before_search_content' );
 
-			if ( $abrs_query->is_error() ) {
-				abrs_get_template( 'search/error.php', [ 'errors' => $abrs_query->errors ] );
-			} elseif ( ! $res_request && ! $abrs_results ) {
+			if ( ! $res_request->get_parameter( 'check_in' ) && ! $res_request->get_parameter( 'check_out' ) ) {
 				abrs_get_template( 'search/welcome.php' );
+			} elseif ( $abrs_query->is_error() ) {
+				abrs_get_template( 'search/error.php', [ 'errors' => $abrs_query->errors ] );
 			} elseif ( ! $abrs_results->has_items() ) {
 				abrs_get_template( 'search/no-results.php' );
 			} else {

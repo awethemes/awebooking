@@ -1,10 +1,11 @@
 <?php
+
 namespace AweBooking\Admin\Settings;
 
 use AweBooking\Plugin;
 use AweBooking\Admin\Fluent_Settings;
 use AweBooking\Component\Form\Form;
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
 
 abstract class Abstract_Setting extends Form implements Setting {

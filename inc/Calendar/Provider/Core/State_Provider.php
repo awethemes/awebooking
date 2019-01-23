@@ -1,4 +1,5 @@
 <?php
+
 namespace AweBooking\Calendar\Provider\Core;
 
 use AweBooking\Calendar\Provider\DB_Provider;

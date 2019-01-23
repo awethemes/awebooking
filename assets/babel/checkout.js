@@ -1,21 +1,21 @@
-import $ from 'jquery';
+import $ from 'jquery'
 
-const SELECTED = 'selected';
+const SELECTED = 'selected'
 
 const Selector = {
-  ROOT:     '.payment-methods',
-  ITEM:     '.payment-method',
-  INPUT:    'input[type="radio"]',
+  ROOT: '.payment-methods',
+  ITEM: '.payment-method',
+  INPUT: 'input[type="radio"]',
   SELECTED: '.selected',
 }
 
-const _handleLabelClick = function(e) {
+const _handleLabelClick = function (e) {
   const element = e.currentTarget
-  const input   = element.querySelector(Selector.INPUT)
+  const input = element.querySelector(Selector.INPUT)
 
   // Prevent action on non-input.
   if (!input) {
-    return;
+    return
   }
 
   let triggerChange = true
@@ -42,28 +42,28 @@ const _handleLabelClick = function(e) {
   }
 }
 
-const _triggerPaymentMethod = function(e) {
+const _triggerPaymentMethod = function (e) {
   const input = e.currentTarget
   if (!input.checked) {
     return
   }
 
-  const root  = $(input).closest(Selector.ROOT)[0]
+  const root = $(input).closest(Selector.ROOT)[0]
   const event = $.Event('selected.awebooking.gateway', {
     relatedTarget: input
   })
 
-  $(root).trigger(event, input.value);
+  $(root).trigger(event, input.value)
 }
 
 $(function () {
   const $el = $('#payment-methods')
     .on('click', Selector.ITEM, _handleLabelClick)
-    .on('change', Selector.INPUT, _triggerPaymentMethod);
+    .on('change', Selector.INPUT, _triggerPaymentMethod)
 
   setTimeout(() => {
     $el.find(`${Selector.INPUT}:checked`)
-      .closest(Selector.ITEM)
-      .trigger('click')
+       .closest(Selector.ITEM)
+       .trigger('click')
   }, 0)
 })

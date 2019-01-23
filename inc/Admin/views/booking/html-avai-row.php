@@ -2,10 +2,6 @@
 
 list ($room_type, $room_rate ) = array_values( $avai );
 
-if ( $room_rate->has_error( 'zero_rate' ) ) {
-	return;
-}
-
 // Build the input prefix.
 $input_prefix = 'reservation[' . $room_type->get_id() . ']';
 
@@ -92,46 +88,29 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 	</td>
 
 	<td>
-		<?php if ( $room_rate->has_error() ) : ?>
+		<span class="abrs-badge abrs-badge--primary tippy" data-tippy-html="#js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
+			<?php abrs_price( $room_rate->get_rate() ); ?>
+		</span>
 
-			<?php
-			$reject_rate = $room_rate->rates_availability->excludes()->first();
+		<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_rate() ); ?>">
 
-			if ( $reject_rate && ! empty( $reject_rate['message'] ) ) {
-				$message = $reject_rate['message'];
-			} else {
-				$message = $room_rate->get_error_message();
-			}
+		<div class="book-actions">
+			<button class="button button-primary abrs-button" name="submit" value="<?php echo esc_attr( $room_type->get_id() ); ?>"><?php echo esc_html__( 'Book', 'awebooking' ); ?></button>
+		</div>
 
-			echo '<span class="tippy" title="' . esc_attr( $message ) . '"><span class="dashicons dashicons-flag"></span></span>';
-			?>
-
-		<?php else : ?>
-			<span class="abrs-badge abrs-badge--primary tippy" data-tippy-html="#js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
-				<?php abrs_price( $room_rate->get_rate() ); ?>
-			</span>
-
-			<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_rate() ); ?>">
-
-			<div class="book-actions">
-				<button class="button button-primary abrs-button" name="submit" value="<?php echo esc_attr( $room_type->get_id() ); ?>"><?php echo esc_html__( 'Book', 'awebooking' ); ?></button>
-			</div>
-
-			<div id="js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
-				<?php if ( $room_rate->breakdown ) : ?>
-				<table class="awebooking-table abrs-breakdown-table">
-					<tbody>
-						<?php foreach ( $room_rate->breakdown as $date => $amount ) : ?>
-							<tr>
-								<td class="abrs-text-left"><?php echo abrs_format_date( $date ); // WPCS: XSS OK. ?></td>
-								<td class="abrs-text-right"><?php abrs_price( $amount ); ?></td>
-							</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
-				<?php endif; ?>
-			</div>
-
-		<?php endif ?>
+		<div id="js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
+			<?php if ( $room_rate->breakdown ) : ?>
+			<table class="awebooking-table abrs-breakdown-table">
+				<tbody>
+					<?php foreach ( $room_rate->breakdown as $date => $amount ) : ?>
+						<tr>
+							<td class="abrs-text-left"><?php echo abrs_format_date( $date ); // WPCS: XSS OK. ?></td>
+							<td class="abrs-text-right"><?php abrs_price( $amount ); ?></td>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+			<?php endif; ?>
+		</div>
 	</td>
 </tr>

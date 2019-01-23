@@ -1,10 +1,9 @@
 <?php
 
-use AweBooking\Support\Collection;
-use AweBooking\Support\Debug\Dumper;
 use AweBooking\Support\Decimal;
 use AweBooking\Support\Fluent;
 use AweBooking\Support\Optional;
+use AweBooking\Support\Collection;
 
 if ( ! function_exists( 'dd' ) ) {
 	/**
@@ -15,7 +14,7 @@ if ( ! function_exists( 'dd' ) ) {
 	 */
 	function dd( ...$args ) {
 		foreach ( $args as $x ) {
-			( new Dumper )->dump( $x );
+			function_exists( 'dump' ) ? dump( $x ) : var_dump( $x );
 		}
 
 		die( 1 );
@@ -62,11 +61,11 @@ function abrs_collect( $value = null ) {
  * @return \AweBooking\Support\Decimal
  */
 function abrs_decimal( $amount = 0, $scale = null ) {
-	return abrs_rescue( function() use ( $amount, $scale ) {
+	return abrs_rescue( function () use ( $amount, $scale ) {
 		return Decimal::create( $amount, $scale );
 	}, function () { // @codingStandardsIgnoreLine
 		return Decimal::zero();
-	});
+	} );
 }
 
 /**
@@ -81,11 +80,11 @@ function abrs_decimal_raw( $amount, $scale = null ) {
 		return Decimal::zero();
 	}
 
-	return abrs_rescue( function() use ( $amount, $scale ) {
+	return abrs_rescue( function () use ( $amount, $scale ) {
 		return Decimal::from_raw_value( $amount, $scale );
 	}, function () { // @codingStandardsIgnoreLine
 		return Decimal::zero();
-	});
+	} );
 }
 
 /**
@@ -275,7 +274,7 @@ function abrs_valid_url( $path ) {
  */
 function abrs_set_time_limit( $limit = 0 ) {
 	if ( function_exists( 'set_time_limit' ) &&
-		false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
+	     false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) ) {
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
 }

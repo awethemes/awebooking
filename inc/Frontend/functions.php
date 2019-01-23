@@ -29,7 +29,7 @@ function abrs_reservation() {
  *
  * @param  string $message The notice message.
  * @param  string $level   The notice level.
- * @return \AweBooking\Component\Flash\Flash_Notifier
+ * @return \WPLibs\Session\Flash\Flash_Notifier
  */
 function abrs_add_notice( $message, $level = 'info' ) {
 	return abrs_flash( $message, $level );

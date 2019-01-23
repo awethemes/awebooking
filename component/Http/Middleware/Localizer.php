@@ -1,13 +1,13 @@
 <?php
 namespace AweBooking\Component\Http\Middleware;
 
-use Awethemes\Http\Request;
+use WPLibs\Http\Request;
 
 class Localizer {
 	/**
 	 * Handle the incoming request.
 	 *
-	 * @param \Awethemes\Http\Request $request The request instance.
+	 * @param \WPLibs\Http\Request $request The request instance.
 	 * @param \Closure                $next    Next.
 	 *
 	 * @return \Closure
