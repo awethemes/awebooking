@@ -75,7 +75,8 @@
     "sortablejs": "^1.8.1",
     "sweetalert2": "^7.33.1",
     "tippy.js": "2.6.0",
-    "waypoints": "^4.0.1"
+    "waypoints": "^4.0.1",
+    "jquery": "latest"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.0.0",

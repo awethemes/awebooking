@@ -1,8 +1,7 @@
-$searchbox-bg-color:         #fff !default;
-$searchbox-button-font-size: 1.1rem !default;
+$searchbox-bg-color: #fff !default;
+$searchbox-button-font-size: 1.1em !default;
 $searchbox-button-min-width: 130px !default;
-
-$searchbox-box--border:      200px !default;
+$searchbox-box--border: 200px !default;
 
 /* Searchbox Layout */
 .searchbox,
@@ -18,21 +17,23 @@ $searchbox-box--border:      200px !default;
   margin: 0;
   width: 100%;
   display: block;
+
+  [data-hotel="rangepicker"] {
+    display: none !important;
+  }
 }
 
 .searchbox__wrap {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  min-height: 1px;
-  position: relative;
+  flex-direction: column;
   backface-visibility: hidden;
+  position: relative;
+  min-height: 1px;
+  width: 100%;
 }
 
 .searchbox__box {
-  cursor: pointer;
   z-index: 5;
   position: relative;
 
@@ -45,417 +46,162 @@ $searchbox-box--border:      200px !default;
 .searchbox__box-wrap {
   z-index: 10;
   position: relative;
-  padding: 5px 0;
 }
 
-.searchbox__box-label,
-.searchbox--box-line-occupancy {
-  font-weight: 600;
-  margin-bottom: 0;
-
+// ...
+.searchbox__box-label {
+  color: #989898;
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.865em;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 5px;
+  text-align: left;
   @include text-truncate;
 }
 
-.searchbox__box-input {
-  line-height: 1;
-}
-
-.searchbox__box-icon {
-  width: 48px;
-  height: 48px;
-  line-height: 48px;
-
-  padding: 0;
-  margin: auto 0;
-  overflow: hidden;
-  display: inline-block;
-
-  color: #333;
-  font-size: 22px;
-  text-align: center;
-  vertical-align: middle;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 15;
-}
-
-.searchbox__box-line {
+.searchbox__input-display,
+.searchbox-occupancy-info,
+.searchbox__input.input-transparent {
+  color: #495057;
   display: block;
-  margin-left: 48px;
+  text-align: left;
+  font-size: 1em;
+  line-height: 1.4;
 }
 
-.searchbox__input.input-transparent,
-.searchbox__input-display {
-  line-height: 1;
-  display: inline-block;
+.searchbox-occupancy-info {
+  @include text-truncate;
 }
 
 .button--search.searchbox__submit {
   min-width: 130px;
 }
 
-.searchbox__input--hotel {
-  cursor: pointer;
-}
-
 .searchbox__box--occupancy {
   z-index: 6;
 }
 
-/* Styles */
-.searchbox--inline {
-  display: flex;
-
-  .searchbox__wrap {
-    width: auto;
-    display: inline-flex;
-  }
-}
-
-.searchbox--align-center {
-  &.searchbox--inline {
-    justify-content: center;
-  }
-
-  &:not(.searchbox--inline) .searchbox__wrap {
-    justify-content: center;
-  }
-}
-
-.searchbox--align-right {
-  &.searchbox--inline{
-    justify-content: flex-end;
-  }
-
-  &:not(.searchbox--inline) .searchbox__wrap {
-    justify-content: flex-end;
-  }
+.searchbox-occupancy-info__item:not(:last-child):after {
+  content: ',';
 }
 
 // Layout Horizontal
 .searchbox--horizontal {
   .searchbox__wrap {
     padding: 0;
-    border-radius: 1px;
-    background-color: transparent;
-
     flex-wrap: wrap;
-    flex-direction: column;
+    background-color: #fff;
 
     @include media-breakpoint-up(md) {
       flex-direction: row;
     }
-
-    @include media-breakpoint-up(lg) {
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
   }
 
   .searchbox__box {
-    padding: .3em;
-    margin: 0 0 12px;
+    flex-shrink: 1;
+  }
+
+  .searchbox__box-line {
+    padding: 10px;
+    border: solid 1px #dae1e7;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
     background-color: $searchbox-bg-color;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .searchbox__box:not(:last-child) {
+    margin-bottom: 12px;
   }
 
   .searchbox__box--button {
     padding: 0;
+
+    .searchbox__submit {
+      width: 100%;
+      min-height: 45px;
+      border-radius: 3px;
+    }
   }
 
-  .button.searchbox__submit {
-    width: 100%;
-  }
-
-  // Box width.
-  @include media-breakpoint-up(xl) {
+  @include media-breakpoint-only(md) {
     .searchbox__box--hotel {
-      flex: 0 0 20%;
-      max-width: 20%;
+      flex: 0 0 100%;
+      max-width: 100%;
     }
 
     .searchbox__box--checkin,
     .searchbox__box--checkout {
-      flex: 0 0 15%;
-      max-width: 15%;
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .searchbox__box--checkout {
+      left: -1px;
     }
 
     .searchbox__box--occupancy {
-      flex: 0 0 30%;
-      max-width: 30%;
+      flex: 0 0 50%;
+      max-width: 50%;
     }
 
     .searchbox__box--button {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox-occupancy-info {
-      font-size: 1em;
+      flex-grow: 1;
     }
   }
 
   @include media-breakpoint-up(lg) {
-    .searchbox__box--hotel {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox__box--checkin,
-    .searchbox__box--checkout {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox__box--occupancy {
-      flex: 0 0 25%;
-      max-width: 25%;
-    }
-
-    .searchbox-occupancy-info {
-      font-size: 0.75em;
-    }
-
     .searchbox__wrap {
+      flex-wrap: nowrap;
       align-items: center;
+      border: solid 1px #dae1e7;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
       background-color: $searchbox-bg-color;
-      padding: .3em;
-      box-shadow: 0 1px 4px 0 rgba(black, .08);
     }
 
-    .searchbox__box {
-      padding: 0;
-      margin: 0;
-      background-color: transparent;
+    .searchbox__box:not(:last-child) {
+      border-right: solid 1px #eee;
+      margin-bottom: 0;
+    }
+
+    .searchbox__box-line,
+    .searchbox__box--button .searchbox__box-wrap {
+      border: none;
       box-shadow: none;
+    }
 
-      &:not(:last-child) {
-        padding: 0 12px 0 0;
-        box-shadow: 1px 0 0 rgba(0,0,0,.07);
-      }
+    .searchbox__box--button .searchbox__box-wrap {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .searchbox__box--hotel {
+      flex-basis: 200px;
+    }
+
+    .searchbox__box--checkin,
+    .searchbox__box--checkout {
+      flex-basis: 175px;
     }
 
     .searchbox__box--button {
-      flex: 0 0 15%;
-      max-width: 15%;
-      text-align: center;
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    .searchbox__box--hotel {
-      flex: 0 0 100%;
-      max-width: 100%;
-    }
-
-    .searchbox__box--checkin,
-    .searchbox__box--checkout {
-      flex: 0 0 50%;
-      max-width: 50%;
-    }
-
-    .searchbox__box--occupancy {
-      flex: 0 0 50%;
-      max-width: 50%;
-    }
-
-    .searchbox__box--button {
-      flex: 0 0 50%;
-      max-width: 50%;
-      padding: 10px 0 10px 10px;
-    }
-
-    .button.searchbox__submit {
-      width: auto;
-    }
-  }
-}
-
-.searchbox--horizontal-agoda {
-  .searchbox__wrap {
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-
-  .searchbox__box-wrap {
-    margin: 0 5px 0 0;
-    padding: .3em;
-    background-color: #fff;
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
-  }
-
-  // Box width.
-  .searchbox__box--hotel {
-    // flex-grow: 1;
-  }
-
-  .searchbox__box--checkin .searchbox__box-wrap {
-    margin-right: 0;
-  }
-
-  .searchbox__box--button {
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
-    background-color: transparent;
-    min-width: 130px;
-
-    .searchbox__box-wrap {
-      padding: 0;
-      height: 100%;
-      margin-right: 0;
-    }
-  }
-
-  .button.searchbox__submit {
-    width: 100%;
-    height: 100%;
-    display: block;
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,.07);
-  }
-
-  // Box width.
-  @include media-breakpoint-up(xl) {
-    .searchbox__box--hotel {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox__box--checkin,
-    .searchbox__box--checkout {
-      flex: 0 0 15%;
-      max-width: 15%;
-    }
-
-    .searchbox__box--occupancy {
-      flex: 0 0 30%;
-      max-width: 30%;
-    }
-
-    .searchbox__box--button {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox-occupancy-info {
-      font-size: 1em;
-    }
-  }
-
-  @include media-breakpoint-up(lg) {
-    .searchbox__box--hotel {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox__box--checkin,
-    .searchbox__box--checkout {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
-
-    .searchbox__box--occupancy {
-      flex: 0 0 25%;
-      max-width: 25%;
-    }
-
-    .searchbox-occupancy-info {
-      font-size: 0.75em;
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    .searchbox__box--hotel {
-      flex: 0 0 100%;
-      max-width: 100%;
-    }
-
-    .searchbox__box--checkin,
-    .searchbox__box--checkout {
-      flex: 0 0 50%;
-      max-width: 50%;
-    }
-
-    .searchbox__box--occupancy {
-      flex: 0 0 50%;
-      max-width: 50%;
+      flex-grow: 1;
     }
   }
 }
 
 // Layout Vertical
-%vertical-searchbox-box {
-  padding: 0;
-  margin: 0 0 12px;
-  background-color: $searchbox-bg-color;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
-
-  &.searchbox__box--button {
-    box-shadow: none;
-    background-color: transparent;
-  }
-}
-
 .searchbox--vertical {
-  .searchbox__box {
-    @include make-col(12);
-    @extend %vertical-searchbox-box;
-  }
-
-  .button.searchbox__submit {
-    width: 100%;
-  }
-}
-
-.searchbox--vertical-agoda {
-  .searchbox__box {
-    height: 64px;
-    @extend %vertical-searchbox-box;
-  }
-
-  .searchbox__box--hotel {
-    @include make-col(12);
-  }
-  .searchbox__box--checkin,
-  .searchbox__box--checkout {
-    @include make-col(6);
-  }
-  .searchbox__box--occupancy {
-    @include make-col(8);
-  }
-  .searchbox__box--button {
-    @include make-col(4);
-  }
-
-  .searchbox__box:not(.searchbox__box--button) .searchbox__box-wrap {
-    padding: 8px 12px; // height 65px.
-  }
-  .searchbox__box--button .searchbox__box-wrap {
-    padding-left: 12px;
-  }
-
-  .searchbox__box-wrap {
-    //height: 100%;
-  }
-
-  .searchbox__box-icon {
-    top: 8px;
-    left: 12px;
-    font-size: 26px;
-  }
-
   .searchbox__box-line {
-    margin-left: 48px;
+    padding: 7px 12px;
+    margin: 0 0 12px;
+    border: solid 1px #dae1e7;
+    background-color: $searchbox-bg-color;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
   }
 
   .button.searchbox__submit {
     width: 100%;
-    //height: 100%;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: $searchbox-button-font-size;
   }
 }
 
@@ -463,11 +209,13 @@ $searchbox-box--border:      200px !default;
 .searchbox__popup {
   display: none;
   position: absolute;
-  width: 100%;
-  border: solid 1px #eee;
   top: 100%;
+  left: 0;
+  width: 100%;
+  border: solid 1px #ddd;
   background-color: #fff;
   box-sizing: border-box;
+  box-shadow: 1px 2px 3px rgba(0,0,0,.1);
   z-index: 1001;
 
   &.open {
@@ -475,20 +223,28 @@ $searchbox-box--border:      200px !default;
   }
 }
 
-.searchbox-occupancy-info {
-  font-size: 1rem
-}
+.searchbox__popup-item > label {
+  display: flex;
+  padding: 12px;
+  border-bottom: solid 1px #eee;
 
-.searchbox-occupancy-info__item {
-  &:not(:last-child):after {
-    content: ',';
+  > span {
+    flex-grow: 1;
+    display: block;
+  }
+
+  > input[type="number"] {
+    width: 50px;
+    align-items: flex-end;
+    margin: 0;
+    padding: 2px 5px;
+    line-height: 1.4;
+    border: solid 1px #dae1e7;
+    display: inline-block;
   }
 }
 
-.searchbox__input--hotel {
-  height: auto;
-}
-
+/* Remove late */
 .searchbox__spinner {
   padding: 10px 0 10px 48px;
 
@@ -561,4 +317,3 @@ input[type="number"].searchbox__spinner-input {
 .searchbox__spinner-button--decrement {
   bottom: 0;
 }
-

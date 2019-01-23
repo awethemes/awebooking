@@ -8416,10 +8416,6 @@ function Reference(props) {
 
 
  // Public types
-// EXTERNAL MODULE: ./node_modules/lodash/debounce.js
-var debounce = __webpack_require__("sEfC");
-var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce);
-
 // EXTERNAL MODULE: ./node_modules/react-dates/initialize.js
 var initialize = __webpack_require__("GG7f");
 
@@ -8558,23 +8554,23 @@ function _assertThisInitialized(self) {
 
 
 
-
 var defaultProps = {
   form: null,
   // required props for a functional interactive DateRangePicker
   startDate: null,
   endDate: null,
   focusedInput: null,
-  minDate: null,
-  maxDate: null,
-  startDateOffset: undefined,
-  endDateOffset: undefined,
+  minimumNights: 1,
+  maximumNights: 0,
+  minimumDateRange: 0,
+  maximumDateRange: 0,
+  disablePastDates: true,
+  disableFutureDates: false,
   withFullScreenPortal: false,
   displayFormat: 'DD MM YY',
   // calendar presentation and interaction related props
   numberOfMonths: 2,
   disabled: false,
-  minimumNights: 1,
   keepOpenOnDateSelect: false,
   isDayBlocked: function isDayBlocked() {
     return false;
@@ -8609,16 +8605,18 @@ function (_React$Component) {
     }
 
     _this.form = props.form;
+    var elements = _this.form.elements;
     _this.state = {
       focusedInput: null,
-      startDate: null,
-      endDate: null,
+      startDate: toMomentObject_default()(elements['check_in'].get()),
+      endDate: toMomentObject_default()(elements['check_out'].get()),
       isDayPickerFocused: false
     };
     _this.onDatesChange = _this.onDatesChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onFocusChange = _this.onFocusChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.isOutsideRange = _this.isOutsideRange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -8627,8 +8625,8 @@ function (_React$Component) {
     value: function componentDidMount() {
       this.getFormElement('check_in_alt').on('change', this.onStartDateChange.bind(this));
       this.getFormElement('check_out_alt').on('change', this.onEndDateChange.bind(this));
-      this.getFormElement('check_in_alt').on('focus', debounce_default()(this.onStartDateFocus.bind(this), 25));
-      this.getFormElement('check_out_alt').on('focus', debounce_default()(this.onEndDateFocus.bind(this), 25));
+      this.getFormElement('check_in_alt').on('focus', this.onStartDateFocus.bind(this));
+      this.getFormElement('check_out_alt').on('focus', this.onEndDateFocus.bind(this));
     }
   }, {
     key: "componentWillUnmount",
@@ -8671,6 +8669,8 @@ function (_React$Component) {
   }, {
     key: "onDatesChange",
     value: function onDatesChange(_ref) {
+      var _this2 = this;
+
       var startDate = _ref.startDate,
           endDate = _ref.endDate;
       var onChange = this.props.onChange;
@@ -8678,7 +8678,10 @@ function (_React$Component) {
         startDate: startDate,
         endDate: endDate
       }, function () {
-        return onChange({
+        var elements = _this2.form.elements;
+        elements['check_in'].set(startDate ? startDate.format(constants["ISO_FORMAT"]) : '');
+        elements['check_out'].set(endDate ? endDate.format(constants["ISO_FORMAT"]) : '');
+        onChange({
           startDate: startDate,
           endDate: endDate
         });
@@ -8897,23 +8900,67 @@ function (_React$Component) {
       return referenceElement.closest('.searchbox__box')[0];
     }
   }, {
+    key: "isOutsideRange",
+    value: function isOutsideRange(day) {
+      var _this$state2 = this.state,
+          startDate = _this$state2.startDate,
+          focusedInput = _this$state2.focusedInput;
+      var _this$props5 = this.props,
+          disablePastDates = _this$props5.disablePastDates,
+          disableFutureDates = _this$props5.disableFutureDates,
+          maximumNights = _this$props5.maximumNights,
+          isOutsideRange = _this$props5.isOutsideRange,
+          minimumDateRange = _this$props5.minimumDateRange,
+          maximumDateRange = _this$props5.maximumDateRange;
+      var today = external_moment_default()();
+
+      if (startDate && focusedInput === 'endDate' && day.isBefore(startDate, 'day')) {
+        return true;
+      }
+
+      if (disablePastDates && today.isAfter(day, 'day')) {
+        return true;
+      }
+
+      if (disableFutureDates && today.isBefore(day, 'day')) {
+        return true;
+      }
+
+      if (maximumNights && startDate) {
+        var maxDate = startDate.clone().add(maximumNights, 'day');
+
+        if (focusedInput === 'endDate' && maxDate.isBefore(day)) {
+          return true;
+        }
+      }
+
+      if (minimumDateRange > 0 || maximumDateRange > 0) {
+        return !Object(react_dates["isInclusivelyAfterDay"])(day, today.clone().add(minimumDateRange, 'days')) || maximumDateRange && Object(react_dates["isInclusivelyAfterDay"])(day, today.clone().add(maximumDateRange, 'days'));
+      }
+
+      if (isOutsideRange) {
+        return isOutsideRange(day);
+      }
+
+      return false;
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var _this$state2 = this.state,
-          focusedInput = _this$state2.focusedInput,
-          startDate = _this$state2.startDate,
-          endDate = _this$state2.endDate,
-          isDayPickerFocused = _this$state2.isDayPickerFocused;
-      var _this$props5 = this.props,
-          disabled = _this$props5.disabled,
-          numberOfMonths = _this$props5.numberOfMonths,
-          minimumNights = _this$props5.minimumNights,
-          keepOpenOnDateSelect = _this$props5.keepOpenOnDateSelect,
-          isDayBlocked = _this$props5.isDayBlocked,
-          isDayHighlighted = _this$props5.isDayHighlighted,
-          isOutsideRange = _this$props5.isOutsideRange;
+      var _this$state3 = this.state,
+          focusedInput = _this$state3.focusedInput,
+          startDate = _this$state3.startDate,
+          endDate = _this$state3.endDate,
+          isDayPickerFocused = _this$state3.isDayPickerFocused;
+      var _this$props6 = this.props,
+          disabled = _this$props6.disabled,
+          numberOfMonths = _this$props6.numberOfMonths,
+          minimumNights = _this$props6.minimumNights,
+          keepOpenOnDateSelect = _this$props6.keepOpenOnDateSelect,
+          isDayBlocked = _this$props6.isDayBlocked,
+          isDayHighlighted = _this$props6.isDayHighlighted;
       var modifiers = {
         preventOverflow: {
           enabled: false
@@ -8931,7 +8978,7 @@ function (_React$Component) {
       return focusedInput && external_React_default.a.createElement(react_outside_click_handler_default.a, {
         onOutsideClick: this.onOutsideClick
       }, external_React_default.a.createElement(Popper, {
-        placement: "bottom",
+        placement: "bottom-end",
         referenceElement: this.getReferenceElement(focusedInput),
         modifiers: modifiers
       }, function (_ref2) {
@@ -8945,24 +8992,24 @@ function (_React$Component) {
           style: style,
           "data-placement": placement
         }, external_React_default.a.createElement("div", {
-          classID: "DayPickerPopper__Arrow",
+          className: "DayPickerPopper__Arrow",
           ref: arrowProps.ref,
           style: arrowProps.style
         }), external_React_default.a.createElement(react_dates["DayPickerRangeController"], {
           endDate: endDate,
           startDate: startDate,
           focusedInput: focusedInput,
-          onDatesChange: _this2.onDatesChange,
-          onFocusChange: _this2.onFocusChange,
+          onDatesChange: _this3.onDatesChange,
+          onFocusChange: _this3.onFocusChange,
           disabled: disabled,
           numberOfMonths: numberOfMonths,
           minimumNights: minimumNights,
           keepOpenOnDateSelect: keepOpenOnDateSelect,
           isDayBlocked: isDayBlocked,
           isDayHighlighted: isDayHighlighted,
-          isOutsideRange: isOutsideRange,
+          isOutsideRange: _this3.isOutsideRange,
           isFocused: isDayPickerFocused,
-          onBlur: _this2.onDayPickerBlur,
+          onBlur: _this3.onDayPickerBlur,
           hideKeyboardShortcutsPanel: true // onClose={onClose}
 
         }));
@@ -8974,18 +9021,14 @@ function (_React$Component) {
 }(external_React_default.a.Component);
 calendar_DatePicker.defaultProps = defaultProps;
 function createDatePicker(searchform, props) {
-  var root = searchform.getRootElement().querySelector('.searchbox__dates');
-
-  if (!root) {// ...
-  }
-
+  var root = searchform.getRootElement().querySelector('.ar-searchbox__dates');
   return external_ReactDOM_default.a.render(external_React_default.a.createElement(calendar_DatePicker, _extends({
     form: searchform
   }, props)), root);
 }
 
 (function () {
-  window.createDatePicker = createDatePicker;
+  window.createReactDatePicker = createDatePicker;
 })();
 
 /***/ }),

@@ -61,14 +61,14 @@ function ensureElement(element) {
 /**
  * //
  *
- * @param {mixed} a
- * @param {mixed} b
- * @return {bool}
+ * @param {*} a
+ * @param {*} b
+ * @return {boolean}
  */
 function isEquals(a, b) {
   const underscore = window._ || window.lodash
 
-  if (underscore) {
+  if (typeof underscore !== 'undefined') {
     return underscore.isEqual(a, b)
   }
 
@@ -110,8 +110,9 @@ export default class Control {
     // Set the value from the input.
     $.extend(this, _synchronizer)
 
-    if (typeof this.initialize === 'function') {
-      this.initialize.apply(this, arguments)
+    const _initialize = this.initialize || void 0
+    if (typeof _initialize === 'function') {
+      _initialize.apply(this, arguments)
     }
 
     // Overwire some update & refresh methods.
@@ -149,7 +150,7 @@ export default class Control {
   /**
    * Get the value.
    *
-   * @return {mixed}
+   * @return {*}
    */
   get() {
     return this._value
@@ -158,7 +159,7 @@ export default class Control {
   /**
    * Set the value and trigger all bound callbacks.
    *
-   * @param {mixed} to New value.
+   * @param {*} to New value.
    */
   set(to) {
     const from = this._value
@@ -182,7 +183,7 @@ export default class Control {
   /**
    * Validate the value and return the sanitized value.
    *
-   * @param {mixed} value
+   * @param {*} value
    * @return {*}
    */
   validate(value) {

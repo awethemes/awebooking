@@ -11,7 +11,7 @@
 }
 
 .roommaster-header {
-	padding: .3rem 15px;
+	padding: .3em 15px;
 	border-bottom: solid 1px $gray-200;
 	position: relative;
 
@@ -51,7 +51,7 @@
 	&__list {
 		list-style: none;
 		margin: 0;
-		padding: 0.3rem 0;
+		padding: 0.3em 0;
 
 		.info-item {
 			position: relative;
@@ -151,7 +151,7 @@
 
 .roommaster-detail {
 	border-top: 1px solid $gray-500;
-	padding: 1.2rem .8em;
+	padding: 1.2em .8em;
 }
 
 .roommaster-occupancy-list {
@@ -174,7 +174,7 @@
 		position: relative;
 		cursor: pointer;
 		display: inline-block;
-		padding: .8rem 1.2em;
+		padding: .8em 1.2em;
 
 		+ li {
 			margin-left: 1.2em;

@@ -1,16 +1,16 @@
 // Core template Layout.
-.searchbox,
-.searchbox__wrap,
-.searchbox__box,
-.searchbox__box-wrap,
-.searchbox__box-icon,
-.searchbox__box-child {
+.abrs-searchbox,
+.abrs-searchbox__wrap,
+.abrs-searchbox__box,
+.abrs-searchbox__box-wrap,
+.abrs-searchbox__box-icon,
+.abrs-searchbox__box-child {
   box-sizing: border-box;
 }
 
-// Input and Button need to wrap in the .searchbox
-.searchbox {
-  .searchbox__input {
+// Input and Button need to wrap in the .abrs-searchbox
+.abrs-searchbox {
+  .abrs-searchbox__input {
     margin: 0;
 
     &[readonly] {
@@ -18,12 +18,12 @@
     }
   }
 
-  .searchbox__submit:focus {
+  .abrs-searchbox__submit:focus {
     outline: 0;
   }
 }
 
-.searchbox__box-label {
+.abrs-searchbox__box-label {
   font-size: 0.875em;
   font-weight: 600;
   display: block;
@@ -33,34 +33,34 @@
 }
 
 // Vertical layout.
-.searchbox--vertical {
-  .searchbox__wrap > .searchbox__box,
-  .searchbox__wrap > .searchbox__group {
+.abrs-searchbox--vertical {
+  .abrs-searchbox__wrap > .abrs-searchbox__box,
+  .abrs-searchbox__wrap > .abrs-searchbox__group {
     margin-bottom: 1em;
   }
 
-  .searchbox__submit {
+  .abrs-searchbox__submit {
     width: 100%;
     display: block;
   }
 }
 
 // Horizontal layout.
-.searchbox--horizontal {
-  .searchbox__wrap {
+.abrs-searchbox--horizontal {
+  .abrs-searchbox__wrap {
     border-radius: 1px;
     border: solid 1px #dae1e7;
     box-shadow: 0 1px 1px rgba(0,0,0,.075);
     background-color: #fff;
   }
 
-  .searchbox__wrap > .searchbox__box,
-  .searchbox__wrap > .searchbox__group {
+  .abrs-searchbox__wrap > .abrs-searchbox__box,
+  .abrs-searchbox__wrap > .abrs-searchbox__group {
     padding: 0.75em 0.75em 0;
   }
 
-  .searchbox__wrap,
-  .searchbox__group-wrap {
+  .abrs-searchbox__wrap,
+  .abrs-searchbox__group-wrap {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -73,18 +73,18 @@
     backface-visibility: hidden;
   }
 
-  .searchbox__wrap > .searchbox__box,
-  .searchbox__wrap > .searchbox__group,
-  .searchbox__group-wrap .searchbox__box {
+  .abrs-searchbox__wrap > .abrs-searchbox__box,
+  .abrs-searchbox__wrap > .abrs-searchbox__group,
+  .abrs-searchbox__group-wrap .abrs-searchbox__box {
     flex-grow: 1;
     flex-basis: 0;
   }
 
-  .searchbox__box-label {
+  .abrs-searchbox__box-label {
     color: #9e9e9e;
   }
 
-  .searchbox__input {
+  .abrs-searchbox__input {
     color: inherit;
     width: 100%;
     display: block;
@@ -100,7 +100,7 @@
     }
   }
 
-  .searchbox__submit {
+  .abrs-searchbox__submit {
     align-self: center;
     margin-right: 0.75em;
   }

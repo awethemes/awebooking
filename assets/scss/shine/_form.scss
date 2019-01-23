@@ -63,3 +63,46 @@ select.form-input {
 textarea.form-input {
   height: auto;
 }
+
+.cmb2_select,
+.cmb2_textarea,
+.regular-text {
+  @extend .form-input
+}
+
+
+.input-transparent {
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  background-color: transparent !important;
+
+  color: $input-color;
+  font-size: $font-size-base;
+  line-height: 1;
+
+  &:focus {
+    outline: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  &:disabled,
+  &[readonly] {
+    opacity: 1;
+  }
+
+  &::placeholder {
+    opacity: 1;
+    color: $input-placeholder-color;
+  }
+}
+
+select.input-transparent {
+  appearance: none;
+}

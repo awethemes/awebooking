@@ -1,7 +1,7 @@
 // Keywords: .disabled, .focus, .hover, .open
-$primary-color:    #f2f5f7;
-$base-color:       #3d4852;
-$border-color:     #dae1e7;
+$base-color: #3d4852;
+$primary-color: #f2f5f7;
+$border-color: #dae1e7;
 $background-color: #f2f5f7;
 
 // Import mixins, functions, etc.
@@ -27,8 +27,8 @@ $background-color: #f2f5f7;
 }
 
 // Import components under `.awebooking-block` namespace
-.awebooking-block,
-.awebooking-page {
+.awebooking,
+.awebooking-block {
   @import "shine/reset";
   @import "shine/form";
   @import "shine/button";
@@ -37,22 +37,20 @@ $background-color: #f2f5f7;
   @import "shine/card";
   @import "shine/datepicker";
   @import "shine/searchbox";
-
-  @import "shine/searchbox";
-
-  @import "frontend/elements/notices";
 }
 
+@import "frontend/elements/dialog";
+@import "frontend/elements/notices";
 @import "frontend/layout";
-
 @import "frontend/datepicker";
 @import "frontend/filterbox";
 @import "frontend/roommaster";
-@import "frontend/elements/dialog";
+@import "frontend/checkout";
 @import "frontend/elements/checkout";
-@import "frontend/elements/reservation-details";
-@import "frontend/elements/_checkout-services";
+@import "frontend/reservation-details";
+@import "frontend/_checkout-services";
+@import "frontend/searchbox";
 @import "frontend/search-page";
 @import "frontend/list-rooms";
-@import "frontend/single-room";
 @import "frontend/list-hotels";
+@import "frontend/single-room";

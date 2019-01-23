@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import OutsideClickHandler from 'react-outside-click-handler'
 import moment from 'moment'
 import { Popper } from 'react-popper'
-import debounce from 'lodash/debounce'
 
 import 'react-dates/initialize'
 import isBeforeDay from 'react-dates/lib/utils/isBeforeDay'
@@ -20,10 +19,12 @@ const defaultProps = {
   endDate: null,
   focusedInput: null,
 
-  minDate: null,
-  maxDate: null,
-  startDateOffset: undefined,
-  endDateOffset: undefined,
+  minimumNights: 1,
+  maximumNights: 0,
+  minimumDateRange: 0,
+  maximumDateRange: 0,
+  disablePastDates: true,
+  disableFutureDates: false,
 
   withFullScreenPortal: false,
   displayFormat: 'DD MM YY',
@@ -32,7 +33,6 @@ const defaultProps = {
 	numberOfMonths: 2,
 
   disabled: false,
-  minimumNights: 1,
   keepOpenOnDateSelect: false,
   isDayBlocked: () => false,
   isDayHighlighted: () => false,
@@ -56,11 +56,12 @@ export class DatePicker extends React.Component {
     }
 
     this.form = props.form
+    const { elements } = this.form
 
     this.state = {
       focusedInput: null,
-      startDate: null,
-      endDate: null,
+      startDate: toMomentObject(elements['check_in'].get()),
+      endDate: toMomentObject(elements['check_out'].get()),
       isDayPickerFocused: false,
     }
 
@@ -68,14 +69,15 @@ export class DatePicker extends React.Component {
     this.onFocusChange = this.onFocusChange.bind(this)
     this.onOutsideClick = this.onOutsideClick.bind(this)
     this.onDayPickerBlur = this.onDayPickerBlur.bind(this)
+    this.isOutsideRange = this.isOutsideRange.bind(this)
   }
 
   componentDidMount() {
     this.getFormElement('check_in_alt').on('change', this.onStartDateChange.bind(this))
     this.getFormElement('check_out_alt').on('change', this.onEndDateChange.bind(this))
 
-    this.getFormElement('check_in_alt').on('focus', debounce(this.onStartDateFocus.bind(this), 25))
-    this.getFormElement('check_out_alt').on('focus', debounce(this.onEndDateFocus.bind(this), 25))
+    this.getFormElement('check_in_alt').on('focus', this.onStartDateFocus.bind(this))
+    this.getFormElement('check_out_alt').on('focus', this.onEndDateFocus.bind(this))
   }
 
   componentWillUnmount() {
@@ -113,7 +115,14 @@ export class DatePicker extends React.Component {
 	onDatesChange({ startDate, endDate }) {
 		const { onChange } = this.props
 
-		this.setState({ startDate, endDate }, () => onChange({ startDate, endDate }))
+    this.setState({ startDate, endDate }, () => {
+      const elements = this.form.elements
+
+      elements['check_in'].set(startDate ? startDate.format(ISO_FORMAT) : '')
+      elements['check_out'].set(endDate ? endDate.format(ISO_FORMAT) : '')
+
+      onChange({ startDate, endDate })
+    })
 	}
 
 	clearDates() {
@@ -318,6 +327,51 @@ export class DatePicker extends React.Component {
     return referenceElement.closest('.searchbox__box')[0]
   }
 
+  isOutsideRange(day) {
+    const { startDate, focusedInput } = this.state
+
+    const {
+      disablePastDates,
+      disableFutureDates,
+      maximumNights,
+      isOutsideRange,
+      minimumDateRange,
+      maximumDateRange
+    } = this.props
+
+    const today = moment()
+    if (startDate && focusedInput === 'endDate' && day.isBefore(startDate, 'day')) {
+      return true
+    }
+
+    if (disablePastDates && today.isAfter(day, 'day')) {
+      return true
+    }
+
+    if (disableFutureDates && today.isBefore(day, 'day')) {
+      return true
+    }
+
+    if (maximumNights && startDate) {
+      const maxDate = startDate.clone().add(maximumNights, 'day')
+
+      if (focusedInput === 'endDate' && maxDate.isBefore(day)) {
+        return true
+      }
+    }
+
+    if (minimumDateRange > 0 || maximumDateRange > 0) {
+      return !isInclusivelyAfterDay(day, today.clone().add(minimumDateRange, 'days')) ||
+        maximumDateRange && isInclusivelyAfterDay(day, today.clone().add(maximumDateRange, 'days'))
+    }
+
+    if (isOutsideRange) {
+      return isOutsideRange(day)
+    }
+
+    return false
+  }
+
 	render() {
     const {
       focusedInput,
@@ -333,7 +387,6 @@ export class DatePicker extends React.Component {
       keepOpenOnDateSelect,
       isDayBlocked,
       isDayHighlighted,
-      isOutsideRange,
     } = this.props
 
     const modifiers = {
@@ -355,13 +408,13 @@ export class DatePicker extends React.Component {
 			focusedInput && (
 				<OutsideClickHandler onOutsideClick={this.onOutsideClick}>
 					<Popper
-						placement="bottom"
+						placement="bottom-end"
 						referenceElement={this.getReferenceElement(focusedInput)}
             modifiers={modifiers}
 					>
             {({ ref, style, placement, arrowProps }) => (
               <div className="DayPickerPopper" ref={ref} style={style} data-placement={placement}>
-                <div classID="DayPickerPopper__Arrow" ref={arrowProps.ref} style={arrowProps.style}/>
+                <div className="DayPickerPopper__Arrow" ref={arrowProps.ref} style={arrowProps.style}/>
 
 								<DayPickerRangeController
 									endDate={endDate}
@@ -375,7 +428,7 @@ export class DatePicker extends React.Component {
                   keepOpenOnDateSelect={keepOpenOnDateSelect}
                   isDayBlocked={isDayBlocked}
                   isDayHighlighted={isDayHighlighted}
-                  isOutsideRange={isOutsideRange}
+                  isOutsideRange={this.isOutsideRange}
                   isFocused={isDayPickerFocused}
                   onBlur={this.onDayPickerBlur}
                   hideKeyboardShortcutsPanel={true}
@@ -395,15 +448,11 @@ DatePicker.defaultProps = defaultProps
 export function createDatePicker(searchform, props) {
 	const root = searchform
 		.getRootElement()
-		.querySelector('.searchbox__dates')
-
-	if (!root) {
-		// ...
-	}
+		.querySelector('.ar-searchbox__dates')
 
 	return ReactDOM.render(<DatePicker form={searchform} {...props}/>, root)
 }
 
 (function () {
-  window.createDatePicker = createDatePicker
+  window.createReactDatePicker = createDatePicker
 })()

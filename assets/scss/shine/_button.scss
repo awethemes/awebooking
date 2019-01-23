@@ -55,10 +55,6 @@ $button-primary-hover-bg:      lighten($button-primary-bg, 7%) !default;
   }
 }
 
-.button--rounded {
-  border-radius: 999px;
-}
-
 .button--primary {
   color: $button-primary-color;
   background-color: $button-primary-bg;
@@ -78,4 +74,12 @@ $button-primary-hover-bg:      lighten($button-primary-bg, 7%) !default;
   box-shadow: none;
   border-color: transparent;
   background-color: transparent;
+}
+
+.button--rounded {
+  border-radius: 999px;
+}
+
+.button--block {
+  display: block;
 }
