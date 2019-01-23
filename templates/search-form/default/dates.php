@@ -18,25 +18,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class="searchbox__box searchbox__box--checkin">
-	<div class="searchbox__box-wrap">
-		<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'check_in_alt' ) ); ?>">
+<div class="abrs-searchbox__box abrs-searchbox__box--checkin">
+	<div class="abrs-searchbox__box-wrap">
+		<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'check_in_alt' ) ); ?>">
 			<?php esc_html_e( 'Check In', 'awebooking' ); ?>
 		</label>
 
-		<div class="searchbox__box-input">
+		<div class="abrs-searchbox__box-input">
 			<?php $search_form->check_in(); ?>
 		</div>
 	</div>
 </div>
 
-<div class="searchbox__box searchbox__box--checkout">
-	<div class="searchbox__box-wrap">
-		<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'check_out_alt' ) ); ?>">
+<div class="abrs-searchbox__box abrs-searchbox__box--checkout">
+	<div class="abrs-searchbox__box-wrap">
+		<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'check_out_alt' ) ); ?>">
 			<?php esc_html_e( 'Check Out', 'awebooking' ); ?>
 		</label>
 
-		<div class="searchbox__box-input">
+		<div class="abrs-searchbox__box-input">
 			<?php $search_form->check_out(); ?>
 		</div>
 	</div>

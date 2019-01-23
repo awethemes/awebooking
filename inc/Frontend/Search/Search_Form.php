@@ -19,7 +19,7 @@ class Search_Form extends Form {
 	 * @var array
 	 */
 	protected $atts = [
-		'layout'          => 'default', // Default vertical layout.
+		'layout'          => '', // Default vertical layout.
 		'alignment'       => '',
 		'hotel_location'  => true,
 		'occupancy'       => true,
@@ -88,10 +88,14 @@ class Search_Form extends Form {
 	public function component( $name ) {
 		$name = rtrim( $name, '.php' ) . '.php';
 
-		$template = "search-form/{$this->atts['layout']}/{$name}";
+		$template = 'search-form/' . $name;
 
-		if ( ! file_exists( abrs_locate_template( $template ) ) ) {
-			$template = 'search-form/default/' . $name;
+		if ( 'on' === abrs_get_option( 'use_experiment_style', 'off' ) ) {
+			$template = "search-form/{$this->atts['layout']}/{$name}";
+
+			if ( ! file_exists( abrs_locate_template( $template ) ) ) {
+				$template = 'search-form/default/' . $name;
+			}
 		}
 
 		abrs_get_template( $template, $this->get_template_data() );
@@ -277,7 +281,7 @@ class Search_Form extends Form {
 	protected function prepare_attributes( $name, $defaults = [] ) {
 		$attributes          = [];
 		$attributes['id']    = $this->id( $name );
-		$attributes['class'] = 'form-input searchbox__input searchbox__input--' . $name;
+		$attributes['class'] = 'form-input abrs-searchbox__input abrs-searchbox__input--' . $name;
 
 		if ( $this->request->is_locked( $name ) ) {
 			$attributes['readonly'] = 'readonly';

@@ -17,28 +17,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="searchbox__group searchbox__group--occupancy">
-	<div class="searchbox__group-wrap">
-		<div class="searchbox__box searchbox__box--adults">
-			<div class="searchbox__box-wrap">
-				<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'adults' ) ); ?>">
+<div class="abrs-searchbox__group abrs-searchbox__group--occupancy">
+	<div class="abrs-searchbox__group-wrap">
+		<div class="abrs-searchbox__box abrs-searchbox__box--adults">
+			<div class="abrs-searchbox__box-wrap">
+				<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'adults' ) ); ?>">
 					<?php esc_html_e( 'Adults', 'awebooking' ); ?>
 				</label>
 
-				<div class="searchbox__box-input">
+				<div class="abrs-searchbox__box-input">
 					<?php $search_form->adults(); ?>
 				</div>
 			</div>
 		</div>
 
 		<?php if ( abrs_children_bookable() ) : ?>
-			<div class="searchbox__box searchbox__box--children">
-				<div class="searchbox__box-wrap">
-					<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'children' ) ); ?>">
+			<div class="abrs-searchbox__box abrs-searchbox__box--children">
+				<div class="abrs-searchbox__box-wrap">
+					<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'children' ) ); ?>">
 						<?php esc_html_e( 'Children', 'awebooking' ); ?>
 					</label>
 
-					<div class="searchbox__box-input">
+					<div class="abrs-searchbox__box-input">
 						<?php $search_form->children(); ?>
 					</div>
 				</div>
@@ -46,13 +46,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 
 		<?php if ( abrs_infants_bookable() ) : ?>
-			<div class="searchbox__box searchbox__box--children">
-				<div class="searchbox__box-wrap">
-					<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'infants' ) ); ?>">
+			<div class="abrs-searchbox__box abrs-searchbox__box--children">
+				<div class="abrs-searchbox__box-wrap">
+					<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'infants' ) ); ?>">
 						<?php esc_html_e( 'Infants', 'awebooking' ); ?>
 					</label>
 
-					<div class="searchbox__box-input">
+					<div class="abrs-searchbox__box-input">
 						<?php $search_form->infants(); ?>
 					</div>
 				</div>

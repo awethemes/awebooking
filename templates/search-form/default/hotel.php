@@ -22,13 +22,13 @@ if ( ! abrs_multiple_hotels() || abrs_is_room_type() ) {
 
 ?>
 
-<div class="searchbox__box searchbox__box--hotel">
-	<div class="searchbox__box-wrap">
-		<label class="searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'hotel' ) ); ?>">
+<div class="abrs-searchbox__box abrs-searchbox__box--hotel">
+	<div class="abrs-searchbox__box-wrap">
+		<label class="abrs-searchbox__box-label" for="<?php echo esc_attr( $search_form->id( 'hotel' ) ); ?>">
 			<?php esc_html_e( 'Hotel', 'awebooking' ); ?>
 		</label>
 
-		<div class="searchbox__box-input">
+		<div class="abrs-searchbox__box-input">
 			<?php $search_form->hotels(); ?>
 		</div>
 	</div>
