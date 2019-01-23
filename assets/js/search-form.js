@@ -597,9 +597,7 @@ function () {
 
     this._registerBindings();
 
-    var experimentStyle = root.classList.contains('searchbox--experiment-style');
-
-    if (window.createReactDatePicker && this.root.find('.ar-searchbox__dates').length > 0 && experimentStyle) {
+    if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
       this._createDatePicker();
     }
   }
@@ -890,7 +888,7 @@ function () {
 
 
 external_jQuery_default()(function () {
-  external_jQuery_default()('.awebooking .searchbox, .awebooking-block .searchbox').each(function (index, element) {
+  external_jQuery_default()('.searchbox, .abrs-searchbox').each(function (index, element) {
     var form = new SearchForm_SearchForm(element, index);
 
     if (!element.classList.contains('searchbox--experiment-style')) {

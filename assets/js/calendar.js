@@ -8893,11 +8893,11 @@ function (_React$Component) {
 
       var referenceElement = focusedInput === constants["START_DATE"] ? this.getFormElement('check_in_alt') : this.getFormElement('check_out_alt');
 
-      if (numberOfMonths > 1 && referenceElement.closest('.searchbox__group-wrap').length > 0) {
-        return referenceElement.closest('.searchbox__group')[0];
+      if (numberOfMonths > 1 && referenceElement.closest('.abrs-searchbox__group-wrap').length > 0) {
+        return referenceElement.closest('.abrs-searchbox__group')[0];
       }
 
-      return referenceElement.closest('.searchbox__box')[0];
+      return referenceElement.closest('.abrs-searchbox__box')[0];
     }
   }, {
     key: "isOutsideRange",
@@ -9021,7 +9021,7 @@ function (_React$Component) {
 }(external_React_default.a.Component);
 calendar_DatePicker.defaultProps = defaultProps;
 function createDatePicker(searchform, props) {
-  var root = searchform.getRootElement().querySelector('.ar-searchbox__dates');
+  var root = searchform.getRootElement().querySelector('.abrs-searchbox__dates');
   return external_ReactDOM_default.a.render(external_React_default.a.createElement(calendar_DatePicker, _extends({
     form: searchform
   }, props)), root);
