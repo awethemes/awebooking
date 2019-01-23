@@ -81,7 +81,7 @@ class AweBooking_Composer_Cleaner {
 	 */
 	protected static function get_rules() {
 		$docs  = 'README* CHANGELOG* FAQ* CONTRIBUTING* HISTORY* UPGRADING* UPGRADE* package* demo/ example/ examples/ doc/ docs/ readme* .github* .editorconfig .gitignore';
-		$tests = '.travis.yml .scrutinizer.yml phpunit.xml* phpunit.php test/ tests/ Tests/ travis phpcs.xml* composer.lock bin/';
+		$tests = '.travis.yml .scrutinizer.yml phpunit.xml* phpunit.php test/ tests/ Tests/ travis phpcs.xml* composer.lock bin/ gulpfile.js';
 
 		return [
 			'awethemes/container'                  => [ $docs, $tests, 'tag.sh' ],
@@ -93,7 +93,7 @@ class AweBooking_Composer_Cleaner {
 			'erusev/parsedown'                     => [ $docs, $tests ],
 			'vlucas/valitron'                      => [ $docs, $tests, 'lang' ],
 			'jtsternberg/twitterwp'                => [ $docs, $tests, '.git*' ],
-			'webdevstudios/cmb2'                   => [ $docs, $tests ],
+			'cmb2/cmb2'                            => [ $docs, $tests, 'apigen', 'example-functions.php' ],
 			'webdevstudios/cmb2-post-search-field' => [ $docs, $tests, '*.png' ],
 			'webdevstudios/taxonomy_single_term'   => [ $docs, $tests ],
 			'psr/log'                              => [ $docs, $tests ],
@@ -109,6 +109,14 @@ class AweBooking_Composer_Cleaner {
 			'symfony/translation'                  => [ $docs, $tests ],
 			'ruler/ruler'                          => [ $docs, $tests ],
 			'twig/twig'                            => [ $docs, $tests, 'ext/', '.php_cs.dist' ],
+			'wplibs/http'                          => [ $docs, $tests ],
+			'wplibs/session'                       => [ $docs, $tests ],
+			'wplibs/database'                      => [ $docs, $tests ],
+			'wplibs/form'                          => [ $docs, $tests ],
+			'wplibs/rules'                         => [ $docs, $tests ],
+			'wplibs/view'                          => [ $docs, $tests ],
+			'mrjgreen/database'                    => [ $docs, $tests ],
+			'cakephp/chronos'                      => [ $docs, $tests, 'benchmarks', 'appveyor.yml', 'phpstan.neon', 'phpbench.json' ],
 		];
 	}
 }
