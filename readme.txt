@@ -86,15 +86,18 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 * Activate AweBooking from your Plugins page. (You'll be greeted with a Setup page.)
 * Visit `Room type > Add new room type` and create some room types. (You can always delete these later.)
 
-== Upgrade Notice ==
-
-In v3.1 we perform major upgrade.
-
 ## Video
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.0] - [2019-01-23]
+- Improve frontend style, switch from "rem" unit to "em".
+- Intro new "Experiment Form Style", you can enable and testing it from: "Settings > Appearance > Search Form".
+- The settings in the "Appearance > Date Picker" now worked but only in "Experiment Form Style"
+- Minor bug fixes and improvements.
+- API: Switch from "nesbot/carbon" to "cakephp/chronos" for DateTime API.
+
 ### [v3.1.21] - [2019-01-10]
 - Fixed: Missing `wp_reset_postdata` after call the WP_Query that confusing to Elementor.
 - Fixed: Calculate booking costs.
