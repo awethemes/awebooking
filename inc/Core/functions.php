@@ -831,12 +831,45 @@ function abrs_handle_buffering_exception( $e, $ob_level, $callback = null ) {
  * @return void
  */
 function abrs_register_vendor_js() {
+	global $wp_version;
+
 	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+	if ( version_compare( $wp_version, '5.0', '<' ) ) {
+		$fallback_vendors = [
+			'react'     => [ 'wp-polyfill' ],
+			'react-dom' => [ 'react' ],
+			'moment',
+			'lodash',
+			'wp-polyfill',
+		];
+
+		$fallback_vendors_version = [
+			'react'       => '16.6.3',
+			'react-dom'   => '16.6.3',
+			'moment'      => '2.22.2',
+			'lodash'      => '4.17.11',
+			'wp-polyfill' => '7.0.0',
+		];
+
+		foreach ( $fallback_vendors as $handle => $dependencies ) {
+			if ( is_string( $dependencies ) ) {
+				$handle       = $dependencies;
+				$dependencies = [];
+			}
+
+			$src     = abrs_asset_url( "/vendor/fallback/$handle$min.js" );
+			$version = $fallback_vendors_version[ $handle ];
+
+			wp_register_script( $handle, $src, $dependencies, $version, true );
+		}
+
+		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();' );
+	}
+
 	wp_register_script( 'js-cookie', abrs_asset_url( 'vendor/js-cookie/js.cookie.js' ), [], '2.2.0' );
 	wp_register_script( 'knockout', abrs_asset_url( 'vendor/knockout/knockout-latest' . ( $min ? '' : '.debug' ) . '.js' ), [], '3.4.2' );
-	wp_register_script( 'moment', abrs_asset_url( 'vendor/moment/moment' . $min . '.js' ), [], '2.22.2' );
 	wp_register_script( 'popper', abrs_asset_url( 'vendor/popper-js/popper' . $min . '.js' ), [], '1.14.3' );
 	wp_register_script( 'sortable', abrs_asset_url( 'vendor/sortable/Sortable' . $min . '.js' ), [], '1.7.0' );
 	wp_register_script( 'a11y-dialog', abrs_asset_url( 'vendor/a11y-dialog/a11y-dialog' . $min . '.js' ), [], '5.1.2' );
