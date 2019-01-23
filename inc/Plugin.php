@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
 use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
+use Awethemes\Http\Request;
 
 final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
@@ -130,6 +131,8 @@ final class Plugin extends Container {
 		$this->alias( 'logger', Logger::class );
 		$this->alias( 'logger', LoggerInterface::class );
 		$this->alias( 'multilingual', Multilingual::class );
+
+		$this->alias( Request::class, 'Awethemes\\Http\\Request' );
 	}
 
 	/**
