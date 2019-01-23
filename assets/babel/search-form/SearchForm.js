@@ -15,8 +15,7 @@ export default class SearchForm {
 
     this._registerBindings()
 
-    const experimentStyle = root.classList.contains('searchbox--experiment-style')
-    if (window.createReactDatePicker && this.root.find('.ar-searchbox__dates').length > 0 && experimentStyle) {
+    if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
       this._createDatePicker()
     }
   }

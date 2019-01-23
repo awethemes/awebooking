@@ -320,11 +320,11 @@ export class DatePicker extends React.Component {
       ? this.getFormElement('check_in_alt')
       : this.getFormElement('check_out_alt')
 
-    if (numberOfMonths > 1 && referenceElement.closest('.searchbox__group-wrap').length > 0) {
-      return referenceElement.closest('.searchbox__group')[0]
+    if (numberOfMonths > 1 && referenceElement.closest('.abrs-searchbox__group-wrap').length > 0) {
+      return referenceElement.closest('.abrs-searchbox__group')[0]
     }
 
-    return referenceElement.closest('.searchbox__box')[0]
+    return referenceElement.closest('.abrs-searchbox__box')[0]
   }
 
   isOutsideRange(day) {
@@ -446,9 +446,9 @@ export class DatePicker extends React.Component {
 DatePicker.defaultProps = defaultProps
 
 export function createDatePicker(searchform, props) {
-	const root = searchform
-		.getRootElement()
-		.querySelector('.ar-searchbox__dates')
+  const root = searchform
+    .getRootElement()
+    .querySelector('.abrs-searchbox__dates')
 
 	return ReactDOM.render(<DatePicker form={searchform} {...props}/>, root)
 }
