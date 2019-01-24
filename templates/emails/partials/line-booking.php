@@ -13,6 +13,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 /* @var \AweBooking\Model\Booking $booking */
 ?>
 
@@ -84,6 +85,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endforeach ?>
 	</tbody>
 </table>
+
+<?php do_action( 'abrs_email_booking_line_items', $booking, $email ); ?>
 
 <table class="table-booking-totals">
 	<tbody>
