@@ -103,15 +103,15 @@ $searchbox-box--border: 200px !default;
     flex-shrink: 1;
   }
 
+  .searchbox__box-wrap {
+    padding-bottom: 1em;
+  }
+
   .searchbox__box-line {
     padding: 10px;
     border: solid 1px #dae1e7;
     box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
     background-color: $searchbox-bg-color;
-  }
-
-  .searchbox__box:not(:last-child) {
-    margin-bottom: 12px;
   }
 
   .searchbox__box--button {
@@ -125,28 +125,26 @@ $searchbox-box--border: 200px !default;
   }
 
   @include media-breakpoint-only(md) {
+    .searchbox__box-wrap {
+      padding-right: 1em;
+    }
+
     .searchbox__box--hotel {
       flex: 0 0 100%;
-      max-width: 100%;
     }
 
     .searchbox__box--checkin,
     .searchbox__box--checkout {
       flex: 0 0 50%;
-      max-width: 50%;
     }
 
     .searchbox__box--checkout {
       left: -1px;
     }
 
-    .searchbox__box--occupancy {
-      flex: 0 0 50%;
-      max-width: 50%;
-    }
-
+    .searchbox__box--occupancy,
     .searchbox__box--button {
-      flex-grow: 1;
+      flex: 0 0 50%;
     }
   }
 
@@ -161,7 +159,10 @@ $searchbox-box--border: 200px !default;
 
     .searchbox__box:not(:last-child) {
       border-right: solid 1px #eee;
-      margin-bottom: 0;
+    }
+
+    .searchbox__box-wrap {
+      padding: 0;
     }
 
     .searchbox__box-line,
@@ -181,10 +182,10 @@ $searchbox-box--border: 200px !default;
 
     .searchbox__box--checkin,
     .searchbox__box--checkout {
-      flex-basis: 175px;
+      flex-basis: 225px;
     }
 
-    .searchbox__box--button {
+    .searchbox__box--occupancy {
       flex-grow: 1;
     }
   }
