@@ -1034,6 +1034,7 @@ table.awebooking-input-table tr:last-child td {
 .awebooking-dialog {
   padding: 0;
   transition: all 0.15s ease-in-out;
+  z-index: 100001 !important;
 }
 .awebooking-dialog .ui-dialog-titlebar {
   height: 48px;
@@ -1056,6 +1057,9 @@ table.awebooking-input-table tr:last-child td {
   -webkit-transform: none;
           transform: none;
   background-color: #eee;
+}
+.awebooking-dialog.ui-dialog .ui-dialog-titlebar-close span {
+  display: none !important;
 }
 .awebooking-dialog .awebooking-dialog-contents {
   padding: 15px 15px 0 15px;
@@ -1093,6 +1097,10 @@ table.awebooking-input-table tr:last-child td {
 .awebooking-dialog .list-bulk-rooms > li > ul {
   display: block;
   margin-bottom: 1rem;
+}
+
+.ui-widget-overlay {
+  z-index: 100000 !important;
 }
 
 /* SweetAlert2 confirm dialog */

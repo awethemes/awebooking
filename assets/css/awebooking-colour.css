@@ -1870,14 +1870,14 @@ ul.booking_details li:last-of-type {
 .searchbox--horizontal .searchbox__box {
   flex-shrink: 1;
 }
+.searchbox--horizontal .searchbox__box-wrap {
+  padding-bottom: 1em;
+}
 .searchbox--horizontal .searchbox__box-line {
   padding: 10px;
   border: solid 1px #dae1e7;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   background-color: #fff;
-}
-.searchbox--horizontal .searchbox__box:not(:last-child) {
-  margin-bottom: 12px;
 }
 .searchbox--horizontal .searchbox__box--button {
   padding: 0;
@@ -2321,7 +2321,9 @@ input[type=number].searchbox__spinner-input {
   }
   .searchbox--horizontal .searchbox__box:not(:last-child) {
     border-right: solid 1px #eee;
-    margin-bottom: 0;
+  }
+  .searchbox--horizontal .searchbox__box-wrap {
+    padding: 0;
   }
   .searchbox--horizontal .searchbox__box-line,
 .searchbox--horizontal .searchbox__box--button .searchbox__box-wrap {
@@ -2337,9 +2339,9 @@ input[type=number].searchbox__spinner-input {
   }
   .searchbox--horizontal .searchbox__box--checkin,
 .searchbox--horizontal .searchbox__box--checkout {
-    flex-basis: 175px;
+    flex-basis: 225px;
   }
-  .searchbox--horizontal .searchbox__box--button {
+  .searchbox--horizontal .searchbox__box--occupancy {
     flex-grow: 1;
   }
   .searchbox__spinner-button {
@@ -2388,23 +2390,21 @@ input[type=number].searchbox__spinner-input {
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
+  .searchbox--horizontal .searchbox__box-wrap {
+    padding-right: 1em;
+  }
   .searchbox--horizontal .searchbox__box--hotel {
     flex: 0 0 100%;
-    max-width: 100%;
   }
   .searchbox--horizontal .searchbox__box--checkin,
 .searchbox--horizontal .searchbox__box--checkout {
     flex: 0 0 50%;
-    max-width: 50%;
   }
   .searchbox--horizontal .searchbox__box--checkout {
     left: -1px;
   }
-  .searchbox--horizontal .searchbox__box--occupancy {
+  .searchbox--horizontal .searchbox__box--occupancy,
+.searchbox--horizontal .searchbox__box--button {
     flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .searchbox--horizontal .searchbox__box--button {
-    flex-grow: 1;
   }
 }
