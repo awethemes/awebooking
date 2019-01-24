@@ -2,6 +2,7 @@
 .awebooking-dialog {
   padding: 0;
   transition: all 0.15s ease-in-out;
+  z-index: 100001 !important;
 
   .ui-dialog-titlebar {
     height: 48px;
@@ -27,6 +28,10 @@
       transform: none;
       background-color: #eee;
     }
+  }
+
+  &.ui-dialog .ui-dialog-titlebar-close span {
+    display: none !important;
   }
 
   .awebooking-dialog-contents {
@@ -73,6 +78,10 @@
       margin-bottom: 1rem;
     }
   }
+}
+
+.ui-widget-overlay {
+  z-index: 100000 !important;
 }
 
 /* SweetAlert2 confirm dialog */
