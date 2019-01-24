@@ -183,6 +183,39 @@ class Room_Type_Data_Form extends Form {
 			'grid_row'     => true,
 		]);
 
+		// Section pricing.
+		$availability = $this->add_section( 'availability', [
+			'title'    => esc_html__( 'Availability', 'awebooking' ),
+			'priority' => 60,
+		]);
+
+		$availability->add_field( [
+			'id'                => 'availability_allowed_checkin_days',
+			'type'              => 'multicheck_inline',
+			'name'              => esc_html__( 'Allowed check-in days', 'awebooking' ),
+			'desc'              => esc_html__( 'All the days passed to the list will be abled.', 'awebooking' ),
+			'options_cb'        => 'abrs_days_of_week',
+			'default'           => [ 0, 1, 2, 3, 4, 5, 6 ],
+			'select_all_button' => false,
+			'tooltip'           => true,
+			'grid_row'          => true,
+		]);
+
+		$availability->add_field([
+			'id'              => 'availability_period_bookable',
+			'type'            => 'text',
+			'name'            => esc_html__( 'Period bookable', 'awebooking' ),
+			'desc'            => esc_html__( 'When set to "0", there is unlimit. A number of days from today. For example 7 represents seven days from today. All the dates after the additional date will be disabled.', 'awebooking' ),
+			'sanitization_cb' => 'absint',
+			'attributes'      => [
+				'type'  => 'number',
+				'step'  => 1,
+				'style' => 'width: 100px;',
+			],
+			'tooltip'         => true,
+			'grid_row'        => true,
+		]);
+
 		// Section rooms.
 		$rooms = $this->add_section( 'rooms', [
 			'title'    => esc_html__( 'Rooms & Amenities', 'awebooking' ),

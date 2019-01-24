@@ -15,6 +15,8 @@ use AweBooking\Availability\Constraints\Night_Stay_Constraint;
 use WPLibs\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
+use AweBooking\Availability\Constraints\Checkin_Days_Constraint;
+use AweBooking\Availability\Constraints\Period_Bookable_Constraint;
 
 /**
  * Returns list of states represent for blocked.
@@ -104,6 +106,10 @@ function abrs_check_room_states( $room, Timespan $timespan, $states = Constants:
 		->transform( 'abrs_resource_room' )
 		->filter()
 		->all();
+
+	$constraints   = apply_filters( 'abrs_room_contraints', $constraints, $room, $timespan );
+	$constraints[] = new Checkin_Days_Constraint( $resources, $timespan );
+	$constraints[] = new Period_Bookable_Constraint( $resources, $timespan );
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->filter( $comparison, $states )
