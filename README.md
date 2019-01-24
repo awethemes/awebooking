@@ -2,8 +2,6 @@
 
 Awebooking is a WordPress plugin that helps you to setup hotel booking system quickly, pleasantly and easily.
 
-CYBER MONDAY SALE: 35% OFF YEARLY ACCESS & $80 OFF LIFE TIME PACKAGE. [JOIN NOW!](https://awethemes.com/join)
-
 ### Plugin features
 
 * Room type and rooms
