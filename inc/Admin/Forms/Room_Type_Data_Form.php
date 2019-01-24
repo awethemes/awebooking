@@ -184,7 +184,7 @@ class Room_Type_Data_Form extends Form {
 		]);
 
 		// Section pricing.
-		$availability = $this->add_section( 'availability', [
+		/*$availability = $this->add_section( 'availability', [
 			'title'    => esc_html__( 'Availability', 'awebooking' ),
 			'priority' => 60,
 		]);
@@ -214,7 +214,7 @@ class Room_Type_Data_Form extends Form {
 			],
 			'tooltip'         => true,
 			'grid_row'        => true,
-		]);
+		]);*/
 
 		// Section rooms.
 		$rooms = $this->add_section( 'rooms', [

@@ -108,8 +108,8 @@ function abrs_check_room_states( $room, Timespan $timespan, $states = Constants:
 		->all();
 
 	$constraints   = apply_filters( 'abrs_room_contraints', $constraints, $room, $timespan );
-	$constraints[] = new Checkin_Days_Constraint( $resources, $timespan );
-	$constraints[] = new Period_Bookable_Constraint( $resources, $timespan );
+	// $constraints[] = new Checkin_Days_Constraint( $resources, $timespan );
+	// $constraints[] = new Period_Bookable_Constraint( $resources, $timespan );
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->filter( $comparison, $states )
