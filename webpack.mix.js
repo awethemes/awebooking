@@ -14,6 +14,15 @@ const externals = {
   'moment': 'moment',
   'lodash': 'lodash',
   'popper.js': 'Popper',
+  '@wordpress/api-fetch': { this: [ 'wp', 'apiFetch' ] },
+  '@wordpress/blocks': { this: [ 'wp', 'blocks' ] },
+  '@wordpress/components': { this: [ 'wp', 'components' ] },
+  '@wordpress/compose': { this: [ 'wp', 'compose' ] },
+  '@wordpress/data': { this: [ 'wp', 'data' ] },
+  '@wordpress/element': { this: [ 'wp', 'element' ] },
+  '@wordpress/editor': { this: [ 'wp', 'editor' ] },
+  '@wordpress/i18n': { this: [ 'wp', 'i18n' ] },
+  '@wordpress/url': { this: [ 'wp', 'url' ] },
 }
 
 /**
@@ -28,11 +37,12 @@ const adminScripts = glob.sync('assets/babel/admin/*.js')
  */
 styles.forEach(name => mix.sass(name, 'assets/css'))
 
-scripts.forEach(name => mix.js(name, 'assets/js'))
+// scripts.forEach(name => mix.js(name, 'assets/js'))
 
-adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
+// adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
 
-mix.react('assets/babel/calendar.jsx', 'assets/js')
+// mix.react('assets/babel/calendar.jsx', 'assets/js')
+mix.react('blocks/awebooking-rooms/index.jsx', 'blocks/awebooking-rooms')
 
 if (mix.inProduction()) {
   mix.version()
@@ -51,10 +61,11 @@ mix.browserSync({
 mix.webpackConfig({
   externals,
   optimization: {
-    minimize: false
+    // minimize: false
   },
   output: {
-    pathinfo: false
+    // pathinfo: false,
+    libraryTarget: 'this',
   }
 })
 

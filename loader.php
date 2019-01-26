@@ -34,6 +34,8 @@ require trailingslashit( __DIR__ ) . 'inc/Core/sanitizer.php';
  */
 require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
 
+require_once trailingslashit( __DIR__ ) . 'blocks/awebooking-rooms.php';
+
 /**
  * Alias the class "AweBooking\Plugin" to "AweBooking".
  */
