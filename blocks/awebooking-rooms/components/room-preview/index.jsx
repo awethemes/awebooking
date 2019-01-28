@@ -34,9 +34,9 @@ const RoomPreview = ( { room } ) => {
             />
           </div>
 
-          <div className="list-room__container">
+          <div className="list-room-preview__container">
             <div
-              className="list-room__desc"
+              className="list-room-preview__desc"
               dangerouslySetInnerHTML={ { __html: room.short_description } }
             />
           </div>
