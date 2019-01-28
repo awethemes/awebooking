@@ -61,7 +61,6 @@ class RoomsBlock extends Component {
       ),
     } )
     .then( ( rooms ) => {
-      console.log(rooms)
       this.setState( { rooms, loaded: true } );
     } )
     .catch( () => {
@@ -135,7 +134,6 @@ class RoomsBlock extends Component {
 
     return (
       <Fragment>
-        <p>sasdasd</p>
         { this.getInspectorControls() }
         <div className={ classes.join( ' ' ) }>
           { rooms.length ? (

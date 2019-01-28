@@ -9,6 +9,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import Block from './block';
+import getShortcode from './utils/get-shortcode';
 import sharedAttributes from './utils/shared-attributes';
 
 registerBlockType( 'awebooking/awebooking-rooms', {
@@ -34,8 +35,8 @@ registerBlockType( 'awebooking/awebooking-rooms', {
    */
   save( props ) {
     return (
-      <RawHTML className={ align ? `align${ align }` : '' }>
-        { getShortcode( props, 'woocommerce/product-best-sellers' ) }
+      <RawHTML>
+        { getShortcode( props ) }
       </RawHTML>
     );
   },

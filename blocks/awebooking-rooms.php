@@ -112,19 +112,40 @@ function awebooking_render_block_rooms( $attributes ) {
 	return do_shortcode( '[awebooking_rooms ' . $shortcode_atts . ']' );
 }
 
-function awebooking_add_author_name_to_api() {
+function awebooking_add_fields_to_api() {
 	register_rest_field( 'room_type',
 		'thumbnail_url',
 		[
-			'get_callback' => 'awebooking_get_thumbnail_url',
+			'get_callback' => 'awebooking_api_get_thumbnail_url',
+		]
+	);
+
+	register_rest_field( 'room_type',
+		'room_name',
+		[
+			'get_callback' => 'awebooking_api_get_room_name',
+		]
+	);
+
+	register_rest_field( 'room_type',
+		'price_html',
+		[
+			'get_callback' => 'awebooking_api_get_price_html',
+		]
+	);
+
+	register_rest_field( 'room_type',
+		'short_description',
+		[
+			'get_callback' => 'awebooking_api_get_short_description',
 		]
 	);
 }
 
-add_action( 'rest_api_init', 'awebooking_add_author_name_to_api' );
+add_action( 'rest_api_init', 'awebooking_add_fields_to_api' );
 
 /**
- * Get the value of the "starship" field
+ * Get the value of the "thumbnail_url" field
  *
  * @param array           $object     Details of current post.
  * @param string          $field_name Name of field.
@@ -132,6 +153,51 @@ add_action( 'rest_api_init', 'awebooking_add_author_name_to_api' );
  *
  * @return mixed
  */
-function awebooking_get_thumbnail_url( $object, $field_name, $request ) {
+function awebooking_api_get_thumbnail_url( $object, $field_name, $request ) {
 	return get_the_post_thumbnail_url( $object['id'] );
+}
+
+/**
+ * Get the value of the "room_name" field
+ *
+ * @param array           $object     Details of current post.
+ * @param string          $field_name Name of field.
+ * @param WP_REST_Request $request    Current request
+ *
+ * @return mixed
+ */
+function awebooking_api_get_room_name( $object, $field_name, $request ) {
+	return abrs_get_room_type( $object['id'] )->get_title();
+}
+
+/**
+ * Get the value of the "price_html" field
+ *
+ * @param array           $object     Details of current post.
+ * @param string          $field_name Name of field.
+ * @param WP_REST_Request $request    Current request
+ *
+ * @return mixed
+ */
+function awebooking_api_get_price_html( $object, $field_name, $request ) {
+	ob_start();
+	$room_type = abrs_get_room_type( $object['id'] );
+
+	/* translators: %s room price */
+	printf( esc_html__( 'Start from %s/night', 'awebooking' ), '<span>' . abrs_format_price( $room_type->get( 'rack_rate' ) ) . '</span>' ); // WPCS: xss ok.
+
+	return ob_get_clean();
+}
+
+/**
+ * Get the value of the "short_description" field
+ *
+ * @param array           $object     Details of current post.
+ * @param string          $field_name Name of field.
+ * @param WP_REST_Request $request    Current request
+ *
+ * @return mixed
+ */
+function awebooking_api_get_short_description( $object, $field_name, $request ) {
+	return abrs_get_room_type( $object['id'] )->get( 'short_description' );
 }

@@ -19,9 +19,33 @@ const RoomPreview = ( { room } ) => {
   }
 
   return (
-    <div className="awebooking-room-preview">
-      { image }
-      <div className="awebooking-room-preview__title">{ room.title.rendered }</div>
+    <div className="list-room-preview">
+      <div className="list-room-preview__wrap">
+        <div className="list-room-preview__media">
+          { image }
+        </div>
+
+        <div className="list-room-preview__info">
+          <div className="list-room-preview__header">
+            <h2 className="list-room-preview__title">{ room.room_name }</h2>
+            <div
+              className="list-room-preview__price"
+              dangerouslySetInnerHTML={ { __html: room.price_html } }
+            />
+          </div>
+
+          <div className="list-room__container">
+            <div
+              className="list-room__desc"
+              dangerouslySetInnerHTML={ { __html: room.short_description } }
+            />
+          </div>
+
+          <div className="list-room-preview__footer">
+            <span className="list-room-preview__button">{ __( 'View more infomation', 'awebooking' ) }</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -31,9 +55,10 @@ RoomPreview.propTypes = {
    * The room object as returned from the API.
    */
   room: PropTypes.shape( {
-    id: PropTypes.number,
-    thumbnail_url: PropTypes.string,
-    title: PropTypes.array,
+  id: PropTypes.number,
+  room_name: PropTypes.string,
+  thumbnail_url: PropTypes.string,
+  short_description: PropTypes.string,
   } ).isRequired,
 };
 
