@@ -34,7 +34,7 @@ class Search_Form extends Form {
 	 */
 	public function __construct( $atts = [] ) {
 		$this->builder = new Html_Form;
-		$this->atts = $atts;
+		$this->atts    = $atts;
 	}
 
 	/**
@@ -131,13 +131,15 @@ class Search_Form extends Form {
 			$inputs[] = $this->builder->hidden( 'lang', $this->parameter( 'lang' ) ?: abrs_multilingual()->get_current_language() );
 		}
 
-		if ( abrs_is_room_type() ) {
-			// Resolve current hotel ID.
-			$inputs[] = $this->builder->hidden( 'hotel', '' );
+		if ( abrs_is_room_type() && abrs_multiple_hotels() ) {
+			$room_type = abrs_get_room_type( get_the_ID() );
+
+			$inputs[] = $this->builder->hidden( 'hotel', $room_type ? $room_type->get( 'hotel_id' ) : '' );
 		}
 
-		// only...
-		// ...
+		if ( ! empty( $this->atts['only_room'] ) ) {
+			$inputs[] = $this->builder->hidden( 'only', implode( ',', wp_parse_id_list( $this->atts['only_room'] ) ) );
+		}
 
 		if ( count( $inputs ) > 0 ) {
 			print implode( "\n", $inputs ); // @WPCS: XSS OK.
@@ -168,16 +170,16 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_in' );
 
 		$this->input( 'hidden', 'check_in', $attributes + [
-			'value' => $value,
-		] );
+				'value' => $value,
+			] );
 
 		$this->input( 'text', 'check_in_alt', $alt_attributes + [
-			'name'          => false, // Remove "name" attribute.
-			'value'         => $value ? abrs_format_date( $value ) : '',
-			'placeholder'   => abrs_get_date_format(),
-			'autocomplete'  => 'off',
-			'aria-haspopup' => 'true',
-		] );
+				'name'          => false, // Remove "name" attribute.
+				'value'         => $value ? abrs_format_date( $value ) : '',
+				'placeholder'   => abrs_get_date_format(),
+				'autocomplete'  => 'off',
+				'aria-haspopup' => 'true',
+			] );
 	}
 
 	/**
@@ -190,8 +192,8 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_out' );
 
 		$this->input( 'hidden', 'check_out', $attributes + [
-			'value' => $value,
-		] );
+				'value' => $value,
+			] );
 
 		$this->input( 'text', 'check_out_alt', array_merge( $alt_attributes, [
 			'name'          => false, // Remove "name" attribute.
