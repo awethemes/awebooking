@@ -73,10 +73,6 @@ class Query {
 	public function query_rooms() {
 		$guestcounts = $this->request->get_guest_counts();
 
-		// Gets the query args.
-		$query_args = (array) $this->request['query_args'];
-
-		// Build the query args.
 		$wp_query_args = [
 			'post_type'        => Constants::ROOM_TYPE,
 			'post_status'      => 'publish',
@@ -88,16 +84,15 @@ class Query {
 			'meta_query'       => [],
 		];
 
-		// Filter get only room types.
-		if ( ! empty( $query_args['only'] ) ) {
-			$wp_query_args['post__in'] = wp_parse_id_list( $query_args['only'] );
+		if ( $only = $this->request->get_parameter( 'only' ) ) {
+			$wp_query_args['post__in'] = wp_parse_id_list( $only );
 		}
 
 		if ( abrs_multiple_hotels() ) {
-			if ( ! empty( $query_args['hotel'] ) ) {
+			if ( $hotel_id = $this->request->get_parameter( 'hotel' ) ) {
 				$wp_query_args['meta_query'][] = [
 					'key'     => '_hotel_id',
-					'value'   => absint( $query_args['hotel'] ),
+					'value'   => absint( $hotel_id ),
 					'type'    => 'numeric',
 					'compare' => '=',
 				];
