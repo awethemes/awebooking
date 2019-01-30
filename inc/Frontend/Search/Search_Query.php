@@ -139,4 +139,26 @@ class Search_Query {
 		$GLOBALS['res_request']  = $this->res_request;
 		$GLOBALS['abrs_results'] = $this->results;
 	}
+
+	/**
+	 * Gets the plugin instance.
+	 *
+	 * @return \AweBooking\Plugin
+	 */
+	public function get_plugin() {
+		_deprecated_function( __FUNCTION__, '3.2.0', null );
+
+		return awebooking();
+	}
+
+	/**
+	 * Gets the http request instance.
+	 *
+	 * @return \Awethemes\Http\Request
+	 */
+	public function get_request() {
+		_deprecated_function( __FUNCTION__, '3.2.0', null );
+
+		return abrs_http_request();
+	}
 }

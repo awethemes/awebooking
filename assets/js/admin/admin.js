@@ -1609,7 +1609,8 @@ var accounting_default = /*#__PURE__*/__webpack_require__.n(accounting);
 
  // Instance the awebooking object.
 
-var awebooking = window.awebooking || {}; // Create the properties.
+var awebooking = window.awebooking || {};
+var i18n = awebooking.i18n || {}; // Create the properties.
 
 awebooking.utils = {};
 awebooking.instances = {};
@@ -1653,7 +1654,7 @@ awebooking.alert = function (message) {
 
 awebooking.confirm = function (message, callback) {
   if (!window.swal) {
-    return window.confirm(message || this.i18n.warning) && callback();
+    return window.confirm(message || i18n.warning) && callback();
   }
 
   var confirm = window.swal({
@@ -1703,7 +1704,7 @@ awebooking.dialog = function (selector) {
       of: window
     }
   });
-  external_jQuery_default()(window).resize(debounce_default()(function () {
+  external_jQuery_default()(window).on('resize', debounce_default()(function () {
     $dialog.dialog('option', 'position', {
       my: 'center',
       at: 'center center-15%',
@@ -1715,20 +1716,22 @@ awebooking.dialog = function (selector) {
 /**
  * Send a ajax request to a route.
  *
+ * @param  {String}   method
  * @param  {String}   route
  * @param  {Object}   data
  * @param  {Function} callback
- * @return {Object}
+ * @return {JQuery.jqXHR}
  */
 
 
 awebooking.ajax = function (method, route, data, callback) {
-  return external_jQuery_default.a.ajax({
+  var xhr = external_jQuery_default.a.ajax({
     url: awebooking.route(route),
     data: data,
     method: method,
     dataType: 'json'
-  }).done(function (data) {
+  });
+  return xhr.done(function (data) {
     if (callback) callback(data);
   }).fail(function (xhr) {
     var json = xhr.responseJSON;
@@ -1736,14 +1739,14 @@ awebooking.ajax = function (method, route, data, callback) {
     if (json && json.message) {
       awebooking.alert(json.message, 'error');
     } else {
-      awebooking.alert(awebooking.i18n.error, 'error');
+      awebooking.alert(i18n.error, 'error');
     }
   });
 };
 /**
  * Create a form then append to body.
  *
- * @param  {String} link   The form action.
+ * @param  {String} action The form action.
  * @param  {String} method The form method.
  * @return {Object}
  */
@@ -1771,11 +1774,11 @@ awebooking.createForm = function (action, method) {
 
 awebooking.formatPrice = function (amount) {
   return accounting_default.a.formatMoney(amount, {
-    format: awebooking.i18n.priceFormat,
-    symbol: awebooking.i18n.currencySymbol,
-    decimal: awebooking.i18n.decimalSeparator,
-    thousand: awebooking.i18n.priceThousandSeparator,
-    precision: awebooking.i18n.numberDecimals
+    format: i18n.priceFormat,
+    symbol: i18n.currencySymbol,
+    decimal: i18n.decimalSeparator,
+    thousand: i18n.priceThousandSeparator,
+    precision: i18n.numberDecimals
   });
 };
 /**

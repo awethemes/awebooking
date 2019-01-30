@@ -1,7 +1,8 @@
-import $ from 'jquery';
+import $ from 'jquery'
+
 const plugin = window.awebooking
 
-const DATE_FORMAT  = 'YYYY-MM-DD';
+const DATE_FORMAT = 'YYYY-MM-DD'
 
 class BookingScheduler {
   /**
@@ -10,34 +11,34 @@ class BookingScheduler {
    * @return {void}
    */
   constructor() {
-    const self = this;
+    const self = this
 
-    this.initBulkUpdate();
+    this.initBulkUpdate()
 
     this.scheduler = new ScheduleCalendar({
       el: '.scheduler',
       debug: plugin.debug,
       granularity: 'nightly',
-    });
+    })
 
-    this.scheduler.on('clear', this.handleClearSelected.bind(this));
-    this.scheduler.on('action:block', this.handleBlockRoom.bind(this));
-    this.scheduler.on('action:unblock', this.handleUnblockRoom.bind(this));
+    this.scheduler.on('clear', this.handleClearSelected.bind(this))
+    this.scheduler.on('action:block', this.handleBlockRoom.bind(this))
+    this.scheduler.on('action:unblock', this.handleUnblockRoom.bind(this))
 
-    $('.js-unlock-period').on('click', function(e) {
-      e.preventDefault();
-      const $el = $(this);
+    $('.js-unlock-period').on('click', function (e) {
+      e.preventDefault()
+      const $el = $(this)
 
-      self.scheduler.model.set('calendar', $el.data('room'));
-      self.scheduler.model.set('startDate', moment($el.data('startDate')));
-      self.scheduler.model.set('endDate', moment($el.data('endDate')));
+      self.scheduler.model.set('calendar', $el.data('room'))
+      self.scheduler.model.set('startDate', moment($el.data('startDate')))
+      self.scheduler.model.set('endDate', moment($el.data('endDate')))
 
-      self.scheduler.trigger('action:unblock');
-    });
+      self.scheduler.trigger('action:unblock')
+    })
 
-    $('.scheduler__state-event, .scheduler__booking-event').each(function() {
-      self.setupEventPopper(this);
-    });
+    $('.scheduler__state-event, .scheduler__booking-event').each(function () {
+      self.setupEventPopper(this)
+    })
   }
 
   /**
@@ -46,7 +47,7 @@ class BookingScheduler {
    * @return {void}
    */
   handleClearSelected() {
-    window.swal && swal.close();
+    window.swal && swal.close()
   }
 
   /**
@@ -58,9 +59,9 @@ class BookingScheduler {
    */
   handleBlockRoom(e, model) {
     plugin.confirm(plugin.i18n.warning, () => {
-      const $controls = this.compileHtmlControls('block', model);
-      $controls.closest('form').submit();
-    });
+      const $controls = this.compileHtmlControls('block', model)
+      $controls.closest('form').submit()
+    })
   }
 
   /**
@@ -72,9 +73,9 @@ class BookingScheduler {
    */
   handleUnblockRoom(e, model) {
     plugin.confirm(plugin.i18n.warning, () => {
-      const $controls = this.compileHtmlControls('unblock', model);
-      $controls.closest('form').submit();
-    });
+      const $controls = this.compileHtmlControls('unblock', model)
+      $controls.closest('form').submit()
+    })
   }
 
   /**
@@ -84,20 +85,20 @@ class BookingScheduler {
    * @return {void}
    */
   compileHtmlControls(action, model) {
-    const template = wp.template('scheduler-pricing-controls');
+    const template = wp.template('scheduler-pricing-controls')
 
-    if (! model) {
-      model = this.scheduler.model;
+    if (!model) {
+      model = this.scheduler.model
     }
 
     const data = {
-      action:    action,
-      endDate:   model.get('endDate').format(DATE_FORMAT),
+      action: action,
+      endDate: model.get('endDate').format(DATE_FORMAT),
       startDate: model.get('startDate').format(DATE_FORMAT),
-      calendar:  model.get('calendar'),
-    };
+      calendar: model.get('calendar'),
+    }
 
-    return $('#js-scheduler-form-controls').html(template(data));
+    return $('#js-scheduler-form-controls').html(template(data))
   }
 
   /**
@@ -107,7 +108,7 @@ class BookingScheduler {
    * @return {void}
    */
   setupEventPopper(el) {
-    const $html = $(el).find('.js-tippy-html');
+    const $html = $(el).find('.js-tippy-html')
 
     tippy(el, {
       theme: 'booking-popup',
@@ -123,32 +124,34 @@ class BookingScheduler {
       animation: 'shift-toward',
       duration: [150, 150],
       html: $html.length ? $html[0] : false,
-      popperOptions: { modifiers: {
+      popperOptions: {
+        modifiers: {
           hide: { enabled: false },
           preventOverflow: { enabled: false },
-        }}
-    });
+        }
+      }
+    })
 
-    return el._tippy;
+    return el._tippy
   }
 
   /**
    * Handle bulk update action.
    */
   initBulkUpdate() {
-    const $dialog = plugin.dialog('#bulk-update-dialog');
+    const $dialog = plugin.dialog('#bulk-update-dialog')
 
-    $('.js-open-bulk-update').on('click', function(e) {
-      e.preventDefault();
-      $dialog.dialog('open');
-    });
+    $('.js-open-bulk-update').on('click', function (e) {
+      e.preventDefault()
+      $dialog.dialog('open')
+    })
 
     flatpickr('#bulk_date_start', {
       mode: 'range',
       dateFormat: 'Y-m-d',
       showMonths: plugin.isMobile() ? 1 : 2,
-      plugins: [ new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' }) ],
-    });
+      plugins: [new plugin.utils.flatpickrRangePlugin({ input: '#bulk_date_end' })],
+    })
   }
 }
 
@@ -157,6 +160,6 @@ class BookingScheduler {
  *
  * @return {void}
  */
-$(function() {
-  new BookingScheduler();
-});
+$(function () {
+  new BookingScheduler()
+})
