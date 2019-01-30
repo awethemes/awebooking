@@ -2777,6 +2777,7 @@ function (_ref) {
       isInputFocused: false,
       showKeyboardShortcuts: false
     };
+    _this.onFocusOut = _this.onFocusOut.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onInputFocus = _this.onInputFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -2795,7 +2796,7 @@ function (_ref) {
     key: "componentDidMount",
     value: function () {
       function componentDidMount() {
-        this.removeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
+        this.removeResizeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
           passive: true
         });
         this.responsivizePickerPosition();
@@ -2835,7 +2836,8 @@ function (_ref) {
     key: "componentWillUnmount",
     value: function () {
       function componentWillUnmount() {
-        if (this.removeEventListener) this.removeEventListener();
+        if (this.removeResizeEventListener) this.removeResizeEventListener();
+        if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
         if (this.enableScroll) this.enableScroll();
       }
 
@@ -2927,6 +2929,19 @@ function (_ref) {
       return onDayPickerBlur;
     }()
   }, {
+    key: "onFocusOut",
+    value: function () {
+      function onFocusOut(e) {
+        var onFocusChange = this.props.onFocusChange;
+        if (this.container.contains(e.relatedTarget || e.target)) return;
+        onFocusChange({
+          focused: false
+        });
+      }
+
+      return onFocusOut;
+    }()
+  }, {
     key: "setDayPickerContainerRef",
     value: function () {
       function setDayPickerContainerRef(ref) {
@@ -2939,10 +2954,35 @@ function (_ref) {
     key: "setContainerRef",
     value: function () {
       function setContainerRef(ref) {
+        if (ref === this.container) return;
+        this.removeEventListeners();
         this.container = ref;
+        if (!ref) return;
+        this.addEventListeners();
       }
 
       return setContainerRef;
+    }()
+  }, {
+    key: "addEventListeners",
+    value: function () {
+      function addEventListeners() {
+        // We manually set event because React has not implemented onFocusIn/onFocusOut.
+        // Keep an eye on https://github.com/facebook/react/issues/6410 for updates
+        // We use "blur w/ useCapture param" vs "onfocusout" for FF browser support
+        this.removeFocusOutEventListener = (0, _consolidatedEvents.addEventListener)(this.container, 'focusout', this.onFocusOut);
+      }
+
+      return addEventListeners;
+    }()
+  }, {
+    key: "removeEventListeners",
+    value: function () {
+      function removeEventListeners() {
+        if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
+      }
+
+      return removeEventListeners;
     }()
   }, {
     key: "disableScroll",
@@ -3222,13 +3262,13 @@ function (_ref) {
           verticalSpacing: verticalSpacing,
           reopenPickerOnClearDate: reopenPickerOnClearDate,
           keepOpenOnDateSelect: keepOpenOnDateSelect
-        });
+        }, this.maybeRenderDayPickerWithPortal());
 
         return _react["default"].createElement("div", _extends({
           ref: this.setContainerRef
         }, (0, _reactWithStyles.css)(styles.SingleDatePicker, block && styles.SingleDatePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
           onOutsideClick: this.onOutsideClick
-        }, input, this.maybeRenderDayPickerWithPortal()), !enableOutsideClick && input, !enableOutsideClick && this.maybeRenderDayPickerWithPortal());
+        }, input), enableOutsideClick || input);
       }
 
       return render;
@@ -4560,6 +4600,7 @@ function (_ref) {
     _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onDateRangePickerInputFocus = _this.onDateRangePickerInputFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onDayPickerFocusOut = _this.onDayPickerFocusOut.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -4613,6 +4654,7 @@ function (_ref) {
     key: "componentWillUnmount",
     value: function () {
       function componentWillUnmount() {
+        this.removeDayPickerEventListeners();
         if (this.removeEventListener) this.removeEventListener();
         if (this.enableScroll) this.enableScroll();
       }
@@ -4690,6 +4732,22 @@ function (_ref) {
       return onDayPickerFocus;
     }()
   }, {
+    key: "onDayPickerFocusOut",
+    value: function () {
+      function onDayPickerFocusOut(event) {
+        // In cases where **relatedTarget** is not null, it points to the right
+        // element here. However, in cases where it is null (such as clicking on a
+        // specific day), the appropriate value is **event.target**.
+        //
+        // We handle both situations here by using the ` || ` operator to fallback
+        // to *event.target** when **relatedTarget** is not provided.
+        if (this.dayPickerContainer.contains(event.relatedTarget || event.target)) return;
+        this.onOutsideClick(event);
+      }
+
+      return onDayPickerFocusOut;
+    }()
+  }, {
     key: "onDayPickerBlur",
     value: function () {
       function onDayPickerBlur() {
@@ -4706,7 +4764,11 @@ function (_ref) {
     key: "setDayPickerContainerRef",
     value: function () {
       function setDayPickerContainerRef(ref) {
+        if (ref === this.dayPickerContainer) return;
+        if (this.dayPickerContainer) this.removeDayPickerEventListeners();
         this.dayPickerContainer = ref;
+        if (!ref) return;
+        this.addDayPickerEventListeners();
       }
 
       return setDayPickerContainerRef;
@@ -4719,6 +4781,30 @@ function (_ref) {
       }
 
       return setContainerRef;
+    }()
+  }, {
+    key: "addDayPickerEventListeners",
+    value: function () {
+      function addDayPickerEventListeners() {
+        // NOTE: We are using a manual event listener here, because React doesn't
+        // provide FocusOut, while blur and keydown don't provide the information
+        // needed in order to know whether we have left focus or not.
+        //
+        // For reference, this issue is further described here:
+        // - https://github.com/facebook/react/issues/6410
+        this.removeDayPickerFocusOut = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onDayPickerFocusOut);
+      }
+
+      return addDayPickerEventListeners;
+    }()
+  }, {
+    key: "removeDayPickerEventListeners",
+    value: function () {
+      function removeDayPickerEventListeners() {
+        if (this.removeDayPickerFocusOut) this.removeDayPickerFocusOut();
+      }
+
+      return removeDayPickerEventListeners;
     }()
   }, {
     key: "isOpened",
@@ -5027,13 +5113,13 @@ function (_ref) {
           small: small,
           regular: regular,
           verticalSpacing: verticalSpacing
-        });
+        }, this.maybeRenderDayPickerWithPortal());
 
         return _react["default"].createElement("div", _extends({
           ref: this.setContainerRef
         }, (0, _reactWithStyles.css)(styles.DateRangePicker, block && styles.DateRangePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
           onOutsideClick: this.onOutsideClick
-        }, input, this.maybeRenderDayPickerWithPortal()), !enableOutsideClick && input, !enableOutsideClick && this.maybeRenderDayPickerWithPortal());
+        }, input), enableOutsideClick || input);
       }
 
       return render;
@@ -6074,8 +6160,9 @@ function (_ref) {
             endDateOffset = _this$props4.endDateOffset;
         var _this$state = this.state,
             hoverDate = _this$state.hoverDate,
-            visibleDays = _this$state.visibleDays;
-        var dateOffset = null;
+            visibleDays = _this$state.visibleDays,
+            dateOffset = _this$state.dateOffset;
+        var nextDateOffset = null;
 
         if (focusedInput) {
           var hasOffset = startDateOffset || endDateOffset;
@@ -6086,13 +6173,13 @@ function (_ref) {
             var end = (0, _getSelectedDateOffset["default"])(endDateOffset, day, function (rangeDay) {
               return rangeDay.add(1, 'day');
             });
-            dateOffset = {
+            nextDateOffset = {
               start: start,
               end: end
             }; // eslint-disable-next-line react/destructuring-assignment
 
-            if (this.state.dateOffset && this.state.dateOffset.start && this.state.dateOffset.end) {
-              modifiers = this.deleteModifierFromRange(modifiers, this.state.dateOffset.start, this.state.dateOffset.end, 'hovered-offset');
+            if (dateOffset && dateOffset.start && dateOffset.end) {
+              modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
             }
 
             modifiers = this.addModifierToRange(modifiers, start, end, 'hovered-offset');
@@ -6142,7 +6229,7 @@ function (_ref) {
 
           this.setState({
             hoverDate: day,
-            dateOffset: dateOffset,
+            dateOffset: nextDateOffset,
             visibleDays: _objectSpread({}, visibleDays, modifiers)
           });
         }
@@ -9593,6 +9680,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
+  children: null,
   placeholder: 'Select Date',
   displayValue: '',
   screenReaderMessage: '',
@@ -9655,6 +9743,7 @@ var defaultProps = {
 
 function SingleDatePickerInput(_ref) {
   var id = _ref.id,
+      children = _ref.children,
       placeholder = _ref.placeholder,
       displayValue = _ref.displayValue,
       focused = _ref.focused,
@@ -9722,7 +9811,7 @@ function SingleDatePickerInput(_ref) {
     small: small,
     regular: regular,
     block: block
-  }), showClearDate && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePickerInput_clearDate, small && styles.SingleDatePickerInput_clearDate__small, !customCloseIcon && styles.SingleDatePickerInput_clearDate__default, !displayValue && styles.SingleDatePickerInput_clearDate__hide), {
+  }), children, showClearDate && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePickerInput_clearDate, small && styles.SingleDatePickerInput_clearDate__small, !customCloseIcon && styles.SingleDatePickerInput_clearDate__default, !displayValue && styles.SingleDatePickerInput_clearDate__hide), {
     type: "button",
     "aria-label": phrases.clearDate,
     disabled: disabled,
@@ -10674,6 +10763,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
+  children: null,
   date: null,
   focused: false,
   placeholder: '',
@@ -10877,6 +10967,7 @@ function (_ref) {
     value: function () {
       function render() {
         var _this$props5 = this.props,
+            children = _this$props5.children,
             id = _this$props5.id,
             placeholder = _this$props5.placeholder,
             disabled = _this$props5.disabled,
@@ -10923,7 +11014,6 @@ function (_ref) {
           onChange: this.onChange,
           onFocus: this.onFocus,
           onKeyDownShiftTab: this.onClearFocus,
-          onKeyDownTab: this.onClearFocus,
           onKeyDownArrowDown: onKeyDownArrowDown,
           onKeyDownQuestionMark: onKeyDownQuestionMark,
           screenReaderMessage: screenReaderMessage,
@@ -10934,7 +11024,7 @@ function (_ref) {
           small: small,
           regular: regular,
           verticalSpacing: verticalSpacing
-        });
+        }, children);
       }
 
       return render;
@@ -11501,7 +11591,7 @@ function (_ref) {
             if (showKeyboardShortcuts) {
               this.closeKeyboardShortcutsPanel();
             } else {
-              onBlur();
+              onBlur(e);
             }
 
             break;
@@ -11510,7 +11600,7 @@ function (_ref) {
             if (e.shiftKey) {
               onShiftTab();
             } else {
-              onTab();
+              onTab(e);
             }
 
             break;
@@ -15369,6 +15459,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
+  children: null,
   startDateId: _constants.START_DATE,
   endDateId: _constants.END_DATE,
   startDatePlaceholderText: 'Start Date',
@@ -15447,7 +15538,8 @@ var defaultProps = {
 };
 
 function DateRangePickerInput(_ref) {
-  var startDate = _ref.startDate,
+  var children = _ref.children,
+      startDate = _ref.startDate,
       startDateId = _ref.startDateId,
       startDatePlaceholderText = _ref.startDatePlaceholderText,
       screenReaderMessage = _ref.screenReaderMessage,
@@ -15529,7 +15621,7 @@ function DateRangePickerInput(_ref) {
   }), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePickerInput_arrow), {
     "aria-hidden": "true",
     role: "presentation"
-  }), arrowIcon), _react["default"].createElement(_DateInput["default"], {
+  }), arrowIcon), isStartDateFocused && children, _react["default"].createElement(_DateInput["default"], {
     id: endDateId,
     placeholder: endDatePlaceholderText,
     displayValue: endDate,
@@ -15543,13 +15635,13 @@ function DateRangePickerInput(_ref) {
     openDirection: openDirection,
     onChange: onEndDateChange,
     onFocus: onEndDateFocus,
-    onKeyDownTab: onEndDateTab,
     onKeyDownArrowDown: onKeyDownArrowDown,
     onKeyDownQuestionMark: onKeyDownQuestionMark,
+    onKeyDownTab: onEndDateTab,
     verticalSpacing: verticalSpacing,
     small: small,
     regular: regular
-  }), showClearDates && _react["default"].createElement("button", _extends({
+  }), isEndDateFocused && children, showClearDates && _react["default"].createElement("button", _extends({
     type: "button",
     "aria-label": phrases.clearDates
   }, (0, _reactWithStyles.css)(styles.DateRangePickerInput_clearDates, small && styles.DateRangePickerInput_clearDates__small, !customCloseIcon && styles.DateRangePickerInput_clearDates_default, !(startDate || endDate) && styles.DateRangePickerInput_clearDates__hide), {
@@ -16671,6 +16763,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
+  children: null,
   startDate: null,
   startDateId: _constants.START_DATE,
   startDatePlaceholderText: 'Start Date',
@@ -16946,6 +17039,7 @@ function (_ref) {
     value: function () {
       function render() {
         var _this$props7 = this.props,
+            children = _this$props7.children,
             startDate = _this$props7.startDate,
             startDateId = _this$props7.startDateId,
             startDatePlaceholderText = _this$props7.startDatePlaceholderText,
@@ -17004,7 +17098,6 @@ function (_ref) {
           onStartDateShiftTab: this.onClearFocus,
           onEndDateChange: this.onEndDateChange,
           onEndDateFocus: this.onEndDateFocus,
-          onEndDateTab: this.onClearFocus,
           showClearDates: showClearDates,
           onClearDates: this.clearDates,
           screenReaderMessage: screenReaderMessage,
@@ -17016,7 +17109,7 @@ function (_ref) {
           small: small,
           regular: regular,
           verticalSpacing: verticalSpacing
-        });
+        }, children);
       }
 
       return render;
