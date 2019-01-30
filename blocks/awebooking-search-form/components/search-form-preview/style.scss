@@ -1,0 +1,47 @@
+.search-form-placeholder {
+  position: relative;
+  height: 40px;
+  background: rgba(139, 139, 150, 0.1);
+
+  .dashicons {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    color: #bdbdbd;
+  }
+}
+
+.search-form-occupancy {
+  display: flex;
+
+  > div {
+    flex-grow: 1;
+  }
+}
+
+.search-form-preview {
+  margin: auto;
+  display: flex;
+  max-width: 380px;
+  flex-direction: column;
+}
+
+.search-form-preview > div {
+  flex: 0 0 100%;
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.awebooking-block-search-form--horizontal {
+  .search-form-preview {
+    max-width: unset;
+    flex-direction: row;
+  }
+
+  .search-form-preview > div {
+    flex: 0 0 20%;
+    max-width: 20%;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+}

@@ -56,7 +56,7 @@ function awebooking_rooms_block_init() {
 
 	$assets_url = trailingslashit( plugin_dir_url( __FILE__ ) );
 	if ( file_exists( __DIR__ . '/../hot' ) ) {
-		$assets_url = '//localhost:8080/blocks/';
+		$assets_url = '//localhost:8089/blocks/';
 	}
 
 	$index_js = 'awebooking-rooms/index.js';
@@ -92,25 +92,70 @@ function awebooking_rooms_block_init() {
 
 add_action( 'init', 'awebooking_rooms_block_init' );
 
-function awebooking_render_block_rooms( $attributes ) {
-	$args = [
-		'orderby'        => $attributes['orderBy'],
-		'order'          => $attributes['order'],
-		'posts_per_page' => $attributes['postsToShow'],
-		'offset'         => $attributes['offset'],
-	];
-
-	// if ( isset( $attributes['hotel'] ) ) {
-	// 	$args['hotel'] = $attributes['hotel'];
-	// }
-
-	$shortcode_atts = '';
-	foreach ( $args as $attribute => $value ) {
-		$shortcode_atts .= $attribute . '="' . esc_attr( $value ) . '" ';
+/**
+ * Registers all block assets so that they can be enqueued through Gutenberg in
+ * the corresponding context.
+ *
+ * @see https://wordpress.org/gutenberg/handbook/blocks/writing-your-first-block-type/#enqueuing-block-scripts
+ */
+function awebooking_search_form_block_init() {
+	// Skip block registration if Gutenberg is not enabled/merged.
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
 	}
 
-	return do_shortcode( '[awebooking_rooms ' . $shortcode_atts . ']' );
+	$dir = __DIR__;
+
+	$block_dependencies = [
+		'wp-api-fetch',
+		'wp-blocks',
+		'wp-components',
+		'wp-compose',
+		'wp-data',
+		'wp-element',
+		'wp-editor',
+		'wp-i18n',
+		'wp-url',
+		'lodash',
+	];
+
+	$assets_url = trailingslashit( plugin_dir_url( __FILE__ ) );
+	if ( file_exists( __DIR__ . '/../hot' ) ) {
+		$assets_url = '//localhost:8089/blocks/';
+	}
+
+	$index_js = 'awebooking-search-form/index.js';
+	wp_register_script(
+		'awebooking-search-form-block-editor',
+		$assets_url . $index_js,
+		$block_dependencies,
+		null
+	);
+
+	$editor_css = 'awebooking-search-form/editor.css';
+	wp_register_style(
+		'awebooking-search-form-block-editor',
+		$assets_url . $editor_css,
+		[],
+		null
+	);
+
+	$style_css = 'awebooking-search-form/style.css';
+	wp_register_style(
+		'awebooking-search-form-block',
+		$assets_url . $style_css,
+		[],
+		null
+	);
+
+	register_block_type( 'awebooking/awebooking-search-form', [
+		'editor_script' => 'awebooking-search-form-block-editor',
+		'editor_style'  => 'awebooking-search-form-block-editor',
+		'style'         => 'awebooking-search-form-block',
+	] );
 }
+
+add_action( 'init', 'awebooking_search_form_block_init' );
 
 function awebooking_add_fields_to_api() {
 	register_rest_field( 'room_type',
@@ -142,7 +187,7 @@ function awebooking_add_fields_to_api() {
 	);
 }
 
-add_action( 'rest_api_init', 'awebooking_add_fields_to_api' );
+// add_action( 'rest_api_init', 'awebooking_add_fields_to_api' );
 
 /**
  * Get the value of the "thumbnail_url" field

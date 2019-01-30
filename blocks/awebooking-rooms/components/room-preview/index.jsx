@@ -55,10 +55,10 @@ RoomPreview.propTypes = {
    * The room object as returned from the API.
    */
   room: PropTypes.shape( {
-  id: PropTypes.number,
-  room_name: PropTypes.string,
-  thumbnail_url: PropTypes.string,
-  short_description: PropTypes.string,
+    id: PropTypes.number,
+    room_name: PropTypes.string,
+    thumbnail_url: PropTypes.string,
+    short_description: PropTypes.string,
   } ).isRequired,
 };
 
