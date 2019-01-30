@@ -4,6 +4,7 @@ namespace AweBooking\Model\Booking;
 
 use WP_Error;
 use AweBooking\Support\Period;
+use AweBooking\Model\Room;
 use AweBooking\Model\Common\Timespan;
 use AweBooking\Model\Common\Guest_Counts;
 
@@ -197,6 +198,48 @@ class Room_Item extends Item {
 				return false;
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Swap to a another room unit.
+	 *
+	 * @param \AweBooking\Model\Room|int $swap_to
+	 * @return WP_Error|bool
+	 */
+	public function swap_room( $swap_to ) {
+		if ( ! $swap_to instanceof Room ) {
+			$swap_to = abrs_get_room( $swap_to );
+		}
+
+		if ( empty( $swap_to ) || (int) $swap_to->get( 'room_type' ) !== (int) $this->get( 'room_type_id' ) ) {
+			return new WP_Error( 'room_type_mismatch', esc_html__( 'Can not swap to diffrent room type.', 'awebooking' ) );
+		}
+
+		// Check the availability of the rooms.
+		$timespan = $this->get_timespan();
+
+		if ( ! $timespan || ! abrs_room_available( $swap_to, $timespan ) ) {
+			return new WP_Error( 'swap_error', esc_html__( 'Can not swap to selected room type.', 'awebooking' ) );
+		}
+
+		// Start a mysql transaction.
+		abrs_db_transaction( 'start' );
+
+		$updated1 = abrs_clear_booking_event( $this->get( 'room_id' ), $this->get( 'booking_id' ), $timespan );
+		$updated2 = abrs_apply_booking_event( $swap_to->get_id(), $this->get( 'booking_id' ), $timespan );
+
+		if ( true !== $updated1 || true !== $updated2 ) {
+			abrs_db_transaction( 'rollback' );
+			return false;
+		}
+
+		// Commit the transaction.
+		abrs_db_transaction( 'commit' );
+
+		$this->set_attribute( 'room_id', $swap_to->get_id() );
+		$this->save();
 
 		return true;
 	}

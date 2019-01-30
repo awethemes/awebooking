@@ -2,16 +2,17 @@
 
 namespace AweBooking\Admin\Controllers;
 
-use AweBooking\Model\Room;
-use WPLibs\Http\Json_Response;
+use AweBooking\Model\Booking\Room_Item;
 use WPLibs\Http\Request;
+use WPLibs\Http\Json_Response;
+use AweBooking\Model\Room;
 
 class Ajax_Controller extends Controller {
 	/**
 	 * Delete room.
 	 *
-	 * @param \WPLibs\Http\Request $request The current request.
-	 * @param \AweBooking\Model\Room  $room    Room.
+	 * @param \WPLibs\Http\Request   $request The current request.
+	 * @param \AweBooking\Model\Room $room    Room.
 	 * @return mixed
 	 */
 	public function delete_room( Request $request, Room $room ) {
@@ -31,7 +32,7 @@ class Ajax_Controller extends Controller {
 
 		// No rooms belong to any booking, just delete that!
 		if ( count( $rooms ) === 0 ) {
-			$deleted = $room->delete();
+			$room->delete();
 			return $this->response_json( 'success', esc_html__( 'Room successfully deleted', 'awebooking' ) );
 		}
 
@@ -77,7 +78,7 @@ class Ajax_Controller extends Controller {
 	 * Handle add booking note.
 	 *
 	 * @param  \WPLibs\Http\Request $request The current request.
-	 * @param  int                     $note    The booking note ID to delete.
+	 * @param  int                  $note    The booking note ID to delete.
 	 * @return mixed
 	 */
 	public function delete_booking_note( Request $request, $note ) {
@@ -184,5 +185,68 @@ class Ajax_Controller extends Controller {
 		}
 
 		return new Json_Response( $services );
+	}
+
+	/**
+	 * Check the rates.
+	 *
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @return \WPLibs\Http\Response|mixed
+	 */
+	public function check_rates( Request $request ) {
+		if ( $request->filled( 'booked' ) ) {
+			$this->fill_booked_request( $request );
+		}
+
+		if ( ! $request->filled( 'check_in', 'check_out', 'room_type' ) ) {
+			return new Json_Response( [ 'status' => 'error' ], 400 );
+		}
+
+		$args = $request->only(
+			'adults', 'children', 'infants', 'check_in', 'check_out', 'room_type', 'rate_plan'
+		);
+
+		$room_rate = abrs_retrieve_room_rate( array_merge( $args, [
+			'request' => $request,
+		] ) );
+
+		if ( is_wp_error( $room_rate ) ) {
+			return new Json_Response( [
+				'status'  => 'error',
+				'message' => $room_rate->get_error_message(),
+			], 400 );
+		}
+
+		$data = [
+			'prices'                => $room_rate->get_prices(),
+			'breakdown'             => $room_rate->get_breakdown()->all(),
+			'additional_rates'      => $room_rate->get_additional_rates(),
+			'additional_breakdowns' => array_map( function ( $breakdown ) {
+				return $breakdown->all();
+			}, $room_rate->get_additional_breakdowns() ),
+		];
+
+		// @codingStandardsIgnoreLine
+		return new Json_Response( [ 'status' => 'success', 'data' => $data ] );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  \WPLibs\Http\Request $request The current request.
+	 */
+	protected function fill_booked_request( Request $request ) {
+		$booking_item = abrs_get_booking_item( $request->get( 'booked' ) );
+
+		if ( $booking_item instanceof Room_Item ) {
+			$request['room_type'] = $booking_item->get( 'room_type_id' );
+			$request['rate_plan'] = $booking_item->get( 'rate_plan_id' );
+
+			foreach ( [ 'adults', 'infants', 'children', 'check_in', 'check_out' ] as $key ) {
+				if ( ! $request->has( $key ) ) {
+					$request[ $key ] = $booking_item->get( $key );
+				}
+			}
+		}
 	}
 }
