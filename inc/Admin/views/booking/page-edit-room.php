@@ -206,7 +206,9 @@ if ( 'swap' === $current_action && $timespan ) {
 				});
 			};
 
-			if (checkInInput._flatpickr) {
+			$('[name="adults"], [name="children"], [name="infants"]', form).on('change', refreshCosts);
+
+			if (checkInInput && checkInInput._flatpickr) {
 				_flatpickr = checkInInput._flatpickr;
 
 				_flatpickr.config.onChange.push(function (selectedDates) {
@@ -215,8 +217,6 @@ if ( 'swap' === $current_action && $timespan ) {
 					}
 				});
 			}
-
-			$('[name="adults"], [name="children"], [name="infants"]', form).on('change', refreshCosts);
 
 			$('#js-apply-new-price').on('click', function (e) {
 				e.preventDefault();
