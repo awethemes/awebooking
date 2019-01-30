@@ -86,10 +86,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</tbody>
 </table>
 
+<?php $fees = $booking->get_fees(); ?>
+<?php if ( count( $fees ) > 0 ) : ?>
+	<table class="table-booking" width="100%" cellpadding="0" cellspacing="0">
+		<tbody>
+			<?php foreach ( $fees as $item ) : ?>
+				<tr>
+					<th><?php echo esc_html( $item->get_name() ); ?></th>
+					<td class="total-column"><?php abrs_price( $item->get_total() ); ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+<?php endif; ?>
+
 <?php do_action( 'abrs_email_booking_line_items', $booking, $email ); ?>
 
 <table class="table-booking-totals">
 	<tbody>
+		<tr>
+			<th><?php esc_html_e( 'Subtotal', 'awebooking' ); ?></th>
+			<td class="total-column"><?php abrs_price( $booking->get_subtotal() ); ?></td>
+		</tr>
+
 		<tr>
 			<th><?php esc_html_e( 'Total', 'awebooking' ); ?></th>
 			<td class="total-column"><?php abrs_price( $booking->get_total() ); ?></td>
