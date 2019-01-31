@@ -86,7 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "3ux1":
+/***/ "./assets/babel/admin/settings.js":
 /***/ (function(module, exports) {
 
 (function ($, plugin) {
@@ -242,9 +242,10 @@
 /***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("3ux1");
+module.exports = __webpack_require__("./assets/babel/admin/settings.js");
 
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=settings.js.map
