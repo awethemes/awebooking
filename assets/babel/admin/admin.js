@@ -8,14 +8,15 @@ import customerSearch from './utils/search-customer'
 import accounting from 'accounting'
 
 // Instance the awebooking object.
-let awebooking = window.awebooking || {};
+const awebooking = window.awebooking || {}
+const i18n = awebooking.i18n || {}
 
 // Create the properties.
-awebooking.utils = {};
-awebooking.instances = {};
+awebooking.utils = {}
+awebooking.instances = {}
 
 awebooking.isMobile = isMobile
-awebooking.utils.flatpickrRangePlugin = rangePlugin;
+awebooking.utils.flatpickrRangePlugin = rangePlugin
 
 /**
  * The admin route.
@@ -23,16 +24,16 @@ awebooking.utils.flatpickrRangePlugin = rangePlugin;
  * @param  {string} route
  * @return {string}
  */
-awebooking.route = function(route) {
-  return this.admin_route + route.replace(/^\//g, '');
-};
+awebooking.route = function (route) {
+  return this.admin_route + route.replace(/^\//g, '')
+}
 
 /**
  * Show the alert dialog.
  *
  * @return {SweetAlert}
  */
-awebooking.alert = function(message, type = 'error') {
+awebooking.alert = function (message, type = 'error') {
   return swal({
     text: message,
     type: type,
@@ -41,17 +42,17 @@ awebooking.alert = function(message, type = 'error') {
     showCancelButton: false,
     showConfirmButton: true,
     confirmButtonClass: 'button'
-  });
-};
+  })
+}
 
 /**
  * Show the confirm message.
  *
  * @return {SweetAlert}
  */
-awebooking.confirm = function(message, callback) {
-  if (! window.swal) {
-    return window.confirm(message || this.i18n.warning) && callback();
+awebooking.confirm = function (message, callback) {
+  if (!window.swal) {
+    return window.confirm(message || i18n.warning) && callback()
   }
 
   const confirm = window.swal({
@@ -67,16 +68,16 @@ awebooking.confirm = function(message, callback) {
     confirmButtonClass: '',
     cancelButtonText: this.i18n.cancel,
     confirmButtonText: this.i18n.ok,
-  });
+  })
 
   if (callback) {
-    return confirm.then(function(result) {
-      if (result.value) callback(result);
-    });
+    return confirm.then(function (result) {
+      if (result.value) callback(result)
+    })
   }
 
-  return confirm;
-};
+  return confirm
+}
 
 /**
  * Create the dialog.
@@ -84,7 +85,7 @@ awebooking.confirm = function(message, callback) {
  * @param  {string} selector
  * @return {Object}
  */
-awebooking.dialog = function(selector) {
+awebooking.dialog = function (selector) {
   const $dialog = $(selector).dialog({
     modal: true,
     width: 'auto',
@@ -95,58 +96,59 @@ awebooking.dialog = function(selector) {
     closeOnEscape: true,
     dialogClass: 'wp-dialog awebooking-dialog',
     position: { my: 'center', at: 'center center-15%', of: window },
-  });
+  })
 
-  $(window).resize(debounce(() => {
-    $dialog.dialog('option', 'position', { my: 'center', at: 'center center-15%', of: window });
-  }, 150));
+  $(window).on('resize', debounce(() => {
+    $dialog.dialog('option', 'position', { my: 'center', at: 'center center-15%', of: window })
+  }, 150))
 
-  return $dialog;
-};
+  return $dialog
+}
 
 /**
  * Send a ajax request to a route.
  *
+ * @param  {String}   method
  * @param  {String}   route
  * @param  {Object}   data
  * @param  {Function} callback
- * @return {Object}
+ * @return {JQuery.jqXHR}
  */
-awebooking.ajax = function(method, route, data, callback) {
-  return $.ajax({
+awebooking.ajax = function (method, route, data, callback) {
+  const xhr = $.ajax({
     url: awebooking.route(route),
     data: data,
     method: method,
     dataType: 'json',
   })
-  .done((data) => {
-    if(callback) callback(data);
-  })
-  .fail((xhr) => {
-    const json = xhr.responseJSON;
+
+  return xhr.done((data) => {
+    if (callback) callback(data)
+  }).fail((xhr) => {
+    const json = xhr.responseJSON
 
     if (json && json.message) {
-      awebooking.alert(json.message, 'error');
+      awebooking.alert(json.message, 'error')
     } else {
-      awebooking.alert(awebooking.i18n.error, 'error');
+      awebooking.alert(i18n.error, 'error')
     }
-  });
-};
+  })
+}
 
 /**
  * Create a form then append to body.
  *
- * @param  {String} link   The form action.
+ * @param  {String} action The form action.
  * @param  {String} method The form method.
  * @return {Object}
  */
-awebooking.createForm = function(action, method) {
-  const $form = $('<form>', { 'method': 'POST', 'action': action });
+awebooking.createForm = function (action, method) {
+  const $form = $('<form>', { 'method': 'POST', 'action': action })
 
-  const hiddenInput = $('<input>', { 'name': '_method',  'type': 'hidden', 'value': method });
+  const hiddenInput = $('<input>', { 'name': '_method', 'type': 'hidden', 'value': method })
 
-  return $form.append(hiddenInput).appendTo('body');
-};
+  return $form.append(hiddenInput).appendTo('body')
+}
 
 /**
  * Format the price.
@@ -154,15 +156,15 @@ awebooking.createForm = function(action, method) {
  * @param amount
  * @returns {string}
  */
-awebooking.formatPrice = function(amount) {
+awebooking.formatPrice = function (amount) {
   return accounting.formatMoney(amount, {
-    format: awebooking.i18n.priceFormat,
-    symbol: awebooking.i18n.currencySymbol,
-    decimal: awebooking.i18n.decimalSeparator,
-    thousand: awebooking.i18n.priceThousandSeparator,
-    precision: awebooking.i18n.numberDecimals,
-  });
-};
+    format: i18n.priceFormat,
+    symbol: i18n.currencySymbol,
+    decimal: i18n.decimalSeparator,
+    thousand: i18n.priceThousandSeparator,
+    precision: i18n.numberDecimals,
+  })
+}
 
 /**
  * Retrieves a modified URL query string.
@@ -170,52 +172,52 @@ awebooking.formatPrice = function(amount) {
  * @param {object} args
  * @param {string} url
  */
-awebooking.utils.addQueryArgs =function(args, url) {
+awebooking.utils.addQueryArgs = function (args, url) {
   if (typeof url === 'undefined') {
-    url = window.location.href;
+    url = window.location.href
   }
 
-  const parsed = queryString.parseUrl(url);
-  const query  = $.extend({}, parsed.query, args);
+  const parsed = queryString.parseUrl(url)
+  const query = $.extend({}, parsed.query, args)
 
-  return parsed.url + '?' + queryString.stringify(query, { sort: false });
-};
+  return parsed.url + '?' + queryString.stringify(query, { sort: false })
+}
 
-$(function() {
+$(function () {
   if (window.tippy) {
     tippy('.tippy', {
       arrow: true,
       animation: 'shift-toward',
       duration: [200, 150],
-    });
+    })
   }
 
   // Init the selectize.
   if ($.fn.selectize) {
-    customerSearch();
+    customerSearch()
 
     $('select.selectize, .with-selectize .cmb2_select').selectize({
       allowEmptyOption: true,
       searchField: ['value', 'text'],
-    });
+    })
   }
 
   // Init warning before delete.
-  $('[data-method="abrs-delete"]').on( 'click', function(e) {
-    e.preventDefault();
+  $('[data-method="abrs-delete"]').on('click', function (e) {
+    e.preventDefault()
 
-    const link = $(this).attr('href');
-    const message = $(this).data('warning');
+    const link = $(this).attr('href')
+    const message = $(this).data('warning')
 
-    awebooking.confirm(message, function() {
-      awebooking.createForm(link, 'DELETE').submit();
-    });
-  });
+    awebooking.confirm(message, function () {
+      awebooking.createForm(link, 'DELETE').submit()
+    })
+  })
 
   $('[data-init="abrs-dropdown"]').each(function () {
     $(this).data('abrs-dropdown', new Dropdown(this, {
       drop: '.abrs-drop',
-    }));
-  });
+    }))
+  })
 
-});
+})

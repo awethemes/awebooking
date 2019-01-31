@@ -11,8 +11,8 @@ $route->post(   '/rates/bulk-update',                  'Rate_Controller@bulk_upd
 $route->get(    '/calendar',                           'Calendar_Controller@index' );
 $route->post(   '/calendar',                           'Calendar_Controller@update' );
 $route->post(   '/calendar/bulk-update',               'Calendar_Controller@bulk_update' );
-$route->get(   '/export/rates',                        'Export_Controller@rates' );
-$route->get(   '/export/calendar',                     'Export_Controller@calendar' );
+$route->get(    '/export/rates',                       'Export_Controller@rates' );
+$route->get(    '/export/calendar',                    'Export_Controller@calendar' );
 
 $route->get(    '/settings',                           'Settings_Controller@index' );
 $route->post(   '/settings',                           'Settings_Controller@store' );
@@ -42,4 +42,5 @@ $route->get(    '/search/services',                    'Ajax_Controller@search_s
 $route->post(   '/ajax/booking-note',                  'Ajax_Controller@add_booking_note' );
 $route->delete( '/ajax/booking-note/{note:\d+}',       'Ajax_Controller@delete_booking_note' );
 $route->delete( '/ajax/delete-room/{room:\d+}',        'Ajax_Controller@delete_room' );
+$route->get(    '/ajax/rates/check',                   'Ajax_Controller@check_rates' );
 // @codingStandardsIgnoreEnd

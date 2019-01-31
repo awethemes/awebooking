@@ -3,7 +3,9 @@
 namespace AweBooking\Admin\Controllers;
 
 use WP_Error;
+use RuntimeException;
 use WPLibs\Http\Request;
+use AweBooking\Model\Booking;
 use AweBooking\Model\Booking\Room_Item;
 use AweBooking\Model\Common\Guest_Counts;
 use AweBooking\Admin\Forms\Edit_Booking_Room_Form;
@@ -19,17 +21,14 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Handle search rooms.
 	 *
-	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @param  Request $request The current request.
 	 * @return mixed
 	 */
 	public function search( Request $request ) {
-		// Get the check the booking reference.
-		if ( ! $booking = abrs_get_booking( $request['refer'] ) ) {
-			return new WP_Error( 404, esc_html__( 'The booking reference is does not exist.', 'awebooking' ) );
-		}
-
-		if ( ! $booking->is_editable() ) {
-			return new WP_Error( 400, esc_html__( 'This booking is no longer editable.', 'awebooking' ) );
+		try {
+			$booking = $this->preapre_booking( abrs_get_booking( $request['refer'] ) );
+		} catch ( \Exception $e ) {
+			return new WP_Error( 400, $e->getMessage() );
 		}
 
 		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
@@ -46,24 +45,46 @@ class Booking_Room_Controller extends Controller {
 
 		return $this->response( 'booking/add-room.php', compact(
 			'request', 'booking', 'res_request', 'results'
-		));
+		) );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  Booking|null $booking
+	 * @return Booking
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function preapre_booking( $booking ) {
+		if ( ! $booking ) {
+			throw new RuntimeException( esc_html__( 'The booking reference is does not exist.', 'awebooking' ) );
+		}
+
+		if ( ! $booking->is_editable() ) {
+			 throw new RuntimeException( esc_html__( 'This booking is no longer editable.', 'awebooking' ) );
+		}
+
+		return $booking;
 	}
 
 	/**
 	 * Handle store new booking payment.
 	 *
-	 * @param  \WPLibs\Http\Request $request The current request.
+	 * @param  Request $request The current request.
 	 * @return mixed
 	 */
 	public function store( Request $request ) {
 		check_admin_referer( 'add_booking_room', '_wpnonce' );
 
-		if ( ! $request->filled( '_refer' ) || ! $booking = abrs_get_booking( $request['_refer'] ) ) {
-			return new WP_Error( 404, esc_html__( 'The booking reference is does not exist.', 'awebooking' ) );
+		try {
+			$booking = $this->preapre_booking( abrs_get_booking( $request['refer'] ) );
+		} catch ( \Exception $e ) {
+			return new WP_Error( 400, $e->getMessage() );
 		}
 
 		if ( empty( $request['reservation'][ $request->submit ] ) ) {
-			return;
+			return new WP_Error( 500, '@~@' );
 		}
 
 		// The summit room & occupancy data.
@@ -97,7 +118,7 @@ class Booking_Room_Controller extends Controller {
 		$room_item->set_timespan( $timespan );
 		$room_item->set_total( isset( $submit_data['total'] ) ? $submit_data['total'] : 0 );
 
-		$saved = $room_item->save();
+		$room_item->save();
 
 		return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
 	}
@@ -105,12 +126,14 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Display the edit form.
 	 *
-	 * @param  \WPLibs\Http\Request             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
-	public function edit( Request $request, Room_Item $room_item ) {
-		if ( ! $booking = abrs_get_booking( $room_item->booking_id ) ) {
+	public function edit( Room_Item $room_item ) {
+		try {
+			$booking = $this->preapre_booking( abrs_get_booking( $room_item->booking_id ) );
+		} catch ( \Exception $e ) {
+			return new WP_Error( 400, $e->getMessage() );
 		}
 
 		$controls = new Edit_Booking_Room_Form( $room_item );
@@ -121,20 +144,33 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform update the room stay.
 	 *
-	 * @param  \WPLibs\Http\Request             $request   The current request.
+	 * @param  Request                             $request   The current request.
 	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The booking payment item.
 	 * @return mixed
 	 */
 	public function update( Request $request, Room_Item $room_item ) {
 		check_admin_referer( 'update_room_stay', '_wpnonce' );
 
+		try {
+			$this->preapre_booking( abrs_get_booking( $room_item->booking_id ) );
+		} catch ( \Exception $e ) {
+			return new WP_Error( 400, $e->getMessage() );
+		}
+
 		$data = ( new Edit_Booking_Room_Form( $room_item ) )->handle( $request );
 
 		$redirect_fallback = abrs_admin_route( "/booking-room/{$room_item->get_id()}", $request->only( 'action' ) );
 
 		switch ( $request->get( '_action' ) ) {
-			case 'swap-room':
-				// TODO: ...
+			case 'swap':
+				if ( $swap_to = $request->get( 'swap_to_room' ) ) {
+					$changed = $room_item->swap_room( $swap_to );
+
+					if ( is_wp_error( $changed ) ) {
+						abrs_flash_notices( $changed->get_error_message(), 'error' );
+						return $this->redirect()->back( $redirect_fallback );
+					}
+				}
 				break;
 
 			case 'change-timespan':
@@ -148,6 +184,10 @@ class Booking_Room_Controller extends Controller {
 
 					// Change to the new timespan.
 					$changed = $room_item->change_timespan( $to_timespan );
+
+					$room_item->set_subtotal( $data['subtotal'] );
+					$room_item->set_total( $data['total'] );
+					$room_item->save();
 
 					if ( is_wp_error( $changed ) ) {
 						abrs_flash_notices( $changed->get_error_message(), 'error' );
@@ -175,11 +215,10 @@ class Booking_Room_Controller extends Controller {
 	/**
 	 * Perform delete a booking room.
 	 *
-	 * @param  \WPLibs\Http\Request             $request   The current request.
-	 * @param  \AweBooking\Model\Booking\Room_Item $room_item The room item instance.
+	 * @param \AweBooking\Model\Booking\Room_Item $room_item
 	 * @return mixed
 	 */
-	public function destroy( Request $request, Room_Item $room_item ) {
+	public function destroy( Room_Item $room_item ) {
 		check_admin_referer( 'delete_room_' . $room_item->get_id(), '_wpnonce' );
 
 		abrs_delete_booking_item( $room_item );

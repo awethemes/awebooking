@@ -119,6 +119,7 @@ $room_items = $the_booking->get_rooms();
 
 						<div class="row-actions abrs-fleft">
 							<span class="edit"><a href="<?php echo esc_url( $action_link ); ?>"><?php esc_html_e( 'Edit', 'awebooking' ); ?></a> | </span>
+							<span class="swap"><a href="<?php echo esc_url( add_query_arg( 'action', 'swap', $action_link ) ); ?>"><?php esc_html_e( 'Swap', 'awebooking' ); ?></a> | </span>
 							<span class="trash"><a href="<?php echo esc_url( wp_nonce_url( $action_link, "delete_room_{$item->get_id()}" ) ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
 						</div>
 

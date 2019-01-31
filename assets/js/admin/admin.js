@@ -86,338 +86,19 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./assets/babel/admin/admin.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/debounce/index.js");
-/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./node_modules/is-mobile/index.js");
-/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./node_modules/query-string/index.js");
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./assets/babel/core/dropdown.js");
-/* harmony import */ var _core_range_dates__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("./assets/babel/core/range-dates.js");
-/* harmony import */ var _utils_search_customer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("./assets/babel/admin/utils/search-customer.js");
-/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("./node_modules/accounting/accounting.js");
-/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_7__);
+module.exports = __webpack_require__("rBQX");
 
-
-
-
-
-
-
- // Instance the awebooking object.
-
-var awebooking = window.awebooking || {}; // Create the properties.
-
-awebooking.utils = {};
-awebooking.instances = {};
-awebooking.isMobile = is_mobile__WEBPACK_IMPORTED_MODULE_2___default.a;
-awebooking.utils.flatpickrRangePlugin = _core_range_dates__WEBPACK_IMPORTED_MODULE_5__["default"];
-/**
- * The admin route.
- *
- * @param  {string} route
- * @return {string}
- */
-
-awebooking.route = function (route) {
-  return this.admin_route + route.replace(/^\//g, '');
-};
-/**
- * Show the alert dialog.
- *
- * @return {SweetAlert}
- */
-
-
-awebooking.alert = function (message) {
-  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'error';
-  return swal({
-    text: message,
-    type: type,
-    toast: true,
-    buttonsStyling: false,
-    showCancelButton: false,
-    showConfirmButton: true,
-    confirmButtonClass: 'button'
-  });
-};
-/**
- * Show the confirm message.
- *
- * @return {SweetAlert}
- */
-
-
-awebooking.confirm = function (message, callback) {
-  if (!window.swal) {
-    return window.confirm(message || this.i18n.warning) && callback();
-  }
-
-  var confirm = window.swal({
-    text: message || this.i18n.warning,
-    customClass: 'awebooking-confirm-dialog',
-    position: 'center',
-    animation: false,
-    backdrop: 'rgba(0,0,0,.8)',
-    reverseButtons: true,
-    buttonsStyling: false,
-    showCancelButton: true,
-    cancelButtonClass: '',
-    confirmButtonClass: '',
-    cancelButtonText: this.i18n.cancel,
-    confirmButtonText: this.i18n.ok
-  });
-
-  if (callback) {
-    return confirm.then(function (result) {
-      if (result.value) callback(result);
-    });
-  }
-
-  return confirm;
-};
-/**
- * Create the dialog.
- *
- * @param  {string} selector
- * @return {Object}
- */
-
-
-awebooking.dialog = function (selector) {
-  var $dialog = jquery__WEBPACK_IMPORTED_MODULE_0___default()(selector).dialog({
-    modal: true,
-    width: 'auto',
-    height: 'auto',
-    autoOpen: false,
-    draggable: false,
-    resizable: false,
-    closeOnEscape: true,
-    dialogClass: 'wp-dialog awebooking-dialog',
-    position: {
-      my: 'center',
-      at: 'center center-15%',
-      of: window
-    }
-  });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).resize(debounce__WEBPACK_IMPORTED_MODULE_1___default()(function () {
-    $dialog.dialog('option', 'position', {
-      my: 'center',
-      at: 'center center-15%',
-      of: window
-    });
-  }, 150));
-  return $dialog;
-};
-/**
- * Send a ajax request to a route.
- *
- * @param  {String}   route
- * @param  {Object}   data
- * @param  {Function} callback
- * @return {Object}
- */
-
-
-awebooking.ajax = function (method, route, data, callback) {
-  return jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    url: awebooking.route(route),
-    data: data,
-    method: method,
-    dataType: 'json'
-  }).done(function (data) {
-    if (callback) callback(data);
-  }).fail(function (xhr) {
-    var json = xhr.responseJSON;
-
-    if (json && json.message) {
-      awebooking.alert(json.message, 'error');
-    } else {
-      awebooking.alert(awebooking.i18n.error, 'error');
-    }
-  });
-};
-/**
- * Create a form then append to body.
- *
- * @param  {String} link   The form action.
- * @param  {String} method The form method.
- * @return {Object}
- */
-
-
-awebooking.createForm = function (action, method) {
-  var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<form>', {
-    'method': 'POST',
-    'action': action
-  });
-  var hiddenInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<input>', {
-    'name': '_method',
-    'type': 'hidden',
-    'value': method
-  });
-  return $form.append(hiddenInput).appendTo('body');
-};
-/**
- * Format the price.
- *
- * @param amount
- * @returns {string}
- */
-
-
-awebooking.formatPrice = function (amount) {
-  return accounting__WEBPACK_IMPORTED_MODULE_7___default.a.formatMoney(amount, {
-    format: awebooking.i18n.priceFormat,
-    symbol: awebooking.i18n.currencySymbol,
-    decimal: awebooking.i18n.decimalSeparator,
-    thousand: awebooking.i18n.priceThousandSeparator,
-    precision: awebooking.i18n.numberDecimals
-  });
-};
-/**
- * Retrieves a modified URL query string.
- *
- * @param {object} args
- * @param {string} url
- */
-
-
-awebooking.utils.addQueryArgs = function (args, url) {
-  if (typeof url === 'undefined') {
-    url = window.location.href;
-  }
-
-  var parsed = query_string__WEBPACK_IMPORTED_MODULE_3__["parseUrl"](url);
-  var query = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, parsed.query, args);
-  return parsed.url + '?' + query_string__WEBPACK_IMPORTED_MODULE_3__["stringify"](query, {
-    sort: false
-  });
-};
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  if (window.tippy) {
-    tippy('.tippy', {
-      arrow: true,
-      animation: 'shift-toward',
-      duration: [200, 150]
-    });
-  } // Init the selectize.
-
-
-  if (jquery__WEBPACK_IMPORTED_MODULE_0___default.a.fn.selectize) {
-    Object(_utils_search_customer__WEBPACK_IMPORTED_MODULE_6__["default"])();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('select.selectize, .with-selectize .cmb2_select').selectize({
-      allowEmptyOption: true,
-      searchField: ['value', 'text']
-    });
-  } // Init warning before delete.
-
-
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-method="abrs-delete"]').on('click', function (e) {
-    e.preventDefault();
-    var link = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('href');
-    var message = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('warning');
-    awebooking.confirm(message, function () {
-      awebooking.createForm(link, 'DELETE').submit();
-    });
-  });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="abrs-dropdown"]').each(function () {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_4__["default"](this, {
-      drop: '.abrs-drop'
-    }));
-  });
-});
 
 /***/ }),
 
-/***/ "./assets/babel/admin/utils/search-customer.js":
+/***/ "7l0f":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-var $ = jQuery;
-var plugin = window.awebooking;
-
-var ajaxSearch = function ajaxSearch() {
-  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'customers';
-  var query = arguments.length > 1 ? arguments[1] : undefined;
-  var callback = arguments.length > 2 ? arguments[2] : undefined;
-  $.ajax({
-    type: 'GET',
-    url: plugin.route("/search/".concat(type)),
-    data: {
-      term: encodeURIComponent(query)
-    },
-    error: function error() {
-      callback();
-    },
-    success: function success(res) {
-      callback(res);
-    }
-  });
-};
-
-var initSelectize = function initSelectize(select) {
-  $(select).selectize({
-    valueField: 'id',
-    labelField: 'display',
-    searchField: 'display',
-    dropdownParent: 'body',
-    placeholder: $(this).data('placeholder'),
-    load: function load(query, callback) {
-      if (!query.length) {
-        return callback();
-      } else {
-        ajaxSearch('customers', query, callback);
-      }
-    }
-  });
-};
-
-var initSelectizeServices = function initSelectizeServices(select) {
-  $(select).selectize({
-    plugins: ['remove_button', 'drag_drop'],
-    valueField: 'id',
-    labelField: 'name',
-    searchField: ['name', 'id'],
-    dropdownParent: 'body',
-    placeholder: $(this).data('placeholder'),
-    load: function load(query, callback) {
-      if (!query.length) {
-        return callback();
-      } else {
-        ajaxSearch('services', query, callback);
-      }
-    }
-  });
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (function () {
-  $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select').each(function () {
-    initSelectize(this);
-  });
-  $('.selectize-search-services').each(function () {
-    initSelectizeServices(this);
-  });
-});
-;
-
-/***/ }),
-
-/***/ "./assets/babel/core/dropdown.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./assets/babel/core/util.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9T72");
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -537,7 +218,7 @@ var Dropdown = function ($, Popper) {
         this.element.setAttribute('aria-expanded', false);
         this.drop.removeAttribute('aria-hidden');
         this.drop.classList.remove('open--transition');
-        _util__WEBPACK_IMPORTED_MODULE_0__["default"].onTransitionEnd(this.drop, function () {
+        _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].onTransitionEnd(this.drop, function () {
           _this2.drop.classList.remove('open');
         });
       }
@@ -593,7 +274,7 @@ var Dropdown = function ($, Popper) {
       value: function _getDropElement() {
         if (!this.drop) {
           var parent = this.element.parentNode;
-          var target = _util__WEBPACK_IMPORTED_MODULE_0__["default"].getTargetFromElement(this.element);
+          var target = _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].getTargetFromElement(this.element);
 
           if (target) {
             this.drop = document.querySelector(target);
@@ -666,216 +347,121 @@ var Dropdown = function ($, Popper) {
   return Dropdown;
 }(jQuery, window.Popper);
 
-/* harmony default export */ __webpack_exports__["default"] = (Dropdown);
+/* harmony default export */ __webpack_exports__["a"] = (Dropdown);
 
 /***/ }),
 
-/***/ "./assets/babel/core/range-dates.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "8jRI":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return rangePlugin; });
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
 }
 
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
 }
 
-function _iterableToArrayLimit(arr, i) {
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
 
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
 
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
 
-  return _arr;
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
 }
 
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
 
-function rangePlugin() {
-  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return function (fp) {
-    var dateFormat = '',
-        secondInput,
-        _firstInputFocused,
-        _secondInputFocused;
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
 
-    var createSecondInput = function createSecondInput() {
-      if (config.input) {
-        secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
-      } else {
-        secondInput = fp._input.cloneNode();
-        secondInput.removeAttribute('id');
-        secondInput._flatpickr = undefined;
-      }
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
 
-      if (secondInput.value) {
-        var parsedDate = fp.parseDate(secondInput.value);
-
-        if (parsedDate) {
-          fp.selectedDates.push(parsedDate);
-        }
-      }
-
-      secondInput.setAttribute('data-fp-omit', '');
-
-      fp._bind(secondInput, ['focus', 'click'], function () {
-        if (fp.selectedDates[1]) {
-          fp.latestSelectedDateObj = fp.selectedDates[1];
-
-          fp._setHoursFromDate(fp.selectedDates[1]);
-
-          fp.jumpToDate(fp.selectedDates[1]);
-        }
-
-        _firstInputFocused = false;
-        _secondInputFocused = true;
-        fp.isOpen = false;
-        fp.open(undefined, secondInput);
-      });
-
-      fp._bind(fp._input, ['focus', 'click'], function (e) {
-        e.preventDefault();
-        fp.isOpen = false;
-        fp.open();
-      });
-
-      if (fp.config.allowInput) {
-        fp._bind(secondInput, 'keydown', function (e) {
-          if (e.key === 'Enter') {
-            fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
-            secondInput.click();
-          }
-        });
-      }
-
-      if (!config.input) {
-        fp._input.parentNode && fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
-      }
-    };
-
-    var plugin = {
-      onParseConfig: function onParseConfig() {
-        fp.config.mode = 'range';
-        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
-      },
-      onReady: function onReady() {
-        createSecondInput();
-        fp.config.ignoredFocusElements.push(secondInput);
-
-        if (fp.config.allowInput) {
-          fp._input.removeAttribute('readonly');
-
-          secondInput.removeAttribute('readonly');
-        } else {
-          secondInput.setAttribute('readonly', 'readonly');
-        }
-
-        fp._bind(fp._input, 'focus', function () {
-          fp.latestSelectedDateObj = fp.selectedDates[0];
-
-          fp._setHoursFromDate(fp.selectedDates[0]);
-
-          _firstInputFocused = true;
-          _secondInputFocused = false;
-        });
-
-        if (fp.config.allowInput) {
-          fp._bind(fp._input, 'keydown', function (e) {
-            if (e.key === 'Enter') {
-              fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
-            }
-          });
-        }
-
-        fp.setDate(fp.selectedDates, false);
-        plugin.onValueUpdate(fp.selectedDates);
-      },
-      onPreCalendarPosition: function onPreCalendarPosition() {
-        if (_secondInputFocused) {
-          fp._positionElement = secondInput;
-          setTimeout(function () {
-            fp._positionElement = fp._input;
-          }, 0);
-        }
-      },
-      onValueUpdate: function onValueUpdate() {
-        if (!secondInput) {
-          return;
-        }
-
-        var _fp$selectedDates$map = fp.selectedDates.map(function (d) {
-          return fp.formatDate(d, dateFormat);
-        });
-
-        var _fp$selectedDates$map2 = _slicedToArray(_fp$selectedDates$map, 2);
-
-        var _fp$selectedDates$map3 = _fp$selectedDates$map2[0];
-        fp._input.value = _fp$selectedDates$map3 === void 0 ? '' : _fp$selectedDates$map3;
-        var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
-        secondInput.value = _fp$selectedDates$map4 === void 0 ? '' : _fp$selectedDates$map4;
-      },
-      onChange: function onChange() {
-        if (!fp.selectedDates.length) {
-          setTimeout(function () {
-            if (fp.selectedDates.length) {
-              return;
-            }
-
-            secondInput.value = '';
-          }, 10);
-        }
-
-        if (_secondInputFocused) {
-          setTimeout(function () {
-            secondInput.focus();
-          }, 0);
-        }
-      },
-      onDestroy: function onDestroy() {
-        if (!config.input) {
-          secondInput.parentNode && secondInput.parentNode.removeChild(secondInput);
-        }
-      }
-    };
-    return plugin;
-  };
-}
 
 /***/ }),
 
-/***/ "./assets/babel/core/util.js":
+/***/ "9T72":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/debounce/index.js");
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("sBL/");
 /* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/is-mobile/index.js");
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("jfjY");
 /* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./node_modules/query-string/index.js");
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("cr+I");
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_2__);
 
 
@@ -954,11 +540,11 @@ var Utils = function ($) {
   };
 }(jQuery);
 
-/* harmony default export */ __webpack_exports__["default"] = (Utils);
+/* harmony default export */ __webpack_exports__["a"] = (Utils);
 
 /***/ }),
 
-/***/ "./node_modules/accounting/accounting.js":
+/***/ "9UV2":
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1356,216 +942,7 @@ var Utils = function ($) {
 
 /***/ }),
 
-/***/ "./node_modules/debounce/index.js":
-/***/ (function(module, exports) {
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
-};
-
-// Adds compatibility for ES modules
-debounce.debounce = debounce;
-
-module.exports = debounce;
-
-
-/***/ }),
-
-/***/ "./node_modules/decode-uri-component/index.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var token = '%[a-f0-9]{2}';
-var singleMatcher = new RegExp(token, 'gi');
-var multiMatcher = new RegExp('(' + token + ')+', 'gi');
-
-function decodeComponents(components, split) {
-	try {
-		// Try to decode the entire string first
-		return decodeURIComponent(components.join(''));
-	} catch (err) {
-		// Do nothing
-	}
-
-	if (components.length === 1) {
-		return components;
-	}
-
-	split = split || 1;
-
-	// Split the array in 2 parts
-	var left = components.slice(0, split);
-	var right = components.slice(split);
-
-	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
-}
-
-function decode(input) {
-	try {
-		return decodeURIComponent(input);
-	} catch (err) {
-		var tokens = input.match(singleMatcher);
-
-		for (var i = 1; i < tokens.length; i++) {
-			input = decodeComponents(tokens, i).join('');
-
-			tokens = input.match(singleMatcher);
-		}
-
-		return input;
-	}
-}
-
-function customDecodeURIComponent(input) {
-	// Keep track of all the replacements and prefill the map with the `BOM`
-	var replaceMap = {
-		'%FE%FF': '\uFFFD\uFFFD',
-		'%FF%FE': '\uFFFD\uFFFD'
-	};
-
-	var match = multiMatcher.exec(input);
-	while (match) {
-		try {
-			// Decode as big chunks as possible
-			replaceMap[match[0]] = decodeURIComponent(match[0]);
-		} catch (err) {
-			var result = decode(match[0]);
-
-			if (result !== match[0]) {
-				replaceMap[match[0]] = result;
-			}
-		}
-
-		match = multiMatcher.exec(input);
-	}
-
-	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
-	replaceMap['%C2'] = '\uFFFD';
-
-	var entries = Object.keys(replaceMap);
-
-	for (var i = 0; i < entries.length; i++) {
-		// Replace all decoded components
-		var key = entries[i];
-		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
-	}
-
-	return input;
-}
-
-module.exports = function (encodedURI) {
-	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
-	}
-
-	try {
-		encodedURI = encodedURI.replace(/\+/g, ' ');
-
-		// Try the built in decoder first
-		return decodeURIComponent(encodedURI);
-	} catch (err) {
-		// Fallback to a more advanced decoder
-		return customDecodeURIComponent(encodedURI);
-	}
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/is-mobile/index.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = isMobile;
-module.exports.isMobile = isMobile;
-
-var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
-
-var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
-
-function isMobile (opts) {
-  if (!opts) opts = {}
-  var ua = opts.ua
-  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
-  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-    ua = ua.headers['user-agent'];
-  }
-  if (typeof ua !== 'string') return false;
-
-  return opts.tablet
-    ? tabletRE.test(ua)
-    : mobileRE.test(ua);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/object-assign/index.js":
+/***/ "MgzW":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1663,14 +1040,28 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
-/***/ "./node_modules/query-string/index.js":
+/***/ "ZFOp":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__("./node_modules/strict-uri-encode/index.js");
-var objectAssign = __webpack_require__("./node_modules/object-assign/index.js");
-var decodeComponent = __webpack_require__("./node_modules/decode-uri-component/index.js");
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
+
+/***/ }),
+
+/***/ "cr+I":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var strictUriEncode = __webpack_require__("ZFOp");
+var objectAssign = __webpack_require__("MgzW");
+var decodeComponent = __webpack_require__("8jRI");
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -1895,29 +1286,635 @@ exports.parseUrl = function (str, opts) {
 
 /***/ }),
 
-/***/ "./node_modules/strict-uri-encode/index.js":
+/***/ "jfjY":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
+
+module.exports = isMobile;
+module.exports.isMobile = isMobile;
+
+var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
+
+var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
+
+function isMobile (opts) {
+  if (!opts) opts = {}
+  var ua = opts.ua
+  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
+  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
+    ua = ua.headers['user-agent'];
+  }
+  if (typeof ua !== 'string') return false;
+
+  return opts.tablet
+    ? tabletRE.test(ua)
+    : mobileRE.test(ua);
+}
+
+
+/***/ }),
+
+/***/ "rBQX":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: external "jQuery"
+var external_jQuery_ = __webpack_require__("xeH2");
+var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
+
+// EXTERNAL MODULE: ./node_modules/debounce/index.js
+var debounce = __webpack_require__("sBL/");
+var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce);
+
+// EXTERNAL MODULE: ./node_modules/is-mobile/index.js
+var is_mobile = __webpack_require__("jfjY");
+var is_mobile_default = /*#__PURE__*/__webpack_require__.n(is_mobile);
+
+// EXTERNAL MODULE: ./node_modules/query-string/index.js
+var query_string = __webpack_require__("cr+I");
+
+// EXTERNAL MODULE: ./assets/babel/core/dropdown.js
+var dropdown = __webpack_require__("7l0f");
+
+// CONCATENATED MODULE: ./assets/babel/core/range-dates.js
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function rangePlugin() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return function (fp) {
+    var dateFormat = '',
+        secondInput,
+        _firstInputFocused,
+        _secondInputFocused;
+
+    var createSecondInput = function createSecondInput() {
+      if (config.input) {
+        secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+      } else {
+        secondInput = fp._input.cloneNode();
+        secondInput.removeAttribute('id');
+        secondInput._flatpickr = undefined;
+      }
+
+      if (secondInput.value) {
+        var parsedDate = fp.parseDate(secondInput.value);
+
+        if (parsedDate) {
+          fp.selectedDates.push(parsedDate);
+        }
+      }
+
+      secondInput.setAttribute('data-fp-omit', '');
+
+      fp._bind(secondInput, ['focus', 'click'], function () {
+        if (fp.selectedDates[1]) {
+          fp.latestSelectedDateObj = fp.selectedDates[1];
+
+          fp._setHoursFromDate(fp.selectedDates[1]);
+
+          fp.jumpToDate(fp.selectedDates[1]);
+        }
+
+        _firstInputFocused = false;
+        _secondInputFocused = true;
+        fp.isOpen = false;
+        fp.open(undefined, secondInput);
+      });
+
+      fp._bind(fp._input, ['focus', 'click'], function (e) {
+        e.preventDefault();
+        fp.isOpen = false;
+        fp.open();
+      });
+
+      if (fp.config.allowInput) {
+        fp._bind(secondInput, 'keydown', function (e) {
+          if (e.key === 'Enter') {
+            fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
+            secondInput.click();
+          }
+        });
+      }
+
+      if (!config.input) {
+        fp._input.parentNode && fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+      }
+    };
+
+    var plugin = {
+      onParseConfig: function onParseConfig() {
+        fp.config.mode = 'range';
+        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
+      },
+      onReady: function onReady() {
+        createSecondInput();
+        fp.config.ignoredFocusElements.push(secondInput);
+
+        if (fp.config.allowInput) {
+          fp._input.removeAttribute('readonly');
+
+          secondInput.removeAttribute('readonly');
+        } else {
+          secondInput.setAttribute('readonly', 'readonly');
+        }
+
+        fp._bind(fp._input, 'focus', function () {
+          fp.latestSelectedDateObj = fp.selectedDates[0];
+
+          fp._setHoursFromDate(fp.selectedDates[0]);
+
+          _firstInputFocused = true;
+          _secondInputFocused = false;
+        });
+
+        if (fp.config.allowInput) {
+          fp._bind(fp._input, 'keydown', function (e) {
+            if (e.key === 'Enter') {
+              fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
+            }
+          });
+        }
+
+        fp.setDate(fp.selectedDates, false);
+        plugin.onValueUpdate(fp.selectedDates);
+      },
+      onPreCalendarPosition: function onPreCalendarPosition() {
+        if (_secondInputFocused) {
+          fp._positionElement = secondInput;
+          setTimeout(function () {
+            fp._positionElement = fp._input;
+          }, 0);
+        }
+      },
+      onValueUpdate: function onValueUpdate() {
+        if (!secondInput) {
+          return;
+        }
+
+        var _fp$selectedDates$map = fp.selectedDates.map(function (d) {
+          return fp.formatDate(d, dateFormat);
+        });
+
+        var _fp$selectedDates$map2 = _slicedToArray(_fp$selectedDates$map, 2);
+
+        var _fp$selectedDates$map3 = _fp$selectedDates$map2[0];
+        fp._input.value = _fp$selectedDates$map3 === void 0 ? '' : _fp$selectedDates$map3;
+        var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
+        secondInput.value = _fp$selectedDates$map4 === void 0 ? '' : _fp$selectedDates$map4;
+      },
+      onChange: function onChange() {
+        if (!fp.selectedDates.length) {
+          setTimeout(function () {
+            if (fp.selectedDates.length) {
+              return;
+            }
+
+            secondInput.value = '';
+          }, 10);
+        }
+
+        if (_secondInputFocused) {
+          setTimeout(function () {
+            secondInput.focus();
+          }, 0);
+        }
+      },
+      onDestroy: function onDestroy() {
+        if (!config.input) {
+          secondInput.parentNode && secondInput.parentNode.removeChild(secondInput);
+        }
+      }
+    };
+    return plugin;
+  };
+}
+// CONCATENATED MODULE: ./assets/babel/admin/utils/search-customer.js
+var $ = jQuery;
+var search_customer_plugin = window.awebooking;
+
+var ajaxSearch = function ajaxSearch() {
+  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'customers';
+  var query = arguments.length > 1 ? arguments[1] : undefined;
+  var callback = arguments.length > 2 ? arguments[2] : undefined;
+  $.ajax({
+    type: 'GET',
+    url: search_customer_plugin.route("/search/".concat(type)),
+    data: {
+      term: encodeURIComponent(query)
+    },
+    error: function error() {
+      callback();
+    },
+    success: function success(res) {
+      callback(res);
+    }
+  });
 };
 
+var initSelectize = function initSelectize(select) {
+  $(select).selectize({
+    valueField: 'id',
+    labelField: 'display',
+    searchField: 'display',
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch('customers', query, callback);
+      }
+    }
+  });
+};
+
+var initSelectizeServices = function initSelectizeServices(select) {
+  $(select).selectize({
+    plugins: ['remove_button', 'drag_drop'],
+    valueField: 'id',
+    labelField: 'name',
+    searchField: ['name', 'id'],
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch('services', query, callback);
+      }
+    }
+  });
+};
+
+/* harmony default export */ var search_customer = (function () {
+  $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select').each(function () {
+    initSelectize(this);
+  });
+  $('.selectize-search-services').each(function () {
+    initSelectizeServices(this);
+  });
+});
+;
+// EXTERNAL MODULE: ./node_modules/accounting/accounting.js
+var accounting = __webpack_require__("9UV2");
+var accounting_default = /*#__PURE__*/__webpack_require__.n(accounting);
+
+// CONCATENATED MODULE: ./assets/babel/admin/admin.js
+
+
+
+
+
+
+
+ // Instance the awebooking object.
+
+var awebooking = window.awebooking || {};
+var i18n = awebooking.i18n || {}; // Create the properties.
+
+awebooking.utils = {};
+awebooking.instances = {};
+awebooking.isMobile = is_mobile_default.a;
+awebooking.utils.flatpickrRangePlugin = rangePlugin;
+/**
+ * The admin route.
+ *
+ * @param  {string} route
+ * @return {string}
+ */
+
+awebooking.route = function (route) {
+  return this.admin_route + route.replace(/^\//g, '');
+};
+/**
+ * Show the alert dialog.
+ *
+ * @return {SweetAlert}
+ */
+
+
+awebooking.alert = function (message) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'error';
+  return swal({
+    text: message,
+    type: type,
+    toast: true,
+    buttonsStyling: false,
+    showCancelButton: false,
+    showConfirmButton: true,
+    confirmButtonClass: 'button'
+  });
+};
+/**
+ * Show the confirm message.
+ *
+ * @return {SweetAlert}
+ */
+
+
+awebooking.confirm = function (message, callback) {
+  if (!window.swal) {
+    return window.confirm(message || i18n.warning) && callback();
+  }
+
+  var confirm = window.swal({
+    text: message || this.i18n.warning,
+    customClass: 'awebooking-confirm-dialog',
+    position: 'center',
+    animation: false,
+    backdrop: 'rgba(0,0,0,.8)',
+    reverseButtons: true,
+    buttonsStyling: false,
+    showCancelButton: true,
+    cancelButtonClass: '',
+    confirmButtonClass: '',
+    cancelButtonText: this.i18n.cancel,
+    confirmButtonText: this.i18n.ok
+  });
+
+  if (callback) {
+    return confirm.then(function (result) {
+      if (result.value) callback(result);
+    });
+  }
+
+  return confirm;
+};
+/**
+ * Create the dialog.
+ *
+ * @param  {string} selector
+ * @return {Object}
+ */
+
+
+awebooking.dialog = function (selector) {
+  var $dialog = external_jQuery_default()(selector).dialog({
+    modal: true,
+    width: 'auto',
+    height: 'auto',
+    autoOpen: false,
+    draggable: false,
+    resizable: false,
+    closeOnEscape: true,
+    dialogClass: 'wp-dialog awebooking-dialog',
+    position: {
+      my: 'center',
+      at: 'center center-15%',
+      of: window
+    }
+  });
+  external_jQuery_default()(window).on('resize', debounce_default()(function () {
+    $dialog.dialog('option', 'position', {
+      my: 'center',
+      at: 'center center-15%',
+      of: window
+    });
+  }, 150));
+  return $dialog;
+};
+/**
+ * Send a ajax request to a route.
+ *
+ * @param  {String}   method
+ * @param  {String}   route
+ * @param  {Object}   data
+ * @param  {Function} callback
+ * @return {JQuery.jqXHR}
+ */
+
+
+awebooking.ajax = function (method, route, data, callback) {
+  var xhr = external_jQuery_default.a.ajax({
+    url: awebooking.route(route),
+    data: data,
+    method: method,
+    dataType: 'json'
+  });
+  return xhr.done(function (data) {
+    if (callback) callback(data);
+  }).fail(function (xhr) {
+    var json = xhr.responseJSON;
+
+    if (json && json.message) {
+      awebooking.alert(json.message, 'error');
+    } else {
+      awebooking.alert(i18n.error, 'error');
+    }
+  });
+};
+/**
+ * Create a form then append to body.
+ *
+ * @param  {String} action The form action.
+ * @param  {String} method The form method.
+ * @return {Object}
+ */
+
+
+awebooking.createForm = function (action, method) {
+  var $form = external_jQuery_default()('<form>', {
+    'method': 'POST',
+    'action': action
+  });
+  var hiddenInput = external_jQuery_default()('<input>', {
+    'name': '_method',
+    'type': 'hidden',
+    'value': method
+  });
+  return $form.append(hiddenInput).appendTo('body');
+};
+/**
+ * Format the price.
+ *
+ * @param amount
+ * @returns {string}
+ */
+
+
+awebooking.formatPrice = function (amount) {
+  return accounting_default.a.formatMoney(amount, {
+    format: i18n.priceFormat,
+    symbol: i18n.currencySymbol,
+    decimal: i18n.decimalSeparator,
+    thousand: i18n.priceThousandSeparator,
+    precision: i18n.numberDecimals
+  });
+};
+/**
+ * Retrieves a modified URL query string.
+ *
+ * @param {object} args
+ * @param {string} url
+ */
+
+
+awebooking.utils.addQueryArgs = function (args, url) {
+  if (typeof url === 'undefined') {
+    url = window.location.href;
+  }
+
+  var parsed = query_string["parseUrl"](url);
+  var query = external_jQuery_default.a.extend({}, parsed.query, args);
+  return parsed.url + '?' + query_string["stringify"](query, {
+    sort: false
+  });
+};
+
+external_jQuery_default()(function () {
+  if (window.tippy) {
+    tippy('.tippy', {
+      arrow: true,
+      animation: 'shift-toward',
+      duration: [200, 150]
+    });
+  } // Init the selectize.
+
+
+  if (external_jQuery_default.a.fn.selectize) {
+    search_customer();
+    external_jQuery_default()('select.selectize, .with-selectize .cmb2_select').selectize({
+      allowEmptyOption: true,
+      searchField: ['value', 'text']
+    });
+  } // Init warning before delete.
+
+
+  external_jQuery_default()('[data-method="abrs-delete"]').on('click', function (e) {
+    e.preventDefault();
+    var link = external_jQuery_default()(this).attr('href');
+    var message = external_jQuery_default()(this).data('warning');
+    awebooking.confirm(message, function () {
+      awebooking.createForm(link, 'DELETE').submit();
+    });
+  });
+  external_jQuery_default()('[data-init="abrs-dropdown"]').each(function () {
+    external_jQuery_default()(this).data('abrs-dropdown', new dropdown["a" /* default */](this, {
+      drop: '.abrs-drop'
+    }));
+  });
+});
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "sBL/":
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__("./assets/babel/admin/admin.js");
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
 
 
 /***/ }),
 
-/***/ "jquery":
+/***/ "xeH2":
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
@@ -1925,4 +1922,3 @@ module.exports = jQuery;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=admin.js.map

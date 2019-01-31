@@ -3,6 +3,7 @@
 namespace AweBooking\Availability;
 
 use AweBooking\Constants;
+use AweBooking\Model\Pricing\Custom_Rate_Interval;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
@@ -57,7 +58,7 @@ class Room_Rate {
 	/**
 	 * Store the breakdown of room rate.
 	 *
-	 * @var \AweBooking\Support\Collection
+	 * @var \AweBooking\Model\Pricing\Breakdown
 	 */
 	protected $breakdown;
 
@@ -336,7 +337,7 @@ class Room_Rate {
 	/**
 	 * Gets the rate breakdown.
 	 *
-	 * @return \AweBooking\Support\Collection|null
+	 * @return \AweBooking\Model\Pricing\Breakdown
 	 */
 	public function get_breakdown() {
 		return $this->breakdown;
@@ -354,7 +355,7 @@ class Room_Rate {
 	/**
 	 * Gets the additional breakdowns.
 	 *
-	 * @return array \AweBooking\Support\Collection[]
+	 * @return array
 	 */
 	public function get_additional_breakdowns() {
 		return $this->additional_breakdowns;
@@ -379,5 +380,14 @@ class Room_Rate {
 		return array_key_exists( $type, $this->prices )
 			? $this->prices[ $type ]
 			: 0;
+	}
+
+	/**
+	 * Returns the prices.
+	 *
+	 * @return array
+	 */
+	public function get_prices() {
+		return $this->prices;
 	}
 }

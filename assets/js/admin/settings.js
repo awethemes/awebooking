@@ -86,7 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./assets/babel/admin/settings.js":
+/***/ "3ux1":
 /***/ (function(module, exports) {
 
 (function ($, plugin) {
@@ -207,25 +207,25 @@
 
   function setupInputTableSortable() {}
   /*$('.wc_input_table.sortable tbody').sortable({
-    items: 'tr',
-    cursor: 'move',
-    axis: 'y',
-    scrollSensitivity: 40,
-    forcePlaceholderSize: true,
-    helper: 'clone',
-    opacity: 0.65,
-    placeholder: 'wc-metabox-sortable-placeholder',
-    start: function (event, ui) {
-      ui.item.css('background-color', '#f6f6f6');
-    },
-    stop: function (event, ui) {
-      ui.item.removeAttr('style');
-    }
-  });
-   // Focus on inputs within the table if clicked instead of trying to sort.
-  $('.wc_input_table.sortable tbody input').on('click', function () {
-    $(this).focus();
-  });*/
+   items: 'tr',
+   cursor: 'move',
+   axis: 'y',
+   scrollSensitivity: 40,
+   forcePlaceholderSize: true,
+   helper: 'clone',
+   opacity: 0.65,
+   placeholder: 'wc-metabox-sortable-placeholder',
+   start: function (event, ui) {
+   ui.item.css('background-color', '#f6f6f6');
+   },
+   stop: function (event, ui) {
+   ui.item.removeAttr('style');
+   }
+   });
+    // Focus on inputs within the table if clicked instead of trying to sort.
+   $('.wc_input_table.sortable tbody input').on('click', function () {
+   $(this).focus();
+   });*/
 
   /** Document ready */
 
@@ -242,10 +242,9 @@
 /***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("./assets/babel/admin/settings.js");
+module.exports = __webpack_require__("3ux1");
 
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=settings.js.map
