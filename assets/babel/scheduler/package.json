@@ -1,0 +1,9 @@
+{
+  "name": "@awebooking/scheduler",
+  "version": "0.1.0",
+  "main": "webpack.config.js",
+  "scripts": {
+  },
+  "author": "Nguyen Van Anh <anhskohbo@gmail.com>",
+  "license": "MIT"
+}

@@ -1,18 +1,4 @@
 {
-    "/assets/js/admin/admin.js": "/assets/js/admin/admin.js?id=a954ad4d26d31e8c4eee",
-    "/assets/js/admin/edit-booking.js": "/assets/js/admin/edit-booking.js?id=339845220e7bbb5b4c6c",
-    "/assets/js/admin/edit-room-type.js": "/assets/js/admin/edit-room-type.js?id=81783db421c4a7615db0",
-    "/assets/js/admin/page-calendar.js": "/assets/js/admin/page-calendar.js?id=7a71462e3c946c4a7961",
-    "/assets/js/admin/page-pricing.js": "/assets/js/admin/page-pricing.js?id=0e4e0fbdd22c540846e8",
-    "/assets/js/admin/schedule-calendar.js": "/assets/js/admin/schedule-calendar.js?id=c4e7f642561741337ec9",
-    "/assets/js/admin/settings.js": "/assets/js/admin/settings.js?id=35be6831a8ba78d01035",
-    "/assets/js/awebooking.js": "/assets/js/awebooking.js?id=12ed7600d05d3dd92d07",
-    "/assets/css/admin.css": "/assets/css/admin.css?id=800934b919108c4f0bc5",
-    "/assets/css/awebooking-colour.css": "/assets/css/awebooking-colour.css?id=4c4744a3217995202cbe",
-    "/assets/css/awebooking.css": "/assets/css/awebooking.css?id=4f7ef62ccd5e1e1f1e04",
-    "/assets/css/react-datepicker.css": "/assets/css/react-datepicker.css?id=955dbb60c49f6f955358",
-    "/assets/css/schedule-calendar.css": "/assets/css/schedule-calendar.css?id=860aa422967670b75489",
-    "/assets/js/calendar.js": "/assets/js/calendar.js?id=1655ccc245e583a4905e",
-    "/assets/js/checkout.js": "/assets/js/checkout.js?id=00c7192f2629b671d40e",
-    "/assets/js/search-form.js": "/assets/js/search-form.js?id=5afdc882d80f1f5cb76d"
+    "/assets/js/scheduler.js": "/assets/js/scheduler.js?id=a5817e4903c429ee811b",
+    "/assets/css/scheduler.css": "/assets/css/scheduler.css?id=d41d8cd98f00b204e980"
 }

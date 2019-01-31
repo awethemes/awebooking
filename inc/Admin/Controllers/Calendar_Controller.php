@@ -25,6 +25,20 @@ class Calendar_Controller extends Controller {
 
 		$scheduler->prepare( $request );
 
+		$deps = [
+			'react',
+			'react-dom',
+			'wp-api-fetch',
+			'wp-components',
+			'wp-compose',
+			'wp-i18n',
+			'wp-url',
+			'lodash',
+		];
+
+		wp_enqueue_style( 'wp-components' );
+		wp_enqueue_script( 'awebooking-react-scheduler', 'http://localhost:8080/assets/js/scheduler.js', $deps, time(), true );
+
 		return $this->response( 'calendar/index.php', compact( 'scheduler' ) );
 	}
 

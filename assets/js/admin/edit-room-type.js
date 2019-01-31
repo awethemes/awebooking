@@ -86,15 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 5:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("ahWw");
-
-
-/***/ }),
-
-/***/ "ahWw":
+/***/ "./assets/babel/admin/edit-room-type.js":
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -251,6 +243,15 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
 })(jQuery, window.awebooking, document);
 
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/admin/edit-room-type.js");
+
+
 /***/ })
 
 /******/ });
+//# sourceMappingURL=edit-room-type.js.map

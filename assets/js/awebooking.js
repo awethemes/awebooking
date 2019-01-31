@@ -86,24 +86,452 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("SU20");
-__webpack_require__("VjC/");
-__webpack_require__("yCXB");
-__webpack_require__("jJUo");
-__webpack_require__("l+pI");
-module.exports = __webpack_require__("Zpi2");
-
-
-/***/ }),
-
-/***/ "7l0f":
+/***/ "./assets/babel/awebooking.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9T72");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/accounting/accounting.js");
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./assets/babel/core/dropdown.js");
+/* harmony import */ var _core_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./assets/babel/core/util.js");
+/* harmony import */ var _core_date_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./assets/babel/core/date-utils.js");
+
+
+
+
+
+var plugin = window.awebooking = {}; // Main objects
+
+plugin.utils = {};
+plugin.instances = {};
+plugin.i18n = window._awebooking_i18n || {};
+plugin.config = Object.assign({}, {
+  route: window.location.origin + '?awebooking_route=/',
+  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
+}, window._awebooking);
+plugin.utils.dates = _core_date_utils__WEBPACK_IMPORTED_MODULE_4__["default"];
+
+if (typeof window.flatpickr !== 'undefined') {
+  plugin.utils.dates.l10n = flatpickr.l10ns.default;
+}
+
+plugin.utils.dropdown = function (el, config) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(el).each(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_2__["default"](this, config));
+  });
+};
+/**
+ * The admin route.
+ *
+ * @param  {string} route
+ * @return {string}
+ */
+
+
+plugin.route = function (route) {
+  return this.config.route + (route || '').replace(/^\//g, '');
+};
+/**
+ * Create new datepicker.
+ *
+ * @see https://flatpickr.js.org/options/
+ *
+ * @return {flatpickr}
+ */
+
+
+plugin.datepicker = function (instance, options) {
+  var i18n = plugin.i18n;
+  var defaults = plugin.config.datepicker;
+  var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
+
+  if (Array.isArray(defaults.disableDays)) {
+    disable.push(function (date) {
+      return defaults.disableDays.indexOf(date.getDay()) !== -1;
+    });
+  } // const minDate = new Date().fp_incr(defaults.min_date);
+  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+
+
+  var _defaults = {
+    dateFormat: 'Y-m-d',
+    ariaDateFormat: i18n.dateFormat,
+    minDate: 'today',
+    // maxDate: max_date,
+    // disable: disable,
+    showMonths: defaults.showMonths || 1,
+    enableTime: false,
+    enableSeconds: false,
+    disableMobile: false,
+    onReady: function onReady(_, __, fp) {
+      fp.calendarContainer.classList.add('awebooking-datepicker');
+    }
+  };
+
+  if (_core_util__WEBPACK_IMPORTED_MODULE_3__["default"].isMobile()) {
+    _defaults.showMonths = 1;
+  }
+
+  return flatpickr(instance, jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, _defaults, options));
+};
+/**
+ * Format the price.
+ *
+ * @param amount
+ * @returns {string}
+ */
+
+
+plugin.formatPrice = function (amount) {
+  return accounting__WEBPACK_IMPORTED_MODULE_1___default.a.formatMoney(amount, {
+    format: plugin.i18n.priceFormat,
+    symbol: plugin.i18n.currencySymbol,
+    decimal: plugin.i18n.decimalSeparator,
+    thousand: plugin.i18n.priceThousandSeparator,
+    precision: plugin.i18n.numberDecimals
+  });
+};
+/**
+ * Document ready.
+ *
+ * @return {void}
+ */
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  tippy('[data-awebooking="tooltip"]', {
+    theme: 'awebooking-tooltip'
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="awebooking-dialog"]').each(function (e, el) {
+    var dialog = new window.A11yDialog(el);
+    dialog.on('show', function () {
+      el.classList.add('open');
+      el.removeAttribute('aria-hidden');
+    });
+    dialog.on('hide', function () {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', true);
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/babel/core/date-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var DateUtils = function () {
+  var pad = function pad(number) {
+    return "0".concat(number).slice(-2);
+  };
+
+  var int = function int(bool) {
+    return bool === true ? 1 : 0;
+  };
+
+  var monthToStr = function monthToStr(monthNumber, shorthand, locale) {
+    return locale.months[shorthand ? 'shorthand' : 'longhand'][monthNumber];
+  };
+
+  var tokenRegex = {
+    D: "(\\w+)",
+    F: "(\\w+)",
+    G: "(\\d\\d|\\d)",
+    H: "(\\d\\d|\\d)",
+    J: "(\\d\\d|\\d)\\w+",
+    K: "",
+    M: "(\\w+)",
+    S: "(\\d\\d|\\d)",
+    U: "(.+)",
+    W: "(\\d\\d|\\d)",
+    Y: "(\\d{4})",
+    Z: "(.+)",
+    d: "(\\d\\d|\\d)",
+    h: "(\\d\\d|\\d)",
+    i: "(\\d\\d|\\d)",
+    j: "(\\d\\d|\\d)",
+    l: "(\\w+)",
+    m: "(\\d\\d|\\d)",
+    n: "(\\d\\d|\\d)",
+    s: "(\\d\\d|\\d)",
+    w: "(\\d\\d|\\d)",
+    y: "(\\d{2})"
+  };
+  var revFormat = {
+    D: function D() {
+      return undefined;
+    },
+    F: function F(date, monthName, locale) {
+      date.setMonth(locale.months.longhand.indexOf(monthName));
+    },
+    G: function G(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+    H: function H(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+    J: function J(date, day) {
+      date.setDate(parseFloat(day));
+    },
+    K: function K(date, amPM, locale) {
+      date.setHours(date.getHours() % 12 + 12 * int(new RegExp(locale.amPM[1], 'i').test(amPM)));
+    },
+    M: function M(date, shortMonth, locale) {
+      date.setMonth(locale.months.shorthand.indexOf(shortMonth));
+    },
+    S: function S(date, seconds) {
+      date.setSeconds(parseFloat(seconds));
+    },
+    U: function U(_, unixSeconds) {
+      return new Date(parseFloat(unixSeconds) * 1000);
+    },
+    W: function W(date, weekNum) {
+      var weekNumber = parseInt(weekNum);
+      return new Date(date.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
+    },
+    Y: function Y(date, year) {
+      date.setFullYear(parseFloat(year));
+    },
+    Z: function Z(_, ISODate) {
+      return new Date(ISODate);
+    },
+    d: function d(date, day) {
+      date.setDate(parseFloat(day));
+    },
+    h: function h(date, hour) {
+      date.setHours(parseFloat(hour));
+    },
+    i: function i(date, minutes) {
+      date.setMinutes(parseFloat(minutes));
+    },
+    j: function j(date, day) {
+      date.setDate(parseFloat(day));
+    },
+    l: function l() {
+      return undefined;
+    },
+    m: function m(date, month) {
+      date.setMonth(parseFloat(month) - 1);
+    },
+    n: function n(date, month) {
+      date.setMonth(parseFloat(month) - 1);
+    },
+    s: function s(date, seconds) {
+      date.setSeconds(parseFloat(seconds));
+    },
+    w: function w() {
+      return undefined;
+    },
+    y: function y(date, year) {
+      date.setFullYear(2000 + parseFloat(year));
+    }
+  };
+  var formats = {
+    // Get the date in UTC
+    Z: function Z(date) {
+      return date.toISOString();
+    },
+    // Weekday name, short, e.g. Thu
+    D: function D(date, locale) {
+      return locale.weekdays.shorthand[formats.w(date, locale)];
+    },
+    // Full month name e.g. January
+    F: function F(date, locale) {
+      return monthToStr(formats.n(date, locale) - 1, false, locale);
+    },
+    // Padded hour 1-12
+    G: function G(date, locale) {
+      return pad(formats.h(date, locale));
+    },
+    // Hours with leading zero e.g. 03
+    H: function H(date) {
+      return pad(date.getHours());
+    },
+    // Day (1-30) with ordinal suffix e.g. 1st, 2nd
+    J: function J(date, locale) {
+      return locale.ordinal !== undefined ? date.getDate() + locale.ordinal(date.getDate()) : date.getDate();
+    },
+    // AM/PM
+    K: function K(date, locale) {
+      return locale.amPM[int(date.getHours() > 11)];
+    },
+    // Shorthand month e.g. Jan, Sep, Oct, etc
+    M: function M(date, locale) {
+      return monthToStr(date.getMonth(), true, locale);
+    },
+    // Seconds 00-59
+    S: function S(date) {
+      return pad(date.getSeconds());
+    },
+    // Unix timestamp
+    U: function U(date) {
+      return date.getTime() / 1000;
+    },
+    // ISO-8601 week number of year
+    W: function W(date) {
+      return DateUtils.getWeek(date);
+    },
+    // Full year e.g. 2016
+    Y: function Y(date) {
+      return date.getFullYear();
+    },
+    // Day in month, padded (01-30)
+    d: function d(date) {
+      return pad(date.getDate());
+    },
+    // Hour from 1-12 (am/pm)
+    h: function h(date) {
+      return date.getHours() % 12 ? date.getHours() % 12 : 12;
+    },
+    // Minutes, padded with leading zero e.g. 09
+    i: function i(date) {
+      return pad(date.getMinutes());
+    },
+    // Day in month (1-30)
+    j: function j(date) {
+      return date.getDate();
+    },
+    // Weekday name, full, e.g. Thursday
+    l: function l(date, locale) {
+      return locale.weekdays.longhand[date.getDay()];
+    },
+    // Padded month number (01-12)
+    m: function m(date) {
+      return pad(date.getMonth() + 1);
+    },
+    // The month number (1-12)
+    n: function n(date) {
+      return date.getMonth() + 1;
+    },
+    // Seconds 0-59
+    s: function s(date) {
+      return date.getSeconds();
+    },
+    // Number of the day of the week
+    w: function w(date) {
+      return date.getDay();
+    },
+    // Last two digits of year e.g. 16 for 2016
+    y: function y(date) {
+      return String(date.getFullYear()).substring(2);
+    }
+  };
+  return {
+    l10n: {
+      amPM: ['AM', 'PM'],
+      weekdays: {
+        shorthand: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        longhand: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      },
+      months: {
+        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        longhand: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      }
+    },
+    getWeek: function getWeek(givenDate) {
+      var date = new Date(givenDate.getTime());
+      date.setHours(0, 0, 0, 0); // Thursday in current week decides the year.
+
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7); // January 4 is always in week 1.
+
+      var week1 = new Date(date.getFullYear(), 0, 4); // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+
+      return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    },
+    format: function format(date, _format, locale) {
+      locale = locale || this.l10n;
+      return _format.split('').map(function (c, i, arr) {
+        return formats[c] && arr[i - 1] !== '\\' ? formats[c](date, locale) : c !== '\\' ? c : '';
+      }).join('');
+    },
+    parse: function parse(date, format, timeless, locale) {
+      locale = locale || this.l10n;
+
+      if (date !== 0 && !date) {
+        return undefined;
+      }
+
+      var parsedDate;
+      var dateOrig = date;
+
+      if (date instanceof Date) {
+        parsedDate = new Date(date.getTime());
+      } else if (typeof date !== 'string' && date.toFixed !== undefined) {
+        parsedDate = new Date(date);
+      } else if (typeof date === 'string') {
+        var datestr = String(date).trim();
+
+        if (datestr === 'today') {
+          parsedDate = new Date();
+          timeless = true;
+        } else if (/Z$/.test(datestr) || /GMT$/.test(datestr)) {
+          parsedDate = new Date(date);
+        } else {
+          parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
+          var matched,
+              ops = [];
+
+          for (var i = 0, matchIndex = 0, regexStr = ''; i < format.length; i++) {
+            var token = format[i];
+            var isBackSlash = token === '\\';
+            var escaped = format[i - 1] === '\\' || isBackSlash;
+
+            if (tokenRegex[token] && !escaped) {
+              regexStr += tokenRegex[token];
+              var match = new RegExp(regexStr).exec(date);
+
+              if (match && (matched = true)) {
+                ops[token !== 'Y' ? 'push' : 'unshift']({
+                  fn: revFormat[token],
+                  val: match[++matchIndex]
+                });
+              }
+            } else if (!isBackSlash) {
+              regexStr += '.'; // don't really care
+            }
+
+            ops.forEach(function (_ref) {
+              var fn = _ref.fn,
+                  val = _ref.val;
+              return parsedDate = fn(parsedDate, val, locale) || parsedDate;
+            });
+          }
+
+          parsedDate = matched ? parsedDate : undefined;
+        }
+      }
+      /* istanbul ignore next */
+
+
+      if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
+        // config.errorHandler(new Error(`Invalid date provided: ${dateOrig}`))
+        return undefined;
+      }
+
+      if (timeless === true) {
+        parsedDate.setHours(0, 0, 0, 0);
+      }
+
+      return parsedDate;
+    }
+  };
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (DateUtils);
+
+/***/ }),
+
+/***/ "./assets/babel/core/dropdown.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./assets/babel/core/util.js");
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -223,7 +651,7 @@ var Dropdown = function ($, Popper) {
         this.element.setAttribute('aria-expanded', false);
         this.drop.removeAttribute('aria-hidden');
         this.drop.classList.remove('open--transition');
-        _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].onTransitionEnd(this.drop, function () {
+        _util__WEBPACK_IMPORTED_MODULE_0__["default"].onTransitionEnd(this.drop, function () {
           _this2.drop.classList.remove('open');
         });
       }
@@ -279,7 +707,7 @@ var Dropdown = function ($, Popper) {
       value: function _getDropElement() {
         if (!this.drop) {
           var parent = this.element.parentNode;
-          var target = _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].getTargetFromElement(this.element);
+          var target = _util__WEBPACK_IMPORTED_MODULE_0__["default"].getTargetFromElement(this.element);
 
           if (target) {
             this.drop = document.querySelector(target);
@@ -352,121 +780,20 @@ var Dropdown = function ($, Popper) {
   return Dropdown;
 }(jQuery, window.Popper);
 
-/* harmony default export */ __webpack_exports__["a"] = (Dropdown);
+/* harmony default export */ __webpack_exports__["default"] = (Dropdown);
 
 /***/ }),
 
-/***/ "8jRI":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var token = '%[a-f0-9]{2}';
-var singleMatcher = new RegExp(token, 'gi');
-var multiMatcher = new RegExp('(' + token + ')+', 'gi');
-
-function decodeComponents(components, split) {
-	try {
-		// Try to decode the entire string first
-		return decodeURIComponent(components.join(''));
-	} catch (err) {
-		// Do nothing
-	}
-
-	if (components.length === 1) {
-		return components;
-	}
-
-	split = split || 1;
-
-	// Split the array in 2 parts
-	var left = components.slice(0, split);
-	var right = components.slice(split);
-
-	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
-}
-
-function decode(input) {
-	try {
-		return decodeURIComponent(input);
-	} catch (err) {
-		var tokens = input.match(singleMatcher);
-
-		for (var i = 1; i < tokens.length; i++) {
-			input = decodeComponents(tokens, i).join('');
-
-			tokens = input.match(singleMatcher);
-		}
-
-		return input;
-	}
-}
-
-function customDecodeURIComponent(input) {
-	// Keep track of all the replacements and prefill the map with the `BOM`
-	var replaceMap = {
-		'%FE%FF': '\uFFFD\uFFFD',
-		'%FF%FE': '\uFFFD\uFFFD'
-	};
-
-	var match = multiMatcher.exec(input);
-	while (match) {
-		try {
-			// Decode as big chunks as possible
-			replaceMap[match[0]] = decodeURIComponent(match[0]);
-		} catch (err) {
-			var result = decode(match[0]);
-
-			if (result !== match[0]) {
-				replaceMap[match[0]] = result;
-			}
-		}
-
-		match = multiMatcher.exec(input);
-	}
-
-	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
-	replaceMap['%C2'] = '\uFFFD';
-
-	var entries = Object.keys(replaceMap);
-
-	for (var i = 0; i < entries.length; i++) {
-		// Replace all decoded components
-		var key = entries[i];
-		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
-	}
-
-	return input;
-}
-
-module.exports = function (encodedURI) {
-	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
-	}
-
-	try {
-		encodedURI = encodedURI.replace(/\+/g, ' ');
-
-		// Try the built in decoder first
-		return decodeURIComponent(encodedURI);
-	} catch (err) {
-		// Fallback to a more advanced decoder
-		return customDecodeURIComponent(encodedURI);
-	}
-};
-
-
-/***/ }),
-
-/***/ "9T72":
+/***/ "./assets/babel/core/util.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("sBL/");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/debounce/index.js");
 /* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("jfjY");
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/is-mobile/index.js");
 /* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("cr+I");
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./node_modules/query-string/index.js");
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_2__);
 
 
@@ -545,11 +872,46 @@ var Utils = function ($) {
   };
 }(jQuery);
 
-/* harmony default export */ __webpack_exports__["a"] = (Utils);
+/* harmony default export */ __webpack_exports__["default"] = (Utils);
 
 /***/ }),
 
-/***/ "9UV2":
+/***/ "./assets/scss/admin.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/awebooking-colour.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/awebooking.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/react-datepicker.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/schedule-calendar.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./node_modules/accounting/accounting.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -947,7 +1309,216 @@ var Utils = function ($) {
 
 /***/ }),
 
-/***/ "MgzW":
+/***/ "./node_modules/debounce/index.js":
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
+
+
+/***/ }),
+
+/***/ "./node_modules/decode-uri-component/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
+}
+
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
+
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
+
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
+
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
+}
+
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
+
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
+
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/is-mobile/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = isMobile;
+module.exports.isMobile = isMobile;
+
+var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
+
+var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
+
+function isMobile (opts) {
+  if (!opts) opts = {}
+  var ua = opts.ua
+  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
+  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
+    ua = ua.headers['user-agent'];
+  }
+  if (typeof ua !== 'string') return false;
+
+  return opts.tablet
+    ? tabletRE.test(ua)
+    : mobileRE.test(ua);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/object-assign/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1045,484 +1616,14 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
-/***/ "SU20":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: external "jQuery"
-var external_jQuery_ = __webpack_require__("xeH2");
-var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
-
-// EXTERNAL MODULE: ./node_modules/accounting/accounting.js
-var accounting = __webpack_require__("9UV2");
-var accounting_default = /*#__PURE__*/__webpack_require__.n(accounting);
-
-// EXTERNAL MODULE: ./assets/babel/core/dropdown.js
-var dropdown = __webpack_require__("7l0f");
-
-// EXTERNAL MODULE: ./assets/babel/core/util.js
-var util = __webpack_require__("9T72");
-
-// CONCATENATED MODULE: ./assets/babel/core/date-utils.js
-var DateUtils = function () {
-  var pad = function pad(number) {
-    return "0".concat(number).slice(-2);
-  };
-
-  var int = function int(bool) {
-    return bool === true ? 1 : 0;
-  };
-
-  var monthToStr = function monthToStr(monthNumber, shorthand, locale) {
-    return locale.months[shorthand ? 'shorthand' : 'longhand'][monthNumber];
-  };
-
-  var tokenRegex = {
-    D: "(\\w+)",
-    F: "(\\w+)",
-    G: "(\\d\\d|\\d)",
-    H: "(\\d\\d|\\d)",
-    J: "(\\d\\d|\\d)\\w+",
-    K: "",
-    M: "(\\w+)",
-    S: "(\\d\\d|\\d)",
-    U: "(.+)",
-    W: "(\\d\\d|\\d)",
-    Y: "(\\d{4})",
-    Z: "(.+)",
-    d: "(\\d\\d|\\d)",
-    h: "(\\d\\d|\\d)",
-    i: "(\\d\\d|\\d)",
-    j: "(\\d\\d|\\d)",
-    l: "(\\w+)",
-    m: "(\\d\\d|\\d)",
-    n: "(\\d\\d|\\d)",
-    s: "(\\d\\d|\\d)",
-    w: "(\\d\\d|\\d)",
-    y: "(\\d{2})"
-  };
-  var revFormat = {
-    D: function D() {
-      return undefined;
-    },
-    F: function F(date, monthName, locale) {
-      date.setMonth(locale.months.longhand.indexOf(monthName));
-    },
-    G: function G(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    H: function H(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    J: function J(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    K: function K(date, amPM, locale) {
-      date.setHours(date.getHours() % 12 + 12 * int(new RegExp(locale.amPM[1], 'i').test(amPM)));
-    },
-    M: function M(date, shortMonth, locale) {
-      date.setMonth(locale.months.shorthand.indexOf(shortMonth));
-    },
-    S: function S(date, seconds) {
-      date.setSeconds(parseFloat(seconds));
-    },
-    U: function U(_, unixSeconds) {
-      return new Date(parseFloat(unixSeconds) * 1000);
-    },
-    W: function W(date, weekNum) {
-      var weekNumber = parseInt(weekNum);
-      return new Date(date.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
-    },
-    Y: function Y(date, year) {
-      date.setFullYear(parseFloat(year));
-    },
-    Z: function Z(_, ISODate) {
-      return new Date(ISODate);
-    },
-    d: function d(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    h: function h(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    i: function i(date, minutes) {
-      date.setMinutes(parseFloat(minutes));
-    },
-    j: function j(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    l: function l() {
-      return undefined;
-    },
-    m: function m(date, month) {
-      date.setMonth(parseFloat(month) - 1);
-    },
-    n: function n(date, month) {
-      date.setMonth(parseFloat(month) - 1);
-    },
-    s: function s(date, seconds) {
-      date.setSeconds(parseFloat(seconds));
-    },
-    w: function w() {
-      return undefined;
-    },
-    y: function y(date, year) {
-      date.setFullYear(2000 + parseFloat(year));
-    }
-  };
-  var formats = {
-    // Get the date in UTC
-    Z: function Z(date) {
-      return date.toISOString();
-    },
-    // Weekday name, short, e.g. Thu
-    D: function D(date, locale) {
-      return locale.weekdays.shorthand[formats.w(date, locale)];
-    },
-    // Full month name e.g. January
-    F: function F(date, locale) {
-      return monthToStr(formats.n(date, locale) - 1, false, locale);
-    },
-    // Padded hour 1-12
-    G: function G(date, locale) {
-      return pad(formats.h(date, locale));
-    },
-    // Hours with leading zero e.g. 03
-    H: function H(date) {
-      return pad(date.getHours());
-    },
-    // Day (1-30) with ordinal suffix e.g. 1st, 2nd
-    J: function J(date, locale) {
-      return locale.ordinal !== undefined ? date.getDate() + locale.ordinal(date.getDate()) : date.getDate();
-    },
-    // AM/PM
-    K: function K(date, locale) {
-      return locale.amPM[int(date.getHours() > 11)];
-    },
-    // Shorthand month e.g. Jan, Sep, Oct, etc
-    M: function M(date, locale) {
-      return monthToStr(date.getMonth(), true, locale);
-    },
-    // Seconds 00-59
-    S: function S(date) {
-      return pad(date.getSeconds());
-    },
-    // Unix timestamp
-    U: function U(date) {
-      return date.getTime() / 1000;
-    },
-    // ISO-8601 week number of year
-    W: function W(date) {
-      return DateUtils.getWeek(date);
-    },
-    // Full year e.g. 2016
-    Y: function Y(date) {
-      return date.getFullYear();
-    },
-    // Day in month, padded (01-30)
-    d: function d(date) {
-      return pad(date.getDate());
-    },
-    // Hour from 1-12 (am/pm)
-    h: function h(date) {
-      return date.getHours() % 12 ? date.getHours() % 12 : 12;
-    },
-    // Minutes, padded with leading zero e.g. 09
-    i: function i(date) {
-      return pad(date.getMinutes());
-    },
-    // Day in month (1-30)
-    j: function j(date) {
-      return date.getDate();
-    },
-    // Weekday name, full, e.g. Thursday
-    l: function l(date, locale) {
-      return locale.weekdays.longhand[date.getDay()];
-    },
-    // Padded month number (01-12)
-    m: function m(date) {
-      return pad(date.getMonth() + 1);
-    },
-    // The month number (1-12)
-    n: function n(date) {
-      return date.getMonth() + 1;
-    },
-    // Seconds 0-59
-    s: function s(date) {
-      return date.getSeconds();
-    },
-    // Number of the day of the week
-    w: function w(date) {
-      return date.getDay();
-    },
-    // Last two digits of year e.g. 16 for 2016
-    y: function y(date) {
-      return String(date.getFullYear()).substring(2);
-    }
-  };
-  return {
-    l10n: {
-      amPM: ['AM', 'PM'],
-      weekdays: {
-        shorthand: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        longhand: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      },
-      months: {
-        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        longhand: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      }
-    },
-    getWeek: function getWeek(givenDate) {
-      var date = new Date(givenDate.getTime());
-      date.setHours(0, 0, 0, 0); // Thursday in current week decides the year.
-
-      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7); // January 4 is always in week 1.
-
-      var week1 = new Date(date.getFullYear(), 0, 4); // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-
-      return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    },
-    format: function format(date, _format, locale) {
-      locale = locale || this.l10n;
-      return _format.split('').map(function (c, i, arr) {
-        return formats[c] && arr[i - 1] !== '\\' ? formats[c](date, locale) : c !== '\\' ? c : '';
-      }).join('');
-    },
-    parse: function parse(date, format, timeless, locale) {
-      locale = locale || this.l10n;
-
-      if (date !== 0 && !date) {
-        return undefined;
-      }
-
-      var parsedDate;
-      var dateOrig = date;
-
-      if (date instanceof Date) {
-        parsedDate = new Date(date.getTime());
-      } else if (typeof date !== 'string' && date.toFixed !== undefined) {
-        parsedDate = new Date(date);
-      } else if (typeof date === 'string') {
-        var datestr = String(date).trim();
-
-        if (datestr === 'today') {
-          parsedDate = new Date();
-          timeless = true;
-        } else if (/Z$/.test(datestr) || /GMT$/.test(datestr)) {
-          parsedDate = new Date(date);
-        } else {
-          parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
-          var matched,
-              ops = [];
-
-          for (var i = 0, matchIndex = 0, regexStr = ''; i < format.length; i++) {
-            var token = format[i];
-            var isBackSlash = token === '\\';
-            var escaped = format[i - 1] === '\\' || isBackSlash;
-
-            if (tokenRegex[token] && !escaped) {
-              regexStr += tokenRegex[token];
-              var match = new RegExp(regexStr).exec(date);
-
-              if (match && (matched = true)) {
-                ops[token !== 'Y' ? 'push' : 'unshift']({
-                  fn: revFormat[token],
-                  val: match[++matchIndex]
-                });
-              }
-            } else if (!isBackSlash) {
-              regexStr += '.'; // don't really care
-            }
-
-            ops.forEach(function (_ref) {
-              var fn = _ref.fn,
-                  val = _ref.val;
-              return parsedDate = fn(parsedDate, val, locale) || parsedDate;
-            });
-          }
-
-          parsedDate = matched ? parsedDate : undefined;
-        }
-      }
-      /* istanbul ignore next */
-
-
-      if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
-        // config.errorHandler(new Error(`Invalid date provided: ${dateOrig}`))
-        return undefined;
-      }
-
-      if (timeless === true) {
-        parsedDate.setHours(0, 0, 0, 0);
-      }
-
-      return parsedDate;
-    }
-  };
-}();
-
-/* harmony default export */ var date_utils = (DateUtils);
-// CONCATENATED MODULE: ./assets/babel/awebooking.js
-
-
-
-
-
-var awebooking_plugin = window.awebooking = {}; // Main objects
-
-awebooking_plugin.utils = {};
-awebooking_plugin.instances = {};
-awebooking_plugin.i18n = window._awebooking_i18n || {};
-awebooking_plugin.config = Object.assign({}, {
-  route: window.location.origin + '?awebooking_route=/',
-  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
-}, window._awebooking);
-awebooking_plugin.utils.dates = date_utils;
-
-if (typeof window.flatpickr !== 'undefined') {
-  awebooking_plugin.utils.dates.l10n = flatpickr.l10ns.default;
-}
-
-awebooking_plugin.utils.dropdown = function (el, config) {
-  external_jQuery_default()(el).each(function () {
-    external_jQuery_default()(this).data('abrs-dropdown', new dropdown["a" /* default */](this, config));
-  });
-};
-/**
- * The admin route.
- *
- * @param  {string} route
- * @return {string}
- */
-
-
-awebooking_plugin.route = function (route) {
-  return this.config.route + (route || '').replace(/^\//g, '');
-};
-/**
- * Create new datepicker.
- *
- * @see https://flatpickr.js.org/options/
- *
- * @return {flatpickr}
- */
-
-
-awebooking_plugin.datepicker = function (instance, options) {
-  var i18n = awebooking_plugin.i18n;
-  var defaults = awebooking_plugin.config.datepicker;
-  var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
-
-  if (Array.isArray(defaults.disableDays)) {
-    disable.push(function (date) {
-      return defaults.disableDays.indexOf(date.getDay()) !== -1;
-    });
-  } // const minDate = new Date().fp_incr(defaults.min_date);
-  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
-
-
-  var _defaults = {
-    dateFormat: 'Y-m-d',
-    ariaDateFormat: i18n.dateFormat,
-    minDate: 'today',
-    // maxDate: max_date,
-    // disable: disable,
-    showMonths: defaults.showMonths || 1,
-    enableTime: false,
-    enableSeconds: false,
-    disableMobile: false,
-    onReady: function onReady(_, __, fp) {
-      fp.calendarContainer.classList.add('awebooking-datepicker');
-    }
-  };
-
-  if (util["a" /* default */].isMobile()) {
-    _defaults.showMonths = 1;
-  }
-
-  return flatpickr(instance, external_jQuery_default.a.extend({}, _defaults, options));
-};
-/**
- * Format the price.
- *
- * @param amount
- * @returns {string}
- */
-
-
-awebooking_plugin.formatPrice = function (amount) {
-  return accounting_default.a.formatMoney(amount, {
-    format: awebooking_plugin.i18n.priceFormat,
-    symbol: awebooking_plugin.i18n.currencySymbol,
-    decimal: awebooking_plugin.i18n.decimalSeparator,
-    thousand: awebooking_plugin.i18n.priceThousandSeparator,
-    precision: awebooking_plugin.i18n.numberDecimals
-  });
-};
-/**
- * Document ready.
- *
- * @return {void}
- */
-
-
-external_jQuery_default()(function () {
-  tippy('[data-awebooking="tooltip"]', {
-    theme: 'awebooking-tooltip'
-  });
-  external_jQuery_default()('[data-init="awebooking-dialog"]').each(function (e, el) {
-    var dialog = new window.A11yDialog(el);
-    dialog.on('show', function () {
-      el.classList.add('open');
-      el.removeAttribute('aria-hidden');
-    });
-    dialog.on('hide', function () {
-      el.classList.remove('open');
-      el.setAttribute('aria-hidden', true);
-    });
-  });
-});
-
-/***/ }),
-
-/***/ "VjC/":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "ZFOp":
+/***/ "./node_modules/query-string/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-
-/***/ "Zpi2":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "cr+I":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var strictUriEncode = __webpack_require__("ZFOp");
-var objectAssign = __webpack_require__("MgzW");
-var decodeComponent = __webpack_require__("8jRI");
+var strictUriEncode = __webpack_require__("./node_modules/strict-uri-encode/index.js");
+var objectAssign = __webpack_require__("./node_modules/object-assign/index.js");
+var decodeComponent = __webpack_require__("./node_modules/decode-uri-component/index.js");
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -1747,139 +1848,39 @@ exports.parseUrl = function (str, opts) {
 
 /***/ }),
 
-/***/ "jJUo":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "jfjY":
+/***/ "./node_modules/strict-uri-encode/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-module.exports = isMobile;
-module.exports.isMobile = isMobile;
-
-var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
-
-var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
-
-function isMobile (opts) {
-  if (!opts) opts = {}
-  var ua = opts.ua
-  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
-  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-    ua = ua.headers['user-agent'];
-  }
-  if (typeof ua !== 'string') return false;
-
-  return opts.tablet
-    ? tabletRE.test(ua)
-    : mobileRE.test(ua);
-}
-
-
-/***/ }),
-
-/***/ "l+pI":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "sBL/":
-/***/ (function(module, exports) {
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
 };
 
-// Adds compatibility for ES modules
-debounce.debounce = debounce;
 
-module.exports = debounce;
+/***/ }),
+
+/***/ 0:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("./assets/babel/awebooking.js");
+__webpack_require__("./assets/scss/admin.scss");
+__webpack_require__("./assets/scss/awebooking-colour.scss");
+__webpack_require__("./assets/scss/awebooking.scss");
+__webpack_require__("./assets/scss/react-datepicker.scss");
+module.exports = __webpack_require__("./assets/scss/schedule-calendar.scss");
 
 
 /***/ }),
 
-/***/ "xeH2":
+/***/ "jquery":
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
 
-/***/ }),
-
-/***/ "yCXB":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
 /***/ })
 
 /******/ });
+//# sourceMappingURL=awebooking.js.map

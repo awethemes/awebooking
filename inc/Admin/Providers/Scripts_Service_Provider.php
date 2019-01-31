@@ -116,9 +116,9 @@ class Scripts_Service_Provider extends Service_Provider {
 				break;
 
 			case abrs_admin_route_is( '/calendar' ):
-				wp_enqueue_style( 'wp-jquery-ui-dialog' );
-				wp_enqueue_style( 'awebooking-scheduler' );
-				wp_enqueue_script( 'awebooking-page-calendar' );
+				// wp_enqueue_style( 'wp-jquery-ui-dialog' );
+				// wp_enqueue_style( 'awebooking-scheduler' );
+				// wp_enqueue_script( 'awebooking-page-calendar' );
 				break;
 
 			case abrs_admin_route_is( '/settings' ):

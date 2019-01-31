@@ -248,4 +248,15 @@ class Room_Type extends Model {
 
 		return apply_filters( $this->prefix( 'sanitize_attribute' ), $value, $key );
 	}
+
+	/**
+	 * Retrieves the attributes as array.
+	 *
+	 * @return array
+	 */
+	public function to_array() {
+		return array_merge( parent::to_array(), [
+			'rooms' => $this->get_rooms()->to_array(),
+		] );
+	}
 }

@@ -1,43 +1,29 @@
 <?php
-/**
- * Template displaying the calendar.
- *
- * @var \AweBooking\Admin\Calendar\Abstract_Scheduler $scheduler
- *
- * @package AweBooking
- */
 
+use AweBooking\Constants;
+use AweBooking\Model\Room_Type;
+
+$r_query = new WP_Query( [
+	'post_type'      => Constants::ROOM_TYPE,
+	'post_status'    => 'publish',
+	'no_found_rows'  => true,
+	'posts_per_page' => 250,
+] );
+
+$room_types = abrs_collect( $r_query->posts )
+	->map_into( Room_Type::class )
+	->reject( function ( Room_Type $r ) {
+		return count( $r->get_rooms() ) === 0;
+	} )->values();
 ?>
 
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Calendar', 'awebooking' ); ?></h1>
 	<hr class="wp-header-end">
 
-	<?php if ( ! abrs_blank( $scheduler->scheduler ) ) : ?>
-		<div class="abrs-toolbar abrs-toolbar--calendar dp-flex">
-			<div class="abrs-ptb1">
-				<button class="button abrs-button js-open-bulk-update"><?php esc_html_e( 'Bulk Update', 'awebooking' ); ?></button>
-			</div>
-
-			<?php $scheduler->call( 'display_main_toolbar' ); ?>
-		</div>
-	<?php endif; ?>
-
-	<div id="awebooking-avai-scheduler">
-		<?php $scheduler->display(); ?>
-	</div>
+	<div id="awebooking-calendar-root"></div>
 </div>
 
-<?php abrs_admin_template()->partial( 'calendar/html-bulk-update.php', compact( 'scheduler' ) ); ?>
-
-<form method="POST" action="<?php echo esc_url( abrs_admin_route( '/calendar' ) ); ?>" style="display: none;">
-	<?php wp_nonce_field( 'awebooking_update_state' ); ?>
-	<div id="js-scheduler-form-controls"></div>
-</form>
-
-<script type="text/template" id="tmpl-scheduler-pricing-controls">
-	<input type="hidden" name="action" value="{{ data.action }}">
-	<input type="hidden" name="room" value="{{ data.calendar }}">
-	<input type="hidden" name="end_date" value="{{ data.endDate }}">
-	<input type="hidden" name="start_date" value="{{ data.startDate }}">
+<script>
+	window.awebookingRoomTypes = <?php echo $room_types->to_json() ?: '[]'; ?>
 </script>

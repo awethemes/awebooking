@@ -86,120 +86,392 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 2:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("oNlh");
-
-
-/***/ }),
-
-/***/ "Fv1B":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MODIFIER_KEY_NAMES = exports.DEFAULT_VERTICAL_SPACING = exports.FANG_HEIGHT_PX = exports.FANG_WIDTH_PX = exports.WEEKDAYS = exports.BLOCKED_MODIFIER = exports.DAY_SIZE = exports.OPEN_UP = exports.OPEN_DOWN = exports.ANCHOR_RIGHT = exports.ANCHOR_LEFT = exports.INFO_POSITION_AFTER = exports.INFO_POSITION_BEFORE = exports.INFO_POSITION_BOTTOM = exports.INFO_POSITION_TOP = exports.ICON_AFTER_POSITION = exports.ICON_BEFORE_POSITION = exports.VERTICAL_SCROLLABLE = exports.VERTICAL_ORIENTATION = exports.HORIZONTAL_ORIENTATION = exports.END_DATE = exports.START_DATE = exports.ISO_MONTH_FORMAT = exports.ISO_FORMAT = exports.DISPLAY_FORMAT = void 0;
-var DISPLAY_FORMAT = 'L';
-exports.DISPLAY_FORMAT = DISPLAY_FORMAT;
-var ISO_FORMAT = 'YYYY-MM-DD';
-exports.ISO_FORMAT = ISO_FORMAT;
-var ISO_MONTH_FORMAT = 'YYYY-MM';
-exports.ISO_MONTH_FORMAT = ISO_MONTH_FORMAT;
-var START_DATE = 'startDate';
-exports.START_DATE = START_DATE;
-var END_DATE = 'endDate';
-exports.END_DATE = END_DATE;
-var HORIZONTAL_ORIENTATION = 'horizontal';
-exports.HORIZONTAL_ORIENTATION = HORIZONTAL_ORIENTATION;
-var VERTICAL_ORIENTATION = 'vertical';
-exports.VERTICAL_ORIENTATION = VERTICAL_ORIENTATION;
-var VERTICAL_SCROLLABLE = 'verticalScrollable';
-exports.VERTICAL_SCROLLABLE = VERTICAL_SCROLLABLE;
-var ICON_BEFORE_POSITION = 'before';
-exports.ICON_BEFORE_POSITION = ICON_BEFORE_POSITION;
-var ICON_AFTER_POSITION = 'after';
-exports.ICON_AFTER_POSITION = ICON_AFTER_POSITION;
-var INFO_POSITION_TOP = 'top';
-exports.INFO_POSITION_TOP = INFO_POSITION_TOP;
-var INFO_POSITION_BOTTOM = 'bottom';
-exports.INFO_POSITION_BOTTOM = INFO_POSITION_BOTTOM;
-var INFO_POSITION_BEFORE = 'before';
-exports.INFO_POSITION_BEFORE = INFO_POSITION_BEFORE;
-var INFO_POSITION_AFTER = 'after';
-exports.INFO_POSITION_AFTER = INFO_POSITION_AFTER;
-var ANCHOR_LEFT = 'left';
-exports.ANCHOR_LEFT = ANCHOR_LEFT;
-var ANCHOR_RIGHT = 'right';
-exports.ANCHOR_RIGHT = ANCHOR_RIGHT;
-var OPEN_DOWN = 'down';
-exports.OPEN_DOWN = OPEN_DOWN;
-var OPEN_UP = 'up';
-exports.OPEN_UP = OPEN_UP;
-var DAY_SIZE = 39;
-exports.DAY_SIZE = DAY_SIZE;
-var BLOCKED_MODIFIER = 'blocked';
-exports.BLOCKED_MODIFIER = BLOCKED_MODIFIER;
-var WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
-exports.WEEKDAYS = WEEKDAYS;
-var FANG_WIDTH_PX = 20;
-exports.FANG_WIDTH_PX = FANG_WIDTH_PX;
-var FANG_HEIGHT_PX = 10;
-exports.FANG_HEIGHT_PX = FANG_HEIGHT_PX;
-var DEFAULT_VERTICAL_SPACING = 22;
-exports.DEFAULT_VERTICAL_SPACING = DEFAULT_VERTICAL_SPACING;
-var MODIFIER_KEY_NAMES = new Set(['Shift', 'Control', 'Alt', 'Meta']);
-exports.MODIFIER_KEY_NAMES = MODIFIER_KEY_NAMES;
-
-/***/ }),
-
-/***/ "WmS1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = toMomentObject;
-
-var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function toMomentObject(dateString, customFormat) {
-  var dateFormats = customFormat ? [customFormat, _constants.DISPLAY_FORMAT, _constants.ISO_FORMAT] : [_constants.DISPLAY_FORMAT, _constants.ISO_FORMAT];
-  var date = (0, _moment["default"])(dateString, dateFormats, true);
-  return date.isValid() ? date.hour(12) : null;
-}
-
-/***/ }),
-
-/***/ "nGjC":
-/***/ (function(module, exports) {
-
-module.exports = window.ko;
-
-/***/ }),
-
-/***/ "oNlh":
+/***/ "./assets/babel/search-form.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _search_form_SearchForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./assets/babel/search-form/SearchForm.js");
+/* harmony import */ var _search_form_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./assets/babel/search-form/old.js");
 
-// EXTERNAL MODULE: external "jQuery"
-var external_jQuery_ = __webpack_require__("xeH2");
-var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
 
-// CONCATENATED MODULE: ./assets/babel/utils/control.js
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.searchbox, .abrs-searchbox').each(function (index, element) {
+    var form = new _search_form_SearchForm__WEBPACK_IMPORTED_MODULE_1__["default"](element, index);
+
+    if (!element.classList.contains('searchbox--experiment-style')) {
+      new _search_form_old__WEBPACK_IMPORTED_MODULE_2__["default"](element, form);
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/babel/search-form/SearchForm.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SearchForm; });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_control__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./assets/babel/utils/control.js");
+/* harmony import */ var _utils_date_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./assets/babel/utils/date-utils.js");
+/* harmony import */ var react_dates_lib_utils_isSameDay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./node_modules/react-dates/lib/utils/isSameDay.js");
+/* harmony import */ var react_dates_lib_utils_isSameDay__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dates_lib_utils_isSameDay__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_dates_lib_utils_toMomentObject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./node_modules/react-dates/lib/utils/toMomentObject.js");
+/* harmony import */ var react_dates_lib_utils_toMomentObject__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_dates_lib_utils_toMomentObject__WEBPACK_IMPORTED_MODULE_4__);
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+
+
+
+
+
+
+var SearchForm =
+/*#__PURE__*/
+function () {
+  function SearchForm(root, instance) {
+    _classCallCheck(this, SearchForm);
+
+    this.root = jquery__WEBPACK_IMPORTED_MODULE_0___default()(root);
+    this.instance = instance; // Store the input elements
+
+    this.elements = {};
+    this.linkElements();
+
+    this._registerBindings();
+
+    if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
+      this._createDatePicker();
+    }
+  }
+
+  _createClass(SearchForm, [{
+    key: "getFormData",
+    value: function getFormData() {
+      var elements = this.elements;
+      var data = {};
+      Object.keys(elements).forEach(function (index) {
+        data[index] = elements[index].get();
+      });
+      return data;
+    }
+  }, {
+    key: "getRootElement",
+    value: function getRootElement() {
+      return this.root[0];
+    }
+  }, {
+    key: "_createDatePicker",
+    value: function _createDatePicker() {
+      var datepicker = window.awebooking.config.datepicker;
+      var disableDays = datepicker.disableDays,
+          disableDates = datepicker.disableDates;
+      disableDates = disableDates.split(/,\s?/).map(function (day) {
+        return react_dates_lib_utils_toMomentObject__WEBPACK_IMPORTED_MODULE_4___default()(day);
+      });
+
+      var isDayBlocked = function isDayBlocked(day) {
+        var disabled = false;
+
+        if (Array.isArray(disableDays) && disableDays.length > 0) {
+          disabled = disableDays.includes(parseInt(day.format('d'), 10));
+        }
+
+        if (!disabled && disableDates.length > 0) {
+          disabled = disableDates.some(function (test) {
+            return react_dates_lib_utils_isSameDay__WEBPACK_IMPORTED_MODULE_3___default()(day, test);
+          });
+        }
+
+        return disabled;
+      };
+
+      window.createReactDatePicker(this, {
+        isDayBlocked: isDayBlocked,
+        minimumNights: datepicker.minNights || 1,
+        maximumNights: datepicker.maxNights || 0,
+        minimumDateRange: datepicker.minDate || 0,
+        maximumDateRange: datepicker.maxDate || 0,
+        numberOfMonths: datepicker.showMonths || 1
+      });
+    }
+  }, {
+    key: "_registerBindings",
+    value: function _registerBindings() {
+      var _this = this;
+
+      var binding = function binding(bind) {
+        return function (value) {
+          _this.elements[bind].set(value ? Object(_utils_date_utils__WEBPACK_IMPORTED_MODULE_2__["formatDateString"])(value) : '');
+        };
+      };
+
+      if (this.elements.hasOwnProperty('check_in_alt')) {
+        this.elements['check_in'].bind(binding('check_in_alt'));
+      }
+
+      if (this.elements.hasOwnProperty('check_out_alt')) {
+        this.elements['check_out'].bind(binding('check_out_alt'));
+      }
+    }
+    /**
+     * Link elements between settings and inputs
+     */
+
+  }, {
+    key: "linkElements",
+    value: function linkElements() {
+      var control = this;
+      var nodes = control.root.find('select, input, textarea');
+      var radios = {};
+      nodes.each(function (index, element) {
+        var node = jquery__WEBPACK_IMPORTED_MODULE_0___default()(element);
+
+        if (node.data('_elementLinked')) {
+          return;
+        } // Prevent re-linking element.
+
+
+        node.data('_elementLinked', true);
+        var name = node.prop('name');
+
+        if (node.is(':radio')) {
+          if (radios[name]) {
+            return;
+          }
+
+          radios[name] = true;
+          node = nodes.filter('[name="' + name + '"]');
+        }
+
+        index = name || index;
+
+        if (node.data('element')) {
+          index = node.data('element');
+        }
+
+        control.elements[index] = new _utils_control__WEBPACK_IMPORTED_MODULE_1__["default"](node);
+      });
+    }
+  }]);
+
+  return SearchForm;
+}();
+
+
+
+/***/ }),
+
+/***/ "./assets/babel/search-form/old.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OldSearchForm; });
+/* harmony import */ var ko__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ko");
+/* harmony import */ var ko__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(ko__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_date_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./assets/babel/utils/date-utils.js");
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+
+
+
+
+var SearchFormModel =
+/*#__PURE__*/
+function () {
+  function SearchFormModel(data) {
+    var _this = this;
+
+    _classCallCheck(this, SearchFormModel);
+
+    this.hotel = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.adults || 0);
+    this.adults = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.adults || 1);
+    this.children = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.children || 0);
+    this.infants = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.infants || 0);
+    this.checkIn = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.check_in || '');
+    this.checkOut = ko__WEBPACK_IMPORTED_MODULE_0___default.a.observable(data.check_out || '');
+    this.checkInDate = ko__WEBPACK_IMPORTED_MODULE_0___default.a.computed(function () {
+      return Object(_utils_date_utils__WEBPACK_IMPORTED_MODULE_2__["formatDateString"])(_this.checkIn(), 'Y-m-d');
+    });
+    this.checkOutDate = ko__WEBPACK_IMPORTED_MODULE_0___default.a.computed(function () {
+      return Object(_utils_date_utils__WEBPACK_IMPORTED_MODULE_2__["formatDateString"])(_this.checkOut(), 'Y-m-d');
+    });
+    this.checkInFormatted = ko__WEBPACK_IMPORTED_MODULE_0___default.a.computed(this.checkInFormatted.bind(this));
+    this.checkOutFormatted = ko__WEBPACK_IMPORTED_MODULE_0___default.a.computed(this.checkOutFormatted.bind(this));
+  }
+
+  _createClass(SearchFormModel, [{
+    key: "checkInFormatted",
+    value: function checkInFormatted(format) {
+      return Object(_utils_date_utils__WEBPACK_IMPORTED_MODULE_2__["formatDateString"])(this.checkIn(), format);
+    }
+  }, {
+    key: "checkOutFormatted",
+    value: function checkOutFormatted(format) {
+      return Object(_utils_date_utils__WEBPACK_IMPORTED_MODULE_2__["formatDateString"])(this.checkOut(), format);
+    }
+  }]);
+
+  return SearchFormModel;
+}();
+
+var OldSearchForm =
+/*#__PURE__*/
+function () {
+  function OldSearchForm(el, form) {
+    var _this2 = this;
+
+    _classCallCheck(this, OldSearchForm);
+
+    this.$el = jquery__WEBPACK_IMPORTED_MODULE_1___default()(el);
+    this.form = form;
+
+    this._setupDatePicker();
+
+    this.$el.find('.searchbox__box').each(function (i, box) {
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()(box).data('popup', _this2._setuptPopper(box));
+    });
+    this.$el.find('[data-trigger="spinner"]').on('changed.spinner', function () {
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()(this).find('[data-spin="spinner"]').trigger('change');
+    });
+    this.model = new SearchFormModel(form.getFormData());
+    ko__WEBPACK_IMPORTED_MODULE_0___default.a.applyBindings(this.model, el);
+  }
+
+  _createClass(OldSearchForm, [{
+    key: "_setupDatePicker",
+    value: function _setupDatePicker() {
+      var _this3 = this;
+
+      var self = this;
+      var plugin = window.awebooking;
+      var $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
+
+      if ($rangepicker.length === 0) {
+        $rangepicker = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
+      }
+
+      var fp = plugin.datepicker($rangepicker[0], {
+        mode: 'range',
+        altInput: false,
+        clickOpens: false,
+        closeOnSelect: true,
+        onReady: function onReady(_, __, fp) {
+          fp.calendarContainer.classList.add('awebooking-datepicker');
+          this.config.ignoredFocusElements.push(jquery__WEBPACK_IMPORTED_MODULE_1___default()('.searchbox__box--checkin', self.$el)[0]);
+          this.config.ignoredFocusElements.push(jquery__WEBPACK_IMPORTED_MODULE_1___default()('.searchbox__box--checkout', self.$el)[0]);
+        },
+        onChange: function onChange(dates) {
+          if (dates.length === 0) {
+            _this3.model.checkIn(null);
+
+            _this3.model.checkIn(null);
+          } else if (dates.length === 1) {
+            _this3.model.checkIn(dates[0]);
+
+            _this3.model.checkOut(null);
+          } else {
+            _this3.model.checkIn(dates[0]);
+
+            _this3.model.checkOut(dates[1]);
+          }
+        },
+        onPreCalendarPosition: function onPreCalendarPosition(_, __, fp) {
+          var _this4 = this;
+
+          fp._positionElement = jquery__WEBPACK_IMPORTED_MODULE_1___default()('.searchbox__box--checkout', self.$el)[0];
+          setTimeout(function () {
+            _this4._positionElement = _this4._input;
+          }, 0);
+        }
+      });
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.$el).on('click', '.searchbox__box--checkin, .searchbox__box--checkout', function (e) {
+        e.preventDefault();
+        fp.isOpen = false;
+        fp.open(undefined, e.currentTarget);
+      });
+    }
+  }, {
+    key: "_setuptPopper",
+    value: function _setuptPopper(el) {
+      var plugin = window.awebooking;
+      var $html = jquery__WEBPACK_IMPORTED_MODULE_1___default()(el).find('.searchbox__popup');
+
+      if ($html.length === 0) {
+        return;
+      }
+
+      plugin.utils.dropdown(jquery__WEBPACK_IMPORTED_MODULE_1___default()(el).find('.searchbox__box-wrap'), {
+        drop: '.searchbox__popup',
+        display: 'static'
+      });
+    }
+  }]);
+
+  return OldSearchForm;
+}();
+
+
+
+/***/ }),
+
+/***/ "./assets/babel/utils/control.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Control; });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -273,7 +545,7 @@ var Synchronizer = {
 };
 
 function ensureElement(element) {
-  return typeof element == 'string' ? external_jQuery_default()(element) : element;
+  return typeof element == 'string' ? jquery__WEBPACK_IMPORTED_MODULE_0___default()(element) : element;
 }
 /**
  * //
@@ -301,7 +573,7 @@ function isEquals(a, b) {
  */
 
 
-var control_Control =
+var Control =
 /*#__PURE__*/
 function () {
   function Control(element) {
@@ -310,7 +582,7 @@ function () {
     this._value = null;
     this._dirty = false; // Store and manage the callback lists
 
-    this.callbacks = external_jQuery_default.a.Callbacks();
+    this.callbacks = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.Callbacks();
     this.element = ensureElement(element);
     this.events = '';
     /* synchronizer */
@@ -328,7 +600,7 @@ function () {
     } // Set the value from the input.
 
 
-    external_jQuery_default.a.extend(this, _synchronizer);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend(this, _synchronizer);
 
     var _initialize = this.initialize || void 0;
 
@@ -532,7 +804,15 @@ function () {
 }();
 
 
-// CONCATENATED MODULE: ./assets/babel/utils/date-utils.js
+
+/***/ }),
+
+/***/ "./assets/babel/utils/date-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatDateString", function() { return formatDateString; });
 function formatDateString(dateString, format) {
   var _ref = window.awebooking || {},
       i18n = _ref.i18n,
@@ -546,360 +826,73 @@ function formatDateString(dateString, format) {
 
   return utils.dates.format(date, format || i18n.dateFormat);
 }
-// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/isSameDay.js
-var isSameDay = __webpack_require__("pRvc");
-var isSameDay_default = /*#__PURE__*/__webpack_require__.n(isSameDay);
-
-// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/toMomentObject.js
-var toMomentObject = __webpack_require__("WmS1");
-var toMomentObject_default = /*#__PURE__*/__webpack_require__.n(toMomentObject);
-
-// CONCATENATED MODULE: ./assets/babel/search-form/SearchForm.js
-function SearchForm_classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function SearchForm_defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function SearchForm_createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) SearchForm_defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) SearchForm_defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-
-
-
-
-
-
-var SearchForm_SearchForm =
-/*#__PURE__*/
-function () {
-  function SearchForm(root, instance) {
-    SearchForm_classCallCheck(this, SearchForm);
-
-    this.root = external_jQuery_default()(root);
-    this.instance = instance; // Store the input elements
-
-    this.elements = {};
-    this.linkElements();
-
-    this._registerBindings();
-
-    if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
-      this._createDatePicker();
-    }
-  }
-
-  SearchForm_createClass(SearchForm, [{
-    key: "getFormData",
-    value: function getFormData() {
-      var elements = this.elements;
-      var data = {};
-      Object.keys(elements).forEach(function (index) {
-        data[index] = elements[index].get();
-      });
-      return data;
-    }
-  }, {
-    key: "getRootElement",
-    value: function getRootElement() {
-      return this.root[0];
-    }
-  }, {
-    key: "_createDatePicker",
-    value: function _createDatePicker() {
-      var datepicker = window.awebooking.config.datepicker;
-      var disableDays = datepicker.disableDays,
-          disableDates = datepicker.disableDates;
-      disableDates = disableDates.split(/,\s?/).map(function (day) {
-        return toMomentObject_default()(day);
-      });
-
-      var isDayBlocked = function isDayBlocked(day) {
-        var disabled = false;
-
-        if (Array.isArray(disableDays) && disableDays.length > 0) {
-          disabled = disableDays.includes(parseInt(day.format('d'), 10));
-        }
-
-        if (!disabled && disableDates.length > 0) {
-          disabled = disableDates.some(function (test) {
-            return isSameDay_default()(day, test);
-          });
-        }
-
-        return disabled;
-      };
-
-      window.createReactDatePicker(this, {
-        isDayBlocked: isDayBlocked,
-        minimumNights: datepicker.minNights || 1,
-        maximumNights: datepicker.maxNights || 0,
-        minimumDateRange: datepicker.minDate || 0,
-        maximumDateRange: datepicker.maxDate || 0,
-        numberOfMonths: datepicker.showMonths || 1
-      });
-    }
-  }, {
-    key: "_registerBindings",
-    value: function _registerBindings() {
-      var _this = this;
-
-      var binding = function binding(bind) {
-        return function (value) {
-          _this.elements[bind].set(value ? formatDateString(value) : '');
-        };
-      };
-
-      if (this.elements.hasOwnProperty('check_in_alt')) {
-        this.elements['check_in'].bind(binding('check_in_alt'));
-      }
-
-      if (this.elements.hasOwnProperty('check_out_alt')) {
-        this.elements['check_out'].bind(binding('check_out_alt'));
-      }
-    }
-    /**
-     * Link elements between settings and inputs
-     */
-
-  }, {
-    key: "linkElements",
-    value: function linkElements() {
-      var control = this;
-      var nodes = control.root.find('select, input, textarea');
-      var radios = {};
-      nodes.each(function (index, element) {
-        var node = external_jQuery_default()(element);
-
-        if (node.data('_elementLinked')) {
-          return;
-        } // Prevent re-linking element.
-
-
-        node.data('_elementLinked', true);
-        var name = node.prop('name');
-
-        if (node.is(':radio')) {
-          if (radios[name]) {
-            return;
-          }
-
-          radios[name] = true;
-          node = nodes.filter('[name="' + name + '"]');
-        }
-
-        index = name || index;
-
-        if (node.data('element')) {
-          index = node.data('element');
-        }
-
-        control.elements[index] = new control_Control(node);
-      });
-    }
-  }]);
-
-  return SearchForm;
-}();
-
-
-// EXTERNAL MODULE: external "window.ko"
-var external_window_ko_ = __webpack_require__("nGjC");
-var external_window_ko_default = /*#__PURE__*/__webpack_require__.n(external_window_ko_);
-
-// CONCATENATED MODULE: ./assets/babel/search-form/old.js
-function old_classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function old_defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function old_createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) old_defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) old_defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-
-
-
-
-var old_SearchFormModel =
-/*#__PURE__*/
-function () {
-  function SearchFormModel(data) {
-    var _this = this;
-
-    old_classCallCheck(this, SearchFormModel);
-
-    this.hotel = external_window_ko_default.a.observable(data.adults || 0);
-    this.adults = external_window_ko_default.a.observable(data.adults || 1);
-    this.children = external_window_ko_default.a.observable(data.children || 0);
-    this.infants = external_window_ko_default.a.observable(data.infants || 0);
-    this.checkIn = external_window_ko_default.a.observable(data.check_in || '');
-    this.checkOut = external_window_ko_default.a.observable(data.check_out || '');
-    this.checkInDate = external_window_ko_default.a.computed(function () {
-      return formatDateString(_this.checkIn(), 'Y-m-d');
-    });
-    this.checkOutDate = external_window_ko_default.a.computed(function () {
-      return formatDateString(_this.checkOut(), 'Y-m-d');
-    });
-    this.checkInFormatted = external_window_ko_default.a.computed(this.checkInFormatted.bind(this));
-    this.checkOutFormatted = external_window_ko_default.a.computed(this.checkOutFormatted.bind(this));
-  }
-
-  old_createClass(SearchFormModel, [{
-    key: "checkInFormatted",
-    value: function checkInFormatted(format) {
-      return formatDateString(this.checkIn(), format);
-    }
-  }, {
-    key: "checkOutFormatted",
-    value: function checkOutFormatted(format) {
-      return formatDateString(this.checkOut(), format);
-    }
-  }]);
-
-  return SearchFormModel;
-}();
-
-var old_OldSearchForm =
-/*#__PURE__*/
-function () {
-  function OldSearchForm(el, form) {
-    var _this2 = this;
-
-    old_classCallCheck(this, OldSearchForm);
-
-    this.$el = external_jQuery_default()(el);
-    this.form = form;
-
-    this._setupDatePicker();
-
-    this.$el.find('.searchbox__box').each(function (i, box) {
-      external_jQuery_default()(box).data('popup', _this2._setuptPopper(box));
-    });
-    this.$el.find('[data-trigger="spinner"]').on('changed.spinner', function () {
-      external_jQuery_default()(this).find('[data-spin="spinner"]').trigger('change');
-    });
-    this.model = new old_SearchFormModel(form.getFormData());
-    external_window_ko_default.a.applyBindings(this.model, el);
-  }
-
-  old_createClass(OldSearchForm, [{
-    key: "_setupDatePicker",
-    value: function _setupDatePicker() {
-      var _this3 = this;
-
-      var self = this;
-      var plugin = window.awebooking;
-      var $rangepicker = this.$el.find('[data-hotel="rangepicker"]');
-
-      if ($rangepicker.length === 0) {
-        $rangepicker = external_jQuery_default()('<input type="text" data-hotel="rangepicker"/>').appendTo(this.$el);
-      }
-
-      var fp = plugin.datepicker($rangepicker[0], {
-        mode: 'range',
-        altInput: false,
-        clickOpens: false,
-        closeOnSelect: true,
-        onReady: function onReady(_, __, fp) {
-          fp.calendarContainer.classList.add('awebooking-datepicker');
-          this.config.ignoredFocusElements.push(external_jQuery_default()('.searchbox__box--checkin', self.$el)[0]);
-          this.config.ignoredFocusElements.push(external_jQuery_default()('.searchbox__box--checkout', self.$el)[0]);
-        },
-        onChange: function onChange(dates) {
-          if (dates.length === 0) {
-            _this3.model.checkIn(null);
-
-            _this3.model.checkIn(null);
-          } else if (dates.length === 1) {
-            _this3.model.checkIn(dates[0]);
-
-            _this3.model.checkOut(null);
-          } else {
-            _this3.model.checkIn(dates[0]);
-
-            _this3.model.checkOut(dates[1]);
-          }
-        },
-        onPreCalendarPosition: function onPreCalendarPosition(_, __, fp) {
-          var _this4 = this;
-
-          fp._positionElement = external_jQuery_default()('.searchbox__box--checkout', self.$el)[0];
-          setTimeout(function () {
-            _this4._positionElement = _this4._input;
-          }, 0);
-        }
-      });
-      external_jQuery_default()(this.$el).on('click', '.searchbox__box--checkin, .searchbox__box--checkout', function (e) {
-        e.preventDefault();
-        fp.isOpen = false;
-        fp.open(undefined, e.currentTarget);
-      });
-    }
-  }, {
-    key: "_setuptPopper",
-    value: function _setuptPopper(el) {
-      var plugin = window.awebooking;
-      var $html = external_jQuery_default()(el).find('.searchbox__popup');
-
-      if ($html.length === 0) {
-        return;
-      }
-
-      plugin.utils.dropdown(external_jQuery_default()(el).find('.searchbox__box-wrap'), {
-        drop: '.searchbox__popup',
-        display: 'static'
-      });
-    }
-  }]);
-
-  return OldSearchForm;
-}();
-
-
-// CONCATENATED MODULE: ./assets/babel/search-form.js
-
-
-
-external_jQuery_default()(function () {
-  external_jQuery_default()('.searchbox, .abrs-searchbox').each(function (index, element) {
-    var form = new SearchForm_SearchForm(element, index);
-
-    if (!element.classList.contains('searchbox--experiment-style')) {
-      new old_OldSearchForm(element, form);
-    }
-  });
-});
 
 /***/ }),
 
-/***/ "pRvc":
+/***/ "./node_modules/react-dates/lib/constants.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MODIFIER_KEY_NAMES = exports.DEFAULT_VERTICAL_SPACING = exports.FANG_HEIGHT_PX = exports.FANG_WIDTH_PX = exports.WEEKDAYS = exports.BLOCKED_MODIFIER = exports.DAY_SIZE = exports.OPEN_UP = exports.OPEN_DOWN = exports.ANCHOR_RIGHT = exports.ANCHOR_LEFT = exports.INFO_POSITION_AFTER = exports.INFO_POSITION_BEFORE = exports.INFO_POSITION_BOTTOM = exports.INFO_POSITION_TOP = exports.ICON_AFTER_POSITION = exports.ICON_BEFORE_POSITION = exports.VERTICAL_SCROLLABLE = exports.VERTICAL_ORIENTATION = exports.HORIZONTAL_ORIENTATION = exports.END_DATE = exports.START_DATE = exports.ISO_MONTH_FORMAT = exports.ISO_FORMAT = exports.DISPLAY_FORMAT = void 0;
+var DISPLAY_FORMAT = 'L';
+exports.DISPLAY_FORMAT = DISPLAY_FORMAT;
+var ISO_FORMAT = 'YYYY-MM-DD';
+exports.ISO_FORMAT = ISO_FORMAT;
+var ISO_MONTH_FORMAT = 'YYYY-MM';
+exports.ISO_MONTH_FORMAT = ISO_MONTH_FORMAT;
+var START_DATE = 'startDate';
+exports.START_DATE = START_DATE;
+var END_DATE = 'endDate';
+exports.END_DATE = END_DATE;
+var HORIZONTAL_ORIENTATION = 'horizontal';
+exports.HORIZONTAL_ORIENTATION = HORIZONTAL_ORIENTATION;
+var VERTICAL_ORIENTATION = 'vertical';
+exports.VERTICAL_ORIENTATION = VERTICAL_ORIENTATION;
+var VERTICAL_SCROLLABLE = 'verticalScrollable';
+exports.VERTICAL_SCROLLABLE = VERTICAL_SCROLLABLE;
+var ICON_BEFORE_POSITION = 'before';
+exports.ICON_BEFORE_POSITION = ICON_BEFORE_POSITION;
+var ICON_AFTER_POSITION = 'after';
+exports.ICON_AFTER_POSITION = ICON_AFTER_POSITION;
+var INFO_POSITION_TOP = 'top';
+exports.INFO_POSITION_TOP = INFO_POSITION_TOP;
+var INFO_POSITION_BOTTOM = 'bottom';
+exports.INFO_POSITION_BOTTOM = INFO_POSITION_BOTTOM;
+var INFO_POSITION_BEFORE = 'before';
+exports.INFO_POSITION_BEFORE = INFO_POSITION_BEFORE;
+var INFO_POSITION_AFTER = 'after';
+exports.INFO_POSITION_AFTER = INFO_POSITION_AFTER;
+var ANCHOR_LEFT = 'left';
+exports.ANCHOR_LEFT = ANCHOR_LEFT;
+var ANCHOR_RIGHT = 'right';
+exports.ANCHOR_RIGHT = ANCHOR_RIGHT;
+var OPEN_DOWN = 'down';
+exports.OPEN_DOWN = OPEN_DOWN;
+var OPEN_UP = 'up';
+exports.OPEN_UP = OPEN_UP;
+var DAY_SIZE = 39;
+exports.DAY_SIZE = DAY_SIZE;
+var BLOCKED_MODIFIER = 'blocked';
+exports.BLOCKED_MODIFIER = BLOCKED_MODIFIER;
+var WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
+exports.WEEKDAYS = WEEKDAYS;
+var FANG_WIDTH_PX = 20;
+exports.FANG_WIDTH_PX = FANG_WIDTH_PX;
+var FANG_HEIGHT_PX = 10;
+exports.FANG_HEIGHT_PX = FANG_HEIGHT_PX;
+var DEFAULT_VERTICAL_SPACING = 22;
+exports.DEFAULT_VERTICAL_SPACING = DEFAULT_VERTICAL_SPACING;
+var MODIFIER_KEY_NAMES = new Set(['Shift', 'Control', 'Alt', 'Meta']);
+exports.MODIFIER_KEY_NAMES = MODIFIER_KEY_NAMES;
+
+/***/ }),
+
+/***/ "./node_modules/react-dates/lib/utils/isSameDay.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -910,7 +903,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = isSameDay;
 
-var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
+var _moment = _interopRequireDefault(__webpack_require__("moment"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -923,18 +916,59 @@ function isSameDay(a, b) {
 
 /***/ }),
 
-/***/ "wy2R":
-/***/ (function(module, exports) {
+/***/ "./node_modules/react-dates/lib/utils/toMomentObject.js":
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = moment;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = toMomentObject;
+
+var _moment = _interopRequireDefault(__webpack_require__("moment"));
+
+var _constants = __webpack_require__("./node_modules/react-dates/lib/constants.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function toMomentObject(dateString, customFormat) {
+  var dateFormats = customFormat ? [customFormat, _constants.DISPLAY_FORMAT, _constants.ISO_FORMAT] : [_constants.DISPLAY_FORMAT, _constants.ISO_FORMAT];
+  var date = (0, _moment["default"])(dateString, dateFormats, true);
+  return date.isValid() ? date.hour(12) : null;
+}
 
 /***/ }),
 
-/***/ "xeH2":
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/search-form.js");
+
+
+/***/ }),
+
+/***/ "jquery":
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
 
+/***/ }),
+
+/***/ "ko":
+/***/ (function(module, exports) {
+
+module.exports = window.ko;
+
+/***/ }),
+
+/***/ "moment":
+/***/ (function(module, exports) {
+
+module.exports = moment;
+
 /***/ })
 
 /******/ });
+//# sourceMappingURL=search-form.js.map

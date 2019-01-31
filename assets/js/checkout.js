@@ -86,27 +86,12 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("yXmg");
-
-
-/***/ }),
-
-/***/ "xeH2":
-/***/ (function(module, exports) {
-
-module.exports = jQuery;
-
-/***/ }),
-
-/***/ "yXmg":
+/***/ "./assets/babel/checkout.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
 var SELECTED = 'selected';
@@ -170,6 +155,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   }, 0);
 });
 
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/checkout.js");
+
+
+/***/ }),
+
+/***/ "jquery":
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
+
 /***/ })
 
 /******/ });
+//# sourceMappingURL=checkout.js.map

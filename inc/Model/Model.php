@@ -3,8 +3,10 @@
 namespace AweBooking\Model;
 
 use Awethemes\WP_Object\WP_Object;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
-abstract class Model extends WP_Object {
+abstract class Model extends WP_Object implements Arrayable, Jsonable {
 	/**
 	 * Mark the object readonly.
 	 *
@@ -118,6 +120,20 @@ abstract class Model extends WP_Object {
 	 */
 	protected function prefix( $hook_name ) {
 		return sprintf( 'abrs_%s_%s', $this->object_type, $hook_name );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function toArray() {
+		return $this->to_array();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function toJson( $options = 0 ) {
+		return $this->to_json();
 	}
 
 	/**
