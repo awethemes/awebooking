@@ -170,16 +170,16 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_in' );
 
 		$this->input( 'hidden', 'check_in', $attributes + [
-				'value' => $value,
-			] );
+			'value' => $value,
+		] );
 
 		$this->input( 'text', 'check_in_alt', $alt_attributes + [
-				'name'          => false, // Remove "name" attribute.
-				'value'         => $value ? abrs_format_date( $value ) : '',
-				'placeholder'   => abrs_get_date_format(),
-				'autocomplete'  => 'off',
-				'aria-haspopup' => 'true',
-			] );
+			'name'          => false, // Remove "name" attribute.
+			'value'         => $value ? abrs_format_date( $value ) : '',
+			'placeholder'   => abrs_get_date_format(),
+			'autocomplete'  => 'off',
+			'aria-haspopup' => 'true',
+		] );
 	}
 
 	/**
@@ -192,8 +192,8 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_out' );
 
 		$this->input( 'hidden', 'check_out', $attributes + [
-				'value' => $value,
-			] );
+			'value' => $value,
+		] );
 
 		$this->input( 'text', 'check_out_alt', array_merge( $alt_attributes, [
 			'name'          => false, // Remove "name" attribute.
