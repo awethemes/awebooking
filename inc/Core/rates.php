@@ -48,7 +48,7 @@ function abrs_query_rates( $room_type ) {
 	return abrs_collect( apply_filters( 'abrs_query_rates', [], $room_type ) )
 		->filter( function ( $rate ) {
 			return $rate instanceof Rate;
-		})->sortBy( function( Rate $rate ) {
+		})->sortByDesc( function( Rate $rate ) {
 			return $rate->get_priority();
 		})->values();
 }
@@ -82,7 +82,7 @@ function abrs_get_rate_intervals( $rate ) {
 	return abrs_collect( apply_filters( 'abrs_get_rate_intervals', [], $rate ) )
 		->filter( function ( $plan ) {
 			return $plan instanceof Rate_Interval;
-		} )->sortBy( function ( Rate_Interval $rate ) {
+		} )->sortByDesc( function ( Rate_Interval $rate ) {
 			return $rate->get_priority();
 		} )->values();
 }

@@ -415,11 +415,17 @@ function _abrs_filter_rates_callback( $resource, $response ) {
 
 	if ( $effective_date && $today < abrs_date_time( $effective_date ) ) {
 		$response->add_miss( $resource, 'rate_effective_date' );
-	} elseif ( $expires_date && $today > abrs_date_time( $expires_date ) ) {
-		$response->add_miss( $resource, 'rate_expired_date' );
-	} else {
-		$response->add_match( $resource, 'rate_valid_dates' );
+
+		return;
 	}
+
+	if ( $expires_date && $today > abrs_date_time( $expires_date ) ) {
+		$response->add_miss( $resource, 'rate_expired_date' );
+
+		return;
+	}
+
+	$response->add_match( $resource, 'rate_valid_dates' );
 }
 
 /**
