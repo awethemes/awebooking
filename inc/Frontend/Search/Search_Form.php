@@ -80,9 +80,14 @@ class Search_Form extends Form {
 	 * @return void
 	 */
 	public function components() {
-		foreach ( [ 'hotel', 'dates', 'occupancy', 'button' ] as $component ) {
-			$this->component( $component );
+		if ( $this->atts['hotel_location'] && 'false' !== $this->atts['hotel_location'] ) {
+			$this->component( 'hotel' );
 		}
+
+		$this->component( 'dates' );
+		$this->component( 'occupancy' );
+
+		$this->component( 'button' );
 	}
 
 	/**
