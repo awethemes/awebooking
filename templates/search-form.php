@@ -35,7 +35,7 @@ if ( $use_experiment_style ) {
 
 ?>
 
-<form id="<?php echo esc_attr( $search_form->id() ); ?>" action="<?php echo esc_url( $search_form->action() ); ?>" method="GET" role="search">
+<form id="<?php echo esc_attr( $search_form->id() ); ?>" action="<?php echo esc_url( $search_form->action() ); ?>" method="GET" role="search" novalidate>
 	<?php $search_form->hiddens(); ?>
 
 	<div class="<?php echo esc_attr( abrs_html_class( $form_classes ) ); ?>">
