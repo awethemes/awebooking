@@ -19,6 +19,7 @@ class Search_Form extends Form {
 	 * @var array
 	 */
 	protected $atts = [
+		'template'        => '',
 		'layout'          => '', // Default vertical layout.
 		'alignment'       => '',
 		'hotel_location'  => true,
@@ -47,7 +48,11 @@ class Search_Form extends Form {
 			$this->builder->set_request( $this->http_request );
 		}
 
-		return abrs_get_template_content( 'search-form.php', $this->get_template_data() );
+		$template = $this->atts['template']
+			? "search-form-{$this->atts['template']}.php"
+			: 'search-form.php';
+
+		return abrs_get_template_content( $template, $this->get_template_data() );
 	}
 
 	/**
