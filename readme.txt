@@ -91,6 +91,9 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.4] - [2019-02-01]
+- Minor bug fixes
+
 ### [v3.2.3] - [2019-01-30]
 - Added: Now you can swap a room unit to another in same room type.
 - Added: Auto recalculates room price when editing a booking room.
