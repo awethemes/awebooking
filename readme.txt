@@ -91,6 +91,10 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.5] - [2019-02-04]
+- Happy Lunar New Year!
+- Fixed: Failed to check reference when booking room in admin area.
+
 ### [v3.2.4] - [2019-02-01]
 - Minor bug fixes
 
