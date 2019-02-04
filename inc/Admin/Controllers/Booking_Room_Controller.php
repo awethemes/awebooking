@@ -78,7 +78,7 @@ class Booking_Room_Controller extends Controller {
 		check_admin_referer( 'add_booking_room', '_wpnonce' );
 
 		try {
-			$booking = $this->preapre_booking( abrs_get_booking( $request['refer'] ) );
+			$booking = $this->preapre_booking( abrs_get_booking( $request['_refer'] ) );
 		} catch ( \Exception $e ) {
 			return new WP_Error( 400, $e->getMessage() );
 		}
