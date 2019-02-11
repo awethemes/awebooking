@@ -338,6 +338,8 @@ function abrs_get_translatable_options() {
 		'measure_unit',
 		'page_checkout',
 		'page_check_availability',
+		'page_terms',
+		'page_check_hotels',
 		'currency',
 		'currency_position',
 		'price_thousand_separator',
