@@ -767,8 +767,6 @@ function () {
     this.checkOutDate = external_window_ko_default.a.computed(function () {
       return formatDateString(_this.checkOut(), 'Y-m-d');
     });
-    this.checkInFormatted = external_window_ko_default.a.computed(this.checkInFormatted.bind(this));
-    this.checkOutFormatted = external_window_ko_default.a.computed(this.checkOutFormatted.bind(this));
   }
 
   old_createClass(SearchFormModel, [{
