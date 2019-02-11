@@ -1,3 +1,5 @@
+/* global window, Backbone, tippy */
+
 (function ($, flatpickr, moment) {
   'use strict'
 
@@ -40,7 +42,7 @@
     }
   })
 
-  const ScheduleCalendar = Backbone.View.extend({
+  window.ScheduleCalendar = Backbone.View.extend({
     options: {
       debug: false,
       marker: '.scheduler__marker',
@@ -54,6 +56,8 @@
     },
 
     initialize(options) {
+      this.isRTL = $('html').attr('dir') === 'rtl'
+
       this.options = _.defaults(options || {}, this.options)
       this.model = new Selection
 
@@ -100,7 +104,7 @@
     },
 
     onKeyup(e) {
-      if (e.keyCode == 27) {
+      if (e.keyCode === 27) {
         this.model.clearSelectedDate()
       }
     },
@@ -153,7 +157,7 @@
       }
 
       // Require 1 night for granularity by nightly.
-      if ('nightly' == this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
+      if ('nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
         return
       }
 
@@ -176,8 +180,16 @@
       )
 
       if (_.isNull(endDate)) {
-        const position = this.getCellPossiton($startDateEl)
-        this.$marker.show().css({ top: position.top, left: position.left })
+        const cellPosition = this.getCellPossiton($startDateEl)
+
+        let atts = { top: cellPosition.top, left: cellPosition.left }
+
+        if (this.isRTL) {
+          // atts.left = 'auto'
+          // atts.transform = `translateX(-${cellPosition.left}px)`
+        }
+
+        this.$marker.show().css(atts)
       } else {
         const $endDateEl = this.getElementByDate(this.model.get('calendar'), endDate)
         this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * COLUMN_WIDTH)
@@ -203,7 +215,7 @@
         const days = ($target.index() - $startDateEl.index() + 1)
 
         this.$marker.css('width', days * COLUMN_WIDTH)
-        this.$marker.find('span').text('daily' == this.options.granularity ? days : days - 1)
+        this.$marker.find('span').text('daily' === this.options.granularity ? days : days - 1)
       }
     },
 
@@ -298,7 +310,5 @@
       })
     }
   })
-
-  window.ScheduleCalendar = ScheduleCalendar
 
 })(jQuery, window.flatpickr, window.moment)

@@ -104,6 +104,8 @@ function _typeof(obj) {
 
   return _typeof(obj);
 }
+/* global window, Backbone, tippy */
+
 
 (function ($, flatpickr, moment) {
   'use strict';
@@ -142,7 +144,7 @@ function _typeof(obj) {
       return this.get('endDate').diff(this.get('startDate'), 'days');
     }
   });
-  var ScheduleCalendar = Backbone.View.extend({
+  window.ScheduleCalendar = Backbone.View.extend({
     options: {
       debug: false,
       marker: '.scheduler__marker',
@@ -155,6 +157,7 @@ function _typeof(obj) {
       'mouseenter .scheduler__body .scheduler__date': 'drawMarkerOnHover'
     },
     initialize: function initialize(options) {
+      this.isRTL = $('html').attr('dir') === 'rtl';
       this.options = _.defaults(options || {}, this.options);
       this.model = new Selection();
       var testColumnWith = this.$el.find('.scheduler__column').first().outerWidth();
@@ -196,7 +199,7 @@ function _typeof(obj) {
       }
     },
     onKeyup: function onKeyup(e) {
-      if (e.keyCode == 27) {
+      if (e.keyCode === 27) {
         this.model.clearSelectedDate();
       }
     },
@@ -242,7 +245,7 @@ function _typeof(obj) {
       } // Require 1 night for granularity by nightly.
 
 
-      if ('nightly' == this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
+      if ('nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
         return;
       }
 
@@ -262,11 +265,17 @@ function _typeof(obj) {
       var $startDateEl = this.getElementByDate(this.model.get('calendar'), startDate);
 
       if (_.isNull(endDate)) {
-        var position = this.getCellPossiton($startDateEl);
-        this.$marker.show().css({
-          top: position.top,
-          left: position.left
-        });
+        var cellPosition = this.getCellPossiton($startDateEl);
+        var atts = {
+          top: cellPosition.top,
+          left: cellPosition.left
+        };
+
+        if (this.isRTL) {// atts.left = 'auto'
+          // atts.transform = `translateX(-${cellPosition.left}px)`
+        }
+
+        this.$marker.show().css(atts);
       } else {
         var $endDateEl = this.getElementByDate(this.model.get('calendar'), endDate);
         this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * COLUMN_WIDTH);
@@ -287,7 +296,7 @@ function _typeof(obj) {
         var $startDateEl = this.getElementByDate(targetUnit, startDate);
         var days = $target.index() - $startDateEl.index() + 1;
         this.$marker.css('width', days * COLUMN_WIDTH);
-        this.$marker.find('span').text('daily' == this.options.granularity ? days : days - 1);
+        this.$marker.find('span').text('daily' === this.options.granularity ? days : days - 1);
       }
     },
     getElementByDate: function getElementByDate(calendar, date) {
@@ -380,7 +389,6 @@ function _typeof(obj) {
       });
     }
   });
-  window.ScheduleCalendar = ScheduleCalendar;
 })(jQuery, window.flatpickr, window.moment);
 
 /***/ }),
