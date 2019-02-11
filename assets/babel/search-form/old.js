@@ -10,7 +10,6 @@ class SearchFormModel {
     this.infants = ko.observable(data.infants || 0)
     this.checkIn = ko.observable(data.check_in || '')
     this.checkOut = ko.observable(data.check_out || '')
-
     this.checkInDate = ko.computed(() => formatDateString(this.checkIn(), 'Y-m-d'))
     this.checkOutDate = ko.computed(() => formatDateString(this.checkOut(), 'Y-m-d'))
   }
