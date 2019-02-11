@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.0
 Requires PHP:      5.6
-Stable tag:        3.2.3
+Stable tag:        3.2.6
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,11 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.6] - [2019-02-11]
+- Added: Calendar now pagination 15 room types per page to better performance.
+- Fixed: Guests count not work correctly since v3.2
+- Minor bug fixes
+
 ### [v3.2.5] - [2019-02-04]
 - Happy Lunar New Year!
 - Fixed: Failed to check reference when booking room in admin area.
