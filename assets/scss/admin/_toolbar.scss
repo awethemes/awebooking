@@ -22,3 +22,40 @@
     padding: 1.24em 1px;
   }
 }
+
+.abrs-page-links {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  ul > li {
+    margin: 0;
+  }
+
+  li > a,
+  li > span {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #444;
+    margin: 0;
+    border: none;
+    border-radius: 50%;
+    font-weight: 600;
+    text-align: center;
+    line-height: 28px;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  li > span,
+  li > a:hover {
+    background-color: #eaf7ff;
+  }
+}

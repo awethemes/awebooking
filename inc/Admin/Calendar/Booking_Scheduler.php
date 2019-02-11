@@ -12,18 +12,11 @@ use WPLibs\Http\Request;
 
 class Booking_Scheduler extends Abstract_Scheduler {
 	/**
-	 * Cache results of room types.
-	 *
-	 * @var \AweBooking\Support\Collection
-	 */
-	protected $room_types;
-
-	/**
 	 * Store the booking data matrix.
 	 *
 	 * @var array
 	 */
-	protected $booking_data;
+	protected $booking_data = [];
 
 	/**
 	 * The main HTML layout.
@@ -36,8 +29,7 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * {@inheritdoc}
 	 */
 	protected function create_scheduler() {
-		// Query the list of room type to display.
-		$this->room_types = $this->query_room_types();
+		$this->query_room_types();
 
 		// Get all rooms indexed by room type ID.
 		$all_rooms = $this->room_types
@@ -117,26 +109,6 @@ class Booking_Scheduler extends Abstract_Scheduler {
 		echo '<span class="awebooking-completed-color tippy" title="' . esc_html__( 'Paid', 'awebooking' ) . '"></span>';
 		echo '<span class="awebooking-checked-in-color tippy" title="' . esc_html__( 'Checked In', 'awebooking' ) . '"></span>';
 		echo '<span class="awebooking-checked-out-color tippy" title="' . esc_html__( 'Checked Out', 'awebooking' ) . '"></span>';
-	}
-
-	/**
-	 * Display the toolbars.
-	 *
-	 * @return void
-	 */
-	protected function display_toolbar() {
-		echo '<div class="scheduler-flexspace"></div>';
-		$this->template( 'toolbar/datepicker.php' );
-	}
-
-	/**
-	 * Display the main toolbars.
-	 *
-	 * @return void
-	 */
-	protected function display_main_toolbar() {
-		echo '<div class="abrs-spacer"></div>';
-		$this->template( 'main-toolbar/hotel-filter.php' );
 	}
 
 	/**
