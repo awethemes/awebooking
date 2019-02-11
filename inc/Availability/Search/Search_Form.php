@@ -21,11 +21,50 @@ abstract class Search_Form {
 	protected $http_request;
 
 	/**
+	 * Store current instance number.
+	 *
+	 * @var int
+	 */
+	protected $instance = 0;
+
+	/**
+	 * Store count instance number.
+	 *
+	 * @var int
+	 */
+	protected static $instances = 0;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->instance = ++static::$instances;
+	}
+
+	/**
 	 * Render search form HTML.
 	 *
 	 * @return string
 	 */
 	abstract public function render();
+
+	/**
+	 * Returns the instance number.
+	 *
+	 * @return int
+	 */
+	public function get_instance_number() {
+		return $this->instance;
+	}
+
+	/**
+	 * Reset the instance number for the testing purpose.
+	 *
+	 * @access private
+	 */
+	public static function reset_instance_number() {
+		static::$instances = 0;
+	}
 
 	/**
 	 * Get the search form parameter.
@@ -106,5 +145,15 @@ abstract class Search_Form {
 		}
 
 		throw new \BadMethodCallException( sprintf( 'Method %s::%s does not exist.', get_class( $this->request ), $name ) );
+	}
+
+	/**
+	 * Increment instance number when clone object.
+	 *
+	 * @return void
+	 */
+	public function __clone() {
+		$this->instance = ++static::$instances;
+		$this->request  = clone $this->request;
 	}
 }

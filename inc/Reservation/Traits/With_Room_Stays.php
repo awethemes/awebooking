@@ -2,13 +2,13 @@
 
 namespace AweBooking\Reservation\Traits;
 
-use AweBooking\Constants;
 use AweBooking\Availability\Request;
-use AweBooking\Reservation\Item;
-use AweBooking\Reservation\Exceptions\PastDateException;
-use AweBooking\Reservation\Exceptions\RoomRateException;
+use AweBooking\Constants;
 use AweBooking\Reservation\Exceptions\FullyBookedException;
 use AweBooking\Reservation\Exceptions\NotEnoughRoomsException;
+use AweBooking\Reservation\Exceptions\PastDateException;
+use AweBooking\Reservation\Exceptions\RoomRateException;
+use AweBooking\Reservation\Item;
 use Illuminate\Support\Arr;
 
 /**
@@ -317,7 +317,11 @@ trait With_Room_Stays {
 			}
 
 			// Re-check the availability of the rate.
-			$room_rate = abrs_retrieve_room_rate( $room_stay->get_options()->all() );
+			$res_request = abrs_create_res_request(
+				$args = $room_stay->get_options()->all()
+			);
+
+			$room_rate = abrs_retrieve_room_rate( $args + [ 'request' => $res_request ] );
 
 			try {
 				$this->check_room_rate( $room_rate, $room_stay->get_quantity() );

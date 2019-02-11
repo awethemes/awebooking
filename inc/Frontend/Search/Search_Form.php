@@ -34,6 +34,8 @@ class Search_Form extends Form {
 	 * @param array $atts
 	 */
 	public function __construct( $atts = [] ) {
+		parent::__construct();
+
 		$this->builder = new Html_Form;
 		$this->atts    = $atts;
 	}
@@ -62,7 +64,7 @@ class Search_Form extends Form {
 	 * @return string
 	 */
 	public function id( $name = null ) {
-		return 'awebooking_searchbox_' . $this->request->get_instance_number() . ( $name ? '_' . $name : '' );
+		return 'awebooking_searchbox_' . $this->get_instance_number() . ( $name ? '_' . $name : '' );
 	}
 
 	/**

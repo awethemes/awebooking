@@ -507,19 +507,24 @@ function abrs_retrieve_room_rate( $args ) {
  * @return \AweBooking\Availability\Request|\WP_Error|null
  */
 function abrs_create_res_request( $args, $wp_error = false ) {
+	$http_request = null;
+
 	if ( $args instanceof Http_Request ) {
+		$http_request = $args;
+
 		$args = $args->all();
+		$args['merge_http_request'] = true;
 	}
 
 	$args = wp_parse_args( $args, [
-		'strict'    => is_admin() ? false : true,
-		'hotel'     => 0,
-		'check_in'  => isset( $args['check-in'] ) ? $args['check-in'] : '',
-		'check_out' => isset( $args['check-out'] ) ? $args['check-out'] : '',
-		'adults'    => 1,
-		'children'  => 0,
-		'infants'   => 0,
-		'options'   => [],
+		'strict'             => is_admin() ? false : true,
+		'hotel'              => 0,
+		'check_in'           => isset( $args['check-in'] ) ? $args['check-in'] : '',
+		'check_out'          => isset( $args['check-out'] ) ? $args['check-out'] : '',
+		'adults'             => 1,
+		'children'           => 0,
+		'infants'            => 0,
+		'merge_http_request' => false,
 	] );
 
 	// Create the timespan.
@@ -531,6 +536,7 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 
 	// Create the guest counts.
 	$guest_counts = new Guest_Counts( $args['adults'] );
+
 	if ( $args['children'] > 0 && abrs_children_bookable() ) {
 		$guest_counts->set_children( $args['children'] );
 	}
@@ -539,10 +545,16 @@ function abrs_create_res_request( $args, $wp_error = false ) {
 		$guest_counts->set_infants( $args['infants'] );
 	}
 
-	$http_request = abrs_http_request();
+	// Resolve http request.
+	$http_request = $http_request ?: abrs_http_request();
 
-	$res_request = ( new Request( $timespan, $guest_counts, $http_request ) )
-		->set_hotel( abrs_get_hotel( (int) $args['hotel'] ) );
+	$res_request = new Request(
+		$timespan, $guest_counts, $http_request, $args['merge_http_request']
+	);
+
+	if ( $hotel = abrs_get_hotel( $args['hotel'] ) ) {
+		$res_request->set_hotel( $hotel );
+	}
 
 	return apply_filters( 'abrs_reservation_request', $res_request );
 }
