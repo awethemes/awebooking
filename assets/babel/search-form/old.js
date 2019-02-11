@@ -11,24 +11,11 @@ class SearchFormModel {
     this.checkIn = ko.observable(data.check_in || '')
     this.checkOut = ko.observable(data.check_out || '')
 
-    this.checkInDate = ko.computed(() => {
-      return formatDateString(this.checkIn(), 'Y-m-d')
-    })
+    this.checkInDate = ko.computed(() => formatDateString(this.checkIn(), 'Y-m-d'))
+    this.checkOutDate = ko.computed(() => formatDateString(this.checkOut(), 'Y-m-d'))
 
-    this.checkOutDate = ko.computed(() => {
-      return formatDateString(this.checkOut(), 'Y-m-d')
-    })
-
-    this.checkInFormatted = ko.computed(this.checkInFormatted.bind(this))
-    this.checkOutFormatted = ko.computed(this.checkOutFormatted.bind(this))
-  }
-
-  checkInFormatted(format) {
-    return formatDateString(this.checkIn(), format)
-  }
-
-  checkOutFormatted(format) {
-    return formatDateString(this.checkOut(), format)
+    this.checkInFormatted = ko.computed(format => formatDateString(this.checkIn(), format))
+    this.checkOutFormatted = ko.computed(format => formatDateString(this.checkOut(), format))
   }
 }
 

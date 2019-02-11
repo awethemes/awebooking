@@ -721,12 +721,6 @@ var external_window_ko_ = __webpack_require__("nGjC");
 var external_window_ko_default = /*#__PURE__*/__webpack_require__.n(external_window_ko_);
 
 // CONCATENATED MODULE: ./assets/babel/search-form/old.js
-function old_classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
 function old_defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -743,48 +737,40 @@ function old_createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-
-
-
-
-var old_SearchFormModel =
-/*#__PURE__*/
-function () {
-  function SearchFormModel(data) {
-    var _this = this;
-
-    old_classCallCheck(this, SearchFormModel);
-
-    this.hotel = external_window_ko_default.a.observable(data.adults || 0);
-    this.adults = external_window_ko_default.a.observable(data.adults || 1);
-    this.children = external_window_ko_default.a.observable(data.children || 0);
-    this.infants = external_window_ko_default.a.observable(data.infants || 0);
-    this.checkIn = external_window_ko_default.a.observable(data.check_in || '');
-    this.checkOut = external_window_ko_default.a.observable(data.check_out || '');
-    this.checkInDate = external_window_ko_default.a.computed(function () {
-      return formatDateString(_this.checkIn(), 'Y-m-d');
-    });
-    this.checkOutDate = external_window_ko_default.a.computed(function () {
-      return formatDateString(_this.checkOut(), 'Y-m-d');
-    });
-    this.checkInFormatted = external_window_ko_default.a.computed(this.checkInFormatted.bind(this));
-    this.checkOutFormatted = external_window_ko_default.a.computed(this.checkOutFormatted.bind(this));
+function old_classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
   }
+}
 
-  old_createClass(SearchFormModel, [{
-    key: "checkInFormatted",
-    value: function checkInFormatted(format) {
-      return formatDateString(this.checkIn(), format);
-    }
-  }, {
-    key: "checkOutFormatted",
-    value: function checkOutFormatted(format) {
-      return formatDateString(this.checkOut(), format);
-    }
-  }]);
 
-  return SearchFormModel;
-}();
+
+
+
+var old_SearchFormModel = function SearchFormModel(data) {
+  var _this = this;
+
+  old_classCallCheck(this, SearchFormModel);
+
+  this.hotel = external_window_ko_default.a.observable(data.adults || 0);
+  this.adults = external_window_ko_default.a.observable(data.adults || 1);
+  this.children = external_window_ko_default.a.observable(data.children || 0);
+  this.infants = external_window_ko_default.a.observable(data.infants || 0);
+  this.checkIn = external_window_ko_default.a.observable(data.check_in || '');
+  this.checkOut = external_window_ko_default.a.observable(data.check_out || '');
+  this.checkInDate = external_window_ko_default.a.computed(function () {
+    return formatDateString(_this.checkIn(), 'Y-m-d');
+  });
+  this.checkOutDate = external_window_ko_default.a.computed(function () {
+    return formatDateString(_this.checkOut(), 'Y-m-d');
+  });
+  this.checkInFormatted = external_window_ko_default.a.computed(function (format) {
+    return formatDateString(_this.checkIn(), format);
+  });
+  this.checkOutFormatted = external_window_ko_default.a.computed(function (format) {
+    return formatDateString(_this.checkOut(), format);
+  });
+};
 
 var old_OldSearchForm =
 /*#__PURE__*/
