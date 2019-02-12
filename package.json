@@ -69,6 +69,7 @@
     "js-cookie": "^2.2.0",
     "knockout": "^3.4.2",
     "moment": "^2.24.0",
+    "prop-types": "^15.6.2",
     "query-string": "5.1.*",
     "react": "^16.7.0",
     "react-dates": "^18.4.1",
@@ -95,6 +96,7 @@
     "icon.font": "^1.1.1",
     "laravel-mix": "^4.0.14",
     "node-wp-i18n": "^1.2.2",
+    "react-moment-proptypes": "^1.6.0",
     "sass": "^1.16.1",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.22"

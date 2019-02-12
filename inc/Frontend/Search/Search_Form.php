@@ -19,6 +19,7 @@ class Search_Form extends Form {
 	 * @var array
 	 */
 	protected $atts = [
+		'template'        => '',
 		'layout'          => '', // Default vertical layout.
 		'alignment'       => '',
 		'hotel_location'  => true,
@@ -33,6 +34,8 @@ class Search_Form extends Form {
 	 * @param array $atts
 	 */
 	public function __construct( $atts = [] ) {
+		parent::__construct();
+
 		$this->builder = new Html_Form;
 		$this->atts    = $atts;
 	}
@@ -47,7 +50,11 @@ class Search_Form extends Form {
 			$this->builder->set_request( $this->http_request );
 		}
 
-		return abrs_get_template_content( 'search-form.php', $this->get_template_data() );
+		$template = $this->atts['template']
+			? "search-form-{$this->atts['template']}.php"
+			: 'search-form.php';
+
+		return abrs_get_template_content( $template, $this->get_template_data() );
 	}
 
 	/**
@@ -57,7 +64,7 @@ class Search_Form extends Form {
 	 * @return string
 	 */
 	public function id( $name = null ) {
-		return 'awebooking_searchbox_' . $this->request->get_instance_number() . ( $name ? '_' . $name : '' );
+		return 'awebooking_searchbox_' . $this->get_instance_number() . ( $name ? '_' . $name : '' );
 	}
 
 	/**
@@ -75,9 +82,14 @@ class Search_Form extends Form {
 	 * @return void
 	 */
 	public function components() {
-		foreach ( [ 'hotel', 'dates', 'occupancy', 'button' ] as $component ) {
-			$this->component( $component );
+		if ( $this->atts['hotel_location'] && 'false' !== $this->atts['hotel_location'] ) {
+			$this->component( 'hotel' );
 		}
+
+		$this->component( 'dates' );
+		$this->component( 'occupancy' );
+
+		$this->component( 'button' );
 	}
 
 	/**
@@ -170,16 +182,16 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_in' );
 
 		$this->input( 'hidden', 'check_in', $attributes + [
-				'value' => $value,
-			] );
+			'value' => $value,
+		] );
 
 		$this->input( 'text', 'check_in_alt', $alt_attributes + [
-				'name'          => false, // Remove "name" attribute.
-				'value'         => $value ? abrs_format_date( $value ) : '',
-				'placeholder'   => abrs_get_date_format(),
-				'autocomplete'  => 'off',
-				'aria-haspopup' => 'true',
-			] );
+			'name'          => false, // Remove "name" attribute.
+			'value'         => $value ? abrs_format_date( $value ) : '',
+			'placeholder'   => abrs_get_date_format(),
+			'autocomplete'  => 'off',
+			'aria-haspopup' => 'true',
+		] );
 	}
 
 	/**
@@ -192,8 +204,8 @@ class Search_Form extends Form {
 		$value = $this->parameter( 'check_out' );
 
 		$this->input( 'hidden', 'check_out', $attributes + [
-				'value' => $value,
-			] );
+			'value' => $value,
+		] );
 
 		$this->input( 'text', 'check_out_alt', array_merge( $alt_attributes, [
 			'name'          => false, // Remove "name" attribute.

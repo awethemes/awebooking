@@ -22,6 +22,13 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	protected $http_request;
 
 	/**
+	 * Consider merge Http_Request variables while auto fill.
+	 *
+	 * @var bool
+	 */
+	protected $merge_http_request = false;
+
+	/**
 	 * The form field parameters.
 	 *
 	 * @var \Symfony\Component\HttpFoundation\ParameterBag
@@ -57,27 +64,13 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	protected $hash;
 
 	/**
-	 * Store current instance number.
-	 *
-	 * @var int
-	 */
-	protected $instance = 0;
-
-	/**
-	 * Store count instance number.
-	 *
-	 * @var int
-	 */
-	protected static $instances = 0;
-
-	/**
 	 * Create new instance from Http request.
 	 *
 	 * @param Http_Request $request
 	 * @return static
 	 */
 	public static function create_from_request( Http_Request $request ) {
-		return new static( null, null, $request );
+		return new static( null, null, $request, true );
 	}
 
 	/**
@@ -86,16 +79,19 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @param Timespan|null     $timespan
 	 * @param Guest_Counts|null $guest_counts
 	 * @param Http_Request|null $http_request
+	 * @param bool              $merge_http_request
 	 */
 	public function __construct(
 		Timespan $timespan = null,
 		Guest_Counts $guest_counts = null,
-		Http_Request $http_request = null
+		Http_Request $http_request = null,
+		$merge_http_request = false
 	) {
-		$this->instance = ++static::$instances;
+		$this->parameters = new ParameterBag;
+		$this->errors     = new WP_Error;
 
-		$this->errors       = new WP_Error;
-		$this->http_request = $http_request;
+		$this->http_request       = $http_request;
+		$this->merge_http_request = $merge_http_request;
 
 		$this->initialize( compact( 'timespan', 'guest_counts' ) );
 	}
@@ -107,20 +103,18 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return $this
 	 */
 	public function initialize( array $parameters = [] ) {
-		$this->parameters = new ParameterBag;
-
 		// Sets default parameters.
 		foreach ( $this->get_default_parameters() as $key => $value ) {
 			$this->parameters->set( $key, $value );
 		}
 
-		// TODO: Consider to remove in next version.
+		// TODO: Consider to remove in next major version.
 		if ( isset( $parameters['timespan'] ) || isset( $parameters['guest_counts'] ) ) {
 			$this->initialize_from_objects( $parameters );
 		}
 
 		// Initialize the parameters.
-		if ( $this->http_request ) {
+		if ( $this->merge_http_request && $this->http_request ) {
 			$parameters += $this->http_request->only( $this->parameters->keys() );
 		}
 
@@ -413,6 +407,17 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Returns the timespan instance.
+	 *
+	 * @return \AweBooking\Model\Common\Timespan
+	 */
+	public function get_timespan() {
+		return new Timespan(
+			$this->get_parameter( 'check_in' ), $this->get_parameter( 'check_out' )
+		);
+	}
+
+	/**
 	 * Return the number of adults.
 	 *
 	 * @return int
@@ -453,6 +458,10 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return $this
 	 */
 	public function set_children( $children ) {
+		if ( ! abrs_children_bookable() ) {
+			return $this;
+		}
+
 		if ( is_numeric( $children ) && $children > 0 ) {
 			$this->set_parameter( 'children', min( $children, (int) abrs_get_option( 'search_form_max_children', 6 ) ) );
 		}
@@ -476,11 +485,24 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return $this
 	 */
 	public function set_infants( $infants ) {
+		if ( ! abrs_infants_bookable() ) {
+			return $this;
+		}
+
 		if ( is_numeric( $infants ) && $infants > 0 ) {
 			$this->set_parameter( 'infants', min( $infants, (int) abrs_get_option( 'search_form_max_infants', 6 ) ) );
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Gets the Guest_Counts.
+	 *
+	 * @return \AweBooking\Model\Common\Guest_Counts
+	 */
+	public function get_guest_counts() {
+		return new Guest_Counts( $this->get_adults(), $this->get_children(), $this->get_infants() );
 	}
 
 	/**
@@ -600,24 +622,6 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
-	 * Returns the instance number.
-	 *
-	 * @return int
-	 */
-	public function get_instance_number() {
-		return $this->instance;
-	}
-
-	/**
-	 * Reset the instance number for the testing purpose.
-	 *
-	 * @access private
-	 */
-	public static function reset_instance_number() {
-		static::$instances = 0;
-	}
-
-	/**
 	 * Returns the errors instance.
 	 *
 	 * @return \WP_Error
@@ -711,7 +715,6 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return void
 	 */
 	public function __clone() {
-		$this->instance   = ++static::$instances;
 		$this->parameters = clone $this->parameters;
 		$this->errors     = clone $this->errors;
 	}

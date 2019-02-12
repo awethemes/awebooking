@@ -60,7 +60,7 @@ class Room_Type extends Model {
 
 		if ( is_null( $this->rates ) ) {
 			$this->rates = abrs_query_rates( $this )
-				->prepend( abrs_get_base_rate( $this ) );
+				->push( abrs_get_base_rate( $this ) );
 		}
 
 		return $this->rates;

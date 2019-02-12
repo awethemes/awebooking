@@ -7,17 +7,10 @@ use AweBooking\Model\Pricing\Standard_Rate_Interval;
 
 class Pricing_Scheduler extends Abstract_Scheduler {
 	/**
-	 * Cache results of room types.
-	 *
-	 * @var string
-	 */
-	protected $room_types;
-
-	/**
 	 * {@inheritdoc}
 	 */
 	protected function create_scheduler() {
-		$this->room_types = $this->query_room_types();
+		$this->query_room_types();
 
 		// Pluck the base rate in each room-type.
 		$rates = $this->room_types
@@ -42,26 +35,6 @@ class Pricing_Scheduler extends Abstract_Scheduler {
 		echo '<span class="tippy" title="' . esc_html__( 'Not Modified', 'awebooking' ) . '"></span>';
 		echo '<span class="tippy" style="background: #1565c0;" title="' . esc_html__( 'Modified Higher', 'awebooking' ) . '"></span>';
 		echo '<span class="tippy" style="background: #d40e00;" title="' . esc_html__( 'Modified Lower', 'awebooking' ) . '"></span>';
-	}
-
-	/**
-	 * Display the toolbars.
-	 *
-	 * @return void
-	 */
-	protected function display_toolbar() {
-		echo '<div class="scheduler-flexspace"></div>';
-		$this->template( 'toolbar/datepicker.php' );
-	}
-
-	/**
-	 * Display the main toolbars.
-	 *
-	 * @return void
-	 */
-	protected function display_main_toolbar() {
-		echo '<div class="abrs-spacer"></div>';
-		$this->template( 'main-toolbar/hotel-filter.php' );
 	}
 
 	/**

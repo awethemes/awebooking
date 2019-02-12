@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/* @var $res_request \AweBooking\Availability\Request|mixed */
 $res_request = abrs_optional( $room_stay->data() )
 	->get_request();
 

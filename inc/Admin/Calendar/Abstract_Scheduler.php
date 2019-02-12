@@ -22,6 +22,24 @@ abstract class Abstract_Scheduler {
 	protected $request;
 
 	/**
+	 * Cache results of room types.
+	 *
+	 * @var \AweBooking\Support\Collection|Room_Type[]
+	 */
+	protected $room_types;
+
+	/**
+	 * //
+	 *
+	 * @var array
+	 */
+	protected $pagination_args = [
+		'per_page'    => 15,
+		'total_items' => 0,
+		'total_pages' => 0,
+	];
+
+	/**
 	 * The datepoint to begin the scheduler.
 	 *
 	 * @var string
@@ -93,7 +111,7 @@ abstract class Abstract_Scheduler {
 
 		// Create the period.
 		$this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
-			->moveStartDate( '-2 days' );
+		                               ->moveStartDate( '-2 days' );
 
 		// Create the scheduler.
 		$this->scheduler = $this->create_scheduler();
@@ -115,6 +133,7 @@ abstract class Abstract_Scheduler {
 
 		if ( abrs_blank( $this->scheduler ) ) {
 			$this->template( 'empty.php' );
+
 			return;
 		}
 
@@ -168,7 +187,7 @@ abstract class Abstract_Scheduler {
 	 * Perform display a private method.
 	 *
 	 * @param  string $method  The call method.
-	 * @param  mixed  ...$args    Call method args.
+	 * @param  mixed  ...$args Call method args.
 	 * @return void
 	 */
 	public function call( $method, ...$args ) {
@@ -205,6 +224,27 @@ abstract class Abstract_Scheduler {
 	 * @return \AweBooking\Calendar\Scheduler
 	 */
 	abstract protected function create_scheduler();
+
+	/**
+	 * Display the toolbars.
+	 *
+	 * @return void
+	 */
+	protected function display_toolbar() {
+		echo '<div class="scheduler-flexspace"></div>';
+		$this->template( 'toolbar/datepicker.php' );
+		$this->template( 'toolbar/pagination.php' );
+	}
+
+	/**
+	 * Display the main toolbars.
+	 *
+	 * @return void
+	 */
+	protected function display_main_toolbar() {
+		echo '<div class="abrs-spacer"></div>';
+		$this->template( 'main-toolbar/hotel-filter.php' );
+	}
 
 	/**
 	 * Setup the scheduler.
@@ -279,9 +319,13 @@ abstract class Abstract_Scheduler {
 	 * Perform query room_types.
 	 *
 	 * @param  array $query The query.
-	 * @return \AweBooking\Support\Collection
+	 * @return void
 	 */
 	protected function query_room_types( $query = [] ) {
+		if ( $this->request->filled( 'paged' ) ) {
+			$query['paged'] = max( 1, (int) $this->request->get( 'paged' ) );
+		}
+
 		if ( $this->request->filled( 'only' ) ) {
 			$query['post__in'] = wp_parse_id_list( $this->request->get( 'only' ) );
 		}
@@ -298,21 +342,31 @@ abstract class Abstract_Scheduler {
 		$wp_query_args = apply_filters( 'abrs_scheduler_query_room_types', wp_parse_args( $query, [
 			'post_type'      => Constants::ROOM_TYPE,
 			'post_status'    => 'publish',
-			'no_found_rows'  => true,
-			'posts_per_page' => 250,
-		]), $this );
+			'no_found_rows'  => false,
+			'posts_per_page' => $this->pagination_args['per_page'] ?: 15,
+		] ), $this );
 
 		// Create the WP_Query room types.
-		$room_types = ( new WP_Query( $wp_query_args ) )->posts;
+		$query_results = new WP_Query( $wp_query_args );
+
+		$room_types = $query_results->posts;
 
 		// Prime caches to reduce future queries.
 		abrs_prime_room_caches( wp_list_pluck( $room_types, 'ID' ) );
 
-		return abrs_collect( $room_types )
+		$this->room_types = abrs_collect( $room_types )
 			->map_into( Room_Type::class )
 			->reject( function ( Room_Type $r ) {
 				return count( $r->get_rooms() ) === 0;
-			})->values();
+			} )->values();
+
+		$this->pagination_args['total_items'] = $query_results->max_num_pages;
+
+		if ( ! $this->pagination_args['total_pages'] && $this->pagination_args['per_page'] > 0 ) {
+			$this->pagination_args['total_pages'] = ceil( $this->pagination_args['total_items'] / $this->pagination_args['per_page'] );
+		}
+
+		return $this->room_types;
 	}
 
 	/**

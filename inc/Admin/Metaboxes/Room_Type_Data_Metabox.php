@@ -105,6 +105,10 @@ class Room_Type_Data_Metabox extends Metabox {
 		// Fill data values.
 		$room_type->fill( $values );
 
+		if ( empty( $values['rate_services'] ) ) {
+			$room_type['rate_services'] = [];
+		}
+
 		// Fire action before save.
 		do_action( 'abrs_process_room_type_data', $room_type, $values, $request );
 
