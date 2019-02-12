@@ -71,16 +71,14 @@ class Query {
 	 * @return \AweBooking\Support\Collection
 	 */
 	public function query_rooms() {
-		$guestcounts = $this->request->get_guest_counts();
-
 		$wp_query_args = [
 			'post_type'        => Constants::ROOM_TYPE,
 			'post_status'      => 'publish',
 			'no_found_rows'    => true,
 			'posts_per_page'   => 250, // Limit 250 items.
-			'booking_adults'   => $guestcounts->get_adults()->get_count(),
-			'booking_children' => $guestcounts->has( 'children' ) ? $guestcounts->get_children()->get_count() : -1,
-			'booking_infants'  => $guestcounts->has( 'infants' ) ? $guestcounts->get_infants()->get_count() : -1,
+			'booking_adults'   => $this->request->get_adults(),
+			'booking_children' => $this->request->get_children() ?: -1,
+			'booking_infants'  => $this->request->get_infants() ?: -1,
 			'meta_query'       => [],
 		];
 

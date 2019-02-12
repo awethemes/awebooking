@@ -423,7 +423,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return int
 	 */
 	public function get_adults() {
-		return $this->get_parameter( 'adults' );
+		return (int) $this->get_parameter( 'adults' ) ?: 1;
 	}
 
 	/**
@@ -448,7 +448,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return int
 	 */
 	public function get_children() {
-		return $this->get_parameter( 'children' );
+		return (int) $this->get_parameter( 'children' ) ?: 0;
 	}
 
 	/**
@@ -475,7 +475,7 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	 * @return int
 	 */
 	public function get_infants() {
-		return $this->get_parameter( 'infants' );
+		return (int) $this->get_parameter( 'infants' ) ?: 0;
 	}
 
 	/**
