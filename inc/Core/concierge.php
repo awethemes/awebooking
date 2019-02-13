@@ -12,11 +12,12 @@ use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Availability\Request;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Availability\Constraints\Night_Stay_Constraint;
+use AweBooking\Availability\Constraints\Rate_Constraint;
+use AweBooking\Availability\Constraints\Checkin_Days_Constraint;
+use AweBooking\Availability\Constraints\Period_Bookable_Constraint;
 use WPLibs\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
-use AweBooking\Availability\Constraints\Checkin_Days_Constraint;
-use AweBooking\Availability\Constraints\Period_Bookable_Constraint;
 
 /**
  * Returns list of states represent for blocked.
@@ -408,24 +409,13 @@ function abrs_filter_rate_intervals( $rates, Timespan $timespan, $constraints = 
  * @return void
  */
 function _abrs_filter_rates_callback( $resource, $response ) {
-	$effective_date = $resource->get_reference()->get_effective_date();
-	$expires_date   = $resource->get_reference()->get_expires_date();
+	$rack_rate = $resource->get_reference()->get_rack_rate();
 
-	$today = abrs_date_time( 'today' );
-
-	if ( $effective_date && $today < abrs_date_time( $effective_date ) ) {
-		$response->add_miss( $resource, 'rate_effective_date' );
-
-		return;
+	if ( $rack_rate && $rack_rate > 0 ) {
+		$response->add_match( $resource, 'rate_valid' );
+	} else {
+		$response->add_miss( $resource, 'rate_invalid' );
 	}
-
-	if ( $expires_date && $today > abrs_date_time( $expires_date ) ) {
-		$response->add_miss( $resource, 'rate_expired_date' );
-
-		return;
-	}
-
-	$response->add_match( $resource, 'rate_valid_dates' );
 }
 
 /**
@@ -436,10 +426,13 @@ function _abrs_filter_rates_callback( $resource, $response ) {
  * @return array
  */
 function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan ) {
+	$constraints = [];
+
 	// Get rate restrictions.
 	$restrictions = $rate->get_restrictions();
 
-	$constraints = [];
+	$constraints[] = new Rate_Constraint( $timespan );
+
 	if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
 		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
