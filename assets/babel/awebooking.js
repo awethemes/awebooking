@@ -47,23 +47,34 @@ plugin.route = function (route) {
 plugin.datepicker = function (instance, options) {
   const i18n = plugin.i18n
   const defaults = plugin.config.datepicker
-  const disable = Array.isArray(defaults.disable) ? defaults.disable : []
 
-  if (Array.isArray(defaults.disableDays)) {
+  let { disableDays, disableDates } = defaults
+  const disable = disableDates.split(/,\s?/)
+
+  if (Array.isArray(disableDays) && disableDays.length > 0) {
     disable.push(function (date) {
-      return defaults.disableDays.indexOf(date.getDay()) !== -1
+      return disableDays.includes(date.getDay())
     })
   }
 
-  // const minDate = new Date().fp_incr(defaults.min_date);
-  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+  // Min & Max date range.
+  let minDate = 'today'
+  let maxDate = null
+
+  if (Date.prototype.fp_incr && defaults.minDate > 0) {
+    minDate = (new Date).fp_incr(defaults.minDate || 0)
+  }
+
+  if (Date.prototype.fp_incr && defaults.maxDate !== 0) {
+    maxDate = (new Date).fp_incr(defaults.maxDate)
+  }
 
   const _defaults = {
     dateFormat: 'Y-m-d',
     ariaDateFormat: i18n.dateFormat,
-    minDate: 'today',
-    // maxDate: max_date,
-    // disable: disable,
+    minDate: minDate,
+    maxDate: maxDate,
+    disable: disable,
     showMonths: defaults.showMonths || 1,
     enableTime: false,
     enableSeconds: false,

@@ -75,7 +75,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_localize_script( 'awebooking', '_awebooking', [
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
 			'route'      => abrs_route( '/' ),
-			'datepicker' => [
+			'datepicker' => apply_filters( 'abrs_datepicker_localize_js', [
 				'minNights'    => abrs_get_option( 'display_datepicker_minnights', 1 ),
 				'maxNights'    => abrs_get_option( 'display_datepicker_maxnights', 0 ),
 				'minDate'      => abrs_get_option( 'display_datepicker_mindate', 0 ),
@@ -83,7 +83,7 @@ class Scripts_Service_Provider extends Service_Provider {
 				'disableDates' => abrs_get_option( 'display_datepicker_disabledates', '' ),
 				'disableDays'  => abrs_get_option( 'display_datepicker_disabledays', [] ),
 				'showMonths'   => abrs_get_option( 'display_datepicker_showmonths', 1 ),
-			],
+			] ),
 		]);
 
 		switch ( true ) {
