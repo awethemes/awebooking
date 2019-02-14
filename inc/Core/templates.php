@@ -27,8 +27,6 @@ function abrs_search_form_default_atts() {
  * @return string
  */
 function abrs_get_search_form( $atts = [], $echo = true ) {
-	static $instance = 1;
-
 	$abrs_query = isset( $GLOBALS['abrs_query'] ) ? $GLOBALS['abrs_query'] : null;
 
 	// Pairs the input atts.
@@ -59,6 +57,8 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
 		$res_request = null;
 	}
+
+	do_action( 'abrs_preapre_search_form_request', $res_request );
 
 	$search_form = new Search_Form( $atts );
 

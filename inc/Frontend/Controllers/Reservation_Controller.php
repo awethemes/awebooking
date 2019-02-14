@@ -54,6 +54,14 @@ class Reservation_Controller {
 			return $this->redirector->back();
 		}
 
+		$errors = $res_request->validate();
+
+		if ( is_wp_error( $errors ) ) {
+			abrs_add_notice( $errors->get_error_message(), 'error' );
+
+			return $this->redirector->back();
+		}
+
 		// Create the availability url.
 		$availability_url = ( new Url_Generator( $res_request ) )
 			->get_availability_url();
