@@ -1413,22 +1413,34 @@ awebooking_plugin.route = function (route) {
 awebooking_plugin.datepicker = function (instance, options) {
   var i18n = awebooking_plugin.i18n;
   var defaults = awebooking_plugin.config.datepicker;
-  var disable = Array.isArray(defaults.disable) ? defaults.disable : [];
+  var disableDays = defaults.disableDays,
+      disableDates = defaults.disableDates;
+  var disable = disableDates.split(/,\s?/);
 
-  if (Array.isArray(defaults.disableDays)) {
+  if (Array.isArray(disableDays) && disableDays.length > 0) {
     disable.push(function (date) {
-      return defaults.disableDays.indexOf(date.getDay()) !== -1;
+      return disableDays.includes(date.getDay());
     });
-  } // const minDate = new Date().fp_incr(defaults.min_date);
-  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+  } // Min & Max date range.
 
+
+  var minDate = 'today';
+  var maxDate = null;
+
+  if (Date.prototype.fp_incr && defaults.minDate > 0) {
+    minDate = new Date().fp_incr(defaults.minDate || 0);
+  }
+
+  if (Date.prototype.fp_incr && defaults.maxDate !== 0) {
+    maxDate = new Date().fp_incr(defaults.maxDate);
+  }
 
   var _defaults = {
     dateFormat: 'Y-m-d',
     ariaDateFormat: i18n.dateFormat,
-    minDate: 'today',
-    // maxDate: max_date,
-    // disable: disable,
+    minDate: minDate,
+    maxDate: maxDate,
+    disable: disable,
     showMonths: defaults.showMonths || 1,
     enableTime: false,
     enableSeconds: false,
