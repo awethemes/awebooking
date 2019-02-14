@@ -36,8 +36,9 @@ class Search_Form extends Form {
 	public function __construct( $atts = [] ) {
 		parent::__construct();
 
+		$this->atts = $atts;
+
 		$this->builder = new Html_Form;
-		$this->atts    = $atts;
 	}
 
 	/**
