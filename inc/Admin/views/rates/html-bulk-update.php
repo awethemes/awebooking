@@ -3,16 +3,20 @@
  * Partial html to display bulk adjust price form.
  *
  * @package AweBooking
+ *
+ * @var $scheduler \AweBooking\Admin\Calendar\Pricing_Scheduler
  */
-
-/* @vars $scheduler */
 
 // Create the form builder.
 $controls = abrs_create_form( 'bulk-adjust-price' );
 
-$all_rates = $scheduler->scheduler->mapWithKeys( function ( $calendar ) {
-	return [ $calendar->get_uid() => $calendar->get_name() ];
-})->all();
+if ( $scheduler->is_nested() ) {
+	$all_rates = [];
+} else {
+	$all_rates = $scheduler->scheduler->mapWithKeys( function ( $calendar ) {
+		return [ $calendar->get_uid() => $calendar->get_name() ];
+	} )->all();
+}
 
 ?>
 
@@ -25,15 +29,41 @@ $all_rates = $scheduler->scheduler->mapWithKeys( function ( $calendar ) {
 
 				<div class="abrow abrs-pb1">
 					<div class="abcol-4 abcol-sm-12">
-						<?php
-						$controls->show_field([
-							'id'                => 'bulk_rates',
-							'type'              => 'multicheck',
-							'name'              => esc_html__( 'Select Rates', 'awebooking' ),
-							'options'           => $all_rates,
-							'select_all_button' => false,
-						]);
-						?>
+
+						<?php if ( $scheduler->is_nested() ) : ?>
+							<div class="cmb-row">
+								<div class="cmb-td">
+									<label for="bulk_rates"><?php esc_html_e( 'Select Rates', 'awebooking' ); ?> </label>
+
+									<ul class="list-bulk-rooms">
+										<?php foreach ( $scheduler->scheduler as $scheduler ) : ?>
+											<li>
+												<strong><?php echo esc_html( $scheduler->get_name() ); ?></strong>
+
+												<ul>
+													<?php foreach ( $scheduler as $calendar ) : ?>
+														<li>
+															<input type="checkbox" class="cmb2-option" name="bulk_rates[]" id="bulk_rates<?php echo esc_attr( $calendar->get_uid() ); ?>" value="<?php echo esc_attr( $calendar->get_uid() ); ?>">
+															<label for="bulk_rates<?php echo esc_attr( $calendar->get_uid() ); ?>"><?php echo esc_html( $calendar->get_name() ); ?></label>
+														</li>
+													<?php endforeach ?>
+												</ul>
+											</li>
+										<?php endforeach ?>
+									</ul>
+								</div>
+							</div>
+						<?php else : ?>
+							<?php
+							$controls->show_field( [
+								'id'                => 'bulk_rates',
+								'type'              => 'multicheck',
+								'name'              => esc_html__( 'Select Rates', 'awebooking' ),
+								'options'           => $all_rates,
+								'select_all_button' => false,
+							] );
+							?>
+						<?php endif; ?>
 					</div>
 
 					<div class="abcol-8 abcol-sm-12">

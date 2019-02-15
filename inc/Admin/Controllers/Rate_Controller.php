@@ -51,7 +51,7 @@ class Rate_Controller extends Controller {
 		$updated = abrs_apply_rate( absint( $request->rate ), $timespan, abrs_sanitize_decimal( $request->amount ), $request->operator, [
 			'granularity' => Constants::GL_DAILY,
 			'only_days'   => $request->get( 'days' ),
-		]);
+		] );
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 			abrs_flash_notices( esc_html__( 'Update price successfully', 'awebooking' ), 'success' )->dialog();
@@ -89,7 +89,7 @@ class Rate_Controller extends Controller {
 			$updated = abrs_apply_rate( $rate, $timespan, $amount, $request->get( 'bulk_operator' ), [
 				'granularity' => Constants::GL_DAILY,
 				'only_days'   => $request->get( 'bulk_days' ),
-			]);
+			] );
 
 			if ( $updated && ! is_wp_error( $updated ) ) {
 				$bulk_counts++;
