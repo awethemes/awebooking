@@ -263,6 +263,7 @@ class Room_Rate {
 			);
 		}
 
+		$breakdown->set_label( esc_html__( 'Room Only', 'awebooking' ) );
 		$this->breakdown = $breakdown;
 
 		$this->calculate_costs();
@@ -376,6 +377,10 @@ class Room_Rate {
 		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
 		if ( is_wp_error( $breakdown ) ) {
 			throw new \RuntimeException( $breakdown->get_error_message() );
+		}
+
+		if ( ! $breakdown->get_label() ) {
+			$breakdown->set_label( $reason );
 		}
 
 		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
