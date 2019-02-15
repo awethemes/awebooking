@@ -8653,6 +8653,7 @@ var defaultProps = {
   maximumDateRange: 0,
   disablePastDates: true,
   disableFutureDates: false,
+  isRTL: false,
   withFullScreenPortal: false,
   displayFormat: 'DD MM YY',
   // calendar presentation and interaction related props
@@ -9047,7 +9048,8 @@ function (_React$Component) {
           minimumNights = _this$props6.minimumNights,
           keepOpenOnDateSelect = _this$props6.keepOpenOnDateSelect,
           isDayBlocked = _this$props6.isDayBlocked,
-          isDayHighlighted = _this$props6.isDayHighlighted;
+          isDayHighlighted = _this$props6.isDayHighlighted,
+          isRTL = _this$props6.isRTL;
       var modifiers = {
         preventOverflow: {
           enabled: false
@@ -9083,6 +9085,7 @@ function (_React$Component) {
           ref: arrowProps.ref,
           style: arrowProps.style
         }), external_React_default.a.createElement(react_dates["DayPickerRangeController"], {
+          isRTL: isRTL,
           endDate: endDate,
           startDate: startDate,
           focusedInput: focusedInput,

@@ -644,6 +644,7 @@ function () {
       };
 
       window.createReactDatePicker(this, {
+        isRTL: 'rtl' === external_jQuery_default()('html').attr('dir'),
         isDayBlocked: isDayBlocked,
         minimumNights: datepicker.minNights || 1,
         maximumNights: datepicker.maxNights || 0,
