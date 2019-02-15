@@ -57,6 +57,7 @@ export default class SearchForm {
     }
 
     window.createReactDatePicker(this, {
+      isRTL: 'rtl' === $('html').attr('dir'),
       isDayBlocked: isDayBlocked,
       minimumNights: datepicker.minNights || 1,
       maximumNights: datepicker.maxNights || 0,
