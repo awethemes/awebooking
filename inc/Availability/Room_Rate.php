@@ -301,7 +301,7 @@ class Room_Rate {
 			}
 		}
 
-		return $breakdown;
+		return apply_filters( 'abrs_get_mixed_rates_breakdown', $breakdown, $main_rate, $valid_rates, $this );
 	}
 
 	/**
@@ -375,6 +375,7 @@ class Room_Rate {
 		}
 
 		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
+
 		if ( is_wp_error( $breakdown ) ) {
 			throw new \RuntimeException( $breakdown->get_error_message() );
 		}
@@ -382,6 +383,8 @@ class Room_Rate {
 		if ( ! $breakdown->get_label() ) {
 			$breakdown->set_label( $reason );
 		}
+
+		$breakdown = apply_filters( 'abrs_setup_additional_rate_breakdown', $breakdown, $rate, $reason, $this );
 
 		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
 		$this->additional_breakdowns[ $key ] = $breakdown;
