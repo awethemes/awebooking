@@ -49,7 +49,7 @@ plugin.datepicker = function (instance, options) {
   const defaults = plugin.config.datepicker
 
   let { disableDays, disableDates } = defaults
-  const disable = disableDates.split(/,\s?/)
+  const disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates
 
   if (Array.isArray(disableDays) && disableDays.length > 0) {
     disable.push(function (date) {
@@ -57,16 +57,16 @@ plugin.datepicker = function (instance, options) {
     })
   }
 
-  // Min & Max date range.
-  let minDate = 'today'
+  let minDate = new Date
   let maxDate = null
 
+  // Limit available days from today
   if (Date.prototype.fp_incr && defaults.minDate > 0) {
-    minDate = (new Date).fp_incr(defaults.minDate || 0)
+    minDate = minDate.fp_incr(defaults.minDate || 0)
   }
 
-  if (Date.prototype.fp_incr && defaults.maxDate !== 0) {
-    maxDate = (new Date).fp_incr(defaults.maxDate)
+  if (Date.prototype.fp_incr && defaults.maxNights > 0) {
+    maxDate = minDate.fp_incr(defaults.maxNights)
   }
 
   const _defaults = {

@@ -744,6 +744,64 @@ function abrs_get_rounding_precision() {
 }
 
 /**
+ * //
+ *
+ * @return int
+ */
+function abrs_get_restriction_minimum_nights() {
+	$nights = absint( abrs_get_option( 'display_datepicker_minnights', 1 ) );
+
+	return apply_filters( 'abrs_get_restriction_minimum_nights', $nights );
+}
+
+/**
+ * //
+ *
+ * @return int
+ */
+function abrs_get_restriction_maximum_nights() {
+	$nights = absint( abrs_get_option( 'display_datepicker_maxnights', 0 ) );
+
+	return apply_filters( 'abrs_get_restriction_maximum_nights', $nights );
+}
+
+/**
+ * //
+ *
+ * @return int
+ */
+function abrs_get_restriction_begin_available_days() {
+	$nights = absint( abrs_get_option( 'display_datepicker_mindate', 0 ) );
+
+	return apply_filters( 'abrs_get_restriction_begin_available_days', $nights );
+}
+
+/**
+ * //
+ *
+ * @return array
+ */
+function abrs_get_restriction_disable_week_days() {
+	return apply_filters( 'abrs_get_restriction_begin_available_days',
+		abrs_sanitize_days_of_week( abrs_get_option( 'display_datepicker_disabledays' ) )
+	);
+}
+
+/**
+ * //
+ *
+ * @return array
+ */
+function abrs_get_restriction_disable_days() {
+	$disable_days = abrs_get_option( 'display_datepicker_disabledates' );
+
+	$disable_days = preg_split( '/[\s,]+/', $disable_days );
+	$disable_days = array_filter( $disable_days, 'abrs_is_standard_date' );
+
+	return apply_filters( 'abrs_get_restriction_begin_available_days', $disable_days );
+}
+
+/**
  * Parse the object_id.
  *
  * @param  mixed $object The object.

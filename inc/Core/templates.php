@@ -1,5 +1,6 @@
 <?php
 
+use AweBooking\Availability\Request;
 use AweBooking\Frontend\Search\Search_Form;
 
 /**
@@ -48,10 +49,8 @@ function abrs_get_search_form( $atts = [], $echo = true ) {
 	if ( ! $atts['res_request'] && ( $abrs_query && $abrs_query->res_request ) ) {
 		$res_request = $abrs_query->res_request;
 	} else {
-		$res_request = abrs_create_res_request([
-			'check_in'  => 'today',
-			'check_out' => 'tomorrow',
-		]);
+		$res_request = Request::create_from_request( abrs_http_request() );
+		$res_request->maybe_initialize_default();
 	}
 
 	if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {

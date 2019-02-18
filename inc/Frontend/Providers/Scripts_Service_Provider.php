@@ -76,12 +76,11 @@ class Scripts_Service_Provider extends Service_Provider {
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
 			'route'      => abrs_route( '/' ),
 			'datepicker' => apply_filters( 'abrs_datepicker_localize_js', [
-				'minNights'    => abrs_get_option( 'display_datepicker_minnights', 1 ),
-				'maxNights'    => abrs_get_option( 'display_datepicker_maxnights', 0 ),
-				'minDate'      => abrs_get_option( 'display_datepicker_mindate', 0 ),
-				'maxDate'      => abrs_get_option( 'display_datepicker_maxdate', 0 ),
-				'disableDates' => abrs_get_option( 'display_datepicker_disabledates', '' ),
-				'disableDays'  => abrs_get_option( 'display_datepicker_disabledays', [] ),
+				'minNights'    => abrs_get_restriction_minimum_nights(),
+				'maxNights'    => abrs_get_restriction_maximum_nights(),
+				'minDate'      => abrs_get_restriction_begin_available_days(),
+				'disableDays'  => abrs_get_restriction_disable_week_days(),
+				'disableDates' => abrs_get_restriction_disable_days(),
 				'showMonths'   => abrs_get_option( 'display_datepicker_showmonths', 1 ),
 			] ),
 		]);

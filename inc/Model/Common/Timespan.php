@@ -155,7 +155,7 @@ class Timespan implements \JsonSerializable {
 	public function requires_minimum_nights( $nights = 1 ) {
 		if ( $this->nights() < $nights ) {
 			/* translators: %d: Number of nights */
-			throw new \LogicException( sprintf( esc_html__( 'The timespan requires at least %d nights', 'awebooking' ), esc_html( $nights ) ) );
+			throw new \LogicException( sprintf( esc_html__( 'The reservation requires at least %d nights', 'awebooking' ), esc_html( $nights ) ) );
 		}
 	}
 }

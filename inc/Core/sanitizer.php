@@ -122,9 +122,12 @@ function abrs_sanitize_days_of_week( $days ) {
 	}
 
 	$days = array_unique( $days );
-	$days_of_week = [ 0, 1, 2, 3, 4, 5, 6 ];
 
-	return array_values( array_intersect( $days_of_week, $days ) );
+	$days_of_week = range( 0, 6 );
+
+	return array_values(
+		array_intersect( $days_of_week, $days )
+	);
 }
 
 /**

@@ -37,10 +37,12 @@ export default class SearchForm {
   }
 
   _createDatePicker() {
-    const datepicker = window.awebooking.config.datepicker
+    const config = window.awebooking.config.datepicker
+    let { disableDays, disableDates } = config
 
-    let { disableDays, disableDates } = datepicker
-    disableDates = disableDates.split(/,\s?/).map(day => toMomentObject(day))
+    disableDates = !Array.isArray(disableDates)
+      ? disableDates.split(/,\s?/).map(day => toMomentObject(day))
+      : disableDates
 
     const isDayBlocked = (day) => {
       let disabled = false
@@ -59,11 +61,11 @@ export default class SearchForm {
     window.createReactDatePicker(this, {
       isRTL: 'rtl' === $('html').attr('dir'),
       isDayBlocked: isDayBlocked,
-      minimumNights: datepicker.minNights || 1,
-      maximumNights: datepicker.maxNights || 0,
-      minimumDateRange: datepicker.minDate || 0,
-      maximumDateRange: datepicker.maxDate || 0,
-      numberOfMonths: datepicker.showMonths || 1
+      minimumNights: config.minNights || 1,
+      maximumNights: config.maxNights || 0,
+      minimumDateRange: config.minDate || 0,
+      maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
+      numberOfMonths: config.showMonths || 1
     })
   }
 
