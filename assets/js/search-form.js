@@ -620,12 +620,12 @@ function () {
   }, {
     key: "_createDatePicker",
     value: function _createDatePicker() {
-      var datepicker = window.awebooking.config.datepicker;
-      var disableDays = datepicker.disableDays,
-          disableDates = datepicker.disableDates;
-      disableDates = disableDates.split(/,\s?/).map(function (day) {
+      var config = window.awebooking.config.datepicker;
+      var disableDays = config.disableDays,
+          disableDates = config.disableDates;
+      disableDates = !Array.isArray(disableDates) ? disableDates.split(/,\s?/).map(function (day) {
         return toMomentObject_default()(day);
-      });
+      }) : disableDates;
 
       var isDayBlocked = function isDayBlocked(day) {
         var disabled = false;
@@ -646,11 +646,11 @@ function () {
       window.createReactDatePicker(this, {
         isRTL: 'rtl' === external_jQuery_default()('html').attr('dir'),
         isDayBlocked: isDayBlocked,
-        minimumNights: datepicker.minNights || 1,
-        maximumNights: datepicker.maxNights || 0,
-        minimumDateRange: datepicker.minDate || 0,
-        maximumDateRange: datepicker.maxDate || 0,
-        numberOfMonths: datepicker.showMonths || 1
+        minimumNights: config.minNights || 1,
+        maximumNights: config.maxNights || 0,
+        minimumDateRange: config.minDate || 0,
+        maximumDateRange: config.maxNights ? config.maxNights + config.minDate + 1 : 0,
+        numberOfMonths: config.showMonths || 1
       });
     }
   }, {

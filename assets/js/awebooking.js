@@ -1415,24 +1415,23 @@ awebooking_plugin.datepicker = function (instance, options) {
   var defaults = awebooking_plugin.config.datepicker;
   var disableDays = defaults.disableDays,
       disableDates = defaults.disableDates;
-  var disable = disableDates.split(/,\s?/);
+  var disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates;
 
   if (Array.isArray(disableDays) && disableDays.length > 0) {
     disable.push(function (date) {
       return disableDays.includes(date.getDay());
     });
-  } // Min & Max date range.
-
-
-  var minDate = 'today';
-  var maxDate = null;
-
-  if (Date.prototype.fp_incr && defaults.minDate > 0) {
-    minDate = new Date().fp_incr(defaults.minDate || 0);
   }
 
-  if (Date.prototype.fp_incr && defaults.maxDate !== 0) {
-    maxDate = new Date().fp_incr(defaults.maxDate);
+  var minDate = new Date();
+  var maxDate = null; // Limit available days from today
+
+  if (Date.prototype.fp_incr && defaults.minDate > 0) {
+    minDate = minDate.fp_incr(defaults.minDate || 0);
+  }
+
+  if (Date.prototype.fp_incr && defaults.maxNights > 0) {
+    maxDate = minDate.fp_incr(defaults.maxNights);
   }
 
   var _defaults = {
