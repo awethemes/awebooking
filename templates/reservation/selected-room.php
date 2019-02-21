@@ -59,8 +59,12 @@ if ( empty( $res_request ) ) {
 		<dd><?php abrs_price( $room_stay->get_subtotal() ); ?></dd>
 
 		<?php if ( abrs_tax_enabled() && $room_stay->get_tax() > 0 ) : ?>
-			<dt><?php echo isset( $room_stay['tax_rates']['name'] ) ? esc_html( $room_stay['tax_rate']['name'] ) : esc_html__( 'Tax', 'awebooking' ); ?></dt>
-			<dd><?php abrs_price( $room_stay->get_total_tax() ); ?></dd>
+			<?php foreach ( $room_stay->get_tax_rates() as $tax_id => $tax_amount ) : ?>
+				<?php $tax_rate = abrs_get_tax_rate( $tax_id ); ?>
+
+				<dt><?php echo isset( $tax_rate['name'] ) ? sprintf( esc_html__( 'Tax (%s)', 'awebooking' ), esc_html( $tax_rate['name'] ) ) : esc_html__( 'Tax', 'awebooking' ); ?></dt>
+				<dd><?php abrs_price( $tax_amount ); ?></dd>
+			<?php endforeach; ?>
 		<?php endif; ?>
 	</dl>
 
