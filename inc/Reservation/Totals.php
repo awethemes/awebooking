@@ -210,7 +210,8 @@ class Totals {
 	 */
 	protected function calculate_totals() {
 		$this->set_total( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) + $this->get( 'fees_total' ) );
-		$this->set_total( 'total', $this->get( 'rooms_total' ) + $this->get( 'services_total' ) + $this->get( 'fees_total' ) );
+		$this->set_total( 'total_tax', $this->get( 'services_total' ) + $this->get( 'fees_total' ) );
+		$this->set_total( 'total', $this->get( 'rooms_total' ) + $this->get( 'total_tax' ) );
 	}
 
 	/**
