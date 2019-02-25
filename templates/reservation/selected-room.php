@@ -56,7 +56,19 @@ if ( empty( $res_request ) ) {
 				?>
 			</small>
 		</dt>
-		<dd><?php abrs_price( $room_stay->get_subtotal() ); ?></dd>
+		<dd>
+			<?php
+			if ( $room_stay->get_discounted() > 0 ) {
+				/* translators: %1$s rooms, %2$s nights */
+				printf( '<div><span>%1$s</span>&nbsp;<del>%2$s</del></div>',
+					abrs_format_price( $room_stay->get_price_discounted() ),
+					abrs_format_price( $room_stay->get_subtotal() )
+				); // WPCS: XSS OK.
+			} else {
+				abrs_price( $room_stay->get_subtotal() );
+			}
+			?>
+		</dd>
 
 		<?php if ( abrs_tax_enabled() && $room_stay->get_tax() > 0 ) : ?>
 			<?php foreach ( $room_stay->get_tax_rates() as $tax_id => $tax_amount ) : ?>

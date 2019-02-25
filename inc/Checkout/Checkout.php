@@ -362,6 +362,7 @@ class Checkout {
 	 */
 	public function create_booking_items( $booking, $data ) {
 		foreach ( $this->reservation->get_room_stays() as $item_key => $room_stay ) {
+			/* @var $room_stay \AweBooking\Reservation\Item */
 			$room_rate = $room_stay->get_data();
 
 			if ( ! $room_rate || ! $room_rate instanceof Room_Rate ) {
@@ -379,7 +380,7 @@ class Checkout {
 
 			/* @var \AweBooking\Model\Room $room */
 			foreach ( $assign_rooms as $room ) {
-				$item = ( new Room_Item )->fill([
+				$item = ( new Room_Item )->fill( [
 					'booking_id'   => $booking->get_id(),
 					/* translators: The room number */
 					'name'         => $room->get( 'name' ),
@@ -393,9 +394,9 @@ class Checkout {
 					'infants'      => $request->infants ?: 0,
 					'subtotal'     => $room_stay->get_subtotal(),
 					'total_tax'    => $room_stay->get_tax(),
-					'total'        => $room_stay->get_price_tax(),
+					'total'        => $room_stay->get_total(),
 					'taxes'        => [ 'total' => $room_stay->get_tax_rates() ],
-				]);
+				] );
 
 				do_action( 'abrs_checkout_creating_booking_room_item', $item, $room_stay, $item_key, $booking );
 
