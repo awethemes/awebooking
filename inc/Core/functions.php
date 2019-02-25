@@ -782,9 +782,9 @@ function abrs_get_restriction_begin_available_days() {
  * @return array
  */
 function abrs_get_restriction_disable_week_days() {
-	return apply_filters( 'abrs_get_restriction_begin_available_days',
-		abrs_sanitize_days_of_week( abrs_get_option( 'display_datepicker_disabledays' ) )
-	);
+	$days = abrs_sanitize_days_of_week( abrs_get_option( 'display_datepicker_disabledays' ) );
+
+	return apply_filters( 'abrs_get_restriction_begin_available_days', $days ?: [] );
 }
 
 /**
