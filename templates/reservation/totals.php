@@ -24,12 +24,12 @@ $reservation = abrs_reservation();
 		<dd><?php abrs_price( $reservation->get_subtotal() ); ?></dd>
 	</dl>
 
+	<?php do_action( 'abrs_reservation_before_total' ); ?>
+
 	<dl>
 		<dt><?php esc_html_e( 'Total Tax', 'awebooking' ); ?></dt>
 		<dd><?php abrs_price( $reservation->get_total_tax() ); ?></dd>
 	</dl>
-
-	<?php do_action( 'abrs_reservation_before_total' ); ?>
 
 	<dl>
 		<dt><strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong></dt>
