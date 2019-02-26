@@ -238,6 +238,7 @@ class Room_Item extends Item {
 		// Commit the transaction.
 		abrs_db_transaction( 'commit' );
 
+		$this->set_attribute( 'name', $swap_to->get( 'name' ) );
 		$this->set_attribute( 'room_id', $swap_to->get_id() );
 		$this->save();
 
