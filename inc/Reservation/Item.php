@@ -495,7 +495,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return array
 	 */
 	public function get_virtual_attributes() {
-		return [ 'tax', 'total_tax', 'price_tax', 'subtotal', 'total', 'discount', 'discounted' ];
+		return [ 'tax', 'total_tax', 'subtotal', 'total', 'discount', 'discounted' ];
 	}
 
 	/**

@@ -217,7 +217,8 @@ class Totals {
 
 		$this->set_total( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) + $this->get( 'fees_total' ) );
 		$this->set_total( 'total_tax', $this->get( 'rooms_total_tax' ) + $this->get( 'services_total_tax' ) + $this->get( 'fees_total_tax' ) );
-		$this->set_total( 'total', $this->get( 'subtotal' ) + $this->get( 'total_tax' ) );
+
+		$this->set_total( 'total', $this->get( 'subtotal' ) - $this->get( 'discounts_total' ) + $this->get( 'total_tax' ) );
 	}
 
 	/**
