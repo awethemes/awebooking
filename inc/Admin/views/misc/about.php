@@ -35,6 +35,12 @@
 		color: #333;
 		text-decoration: none;
 	}
+
+	.about-wrap .three-col .col {
+		flex: 0 0 30%;
+		max-width: 30%;
+		margin: 0 0 15px !important;
+	}
 </style>
 
 <div class="wrap about-wrap">
