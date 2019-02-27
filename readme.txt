@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.0
 Requires PHP:      5.6
-Stable tag:        3.2.7
+Stable tag:        3.2.8
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,11 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.8] - [2019-02-27]
+- Improve price calculation.
+- Fixed: Swap a room not change the room name.
+- Minor bug fixes
+
 ### [v3.2.7] - [2019-02-18]
 - Added: **Settings > Availability** to controls the availability dates.
 - Improve the front-end Calendar availability.
