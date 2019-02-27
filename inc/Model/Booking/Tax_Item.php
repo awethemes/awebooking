@@ -26,7 +26,7 @@ class Tax_Item extends Item {
 			'rate_amount'   => 0,
 			'rate_compound' => false,
 			'tax_total'     => 0,
-		]));
+		] ) );
 	}
 
 	/**
@@ -38,6 +38,6 @@ class Tax_Item extends Item {
 			'rate_amount'   => '_tax_rate_amount',
 			'rate_compound' => '_tax_rate_compound',
 			'tax_total'     => '_tax_total',
-		]);
+		] );
 	}
 }

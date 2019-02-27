@@ -29,7 +29,7 @@ class Service_Item extends Item {
 			'total'        => 0,
 			'total_tax'    => 0,
 			'price'        => 0,
-		]));
+		] ) );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Service_Item extends Item {
 			'total'        => '_service_total',
 			'total_tax'    => '_service_total_tax',
 			'price'        => '_price',
-		]);
+		] );
 	}
 
 	/**

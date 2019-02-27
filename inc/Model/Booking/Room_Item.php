@@ -141,7 +141,7 @@ class Room_Item extends Item {
 		}
 
 		// Force to change the timespan.
-		$this->force_change_timespan   = true;
+		$this->force_change_timespan = true;
 
 		$this->attributes['check_in']  = $timespan->get_start_date();
 		$this->attributes['check_out'] = $timespan->get_end_date();
@@ -170,7 +170,7 @@ class Room_Item extends Item {
 			return false;
 		}
 
-		$to_period = $to_timespan->get_period();
+		$to_period       = $to_timespan->get_period();
 		$original_period = new Period( $this->original['check_in'], $this->original['check_out'] );
 
 		// If new period inside the current-period,
@@ -232,6 +232,7 @@ class Room_Item extends Item {
 
 		if ( true !== $updated1 || true !== $updated2 ) {
 			abrs_db_transaction( 'rollback' );
+
 			return false;
 		}
 
@@ -308,7 +309,7 @@ class Room_Item extends Item {
 
 		abrs_rescue( function () {
 			abrs_optional( $this->get_booking() )->setup_dates();
-		});
+		} );
 	}
 
 	/**
@@ -381,22 +382,22 @@ class Room_Item extends Item {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), array_merge( $this->attributes, [
-			'room_id'        => 0,
-			'room_type_id'   => 0,
-			'rate_plan_id'   => 0,
+			'room_id'      => 0,
+			'room_type_id' => 0,
+			'rate_plan_id' => 0,
 
-			'check_in'       => '',
-			'check_out'      => '',
-			'adults'         => 0,
-			'children'       => 0,
-			'infants'        => 0,
+			'check_in'  => '',
+			'check_out' => '',
+			'adults'    => 0,
+			'children'  => 0,
+			'infants'   => 0,
 
-			'subtotal'       => 0, // Pre-discount.
-			'subtotal_tax'   => 0,
-			'total'          => 0,
-			'total_tax'      => 0,
-			'taxes'          => [], // ['total' => [ 1 => 100 ]].
-		]));
+			'subtotal'     => 0, // Pre-discount.
+			'subtotal_tax' => 0,
+			'total'        => 0,
+			'total_tax'    => 0,
+			'taxes'        => [], // ['total' => [ 1 => 100 ]].
+		] ) );
 	}
 
 	/**
@@ -404,23 +405,23 @@ class Room_Item extends Item {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'room_id'        => '_room_id',
-			'room_type_id'   => '_room_type_id',
-			'rate_plan_id'   => '_rate_plan_id',
+			'room_id'      => '_room_id',
+			'room_type_id' => '_room_type_id',
+			'rate_plan_id' => '_rate_plan_id',
 
-			'check_in'       => '_check_in',
-			'check_out'      => '_check_out',
-			'adults'         => '_adults',
-			'children'       => '_children',
-			'infants'        => '_infants',
+			'check_in'  => '_check_in',
+			'check_out' => '_check_out',
+			'adults'    => '_adults',
+			'children'  => '_children',
+			'infants'   => '_infants',
 
-			'subtotal'       => '_line_subtotal',
-			'subtotal_tax'   => '_line_subtotal_tax',
-			'total'          => '_line_total',
-			'total_tax'      => '_line_total_tax',
-			'taxes'          => '_taxes',
-			'breakdowns'     => [], // Cache the price breakdowns.
-		]);
+			'subtotal'     => '_line_subtotal',
+			'subtotal_tax' => '_line_subtotal_tax',
+			'total'        => '_line_total',
+			'total_tax'    => '_line_total_tax',
+			'taxes'        => '_taxes',
+			'breakdowns'   => [], // Cache the price breakdowns.
+		] );
 	}
 
 	/**
