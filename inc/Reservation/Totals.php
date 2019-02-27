@@ -25,16 +25,19 @@ class Totals {
 	 * @var array
 	 */
 	protected $totals = [
-		'subtotal'           => 0,
 		'total'              => 0,
+		'subtotal'           => 0,
+
 		'rooms_total'        => 0,
 		'rooms_subtotal'     => 0,
 		'rooms_total_tax'    => 0,
+
 		'services_total'     => 0,
 		'services_subtotal'  => 0,
 		'services_total_tax' => 0,
-		'fees_total'         => 0,
+
 		'fees_tax'           => 0,
+		'fees_total'         => 0,
 		'discounts_total'    => 0,
 	];
 
@@ -170,7 +173,9 @@ class Totals {
 
 			$item->set( 'price', $price );
 		}
+
 		$this->set_total( 'services_total', $this->sum_items( $services, 'total' ) );
+		$this->set_total( 'services_subtotal', $this->sum_items( $services, 'subtotal' ) );
 		$this->set_total( 'services_total_tax', $this->sum_items( $services, 'total_tax' ) );
 	}
 
