@@ -218,22 +218,23 @@ class Booking extends Model {
 	public function calculate_totals( $with_taxes = true ) {
 		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
 
-		$room_subtotal    = 0;
-		$room_total       = 0;
-		$service_subtotal = 0;
-		$service_total    = 0;
-		$fee_total        = 0;
+		$subtotal  = 0;
+		$total     = 0;
+		$total_tax = 0;
+		$fee_total = 0;
 
 		// Sum the room costs.
 		foreach ( $this->get_rooms() as $room ) {
-			$room_subtotal += $room->get( 'subtotal' );
-			$room_total    += $room->get( 'total' );
+			$subtotal  += $room->get( 'subtotal' );
+			$total     += $room->get( 'total' );
+			$total_tax += $room->get( 'total_tax' );
 		}
 
 		// Sum the service costs.
 		foreach ( $this->get_services() as $service ) {
-			$service_subtotal += $service->get( 'subtotal' );
-			$service_total    += $service->get( 'total' );
+			$subtotal  += $service->get( 'subtotal' );
+			$total     += $service->get( 'total' );
+			$total_tax += $service->get( 'total_tax' );
 		}
 
 		// Sun the fees.
@@ -241,11 +242,10 @@ class Booking extends Model {
 			$fee_total += $fee->get( 'amount' );
 		}
 
-		$this->set_attribute( 'subtotal', $room_subtotal + $service_total + $fee_total );
-		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
-		$this->set_attribute( 'total', $this->get( 'subtotal' ) - $this->get( 'discount_total' ) );
-
-		$this->set_attribute( 'tax_total', $this->get_rooms()->sum( 'total_tax' ) );
+		$this->set_attribute( 'subtotal', $subtotal );
+		$this->set_attribute( 'tax_total', $total_tax );
+		$this->set_attribute( 'discount_total', $subtotal - $total );
+		$this->set_attribute( 'total', ( $subtotal + $fee_total + $total_tax ) - $this->get( 'discount_total' ) );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );

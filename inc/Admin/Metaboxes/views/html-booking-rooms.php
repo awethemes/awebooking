@@ -17,6 +17,14 @@ $room_items = $the_booking->get_rooms();
 
 ?>
 
+<style>
+	.abrs-inline-table tbody th,
+	.abrs-inline-table tbody td {
+		padding: 0;
+		border: none !important;
+	}
+</style>
+
 <table class="awebooking-table abrs-booking-rooms widefat fixed">
 	<thead>
 	<tr>
@@ -125,11 +133,24 @@ $room_items = $the_booking->get_rooms();
 
 					<?php endif; ?>
 
-					<?php esc_html_e( 'Subtotal:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
-					<br>
-					<?php esc_html_e( 'Total:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'total' ), $the_booking->get( 'currency' ) ); ?>
-					<br>
-					<?php esc_html_e( 'TAX:', 'awebooking' ); ?> <?php abrs_price( $item->get( 'total_tax' ) ); ?>
+					<table class="abrs-fright abrs-inline-table">
+						<tbody>
+							<tr>
+								<th><?php esc_html_e( 'Subtotal:', 'awebooking' ); ?></th>
+								<td><?php abrs_price( $item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?></td>
+							</tr>
+
+							<tr>
+								<th><?php esc_html_e( 'TAX:', 'awebooking' ); ?></th>
+								<td><?php abrs_price( $item->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?></td>
+							</tr>
+
+							<tr>
+								<th><?php esc_html_e( 'Total:', 'awebooking' ); ?></th>
+								<td><strong><?php abrs_price( $item->get( 'total' ), $the_booking->get( 'currency' ) ); ?></strong></td>
+							</tr>
+						</tbody>
+					</table>
 				</td>
 			</tr>
 

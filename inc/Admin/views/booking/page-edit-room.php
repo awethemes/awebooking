@@ -150,6 +150,7 @@ if ( 'swap' === $current_action && $timespan ) {
 
 						<?php $controls->show_field( 'subtotal' ); ?>
 						<?php $controls->show_field( 'total' ); ?>
+						<?php $controls->show_field( 'total_tax' ); ?>
 
 					<?php endif; ?>
 

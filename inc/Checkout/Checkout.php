@@ -393,8 +393,8 @@ class Checkout {
 					'children'     => $request->children ?: 0,
 					'infants'      => $request->infants ?: 0,
 					'subtotal'     => $room_stay->get_subtotal(),
-					'total_tax'    => $room_stay->get_tax(),
-					'total'        => $room_stay->get_total(),
+					'total_tax'    => $room_stay->get_total_tax(),
+					'total'        => $room_stay->get_price_discounted(),
 					'taxes'        => [ 'total' => $room_stay->get_tax_rates() ],
 				] );
 
@@ -428,14 +428,15 @@ class Checkout {
 				continue;
 			}
 
-			$item = ( new Service_item )->fill([
+			$item = ( new Service_item )->fill( [
 				'name'       => $service->get( 'name' ),
 				'booking_id' => $booking->get_id(),
 				'service_id' => $service->get_id(),
 				'quantity'   => $res_item->get_quantity(),
 				'subtotal'   => $res_item->get_subtotal(),
-				'total'      => $res_item->get_total(),
-			]);
+				'total_tax'  => $res_item->get_total_tax(),
+				'total'      => $res_item->get_price_discounted(),
+			] );
 
 			try {
 				$item->save();
@@ -455,12 +456,12 @@ class Checkout {
 	public function create_fees_items( $booking, $data ) {
 		/* @var \AweBooking\Reservation\Item $res_item */
 		foreach ( $this->reservation->get_fees() as $item_key => $res_item ) {
-			$item = ( new Fee_Item )->fill([
+			$item = ( new Fee_Item )->fill( [
 				'name'       => $res_item->get_name(),
 				'booking_id' => $booking->get_id(),
 				'total'      => $res_item->get_total(),
 				'amount'     => $res_item->get_price(),
-			]);
+			] );
 
 			try {
 				$item->save();
