@@ -243,7 +243,7 @@ class Booking extends Model {
 		}
 
 		$this->set_attribute( 'subtotal', $subtotal );
-		$this->set_attribute( 'tax_total', $total_tax );
+		$this->set_attribute( 'total_tax', $total_tax );
 		$this->set_attribute( 'discount_total', $subtotal - $total );
 		$this->set_attribute( 'total', ( $subtotal + $fee_total + $total_tax ) - $this->get( 'discount_total' ) );
 
