@@ -114,7 +114,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( $booking->get( 'total_tax' ) ) : ?>
 			<tr>
 				<th><?php echo esc_html__( 'Total Tax:', 'awebooking' ); ?></th>
-				<td><?php abrs_price( $booking->get( 'total_tax' ), $booking->get( 'currency' ) ); ?></td>
+				<td class="total-column"><?php abrs_price( $booking->get( 'total_tax' ), $booking->get( 'currency' ) ); ?></td>
 			</tr>
 		<?php endif; ?>
 
