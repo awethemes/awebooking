@@ -3,7 +3,7 @@ Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
-Tested up to:      5.0
+Tested up to:      5.1
 Requires PHP:      5.6
 Stable tag:        3.2.8
 License:           GPLv2 or later
