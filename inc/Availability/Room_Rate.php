@@ -6,6 +6,8 @@ use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
+use AweBooking\Model\Session;
+use AweBooking\Support\Period;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Room_Rate {
@@ -32,6 +34,13 @@ class Room_Rate {
 	 * @var \AweBooking\Model\Pricing\Contracts\Rate
 	 */
 	protected $rate_plan;
+
+	/**
+	 * //
+	 *
+	 * @var \AweBooking\Model\Session
+	 */
+	protected $session;
 
 	/**
 	 * The room availability.
@@ -114,8 +123,11 @@ class Room_Rate {
 		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), Constants::STATE_AVAILABLE, $constraints );
 		$this->rooms_availability = new Availability( $this->room_type, $room_response );
 
+		$timespan  = $this->get_timespan();
+		$intervals = $this->rate_plan->get_rate_intervals();
+
 		// Check the rates availability.
-		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan() );
+		$rate_response            = abrs_filter_rate_intervals( $intervals, $timespan );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
@@ -125,6 +137,31 @@ class Room_Rate {
 
 			$this->calculate_costs();
 		}
+	}
+
+	/**
+	 * //
+	 *
+	 * @return Session|null
+	 */
+	protected function find_matches_sessions() {
+		$sessions = abrs_get_sessions();
+
+		return $sessions->first( function ( Session $session ) {
+			if ( ! $session->get_start_date() || ! $session->get_end_date() ) {
+				return false;
+			}
+
+			try {
+				$session_period = new Period( $session->get_start_date(), $session->get_end_date() );
+			} catch ( \Exception $e ) {
+				return false;
+			}
+
+			return $session_period->contains(
+				abrs_date( $this->get_timespan()->get_start_date() )
+			);
+		} );
 	}
 
 	/**

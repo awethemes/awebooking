@@ -382,6 +382,28 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
  *
  * @param  Collection|array|int $rates       The rates.
  * @param  Timespan             $timespan    The timespan.
+ * @return \AweBooking\Calendar\Finder\Response
+ */
+function abrs_filter_valid_date_rate_intervals( $rates, Timespan $timespan ) {
+	$resources = abrs_collect( $rates )
+		->transform( 'abrs_resource_rate' )
+		->filter( /* Remove empty items */ )
+		->each( function ( Resource $r ) use ( $timespan ) {
+			$r->set_constraints( [ new Rate_Constraint( $timespan ) ] );
+		} );
+
+	$response = ( new Finder( $resources->all() ) )
+		->callback( '_abrs_filter_rates_callback' )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+
+	return apply_filters( 'abrs_filter_valid_date_rate_intervals', $response, $timespan, $resources );
+}
+
+/**
+ * Filter given rates by request.
+ *
+ * @param  Collection|array|int $rates       The rates.
+ * @param  Timespan             $timespan    The timespan.
  * @param  array                $constraints Array of constraints.
  * @return \AweBooking\Calendar\Finder\Response
  */

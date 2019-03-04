@@ -5,6 +5,7 @@ use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Standard_Rate_Interval;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
+use AweBooking\Model\Session;
 
 /**
  * Retrieves the rate object.
@@ -98,4 +99,20 @@ function abrs_get_standard_rate_interval( $room_type ) {
 	return ( $room_type = abrs_get_room_type( $room_type ) )
 		? new Standard_Rate_Interval( $room_type )
 		: null;
+}
+
+/**
+ * Gets all sessions.
+ *
+ * Just a placeholder function for pro version :).
+ *
+ * @return \AweBooking\Support\Collection
+ */
+function abrs_get_sessions() {
+	return abrs_collect( apply_filters( 'abrs_get_sessions', [] ) )
+		->filter( function ( $session ) {
+			return $session instanceof Session;
+		} )->sortByDesc( function ( Session $session ) {
+			return $session->get_priority();
+		} )->values();
 }
