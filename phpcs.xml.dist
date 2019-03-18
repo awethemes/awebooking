@@ -28,8 +28,6 @@
 	<config name="minimum_supported_wp_version" value="4.6"/>
 
 	<rule ref="WordPress">
-		<exclude name="WordPress.VIP"/>
-
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
 
