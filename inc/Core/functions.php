@@ -542,23 +542,29 @@ function abrs_restore_locale() {
 }
 
 /**
+ * //
+ *
+ * @return \WPLibs\View\View_Factory
+ */
+function abrs_view() {
+	return awebooking()->make( 'view' );
+}
+
+/**
  * Locate a template and return the path for inclusion.
  *
  * @param  string $template_name The template name.
  * @return string
  */
 function abrs_locate_template( $template_name ) {
-	// Locate in your {theme}/awebooking.
-	$template = locate_template([
-		trailingslashit( awebooking()->template_path() ) . $template_name,
-	]);
+	$template_name = str_replace( '.php', '', $template_name );
 
-	// Fallback to default template in the plugin.
-	if ( ! $template || ABRS_TEMPLATE_DEBUG ) {
-		$template = awebooking()->plugin_path( 'templates/' ) . $template_name;
+	try {
+		$template = abrs_view()->get_finder()->find( $template_name );
+	} catch ( Exception $e ) {
+		$template = '';
 	}
 
-	// Return what we found.
 	return apply_filters( 'abrs_locate_template', $template, $template_name );
 }
 
@@ -572,7 +578,7 @@ function abrs_locate_template( $template_name ) {
 function abrs_get_template( $template_name, $vars = [] ) {
 	$located = abrs_locate_template( $template_name );
 
-	if ( ! file_exists( $located ) ) {
+	if ( ! $located || ! file_exists( $located ) ) {
 		/* translators: %s template */
 		_doing_it_wrong( __FUNCTION__, sprintf( wp_kses_post( __( '%s does not exist.', 'awebooking' ) ), '<code>' . esc_html( $located ) . '</code>' ), '3.1' );
 		return;
@@ -583,13 +589,7 @@ function abrs_get_template( $template_name, $vars = [] ) {
 
 	do_action( 'abrs_before_template_part', $template_name, $located, $vars );
 
-	// Extract $vars to variables.
-	if ( ! empty( $vars ) && is_array( $vars ) ) {
-		extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
-	}
-
-	// Include the located file.
-	include $located;
+	echo abrs_view()->file( $located, $vars ); // @codingStandardsIgnoreLine
 
 	do_action( 'abrs_after_template_part', $template_name, $located, $vars );
 }
@@ -605,17 +605,9 @@ function abrs_get_template( $template_name, $vars = [] ) {
  * @return string
  */
 function abrs_get_template_content( $template_name, $vars = [] ) {
-	$level = ob_get_level();
-
 	ob_start();
 
-	try {
-		abrs_get_template( $template_name, $vars );
-	} catch ( Exception $e ) {
-		abrs_handle_buffering_exception( $e, $level );
-	} catch ( Throwable $e ) {
-		abrs_handle_buffering_exception( $e, $level );
-	}
+	abrs_get_template( $template_name, $vars );
 
 	return trim( ob_get_clean() );
 }

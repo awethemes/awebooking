@@ -12,6 +12,8 @@ use Illuminate\Container\Container;
 use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
 use Awethemes\Http\Request;
+use WPLibs\View\Factory;
+use WPLibs\View\View_Factory;
 
 final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
@@ -117,6 +119,15 @@ final class Plugin extends Container {
 		$this->singleton( 'multilingual', function() {
 			return new Multilingual;
 		});
+
+		$this->singleton( 'view', function () {
+			$view = Factory::create( $this->configuration['view'] );
+
+			$view->get_finder()->prepend_location( TEMPLATEPATH . '/' . $this->template_path() );
+			$view->get_finder()->prepend_location( STYLESHEETPATH . '/' . $this->template_path() );
+
+			return $view;
+		} );
 
 		$this->singleton( 'logger', function () {
 			return new Logger( 'awebooking', [ new BufferHandler( $this->get_monolog_handler() ) ] );
