@@ -353,7 +353,7 @@ class Room_Rate {
 		$cache_breakdowns = [];
 
 		foreach ( $valid_rates as $rate_response ) {
-			/* @var $rate Rate_Interval */
+			/* @var Rate_Interval $rate */
 			$rate = $rate_response['resource'];
 
 			// Checking the expires_date.
