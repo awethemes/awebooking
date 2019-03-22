@@ -589,7 +589,7 @@ function abrs_get_template( $template_name, $vars = [] ) {
 
 	do_action( 'abrs_before_template_part', $template_name, $located, $vars );
 
-	echo abrs_view()->file( $located, $vars ); // @codingStandardsIgnoreLine
+	echo abrs_view()->file( $located, $vars )->render(); // @codingStandardsIgnoreLine
 
 	do_action( 'abrs_after_template_part', $template_name, $located, $vars );
 }
