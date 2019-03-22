@@ -48,7 +48,7 @@ do_action( 'abrs_print_notices' );
 				abrs_get_template( 'search/welcome.php' );
 			} elseif ( $abrs_query->is_error() ) {
 				abrs_get_template( 'search/error.php', [ 'errors' => $abrs_query->errors ] );
-			} elseif ( ! $abrs_results->has_items() ) {
+			} elseif ( ! $abrs_results->has_items() && abrs_blank( $abrs_results->get_invalid_items() ) ) {
 				abrs_get_template( 'search/no-results.php' );
 			} else {
 				abrs_get_template( 'search/results.php', [ 'results' => $abrs_results ] );

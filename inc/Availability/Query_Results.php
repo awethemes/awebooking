@@ -18,14 +18,22 @@ class Query_Results implements \Countable, \IteratorAggregate {
 	public $items;
 
 	/**
+	 * //
+	 *
+	 * @var \AweBooking\Support\Collection
+	 */
+	protected $invalid_items;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Request $request The reservation request.
 	 * @param array   $items   The items.
 	 */
-	public function __construct( Request $request, array $items ) {
-		$this->request = $request;
-		$this->items   = abrs_collect( $items );
+	public function __construct( Request $request, array $items, array $invalid_items = [] ) {
+		$this->request       = $request;
+		$this->items         = abrs_collect( $items );
+		$this->invalid_items = abrs_collect( $invalid_items );
 	}
 
 	/**
@@ -53,6 +61,15 @@ class Query_Results implements \Countable, \IteratorAggregate {
 	 */
 	public function get_items() {
 		return $this->items;
+	}
+
+	/**
+	 * //
+	 *
+	 * @return \AweBooking\Support\Collection
+	 */
+	public function get_invalid_items() {
+		return $this->invalid_items;
 	}
 
 	/**
