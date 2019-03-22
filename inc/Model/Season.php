@@ -2,7 +2,7 @@
 
 namespace AweBooking\Model;
 
-interface Session {
+interface Season {
 	/**
 	 * //
 	 *

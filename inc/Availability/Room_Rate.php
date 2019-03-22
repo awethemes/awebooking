@@ -6,7 +6,7 @@ use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
-use AweBooking\Model\Session;
+use AweBooking\Model\Season;
 use AweBooking\Support\Period;
 use AweBooking\Support\Traits\Fluent_Getter;
 
@@ -38,7 +38,7 @@ class Room_Rate {
 	/**
 	 * //
 	 *
-	 * @var \AweBooking\Model\Session
+	 * @var \AweBooking\Model\Season
 	 */
 	protected $session;
 
@@ -142,12 +142,12 @@ class Room_Rate {
 	/**
 	 * //
 	 *
-	 * @return Session|null
+	 * @return Season|null
 	 */
-	protected function find_matches_sessions() {
-		$sessions = abrs_get_sessions();
+	protected function find_matches_seasons() {
+		$sessions = abrs_get_seasons();
 
-		return $sessions->first( function ( Session $session ) {
+		return $sessions->first( function ( Season $session ) {
 			if ( ! $session->get_start_date() || ! $session->get_end_date() ) {
 				return false;
 			}

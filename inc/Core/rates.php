@@ -5,7 +5,7 @@ use AweBooking\Model\Pricing\Base_Rate;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Standard_Rate_Interval;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
-use AweBooking\Model\Session;
+use AweBooking\Model\Season;
 
 /**
  * Retrieves the rate object.
@@ -102,17 +102,17 @@ function abrs_get_standard_rate_interval( $room_type ) {
 }
 
 /**
- * Gets all sessions.
+ * Gets all seasons.
  *
  * Just a placeholder function for pro version :).
  *
  * @return \AweBooking\Support\Collection
  */
-function abrs_get_sessions() {
-	return abrs_collect( apply_filters( 'abrs_get_sessions', [] ) )
+function abrs_get_seasons() {
+	return abrs_collect( apply_filters( 'abrs_get_seasons', [] ) )
 		->filter( function ( $session ) {
-			return $session instanceof Session;
-		} )->sortByDesc( function ( Session $session ) {
+			return $session instanceof Season;
+		} )->sortByDesc( function ( Season $session ) {
 			return $session->get_priority();
 		} )->values();
 }
