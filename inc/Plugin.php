@@ -4,6 +4,7 @@ namespace AweBooking;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\LineFormatter;
@@ -153,6 +154,10 @@ final class Plugin extends Container {
 	 * @throws \Exception
 	 */
 	protected function get_monolog_handler() {
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			return new NullHandler;
+		}
+
 		return ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )
 					->setFormatter( new LineFormatter( null, null, true, true ) );
 	}

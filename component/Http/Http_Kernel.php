@@ -18,6 +18,7 @@ use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\ExceptionHandler;
 use WPLibs\Http\Exception\MethodNotAllowedException;
 use WPLibs\Http\Exception\NotFoundException;
+use WPLibs\Http\Exception\HttpExceptionInterface;
 use WPLibs\Http\Request;
 use WPLibs\Http\Response;
 use WPLibs\Http\WP_Error_Response;
