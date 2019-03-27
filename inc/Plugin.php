@@ -13,7 +13,6 @@ use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
 use Awethemes\Http\Request;
 use WPLibs\View\Factory;
-use WPLibs\View\View_Factory;
 
 final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
