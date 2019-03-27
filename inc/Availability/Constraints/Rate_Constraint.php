@@ -26,22 +26,23 @@ class Rate_Constraint extends Constraint {
 	 * {@inheritdoc}
 	 */
 	public function apply( Response $response ) {
-		$check_day = abrs_date( $this->timespan->get_start_date() );
+		$check_in_date = abrs_date( $this->timespan->get_start_date() );
+		$check_out_date = abrs_date( $this->timespan->get_end_date() );
 
 		foreach ( $response->get_included() as $resource => $include ) {
 			$resource = $include['resource'];
 
-			$effective_date = $resource->get_reference()->get_effective_date();
-			$expires_date   = $resource->get_reference()->get_expires_date();
+			$effective_date = abrs_date(
+				$resource->get_reference()->get_effective_date()
+			) ?: abrs_date( '1970-01-01' );
 
-			if ( $effective_date && $check_day < abrs_date( $effective_date ) ) {
-				$response->reject( $resource, 'rate_effective_date', $this );
-				continue;
-			}
+			$expires_date = abrs_date(
+				$resource->get_reference()->get_expires_date()
+			) ?: abrs_date( '2999-01-01' );
 
-			if ( $expires_date && $check_day > abrs_date( $expires_date ) ) {
-				$response->reject( $resource, 'rate_expired_date', $this );
-				continue;
+			if ( ! $check_in_date->between( $effective_date, $expires_date ) &&
+				 ! $check_out_date->between( $effective_date, $expires_date ) ) {
+				$response->reject( $resource, 'invalid_date', $this );
 			}
 		}
 	}
