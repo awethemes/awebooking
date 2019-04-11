@@ -711,9 +711,7 @@
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__group-wrap {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: left;
-  align-items: flex-end;
+  flex-direction: column;
   width: 100%;
   min-height: 1px;
   position: relative;
@@ -2274,6 +2272,14 @@ input[type=number].searchbox__spinner-input {
     position: absolute;
     right: 0;
     top: 0;
+  }
+  .awebooking .abrs-searchbox--horizontal .abrs-searchbox__wrap,
+.awebooking .abrs-searchbox--horizontal .abrs-searchbox__group-wrap,
+.awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__wrap,
+.awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__group-wrap {
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-end;
   }
   .filterbox__wrap {
     flex-direction: row;

@@ -508,6 +508,11 @@
   pointer-events: auto !important;
 }
 
+[dir=rtl] .scheduler__state-event,
+[dir=rtl] .scheduler__booking-event {
+  position: relative !important;
+}
+
 .scheduler__state-event.unavailable {
   color: #444;
   background: url("../img/blocked-pattern.png") rgba(0, 0, 0, 0.01);
