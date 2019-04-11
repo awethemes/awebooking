@@ -192,6 +192,7 @@ class Search_Form extends Form {
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
+			'readonly'      => 'readonly',
 		] );
 	}
 
@@ -214,6 +215,7 @@ class Search_Form extends Form {
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
+			'readonly'      => 'readonly',
 		] ) );
 	}
 

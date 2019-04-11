@@ -63,9 +63,7 @@
   .abrs-searchbox__group-wrap {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: left;
-    align-items: flex-end;
+    flex-direction: column;
 
     width: 100%;
     min-height: 1px;
@@ -103,6 +101,15 @@
   .abrs-searchbox__submit {
     align-self: center;
     margin-right: 0.75em;
+  }
+
+  @include media-breakpoint-up(md) {
+    .abrs-searchbox__wrap,
+    .abrs-searchbox__group-wrap {
+      flex-direction: row;
+      justify-content: left;
+      align-items: flex-end;
+    }
   }
 }
 
