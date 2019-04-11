@@ -123,6 +123,7 @@ final class Plugin extends Container {
 		$this->singleton( 'view', function () {
 			$view = Factory::create( $this->configuration['view'] );
 
+			// TODO: Consider this case.
 			$view->get_finder()->prepend_location( TEMPLATEPATH . '/' . $this->template_path() );
 			$view->get_finder()->prepend_location( STYLESHEETPATH . '/' . $this->template_path() );
 
@@ -130,8 +131,8 @@ final class Plugin extends Container {
 		} );
 
 		$this->singleton( 'logger', function () {
-			return new Logger( 'awebooking', [ new BufferHandler( $this->get_monolog_handler() ) ] );
-		});
+			return new Logger( 'awebooking', [ $this->get_monolog_handler() ] );
+		} );
 
 		if ( class_exists( Relationships::class ) ) {
 			$this->singleton( 'relationships', function () {
@@ -158,8 +159,10 @@ final class Plugin extends Container {
 			return new NullHandler;
 		}
 
-		return ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )
-					->setFormatter( new LineFormatter( null, null, true, true ) );
+		$stream = ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )
+			->setFormatter( new LineFormatter( null, null, true, true ) );
+
+		return new BufferHandler( $stream );
 	}
 
 	/**

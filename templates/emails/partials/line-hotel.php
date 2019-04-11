@@ -32,6 +32,10 @@ if ( is_null( $hotel ) ) {
 						<a href="<?php echo esc_url( get_edit_post_link( $booking->get_id() ) ); ?>" target="_blank">#<?php echo esc_html( $booking->get_booking_number() ); ?></a>
 					<?php endif; ?>
 				</strong>
+
+				<strong class="booking-id" style="border-style: solid !important;">
+					<?php echo esc_html( abrs_get_booking_status_name( $booking->get_status() ) ); ?>
+				</strong>
 			</td>
 
 			<td class="align-right">

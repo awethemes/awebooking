@@ -127,10 +127,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<th><?php esc_html_e( 'Paid', 'awebooking' ); ?></th>
 			<td class="total-column"><?php abrs_price( $booking->get_paid(), $booking->get( 'currency' ) ); ?></td>
 		</tr>
-
-		<tr>
-			<th><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></th>
-			<td class="total-column"><?php abrs_price( $booking->get_balance_due(), $booking->get( 'currency' ) ); ?></td>
-		</tr>
 	</tbody>
 </table>
