@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the AweBooking package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AweBooking 3.2.11\n"
+"Project-Id-Version: AweBooking 3.2.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/awebooking\n"
-"POT-Creation-Date: 2019-04-11 03:11:09+00:00\n"
+"POT-Creation-Date: 2019-04-22 02:33:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,6 +22,1622 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
+
+#: component/Country/dataset.php:9
+msgid "Afghanistan"
+msgstr ""
+
+#: component/Country/dataset.php:18
+msgid "Åland Islands"
+msgstr ""
+
+#: component/Country/dataset.php:27
+msgid "Albania"
+msgstr ""
+
+#: component/Country/dataset.php:36
+msgid "Algeria"
+msgstr ""
+
+#: component/Country/dataset.php:45
+msgid "American Samoa"
+msgstr ""
+
+#: component/Country/dataset.php:54
+msgid "Andorra"
+msgstr ""
+
+#: component/Country/dataset.php:63
+msgid "Angola"
+msgstr ""
+
+#: component/Country/dataset.php:72
+msgid "Anguilla"
+msgstr ""
+
+#: component/Country/dataset.php:81
+msgid "Antarctica"
+msgstr ""
+
+#: component/Country/dataset.php:114
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: component/Country/dataset.php:123
+msgid "Argentina"
+msgstr ""
+
+#: component/Country/dataset.php:132
+msgid "Armenia"
+msgstr ""
+
+#: component/Country/dataset.php:141
+msgid "Aruba"
+msgstr ""
+
+#: component/Country/dataset.php:150
+msgid "Australia"
+msgstr ""
+
+#: component/Country/dataset.php:159
+msgid "Austria"
+msgstr ""
+
+#: component/Country/dataset.php:168
+msgid "Azerbaijan"
+msgstr ""
+
+#: component/Country/dataset.php:177
+msgid "Bahamas"
+msgstr ""
+
+#: component/Country/dataset.php:186
+msgid "Bahrain"
+msgstr ""
+
+#: component/Country/dataset.php:195
+msgid "Bangladesh"
+msgstr ""
+
+#: component/Country/dataset.php:204
+msgid "Barbados"
+msgstr ""
+
+#: component/Country/dataset.php:213
+msgid "Belarus"
+msgstr ""
+
+#: component/Country/dataset.php:222
+msgid "Belgium"
+msgstr ""
+
+#: component/Country/dataset.php:231
+msgid "Belize"
+msgstr ""
+
+#: component/Country/dataset.php:240
+msgid "Benin"
+msgstr ""
+
+#: component/Country/dataset.php:249
+msgid "Bermuda"
+msgstr ""
+
+#: component/Country/dataset.php:258
+msgid "Bhutan"
+msgstr ""
+
+#: component/Country/dataset.php:267
+msgid "Bolivia (Plurinational State of)"
+msgstr ""
+
+#: component/Country/dataset.php:276
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: component/Country/dataset.php:285
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: component/Country/dataset.php:294
+msgid "Botswana"
+msgstr ""
+
+#: component/Country/dataset.php:303
+msgid "Bouvet Island"
+msgstr ""
+
+#: component/Country/dataset.php:312
+msgid "Brazil"
+msgstr ""
+
+#: component/Country/dataset.php:321
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: component/Country/dataset.php:330
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: component/Country/dataset.php:340
+msgid "Bulgaria"
+msgstr ""
+
+#: component/Country/dataset.php:349
+msgid "Burkina Faso"
+msgstr ""
+
+#: component/Country/dataset.php:358
+msgid "Burundi"
+msgstr ""
+
+#: component/Country/dataset.php:367
+msgid "Cabo Verde"
+msgstr ""
+
+#: component/Country/dataset.php:376
+msgid "Cambodia"
+msgstr ""
+
+#: component/Country/dataset.php:385
+msgid "Cameroon"
+msgstr ""
+
+#: component/Country/dataset.php:394
+msgid "Canada"
+msgstr ""
+
+#: component/Country/dataset.php:403
+msgid "Cayman Islands"
+msgstr ""
+
+#: component/Country/dataset.php:412
+msgid "Central African Republic"
+msgstr ""
+
+#: component/Country/dataset.php:421
+msgid "Chad"
+msgstr ""
+
+#: component/Country/dataset.php:430
+msgid "Chile"
+msgstr ""
+
+#: component/Country/dataset.php:439
+msgid "China"
+msgstr ""
+
+#: component/Country/dataset.php:448
+msgid "Christmas Island"
+msgstr ""
+
+#: component/Country/dataset.php:457
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: component/Country/dataset.php:466
+msgid "Colombia"
+msgstr ""
+
+#: component/Country/dataset.php:475
+msgid "Comoros"
+msgstr ""
+
+#: component/Country/dataset.php:484
+msgid "Congo"
+msgstr ""
+
+#: component/Country/dataset.php:493
+msgid "Congo (Democratic Republic of the)"
+msgstr ""
+
+#: component/Country/dataset.php:502
+msgid "Cook Islands"
+msgstr ""
+
+#: component/Country/dataset.php:511
+msgid "Costa Rica"
+msgstr ""
+
+#: component/Country/dataset.php:520
+msgid "Côte d'Ivoire"
+msgstr ""
+
+#: component/Country/dataset.php:529
+msgid "Croatia"
+msgstr ""
+
+#: component/Country/dataset.php:538
+msgid "Cuba"
+msgstr ""
+
+#: component/Country/dataset.php:548
+msgid "Curaçao"
+msgstr ""
+
+#: component/Country/dataset.php:557
+msgid "Cyprus"
+msgstr ""
+
+#: component/Country/dataset.php:566
+msgid "Czechia"
+msgstr ""
+
+#: component/Country/dataset.php:575
+msgid "Denmark"
+msgstr ""
+
+#: component/Country/dataset.php:584
+msgid "Djibouti"
+msgstr ""
+
+#: component/Country/dataset.php:593
+msgid "Dominica"
+msgstr ""
+
+#: component/Country/dataset.php:602
+msgid "Dominican Republic"
+msgstr ""
+
+#: component/Country/dataset.php:611
+msgid "Ecuador"
+msgstr ""
+
+#: component/Country/dataset.php:620
+msgid "Egypt"
+msgstr ""
+
+#: component/Country/dataset.php:629
+msgid "El Salvador"
+msgstr ""
+
+#: component/Country/dataset.php:638
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:647
+msgid "Eritrea"
+msgstr ""
+
+#: component/Country/dataset.php:656
+msgid "Estonia"
+msgstr ""
+
+#: component/Country/dataset.php:665
+msgid "Ethiopia"
+msgstr ""
+
+#: component/Country/dataset.php:674
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: component/Country/dataset.php:683
+msgid "Faroe Islands"
+msgstr ""
+
+#: component/Country/dataset.php:692
+msgid "Fiji"
+msgstr ""
+
+#: component/Country/dataset.php:701
+msgid "Finland"
+msgstr ""
+
+#: component/Country/dataset.php:710
+msgid "France"
+msgstr ""
+
+#: component/Country/dataset.php:719
+msgid "French Guiana"
+msgstr ""
+
+#: component/Country/dataset.php:728
+msgid "French Polynesia"
+msgstr ""
+
+#: component/Country/dataset.php:737
+msgid "French Southern Territories"
+msgstr ""
+
+#: component/Country/dataset.php:746
+msgid "Gabon"
+msgstr ""
+
+#: component/Country/dataset.php:755
+msgid "Gambia"
+msgstr ""
+
+#: component/Country/dataset.php:764
+msgid "Georgia"
+msgstr ""
+
+#: component/Country/dataset.php:773
+msgid "Germany"
+msgstr ""
+
+#: component/Country/dataset.php:782
+msgid "Ghana"
+msgstr ""
+
+#: component/Country/dataset.php:791
+msgid "Gibraltar"
+msgstr ""
+
+#: component/Country/dataset.php:800
+msgid "Greece"
+msgstr ""
+
+#: component/Country/dataset.php:809
+msgid "Greenland"
+msgstr ""
+
+#: component/Country/dataset.php:818
+msgid "Grenada"
+msgstr ""
+
+#: component/Country/dataset.php:827
+msgid "Guadeloupe"
+msgstr ""
+
+#: component/Country/dataset.php:836
+msgid "Guam"
+msgstr ""
+
+#: component/Country/dataset.php:845
+msgid "Guatemala"
+msgstr ""
+
+#: component/Country/dataset.php:854
+msgid "Guernsey"
+msgstr ""
+
+#: component/Country/dataset.php:863
+msgid "Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:872
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: component/Country/dataset.php:881
+msgid "Guyana"
+msgstr ""
+
+#: component/Country/dataset.php:890
+msgid "Haiti"
+msgstr ""
+
+#: component/Country/dataset.php:899
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: component/Country/dataset.php:908
+msgid "Holy See"
+msgstr ""
+
+#: component/Country/dataset.php:917
+msgid "Honduras"
+msgstr ""
+
+#: component/Country/dataset.php:926
+msgid "Hong Kong"
+msgstr ""
+
+#: component/Country/dataset.php:935
+msgid "Hungary"
+msgstr ""
+
+#: component/Country/dataset.php:944
+msgid "Iceland"
+msgstr ""
+
+#: component/Country/dataset.php:953
+msgid "India"
+msgstr ""
+
+#: component/Country/dataset.php:962
+msgid "Indonesia"
+msgstr ""
+
+#: component/Country/dataset.php:971
+msgid "Iran (Islamic Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:980
+msgid "Iraq"
+msgstr ""
+
+#: component/Country/dataset.php:989
+msgid "Ireland"
+msgstr ""
+
+#: component/Country/dataset.php:998
+msgid "Isle of Man"
+msgstr ""
+
+#: component/Country/dataset.php:1007
+msgid "Israel"
+msgstr ""
+
+#: component/Country/dataset.php:1016
+msgid "Italy"
+msgstr ""
+
+#: component/Country/dataset.php:1025
+msgid "Jamaica"
+msgstr ""
+
+#: component/Country/dataset.php:1034
+msgid "Japan"
+msgstr ""
+
+#: component/Country/dataset.php:1043
+msgid "Jersey"
+msgstr ""
+
+#: component/Country/dataset.php:1052
+msgid "Jordan"
+msgstr ""
+
+#: component/Country/dataset.php:1061
+msgid "Kazakhstan"
+msgstr ""
+
+#: component/Country/dataset.php:1070
+msgid "Kenya"
+msgstr ""
+
+#: component/Country/dataset.php:1079
+msgid "Kiribati"
+msgstr ""
+
+#: component/Country/dataset.php:1088
+msgid "Korea (Democratic People's Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1097
+msgid "Korea (Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1106
+msgid "Kuwait"
+msgstr ""
+
+#: component/Country/dataset.php:1115
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: component/Country/dataset.php:1124
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: component/Country/dataset.php:1133
+msgid "Latvia"
+msgstr ""
+
+#: component/Country/dataset.php:1142
+msgid "Lebanon"
+msgstr ""
+
+#: component/Country/dataset.php:1151
+msgid "Lesotho"
+msgstr ""
+
+#: component/Country/dataset.php:1161
+msgid "Liberia"
+msgstr ""
+
+#: component/Country/dataset.php:1170
+msgid "Libya"
+msgstr ""
+
+#: component/Country/dataset.php:1179
+msgid "Liechtenstein"
+msgstr ""
+
+#: component/Country/dataset.php:1188
+msgid "Lithuania"
+msgstr ""
+
+#: component/Country/dataset.php:1197
+msgid "Luxembourg"
+msgstr ""
+
+#: component/Country/dataset.php:1206
+msgid "Macao"
+msgstr ""
+
+#: component/Country/dataset.php:1215
+msgid "Macedonia (the former Yugoslav Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1224
+msgid "Madagascar"
+msgstr ""
+
+#: component/Country/dataset.php:1233
+msgid "Malawi"
+msgstr ""
+
+#: component/Country/dataset.php:1242
+msgid "Malaysia"
+msgstr ""
+
+#: component/Country/dataset.php:1251
+msgid "Maldives"
+msgstr ""
+
+#: component/Country/dataset.php:1260
+msgid "Mali"
+msgstr ""
+
+#: component/Country/dataset.php:1269
+msgid "Malta"
+msgstr ""
+
+#: component/Country/dataset.php:1278
+msgid "Marshall Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1287
+msgid "Martinique"
+msgstr ""
+
+#: component/Country/dataset.php:1296
+msgid "Mauritania"
+msgstr ""
+
+#: component/Country/dataset.php:1305
+msgid "Mauritius"
+msgstr ""
+
+#: component/Country/dataset.php:1314
+msgid "Mayotte"
+msgstr ""
+
+#: component/Country/dataset.php:1323
+msgid "Mexico"
+msgstr ""
+
+#: component/Country/dataset.php:1332
+msgid "Micronesia (Federated States of)"
+msgstr ""
+
+#: component/Country/dataset.php:1341
+msgid "Moldova (Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1350
+msgid "Monaco"
+msgstr ""
+
+#: component/Country/dataset.php:1359
+msgid "Mongolia"
+msgstr ""
+
+#: component/Country/dataset.php:1368
+msgid "Montenegro"
+msgstr ""
+
+#: component/Country/dataset.php:1377
+msgid "Montserrat"
+msgstr ""
+
+#: component/Country/dataset.php:1386
+msgid "Morocco"
+msgstr ""
+
+#: component/Country/dataset.php:1395
+msgid "Mozambique"
+msgstr ""
+
+#: component/Country/dataset.php:1404
+msgid "Myanmar"
+msgstr ""
+
+#: component/Country/dataset.php:1413
+msgid "Namibia"
+msgstr ""
+
+#: component/Country/dataset.php:1423
+msgid "Nauru"
+msgstr ""
+
+#: component/Country/dataset.php:1432
+msgid "Nepal"
+msgstr ""
+
+#: component/Country/dataset.php:1441
+msgid "Netherlands"
+msgstr ""
+
+#: component/Country/dataset.php:1450
+msgid "New Caledonia"
+msgstr ""
+
+#: component/Country/dataset.php:1459
+msgid "New Zealand"
+msgstr ""
+
+#: component/Country/dataset.php:1468
+msgid "Nicaragua"
+msgstr ""
+
+#: component/Country/dataset.php:1477
+msgid "Niger"
+msgstr ""
+
+#: component/Country/dataset.php:1486
+msgid "Nigeria"
+msgstr ""
+
+#: component/Country/dataset.php:1495
+msgid "Niue"
+msgstr ""
+
+#: component/Country/dataset.php:1504
+msgid "Norfolk Island"
+msgstr ""
+
+#: component/Country/dataset.php:1513
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1522
+msgid "Norway"
+msgstr ""
+
+#: component/Country/dataset.php:1531
+msgid "Oman"
+msgstr ""
+
+#: component/Country/dataset.php:1540
+msgid "Pakistan"
+msgstr ""
+
+#: component/Country/dataset.php:1549
+msgid "Palau"
+msgstr ""
+
+#: component/Country/dataset.php:1558
+msgid "Palestine, State of"
+msgstr ""
+
+#: component/Country/dataset.php:1567
+msgid "Panama"
+msgstr ""
+
+#: component/Country/dataset.php:1576
+msgid "Papua New Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:1585
+msgid "Paraguay"
+msgstr ""
+
+#: component/Country/dataset.php:1594
+msgid "Peru"
+msgstr ""
+
+#: component/Country/dataset.php:1603
+msgid "Philippines"
+msgstr ""
+
+#: component/Country/dataset.php:1612
+msgid "Pitcairn"
+msgstr ""
+
+#: component/Country/dataset.php:1621
+msgid "Poland"
+msgstr ""
+
+#: component/Country/dataset.php:1630
+msgid "Portugal"
+msgstr ""
+
+#: component/Country/dataset.php:1639
+msgid "Puerto Rico"
+msgstr ""
+
+#: component/Country/dataset.php:1648
+msgid "Qatar"
+msgstr ""
+
+#: component/Country/dataset.php:1657
+msgid "Réunion"
+msgstr ""
+
+#: component/Country/dataset.php:1666
+msgid "Romania"
+msgstr ""
+
+#: component/Country/dataset.php:1675
+msgid "Russian Federation"
+msgstr ""
+
+#: component/Country/dataset.php:1684
+msgid "Rwanda"
+msgstr ""
+
+#: component/Country/dataset.php:1693
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: component/Country/dataset.php:1702
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr ""
+
+#: component/Country/dataset.php:1711
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: component/Country/dataset.php:1720
+msgid "Saint Lucia"
+msgstr ""
+
+#: component/Country/dataset.php:1729
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: component/Country/dataset.php:1739
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: component/Country/dataset.php:1748
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: component/Country/dataset.php:1757
+msgid "Samoa"
+msgstr ""
+
+#: component/Country/dataset.php:1766
+msgid "San Marino"
+msgstr ""
+
+#: component/Country/dataset.php:1775
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: component/Country/dataset.php:1784
+msgid "Saudi Arabia"
+msgstr ""
+
+#: component/Country/dataset.php:1793
+msgid "Senegal"
+msgstr ""
+
+#: component/Country/dataset.php:1802
+msgid "Serbia"
+msgstr ""
+
+#: component/Country/dataset.php:1811
+msgid "Seychelles"
+msgstr ""
+
+#: component/Country/dataset.php:1820
+msgid "Sierra Leone"
+msgstr ""
+
+#: component/Country/dataset.php:1829
+msgid "Singapore"
+msgstr ""
+
+#: component/Country/dataset.php:1838
+msgid "Sint Maarten (Dutch part)"
+msgstr ""
+
+#: component/Country/dataset.php:1847
+msgid "Slovakia"
+msgstr ""
+
+#: component/Country/dataset.php:1856
+msgid "Slovenia"
+msgstr ""
+
+#: component/Country/dataset.php:1865
+msgid "Solomon Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1874
+msgid "Somalia"
+msgstr ""
+
+#: component/Country/dataset.php:1883
+msgid "South Africa"
+msgstr ""
+
+#: component/Country/dataset.php:1892
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1901
+msgid "South Sudan"
+msgstr ""
+
+#: component/Country/dataset.php:1910
+msgid "Spain"
+msgstr ""
+
+#: component/Country/dataset.php:1919
+msgid "Sri Lanka"
+msgstr ""
+
+#: component/Country/dataset.php:1928
+msgid "Sudan"
+msgstr ""
+
+#: component/Country/dataset.php:1937
+msgid "Suriname"
+msgstr ""
+
+#: component/Country/dataset.php:1946
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: component/Country/dataset.php:1955
+msgid "Swaziland"
+msgstr ""
+
+#: component/Country/dataset.php:1965
+msgid "Sweden"
+msgstr ""
+
+#: component/Country/dataset.php:1974
+msgid "Switzerland"
+msgstr ""
+
+#: component/Country/dataset.php:1983
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: component/Country/dataset.php:1992
+msgid "Taiwan (Province of China)"
+msgstr ""
+
+#: component/Country/dataset.php:2001
+msgid "Tajikistan"
+msgstr ""
+
+#: component/Country/dataset.php:2010
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: component/Country/dataset.php:2019
+msgid "Thailand"
+msgstr ""
+
+#: component/Country/dataset.php:2028
+msgid "Timor-Leste"
+msgstr ""
+
+#: component/Country/dataset.php:2037
+msgid "Togo"
+msgstr ""
+
+#: component/Country/dataset.php:2046
+msgid "Tokelau"
+msgstr ""
+
+#: component/Country/dataset.php:2055
+msgid "Tonga"
+msgstr ""
+
+#: component/Country/dataset.php:2064
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: component/Country/dataset.php:2073
+msgid "Tunisia"
+msgstr ""
+
+#: component/Country/dataset.php:2082
+msgid "Turkey"
+msgstr ""
+
+#: component/Country/dataset.php:2091
+msgid "Turkmenistan"
+msgstr ""
+
+#: component/Country/dataset.php:2100
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: component/Country/dataset.php:2109
+msgid "Tuvalu"
+msgstr ""
+
+#: component/Country/dataset.php:2118
+msgid "Uganda"
+msgstr ""
+
+#: component/Country/dataset.php:2127
+msgid "Ukraine"
+msgstr ""
+
+#: component/Country/dataset.php:2136
+msgid "United Arab Emirates"
+msgstr ""
+
+#: component/Country/dataset.php:2145
+msgid "United Kingdom of Great Britain and Northern Ireland"
+msgstr ""
+
+#: component/Country/dataset.php:2154
+msgid "United States of America"
+msgstr ""
+
+#: component/Country/dataset.php:2163
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: component/Country/dataset.php:2172
+msgid "Uruguay"
+msgstr ""
+
+#: component/Country/dataset.php:2181
+msgid "Uzbekistan"
+msgstr ""
+
+#: component/Country/dataset.php:2190
+msgid "Vanuatu"
+msgstr ""
+
+#: component/Country/dataset.php:2199
+msgid "Venezuela (Bolivarian Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:2208
+msgid "Viet Nam"
+msgstr ""
+
+#: component/Country/dataset.php:2217
+msgid "Virgin Islands (British)"
+msgstr ""
+
+#: component/Country/dataset.php:2226
+msgid "Virgin Islands (U.S.)"
+msgstr ""
+
+#: component/Country/dataset.php:2235
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: component/Country/dataset.php:2244
+msgid "Western Sahara"
+msgstr ""
+
+#: component/Country/dataset.php:2253
+msgid "Yemen"
+msgstr ""
+
+#: component/Country/dataset.php:2262
+msgid "Zambia"
+msgstr ""
+
+#: component/Country/dataset.php:2271
+msgid "Zimbabwe"
+msgstr ""
+
+#: component/Currency/dataset.php:10
+msgid "UAE Dirham"
+msgstr ""
+
+#: component/Currency/dataset.php:17
+msgid "Afghan Afghani"
+msgstr ""
+
+#: component/Currency/dataset.php:24
+msgid "Albanian Lek"
+msgstr ""
+
+#: component/Currency/dataset.php:31
+msgid "Armenian Dram"
+msgstr ""
+
+#: component/Currency/dataset.php:38
+msgid "Netherlands Antillean Guilder"
+msgstr ""
+
+#: component/Currency/dataset.php:45
+msgid "Angolan Kwanza"
+msgstr ""
+
+#: component/Currency/dataset.php:52
+msgid "Argentine Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:59
+msgid "Australian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:66
+msgid "Aruban Florin"
+msgstr ""
+
+#: component/Currency/dataset.php:73
+msgid "Azerbaijani Manat"
+msgstr ""
+
+#: component/Currency/dataset.php:80
+msgid "Bosnia and Herzegovina Convertible Mark"
+msgstr ""
+
+#: component/Currency/dataset.php:87
+msgid "Barbados Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:94
+msgid "Bangladeshi Taka"
+msgstr ""
+
+#: component/Currency/dataset.php:101
+msgid "Bulgarian Lev"
+msgstr ""
+
+#: component/Currency/dataset.php:108
+msgid "Bahraini Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:115
+msgid "Burundian Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:122
+msgid "Bermudian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:129
+msgid "Brunei Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:136
+msgid "Boliviano"
+msgstr ""
+
+#: component/Currency/dataset.php:143
+msgid "Brazilian Real"
+msgstr ""
+
+#: component/Currency/dataset.php:150
+msgid "Bahamian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:157
+msgid "Bhutanese Ngultrum"
+msgstr ""
+
+#: component/Currency/dataset.php:164
+msgid "Botswana Pula"
+msgstr ""
+
+#: component/Currency/dataset.php:171
+msgid "Belarussian Ruble"
+msgstr ""
+
+#: component/Currency/dataset.php:178
+msgid "Belize Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:185
+msgid "Canadian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:192
+msgid "Congolese Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:199
+msgid "Swiss Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:206
+msgid "Chilean Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:213
+msgid "Chinese Yuan"
+msgstr ""
+
+#: component/Currency/dataset.php:220
+msgid "Colombian Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:227
+msgid "Costa Rican Colon"
+msgstr ""
+
+#: component/Currency/dataset.php:234
+msgid "Cuban Convertible Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:241
+msgid "Cuban Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:248
+msgid "Cape Verde Escudo"
+msgstr ""
+
+#: component/Currency/dataset.php:255
+msgid "Czech Koruna"
+msgstr ""
+
+#: component/Currency/dataset.php:262
+msgid "Djiboutian Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:269
+msgid "Danish Krone"
+msgstr ""
+
+#: component/Currency/dataset.php:276
+msgid "Dominican Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:283
+msgid "Algerian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:290
+msgid "Egyptian Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:297
+msgid "Eritrean Nakfa"
+msgstr ""
+
+#: component/Currency/dataset.php:304
+msgid "Ethiopian Birr"
+msgstr ""
+
+#: component/Currency/dataset.php:311
+msgid "Euro"
+msgstr ""
+
+#: component/Currency/dataset.php:318
+msgid "Fiji Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:325
+msgid "Falkland Islands Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:332
+msgid "Pound Sterling"
+msgstr ""
+
+#: component/Currency/dataset.php:339
+msgid "Georgian Lari"
+msgstr ""
+
+#: component/Currency/dataset.php:346
+msgid "Ghanaian Cedi"
+msgstr ""
+
+#: component/Currency/dataset.php:353
+msgid "Gibraltar Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:360
+msgid "Gambian Dalasi"
+msgstr ""
+
+#: component/Currency/dataset.php:367
+msgid "Guinean Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:374
+msgid "Guatemalan Quetzal"
+msgstr ""
+
+#: component/Currency/dataset.php:381
+msgid "Guyanese Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:388
+msgid "Hong Kong Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:395
+msgid "Honduran Lempira"
+msgstr ""
+
+#: component/Currency/dataset.php:402
+msgid "Croatian Kuna"
+msgstr ""
+
+#: component/Currency/dataset.php:409
+msgid "Haitian Gourde"
+msgstr ""
+
+#: component/Currency/dataset.php:416
+msgid "Hungarian Forint"
+msgstr ""
+
+#: component/Currency/dataset.php:423
+msgid "Indonesian Rupiah"
+msgstr ""
+
+#: component/Currency/dataset.php:430
+msgid "Israeli New Sheqel"
+msgstr ""
+
+#: component/Currency/dataset.php:437
+msgid "Indian Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:444
+msgid "Iraqi Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:451
+msgid "Iranian Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:458
+msgid "Icelandic Króna"
+msgstr ""
+
+#: component/Currency/dataset.php:465
+msgid "Jamaican Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:472
+msgid "Jordanian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:479
+msgid "Japanese Yen"
+msgstr ""
+
+#: component/Currency/dataset.php:486
+msgid "Kenyan Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:493
+msgid "Kyrgyzstani Som"
+msgstr ""
+
+#: component/Currency/dataset.php:500
+msgid "Cambodian Riel"
+msgstr ""
+
+#: component/Currency/dataset.php:507
+msgid "Comoro Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:514
+msgid "North Korean Won"
+msgstr ""
+
+#: component/Currency/dataset.php:521
+msgid "South Korean Won"
+msgstr ""
+
+#: component/Currency/dataset.php:528
+msgid "Kuwaiti Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:535
+msgid "Cayman Islands Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:542
+msgid "Kazakhstani Tenge"
+msgstr ""
+
+#: component/Currency/dataset.php:549
+msgid "Lao Kip"
+msgstr ""
+
+#: component/Currency/dataset.php:556
+msgid "Lebanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:563
+msgid "Sri Lankan Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:570
+msgid "Liberian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:577
+msgid "Lesotho Loti"
+msgstr ""
+
+#: component/Currency/dataset.php:584
+msgid "Libyan Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:591
+msgid "Moroccan Dirham"
+msgstr ""
+
+#: component/Currency/dataset.php:598
+msgid "Moldovan Leu"
+msgstr ""
+
+#: component/Currency/dataset.php:605
+msgid "Malagasy Ariary"
+msgstr ""
+
+#: component/Currency/dataset.php:612
+msgid "Macedonian Denar"
+msgstr ""
+
+#: component/Currency/dataset.php:619
+msgid "Myanmar Kyat"
+msgstr ""
+
+#: component/Currency/dataset.php:626
+msgid "Mongolian Tugrik"
+msgstr ""
+
+#: component/Currency/dataset.php:633
+msgid "Macanese Pataca"
+msgstr ""
+
+#: component/Currency/dataset.php:640
+msgid "Mauritanian Ouguiya"
+msgstr ""
+
+#: component/Currency/dataset.php:647
+msgid "Mauritian Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:654
+msgid "Maldivian Rufiyaa"
+msgstr ""
+
+#: component/Currency/dataset.php:661
+msgid "Malawian Kwacha"
+msgstr ""
+
+#: component/Currency/dataset.php:668
+msgid "Mexican Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:675
+msgid "Malaysian Ringgit"
+msgstr ""
+
+#: component/Currency/dataset.php:682
+msgid "Mozambican Metical"
+msgstr ""
+
+#: component/Currency/dataset.php:689
+msgid "Namibian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:696
+msgid "Nigerian Naira"
+msgstr ""
+
+#: component/Currency/dataset.php:703
+msgid "Nicaraguan Córdoba"
+msgstr ""
+
+#: component/Currency/dataset.php:710
+msgid "Norwegian Krone"
+msgstr ""
+
+#: component/Currency/dataset.php:717
+msgid "Nepalese Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:724
+msgid "New Zealand Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:731
+msgid "Omani Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:738
+msgid "Panamanian Balboa"
+msgstr ""
+
+#: component/Currency/dataset.php:745
+msgid "Peruvian Nuevo Sol"
+msgstr ""
+
+#: component/Currency/dataset.php:752
+msgid "Papua New Guinean Kina"
+msgstr ""
+
+#: component/Currency/dataset.php:759
+msgid "Philippine Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:766
+msgid "Pakistani Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:773
+msgid "Polish Zloty"
+msgstr ""
+
+#: component/Currency/dataset.php:780
+msgid "Paraguayan Guarani"
+msgstr ""
+
+#: component/Currency/dataset.php:787
+msgid "Qatari Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:794
+msgid "Romanian New Leu"
+msgstr ""
+
+#: component/Currency/dataset.php:801
+msgid "Serbian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:808
+msgid "Russian Ruble"
+msgstr ""
+
+#: component/Currency/dataset.php:815
+msgid "Rwandan Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:822
+msgid "Saudi Riyal"
+msgstr ""
+
+#: component/Currency/dataset.php:829
+msgid "Solomon Islands Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:836
+msgid "Seychelles Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:843
+msgid "Sudanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:850
+msgid "Swedish Krona"
+msgstr ""
+
+#: component/Currency/dataset.php:857
+msgid "Singapore Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:864
+msgid "Saint Helena Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:871
+msgid "Sierra Leonean Leone"
+msgstr ""
+
+#: component/Currency/dataset.php:878
+msgid "Somali Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:885
+msgid "Surinamese Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:892
+msgid "South Sudanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:899
+msgid "São Tomé and Principe Dobra"
+msgstr ""
+
+#: component/Currency/dataset.php:906
+msgid "Syrian Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:913
+msgid "Swazi Lilangeni"
+msgstr ""
+
+#: component/Currency/dataset.php:920
+msgid "Thai Baht"
+msgstr ""
+
+#: component/Currency/dataset.php:927
+msgid "Tajikistani Somoni"
+msgstr ""
+
+#: component/Currency/dataset.php:934
+msgid "Turkmenistani Manat"
+msgstr ""
+
+#: component/Currency/dataset.php:941
+msgid "Tunisian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:948
+msgid "Tongan Paʻanga"
+msgstr ""
+
+#: component/Currency/dataset.php:955
+msgid "Turkish Lira"
+msgstr ""
+
+#: component/Currency/dataset.php:962
+msgid "Trinidad and Tobago Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:969
+msgid "New Taiwan Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:976
+msgid "Tanzanian Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:983
+msgid "Ukrainian Hryvnia"
+msgstr ""
+
+#: component/Currency/dataset.php:990
+msgid "Ugandan Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:997
+msgid "US Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:1004
+msgid "Uruguayan Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:1011
+msgid "Uzbekistan Som"
+msgstr ""
+
+#: component/Currency/dataset.php:1018
+msgid "Venezuelan Bolivar"
+msgstr ""
+
+#: component/Currency/dataset.php:1025
+msgid "Vietnamese Dong"
+msgstr ""
+
+#: component/Currency/dataset.php:1032
+msgid "Vanuatu Vatu"
+msgstr ""
+
+#: component/Currency/dataset.php:1039
+msgid "Samoan Tala"
+msgstr ""
+
+#: component/Currency/dataset.php:1046
+msgid "CFA Franc BEAC"
+msgstr ""
+
+#: component/Currency/dataset.php:1053
+msgid "East Caribbean Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:1060
+msgid "CFA Franc BCEAO"
+msgstr ""
+
+#: component/Currency/dataset.php:1067
+msgid "CFP Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:1074
+msgid "Yemeni Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:1081
+msgid "South African Rand"
+msgstr ""
+
+#: component/Currency/dataset.php:1088
+msgid "Zambian Kwacha"
+msgstr ""
 
 #: component/Form/fields/abrs_dates.php:23
 #: inc/Admin/Metaboxes/views/html-booking-rooms.php:34
