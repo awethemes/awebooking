@@ -1071,7 +1071,7 @@ var DateUtils = function () {
     return "0".concat(number).slice(-2);
   };
 
-  var int = function int(bool) {
+  var _int = function _int(bool) {
     return bool === true ? 1 : 0;
   };
 
@@ -1120,7 +1120,7 @@ var DateUtils = function () {
       date.setDate(parseFloat(day));
     },
     K: function K(date, amPM, locale) {
-      date.setHours(date.getHours() % 12 + 12 * int(new RegExp(locale.amPM[1], 'i').test(amPM)));
+      date.setHours(date.getHours() % 12 + 12 * _int(new RegExp(locale.amPM[1], 'i').test(amPM)));
     },
     M: function M(date, shortMonth, locale) {
       date.setMonth(locale.months.shorthand.indexOf(shortMonth));
@@ -1199,7 +1199,7 @@ var DateUtils = function () {
     },
     // AM/PM
     K: function K(date, locale) {
-      return locale.amPM[int(date.getHours() > 11)];
+      return locale.amPM[_int(date.getHours() > 11)];
     },
     // Shorthand month e.g. Jan, Sep, Oct, etc
     M: function M(date, locale) {
@@ -1382,7 +1382,7 @@ awebooking_plugin.config = Object.assign({}, {
 awebooking_plugin.utils.dates = date_utils;
 
 if (typeof window.flatpickr !== 'undefined') {
-  awebooking_plugin.utils.dates.l10n = flatpickr.l10ns.default;
+  awebooking_plugin.utils.dates.l10n = flatpickr.l10ns["default"];
 }
 
 awebooking_plugin.utils.dropdown = function (el, config) {

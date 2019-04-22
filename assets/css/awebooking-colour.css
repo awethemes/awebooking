@@ -92,6 +92,16 @@
   opacity: 0.5;
   color: inherit;
 }
+.awebooking .form-input::-moz-placeholder, .awebooking .cmb2_select::-moz-placeholder,
+.awebooking .cmb2_textarea::-moz-placeholder,
+.awebooking .regular-text::-moz-placeholder,
+.awebooking-block .form-input::-moz-placeholder,
+.awebooking-block .cmb2_select::-moz-placeholder,
+.awebooking-block .cmb2_textarea::-moz-placeholder,
+.awebooking-block .regular-text::-moz-placeholder {
+  opacity: 0.5;
+  color: inherit;
+}
 .awebooking .form-input:-ms-input-placeholder, .awebooking .cmb2_select:-ms-input-placeholder,
 .awebooking .cmb2_textarea:-ms-input-placeholder,
 .awebooking .regular-text:-ms-input-placeholder,
@@ -209,6 +219,11 @@
 }
 .awebooking .input-transparent::-webkit-input-placeholder,
 .awebooking-block .input-transparent::-webkit-input-placeholder {
+  opacity: 1;
+  color: #6c757d;
+}
+.awebooking .input-transparent::-moz-placeholder,
+.awebooking-block .input-transparent::-moz-placeholder {
   opacity: 1;
   color: #6c757d;
 }
@@ -331,7 +346,7 @@
   text-transform: uppercase;
   vertical-align: bottom;
   background-color: #f2f5f7;
-  border-bottom: solid 1px #dee2e6;
+  border-bottom: solid 1px #dae1e7;
 }
 .awebooking .table tbody td,
 .awebooking .table tbody th,

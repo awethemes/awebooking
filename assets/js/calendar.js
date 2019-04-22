@@ -489,7 +489,8 @@ var defaultProps = {
 
     return closeKeyboardShortcutsPanel;
   }(),
-  phrases: _defaultPhrases.DayPickerKeyboardShortcutsPhrases
+  phrases: _defaultPhrases.DayPickerKeyboardShortcutsPhrases,
+  renderKeyboardShortcutsButton: undefined
 };
 
 function getKeyboardShortcuts(phrases) {
@@ -679,12 +680,18 @@ function (_ref) {
             showKeyboardShortcutsPanel = _this$props.showKeyboardShortcutsPanel,
             closeKeyboardShortcutsPanel = _this$props.closeKeyboardShortcutsPanel,
             styles = _this$props.styles,
-            phrases = _this$props.phrases;
+            phrases = _this$props.phrases,
+            renderKeyboardShortcutsButton = _this$props.renderKeyboardShortcutsButton;
         var toggleButtonText = showKeyboardShortcutsPanel ? phrases.hideKeyboardShortcutsPanel : phrases.showKeyboardShortcutsPanel;
         var bottomRight = buttonLocation === BOTTOM_RIGHT;
         var topRight = buttonLocation === TOP_RIGHT;
         var topLeft = buttonLocation === TOP_LEFT;
-        return _react["default"].createElement("div", null, _react["default"].createElement("button", _extends({
+        return _react["default"].createElement("div", null, renderKeyboardShortcutsButton && renderKeyboardShortcutsButton({
+          // passing in context-specific props
+          ref: this.setShowKeyboardShortcutsButtonRef,
+          onClick: this.onShowKeyboardShortcutsButtonClick,
+          ariaLabel: toggleButtonText
+        }), renderKeyboardShortcutsButton || _react["default"].createElement("button", _extends({
           ref: this.setShowKeyboardShortcutsButtonRef
         }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
           type: "button",
@@ -903,6 +910,8 @@ module.exports = __webpack_require__("G+CP");
 var ReactPropTypesSecret = __webpack_require__("WbBG");
 
 function emptyFunction() {}
+function emptyFunctionWithReset() {}
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
 
 module.exports = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -936,16 +945,19 @@ module.exports = function() {
     any: shim,
     arrayOf: getShim,
     element: shim,
+    elementType: shim,
     instanceOf: getShim,
     node: shim,
     objectOf: getShim,
     oneOf: getShim,
     oneOfType: getShim,
     shape: getShim,
-    exact: getShim
+    exact: getShim,
+
+    checkPropTypes: emptyFunctionWithReset,
+    resetWarningCache: emptyFunction
   };
 
-  ReactPropTypes.checkPropTypes = emptyFunction;
   ReactPropTypes.PropTypes = ReactPropTypes;
 
   return ReactPropTypes;
@@ -964,7 +976,7 @@ module.exports = function() {
  * LICENSE file in the root directory of this source tree.
  */
 
-if (false) { var throwOnDirectAccess, isValidElement, REACT_ELEMENT_TYPE; } else {
+if (false) { var throwOnDirectAccess, ReactIs; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
   module.exports = __webpack_require__("16Al")();
@@ -2312,9 +2324,9 @@ var warning = function() {};
 if (__DEV__) {
   var printWarning = function printWarning(format, args) {
     var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
+    args = new Array(len > 1 ? len - 1 : 0);
+    for (var key = 1; key < len; key++) {
+      args[key - 1] = arguments[key];
     }
     var argIndex = 0;
     var message = 'Warning: ' +
@@ -2933,7 +2945,7 @@ function (_ref) {
     value: function () {
       function onFocusOut(e) {
         var onFocusChange = this.props.onFocusChange;
-        if (this.container.contains(e.relatedTarget || e.target)) return;
+        if (this.dayPickerContainer.contains(e.relatedTarget || e.target)) return;
         onFocusChange({
           focused: false
         });
@@ -2945,7 +2957,11 @@ function (_ref) {
     key: "setDayPickerContainerRef",
     value: function () {
       function setDayPickerContainerRef(ref) {
+        if (ref === this.dayPickerContainer) return;
+        this.removeEventListeners();
         this.dayPickerContainer = ref;
+        if (!ref) return;
+        this.addEventListeners();
       }
 
       return setDayPickerContainerRef;
@@ -2954,11 +2970,7 @@ function (_ref) {
     key: "setContainerRef",
     value: function () {
       function setContainerRef(ref) {
-        if (ref === this.container) return;
-        this.removeEventListeners();
         this.container = ref;
-        if (!ref) return;
-        this.addEventListeners();
       }
 
       return setContainerRef;
@@ -2970,7 +2982,7 @@ function (_ref) {
         // We manually set event because React has not implemented onFocusIn/onFocusOut.
         // Keep an eye on https://github.com/facebook/react/issues/6410 for updates
         // We use "blur w/ useCapture param" vs "onfocusout" for FF browser support
-        this.removeFocusOutEventListener = (0, _consolidatedEvents.addEventListener)(this.container, 'focusout', this.onFocusOut);
+        this.removeFocusOutEventListener = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onFocusOut);
       }
 
       return addEventListeners;
@@ -3361,7 +3373,7 @@ exports["default"] = _default;
 "use strict";
 
 
-var define = __webpack_require__("E19O");
+var define = __webpack_require__("82c2");
 
 var implementation = __webpack_require__("rQy3");
 var getPolyfill = __webpack_require__("xoj2");
@@ -3407,6 +3419,10 @@ var _consolidatedEvents = __webpack_require__("1TsT");
 var _object = __webpack_require__("4cSd");
 
 var _object2 = _interopRequireDefault(_object);
+
+var _document = __webpack_require__("n1Y7");
+
+var _document2 = _interopRequireDefault(_document);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -3513,7 +3529,7 @@ var OutsideClickHandler = function (_React$Component) {
         var useCapture = this.props.useCapture;
 
 
-        var isDescendantOfRoot = this.childNode && this.childNode.contains(e.target);
+        var isDescendantOfRoot = this.childNode && (0, _document2['default'])(this.childNode, e.target);
         if (!isDescendantOfRoot) {
           this.removeMouseUp = (0, _consolidatedEvents.addEventListener)(document, 'mouseup', this.onMouseUp, { capture: useCapture });
         }
@@ -3533,7 +3549,7 @@ var OutsideClickHandler = function (_React$Component) {
         var onOutsideClick = this.props.onOutsideClick;
 
 
-        var isDescendantOfRoot = this.childNode && this.childNode.contains(e.target);
+        var isDescendantOfRoot = this.childNode && (0, _document2['default'])(this.childNode, e.target);
         if (this.removeMouseUp) this.removeMouseUp();
         this.removeMouseUp = null;
 
@@ -3657,6 +3673,29 @@ exports["default"] = _default;
 
 // eslint-disable-next-line import/no-unresolved
 module.exports = __webpack_require__("Fv1B");
+
+
+/***/ }),
+
+/***/ "5yQQ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var implementation = __webpack_require__("nRDI");
+
+module.exports = function getPolyfill() {
+	if (typeof document !== 'undefined') {
+		if (document.contains) {
+			return document.contains;
+		}
+		if (document.body && document.body.contains) {
+			return document.body.contains;
+		}
+	}
+	return implementation;
+};
 
 
 /***/ }),
@@ -4198,10 +4237,11 @@ PortalWithState_PortalWithState.defaultProps = {
 
 
 var keys = __webpack_require__("1seS");
-var foreach = __webpack_require__("v61W");
-var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol';
+var hasSymbols = typeof Symbol === 'function' && typeof Symbol('foo') === 'symbol';
 
 var toStr = Object.prototype.toString;
+var concat = Array.prototype.concat;
+var origDefineProperty = Object.defineProperty;
 
 var isFunction = function (fn) {
 	return typeof fn === 'function' && toStr.call(fn) === '[object Function]';
@@ -4210,23 +4250,24 @@ var isFunction = function (fn) {
 var arePropertyDescriptorsSupported = function () {
 	var obj = {};
 	try {
-		Object.defineProperty(obj, 'x', { enumerable: false, value: obj });
-        /* eslint-disable no-unused-vars, no-restricted-syntax */
-        for (var _ in obj) { return false; }
-        /* eslint-enable no-unused-vars, no-restricted-syntax */
+		origDefineProperty(obj, 'x', { enumerable: false, value: obj });
+		// eslint-disable-next-line no-unused-vars, no-restricted-syntax
+		for (var _ in obj) { // jscs:ignore disallowUnusedVariables
+			return false;
+		}
 		return obj.x === obj;
 	} catch (e) { /* this is IE 8. */
 		return false;
 	}
 };
-var supportsDescriptors = Object.defineProperty && arePropertyDescriptorsSupported();
+var supportsDescriptors = origDefineProperty && arePropertyDescriptorsSupported();
 
 var defineProperty = function (object, name, value, predicate) {
 	if (name in object && (!isFunction(predicate) || !predicate())) {
 		return;
 	}
 	if (supportsDescriptors) {
-		Object.defineProperty(object, name, {
+		origDefineProperty(object, name, {
 			configurable: true,
 			enumerable: false,
 			value: value,
@@ -4241,11 +4282,11 @@ var defineProperties = function (object, map) {
 	var predicates = arguments.length > 2 ? arguments[2] : {};
 	var props = keys(map);
 	if (hasSymbols) {
-		props = props.concat(Object.getOwnPropertySymbols(map));
+		props = concat.call(props, Object.getOwnPropertySymbols(map));
 	}
-	foreach(props, function (name) {
-		defineProperty(object, name, map[name], predicates[name]);
-	});
+	for (var i = 0; i < props.length; i += 1) {
+		defineProperty(object, props[i], map[props[i]], predicates[props[i]]);
+	}
 };
 
 defineProperties.supportsDescriptors = !!supportsDescriptors;
@@ -4470,6 +4511,8 @@ var defaultProps = {
   // input related props
   startDatePlaceholderText: 'Start Date',
   endDatePlaceholderText: 'End Date',
+  startDateOffset: undefined,
+  endDateOffset: undefined,
   disabled: false,
   required: false,
   readOnly: false,
@@ -4737,11 +4780,12 @@ function (_ref) {
       function onDayPickerFocusOut(event) {
         // In cases where **relatedTarget** is not null, it points to the right
         // element here. However, in cases where it is null (such as clicking on a
-        // specific day), the appropriate value is **event.target**.
+        // specific day) or it is **document.body** (IE11), the appropriate value is **event.target**.
         //
         // We handle both situations here by using the ` || ` operator to fallback
         // to *event.target** when **relatedTarget** is not provided.
-        if (this.dayPickerContainer.contains(event.relatedTarget || event.target)) return;
+        var relatedTarget = event.relatedTarget === document.body ? event.target : event.relatedTarget || event.target;
+        if (this.dayPickerContainer.contains(relatedTarget)) return;
         this.onOutsideClick(event);
       }
 
@@ -4930,7 +4974,9 @@ function (_ref) {
             enableOutsideDays = _this$props7.enableOutsideDays,
             focusedInput = _this$props7.focusedInput,
             startDate = _this$props7.startDate,
+            startDateOffset = _this$props7.startDateOffset,
             endDate = _this$props7.endDate,
+            endDateOffset = _this$props7.endDateOffset,
             minimumNights = _this$props7.minimumNights,
             keepOpenOnDateSelect = _this$props7.keepOpenOnDateSelect,
             renderCalendarDay = _this$props7.renderCalendarDay,
@@ -4989,7 +5035,9 @@ function (_ref) {
           onClose: onClose,
           focusedInput: focusedInput,
           startDate: startDate,
+          startDateOffset: startDateOffset,
           endDate: endDate,
+          endDateOffset: endDateOffset,
           monthFormat: monthFormat,
           renderMonthText: renderMonthText,
           withPortal: withAnyPortal,
@@ -5410,44 +5458,59 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function getCalendarDaySettings(day, ariaLabelFormat, daySize, modifiers, phrases) {
+function isSelected(modifiers) {
+  return modifiers.has('selected') || modifiers.has('selected-span') || modifiers.has('selected-start') || modifiers.has('selected-end');
+}
+
+function shouldUseDefaultCursor(modifiers) {
+  return modifiers.has('blocked-minimum-nights') || modifiers.has('blocked-calendar') || modifiers.has('blocked-out-of-range');
+}
+
+function isHoveredSpan(modifiers) {
+  if (isSelected(modifiers)) return false;
+  return modifiers.has('hovered-span') || modifiers.has('after-hovered-start');
+}
+
+function getAriaLabel(phrases, modifiers, day, ariaLabelFormat) {
   var chooseAvailableDate = phrases.chooseAvailableDate,
       dateIsUnavailable = phrases.dateIsUnavailable,
       dateIsSelected = phrases.dateIsSelected,
       dateIsSelectedAsStartDate = phrases.dateIsSelectedAsStartDate,
       dateIsSelectedAsEndDate = phrases.dateIsSelectedAsEndDate;
-  var daySizeStyles = {
-    width: daySize,
-    height: daySize - 1
-  };
-  var useDefaultCursor = modifiers.has('blocked-minimum-nights') || modifiers.has('blocked-calendar') || modifiers.has('blocked-out-of-range');
-  var selected = modifiers.has('selected') || modifiers.has('selected-start') || modifiers.has('selected-end');
-  var hoveredSpan = !selected && (modifiers.has('hovered-span') || modifiers.has('after-hovered-start'));
-  var isOutsideRange = modifiers.has('blocked-out-of-range');
   var formattedDate = {
     date: day.format(ariaLabelFormat)
   };
-  var ariaLabel = (0, _getPhrase["default"])(chooseAvailableDate, formattedDate);
 
-  if (selected) {
-    if (modifiers.has('selected-start') && dateIsSelectedAsStartDate) {
-      ariaLabel = (0, _getPhrase["default"])(dateIsSelectedAsStartDate, formattedDate);
-    } else if (modifiers.has('selected-end') && dateIsSelectedAsEndDate) {
-      ariaLabel = (0, _getPhrase["default"])(dateIsSelectedAsEndDate, formattedDate);
-    } else {
-      ariaLabel = (0, _getPhrase["default"])(dateIsSelected, formattedDate);
-    }
-  } else if (modifiers.has(_constants.BLOCKED_MODIFIER)) {
-    ariaLabel = (0, _getPhrase["default"])(dateIsUnavailable, formattedDate);
+  if (modifiers.has('selected-start') && dateIsSelectedAsStartDate) {
+    return (0, _getPhrase["default"])(dateIsSelectedAsStartDate, formattedDate);
   }
 
+  if (modifiers.has('selected-end') && dateIsSelectedAsEndDate) {
+    return (0, _getPhrase["default"])(dateIsSelectedAsEndDate, formattedDate);
+  }
+
+  if (isSelected(modifiers) && dateIsSelected) {
+    return (0, _getPhrase["default"])(dateIsSelected, formattedDate);
+  }
+
+  if (modifiers.has(_constants.BLOCKED_MODIFIER)) {
+    return (0, _getPhrase["default"])(dateIsUnavailable, formattedDate);
+  }
+
+  return (0, _getPhrase["default"])(chooseAvailableDate, formattedDate);
+}
+
+function getCalendarDaySettings(day, ariaLabelFormat, daySize, modifiers, phrases) {
   return {
-    daySizeStyles: daySizeStyles,
-    useDefaultCursor: useDefaultCursor,
-    selected: selected,
-    hoveredSpan: hoveredSpan,
-    isOutsideRange: isOutsideRange,
-    ariaLabel: ariaLabel
+    ariaLabel: getAriaLabel(phrases, modifiers, day, ariaLabelFormat),
+    hoveredSpan: isHoveredSpan(modifiers),
+    isOutsideRange: modifiers.has('blocked-out-of-range'),
+    selected: isSelected(modifiers),
+    useDefaultCursor: shouldUseDefaultCursor(modifiers),
+    daySizeStyles: {
+      width: daySize,
+      height: daySize - 1
+    }
   };
 }
 
@@ -5617,6 +5680,11 @@ var defaultProps = {
 
     return isDayHighlighted;
   }(),
+  getMinNightsForHoverDate: function () {
+    function getMinNightsForHoverDate() {}
+
+    return getMinNightsForHoverDate;
+  }(),
   // DayPicker props
   renderMonthText: null,
   enableOutsideDays: false,
@@ -5648,6 +5716,7 @@ var defaultProps = {
   renderDayContents: null,
   renderCalendarInfo: null,
   renderMonthElement: null,
+  renderKeyboardShortcutsButton: undefined,
   calendarInfoPosition: _constants.INFO_POSITION_BOTTOM,
   firstDayOfWeek: null,
   verticalHeight: null,
@@ -5836,6 +5905,20 @@ function (_ref) {
         }
 
         return lastDayOfWeek;
+      }(),
+      'hovered-start-first-possible-end': function () {
+        function hoveredStartFirstPossibleEnd(day, hoverDate) {
+          return _this.isFirstPossibleEndDateForHoveredStartDate(day, hoverDate);
+        }
+
+        return hoveredStartFirstPossibleEnd;
+      }(),
+      'hovered-start-blocked-minimum-nights': function () {
+        function hoveredStartBlockedMinimumNights(day, hoverDate) {
+          return _this.doesNotMeetMinNightsForHoveredStartDate(day, hoverDate);
+        }
+
+        return hoveredStartBlockedMinimumNights;
       }()
     };
 
@@ -5877,6 +5960,7 @@ function (_ref) {
         var startDate = nextProps.startDate,
             endDate = nextProps.endDate,
             focusedInput = nextProps.focusedInput,
+            getMinNightsForHoverDate = nextProps.getMinNightsForHoverDate,
             minimumNights = nextProps.minimumNights,
             isOutsideRange = nextProps.isOutsideRange,
             isDayBlocked = nextProps.isDayBlocked,
@@ -5897,6 +5981,7 @@ function (_ref) {
             prevInitialVisibleMonth = _this$props.initialVisibleMonth,
             prevNumberOfMonths = _this$props.numberOfMonths,
             prevEnableOutsideDays = _this$props.enableOutsideDays;
+        var hoverDate = this.state.hoverDate;
         var visibleDays = this.state.visibleDays;
         var recomputeOutsideRange = false;
         var recomputeDayBlocked = false;
@@ -6028,6 +6113,20 @@ function (_ref) {
           });
         }
 
+        if (!this.isTouchDevice && didFocusChange && hoverDate && !this.isBlocked(hoverDate)) {
+          var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
+
+          if (minNightsForHoverDate > 0 && focusedInput === _constants.END_DATE) {
+            modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+            modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+          }
+
+          if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+            modifiers = this.addModifierToRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+            modifiers = this.addModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+          }
+        }
+
         if (minimumNights > 0 && startDate && focusedInput === _constants.END_DATE) {
           modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked-minimum-nights');
           modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked');
@@ -6085,6 +6184,15 @@ function (_ref) {
           startDate = (0, _getSelectedDateOffset["default"])(startDateOffset, day);
           endDate = (0, _getSelectedDateOffset["default"])(endDateOffset, day);
 
+          if (this.isBlocked(startDate) || this.isBlocked(endDate)) {
+            return;
+          }
+
+          onDatesChange({
+            startDate: startDate,
+            endDate: endDate
+          });
+
           if (!keepOpenOnDateSelect) {
             onFocusChange(null);
             onClose({
@@ -6105,6 +6213,11 @@ function (_ref) {
             }
           }
 
+          onDatesChange({
+            startDate: startDate,
+            endDate: endDate
+          });
+
           if (isEndDateDisabled && !isStartDateAfterEndDate) {
             onFocusChange(null);
             onClose({
@@ -6119,9 +6232,17 @@ function (_ref) {
 
           if (!startDate) {
             endDate = day;
+            onDatesChange({
+              startDate: startDate,
+              endDate: endDate
+            });
             onFocusChange(_constants.START_DATE);
           } else if ((0, _isInclusivelyAfterDay["default"])(day, firstAllowedEndDate)) {
             endDate = day;
+            onDatesChange({
+              startDate: startDate,
+              endDate: endDate
+            });
 
             if (!keepOpenOnDateSelect) {
               onFocusChange(null);
@@ -6133,13 +6254,23 @@ function (_ref) {
           } else if (disabled !== _constants.START_DATE) {
             startDate = day;
             endDate = null;
+            onDatesChange({
+              startDate: startDate,
+              endDate: endDate
+            });
+          } else {
+            onDatesChange({
+              startDate: startDate,
+              endDate: endDate
+            });
           }
+        } else {
+          onDatesChange({
+            startDate: startDate,
+            endDate: endDate
+          });
         }
 
-        onDatesChange({
-          startDate: startDate,
-          endDate: endDate
-        });
         onBlur();
       }
 
@@ -6155,6 +6286,7 @@ function (_ref) {
             startDate = _this$props4.startDate,
             endDate = _this$props4.endDate,
             focusedInput = _this$props4.focusedInput,
+            getMinNightsForHoverDate = _this$props4.getMinNightsForHoverDate,
             minimumNights = _this$props4.minimumNights,
             startDateOffset = _this$props4.startDateOffset,
             endDateOffset = _this$props4.endDateOffset;
@@ -6225,6 +6357,24 @@ function (_ref) {
                 modifiers = this.addModifierToRange(modifiers, newStartSpan, newEndSpan, 'after-hovered-start');
               }
             }
+
+            if (hoverDate && !this.isBlocked(hoverDate)) {
+              var minNightsForPrevHoverDate = getMinNightsForHoverDate(hoverDate);
+
+              if (minNightsForPrevHoverDate > 0 && focusedInput === _constants.START_DATE) {
+                modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+                modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-first-possible-end');
+              }
+            }
+
+            if (!this.isBlocked(day)) {
+              var minNightsForHoverDate = getMinNightsForHoverDate(day);
+
+              if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+                modifiers = this.addModifierToRange(modifiers, day.clone().add(1, 'days'), day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+                modifiers = this.addModifier(modifiers, day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+              }
+            }
           }
 
           this.setState({
@@ -6244,6 +6394,8 @@ function (_ref) {
         var _this$props5 = this.props,
             startDate = _this$props5.startDate,
             endDate = _this$props5.endDate,
+            focusedInput = _this$props5.focusedInput,
+            getMinNightsForHoverDate = _this$props5.getMinNightsForHoverDate,
             minimumNights = _this$props5.minimumNights;
         var _this$state2 = this.state,
             hoverDate = _this$state2.hoverDate,
@@ -6272,6 +6424,15 @@ function (_ref) {
           var _endSpan4 = startDate.clone().add(minimumNights + 1, 'days');
 
           modifiers = this.deleteModifierFromRange(modifiers, startSpan, _endSpan4, 'after-hovered-start');
+        }
+
+        if (!this.isBlocked(hoverDate)) {
+          var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
+
+          if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+            modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+            modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+          }
         }
 
         this.setState({
@@ -6681,13 +6842,33 @@ function (_ref) {
       return doesNotMeetMinimumNights;
     }()
   }, {
+    key: "doesNotMeetMinNightsForHoveredStartDate",
+    value: function () {
+      function doesNotMeetMinNightsForHoveredStartDate(day, hoverDate) {
+        var _this$props16 = this.props,
+            focusedInput = _this$props16.focusedInput,
+            getMinNightsForHoverDate = _this$props16.getMinNightsForHoverDate;
+        if (focusedInput !== _constants.END_DATE) return false;
+
+        if (hoverDate && !this.isBlocked(hoverDate)) {
+          var minNights = getMinNightsForHoverDate(hoverDate);
+          var dayDiff = day.diff(hoverDate.clone().startOf('day').hour(12), 'days');
+          return dayDiff < minNights && dayDiff >= 0;
+        }
+
+        return false;
+      }
+
+      return doesNotMeetMinNightsForHoveredStartDate;
+    }()
+  }, {
     key: "isDayAfterHoveredStartDate",
     value: function () {
       function isDayAfterHoveredStartDate(day) {
-        var _this$props16 = this.props,
-            startDate = _this$props16.startDate,
-            endDate = _this$props16.endDate,
-            minimumNights = _this$props16.minimumNights;
+        var _this$props17 = this.props,
+            startDate = _this$props17.startDate,
+            endDate = _this$props17.endDate,
+            minimumNights = _this$props17.minimumNights;
 
         var _ref2 = this.state || {},
             hoverDate = _ref2.hoverDate;
@@ -6724,9 +6905,9 @@ function (_ref) {
     key: "isInHoveredSpan",
     value: function () {
       function isInHoveredSpan(day) {
-        var _this$props17 = this.props,
-            startDate = _this$props17.startDate,
-            endDate = _this$props17.endDate;
+        var _this$props18 = this.props,
+            startDate = _this$props18.startDate,
+            endDate = _this$props18.endDate;
 
         var _ref4 = this.state || {},
             hoverDate = _ref4.hoverDate;
@@ -6743,9 +6924,9 @@ function (_ref) {
     key: "isInSelectedSpan",
     value: function () {
       function isInSelectedSpan(day) {
-        var _this$props18 = this.props,
-            startDate = _this$props18.startDate,
-            endDate = _this$props18.endDate;
+        var _this$props19 = this.props,
+            startDate = _this$props19.startDate,
+            endDate = _this$props19.endDate;
         return day.isBetween(startDate, endDate);
       }
 
@@ -6775,9 +6956,9 @@ function (_ref) {
     key: "isBlocked",
     value: function () {
       function isBlocked(day) {
-        var _this$props19 = this.props,
-            isDayBlocked = _this$props19.isDayBlocked,
-            isOutsideRange = _this$props19.isOutsideRange;
+        var _this$props20 = this.props,
+            isDayBlocked = _this$props20.isDayBlocked,
+            isOutsideRange = _this$props20.isOutsideRange;
         return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
       }
 
@@ -6813,42 +6994,58 @@ function (_ref) {
       return isLastDayOfWeek;
     }()
   }, {
+    key: "isFirstPossibleEndDateForHoveredStartDate",
+    value: function () {
+      function isFirstPossibleEndDateForHoveredStartDate(day, hoverDate) {
+        var _this$props21 = this.props,
+            focusedInput = _this$props21.focusedInput,
+            getMinNightsForHoverDate = _this$props21.getMinNightsForHoverDate;
+        if (focusedInput !== _constants.END_DATE || !hoverDate || this.isBlocked(hoverDate)) return false;
+        var minNights = getMinNightsForHoverDate(hoverDate);
+        var firstAvailableEndDate = hoverDate.clone().add(minNights, 'days');
+        return (0, _isSameDay["default"])(day, firstAvailableEndDate);
+      }
+
+      return isFirstPossibleEndDateForHoveredStartDate;
+    }()
+  }, {
     key: "render",
     value: function () {
       function render() {
-        var _this$props20 = this.props,
-            numberOfMonths = _this$props20.numberOfMonths,
-            orientation = _this$props20.orientation,
-            monthFormat = _this$props20.monthFormat,
-            renderMonthText = _this$props20.renderMonthText,
-            navPrev = _this$props20.navPrev,
-            navNext = _this$props20.navNext,
-            noNavButtons = _this$props20.noNavButtons,
-            onOutsideClick = _this$props20.onOutsideClick,
-            withPortal = _this$props20.withPortal,
-            enableOutsideDays = _this$props20.enableOutsideDays,
-            firstDayOfWeek = _this$props20.firstDayOfWeek,
-            hideKeyboardShortcutsPanel = _this$props20.hideKeyboardShortcutsPanel,
-            daySize = _this$props20.daySize,
-            focusedInput = _this$props20.focusedInput,
-            renderCalendarDay = _this$props20.renderCalendarDay,
-            renderDayContents = _this$props20.renderDayContents,
-            renderCalendarInfo = _this$props20.renderCalendarInfo,
-            renderMonthElement = _this$props20.renderMonthElement,
-            calendarInfoPosition = _this$props20.calendarInfoPosition,
-            onBlur = _this$props20.onBlur,
-            onShiftTab = _this$props20.onShiftTab,
-            onTab = _this$props20.onTab,
-            isFocused = _this$props20.isFocused,
-            showKeyboardShortcuts = _this$props20.showKeyboardShortcuts,
-            isRTL = _this$props20.isRTL,
-            weekDayFormat = _this$props20.weekDayFormat,
-            dayAriaLabelFormat = _this$props20.dayAriaLabelFormat,
-            verticalHeight = _this$props20.verticalHeight,
-            noBorder = _this$props20.noBorder,
-            transitionDuration = _this$props20.transitionDuration,
-            verticalBorderSpacing = _this$props20.verticalBorderSpacing,
-            horizontalMonthPadding = _this$props20.horizontalMonthPadding;
+        var _this$props22 = this.props,
+            numberOfMonths = _this$props22.numberOfMonths,
+            orientation = _this$props22.orientation,
+            monthFormat = _this$props22.monthFormat,
+            renderMonthText = _this$props22.renderMonthText,
+            navPrev = _this$props22.navPrev,
+            navNext = _this$props22.navNext,
+            noNavButtons = _this$props22.noNavButtons,
+            onOutsideClick = _this$props22.onOutsideClick,
+            withPortal = _this$props22.withPortal,
+            enableOutsideDays = _this$props22.enableOutsideDays,
+            firstDayOfWeek = _this$props22.firstDayOfWeek,
+            renderKeyboardShortcutsButton = _this$props22.renderKeyboardShortcutsButton,
+            hideKeyboardShortcutsPanel = _this$props22.hideKeyboardShortcutsPanel,
+            daySize = _this$props22.daySize,
+            focusedInput = _this$props22.focusedInput,
+            renderCalendarDay = _this$props22.renderCalendarDay,
+            renderDayContents = _this$props22.renderDayContents,
+            renderCalendarInfo = _this$props22.renderCalendarInfo,
+            renderMonthElement = _this$props22.renderMonthElement,
+            calendarInfoPosition = _this$props22.calendarInfoPosition,
+            onBlur = _this$props22.onBlur,
+            onShiftTab = _this$props22.onShiftTab,
+            onTab = _this$props22.onTab,
+            isFocused = _this$props22.isFocused,
+            showKeyboardShortcuts = _this$props22.showKeyboardShortcuts,
+            isRTL = _this$props22.isRTL,
+            weekDayFormat = _this$props22.weekDayFormat,
+            dayAriaLabelFormat = _this$props22.dayAriaLabelFormat,
+            verticalHeight = _this$props22.verticalHeight,
+            noBorder = _this$props22.noBorder,
+            transitionDuration = _this$props22.transitionDuration,
+            verticalBorderSpacing = _this$props22.verticalBorderSpacing,
+            horizontalMonthPadding = _this$props22.horizontalMonthPadding;
         var _this$state8 = this.state,
             currentMonth = _this$state8.currentMonth,
             phrases = _this$state8.phrases,
@@ -6892,6 +7089,7 @@ function (_ref) {
           renderDayContents: renderDayContents,
           renderCalendarInfo: renderCalendarInfo,
           renderMonthElement: renderMonthElement,
+          renderKeyboardShortcutsButton: renderKeyboardShortcutsButton,
           calendarInfoPosition: calendarInfoPosition,
           firstDayOfWeek: firstDayOfWeek,
           hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
@@ -6996,12 +7194,17 @@ exports["default"] = _default;
 /***/ }),
 
 /***/ "DciD":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function noop() {
   return null;
 }
+
 noop.isRequired = noop;
+
 function noopThunk() {
   return noop;
 }
@@ -7017,6 +7220,7 @@ module.exports = {
   componentWithName: noopThunk,
   disallowedIf: noopThunk,
   elementType: noopThunk,
+  empty: noopThunk,
   explicitNull: noopThunk,
   forbidExtraProps: Object,
   integer: noopThunk,
@@ -7030,6 +7234,7 @@ module.exports = {
   object: noopThunk,
   or: noopThunk,
   range: noopThunk,
+  ref: noopThunk,
   requiredBy: noopThunk,
   restrictedProp: noopThunk,
   sequenceOf: noopThunk,
@@ -7834,72 +8039,6 @@ module.exports = throttle;
 
 /***/ }),
 
-/***/ "E19O":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var keys = __webpack_require__("1seS");
-var hasSymbols = typeof Symbol === 'function' && typeof Symbol('foo') === 'symbol';
-
-var toStr = Object.prototype.toString;
-var concat = Array.prototype.concat;
-var origDefineProperty = Object.defineProperty;
-
-var isFunction = function (fn) {
-	return typeof fn === 'function' && toStr.call(fn) === '[object Function]';
-};
-
-var arePropertyDescriptorsSupported = function () {
-	var obj = {};
-	try {
-		origDefineProperty(obj, 'x', { enumerable: false, value: obj });
-		// eslint-disable-next-line no-unused-vars, no-restricted-syntax
-		for (var _ in obj) { // jscs:ignore disallowUnusedVariables
-			return false;
-		}
-		return obj.x === obj;
-	} catch (e) { /* this is IE 8. */
-		return false;
-	}
-};
-var supportsDescriptors = origDefineProperty && arePropertyDescriptorsSupported();
-
-var defineProperty = function (object, name, value, predicate) {
-	if (name in object && (!isFunction(predicate) || !predicate())) {
-		return;
-	}
-	if (supportsDescriptors) {
-		origDefineProperty(object, name, {
-			configurable: true,
-			enumerable: false,
-			value: value,
-			writable: true
-		});
-	} else {
-		object[name] = value;
-	}
-};
-
-var defineProperties = function (object, map) {
-	var predicates = arguments.length > 2 ? arguments[2] : {};
-	var props = keys(map);
-	if (hasSymbols) {
-		props = concat.call(props, Object.getOwnPropertySymbols(map));
-	}
-	for (var i = 0; i < props.length; i += 1) {
-		defineProperty(object, props[i], map[props[i]], predicates[props[i]]);
-	}
-};
-
-defineProperties.supportsDescriptors = !!supportsDescriptors;
-
-module.exports = defineProperties;
-
-
-/***/ }),
-
 /***/ "E1iy":
 /***/ (function(module, exports) {
 
@@ -8178,7 +8317,7 @@ var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 
 
 var ManagerContext = lib_default()({
-  getReferenceRef: undefined,
+  setReferenceNode: undefined,
   referenceNode: undefined
 });
 
@@ -8192,8 +8331,12 @@ function (_React$Component) {
 
     _this = _React$Component.call(this) || this;
 
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "getReferenceRef", function (referenceNode) {
-      return _this.setState(function (_ref) {
+    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "setReferenceNode", function (referenceNode) {
+      if (!referenceNode || _this.state.context.referenceNode === referenceNode) {
+        return;
+      }
+
+      _this.setState(function (_ref) {
         var context = _ref.context;
         return {
           context: extends_default()({}, context, {
@@ -8205,7 +8348,7 @@ function (_React$Component) {
 
     _this.state = {
       context: {
-        getReferenceRef: _this.getReferenceRef,
+        setReferenceNode: _this.setReferenceNode,
         referenceNode: undefined
       }
     };
@@ -8471,7 +8614,7 @@ function (_React$Component) {
 
     defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "refHandler", function (node) {
       safeInvoke(_this.props.innerRef, node);
-      safeInvoke(_this.props.getReferenceRef, node);
+      safeInvoke(_this.props.setReferenceNode, node);
     });
 
     return _this;
@@ -8480,7 +8623,7 @@ function (_React$Component) {
   var _proto = InnerReference.prototype;
 
   _proto.render = function render() {
-    warning_default()(this.props.getReferenceRef, '`Reference` should not be used outside of a `Manager` component.');
+    warning_default()(Boolean(this.props.setReferenceNode), '`Reference` should not be used outside of a `Manager` component.');
     return unwrapArray(this.props.children)({
       ref: this.refHandler
     });
@@ -8491,9 +8634,9 @@ function (_React$Component) {
 
 function Reference(props) {
   return external_React_["createElement"](ManagerContext.Consumer, null, function (_ref) {
-    var getReferenceRef = _ref.getReferenceRef;
+    var setReferenceNode = _ref.setReferenceNode;
     return external_React_["createElement"](Reference_InnerReference, extends_default()({
-      getReferenceRef: getReferenceRef
+      setReferenceNode: setReferenceNode
     }, props));
   });
 }
@@ -8598,6 +8741,14 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
@@ -8620,14 +8771,6 @@ function _setPrototypeOf(o, p) {
   };
 
   return _setPrototypeOf(o, p);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
 }
 
 
@@ -8700,11 +8843,11 @@ function (_React$Component) {
       endDate: toMomentObject_default()(elements['check_out'].get()),
       isDayPickerFocused: false
     };
-    _this.onDatesChange = _this.onDatesChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onFocusChange = _this.onFocusChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.isOutsideRange = _this.isOutsideRange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onDatesChange = _this.onDatesChange.bind(_assertThisInitialized(_this));
+    _this.onFocusChange = _this.onFocusChange.bind(_assertThisInitialized(_this));
+    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_this));
+    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_this));
+    _this.isOutsideRange = _this.isOutsideRange.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -9279,12 +9422,7 @@ var selectedSpanStyles = {
   }
 };
 exports.selectedSpanStyles = selectedSpanStyles;
-var lastInRangeStyles = {
-  borderStyle: 'solid',
-  hover: {
-    borderStyle: 'solid'
-  }
-};
+var lastInRangeStyles = {};
 exports.lastInRangeStyles = lastInRangeStyles;
 var selectedStyles = {
   background: color.selected.backgroundColor,
@@ -9338,6 +9476,8 @@ var defaultProps = {
   afterHoveredStartStyles: {},
   firstDayOfWeekStyles: {},
   lastDayOfWeekStyles: {},
+  hoveredStartFirstPossibleEndStyles: {},
+  hoveredStartBlockedMinNightsStyles: {},
   // internationalization
   phrases: _defaultPhrases.CalendarDayPhrases
 };
@@ -9484,7 +9624,9 @@ function (_ref) {
             selectedStylesWithHover = _this$props2.selectedStyles,
             selectedStartStylesWithHover = _this$props2.selectedStartStyles,
             selectedEndStylesWithHover = _this$props2.selectedEndStyles,
-            afterHoveredStartStylesWithHover = _this$props2.afterHoveredStartStyles;
+            afterHoveredStartStylesWithHover = _this$props2.afterHoveredStartStyles,
+            hoveredStartFirstPossibleEndStylesWithHover = _this$props2.hoveredStartFirstPossibleEndStyles,
+            hoveredStartBlockedMinNightsStylesWithHover = _this$props2.hoveredStartBlockedMinNightsStyles;
         var isHovered = this.state.isHovered;
         if (!day) return _react["default"].createElement("td", null);
 
@@ -9496,10 +9638,11 @@ function (_ref) {
             isOutsideRange = _getCalendarDaySettin.isOutsideRange,
             ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
+        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered), modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
           role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
           ,
           ref: this.setButtonRef,
+          "aria-disabled": modifiers.has('blocked'),
           "aria-label": ariaLabel,
           onMouseEnter: function () {
             function onMouseEnter(e) {
@@ -9580,6 +9723,37 @@ exports["default"] = _default;
 
 // eslint-disable-next-line import/no-unresolved
 __webpack_require__("H24B");
+
+
+/***/ }),
+
+/***/ "Gn0q":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var define = __webpack_require__("82c2");
+var getPolyfill = __webpack_require__("5yQQ");
+
+module.exports = function shimContains() {
+	var polyfill = getPolyfill();
+	if (typeof document !== 'undefined') {
+		define(
+			document,
+			{ contains: polyfill },
+			{ contains: function () { return document.contains !== polyfill; } }
+		);
+		if (typeof Element !== 'undefined') {
+			define(
+				Element.prototype,
+				{ contains: polyfill },
+				{ contains: function () { return Element.prototype.contains !== polyfill; } }
+			);
+		}
+	}
+	return polyfill;
+};
 
 
 /***/ }),
@@ -10460,10 +10634,11 @@ function (_ref) {
             isOutsideRange = _getCalendarDaySettin.isOutsideRange,
             ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('last-in-range') && styles.CalendarDay__last_in_range, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
+        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('hovered-start-first-possible-end') && styles.CalendarDay__hovered_start_first_possible_end, modifiers.has('hovered-start-blocked-minimum-nights') && styles.CalendarDay__hovered_start_blocked_min_nights, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && !modifiers.has('selected-span') && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
           role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
           ,
           ref: this.setButtonRef,
+          "aria-disabled": modifiers.has('blocked'),
           "aria-label": ariaLabel,
           onMouseEnter: function () {
             function onMouseEnter(e) {
@@ -10595,12 +10770,6 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
         color: color.selectedSpan.color_active
       }
     },
-    CalendarDay__last_in_range: {
-      borderStyle: 'solid',
-      ':hover': {
-        borderStyle: 'solid'
-      }
-    },
     CalendarDay__selected: {
       background: color.selected.backgroundColor,
       border: "1px double ".concat(color.selected.borderColor),
@@ -10660,6 +10829,14 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
         border: "1px solid ".concat(color.blocked_out_of_range.borderColor),
         color: color.blocked_out_of_range.color_active
       }
+    },
+    CalendarDay__hovered_start_first_possible_end: {
+      background: color.core.borderLighter,
+      border: "1px double ".concat(color.core.borderLighter)
+    },
+    CalendarDay__hovered_start_blocked_min_nights: {
+      background: color.core.borderLighter,
+      border: "1px double ".concat(color.core.borderLight)
     },
     CalendarDay__selected_start: {},
     CalendarDay__selected_end: {},
@@ -11176,6 +11353,7 @@ var defaultProps = {
   transitionDuration: undefined,
   verticalBorderSpacing: undefined,
   horizontalMonthPadding: 13,
+  renderKeyboardShortcutsButton: undefined,
   // navigation props
   disablePrev: false,
   disableNext: false,
@@ -11313,6 +11491,7 @@ function (_ref) {
 
     _this.calendarMonthGridHeight = 0;
     _this.setCalendarInfoWidthTimeout = null;
+    _this.setCalendarMonthGridHeightTimeout = null;
     _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.throttledKeyDown = (0, _throttle["default"])(_this.onFinalKeyDown, 200, {
       trailing: false
@@ -11478,6 +11657,7 @@ function (_ref) {
     value: function () {
       function componentWillUnmount() {
         clearTimeout(this.setCalendarInfoWidthTimeout);
+        clearTimeout(this.setCalendarMonthGridHeightTimeout);
       }
 
       return componentWillUnmount;
@@ -12051,7 +12231,7 @@ function (_ref) {
           this.transitionContainer.style.height = "".concat(monthHeight, "px");
 
           if (!this.calendarMonthGridHeight) {
-            setTimeout(function () {
+            this.setCalendarMonthGridHeightTimeout = setTimeout(function () {
               _this5.setState({
                 hasSetHeight: true
               });
@@ -12226,6 +12406,7 @@ function (_ref) {
             renderDayContents = _this$props11.renderDayContents,
             renderCalendarInfo = _this$props11.renderCalendarInfo,
             renderMonthElement = _this$props11.renderMonthElement,
+            renderKeyboardShortcutsButton = _this$props11.renderKeyboardShortcutsButton,
             calendarInfoPosition = _this$props11.calendarInfoPosition,
             hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
             onOutsideClick = _this$props11.onOutsideClick,
@@ -12367,7 +12548,8 @@ function (_ref) {
           showKeyboardShortcutsPanel: showKeyboardShortcuts,
           openKeyboardShortcutsPanel: this.openKeyboardShortcutsPanel,
           closeKeyboardShortcutsPanel: this.closeKeyboardShortcutsPanel,
-          phrases: phrases
+          phrases: phrases,
+          renderKeyboardShortcutsButton: renderKeyboardShortcutsButton
         }))), (calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo));
       }
 
@@ -15911,7 +16093,7 @@ module.exports = {
 
 
 var getPolyfill = __webpack_require__("xoj2");
-var define = __webpack_require__("E19O");
+var define = __webpack_require__("82c2");
 
 module.exports = function shimValues() {
 	var polyfill = getPolyfill();
@@ -16677,6 +16859,34 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "n1Y7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var define = __webpack_require__("82c2");
+
+var implementation = __webpack_require__("nRDI");
+var getPolyfill = __webpack_require__("5yQQ");
+var polyfill = getPolyfill();
+var shim = __webpack_require__("Gn0q");
+
+var boundContains = function contains(node, other) {
+	return polyfill.apply(node, [other]);
+};
+
+define(boundContains, {
+	getPolyfill: getPolyfill,
+	implementation: implementation,
+	shim: shim
+});
+
+module.exports = boundContains;
+
+
+/***/ }),
+
 /***/ "nLTY":
 /***/ (function(module, exports) {
 
@@ -16696,6 +16906,36 @@ function getClassName(namespace, styleName) {
   var namespaceSegment = namespace.length > 0 ? String(namespace) + '__' : '';
   return '' + namespaceSegment + String(styleName);
 }
+
+/***/ }),
+
+/***/ "nRDI":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function contains(other) {
+	if (arguments.length < 1) {
+		throw new TypeError('1 argument is required');
+	}
+	if (typeof other !== 'object') {
+		throw new TypeError('Argument 1 (”other“) to Node.contains must be an instance of Node');
+	}
+
+	var node = other;
+	do {
+		if (this === node) {
+			return true;
+		}
+		if (node) {
+			node = node.parentNode;
+		}
+	} while (node);
+
+	return false;
+};
+
 
 /***/ }),
 
@@ -17978,35 +18218,6 @@ module.exports = function shimFlat() {
 
 /***/ }),
 
-/***/ "v61W":
-/***/ (function(module, exports) {
-
-
-var hasOwn = Object.prototype.hasOwnProperty;
-var toString = Object.prototype.toString;
-
-module.exports = function forEach (obj, fn, ctx) {
-    if (toString.call(fn) !== '[object Function]') {
-        throw new TypeError('iterator must be a function');
-    }
-    var l = obj.length;
-    if (l === +l) {
-        for (var i = 0; i < l; i++) {
-            fn.call(ctx, obj[i], i, obj);
-        }
-    } else {
-        for (var k in obj) {
-            if (hasOwn.call(obj, k)) {
-                fn.call(ctx, obj[k], k, obj);
-            }
-        }
-    }
-};
-
-
-
-/***/ }),
-
 /***/ "vV+G":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18638,6 +18849,8 @@ var _default = {
   // input related props
   startDateId: _propTypes["default"].string.isRequired,
   startDatePlaceholderText: _propTypes["default"].string,
+  startDateOffset: _propTypes["default"].func,
+  endDateOffset: _propTypes["default"].func,
   endDateId: _propTypes["default"].string.isRequired,
   endDatePlaceholderText: _propTypes["default"].string,
   disabled: _DisabledShape["default"],
@@ -19177,8 +19390,13 @@ function DayPickerNavigation(_ref) {
   var navNextIcon = navNext;
   var isDefaultNavPrev = false;
   var isDefaultNavNext = false;
+  var navPrevTabIndex = {};
+  var navNextTabIndex = {};
 
   if (!navPrevIcon) {
+    navPrevTabIndex = {
+      tabIndex: '0'
+    };
     isDefaultNavPrev = true;
     var Icon = isVertical ? _ChevronUp["default"] : _LeftArrow["default"];
 
@@ -19190,6 +19408,9 @@ function DayPickerNavigation(_ref) {
   }
 
   if (!navNextIcon) {
+    navNextTabIndex = {
+      tabIndex: '0'
+    };
     isDefaultNavNext = true;
 
     var _Icon = isVertical ? _ChevronDown["default"] : _RightArrow["default"];
@@ -19203,9 +19424,9 @@ function DayPickerNavigation(_ref) {
 
   var isDefaultNav = isVerticalScrollable ? isDefaultNavNext : isDefaultNavNext || isDefaultNavPrev;
   return _react["default"].createElement("div", _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation, isHorizontal && styles.DayPickerNavigation__horizontal].concat(_toConsumableArray(isVertical ? [styles.DayPickerNavigation__vertical, isDefaultNav && styles.DayPickerNavigation__verticalDefault] : []), _toConsumableArray(isVerticalScrollable ? [styles.DayPickerNavigation__verticalScrollable, isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault] : []))), !isVerticalScrollable && _react["default"].createElement("div", _extends({
-    role: "button",
-    tabIndex: "0"
-  }, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault] : [])) : []))), {
+    // eslint-disable-line jsx-a11y/interactive-supports-focus
+    role: "button"
+  }, navPrevTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault] : [])) : []))), {
     "aria-disabled": disablePrev ? true : undefined,
     "aria-label": phrases.jumpToPrevMonth,
     onClick: disablePrev ? undefined : onPrevMonthClick,
@@ -19217,9 +19438,9 @@ function DayPickerNavigation(_ref) {
       e.currentTarget.blur();
     }
   }), navPrevIcon), _react["default"].createElement("div", _extends({
-    role: "button",
-    tabIndex: "0"
-  }, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical, styles.DayPickerNavigation_nextButton__vertical].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
+    // eslint-disable-line jsx-a11y/interactive-supports-focus
+    role: "button"
+  }, navNextTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical, styles.DayPickerNavigation_nextButton__vertical].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
     "aria-disabled": disableNext ? true : undefined,
     "aria-label": phrases.jumpToNextMonth,
     onClick: disableNext ? undefined : onNextMonthClick,
