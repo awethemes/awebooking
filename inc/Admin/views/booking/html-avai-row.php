@@ -51,7 +51,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 	</td>
 
 	<td>
-		<select name="<?php echo esc_attr( $input_prefix . '[room]' ); ?>">
+		<select name="<?php echo esc_attr( $input_prefix . '[room]' ); ?>" class="js-select-room">
 			<?php foreach ( $remain_rooms as $room_info ) : ?>
 			<option value="<?php echo esc_html( abrs_optional( $room_info['resource'] )->get_id() ); ?>"><?php echo esc_html( abrs_optional( $room_info['resource'] )->get( 'name' ) ); ?></option>
 			<?php endforeach ?>
@@ -62,7 +62,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 		<div class="wrap-select-occupancy">
 			<p>
 				<label class="screen-reader-text"><?php esc_html_e( 'Adults', 'awebooking' ); ?></label>
-				<select name="<?php echo esc_attr( $input_prefix . '[adults]' ); ?>" title="<?php esc_html_e( 'Select adults', 'awebooking' ); ?>">
+				<select class="js-select-adults" name="<?php echo esc_attr( $input_prefix . '[adults]' ); ?>" title="<?php esc_html_e( 'Select adults', 'awebooking' ); ?>">
 					<?php print $occupancy_options( 1, $res_request->adults ); // WPCS: XSS OK. ?>
 				</select>
 			</p>
@@ -70,7 +70,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 			<?php if ( abrs_children_bookable() ) : ?>
 				<p>
 					<label class="screen-reader-text"><?php esc_html_e( 'Children', 'awebooking' ); ?></label>
-					<select name="<?php echo esc_attr( $input_prefix . '[children]' ); ?>" title="<?php esc_html_e( 'Select children', 'awebooking' ); ?>">
+					<select class="js-select-children" name="<?php echo esc_attr( $input_prefix . '[children]' ); ?>" title="<?php esc_html_e( 'Select children', 'awebooking' ); ?>">
 						<?php print $occupancy_options( 0, $res_request->children ); // WPCS: XSS OK. ?>
 					</select>
 				</p>
@@ -79,7 +79,7 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 			<?php if ( abrs_infants_bookable() ) : ?>
 				<p>
 					<label class="screen-reader-text"><?php esc_html_e( 'Infants', 'awebooking' ); ?></label>
-					<select name="<?php echo esc_attr( $input_prefix . '[infants]' ); ?>" title="<?php esc_html_e( 'Select infants', 'awebooking' ); ?>">
+					<select class="js-select-infants" name="<?php echo esc_attr( $input_prefix . '[infants]' ); ?>" title="<?php esc_html_e( 'Select infants', 'awebooking' ); ?>">
 						<?php print $occupancy_options( 0, $res_request->infants ); // WPCS: XSS OK. ?>
 					</select>
 				</p>
@@ -88,29 +88,12 @@ $occupancy_options = function ( $min = 1, $selected = 0 ) use ( $room_type ) {
 	</td>
 
 	<td>
-		<span class="abrs-badge abrs-badge--primary tippy" data-tippy-html="#js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" data-tippy-theme="abrs-tippy" data-tippy-size="large" data-tippy-max-width="350px;" data-tippy-interactive="true" data-tippy-arrow="true">
-			<?php abrs_price( $room_rate->get_rate() ); ?>
-		</span>
-
-		<input type="hidden" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_rate() ); ?>">
+		<span class="abrs-badge abrs-badge--primary js-show-breakdown" data-title="<?php echo esc_attr( $room_type->get_title() ); ?>" style="cursor: pointer"><?php abrs_price( $room_rate->get_rate() ); ?></span>
+		<a href="#" class="js-editprice abrs-badge"><?php echo esc_html_x( 'Modify', 'modify room price', 'awebooking' ); ?></a>
+		<input type="number" style="display: none;" class="min_inputprice" name="<?php echo esc_attr( $input_prefix . '[total]' ); ?>" value="<?php echo esc_attr( $room_rate->get_rate() ); ?>">
 
 		<div class="book-actions">
 			<button class="button button-primary abrs-button" name="submit" value="<?php echo esc_attr( $room_type->get_id() ); ?>"><?php echo esc_html__( 'Book', 'awebooking' ); ?></button>
-		</div>
-
-		<div id="js-breakdown-<?php echo esc_attr( $room_type->get_id() ); ?>" style="display: none;">
-			<?php if ( $room_rate->breakdown ) : ?>
-			<table class="awebooking-table abrs-breakdown-table">
-				<tbody>
-					<?php foreach ( $room_rate->breakdown as $date => $amount ) : ?>
-						<tr>
-							<td class="abrs-text-left"><?php echo abrs_format_date( $date ); // WPCS: XSS OK. ?></td>
-							<td class="abrs-text-right"><?php abrs_price( $amount ); ?></td>
-						</tr>
-					<?php endforeach ?>
-				</tbody>
-			</table>
-			<?php endif; ?>
 		</div>
 	</td>
 </tr>

@@ -31,6 +31,9 @@ class Booking_Room_Controller extends Controller {
 			return new WP_Error( 400, $e->getMessage() );
 		}
 
+		$results = null;
+		$res_request = null;
+
 		if ( $request->filled( 'check_in', 'check_out' ) || $request->filled( 'check-in', 'check-out' ) ) {
 			$res_request = abrs_create_res_request( $request );
 
