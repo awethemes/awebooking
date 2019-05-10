@@ -166,7 +166,7 @@ var _triggerPaymentMethod = function _triggerPaymentMethod(e) {
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   var $el = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#payment-methods').on('click', Selector.ITEM, _handleLabelClick).on('change', Selector.INPUT, _triggerPaymentMethod);
   setTimeout(function () {
-    $el.find("".concat(Selector.INPUT, ":checked")).closest(Selector.ITEM).trigger('click');
+    $el.find("".concat(Selector.INPUT, ":checked")).closest(Selector.ITEM).addClass(SELECTED);
   }, 0);
 });
 
