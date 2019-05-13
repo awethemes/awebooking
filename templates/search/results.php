@@ -56,7 +56,7 @@ $res_request = $results->get_request();
 					 */
 					do_action( 'abrs_display_search_result_unavailable_item', $res_request, $room_type, $room_rate );
 				}
-			} else {
+			} else if ( abrs_blank( $results ) ) {
 				abrs_get_template( 'search/no-results.php' );
 			}
 			?>
