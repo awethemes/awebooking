@@ -71,7 +71,7 @@ $res_request = $results->get_request();
 		<?php if ( ! abrs_reservation()->is_empty() ) : ?>
 
 			<div class="reservation-goto-checkout">
-				<a href="<?php echo esc_url( abrs_get_checkout_url() ); ?>" class="button button--primary button--block"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
+				<a href="<?php echo esc_url( add_query_arg( 'res', $res_request->get_hash(), abrs_get_checkout_url() ) ); ?>" class="button button--primary button--block"><?php esc_html_e( 'Checkout', 'awebooking' ); ?></a>
 			</div>
 
 		<?php endif; ?>
