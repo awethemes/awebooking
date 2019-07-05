@@ -65,8 +65,9 @@ plugin.datepicker = function (instance, options) {
     minDate = minDate.fp_incr(defaults.minDate || 0)
   }
 
+  // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
   if (Date.prototype.fp_incr && defaults.maxNights > 0) {
-    maxDate = minDate.fp_incr(defaults.maxNights)
+    // maxDate = minDate.fp_incr(defaults.maxNights)
   }
 
   const _defaults = {

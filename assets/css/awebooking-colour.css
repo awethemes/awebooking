@@ -539,8 +539,7 @@
   color: red;
   font-size: 16px;
   top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .awebooking .datepicker__month-day--day-of-week-disabled,
 .awebooking-block .datepicker__month-day--day-of-week-disabled {
@@ -863,24 +862,20 @@ dialog[open] {
 @-webkit-keyframes fade-in-fly-up {
   0% {
     opacity: 0;
-    -webkit-transform: translate3d(0, 130px, 0);
     transform: translate3d(0, 130px, 0);
   }
   to {
     opacity: 1;
-    -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
 }
 @keyframes fade-in-fly-up {
   0% {
     opacity: 0;
-    -webkit-transform: translate3d(0, 130px, 0);
     transform: translate3d(0, 130px, 0);
   }
   to {
     opacity: 1;
-    -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
 }
@@ -1670,8 +1665,7 @@ ul.booking_details li:last-of-type {
   top: 50%;
   left: 0;
   position: absolute;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   font-size: 3em;
   line-height: 1;
 }

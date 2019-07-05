@@ -1428,10 +1428,10 @@ awebooking_plugin.datepicker = function (instance, options) {
 
   if (Date.prototype.fp_incr && defaults.minDate > 0) {
     minDate = minDate.fp_incr(defaults.minDate || 0);
-  }
+  } // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
 
-  if (Date.prototype.fp_incr && defaults.maxNights > 0) {
-    maxDate = minDate.fp_incr(defaults.maxNights);
+
+  if (Date.prototype.fp_incr && defaults.maxNights > 0) {// maxDate = minDate.fp_incr(defaults.maxNights)
   }
 
   var _defaults = {
@@ -1771,25 +1771,23 @@ exports.parseUrl = function (str, opts) {
 "use strict";
 
 
-module.exports = isMobile;
-module.exports.isMobile = isMobile;
+module.exports = isMobile
+module.exports.isMobile = isMobile
 
-var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
+var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
 
-var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
+var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i
 
 function isMobile (opts) {
   if (!opts) opts = {}
   var ua = opts.ua
-  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
+  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent
   if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-    ua = ua.headers['user-agent'];
+    ua = ua.headers['user-agent']
   }
-  if (typeof ua !== 'string') return false;
+  if (typeof ua !== 'string') return false
 
-  return opts.tablet
-    ? tabletRE.test(ua)
-    : mobileRE.test(ua);
+  return opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua)
 }
 
 

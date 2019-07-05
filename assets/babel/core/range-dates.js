@@ -94,6 +94,7 @@ export default function rangePlugin(config = {}) {
 
         fp.setDate(fp.selectedDates, false)
         plugin.onValueUpdate(fp.selectedDates)
+        fp.loadedPlugins.push('range')
       },
 
       onPreCalendarPosition() {

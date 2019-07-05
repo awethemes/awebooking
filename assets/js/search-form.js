@@ -108,7 +108,8 @@ var DISPLAY_FORMAT = 'L';
 exports.DISPLAY_FORMAT = DISPLAY_FORMAT;
 var ISO_FORMAT = 'YYYY-MM-DD';
 exports.ISO_FORMAT = ISO_FORMAT;
-var ISO_MONTH_FORMAT = 'YYYY-MM';
+var ISO_MONTH_FORMAT = 'YYYY-MM'; // TODO delete this line of dead code on next breaking change
+
 exports.ISO_MONTH_FORMAT = ISO_MONTH_FORMAT;
 var START_DATE = 'startDate';
 exports.START_DATE = START_DATE;
@@ -649,7 +650,7 @@ function () {
         minimumNights: config.minNights || 1,
         maximumNights: config.maxNights || 0,
         minimumDateRange: config.minDate || 0,
-        maximumDateRange: config.maxNights ? config.maxNights + config.minDate + 1 : 0,
+        // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
         numberOfMonths: config.showMonths || 1
       });
     }

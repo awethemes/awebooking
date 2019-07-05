@@ -64,7 +64,7 @@ export default class SearchForm {
       minimumNights: config.minNights || 1,
       maximumNights: config.maxNights || 0,
       minimumDateRange: config.minDate || 0,
-      maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
+      // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
       numberOfMonths: config.showMonths || 1
     })
   }

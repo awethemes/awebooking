@@ -394,15 +394,11 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var LeftArrow = function () {
-  function LeftArrow(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      d: "M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7l-249.1-249c-11-11-11-21 0-32l249.1-249.1c21-21.1 53 10.9 32 32z"
-    }));
-  }
-
-  return LeftArrow;
-}();
+var LeftArrow = function LeftArrow(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    d: "M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7l-249.1-249c-11-11-11-21 0-32l249.1-249.1c21-21.1 53 10.9 32 32z"
+  }));
+};
 
 LeftArrow.defaultProps = {
   focusable: "false",
@@ -444,25 +440,11 @@ var _CloseButton = _interopRequireDefault(__webpack_require__("xEte"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -474,21 +456,13 @@ var TOP_RIGHT = 'top-right';
 exports.TOP_RIGHT = TOP_RIGHT;
 var BOTTOM_RIGHT = 'bottom-right';
 exports.BOTTOM_RIGHT = BOTTOM_RIGHT;
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   block: false,
   buttonLocation: BOTTOM_RIGHT,
   showKeyboardShortcutsPanel: false,
-  openKeyboardShortcutsPanel: function () {
-    function openKeyboardShortcutsPanel() {}
-
-    return openKeyboardShortcutsPanel;
-  }(),
-  closeKeyboardShortcutsPanel: function () {
-    function closeKeyboardShortcutsPanel() {}
-
-    return closeKeyboardShortcutsPanel;
-  }(),
+  openKeyboardShortcutsPanel: function openKeyboardShortcutsPanel() {},
+  closeKeyboardShortcutsPanel: function closeKeyboardShortcutsPanel() {},
   phrases: _defaultPhrases.DayPickerKeyboardShortcutsPhrases,
   renderKeyboardShortcutsButton: undefined
 };
@@ -528,215 +502,160 @@ function getKeyboardShortcuts(phrases) {
 var DayPickerKeyboardShortcuts =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DayPickerKeyboardShortcuts, _ref);
+  _inheritsLoose(DayPickerKeyboardShortcuts, _ref);
 
-  _createClass(DayPickerKeyboardShortcuts, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DayPickerKeyboardShortcuts.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DayPickerKeyboardShortcuts() {
-    var _getPrototypeOf2;
-
     var _this;
-
-    _classCallCheck(this, DayPickerKeyboardShortcuts);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(DayPickerKeyboardShortcuts)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _ref.call.apply(_ref, [this].concat(args)) || this;
     var phrases = _this.props.phrases;
     _this.keyboardShortcuts = getKeyboardShortcuts(phrases);
-    _this.onShowKeyboardShortcutsButtonClick = _this.onShowKeyboardShortcutsButtonClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setShowKeyboardShortcutsButtonRef = _this.setShowKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setHideKeyboardShortcutsButtonRef = _this.setHideKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.handleFocus = _this.handleFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onShowKeyboardShortcutsButtonClick = _this.onShowKeyboardShortcutsButtonClick.bind(_assertThisInitialized(_this));
+    _this.setShowKeyboardShortcutsButtonRef = _this.setShowKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_this));
+    _this.setHideKeyboardShortcutsButtonRef = _this.setHideKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_this));
+    _this.handleFocus = _this.handleFocus.bind(_assertThisInitialized(_this));
+    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DayPickerKeyboardShortcuts, [{
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var phrases = this.props.phrases;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var phrases = this.props.phrases;
 
-        if (nextProps.phrases !== phrases) {
-          this.keyboardShortcuts = getKeyboardShortcuts(nextProps.phrases);
-        }
+    if (nextProps.phrases !== phrases) {
+      this.keyboardShortcuts = getKeyboardShortcuts(nextProps.phrases);
+    }
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate() {
+    this.handleFocus();
+  };
+
+  _proto.onKeyDown = function onKeyDown(e) {
+    e.stopPropagation();
+    var closeKeyboardShortcutsPanel = this.props.closeKeyboardShortcutsPanel; // Because the close button is the only focusable element inside of the panel, this
+    // amounts to a very basic focus trap. The user can exit the panel by "pressing" the
+    // close button or hitting escape
+
+    switch (e.key) {
+      case 'Escape':
+        closeKeyboardShortcutsPanel();
+        break;
+      // do nothing - this allows the up and down arrows continue their
+      // default behavior of scrolling the content of the Keyboard Shortcuts Panel
+      // which is needed when only a single month is shown for instance.
+
+      case 'ArrowUp':
+      case 'ArrowDown':
+        break;
+      // completely block the rest of the keys that have functionality outside of this panel
+
+      case 'Tab':
+      case 'Home':
+      case 'End':
+      case 'PageUp':
+      case 'PageDown':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        e.preventDefault();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  _proto.onShowKeyboardShortcutsButtonClick = function onShowKeyboardShortcutsButtonClick() {
+    var _this2 = this;
+
+    var openKeyboardShortcutsPanel = this.props.openKeyboardShortcutsPanel; // we want to return focus to this button after closing the keyboard shortcuts panel
+
+    openKeyboardShortcutsPanel(function () {
+      _this2.showKeyboardShortcutsButton.focus();
+    });
+  };
+
+  _proto.setShowKeyboardShortcutsButtonRef = function setShowKeyboardShortcutsButtonRef(ref) {
+    this.showKeyboardShortcutsButton = ref;
+  };
+
+  _proto.setHideKeyboardShortcutsButtonRef = function setHideKeyboardShortcutsButtonRef(ref) {
+    this.hideKeyboardShortcutsButton = ref;
+  };
+
+  _proto.handleFocus = function handleFocus() {
+    if (this.hideKeyboardShortcutsButton) {
+      // automatically move focus into the dialog by moving
+      // to the only interactive element, the hide button
+      this.hideKeyboardShortcutsButton.focus();
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        block = _this$props.block,
+        buttonLocation = _this$props.buttonLocation,
+        showKeyboardShortcutsPanel = _this$props.showKeyboardShortcutsPanel,
+        closeKeyboardShortcutsPanel = _this$props.closeKeyboardShortcutsPanel,
+        styles = _this$props.styles,
+        phrases = _this$props.phrases,
+        renderKeyboardShortcutsButton = _this$props.renderKeyboardShortcutsButton;
+    var toggleButtonText = showKeyboardShortcutsPanel ? phrases.hideKeyboardShortcutsPanel : phrases.showKeyboardShortcutsPanel;
+    var bottomRight = buttonLocation === BOTTOM_RIGHT;
+    var topRight = buttonLocation === TOP_RIGHT;
+    var topLeft = buttonLocation === TOP_LEFT;
+    return _react["default"].createElement("div", null, renderKeyboardShortcutsButton && renderKeyboardShortcutsButton({
+      // passing in context-specific props
+      ref: this.setShowKeyboardShortcutsButtonRef,
+      onClick: this.onShowKeyboardShortcutsButtonClick,
+      ariaLabel: toggleButtonText
+    }), renderKeyboardShortcutsButton || _react["default"].createElement("button", _extends({
+      ref: this.setShowKeyboardShortcutsButtonRef
+    }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
+      type: "button",
+      "aria-label": toggleButtonText,
+      onClick: this.onShowKeyboardShortcutsButtonClick,
+      onMouseUp: function onMouseUp(e) {
+        e.currentTarget.blur();
       }
-
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate() {
-        this.handleFocus();
-      }
-
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "onKeyDown",
-    value: function () {
-      function onKeyDown(e) {
-        e.stopPropagation();
-        var closeKeyboardShortcutsPanel = this.props.closeKeyboardShortcutsPanel; // Because the close button is the only focusable element inside of the panel, this
-        // amounts to a very basic focus trap. The user can exit the panel by "pressing" the
-        // close button or hitting escape
-
-        switch (e.key) {
-          case 'Escape':
-            closeKeyboardShortcutsPanel();
-            break;
-          // do nothing - this allows the up and down arrows continue their
-          // default behavior of scrolling the content of the Keyboard Shortcuts Panel
-          // which is needed when only a single month is shown for instance.
-
-          case 'ArrowUp':
-          case 'ArrowDown':
-            break;
-          // completely block the rest of the keys that have functionality outside of this panel
-
-          case 'Tab':
-          case 'Home':
-          case 'End':
-          case 'PageUp':
-          case 'PageDown':
-          case 'ArrowLeft':
-          case 'ArrowRight':
-            e.preventDefault();
-            break;
-
-          default:
-            break;
-        }
-      }
-
-      return onKeyDown;
-    }()
-  }, {
-    key: "onShowKeyboardShortcutsButtonClick",
-    value: function () {
-      function onShowKeyboardShortcutsButtonClick() {
-        var _this2 = this;
-
-        var openKeyboardShortcutsPanel = this.props.openKeyboardShortcutsPanel; // we want to return focus to this button after closing the keyboard shortcuts panel
-
-        openKeyboardShortcutsPanel(function () {
-          _this2.showKeyboardShortcutsButton.focus();
-        });
-      }
-
-      return onShowKeyboardShortcutsButtonClick;
-    }()
-  }, {
-    key: "setShowKeyboardShortcutsButtonRef",
-    value: function () {
-      function setShowKeyboardShortcutsButtonRef(ref) {
-        this.showKeyboardShortcutsButton = ref;
-      }
-
-      return setShowKeyboardShortcutsButtonRef;
-    }()
-  }, {
-    key: "setHideKeyboardShortcutsButtonRef",
-    value: function () {
-      function setHideKeyboardShortcutsButtonRef(ref) {
-        this.hideKeyboardShortcutsButton = ref;
-      }
-
-      return setHideKeyboardShortcutsButtonRef;
-    }()
-  }, {
-    key: "handleFocus",
-    value: function () {
-      function handleFocus() {
-        if (this.hideKeyboardShortcutsButton) {
-          // automatically move focus into the dialog by moving
-          // to the only interactive element, the hide button
-          this.hideKeyboardShortcutsButton.focus();
-        }
-      }
-
-      return handleFocus;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props = this.props,
-            block = _this$props.block,
-            buttonLocation = _this$props.buttonLocation,
-            showKeyboardShortcutsPanel = _this$props.showKeyboardShortcutsPanel,
-            closeKeyboardShortcutsPanel = _this$props.closeKeyboardShortcutsPanel,
-            styles = _this$props.styles,
-            phrases = _this$props.phrases,
-            renderKeyboardShortcutsButton = _this$props.renderKeyboardShortcutsButton;
-        var toggleButtonText = showKeyboardShortcutsPanel ? phrases.hideKeyboardShortcutsPanel : phrases.showKeyboardShortcutsPanel;
-        var bottomRight = buttonLocation === BOTTOM_RIGHT;
-        var topRight = buttonLocation === TOP_RIGHT;
-        var topLeft = buttonLocation === TOP_LEFT;
-        return _react["default"].createElement("div", null, renderKeyboardShortcutsButton && renderKeyboardShortcutsButton({
-          // passing in context-specific props
-          ref: this.setShowKeyboardShortcutsButtonRef,
-          onClick: this.onShowKeyboardShortcutsButtonClick,
-          ariaLabel: toggleButtonText
-        }), renderKeyboardShortcutsButton || _react["default"].createElement("button", _extends({
-          ref: this.setShowKeyboardShortcutsButtonRef
-        }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
-          type: "button",
-          "aria-label": toggleButtonText,
-          onClick: this.onShowKeyboardShortcutsButtonClick,
-          onMouseUp: function () {
-            function onMouseUp(e) {
-              e.currentTarget.blur();
-            }
-
-            return onMouseUp;
-          }()
-        }), _react["default"].createElement("span", (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_showSpan, bottomRight && styles.DayPickerKeyboardShortcuts_showSpan__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_showSpan__topRight, topLeft && styles.DayPickerKeyboardShortcuts_showSpan__topLeft), "?")), showKeyboardShortcutsPanel && _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_panel), {
-          role: "dialog",
-          "aria-labelledby": "DayPickerKeyboardShortcuts_title",
-          "aria-describedby": "DayPickerKeyboardShortcuts_description"
-        }), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_title), {
-          id: "DayPickerKeyboardShortcuts_title"
-        }), phrases.keyboardShortcuts), _react["default"].createElement("button", _extends({
-          ref: this.setHideKeyboardShortcutsButtonRef
-        }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_close), {
-          type: "button",
-          tabIndex: "0",
-          "aria-label": phrases.hideKeyboardShortcutsPanel,
-          onClick: closeKeyboardShortcutsPanel,
-          onKeyDown: this.onKeyDown
-        }), _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_closeSvg))), _react["default"].createElement("ul", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_list), {
-          id: "DayPickerKeyboardShortcuts_description"
-        }), this.keyboardShortcuts.map(function (_ref2) {
-          var unicode = _ref2.unicode,
-              label = _ref2.label,
-              action = _ref2.action;
-          return _react["default"].createElement(_KeyboardShortcutRow["default"], {
-            key: label,
-            unicode: unicode,
-            label: label,
-            action: action,
-            block: block
-          });
-        }))));
-      }
-
-      return render;
-    }()
-  }]);
+    }), _react["default"].createElement("span", (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_showSpan, bottomRight && styles.DayPickerKeyboardShortcuts_showSpan__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_showSpan__topRight, topLeft && styles.DayPickerKeyboardShortcuts_showSpan__topLeft), "?")), showKeyboardShortcutsPanel && _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_panel), {
+      role: "dialog",
+      "aria-labelledby": "DayPickerKeyboardShortcuts_title",
+      "aria-describedby": "DayPickerKeyboardShortcuts_description"
+    }), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_title), {
+      id: "DayPickerKeyboardShortcuts_title"
+    }), phrases.keyboardShortcuts), _react["default"].createElement("button", _extends({
+      ref: this.setHideKeyboardShortcutsButtonRef
+    }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_close), {
+      type: "button",
+      tabIndex: "0",
+      "aria-label": phrases.hideKeyboardShortcutsPanel,
+      onClick: closeKeyboardShortcutsPanel,
+      onKeyDown: this.onKeyDown
+    }), _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_closeSvg))), _react["default"].createElement("ul", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_list), {
+      id: "DayPickerKeyboardShortcuts_description"
+    }), this.keyboardShortcuts.map(function (_ref2) {
+      var unicode = _ref2.unicode,
+          label = _ref2.label,
+          action = _ref2.action;
+      return _react["default"].createElement(_KeyboardShortcutRow["default"], {
+        key: label,
+        unicode: unicode,
+        label: label,
+        action: action,
+        block: block
+      });
+    }))));
+  };
 
   return DayPickerKeyboardShortcuts;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -2263,7 +2182,7 @@ var _CustomizableCalendarDay = _interopRequireDefault(__webpack_require__("GET3"
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 
 function CalendarWeek(_ref) {
   var children = _ref.children;
@@ -2633,31 +2552,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   // required props for a functional interactive SingleDatePicker
   date: null,
@@ -2665,6 +2570,7 @@ var defaultProps = {
   // input related props
   id: 'date',
   placeholder: 'Date',
+  ariaLabel: undefined,
   disabled: false,
   required: false,
   readOnly: false,
@@ -2705,21 +2611,9 @@ var defaultProps = {
   // navigation related props
   navPrev: null,
   navNext: null,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
+  onClose: function onClose() {},
   // month presentation and interaction related props
   renderMonthText: null,
   // day presentation and interaction related props
@@ -2727,33 +2621,17 @@ var defaultProps = {
   renderDayContents: null,
   renderMonthElement: null,
   enableOutsideDays: false,
-  isDayBlocked: function () {
-    function isDayBlocked() {
-      return false;
-    }
-
-    return isDayBlocked;
-  }(),
-  isOutsideRange: function () {
-    function isOutsideRange(day) {
-      return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
-    }
-
-    return isOutsideRange;
-  }(),
-  isDayHighlighted: function () {
-    function isDayHighlighted() {}
-
-    return isDayHighlighted;
-  }(),
+  isDayBlocked: function isDayBlocked() {
+    return false;
+  },
+  isOutsideRange: function isOutsideRange(day) {
+    return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
+  },
+  isDayHighlighted: function isDayHighlighted() {},
   // internationalization props
-  displayFormat: function () {
-    function displayFormat() {
-      return _moment["default"].localeData().longDateFormat('L');
-    }
-
-    return displayFormat;
-  }(),
+  displayFormat: function displayFormat() {
+    return _moment["default"].localeData().longDateFormat('L');
+  },
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
   phrases: _defaultPhrases.SingleDatePickerPhrases,
@@ -2763,25 +2641,18 @@ var defaultProps = {
 var SingleDatePicker =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(SingleDatePicker, _ref);
+  _inheritsLoose(SingleDatePicker, _ref);
 
-  _createClass(SingleDatePicker, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = SingleDatePicker.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function SingleDatePicker(props) {
     var _this;
 
-    _classCallCheck(this, SingleDatePicker);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SingleDatePicker).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.isTouchDevice = false;
     _this.state = {
       dayPickerContainerStyles: {},
@@ -2789,503 +2660,420 @@ function (_ref) {
       isInputFocused: false,
       showKeyboardShortcuts: false
     };
-    _this.onFocusOut = _this.onFocusOut.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onInputFocus = _this.onInputFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onFocusOut = _this.onFocusOut.bind(_assertThisInitialized(_this));
+    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_this));
+    _this.onInputFocus = _this.onInputFocus.bind(_assertThisInitialized(_this));
+    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_this));
+    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_this));
+    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
+    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_this));
+    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_this));
+    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_this));
+    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
     return _this;
   }
   /* istanbul ignore next */
 
 
-  _createClass(SingleDatePicker, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.removeResizeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
-          passive: true
-        });
-        this.responsivizePickerPosition();
-        this.disableScroll();
-        var focused = this.props.focused;
+  _proto.componentDidMount = function componentDidMount() {
+    this.removeResizeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
+      passive: true
+    });
+    this.responsivizePickerPosition();
+    this.disableScroll();
+    var focused = this.props.focused;
 
-        if (focused) {
-          this.setState({
-            isInputFocused: true
-          });
-        }
+    if (focused) {
+      this.setState({
+        isInputFocused: true
+      });
+    }
 
-        this.isTouchDevice = (0, _isTouchDevice["default"])();
+    this.isTouchDevice = (0, _isTouchDevice["default"])();
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var focused = this.props.focused;
+
+    if (!prevProps.focused && focused) {
+      this.responsivizePickerPosition();
+      this.disableScroll();
+    } else if (prevProps.focused && !focused) {
+      if (this.enableScroll) this.enableScroll();
+    }
+  }
+  /* istanbul ignore next */
+  ;
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    if (this.removeResizeEventListener) this.removeResizeEventListener();
+    if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
+    if (this.enableScroll) this.enableScroll();
+  };
+
+  _proto.onOutsideClick = function onOutsideClick(event) {
+    var _this$props = this.props,
+        focused = _this$props.focused,
+        onFocusChange = _this$props.onFocusChange,
+        onClose = _this$props.onClose,
+        startDate = _this$props.startDate,
+        endDate = _this$props.endDate,
+        appendToBody = _this$props.appendToBody;
+    if (!focused) return;
+    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    this.setState({
+      isInputFocused: false,
+      isDayPickerFocused: false,
+      showKeyboardShortcuts: false
+    });
+    onFocusChange({
+      focused: false
+    });
+    onClose({
+      startDate: startDate,
+      endDate: endDate
+    });
+  };
+
+  _proto.onInputFocus = function onInputFocus(_ref2) {
+    var focused = _ref2.focused;
+    var _this$props2 = this.props,
+        onFocusChange = _this$props2.onFocusChange,
+        readOnly = _this$props2.readOnly,
+        withPortal = _this$props2.withPortal,
+        withFullScreenPortal = _this$props2.withFullScreenPortal,
+        keepFocusOnInput = _this$props2.keepFocusOnInput;
+
+    if (focused) {
+      var withAnyPortal = withPortal || withFullScreenPortal;
+      var moveFocusToDayPicker = withAnyPortal || readOnly && !keepFocusOnInput || this.isTouchDevice && !keepFocusOnInput;
+
+      if (moveFocusToDayPicker) {
+        this.onDayPickerFocus();
+      } else {
+        this.onDayPickerBlur();
       }
+    }
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var focused = this.props.focused;
+    onFocusChange({
+      focused: focused
+    });
+  };
 
-        if (!prevProps.focused && focused) {
-          this.responsivizePickerPosition();
-          this.disableScroll();
-        } else if (prevProps.focused && !focused) {
-          if (this.enableScroll) this.enableScroll();
-        }
-      }
+  _proto.onDayPickerFocus = function onDayPickerFocus() {
+    this.setState({
+      isInputFocused: false,
+      isDayPickerFocused: true,
+      showKeyboardShortcuts: false
+    });
+  };
 
-      return componentDidUpdate;
-    }()
-    /* istanbul ignore next */
+  _proto.onDayPickerBlur = function onDayPickerBlur() {
+    this.setState({
+      isInputFocused: true,
+      isDayPickerFocused: false,
+      showKeyboardShortcuts: false
+    });
+  };
 
-  }, {
-    key: "componentWillUnmount",
-    value: function () {
-      function componentWillUnmount() {
-        if (this.removeResizeEventListener) this.removeResizeEventListener();
-        if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
-        if (this.enableScroll) this.enableScroll();
-      }
+  _proto.onFocusOut = function onFocusOut(e) {
+    var onFocusChange = this.props.onFocusChange; // In cases where **relatedTarget** is not null, it points to the right
+    // element here. However, in cases where it is null (such as clicking on a
+    // specific day) or it is **document.body** (IE11), the appropriate value is **event.target**.
+    //
+    // We handle both situations here by using the ` || ` operator to fallback
+    // to *event.target** when **relatedTarget** is not provided.
 
-      return componentWillUnmount;
-    }()
-  }, {
-    key: "onOutsideClick",
-    value: function () {
-      function onOutsideClick(event) {
-        var _this$props = this.props,
-            focused = _this$props.focused,
-            onFocusChange = _this$props.onFocusChange,
-            onClose = _this$props.onClose,
-            startDate = _this$props.startDate,
-            endDate = _this$props.endDate,
-            appendToBody = _this$props.appendToBody;
-        if (!focused) return;
-        if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
-        this.setState({
-          isInputFocused: false,
-          isDayPickerFocused: false,
-          showKeyboardShortcuts: false
-        });
-        onFocusChange({
-          focused: false
-        });
-        onClose({
-          startDate: startDate,
-          endDate: endDate
-        });
-      }
+    var relatedTarget = e.relatedTarget === document.body ? e.target : e.relatedTarget || e.target;
+    if (this.dayPickerContainer.contains(relatedTarget)) return;
+    onFocusChange({
+      focused: false
+    });
+  };
 
-      return onOutsideClick;
-    }()
-  }, {
-    key: "onInputFocus",
-    value: function () {
-      function onInputFocus(_ref2) {
-        var focused = _ref2.focused;
-        var _this$props2 = this.props,
-            onFocusChange = _this$props2.onFocusChange,
-            readOnly = _this$props2.readOnly,
-            withPortal = _this$props2.withPortal,
-            withFullScreenPortal = _this$props2.withFullScreenPortal,
-            keepFocusOnInput = _this$props2.keepFocusOnInput;
+  _proto.setDayPickerContainerRef = function setDayPickerContainerRef(ref) {
+    if (ref === this.dayPickerContainer) return;
+    this.removeEventListeners();
+    this.dayPickerContainer = ref;
+    if (!ref) return;
+    this.addEventListeners();
+  };
 
-        if (focused) {
-          var withAnyPortal = withPortal || withFullScreenPortal;
-          var moveFocusToDayPicker = withAnyPortal || readOnly && !keepFocusOnInput || this.isTouchDevice && !keepFocusOnInput;
+  _proto.setContainerRef = function setContainerRef(ref) {
+    this.container = ref;
+  };
 
-          if (moveFocusToDayPicker) {
-            this.onDayPickerFocus();
-          } else {
-            this.onDayPickerBlur();
-          }
-        }
+  _proto.addEventListeners = function addEventListeners() {
+    // We manually set event because React has not implemented onFocusIn/onFocusOut.
+    // Keep an eye on https://github.com/facebook/react/issues/6410 for updates
+    // We use "blur w/ useCapture param" vs "onfocusout" for FF browser support
+    this.removeFocusOutEventListener = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onFocusOut);
+  };
 
-        onFocusChange({
-          focused: focused
-        });
-      }
+  _proto.removeEventListeners = function removeEventListeners() {
+    if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
+  };
 
-      return onInputFocus;
-    }()
-  }, {
-    key: "onDayPickerFocus",
-    value: function () {
-      function onDayPickerFocus() {
-        this.setState({
-          isInputFocused: false,
-          isDayPickerFocused: true,
-          showKeyboardShortcuts: false
-        });
-      }
+  _proto.disableScroll = function disableScroll() {
+    var _this$props3 = this.props,
+        appendToBody = _this$props3.appendToBody,
+        propDisableScroll = _this$props3.disableScroll,
+        focused = _this$props3.focused;
+    if (!appendToBody && !propDisableScroll) return;
+    if (!focused) return; // Disable scroll for every ancestor of this <SingleDatePicker> up to the
+    // document level. This ensures the input and the picker never move. Other
+    // sibling elements or the picker itself can scroll.
 
-      return onDayPickerFocus;
-    }()
-  }, {
-    key: "onDayPickerBlur",
-    value: function () {
-      function onDayPickerBlur() {
-        this.setState({
-          isInputFocused: true,
-          isDayPickerFocused: false,
-          showKeyboardShortcuts: false
-        });
-      }
+    this.enableScroll = (0, _disableScroll2["default"])(this.container);
+  }
+  /* istanbul ignore next */
+  ;
 
-      return onDayPickerBlur;
-    }()
-  }, {
-    key: "onFocusOut",
-    value: function () {
-      function onFocusOut(e) {
-        var onFocusChange = this.props.onFocusChange;
-        if (this.dayPickerContainer.contains(e.relatedTarget || e.target)) return;
-        onFocusChange({
-          focused: false
-        });
-      }
+  _proto.responsivizePickerPosition = function responsivizePickerPosition() {
+    // It's possible the portal props have been changed in response to window resizes
+    // So let's ensure we reset this back to the base state each time
+    this.setState({
+      dayPickerContainerStyles: {}
+    });
+    var _this$props4 = this.props,
+        openDirection = _this$props4.openDirection,
+        anchorDirection = _this$props4.anchorDirection,
+        horizontalMargin = _this$props4.horizontalMargin,
+        withPortal = _this$props4.withPortal,
+        withFullScreenPortal = _this$props4.withFullScreenPortal,
+        appendToBody = _this$props4.appendToBody,
+        focused = _this$props4.focused;
+    var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
 
-      return onFocusOut;
-    }()
-  }, {
-    key: "setDayPickerContainerRef",
-    value: function () {
-      function setDayPickerContainerRef(ref) {
-        if (ref === this.dayPickerContainer) return;
-        this.removeEventListeners();
-        this.dayPickerContainer = ref;
-        if (!ref) return;
-        this.addEventListeners();
-      }
+    if (!focused) {
+      return;
+    }
 
-      return setDayPickerContainerRef;
-    }()
-  }, {
-    key: "setContainerRef",
-    value: function () {
-      function setContainerRef(ref) {
-        this.container = ref;
-      }
+    var isAnchoredLeft = anchorDirection === _constants.ANCHOR_LEFT;
 
-      return setContainerRef;
-    }()
-  }, {
-    key: "addEventListeners",
-    value: function () {
-      function addEventListeners() {
-        // We manually set event because React has not implemented onFocusIn/onFocusOut.
-        // Keep an eye on https://github.com/facebook/react/issues/6410 for updates
-        // We use "blur w/ useCapture param" vs "onfocusout" for FF browser support
-        this.removeFocusOutEventListener = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onFocusOut);
-      }
+    if (!withPortal && !withFullScreenPortal) {
+      var containerRect = this.dayPickerContainer.getBoundingClientRect();
+      var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+      var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
+      this.setState({
+        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
+      });
+    }
+  };
 
-      return addEventListeners;
-    }()
-  }, {
-    key: "removeEventListeners",
-    value: function () {
-      function removeEventListeners() {
-        if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
-      }
+  _proto.showKeyboardShortcutsPanel = function showKeyboardShortcutsPanel() {
+    this.setState({
+      isInputFocused: false,
+      isDayPickerFocused: true,
+      showKeyboardShortcuts: true
+    });
+  };
 
-      return removeEventListeners;
-    }()
-  }, {
-    key: "disableScroll",
-    value: function () {
-      function disableScroll() {
-        var _this$props3 = this.props,
-            appendToBody = _this$props3.appendToBody,
-            propDisableScroll = _this$props3.disableScroll,
-            focused = _this$props3.focused;
-        if (!appendToBody && !propDisableScroll) return;
-        if (!focused) return; // Disable scroll for every ancestor of this <SingleDatePicker> up to the
-        // document level. This ensures the input and the picker never move. Other
-        // sibling elements or the picker itself can scroll.
+  _proto.maybeRenderDayPickerWithPortal = function maybeRenderDayPickerWithPortal() {
+    var _this$props5 = this.props,
+        focused = _this$props5.focused,
+        withPortal = _this$props5.withPortal,
+        withFullScreenPortal = _this$props5.withFullScreenPortal,
+        appendToBody = _this$props5.appendToBody;
 
-        this.enableScroll = (0, _disableScroll2["default"])(this.container);
-      }
+    if (!focused) {
+      return null;
+    }
 
-      return disableScroll;
-    }()
-    /* istanbul ignore next */
+    if (withPortal || withFullScreenPortal || appendToBody) {
+      return _react["default"].createElement(_reactPortal.Portal, null, this.renderDayPicker());
+    }
 
-  }, {
-    key: "responsivizePickerPosition",
-    value: function () {
-      function responsivizePickerPosition() {
-        // It's possible the portal props have been changed in response to window resizes
-        // So let's ensure we reset this back to the base state each time
-        this.setState({
-          dayPickerContainerStyles: {}
-        });
-        var _this$props4 = this.props,
-            openDirection = _this$props4.openDirection,
-            anchorDirection = _this$props4.anchorDirection,
-            horizontalMargin = _this$props4.horizontalMargin,
-            withPortal = _this$props4.withPortal,
-            withFullScreenPortal = _this$props4.withFullScreenPortal,
-            appendToBody = _this$props4.appendToBody,
-            focused = _this$props4.focused;
-        var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
+    return this.renderDayPicker();
+  };
 
-        if (!focused) {
-          return;
-        }
+  _proto.renderDayPicker = function renderDayPicker() {
+    var _this$props6 = this.props,
+        anchorDirection = _this$props6.anchorDirection,
+        openDirection = _this$props6.openDirection,
+        onDateChange = _this$props6.onDateChange,
+        date = _this$props6.date,
+        onFocusChange = _this$props6.onFocusChange,
+        focused = _this$props6.focused,
+        enableOutsideDays = _this$props6.enableOutsideDays,
+        numberOfMonths = _this$props6.numberOfMonths,
+        orientation = _this$props6.orientation,
+        monthFormat = _this$props6.monthFormat,
+        navPrev = _this$props6.navPrev,
+        navNext = _this$props6.navNext,
+        onPrevMonthClick = _this$props6.onPrevMonthClick,
+        onNextMonthClick = _this$props6.onNextMonthClick,
+        onClose = _this$props6.onClose,
+        withPortal = _this$props6.withPortal,
+        withFullScreenPortal = _this$props6.withFullScreenPortal,
+        keepOpenOnDateSelect = _this$props6.keepOpenOnDateSelect,
+        initialVisibleMonth = _this$props6.initialVisibleMonth,
+        renderMonthText = _this$props6.renderMonthText,
+        renderCalendarDay = _this$props6.renderCalendarDay,
+        renderDayContents = _this$props6.renderDayContents,
+        renderCalendarInfo = _this$props6.renderCalendarInfo,
+        renderMonthElement = _this$props6.renderMonthElement,
+        calendarInfoPosition = _this$props6.calendarInfoPosition,
+        hideKeyboardShortcutsPanel = _this$props6.hideKeyboardShortcutsPanel,
+        firstDayOfWeek = _this$props6.firstDayOfWeek,
+        customCloseIcon = _this$props6.customCloseIcon,
+        phrases = _this$props6.phrases,
+        dayAriaLabelFormat = _this$props6.dayAriaLabelFormat,
+        daySize = _this$props6.daySize,
+        isRTL = _this$props6.isRTL,
+        isOutsideRange = _this$props6.isOutsideRange,
+        isDayBlocked = _this$props6.isDayBlocked,
+        isDayHighlighted = _this$props6.isDayHighlighted,
+        weekDayFormat = _this$props6.weekDayFormat,
+        styles = _this$props6.styles,
+        verticalHeight = _this$props6.verticalHeight,
+        transitionDuration = _this$props6.transitionDuration,
+        verticalSpacing = _this$props6.verticalSpacing,
+        horizontalMonthPadding = _this$props6.horizontalMonthPadding,
+        small = _this$props6.small,
+        reactDates = _this$props6.theme.reactDates;
+    var _this$state = this.state,
+        dayPickerContainerStyles = _this$state.dayPickerContainerStyles,
+        isDayPickerFocused = _this$state.isDayPickerFocused,
+        showKeyboardShortcuts = _this$state.showKeyboardShortcuts;
+    var onOutsideClick = !withFullScreenPortal && withPortal ? this.onOutsideClick : undefined;
 
-        var isAnchoredLeft = anchorDirection === _constants.ANCHOR_LEFT;
+    var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], null);
 
-        if (!withPortal && !withFullScreenPortal) {
-          var containerRect = this.dayPickerContainer.getBoundingClientRect();
-          var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-          var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
-          this.setState({
-            dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
-          });
-        }
-      }
+    var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
+    var withAnyPortal = withPortal || withFullScreenPortal;
+    return _react["default"].createElement("div", _extends({
+      // eslint-disable-line jsx-a11y/no-static-element-interactions
+      ref: this.setDayPickerContainerRef
+    }, (0, _reactWithStyles.css)(styles.SingleDatePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.SingleDatePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight, openDirection === _constants.OPEN_DOWN && styles.SingleDatePicker_picker__openDown, openDirection === _constants.OPEN_UP && styles.SingleDatePicker_picker__openUp, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
+      top: inputHeight + verticalSpacing
+    }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
+      bottom: inputHeight + verticalSpacing
+    }, orientation === _constants.HORIZONTAL_ORIENTATION && styles.SingleDatePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.SingleDatePicker_picker__vertical, withAnyPortal && styles.SingleDatePicker_picker__portal, withFullScreenPortal && styles.SingleDatePicker_picker__fullScreenPortal, isRTL && styles.SingleDatePicker_picker__rtl, dayPickerContainerStyles), {
+      onClick: onOutsideClick
+    }), _react["default"].createElement(_DayPickerSingleDateController["default"], {
+      date: date,
+      onDateChange: onDateChange,
+      onFocusChange: onFocusChange,
+      orientation: orientation,
+      enableOutsideDays: enableOutsideDays,
+      numberOfMonths: numberOfMonths,
+      monthFormat: monthFormat,
+      withPortal: withAnyPortal,
+      focused: focused,
+      keepOpenOnDateSelect: keepOpenOnDateSelect,
+      hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
+      initialVisibleMonth: initialVisibleMonth,
+      navPrev: navPrev,
+      navNext: navNext,
+      onPrevMonthClick: onPrevMonthClick,
+      onNextMonthClick: onNextMonthClick,
+      onClose: onClose,
+      renderMonthText: renderMonthText,
+      renderCalendarDay: renderCalendarDay,
+      renderDayContents: renderDayContents,
+      renderCalendarInfo: renderCalendarInfo,
+      renderMonthElement: renderMonthElement,
+      calendarInfoPosition: calendarInfoPosition,
+      isFocused: isDayPickerFocused,
+      showKeyboardShortcuts: showKeyboardShortcuts,
+      onBlur: this.onDayPickerBlur,
+      phrases: phrases,
+      dayAriaLabelFormat: dayAriaLabelFormat,
+      daySize: daySize,
+      isRTL: isRTL,
+      isOutsideRange: isOutsideRange,
+      isDayBlocked: isDayBlocked,
+      isDayHighlighted: isDayHighlighted,
+      firstDayOfWeek: firstDayOfWeek,
+      weekDayFormat: weekDayFormat,
+      verticalHeight: verticalHeight,
+      transitionDuration: transitionDuration,
+      horizontalMonthPadding: horizontalMonthPadding
+    }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton), {
+      "aria-label": phrases.closeDatePicker,
+      type: "button",
+      onClick: this.onOutsideClick
+    }), _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton_svg), closeIcon)));
+  };
 
-      return responsivizePickerPosition;
-    }()
-  }, {
-    key: "showKeyboardShortcutsPanel",
-    value: function () {
-      function showKeyboardShortcutsPanel() {
-        this.setState({
-          isInputFocused: false,
-          isDayPickerFocused: true,
-          showKeyboardShortcuts: true
-        });
-      }
+  _proto.render = function render() {
+    var _this$props7 = this.props,
+        id = _this$props7.id,
+        placeholder = _this$props7.placeholder,
+        ariaLabel = _this$props7.ariaLabel,
+        disabled = _this$props7.disabled,
+        focused = _this$props7.focused,
+        required = _this$props7.required,
+        readOnly = _this$props7.readOnly,
+        openDirection = _this$props7.openDirection,
+        showClearDate = _this$props7.showClearDate,
+        showDefaultInputIcon = _this$props7.showDefaultInputIcon,
+        inputIconPosition = _this$props7.inputIconPosition,
+        customCloseIcon = _this$props7.customCloseIcon,
+        customInputIcon = _this$props7.customInputIcon,
+        date = _this$props7.date,
+        onDateChange = _this$props7.onDateChange,
+        displayFormat = _this$props7.displayFormat,
+        phrases = _this$props7.phrases,
+        withPortal = _this$props7.withPortal,
+        withFullScreenPortal = _this$props7.withFullScreenPortal,
+        screenReaderInputMessage = _this$props7.screenReaderInputMessage,
+        isRTL = _this$props7.isRTL,
+        noBorder = _this$props7.noBorder,
+        block = _this$props7.block,
+        small = _this$props7.small,
+        regular = _this$props7.regular,
+        verticalSpacing = _this$props7.verticalSpacing,
+        reopenPickerOnClearDate = _this$props7.reopenPickerOnClearDate,
+        keepOpenOnDateSelect = _this$props7.keepOpenOnDateSelect,
+        styles = _this$props7.styles,
+        isOutsideRange = _this$props7.isOutsideRange;
+    var isInputFocused = this.state.isInputFocused;
+    var enableOutsideClick = !withPortal && !withFullScreenPortal;
+    var hideFang = verticalSpacing < _constants.FANG_HEIGHT_PX;
 
-      return showKeyboardShortcutsPanel;
-    }()
-  }, {
-    key: "maybeRenderDayPickerWithPortal",
-    value: function () {
-      function maybeRenderDayPickerWithPortal() {
-        var _this$props5 = this.props,
-            focused = _this$props5.focused,
-            withPortal = _this$props5.withPortal,
-            withFullScreenPortal = _this$props5.withFullScreenPortal,
-            appendToBody = _this$props5.appendToBody;
+    var input = _react["default"].createElement(_SingleDatePickerInputController["default"], {
+      id: id,
+      placeholder: placeholder,
+      ariaLabel: ariaLabel,
+      focused: focused,
+      isFocused: isInputFocused,
+      disabled: disabled,
+      required: required,
+      readOnly: readOnly,
+      openDirection: openDirection,
+      showCaret: !withPortal && !withFullScreenPortal && !hideFang,
+      showClearDate: showClearDate,
+      showDefaultInputIcon: showDefaultInputIcon,
+      inputIconPosition: inputIconPosition,
+      isOutsideRange: isOutsideRange,
+      customCloseIcon: customCloseIcon,
+      customInputIcon: customInputIcon,
+      date: date,
+      onDateChange: onDateChange,
+      displayFormat: displayFormat,
+      onFocusChange: this.onInputFocus,
+      onKeyDownArrowDown: this.onDayPickerFocus,
+      onKeyDownQuestionMark: this.showKeyboardShortcutsPanel,
+      screenReaderMessage: screenReaderInputMessage,
+      phrases: phrases,
+      isRTL: isRTL,
+      noBorder: noBorder,
+      block: block,
+      small: small,
+      regular: regular,
+      verticalSpacing: verticalSpacing,
+      reopenPickerOnClearDate: reopenPickerOnClearDate,
+      keepOpenOnDateSelect: keepOpenOnDateSelect
+    }, this.maybeRenderDayPickerWithPortal());
 
-        if (!focused) {
-          return null;
-        }
-
-        if (withPortal || withFullScreenPortal || appendToBody) {
-          return _react["default"].createElement(_reactPortal.Portal, null, this.renderDayPicker());
-        }
-
-        return this.renderDayPicker();
-      }
-
-      return maybeRenderDayPickerWithPortal;
-    }()
-  }, {
-    key: "renderDayPicker",
-    value: function () {
-      function renderDayPicker() {
-        var _this$props6 = this.props,
-            anchorDirection = _this$props6.anchorDirection,
-            openDirection = _this$props6.openDirection,
-            onDateChange = _this$props6.onDateChange,
-            date = _this$props6.date,
-            onFocusChange = _this$props6.onFocusChange,
-            focused = _this$props6.focused,
-            enableOutsideDays = _this$props6.enableOutsideDays,
-            numberOfMonths = _this$props6.numberOfMonths,
-            orientation = _this$props6.orientation,
-            monthFormat = _this$props6.monthFormat,
-            navPrev = _this$props6.navPrev,
-            navNext = _this$props6.navNext,
-            onPrevMonthClick = _this$props6.onPrevMonthClick,
-            onNextMonthClick = _this$props6.onNextMonthClick,
-            onClose = _this$props6.onClose,
-            withPortal = _this$props6.withPortal,
-            withFullScreenPortal = _this$props6.withFullScreenPortal,
-            keepOpenOnDateSelect = _this$props6.keepOpenOnDateSelect,
-            initialVisibleMonth = _this$props6.initialVisibleMonth,
-            renderMonthText = _this$props6.renderMonthText,
-            renderCalendarDay = _this$props6.renderCalendarDay,
-            renderDayContents = _this$props6.renderDayContents,
-            renderCalendarInfo = _this$props6.renderCalendarInfo,
-            renderMonthElement = _this$props6.renderMonthElement,
-            calendarInfoPosition = _this$props6.calendarInfoPosition,
-            hideKeyboardShortcutsPanel = _this$props6.hideKeyboardShortcutsPanel,
-            firstDayOfWeek = _this$props6.firstDayOfWeek,
-            customCloseIcon = _this$props6.customCloseIcon,
-            phrases = _this$props6.phrases,
-            dayAriaLabelFormat = _this$props6.dayAriaLabelFormat,
-            daySize = _this$props6.daySize,
-            isRTL = _this$props6.isRTL,
-            isOutsideRange = _this$props6.isOutsideRange,
-            isDayBlocked = _this$props6.isDayBlocked,
-            isDayHighlighted = _this$props6.isDayHighlighted,
-            weekDayFormat = _this$props6.weekDayFormat,
-            styles = _this$props6.styles,
-            verticalHeight = _this$props6.verticalHeight,
-            transitionDuration = _this$props6.transitionDuration,
-            verticalSpacing = _this$props6.verticalSpacing,
-            horizontalMonthPadding = _this$props6.horizontalMonthPadding,
-            small = _this$props6.small,
-            reactDates = _this$props6.theme.reactDates;
-        var _this$state = this.state,
-            dayPickerContainerStyles = _this$state.dayPickerContainerStyles,
-            isDayPickerFocused = _this$state.isDayPickerFocused,
-            showKeyboardShortcuts = _this$state.showKeyboardShortcuts;
-        var onOutsideClick = !withFullScreenPortal && withPortal ? this.onOutsideClick : undefined;
-
-        var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], null);
-
-        var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
-        var withAnyPortal = withPortal || withFullScreenPortal;
-        return _react["default"].createElement("div", _extends({
-          // eslint-disable-line jsx-a11y/no-static-element-interactions
-          ref: this.setDayPickerContainerRef
-        }, (0, _reactWithStyles.css)(styles.SingleDatePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.SingleDatePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight, openDirection === _constants.OPEN_DOWN && styles.SingleDatePicker_picker__openDown, openDirection === _constants.OPEN_UP && styles.SingleDatePicker_picker__openUp, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
-          top: inputHeight + verticalSpacing
-        }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
-          bottom: inputHeight + verticalSpacing
-        }, orientation === _constants.HORIZONTAL_ORIENTATION && styles.SingleDatePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.SingleDatePicker_picker__vertical, withAnyPortal && styles.SingleDatePicker_picker__portal, withFullScreenPortal && styles.SingleDatePicker_picker__fullScreenPortal, isRTL && styles.SingleDatePicker_picker__rtl, dayPickerContainerStyles), {
-          onClick: onOutsideClick
-        }), _react["default"].createElement(_DayPickerSingleDateController["default"], {
-          date: date,
-          onDateChange: onDateChange,
-          onFocusChange: onFocusChange,
-          orientation: orientation,
-          enableOutsideDays: enableOutsideDays,
-          numberOfMonths: numberOfMonths,
-          monthFormat: monthFormat,
-          withPortal: withAnyPortal,
-          focused: focused,
-          keepOpenOnDateSelect: keepOpenOnDateSelect,
-          hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
-          initialVisibleMonth: initialVisibleMonth,
-          navPrev: navPrev,
-          navNext: navNext,
-          onPrevMonthClick: onPrevMonthClick,
-          onNextMonthClick: onNextMonthClick,
-          onClose: onClose,
-          renderMonthText: renderMonthText,
-          renderCalendarDay: renderCalendarDay,
-          renderDayContents: renderDayContents,
-          renderCalendarInfo: renderCalendarInfo,
-          renderMonthElement: renderMonthElement,
-          calendarInfoPosition: calendarInfoPosition,
-          isFocused: isDayPickerFocused,
-          showKeyboardShortcuts: showKeyboardShortcuts,
-          onBlur: this.onDayPickerBlur,
-          phrases: phrases,
-          dayAriaLabelFormat: dayAriaLabelFormat,
-          daySize: daySize,
-          isRTL: isRTL,
-          isOutsideRange: isOutsideRange,
-          isDayBlocked: isDayBlocked,
-          isDayHighlighted: isDayHighlighted,
-          firstDayOfWeek: firstDayOfWeek,
-          weekDayFormat: weekDayFormat,
-          verticalHeight: verticalHeight,
-          transitionDuration: transitionDuration,
-          horizontalMonthPadding: horizontalMonthPadding
-        }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton), {
-          "aria-label": phrases.closeDatePicker,
-          type: "button",
-          onClick: this.onOutsideClick
-        }), _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton_svg), closeIcon)));
-      }
-
-      return renderDayPicker;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props7 = this.props,
-            id = _this$props7.id,
-            placeholder = _this$props7.placeholder,
-            disabled = _this$props7.disabled,
-            focused = _this$props7.focused,
-            required = _this$props7.required,
-            readOnly = _this$props7.readOnly,
-            openDirection = _this$props7.openDirection,
-            showClearDate = _this$props7.showClearDate,
-            showDefaultInputIcon = _this$props7.showDefaultInputIcon,
-            inputIconPosition = _this$props7.inputIconPosition,
-            customCloseIcon = _this$props7.customCloseIcon,
-            customInputIcon = _this$props7.customInputIcon,
-            date = _this$props7.date,
-            onDateChange = _this$props7.onDateChange,
-            displayFormat = _this$props7.displayFormat,
-            phrases = _this$props7.phrases,
-            withPortal = _this$props7.withPortal,
-            withFullScreenPortal = _this$props7.withFullScreenPortal,
-            screenReaderInputMessage = _this$props7.screenReaderInputMessage,
-            isRTL = _this$props7.isRTL,
-            noBorder = _this$props7.noBorder,
-            block = _this$props7.block,
-            small = _this$props7.small,
-            regular = _this$props7.regular,
-            verticalSpacing = _this$props7.verticalSpacing,
-            reopenPickerOnClearDate = _this$props7.reopenPickerOnClearDate,
-            keepOpenOnDateSelect = _this$props7.keepOpenOnDateSelect,
-            styles = _this$props7.styles,
-            isOutsideRange = _this$props7.isOutsideRange;
-        var isInputFocused = this.state.isInputFocused;
-        var enableOutsideClick = !withPortal && !withFullScreenPortal;
-        var hideFang = verticalSpacing < _constants.FANG_HEIGHT_PX;
-
-        var input = _react["default"].createElement(_SingleDatePickerInputController["default"], {
-          id: id,
-          placeholder: placeholder,
-          focused: focused,
-          isFocused: isInputFocused,
-          disabled: disabled,
-          required: required,
-          readOnly: readOnly,
-          openDirection: openDirection,
-          showCaret: !withPortal && !withFullScreenPortal && !hideFang,
-          showClearDate: showClearDate,
-          showDefaultInputIcon: showDefaultInputIcon,
-          inputIconPosition: inputIconPosition,
-          isOutsideRange: isOutsideRange,
-          customCloseIcon: customCloseIcon,
-          customInputIcon: customInputIcon,
-          date: date,
-          onDateChange: onDateChange,
-          displayFormat: displayFormat,
-          onFocusChange: this.onInputFocus,
-          onKeyDownArrowDown: this.onDayPickerFocus,
-          onKeyDownQuestionMark: this.showKeyboardShortcutsPanel,
-          screenReaderMessage: screenReaderInputMessage,
-          phrases: phrases,
-          isRTL: isRTL,
-          noBorder: noBorder,
-          block: block,
-          small: small,
-          regular: regular,
-          verticalSpacing: verticalSpacing,
-          reopenPickerOnClearDate: reopenPickerOnClearDate,
-          keepOpenOnDateSelect: keepOpenOnDateSelect
-        }, this.maybeRenderDayPickerWithPortal());
-
-        return _react["default"].createElement("div", _extends({
-          ref: this.setContainerRef
-        }, (0, _reactWithStyles.css)(styles.SingleDatePicker, block && styles.SingleDatePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
-          onOutsideClick: this.onOutsideClick
-        }, input), enableOutsideClick || input);
-      }
-
-      return render;
-    }()
-  }]);
+    return _react["default"].createElement("div", _extends({
+      ref: this.setContainerRef
+    }, (0, _reactWithStyles.css)(styles.SingleDatePicker, block && styles.SingleDatePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
+      onOutsideClick: this.onOutsideClick
+    }, input), enableOutsideClick || input);
+  };
 
   return SingleDatePicker;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -4478,31 +4266,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   // required props for a functional interactive DateRangePicker
   startDate: null,
@@ -4511,6 +4285,8 @@ var defaultProps = {
   // input related props
   startDatePlaceholderText: 'Start Date',
   endDatePlaceholderText: 'End Date',
+  startDateAriaLabel: undefined,
+  endDateAriaLabel: undefined,
   startDateOffset: undefined,
   endDateOffset: undefined,
   disabled: false,
@@ -4555,56 +4331,28 @@ var defaultProps = {
   // navigation related props
   navPrev: null,
   navNext: null,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
+  onClose: function onClose() {},
   // day presentation and interaction related props
   renderCalendarDay: undefined,
   renderDayContents: null,
   renderMonthElement: null,
   minimumNights: 1,
   enableOutsideDays: false,
-  isDayBlocked: function () {
-    function isDayBlocked() {
-      return false;
-    }
-
-    return isDayBlocked;
-  }(),
-  isOutsideRange: function () {
-    function isOutsideRange(day) {
-      return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
-    }
-
-    return isOutsideRange;
-  }(),
-  isDayHighlighted: function () {
-    function isDayHighlighted() {
-      return false;
-    }
-
-    return isDayHighlighted;
-  }(),
+  isDayBlocked: function isDayBlocked() {
+    return false;
+  },
+  isOutsideRange: function isOutsideRange(day) {
+    return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
+  },
+  isDayHighlighted: function isDayHighlighted() {
+    return false;
+  },
   // internationalization
-  displayFormat: function () {
-    function displayFormat() {
-      return _moment["default"].localeData().longDateFormat('L');
-    }
-
-    return displayFormat;
-  }(),
+  displayFormat: function displayFormat() {
+    return _moment["default"].localeData().longDateFormat('L');
+  },
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
   phrases: _defaultPhrases.DateRangePickerPhrases,
@@ -4614,25 +4362,18 @@ var defaultProps = {
 var DateRangePicker =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DateRangePicker, _ref);
+  _inheritsLoose(DateRangePicker, _ref);
 
-  _createClass(DateRangePicker, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DateRangePicker.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DateRangePicker(props) {
     var _this;
 
-    _classCallCheck(this, DateRangePicker);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DateRangePicker).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.state = {
       dayPickerContainerStyles: {},
       isDateRangePickerInputFocused: false,
@@ -4640,539 +4381,446 @@ function (_ref) {
       showKeyboardShortcuts: false
     };
     _this.isTouchDevice = false;
-    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDateRangePickerInputFocus = _this.onDateRangePickerInputFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerFocusOut = _this.onDayPickerFocusOut.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_this));
+    _this.onDateRangePickerInputFocus = _this.onDateRangePickerInputFocus.bind(_assertThisInitialized(_this));
+    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_this));
+    _this.onDayPickerFocusOut = _this.onDayPickerFocusOut.bind(_assertThisInitialized(_this));
+    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_this));
+    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
+    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_this));
+    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_this));
+    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_this));
+    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DateRangePicker, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.removeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
-          passive: true
-        });
-        this.responsivizePickerPosition();
-        this.disableScroll();
-        var focusedInput = this.props.focusedInput;
+  _proto.componentDidMount = function componentDidMount() {
+    this.removeEventListener = (0, _consolidatedEvents.addEventListener)(window, 'resize', this.responsivizePickerPosition, {
+      passive: true
+    });
+    this.responsivizePickerPosition();
+    this.disableScroll();
+    var focusedInput = this.props.focusedInput;
 
-        if (focusedInput) {
-          this.setState({
-            isDateRangePickerInputFocused: true
-          });
-        }
+    if (focusedInput) {
+      this.setState({
+        isDateRangePickerInputFocused: true
+      });
+    }
 
-        this.isTouchDevice = (0, _isTouchDevice["default"])();
+    this.isTouchDevice = (0, _isTouchDevice["default"])();
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var focusedInput = this.props.focusedInput;
+
+    if (!prevProps.focusedInput && focusedInput && this.isOpened()) {
+      // The date picker just changed from being closed to being open.
+      this.responsivizePickerPosition();
+      this.disableScroll();
+    } else if (prevProps.focusedInput && !focusedInput && !this.isOpened()) {
+      // The date picker just changed from being open to being closed.
+      if (this.enableScroll) this.enableScroll();
+    }
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.removeDayPickerEventListeners();
+    if (this.removeEventListener) this.removeEventListener();
+    if (this.enableScroll) this.enableScroll();
+  };
+
+  _proto.onOutsideClick = function onOutsideClick(event) {
+    var _this$props = this.props,
+        onFocusChange = _this$props.onFocusChange,
+        onClose = _this$props.onClose,
+        startDate = _this$props.startDate,
+        endDate = _this$props.endDate,
+        appendToBody = _this$props.appendToBody;
+    if (!this.isOpened()) return;
+    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    this.setState({
+      isDateRangePickerInputFocused: false,
+      isDayPickerFocused: false,
+      showKeyboardShortcuts: false
+    });
+    onFocusChange(null);
+    onClose({
+      startDate: startDate,
+      endDate: endDate
+    });
+  };
+
+  _proto.onDateRangePickerInputFocus = function onDateRangePickerInputFocus(focusedInput) {
+    var _this$props2 = this.props,
+        onFocusChange = _this$props2.onFocusChange,
+        readOnly = _this$props2.readOnly,
+        withPortal = _this$props2.withPortal,
+        withFullScreenPortal = _this$props2.withFullScreenPortal,
+        keepFocusOnInput = _this$props2.keepFocusOnInput;
+
+    if (focusedInput) {
+      var withAnyPortal = withPortal || withFullScreenPortal;
+      var moveFocusToDayPicker = withAnyPortal || readOnly && !keepFocusOnInput || this.isTouchDevice && !keepFocusOnInput;
+
+      if (moveFocusToDayPicker) {
+        this.onDayPickerFocus();
+      } else {
+        this.onDayPickerBlur();
       }
+    }
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var focusedInput = this.props.focusedInput;
+    onFocusChange(focusedInput);
+  };
 
-        if (!prevProps.focusedInput && focusedInput && this.isOpened()) {
-          // The date picker just changed from being closed to being open.
-          this.responsivizePickerPosition();
-          this.disableScroll();
-        } else if (prevProps.focusedInput && !focusedInput && !this.isOpened()) {
-          // The date picker just changed from being open to being closed.
-          if (this.enableScroll) this.enableScroll();
-        }
-      }
+  _proto.onDayPickerFocus = function onDayPickerFocus() {
+    var _this$props3 = this.props,
+        focusedInput = _this$props3.focusedInput,
+        onFocusChange = _this$props3.onFocusChange;
+    if (!focusedInput) onFocusChange(_constants.START_DATE);
+    this.setState({
+      isDateRangePickerInputFocused: false,
+      isDayPickerFocused: true,
+      showKeyboardShortcuts: false
+    });
+  };
 
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "componentWillUnmount",
-    value: function () {
-      function componentWillUnmount() {
-        this.removeDayPickerEventListeners();
-        if (this.removeEventListener) this.removeEventListener();
-        if (this.enableScroll) this.enableScroll();
-      }
+  _proto.onDayPickerFocusOut = function onDayPickerFocusOut(event) {
+    // In cases where **relatedTarget** is not null, it points to the right
+    // element here. However, in cases where it is null (such as clicking on a
+    // specific day) or it is **document.body** (IE11), the appropriate value is **event.target**.
+    //
+    // We handle both situations here by using the ` || ` operator to fallback
+    // to *event.target** when **relatedTarget** is not provided.
+    var relatedTarget = event.relatedTarget === document.body ? event.target : event.relatedTarget || event.target;
+    if (this.dayPickerContainer.contains(relatedTarget)) return;
+    this.onOutsideClick(event);
+  };
 
-      return componentWillUnmount;
-    }()
-  }, {
-    key: "onOutsideClick",
-    value: function () {
-      function onOutsideClick(event) {
-        var _this$props = this.props,
-            onFocusChange = _this$props.onFocusChange,
-            onClose = _this$props.onClose,
-            startDate = _this$props.startDate,
-            endDate = _this$props.endDate,
-            appendToBody = _this$props.appendToBody;
-        if (!this.isOpened()) return;
-        if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
-        this.setState({
-          isDateRangePickerInputFocused: false,
-          isDayPickerFocused: false,
-          showKeyboardShortcuts: false
-        });
-        onFocusChange(null);
-        onClose({
-          startDate: startDate,
-          endDate: endDate
-        });
-      }
+  _proto.onDayPickerBlur = function onDayPickerBlur() {
+    this.setState({
+      isDateRangePickerInputFocused: true,
+      isDayPickerFocused: false,
+      showKeyboardShortcuts: false
+    });
+  };
 
-      return onOutsideClick;
-    }()
-  }, {
-    key: "onDateRangePickerInputFocus",
-    value: function () {
-      function onDateRangePickerInputFocus(focusedInput) {
-        var _this$props2 = this.props,
-            onFocusChange = _this$props2.onFocusChange,
-            readOnly = _this$props2.readOnly,
-            withPortal = _this$props2.withPortal,
-            withFullScreenPortal = _this$props2.withFullScreenPortal,
-            keepFocusOnInput = _this$props2.keepFocusOnInput;
+  _proto.setDayPickerContainerRef = function setDayPickerContainerRef(ref) {
+    if (ref === this.dayPickerContainer) return;
+    if (this.dayPickerContainer) this.removeDayPickerEventListeners();
+    this.dayPickerContainer = ref;
+    if (!ref) return;
+    this.addDayPickerEventListeners();
+  };
 
-        if (focusedInput) {
-          var withAnyPortal = withPortal || withFullScreenPortal;
-          var moveFocusToDayPicker = withAnyPortal || readOnly && !keepFocusOnInput || this.isTouchDevice && !keepFocusOnInput;
+  _proto.setContainerRef = function setContainerRef(ref) {
+    this.container = ref;
+  };
 
-          if (moveFocusToDayPicker) {
-            this.onDayPickerFocus();
-          } else {
-            this.onDayPickerBlur();
-          }
-        }
+  _proto.addDayPickerEventListeners = function addDayPickerEventListeners() {
+    // NOTE: We are using a manual event listener here, because React doesn't
+    // provide FocusOut, while blur and keydown don't provide the information
+    // needed in order to know whether we have left focus or not.
+    //
+    // For reference, this issue is further described here:
+    // - https://github.com/facebook/react/issues/6410
+    this.removeDayPickerFocusOut = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onDayPickerFocusOut);
+  };
 
-        onFocusChange(focusedInput);
-      }
+  _proto.removeDayPickerEventListeners = function removeDayPickerEventListeners() {
+    if (this.removeDayPickerFocusOut) this.removeDayPickerFocusOut();
+  };
 
-      return onDateRangePickerInputFocus;
-    }()
-  }, {
-    key: "onDayPickerFocus",
-    value: function () {
-      function onDayPickerFocus() {
-        var _this$props3 = this.props,
-            focusedInput = _this$props3.focusedInput,
-            onFocusChange = _this$props3.onFocusChange;
-        if (!focusedInput) onFocusChange(_constants.START_DATE);
-        this.setState({
-          isDateRangePickerInputFocused: false,
-          isDayPickerFocused: true,
-          showKeyboardShortcuts: false
-        });
-      }
+  _proto.isOpened = function isOpened() {
+    var focusedInput = this.props.focusedInput;
+    return focusedInput === _constants.START_DATE || focusedInput === _constants.END_DATE;
+  };
 
-      return onDayPickerFocus;
-    }()
-  }, {
-    key: "onDayPickerFocusOut",
-    value: function () {
-      function onDayPickerFocusOut(event) {
-        // In cases where **relatedTarget** is not null, it points to the right
-        // element here. However, in cases where it is null (such as clicking on a
-        // specific day) or it is **document.body** (IE11), the appropriate value is **event.target**.
-        //
-        // We handle both situations here by using the ` || ` operator to fallback
-        // to *event.target** when **relatedTarget** is not provided.
-        var relatedTarget = event.relatedTarget === document.body ? event.target : event.relatedTarget || event.target;
-        if (this.dayPickerContainer.contains(relatedTarget)) return;
-        this.onOutsideClick(event);
-      }
+  _proto.disableScroll = function disableScroll() {
+    var _this$props4 = this.props,
+        appendToBody = _this$props4.appendToBody,
+        propDisableScroll = _this$props4.disableScroll;
+    if (!appendToBody && !propDisableScroll) return;
+    if (!this.isOpened()) return; // Disable scroll for every ancestor of this DateRangePicker up to the
+    // document level. This ensures the input and the picker never move. Other
+    // sibling elements or the picker itself can scroll.
 
-      return onDayPickerFocusOut;
-    }()
-  }, {
-    key: "onDayPickerBlur",
-    value: function () {
-      function onDayPickerBlur() {
-        this.setState({
-          isDateRangePickerInputFocused: true,
-          isDayPickerFocused: false,
-          showKeyboardShortcuts: false
-        });
-      }
+    this.enableScroll = (0, _disableScroll2["default"])(this.container);
+  };
 
-      return onDayPickerBlur;
-    }()
-  }, {
-    key: "setDayPickerContainerRef",
-    value: function () {
-      function setDayPickerContainerRef(ref) {
-        if (ref === this.dayPickerContainer) return;
-        if (this.dayPickerContainer) this.removeDayPickerEventListeners();
-        this.dayPickerContainer = ref;
-        if (!ref) return;
-        this.addDayPickerEventListeners();
-      }
+  _proto.responsivizePickerPosition = function responsivizePickerPosition() {
+    // It's possible the portal props have been changed in response to window resizes
+    // So let's ensure we reset this back to the base state each time
+    this.setState({
+      dayPickerContainerStyles: {}
+    });
 
-      return setDayPickerContainerRef;
-    }()
-  }, {
-    key: "setContainerRef",
-    value: function () {
-      function setContainerRef(ref) {
-        this.container = ref;
-      }
+    if (!this.isOpened()) {
+      return;
+    }
 
-      return setContainerRef;
-    }()
-  }, {
-    key: "addDayPickerEventListeners",
-    value: function () {
-      function addDayPickerEventListeners() {
-        // NOTE: We are using a manual event listener here, because React doesn't
-        // provide FocusOut, while blur and keydown don't provide the information
-        // needed in order to know whether we have left focus or not.
-        //
-        // For reference, this issue is further described here:
-        // - https://github.com/facebook/react/issues/6410
-        this.removeDayPickerFocusOut = (0, _consolidatedEvents.addEventListener)(this.dayPickerContainer, 'focusout', this.onDayPickerFocusOut);
-      }
+    var _this$props5 = this.props,
+        openDirection = _this$props5.openDirection,
+        anchorDirection = _this$props5.anchorDirection,
+        horizontalMargin = _this$props5.horizontalMargin,
+        withPortal = _this$props5.withPortal,
+        withFullScreenPortal = _this$props5.withFullScreenPortal,
+        appendToBody = _this$props5.appendToBody;
+    var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
+    var isAnchoredLeft = anchorDirection === _constants.ANCHOR_LEFT;
 
-      return addDayPickerEventListeners;
-    }()
-  }, {
-    key: "removeDayPickerEventListeners",
-    value: function () {
-      function removeDayPickerEventListeners() {
-        if (this.removeDayPickerFocusOut) this.removeDayPickerFocusOut();
-      }
+    if (!withPortal && !withFullScreenPortal) {
+      var containerRect = this.dayPickerContainer.getBoundingClientRect();
+      var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+      var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
+      this.setState({
+        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
+      });
+    }
+  };
 
-      return removeDayPickerEventListeners;
-    }()
-  }, {
-    key: "isOpened",
-    value: function () {
-      function isOpened() {
-        var focusedInput = this.props.focusedInput;
-        return focusedInput === _constants.START_DATE || focusedInput === _constants.END_DATE;
-      }
+  _proto.showKeyboardShortcutsPanel = function showKeyboardShortcutsPanel() {
+    this.setState({
+      isDateRangePickerInputFocused: false,
+      isDayPickerFocused: true,
+      showKeyboardShortcuts: true
+    });
+  };
 
-      return isOpened;
-    }()
-  }, {
-    key: "disableScroll",
-    value: function () {
-      function disableScroll() {
-        var _this$props4 = this.props,
-            appendToBody = _this$props4.appendToBody,
-            propDisableScroll = _this$props4.disableScroll;
-        if (!appendToBody && !propDisableScroll) return;
-        if (!this.isOpened()) return; // Disable scroll for every ancestor of this DateRangePicker up to the
-        // document level. This ensures the input and the picker never move. Other
-        // sibling elements or the picker itself can scroll.
+  _proto.maybeRenderDayPickerWithPortal = function maybeRenderDayPickerWithPortal() {
+    var _this$props6 = this.props,
+        withPortal = _this$props6.withPortal,
+        withFullScreenPortal = _this$props6.withFullScreenPortal,
+        appendToBody = _this$props6.appendToBody;
 
-        this.enableScroll = (0, _disableScroll2["default"])(this.container);
-      }
+    if (!this.isOpened()) {
+      return null;
+    }
 
-      return disableScroll;
-    }()
-  }, {
-    key: "responsivizePickerPosition",
-    value: function () {
-      function responsivizePickerPosition() {
-        // It's possible the portal props have been changed in response to window resizes
-        // So let's ensure we reset this back to the base state each time
-        this.setState({
-          dayPickerContainerStyles: {}
-        });
+    if (withPortal || withFullScreenPortal || appendToBody) {
+      return _react["default"].createElement(_reactPortal.Portal, null, this.renderDayPicker());
+    }
 
-        if (!this.isOpened()) {
-          return;
-        }
+    return this.renderDayPicker();
+  };
 
-        var _this$props5 = this.props,
-            openDirection = _this$props5.openDirection,
-            anchorDirection = _this$props5.anchorDirection,
-            horizontalMargin = _this$props5.horizontalMargin,
-            withPortal = _this$props5.withPortal,
-            withFullScreenPortal = _this$props5.withFullScreenPortal,
-            appendToBody = _this$props5.appendToBody;
-        var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
-        var isAnchoredLeft = anchorDirection === _constants.ANCHOR_LEFT;
+  _proto.renderDayPicker = function renderDayPicker() {
+    var _this$props7 = this.props,
+        anchorDirection = _this$props7.anchorDirection,
+        openDirection = _this$props7.openDirection,
+        isDayBlocked = _this$props7.isDayBlocked,
+        isDayHighlighted = _this$props7.isDayHighlighted,
+        isOutsideRange = _this$props7.isOutsideRange,
+        numberOfMonths = _this$props7.numberOfMonths,
+        orientation = _this$props7.orientation,
+        monthFormat = _this$props7.monthFormat,
+        renderMonthText = _this$props7.renderMonthText,
+        navPrev = _this$props7.navPrev,
+        navNext = _this$props7.navNext,
+        onPrevMonthClick = _this$props7.onPrevMonthClick,
+        onNextMonthClick = _this$props7.onNextMonthClick,
+        onDatesChange = _this$props7.onDatesChange,
+        onFocusChange = _this$props7.onFocusChange,
+        withPortal = _this$props7.withPortal,
+        withFullScreenPortal = _this$props7.withFullScreenPortal,
+        daySize = _this$props7.daySize,
+        enableOutsideDays = _this$props7.enableOutsideDays,
+        focusedInput = _this$props7.focusedInput,
+        startDate = _this$props7.startDate,
+        startDateOffset = _this$props7.startDateOffset,
+        endDate = _this$props7.endDate,
+        endDateOffset = _this$props7.endDateOffset,
+        minimumNights = _this$props7.minimumNights,
+        keepOpenOnDateSelect = _this$props7.keepOpenOnDateSelect,
+        renderCalendarDay = _this$props7.renderCalendarDay,
+        renderDayContents = _this$props7.renderDayContents,
+        renderCalendarInfo = _this$props7.renderCalendarInfo,
+        renderMonthElement = _this$props7.renderMonthElement,
+        calendarInfoPosition = _this$props7.calendarInfoPosition,
+        firstDayOfWeek = _this$props7.firstDayOfWeek,
+        initialVisibleMonth = _this$props7.initialVisibleMonth,
+        hideKeyboardShortcutsPanel = _this$props7.hideKeyboardShortcutsPanel,
+        customCloseIcon = _this$props7.customCloseIcon,
+        onClose = _this$props7.onClose,
+        phrases = _this$props7.phrases,
+        dayAriaLabelFormat = _this$props7.dayAriaLabelFormat,
+        isRTL = _this$props7.isRTL,
+        weekDayFormat = _this$props7.weekDayFormat,
+        styles = _this$props7.styles,
+        verticalHeight = _this$props7.verticalHeight,
+        transitionDuration = _this$props7.transitionDuration,
+        verticalSpacing = _this$props7.verticalSpacing,
+        horizontalMonthPadding = _this$props7.horizontalMonthPadding,
+        small = _this$props7.small,
+        disabled = _this$props7.disabled,
+        reactDates = _this$props7.theme.reactDates;
+    var _this$state = this.state,
+        dayPickerContainerStyles = _this$state.dayPickerContainerStyles,
+        isDayPickerFocused = _this$state.isDayPickerFocused,
+        showKeyboardShortcuts = _this$state.showKeyboardShortcuts;
+    var onOutsideClick = !withFullScreenPortal && withPortal ? this.onOutsideClick : undefined;
 
-        if (!withPortal && !withFullScreenPortal) {
-          var containerRect = this.dayPickerContainer.getBoundingClientRect();
-          var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-          var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
-          this.setState({
-            dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
-          });
-        }
-      }
+    var initialVisibleMonthThunk = initialVisibleMonth || function () {
+      return startDate || endDate || (0, _moment["default"])();
+    };
 
-      return responsivizePickerPosition;
-    }()
-  }, {
-    key: "showKeyboardShortcutsPanel",
-    value: function () {
-      function showKeyboardShortcutsPanel() {
-        this.setState({
-          isDateRangePickerInputFocused: false,
-          isDayPickerFocused: true,
-          showKeyboardShortcuts: true
-        });
-      }
+    var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton_svg));
 
-      return showKeyboardShortcutsPanel;
-    }()
-  }, {
-    key: "maybeRenderDayPickerWithPortal",
-    value: function () {
-      function maybeRenderDayPickerWithPortal() {
-        var _this$props6 = this.props,
-            withPortal = _this$props6.withPortal,
-            withFullScreenPortal = _this$props6.withFullScreenPortal,
-            appendToBody = _this$props6.appendToBody;
+    var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
+    var withAnyPortal = withPortal || withFullScreenPortal;
+    return _react["default"].createElement("div", _extends({
+      // eslint-disable-line jsx-a11y/no-static-element-interactions
+      ref: this.setDayPickerContainerRef
+    }, (0, _reactWithStyles.css)(styles.DateRangePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.DateRangePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight, orientation === _constants.HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
+      top: inputHeight + verticalSpacing
+    }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
+      bottom: inputHeight + verticalSpacing
+    }, withAnyPortal && styles.DateRangePicker_picker__portal, withFullScreenPortal && styles.DateRangePicker_picker__fullScreenPortal, isRTL && styles.DateRangePicker_picker__rtl, dayPickerContainerStyles), {
+      onClick: onOutsideClick
+    }), _react["default"].createElement(_DayPickerRangeController["default"], {
+      orientation: orientation,
+      enableOutsideDays: enableOutsideDays,
+      numberOfMonths: numberOfMonths,
+      onPrevMonthClick: onPrevMonthClick,
+      onNextMonthClick: onNextMonthClick,
+      onDatesChange: onDatesChange,
+      onFocusChange: onFocusChange,
+      onClose: onClose,
+      focusedInput: focusedInput,
+      startDate: startDate,
+      startDateOffset: startDateOffset,
+      endDate: endDate,
+      endDateOffset: endDateOffset,
+      monthFormat: monthFormat,
+      renderMonthText: renderMonthText,
+      withPortal: withAnyPortal,
+      daySize: daySize,
+      initialVisibleMonth: initialVisibleMonthThunk,
+      hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
+      navPrev: navPrev,
+      navNext: navNext,
+      minimumNights: minimumNights,
+      isOutsideRange: isOutsideRange,
+      isDayHighlighted: isDayHighlighted,
+      isDayBlocked: isDayBlocked,
+      keepOpenOnDateSelect: keepOpenOnDateSelect,
+      renderCalendarDay: renderCalendarDay,
+      renderDayContents: renderDayContents,
+      renderCalendarInfo: renderCalendarInfo,
+      renderMonthElement: renderMonthElement,
+      calendarInfoPosition: calendarInfoPosition,
+      isFocused: isDayPickerFocused,
+      showKeyboardShortcuts: showKeyboardShortcuts,
+      onBlur: this.onDayPickerBlur,
+      phrases: phrases,
+      dayAriaLabelFormat: dayAriaLabelFormat,
+      isRTL: isRTL,
+      firstDayOfWeek: firstDayOfWeek,
+      weekDayFormat: weekDayFormat,
+      verticalHeight: verticalHeight,
+      transitionDuration: transitionDuration,
+      disabled: disabled,
+      horizontalMonthPadding: horizontalMonthPadding
+    }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton), {
+      type: "button",
+      onClick: this.onOutsideClick,
+      "aria-label": phrases.closeDatePicker
+    }), closeIcon));
+  };
 
-        if (!this.isOpened()) {
-          return null;
-        }
+  _proto.render = function render() {
+    var _this$props8 = this.props,
+        startDate = _this$props8.startDate,
+        startDateId = _this$props8.startDateId,
+        startDatePlaceholderText = _this$props8.startDatePlaceholderText,
+        startDateAriaLabel = _this$props8.startDateAriaLabel,
+        endDate = _this$props8.endDate,
+        endDateId = _this$props8.endDateId,
+        endDatePlaceholderText = _this$props8.endDatePlaceholderText,
+        endDateAriaLabel = _this$props8.endDateAriaLabel,
+        focusedInput = _this$props8.focusedInput,
+        screenReaderInputMessage = _this$props8.screenReaderInputMessage,
+        showClearDates = _this$props8.showClearDates,
+        showDefaultInputIcon = _this$props8.showDefaultInputIcon,
+        inputIconPosition = _this$props8.inputIconPosition,
+        customInputIcon = _this$props8.customInputIcon,
+        customArrowIcon = _this$props8.customArrowIcon,
+        customCloseIcon = _this$props8.customCloseIcon,
+        disabled = _this$props8.disabled,
+        required = _this$props8.required,
+        readOnly = _this$props8.readOnly,
+        openDirection = _this$props8.openDirection,
+        phrases = _this$props8.phrases,
+        isOutsideRange = _this$props8.isOutsideRange,
+        minimumNights = _this$props8.minimumNights,
+        withPortal = _this$props8.withPortal,
+        withFullScreenPortal = _this$props8.withFullScreenPortal,
+        displayFormat = _this$props8.displayFormat,
+        reopenPickerOnClearDates = _this$props8.reopenPickerOnClearDates,
+        keepOpenOnDateSelect = _this$props8.keepOpenOnDateSelect,
+        onDatesChange = _this$props8.onDatesChange,
+        onClose = _this$props8.onClose,
+        isRTL = _this$props8.isRTL,
+        noBorder = _this$props8.noBorder,
+        block = _this$props8.block,
+        verticalSpacing = _this$props8.verticalSpacing,
+        small = _this$props8.small,
+        regular = _this$props8.regular,
+        styles = _this$props8.styles;
+    var isDateRangePickerInputFocused = this.state.isDateRangePickerInputFocused;
+    var enableOutsideClick = !withPortal && !withFullScreenPortal;
+    var hideFang = verticalSpacing < _constants.FANG_HEIGHT_PX;
 
-        if (withPortal || withFullScreenPortal || appendToBody) {
-          return _react["default"].createElement(_reactPortal.Portal, null, this.renderDayPicker());
-        }
+    var input = _react["default"].createElement(_DateRangePickerInputController["default"], {
+      startDate: startDate,
+      startDateId: startDateId,
+      startDatePlaceholderText: startDatePlaceholderText,
+      isStartDateFocused: focusedInput === _constants.START_DATE,
+      startDateAriaLabel: startDateAriaLabel,
+      endDate: endDate,
+      endDateId: endDateId,
+      endDatePlaceholderText: endDatePlaceholderText,
+      isEndDateFocused: focusedInput === _constants.END_DATE,
+      endDateAriaLabel: endDateAriaLabel,
+      displayFormat: displayFormat,
+      showClearDates: showClearDates,
+      showCaret: !withPortal && !withFullScreenPortal && !hideFang,
+      showDefaultInputIcon: showDefaultInputIcon,
+      inputIconPosition: inputIconPosition,
+      customInputIcon: customInputIcon,
+      customArrowIcon: customArrowIcon,
+      customCloseIcon: customCloseIcon,
+      disabled: disabled,
+      required: required,
+      readOnly: readOnly,
+      openDirection: openDirection,
+      reopenPickerOnClearDates: reopenPickerOnClearDates,
+      keepOpenOnDateSelect: keepOpenOnDateSelect,
+      isOutsideRange: isOutsideRange,
+      minimumNights: minimumNights,
+      withFullScreenPortal: withFullScreenPortal,
+      onDatesChange: onDatesChange,
+      onFocusChange: this.onDateRangePickerInputFocus,
+      onKeyDownArrowDown: this.onDayPickerFocus,
+      onKeyDownQuestionMark: this.showKeyboardShortcutsPanel,
+      onClose: onClose,
+      phrases: phrases,
+      screenReaderMessage: screenReaderInputMessage,
+      isFocused: isDateRangePickerInputFocused,
+      isRTL: isRTL,
+      noBorder: noBorder,
+      block: block,
+      small: small,
+      regular: regular,
+      verticalSpacing: verticalSpacing
+    }, this.maybeRenderDayPickerWithPortal());
 
-        return this.renderDayPicker();
-      }
-
-      return maybeRenderDayPickerWithPortal;
-    }()
-  }, {
-    key: "renderDayPicker",
-    value: function () {
-      function renderDayPicker() {
-        var _this$props7 = this.props,
-            anchorDirection = _this$props7.anchorDirection,
-            openDirection = _this$props7.openDirection,
-            isDayBlocked = _this$props7.isDayBlocked,
-            isDayHighlighted = _this$props7.isDayHighlighted,
-            isOutsideRange = _this$props7.isOutsideRange,
-            numberOfMonths = _this$props7.numberOfMonths,
-            orientation = _this$props7.orientation,
-            monthFormat = _this$props7.monthFormat,
-            renderMonthText = _this$props7.renderMonthText,
-            navPrev = _this$props7.navPrev,
-            navNext = _this$props7.navNext,
-            onPrevMonthClick = _this$props7.onPrevMonthClick,
-            onNextMonthClick = _this$props7.onNextMonthClick,
-            onDatesChange = _this$props7.onDatesChange,
-            onFocusChange = _this$props7.onFocusChange,
-            withPortal = _this$props7.withPortal,
-            withFullScreenPortal = _this$props7.withFullScreenPortal,
-            daySize = _this$props7.daySize,
-            enableOutsideDays = _this$props7.enableOutsideDays,
-            focusedInput = _this$props7.focusedInput,
-            startDate = _this$props7.startDate,
-            startDateOffset = _this$props7.startDateOffset,
-            endDate = _this$props7.endDate,
-            endDateOffset = _this$props7.endDateOffset,
-            minimumNights = _this$props7.minimumNights,
-            keepOpenOnDateSelect = _this$props7.keepOpenOnDateSelect,
-            renderCalendarDay = _this$props7.renderCalendarDay,
-            renderDayContents = _this$props7.renderDayContents,
-            renderCalendarInfo = _this$props7.renderCalendarInfo,
-            renderMonthElement = _this$props7.renderMonthElement,
-            calendarInfoPosition = _this$props7.calendarInfoPosition,
-            firstDayOfWeek = _this$props7.firstDayOfWeek,
-            initialVisibleMonth = _this$props7.initialVisibleMonth,
-            hideKeyboardShortcutsPanel = _this$props7.hideKeyboardShortcutsPanel,
-            customCloseIcon = _this$props7.customCloseIcon,
-            onClose = _this$props7.onClose,
-            phrases = _this$props7.phrases,
-            dayAriaLabelFormat = _this$props7.dayAriaLabelFormat,
-            isRTL = _this$props7.isRTL,
-            weekDayFormat = _this$props7.weekDayFormat,
-            styles = _this$props7.styles,
-            verticalHeight = _this$props7.verticalHeight,
-            transitionDuration = _this$props7.transitionDuration,
-            verticalSpacing = _this$props7.verticalSpacing,
-            horizontalMonthPadding = _this$props7.horizontalMonthPadding,
-            small = _this$props7.small,
-            disabled = _this$props7.disabled,
-            reactDates = _this$props7.theme.reactDates;
-        var _this$state = this.state,
-            dayPickerContainerStyles = _this$state.dayPickerContainerStyles,
-            isDayPickerFocused = _this$state.isDayPickerFocused,
-            showKeyboardShortcuts = _this$state.showKeyboardShortcuts;
-        var onOutsideClick = !withFullScreenPortal && withPortal ? this.onOutsideClick : undefined;
-
-        var initialVisibleMonthThunk = initialVisibleMonth || function () {
-          return startDate || endDate || (0, _moment["default"])();
-        };
-
-        var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton_svg));
-
-        var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
-        var withAnyPortal = withPortal || withFullScreenPortal;
-        return _react["default"].createElement("div", _extends({
-          // eslint-disable-line jsx-a11y/no-static-element-interactions
-          ref: this.setDayPickerContainerRef
-        }, (0, _reactWithStyles.css)(styles.DateRangePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.DateRangePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight, orientation === _constants.HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
-          top: inputHeight + verticalSpacing
-        }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
-          bottom: inputHeight + verticalSpacing
-        }, withAnyPortal && styles.DateRangePicker_picker__portal, withFullScreenPortal && styles.DateRangePicker_picker__fullScreenPortal, isRTL && styles.DateRangePicker_picker__rtl, dayPickerContainerStyles), {
-          onClick: onOutsideClick
-        }), _react["default"].createElement(_DayPickerRangeController["default"], {
-          orientation: orientation,
-          enableOutsideDays: enableOutsideDays,
-          numberOfMonths: numberOfMonths,
-          onPrevMonthClick: onPrevMonthClick,
-          onNextMonthClick: onNextMonthClick,
-          onDatesChange: onDatesChange,
-          onFocusChange: onFocusChange,
-          onClose: onClose,
-          focusedInput: focusedInput,
-          startDate: startDate,
-          startDateOffset: startDateOffset,
-          endDate: endDate,
-          endDateOffset: endDateOffset,
-          monthFormat: monthFormat,
-          renderMonthText: renderMonthText,
-          withPortal: withAnyPortal,
-          daySize: daySize,
-          initialVisibleMonth: initialVisibleMonthThunk,
-          hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
-          navPrev: navPrev,
-          navNext: navNext,
-          minimumNights: minimumNights,
-          isOutsideRange: isOutsideRange,
-          isDayHighlighted: isDayHighlighted,
-          isDayBlocked: isDayBlocked,
-          keepOpenOnDateSelect: keepOpenOnDateSelect,
-          renderCalendarDay: renderCalendarDay,
-          renderDayContents: renderDayContents,
-          renderCalendarInfo: renderCalendarInfo,
-          renderMonthElement: renderMonthElement,
-          calendarInfoPosition: calendarInfoPosition,
-          isFocused: isDayPickerFocused,
-          showKeyboardShortcuts: showKeyboardShortcuts,
-          onBlur: this.onDayPickerBlur,
-          phrases: phrases,
-          dayAriaLabelFormat: dayAriaLabelFormat,
-          isRTL: isRTL,
-          firstDayOfWeek: firstDayOfWeek,
-          weekDayFormat: weekDayFormat,
-          verticalHeight: verticalHeight,
-          transitionDuration: transitionDuration,
-          disabled: disabled,
-          horizontalMonthPadding: horizontalMonthPadding
-        }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton), {
-          type: "button",
-          onClick: this.onOutsideClick,
-          "aria-label": phrases.closeDatePicker
-        }), closeIcon));
-      }
-
-      return renderDayPicker;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props8 = this.props,
-            startDate = _this$props8.startDate,
-            startDateId = _this$props8.startDateId,
-            startDatePlaceholderText = _this$props8.startDatePlaceholderText,
-            endDate = _this$props8.endDate,
-            endDateId = _this$props8.endDateId,
-            endDatePlaceholderText = _this$props8.endDatePlaceholderText,
-            focusedInput = _this$props8.focusedInput,
-            screenReaderInputMessage = _this$props8.screenReaderInputMessage,
-            showClearDates = _this$props8.showClearDates,
-            showDefaultInputIcon = _this$props8.showDefaultInputIcon,
-            inputIconPosition = _this$props8.inputIconPosition,
-            customInputIcon = _this$props8.customInputIcon,
-            customArrowIcon = _this$props8.customArrowIcon,
-            customCloseIcon = _this$props8.customCloseIcon,
-            disabled = _this$props8.disabled,
-            required = _this$props8.required,
-            readOnly = _this$props8.readOnly,
-            openDirection = _this$props8.openDirection,
-            phrases = _this$props8.phrases,
-            isOutsideRange = _this$props8.isOutsideRange,
-            minimumNights = _this$props8.minimumNights,
-            withPortal = _this$props8.withPortal,
-            withFullScreenPortal = _this$props8.withFullScreenPortal,
-            displayFormat = _this$props8.displayFormat,
-            reopenPickerOnClearDates = _this$props8.reopenPickerOnClearDates,
-            keepOpenOnDateSelect = _this$props8.keepOpenOnDateSelect,
-            onDatesChange = _this$props8.onDatesChange,
-            onClose = _this$props8.onClose,
-            isRTL = _this$props8.isRTL,
-            noBorder = _this$props8.noBorder,
-            block = _this$props8.block,
-            verticalSpacing = _this$props8.verticalSpacing,
-            small = _this$props8.small,
-            regular = _this$props8.regular,
-            styles = _this$props8.styles;
-        var isDateRangePickerInputFocused = this.state.isDateRangePickerInputFocused;
-        var enableOutsideClick = !withPortal && !withFullScreenPortal;
-        var hideFang = verticalSpacing < _constants.FANG_HEIGHT_PX;
-
-        var input = _react["default"].createElement(_DateRangePickerInputController["default"], {
-          startDate: startDate,
-          startDateId: startDateId,
-          startDatePlaceholderText: startDatePlaceholderText,
-          isStartDateFocused: focusedInput === _constants.START_DATE,
-          endDate: endDate,
-          endDateId: endDateId,
-          endDatePlaceholderText: endDatePlaceholderText,
-          isEndDateFocused: focusedInput === _constants.END_DATE,
-          displayFormat: displayFormat,
-          showClearDates: showClearDates,
-          showCaret: !withPortal && !withFullScreenPortal && !hideFang,
-          showDefaultInputIcon: showDefaultInputIcon,
-          inputIconPosition: inputIconPosition,
-          customInputIcon: customInputIcon,
-          customArrowIcon: customArrowIcon,
-          customCloseIcon: customCloseIcon,
-          disabled: disabled,
-          required: required,
-          readOnly: readOnly,
-          openDirection: openDirection,
-          reopenPickerOnClearDates: reopenPickerOnClearDates,
-          keepOpenOnDateSelect: keepOpenOnDateSelect,
-          isOutsideRange: isOutsideRange,
-          minimumNights: minimumNights,
-          withFullScreenPortal: withFullScreenPortal,
-          onDatesChange: onDatesChange,
-          onFocusChange: this.onDateRangePickerInputFocus,
-          onKeyDownArrowDown: this.onDayPickerFocus,
-          onKeyDownQuestionMark: this.showKeyboardShortcutsPanel,
-          onClose: onClose,
-          phrases: phrases,
-          screenReaderMessage: screenReaderInputMessage,
-          isFocused: isDateRangePickerInputFocused,
-          isRTL: isRTL,
-          noBorder: noBorder,
-          block: block,
-          small: small,
-          regular: regular,
-          verticalSpacing: verticalSpacing
-        }, this.maybeRenderDayPickerWithPortal());
-
-        return _react["default"].createElement("div", _extends({
-          ref: this.setContainerRef
-        }, (0, _reactWithStyles.css)(styles.DateRangePicker, block && styles.DateRangePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
-          onOutsideClick: this.onOutsideClick
-        }, input), enableOutsideClick || input);
-      }
-
-      return render;
-    }()
-  }]);
+    return _react["default"].createElement("div", _extends({
+      ref: this.setContainerRef
+    }, (0, _reactWithStyles.css)(styles.DateRangePicker, block && styles.DateRangePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
+      onOutsideClick: this.onOutsideClick
+    }, input), enableOutsideClick || input);
+  };
 
   return DateRangePicker;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -5269,15 +4917,11 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var ChevronUp = function () {
-  function ChevronUp(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      d: "M32.1 712.6l453.2-452.2c11-11 21-11 32 0l453.2 452.2c4 5 6 10 6 16 0 13-10 23-22 23-7 0-12-2-16-7L501.3 308.5 64.1 744.7c-4 5-9 7-15 7-7 0-12-2-17-7-9-11-9-21 0-32.1z"
-    }));
-  }
-
-  return ChevronUp;
-}();
+var ChevronUp = function ChevronUp(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    d: "M32.1 712.6l453.2-452.2c11-11 21-11 32 0l453.2 452.2c4 5 6 10 6 16 0 13-10 23-22 23-7 0-12-2-16-7L501.3 308.5 64.1 744.7c-4 5-9 7-15 7-7 0-12-2-17-7-9-11-9-21 0-32.1z"
+  }));
+};
 
 ChevronUp.defaultProps = {
   focusable: "false",
@@ -5604,9 +5248,11 @@ var _constants = __webpack_require__("Fv1B");
 
 var _DayPicker = _interopRequireDefault(__webpack_require__("Nloh"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _getPreviousMonthMemoLast = _interopRequireDefault(__webpack_require__("qkIn"));
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -5620,23 +5266,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var propTypes =  false ? undefined : {};
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   startDate: undefined,
   // TODO: use null
@@ -5644,47 +5278,19 @@ var defaultProps = {
   // TODO: use null
   minDate: null,
   maxDate: null,
-  onDatesChange: function () {
-    function onDatesChange() {}
-
-    return onDatesChange;
-  }(),
+  onDatesChange: function onDatesChange() {},
   startDateOffset: undefined,
   endDateOffset: undefined,
   focusedInput: null,
-  onFocusChange: function () {
-    function onFocusChange() {}
-
-    return onFocusChange;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
+  onFocusChange: function onFocusChange() {},
+  onClose: function onClose() {},
   keepOpenOnDateSelect: false,
   minimumNights: 1,
   disabled: false,
-  isOutsideRange: function () {
-    function isOutsideRange() {}
-
-    return isOutsideRange;
-  }(),
-  isDayBlocked: function () {
-    function isDayBlocked() {}
-
-    return isDayBlocked;
-  }(),
-  isDayHighlighted: function () {
-    function isDayHighlighted() {}
-
-    return isDayHighlighted;
-  }(),
-  getMinNightsForHoverDate: function () {
-    function getMinNightsForHoverDate() {}
-
-    return getMinNightsForHoverDate;
-  }(),
+  isOutsideRange: function isOutsideRange() {},
+  isDayBlocked: function isDayBlocked() {},
+  isDayHighlighted: function isDayHighlighted() {},
+  getMinNightsForHoverDate: function getMinNightsForHoverDate() {},
   // DayPicker props
   renderMonthText: null,
   enableOutsideDays: false,
@@ -5697,21 +5303,9 @@ var defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
-  onOutsideClick: function () {
-    function onOutsideClick() {}
-
-    return onOutsideClick;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
+  onOutsideClick: function onOutsideClick() {},
   renderCalendarDay: undefined,
   renderDayContents: null,
   renderCalendarInfo: null,
@@ -5725,23 +5319,11 @@ var defaultProps = {
   verticalBorderSpacing: undefined,
   horizontalMonthPadding: 13,
   // accessibility
-  onBlur: function () {
-    function onBlur() {}
-
-    return onBlur;
-  }(),
+  onBlur: function onBlur() {},
   isFocused: false,
   showKeyboardShortcuts: false,
-  onTab: function () {
-    function onTab() {}
-
-    return onTab;
-  }(),
-  onShiftTab: function () {
-    function onShiftTab() {}
-
-    return onShiftTab;
-  }(),
+  onTab: function onTab() {},
+  onShiftTab: function onShiftTab() {},
   // i18n
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
@@ -5765,161 +5347,78 @@ var getChooseAvailableDatePhrase = function getChooseAvailableDatePhrase(phrases
 var DayPickerRangeController =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DayPickerRangeController, _ref);
+  _inheritsLoose(DayPickerRangeController, _ref);
 
-  _createClass(DayPickerRangeController, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DayPickerRangeController.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DayPickerRangeController(props) {
     var _this;
 
-    _classCallCheck(this, DayPickerRangeController);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DayPickerRangeController).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.isTouchDevice = (0, _isTouchDevice["default"])();
     _this.today = (0, _moment["default"])();
     _this.modifiers = {
-      today: function () {
-        function today(day) {
-          return _this.isToday(day);
-        }
-
-        return today;
-      }(),
-      blocked: function () {
-        function blocked(day) {
-          return _this.isBlocked(day);
-        }
-
-        return blocked;
-      }(),
-      'blocked-calendar': function () {
-        function blockedCalendar(day) {
-          return props.isDayBlocked(day);
-        }
-
-        return blockedCalendar;
-      }(),
-      'blocked-out-of-range': function () {
-        function blockedOutOfRange(day) {
-          return props.isOutsideRange(day);
-        }
-
-        return blockedOutOfRange;
-      }(),
-      'highlighted-calendar': function () {
-        function highlightedCalendar(day) {
-          return props.isDayHighlighted(day);
-        }
-
-        return highlightedCalendar;
-      }(),
-      valid: function () {
-        function valid(day) {
-          return !_this.isBlocked(day);
-        }
-
-        return valid;
-      }(),
-      'selected-start': function () {
-        function selectedStart(day) {
-          return _this.isStartDate(day);
-        }
-
-        return selectedStart;
-      }(),
-      'selected-end': function () {
-        function selectedEnd(day) {
-          return _this.isEndDate(day);
-        }
-
-        return selectedEnd;
-      }(),
-      'blocked-minimum-nights': function () {
-        function blockedMinimumNights(day) {
-          return _this.doesNotMeetMinimumNights(day);
-        }
-
-        return blockedMinimumNights;
-      }(),
-      'selected-span': function () {
-        function selectedSpan(day) {
-          return _this.isInSelectedSpan(day);
-        }
-
-        return selectedSpan;
-      }(),
-      'last-in-range': function () {
-        function lastInRange(day) {
-          return _this.isLastInRange(day);
-        }
-
-        return lastInRange;
-      }(),
-      hovered: function () {
-        function hovered(day) {
-          return _this.isHovered(day);
-        }
-
-        return hovered;
-      }(),
-      'hovered-span': function () {
-        function hoveredSpan(day) {
-          return _this.isInHoveredSpan(day);
-        }
-
-        return hoveredSpan;
-      }(),
-      'hovered-offset': function () {
-        function hoveredOffset(day) {
-          return _this.isInHoveredSpan(day);
-        }
-
-        return hoveredOffset;
-      }(),
-      'after-hovered-start': function () {
-        function afterHoveredStart(day) {
-          return _this.isDayAfterHoveredStartDate(day);
-        }
-
-        return afterHoveredStart;
-      }(),
-      'first-day-of-week': function () {
-        function firstDayOfWeek(day) {
-          return _this.isFirstDayOfWeek(day);
-        }
-
-        return firstDayOfWeek;
-      }(),
-      'last-day-of-week': function () {
-        function lastDayOfWeek(day) {
-          return _this.isLastDayOfWeek(day);
-        }
-
-        return lastDayOfWeek;
-      }(),
-      'hovered-start-first-possible-end': function () {
-        function hoveredStartFirstPossibleEnd(day, hoverDate) {
-          return _this.isFirstPossibleEndDateForHoveredStartDate(day, hoverDate);
-        }
-
-        return hoveredStartFirstPossibleEnd;
-      }(),
-      'hovered-start-blocked-minimum-nights': function () {
-        function hoveredStartBlockedMinimumNights(day, hoverDate) {
-          return _this.doesNotMeetMinNightsForHoveredStartDate(day, hoverDate);
-        }
-
-        return hoveredStartBlockedMinimumNights;
-      }()
+      today: function today(day) {
+        return _this.isToday(day);
+      },
+      blocked: function blocked(day) {
+        return _this.isBlocked(day);
+      },
+      'blocked-calendar': function blockedCalendar(day) {
+        return props.isDayBlocked(day);
+      },
+      'blocked-out-of-range': function blockedOutOfRange(day) {
+        return props.isOutsideRange(day);
+      },
+      'highlighted-calendar': function highlightedCalendar(day) {
+        return props.isDayHighlighted(day);
+      },
+      valid: function valid(day) {
+        return !_this.isBlocked(day);
+      },
+      'selected-start': function selectedStart(day) {
+        return _this.isStartDate(day);
+      },
+      'selected-end': function selectedEnd(day) {
+        return _this.isEndDate(day);
+      },
+      'blocked-minimum-nights': function blockedMinimumNights(day) {
+        return _this.doesNotMeetMinimumNights(day);
+      },
+      'selected-span': function selectedSpan(day) {
+        return _this.isInSelectedSpan(day);
+      },
+      'last-in-range': function lastInRange(day) {
+        return _this.isLastInRange(day);
+      },
+      hovered: function hovered(day) {
+        return _this.isHovered(day);
+      },
+      'hovered-span': function hoveredSpan(day) {
+        return _this.isInHoveredSpan(day);
+      },
+      'hovered-offset': function hoveredOffset(day) {
+        return _this.isInHoveredSpan(day);
+      },
+      'after-hovered-start': function afterHoveredStart(day) {
+        return _this.isDayAfterHoveredStartDate(day);
+      },
+      'first-day-of-week': function firstDayOfWeek(day) {
+        return _this.isFirstDayOfWeek(day);
+      },
+      'last-day-of-week': function lastDayOfWeek(day) {
+        return _this.isLastDayOfWeek(day);
+      },
+      'hovered-start-first-possible-end': function hoveredStartFirstPossibleEnd(day, hoverDate) {
+        return _this.isFirstPossibleEndDateForHoveredStartDate(day, hoverDate);
+      },
+      'hovered-start-blocked-minimum-nights': function hoveredStartBlockedMinimumNights(day, hoverDate) {
+        return _this.doesNotMeetMinNightsForHoveredStartDate(day, hoverDate);
+      }
     };
 
     var _this$getStateForNewM = _this.getStateForNewMonth(props),
@@ -5939,1179 +5438,1024 @@ function (_ref) {
       disablePrev: _this.shouldDisableMonthNavigation(props.minDate, currentMonth),
       disableNext: _this.shouldDisableMonthNavigation(props.maxDate, currentMonth)
     };
-    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_this));
+    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_this));
+    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_this));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
+    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
+    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
+    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind(_assertThisInitialized(_this));
+    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DayPickerRangeController, [{
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var _this2 = this;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var _this2 = this;
 
-        var startDate = nextProps.startDate,
-            endDate = nextProps.endDate,
-            focusedInput = nextProps.focusedInput,
-            getMinNightsForHoverDate = nextProps.getMinNightsForHoverDate,
-            minimumNights = nextProps.minimumNights,
-            isOutsideRange = nextProps.isOutsideRange,
-            isDayBlocked = nextProps.isDayBlocked,
-            isDayHighlighted = nextProps.isDayHighlighted,
-            phrases = nextProps.phrases,
-            initialVisibleMonth = nextProps.initialVisibleMonth,
-            numberOfMonths = nextProps.numberOfMonths,
-            enableOutsideDays = nextProps.enableOutsideDays;
-        var _this$props = this.props,
-            prevStartDate = _this$props.startDate,
-            prevEndDate = _this$props.endDate,
-            prevFocusedInput = _this$props.focusedInput,
-            prevMinimumNights = _this$props.minimumNights,
-            prevIsOutsideRange = _this$props.isOutsideRange,
-            prevIsDayBlocked = _this$props.isDayBlocked,
-            prevIsDayHighlighted = _this$props.isDayHighlighted,
-            prevPhrases = _this$props.phrases,
-            prevInitialVisibleMonth = _this$props.initialVisibleMonth,
-            prevNumberOfMonths = _this$props.numberOfMonths,
-            prevEnableOutsideDays = _this$props.enableOutsideDays;
-        var hoverDate = this.state.hoverDate;
-        var visibleDays = this.state.visibleDays;
-        var recomputeOutsideRange = false;
-        var recomputeDayBlocked = false;
-        var recomputeDayHighlighted = false;
+    var startDate = nextProps.startDate,
+        endDate = nextProps.endDate,
+        focusedInput = nextProps.focusedInput,
+        getMinNightsForHoverDate = nextProps.getMinNightsForHoverDate,
+        minimumNights = nextProps.minimumNights,
+        isOutsideRange = nextProps.isOutsideRange,
+        isDayBlocked = nextProps.isDayBlocked,
+        isDayHighlighted = nextProps.isDayHighlighted,
+        phrases = nextProps.phrases,
+        initialVisibleMonth = nextProps.initialVisibleMonth,
+        numberOfMonths = nextProps.numberOfMonths,
+        enableOutsideDays = nextProps.enableOutsideDays;
+    var _this$props = this.props,
+        prevStartDate = _this$props.startDate,
+        prevEndDate = _this$props.endDate,
+        prevFocusedInput = _this$props.focusedInput,
+        prevMinimumNights = _this$props.minimumNights,
+        prevIsOutsideRange = _this$props.isOutsideRange,
+        prevIsDayBlocked = _this$props.isDayBlocked,
+        prevIsDayHighlighted = _this$props.isDayHighlighted,
+        prevPhrases = _this$props.phrases,
+        prevInitialVisibleMonth = _this$props.initialVisibleMonth,
+        prevNumberOfMonths = _this$props.numberOfMonths,
+        prevEnableOutsideDays = _this$props.enableOutsideDays;
+    var hoverDate = this.state.hoverDate;
+    var visibleDays = this.state.visibleDays;
+    var recomputeOutsideRange = false;
+    var recomputeDayBlocked = false;
+    var recomputeDayHighlighted = false;
 
-        if (isOutsideRange !== prevIsOutsideRange) {
-          this.modifiers['blocked-out-of-range'] = function (day) {
-            return isOutsideRange(day);
-          };
+    if (isOutsideRange !== prevIsOutsideRange) {
+      this.modifiers['blocked-out-of-range'] = function (day) {
+        return isOutsideRange(day);
+      };
 
-          recomputeOutsideRange = true;
-        }
+      recomputeOutsideRange = true;
+    }
 
-        if (isDayBlocked !== prevIsDayBlocked) {
-          this.modifiers['blocked-calendar'] = function (day) {
-            return isDayBlocked(day);
-          };
+    if (isDayBlocked !== prevIsDayBlocked) {
+      this.modifiers['blocked-calendar'] = function (day) {
+        return isDayBlocked(day);
+      };
 
-          recomputeDayBlocked = true;
-        }
+      recomputeDayBlocked = true;
+    }
 
-        if (isDayHighlighted !== prevIsDayHighlighted) {
-          this.modifiers['highlighted-calendar'] = function (day) {
-            return isDayHighlighted(day);
-          };
+    if (isDayHighlighted !== prevIsDayHighlighted) {
+      this.modifiers['highlighted-calendar'] = function (day) {
+        return isDayHighlighted(day);
+      };
 
-          recomputeDayHighlighted = true;
-        }
+      recomputeDayHighlighted = true;
+    }
 
-        var recomputePropModifiers = recomputeOutsideRange || recomputeDayBlocked || recomputeDayHighlighted;
-        var didStartDateChange = startDate !== prevStartDate;
-        var didEndDateChange = endDate !== prevEndDate;
-        var didFocusChange = focusedInput !== prevFocusedInput;
+    var recomputePropModifiers = recomputeOutsideRange || recomputeDayBlocked || recomputeDayHighlighted;
+    var didStartDateChange = startDate !== prevStartDate;
+    var didEndDateChange = endDate !== prevEndDate;
+    var didFocusChange = focusedInput !== prevFocusedInput;
 
-        if (numberOfMonths !== prevNumberOfMonths || enableOutsideDays !== prevEnableOutsideDays || initialVisibleMonth !== prevInitialVisibleMonth && !prevFocusedInput && didFocusChange) {
-          var newMonthState = this.getStateForNewMonth(nextProps);
-          var currentMonth = newMonthState.currentMonth;
-          visibleDays = newMonthState.visibleDays;
-          this.setState({
-            currentMonth: currentMonth,
-            visibleDays: visibleDays
-          });
-        }
+    if (numberOfMonths !== prevNumberOfMonths || enableOutsideDays !== prevEnableOutsideDays || initialVisibleMonth !== prevInitialVisibleMonth && !prevFocusedInput && didFocusChange) {
+      var newMonthState = this.getStateForNewMonth(nextProps);
+      var currentMonth = newMonthState.currentMonth;
+      visibleDays = newMonthState.visibleDays;
+      this.setState({
+        currentMonth: currentMonth,
+        visibleDays: visibleDays
+      });
+    }
 
-        var modifiers = {};
+    var modifiers = {};
 
-        if (didStartDateChange) {
-          modifiers = this.deleteModifier(modifiers, prevStartDate, 'selected-start');
-          modifiers = this.addModifier(modifiers, startDate, 'selected-start');
+    if (didStartDateChange) {
+      modifiers = this.deleteModifier(modifiers, prevStartDate, 'selected-start');
+      modifiers = this.addModifier(modifiers, startDate, 'selected-start');
 
-          if (prevStartDate) {
-            var startSpan = prevStartDate.clone().add(1, 'day');
-            var endSpan = prevStartDate.clone().add(prevMinimumNights + 1, 'days');
-            modifiers = this.deleteModifierFromRange(modifiers, startSpan, endSpan, 'after-hovered-start');
-          }
-        }
+      if (prevStartDate) {
+        var startSpan = prevStartDate.clone().add(1, 'day');
+        var endSpan = prevStartDate.clone().add(prevMinimumNights + 1, 'days');
+        modifiers = this.deleteModifierFromRange(modifiers, startSpan, endSpan, 'after-hovered-start');
+      }
+    }
 
-        if (didEndDateChange) {
-          modifiers = this.deleteModifier(modifiers, prevEndDate, 'selected-end');
-          modifiers = this.addModifier(modifiers, endDate, 'selected-end');
-        }
+    if (didEndDateChange) {
+      modifiers = this.deleteModifier(modifiers, prevEndDate, 'selected-end');
+      modifiers = this.addModifier(modifiers, endDate, 'selected-end');
+    }
 
-        if (didStartDateChange || didEndDateChange) {
-          if (prevStartDate && prevEndDate) {
-            modifiers = this.deleteModifierFromRange(modifiers, prevStartDate, prevEndDate.clone().add(1, 'day'), 'selected-span');
-          }
-
-          if (startDate && endDate) {
-            modifiers = this.deleteModifierFromRange(modifiers, startDate, endDate.clone().add(1, 'day'), 'hovered-span');
-            modifiers = this.addModifierToRange(modifiers, startDate.clone().add(1, 'day'), endDate, 'selected-span');
-          }
-        }
-
-        if (!this.isTouchDevice && didStartDateChange && startDate && !endDate) {
-          var _startSpan = startDate.clone().add(1, 'day');
-
-          var _endSpan = startDate.clone().add(minimumNights + 1, 'days');
-
-          modifiers = this.addModifierToRange(modifiers, _startSpan, _endSpan, 'after-hovered-start');
-        }
-
-        if (prevMinimumNights > 0) {
-          if (didFocusChange || didStartDateChange || minimumNights !== prevMinimumNights) {
-            var _startSpan2 = prevStartDate || this.today;
-
-            modifiers = this.deleteModifierFromRange(modifiers, _startSpan2, _startSpan2.clone().add(prevMinimumNights, 'days'), 'blocked-minimum-nights');
-            modifiers = this.deleteModifierFromRange(modifiers, _startSpan2, _startSpan2.clone().add(prevMinimumNights, 'days'), 'blocked');
-          }
-        }
-
-        if (didFocusChange || recomputePropModifiers) {
-          (0, _object["default"])(visibleDays).forEach(function (days) {
-            Object.keys(days).forEach(function (day) {
-              var momentObj = (0, _moment["default"])(day);
-              var isBlocked = false;
-
-              if (didFocusChange || recomputeOutsideRange) {
-                if (isOutsideRange(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-out-of-range');
-                  isBlocked = true;
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-out-of-range');
-                }
-              }
-
-              if (didFocusChange || recomputeDayBlocked) {
-                if (isDayBlocked(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-calendar');
-                  isBlocked = true;
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-calendar');
-                }
-              }
-
-              if (isBlocked) {
-                modifiers = _this2.addModifier(modifiers, momentObj, 'blocked');
-              } else {
-                modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked');
-              }
-
-              if (didFocusChange || recomputeDayHighlighted) {
-                if (isDayHighlighted(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'highlighted-calendar');
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
-                }
-              }
-            });
-          });
-        }
-
-        if (!this.isTouchDevice && didFocusChange && hoverDate && !this.isBlocked(hoverDate)) {
-          var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
-
-          if (minNightsForHoverDate > 0 && focusedInput === _constants.END_DATE) {
-            modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
-            modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
-          }
-
-          if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
-            modifiers = this.addModifierToRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
-            modifiers = this.addModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
-          }
-        }
-
-        if (minimumNights > 0 && startDate && focusedInput === _constants.END_DATE) {
-          modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked-minimum-nights');
-          modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked');
-        }
-
-        var today = (0, _moment["default"])();
-
-        if (!(0, _isSameDay["default"])(this.today, today)) {
-          modifiers = this.deleteModifier(modifiers, this.today, 'today');
-          modifiers = this.addModifier(modifiers, today, 'today');
-          this.today = today;
-        }
-
-        if (Object.keys(modifiers).length > 0) {
-          this.setState({
-            visibleDays: _objectSpread({}, visibleDays, modifiers)
-          });
-        }
-
-        if (didFocusChange || phrases !== prevPhrases) {
-          // set the appropriate CalendarDay phrase based on focusedInput
-          var chooseAvailableDate = getChooseAvailableDatePhrase(phrases, focusedInput);
-          this.setState({
-            phrases: _objectSpread({}, phrases, {
-              chooseAvailableDate: chooseAvailableDate
-            })
-          });
-        }
+    if (didStartDateChange || didEndDateChange) {
+      if (prevStartDate && prevEndDate) {
+        modifiers = this.deleteModifierFromRange(modifiers, prevStartDate, prevEndDate.clone().add(1, 'day'), 'selected-span');
       }
 
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "onDayClick",
-    value: function () {
-      function onDayClick(day, e) {
-        var _this$props2 = this.props,
-            keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
-            minimumNights = _this$props2.minimumNights,
-            onBlur = _this$props2.onBlur,
-            focusedInput = _this$props2.focusedInput,
-            onFocusChange = _this$props2.onFocusChange,
-            onClose = _this$props2.onClose,
-            onDatesChange = _this$props2.onDatesChange,
-            startDateOffset = _this$props2.startDateOffset,
-            endDateOffset = _this$props2.endDateOffset,
-            disabled = _this$props2.disabled;
-        if (e) e.preventDefault();
-        if (this.isBlocked(day)) return;
-        var _this$props3 = this.props,
-            startDate = _this$props3.startDate,
-            endDate = _this$props3.endDate;
+      if (startDate && endDate) {
+        modifiers = this.deleteModifierFromRange(modifiers, startDate, endDate.clone().add(1, 'day'), 'hovered-span');
+        modifiers = this.addModifierToRange(modifiers, startDate.clone().add(1, 'day'), endDate, 'selected-span');
+      }
+    }
 
-        if (startDateOffset || endDateOffset) {
-          startDate = (0, _getSelectedDateOffset["default"])(startDateOffset, day);
-          endDate = (0, _getSelectedDateOffset["default"])(endDateOffset, day);
+    if (!this.isTouchDevice && didStartDateChange && startDate && !endDate) {
+      var _startSpan = startDate.clone().add(1, 'day');
 
-          if (this.isBlocked(startDate) || this.isBlocked(endDate)) {
-            return;
-          }
+      var _endSpan = startDate.clone().add(minimumNights + 1, 'days');
 
-          onDatesChange({
-            startDate: startDate,
-            endDate: endDate
-          });
+      modifiers = this.addModifierToRange(modifiers, _startSpan, _endSpan, 'after-hovered-start');
+    }
 
-          if (!keepOpenOnDateSelect) {
-            onFocusChange(null);
-            onClose({
-              startDate: startDate,
-              endDate: endDate
-            });
-          }
-        } else if (focusedInput === _constants.START_DATE) {
-          var lastAllowedStartDate = endDate && endDate.clone().subtract(minimumNights, 'days');
-          var isStartDateAfterEndDate = (0, _isBeforeDay["default"])(lastAllowedStartDate, day) || (0, _isAfterDay["default"])(startDate, endDate);
-          var isEndDateDisabled = disabled === _constants.END_DATE;
+    if (prevMinimumNights > 0) {
+      if (didFocusChange || didStartDateChange || minimumNights !== prevMinimumNights) {
+        var _startSpan2 = prevStartDate || this.today;
 
-          if (!isEndDateDisabled || !isStartDateAfterEndDate) {
-            startDate = day;
+        modifiers = this.deleteModifierFromRange(modifiers, _startSpan2, _startSpan2.clone().add(prevMinimumNights, 'days'), 'blocked-minimum-nights');
+        modifiers = this.deleteModifierFromRange(modifiers, _startSpan2, _startSpan2.clone().add(prevMinimumNights, 'days'), 'blocked');
+      }
+    }
 
-            if (isStartDateAfterEndDate) {
-              endDate = null;
+    if (didFocusChange || recomputePropModifiers) {
+      (0, _object["default"])(visibleDays).forEach(function (days) {
+        Object.keys(days).forEach(function (day) {
+          var momentObj = (0, _getPooledMoment["default"])(day);
+          var isBlocked = false;
+
+          if (didFocusChange || recomputeOutsideRange) {
+            if (isOutsideRange(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-out-of-range');
+              isBlocked = true;
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-out-of-range');
             }
           }
 
-          onDatesChange({
-            startDate: startDate,
-            endDate: endDate
-          });
-
-          if (isEndDateDisabled && !isStartDateAfterEndDate) {
-            onFocusChange(null);
-            onClose({
-              startDate: startDate,
-              endDate: endDate
-            });
-          } else if (!isEndDateDisabled) {
-            onFocusChange(_constants.END_DATE);
-          }
-        } else if (focusedInput === _constants.END_DATE) {
-          var firstAllowedEndDate = startDate && startDate.clone().add(minimumNights, 'days');
-
-          if (!startDate) {
-            endDate = day;
-            onDatesChange({
-              startDate: startDate,
-              endDate: endDate
-            });
-            onFocusChange(_constants.START_DATE);
-          } else if ((0, _isInclusivelyAfterDay["default"])(day, firstAllowedEndDate)) {
-            endDate = day;
-            onDatesChange({
-              startDate: startDate,
-              endDate: endDate
-            });
-
-            if (!keepOpenOnDateSelect) {
-              onFocusChange(null);
-              onClose({
-                startDate: startDate,
-                endDate: endDate
-              });
+          if (didFocusChange || recomputeDayBlocked) {
+            if (isDayBlocked(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-calendar');
+              isBlocked = true;
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-calendar');
             }
-          } else if (disabled !== _constants.START_DATE) {
-            startDate = day;
-            endDate = null;
-            onDatesChange({
-              startDate: startDate,
-              endDate: endDate
-            });
+          }
+
+          if (isBlocked) {
+            modifiers = _this2.addModifier(modifiers, momentObj, 'blocked');
           } else {
-            onDatesChange({
-              startDate: startDate,
-              endDate: endDate
-            });
+            modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked');
           }
-        } else {
-          onDatesChange({
+
+          if (didFocusChange || recomputeDayHighlighted) {
+            if (isDayHighlighted(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'highlighted-calendar');
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
+            }
+          }
+        });
+      });
+    }
+
+    if (!this.isTouchDevice && didFocusChange && hoverDate && !this.isBlocked(hoverDate)) {
+      var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
+
+      if (minNightsForHoverDate > 0 && focusedInput === _constants.END_DATE) {
+        modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+        modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+      }
+
+      if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+        modifiers = this.addModifierToRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+        modifiers = this.addModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+      }
+    }
+
+    if (minimumNights > 0 && startDate && focusedInput === _constants.END_DATE) {
+      modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked-minimum-nights');
+      modifiers = this.addModifierToRange(modifiers, startDate, startDate.clone().add(minimumNights, 'days'), 'blocked');
+    }
+
+    var today = (0, _moment["default"])();
+
+    if (!(0, _isSameDay["default"])(this.today, today)) {
+      modifiers = this.deleteModifier(modifiers, this.today, 'today');
+      modifiers = this.addModifier(modifiers, today, 'today');
+      this.today = today;
+    }
+
+    if (Object.keys(modifiers).length > 0) {
+      this.setState({
+        visibleDays: _objectSpread({}, visibleDays, modifiers)
+      });
+    }
+
+    if (didFocusChange || phrases !== prevPhrases) {
+      // set the appropriate CalendarDay phrase based on focusedInput
+      var chooseAvailableDate = getChooseAvailableDatePhrase(phrases, focusedInput);
+      this.setState({
+        phrases: _objectSpread({}, phrases, {
+          chooseAvailableDate: chooseAvailableDate
+        })
+      });
+    }
+  };
+
+  _proto.onDayClick = function onDayClick(day, e) {
+    var _this$props2 = this.props,
+        keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
+        minimumNights = _this$props2.minimumNights,
+        onBlur = _this$props2.onBlur,
+        focusedInput = _this$props2.focusedInput,
+        onFocusChange = _this$props2.onFocusChange,
+        onClose = _this$props2.onClose,
+        onDatesChange = _this$props2.onDatesChange,
+        startDateOffset = _this$props2.startDateOffset,
+        endDateOffset = _this$props2.endDateOffset,
+        disabled = _this$props2.disabled;
+    if (e) e.preventDefault();
+    if (this.isBlocked(day)) return;
+    var _this$props3 = this.props,
+        startDate = _this$props3.startDate,
+        endDate = _this$props3.endDate;
+
+    if (startDateOffset || endDateOffset) {
+      startDate = (0, _getSelectedDateOffset["default"])(startDateOffset, day);
+      endDate = (0, _getSelectedDateOffset["default"])(endDateOffset, day);
+
+      if (this.isBlocked(startDate) || this.isBlocked(endDate)) {
+        return;
+      }
+
+      onDatesChange({
+        startDate: startDate,
+        endDate: endDate
+      });
+
+      if (!keepOpenOnDateSelect) {
+        onFocusChange(null);
+        onClose({
+          startDate: startDate,
+          endDate: endDate
+        });
+      }
+    } else if (focusedInput === _constants.START_DATE) {
+      var lastAllowedStartDate = endDate && endDate.clone().subtract(minimumNights, 'days');
+      var isStartDateAfterEndDate = (0, _isBeforeDay["default"])(lastAllowedStartDate, day) || (0, _isAfterDay["default"])(startDate, endDate);
+      var isEndDateDisabled = disabled === _constants.END_DATE;
+
+      if (!isEndDateDisabled || !isStartDateAfterEndDate) {
+        startDate = day;
+
+        if (isStartDateAfterEndDate) {
+          endDate = null;
+        }
+      }
+
+      onDatesChange({
+        startDate: startDate,
+        endDate: endDate
+      });
+
+      if (isEndDateDisabled && !isStartDateAfterEndDate) {
+        onFocusChange(null);
+        onClose({
+          startDate: startDate,
+          endDate: endDate
+        });
+      } else if (!isEndDateDisabled) {
+        onFocusChange(_constants.END_DATE);
+      }
+    } else if (focusedInput === _constants.END_DATE) {
+      var firstAllowedEndDate = startDate && startDate.clone().add(minimumNights, 'days');
+
+      if (!startDate) {
+        endDate = day;
+        onDatesChange({
+          startDate: startDate,
+          endDate: endDate
+        });
+        onFocusChange(_constants.START_DATE);
+      } else if ((0, _isInclusivelyAfterDay["default"])(day, firstAllowedEndDate)) {
+        endDate = day;
+        onDatesChange({
+          startDate: startDate,
+          endDate: endDate
+        });
+
+        if (!keepOpenOnDateSelect) {
+          onFocusChange(null);
+          onClose({
             startDate: startDate,
             endDate: endDate
           });
         }
-
-        onBlur();
+      } else if (disabled !== _constants.START_DATE) {
+        startDate = day;
+        endDate = null;
+        onDatesChange({
+          startDate: startDate,
+          endDate: endDate
+        });
+      } else {
+        onDatesChange({
+          startDate: startDate,
+          endDate: endDate
+        });
       }
+    } else {
+      onDatesChange({
+        startDate: startDate,
+        endDate: endDate
+      });
+    }
 
-      return onDayClick;
-    }()
-  }, {
-    key: "onDayMouseEnter",
-    value: function () {
-      function onDayMouseEnter(day) {
-        /* eslint react/destructuring-assignment: 1 */
-        if (this.isTouchDevice) return;
-        var _this$props4 = this.props,
-            startDate = _this$props4.startDate,
-            endDate = _this$props4.endDate,
-            focusedInput = _this$props4.focusedInput,
-            getMinNightsForHoverDate = _this$props4.getMinNightsForHoverDate,
-            minimumNights = _this$props4.minimumNights,
-            startDateOffset = _this$props4.startDateOffset,
-            endDateOffset = _this$props4.endDateOffset;
-        var _this$state = this.state,
-            hoverDate = _this$state.hoverDate,
-            visibleDays = _this$state.visibleDays,
-            dateOffset = _this$state.dateOffset;
-        var nextDateOffset = null;
+    onBlur();
+  };
 
-        if (focusedInput) {
-          var hasOffset = startDateOffset || endDateOffset;
-          var modifiers = {};
+  _proto.onDayMouseEnter = function onDayMouseEnter(day) {
+    /* eslint react/destructuring-assignment: 1 */
+    if (this.isTouchDevice) return;
+    var _this$props4 = this.props,
+        startDate = _this$props4.startDate,
+        endDate = _this$props4.endDate,
+        focusedInput = _this$props4.focusedInput,
+        getMinNightsForHoverDate = _this$props4.getMinNightsForHoverDate,
+        minimumNights = _this$props4.minimumNights,
+        startDateOffset = _this$props4.startDateOffset,
+        endDateOffset = _this$props4.endDateOffset;
+    var _this$state = this.state,
+        hoverDate = _this$state.hoverDate,
+        visibleDays = _this$state.visibleDays,
+        dateOffset = _this$state.dateOffset;
+    var nextDateOffset = null;
 
-          if (hasOffset) {
-            var start = (0, _getSelectedDateOffset["default"])(startDateOffset, day);
-            var end = (0, _getSelectedDateOffset["default"])(endDateOffset, day, function (rangeDay) {
-              return rangeDay.add(1, 'day');
-            });
-            nextDateOffset = {
-              start: start,
-              end: end
-            }; // eslint-disable-next-line react/destructuring-assignment
+    if (focusedInput) {
+      var hasOffset = startDateOffset || endDateOffset;
+      var modifiers = {};
 
-            if (dateOffset && dateOffset.start && dateOffset.end) {
-              modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
-            }
+      if (hasOffset) {
+        var start = (0, _getSelectedDateOffset["default"])(startDateOffset, day);
+        var end = (0, _getSelectedDateOffset["default"])(endDateOffset, day, function (rangeDay) {
+          return rangeDay.add(1, 'day');
+        });
+        nextDateOffset = {
+          start: start,
+          end: end
+        }; // eslint-disable-next-line react/destructuring-assignment
 
-            modifiers = this.addModifierToRange(modifiers, start, end, 'hovered-offset');
-          }
-
-          if (!hasOffset) {
-            modifiers = this.deleteModifier(modifiers, hoverDate, 'hovered');
-            modifiers = this.addModifier(modifiers, day, 'hovered');
-
-            if (startDate && !endDate && focusedInput === _constants.END_DATE) {
-              if ((0, _isAfterDay["default"])(hoverDate, startDate)) {
-                var endSpan = hoverDate.clone().add(1, 'day');
-                modifiers = this.deleteModifierFromRange(modifiers, startDate, endSpan, 'hovered-span');
-              }
-
-              if (!this.isBlocked(day) && (0, _isAfterDay["default"])(day, startDate)) {
-                var _endSpan2 = day.clone().add(1, 'day');
-
-                modifiers = this.addModifierToRange(modifiers, startDate, _endSpan2, 'hovered-span');
-              }
-            }
-
-            if (!startDate && endDate && focusedInput === _constants.START_DATE) {
-              if ((0, _isBeforeDay["default"])(hoverDate, endDate)) {
-                modifiers = this.deleteModifierFromRange(modifiers, hoverDate, endDate, 'hovered-span');
-              }
-
-              if (!this.isBlocked(day) && (0, _isBeforeDay["default"])(day, endDate)) {
-                modifiers = this.addModifierToRange(modifiers, day, endDate, 'hovered-span');
-              }
-            }
-
-            if (startDate) {
-              var startSpan = startDate.clone().add(1, 'day');
-
-              var _endSpan3 = startDate.clone().add(minimumNights + 1, 'days');
-
-              modifiers = this.deleteModifierFromRange(modifiers, startSpan, _endSpan3, 'after-hovered-start');
-
-              if ((0, _isSameDay["default"])(day, startDate)) {
-                var newStartSpan = startDate.clone().add(1, 'day');
-                var newEndSpan = startDate.clone().add(minimumNights + 1, 'days');
-                modifiers = this.addModifierToRange(modifiers, newStartSpan, newEndSpan, 'after-hovered-start');
-              }
-            }
-
-            if (hoverDate && !this.isBlocked(hoverDate)) {
-              var minNightsForPrevHoverDate = getMinNightsForHoverDate(hoverDate);
-
-              if (minNightsForPrevHoverDate > 0 && focusedInput === _constants.START_DATE) {
-                modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
-                modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-first-possible-end');
-              }
-            }
-
-            if (!this.isBlocked(day)) {
-              var minNightsForHoverDate = getMinNightsForHoverDate(day);
-
-              if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
-                modifiers = this.addModifierToRange(modifiers, day.clone().add(1, 'days'), day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
-                modifiers = this.addModifier(modifiers, day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
-              }
-            }
-          }
-
-          this.setState({
-            hoverDate: day,
-            dateOffset: nextDateOffset,
-            visibleDays: _objectSpread({}, visibleDays, modifiers)
-          });
-        }
-      }
-
-      return onDayMouseEnter;
-    }()
-  }, {
-    key: "onDayMouseLeave",
-    value: function () {
-      function onDayMouseLeave(day) {
-        var _this$props5 = this.props,
-            startDate = _this$props5.startDate,
-            endDate = _this$props5.endDate,
-            focusedInput = _this$props5.focusedInput,
-            getMinNightsForHoverDate = _this$props5.getMinNightsForHoverDate,
-            minimumNights = _this$props5.minimumNights;
-        var _this$state2 = this.state,
-            hoverDate = _this$state2.hoverDate,
-            visibleDays = _this$state2.visibleDays,
-            dateOffset = _this$state2.dateOffset;
-        if (this.isTouchDevice || !hoverDate) return;
-        var modifiers = {};
-        modifiers = this.deleteModifier(modifiers, hoverDate, 'hovered');
-
-        if (dateOffset) {
+        if (dateOffset && dateOffset.start && dateOffset.end) {
           modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
         }
 
-        if (startDate && !endDate && (0, _isAfterDay["default"])(hoverDate, startDate)) {
-          var endSpan = hoverDate.clone().add(1, 'day');
-          modifiers = this.deleteModifierFromRange(modifiers, startDate, endSpan, 'hovered-span');
-        }
+        modifiers = this.addModifierToRange(modifiers, start, end, 'hovered-offset');
+      }
 
-        if (!startDate && endDate && (0, _isAfterDay["default"])(endDate, hoverDate)) {
-          modifiers = this.deleteModifierFromRange(modifiers, hoverDate, endDate, 'hovered-span');
-        }
+      if (!hasOffset) {
+        modifiers = this.deleteModifier(modifiers, hoverDate, 'hovered');
+        modifiers = this.addModifier(modifiers, day, 'hovered');
 
-        if (startDate && (0, _isSameDay["default"])(day, startDate)) {
-          var startSpan = startDate.clone().add(1, 'day');
+        if (startDate && !endDate && focusedInput === _constants.END_DATE) {
+          if ((0, _isAfterDay["default"])(hoverDate, startDate)) {
+            var endSpan = hoverDate.clone().add(1, 'day');
+            modifiers = this.deleteModifierFromRange(modifiers, startDate, endSpan, 'hovered-span');
+          }
 
-          var _endSpan4 = startDate.clone().add(minimumNights + 1, 'days');
+          if (!this.isBlocked(day) && (0, _isAfterDay["default"])(day, startDate)) {
+            var _endSpan2 = day.clone().add(1, 'day');
 
-          modifiers = this.deleteModifierFromRange(modifiers, startSpan, _endSpan4, 'after-hovered-start');
-        }
-
-        if (!this.isBlocked(hoverDate)) {
-          var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
-
-          if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
-            modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
-            modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+            modifiers = this.addModifierToRange(modifiers, startDate, _endSpan2, 'hovered-span');
           }
         }
 
-        this.setState({
-          hoverDate: null,
-          visibleDays: _objectSpread({}, visibleDays, modifiers)
-        });
-      }
-
-      return onDayMouseLeave;
-    }()
-  }, {
-    key: "onPrevMonthClick",
-    value: function () {
-      function onPrevMonthClick() {
-        var _this$props6 = this.props,
-            enableOutsideDays = _this$props6.enableOutsideDays,
-            maxDate = _this$props6.maxDate,
-            minDate = _this$props6.minDate,
-            numberOfMonths = _this$props6.numberOfMonths,
-            onPrevMonthClick = _this$props6.onPrevMonthClick;
-        var _this$state3 = this.state,
-            currentMonth = _this$state3.currentMonth,
-            visibleDays = _this$state3.visibleDays;
-        var newVisibleDays = {};
-        Object.keys(visibleDays).sort().slice(0, numberOfMonths + 1).forEach(function (month) {
-          newVisibleDays[month] = visibleDays[month];
-        });
-        var prevMonth = currentMonth.clone().subtract(2, 'months');
-        var prevMonthVisibleDays = (0, _getVisibleDays["default"])(prevMonth, 1, enableOutsideDays, true);
-        var newCurrentMonth = currentMonth.clone().subtract(1, 'month');
-        this.setState({
-          currentMonth: newCurrentMonth,
-          disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
-          disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
-          visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
-        }, function () {
-          onPrevMonthClick(newCurrentMonth.clone());
-        });
-      }
-
-      return onPrevMonthClick;
-    }()
-  }, {
-    key: "onNextMonthClick",
-    value: function () {
-      function onNextMonthClick() {
-        var _this$props7 = this.props,
-            enableOutsideDays = _this$props7.enableOutsideDays,
-            maxDate = _this$props7.maxDate,
-            minDate = _this$props7.minDate,
-            numberOfMonths = _this$props7.numberOfMonths,
-            onNextMonthClick = _this$props7.onNextMonthClick;
-        var _this$state4 = this.state,
-            currentMonth = _this$state4.currentMonth,
-            visibleDays = _this$state4.visibleDays;
-        var newVisibleDays = {};
-        Object.keys(visibleDays).sort().slice(1).forEach(function (month) {
-          newVisibleDays[month] = visibleDays[month];
-        });
-        var nextMonth = currentMonth.clone().add(numberOfMonths + 1, 'month');
-        var nextMonthVisibleDays = (0, _getVisibleDays["default"])(nextMonth, 1, enableOutsideDays, true);
-        var newCurrentMonth = currentMonth.clone().add(1, 'month');
-        this.setState({
-          currentMonth: newCurrentMonth,
-          disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
-          disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
-          visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
-        }, function () {
-          onNextMonthClick(newCurrentMonth.clone());
-        });
-      }
-
-      return onNextMonthClick;
-    }()
-  }, {
-    key: "onMonthChange",
-    value: function () {
-      function onMonthChange(newMonth) {
-        var _this$props8 = this.props,
-            numberOfMonths = _this$props8.numberOfMonths,
-            enableOutsideDays = _this$props8.enableOutsideDays,
-            orientation = _this$props8.orientation;
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
-        this.setState({
-          currentMonth: newMonth.clone(),
-          visibleDays: this.getModifiers(newVisibleDays)
-        });
-      }
-
-      return onMonthChange;
-    }()
-  }, {
-    key: "onYearChange",
-    value: function () {
-      function onYearChange(newMonth) {
-        var _this$props9 = this.props,
-            numberOfMonths = _this$props9.numberOfMonths,
-            enableOutsideDays = _this$props9.enableOutsideDays,
-            orientation = _this$props9.orientation;
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
-        this.setState({
-          currentMonth: newMonth.clone(),
-          visibleDays: this.getModifiers(newVisibleDays)
-        });
-      }
-
-      return onYearChange;
-    }()
-  }, {
-    key: "onMultiplyScrollableMonths",
-    value: function () {
-      function onMultiplyScrollableMonths() {
-        var _this$props10 = this.props,
-            numberOfMonths = _this$props10.numberOfMonths,
-            enableOutsideDays = _this$props10.enableOutsideDays;
-        var _this$state5 = this.state,
-            currentMonth = _this$state5.currentMonth,
-            visibleDays = _this$state5.visibleDays;
-        var numberOfVisibleMonths = Object.keys(visibleDays).length;
-        var nextMonth = currentMonth.clone().add(numberOfVisibleMonths, 'month');
-        var newVisibleDays = (0, _getVisibleDays["default"])(nextMonth, numberOfMonths, enableOutsideDays, true);
-        this.setState({
-          visibleDays: _objectSpread({}, visibleDays, this.getModifiers(newVisibleDays))
-        });
-      }
-
-      return onMultiplyScrollableMonths;
-    }()
-  }, {
-    key: "getFirstFocusableDay",
-    value: function () {
-      function getFirstFocusableDay(newMonth) {
-        var _this3 = this;
-
-        var _this$props11 = this.props,
-            startDate = _this$props11.startDate,
-            endDate = _this$props11.endDate,
-            focusedInput = _this$props11.focusedInput,
-            minimumNights = _this$props11.minimumNights,
-            numberOfMonths = _this$props11.numberOfMonths;
-        var focusedDate = newMonth.clone().startOf('month');
-
-        if (focusedInput === _constants.START_DATE && startDate) {
-          focusedDate = startDate.clone();
-        } else if (focusedInput === _constants.END_DATE && !endDate && startDate) {
-          focusedDate = startDate.clone().add(minimumNights, 'days');
-        } else if (focusedInput === _constants.END_DATE && endDate) {
-          focusedDate = endDate.clone();
-        }
-
-        if (this.isBlocked(focusedDate)) {
-          var days = [];
-          var lastVisibleDay = newMonth.clone().add(numberOfMonths - 1, 'months').endOf('month');
-          var currentDay = focusedDate.clone();
-
-          while (!(0, _isAfterDay["default"])(currentDay, lastVisibleDay)) {
-            currentDay = currentDay.clone().add(1, 'day');
-            days.push(currentDay);
+        if (!startDate && endDate && focusedInput === _constants.START_DATE) {
+          if ((0, _isBeforeDay["default"])(hoverDate, endDate)) {
+            modifiers = this.deleteModifierFromRange(modifiers, hoverDate, endDate, 'hovered-span');
           }
 
-          var viableDays = days.filter(function (day) {
-            return !_this3.isBlocked(day);
-          });
-
-          if (viableDays.length > 0) {
-            var _viableDays = _slicedToArray(viableDays, 1);
-
-            focusedDate = _viableDays[0];
+          if (!this.isBlocked(day) && (0, _isBeforeDay["default"])(day, endDate)) {
+            modifiers = this.addModifierToRange(modifiers, day, endDate, 'hovered-span');
           }
         }
-
-        return focusedDate;
-      }
-
-      return getFirstFocusableDay;
-    }()
-  }, {
-    key: "getModifiers",
-    value: function () {
-      function getModifiers(visibleDays) {
-        var _this4 = this;
-
-        var modifiers = {};
-        Object.keys(visibleDays).forEach(function (month) {
-          modifiers[month] = {};
-          visibleDays[month].forEach(function (day) {
-            modifiers[month][(0, _toISODateString["default"])(day)] = _this4.getModifiersForDay(day);
-          });
-        });
-        return modifiers;
-      }
-
-      return getModifiers;
-    }()
-  }, {
-    key: "getModifiersForDay",
-    value: function () {
-      function getModifiersForDay(day) {
-        var _this5 = this;
-
-        return new Set(Object.keys(this.modifiers).filter(function (modifier) {
-          return _this5.modifiers[modifier](day);
-        }));
-      }
-
-      return getModifiersForDay;
-    }()
-  }, {
-    key: "getStateForNewMonth",
-    value: function () {
-      function getStateForNewMonth(nextProps) {
-        var _this6 = this;
-
-        var initialVisibleMonth = nextProps.initialVisibleMonth,
-            numberOfMonths = nextProps.numberOfMonths,
-            enableOutsideDays = nextProps.enableOutsideDays,
-            orientation = nextProps.orientation,
-            startDate = nextProps.startDate;
-        var initialVisibleMonthThunk = initialVisibleMonth || (startDate ? function () {
-          return startDate;
-        } : function () {
-          return _this6.today;
-        });
-        var currentMonth = initialVisibleMonthThunk();
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths));
-        return {
-          currentMonth: currentMonth,
-          visibleDays: visibleDays
-        };
-      }
-
-      return getStateForNewMonth;
-    }()
-  }, {
-    key: "shouldDisableMonthNavigation",
-    value: function () {
-      function shouldDisableMonthNavigation(date, visibleMonth) {
-        if (!date) return false;
-        var _this$props12 = this.props,
-            numberOfMonths = _this$props12.numberOfMonths,
-            enableOutsideDays = _this$props12.enableOutsideDays;
-        return (0, _isDayVisible["default"])(date, visibleMonth, numberOfMonths, enableOutsideDays);
-      }
-
-      return shouldDisableMonthNavigation;
-    }()
-  }, {
-    key: "addModifier",
-    value: function () {
-      function addModifier(updatedDays, day, modifier) {
-        var _this$props13 = this.props,
-            numberOfVisibleMonths = _this$props13.numberOfMonths,
-            enableOutsideDays = _this$props13.enableOutsideDays,
-            orientation = _this$props13.orientation;
-        var _this$state6 = this.state,
-            firstVisibleMonth = _this$state6.currentMonth,
-            visibleDays = _this$state6.visibleDays;
-        var currentMonth = firstVisibleMonth;
-        var numberOfMonths = numberOfVisibleMonths;
-
-        if (orientation === _constants.VERTICAL_SCROLLABLE) {
-          numberOfMonths = Object.keys(visibleDays).length;
-        } else {
-          currentMonth = currentMonth.clone().subtract(1, 'month');
-          numberOfMonths += 2;
-        }
-
-        if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-          return updatedDays;
-        }
-
-        var iso = (0, _toISODateString["default"])(day);
-
-        var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
-
-        if (enableOutsideDays) {
-          var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-            return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-          });
-          updatedDaysAfterAddition = monthsToUpdate.reduce(function (days, monthIso) {
-            var month = updatedDays[monthIso] || visibleDays[monthIso];
-            var modifiers = new Set(month[iso]);
-            modifiers.add(modifier);
-            return _objectSpread({}, days, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-          }, updatedDaysAfterAddition);
-        } else {
-          var monthIso = (0, _toISOMonthString["default"])(day);
-          var month = updatedDays[monthIso] || visibleDays[monthIso];
-          var modifiers = new Set(month[iso]);
-          modifiers.add(modifier);
-          updatedDaysAfterAddition = _objectSpread({}, updatedDaysAfterAddition, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-        }
-
-        return updatedDaysAfterAddition;
-      }
-
-      return addModifier;
-    }()
-  }, {
-    key: "addModifierToRange",
-    value: function () {
-      function addModifierToRange(updatedDays, start, end, modifier) {
-        var days = updatedDays;
-        var spanStart = start.clone();
-
-        while ((0, _isBeforeDay["default"])(spanStart, end)) {
-          days = this.addModifier(days, spanStart, modifier);
-          spanStart = spanStart.clone().add(1, 'day');
-        }
-
-        return days;
-      }
-
-      return addModifierToRange;
-    }()
-  }, {
-    key: "deleteModifier",
-    value: function () {
-      function deleteModifier(updatedDays, day, modifier) {
-        var _this$props14 = this.props,
-            numberOfVisibleMonths = _this$props14.numberOfMonths,
-            enableOutsideDays = _this$props14.enableOutsideDays,
-            orientation = _this$props14.orientation;
-        var _this$state7 = this.state,
-            firstVisibleMonth = _this$state7.currentMonth,
-            visibleDays = _this$state7.visibleDays;
-        var currentMonth = firstVisibleMonth;
-        var numberOfMonths = numberOfVisibleMonths;
-
-        if (orientation === _constants.VERTICAL_SCROLLABLE) {
-          numberOfMonths = Object.keys(visibleDays).length;
-        } else {
-          currentMonth = currentMonth.clone().subtract(1, 'month');
-          numberOfMonths += 2;
-        }
-
-        if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-          return updatedDays;
-        }
-
-        var iso = (0, _toISODateString["default"])(day);
-
-        var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
-
-        if (enableOutsideDays) {
-          var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-            return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-          });
-          updatedDaysAfterDeletion = monthsToUpdate.reduce(function (days, monthIso) {
-            var month = updatedDays[monthIso] || visibleDays[monthIso];
-            var modifiers = new Set(month[iso]);
-            modifiers["delete"](modifier);
-            return _objectSpread({}, days, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-          }, updatedDaysAfterDeletion);
-        } else {
-          var monthIso = (0, _toISOMonthString["default"])(day);
-          var month = updatedDays[monthIso] || visibleDays[monthIso];
-          var modifiers = new Set(month[iso]);
-          modifiers["delete"](modifier);
-          updatedDaysAfterDeletion = _objectSpread({}, updatedDaysAfterDeletion, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-        }
-
-        return updatedDaysAfterDeletion;
-      }
-
-      return deleteModifier;
-    }()
-  }, {
-    key: "deleteModifierFromRange",
-    value: function () {
-      function deleteModifierFromRange(updatedDays, start, end, modifier) {
-        var days = updatedDays;
-        var spanStart = start.clone();
-
-        while ((0, _isBeforeDay["default"])(spanStart, end)) {
-          days = this.deleteModifier(days, spanStart, modifier);
-          spanStart = spanStart.clone().add(1, 'day');
-        }
-
-        return days;
-      }
-
-      return deleteModifierFromRange;
-    }()
-  }, {
-    key: "doesNotMeetMinimumNights",
-    value: function () {
-      function doesNotMeetMinimumNights(day) {
-        var _this$props15 = this.props,
-            startDate = _this$props15.startDate,
-            isOutsideRange = _this$props15.isOutsideRange,
-            focusedInput = _this$props15.focusedInput,
-            minimumNights = _this$props15.minimumNights;
-        if (focusedInput !== _constants.END_DATE) return false;
 
         if (startDate) {
-          var dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
-          return dayDiff < minimumNights && dayDiff >= 0;
+          var startSpan = startDate.clone().add(1, 'day');
+
+          var _endSpan3 = startDate.clone().add(minimumNights + 1, 'days');
+
+          modifiers = this.deleteModifierFromRange(modifiers, startSpan, _endSpan3, 'after-hovered-start');
+
+          if ((0, _isSameDay["default"])(day, startDate)) {
+            var newStartSpan = startDate.clone().add(1, 'day');
+            var newEndSpan = startDate.clone().add(minimumNights + 1, 'days');
+            modifiers = this.addModifierToRange(modifiers, newStartSpan, newEndSpan, 'after-hovered-start');
+          }
         }
-
-        return isOutsideRange((0, _moment["default"])(day).subtract(minimumNights, 'days'));
-      }
-
-      return doesNotMeetMinimumNights;
-    }()
-  }, {
-    key: "doesNotMeetMinNightsForHoveredStartDate",
-    value: function () {
-      function doesNotMeetMinNightsForHoveredStartDate(day, hoverDate) {
-        var _this$props16 = this.props,
-            focusedInput = _this$props16.focusedInput,
-            getMinNightsForHoverDate = _this$props16.getMinNightsForHoverDate;
-        if (focusedInput !== _constants.END_DATE) return false;
 
         if (hoverDate && !this.isBlocked(hoverDate)) {
-          var minNights = getMinNightsForHoverDate(hoverDate);
-          var dayDiff = day.diff(hoverDate.clone().startOf('day').hour(12), 'days');
-          return dayDiff < minNights && dayDiff >= 0;
+          var minNightsForPrevHoverDate = getMinNightsForHoverDate(hoverDate);
+
+          if (minNightsForPrevHoverDate > 0 && focusedInput === _constants.START_DATE) {
+            modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+            modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForPrevHoverDate, 'days'), 'hovered-start-first-possible-end');
+          }
         }
 
-        return false;
+        if (!this.isBlocked(day)) {
+          var minNightsForHoverDate = getMinNightsForHoverDate(day);
+
+          if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+            modifiers = this.addModifierToRange(modifiers, day.clone().add(1, 'days'), day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+            modifiers = this.addModifier(modifiers, day.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+          }
+        }
       }
 
-      return doesNotMeetMinNightsForHoveredStartDate;
-    }()
-  }, {
-    key: "isDayAfterHoveredStartDate",
-    value: function () {
-      function isDayAfterHoveredStartDate(day) {
-        var _this$props17 = this.props,
-            startDate = _this$props17.startDate,
-            endDate = _this$props17.endDate,
-            minimumNights = _this$props17.minimumNights;
+      this.setState({
+        hoverDate: day,
+        dateOffset: nextDateOffset,
+        visibleDays: _objectSpread({}, visibleDays, modifiers)
+      });
+    }
+  };
 
-        var _ref2 = this.state || {},
-            hoverDate = _ref2.hoverDate;
+  _proto.onDayMouseLeave = function onDayMouseLeave(day) {
+    var _this$props5 = this.props,
+        startDate = _this$props5.startDate,
+        endDate = _this$props5.endDate,
+        focusedInput = _this$props5.focusedInput,
+        getMinNightsForHoverDate = _this$props5.getMinNightsForHoverDate,
+        minimumNights = _this$props5.minimumNights;
+    var _this$state2 = this.state,
+        hoverDate = _this$state2.hoverDate,
+        visibleDays = _this$state2.visibleDays,
+        dateOffset = _this$state2.dateOffset;
+    if (this.isTouchDevice || !hoverDate) return;
+    var modifiers = {};
+    modifiers = this.deleteModifier(modifiers, hoverDate, 'hovered');
 
-        return !!startDate && !endDate && !this.isBlocked(day) && (0, _isNextDay["default"])(hoverDate, day) && minimumNights > 0 && (0, _isSameDay["default"])(hoverDate, startDate);
+    if (dateOffset) {
+      modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
+    }
+
+    if (startDate && !endDate && (0, _isAfterDay["default"])(hoverDate, startDate)) {
+      var endSpan = hoverDate.clone().add(1, 'day');
+      modifiers = this.deleteModifierFromRange(modifiers, startDate, endSpan, 'hovered-span');
+    }
+
+    if (!startDate && endDate && (0, _isAfterDay["default"])(endDate, hoverDate)) {
+      modifiers = this.deleteModifierFromRange(modifiers, hoverDate, endDate, 'hovered-span');
+    }
+
+    if (startDate && (0, _isSameDay["default"])(day, startDate)) {
+      var startSpan = startDate.clone().add(1, 'day');
+
+      var _endSpan4 = startDate.clone().add(minimumNights + 1, 'days');
+
+      modifiers = this.deleteModifierFromRange(modifiers, startSpan, _endSpan4, 'after-hovered-start');
+    }
+
+    if (!this.isBlocked(hoverDate)) {
+      var minNightsForHoverDate = getMinNightsForHoverDate(hoverDate);
+
+      if (minNightsForHoverDate > 0 && focusedInput === _constants.START_DATE) {
+        modifiers = this.deleteModifierFromRange(modifiers, hoverDate.clone().add(1, 'days'), hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-blocked-minimum-nights');
+        modifiers = this.deleteModifier(modifiers, hoverDate.clone().add(minNightsForHoverDate, 'days'), 'hovered-start-first-possible-end');
+      }
+    }
+
+    this.setState({
+      hoverDate: null,
+      visibleDays: _objectSpread({}, visibleDays, modifiers)
+    });
+  };
+
+  _proto.onPrevMonthClick = function onPrevMonthClick() {
+    var _this$props6 = this.props,
+        enableOutsideDays = _this$props6.enableOutsideDays,
+        maxDate = _this$props6.maxDate,
+        minDate = _this$props6.minDate,
+        numberOfMonths = _this$props6.numberOfMonths,
+        onPrevMonthClick = _this$props6.onPrevMonthClick;
+    var _this$state3 = this.state,
+        currentMonth = _this$state3.currentMonth,
+        visibleDays = _this$state3.visibleDays;
+    var newVisibleDays = {};
+    Object.keys(visibleDays).sort().slice(0, numberOfMonths + 1).forEach(function (month) {
+      newVisibleDays[month] = visibleDays[month];
+    });
+    var prevMonth = currentMonth.clone().subtract(2, 'months');
+    var prevMonthVisibleDays = (0, _getVisibleDays["default"])(prevMonth, 1, enableOutsideDays, true);
+    var newCurrentMonth = currentMonth.clone().subtract(1, 'month');
+    this.setState({
+      currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
+      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
+    }, function () {
+      onPrevMonthClick(newCurrentMonth.clone());
+    });
+  };
+
+  _proto.onNextMonthClick = function onNextMonthClick() {
+    var _this$props7 = this.props,
+        enableOutsideDays = _this$props7.enableOutsideDays,
+        maxDate = _this$props7.maxDate,
+        minDate = _this$props7.minDate,
+        numberOfMonths = _this$props7.numberOfMonths,
+        onNextMonthClick = _this$props7.onNextMonthClick;
+    var _this$state4 = this.state,
+        currentMonth = _this$state4.currentMonth,
+        visibleDays = _this$state4.visibleDays;
+    var newVisibleDays = {};
+    Object.keys(visibleDays).sort().slice(1).forEach(function (month) {
+      newVisibleDays[month] = visibleDays[month];
+    });
+    var nextMonth = currentMonth.clone().add(numberOfMonths + 1, 'month');
+    var nextMonthVisibleDays = (0, _getVisibleDays["default"])(nextMonth, 1, enableOutsideDays, true);
+    var newCurrentMonth = currentMonth.clone().add(1, 'month');
+    this.setState({
+      currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
+      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
+    }, function () {
+      onNextMonthClick(newCurrentMonth.clone());
+    });
+  };
+
+  _proto.onMonthChange = function onMonthChange(newMonth) {
+    var _this$props8 = this.props,
+        numberOfMonths = _this$props8.numberOfMonths,
+        enableOutsideDays = _this$props8.enableOutsideDays,
+        orientation = _this$props8.orientation;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
+    this.setState({
+      currentMonth: newMonth.clone(),
+      visibleDays: this.getModifiers(newVisibleDays)
+    });
+  };
+
+  _proto.onYearChange = function onYearChange(newMonth) {
+    var _this$props9 = this.props,
+        numberOfMonths = _this$props9.numberOfMonths,
+        enableOutsideDays = _this$props9.enableOutsideDays,
+        orientation = _this$props9.orientation;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
+    this.setState({
+      currentMonth: newMonth.clone(),
+      visibleDays: this.getModifiers(newVisibleDays)
+    });
+  };
+
+  _proto.onMultiplyScrollableMonths = function onMultiplyScrollableMonths() {
+    var _this$props10 = this.props,
+        numberOfMonths = _this$props10.numberOfMonths,
+        enableOutsideDays = _this$props10.enableOutsideDays;
+    var _this$state5 = this.state,
+        currentMonth = _this$state5.currentMonth,
+        visibleDays = _this$state5.visibleDays;
+    var numberOfVisibleMonths = Object.keys(visibleDays).length;
+    var nextMonth = currentMonth.clone().add(numberOfVisibleMonths, 'month');
+    var newVisibleDays = (0, _getVisibleDays["default"])(nextMonth, numberOfMonths, enableOutsideDays, true);
+    this.setState({
+      visibleDays: _objectSpread({}, visibleDays, this.getModifiers(newVisibleDays))
+    });
+  };
+
+  _proto.getFirstFocusableDay = function getFirstFocusableDay(newMonth) {
+    var _this3 = this;
+
+    var _this$props11 = this.props,
+        startDate = _this$props11.startDate,
+        endDate = _this$props11.endDate,
+        focusedInput = _this$props11.focusedInput,
+        minimumNights = _this$props11.minimumNights,
+        numberOfMonths = _this$props11.numberOfMonths;
+    var focusedDate = newMonth.clone().startOf('month');
+
+    if (focusedInput === _constants.START_DATE && startDate) {
+      focusedDate = startDate.clone();
+    } else if (focusedInput === _constants.END_DATE && !endDate && startDate) {
+      focusedDate = startDate.clone().add(minimumNights, 'days');
+    } else if (focusedInput === _constants.END_DATE && endDate) {
+      focusedDate = endDate.clone();
+    }
+
+    if (this.isBlocked(focusedDate)) {
+      var days = [];
+      var lastVisibleDay = newMonth.clone().add(numberOfMonths - 1, 'months').endOf('month');
+      var currentDay = focusedDate.clone();
+
+      while (!(0, _isAfterDay["default"])(currentDay, lastVisibleDay)) {
+        currentDay = currentDay.clone().add(1, 'day');
+        days.push(currentDay);
       }
 
-      return isDayAfterHoveredStartDate;
-    }()
-  }, {
-    key: "isEndDate",
-    value: function () {
-      function isEndDate(day) {
-        var endDate = this.props.endDate;
-        return (0, _isSameDay["default"])(day, endDate);
+      var viableDays = days.filter(function (day) {
+        return !_this3.isBlocked(day);
+      });
+
+      if (viableDays.length > 0) {
+        var _viableDays = _slicedToArray(viableDays, 1);
+
+        focusedDate = _viableDays[0];
       }
+    }
 
-      return isEndDate;
-    }()
-  }, {
-    key: "isHovered",
-    value: function () {
-      function isHovered(day) {
-        var _ref3 = this.state || {},
-            hoverDate = _ref3.hoverDate;
+    return focusedDate;
+  };
 
-        var focusedInput = this.props.focusedInput;
-        return !!focusedInput && (0, _isSameDay["default"])(day, hoverDate);
+  _proto.getModifiers = function getModifiers(visibleDays) {
+    var _this4 = this;
+
+    var modifiers = {};
+    Object.keys(visibleDays).forEach(function (month) {
+      modifiers[month] = {};
+      visibleDays[month].forEach(function (day) {
+        modifiers[month][(0, _toISODateString["default"])(day)] = _this4.getModifiersForDay(day);
+      });
+    });
+    return modifiers;
+  };
+
+  _proto.getModifiersForDay = function getModifiersForDay(day) {
+    var _this5 = this;
+
+    return new Set(Object.keys(this.modifiers).filter(function (modifier) {
+      return _this5.modifiers[modifier](day);
+    }));
+  };
+
+  _proto.getStateForNewMonth = function getStateForNewMonth(nextProps) {
+    var _this6 = this;
+
+    var initialVisibleMonth = nextProps.initialVisibleMonth,
+        numberOfMonths = nextProps.numberOfMonths,
+        enableOutsideDays = nextProps.enableOutsideDays,
+        orientation = nextProps.orientation,
+        startDate = nextProps.startDate;
+    var initialVisibleMonthThunk = initialVisibleMonth || (startDate ? function () {
+      return startDate;
+    } : function () {
+      return _this6.today;
+    });
+    var currentMonth = initialVisibleMonthThunk();
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths));
+    return {
+      currentMonth: currentMonth,
+      visibleDays: visibleDays
+    };
+  };
+
+  _proto.shouldDisableMonthNavigation = function shouldDisableMonthNavigation(date, visibleMonth) {
+    if (!date) return false;
+    var _this$props12 = this.props,
+        numberOfMonths = _this$props12.numberOfMonths,
+        enableOutsideDays = _this$props12.enableOutsideDays;
+    return (0, _isDayVisible["default"])(date, visibleMonth, numberOfMonths, enableOutsideDays);
+  };
+
+  _proto.addModifier = function addModifier(updatedDays, day, modifier) {
+    var _this$props13 = this.props,
+        numberOfVisibleMonths = _this$props13.numberOfMonths,
+        enableOutsideDays = _this$props13.enableOutsideDays,
+        orientation = _this$props13.orientation;
+    var _this$state6 = this.state,
+        firstVisibleMonth = _this$state6.currentMonth,
+        visibleDays = _this$state6.visibleDays;
+    var currentMonth = firstVisibleMonth;
+    var numberOfMonths = numberOfVisibleMonths;
+
+    if (orientation === _constants.VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.keys(visibleDays).length;
+    } else {
+      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+      numberOfMonths += 2;
+    }
+
+    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+      return updatedDays;
+    }
+
+    var iso = (0, _toISODateString["default"])(day);
+
+    var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
+
+    if (enableOutsideDays) {
+      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+      });
+      updatedDaysAfterAddition = monthsToUpdate.reduce(function (acc, monthIso) {
+        var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+        if (!month[iso] || !month[iso].has(modifier)) {
+          var modifiers = new Set(month[iso]);
+          modifiers.add(modifier);
+          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
+        }
+
+        return acc;
+      }, updatedDaysAfterAddition);
+    } else {
+      var monthIso = (0, _toISOMonthString["default"])(day);
+      var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
+
+      if (!month[iso] || !month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers.add(modifier);
+        updatedDaysAfterAddition[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
       }
+    }
 
-      return isHovered;
-    }()
-  }, {
-    key: "isInHoveredSpan",
-    value: function () {
-      function isInHoveredSpan(day) {
-        var _this$props18 = this.props,
-            startDate = _this$props18.startDate,
-            endDate = _this$props18.endDate;
+    return updatedDaysAfterAddition;
+  };
 
-        var _ref4 = this.state || {},
-            hoverDate = _ref4.hoverDate;
+  _proto.addModifierToRange = function addModifierToRange(updatedDays, start, end, modifier) {
+    var days = updatedDays;
+    var spanStart = start.clone();
 
-        var isForwardRange = !!startDate && !endDate && (day.isBetween(startDate, hoverDate) || (0, _isSameDay["default"])(hoverDate, day));
-        var isBackwardRange = !!endDate && !startDate && (day.isBetween(hoverDate, endDate) || (0, _isSameDay["default"])(hoverDate, day));
-        var isValidDayHovered = hoverDate && !this.isBlocked(hoverDate);
-        return (isForwardRange || isBackwardRange) && isValidDayHovered;
+    while ((0, _isBeforeDay["default"])(spanStart, end)) {
+      days = this.addModifier(days, spanStart, modifier);
+      spanStart = spanStart.clone().add(1, 'day');
+    }
+
+    return days;
+  };
+
+  _proto.deleteModifier = function deleteModifier(updatedDays, day, modifier) {
+    var _this$props14 = this.props,
+        numberOfVisibleMonths = _this$props14.numberOfMonths,
+        enableOutsideDays = _this$props14.enableOutsideDays,
+        orientation = _this$props14.orientation;
+    var _this$state7 = this.state,
+        firstVisibleMonth = _this$state7.currentMonth,
+        visibleDays = _this$state7.visibleDays;
+    var currentMonth = firstVisibleMonth;
+    var numberOfMonths = numberOfVisibleMonths;
+
+    if (orientation === _constants.VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.keys(visibleDays).length;
+    } else {
+      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+      numberOfMonths += 2;
+    }
+
+    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+      return updatedDays;
+    }
+
+    var iso = (0, _toISODateString["default"])(day);
+
+    var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
+
+    if (enableOutsideDays) {
+      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+      });
+      updatedDaysAfterDeletion = monthsToUpdate.reduce(function (acc, monthIso) {
+        var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+        if (month[iso] && month[iso].has(modifier)) {
+          var modifiers = new Set(month[iso]);
+          modifiers["delete"](modifier);
+          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
+        }
+
+        return acc;
+      }, updatedDaysAfterDeletion);
+    } else {
+      var monthIso = (0, _toISOMonthString["default"])(day);
+      var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+      if (month[iso] && month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers["delete"](modifier);
+        updatedDaysAfterDeletion[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
       }
+    }
 
-      return isInHoveredSpan;
-    }()
-  }, {
-    key: "isInSelectedSpan",
-    value: function () {
-      function isInSelectedSpan(day) {
-        var _this$props19 = this.props,
-            startDate = _this$props19.startDate,
-            endDate = _this$props19.endDate;
-        return day.isBetween(startDate, endDate);
-      }
+    return updatedDaysAfterDeletion;
+  };
 
-      return isInSelectedSpan;
-    }()
-  }, {
-    key: "isLastInRange",
-    value: function () {
-      function isLastInRange(day) {
-        var endDate = this.props.endDate;
-        return this.isInSelectedSpan(day) && (0, _isNextDay["default"])(day, endDate);
-      }
+  _proto.deleteModifierFromRange = function deleteModifierFromRange(updatedDays, start, end, modifier) {
+    var days = updatedDays;
+    var spanStart = start.clone();
 
-      return isLastInRange;
-    }()
-  }, {
-    key: "isStartDate",
-    value: function () {
-      function isStartDate(day) {
-        var startDate = this.props.startDate;
-        return (0, _isSameDay["default"])(day, startDate);
-      }
+    while ((0, _isBeforeDay["default"])(spanStart, end)) {
+      days = this.deleteModifier(days, spanStart, modifier);
+      spanStart = spanStart.clone().add(1, 'day');
+    }
 
-      return isStartDate;
-    }()
-  }, {
-    key: "isBlocked",
-    value: function () {
-      function isBlocked(day) {
-        var _this$props20 = this.props,
-            isDayBlocked = _this$props20.isDayBlocked,
-            isOutsideRange = _this$props20.isOutsideRange;
-        return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
-      }
+    return days;
+  };
 
-      return isBlocked;
-    }()
-  }, {
-    key: "isToday",
-    value: function () {
-      function isToday(day) {
-        return (0, _isSameDay["default"])(day, this.today);
-      }
+  _proto.doesNotMeetMinimumNights = function doesNotMeetMinimumNights(day) {
+    var _this$props15 = this.props,
+        startDate = _this$props15.startDate,
+        isOutsideRange = _this$props15.isOutsideRange,
+        focusedInput = _this$props15.focusedInput,
+        minimumNights = _this$props15.minimumNights;
+    if (focusedInput !== _constants.END_DATE) return false;
 
-      return isToday;
-    }()
-  }, {
-    key: "isFirstDayOfWeek",
-    value: function () {
-      function isFirstDayOfWeek(day) {
-        var firstDayOfWeek = this.props.firstDayOfWeek;
-        return day.day() === (firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek());
-      }
+    if (startDate) {
+      var dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
+      return dayDiff < minimumNights && dayDiff >= 0;
+    }
 
-      return isFirstDayOfWeek;
-    }()
-  }, {
-    key: "isLastDayOfWeek",
-    value: function () {
-      function isLastDayOfWeek(day) {
-        var firstDayOfWeek = this.props.firstDayOfWeek;
-        return day.day() === ((firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek()) + 6) % 7;
-      }
+    return isOutsideRange((0, _moment["default"])(day).subtract(minimumNights, 'days'));
+  };
 
-      return isLastDayOfWeek;
-    }()
-  }, {
-    key: "isFirstPossibleEndDateForHoveredStartDate",
-    value: function () {
-      function isFirstPossibleEndDateForHoveredStartDate(day, hoverDate) {
-        var _this$props21 = this.props,
-            focusedInput = _this$props21.focusedInput,
-            getMinNightsForHoverDate = _this$props21.getMinNightsForHoverDate;
-        if (focusedInput !== _constants.END_DATE || !hoverDate || this.isBlocked(hoverDate)) return false;
-        var minNights = getMinNightsForHoverDate(hoverDate);
-        var firstAvailableEndDate = hoverDate.clone().add(minNights, 'days');
-        return (0, _isSameDay["default"])(day, firstAvailableEndDate);
-      }
+  _proto.doesNotMeetMinNightsForHoveredStartDate = function doesNotMeetMinNightsForHoveredStartDate(day, hoverDate) {
+    var _this$props16 = this.props,
+        focusedInput = _this$props16.focusedInput,
+        getMinNightsForHoverDate = _this$props16.getMinNightsForHoverDate;
+    if (focusedInput !== _constants.END_DATE) return false;
 
-      return isFirstPossibleEndDateForHoveredStartDate;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props22 = this.props,
-            numberOfMonths = _this$props22.numberOfMonths,
-            orientation = _this$props22.orientation,
-            monthFormat = _this$props22.monthFormat,
-            renderMonthText = _this$props22.renderMonthText,
-            navPrev = _this$props22.navPrev,
-            navNext = _this$props22.navNext,
-            noNavButtons = _this$props22.noNavButtons,
-            onOutsideClick = _this$props22.onOutsideClick,
-            withPortal = _this$props22.withPortal,
-            enableOutsideDays = _this$props22.enableOutsideDays,
-            firstDayOfWeek = _this$props22.firstDayOfWeek,
-            renderKeyboardShortcutsButton = _this$props22.renderKeyboardShortcutsButton,
-            hideKeyboardShortcutsPanel = _this$props22.hideKeyboardShortcutsPanel,
-            daySize = _this$props22.daySize,
-            focusedInput = _this$props22.focusedInput,
-            renderCalendarDay = _this$props22.renderCalendarDay,
-            renderDayContents = _this$props22.renderDayContents,
-            renderCalendarInfo = _this$props22.renderCalendarInfo,
-            renderMonthElement = _this$props22.renderMonthElement,
-            calendarInfoPosition = _this$props22.calendarInfoPosition,
-            onBlur = _this$props22.onBlur,
-            onShiftTab = _this$props22.onShiftTab,
-            onTab = _this$props22.onTab,
-            isFocused = _this$props22.isFocused,
-            showKeyboardShortcuts = _this$props22.showKeyboardShortcuts,
-            isRTL = _this$props22.isRTL,
-            weekDayFormat = _this$props22.weekDayFormat,
-            dayAriaLabelFormat = _this$props22.dayAriaLabelFormat,
-            verticalHeight = _this$props22.verticalHeight,
-            noBorder = _this$props22.noBorder,
-            transitionDuration = _this$props22.transitionDuration,
-            verticalBorderSpacing = _this$props22.verticalBorderSpacing,
-            horizontalMonthPadding = _this$props22.horizontalMonthPadding;
-        var _this$state8 = this.state,
-            currentMonth = _this$state8.currentMonth,
-            phrases = _this$state8.phrases,
-            visibleDays = _this$state8.visibleDays,
-            disablePrev = _this$state8.disablePrev,
-            disableNext = _this$state8.disableNext;
-        return _react["default"].createElement(_DayPicker["default"], {
-          orientation: orientation,
-          enableOutsideDays: enableOutsideDays,
-          modifiers: visibleDays,
-          numberOfMonths: numberOfMonths,
-          onDayClick: this.onDayClick,
-          onDayMouseEnter: this.onDayMouseEnter,
-          onDayMouseLeave: this.onDayMouseLeave,
-          onPrevMonthClick: this.onPrevMonthClick,
-          onNextMonthClick: this.onNextMonthClick,
-          onMonthChange: this.onMonthChange,
-          onTab: onTab,
-          onShiftTab: onShiftTab,
-          onYearChange: this.onYearChange,
-          onMultiplyScrollableMonths: this.onMultiplyScrollableMonths,
-          monthFormat: monthFormat,
-          renderMonthText: renderMonthText,
-          withPortal: withPortal,
-          hidden: !focusedInput,
-          initialVisibleMonth: function () {
-            function initialVisibleMonth() {
-              return currentMonth;
-            }
+    if (hoverDate && !this.isBlocked(hoverDate)) {
+      var minNights = getMinNightsForHoverDate(hoverDate);
+      var dayDiff = day.diff(hoverDate.clone().startOf('day').hour(12), 'days');
+      return dayDiff < minNights && dayDiff >= 0;
+    }
 
-            return initialVisibleMonth;
-          }(),
-          daySize: daySize,
-          onOutsideClick: onOutsideClick,
-          disablePrev: disablePrev,
-          disableNext: disableNext,
-          navPrev: navPrev,
-          navNext: navNext,
-          noNavButtons: noNavButtons,
-          renderCalendarDay: renderCalendarDay,
-          renderDayContents: renderDayContents,
-          renderCalendarInfo: renderCalendarInfo,
-          renderMonthElement: renderMonthElement,
-          renderKeyboardShortcutsButton: renderKeyboardShortcutsButton,
-          calendarInfoPosition: calendarInfoPosition,
-          firstDayOfWeek: firstDayOfWeek,
-          hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
-          isFocused: isFocused,
-          getFirstFocusableDay: this.getFirstFocusableDay,
-          onBlur: onBlur,
-          showKeyboardShortcuts: showKeyboardShortcuts,
-          phrases: phrases,
-          isRTL: isRTL,
-          weekDayFormat: weekDayFormat,
-          dayAriaLabelFormat: dayAriaLabelFormat,
-          verticalHeight: verticalHeight,
-          verticalBorderSpacing: verticalBorderSpacing,
-          noBorder: noBorder,
-          transitionDuration: transitionDuration,
-          horizontalMonthPadding: horizontalMonthPadding
-        });
-      }
+    return false;
+  };
 
-      return render;
-    }()
-  }]);
+  _proto.isDayAfterHoveredStartDate = function isDayAfterHoveredStartDate(day) {
+    var _this$props17 = this.props,
+        startDate = _this$props17.startDate,
+        endDate = _this$props17.endDate,
+        minimumNights = _this$props17.minimumNights;
+
+    var _ref2 = this.state || {},
+        hoverDate = _ref2.hoverDate;
+
+    return !!startDate && !endDate && !this.isBlocked(day) && (0, _isNextDay["default"])(hoverDate, day) && minimumNights > 0 && (0, _isSameDay["default"])(hoverDate, startDate);
+  };
+
+  _proto.isEndDate = function isEndDate(day) {
+    var endDate = this.props.endDate;
+    return (0, _isSameDay["default"])(day, endDate);
+  };
+
+  _proto.isHovered = function isHovered(day) {
+    var _ref3 = this.state || {},
+        hoverDate = _ref3.hoverDate;
+
+    var focusedInput = this.props.focusedInput;
+    return !!focusedInput && (0, _isSameDay["default"])(day, hoverDate);
+  };
+
+  _proto.isInHoveredSpan = function isInHoveredSpan(day) {
+    var _this$props18 = this.props,
+        startDate = _this$props18.startDate,
+        endDate = _this$props18.endDate;
+
+    var _ref4 = this.state || {},
+        hoverDate = _ref4.hoverDate;
+
+    var isForwardRange = !!startDate && !endDate && (day.isBetween(startDate, hoverDate) || (0, _isSameDay["default"])(hoverDate, day));
+    var isBackwardRange = !!endDate && !startDate && (day.isBetween(hoverDate, endDate) || (0, _isSameDay["default"])(hoverDate, day));
+    var isValidDayHovered = hoverDate && !this.isBlocked(hoverDate);
+    return (isForwardRange || isBackwardRange) && isValidDayHovered;
+  };
+
+  _proto.isInSelectedSpan = function isInSelectedSpan(day) {
+    var _this$props19 = this.props,
+        startDate = _this$props19.startDate,
+        endDate = _this$props19.endDate;
+    return day.isBetween(startDate, endDate);
+  };
+
+  _proto.isLastInRange = function isLastInRange(day) {
+    var endDate = this.props.endDate;
+    return this.isInSelectedSpan(day) && (0, _isNextDay["default"])(day, endDate);
+  };
+
+  _proto.isStartDate = function isStartDate(day) {
+    var startDate = this.props.startDate;
+    return (0, _isSameDay["default"])(day, startDate);
+  };
+
+  _proto.isBlocked = function isBlocked(day) {
+    var _this$props20 = this.props,
+        isDayBlocked = _this$props20.isDayBlocked,
+        isOutsideRange = _this$props20.isOutsideRange;
+    return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
+  };
+
+  _proto.isToday = function isToday(day) {
+    return (0, _isSameDay["default"])(day, this.today);
+  };
+
+  _proto.isFirstDayOfWeek = function isFirstDayOfWeek(day) {
+    var firstDayOfWeek = this.props.firstDayOfWeek;
+    return day.day() === (firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek());
+  };
+
+  _proto.isLastDayOfWeek = function isLastDayOfWeek(day) {
+    var firstDayOfWeek = this.props.firstDayOfWeek;
+    return day.day() === ((firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek()) + 6) % 7;
+  };
+
+  _proto.isFirstPossibleEndDateForHoveredStartDate = function isFirstPossibleEndDateForHoveredStartDate(day, hoverDate) {
+    var _this$props21 = this.props,
+        focusedInput = _this$props21.focusedInput,
+        getMinNightsForHoverDate = _this$props21.getMinNightsForHoverDate;
+    if (focusedInput !== _constants.END_DATE || !hoverDate || this.isBlocked(hoverDate)) return false;
+    var minNights = getMinNightsForHoverDate(hoverDate);
+    var firstAvailableEndDate = hoverDate.clone().add(minNights, 'days');
+    return (0, _isSameDay["default"])(day, firstAvailableEndDate);
+  };
+
+  _proto.render = function render() {
+    var _this$props22 = this.props,
+        numberOfMonths = _this$props22.numberOfMonths,
+        orientation = _this$props22.orientation,
+        monthFormat = _this$props22.monthFormat,
+        renderMonthText = _this$props22.renderMonthText,
+        navPrev = _this$props22.navPrev,
+        navNext = _this$props22.navNext,
+        noNavButtons = _this$props22.noNavButtons,
+        onOutsideClick = _this$props22.onOutsideClick,
+        withPortal = _this$props22.withPortal,
+        enableOutsideDays = _this$props22.enableOutsideDays,
+        firstDayOfWeek = _this$props22.firstDayOfWeek,
+        renderKeyboardShortcutsButton = _this$props22.renderKeyboardShortcutsButton,
+        hideKeyboardShortcutsPanel = _this$props22.hideKeyboardShortcutsPanel,
+        daySize = _this$props22.daySize,
+        focusedInput = _this$props22.focusedInput,
+        renderCalendarDay = _this$props22.renderCalendarDay,
+        renderDayContents = _this$props22.renderDayContents,
+        renderCalendarInfo = _this$props22.renderCalendarInfo,
+        renderMonthElement = _this$props22.renderMonthElement,
+        calendarInfoPosition = _this$props22.calendarInfoPosition,
+        onBlur = _this$props22.onBlur,
+        onShiftTab = _this$props22.onShiftTab,
+        onTab = _this$props22.onTab,
+        isFocused = _this$props22.isFocused,
+        showKeyboardShortcuts = _this$props22.showKeyboardShortcuts,
+        isRTL = _this$props22.isRTL,
+        weekDayFormat = _this$props22.weekDayFormat,
+        dayAriaLabelFormat = _this$props22.dayAriaLabelFormat,
+        verticalHeight = _this$props22.verticalHeight,
+        noBorder = _this$props22.noBorder,
+        transitionDuration = _this$props22.transitionDuration,
+        verticalBorderSpacing = _this$props22.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props22.horizontalMonthPadding;
+    var _this$state8 = this.state,
+        currentMonth = _this$state8.currentMonth,
+        phrases = _this$state8.phrases,
+        visibleDays = _this$state8.visibleDays,
+        disablePrev = _this$state8.disablePrev,
+        disableNext = _this$state8.disableNext;
+    return _react["default"].createElement(_DayPicker["default"], {
+      orientation: orientation,
+      enableOutsideDays: enableOutsideDays,
+      modifiers: visibleDays,
+      numberOfMonths: numberOfMonths,
+      onDayClick: this.onDayClick,
+      onDayMouseEnter: this.onDayMouseEnter,
+      onDayMouseLeave: this.onDayMouseLeave,
+      onPrevMonthClick: this.onPrevMonthClick,
+      onNextMonthClick: this.onNextMonthClick,
+      onMonthChange: this.onMonthChange,
+      onTab: onTab,
+      onShiftTab: onShiftTab,
+      onYearChange: this.onYearChange,
+      onMultiplyScrollableMonths: this.onMultiplyScrollableMonths,
+      monthFormat: monthFormat,
+      renderMonthText: renderMonthText,
+      withPortal: withPortal,
+      hidden: !focusedInput,
+      initialVisibleMonth: function initialVisibleMonth() {
+        return currentMonth;
+      },
+      daySize: daySize,
+      onOutsideClick: onOutsideClick,
+      disablePrev: disablePrev,
+      disableNext: disableNext,
+      navPrev: navPrev,
+      navNext: navNext,
+      noNavButtons: noNavButtons,
+      renderCalendarDay: renderCalendarDay,
+      renderDayContents: renderDayContents,
+      renderCalendarInfo: renderCalendarInfo,
+      renderMonthElement: renderMonthElement,
+      renderKeyboardShortcutsButton: renderKeyboardShortcutsButton,
+      calendarInfoPosition: calendarInfoPosition,
+      firstDayOfWeek: firstDayOfWeek,
+      hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
+      isFocused: isFocused,
+      getFirstFocusableDay: this.getFirstFocusableDay,
+      onBlur: onBlur,
+      showKeyboardShortcuts: showKeyboardShortcuts,
+      phrases: phrases,
+      isRTL: isRTL,
+      weekDayFormat: weekDayFormat,
+      dayAriaLabelFormat: dayAriaLabelFormat,
+      verticalHeight: verticalHeight,
+      verticalBorderSpacing: verticalBorderSpacing,
+      noBorder: noBorder,
+      transitionDuration: transitionDuration,
+      horizontalMonthPadding: horizontalMonthPadding
+    });
+  };
 
   return DayPickerRangeController;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -7174,15 +6518,11 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var ChevronDown = function () {
-  function ChevronDown(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      d: "M967.5 288.5L514.3 740.7c-11 11-21 11-32 0L29.1 288.5c-4-5-6-11-6-16 0-13 10-23 23-23 6 0 11 2 15 7l437.2 436.2 437.2-436.2c4-5 9-7 16-7 6 0 11 2 16 7 9 10.9 9 21 0 32z"
-    }));
-  }
-
-  return ChevronDown;
-}();
+var ChevronDown = function ChevronDown(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    d: "M967.5 288.5L514.3 740.7c-11 11-21 11-32 0L29.1 288.5c-4-5-6-11-6-16 0-13 10-23 23-23 6 0 11 2 15 7l437.2 436.2 437.2-436.2c4-5 9-7 16-7 6 0 11 2 16 7 9 10.9 9 21 0 32z"
+  }));
+};
 
 ChevronDown.defaultProps = {
   focusable: "false",
@@ -7312,25 +6652,11 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -7340,10 +6666,11 @@ var FANG_PATH_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constan
 var FANG_STROKE_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX / 2, ",0 ").concat(_constants.FANG_WIDTH_PX, ",").concat(_constants.FANG_HEIGHT_PX);
 var FANG_PATH_BOTTOM = "M0,0 ".concat(_constants.FANG_WIDTH_PX, ",0 ").concat(_constants.FANG_WIDTH_PX / 2, ",").concat(_constants.FANG_HEIGHT_PX, "z");
 var FANG_STROKE_BOTTOM = "M0,0 ".concat(_constants.FANG_WIDTH_PX / 2, ",").concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX, ",0");
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   placeholder: 'Select Date',
   displayValue: '',
+  ariaLabel: undefined,
   screenReaderMessage: '',
   focused: false,
   disabled: false,
@@ -7355,36 +6682,12 @@ var defaultProps = {
   small: false,
   block: false,
   regular: false,
-  onChange: function () {
-    function onChange() {}
-
-    return onChange;
-  }(),
-  onFocus: function () {
-    function onFocus() {}
-
-    return onFocus;
-  }(),
-  onKeyDownShiftTab: function () {
-    function onKeyDownShiftTab() {}
-
-    return onKeyDownShiftTab;
-  }(),
-  onKeyDownTab: function () {
-    function onKeyDownTab() {}
-
-    return onKeyDownTab;
-  }(),
-  onKeyDownArrowDown: function () {
-    function onKeyDownArrowDown() {}
-
-    return onKeyDownArrowDown;
-  }(),
-  onKeyDownQuestionMark: function () {
-    function onKeyDownQuestionMark() {}
-
-    return onKeyDownQuestionMark;
-  }(),
+  onChange: function onChange() {},
+  onFocus: function onFocus() {},
+  onKeyDownShiftTab: function onKeyDownShiftTab() {},
+  onKeyDownTab: function onKeyDownTab() {},
+  onKeyDownArrowDown: function onKeyDownArrowDown() {},
+  onKeyDownQuestionMark: function onKeyDownQuestionMark() {},
   // accessibility
   isFocused: false
 };
@@ -7392,217 +6695,169 @@ var defaultProps = {
 var DateInput =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DateInput, _ref);
+  _inheritsLoose(DateInput, _ref);
 
-  _createClass(DateInput, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DateInput.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DateInput(props) {
     var _this;
 
-    _classCallCheck(this, DateInput);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DateInput).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.state = {
       dateString: '',
       isTouchDevice: false
     };
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setInputRef = _this.setInputRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
+    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
+    _this.setInputRef = _this.setInputRef.bind(_assertThisInitialized(_this));
     _this.throttledKeyDown = (0, _throttle["default"])(_this.onFinalKeyDown, 300, {
       trailing: false
     });
     return _this;
   }
 
-  _createClass(DateInput, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.setState({
-          isTouchDevice: (0, _isTouchDevice["default"])()
-        });
+  _proto.componentDidMount = function componentDidMount() {
+    this.setState({
+      isTouchDevice: (0, _isTouchDevice["default"])()
+    });
+  };
+
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var dateString = this.state.dateString;
+
+    if (dateString && nextProps.displayValue) {
+      this.setState({
+        dateString: ''
+      });
+    }
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this$props = this.props,
+        focused = _this$props.focused,
+        isFocused = _this$props.isFocused;
+    if (prevProps.focused === focused && prevProps.isFocused === isFocused) return;
+
+    if (focused && isFocused) {
+      this.inputRef.focus();
+    }
+  };
+
+  _proto.onChange = function onChange(e) {
+    var _this$props2 = this.props,
+        onChange = _this$props2.onChange,
+        onKeyDownQuestionMark = _this$props2.onKeyDownQuestionMark;
+    var dateString = e.target.value; // In Safari, onKeyDown does not consistently fire ahead of onChange. As a result, we need to
+    // special case the `?` key so that it always triggers the appropriate callback, instead of
+    // modifying the input value
+
+    if (dateString[dateString.length - 1] === '?') {
+      onKeyDownQuestionMark(e);
+    } else {
+      this.setState({
+        dateString: dateString
+      }, function () {
+        return onChange(dateString);
+      });
+    }
+  };
+
+  _proto.onKeyDown = function onKeyDown(e) {
+    e.stopPropagation();
+
+    if (!_constants.MODIFIER_KEY_NAMES.has(e.key)) {
+      this.throttledKeyDown(e);
+    }
+  };
+
+  _proto.onFinalKeyDown = function onFinalKeyDown(e) {
+    var _this$props3 = this.props,
+        onKeyDownShiftTab = _this$props3.onKeyDownShiftTab,
+        onKeyDownTab = _this$props3.onKeyDownTab,
+        onKeyDownArrowDown = _this$props3.onKeyDownArrowDown,
+        onKeyDownQuestionMark = _this$props3.onKeyDownQuestionMark;
+    var key = e.key;
+
+    if (key === 'Tab') {
+      if (e.shiftKey) {
+        onKeyDownShiftTab(e);
+      } else {
+        onKeyDownTab(e);
       }
+    } else if (key === 'ArrowDown') {
+      onKeyDownArrowDown(e);
+    } else if (key === '?') {
+      e.preventDefault();
+      onKeyDownQuestionMark(e);
+    }
+  };
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var dateString = this.state.dateString;
+  _proto.setInputRef = function setInputRef(ref) {
+    this.inputRef = ref;
+  };
 
-        if (dateString && nextProps.displayValue) {
-          this.setState({
-            dateString: ''
-          });
-        }
-      }
-
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var _this$props = this.props,
-            focused = _this$props.focused,
-            isFocused = _this$props.isFocused;
-        if (prevProps.focused === focused && prevProps.isFocused === isFocused) return;
-
-        if (focused && isFocused) {
-          this.inputRef.focus();
-        }
-      }
-
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "onChange",
-    value: function () {
-      function onChange(e) {
-        var _this$props2 = this.props,
-            onChange = _this$props2.onChange,
-            onKeyDownQuestionMark = _this$props2.onKeyDownQuestionMark;
-        var dateString = e.target.value; // In Safari, onKeyDown does not consistently fire ahead of onChange. As a result, we need to
-        // special case the `?` key so that it always triggers the appropriate callback, instead of
-        // modifying the input value
-
-        if (dateString[dateString.length - 1] === '?') {
-          onKeyDownQuestionMark(e);
-        } else {
-          this.setState({
-            dateString: dateString
-          }, function () {
-            return onChange(dateString);
-          });
-        }
-      }
-
-      return onChange;
-    }()
-  }, {
-    key: "onKeyDown",
-    value: function () {
-      function onKeyDown(e) {
-        e.stopPropagation();
-
-        if (!_constants.MODIFIER_KEY_NAMES.has(e.key)) {
-          this.throttledKeyDown(e);
-        }
-      }
-
-      return onKeyDown;
-    }()
-  }, {
-    key: "onFinalKeyDown",
-    value: function () {
-      function onFinalKeyDown(e) {
-        var _this$props3 = this.props,
-            onKeyDownShiftTab = _this$props3.onKeyDownShiftTab,
-            onKeyDownTab = _this$props3.onKeyDownTab,
-            onKeyDownArrowDown = _this$props3.onKeyDownArrowDown,
-            onKeyDownQuestionMark = _this$props3.onKeyDownQuestionMark;
-        var key = e.key;
-
-        if (key === 'Tab') {
-          if (e.shiftKey) {
-            onKeyDownShiftTab(e);
-          } else {
-            onKeyDownTab(e);
-          }
-        } else if (key === 'ArrowDown') {
-          onKeyDownArrowDown(e);
-        } else if (key === '?') {
-          e.preventDefault();
-          onKeyDownQuestionMark(e);
-        }
-      }
-
-      return onFinalKeyDown;
-    }()
-  }, {
-    key: "setInputRef",
-    value: function () {
-      function setInputRef(ref) {
-        this.inputRef = ref;
-      }
-
-      return setInputRef;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$state = this.state,
-            dateString = _this$state.dateString,
-            isTouch = _this$state.isTouchDevice;
-        var _this$props4 = this.props,
-            id = _this$props4.id,
-            placeholder = _this$props4.placeholder,
-            displayValue = _this$props4.displayValue,
-            screenReaderMessage = _this$props4.screenReaderMessage,
-            focused = _this$props4.focused,
-            showCaret = _this$props4.showCaret,
-            onFocus = _this$props4.onFocus,
-            disabled = _this$props4.disabled,
-            required = _this$props4.required,
-            readOnly = _this$props4.readOnly,
-            openDirection = _this$props4.openDirection,
-            verticalSpacing = _this$props4.verticalSpacing,
-            small = _this$props4.small,
-            regular = _this$props4.regular,
-            block = _this$props4.block,
-            styles = _this$props4.styles,
-            reactDates = _this$props4.theme.reactDates;
-        var value = dateString || displayValue || '';
-        var screenReaderMessageId = "DateInput__screen-reader-message-".concat(id);
-        var withFang = showCaret && focused;
-        var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
-        return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.DateInput, small && styles.DateInput__small, block && styles.DateInput__block, withFang && styles.DateInput__withFang, disabled && styles.DateInput__disabled, withFang && openDirection === _constants.OPEN_DOWN && styles.DateInput__openDown, withFang && openDirection === _constants.OPEN_UP && styles.DateInput__openUp), _react["default"].createElement("input", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_input, small && styles.DateInput_input__small, regular && styles.DateInput_input__regular, readOnly && styles.DateInput_input__readOnly, focused && styles.DateInput_input__focused, disabled && styles.DateInput_input__disabled), {
-          "aria-label": placeholder,
-          type: "text",
-          id: id,
-          name: id,
-          ref: this.setInputRef,
-          value: value,
-          onChange: this.onChange,
-          onKeyDown: this.onKeyDown,
-          onFocus: onFocus,
-          placeholder: placeholder,
-          autoComplete: "off",
-          disabled: disabled,
-          readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
-          required: required,
-          "aria-describedby": screenReaderMessage && screenReaderMessageId
-        })), withFang && _react["default"].createElement("svg", _extends({
-          role: "presentation",
-          focusable: "false"
-        }, (0, _reactWithStyles.css)(styles.DateInput_fang, openDirection === _constants.OPEN_DOWN && {
-          top: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
-        }, openDirection === _constants.OPEN_UP && {
-          bottom: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
-        })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangShape), {
-          d: openDirection === _constants.OPEN_DOWN ? FANG_PATH_TOP : FANG_PATH_BOTTOM
-        })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangStroke), {
-          d: openDirection === _constants.OPEN_DOWN ? FANG_STROKE_TOP : FANG_STROKE_BOTTOM
-        }))), screenReaderMessage && _react["default"].createElement("p", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_screenReaderMessage), {
-          id: screenReaderMessageId
-        }), screenReaderMessage));
-      }
-
-      return render;
-    }()
-  }]);
+  _proto.render = function render() {
+    var _this$state = this.state,
+        dateString = _this$state.dateString,
+        isTouch = _this$state.isTouchDevice;
+    var _this$props4 = this.props,
+        id = _this$props4.id,
+        placeholder = _this$props4.placeholder,
+        ariaLabel = _this$props4.ariaLabel,
+        displayValue = _this$props4.displayValue,
+        screenReaderMessage = _this$props4.screenReaderMessage,
+        focused = _this$props4.focused,
+        showCaret = _this$props4.showCaret,
+        onFocus = _this$props4.onFocus,
+        disabled = _this$props4.disabled,
+        required = _this$props4.required,
+        readOnly = _this$props4.readOnly,
+        openDirection = _this$props4.openDirection,
+        verticalSpacing = _this$props4.verticalSpacing,
+        small = _this$props4.small,
+        regular = _this$props4.regular,
+        block = _this$props4.block,
+        styles = _this$props4.styles,
+        reactDates = _this$props4.theme.reactDates;
+    var value = dateString || displayValue || '';
+    var screenReaderMessageId = "DateInput__screen-reader-message-".concat(id);
+    var withFang = showCaret && focused;
+    var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
+    return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.DateInput, small && styles.DateInput__small, block && styles.DateInput__block, withFang && styles.DateInput__withFang, disabled && styles.DateInput__disabled, withFang && openDirection === _constants.OPEN_DOWN && styles.DateInput__openDown, withFang && openDirection === _constants.OPEN_UP && styles.DateInput__openUp), _react["default"].createElement("input", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_input, small && styles.DateInput_input__small, regular && styles.DateInput_input__regular, readOnly && styles.DateInput_input__readOnly, focused && styles.DateInput_input__focused, disabled && styles.DateInput_input__disabled), {
+      "aria-label": ariaLabel === undefined ? placeholder : ariaLabel,
+      type: "text",
+      id: id,
+      name: id,
+      ref: this.setInputRef,
+      value: value,
+      onChange: this.onChange,
+      onKeyDown: this.onKeyDown,
+      onFocus: onFocus,
+      placeholder: placeholder,
+      autoComplete: "off",
+      disabled: disabled,
+      readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
+      required: required,
+      "aria-describedby": screenReaderMessage && screenReaderMessageId
+    })), withFang && _react["default"].createElement("svg", _extends({
+      role: "presentation",
+      focusable: "false"
+    }, (0, _reactWithStyles.css)(styles.DateInput_fang, openDirection === _constants.OPEN_DOWN && {
+      top: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
+    }, openDirection === _constants.OPEN_UP && {
+      bottom: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
+    })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangShape), {
+      d: openDirection === _constants.OPEN_DOWN ? FANG_PATH_TOP : FANG_PATH_BOTTOM
+    })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangStroke), {
+      d: openDirection === _constants.OPEN_DOWN ? FANG_STROKE_TOP : FANG_STROKE_BOTTOM
+    }))), screenReaderMessage && _react["default"].createElement("p", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_screenReaderMessage), {
+      id: screenReaderMessageId
+    }), screenReaderMessage));
+  };
 
   return DateInput;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -8210,7 +7465,8 @@ var DISPLAY_FORMAT = 'L';
 exports.DISPLAY_FORMAT = DISPLAY_FORMAT;
 var ISO_FORMAT = 'YYYY-MM-DD';
 exports.ISO_FORMAT = ISO_FORMAT;
-var ISO_MONTH_FORMAT = 'YYYY-MM';
+var ISO_MONTH_FORMAT = 'YYYY-MM'; // TODO delete this line of dead code on next breaking change
+
 exports.ISO_MONTH_FORMAT = ISO_MONTH_FORMAT;
 var START_DATE = 'startDate';
 exports.START_DATE = START_DATE;
@@ -9303,25 +8559,11 @@ var _DefaultTheme = _interopRequireDefault(__webpack_require__("xOhs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -9340,8 +8582,8 @@ function getStyles(stylesObj, isHovered) {
   return stylesObj;
 }
 
-var DayStyleShape =  false ? undefined : {};
-var propTypes =  false ? undefined : {};
+var DayStyleShape =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};;
 var defaultStyles = {
   border: "1px solid ".concat(color.core.borderLight),
   color: color.text,
@@ -9442,21 +8684,9 @@ var defaultProps = {
   modifiers: new Set(),
   isFocused: false,
   tabIndex: -1,
-  onDayClick: function () {
-    function onDayClick() {}
-
-    return onDayClick;
-  }(),
-  onDayMouseEnter: function () {
-    function onDayMouseEnter() {}
-
-    return onDayMouseEnter;
-  }(),
-  onDayMouseLeave: function () {
-    function onDayMouseLeave() {}
-
-    return onDayMouseLeave;
-  }(),
+  onDayClick: function onDayClick() {},
+  onDayMouseEnter: function onDayMouseEnter() {},
+  onDayMouseLeave: function onDayMouseLeave() {},
   renderDayContents: null,
   ariaLabelFormat: 'dddd, LL',
   // style defaults
@@ -9485,207 +8715,141 @@ var defaultProps = {
 var CustomizableCalendarDay =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(CustomizableCalendarDay, _ref);
+  _inheritsLoose(CustomizableCalendarDay, _ref);
 
-  _createClass(CustomizableCalendarDay, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = CustomizableCalendarDay.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function CustomizableCalendarDay() {
-    var _getPrototypeOf2;
-
     var _this;
-
-    _classCallCheck(this, CustomizableCalendarDay);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(CustomizableCalendarDay)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _ref.call.apply(_ref, [this].concat(args)) || this;
     _this.state = {
       isHovered: false
     };
-    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(CustomizableCalendarDay, [{
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var _this$props = this.props,
-            isFocused = _this$props.isFocused,
-            tabIndex = _this$props.tabIndex;
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this$props = this.props,
+        isFocused = _this$props.isFocused,
+        tabIndex = _this$props.tabIndex;
 
-        if (tabIndex === 0) {
-          if (isFocused || tabIndex !== prevProps.tabIndex) {
-            this.buttonRef.focus();
-          }
-        }
+    if (tabIndex === 0) {
+      if (isFocused || tabIndex !== prevProps.tabIndex) {
+        this.buttonRef.focus();
       }
+    }
+  };
 
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "onDayClick",
-    value: function () {
-      function onDayClick(day, e) {
-        var onDayClick = this.props.onDayClick;
-        onDayClick(day, e);
-      }
+  _proto.onDayClick = function onDayClick(day, e) {
+    var onDayClick = this.props.onDayClick;
+    onDayClick(day, e);
+  };
 
-      return onDayClick;
-    }()
-  }, {
-    key: "onDayMouseEnter",
-    value: function () {
-      function onDayMouseEnter(day, e) {
-        var onDayMouseEnter = this.props.onDayMouseEnter;
-        this.setState({
-          isHovered: true
-        });
-        onDayMouseEnter(day, e);
-      }
+  _proto.onDayMouseEnter = function onDayMouseEnter(day, e) {
+    var onDayMouseEnter = this.props.onDayMouseEnter;
+    this.setState({
+      isHovered: true
+    });
+    onDayMouseEnter(day, e);
+  };
 
-      return onDayMouseEnter;
-    }()
-  }, {
-    key: "onDayMouseLeave",
-    value: function () {
-      function onDayMouseLeave(day, e) {
-        var onDayMouseLeave = this.props.onDayMouseLeave;
-        this.setState({
-          isHovered: false
-        });
-        onDayMouseLeave(day, e);
-      }
+  _proto.onDayMouseLeave = function onDayMouseLeave(day, e) {
+    var onDayMouseLeave = this.props.onDayMouseLeave;
+    this.setState({
+      isHovered: false
+    });
+    onDayMouseLeave(day, e);
+  };
 
-      return onDayMouseLeave;
-    }()
-  }, {
-    key: "onKeyDown",
-    value: function () {
-      function onKeyDown(day, e) {
-        var onDayClick = this.props.onDayClick;
-        var key = e.key;
+  _proto.onKeyDown = function onKeyDown(day, e) {
+    var onDayClick = this.props.onDayClick;
+    var key = e.key;
 
-        if (key === 'Enter' || key === ' ') {
-          onDayClick(day, e);
-        }
-      }
+    if (key === 'Enter' || key === ' ') {
+      onDayClick(day, e);
+    }
+  };
 
-      return onKeyDown;
-    }()
-  }, {
-    key: "setButtonRef",
-    value: function () {
-      function setButtonRef(ref) {
-        this.buttonRef = ref;
-      }
+  _proto.setButtonRef = function setButtonRef(ref) {
+    this.buttonRef = ref;
+  };
 
-      return setButtonRef;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this2 = this;
+  _proto.render = function render() {
+    var _this2 = this;
 
-        var _this$props2 = this.props,
-            day = _this$props2.day,
-            ariaLabelFormat = _this$props2.ariaLabelFormat,
-            daySize = _this$props2.daySize,
-            isOutsideDay = _this$props2.isOutsideDay,
-            modifiers = _this$props2.modifiers,
-            tabIndex = _this$props2.tabIndex,
-            renderDayContents = _this$props2.renderDayContents,
-            styles = _this$props2.styles,
-            phrases = _this$props2.phrases,
-            defaultStylesWithHover = _this$props2.defaultStyles,
-            outsideStylesWithHover = _this$props2.outsideStyles,
-            todayStylesWithHover = _this$props2.todayStyles,
-            firstDayOfWeekStylesWithHover = _this$props2.firstDayOfWeekStyles,
-            lastDayOfWeekStylesWithHover = _this$props2.lastDayOfWeekStyles,
-            highlightedCalendarStylesWithHover = _this$props2.highlightedCalendarStyles,
-            blockedMinNightsStylesWithHover = _this$props2.blockedMinNightsStyles,
-            blockedCalendarStylesWithHover = _this$props2.blockedCalendarStyles,
-            blockedOutOfRangeStylesWithHover = _this$props2.blockedOutOfRangeStyles,
-            hoveredSpanStylesWithHover = _this$props2.hoveredSpanStyles,
-            selectedSpanStylesWithHover = _this$props2.selectedSpanStyles,
-            lastInRangeStylesWithHover = _this$props2.lastInRangeStyles,
-            selectedStylesWithHover = _this$props2.selectedStyles,
-            selectedStartStylesWithHover = _this$props2.selectedStartStyles,
-            selectedEndStylesWithHover = _this$props2.selectedEndStyles,
-            afterHoveredStartStylesWithHover = _this$props2.afterHoveredStartStyles,
-            hoveredStartFirstPossibleEndStylesWithHover = _this$props2.hoveredStartFirstPossibleEndStyles,
-            hoveredStartBlockedMinNightsStylesWithHover = _this$props2.hoveredStartBlockedMinNightsStyles;
-        var isHovered = this.state.isHovered;
-        if (!day) return _react["default"].createElement("td", null);
+    var _this$props2 = this.props,
+        day = _this$props2.day,
+        ariaLabelFormat = _this$props2.ariaLabelFormat,
+        daySize = _this$props2.daySize,
+        isOutsideDay = _this$props2.isOutsideDay,
+        modifiers = _this$props2.modifiers,
+        tabIndex = _this$props2.tabIndex,
+        renderDayContents = _this$props2.renderDayContents,
+        styles = _this$props2.styles,
+        phrases = _this$props2.phrases,
+        defaultStylesWithHover = _this$props2.defaultStyles,
+        outsideStylesWithHover = _this$props2.outsideStyles,
+        todayStylesWithHover = _this$props2.todayStyles,
+        firstDayOfWeekStylesWithHover = _this$props2.firstDayOfWeekStyles,
+        lastDayOfWeekStylesWithHover = _this$props2.lastDayOfWeekStyles,
+        highlightedCalendarStylesWithHover = _this$props2.highlightedCalendarStyles,
+        blockedMinNightsStylesWithHover = _this$props2.blockedMinNightsStyles,
+        blockedCalendarStylesWithHover = _this$props2.blockedCalendarStyles,
+        blockedOutOfRangeStylesWithHover = _this$props2.blockedOutOfRangeStyles,
+        hoveredSpanStylesWithHover = _this$props2.hoveredSpanStyles,
+        selectedSpanStylesWithHover = _this$props2.selectedSpanStyles,
+        lastInRangeStylesWithHover = _this$props2.lastInRangeStyles,
+        selectedStylesWithHover = _this$props2.selectedStyles,
+        selectedStartStylesWithHover = _this$props2.selectedStartStyles,
+        selectedEndStylesWithHover = _this$props2.selectedEndStyles,
+        afterHoveredStartStylesWithHover = _this$props2.afterHoveredStartStyles,
+        hoveredStartFirstPossibleEndStylesWithHover = _this$props2.hoveredStartFirstPossibleEndStyles,
+        hoveredStartBlockedMinNightsStylesWithHover = _this$props2.hoveredStartBlockedMinNightsStyles;
+    var isHovered = this.state.isHovered;
+    if (!day) return _react["default"].createElement("td", null);
 
-        var _getCalendarDaySettin = (0, _getCalendarDaySettings["default"])(day, ariaLabelFormat, daySize, modifiers, phrases),
-            daySizeStyles = _getCalendarDaySettin.daySizeStyles,
-            useDefaultCursor = _getCalendarDaySettin.useDefaultCursor,
-            selected = _getCalendarDaySettin.selected,
-            hoveredSpan = _getCalendarDaySettin.hoveredSpan,
-            isOutsideRange = _getCalendarDaySettin.isOutsideRange,
-            ariaLabel = _getCalendarDaySettin.ariaLabel;
+    var _getCalendarDaySettin = (0, _getCalendarDaySettings["default"])(day, ariaLabelFormat, daySize, modifiers, phrases),
+        daySizeStyles = _getCalendarDaySettin.daySizeStyles,
+        useDefaultCursor = _getCalendarDaySettin.useDefaultCursor,
+        selected = _getCalendarDaySettin.selected,
+        hoveredSpan = _getCalendarDaySettin.hoveredSpan,
+        isOutsideRange = _getCalendarDaySettin.isOutsideRange,
+        ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered), modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
-          role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
-          ,
-          ref: this.setButtonRef,
-          "aria-disabled": modifiers.has('blocked'),
-          "aria-label": ariaLabel,
-          onMouseEnter: function () {
-            function onMouseEnter(e) {
-              _this2.onDayMouseEnter(day, e);
-            }
-
-            return onMouseEnter;
-          }(),
-          onMouseLeave: function () {
-            function onMouseLeave(e) {
-              _this2.onDayMouseLeave(day, e);
-            }
-
-            return onMouseLeave;
-          }(),
-          onMouseUp: function () {
-            function onMouseUp(e) {
-              e.currentTarget.blur();
-            }
-
-            return onMouseUp;
-          }(),
-          onClick: function () {
-            function onClick(e) {
-              _this2.onDayClick(day, e);
-            }
-
-            return onClick;
-          }(),
-          onKeyDown: function () {
-            function onKeyDown(e) {
-              _this2.onKeyDown(day, e);
-            }
-
-            return onKeyDown;
-          }(),
-          tabIndex: tabIndex
-        }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
-      }
-
-      return render;
-    }()
-  }]);
+    return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered), modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
+      role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
+      ,
+      ref: this.setButtonRef,
+      "aria-disabled": modifiers.has('blocked'),
+      "aria-label": ariaLabel,
+      onMouseEnter: function onMouseEnter(e) {
+        _this2.onDayMouseEnter(day, e);
+      },
+      onMouseLeave: function onMouseLeave(e) {
+        _this2.onDayMouseLeave(day, e);
+      },
+      onMouseUp: function onMouseUp(e) {
+        e.currentTarget.blur();
+      },
+      onClick: function onClick(e) {
+        _this2.onDayClick(day, e);
+      },
+      onKeyDown: function onKeyDown(e) {
+        _this2.onKeyDown(day, e);
+      },
+      tabIndex: tabIndex
+    }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
+  };
 
   return CustomizableCalendarDay;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -9855,10 +9019,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   children: null,
   placeholder: 'Select Date',
+  ariaLabel: undefined,
   displayValue: '',
   screenReaderMessage: '',
   focused: false,
@@ -9879,41 +9044,13 @@ var defaultProps = {
   small: false,
   regular: false,
   verticalSpacing: undefined,
-  onChange: function () {
-    function onChange() {}
-
-    return onChange;
-  }(),
-  onClearDate: function () {
-    function onClearDate() {}
-
-    return onClearDate;
-  }(),
-  onFocus: function () {
-    function onFocus() {}
-
-    return onFocus;
-  }(),
-  onKeyDownShiftTab: function () {
-    function onKeyDownShiftTab() {}
-
-    return onKeyDownShiftTab;
-  }(),
-  onKeyDownTab: function () {
-    function onKeyDownTab() {}
-
-    return onKeyDownTab;
-  }(),
-  onKeyDownArrowDown: function () {
-    function onKeyDownArrowDown() {}
-
-    return onKeyDownArrowDown;
-  }(),
-  onKeyDownQuestionMark: function () {
-    function onKeyDownQuestionMark() {}
-
-    return onKeyDownQuestionMark;
-  }(),
+  onChange: function onChange() {},
+  onClearDate: function onClearDate() {},
+  onFocus: function onFocus() {},
+  onKeyDownShiftTab: function onKeyDownShiftTab() {},
+  onKeyDownTab: function onKeyDownTab() {},
+  onKeyDownArrowDown: function onKeyDownArrowDown() {},
+  onKeyDownQuestionMark: function onKeyDownQuestionMark() {},
   // i18n
   phrases: _defaultPhrases.SingleDatePickerInputPhrases
 };
@@ -9922,6 +9059,7 @@ function SingleDatePickerInput(_ref) {
   var id = _ref.id,
       children = _ref.children,
       placeholder = _ref.placeholder,
+      ariaLabel = _ref.ariaLabel,
       displayValue = _ref.displayValue,
       focused = _ref.focused,
       isFocused = _ref.isFocused,
@@ -9967,8 +9105,8 @@ function SingleDatePickerInput(_ref) {
 
   return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.SingleDatePickerInput, disabled && styles.SingleDatePickerInput__disabled, isRTL && styles.SingleDatePickerInput__rtl, !noBorder && styles.SingleDatePickerInput__withBorder, block && styles.SingleDatePickerInput__block, showClearDate && styles.SingleDatePickerInput__showClearDate), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
     id: id,
-    placeholder: placeholder // also used as label
-    ,
+    placeholder: placeholder,
+    ariaLabel: ariaLabel,
     displayValue: displayValue,
     screenReaderMessage: screenReaderText,
     focused: focused,
@@ -10179,16 +9317,48 @@ var _isBeforeDay = _interopRequireDefault(__webpack_require__("h6xH"));
 
 var _isAfterDay = _interopRequireDefault(__webpack_require__("Nho6"));
 
+var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var startCacheOutsideDays = new Map();
+var endCacheOutsideDays = new Map();
+var startCacheInsideDays = new Map();
+var endCacheInsideDays = new Map();
+
 function isDayVisible(day, month, numberOfMonths, enableOutsideDays) {
-  if (!_moment["default"].isMoment(day)) return false;
-  var firstDayOfFirstMonth = month.clone().startOf('month');
-  if (enableOutsideDays) firstDayOfFirstMonth = firstDayOfFirstMonth.startOf('week');
-  if ((0, _isBeforeDay["default"])(day, firstDayOfFirstMonth)) return false;
-  var lastDayOfLastMonth = month.clone().add(numberOfMonths - 1, 'months').endOf('month');
-  if (enableOutsideDays) lastDayOfLastMonth = lastDayOfLastMonth.endOf('week');
-  return !(0, _isAfterDay["default"])(day, lastDayOfLastMonth);
+  if (!_moment["default"].isMoment(day)) return false; // Cloning is a little expensive, so we want to do it as little as possible.
+
+  var startKey = (0, _toISOMonthString["default"])(month); // eslint-disable-next-line prefer-template
+
+  var endKey = startKey + '+' + numberOfMonths;
+
+  if (enableOutsideDays) {
+    if (!startCacheOutsideDays.has(startKey)) {
+      startCacheOutsideDays.set(startKey, month.clone().startOf('month').startOf('week'));
+    }
+
+    if ((0, _isBeforeDay["default"])(day, startCacheOutsideDays.get(startKey))) return false;
+
+    if (!endCacheOutsideDays.has(endKey)) {
+      endCacheOutsideDays.set(endKey, month.clone().endOf('week').add(numberOfMonths - 1, 'months').endOf('month').endOf('week'));
+    }
+
+    return !(0, _isAfterDay["default"])(day, endCacheOutsideDays.get(endKey));
+  } // !enableOutsideDays
+
+
+  if (!startCacheInsideDays.has(startKey)) {
+    startCacheInsideDays.set(startKey, month.clone().startOf('month'));
+  }
+
+  if ((0, _isBeforeDay["default"])(day, startCacheInsideDays.get(startKey))) return false;
+
+  if (!endCacheInsideDays.has(endKey)) {
+    endCacheInsideDays.set(endKey, month.clone().add(numberOfMonths - 1, 'months').endOf('month'));
+  }
+
+  return !(0, _isAfterDay["default"])(day, endCacheInsideDays.get(endKey));
 }
 
 /***/ }),
@@ -10220,28 +9390,24 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-var _default = (0, _airbnbPropTypes.and)([_propTypes["default"].instanceOf(Set), function () {
-  function modifiers(props, propName) {
-    for (var _len = arguments.length, rest = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      rest[_key - 2] = arguments[_key];
-    }
-
-    var propValue = props[propName];
-    var firstError;
-
-    _toConsumableArray(propValue).some(function (v, i) {
-      var _PropTypes$string;
-
-      var fakePropName = "".concat(propName, ": index ").concat(i);
-      firstError = (_PropTypes$string = _propTypes["default"].string).isRequired.apply(_PropTypes$string, [_defineProperty({}, fakePropName, v), fakePropName].concat(rest));
-      return firstError != null;
-    });
-
-    return firstError == null ? null : firstError;
+var _default = (0, _airbnbPropTypes.and)([_propTypes["default"].instanceOf(Set), function modifiers(props, propName) {
+  for (var _len = arguments.length, rest = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    rest[_key - 2] = arguments[_key];
   }
 
-  return modifiers;
-}()], 'Modifiers (Set of Strings)');
+  var propValue = props[propName];
+  var firstError;
+
+  _toConsumableArray(propValue).some(function (v, i) {
+    var _PropTypes$string;
+
+    var fakePropName = "".concat(propName, ": index ").concat(i);
+    firstError = (_PropTypes$string = _propTypes["default"].string).isRequired.apply(_PropTypes$string, [_defineProperty({}, fakePropName, v), fakePropName].concat(rest));
+    return firstError != null;
+  });
+
+  return firstError == null ? null : firstError;
+}], 'Modifiers (Set of Strings)');
 
 exports["default"] = _default;
 
@@ -10344,15 +9510,11 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var CalendarIcon = function () {
-  function CalendarIcon(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      d: "M107.2 1392.9h241.1v-241.1H107.2v241.1zm294.7 0h267.9v-241.1H401.9v241.1zm-294.7-294.7h241.1V830.4H107.2v267.8zm294.7 0h267.9V830.4H401.9v267.8zM107.2 776.8h241.1V535.7H107.2v241.1zm616.2 616.1h267.9v-241.1H723.4v241.1zM401.9 776.8h267.9V535.7H401.9v241.1zm642.9 616.1H1286v-241.1h-241.1v241.1zm-321.4-294.7h267.9V830.4H723.4v267.8zM428.7 375V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.3-5.3 8-11.5 8-18.8zm616.1 723.2H1286V830.4h-241.1v267.8zM723.4 776.8h267.9V535.7H723.4v241.1zm321.4 0H1286V535.7h-241.1v241.1zm26.8-401.8V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.4-5.3 8-11.5 8-18.8zm321.5-53.6v1071.4c0 29-10.6 54.1-31.8 75.3-21.2 21.2-46.3 31.8-75.3 31.8H107.2c-29 0-54.1-10.6-75.3-31.8C10.6 1447 0 1421.9 0 1392.9V321.4c0-29 10.6-54.1 31.8-75.3s46.3-31.8 75.3-31.8h107.2v-80.4c0-36.8 13.1-68.4 39.3-94.6S311.4 0 348.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3 26.2 26.2 39.3 57.8 39.3 94.6v80.4h321.5v-80.4c0-36.8 13.1-68.4 39.3-94.6C922.9 13.1 954.4 0 991.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3s39.3 57.8 39.3 94.6v80.4H1286c29 0 54.1 10.6 75.3 31.8 21.2 21.2 31.8 46.3 31.8 75.3z"
-    }));
-  }
-
-  return CalendarIcon;
-}();
+var CalendarIcon = function CalendarIcon(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    d: "M107.2 1392.9h241.1v-241.1H107.2v241.1zm294.7 0h267.9v-241.1H401.9v241.1zm-294.7-294.7h241.1V830.4H107.2v267.8zm294.7 0h267.9V830.4H401.9v267.8zM107.2 776.8h241.1V535.7H107.2v241.1zm616.2 616.1h267.9v-241.1H723.4v241.1zM401.9 776.8h267.9V535.7H401.9v241.1zm642.9 616.1H1286v-241.1h-241.1v241.1zm-321.4-294.7h267.9V830.4H723.4v267.8zM428.7 375V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.3-5.3 8-11.5 8-18.8zm616.1 723.2H1286V830.4h-241.1v267.8zM723.4 776.8h267.9V535.7H723.4v241.1zm321.4 0H1286V535.7h-241.1v241.1zm26.8-401.8V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.4-5.3 8-11.5 8-18.8zm321.5-53.6v1071.4c0 29-10.6 54.1-31.8 75.3-21.2 21.2-46.3 31.8-75.3 31.8H107.2c-29 0-54.1-10.6-75.3-31.8C10.6 1447 0 1421.9 0 1392.9V321.4c0-29 10.6-54.1 31.8-75.3s46.3-31.8 75.3-31.8h107.2v-80.4c0-36.8 13.1-68.4 39.3-94.6S311.4 0 348.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3 26.2 26.2 39.3 57.8 39.3 94.6v80.4h321.5v-80.4c0-36.8 13.1-68.4 39.3-94.6C922.9 13.1 954.4 0 991.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3s39.3 57.8 39.3 94.6v80.4H1286c29 0 54.1 10.6 75.3 31.8 21.2 21.2 31.8 46.3 31.8 75.3z"
+  }));
+};
 
 CalendarIcon.defaultProps = {
   focusable: "false",
@@ -10453,31 +9615,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   day: (0, _moment["default"])(),
   daySize: _constants.DAY_SIZE,
@@ -10485,21 +9633,9 @@ var defaultProps = {
   modifiers: new Set(),
   isFocused: false,
   tabIndex: -1,
-  onDayClick: function () {
-    function onDayClick() {}
-
-    return onDayClick;
-  }(),
-  onDayMouseEnter: function () {
-    function onDayMouseEnter() {}
-
-    return onDayMouseEnter;
-  }(),
-  onDayMouseLeave: function () {
-    function onDayMouseLeave() {}
-
-    return onDayMouseLeave;
-  }(),
+  onDayClick: function onDayClick() {},
+  onDayMouseEnter: function onDayMouseEnter() {},
+  onDayMouseLeave: function onDayMouseLeave() {},
   renderDayContents: null,
   ariaLabelFormat: 'dddd, LL',
   // internationalization
@@ -10509,179 +9645,113 @@ var defaultProps = {
 var CalendarDay =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(CalendarDay, _ref);
+  _inheritsLoose(CalendarDay, _ref);
 
-  _createClass(CalendarDay, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = CalendarDay.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function CalendarDay() {
-    var _getPrototypeOf2;
-
     var _this;
-
-    _classCallCheck(this, CalendarDay);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(CalendarDay)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this = _ref.call.apply(_ref, [this].concat(args)) || this;
+    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(CalendarDay, [{
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var _this$props = this.props,
-            isFocused = _this$props.isFocused,
-            tabIndex = _this$props.tabIndex;
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this$props = this.props,
+        isFocused = _this$props.isFocused,
+        tabIndex = _this$props.tabIndex;
 
-        if (tabIndex === 0) {
-          if (isFocused || tabIndex !== prevProps.tabIndex) {
-            this.buttonRef.focus();
-          }
-        }
+    if (tabIndex === 0) {
+      if (isFocused || tabIndex !== prevProps.tabIndex) {
+        this.buttonRef.focus();
       }
+    }
+  };
 
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "onDayClick",
-    value: function () {
-      function onDayClick(day, e) {
-        var onDayClick = this.props.onDayClick;
-        onDayClick(day, e);
-      }
+  _proto.onDayClick = function onDayClick(day, e) {
+    var onDayClick = this.props.onDayClick;
+    onDayClick(day, e);
+  };
 
-      return onDayClick;
-    }()
-  }, {
-    key: "onDayMouseEnter",
-    value: function () {
-      function onDayMouseEnter(day, e) {
-        var onDayMouseEnter = this.props.onDayMouseEnter;
-        onDayMouseEnter(day, e);
-      }
+  _proto.onDayMouseEnter = function onDayMouseEnter(day, e) {
+    var onDayMouseEnter = this.props.onDayMouseEnter;
+    onDayMouseEnter(day, e);
+  };
 
-      return onDayMouseEnter;
-    }()
-  }, {
-    key: "onDayMouseLeave",
-    value: function () {
-      function onDayMouseLeave(day, e) {
-        var onDayMouseLeave = this.props.onDayMouseLeave;
-        onDayMouseLeave(day, e);
-      }
+  _proto.onDayMouseLeave = function onDayMouseLeave(day, e) {
+    var onDayMouseLeave = this.props.onDayMouseLeave;
+    onDayMouseLeave(day, e);
+  };
 
-      return onDayMouseLeave;
-    }()
-  }, {
-    key: "onKeyDown",
-    value: function () {
-      function onKeyDown(day, e) {
-        var onDayClick = this.props.onDayClick;
-        var key = e.key;
+  _proto.onKeyDown = function onKeyDown(day, e) {
+    var onDayClick = this.props.onDayClick;
+    var key = e.key;
 
-        if (key === 'Enter' || key === ' ') {
-          onDayClick(day, e);
-        }
-      }
+    if (key === 'Enter' || key === ' ') {
+      onDayClick(day, e);
+    }
+  };
 
-      return onKeyDown;
-    }()
-  }, {
-    key: "setButtonRef",
-    value: function () {
-      function setButtonRef(ref) {
-        this.buttonRef = ref;
-      }
+  _proto.setButtonRef = function setButtonRef(ref) {
+    this.buttonRef = ref;
+  };
 
-      return setButtonRef;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this2 = this;
+  _proto.render = function render() {
+    var _this2 = this;
 
-        var _this$props2 = this.props,
-            day = _this$props2.day,
-            ariaLabelFormat = _this$props2.ariaLabelFormat,
-            daySize = _this$props2.daySize,
-            isOutsideDay = _this$props2.isOutsideDay,
-            modifiers = _this$props2.modifiers,
-            renderDayContents = _this$props2.renderDayContents,
-            tabIndex = _this$props2.tabIndex,
-            styles = _this$props2.styles,
-            phrases = _this$props2.phrases;
-        if (!day) return _react["default"].createElement("td", null);
+    var _this$props2 = this.props,
+        day = _this$props2.day,
+        ariaLabelFormat = _this$props2.ariaLabelFormat,
+        daySize = _this$props2.daySize,
+        isOutsideDay = _this$props2.isOutsideDay,
+        modifiers = _this$props2.modifiers,
+        renderDayContents = _this$props2.renderDayContents,
+        tabIndex = _this$props2.tabIndex,
+        styles = _this$props2.styles,
+        phrases = _this$props2.phrases;
+    if (!day) return _react["default"].createElement("td", null);
 
-        var _getCalendarDaySettin = (0, _getCalendarDaySettings["default"])(day, ariaLabelFormat, daySize, modifiers, phrases),
-            daySizeStyles = _getCalendarDaySettin.daySizeStyles,
-            useDefaultCursor = _getCalendarDaySettin.useDefaultCursor,
-            selected = _getCalendarDaySettin.selected,
-            hoveredSpan = _getCalendarDaySettin.hoveredSpan,
-            isOutsideRange = _getCalendarDaySettin.isOutsideRange,
-            ariaLabel = _getCalendarDaySettin.ariaLabel;
+    var _getCalendarDaySettin = (0, _getCalendarDaySettings["default"])(day, ariaLabelFormat, daySize, modifiers, phrases),
+        daySizeStyles = _getCalendarDaySettin.daySizeStyles,
+        useDefaultCursor = _getCalendarDaySettin.useDefaultCursor,
+        selected = _getCalendarDaySettin.selected,
+        hoveredSpan = _getCalendarDaySettin.hoveredSpan,
+        isOutsideRange = _getCalendarDaySettin.isOutsideRange,
+        ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-        return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('hovered-start-first-possible-end') && styles.CalendarDay__hovered_start_first_possible_end, modifiers.has('hovered-start-blocked-minimum-nights') && styles.CalendarDay__hovered_start_blocked_min_nights, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && !modifiers.has('selected-span') && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
-          role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
-          ,
-          ref: this.setButtonRef,
-          "aria-disabled": modifiers.has('blocked'),
-          "aria-label": ariaLabel,
-          onMouseEnter: function () {
-            function onMouseEnter(e) {
-              _this2.onDayMouseEnter(day, e);
-            }
-
-            return onMouseEnter;
-          }(),
-          onMouseLeave: function () {
-            function onMouseLeave(e) {
-              _this2.onDayMouseLeave(day, e);
-            }
-
-            return onMouseLeave;
-          }(),
-          onMouseUp: function () {
-            function onMouseUp(e) {
-              e.currentTarget.blur();
-            }
-
-            return onMouseUp;
-          }(),
-          onClick: function () {
-            function onClick(e) {
-              _this2.onDayClick(day, e);
-            }
-
-            return onClick;
-          }(),
-          onKeyDown: function () {
-            function onKeyDown(e) {
-              _this2.onKeyDown(day, e);
-            }
-
-            return onKeyDown;
-          }(),
-          tabIndex: tabIndex
-        }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
-      }
-
-      return render;
-    }()
-  }]);
+    return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('hovered-start-first-possible-end') && styles.CalendarDay__hovered_start_first_possible_end, modifiers.has('hovered-start-blocked-minimum-nights') && styles.CalendarDay__hovered_start_blocked_min_nights, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && !modifiers.has('selected-span') && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
+      role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
+      ,
+      ref: this.setButtonRef,
+      "aria-disabled": modifiers.has('blocked'),
+      "aria-label": ariaLabel,
+      onMouseEnter: function onMouseEnter(e) {
+        _this2.onDayMouseEnter(day, e);
+      },
+      onMouseLeave: function onMouseLeave(e) {
+        _this2.onDayMouseLeave(day, e);
+      },
+      onMouseUp: function onMouseUp(e) {
+        e.currentTarget.blur();
+      },
+      onClick: function onClick(e) {
+        _this2.onDayClick(day, e);
+      },
+      onKeyDown: function onKeyDown(e) {
+        _this2.onKeyDown(day, e);
+      },
+      tabIndex: tabIndex
+    }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
+  };
 
   return CalendarDay;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -10923,30 +9993,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var propTypes =  false ? undefined : {};
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   children: null,
   date: null,
   focused: false,
   placeholder: '',
+  ariaLabel: undefined,
   screenReaderMessage: 'Date',
   showClearDate: false,
   showCaret: false,
@@ -10963,35 +10020,15 @@ var defaultProps = {
   verticalSpacing: undefined,
   keepOpenOnDateSelect: false,
   reopenPickerOnClearDate: false,
-  isOutsideRange: function () {
-    function isOutsideRange(day) {
-      return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
-    }
-
-    return isOutsideRange;
-  }(),
-  displayFormat: function () {
-    function displayFormat() {
-      return _moment["default"].localeData().longDateFormat('L');
-    }
-
-    return displayFormat;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
-  onKeyDownArrowDown: function () {
-    function onKeyDownArrowDown() {}
-
-    return onKeyDownArrowDown;
-  }(),
-  onKeyDownQuestionMark: function () {
-    function onKeyDownQuestionMark() {}
-
-    return onKeyDownQuestionMark;
-  }(),
+  isOutsideRange: function isOutsideRange(day) {
+    return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
+  },
+  displayFormat: function displayFormat() {
+    return _moment["default"].localeData().longDateFormat('L');
+  },
+  onClose: function onClose() {},
+  onKeyDownArrowDown: function onKeyDownArrowDown() {},
+  onKeyDownQuestionMark: function onKeyDownQuestionMark() {},
   customInputIcon: null,
   customCloseIcon: null,
   // accessibility
@@ -11004,212 +10041,170 @@ var defaultProps = {
 var SingleDatePickerInputController =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(SingleDatePickerInputController, _ref);
+  _inheritsLoose(SingleDatePickerInputController, _ref);
 
-  _createClass(SingleDatePickerInputController, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = SingleDatePickerInputController.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function SingleDatePickerInputController(props) {
     var _this;
 
-    _classCallCheck(this, SingleDatePickerInputController);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SingleDatePickerInputController).call(this, props));
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.clearDate = _this.clearDate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this = _ref.call(this, props) || this;
+    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
+    _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_this));
+    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_this));
+    _this.clearDate = _this.clearDate.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(SingleDatePickerInputController, [{
-    key: "onChange",
-    value: function () {
-      function onChange(dateString) {
-        var _this$props = this.props,
-            isOutsideRange = _this$props.isOutsideRange,
-            keepOpenOnDateSelect = _this$props.keepOpenOnDateSelect,
-            onDateChange = _this$props.onDateChange,
-            onFocusChange = _this$props.onFocusChange,
-            onClose = _this$props.onClose;
-        var newDate = (0, _toMomentObject["default"])(dateString, this.getDisplayFormat());
-        var isValid = newDate && !isOutsideRange(newDate);
+  _proto.onChange = function onChange(dateString) {
+    var _this$props = this.props,
+        isOutsideRange = _this$props.isOutsideRange,
+        keepOpenOnDateSelect = _this$props.keepOpenOnDateSelect,
+        onDateChange = _this$props.onDateChange,
+        onFocusChange = _this$props.onFocusChange,
+        onClose = _this$props.onClose;
+    var newDate = (0, _toMomentObject["default"])(dateString, this.getDisplayFormat());
+    var isValid = newDate && !isOutsideRange(newDate);
 
-        if (isValid) {
-          onDateChange(newDate);
+    if (isValid) {
+      onDateChange(newDate);
 
-          if (!keepOpenOnDateSelect) {
-            onFocusChange({
-              focused: false
-            });
-            onClose({
-              date: newDate
-            });
-          }
-        } else {
-          onDateChange(null);
-        }
-      }
-
-      return onChange;
-    }()
-  }, {
-    key: "onFocus",
-    value: function () {
-      function onFocus() {
-        var _this$props2 = this.props,
-            onFocusChange = _this$props2.onFocusChange,
-            disabled = _this$props2.disabled;
-
-        if (!disabled) {
-          onFocusChange({
-            focused: true
-          });
-        }
-      }
-
-      return onFocus;
-    }()
-  }, {
-    key: "onClearFocus",
-    value: function () {
-      function onClearFocus() {
-        var _this$props3 = this.props,
-            focused = _this$props3.focused,
-            onFocusChange = _this$props3.onFocusChange,
-            onClose = _this$props3.onClose,
-            date = _this$props3.date;
-        if (!focused) return;
+      if (!keepOpenOnDateSelect) {
         onFocusChange({
           focused: false
         });
         onClose({
-          date: date
+          date: newDate
         });
       }
+    } else {
+      onDateChange(null);
+    }
+  };
 
-      return onClearFocus;
-    }()
-  }, {
-    key: "getDisplayFormat",
-    value: function () {
-      function getDisplayFormat() {
-        var displayFormat = this.props.displayFormat;
-        return typeof displayFormat === 'string' ? displayFormat : displayFormat();
-      }
+  _proto.onFocus = function onFocus() {
+    var _this$props2 = this.props,
+        onFocusChange = _this$props2.onFocusChange,
+        disabled = _this$props2.disabled;
 
-      return getDisplayFormat;
-    }()
-  }, {
-    key: "getDateString",
-    value: function () {
-      function getDateString(date) {
-        var displayFormat = this.getDisplayFormat();
+    if (!disabled) {
+      onFocusChange({
+        focused: true
+      });
+    }
+  };
 
-        if (date && displayFormat) {
-          return date && date.format(displayFormat);
-        }
+  _proto.onClearFocus = function onClearFocus() {
+    var _this$props3 = this.props,
+        focused = _this$props3.focused,
+        onFocusChange = _this$props3.onFocusChange,
+        onClose = _this$props3.onClose,
+        date = _this$props3.date;
+    if (!focused) return;
+    onFocusChange({
+      focused: false
+    });
+    onClose({
+      date: date
+    });
+  };
 
-        return (0, _toLocalizedDateString["default"])(date);
-      }
+  _proto.getDisplayFormat = function getDisplayFormat() {
+    var displayFormat = this.props.displayFormat;
+    return typeof displayFormat === 'string' ? displayFormat : displayFormat();
+  };
 
-      return getDateString;
-    }()
-  }, {
-    key: "clearDate",
-    value: function () {
-      function clearDate() {
-        var _this$props4 = this.props,
-            onDateChange = _this$props4.onDateChange,
-            reopenPickerOnClearDate = _this$props4.reopenPickerOnClearDate,
-            onFocusChange = _this$props4.onFocusChange;
-        onDateChange(null);
+  _proto.getDateString = function getDateString(date) {
+    var displayFormat = this.getDisplayFormat();
 
-        if (reopenPickerOnClearDate) {
-          onFocusChange({
-            focused: true
-          });
-        }
-      }
+    if (date && displayFormat) {
+      return date && date.format(displayFormat);
+    }
 
-      return clearDate;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props5 = this.props,
-            children = _this$props5.children,
-            id = _this$props5.id,
-            placeholder = _this$props5.placeholder,
-            disabled = _this$props5.disabled,
-            focused = _this$props5.focused,
-            isFocused = _this$props5.isFocused,
-            required = _this$props5.required,
-            readOnly = _this$props5.readOnly,
-            openDirection = _this$props5.openDirection,
-            showClearDate = _this$props5.showClearDate,
-            showCaret = _this$props5.showCaret,
-            showDefaultInputIcon = _this$props5.showDefaultInputIcon,
-            inputIconPosition = _this$props5.inputIconPosition,
-            customCloseIcon = _this$props5.customCloseIcon,
-            customInputIcon = _this$props5.customInputIcon,
-            date = _this$props5.date,
-            phrases = _this$props5.phrases,
-            onKeyDownArrowDown = _this$props5.onKeyDownArrowDown,
-            onKeyDownQuestionMark = _this$props5.onKeyDownQuestionMark,
-            screenReaderMessage = _this$props5.screenReaderMessage,
-            isRTL = _this$props5.isRTL,
-            noBorder = _this$props5.noBorder,
-            block = _this$props5.block,
-            small = _this$props5.small,
-            regular = _this$props5.regular,
-            verticalSpacing = _this$props5.verticalSpacing;
-        var displayValue = this.getDateString(date);
-        return _react["default"].createElement(_SingleDatePickerInput["default"], {
-          id: id,
-          placeholder: placeholder,
-          focused: focused,
-          isFocused: isFocused,
-          disabled: disabled,
-          required: required,
-          readOnly: readOnly,
-          openDirection: openDirection,
-          showCaret: showCaret,
-          onClearDate: this.clearDate,
-          showClearDate: showClearDate,
-          showDefaultInputIcon: showDefaultInputIcon,
-          inputIconPosition: inputIconPosition,
-          customCloseIcon: customCloseIcon,
-          customInputIcon: customInputIcon,
-          displayValue: displayValue,
-          onChange: this.onChange,
-          onFocus: this.onFocus,
-          onKeyDownShiftTab: this.onClearFocus,
-          onKeyDownArrowDown: onKeyDownArrowDown,
-          onKeyDownQuestionMark: onKeyDownQuestionMark,
-          screenReaderMessage: screenReaderMessage,
-          phrases: phrases,
-          isRTL: isRTL,
-          noBorder: noBorder,
-          block: block,
-          small: small,
-          regular: regular,
-          verticalSpacing: verticalSpacing
-        }, children);
-      }
+    return (0, _toLocalizedDateString["default"])(date);
+  };
 
-      return render;
-    }()
-  }]);
+  _proto.clearDate = function clearDate() {
+    var _this$props4 = this.props,
+        onDateChange = _this$props4.onDateChange,
+        reopenPickerOnClearDate = _this$props4.reopenPickerOnClearDate,
+        onFocusChange = _this$props4.onFocusChange;
+    onDateChange(null);
+
+    if (reopenPickerOnClearDate) {
+      onFocusChange({
+        focused: true
+      });
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props5 = this.props,
+        children = _this$props5.children,
+        id = _this$props5.id,
+        placeholder = _this$props5.placeholder,
+        ariaLabel = _this$props5.ariaLabel,
+        disabled = _this$props5.disabled,
+        focused = _this$props5.focused,
+        isFocused = _this$props5.isFocused,
+        required = _this$props5.required,
+        readOnly = _this$props5.readOnly,
+        openDirection = _this$props5.openDirection,
+        showClearDate = _this$props5.showClearDate,
+        showCaret = _this$props5.showCaret,
+        showDefaultInputIcon = _this$props5.showDefaultInputIcon,
+        inputIconPosition = _this$props5.inputIconPosition,
+        customCloseIcon = _this$props5.customCloseIcon,
+        customInputIcon = _this$props5.customInputIcon,
+        date = _this$props5.date,
+        phrases = _this$props5.phrases,
+        onKeyDownArrowDown = _this$props5.onKeyDownArrowDown,
+        onKeyDownQuestionMark = _this$props5.onKeyDownQuestionMark,
+        screenReaderMessage = _this$props5.screenReaderMessage,
+        isRTL = _this$props5.isRTL,
+        noBorder = _this$props5.noBorder,
+        block = _this$props5.block,
+        small = _this$props5.small,
+        regular = _this$props5.regular,
+        verticalSpacing = _this$props5.verticalSpacing;
+    var displayValue = this.getDateString(date);
+    return _react["default"].createElement(_SingleDatePickerInput["default"], {
+      id: id,
+      placeholder: placeholder,
+      ariaLabel: ariaLabel,
+      focused: focused,
+      isFocused: isFocused,
+      disabled: disabled,
+      required: required,
+      readOnly: readOnly,
+      openDirection: openDirection,
+      showCaret: showCaret,
+      onClearDate: this.clearDate,
+      showClearDate: showClearDate,
+      showDefaultInputIcon: showDefaultInputIcon,
+      inputIconPosition: inputIconPosition,
+      customCloseIcon: customCloseIcon,
+      customInputIcon: customInputIcon,
+      displayValue: displayValue,
+      onChange: this.onChange,
+      onFocus: this.onFocus,
+      onKeyDownShiftTab: this.onClearFocus,
+      onKeyDownArrowDown: onKeyDownArrowDown,
+      onKeyDownQuestionMark: onKeyDownQuestionMark,
+      screenReaderMessage: screenReaderMessage,
+      phrases: phrases,
+      isRTL: isRTL,
+      noBorder: noBorder,
+      block: block,
+      small: small,
+      regular: regular,
+      verticalSpacing: verticalSpacing
+    }, children);
+  };
 
   return SingleDatePickerInputController;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -11285,8 +10280,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -11297,21 +10290,9 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -11322,26 +10303,18 @@ var PREV_TRANSITION = 'prev';
 var NEXT_TRANSITION = 'next';
 var MONTH_SELECTION_TRANSITION = 'month_selection';
 var YEAR_SELECTION_TRANSITION = 'year_selection';
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   // calendar presentation props
   enableOutsideDays: false,
   numberOfMonths: 2,
   orientation: _constants.HORIZONTAL_ORIENTATION,
   withPortal: false,
-  onOutsideClick: function () {
-    function onOutsideClick() {}
-
-    return onOutsideClick;
-  }(),
+  onOutsideClick: function onOutsideClick() {},
   hidden: false,
-  initialVisibleMonth: function () {
-    function initialVisibleMonth() {
-      return (0, _moment["default"])();
-    }
-
-    return initialVisibleMonth;
-  }(),
+  initialVisibleMonth: function initialVisibleMonth() {
+    return (0, _moment["default"])();
+  },
   firstDayOfWeek: null,
   renderCalendarInfo: null,
   calendarInfoPosition: _constants.INFO_POSITION_BOTTOM,
@@ -11360,31 +10333,11 @@ var defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
-  onMonthChange: function () {
-    function onMonthChange() {}
-
-    return onMonthChange;
-  }(),
-  onYearChange: function () {
-    function onYearChange() {}
-
-    return onYearChange;
-  }(),
-  onMultiplyScrollableMonths: function () {
-    function onMultiplyScrollableMonths() {}
-
-    return onMultiplyScrollableMonths;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
+  onMonthChange: function onMonthChange() {},
+  onYearChange: function onYearChange() {},
+  onMultiplyScrollableMonths: function onMultiplyScrollableMonths() {},
   // month props
   renderMonthText: null,
   renderMonthElement: null,
@@ -11392,40 +10345,16 @@ var defaultProps = {
   modifiers: {},
   renderCalendarDay: undefined,
   renderDayContents: null,
-  onDayClick: function () {
-    function onDayClick() {}
-
-    return onDayClick;
-  }(),
-  onDayMouseEnter: function () {
-    function onDayMouseEnter() {}
-
-    return onDayMouseEnter;
-  }(),
-  onDayMouseLeave: function () {
-    function onDayMouseLeave() {}
-
-    return onDayMouseLeave;
-  }(),
+  onDayClick: function onDayClick() {},
+  onDayMouseEnter: function onDayMouseEnter() {},
+  onDayMouseLeave: function onDayMouseLeave() {},
   // accessibility props
   isFocused: false,
   getFirstFocusableDay: null,
-  onBlur: function () {
-    function onBlur() {}
-
-    return onBlur;
-  }(),
+  onBlur: function onBlur() {},
   showKeyboardShortcuts: false,
-  onTab: function () {
-    function onTab() {}
-
-    return onTab;
-  }(),
-  onShiftTab: function () {
-    function onShiftTab() {}
-
-    return onShiftTab;
-  }(),
+  onTab: function onTab() {},
+  onShiftTab: function onShiftTab() {},
   // internationalization
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
@@ -11437,25 +10366,18 @@ exports.defaultProps = defaultProps;
 var DayPicker =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DayPicker, _ref);
+  _inheritsLoose(DayPicker, _ref);
 
-  _createClass(DayPicker, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DayPicker.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DayPicker(props) {
     var _this;
 
-    _classCallCheck(this, DayPicker);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DayPicker).call(this, props));
+    _this = _ref.call(this, props) || this;
     var currentMonth = props.hidden ? (0, _moment["default"])() : props.initialVisibleMonth();
     var focusedDate = currentMonth.clone().startOf('month');
 
@@ -11475,11 +10397,7 @@ function (_ref) {
       focusedDate: !props.hidden || props.isFocused ? focusedDate : null,
       nextFocusedDate: null,
       showKeyboardShortcuts: props.showKeyboardShortcuts,
-      onKeyboardShortcutsPanelClose: function () {
-        function onKeyboardShortcutsPanelClose() {}
-
-        return onKeyboardShortcutsPanelClose;
-      }(),
+      onKeyboardShortcutsPanelClose: function onKeyboardShortcutsPanelClose() {},
       isTouchDevice: (0, _isTouchDevice["default"])(),
       withMouseInteractions: true,
       calendarInfoWidth: 0,
@@ -11492,1070 +10410,886 @@ function (_ref) {
     _this.calendarMonthGridHeight = 0;
     _this.setCalendarInfoWidthTimeout = null;
     _this.setCalendarMonthGridHeightTimeout = null;
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
     _this.throttledKeyDown = (0, _throttle["default"])(_this.onFinalKeyDown, 200, {
       trailing: false
     });
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onPrevMonthTransition = _this.onPrevMonthTransition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onNextMonthTransition = _this.onNextMonthTransition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.multiplyScrollableMonths = _this.multiplyScrollableMonths.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.updateStateAfterMonthTransition = _this.updateStateAfterMonthTransition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.openKeyboardShortcutsPanel = _this.openKeyboardShortcutsPanel.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.closeKeyboardShortcutsPanel = _this.closeKeyboardShortcutsPanel.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setCalendarInfoRef = _this.setCalendarInfoRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setTransitionContainerRef = _this.setTransitionContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
+    _this.onPrevMonthTransition = _this.onPrevMonthTransition.bind(_assertThisInitialized(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
+    _this.onNextMonthTransition = _this.onNextMonthTransition.bind(_assertThisInitialized(_this));
+    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
+    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
+    _this.multiplyScrollableMonths = _this.multiplyScrollableMonths.bind(_assertThisInitialized(_this));
+    _this.updateStateAfterMonthTransition = _this.updateStateAfterMonthTransition.bind(_assertThisInitialized(_this));
+    _this.openKeyboardShortcutsPanel = _this.openKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
+    _this.closeKeyboardShortcutsPanel = _this.closeKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
+    _this.setCalendarInfoRef = _this.setCalendarInfoRef.bind(_assertThisInitialized(_this));
+    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
+    _this.setTransitionContainerRef = _this.setTransitionContainerRef.bind(_assertThisInitialized(_this));
+    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DayPicker, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        var currentMonth = this.state.currentMonth;
+  _proto.componentDidMount = function componentDidMount() {
+    var currentMonth = this.state.currentMonth;
 
-        if (this.calendarInfo) {
-          this.setState({
-            isTouchDevice: (0, _isTouchDevice["default"])(),
-            calendarInfoWidth: (0, _calculateDimension["default"])(this.calendarInfo, 'width', true, true)
-          });
-        } else {
-          this.setState({
-            isTouchDevice: (0, _isTouchDevice["default"])()
-          });
-        }
+    if (this.calendarInfo) {
+      this.setState({
+        isTouchDevice: (0, _isTouchDevice["default"])(),
+        calendarInfoWidth: (0, _calculateDimension["default"])(this.calendarInfo, 'width', true, true)
+      });
+    } else {
+      this.setState({
+        isTouchDevice: (0, _isTouchDevice["default"])()
+      });
+    }
 
-        this.setCalendarMonthWeeks(currentMonth);
-      }
+    this.setCalendarMonthWeeks(currentMonth);
+  };
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var hidden = nextProps.hidden,
-            isFocused = nextProps.isFocused,
-            showKeyboardShortcuts = nextProps.showKeyboardShortcuts,
-            onBlur = nextProps.onBlur,
-            renderMonthText = nextProps.renderMonthText,
-            horizontalMonthPadding = nextProps.horizontalMonthPadding;
-        var currentMonth = this.state.currentMonth;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var hidden = nextProps.hidden,
+        isFocused = nextProps.isFocused,
+        showKeyboardShortcuts = nextProps.showKeyboardShortcuts,
+        onBlur = nextProps.onBlur,
+        renderMonthText = nextProps.renderMonthText,
+        horizontalMonthPadding = nextProps.horizontalMonthPadding;
+    var currentMonth = this.state.currentMonth;
 
-        if (!hidden) {
-          if (!this.hasSetInitialVisibleMonth) {
-            this.hasSetInitialVisibleMonth = true;
-            this.setState({
-              currentMonth: nextProps.initialVisibleMonth()
-            });
-          }
-        }
-
-        var _this$props = this.props,
-            daySize = _this$props.daySize,
-            prevIsFocused = _this$props.isFocused,
-            prevRenderMonthText = _this$props.renderMonthText;
-
-        if (nextProps.daySize !== daySize) {
-          this.setState({
-            calendarMonthWidth: (0, _getCalendarMonthWidth["default"])(nextProps.daySize, horizontalMonthPadding)
-          });
-        }
-
-        if (isFocused !== prevIsFocused) {
-          if (isFocused) {
-            var focusedDate = this.getFocusedDay(currentMonth);
-            var onKeyboardShortcutsPanelClose = this.state.onKeyboardShortcutsPanelClose;
-
-            if (nextProps.showKeyboardShortcuts) {
-              // the ? shortcut came from the input and we should return input there once it is close
-              onKeyboardShortcutsPanelClose = onBlur;
-            }
-
-            this.setState({
-              showKeyboardShortcuts: showKeyboardShortcuts,
-              onKeyboardShortcutsPanelClose: onKeyboardShortcutsPanelClose,
-              focusedDate: focusedDate,
-              withMouseInteractions: false
-            });
-          } else {
-            this.setState({
-              focusedDate: null
-            });
-          }
-        }
-
-        if (renderMonthText !== prevRenderMonthText) {
-          this.setState({
-            monthTitleHeight: null
-          });
-        }
-      }
-
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentWillUpdate",
-    value: function () {
-      function componentWillUpdate() {
-        var _this2 = this;
-
-        var transitionDuration = this.props.transitionDuration; // Calculating the dimensions trigger a DOM repaint which
-        // breaks the CSS transition.
-        // The setTimeout will wait until the transition ends.
-
-        if (this.calendarInfo) {
-          this.setCalendarInfoWidthTimeout = setTimeout(function () {
-            var calendarInfoWidth = _this2.state.calendarInfoWidth;
-            var calendarInfoPanelWidth = (0, _calculateDimension["default"])(_this2.calendarInfo, 'width', true, true);
-
-            if (calendarInfoWidth !== calendarInfoPanelWidth) {
-              _this2.setState({
-                calendarInfoWidth: calendarInfoPanelWidth
-              });
-            }
-          }, transitionDuration);
-        }
-      }
-
-      return componentWillUpdate;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate(prevProps) {
-        var _this$props2 = this.props,
-            orientation = _this$props2.orientation,
-            daySize = _this$props2.daySize,
-            isFocused = _this$props2.isFocused,
-            numberOfMonths = _this$props2.numberOfMonths;
-        var _this$state = this.state,
-            focusedDate = _this$state.focusedDate,
-            monthTitleHeight = _this$state.monthTitleHeight;
-
-        if (this.isHorizontal() && (orientation !== prevProps.orientation || daySize !== prevProps.daySize)) {
-          var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
-          var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
-          var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
-          this.adjustDayPickerHeight(newMonthHeight);
-        }
-
-        if (!prevProps.isFocused && isFocused && !focusedDate) {
-          this.container.focus();
-        }
-      }
-
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "componentWillUnmount",
-    value: function () {
-      function componentWillUnmount() {
-        clearTimeout(this.setCalendarInfoWidthTimeout);
-        clearTimeout(this.setCalendarMonthGridHeightTimeout);
-      }
-
-      return componentWillUnmount;
-    }()
-  }, {
-    key: "onKeyDown",
-    value: function () {
-      function onKeyDown(e) {
-        e.stopPropagation();
-
-        if (!_constants.MODIFIER_KEY_NAMES.has(e.key)) {
-          this.throttledKeyDown(e);
-        }
-      }
-
-      return onKeyDown;
-    }()
-  }, {
-    key: "onFinalKeyDown",
-    value: function () {
-      function onFinalKeyDown(e) {
+    if (!hidden) {
+      if (!this.hasSetInitialVisibleMonth) {
+        this.hasSetInitialVisibleMonth = true;
         this.setState({
-          withMouseInteractions: false
-        });
-        var _this$props3 = this.props,
-            onBlur = _this$props3.onBlur,
-            onTab = _this$props3.onTab,
-            onShiftTab = _this$props3.onShiftTab,
-            isRTL = _this$props3.isRTL;
-        var _this$state2 = this.state,
-            focusedDate = _this$state2.focusedDate,
-            showKeyboardShortcuts = _this$state2.showKeyboardShortcuts;
-        if (!focusedDate) return;
-        var newFocusedDate = focusedDate.clone();
-        var didTransitionMonth = false; // focus might be anywhere when the keyboard shortcuts panel is opened so we want to
-        // return it to wherever it was before when the panel was opened
-
-        var activeElement = (0, _getActiveElement["default"])();
-
-        var onKeyboardShortcutsPanelClose = function () {
-          function onKeyboardShortcutsPanelClose() {
-            if (activeElement) activeElement.focus();
-          }
-
-          return onKeyboardShortcutsPanelClose;
-        }();
-
-        switch (e.key) {
-          case 'ArrowUp':
-            e.preventDefault();
-            newFocusedDate.subtract(1, 'week');
-            didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
-            break;
-
-          case 'ArrowLeft':
-            e.preventDefault();
-
-            if (isRTL) {
-              newFocusedDate.add(1, 'day');
-            } else {
-              newFocusedDate.subtract(1, 'day');
-            }
-
-            didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
-            break;
-
-          case 'Home':
-            e.preventDefault();
-            newFocusedDate.startOf('week');
-            didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
-            break;
-
-          case 'PageUp':
-            e.preventDefault();
-            newFocusedDate.subtract(1, 'month');
-            didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
-            break;
-
-          case 'ArrowDown':
-            e.preventDefault();
-            newFocusedDate.add(1, 'week');
-            didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
-            break;
-
-          case 'ArrowRight':
-            e.preventDefault();
-
-            if (isRTL) {
-              newFocusedDate.subtract(1, 'day');
-            } else {
-              newFocusedDate.add(1, 'day');
-            }
-
-            didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
-            break;
-
-          case 'End':
-            e.preventDefault();
-            newFocusedDate.endOf('week');
-            didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
-            break;
-
-          case 'PageDown':
-            e.preventDefault();
-            newFocusedDate.add(1, 'month');
-            didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
-            break;
-
-          case '?':
-            this.openKeyboardShortcutsPanel(onKeyboardShortcutsPanelClose);
-            break;
-
-          case 'Escape':
-            if (showKeyboardShortcuts) {
-              this.closeKeyboardShortcutsPanel();
-            } else {
-              onBlur(e);
-            }
-
-            break;
-
-          case 'Tab':
-            if (e.shiftKey) {
-              onShiftTab();
-            } else {
-              onTab(e);
-            }
-
-            break;
-
-          default:
-            break;
-        } // If there was a month transition, do not update the focused date until the transition has
-        // completed. Otherwise, attempting to focus on a DOM node may interrupt the CSS animation. If
-        // didTransitionMonth is true, the focusedDate gets updated in #updateStateAfterMonthTransition
-
-
-        if (!didTransitionMonth) {
-          this.setState({
-            focusedDate: newFocusedDate
-          });
-        }
-      }
-
-      return onFinalKeyDown;
-    }()
-  }, {
-    key: "onPrevMonthClick",
-    value: function () {
-      function onPrevMonthClick(e) {
-        if (e) e.preventDefault();
-        this.onPrevMonthTransition();
-      }
-
-      return onPrevMonthClick;
-    }()
-  }, {
-    key: "onPrevMonthTransition",
-    value: function () {
-      function onPrevMonthTransition(nextFocusedDate) {
-        var _this$props4 = this.props,
-            daySize = _this$props4.daySize,
-            isRTL = _this$props4.isRTL,
-            numberOfMonths = _this$props4.numberOfMonths;
-        var _this$state3 = this.state,
-            calendarMonthWidth = _this$state3.calendarMonthWidth,
-            monthTitleHeight = _this$state3.monthTitleHeight;
-        var translationValue;
-
-        if (this.isVertical()) {
-          var calendarMonthWeeksHeight = this.calendarMonthWeeks[0] * (daySize - 1);
-          translationValue = monthTitleHeight + calendarMonthWeeksHeight + 1;
-        } else if (this.isHorizontal()) {
-          translationValue = calendarMonthWidth;
-
-          if (isRTL) {
-            translationValue = -2 * calendarMonthWidth;
-          }
-
-          var visibleCalendarWeeks = this.calendarMonthWeeks.slice(0, numberOfMonths);
-
-          var _calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
-
-          var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight + 1;
-          this.adjustDayPickerHeight(newMonthHeight);
-        }
-
-        this.setState({
-          monthTransition: PREV_TRANSITION,
-          translationValue: translationValue,
-          focusedDate: null,
-          nextFocusedDate: nextFocusedDate
+          currentMonth: nextProps.initialVisibleMonth()
         });
       }
+    }
 
-      return onPrevMonthTransition;
-    }()
-  }, {
-    key: "onMonthChange",
-    value: function () {
-      function onMonthChange(currentMonth) {
-        this.setCalendarMonthWeeks(currentMonth);
-        this.calculateAndSetDayPickerHeight(); // Translation value is a hack to force an invisible transition that
-        // properly rerenders the CalendarMonthGrid
+    var _this$props = this.props,
+        daySize = _this$props.daySize,
+        prevIsFocused = _this$props.isFocused,
+        prevRenderMonthText = _this$props.renderMonthText;
 
-        this.setState({
-          monthTransition: MONTH_SELECTION_TRANSITION,
-          translationValue: 0.00001,
-          focusedDate: null,
-          nextFocusedDate: currentMonth,
-          currentMonth: currentMonth
-        });
-      }
+    if (nextProps.daySize !== daySize) {
+      this.setState({
+        calendarMonthWidth: (0, _getCalendarMonthWidth["default"])(nextProps.daySize, horizontalMonthPadding)
+      });
+    }
 
-      return onMonthChange;
-    }()
-  }, {
-    key: "onYearChange",
-    value: function () {
-      function onYearChange(currentMonth) {
-        this.setCalendarMonthWeeks(currentMonth);
-        this.calculateAndSetDayPickerHeight(); // Translation value is a hack to force an invisible transition that
-        // properly rerenders the CalendarMonthGrid
-
-        this.setState({
-          monthTransition: YEAR_SELECTION_TRANSITION,
-          translationValue: 0.0001,
-          focusedDate: null,
-          nextFocusedDate: currentMonth,
-          currentMonth: currentMonth
-        });
-      }
-
-      return onYearChange;
-    }()
-  }, {
-    key: "onNextMonthClick",
-    value: function () {
-      function onNextMonthClick(e) {
-        if (e) e.preventDefault();
-        this.onNextMonthTransition();
-      }
-
-      return onNextMonthClick;
-    }()
-  }, {
-    key: "onNextMonthTransition",
-    value: function () {
-      function onNextMonthTransition(nextFocusedDate) {
-        var _this$props5 = this.props,
-            isRTL = _this$props5.isRTL,
-            numberOfMonths = _this$props5.numberOfMonths,
-            daySize = _this$props5.daySize;
-        var _this$state4 = this.state,
-            calendarMonthWidth = _this$state4.calendarMonthWidth,
-            monthTitleHeight = _this$state4.monthTitleHeight;
-        var translationValue;
-
-        if (this.isVertical()) {
-          var firstVisibleMonthWeeks = this.calendarMonthWeeks[1];
-          var calendarMonthWeeksHeight = firstVisibleMonthWeeks * (daySize - 1);
-          translationValue = -(monthTitleHeight + calendarMonthWeeksHeight + 1);
-        }
-
-        if (this.isHorizontal()) {
-          translationValue = -calendarMonthWidth;
-
-          if (isRTL) {
-            translationValue = 0;
-          }
-
-          var visibleCalendarWeeks = this.calendarMonthWeeks.slice(2, numberOfMonths + 2);
-
-          var _calendarMonthWeeksHeight2 = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
-
-          var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight2 + 1;
-          this.adjustDayPickerHeight(newMonthHeight);
-        }
-
-        this.setState({
-          monthTransition: NEXT_TRANSITION,
-          translationValue: translationValue,
-          focusedDate: null,
-          nextFocusedDate: nextFocusedDate
-        });
-      }
-
-      return onNextMonthTransition;
-    }()
-  }, {
-    key: "getFirstDayOfWeek",
-    value: function () {
-      function getFirstDayOfWeek() {
-        var firstDayOfWeek = this.props.firstDayOfWeek;
-
-        if (firstDayOfWeek == null) {
-          return _moment["default"].localeData().firstDayOfWeek();
-        }
-
-        return firstDayOfWeek;
-      }
-
-      return getFirstDayOfWeek;
-    }()
-  }, {
-    key: "getFirstVisibleIndex",
-    value: function () {
-      function getFirstVisibleIndex() {
-        var orientation = this.props.orientation;
-        var monthTransition = this.state.monthTransition;
-        if (orientation === _constants.VERTICAL_SCROLLABLE) return 0;
-        var firstVisibleMonthIndex = 1;
-
-        if (monthTransition === PREV_TRANSITION) {
-          firstVisibleMonthIndex -= 1;
-        } else if (monthTransition === NEXT_TRANSITION) {
-          firstVisibleMonthIndex += 1;
-        }
-
-        return firstVisibleMonthIndex;
-      }
-
-      return getFirstVisibleIndex;
-    }()
-  }, {
-    key: "getFocusedDay",
-    value: function () {
-      function getFocusedDay(newMonth) {
-        var _this$props6 = this.props,
-            getFirstFocusableDay = _this$props6.getFirstFocusableDay,
-            numberOfMonths = _this$props6.numberOfMonths;
-        var focusedDate;
-
-        if (getFirstFocusableDay) {
-          focusedDate = getFirstFocusableDay(newMonth);
-        }
-
-        if (newMonth && (!focusedDate || !(0, _isDayVisible["default"])(focusedDate, newMonth, numberOfMonths))) {
-          focusedDate = newMonth.clone().startOf('month');
-        }
-
-        return focusedDate;
-      }
-
-      return getFocusedDay;
-    }()
-  }, {
-    key: "setMonthTitleHeight",
-    value: function () {
-      function setMonthTitleHeight(monthTitleHeight) {
-        var _this3 = this;
-
-        this.setState({
-          monthTitleHeight: monthTitleHeight
-        }, function () {
-          _this3.calculateAndSetDayPickerHeight();
-        });
-      }
-
-      return setMonthTitleHeight;
-    }()
-  }, {
-    key: "setCalendarMonthWeeks",
-    value: function () {
-      function setCalendarMonthWeeks(currentMonth) {
-        var numberOfMonths = this.props.numberOfMonths;
-        this.calendarMonthWeeks = [];
-        var month = currentMonth.clone().subtract(1, 'months');
-        var firstDayOfWeek = this.getFirstDayOfWeek();
-
-        for (var i = 0; i < numberOfMonths + 2; i += 1) {
-          var numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(month, firstDayOfWeek);
-          this.calendarMonthWeeks.push(numberOfWeeks);
-          month = month.add(1, 'months');
-        }
-      }
-
-      return setCalendarMonthWeeks;
-    }()
-  }, {
-    key: "setContainerRef",
-    value: function () {
-      function setContainerRef(ref) {
-        this.container = ref;
-      }
-
-      return setContainerRef;
-    }()
-  }, {
-    key: "setCalendarInfoRef",
-    value: function () {
-      function setCalendarInfoRef(ref) {
-        this.calendarInfo = ref;
-      }
-
-      return setCalendarInfoRef;
-    }()
-  }, {
-    key: "setTransitionContainerRef",
-    value: function () {
-      function setTransitionContainerRef(ref) {
-        this.transitionContainer = ref;
-      }
-
-      return setTransitionContainerRef;
-    }()
-  }, {
-    key: "maybeTransitionNextMonth",
-    value: function () {
-      function maybeTransitionNextMonth(newFocusedDate) {
-        var numberOfMonths = this.props.numberOfMonths;
-        var _this$state5 = this.state,
-            currentMonth = _this$state5.currentMonth,
-            focusedDate = _this$state5.focusedDate;
-        var newFocusedDateMonth = newFocusedDate.month();
-        var focusedDateMonth = focusedDate.month();
-        var isNewFocusedDateVisible = (0, _isDayVisible["default"])(newFocusedDate, currentMonth, numberOfMonths);
-
-        if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
-          this.onNextMonthTransition(newFocusedDate);
-          return true;
-        }
-
-        return false;
-      }
-
-      return maybeTransitionNextMonth;
-    }()
-  }, {
-    key: "maybeTransitionPrevMonth",
-    value: function () {
-      function maybeTransitionPrevMonth(newFocusedDate) {
-        var numberOfMonths = this.props.numberOfMonths;
-        var _this$state6 = this.state,
-            currentMonth = _this$state6.currentMonth,
-            focusedDate = _this$state6.focusedDate;
-        var newFocusedDateMonth = newFocusedDate.month();
-        var focusedDateMonth = focusedDate.month();
-        var isNewFocusedDateVisible = (0, _isDayVisible["default"])(newFocusedDate, currentMonth, numberOfMonths);
-
-        if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
-          this.onPrevMonthTransition(newFocusedDate);
-          return true;
-        }
-
-        return false;
-      }
-
-      return maybeTransitionPrevMonth;
-    }()
-  }, {
-    key: "multiplyScrollableMonths",
-    value: function () {
-      function multiplyScrollableMonths(e) {
-        var onMultiplyScrollableMonths = this.props.onMultiplyScrollableMonths;
-        if (e) e.preventDefault();
-        if (onMultiplyScrollableMonths) onMultiplyScrollableMonths(e);
-        this.setState(function (_ref2) {
-          var scrollableMonthMultiple = _ref2.scrollableMonthMultiple;
-          return {
-            scrollableMonthMultiple: scrollableMonthMultiple + 1
-          };
-        });
-      }
-
-      return multiplyScrollableMonths;
-    }()
-  }, {
-    key: "isHorizontal",
-    value: function () {
-      function isHorizontal() {
-        var orientation = this.props.orientation;
-        return orientation === _constants.HORIZONTAL_ORIENTATION;
-      }
-
-      return isHorizontal;
-    }()
-  }, {
-    key: "isVertical",
-    value: function () {
-      function isVertical() {
-        var orientation = this.props.orientation;
-        return orientation === _constants.VERTICAL_ORIENTATION || orientation === _constants.VERTICAL_SCROLLABLE;
-      }
-
-      return isVertical;
-    }()
-  }, {
-    key: "updateStateAfterMonthTransition",
-    value: function () {
-      function updateStateAfterMonthTransition() {
-        var _this4 = this;
-
-        var _this$props7 = this.props,
-            onPrevMonthClick = _this$props7.onPrevMonthClick,
-            onNextMonthClick = _this$props7.onNextMonthClick,
-            numberOfMonths = _this$props7.numberOfMonths,
-            onMonthChange = _this$props7.onMonthChange,
-            onYearChange = _this$props7.onYearChange,
-            isRTL = _this$props7.isRTL;
-        var _this$state7 = this.state,
-            currentMonth = _this$state7.currentMonth,
-            monthTransition = _this$state7.monthTransition,
-            focusedDate = _this$state7.focusedDate,
-            nextFocusedDate = _this$state7.nextFocusedDate,
-            withMouseInteractions = _this$state7.withMouseInteractions,
-            calendarMonthWidth = _this$state7.calendarMonthWidth;
-        if (!monthTransition) return;
-        var newMonth = currentMonth.clone();
-        var firstDayOfWeek = this.getFirstDayOfWeek();
-
-        if (monthTransition === PREV_TRANSITION) {
-          newMonth.subtract(1, 'month');
-          if (onPrevMonthClick) onPrevMonthClick(newMonth);
-          var newInvisibleMonth = newMonth.clone().subtract(1, 'month');
-          var numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(newInvisibleMonth, firstDayOfWeek);
-          this.calendarMonthWeeks = [numberOfWeeks].concat(_toConsumableArray(this.calendarMonthWeeks.slice(0, -1)));
-        } else if (monthTransition === NEXT_TRANSITION) {
-          newMonth.add(1, 'month');
-          if (onNextMonthClick) onNextMonthClick(newMonth);
-
-          var _newInvisibleMonth = newMonth.clone().add(numberOfMonths, 'month');
-
-          var _numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(_newInvisibleMonth, firstDayOfWeek);
-
-          this.calendarMonthWeeks = _toConsumableArray(this.calendarMonthWeeks.slice(1)).concat([_numberOfWeeks]);
-        } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
-          if (onMonthChange) onMonthChange(newMonth);
-        } else if (monthTransition === YEAR_SELECTION_TRANSITION) {
-          if (onYearChange) onYearChange(newMonth);
-        }
-
-        var newFocusedDate = null;
-
-        if (nextFocusedDate) {
-          newFocusedDate = nextFocusedDate;
-        } else if (!focusedDate && !withMouseInteractions) {
-          newFocusedDate = this.getFocusedDay(newMonth);
-        }
-
-        this.setState({
-          currentMonth: newMonth,
-          monthTransition: null,
-          translationValue: isRTL && this.isHorizontal() ? -calendarMonthWidth : 0,
-          nextFocusedDate: null,
-          focusedDate: newFocusedDate
-        }, function () {
-          // we don't want to focus on the relevant calendar day after a month transition
-          // if the user is navigating around using a mouse
-          if (withMouseInteractions) {
-            var activeElement = (0, _getActiveElement["default"])();
-
-            if (activeElement && activeElement !== document.body && _this4.container.contains(activeElement) && activeElement.blur) {
-              activeElement.blur();
-            }
-          }
-        });
-      }
-
-      return updateStateAfterMonthTransition;
-    }()
-  }, {
-    key: "adjustDayPickerHeight",
-    value: function () {
-      function adjustDayPickerHeight(newMonthHeight) {
-        var _this5 = this;
-
-        var monthHeight = newMonthHeight + MONTH_PADDING;
-
-        if (monthHeight !== this.calendarMonthGridHeight) {
-          this.transitionContainer.style.height = "".concat(monthHeight, "px");
-
-          if (!this.calendarMonthGridHeight) {
-            this.setCalendarMonthGridHeightTimeout = setTimeout(function () {
-              _this5.setState({
-                hasSetHeight: true
-              });
-            }, 0);
-          }
-
-          this.calendarMonthGridHeight = monthHeight;
-        }
-      }
-
-      return adjustDayPickerHeight;
-    }()
-  }, {
-    key: "calculateAndSetDayPickerHeight",
-    value: function () {
-      function calculateAndSetDayPickerHeight() {
-        var _this$props8 = this.props,
-            daySize = _this$props8.daySize,
-            numberOfMonths = _this$props8.numberOfMonths;
-        var monthTitleHeight = this.state.monthTitleHeight;
-        var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
-        var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
-        var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
-
-        if (this.isHorizontal()) {
-          this.adjustDayPickerHeight(newMonthHeight);
-        }
-      }
-
-      return calculateAndSetDayPickerHeight;
-    }()
-  }, {
-    key: "openKeyboardShortcutsPanel",
-    value: function () {
-      function openKeyboardShortcutsPanel(onCloseCallBack) {
-        this.setState({
-          showKeyboardShortcuts: true,
-          onKeyboardShortcutsPanelClose: onCloseCallBack
-        });
-      }
-
-      return openKeyboardShortcutsPanel;
-    }()
-  }, {
-    key: "closeKeyboardShortcutsPanel",
-    value: function () {
-      function closeKeyboardShortcutsPanel() {
+    if (isFocused !== prevIsFocused) {
+      if (isFocused) {
+        var focusedDate = this.getFocusedDay(currentMonth);
         var onKeyboardShortcutsPanelClose = this.state.onKeyboardShortcutsPanelClose;
 
-        if (onKeyboardShortcutsPanelClose) {
-          onKeyboardShortcutsPanelClose();
+        if (nextProps.showKeyboardShortcuts) {
+          // the ? shortcut came from the input and we should return input there once it is close
+          onKeyboardShortcutsPanelClose = onBlur;
         }
 
         this.setState({
-          onKeyboardShortcutsPanelClose: null,
-          showKeyboardShortcuts: false
-        });
-      }
-
-      return closeKeyboardShortcutsPanel;
-    }()
-  }, {
-    key: "renderNavigation",
-    value: function () {
-      function renderNavigation() {
-        var _this$props9 = this.props,
-            disablePrev = _this$props9.disablePrev,
-            disableNext = _this$props9.disableNext,
-            navPrev = _this$props9.navPrev,
-            navNext = _this$props9.navNext,
-            noNavButtons = _this$props9.noNavButtons,
-            orientation = _this$props9.orientation,
-            phrases = _this$props9.phrases,
-            isRTL = _this$props9.isRTL;
-
-        if (noNavButtons) {
-          return null;
-        }
-
-        var onNextMonthClick = orientation === _constants.VERTICAL_SCROLLABLE ? this.multiplyScrollableMonths : this.onNextMonthClick;
-        return _react["default"].createElement(_DayPickerNavigation["default"], {
-          disablePrev: disablePrev,
-          disableNext: disableNext,
-          onPrevMonthClick: this.onPrevMonthClick,
-          onNextMonthClick: onNextMonthClick,
-          navPrev: navPrev,
-          navNext: navNext,
-          orientation: orientation,
-          phrases: phrases,
-          isRTL: isRTL
-        });
-      }
-
-      return renderNavigation;
-    }()
-  }, {
-    key: "renderWeekHeader",
-    value: function () {
-      function renderWeekHeader(index) {
-        var _this$props10 = this.props,
-            daySize = _this$props10.daySize,
-            horizontalMonthPadding = _this$props10.horizontalMonthPadding,
-            orientation = _this$props10.orientation,
-            weekDayFormat = _this$props10.weekDayFormat,
-            styles = _this$props10.styles;
-        var calendarMonthWidth = this.state.calendarMonthWidth;
-        var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-        var horizontalStyle = {
-          left: index * calendarMonthWidth
-        };
-        var verticalStyle = {
-          marginLeft: -calendarMonthWidth / 2
-        };
-        var weekHeaderStyle = {}; // no styles applied to the vertical-scrollable orientation
-
-        if (this.isHorizontal()) {
-          weekHeaderStyle = horizontalStyle;
-        } else if (this.isVertical() && !verticalScrollable) {
-          weekHeaderStyle = verticalStyle;
-        }
-
-        var firstDayOfWeek = this.getFirstDayOfWeek();
-        var header = [];
-
-        for (var i = 0; i < 7; i += 1) {
-          header.push(_react["default"].createElement("li", _extends({
-            key: i
-          }, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_li, {
-            width: daySize
-          })), _react["default"].createElement("small", null, (0, _moment["default"])().day((i + firstDayOfWeek) % 7).format(weekDayFormat))));
-        }
-
-        return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader, this.isVertical() && styles.DayPicker_weekHeader__vertical, verticalScrollable && styles.DayPicker_weekHeader__verticalScrollable, weekHeaderStyle, {
-          padding: "0 ".concat(horizontalMonthPadding, "px")
-        }), {
-          key: "week-".concat(index)
-        }), _react["default"].createElement("ul", (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_ul), header));
-      }
-
-      return renderWeekHeader;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this6 = this;
-
-        var _this$state8 = this.state,
-            calendarMonthWidth = _this$state8.calendarMonthWidth,
-            currentMonth = _this$state8.currentMonth,
-            monthTransition = _this$state8.monthTransition,
-            translationValue = _this$state8.translationValue,
-            scrollableMonthMultiple = _this$state8.scrollableMonthMultiple,
-            focusedDate = _this$state8.focusedDate,
-            showKeyboardShortcuts = _this$state8.showKeyboardShortcuts,
-            isTouch = _this$state8.isTouchDevice,
-            hasSetHeight = _this$state8.hasSetHeight,
-            calendarInfoWidth = _this$state8.calendarInfoWidth,
-            monthTitleHeight = _this$state8.monthTitleHeight;
-        var _this$props11 = this.props,
-            enableOutsideDays = _this$props11.enableOutsideDays,
-            numberOfMonths = _this$props11.numberOfMonths,
-            orientation = _this$props11.orientation,
-            modifiers = _this$props11.modifiers,
-            withPortal = _this$props11.withPortal,
-            onDayClick = _this$props11.onDayClick,
-            onDayMouseEnter = _this$props11.onDayMouseEnter,
-            onDayMouseLeave = _this$props11.onDayMouseLeave,
-            firstDayOfWeek = _this$props11.firstDayOfWeek,
-            renderMonthText = _this$props11.renderMonthText,
-            renderCalendarDay = _this$props11.renderCalendarDay,
-            renderDayContents = _this$props11.renderDayContents,
-            renderCalendarInfo = _this$props11.renderCalendarInfo,
-            renderMonthElement = _this$props11.renderMonthElement,
-            renderKeyboardShortcutsButton = _this$props11.renderKeyboardShortcutsButton,
-            calendarInfoPosition = _this$props11.calendarInfoPosition,
-            hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
-            onOutsideClick = _this$props11.onOutsideClick,
-            monthFormat = _this$props11.monthFormat,
-            daySize = _this$props11.daySize,
-            isFocused = _this$props11.isFocused,
-            isRTL = _this$props11.isRTL,
-            styles = _this$props11.styles,
-            theme = _this$props11.theme,
-            phrases = _this$props11.phrases,
-            verticalHeight = _this$props11.verticalHeight,
-            dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
-            noBorder = _this$props11.noBorder,
-            transitionDuration = _this$props11.transitionDuration,
-            verticalBorderSpacing = _this$props11.verticalBorderSpacing,
-            horizontalMonthPadding = _this$props11.horizontalMonthPadding;
-        var dayPickerHorizontalPadding = theme.reactDates.spacing.dayPickerHorizontalPadding;
-        var isHorizontal = this.isHorizontal();
-        var numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
-        var weekHeaders = [];
-
-        for (var i = 0; i < numOfWeekHeaders; i += 1) {
-          weekHeaders.push(this.renderWeekHeader(i));
-        }
-
-        var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-        var height;
-
-        if (isHorizontal) {
-          height = this.calendarMonthGridHeight;
-        } else if (this.isVertical() && !verticalScrollable && !withPortal) {
-          // If the user doesn't set a desired height,
-          // we default back to this kind of made-up value that generally looks good
-          height = verticalHeight || 1.75 * calendarMonthWidth;
-        }
-
-        var isCalendarMonthGridAnimating = monthTransition !== null;
-        var shouldFocusDate = !isCalendarMonthGridAnimating && isFocused;
-        var keyboardShortcutButtonLocation = _DayPickerKeyboardShortcuts.BOTTOM_RIGHT;
-
-        if (this.isVertical()) {
-          keyboardShortcutButtonLocation = withPortal ? _DayPickerKeyboardShortcuts.TOP_LEFT : _DayPickerKeyboardShortcuts.TOP_RIGHT;
-        }
-
-        var shouldAnimateHeight = isHorizontal && hasSetHeight;
-        var calendarInfoPositionTop = calendarInfoPosition === _constants.INFO_POSITION_TOP;
-        var calendarInfoPositionBottom = calendarInfoPosition === _constants.INFO_POSITION_BOTTOM;
-        var calendarInfoPositionBefore = calendarInfoPosition === _constants.INFO_POSITION_BEFORE;
-        var calendarInfoPositionAfter = calendarInfoPosition === _constants.INFO_POSITION_AFTER;
-        var calendarInfoIsInline = calendarInfoPositionBefore || calendarInfoPositionAfter;
-
-        var calendarInfo = renderCalendarInfo && _react["default"].createElement("div", _extends({
-          ref: this.setCalendarInfoRef
-        }, (0, _reactWithStyles.css)(calendarInfoIsInline && styles.DayPicker_calendarInfo__horizontal)), renderCalendarInfo());
-
-        var calendarInfoPanelWidth = renderCalendarInfo && calendarInfoIsInline ? calendarInfoWidth : 0;
-        var firstVisibleMonthIndex = this.getFirstVisibleIndex();
-        var wrapperHorizontalWidth = calendarMonthWidth * numberOfMonths + 2 * dayPickerHorizontalPadding; // Adding `1px` because of whitespace between 2 inline-block
-
-        var fullHorizontalWidth = wrapperHorizontalWidth + calendarInfoPanelWidth + 1;
-        var transitionContainerStyle = {
-          width: isHorizontal && wrapperHorizontalWidth,
-          height: height
-        };
-        var dayPickerWrapperStyle = {
-          width: isHorizontal && wrapperHorizontalWidth
-        };
-        var dayPickerStyle = {
-          width: isHorizontal && fullHorizontalWidth,
-          // These values are to center the datepicker (approximately) on the page
-          marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
-          marginTop: isHorizontal && withPortal ? -calendarMonthWidth / 2 : null
-        };
-        return _react["default"].createElement("div", _extends({
-          role: "application",
-          "aria-label": phrases.calendarLabel
-        }, (0, _reactWithStyles.css)(styles.DayPicker, isHorizontal && styles.DayPicker__horizontal, verticalScrollable && styles.DayPicker__verticalScrollable, isHorizontal && withPortal && styles.DayPicker_portal__horizontal, this.isVertical() && withPortal && styles.DayPicker_portal__vertical, dayPickerStyle, !monthTitleHeight && styles.DayPicker__hidden, !noBorder && styles.DayPicker__withBorder)), _react["default"].createElement(_reactOutsideClickHandler["default"], {
-          onOutsideClick: onOutsideClick
-        }, (calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo, _react["default"].createElement("div", (0, _reactWithStyles.css)(dayPickerWrapperStyle, calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeaders, isHorizontal && styles.DayPicker_weekHeaders__horizontal), {
-          "aria-hidden": "true",
-          role: "presentation"
-        }), weekHeaders), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_focusRegion), {
-          ref: this.setContainerRef,
-          onClick: function () {
-            function onClick(e) {
-              e.stopPropagation();
-            }
-
-            return onClick;
-          }(),
-          onKeyDown: this.onKeyDown,
-          onMouseUp: function () {
-            function onMouseUp() {
-              _this6.setState({
-                withMouseInteractions: true
-              });
-            }
-
-            return onMouseUp;
-          }(),
-          role: "region",
-          tabIndex: -1
-        }), !verticalScrollable && this.renderNavigation(), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_transitionContainer, shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal, this.isVertical() && styles.DayPicker_transitionContainer__vertical, verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable, transitionContainerStyle), {
-          ref: this.setTransitionContainerRef
-        }), _react["default"].createElement(_CalendarMonthGrid["default"], {
-          setMonthTitleHeight: !monthTitleHeight ? this.setMonthTitleHeight : undefined,
-          translationValue: translationValue,
-          enableOutsideDays: enableOutsideDays,
-          firstVisibleMonthIndex: firstVisibleMonthIndex,
-          initialMonth: currentMonth,
-          isAnimating: isCalendarMonthGridAnimating,
-          modifiers: modifiers,
-          orientation: orientation,
-          numberOfMonths: numberOfMonths * scrollableMonthMultiple,
-          onDayClick: onDayClick,
-          onDayMouseEnter: onDayMouseEnter,
-          onDayMouseLeave: onDayMouseLeave,
-          onMonthChange: this.onMonthChange,
-          onYearChange: this.onYearChange,
-          renderMonthText: renderMonthText,
-          renderCalendarDay: renderCalendarDay,
-          renderDayContents: renderDayContents,
-          renderMonthElement: renderMonthElement,
-          onMonthTransitionEnd: this.updateStateAfterMonthTransition,
-          monthFormat: monthFormat,
-          daySize: daySize,
-          firstDayOfWeek: firstDayOfWeek,
-          isFocused: shouldFocusDate,
+          showKeyboardShortcuts: showKeyboardShortcuts,
+          onKeyboardShortcutsPanelClose: onKeyboardShortcutsPanelClose,
           focusedDate: focusedDate,
-          phrases: phrases,
-          isRTL: isRTL,
-          dayAriaLabelFormat: dayAriaLabelFormat,
-          transitionDuration: transitionDuration,
-          verticalBorderSpacing: verticalBorderSpacing,
-          horizontalMonthPadding: horizontalMonthPadding
-        }), verticalScrollable && this.renderNavigation()), !isTouch && !hideKeyboardShortcutsPanel && _react["default"].createElement(_DayPickerKeyboardShortcuts["default"], {
-          block: this.isVertical() && !withPortal,
-          buttonLocation: keyboardShortcutButtonLocation,
-          showKeyboardShortcutsPanel: showKeyboardShortcuts,
-          openKeyboardShortcutsPanel: this.openKeyboardShortcutsPanel,
-          closeKeyboardShortcutsPanel: this.closeKeyboardShortcutsPanel,
-          phrases: phrases,
-          renderKeyboardShortcutsButton: renderKeyboardShortcutsButton
-        }))), (calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo));
+          withMouseInteractions: false
+        });
+      } else {
+        this.setState({
+          focusedDate: null
+        });
+      }
+    }
+
+    if (renderMonthText !== prevRenderMonthText) {
+      this.setState({
+        monthTitleHeight: null
+      });
+    }
+  };
+
+  _proto.componentWillUpdate = function componentWillUpdate() {
+    var _this2 = this;
+
+    var transitionDuration = this.props.transitionDuration; // Calculating the dimensions trigger a DOM repaint which
+    // breaks the CSS transition.
+    // The setTimeout will wait until the transition ends.
+
+    if (this.calendarInfo) {
+      this.setCalendarInfoWidthTimeout = setTimeout(function () {
+        var calendarInfoWidth = _this2.state.calendarInfoWidth;
+        var calendarInfoPanelWidth = (0, _calculateDimension["default"])(_this2.calendarInfo, 'width', true, true);
+
+        if (calendarInfoWidth !== calendarInfoPanelWidth) {
+          _this2.setState({
+            calendarInfoWidth: calendarInfoPanelWidth
+          });
+        }
+      }, transitionDuration);
+    }
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this$props2 = this.props,
+        orientation = _this$props2.orientation,
+        daySize = _this$props2.daySize,
+        isFocused = _this$props2.isFocused,
+        numberOfMonths = _this$props2.numberOfMonths;
+    var _this$state = this.state,
+        focusedDate = _this$state.focusedDate,
+        monthTitleHeight = _this$state.monthTitleHeight;
+
+    if (this.isHorizontal() && (orientation !== prevProps.orientation || daySize !== prevProps.daySize)) {
+      var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
+      var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+      var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
+      this.adjustDayPickerHeight(newMonthHeight);
+    }
+
+    if (!prevProps.isFocused && isFocused && !focusedDate) {
+      this.container.focus();
+    }
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    clearTimeout(this.setCalendarInfoWidthTimeout);
+    clearTimeout(this.setCalendarMonthGridHeightTimeout);
+  };
+
+  _proto.onKeyDown = function onKeyDown(e) {
+    e.stopPropagation();
+
+    if (!_constants.MODIFIER_KEY_NAMES.has(e.key)) {
+      this.throttledKeyDown(e);
+    }
+  };
+
+  _proto.onFinalKeyDown = function onFinalKeyDown(e) {
+    this.setState({
+      withMouseInteractions: false
+    });
+    var _this$props3 = this.props,
+        onBlur = _this$props3.onBlur,
+        onTab = _this$props3.onTab,
+        onShiftTab = _this$props3.onShiftTab,
+        isRTL = _this$props3.isRTL;
+    var _this$state2 = this.state,
+        focusedDate = _this$state2.focusedDate,
+        showKeyboardShortcuts = _this$state2.showKeyboardShortcuts;
+    if (!focusedDate) return;
+    var newFocusedDate = focusedDate.clone();
+    var didTransitionMonth = false; // focus might be anywhere when the keyboard shortcuts panel is opened so we want to
+    // return it to wherever it was before when the panel was opened
+
+    var activeElement = (0, _getActiveElement["default"])();
+
+    var onKeyboardShortcutsPanelClose = function onKeyboardShortcutsPanelClose() {
+      if (activeElement) activeElement.focus();
+    };
+
+    switch (e.key) {
+      case 'ArrowUp':
+        e.preventDefault();
+        newFocusedDate.subtract(1, 'week');
+        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
+        break;
+
+      case 'ArrowLeft':
+        e.preventDefault();
+
+        if (isRTL) {
+          newFocusedDate.add(1, 'day');
+        } else {
+          newFocusedDate.subtract(1, 'day');
+        }
+
+        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        newFocusedDate.startOf('week');
+        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
+        break;
+
+      case 'PageUp':
+        e.preventDefault();
+        newFocusedDate.subtract(1, 'month');
+        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
+        break;
+
+      case 'ArrowDown':
+        e.preventDefault();
+        newFocusedDate.add(1, 'week');
+        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        break;
+
+      case 'ArrowRight':
+        e.preventDefault();
+
+        if (isRTL) {
+          newFocusedDate.subtract(1, 'day');
+        } else {
+          newFocusedDate.add(1, 'day');
+        }
+
+        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        break;
+
+      case 'End':
+        e.preventDefault();
+        newFocusedDate.endOf('week');
+        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        break;
+
+      case 'PageDown':
+        e.preventDefault();
+        newFocusedDate.add(1, 'month');
+        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        break;
+
+      case '?':
+        this.openKeyboardShortcutsPanel(onKeyboardShortcutsPanelClose);
+        break;
+
+      case 'Escape':
+        if (showKeyboardShortcuts) {
+          this.closeKeyboardShortcutsPanel();
+        } else {
+          onBlur(e);
+        }
+
+        break;
+
+      case 'Tab':
+        if (e.shiftKey) {
+          onShiftTab();
+        } else {
+          onTab(e);
+        }
+
+        break;
+
+      default:
+        break;
+    } // If there was a month transition, do not update the focused date until the transition has
+    // completed. Otherwise, attempting to focus on a DOM node may interrupt the CSS animation. If
+    // didTransitionMonth is true, the focusedDate gets updated in #updateStateAfterMonthTransition
+
+
+    if (!didTransitionMonth) {
+      this.setState({
+        focusedDate: newFocusedDate
+      });
+    }
+  };
+
+  _proto.onPrevMonthClick = function onPrevMonthClick(e) {
+    if (e) e.preventDefault();
+    this.onPrevMonthTransition();
+  };
+
+  _proto.onPrevMonthTransition = function onPrevMonthTransition(nextFocusedDate) {
+    var _this$props4 = this.props,
+        daySize = _this$props4.daySize,
+        isRTL = _this$props4.isRTL,
+        numberOfMonths = _this$props4.numberOfMonths;
+    var _this$state3 = this.state,
+        calendarMonthWidth = _this$state3.calendarMonthWidth,
+        monthTitleHeight = _this$state3.monthTitleHeight;
+    var translationValue;
+
+    if (this.isVertical()) {
+      var calendarMonthWeeksHeight = this.calendarMonthWeeks[0] * (daySize - 1);
+      translationValue = monthTitleHeight + calendarMonthWeeksHeight + 1;
+    } else if (this.isHorizontal()) {
+      translationValue = calendarMonthWidth;
+
+      if (isRTL) {
+        translationValue = -2 * calendarMonthWidth;
       }
 
-      return render;
-    }()
-  }]);
+      var visibleCalendarWeeks = this.calendarMonthWeeks.slice(0, numberOfMonths);
+
+      var _calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+
+      var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight + 1;
+      this.adjustDayPickerHeight(newMonthHeight);
+    }
+
+    this.setState({
+      monthTransition: PREV_TRANSITION,
+      translationValue: translationValue,
+      focusedDate: null,
+      nextFocusedDate: nextFocusedDate
+    });
+  };
+
+  _proto.onMonthChange = function onMonthChange(currentMonth) {
+    this.setCalendarMonthWeeks(currentMonth);
+    this.calculateAndSetDayPickerHeight(); // Translation value is a hack to force an invisible transition that
+    // properly rerenders the CalendarMonthGrid
+
+    this.setState({
+      monthTransition: MONTH_SELECTION_TRANSITION,
+      translationValue: 0.00001,
+      focusedDate: null,
+      nextFocusedDate: currentMonth,
+      currentMonth: currentMonth
+    });
+  };
+
+  _proto.onYearChange = function onYearChange(currentMonth) {
+    this.setCalendarMonthWeeks(currentMonth);
+    this.calculateAndSetDayPickerHeight(); // Translation value is a hack to force an invisible transition that
+    // properly rerenders the CalendarMonthGrid
+
+    this.setState({
+      monthTransition: YEAR_SELECTION_TRANSITION,
+      translationValue: 0.0001,
+      focusedDate: null,
+      nextFocusedDate: currentMonth,
+      currentMonth: currentMonth
+    });
+  };
+
+  _proto.onNextMonthClick = function onNextMonthClick(e) {
+    if (e) e.preventDefault();
+    this.onNextMonthTransition();
+  };
+
+  _proto.onNextMonthTransition = function onNextMonthTransition(nextFocusedDate) {
+    var _this$props5 = this.props,
+        isRTL = _this$props5.isRTL,
+        numberOfMonths = _this$props5.numberOfMonths,
+        daySize = _this$props5.daySize;
+    var _this$state4 = this.state,
+        calendarMonthWidth = _this$state4.calendarMonthWidth,
+        monthTitleHeight = _this$state4.monthTitleHeight;
+    var translationValue;
+
+    if (this.isVertical()) {
+      var firstVisibleMonthWeeks = this.calendarMonthWeeks[1];
+      var calendarMonthWeeksHeight = firstVisibleMonthWeeks * (daySize - 1);
+      translationValue = -(monthTitleHeight + calendarMonthWeeksHeight + 1);
+    }
+
+    if (this.isHorizontal()) {
+      translationValue = -calendarMonthWidth;
+
+      if (isRTL) {
+        translationValue = 0;
+      }
+
+      var visibleCalendarWeeks = this.calendarMonthWeeks.slice(2, numberOfMonths + 2);
+
+      var _calendarMonthWeeksHeight2 = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+
+      var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight2 + 1;
+      this.adjustDayPickerHeight(newMonthHeight);
+    }
+
+    this.setState({
+      monthTransition: NEXT_TRANSITION,
+      translationValue: translationValue,
+      focusedDate: null,
+      nextFocusedDate: nextFocusedDate
+    });
+  };
+
+  _proto.getFirstDayOfWeek = function getFirstDayOfWeek() {
+    var firstDayOfWeek = this.props.firstDayOfWeek;
+
+    if (firstDayOfWeek == null) {
+      return _moment["default"].localeData().firstDayOfWeek();
+    }
+
+    return firstDayOfWeek;
+  };
+
+  _proto.getFirstVisibleIndex = function getFirstVisibleIndex() {
+    var orientation = this.props.orientation;
+    var monthTransition = this.state.monthTransition;
+    if (orientation === _constants.VERTICAL_SCROLLABLE) return 0;
+    var firstVisibleMonthIndex = 1;
+
+    if (monthTransition === PREV_TRANSITION) {
+      firstVisibleMonthIndex -= 1;
+    } else if (monthTransition === NEXT_TRANSITION) {
+      firstVisibleMonthIndex += 1;
+    }
+
+    return firstVisibleMonthIndex;
+  };
+
+  _proto.getFocusedDay = function getFocusedDay(newMonth) {
+    var _this$props6 = this.props,
+        getFirstFocusableDay = _this$props6.getFirstFocusableDay,
+        numberOfMonths = _this$props6.numberOfMonths;
+    var focusedDate;
+
+    if (getFirstFocusableDay) {
+      focusedDate = getFirstFocusableDay(newMonth);
+    }
+
+    if (newMonth && (!focusedDate || !(0, _isDayVisible["default"])(focusedDate, newMonth, numberOfMonths))) {
+      focusedDate = newMonth.clone().startOf('month');
+    }
+
+    return focusedDate;
+  };
+
+  _proto.setMonthTitleHeight = function setMonthTitleHeight(monthTitleHeight) {
+    var _this3 = this;
+
+    this.setState({
+      monthTitleHeight: monthTitleHeight
+    }, function () {
+      _this3.calculateAndSetDayPickerHeight();
+    });
+  };
+
+  _proto.setCalendarMonthWeeks = function setCalendarMonthWeeks(currentMonth) {
+    var numberOfMonths = this.props.numberOfMonths;
+    this.calendarMonthWeeks = [];
+    var month = currentMonth.clone().subtract(1, 'months');
+    var firstDayOfWeek = this.getFirstDayOfWeek();
+
+    for (var i = 0; i < numberOfMonths + 2; i += 1) {
+      var numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(month, firstDayOfWeek);
+      this.calendarMonthWeeks.push(numberOfWeeks);
+      month = month.add(1, 'months');
+    }
+  };
+
+  _proto.setContainerRef = function setContainerRef(ref) {
+    this.container = ref;
+  };
+
+  _proto.setCalendarInfoRef = function setCalendarInfoRef(ref) {
+    this.calendarInfo = ref;
+  };
+
+  _proto.setTransitionContainerRef = function setTransitionContainerRef(ref) {
+    this.transitionContainer = ref;
+  };
+
+  _proto.maybeTransitionNextMonth = function maybeTransitionNextMonth(newFocusedDate) {
+    var numberOfMonths = this.props.numberOfMonths;
+    var _this$state5 = this.state,
+        currentMonth = _this$state5.currentMonth,
+        focusedDate = _this$state5.focusedDate;
+    var newFocusedDateMonth = newFocusedDate.month();
+    var focusedDateMonth = focusedDate.month();
+    var isNewFocusedDateVisible = (0, _isDayVisible["default"])(newFocusedDate, currentMonth, numberOfMonths);
+
+    if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
+      this.onNextMonthTransition(newFocusedDate);
+      return true;
+    }
+
+    return false;
+  };
+
+  _proto.maybeTransitionPrevMonth = function maybeTransitionPrevMonth(newFocusedDate) {
+    var numberOfMonths = this.props.numberOfMonths;
+    var _this$state6 = this.state,
+        currentMonth = _this$state6.currentMonth,
+        focusedDate = _this$state6.focusedDate;
+    var newFocusedDateMonth = newFocusedDate.month();
+    var focusedDateMonth = focusedDate.month();
+    var isNewFocusedDateVisible = (0, _isDayVisible["default"])(newFocusedDate, currentMonth, numberOfMonths);
+
+    if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
+      this.onPrevMonthTransition(newFocusedDate);
+      return true;
+    }
+
+    return false;
+  };
+
+  _proto.multiplyScrollableMonths = function multiplyScrollableMonths(e) {
+    var onMultiplyScrollableMonths = this.props.onMultiplyScrollableMonths;
+    if (e) e.preventDefault();
+    if (onMultiplyScrollableMonths) onMultiplyScrollableMonths(e);
+    this.setState(function (_ref2) {
+      var scrollableMonthMultiple = _ref2.scrollableMonthMultiple;
+      return {
+        scrollableMonthMultiple: scrollableMonthMultiple + 1
+      };
+    });
+  };
+
+  _proto.isHorizontal = function isHorizontal() {
+    var orientation = this.props.orientation;
+    return orientation === _constants.HORIZONTAL_ORIENTATION;
+  };
+
+  _proto.isVertical = function isVertical() {
+    var orientation = this.props.orientation;
+    return orientation === _constants.VERTICAL_ORIENTATION || orientation === _constants.VERTICAL_SCROLLABLE;
+  };
+
+  _proto.updateStateAfterMonthTransition = function updateStateAfterMonthTransition() {
+    var _this4 = this;
+
+    var _this$props7 = this.props,
+        onPrevMonthClick = _this$props7.onPrevMonthClick,
+        onNextMonthClick = _this$props7.onNextMonthClick,
+        numberOfMonths = _this$props7.numberOfMonths,
+        onMonthChange = _this$props7.onMonthChange,
+        onYearChange = _this$props7.onYearChange,
+        isRTL = _this$props7.isRTL;
+    var _this$state7 = this.state,
+        currentMonth = _this$state7.currentMonth,
+        monthTransition = _this$state7.monthTransition,
+        focusedDate = _this$state7.focusedDate,
+        nextFocusedDate = _this$state7.nextFocusedDate,
+        withMouseInteractions = _this$state7.withMouseInteractions,
+        calendarMonthWidth = _this$state7.calendarMonthWidth;
+    if (!monthTransition) return;
+    var newMonth = currentMonth.clone();
+    var firstDayOfWeek = this.getFirstDayOfWeek();
+
+    if (monthTransition === PREV_TRANSITION) {
+      newMonth.subtract(1, 'month');
+      if (onPrevMonthClick) onPrevMonthClick(newMonth);
+      var newInvisibleMonth = newMonth.clone().subtract(1, 'month');
+      var numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(newInvisibleMonth, firstDayOfWeek);
+      this.calendarMonthWeeks = [numberOfWeeks].concat(_toConsumableArray(this.calendarMonthWeeks.slice(0, -1)));
+    } else if (monthTransition === NEXT_TRANSITION) {
+      newMonth.add(1, 'month');
+      if (onNextMonthClick) onNextMonthClick(newMonth);
+
+      var _newInvisibleMonth = newMonth.clone().add(numberOfMonths, 'month');
+
+      var _numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(_newInvisibleMonth, firstDayOfWeek);
+
+      this.calendarMonthWeeks = [].concat(_toConsumableArray(this.calendarMonthWeeks.slice(1)), [_numberOfWeeks]);
+    } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
+      if (onMonthChange) onMonthChange(newMonth);
+    } else if (monthTransition === YEAR_SELECTION_TRANSITION) {
+      if (onYearChange) onYearChange(newMonth);
+    }
+
+    var newFocusedDate = null;
+
+    if (nextFocusedDate) {
+      newFocusedDate = nextFocusedDate;
+    } else if (!focusedDate && !withMouseInteractions) {
+      newFocusedDate = this.getFocusedDay(newMonth);
+    }
+
+    this.setState({
+      currentMonth: newMonth,
+      monthTransition: null,
+      translationValue: isRTL && this.isHorizontal() ? -calendarMonthWidth : 0,
+      nextFocusedDate: null,
+      focusedDate: newFocusedDate
+    }, function () {
+      // we don't want to focus on the relevant calendar day after a month transition
+      // if the user is navigating around using a mouse
+      if (withMouseInteractions) {
+        var activeElement = (0, _getActiveElement["default"])();
+
+        if (activeElement && activeElement !== document.body && _this4.container.contains(activeElement) && activeElement.blur) {
+          activeElement.blur();
+        }
+      }
+    });
+  };
+
+  _proto.adjustDayPickerHeight = function adjustDayPickerHeight(newMonthHeight) {
+    var _this5 = this;
+
+    var monthHeight = newMonthHeight + MONTH_PADDING;
+
+    if (monthHeight !== this.calendarMonthGridHeight) {
+      this.transitionContainer.style.height = "".concat(monthHeight, "px");
+
+      if (!this.calendarMonthGridHeight) {
+        this.setCalendarMonthGridHeightTimeout = setTimeout(function () {
+          _this5.setState({
+            hasSetHeight: true
+          });
+        }, 0);
+      }
+
+      this.calendarMonthGridHeight = monthHeight;
+    }
+  };
+
+  _proto.calculateAndSetDayPickerHeight = function calculateAndSetDayPickerHeight() {
+    var _this$props8 = this.props,
+        daySize = _this$props8.daySize,
+        numberOfMonths = _this$props8.numberOfMonths;
+    var monthTitleHeight = this.state.monthTitleHeight;
+    var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
+    var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+    var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
+
+    if (this.isHorizontal()) {
+      this.adjustDayPickerHeight(newMonthHeight);
+    }
+  };
+
+  _proto.openKeyboardShortcutsPanel = function openKeyboardShortcutsPanel(onCloseCallBack) {
+    this.setState({
+      showKeyboardShortcuts: true,
+      onKeyboardShortcutsPanelClose: onCloseCallBack
+    });
+  };
+
+  _proto.closeKeyboardShortcutsPanel = function closeKeyboardShortcutsPanel() {
+    var onKeyboardShortcutsPanelClose = this.state.onKeyboardShortcutsPanelClose;
+
+    if (onKeyboardShortcutsPanelClose) {
+      onKeyboardShortcutsPanelClose();
+    }
+
+    this.setState({
+      onKeyboardShortcutsPanelClose: null,
+      showKeyboardShortcuts: false
+    });
+  };
+
+  _proto.renderNavigation = function renderNavigation() {
+    var _this$props9 = this.props,
+        disablePrev = _this$props9.disablePrev,
+        disableNext = _this$props9.disableNext,
+        navPrev = _this$props9.navPrev,
+        navNext = _this$props9.navNext,
+        noNavButtons = _this$props9.noNavButtons,
+        orientation = _this$props9.orientation,
+        phrases = _this$props9.phrases,
+        isRTL = _this$props9.isRTL;
+
+    if (noNavButtons) {
+      return null;
+    }
+
+    var onNextMonthClick = orientation === _constants.VERTICAL_SCROLLABLE ? this.multiplyScrollableMonths : this.onNextMonthClick;
+    return _react["default"].createElement(_DayPickerNavigation["default"], {
+      disablePrev: disablePrev,
+      disableNext: disableNext,
+      onPrevMonthClick: this.onPrevMonthClick,
+      onNextMonthClick: onNextMonthClick,
+      navPrev: navPrev,
+      navNext: navNext,
+      orientation: orientation,
+      phrases: phrases,
+      isRTL: isRTL
+    });
+  };
+
+  _proto.renderWeekHeader = function renderWeekHeader(index) {
+    var _this$props10 = this.props,
+        daySize = _this$props10.daySize,
+        horizontalMonthPadding = _this$props10.horizontalMonthPadding,
+        orientation = _this$props10.orientation,
+        weekDayFormat = _this$props10.weekDayFormat,
+        styles = _this$props10.styles;
+    var calendarMonthWidth = this.state.calendarMonthWidth;
+    var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
+    var horizontalStyle = {
+      left: index * calendarMonthWidth
+    };
+    var verticalStyle = {
+      marginLeft: -calendarMonthWidth / 2
+    };
+    var weekHeaderStyle = {}; // no styles applied to the vertical-scrollable orientation
+
+    if (this.isHorizontal()) {
+      weekHeaderStyle = horizontalStyle;
+    } else if (this.isVertical() && !verticalScrollable) {
+      weekHeaderStyle = verticalStyle;
+    }
+
+    var firstDayOfWeek = this.getFirstDayOfWeek();
+    var header = [];
+
+    for (var i = 0; i < 7; i += 1) {
+      header.push(_react["default"].createElement("li", _extends({
+        key: i
+      }, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_li, {
+        width: daySize
+      })), _react["default"].createElement("small", null, (0, _moment["default"])().day((i + firstDayOfWeek) % 7).format(weekDayFormat))));
+    }
+
+    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader, this.isVertical() && styles.DayPicker_weekHeader__vertical, verticalScrollable && styles.DayPicker_weekHeader__verticalScrollable, weekHeaderStyle, {
+      padding: "0 ".concat(horizontalMonthPadding, "px")
+    }), {
+      key: "week-".concat(index)
+    }), _react["default"].createElement("ul", (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_ul), header));
+  };
+
+  _proto.render = function render() {
+    var _this6 = this;
+
+    var _this$state8 = this.state,
+        calendarMonthWidth = _this$state8.calendarMonthWidth,
+        currentMonth = _this$state8.currentMonth,
+        monthTransition = _this$state8.monthTransition,
+        translationValue = _this$state8.translationValue,
+        scrollableMonthMultiple = _this$state8.scrollableMonthMultiple,
+        focusedDate = _this$state8.focusedDate,
+        showKeyboardShortcuts = _this$state8.showKeyboardShortcuts,
+        isTouch = _this$state8.isTouchDevice,
+        hasSetHeight = _this$state8.hasSetHeight,
+        calendarInfoWidth = _this$state8.calendarInfoWidth,
+        monthTitleHeight = _this$state8.monthTitleHeight;
+    var _this$props11 = this.props,
+        enableOutsideDays = _this$props11.enableOutsideDays,
+        numberOfMonths = _this$props11.numberOfMonths,
+        orientation = _this$props11.orientation,
+        modifiers = _this$props11.modifiers,
+        withPortal = _this$props11.withPortal,
+        onDayClick = _this$props11.onDayClick,
+        onDayMouseEnter = _this$props11.onDayMouseEnter,
+        onDayMouseLeave = _this$props11.onDayMouseLeave,
+        firstDayOfWeek = _this$props11.firstDayOfWeek,
+        renderMonthText = _this$props11.renderMonthText,
+        renderCalendarDay = _this$props11.renderCalendarDay,
+        renderDayContents = _this$props11.renderDayContents,
+        renderCalendarInfo = _this$props11.renderCalendarInfo,
+        renderMonthElement = _this$props11.renderMonthElement,
+        renderKeyboardShortcutsButton = _this$props11.renderKeyboardShortcutsButton,
+        calendarInfoPosition = _this$props11.calendarInfoPosition,
+        hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
+        onOutsideClick = _this$props11.onOutsideClick,
+        monthFormat = _this$props11.monthFormat,
+        daySize = _this$props11.daySize,
+        isFocused = _this$props11.isFocused,
+        isRTL = _this$props11.isRTL,
+        styles = _this$props11.styles,
+        theme = _this$props11.theme,
+        phrases = _this$props11.phrases,
+        verticalHeight = _this$props11.verticalHeight,
+        dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
+        noBorder = _this$props11.noBorder,
+        transitionDuration = _this$props11.transitionDuration,
+        verticalBorderSpacing = _this$props11.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props11.horizontalMonthPadding;
+    var dayPickerHorizontalPadding = theme.reactDates.spacing.dayPickerHorizontalPadding;
+    var isHorizontal = this.isHorizontal();
+    var numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
+    var weekHeaders = [];
+
+    for (var i = 0; i < numOfWeekHeaders; i += 1) {
+      weekHeaders.push(this.renderWeekHeader(i));
+    }
+
+    var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
+    var height;
+
+    if (isHorizontal) {
+      height = this.calendarMonthGridHeight;
+    } else if (this.isVertical() && !verticalScrollable && !withPortal) {
+      // If the user doesn't set a desired height,
+      // we default back to this kind of made-up value that generally looks good
+      height = verticalHeight || 1.75 * calendarMonthWidth;
+    }
+
+    var isCalendarMonthGridAnimating = monthTransition !== null;
+    var shouldFocusDate = !isCalendarMonthGridAnimating && isFocused;
+    var keyboardShortcutButtonLocation = _DayPickerKeyboardShortcuts.BOTTOM_RIGHT;
+
+    if (this.isVertical()) {
+      keyboardShortcutButtonLocation = withPortal ? _DayPickerKeyboardShortcuts.TOP_LEFT : _DayPickerKeyboardShortcuts.TOP_RIGHT;
+    }
+
+    var shouldAnimateHeight = isHorizontal && hasSetHeight;
+    var calendarInfoPositionTop = calendarInfoPosition === _constants.INFO_POSITION_TOP;
+    var calendarInfoPositionBottom = calendarInfoPosition === _constants.INFO_POSITION_BOTTOM;
+    var calendarInfoPositionBefore = calendarInfoPosition === _constants.INFO_POSITION_BEFORE;
+    var calendarInfoPositionAfter = calendarInfoPosition === _constants.INFO_POSITION_AFTER;
+    var calendarInfoIsInline = calendarInfoPositionBefore || calendarInfoPositionAfter;
+
+    var calendarInfo = renderCalendarInfo && _react["default"].createElement("div", _extends({
+      ref: this.setCalendarInfoRef
+    }, (0, _reactWithStyles.css)(calendarInfoIsInline && styles.DayPicker_calendarInfo__horizontal)), renderCalendarInfo());
+
+    var calendarInfoPanelWidth = renderCalendarInfo && calendarInfoIsInline ? calendarInfoWidth : 0;
+    var firstVisibleMonthIndex = this.getFirstVisibleIndex();
+    var wrapperHorizontalWidth = calendarMonthWidth * numberOfMonths + 2 * dayPickerHorizontalPadding; // Adding `1px` because of whitespace between 2 inline-block
+
+    var fullHorizontalWidth = wrapperHorizontalWidth + calendarInfoPanelWidth + 1;
+    var transitionContainerStyle = {
+      width: isHorizontal && wrapperHorizontalWidth,
+      height: height
+    };
+    var dayPickerWrapperStyle = {
+      width: isHorizontal && wrapperHorizontalWidth
+    };
+    var dayPickerStyle = {
+      width: isHorizontal && fullHorizontalWidth,
+      // These values are to center the datepicker (approximately) on the page
+      marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
+      marginTop: isHorizontal && withPortal ? -calendarMonthWidth / 2 : null
+    };
+    return _react["default"].createElement("div", _extends({
+      role: "application",
+      "aria-label": phrases.calendarLabel
+    }, (0, _reactWithStyles.css)(styles.DayPicker, isHorizontal && styles.DayPicker__horizontal, verticalScrollable && styles.DayPicker__verticalScrollable, isHorizontal && withPortal && styles.DayPicker_portal__horizontal, this.isVertical() && withPortal && styles.DayPicker_portal__vertical, dayPickerStyle, !monthTitleHeight && styles.DayPicker__hidden, !noBorder && styles.DayPicker__withBorder)), _react["default"].createElement(_reactOutsideClickHandler["default"], {
+      onOutsideClick: onOutsideClick
+    }, (calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo, _react["default"].createElement("div", (0, _reactWithStyles.css)(dayPickerWrapperStyle, calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeaders, isHorizontal && styles.DayPicker_weekHeaders__horizontal), {
+      "aria-hidden": "true",
+      role: "presentation"
+    }), weekHeaders), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_focusRegion), {
+      ref: this.setContainerRef,
+      onClick: function onClick(e) {
+        e.stopPropagation();
+      },
+      onKeyDown: this.onKeyDown,
+      onMouseUp: function onMouseUp() {
+        _this6.setState({
+          withMouseInteractions: true
+        });
+      },
+      role: "region",
+      tabIndex: -1
+    }), !verticalScrollable && this.renderNavigation(), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_transitionContainer, shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal, this.isVertical() && styles.DayPicker_transitionContainer__vertical, verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable, transitionContainerStyle), {
+      ref: this.setTransitionContainerRef
+    }), _react["default"].createElement(_CalendarMonthGrid["default"], {
+      setMonthTitleHeight: !monthTitleHeight ? this.setMonthTitleHeight : undefined,
+      translationValue: translationValue,
+      enableOutsideDays: enableOutsideDays,
+      firstVisibleMonthIndex: firstVisibleMonthIndex,
+      initialMonth: currentMonth,
+      isAnimating: isCalendarMonthGridAnimating,
+      modifiers: modifiers,
+      orientation: orientation,
+      numberOfMonths: numberOfMonths * scrollableMonthMultiple,
+      onDayClick: onDayClick,
+      onDayMouseEnter: onDayMouseEnter,
+      onDayMouseLeave: onDayMouseLeave,
+      onMonthChange: this.onMonthChange,
+      onYearChange: this.onYearChange,
+      renderMonthText: renderMonthText,
+      renderCalendarDay: renderCalendarDay,
+      renderDayContents: renderDayContents,
+      renderMonthElement: renderMonthElement,
+      onMonthTransitionEnd: this.updateStateAfterMonthTransition,
+      monthFormat: monthFormat,
+      daySize: daySize,
+      firstDayOfWeek: firstDayOfWeek,
+      isFocused: shouldFocusDate,
+      focusedDate: focusedDate,
+      phrases: phrases,
+      isRTL: isRTL,
+      dayAriaLabelFormat: dayAriaLabelFormat,
+      transitionDuration: transitionDuration,
+      verticalBorderSpacing: verticalBorderSpacing,
+      horizontalMonthPadding: horizontalMonthPadding
+    }), verticalScrollable && this.renderNavigation()), !isTouch && !hideKeyboardShortcutsPanel && _react["default"].createElement(_DayPickerKeyboardShortcuts["default"], {
+      block: this.isVertical() && !withPortal,
+      buttonLocation: keyboardShortcutButtonLocation,
+      showKeyboardShortcutsPanel: showKeyboardShortcuts,
+      openKeyboardShortcutsPanel: this.openKeyboardShortcutsPanel,
+      closeKeyboardShortcutsPanel: this.closeKeyboardShortcutsPanel,
+      phrases: phrases,
+      renderKeyboardShortcutsButton: renderKeyboardShortcutsButton
+    }))), (calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo));
+  };
 
   return DayPicker;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -13095,6 +11829,7 @@ var _default = {
   // input related props
   id: _propTypes["default"].string.isRequired,
   placeholder: _propTypes["default"].string,
+  ariaLabel: _propTypes["default"].string,
   disabled: _propTypes["default"].bool,
   required: _propTypes["default"].bool,
   readOnly: _propTypes["default"].bool,
@@ -13248,31 +11983,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   enableOutsideDays: false,
   firstVisibleMonthIndex: 0,
@@ -13282,36 +12003,12 @@ var defaultProps = {
   numberOfMonths: 1,
   modifiers: {},
   orientation: _constants.HORIZONTAL_ORIENTATION,
-  onDayClick: function () {
-    function onDayClick() {}
-
-    return onDayClick;
-  }(),
-  onDayMouseEnter: function () {
-    function onDayMouseEnter() {}
-
-    return onDayMouseEnter;
-  }(),
-  onDayMouseLeave: function () {
-    function onDayMouseLeave() {}
-
-    return onDayMouseLeave;
-  }(),
-  onMonthChange: function () {
-    function onMonthChange() {}
-
-    return onMonthChange;
-  }(),
-  onYearChange: function () {
-    function onYearChange() {}
-
-    return onYearChange;
-  }(),
-  onMonthTransitionEnd: function () {
-    function onMonthTransitionEnd() {}
-
-    return onMonthTransitionEnd;
-  }(),
+  onDayClick: function onDayClick() {},
+  onDayMouseEnter: function onDayMouseEnter() {},
+  onDayMouseLeave: function onDayMouseLeave() {},
+  onMonthChange: function onMonthChange() {},
+  onYearChange: function onYearChange() {},
+  onMonthTransitionEnd: function onMonthTransitionEnd() {},
   renderMonthText: null,
   renderCalendarDay: undefined,
   renderDayContents: null,
@@ -13348,287 +12045,233 @@ function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
 var CalendarMonthGrid =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(CalendarMonthGrid, _ref);
+  _inheritsLoose(CalendarMonthGrid, _ref);
 
-  _createClass(CalendarMonthGrid, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = CalendarMonthGrid.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function CalendarMonthGrid(props) {
     var _this;
 
-    _classCallCheck(this, CalendarMonthGrid);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CalendarMonthGrid).call(this, props));
+    _this = _ref.call(this, props) || this;
     var withoutTransitionMonths = props.orientation === _constants.VERTICAL_SCROLLABLE;
     _this.state = {
       months: getMonths(props.initialMonth, props.numberOfMonths, withoutTransitionMonths)
     };
     _this.isTransitionEndSupported = (0, _isTransitionEndSupported["default"])();
-    _this.onTransitionEnd = _this.onTransitionEnd.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onTransitionEnd = _this.onTransitionEnd.bind(_assertThisInitialized(_this));
+    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
     _this.locale = _moment["default"].locale();
-    _this.onMonthSelect = _this.onMonthSelect.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onYearSelect = _this.onYearSelect.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onMonthSelect = _this.onMonthSelect.bind(_assertThisInitialized(_this));
+    _this.onYearSelect = _this.onYearSelect.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(CalendarMonthGrid, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.removeEventListener = (0, _consolidatedEvents.addEventListener)(this.container, 'transitionend', this.onTransitionEnd);
-      }
+  _proto.componentDidMount = function componentDidMount() {
+    this.removeEventListener = (0, _consolidatedEvents.addEventListener)(this.container, 'transitionend', this.onTransitionEnd);
+  };
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var _this2 = this;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var _this2 = this;
 
-        var initialMonth = nextProps.initialMonth,
-            numberOfMonths = nextProps.numberOfMonths,
-            orientation = nextProps.orientation;
-        var months = this.state.months;
-        var _this$props = this.props,
-            prevInitialMonth = _this$props.initialMonth,
-            prevNumberOfMonths = _this$props.numberOfMonths;
-        var hasMonthChanged = !prevInitialMonth.isSame(initialMonth, 'month');
-        var hasNumberOfMonthsChanged = prevNumberOfMonths !== numberOfMonths;
-        var newMonths = months;
+    var initialMonth = nextProps.initialMonth,
+        numberOfMonths = nextProps.numberOfMonths,
+        orientation = nextProps.orientation;
+    var months = this.state.months;
+    var _this$props = this.props,
+        prevInitialMonth = _this$props.initialMonth,
+        prevNumberOfMonths = _this$props.numberOfMonths;
+    var hasMonthChanged = !prevInitialMonth.isSame(initialMonth, 'month');
+    var hasNumberOfMonthsChanged = prevNumberOfMonths !== numberOfMonths;
+    var newMonths = months;
 
-        if (hasMonthChanged && !hasNumberOfMonthsChanged) {
-          if ((0, _isNextMonth["default"])(prevInitialMonth, initialMonth)) {
-            newMonths = months.slice(1);
-            newMonths.push(months[months.length - 1].clone().add(1, 'month'));
-          } else if ((0, _isPrevMonth["default"])(prevInitialMonth, initialMonth)) {
-            newMonths = months.slice(0, months.length - 1);
-            newMonths.unshift(months[0].clone().subtract(1, 'month'));
-          } else {
-            var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-            newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
-          }
-        }
-
-        if (hasNumberOfMonthsChanged) {
-          var _withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-
-          newMonths = getMonths(initialMonth, numberOfMonths, _withoutTransitionMonths);
-        }
-
-        var momentLocale = _moment["default"].locale();
-
-        if (this.locale !== momentLocale) {
-          this.locale = momentLocale;
-          newMonths = newMonths.map(function (m) {
-            return m.locale(_this2.locale);
-          });
-        }
-
-        this.setState({
-          months: newMonths
-        });
-      }
-
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentDidUpdate",
-    value: function () {
-      function componentDidUpdate() {
-        var _this$props2 = this.props,
-            isAnimating = _this$props2.isAnimating,
-            transitionDuration = _this$props2.transitionDuration,
-            onMonthTransitionEnd = _this$props2.onMonthTransitionEnd; // For IE9, immediately call onMonthTransitionEnd instead of
-        // waiting for the animation to complete. Similarly, if transitionDuration
-        // is set to 0, also immediately invoke the onMonthTransitionEnd callback
-
-        if ((!this.isTransitionEndSupported || !transitionDuration) && isAnimating) {
-          onMonthTransitionEnd();
-        }
-      }
-
-      return componentDidUpdate;
-    }()
-  }, {
-    key: "componentWillUnmount",
-    value: function () {
-      function componentWillUnmount() {
-        if (this.removeEventListener) this.removeEventListener();
-      }
-
-      return componentWillUnmount;
-    }()
-  }, {
-    key: "onTransitionEnd",
-    value: function () {
-      function onTransitionEnd() {
-        var onMonthTransitionEnd = this.props.onMonthTransitionEnd;
-        onMonthTransitionEnd();
-      }
-
-      return onTransitionEnd;
-    }()
-  }, {
-    key: "onMonthSelect",
-    value: function () {
-      function onMonthSelect(currentMonth, newMonthVal) {
-        var newMonth = currentMonth.clone();
-        var _this$props3 = this.props,
-            onMonthChange = _this$props3.onMonthChange,
-            orientation = _this$props3.orientation;
-        var months = this.state.months;
+    if (hasMonthChanged && !hasNumberOfMonthsChanged) {
+      if ((0, _isNextMonth["default"])(prevInitialMonth, initialMonth)) {
+        newMonths = months.slice(1);
+        newMonths.push(months[months.length - 1].clone().add(1, 'month'));
+      } else if ((0, _isPrevMonth["default"])(prevInitialMonth, initialMonth)) {
+        newMonths = months.slice(0, months.length - 1);
+        newMonths.unshift(months[0].clone().subtract(1, 'month'));
+      } else {
         var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var initialMonthSubtraction = months.indexOf(currentMonth);
-
-        if (!withoutTransitionMonths) {
-          initialMonthSubtraction -= 1;
-        }
-
-        newMonth.set('month', newMonthVal).subtract(initialMonthSubtraction, 'months');
-        onMonthChange(newMonth);
+        newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
       }
+    }
 
-      return onMonthSelect;
-    }()
-  }, {
-    key: "onYearSelect",
-    value: function () {
-      function onYearSelect(currentMonth, newYearVal) {
-        var newMonth = currentMonth.clone();
-        var _this$props4 = this.props,
-            onYearChange = _this$props4.onYearChange,
-            orientation = _this$props4.orientation;
-        var months = this.state.months;
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var initialMonthSubtraction = months.indexOf(currentMonth);
+    if (hasNumberOfMonthsChanged) {
+      var _withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
 
-        if (!withoutTransitionMonths) {
-          initialMonthSubtraction -= 1;
-        }
+      newMonths = getMonths(initialMonth, numberOfMonths, _withoutTransitionMonths);
+    }
 
-        newMonth.set('year', newYearVal).subtract(initialMonthSubtraction, 'months');
-        onYearChange(newMonth);
-      }
+    var momentLocale = _moment["default"].locale();
 
-      return onYearSelect;
-    }()
-  }, {
-    key: "setContainerRef",
-    value: function () {
-      function setContainerRef(ref) {
-        this.container = ref;
-      }
+    if (this.locale !== momentLocale) {
+      this.locale = momentLocale;
+      newMonths = newMonths.map(function (m) {
+        return m.locale(_this2.locale);
+      });
+    }
 
-      return setContainerRef;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this3 = this;
+    this.setState({
+      months: newMonths
+    });
+  };
 
-        var _this$props5 = this.props,
-            enableOutsideDays = _this$props5.enableOutsideDays,
-            firstVisibleMonthIndex = _this$props5.firstVisibleMonthIndex,
-            horizontalMonthPadding = _this$props5.horizontalMonthPadding,
-            isAnimating = _this$props5.isAnimating,
-            modifiers = _this$props5.modifiers,
-            numberOfMonths = _this$props5.numberOfMonths,
-            monthFormat = _this$props5.monthFormat,
-            orientation = _this$props5.orientation,
-            translationValue = _this$props5.translationValue,
-            daySize = _this$props5.daySize,
-            onDayMouseEnter = _this$props5.onDayMouseEnter,
-            onDayMouseLeave = _this$props5.onDayMouseLeave,
-            onDayClick = _this$props5.onDayClick,
-            renderMonthText = _this$props5.renderMonthText,
-            renderCalendarDay = _this$props5.renderCalendarDay,
-            renderDayContents = _this$props5.renderDayContents,
-            renderMonthElement = _this$props5.renderMonthElement,
-            onMonthTransitionEnd = _this$props5.onMonthTransitionEnd,
-            firstDayOfWeek = _this$props5.firstDayOfWeek,
-            focusedDate = _this$props5.focusedDate,
-            isFocused = _this$props5.isFocused,
-            isRTL = _this$props5.isRTL,
-            styles = _this$props5.styles,
-            phrases = _this$props5.phrases,
-            dayAriaLabelFormat = _this$props5.dayAriaLabelFormat,
-            transitionDuration = _this$props5.transitionDuration,
-            verticalBorderSpacing = _this$props5.verticalBorderSpacing,
-            setMonthTitleHeight = _this$props5.setMonthTitleHeight;
-        var months = this.state.months;
-        var isVertical = orientation === _constants.VERTICAL_ORIENTATION;
-        var isVerticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-        var isHorizontal = orientation === _constants.HORIZONTAL_ORIENTATION;
-        var calendarMonthWidth = (0, _getCalendarMonthWidth["default"])(daySize, horizontalMonthPadding);
-        var width = isVertical || isVerticalScrollable ? calendarMonthWidth : (numberOfMonths + 2) * calendarMonthWidth;
-        var transformType = isVertical || isVerticalScrollable ? 'translateY' : 'translateX';
-        var transformValue = "".concat(transformType, "(").concat(translationValue, "px)");
-        return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonthGrid, isHorizontal && styles.CalendarMonthGrid__horizontal, isVertical && styles.CalendarMonthGrid__vertical, isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable, isAnimating && styles.CalendarMonthGrid__animating, isAnimating && transitionDuration && {
-          transition: "transform ".concat(transitionDuration, "ms ease-in-out")
-        }, _objectSpread({}, (0, _getTransformStyles["default"])(transformValue), {
-          width: width
-        })), {
-          ref: this.setContainerRef,
-          onTransitionEnd: onMonthTransitionEnd
-        }), months.map(function (month, i) {
-          var isVisible = i >= firstVisibleMonthIndex && i < firstVisibleMonthIndex + numberOfMonths;
-          var hideForAnimation = i === 0 && !isVisible;
-          var showForAnimation = i === 0 && isAnimating && isVisible;
-          var monthString = (0, _toISOMonthString["default"])(month);
-          return _react["default"].createElement("div", _extends({
-            key: monthString
-          }, (0, _reactWithStyles.css)(isHorizontal && styles.CalendarMonthGrid_month__horizontal, hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation, showForAnimation && !isVertical && !isRTL && {
-            position: 'absolute',
-            left: -calendarMonthWidth
-          }, showForAnimation && !isVertical && isRTL && {
-            position: 'absolute',
-            right: 0
-          }, showForAnimation && isVertical && {
-            position: 'absolute',
-            top: -translationValue
-          }, !isVisible && !isAnimating && styles.CalendarMonthGrid_month__hidden)), _react["default"].createElement(_CalendarMonth["default"], {
-            month: month,
-            isVisible: isVisible,
-            enableOutsideDays: enableOutsideDays,
-            modifiers: modifiers[monthString],
-            monthFormat: monthFormat,
-            orientation: orientation,
-            onDayMouseEnter: onDayMouseEnter,
-            onDayMouseLeave: onDayMouseLeave,
-            onDayClick: onDayClick,
-            onMonthSelect: _this3.onMonthSelect,
-            onYearSelect: _this3.onYearSelect,
-            renderMonthText: renderMonthText,
-            renderCalendarDay: renderCalendarDay,
-            renderDayContents: renderDayContents,
-            renderMonthElement: renderMonthElement,
-            firstDayOfWeek: firstDayOfWeek,
-            daySize: daySize,
-            focusedDate: isVisible ? focusedDate : null,
-            isFocused: isFocused,
-            phrases: phrases,
-            setMonthTitleHeight: setMonthTitleHeight,
-            dayAriaLabelFormat: dayAriaLabelFormat,
-            verticalBorderSpacing: verticalBorderSpacing,
-            horizontalMonthPadding: horizontalMonthPadding
-          }));
-        }));
-      }
+  _proto.componentDidUpdate = function componentDidUpdate() {
+    var _this$props2 = this.props,
+        isAnimating = _this$props2.isAnimating,
+        transitionDuration = _this$props2.transitionDuration,
+        onMonthTransitionEnd = _this$props2.onMonthTransitionEnd; // For IE9, immediately call onMonthTransitionEnd instead of
+    // waiting for the animation to complete. Similarly, if transitionDuration
+    // is set to 0, also immediately invoke the onMonthTransitionEnd callback
 
-      return render;
-    }()
-  }]);
+    if ((!this.isTransitionEndSupported || !transitionDuration) && isAnimating) {
+      onMonthTransitionEnd();
+    }
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    if (this.removeEventListener) this.removeEventListener();
+  };
+
+  _proto.onTransitionEnd = function onTransitionEnd() {
+    var onMonthTransitionEnd = this.props.onMonthTransitionEnd;
+    onMonthTransitionEnd();
+  };
+
+  _proto.onMonthSelect = function onMonthSelect(currentMonth, newMonthVal) {
+    var newMonth = currentMonth.clone();
+    var _this$props3 = this.props,
+        onMonthChange = _this$props3.onMonthChange,
+        orientation = _this$props3.orientation;
+    var months = this.state.months;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var initialMonthSubtraction = months.indexOf(currentMonth);
+
+    if (!withoutTransitionMonths) {
+      initialMonthSubtraction -= 1;
+    }
+
+    newMonth.set('month', newMonthVal).subtract(initialMonthSubtraction, 'months');
+    onMonthChange(newMonth);
+  };
+
+  _proto.onYearSelect = function onYearSelect(currentMonth, newYearVal) {
+    var newMonth = currentMonth.clone();
+    var _this$props4 = this.props,
+        onYearChange = _this$props4.onYearChange,
+        orientation = _this$props4.orientation;
+    var months = this.state.months;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var initialMonthSubtraction = months.indexOf(currentMonth);
+
+    if (!withoutTransitionMonths) {
+      initialMonthSubtraction -= 1;
+    }
+
+    newMonth.set('year', newYearVal).subtract(initialMonthSubtraction, 'months');
+    onYearChange(newMonth);
+  };
+
+  _proto.setContainerRef = function setContainerRef(ref) {
+    this.container = ref;
+  };
+
+  _proto.render = function render() {
+    var _this3 = this;
+
+    var _this$props5 = this.props,
+        enableOutsideDays = _this$props5.enableOutsideDays,
+        firstVisibleMonthIndex = _this$props5.firstVisibleMonthIndex,
+        horizontalMonthPadding = _this$props5.horizontalMonthPadding,
+        isAnimating = _this$props5.isAnimating,
+        modifiers = _this$props5.modifiers,
+        numberOfMonths = _this$props5.numberOfMonths,
+        monthFormat = _this$props5.monthFormat,
+        orientation = _this$props5.orientation,
+        translationValue = _this$props5.translationValue,
+        daySize = _this$props5.daySize,
+        onDayMouseEnter = _this$props5.onDayMouseEnter,
+        onDayMouseLeave = _this$props5.onDayMouseLeave,
+        onDayClick = _this$props5.onDayClick,
+        renderMonthText = _this$props5.renderMonthText,
+        renderCalendarDay = _this$props5.renderCalendarDay,
+        renderDayContents = _this$props5.renderDayContents,
+        renderMonthElement = _this$props5.renderMonthElement,
+        onMonthTransitionEnd = _this$props5.onMonthTransitionEnd,
+        firstDayOfWeek = _this$props5.firstDayOfWeek,
+        focusedDate = _this$props5.focusedDate,
+        isFocused = _this$props5.isFocused,
+        isRTL = _this$props5.isRTL,
+        styles = _this$props5.styles,
+        phrases = _this$props5.phrases,
+        dayAriaLabelFormat = _this$props5.dayAriaLabelFormat,
+        transitionDuration = _this$props5.transitionDuration,
+        verticalBorderSpacing = _this$props5.verticalBorderSpacing,
+        setMonthTitleHeight = _this$props5.setMonthTitleHeight;
+    var months = this.state.months;
+    var isVertical = orientation === _constants.VERTICAL_ORIENTATION;
+    var isVerticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
+    var isHorizontal = orientation === _constants.HORIZONTAL_ORIENTATION;
+    var calendarMonthWidth = (0, _getCalendarMonthWidth["default"])(daySize, horizontalMonthPadding);
+    var width = isVertical || isVerticalScrollable ? calendarMonthWidth : (numberOfMonths + 2) * calendarMonthWidth;
+    var transformType = isVertical || isVerticalScrollable ? 'translateY' : 'translateX';
+    var transformValue = "".concat(transformType, "(").concat(translationValue, "px)");
+    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonthGrid, isHorizontal && styles.CalendarMonthGrid__horizontal, isVertical && styles.CalendarMonthGrid__vertical, isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable, isAnimating && styles.CalendarMonthGrid__animating, isAnimating && transitionDuration && {
+      transition: "transform ".concat(transitionDuration, "ms ease-in-out")
+    }, _objectSpread({}, (0, _getTransformStyles["default"])(transformValue), {
+      width: width
+    })), {
+      ref: this.setContainerRef,
+      onTransitionEnd: onMonthTransitionEnd
+    }), months.map(function (month, i) {
+      var isVisible = i >= firstVisibleMonthIndex && i < firstVisibleMonthIndex + numberOfMonths;
+      var hideForAnimation = i === 0 && !isVisible;
+      var showForAnimation = i === 0 && isAnimating && isVisible;
+      var monthString = (0, _toISOMonthString["default"])(month);
+      return _react["default"].createElement("div", _extends({
+        key: monthString
+      }, (0, _reactWithStyles.css)(isHorizontal && styles.CalendarMonthGrid_month__horizontal, hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation, showForAnimation && !isVertical && !isRTL && {
+        position: 'absolute',
+        left: -calendarMonthWidth
+      }, showForAnimation && !isVertical && isRTL && {
+        position: 'absolute',
+        right: 0
+      }, showForAnimation && isVertical && {
+        position: 'absolute',
+        top: -translationValue
+      }, !isVisible && !isAnimating && styles.CalendarMonthGrid_month__hidden)), _react["default"].createElement(_CalendarMonth["default"], {
+        month: month,
+        isVisible: isVisible,
+        enableOutsideDays: enableOutsideDays,
+        modifiers: modifiers[monthString],
+        monthFormat: monthFormat,
+        orientation: orientation,
+        onDayMouseEnter: onDayMouseEnter,
+        onDayMouseLeave: onDayMouseLeave,
+        onDayClick: onDayClick,
+        onMonthSelect: _this3.onMonthSelect,
+        onYearSelect: _this3.onYearSelect,
+        renderMonthText: renderMonthText,
+        renderCalendarDay: renderCalendarDay,
+        renderDayContents: renderDayContents,
+        renderMonthElement: renderMonthElement,
+        firstDayOfWeek: firstDayOfWeek,
+        daySize: daySize,
+        focusedDate: isVisible ? focusedDate : null,
+        isFocused: isFocused,
+        phrases: phrases,
+        setMonthTitleHeight: setMonthTitleHeight,
+        dayAriaLabelFormat: dayAriaLabelFormat,
+        verticalBorderSpacing: verticalBorderSpacing,
+        horizontalMonthPadding: horizontalMonthPadding
+      }));
+    }));
+  };
 
   return CalendarMonthGrid;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -14108,9 +12751,11 @@ var _constants = __webpack_require__("Fv1B");
 
 var _DayPicker = _interopRequireDefault(__webpack_require__("Nloh"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _getPreviousMonthMemoLast = _interopRequireDefault(__webpack_require__("qkIn"));
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -14124,58 +12769,22 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var propTypes =  false ? undefined : {};
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   date: undefined,
   // TODO: use null
-  onDateChange: function () {
-    function onDateChange() {}
-
-    return onDateChange;
-  }(),
+  onDateChange: function onDateChange() {},
   focused: false,
-  onFocusChange: function () {
-    function onFocusChange() {}
-
-    return onFocusChange;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
+  onFocusChange: function onFocusChange() {},
+  onClose: function onClose() {},
   keepOpenOnDateSelect: false,
-  isOutsideRange: function () {
-    function isOutsideRange() {}
-
-    return isOutsideRange;
-  }(),
-  isDayBlocked: function () {
-    function isDayBlocked() {}
-
-    return isDayBlocked;
-  }(),
-  isDayHighlighted: function () {
-    function isDayHighlighted() {}
-
-    return isDayHighlighted;
-  }(),
+  isOutsideRange: function isOutsideRange() {},
+  isDayBlocked: function isDayBlocked() {},
+  isDayHighlighted: function isDayHighlighted() {},
   // DayPicker props
   renderMonthText: null,
   enableOutsideDays: false,
@@ -14193,44 +12802,20 @@ var defaultProps = {
   horizontalMonthPadding: 13,
   navPrev: null,
   navNext: null,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
-  onOutsideClick: function () {
-    function onOutsideClick() {}
-
-    return onOutsideClick;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
+  onOutsideClick: function onOutsideClick() {},
   renderCalendarDay: undefined,
   renderDayContents: null,
   renderCalendarInfo: null,
   renderMonthElement: null,
   calendarInfoPosition: _constants.INFO_POSITION_BOTTOM,
   // accessibility
-  onBlur: function () {
-    function onBlur() {}
-
-    return onBlur;
-  }(),
+  onBlur: function onBlur() {},
   isFocused: false,
   showKeyboardShortcuts: false,
-  onTab: function () {
-    function onTab() {}
-
-    return onTab;
-  }(),
-  onShiftTab: function () {
-    function onShiftTab() {}
-
-    return onShiftTab;
-  }(),
+  onTab: function onTab() {},
+  onShiftTab: function onShiftTab() {},
   // i18n
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
@@ -14242,98 +12827,51 @@ var defaultProps = {
 var DayPickerSingleDateController =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DayPickerSingleDateController, _ref);
+  _inheritsLoose(DayPickerSingleDateController, _ref);
 
-  _createClass(DayPickerSingleDateController, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DayPickerSingleDateController.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DayPickerSingleDateController(props) {
     var _this;
 
-    _classCallCheck(this, DayPickerSingleDateController);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DayPickerSingleDateController).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.isTouchDevice = false;
     _this.today = (0, _moment["default"])();
     _this.modifiers = {
-      today: function () {
-        function today(day) {
-          return _this.isToday(day);
-        }
-
-        return today;
-      }(),
-      blocked: function () {
-        function blocked(day) {
-          return _this.isBlocked(day);
-        }
-
-        return blocked;
-      }(),
-      'blocked-calendar': function () {
-        function blockedCalendar(day) {
-          return props.isDayBlocked(day);
-        }
-
-        return blockedCalendar;
-      }(),
-      'blocked-out-of-range': function () {
-        function blockedOutOfRange(day) {
-          return props.isOutsideRange(day);
-        }
-
-        return blockedOutOfRange;
-      }(),
-      'highlighted-calendar': function () {
-        function highlightedCalendar(day) {
-          return props.isDayHighlighted(day);
-        }
-
-        return highlightedCalendar;
-      }(),
-      valid: function () {
-        function valid(day) {
-          return !_this.isBlocked(day);
-        }
-
-        return valid;
-      }(),
-      hovered: function () {
-        function hovered(day) {
-          return _this.isHovered(day);
-        }
-
-        return hovered;
-      }(),
-      selected: function () {
-        function selected(day) {
-          return _this.isSelected(day);
-        }
-
-        return selected;
-      }(),
-      'first-day-of-week': function () {
-        function firstDayOfWeek(day) {
-          return _this.isFirstDayOfWeek(day);
-        }
-
-        return firstDayOfWeek;
-      }(),
-      'last-day-of-week': function () {
-        function lastDayOfWeek(day) {
-          return _this.isLastDayOfWeek(day);
-        }
-
-        return lastDayOfWeek;
-      }()
+      today: function today(day) {
+        return _this.isToday(day);
+      },
+      blocked: function blocked(day) {
+        return _this.isBlocked(day);
+      },
+      'blocked-calendar': function blockedCalendar(day) {
+        return props.isDayBlocked(day);
+      },
+      'blocked-out-of-range': function blockedOutOfRange(day) {
+        return props.isOutsideRange(day);
+      },
+      'highlighted-calendar': function highlightedCalendar(day) {
+        return props.isDayHighlighted(day);
+      },
+      valid: function valid(day) {
+        return !_this.isBlocked(day);
+      },
+      hovered: function hovered(day) {
+        return _this.isHovered(day);
+      },
+      selected: function selected(day) {
+        return _this.isSelected(day);
+      },
+      'first-day-of-week': function firstDayOfWeek(day) {
+        return _this.isFirstDayOfWeek(day);
+      },
+      'last-day-of-week': function lastDayOfWeek(day) {
+        return _this.isLastDayOfWeek(day);
+      }
     };
 
     var _this$getStateForNewM = _this.getStateForNewMonth(props),
@@ -14345,673 +12883,568 @@ function (_ref) {
       currentMonth: currentMonth,
       visibleDays: visibleDays
     };
-    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_this));
+    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_this));
+    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_this));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
+    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
+    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
+    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DayPickerSingleDateController, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.isTouchDevice = (0, _isTouchDevice["default"])();
-      }
+  _proto.componentDidMount = function componentDidMount() {
+    this.isTouchDevice = (0, _isTouchDevice["default"])();
+  };
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var _this2 = this;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var _this2 = this;
 
-        var date = nextProps.date,
-            focused = nextProps.focused,
-            isOutsideRange = nextProps.isOutsideRange,
-            isDayBlocked = nextProps.isDayBlocked,
-            isDayHighlighted = nextProps.isDayHighlighted,
-            initialVisibleMonth = nextProps.initialVisibleMonth,
-            numberOfMonths = nextProps.numberOfMonths,
-            enableOutsideDays = nextProps.enableOutsideDays;
-        var _this$props = this.props,
-            prevIsOutsideRange = _this$props.isOutsideRange,
-            prevIsDayBlocked = _this$props.isDayBlocked,
-            prevIsDayHighlighted = _this$props.isDayHighlighted,
-            prevNumberOfMonths = _this$props.numberOfMonths,
-            prevEnableOutsideDays = _this$props.enableOutsideDays,
-            prevInitialVisibleMonth = _this$props.initialVisibleMonth,
-            prevFocused = _this$props.focused,
-            prevDate = _this$props.date;
-        var visibleDays = this.state.visibleDays;
-        var recomputeOutsideRange = false;
-        var recomputeDayBlocked = false;
-        var recomputeDayHighlighted = false;
+    var date = nextProps.date,
+        focused = nextProps.focused,
+        isOutsideRange = nextProps.isOutsideRange,
+        isDayBlocked = nextProps.isDayBlocked,
+        isDayHighlighted = nextProps.isDayHighlighted,
+        initialVisibleMonth = nextProps.initialVisibleMonth,
+        numberOfMonths = nextProps.numberOfMonths,
+        enableOutsideDays = nextProps.enableOutsideDays;
+    var _this$props = this.props,
+        prevIsOutsideRange = _this$props.isOutsideRange,
+        prevIsDayBlocked = _this$props.isDayBlocked,
+        prevIsDayHighlighted = _this$props.isDayHighlighted,
+        prevNumberOfMonths = _this$props.numberOfMonths,
+        prevEnableOutsideDays = _this$props.enableOutsideDays,
+        prevInitialVisibleMonth = _this$props.initialVisibleMonth,
+        prevFocused = _this$props.focused,
+        prevDate = _this$props.date;
+    var visibleDays = this.state.visibleDays;
+    var recomputeOutsideRange = false;
+    var recomputeDayBlocked = false;
+    var recomputeDayHighlighted = false;
 
-        if (isOutsideRange !== prevIsOutsideRange) {
-          this.modifiers['blocked-out-of-range'] = function (day) {
-            return isOutsideRange(day);
-          };
+    if (isOutsideRange !== prevIsOutsideRange) {
+      this.modifiers['blocked-out-of-range'] = function (day) {
+        return isOutsideRange(day);
+      };
 
-          recomputeOutsideRange = true;
-        }
+      recomputeOutsideRange = true;
+    }
 
-        if (isDayBlocked !== prevIsDayBlocked) {
-          this.modifiers['blocked-calendar'] = function (day) {
-            return isDayBlocked(day);
-          };
+    if (isDayBlocked !== prevIsDayBlocked) {
+      this.modifiers['blocked-calendar'] = function (day) {
+        return isDayBlocked(day);
+      };
 
-          recomputeDayBlocked = true;
-        }
+      recomputeDayBlocked = true;
+    }
 
-        if (isDayHighlighted !== prevIsDayHighlighted) {
-          this.modifiers['highlighted-calendar'] = function (day) {
-            return isDayHighlighted(day);
-          };
+    if (isDayHighlighted !== prevIsDayHighlighted) {
+      this.modifiers['highlighted-calendar'] = function (day) {
+        return isDayHighlighted(day);
+      };
 
-          recomputeDayHighlighted = true;
-        }
+      recomputeDayHighlighted = true;
+    }
 
-        var recomputePropModifiers = recomputeOutsideRange || recomputeDayBlocked || recomputeDayHighlighted;
+    var recomputePropModifiers = recomputeOutsideRange || recomputeDayBlocked || recomputeDayHighlighted;
 
-        if (numberOfMonths !== prevNumberOfMonths || enableOutsideDays !== prevEnableOutsideDays || initialVisibleMonth !== prevInitialVisibleMonth && !prevFocused && focused) {
-          var newMonthState = this.getStateForNewMonth(nextProps);
-          var currentMonth = newMonthState.currentMonth;
-          visibleDays = newMonthState.visibleDays;
-          this.setState({
-            currentMonth: currentMonth,
-            visibleDays: visibleDays
-          });
-        }
+    if (numberOfMonths !== prevNumberOfMonths || enableOutsideDays !== prevEnableOutsideDays || initialVisibleMonth !== prevInitialVisibleMonth && !prevFocused && focused) {
+      var newMonthState = this.getStateForNewMonth(nextProps);
+      var currentMonth = newMonthState.currentMonth;
+      visibleDays = newMonthState.visibleDays;
+      this.setState({
+        currentMonth: currentMonth,
+        visibleDays: visibleDays
+      });
+    }
 
-        var didDateChange = date !== prevDate;
-        var didFocusChange = focused !== prevFocused;
-        var modifiers = {};
+    var didDateChange = date !== prevDate;
+    var didFocusChange = focused !== prevFocused;
+    var modifiers = {};
 
-        if (didDateChange) {
-          modifiers = this.deleteModifier(modifiers, prevDate, 'selected');
-          modifiers = this.addModifier(modifiers, date, 'selected');
-        }
+    if (didDateChange) {
+      modifiers = this.deleteModifier(modifiers, prevDate, 'selected');
+      modifiers = this.addModifier(modifiers, date, 'selected');
+    }
 
-        if (didFocusChange || recomputePropModifiers) {
-          (0, _object["default"])(visibleDays).forEach(function (days) {
-            Object.keys(days).forEach(function (day) {
-              var momentObj = (0, _moment["default"])(day);
+    if (didFocusChange || recomputePropModifiers) {
+      (0, _object["default"])(visibleDays).forEach(function (days) {
+        Object.keys(days).forEach(function (day) {
+          var momentObj = (0, _getPooledMoment["default"])(day);
 
-              if (_this2.isBlocked(momentObj)) {
-                modifiers = _this2.addModifier(modifiers, momentObj, 'blocked');
-              } else {
-                modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked');
-              }
-
-              if (didFocusChange || recomputeOutsideRange) {
-                if (isOutsideRange(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-out-of-range');
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-out-of-range');
-                }
-              }
-
-              if (didFocusChange || recomputeDayBlocked) {
-                if (isDayBlocked(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-calendar');
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-calendar');
-                }
-              }
-
-              if (didFocusChange || recomputeDayHighlighted) {
-                if (isDayHighlighted(momentObj)) {
-                  modifiers = _this2.addModifier(modifiers, momentObj, 'highlighted-calendar');
-                } else {
-                  modifiers = _this2.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
-                }
-              }
-            });
-          });
-        }
-
-        var today = (0, _moment["default"])();
-
-        if (!(0, _isSameDay["default"])(this.today, today)) {
-          modifiers = this.deleteModifier(modifiers, this.today, 'today');
-          modifiers = this.addModifier(modifiers, today, 'today');
-          this.today = today;
-        }
-
-        if (Object.keys(modifiers).length > 0) {
-          this.setState({
-            visibleDays: _objectSpread({}, visibleDays, modifiers)
-          });
-        }
-      }
-
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentWillUpdate",
-    value: function () {
-      function componentWillUpdate() {
-        this.today = (0, _moment["default"])();
-      }
-
-      return componentWillUpdate;
-    }()
-  }, {
-    key: "onDayClick",
-    value: function () {
-      function onDayClick(day, e) {
-        if (e) e.preventDefault();
-        if (this.isBlocked(day)) return;
-        var _this$props2 = this.props,
-            onDateChange = _this$props2.onDateChange,
-            keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
-            onFocusChange = _this$props2.onFocusChange,
-            onClose = _this$props2.onClose;
-        onDateChange(day);
-
-        if (!keepOpenOnDateSelect) {
-          onFocusChange({
-            focused: false
-          });
-          onClose({
-            date: day
-          });
-        }
-      }
-
-      return onDayClick;
-    }()
-  }, {
-    key: "onDayMouseEnter",
-    value: function () {
-      function onDayMouseEnter(day) {
-        if (this.isTouchDevice) return;
-        var _this$state = this.state,
-            hoverDate = _this$state.hoverDate,
-            visibleDays = _this$state.visibleDays;
-        var modifiers = this.deleteModifier({}, hoverDate, 'hovered');
-        modifiers = this.addModifier(modifiers, day, 'hovered');
-        this.setState({
-          hoverDate: day,
-          visibleDays: _objectSpread({}, visibleDays, modifiers)
-        });
-      }
-
-      return onDayMouseEnter;
-    }()
-  }, {
-    key: "onDayMouseLeave",
-    value: function () {
-      function onDayMouseLeave() {
-        var _this$state2 = this.state,
-            hoverDate = _this$state2.hoverDate,
-            visibleDays = _this$state2.visibleDays;
-        if (this.isTouchDevice || !hoverDate) return;
-        var modifiers = this.deleteModifier({}, hoverDate, 'hovered');
-        this.setState({
-          hoverDate: null,
-          visibleDays: _objectSpread({}, visibleDays, modifiers)
-        });
-      }
-
-      return onDayMouseLeave;
-    }()
-  }, {
-    key: "onPrevMonthClick",
-    value: function () {
-      function onPrevMonthClick() {
-        var _this$props3 = this.props,
-            onPrevMonthClick = _this$props3.onPrevMonthClick,
-            numberOfMonths = _this$props3.numberOfMonths,
-            enableOutsideDays = _this$props3.enableOutsideDays;
-        var _this$state3 = this.state,
-            currentMonth = _this$state3.currentMonth,
-            visibleDays = _this$state3.visibleDays;
-        var newVisibleDays = {};
-        Object.keys(visibleDays).sort().slice(0, numberOfMonths + 1).forEach(function (month) {
-          newVisibleDays[month] = visibleDays[month];
-        });
-        var prevMonth = currentMonth.clone().subtract(1, 'month');
-        var prevMonthVisibleDays = (0, _getVisibleDays["default"])(prevMonth, 1, enableOutsideDays);
-        this.setState({
-          currentMonth: prevMonth,
-          visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
-        }, function () {
-          onPrevMonthClick(prevMonth.clone());
-        });
-      }
-
-      return onPrevMonthClick;
-    }()
-  }, {
-    key: "onNextMonthClick",
-    value: function () {
-      function onNextMonthClick() {
-        var _this$props4 = this.props,
-            onNextMonthClick = _this$props4.onNextMonthClick,
-            numberOfMonths = _this$props4.numberOfMonths,
-            enableOutsideDays = _this$props4.enableOutsideDays;
-        var _this$state4 = this.state,
-            currentMonth = _this$state4.currentMonth,
-            visibleDays = _this$state4.visibleDays;
-        var newVisibleDays = {};
-        Object.keys(visibleDays).sort().slice(1).forEach(function (month) {
-          newVisibleDays[month] = visibleDays[month];
-        });
-        var nextMonth = currentMonth.clone().add(numberOfMonths, 'month');
-        var nextMonthVisibleDays = (0, _getVisibleDays["default"])(nextMonth, 1, enableOutsideDays);
-        var newCurrentMonth = currentMonth.clone().add(1, 'month');
-        this.setState({
-          currentMonth: newCurrentMonth,
-          visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
-        }, function () {
-          onNextMonthClick(newCurrentMonth.clone());
-        });
-      }
-
-      return onNextMonthClick;
-    }()
-  }, {
-    key: "onMonthChange",
-    value: function () {
-      function onMonthChange(newMonth) {
-        var _this$props5 = this.props,
-            numberOfMonths = _this$props5.numberOfMonths,
-            enableOutsideDays = _this$props5.enableOutsideDays,
-            orientation = _this$props5.orientation;
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
-        this.setState({
-          currentMonth: newMonth.clone(),
-          visibleDays: this.getModifiers(newVisibleDays)
-        });
-      }
-
-      return onMonthChange;
-    }()
-  }, {
-    key: "onYearChange",
-    value: function () {
-      function onYearChange(newMonth) {
-        var _this$props6 = this.props,
-            numberOfMonths = _this$props6.numberOfMonths,
-            enableOutsideDays = _this$props6.enableOutsideDays,
-            orientation = _this$props6.orientation;
-        var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
-        var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
-        this.setState({
-          currentMonth: newMonth.clone(),
-          visibleDays: this.getModifiers(newVisibleDays)
-        });
-      }
-
-      return onYearChange;
-    }()
-  }, {
-    key: "getFirstFocusableDay",
-    value: function () {
-      function getFirstFocusableDay(newMonth) {
-        var _this3 = this;
-
-        var _this$props7 = this.props,
-            date = _this$props7.date,
-            numberOfMonths = _this$props7.numberOfMonths;
-        var focusedDate = newMonth.clone().startOf('month');
-
-        if (date) {
-          focusedDate = date.clone();
-        }
-
-        if (this.isBlocked(focusedDate)) {
-          var days = [];
-          var lastVisibleDay = newMonth.clone().add(numberOfMonths - 1, 'months').endOf('month');
-          var currentDay = focusedDate.clone();
-
-          while (!(0, _isAfterDay["default"])(currentDay, lastVisibleDay)) {
-            currentDay = currentDay.clone().add(1, 'day');
-            days.push(currentDay);
+          if (_this2.isBlocked(momentObj)) {
+            modifiers = _this2.addModifier(modifiers, momentObj, 'blocked');
+          } else {
+            modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked');
           }
 
-          var viableDays = days.filter(function (day) {
-            return !_this3.isBlocked(day) && (0, _isAfterDay["default"])(day, focusedDate);
-          });
-
-          if (viableDays.length > 0) {
-            var _viableDays = _slicedToArray(viableDays, 1);
-
-            focusedDate = _viableDays[0];
+          if (didFocusChange || recomputeOutsideRange) {
+            if (isOutsideRange(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-out-of-range');
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-out-of-range');
+            }
           }
-        }
 
-        return focusedDate;
-      }
+          if (didFocusChange || recomputeDayBlocked) {
+            if (isDayBlocked(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'blocked-calendar');
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'blocked-calendar');
+            }
+          }
 
-      return getFirstFocusableDay;
-    }()
-  }, {
-    key: "getModifiers",
-    value: function () {
-      function getModifiers(visibleDays) {
-        var _this4 = this;
-
-        var modifiers = {};
-        Object.keys(visibleDays).forEach(function (month) {
-          modifiers[month] = {};
-          visibleDays[month].forEach(function (day) {
-            modifiers[month][(0, _toISODateString["default"])(day)] = _this4.getModifiersForDay(day);
-          });
+          if (didFocusChange || recomputeDayHighlighted) {
+            if (isDayHighlighted(momentObj)) {
+              modifiers = _this2.addModifier(modifiers, momentObj, 'highlighted-calendar');
+            } else {
+              modifiers = _this2.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
+            }
+          }
         });
-        return modifiers;
+      });
+    }
+
+    var today = (0, _moment["default"])();
+
+    if (!(0, _isSameDay["default"])(this.today, today)) {
+      modifiers = this.deleteModifier(modifiers, this.today, 'today');
+      modifiers = this.addModifier(modifiers, today, 'today');
+      this.today = today;
+    }
+
+    if (Object.keys(modifiers).length > 0) {
+      this.setState({
+        visibleDays: _objectSpread({}, visibleDays, modifiers)
+      });
+    }
+  };
+
+  _proto.componentWillUpdate = function componentWillUpdate() {
+    this.today = (0, _moment["default"])();
+  };
+
+  _proto.onDayClick = function onDayClick(day, e) {
+    if (e) e.preventDefault();
+    if (this.isBlocked(day)) return;
+    var _this$props2 = this.props,
+        onDateChange = _this$props2.onDateChange,
+        keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
+        onFocusChange = _this$props2.onFocusChange,
+        onClose = _this$props2.onClose;
+    onDateChange(day);
+
+    if (!keepOpenOnDateSelect) {
+      onFocusChange({
+        focused: false
+      });
+      onClose({
+        date: day
+      });
+    }
+  };
+
+  _proto.onDayMouseEnter = function onDayMouseEnter(day) {
+    if (this.isTouchDevice) return;
+    var _this$state = this.state,
+        hoverDate = _this$state.hoverDate,
+        visibleDays = _this$state.visibleDays;
+    var modifiers = this.deleteModifier({}, hoverDate, 'hovered');
+    modifiers = this.addModifier(modifiers, day, 'hovered');
+    this.setState({
+      hoverDate: day,
+      visibleDays: _objectSpread({}, visibleDays, modifiers)
+    });
+  };
+
+  _proto.onDayMouseLeave = function onDayMouseLeave() {
+    var _this$state2 = this.state,
+        hoverDate = _this$state2.hoverDate,
+        visibleDays = _this$state2.visibleDays;
+    if (this.isTouchDevice || !hoverDate) return;
+    var modifiers = this.deleteModifier({}, hoverDate, 'hovered');
+    this.setState({
+      hoverDate: null,
+      visibleDays: _objectSpread({}, visibleDays, modifiers)
+    });
+  };
+
+  _proto.onPrevMonthClick = function onPrevMonthClick() {
+    var _this$props3 = this.props,
+        onPrevMonthClick = _this$props3.onPrevMonthClick,
+        numberOfMonths = _this$props3.numberOfMonths,
+        enableOutsideDays = _this$props3.enableOutsideDays;
+    var _this$state3 = this.state,
+        currentMonth = _this$state3.currentMonth,
+        visibleDays = _this$state3.visibleDays;
+    var newVisibleDays = {};
+    Object.keys(visibleDays).sort().slice(0, numberOfMonths + 1).forEach(function (month) {
+      newVisibleDays[month] = visibleDays[month];
+    });
+    var prevMonth = currentMonth.clone().subtract(1, 'month');
+    var prevMonthVisibleDays = (0, _getVisibleDays["default"])(prevMonth, 1, enableOutsideDays);
+    this.setState({
+      currentMonth: prevMonth,
+      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
+    }, function () {
+      onPrevMonthClick(prevMonth.clone());
+    });
+  };
+
+  _proto.onNextMonthClick = function onNextMonthClick() {
+    var _this$props4 = this.props,
+        onNextMonthClick = _this$props4.onNextMonthClick,
+        numberOfMonths = _this$props4.numberOfMonths,
+        enableOutsideDays = _this$props4.enableOutsideDays;
+    var _this$state4 = this.state,
+        currentMonth = _this$state4.currentMonth,
+        visibleDays = _this$state4.visibleDays;
+    var newVisibleDays = {};
+    Object.keys(visibleDays).sort().slice(1).forEach(function (month) {
+      newVisibleDays[month] = visibleDays[month];
+    });
+    var nextMonth = currentMonth.clone().add(numberOfMonths, 'month');
+    var nextMonthVisibleDays = (0, _getVisibleDays["default"])(nextMonth, 1, enableOutsideDays);
+    var newCurrentMonth = currentMonth.clone().add(1, 'month');
+    this.setState({
+      currentMonth: newCurrentMonth,
+      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
+    }, function () {
+      onNextMonthClick(newCurrentMonth.clone());
+    });
+  };
+
+  _proto.onMonthChange = function onMonthChange(newMonth) {
+    var _this$props5 = this.props,
+        numberOfMonths = _this$props5.numberOfMonths,
+        enableOutsideDays = _this$props5.enableOutsideDays,
+        orientation = _this$props5.orientation;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
+    this.setState({
+      currentMonth: newMonth.clone(),
+      visibleDays: this.getModifiers(newVisibleDays)
+    });
+  };
+
+  _proto.onYearChange = function onYearChange(newMonth) {
+    var _this$props6 = this.props,
+        numberOfMonths = _this$props6.numberOfMonths,
+        enableOutsideDays = _this$props6.enableOutsideDays,
+        orientation = _this$props6.orientation;
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var newVisibleDays = (0, _getVisibleDays["default"])(newMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths);
+    this.setState({
+      currentMonth: newMonth.clone(),
+      visibleDays: this.getModifiers(newVisibleDays)
+    });
+  };
+
+  _proto.getFirstFocusableDay = function getFirstFocusableDay(newMonth) {
+    var _this3 = this;
+
+    var _this$props7 = this.props,
+        date = _this$props7.date,
+        numberOfMonths = _this$props7.numberOfMonths;
+    var focusedDate = newMonth.clone().startOf('month');
+
+    if (date) {
+      focusedDate = date.clone();
+    }
+
+    if (this.isBlocked(focusedDate)) {
+      var days = [];
+      var lastVisibleDay = newMonth.clone().add(numberOfMonths - 1, 'months').endOf('month');
+      var currentDay = focusedDate.clone();
+
+      while (!(0, _isAfterDay["default"])(currentDay, lastVisibleDay)) {
+        currentDay = currentDay.clone().add(1, 'day');
+        days.push(currentDay);
       }
 
-      return getModifiers;
-    }()
-  }, {
-    key: "getModifiersForDay",
-    value: function () {
-      function getModifiersForDay(day) {
-        var _this5 = this;
+      var viableDays = days.filter(function (day) {
+        return !_this3.isBlocked(day) && (0, _isAfterDay["default"])(day, focusedDate);
+      });
 
-        return new Set(Object.keys(this.modifiers).filter(function (modifier) {
-          return _this5.modifiers[modifier](day);
-        }));
+      if (viableDays.length > 0) {
+        var _viableDays = _slicedToArray(viableDays, 1);
+
+        focusedDate = _viableDays[0];
       }
+    }
 
-      return getModifiersForDay;
-    }()
-  }, {
-    key: "getStateForNewMonth",
-    value: function () {
-      function getStateForNewMonth(nextProps) {
-        var _this6 = this;
+    return focusedDate;
+  };
 
-        var initialVisibleMonth = nextProps.initialVisibleMonth,
-            date = nextProps.date,
-            numberOfMonths = nextProps.numberOfMonths,
-            enableOutsideDays = nextProps.enableOutsideDays;
-        var initialVisibleMonthThunk = initialVisibleMonth || (date ? function () {
-          return date;
-        } : function () {
-          return _this6.today;
-        });
-        var currentMonth = initialVisibleMonthThunk();
-        var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays));
-        return {
-          currentMonth: currentMonth,
-          visibleDays: visibleDays
-        };
-      }
+  _proto.getModifiers = function getModifiers(visibleDays) {
+    var _this4 = this;
 
-      return getStateForNewMonth;
-    }()
-  }, {
-    key: "addModifier",
-    value: function () {
-      function addModifier(updatedDays, day, modifier) {
-        var _this$props8 = this.props,
-            numberOfVisibleMonths = _this$props8.numberOfMonths,
-            enableOutsideDays = _this$props8.enableOutsideDays,
-            orientation = _this$props8.orientation;
-        var _this$state5 = this.state,
-            firstVisibleMonth = _this$state5.currentMonth,
-            visibleDays = _this$state5.visibleDays;
-        var currentMonth = firstVisibleMonth;
-        var numberOfMonths = numberOfVisibleMonths;
+    var modifiers = {};
+    Object.keys(visibleDays).forEach(function (month) {
+      modifiers[month] = {};
+      visibleDays[month].forEach(function (day) {
+        modifiers[month][(0, _toISODateString["default"])(day)] = _this4.getModifiersForDay(day);
+      });
+    });
+    return modifiers;
+  };
 
-        if (orientation === _constants.VERTICAL_SCROLLABLE) {
-          numberOfMonths = Object.keys(visibleDays).length;
-        } else {
-          currentMonth = currentMonth.clone().subtract(1, 'month');
-          numberOfMonths += 2;
-        }
+  _proto.getModifiersForDay = function getModifiersForDay(day) {
+    var _this5 = this;
 
-        if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-          return updatedDays;
-        }
+    return new Set(Object.keys(this.modifiers).filter(function (modifier) {
+      return _this5.modifiers[modifier](day);
+    }));
+  };
 
-        var iso = (0, _toISODateString["default"])(day);
+  _proto.getStateForNewMonth = function getStateForNewMonth(nextProps) {
+    var _this6 = this;
 
-        var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
+    var initialVisibleMonth = nextProps.initialVisibleMonth,
+        date = nextProps.date,
+        numberOfMonths = nextProps.numberOfMonths,
+        enableOutsideDays = nextProps.enableOutsideDays;
+    var initialVisibleMonthThunk = initialVisibleMonth || (date ? function () {
+      return date;
+    } : function () {
+      return _this6.today;
+    });
+    var currentMonth = initialVisibleMonthThunk();
+    var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays));
+    return {
+      currentMonth: currentMonth,
+      visibleDays: visibleDays
+    };
+  };
 
-        if (enableOutsideDays) {
-          var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-            return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-          });
-          updatedDaysAfterAddition = monthsToUpdate.reduce(function (days, monthIso) {
-            var month = updatedDays[monthIso] || visibleDays[monthIso];
-            var modifiers = new Set(month[iso]);
-            modifiers.add(modifier);
-            return _objectSpread({}, days, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-          }, updatedDaysAfterAddition);
-        } else {
-          var monthIso = (0, _toISOMonthString["default"])(day);
-          var month = updatedDays[monthIso] || visibleDays[monthIso];
+  _proto.addModifier = function addModifier(updatedDays, day, modifier) {
+    var _this$props8 = this.props,
+        numberOfVisibleMonths = _this$props8.numberOfMonths,
+        enableOutsideDays = _this$props8.enableOutsideDays,
+        orientation = _this$props8.orientation;
+    var _this$state5 = this.state,
+        firstVisibleMonth = _this$state5.currentMonth,
+        visibleDays = _this$state5.visibleDays;
+    var currentMonth = firstVisibleMonth;
+    var numberOfMonths = numberOfVisibleMonths;
+
+    if (orientation === _constants.VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.keys(visibleDays).length;
+    } else {
+      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+      numberOfMonths += 2;
+    }
+
+    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+      return updatedDays;
+    }
+
+    var iso = (0, _toISODateString["default"])(day);
+
+    var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
+
+    if (enableOutsideDays) {
+      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+      });
+      updatedDaysAfterAddition = monthsToUpdate.reduce(function (acc, monthIso) {
+        var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+        if (!month[iso] || !month[iso].has(modifier)) {
           var modifiers = new Set(month[iso]);
           modifiers.add(modifier);
-          updatedDaysAfterAddition = _objectSpread({}, updatedDaysAfterAddition, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
+          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
         }
 
-        return updatedDaysAfterAddition;
+        return acc;
+      }, updatedDaysAfterAddition);
+    } else {
+      var monthIso = (0, _toISOMonthString["default"])(day);
+      var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
+
+      if (!month[iso] || !month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers.add(modifier);
+        updatedDaysAfterAddition[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
       }
+    }
 
-      return addModifier;
-    }()
-  }, {
-    key: "deleteModifier",
-    value: function () {
-      function deleteModifier(updatedDays, day, modifier) {
-        var _this$props9 = this.props,
-            numberOfVisibleMonths = _this$props9.numberOfMonths,
-            enableOutsideDays = _this$props9.enableOutsideDays,
-            orientation = _this$props9.orientation;
-        var _this$state6 = this.state,
-            firstVisibleMonth = _this$state6.currentMonth,
-            visibleDays = _this$state6.visibleDays;
-        var currentMonth = firstVisibleMonth;
-        var numberOfMonths = numberOfVisibleMonths;
+    return updatedDaysAfterAddition;
+  };
 
-        if (orientation === _constants.VERTICAL_SCROLLABLE) {
-          numberOfMonths = Object.keys(visibleDays).length;
-        } else {
-          currentMonth = currentMonth.clone().subtract(1, 'month');
-          numberOfMonths += 2;
-        }
+  _proto.deleteModifier = function deleteModifier(updatedDays, day, modifier) {
+    var _this$props9 = this.props,
+        numberOfVisibleMonths = _this$props9.numberOfMonths,
+        enableOutsideDays = _this$props9.enableOutsideDays,
+        orientation = _this$props9.orientation;
+    var _this$state6 = this.state,
+        firstVisibleMonth = _this$state6.currentMonth,
+        visibleDays = _this$state6.visibleDays;
+    var currentMonth = firstVisibleMonth;
+    var numberOfMonths = numberOfVisibleMonths;
 
-        if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-          return updatedDays;
-        }
+    if (orientation === _constants.VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.keys(visibleDays).length;
+    } else {
+      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+      numberOfMonths += 2;
+    }
 
-        var iso = (0, _toISODateString["default"])(day);
+    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+      return updatedDays;
+    }
 
-        var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
+    var iso = (0, _toISODateString["default"])(day);
 
-        if (enableOutsideDays) {
-          var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-            return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-          });
-          updatedDaysAfterDeletion = monthsToUpdate.reduce(function (days, monthIso) {
-            var month = updatedDays[monthIso] || visibleDays[monthIso];
-            var modifiers = new Set(month[iso]);
-            modifiers["delete"](modifier);
-            return _objectSpread({}, days, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
-          }, updatedDaysAfterDeletion);
-        } else {
-          var monthIso = (0, _toISOMonthString["default"])(day);
-          var month = updatedDays[monthIso] || visibleDays[monthIso];
+    var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
+
+    if (enableOutsideDays) {
+      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+      });
+      updatedDaysAfterDeletion = monthsToUpdate.reduce(function (acc, monthIso) {
+        var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+        if (month[iso] && month[iso].has(modifier)) {
           var modifiers = new Set(month[iso]);
           modifiers["delete"](modifier);
-          updatedDaysAfterDeletion = _objectSpread({}, updatedDaysAfterDeletion, _defineProperty({}, monthIso, _objectSpread({}, month, _defineProperty({}, iso, modifiers))));
+          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
         }
 
-        return updatedDaysAfterDeletion;
+        return acc;
+      }, updatedDaysAfterDeletion);
+    } else {
+      var monthIso = (0, _toISOMonthString["default"])(day);
+      var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+      if (month[iso] && month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers["delete"](modifier);
+        updatedDaysAfterDeletion[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
       }
+    }
 
-      return deleteModifier;
-    }()
-  }, {
-    key: "isBlocked",
-    value: function () {
-      function isBlocked(day) {
-        var _this$props10 = this.props,
-            isDayBlocked = _this$props10.isDayBlocked,
-            isOutsideRange = _this$props10.isOutsideRange;
-        return isDayBlocked(day) || isOutsideRange(day);
-      }
+    return updatedDaysAfterDeletion;
+  };
 
-      return isBlocked;
-    }()
-  }, {
-    key: "isHovered",
-    value: function () {
-      function isHovered(day) {
-        var _ref2 = this.state || {},
-            hoverDate = _ref2.hoverDate;
+  _proto.isBlocked = function isBlocked(day) {
+    var _this$props10 = this.props,
+        isDayBlocked = _this$props10.isDayBlocked,
+        isOutsideRange = _this$props10.isOutsideRange;
+    return isDayBlocked(day) || isOutsideRange(day);
+  };
 
-        return (0, _isSameDay["default"])(day, hoverDate);
-      }
+  _proto.isHovered = function isHovered(day) {
+    var _ref2 = this.state || {},
+        hoverDate = _ref2.hoverDate;
 
-      return isHovered;
-    }()
-  }, {
-    key: "isSelected",
-    value: function () {
-      function isSelected(day) {
-        var date = this.props.date;
-        return (0, _isSameDay["default"])(day, date);
-      }
+    return (0, _isSameDay["default"])(day, hoverDate);
+  };
 
-      return isSelected;
-    }()
-  }, {
-    key: "isToday",
-    value: function () {
-      function isToday(day) {
-        return (0, _isSameDay["default"])(day, this.today);
-      }
+  _proto.isSelected = function isSelected(day) {
+    var date = this.props.date;
+    return (0, _isSameDay["default"])(day, date);
+  };
 
-      return isToday;
-    }()
-  }, {
-    key: "isFirstDayOfWeek",
-    value: function () {
-      function isFirstDayOfWeek(day) {
-        var firstDayOfWeek = this.props.firstDayOfWeek;
-        return day.day() === (firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek());
-      }
+  _proto.isToday = function isToday(day) {
+    return (0, _isSameDay["default"])(day, this.today);
+  };
 
-      return isFirstDayOfWeek;
-    }()
-  }, {
-    key: "isLastDayOfWeek",
-    value: function () {
-      function isLastDayOfWeek(day) {
-        var firstDayOfWeek = this.props.firstDayOfWeek;
-        return day.day() === ((firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek()) + 6) % 7;
-      }
+  _proto.isFirstDayOfWeek = function isFirstDayOfWeek(day) {
+    var firstDayOfWeek = this.props.firstDayOfWeek;
+    return day.day() === (firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek());
+  };
 
-      return isLastDayOfWeek;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props11 = this.props,
-            numberOfMonths = _this$props11.numberOfMonths,
-            orientation = _this$props11.orientation,
-            monthFormat = _this$props11.monthFormat,
-            renderMonthText = _this$props11.renderMonthText,
-            navPrev = _this$props11.navPrev,
-            navNext = _this$props11.navNext,
-            onOutsideClick = _this$props11.onOutsideClick,
-            onShiftTab = _this$props11.onShiftTab,
-            onTab = _this$props11.onTab,
-            withPortal = _this$props11.withPortal,
-            focused = _this$props11.focused,
-            enableOutsideDays = _this$props11.enableOutsideDays,
-            hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
-            daySize = _this$props11.daySize,
-            firstDayOfWeek = _this$props11.firstDayOfWeek,
-            renderCalendarDay = _this$props11.renderCalendarDay,
-            renderDayContents = _this$props11.renderDayContents,
-            renderCalendarInfo = _this$props11.renderCalendarInfo,
-            renderMonthElement = _this$props11.renderMonthElement,
-            calendarInfoPosition = _this$props11.calendarInfoPosition,
-            isFocused = _this$props11.isFocused,
-            isRTL = _this$props11.isRTL,
-            phrases = _this$props11.phrases,
-            dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
-            onBlur = _this$props11.onBlur,
-            showKeyboardShortcuts = _this$props11.showKeyboardShortcuts,
-            weekDayFormat = _this$props11.weekDayFormat,
-            verticalHeight = _this$props11.verticalHeight,
-            noBorder = _this$props11.noBorder,
-            transitionDuration = _this$props11.transitionDuration,
-            verticalBorderSpacing = _this$props11.verticalBorderSpacing,
-            horizontalMonthPadding = _this$props11.horizontalMonthPadding;
-        var _this$state7 = this.state,
-            currentMonth = _this$state7.currentMonth,
-            visibleDays = _this$state7.visibleDays;
-        return _react["default"].createElement(_DayPicker["default"], {
-          orientation: orientation,
-          enableOutsideDays: enableOutsideDays,
-          modifiers: visibleDays,
-          numberOfMonths: numberOfMonths,
-          onDayClick: this.onDayClick,
-          onDayMouseEnter: this.onDayMouseEnter,
-          onDayMouseLeave: this.onDayMouseLeave,
-          onPrevMonthClick: this.onPrevMonthClick,
-          onNextMonthClick: this.onNextMonthClick,
-          onMonthChange: this.onMonthChange,
-          onYearChange: this.onYearChange,
-          monthFormat: monthFormat,
-          withPortal: withPortal,
-          hidden: !focused,
-          hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
-          initialVisibleMonth: function () {
-            function initialVisibleMonth() {
-              return currentMonth;
-            }
+  _proto.isLastDayOfWeek = function isLastDayOfWeek(day) {
+    var firstDayOfWeek = this.props.firstDayOfWeek;
+    return day.day() === ((firstDayOfWeek || _moment["default"].localeData().firstDayOfWeek()) + 6) % 7;
+  };
 
-            return initialVisibleMonth;
-          }(),
-          firstDayOfWeek: firstDayOfWeek,
-          onOutsideClick: onOutsideClick,
-          navPrev: navPrev,
-          navNext: navNext,
-          renderMonthText: renderMonthText,
-          renderCalendarDay: renderCalendarDay,
-          renderDayContents: renderDayContents,
-          renderCalendarInfo: renderCalendarInfo,
-          renderMonthElement: renderMonthElement,
-          calendarInfoPosition: calendarInfoPosition,
-          isFocused: isFocused,
-          getFirstFocusableDay: this.getFirstFocusableDay,
-          onBlur: onBlur,
-          onTab: onTab,
-          onShiftTab: onShiftTab,
-          phrases: phrases,
-          daySize: daySize,
-          isRTL: isRTL,
-          showKeyboardShortcuts: showKeyboardShortcuts,
-          weekDayFormat: weekDayFormat,
-          dayAriaLabelFormat: dayAriaLabelFormat,
-          verticalHeight: verticalHeight,
-          noBorder: noBorder,
-          transitionDuration: transitionDuration,
-          verticalBorderSpacing: verticalBorderSpacing,
-          horizontalMonthPadding: horizontalMonthPadding
-        });
-      }
-
-      return render;
-    }()
-  }]);
+  _proto.render = function render() {
+    var _this$props11 = this.props,
+        numberOfMonths = _this$props11.numberOfMonths,
+        orientation = _this$props11.orientation,
+        monthFormat = _this$props11.monthFormat,
+        renderMonthText = _this$props11.renderMonthText,
+        navPrev = _this$props11.navPrev,
+        navNext = _this$props11.navNext,
+        onOutsideClick = _this$props11.onOutsideClick,
+        onShiftTab = _this$props11.onShiftTab,
+        onTab = _this$props11.onTab,
+        withPortal = _this$props11.withPortal,
+        focused = _this$props11.focused,
+        enableOutsideDays = _this$props11.enableOutsideDays,
+        hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
+        daySize = _this$props11.daySize,
+        firstDayOfWeek = _this$props11.firstDayOfWeek,
+        renderCalendarDay = _this$props11.renderCalendarDay,
+        renderDayContents = _this$props11.renderDayContents,
+        renderCalendarInfo = _this$props11.renderCalendarInfo,
+        renderMonthElement = _this$props11.renderMonthElement,
+        calendarInfoPosition = _this$props11.calendarInfoPosition,
+        isFocused = _this$props11.isFocused,
+        isRTL = _this$props11.isRTL,
+        phrases = _this$props11.phrases,
+        dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
+        onBlur = _this$props11.onBlur,
+        showKeyboardShortcuts = _this$props11.showKeyboardShortcuts,
+        weekDayFormat = _this$props11.weekDayFormat,
+        verticalHeight = _this$props11.verticalHeight,
+        noBorder = _this$props11.noBorder,
+        transitionDuration = _this$props11.transitionDuration,
+        verticalBorderSpacing = _this$props11.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props11.horizontalMonthPadding;
+    var _this$state7 = this.state,
+        currentMonth = _this$state7.currentMonth,
+        visibleDays = _this$state7.visibleDays;
+    return _react["default"].createElement(_DayPicker["default"], {
+      orientation: orientation,
+      enableOutsideDays: enableOutsideDays,
+      modifiers: visibleDays,
+      numberOfMonths: numberOfMonths,
+      onDayClick: this.onDayClick,
+      onDayMouseEnter: this.onDayMouseEnter,
+      onDayMouseLeave: this.onDayMouseLeave,
+      onPrevMonthClick: this.onPrevMonthClick,
+      onNextMonthClick: this.onNextMonthClick,
+      onMonthChange: this.onMonthChange,
+      onYearChange: this.onYearChange,
+      monthFormat: monthFormat,
+      withPortal: withPortal,
+      hidden: !focused,
+      hideKeyboardShortcutsPanel: hideKeyboardShortcutsPanel,
+      initialVisibleMonth: function initialVisibleMonth() {
+        return currentMonth;
+      },
+      firstDayOfWeek: firstDayOfWeek,
+      onOutsideClick: onOutsideClick,
+      navPrev: navPrev,
+      navNext: navNext,
+      renderMonthText: renderMonthText,
+      renderCalendarDay: renderCalendarDay,
+      renderDayContents: renderDayContents,
+      renderCalendarInfo: renderCalendarInfo,
+      renderMonthElement: renderMonthElement,
+      calendarInfoPosition: calendarInfoPosition,
+      isFocused: isFocused,
+      getFirstFocusableDay: this.getFirstFocusableDay,
+      onBlur: onBlur,
+      onTab: onTab,
+      onShiftTab: onShiftTab,
+      phrases: phrases,
+      daySize: daySize,
+      isRTL: isRTL,
+      showKeyboardShortcuts: showKeyboardShortcuts,
+      weekDayFormat: weekDayFormat,
+      dayAriaLabelFormat: dayAriaLabelFormat,
+      verticalHeight: verticalHeight,
+      noBorder: noBorder,
+      transitionDuration: transitionDuration,
+      verticalBorderSpacing: verticalBorderSpacing,
+      horizontalMonthPadding: horizontalMonthPadding
+    });
+  };
 
   return DayPickerSingleDateController;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -15479,15 +13912,11 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var RightArrow = function () {
-  function RightArrow(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      d: "M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z"
-    }));
-  }
-
-  return RightArrow;
-}();
+var RightArrow = function RightArrow(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    d: "M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z"
+  }));
+};
 
 RightArrow.defaultProps = {
   focusable: "false",
@@ -15495,6 +13924,33 @@ RightArrow.defaultProps = {
 };
 var _default = RightArrow;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "gtaZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = getPooledMoment;
+
+var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var momentPool = new Map();
+
+function getPooledMoment(dayString) {
+  if (!momentPool.has(dayString)) {
+    momentPool.set(dayString, (0, _moment["default"])(dayString));
+  }
+
+  return momentPool.get(dayString);
+}
 
 /***/ }),
 
@@ -15642,59 +14098,25 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   children: null,
   startDateId: _constants.START_DATE,
   endDateId: _constants.END_DATE,
   startDatePlaceholderText: 'Start Date',
   endDatePlaceholderText: 'End Date',
+  startDateAriaLabel: undefined,
+  endDateAriaLabel: undefined,
   screenReaderMessage: '',
-  onStartDateFocus: function () {
-    function onStartDateFocus() {}
-
-    return onStartDateFocus;
-  }(),
-  onEndDateFocus: function () {
-    function onEndDateFocus() {}
-
-    return onEndDateFocus;
-  }(),
-  onStartDateChange: function () {
-    function onStartDateChange() {}
-
-    return onStartDateChange;
-  }(),
-  onEndDateChange: function () {
-    function onEndDateChange() {}
-
-    return onEndDateChange;
-  }(),
-  onStartDateShiftTab: function () {
-    function onStartDateShiftTab() {}
-
-    return onStartDateShiftTab;
-  }(),
-  onEndDateTab: function () {
-    function onEndDateTab() {}
-
-    return onEndDateTab;
-  }(),
-  onClearDates: function () {
-    function onClearDates() {}
-
-    return onClearDates;
-  }(),
-  onKeyDownArrowDown: function () {
-    function onKeyDownArrowDown() {}
-
-    return onKeyDownArrowDown;
-  }(),
-  onKeyDownQuestionMark: function () {
-    function onKeyDownQuestionMark() {}
-
-    return onKeyDownQuestionMark;
-  }(),
+  onStartDateFocus: function onStartDateFocus() {},
+  onEndDateFocus: function onEndDateFocus() {},
+  onStartDateChange: function onStartDateChange() {},
+  onEndDateChange: function onEndDateChange() {},
+  onStartDateShiftTab: function onStartDateShiftTab() {},
+  onEndDateTab: function onEndDateTab() {},
+  onClearDates: function onClearDates() {},
+  onKeyDownArrowDown: function onKeyDownArrowDown() {},
+  onKeyDownQuestionMark: function onKeyDownQuestionMark() {},
   startDate: '',
   endDate: '',
   isStartDateFocused: false,
@@ -15732,6 +14154,7 @@ function DateRangePickerInput(_ref) {
       onStartDateChange = _ref.onStartDateChange,
       onStartDateFocus = _ref.onStartDateFocus,
       onStartDateShiftTab = _ref.onStartDateShiftTab,
+      startDateAriaLabel = _ref.startDateAriaLabel,
       endDate = _ref.endDate,
       endDateId = _ref.endDateId,
       endDatePlaceholderText = _ref.endDatePlaceholderText,
@@ -15739,6 +14162,7 @@ function DateRangePickerInput(_ref) {
       onEndDateChange = _ref.onEndDateChange,
       onEndDateFocus = _ref.onEndDateFocus,
       onEndDateTab = _ref.onEndDateTab,
+      endDateAriaLabel = _ref.endDateAriaLabel,
       onKeyDownArrowDown = _ref.onKeyDownArrowDown,
       onKeyDownQuestionMark = _ref.onKeyDownQuestionMark,
       onClearDates = _ref.onClearDates,
@@ -15786,6 +14210,7 @@ function DateRangePickerInput(_ref) {
   return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.DateRangePickerInput, disabled && styles.DateRangePickerInput__disabled, isRTL && styles.DateRangePickerInput__rtl, !noBorder && styles.DateRangePickerInput__withBorder, block && styles.DateRangePickerInput__block, showClearDates && styles.DateRangePickerInput__showClearDates), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
     id: startDateId,
     placeholder: startDatePlaceholderText,
+    ariaLabel: startDateAriaLabel,
     displayValue: startDate,
     screenReaderMessage: screenReaderText,
     focused: isStartDateFocused,
@@ -15809,6 +14234,7 @@ function DateRangePickerInput(_ref) {
   }), arrowIcon), isStartDateFocused && children, _react["default"].createElement(_DateInput["default"], {
     id: endDateId,
     placeholder: endDatePlaceholderText,
+    ariaLabel: endDateAriaLabel,
     displayValue: endDate,
     screenReaderMessage: screenReaderText,
     focused: isEndDateFocused,
@@ -16188,14 +14614,16 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
 
-var _constants = __webpack_require__("Fv1B");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toISOMonthString(date, currentFormat) {
   var dateObj = _moment["default"].isMoment(date) ? date : (0, _toMomentObject["default"])(date, currentFormat);
-  if (!dateObj) return null;
-  return dateObj.format(_constants.ISO_MONTH_FORMAT);
+  if (!dateObj) return null; // Template strings compiled in strict mode uses concat, which is slow. Since
+  // this code is in a hot path and we want it to be as fast as possible, we
+  // want to use old-fashioned +.
+  // eslint-disable-next-line prefer-template
+
+  return dateObj.year() + '-' + String(dateObj.month() + 1).padStart(2, '0');
 }
 
 /***/ }),
@@ -16225,203 +14653,123 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "CalendarDay", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _CalendarDay["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _CalendarDay["default"];
+  }
 });
 Object.defineProperty(exports, "CalendarMonth", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _CalendarMonth["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _CalendarMonth["default"];
+  }
 });
 Object.defineProperty(exports, "CalendarMonthGrid", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _CalendarMonthGrid["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _CalendarMonthGrid["default"];
+  }
 });
 Object.defineProperty(exports, "DateRangePicker", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DateRangePicker["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DateRangePicker["default"];
+  }
 });
 Object.defineProperty(exports, "DateRangePickerInput", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DateRangePickerInput["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DateRangePickerInput["default"];
+  }
 });
 Object.defineProperty(exports, "DateRangePickerInputController", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DateRangePickerInputController["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DateRangePickerInputController["default"];
+  }
 });
 Object.defineProperty(exports, "DateRangePickerShape", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DateRangePickerShape["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DateRangePickerShape["default"];
+  }
 });
 Object.defineProperty(exports, "DayPicker", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DayPicker["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DayPicker["default"];
+  }
 });
 Object.defineProperty(exports, "DayPickerRangeController", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DayPickerRangeController["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DayPickerRangeController["default"];
+  }
 });
 Object.defineProperty(exports, "DayPickerSingleDateController", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _DayPickerSingleDateController["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _DayPickerSingleDateController["default"];
+  }
 });
 Object.defineProperty(exports, "SingleDatePicker", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _SingleDatePicker["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _SingleDatePicker["default"];
+  }
 });
 Object.defineProperty(exports, "SingleDatePickerInput", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _SingleDatePickerInput["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _SingleDatePickerInput["default"];
+  }
 });
 Object.defineProperty(exports, "SingleDatePickerShape", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _SingleDatePickerShape["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _SingleDatePickerShape["default"];
+  }
 });
 Object.defineProperty(exports, "isInclusivelyAfterDay", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _isInclusivelyAfterDay["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _isInclusivelyAfterDay["default"];
+  }
 });
 Object.defineProperty(exports, "isInclusivelyBeforeDay", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _isInclusivelyBeforeDay["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _isInclusivelyBeforeDay["default"];
+  }
 });
 Object.defineProperty(exports, "isNextDay", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _isNextDay["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _isNextDay["default"];
+  }
 });
 Object.defineProperty(exports, "isSameDay", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _isSameDay["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _isSameDay["default"];
+  }
 });
 Object.defineProperty(exports, "toISODateString", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _toISODateString["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _toISODateString["default"];
+  }
 });
 Object.defineProperty(exports, "toLocalizedDateString", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _toLocalizedDateString["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _toLocalizedDateString["default"];
+  }
 });
 Object.defineProperty(exports, "toMomentObject", {
   enumerable: true,
-  get: function () {
-    function get() {
-      return _toMomentObject["default"];
-    }
-
-    return get;
-  }()
+  get: function get() {
+    return _toMomentObject["default"];
+  }
 });
 
 var _CalendarDay = _interopRequireDefault(__webpack_require__("N3k4"));
@@ -16568,31 +14916,17 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   month: (0, _moment["default"])(),
   horizontalMonthPadding: 13,
@@ -16601,39 +14935,15 @@ var defaultProps = {
   modifiers: {},
   orientation: _constants.HORIZONTAL_ORIENTATION,
   daySize: _constants.DAY_SIZE,
-  onDayClick: function () {
-    function onDayClick() {}
-
-    return onDayClick;
-  }(),
-  onDayMouseEnter: function () {
-    function onDayMouseEnter() {}
-
-    return onDayMouseEnter;
-  }(),
-  onDayMouseLeave: function () {
-    function onDayMouseLeave() {}
-
-    return onDayMouseLeave;
-  }(),
-  onMonthSelect: function () {
-    function onMonthSelect() {}
-
-    return onMonthSelect;
-  }(),
-  onYearSelect: function () {
-    function onYearSelect() {}
-
-    return onYearSelect;
-  }(),
+  onDayClick: function onDayClick() {},
+  onDayMouseEnter: function onDayMouseEnter() {},
+  onDayMouseLeave: function onDayMouseLeave() {},
+  onMonthSelect: function onMonthSelect() {},
+  onYearSelect: function onYearSelect() {},
   renderMonthText: null,
-  renderCalendarDay: function () {
-    function renderCalendarDay(props) {
-      return _react["default"].createElement(_CalendarDay["default"], props);
-    }
-
-    return renderCalendarDay;
-  }(),
+  renderCalendarDay: function renderCalendarDay(props) {
+    return _react["default"].createElement(_CalendarDay["default"], props);
+  },
   renderDayContents: null,
   renderMonthElement: null,
   firstDayOfWeek: null,
@@ -16651,167 +14961,129 @@ var defaultProps = {
 var CalendarMonth =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(CalendarMonth, _ref);
+  _inheritsLoose(CalendarMonth, _ref);
 
-  _createClass(CalendarMonth, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = CalendarMonth.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function CalendarMonth(props) {
     var _this;
 
-    _classCallCheck(this, CalendarMonth);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CalendarMonth).call(this, props));
+    _this = _ref.call(this, props) || this;
     _this.state = {
       weeks: (0, _getCalendarMonthWeeks["default"])(props.month, props.enableOutsideDays, props.firstDayOfWeek == null ? _moment["default"].localeData().firstDayOfWeek() : props.firstDayOfWeek)
     };
-    _this.setCaptionRef = _this.setCaptionRef.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.setCaptionRef = _this.setCaptionRef.bind(_assertThisInitialized(_this));
+    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(CalendarMonth, [{
-    key: "componentDidMount",
-    value: function () {
-      function componentDidMount() {
-        this.setMonthTitleHeightTimeout = setTimeout(this.setMonthTitleHeight, 0);
-      }
+  _proto.componentDidMount = function componentDidMount() {
+    this.setMonthTitleHeightTimeout = setTimeout(this.setMonthTitleHeight, 0);
+  };
 
-      return componentDidMount;
-    }()
-  }, {
-    key: "componentWillReceiveProps",
-    value: function () {
-      function componentWillReceiveProps(nextProps) {
-        var month = nextProps.month,
-            enableOutsideDays = nextProps.enableOutsideDays,
-            firstDayOfWeek = nextProps.firstDayOfWeek;
-        var _this$props = this.props,
-            prevMonth = _this$props.month,
-            prevEnableOutsideDays = _this$props.enableOutsideDays,
-            prevFirstDayOfWeek = _this$props.firstDayOfWeek;
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var month = nextProps.month,
+        enableOutsideDays = nextProps.enableOutsideDays,
+        firstDayOfWeek = nextProps.firstDayOfWeek;
+    var _this$props = this.props,
+        prevMonth = _this$props.month,
+        prevEnableOutsideDays = _this$props.enableOutsideDays,
+        prevFirstDayOfWeek = _this$props.firstDayOfWeek;
 
-        if (!month.isSame(prevMonth) || enableOutsideDays !== prevEnableOutsideDays || firstDayOfWeek !== prevFirstDayOfWeek) {
-          this.setState({
-            weeks: (0, _getCalendarMonthWeeks["default"])(month, enableOutsideDays, firstDayOfWeek == null ? _moment["default"].localeData().firstDayOfWeek() : firstDayOfWeek)
-          });
-        }
-      }
+    if (!month.isSame(prevMonth) || enableOutsideDays !== prevEnableOutsideDays || firstDayOfWeek !== prevFirstDayOfWeek) {
+      this.setState({
+        weeks: (0, _getCalendarMonthWeeks["default"])(month, enableOutsideDays, firstDayOfWeek == null ? _moment["default"].localeData().firstDayOfWeek() : firstDayOfWeek)
+      });
+    }
+  };
 
-      return componentWillReceiveProps;
-    }()
-  }, {
-    key: "componentWillUnmount",
-    value: function () {
-      function componentWillUnmount() {
-        if (this.setMonthTitleHeightTimeout) {
-          clearTimeout(this.setMonthTitleHeightTimeout);
-        }
-      }
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    if (this.setMonthTitleHeightTimeout) {
+      clearTimeout(this.setMonthTitleHeightTimeout);
+    }
+  };
 
-      return componentWillUnmount;
-    }()
-  }, {
-    key: "setMonthTitleHeight",
-    value: function () {
-      function setMonthTitleHeight() {
-        var setMonthTitleHeight = this.props.setMonthTitleHeight;
+  _proto.setMonthTitleHeight = function setMonthTitleHeight() {
+    var setMonthTitleHeight = this.props.setMonthTitleHeight;
 
-        if (setMonthTitleHeight) {
-          var captionHeight = (0, _calculateDimension["default"])(this.captionRef, 'height', true, true);
-          setMonthTitleHeight(captionHeight);
-        }
-      }
+    if (setMonthTitleHeight) {
+      var captionHeight = (0, _calculateDimension["default"])(this.captionRef, 'height', true, true);
+      setMonthTitleHeight(captionHeight);
+    }
+  };
 
-      return setMonthTitleHeight;
-    }()
-  }, {
-    key: "setCaptionRef",
-    value: function () {
-      function setCaptionRef(ref) {
-        this.captionRef = ref;
-      }
+  _proto.setCaptionRef = function setCaptionRef(ref) {
+    this.captionRef = ref;
+  };
 
-      return setCaptionRef;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props2 = this.props,
-            dayAriaLabelFormat = _this$props2.dayAriaLabelFormat,
-            daySize = _this$props2.daySize,
-            focusedDate = _this$props2.focusedDate,
-            horizontalMonthPadding = _this$props2.horizontalMonthPadding,
-            isFocused = _this$props2.isFocused,
-            isVisible = _this$props2.isVisible,
-            modifiers = _this$props2.modifiers,
-            month = _this$props2.month,
-            monthFormat = _this$props2.monthFormat,
-            onDayClick = _this$props2.onDayClick,
-            onDayMouseEnter = _this$props2.onDayMouseEnter,
-            onDayMouseLeave = _this$props2.onDayMouseLeave,
-            onMonthSelect = _this$props2.onMonthSelect,
-            onYearSelect = _this$props2.onYearSelect,
-            orientation = _this$props2.orientation,
-            phrases = _this$props2.phrases,
-            renderCalendarDay = _this$props2.renderCalendarDay,
-            renderDayContents = _this$props2.renderDayContents,
-            renderMonthElement = _this$props2.renderMonthElement,
-            renderMonthText = _this$props2.renderMonthText,
-            styles = _this$props2.styles,
-            verticalBorderSpacing = _this$props2.verticalBorderSpacing;
-        var weeks = this.state.weeks;
-        var monthTitle = renderMonthText ? renderMonthText(month) : month.format(monthFormat);
-        var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-        return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonth, {
-          padding: "0 ".concat(horizontalMonthPadding, "px")
-        }), {
-          "data-visible": isVisible
-        }), _react["default"].createElement("div", _extends({
-          ref: this.setCaptionRef
-        }, (0, _reactWithStyles.css)(styles.CalendarMonth_caption, verticalScrollable && styles.CalendarMonth_caption__verticalScrollable)), renderMonthElement ? renderMonthElement({
-          month: month,
-          onMonthSelect: onMonthSelect,
-          onYearSelect: onYearSelect
-        }) : _react["default"].createElement("strong", null, monthTitle)), _react["default"].createElement("table", _extends({}, (0, _reactWithStyles.css)(!verticalBorderSpacing && styles.CalendarMonth_table, verticalBorderSpacing && styles.CalendarMonth_verticalSpacing, verticalBorderSpacing && {
-          borderSpacing: "0px ".concat(verticalBorderSpacing, "px")
-        }), {
-          role: "presentation"
-        }), _react["default"].createElement("tbody", null, weeks.map(function (week, i) {
-          return _react["default"].createElement(_CalendarWeek["default"], {
-            key: i
-          }, week.map(function (day, dayOfWeek) {
-            return renderCalendarDay({
-              key: dayOfWeek,
-              day: day,
-              daySize: daySize,
-              isOutsideDay: !day || day.month() !== month.month(),
-              tabIndex: isVisible && (0, _isSameDay["default"])(day, focusedDate) ? 0 : -1,
-              isFocused: isFocused,
-              onDayMouseEnter: onDayMouseEnter,
-              onDayMouseLeave: onDayMouseLeave,
-              onDayClick: onDayClick,
-              renderDayContents: renderDayContents,
-              phrases: phrases,
-              modifiers: modifiers[(0, _toISODateString["default"])(day)],
-              ariaLabelFormat: dayAriaLabelFormat
-            });
-          }));
-        }))));
-      }
-
-      return render;
-    }()
-  }]);
+  _proto.render = function render() {
+    var _this$props2 = this.props,
+        dayAriaLabelFormat = _this$props2.dayAriaLabelFormat,
+        daySize = _this$props2.daySize,
+        focusedDate = _this$props2.focusedDate,
+        horizontalMonthPadding = _this$props2.horizontalMonthPadding,
+        isFocused = _this$props2.isFocused,
+        isVisible = _this$props2.isVisible,
+        modifiers = _this$props2.modifiers,
+        month = _this$props2.month,
+        monthFormat = _this$props2.monthFormat,
+        onDayClick = _this$props2.onDayClick,
+        onDayMouseEnter = _this$props2.onDayMouseEnter,
+        onDayMouseLeave = _this$props2.onDayMouseLeave,
+        onMonthSelect = _this$props2.onMonthSelect,
+        onYearSelect = _this$props2.onYearSelect,
+        orientation = _this$props2.orientation,
+        phrases = _this$props2.phrases,
+        renderCalendarDay = _this$props2.renderCalendarDay,
+        renderDayContents = _this$props2.renderDayContents,
+        renderMonthElement = _this$props2.renderMonthElement,
+        renderMonthText = _this$props2.renderMonthText,
+        styles = _this$props2.styles,
+        verticalBorderSpacing = _this$props2.verticalBorderSpacing;
+    var weeks = this.state.weeks;
+    var monthTitle = renderMonthText ? renderMonthText(month) : month.format(monthFormat);
+    var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
+    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonth, {
+      padding: "0 ".concat(horizontalMonthPadding, "px")
+    }), {
+      "data-visible": isVisible
+    }), _react["default"].createElement("div", _extends({
+      ref: this.setCaptionRef
+    }, (0, _reactWithStyles.css)(styles.CalendarMonth_caption, verticalScrollable && styles.CalendarMonth_caption__verticalScrollable)), renderMonthElement ? renderMonthElement({
+      month: month,
+      onMonthSelect: onMonthSelect,
+      onYearSelect: onYearSelect,
+      isVisible: isVisible
+    }) : _react["default"].createElement("strong", null, monthTitle)), _react["default"].createElement("table", _extends({}, (0, _reactWithStyles.css)(!verticalBorderSpacing && styles.CalendarMonth_table, verticalBorderSpacing && styles.CalendarMonth_verticalSpacing, verticalBorderSpacing && {
+      borderSpacing: "0px ".concat(verticalBorderSpacing, "px")
+    }), {
+      role: "presentation"
+    }), _react["default"].createElement("tbody", null, weeks.map(function (week, i) {
+      return _react["default"].createElement(_CalendarWeek["default"], {
+        key: i
+      }, week.map(function (day, dayOfWeek) {
+        return renderCalendarDay({
+          key: dayOfWeek,
+          day: day,
+          daySize: daySize,
+          isOutsideDay: !day || day.month() !== month.month(),
+          tabIndex: isVisible && (0, _isSameDay["default"])(day, focusedDate) ? 0 : -1,
+          isFocused: isFocused,
+          onDayMouseEnter: onDayMouseEnter,
+          onDayMouseLeave: onDayMouseLeave,
+          onDayClick: onDayClick,
+          renderDayContents: renderDayContents,
+          phrases: phrases,
+          modifiers: modifiers[(0, _toISODateString["default"])(day)],
+          ariaLabelFormat: dayAriaLabelFormat
+        });
+      }));
+    }))));
+  };
 
   return CalendarMonth;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -16986,35 +15258,23 @@ var _constants = __webpack_require__("Fv1B");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function () { function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); } return _getPrototypeOf; }(); return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function () { function _setPrototypeOf(o, p) { o.__proto__ = p; return o; } return _setPrototypeOf; }(); return _setPrototypeOf(o, p); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var propTypes =  false ? undefined : {};
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   children: null,
   startDate: null,
   startDateId: _constants.START_DATE,
   startDatePlaceholderText: 'Start Date',
   isStartDateFocused: false,
+  startDateAriaLabel: undefined,
   endDate: null,
   endDateId: _constants.END_DATE,
   endDatePlaceholderText: 'End Date',
   isEndDateFocused: false,
+  endDateAriaLabel: undefined,
   screenReaderMessage: '',
   showClearDates: false,
   showCaret: false,
@@ -17033,45 +15293,17 @@ var defaultProps = {
   reopenPickerOnClearDates: false,
   withFullScreenPortal: false,
   minimumNights: 1,
-  isOutsideRange: function () {
-    function isOutsideRange(day) {
-      return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
-    }
-
-    return isOutsideRange;
-  }(),
-  displayFormat: function () {
-    function displayFormat() {
-      return _moment["default"].localeData().longDateFormat('L');
-    }
-
-    return displayFormat;
-  }(),
-  onFocusChange: function () {
-    function onFocusChange() {}
-
-    return onFocusChange;
-  }(),
-  onClose: function () {
-    function onClose() {}
-
-    return onClose;
-  }(),
-  onDatesChange: function () {
-    function onDatesChange() {}
-
-    return onDatesChange;
-  }(),
-  onKeyDownArrowDown: function () {
-    function onKeyDownArrowDown() {}
-
-    return onKeyDownArrowDown;
-  }(),
-  onKeyDownQuestionMark: function () {
-    function onKeyDownQuestionMark() {}
-
-    return onKeyDownQuestionMark;
-  }(),
+  isOutsideRange: function isOutsideRange(day) {
+    return !(0, _isInclusivelyAfterDay["default"])(day, (0, _moment["default"])());
+  },
+  displayFormat: function displayFormat() {
+    return _moment["default"].localeData().longDateFormat('L');
+  },
+  onFocusChange: function onFocusChange() {},
+  onClose: function onClose() {},
+  onDatesChange: function onDatesChange() {},
+  onKeyDownArrowDown: function onKeyDownArrowDown() {},
+  onKeyDownQuestionMark: function onKeyDownQuestionMark() {},
   customInputIcon: null,
   customArrowIcon: null,
   customCloseIcon: null,
@@ -17085,279 +15317,229 @@ var defaultProps = {
 var DateRangePickerInputController =
 /*#__PURE__*/
 function (_ref) {
-  _inherits(DateRangePickerInputController, _ref);
+  _inheritsLoose(DateRangePickerInputController, _ref);
 
-  _createClass(DateRangePickerInputController, [{
-    key: !_react["default"].PureComponent && "shouldComponentUpdate",
-    value: function () {
-      function value(nextProps, nextState) {
-        return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
-      }
+  var _proto = DateRangePickerInputController.prototype;
 
-      return value;
-    }()
-  }]);
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+  };
 
   function DateRangePickerInputController(props) {
     var _this;
 
-    _classCallCheck(this, DateRangePickerInputController);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DateRangePickerInputController).call(this, props));
-    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onStartDateChange = _this.onStartDateChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onStartDateFocus = _this.onStartDateFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onEndDateChange = _this.onEndDateChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onEndDateFocus = _this.onEndDateFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.clearDates = _this.clearDates.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this = _ref.call(this, props) || this;
+    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_this));
+    _this.onStartDateChange = _this.onStartDateChange.bind(_assertThisInitialized(_this));
+    _this.onStartDateFocus = _this.onStartDateFocus.bind(_assertThisInitialized(_this));
+    _this.onEndDateChange = _this.onEndDateChange.bind(_assertThisInitialized(_this));
+    _this.onEndDateFocus = _this.onEndDateFocus.bind(_assertThisInitialized(_this));
+    _this.clearDates = _this.clearDates.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(DateRangePickerInputController, [{
-    key: "onClearFocus",
-    value: function () {
-      function onClearFocus() {
-        var _this$props = this.props,
-            onFocusChange = _this$props.onFocusChange,
-            onClose = _this$props.onClose,
-            startDate = _this$props.startDate,
-            endDate = _this$props.endDate;
-        onFocusChange(null);
-        onClose({
-          startDate: startDate,
-          endDate: endDate
-        });
+  _proto.onClearFocus = function onClearFocus() {
+    var _this$props = this.props,
+        onFocusChange = _this$props.onFocusChange,
+        onClose = _this$props.onClose,
+        startDate = _this$props.startDate,
+        endDate = _this$props.endDate;
+    onFocusChange(null);
+    onClose({
+      startDate: startDate,
+      endDate: endDate
+    });
+  };
+
+  _proto.onEndDateChange = function onEndDateChange(endDateString) {
+    var _this$props2 = this.props,
+        startDate = _this$props2.startDate,
+        isOutsideRange = _this$props2.isOutsideRange,
+        minimumNights = _this$props2.minimumNights,
+        keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
+        onDatesChange = _this$props2.onDatesChange;
+    var endDate = (0, _toMomentObject["default"])(endDateString, this.getDisplayFormat());
+    var isEndDateValid = endDate && !isOutsideRange(endDate) && !(startDate && (0, _isBeforeDay["default"])(endDate, startDate.clone().add(minimumNights, 'days')));
+
+    if (isEndDateValid) {
+      onDatesChange({
+        startDate: startDate,
+        endDate: endDate
+      });
+      if (!keepOpenOnDateSelect) this.onClearFocus();
+    } else {
+      onDatesChange({
+        startDate: startDate,
+        endDate: null
+      });
+    }
+  };
+
+  _proto.onEndDateFocus = function onEndDateFocus() {
+    var _this$props3 = this.props,
+        startDate = _this$props3.startDate,
+        onFocusChange = _this$props3.onFocusChange,
+        withFullScreenPortal = _this$props3.withFullScreenPortal,
+        disabled = _this$props3.disabled;
+
+    if (!startDate && withFullScreenPortal && (!disabled || disabled === _constants.END_DATE)) {
+      // When the datepicker is full screen, we never want to focus the end date first
+      // because there's no indication that that is the case once the datepicker is open and it
+      // might confuse the user
+      onFocusChange(_constants.START_DATE);
+    } else if (!disabled || disabled === _constants.START_DATE) {
+      onFocusChange(_constants.END_DATE);
+    }
+  };
+
+  _proto.onStartDateChange = function onStartDateChange(startDateString) {
+    var endDate = this.props.endDate;
+    var _this$props4 = this.props,
+        isOutsideRange = _this$props4.isOutsideRange,
+        minimumNights = _this$props4.minimumNights,
+        onDatesChange = _this$props4.onDatesChange,
+        onFocusChange = _this$props4.onFocusChange,
+        disabled = _this$props4.disabled;
+    var startDate = (0, _toMomentObject["default"])(startDateString, this.getDisplayFormat());
+    var isEndDateBeforeStartDate = startDate && (0, _isBeforeDay["default"])(endDate, startDate.clone().add(minimumNights, 'days'));
+    var isStartDateValid = startDate && !isOutsideRange(startDate) && !(disabled === _constants.END_DATE && isEndDateBeforeStartDate);
+
+    if (isStartDateValid) {
+      if (isEndDateBeforeStartDate) {
+        endDate = null;
       }
 
-      return onClearFocus;
-    }()
-  }, {
-    key: "onEndDateChange",
-    value: function () {
-      function onEndDateChange(endDateString) {
-        var _this$props2 = this.props,
-            startDate = _this$props2.startDate,
-            isOutsideRange = _this$props2.isOutsideRange,
-            minimumNights = _this$props2.minimumNights,
-            keepOpenOnDateSelect = _this$props2.keepOpenOnDateSelect,
-            onDatesChange = _this$props2.onDatesChange;
-        var endDate = (0, _toMomentObject["default"])(endDateString, this.getDisplayFormat());
-        var isEndDateValid = endDate && !isOutsideRange(endDate) && !(startDate && (0, _isBeforeDay["default"])(endDate, startDate.clone().add(minimumNights, 'days')));
+      onDatesChange({
+        startDate: startDate,
+        endDate: endDate
+      });
+      onFocusChange(_constants.END_DATE);
+    } else {
+      onDatesChange({
+        startDate: null,
+        endDate: endDate
+      });
+    }
+  };
 
-        if (isEndDateValid) {
-          onDatesChange({
-            startDate: startDate,
-            endDate: endDate
-          });
-          if (!keepOpenOnDateSelect) this.onClearFocus();
-        } else {
-          onDatesChange({
-            startDate: startDate,
-            endDate: null
-          });
-        }
-      }
+  _proto.onStartDateFocus = function onStartDateFocus() {
+    var _this$props5 = this.props,
+        disabled = _this$props5.disabled,
+        onFocusChange = _this$props5.onFocusChange;
 
-      return onEndDateChange;
-    }()
-  }, {
-    key: "onEndDateFocus",
-    value: function () {
-      function onEndDateFocus() {
-        var _this$props3 = this.props,
-            startDate = _this$props3.startDate,
-            onFocusChange = _this$props3.onFocusChange,
-            withFullScreenPortal = _this$props3.withFullScreenPortal,
-            disabled = _this$props3.disabled;
+    if (!disabled || disabled === _constants.END_DATE) {
+      onFocusChange(_constants.START_DATE);
+    }
+  };
 
-        if (!startDate && withFullScreenPortal && (!disabled || disabled === _constants.END_DATE)) {
-          // When the datepicker is full screen, we never want to focus the end date first
-          // because there's no indication that that is the case once the datepicker is open and it
-          // might confuse the user
-          onFocusChange(_constants.START_DATE);
-        } else if (!disabled || disabled === _constants.START_DATE) {
-          onFocusChange(_constants.END_DATE);
-        }
-      }
+  _proto.getDisplayFormat = function getDisplayFormat() {
+    var displayFormat = this.props.displayFormat;
+    return typeof displayFormat === 'string' ? displayFormat : displayFormat();
+  };
 
-      return onEndDateFocus;
-    }()
-  }, {
-    key: "onStartDateChange",
-    value: function () {
-      function onStartDateChange(startDateString) {
-        var endDate = this.props.endDate;
-        var _this$props4 = this.props,
-            isOutsideRange = _this$props4.isOutsideRange,
-            minimumNights = _this$props4.minimumNights,
-            onDatesChange = _this$props4.onDatesChange,
-            onFocusChange = _this$props4.onFocusChange,
-            disabled = _this$props4.disabled;
-        var startDate = (0, _toMomentObject["default"])(startDateString, this.getDisplayFormat());
-        var isEndDateBeforeStartDate = startDate && (0, _isBeforeDay["default"])(endDate, startDate.clone().add(minimumNights, 'days'));
-        var isStartDateValid = startDate && !isOutsideRange(startDate) && !(disabled === _constants.END_DATE && isEndDateBeforeStartDate);
+  _proto.getDateString = function getDateString(date) {
+    var displayFormat = this.getDisplayFormat();
 
-        if (isStartDateValid) {
-          if (isEndDateBeforeStartDate) {
-            endDate = null;
-          }
+    if (date && displayFormat) {
+      return date && date.format(displayFormat);
+    }
 
-          onDatesChange({
-            startDate: startDate,
-            endDate: endDate
-          });
-          onFocusChange(_constants.END_DATE);
-        } else {
-          onDatesChange({
-            startDate: null,
-            endDate: endDate
-          });
-        }
-      }
+    return (0, _toLocalizedDateString["default"])(date);
+  };
 
-      return onStartDateChange;
-    }()
-  }, {
-    key: "onStartDateFocus",
-    value: function () {
-      function onStartDateFocus() {
-        var _this$props5 = this.props,
-            disabled = _this$props5.disabled,
-            onFocusChange = _this$props5.onFocusChange;
+  _proto.clearDates = function clearDates() {
+    var _this$props6 = this.props,
+        onDatesChange = _this$props6.onDatesChange,
+        reopenPickerOnClearDates = _this$props6.reopenPickerOnClearDates,
+        onFocusChange = _this$props6.onFocusChange;
+    onDatesChange({
+      startDate: null,
+      endDate: null
+    });
 
-        if (!disabled || disabled === _constants.END_DATE) {
-          onFocusChange(_constants.START_DATE);
-        }
-      }
+    if (reopenPickerOnClearDates) {
+      onFocusChange(_constants.START_DATE);
+    }
+  };
 
-      return onStartDateFocus;
-    }()
-  }, {
-    key: "getDisplayFormat",
-    value: function () {
-      function getDisplayFormat() {
-        var displayFormat = this.props.displayFormat;
-        return typeof displayFormat === 'string' ? displayFormat : displayFormat();
-      }
-
-      return getDisplayFormat;
-    }()
-  }, {
-    key: "getDateString",
-    value: function () {
-      function getDateString(date) {
-        var displayFormat = this.getDisplayFormat();
-
-        if (date && displayFormat) {
-          return date && date.format(displayFormat);
-        }
-
-        return (0, _toLocalizedDateString["default"])(date);
-      }
-
-      return getDateString;
-    }()
-  }, {
-    key: "clearDates",
-    value: function () {
-      function clearDates() {
-        var _this$props6 = this.props,
-            onDatesChange = _this$props6.onDatesChange,
-            reopenPickerOnClearDates = _this$props6.reopenPickerOnClearDates,
-            onFocusChange = _this$props6.onFocusChange;
-        onDatesChange({
-          startDate: null,
-          endDate: null
-        });
-
-        if (reopenPickerOnClearDates) {
-          onFocusChange(_constants.START_DATE);
-        }
-      }
-
-      return clearDates;
-    }()
-  }, {
-    key: "render",
-    value: function () {
-      function render() {
-        var _this$props7 = this.props,
-            children = _this$props7.children,
-            startDate = _this$props7.startDate,
-            startDateId = _this$props7.startDateId,
-            startDatePlaceholderText = _this$props7.startDatePlaceholderText,
-            isStartDateFocused = _this$props7.isStartDateFocused,
-            endDate = _this$props7.endDate,
-            endDateId = _this$props7.endDateId,
-            endDatePlaceholderText = _this$props7.endDatePlaceholderText,
-            isEndDateFocused = _this$props7.isEndDateFocused,
-            screenReaderMessage = _this$props7.screenReaderMessage,
-            showClearDates = _this$props7.showClearDates,
-            showCaret = _this$props7.showCaret,
-            showDefaultInputIcon = _this$props7.showDefaultInputIcon,
-            inputIconPosition = _this$props7.inputIconPosition,
-            customInputIcon = _this$props7.customInputIcon,
-            customArrowIcon = _this$props7.customArrowIcon,
-            customCloseIcon = _this$props7.customCloseIcon,
-            disabled = _this$props7.disabled,
-            required = _this$props7.required,
-            readOnly = _this$props7.readOnly,
-            openDirection = _this$props7.openDirection,
-            isFocused = _this$props7.isFocused,
-            phrases = _this$props7.phrases,
-            onKeyDownArrowDown = _this$props7.onKeyDownArrowDown,
-            onKeyDownQuestionMark = _this$props7.onKeyDownQuestionMark,
-            isRTL = _this$props7.isRTL,
-            noBorder = _this$props7.noBorder,
-            block = _this$props7.block,
-            small = _this$props7.small,
-            regular = _this$props7.regular,
-            verticalSpacing = _this$props7.verticalSpacing;
-        var startDateString = this.getDateString(startDate);
-        var endDateString = this.getDateString(endDate);
-        return _react["default"].createElement(_DateRangePickerInput["default"], {
-          startDate: startDateString,
-          startDateId: startDateId,
-          startDatePlaceholderText: startDatePlaceholderText,
-          isStartDateFocused: isStartDateFocused,
-          endDate: endDateString,
-          endDateId: endDateId,
-          endDatePlaceholderText: endDatePlaceholderText,
-          isEndDateFocused: isEndDateFocused,
-          isFocused: isFocused,
-          disabled: disabled,
-          required: required,
-          readOnly: readOnly,
-          openDirection: openDirection,
-          showCaret: showCaret,
-          showDefaultInputIcon: showDefaultInputIcon,
-          inputIconPosition: inputIconPosition,
-          customInputIcon: customInputIcon,
-          customArrowIcon: customArrowIcon,
-          customCloseIcon: customCloseIcon,
-          phrases: phrases,
-          onStartDateChange: this.onStartDateChange,
-          onStartDateFocus: this.onStartDateFocus,
-          onStartDateShiftTab: this.onClearFocus,
-          onEndDateChange: this.onEndDateChange,
-          onEndDateFocus: this.onEndDateFocus,
-          showClearDates: showClearDates,
-          onClearDates: this.clearDates,
-          screenReaderMessage: screenReaderMessage,
-          onKeyDownArrowDown: onKeyDownArrowDown,
-          onKeyDownQuestionMark: onKeyDownQuestionMark,
-          isRTL: isRTL,
-          noBorder: noBorder,
-          block: block,
-          small: small,
-          regular: regular,
-          verticalSpacing: verticalSpacing
-        }, children);
-      }
-
-      return render;
-    }()
-  }]);
+  _proto.render = function render() {
+    var _this$props7 = this.props,
+        children = _this$props7.children,
+        startDate = _this$props7.startDate,
+        startDateId = _this$props7.startDateId,
+        startDatePlaceholderText = _this$props7.startDatePlaceholderText,
+        isStartDateFocused = _this$props7.isStartDateFocused,
+        startDateAriaLabel = _this$props7.startDateAriaLabel,
+        endDate = _this$props7.endDate,
+        endDateId = _this$props7.endDateId,
+        endDatePlaceholderText = _this$props7.endDatePlaceholderText,
+        endDateAriaLabel = _this$props7.endDateAriaLabel,
+        isEndDateFocused = _this$props7.isEndDateFocused,
+        screenReaderMessage = _this$props7.screenReaderMessage,
+        showClearDates = _this$props7.showClearDates,
+        showCaret = _this$props7.showCaret,
+        showDefaultInputIcon = _this$props7.showDefaultInputIcon,
+        inputIconPosition = _this$props7.inputIconPosition,
+        customInputIcon = _this$props7.customInputIcon,
+        customArrowIcon = _this$props7.customArrowIcon,
+        customCloseIcon = _this$props7.customCloseIcon,
+        disabled = _this$props7.disabled,
+        required = _this$props7.required,
+        readOnly = _this$props7.readOnly,
+        openDirection = _this$props7.openDirection,
+        isFocused = _this$props7.isFocused,
+        phrases = _this$props7.phrases,
+        onKeyDownArrowDown = _this$props7.onKeyDownArrowDown,
+        onKeyDownQuestionMark = _this$props7.onKeyDownQuestionMark,
+        isRTL = _this$props7.isRTL,
+        noBorder = _this$props7.noBorder,
+        block = _this$props7.block,
+        small = _this$props7.small,
+        regular = _this$props7.regular,
+        verticalSpacing = _this$props7.verticalSpacing;
+    var startDateString = this.getDateString(startDate);
+    var endDateString = this.getDateString(endDate);
+    return _react["default"].createElement(_DateRangePickerInput["default"], {
+      startDate: startDateString,
+      startDateId: startDateId,
+      startDatePlaceholderText: startDatePlaceholderText,
+      isStartDateFocused: isStartDateFocused,
+      startDateAriaLabel: startDateAriaLabel,
+      endDate: endDateString,
+      endDateId: endDateId,
+      endDatePlaceholderText: endDatePlaceholderText,
+      isEndDateFocused: isEndDateFocused,
+      endDateAriaLabel: endDateAriaLabel,
+      isFocused: isFocused,
+      disabled: disabled,
+      required: required,
+      readOnly: readOnly,
+      openDirection: openDirection,
+      showCaret: showCaret,
+      showDefaultInputIcon: showDefaultInputIcon,
+      inputIconPosition: inputIconPosition,
+      customInputIcon: customInputIcon,
+      customArrowIcon: customArrowIcon,
+      customCloseIcon: customCloseIcon,
+      phrases: phrases,
+      onStartDateChange: this.onStartDateChange,
+      onStartDateFocus: this.onStartDateFocus,
+      onStartDateShiftTab: this.onClearFocus,
+      onEndDateChange: this.onEndDateChange,
+      onEndDateFocus: this.onEndDateFocus,
+      showClearDates: showClearDates,
+      onClearDates: this.clearDates,
+      screenReaderMessage: screenReaderMessage,
+      onKeyDownArrowDown: onKeyDownArrowDown,
+      onKeyDownQuestionMark: onKeyDownQuestionMark,
+      isRTL: isRTL,
+      noBorder: noBorder,
+      block: block,
+      small: small,
+      regular: regular,
+      verticalSpacing: verticalSpacing
+    }, children);
+  };
 
   return DateRangePickerInputController;
 }(_react["default"].PureComponent || _react["default"].Component);
@@ -17558,14 +15740,16 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
 
-var _constants = __webpack_require__("Fv1B");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toISODateString(date, currentFormat) {
   var dateObj = _moment["default"].isMoment(date) ? date : (0, _toMomentObject["default"])(date, currentFormat);
-  if (!dateObj) return null;
-  return dateObj.format(_constants.ISO_FORMAT);
+  if (!dateObj) return null; // Template strings compiled in strict mode uses concat, which is slow. Since
+  // this code is in a hot path and we want it to be as fast as possible, we
+  // want to use old-fashioned +.
+  // eslint-disable-next-line prefer-template
+
+  return dateObj.year() + '-' + String(dateObj.month() + 1).padStart(2, '0') + '-' + String(dateObj.date()).padStart(2, '0');
 }
 
 /***/ }),
@@ -17621,6 +15805,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var _default = _propTypes["default"].oneOf([_constants.HORIZONTAL_ORIENTATION, _constants.VERTICAL_ORIENTATION]);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "qkIn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = getPreviousMonthMemoLast;
+var getPreviousMonthMemoKey;
+var getPreviousMonthMemoValue;
+
+function getPreviousMonthMemoLast(month) {
+  if (month !== getPreviousMonthMemoKey) {
+    getPreviousMonthMemoKey = month;
+    getPreviousMonthMemoValue = month.clone().subtract(1, 'month');
+  }
+
+  return getPreviousMonthMemoValue;
+}
 
 /***/ }),
 
@@ -18508,16 +16716,12 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var CloseButton = function () {
-  function CloseButton(props) {
-    return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-      fillRule: "evenodd",
-      d: "M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z"
-    }));
-  }
-
-  return CloseButton;
-}();
+var CloseButton = function CloseButton(props) {
+  return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
+    fillRule: "evenodd",
+    d: "M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z"
+  }));
+};
 
 CloseButton.defaultProps = {
   focusable: "false",
@@ -18853,6 +17057,8 @@ var _default = {
   endDateOffset: _propTypes["default"].func,
   endDateId: _propTypes["default"].string.isRequired,
   endDatePlaceholderText: _propTypes["default"].string,
+  startDateAriaLabel: _propTypes["default"].string,
+  endDateAriaLabel: _propTypes["default"].string,
   disabled: _DisabledShape["default"],
   required: _propTypes["default"].bool,
   readOnly: _propTypes["default"].bool,
@@ -19139,7 +17345,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   block: false
 };
@@ -19350,23 +17556,15 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var propTypes =  false ? undefined : {};
+var propTypes =  false ? undefined : {};;
 var defaultProps = {
   disablePrev: false,
   disableNext: false,
   navPrev: null,
   navNext: null,
   orientation: _constants.HORIZONTAL_ORIENTATION,
-  onPrevMonthClick: function () {
-    function onPrevMonthClick() {}
-
-    return onPrevMonthClick;
-  }(),
-  onNextMonthClick: function () {
-    function onNextMonthClick() {}
-
-    return onNextMonthClick;
-  }(),
+  onPrevMonthClick: function onPrevMonthClick() {},
+  onNextMonthClick: function onNextMonthClick() {},
   // internationalization
   phrases: _defaultPhrases.DayPickerNavigationPhrases,
   isRTL: false
