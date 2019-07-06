@@ -41,11 +41,13 @@ class Schedule_Service_Provider extends Service_Provider {
 		// Modify run time at the time hotel checkout.
 		$checkout_time = abrs_get_option( 'hotel_check_out' );
 
-		if ( $checkout_time && preg_match( '/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/', $checkout_time, $matches ) ) {
+		if ( $checkout_time
+		     && preg_match( '/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/', $checkout_time, $matches ) ) {
 			$schedule_date = $schedule_date->hour( $matches[1] )->minute( $matches[2] )->second( 0 );
 		}
 
-		if ( 'checked-in' === $new_status && in_array( $old_status, [ 'on-hold', 'inprocess', 'completed', 'deposit' ] ) ) {
+		if ( 'checked-in' === $new_status
+		     && in_array( $old_status, [ 'on-hold', 'inprocess', 'completed', 'deposit' ] ) ) {
 			wp_schedule_single_event( $schedule_date->timestamp, 'abrs_schedule_update_checkout_status', $args );
 
 			return;
@@ -65,7 +67,10 @@ class Schedule_Service_Provider extends Service_Provider {
 		$booking = abrs_get_booking( $booking_id );
 
 		if ( $booking && 'checked-out' !== $booking->get_status() ) {
-			$booking->update_status( 'checked-out', esc_html__( 'Cron: Auto update status to checked-out.', 'awebooking' ) );
+			$booking->update_status(
+				'checked-out',
+				esc_html__( 'Cron: Auto update status to checked-out.', 'awebooking' )
+			);
 		}
 	}
 
@@ -79,6 +84,8 @@ class Schedule_Service_Provider extends Service_Provider {
 
 		$date = abrs_date_time( 'now' )->addMinutes( 30 );
 		$args = [ $booking->get_id() ];
+
+		$booking->update_meta( '_schedule_clean_booking', $date->timestamp );
 
 		if ( wp_next_scheduled( 'abrs_schedule_clean_booking', $args ) ) {
 			wp_unschedule_event( $date->timestamp, 'abrs_schedule_clean_booking', $args );
@@ -97,6 +104,8 @@ class Schedule_Service_Provider extends Service_Provider {
 
 		if ( $booking && 'pending' === $booking->get_status() ) {
 			$booking->delete( true );
+		} elseif ( $booking ) {
+			$booking->delete_meta( '_schedule_clean_booking' );
 		}
 	}
 }

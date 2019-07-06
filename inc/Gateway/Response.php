@@ -13,7 +13,7 @@ class Response {
 	/**
 	 * The redirect URL.
 	 *
-	 * @var string|false
+	 * @var string|null
 	 */
 	protected $redirect;
 
@@ -25,13 +25,24 @@ class Response {
 	protected $data;
 
 	/**
+	 * Create pending response.
+	 *
+	 * @param string|null $redirect
+	 * @param mixed|null  $data
+	 * @return \AweBooking\Gateway\Response
+	 */
+	public static function pending( $redirect = null, $data = null ) {
+		return new static( 'pending', $redirect, $data );
+	}
+
+	/**
 	 * Constructor.
 	 *
-	 * @param string  $status   The response status.
-	 * @param boolean $redirect The redirect URL.
-	 * @param mixed   $data     The response data.
+	 * @param string      $status   The response status.
+	 * @param string|null $redirect The redirect URL.
+	 * @param mixed       $data     The response data.
 	 */
-	public function __construct( $status, $redirect = false, $data = null ) {
+	public function __construct( $status, $redirect = null, $data = null ) {
 		$this->status   = strtolower( $status );
 		$this->redirect = $redirect;
 		$this->data     = $data;
@@ -44,6 +55,15 @@ class Response {
 	 */
 	public function is_successful() {
 		return 'success' === $this->status;
+	}
+
+	/**
+	 * Is the response is pending?
+	 *
+	 * @return boolean
+	 */
+	public function isPending() {
+		return 'pending' === $this->status;
 	}
 
 	/**
@@ -85,7 +105,7 @@ class Response {
 	/**
 	 * Sets the data.
 	 *
-	 * @param  mixed $data The data.
+	 * @param mixed $data The data.
 	 * @return $this
 	 */
 	public function set_data( $data ) {
@@ -97,10 +117,20 @@ class Response {
 	/**
 	 * Sets the data.
 	 *
-	 * @param  mixed $data The data.
+	 * @param mixed $data The data.
 	 * @return $this
 	 */
 	public function data( $data ) {
+		return $this->set_data( $data );
+	}
+
+	/**
+	 * Sets the data.
+	 *
+	 * @param mixed $data The data.
+	 * @return $this
+	 */
+	public function withData( $data ) {
 		return $this->set_data( $data );
 	}
 }

@@ -78,10 +78,19 @@ abstract class Gateway {
 	/**
 	 * Determines if this gateway enable for using.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_enabled() {
 		return 'on' === abrs_sanitize_checkbox( $this->enabled );
+	}
+
+	/**
+	 * Determines if this gateway is offline payment.
+	 *
+	 * @return bool
+	 */
+	public function isOfflinePayment() {
+		return false;
 	}
 
 	/**
@@ -132,7 +141,7 @@ abstract class Gateway {
 	/**
 	 * Determine if the gateway support a given meta field.
 	 *
-	 * @param  string|array $meta An array keys or a string of specified key.
+	 * @param string|array $meta An array keys or a string of specified key.
 	 * @return bool
 	 */
 	public function is_support( $meta ) {
@@ -170,8 +179,8 @@ abstract class Gateway {
 	/**
 	 * Get the option by key (no prefix include).
 	 *
-	 * @param  string $key     The key.
-	 * @param  mixed  $default The default value.
+	 * @param string $key     The key.
+	 * @param mixed  $default The default value.
 	 * @return mixed
 	 */
 	public function get_option( $key, $default = null ) {
@@ -194,8 +203,8 @@ abstract class Gateway {
 	/**
 	 * Process payment.
 	 *
-	 * @param  \AweBooking\Model\Booking $booking The booking instance.
-	 * @param  \WPLibs\Http\Request   $request The http request.
+	 * @param \AweBooking\Model\Booking $booking The booking instance.
+	 * @param \WPLibs\Http\Request      $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 */
@@ -240,8 +249,8 @@ abstract class Gateway {
 	/**
 	 * Validate frontend payment fields.
 	 *
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
-	 * @param  \WPLibs\Http\Request    $request The http request.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \WPLibs\Http\Request       $request The http request.
 	 *
 	 * @return \WP_Error|bool
 	 */
@@ -259,15 +268,16 @@ abstract class Gateway {
 	 */
 	public function display_payment_contents( Payment_Item $payment_item, Booking $booking ) {
 		if ( $this->is_support( 'transaction_id' ) && $transaction_id = $payment_item->get( 'transaction_id' ) ) {
-			echo '<strong>' . esc_html__( 'Transaction ID:', 'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
+			echo '<strong>' . esc_html__( 'Transaction ID:',
+					'awebooking' ) . '</strong> ' . esc_html( $transaction_id );
 		}
 	}
 
 	/**
 	 * Create the payment item.
 	 *
-	 * @param  \AweBooking\Model\Booking $booking The booking instance.
-	 * @param  mixed                     $data    The reservation data.
+	 * @param \AweBooking\Model\Booking $booking The booking instance.
+	 * @param mixed                     $data    The reservation data.
 	 * @return Payment_Item
 	 */
 	public function create_new_payment( $booking, $data = [] ) {
@@ -275,12 +285,12 @@ abstract class Gateway {
 			$booking = abrs_get_booking( $booking );
 		}
 
-		$payment_item = ( new Payment_Item )->fill( [
+		$payment_item = ( new Payment_Item )->fill( wp_parse_args( $data, [
 			'booking_id' => $booking->get_id(),
 			'method'     => $this->get_method(),
 			'amount'     => 0,
 			'is_deposit' => 'off',
-		] );
+		] ) );
 
 		try {
 			$payment_item->save();

@@ -94,12 +94,29 @@ function abrs_is_checkout_page() {
 }
 
 /**
+ * Determines if current viewing on "payment" page.
+ *
+ * @return bool
+ */
+function abrs_is_payment_page() {
+	return abrs_str_is( '/payment/*', abrs_http_request()->route_path() );
+}
+
+/**
  * Determines if current page is in awebooking pages.
  *
  * @return bool
  */
 function is_awebooking() {
-	$is_awebooking = ( abrs_is_room_type_archive() || abrs_is_room_type() || abrs_is_checkout_page() || abrs_is_search_page() || abrs_is_hotel() || abrs_is_hotel_archive() );
+	$is_awebooking = (
+		abrs_is_room_type_archive() ||
+		abrs_is_room_type() ||
+		abrs_is_checkout_page() ||
+		abrs_is_payment_page() ||
+		abrs_is_search_page() ||
+		abrs_is_hotel() ||
+		abrs_is_hotel_archive()
+	);
 
 	return apply_filters( 'is_awebooking', $is_awebooking );
 }
@@ -123,6 +140,10 @@ function abrs_body_class( $classes ) {
 
 	if ( abrs_is_checkout_page() ) {
 		$classes[] = 'awebooking-checkout';
+	}
+
+	if ( abrs_is_payment_page() ) {
+		$classes[] = 'awebooking-payment';
 	}
 
 	return array_unique( $classes );
