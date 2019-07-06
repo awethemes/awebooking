@@ -8,6 +8,8 @@ use FastRoute\Dispatcher;
 use Psr\Log\LoggerInterface;
 use AweBooking\Component\Http\Resolver\Resolver;
 use AweBooking\Component\Http\Resolver\Simple_Resolver;
+use AweBooking\Component\Http\Exceptions\ModelNotFoundException;
+use AweBooking\Component\Http\Exceptions\RedirectResponseException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -19,6 +21,7 @@ use Symfony\Component\Debug\ExceptionHandler;
 use WPLibs\Http\Exception\MethodNotAllowedException;
 use WPLibs\Http\Exception\NotFoundException;
 use WPLibs\Http\Exception\HttpExceptionInterface;
+use WPLibs\Http\Redirect_Response;
 use WPLibs\Http\Request;
 use WPLibs\Http\Response;
 use WPLibs\Http\WP_Error_Response;
@@ -133,7 +136,7 @@ class Http_Kernel {
 	/**
 	 * Uses custom request_uri instead get from request.
 	 *
-	 * @param  string $request_uri Custom request uri.
+	 * @param string $request_uri Custom request uri.
 	 * @return $this
 	 */
 	public function use_request_uri( $request_uri ) {
@@ -145,7 +148,7 @@ class Http_Kernel {
 	/**
 	 * Use custom dispatcher instead default.
 	 *
-	 * @param  Dispatcher $dispatcher The dispatcher instance.
+	 * @param Dispatcher $dispatcher The dispatcher instance.
 	 * @return $this
 	 */
 	public function use_dispatcher( Dispatcher $dispatcher ) {
@@ -157,7 +160,7 @@ class Http_Kernel {
 	/**
 	 * Add new middleware to the application.
 	 *
-	 * @param  \Closure|array $middleware The middleware.
+	 * @param \Closure|array $middleware The middleware.
 	 * @return $this
 	 */
 	public function middleware( $middleware ) {
@@ -173,7 +176,7 @@ class Http_Kernel {
 	/**
 	 * Handle the incoming request and process the response.
 	 *
-	 * @param  SymfonyRequest|null $request Optional, the Symfony Request instance.
+	 * @param SymfonyRequest|null $request Optional, the Symfony Request instance.
 	 * @return void
 	 */
 	public function handle( $request = null ) {
@@ -191,7 +194,7 @@ class Http_Kernel {
 	/**
 	 * Dispatch the incoming request.
 	 *
-	 * @param  SymfonyRequest|null $request Optional, the Symfony Request instance.
+	 * @param SymfonyRequest|null $request Optional, the Symfony Request instance.
 	 * @return Response
 	 */
 	public function dispatch( $request = null ) {
@@ -204,7 +207,7 @@ class Http_Kernel {
 				);
 
 				return $this->handle_dispatcher( $request, $routeinfo );
-			});
+			} );
 		} catch ( \Exception $e ) {
 			return $this->handler_exception( $e );
 		} catch ( \Throwable $e ) {
@@ -236,7 +239,7 @@ class Http_Kernel {
 		if ( null === $this->dispatcher ) {
 			$this->dispatcher = \FastRoute\simpleDispatcher( function ( $route ) {
 				$this->register_routes( $route );
-			});
+			} );
 		}
 
 		return $this->dispatcher;
@@ -245,7 +248,7 @@ class Http_Kernel {
 	/**
 	 * Get request uri for the dispatcher.
 	 *
-	 * @param  SymfonyRequest $request The incoming request.
+	 * @param SymfonyRequest $request The incoming request.
 	 * @return string
 	 */
 	protected function get_dispatch_request_uri( SymfonyRequest $request ) {
@@ -255,8 +258,8 @@ class Http_Kernel {
 	/**
 	 * Handle the response from the FastRoute dispatcher.
 	 *
-	 * @param  SymfonyRequest $request   The incoming request.
-	 * @param  array          $routeinfo The response from dispatcher.
+	 * @param SymfonyRequest $request   The incoming request.
+	 * @param array          $routeinfo The response from dispatcher.
 	 * @return Response
 	 *
 	 * @throws NotFoundException
@@ -276,8 +279,8 @@ class Http_Kernel {
 	/**
 	 * Handle a route found by the dispatcher.
 	 *
-	 * @param  SymfonyRequest $request   The incoming request.
-	 * @param  array          $routeinfo The response from dispatcher.
+	 * @param SymfonyRequest $request   The incoming request.
+	 * @param array          $routeinfo The response from dispatcher.
 	 * @return Response
 	 */
 	protected function handle_found_route( SymfonyRequest $request, array $routeinfo ) {
@@ -291,12 +294,12 @@ class Http_Kernel {
 		}
 
 		if ( method_exists( $request, 'set_route_resolver' ) ) {
-			$request->set_route_resolver(function() {
+			$request->set_route_resolver( function () {
 				return $this->current_route;
-			});
+			} );
 		}
 
-		$action = $routeinfo[1];
+		$action     = $routeinfo[1];
 		$parameters = method_exists( $request, 'route' ) ? $request->route()[2] : (array) $routeinfo[2];
 
 		if ( is_string( $action ) ) {
@@ -311,7 +314,7 @@ class Http_Kernel {
 	/**
 	 * Send the exception to the handler and return the response.
 	 *
-	 * @param  \Exception|\Throwable $e The Exception.
+	 * @param \Exception|\Throwable $e The Exception.
 	 * @return Response
 	 */
 	protected function handler_exception( $e ) {
@@ -331,7 +334,7 @@ class Http_Kernel {
 	/**
 	 * Resolve the request.
 	 *
-	 * @param  mixed $request The request instance.
+	 * @param mixed $request The request instance.
 	 * @return \Symfony\Component\HttpFoundation\Request
 	 */
 	protected function resolve_request( $request ) {
@@ -345,9 +348,9 @@ class Http_Kernel {
 	/**
 	 * Send the request through the pipeline with the given callback.
 	 *
-	 * @param  SymfonyRequest $request    The incoming request.
-	 * @param  array          $middleware The middleware.
-	 * @param  \Closure       $then       The final destination callback.
+	 * @param SymfonyRequest $request    The incoming request.
+	 * @param array          $middleware The middleware.
+	 * @param \Closure       $then       The final destination callback.
 	 * @return mixed
 	 */
 	protected function send_through_pipeline( SymfonyRequest $request, array $middleware, Closure $then ) {
@@ -373,7 +376,7 @@ class Http_Kernel {
 	/**
 	 * Prepare the response for sending.
 	 *
-	 * @param  mixed $response The responsable resources.
+	 * @param mixed $response The responsable resources.
 	 * @return Response
 	 */
 	protected function prepare_response( $response ) {
@@ -393,10 +396,10 @@ class Http_Kernel {
 	/**
 	 * Create a response of an Exception.
 	 *
-	 * @param  \Exception|\Throwable $e       The Exception.
-	 * @param  integer               $status  The response status code.
-	 * @param  array                 $headers The response headers.
-	 * @return Response
+	 * @param \Exception|\Throwable $e       The Exception.
+	 * @param integer               $status  The response status code.
+	 * @param array                 $headers The response headers.
+	 * @return Response|Redirect_Response
 	 *
 	 * @throws mixed
 	 */
@@ -404,17 +407,18 @@ class Http_Kernel {
 		if ( $e instanceof HttpExceptionInterface ) {
 			$headers = $e->getHeaders();
 			$status  = $e->getStatusCode();
+		} elseif ( $e instanceof ModelNotFoundException ) {
+			$status = 404;
 		}
 
-		// WP_DEBUG not enable, just response a simple error message.
-		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-			$message = new WP_Error( 'http_error', $this->get_exception_message( $e, $status ) );
-			return new WP_Error_Response( $message, $status, $headers );
+		// Redirect response exception.
+		if ( $e instanceof RedirectResponseException ) {
+			return new Redirect_Response( $e->getRedirectUrl(), $e->getStatusCode() );
 		}
 
 		// Response the exception via Symfony exception handler.
 		if ( class_exists( ExceptionHandler::class ) ) {
-			$fe = FlattenException::create( $e );
+			$fe      = FlattenException::create( $e );
 			$handler = new ExceptionHandler( true, get_bloginfo( 'charset' ) );
 
 			$response = new Response( $handler->getHtml( $fe ), $status, $headers );
@@ -425,15 +429,21 @@ class Http_Kernel {
 			return $response;
 		}
 
-		// Throw given exception if any.
-		throw $e;
+		$message = new WP_Error(
+			'http_error',
+			( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG )
+				? $this->get_exception_message( $e, $status )
+				: $e->getMessage()
+		);
+
+		return new WP_Error_Response( $message, $status, $headers );
 	}
 
 	/**
 	 * Get the exception messages.
 	 *
-	 * @param  \Exception|\Throwable $e       The Exception.
-	 * @param  integer               $status  The response status code.
+	 * @param \Exception|\Throwable $e      The Exception.
+	 * @param integer               $status The response status code.
 	 * @return string
 	 */
 	protected function get_exception_message( $e, $status ) {

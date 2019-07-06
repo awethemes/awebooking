@@ -60,6 +60,7 @@
     "accounting": "^0.4.1",
     "bootstrap": "^4.3.1",
     "debounce": "^1.2.0",
+    "easytimer": "^1.1.1",
     "event-source-polyfill": "1.0.5",
     "flatpickr": "^4.6.1",
     "is-mobile": "^2.0.1",

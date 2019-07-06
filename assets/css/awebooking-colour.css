@@ -1526,9 +1526,11 @@ table.abrs-table--checkout-total-cost .booking-price-value {
    * Order page
    */
 ul.booking_details {
-  padding: 0;
-  margin: 0 0 3em;
+  margin: 0 0 1em;
   list-style: none;
+  padding: 10px;
+  display: inline-flex;
+  border: dashed 2px #6d6d6d;
 }
 ul.booking_details::after {
   display: block;

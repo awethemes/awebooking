@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 /**
  * Retrieves the booking object.
  *
- * @param  mixed $booking The post object or post ID of the booking.
+ * @param mixed $booking The post object or post ID of the booking.
  * @return \AweBooking\Model\Booking|false|null
  */
 function abrs_get_booking( $booking ) {
@@ -18,11 +18,35 @@ function abrs_get_booking( $booking ) {
 		return $booking;
 	}
 
-	return abrs_rescue( function() use ( $booking ) {
+	return abrs_rescue( function () use ( $booking ) {
 		$booking = new Booking( $booking );
 
 		return $booking->exists() ? $booking : null;
 	}, false );
+}
+
+/**
+ * Get the booking by public token.
+ *
+ * @param string $token
+ * @return \AweBooking\Model\Booking|null
+ */
+function abrs_get_booking_by_public_token( $token ) {
+	global $wpdb;
+
+	$postmeta = $wpdb->get_row(
+		$wpdb->prepare(
+			"SELECT * FROM `$wpdb->postmeta` WHERE `meta_key` = '_public_token' AND  `meta_value` = %s LIMIT 1",
+			$token
+		),
+		ARRAY_A
+	);
+
+	if ( isset( $postmeta['post_id'] ) ) {
+		return abrs_get_booking( $postmeta['post_id'] );
+	}
+
+	return null;
 }
 
 /**
@@ -32,21 +56,21 @@ function abrs_get_booking( $booking ) {
  */
 function abrs_get_booking_statuses() {
 	return apply_filters( 'abrs_list_booking_statuses', [
-		'awebooking-pending'     => _x( 'Pending', 'Booking status', 'awebooking' ),
-		'awebooking-inprocess'   => _x( 'Processing', 'Booking status', 'awebooking' ),
-		'awebooking-on-hold'     => _x( 'Reserved', 'Booking status', 'awebooking' ),
-		'awebooking-deposit'     => _x( 'Deposit', 'Booking status', 'awebooking' ),
-		'awebooking-completed'   => _x( 'Paid', 'Booking status', 'awebooking' ),
-		'checked-in'             => _x( 'Checked In', 'Booking status', 'awebooking' ),
-		'checked-out'            => _x( 'Checked Out', 'Booking status', 'awebooking' ),
-		'awebooking-cancelled'   => _x( 'Cancelled', 'Booking status', 'awebooking' ),
-	]);
+		'awebooking-pending'   => _x( 'Pending', 'Booking status', 'awebooking' ),
+		'awebooking-inprocess' => _x( 'Processing', 'Booking status', 'awebooking' ),
+		'awebooking-on-hold'   => _x( 'Reserved', 'Booking status', 'awebooking' ),
+		'awebooking-deposit'   => _x( 'Deposit', 'Booking status', 'awebooking' ),
+		'awebooking-completed' => _x( 'Paid', 'Booking status', 'awebooking' ),
+		'checked-in'           => _x( 'Checked In', 'Booking status', 'awebooking' ),
+		'checked-out'          => _x( 'Checked Out', 'Booking status', 'awebooking' ),
+		'awebooking-cancelled' => _x( 'Cancelled', 'Booking status', 'awebooking' ),
+	] );
 }
 
 /**
  * Get the nice name for an booking status.
  *
- * @param  string $status The status name.
+ * @param string $status The status name.
  * @return string
  */
 function abrs_get_booking_status_name( $status ) {
@@ -64,7 +88,7 @@ function abrs_get_booking_status_name( $status ) {
 /**
  * Apply prefix 'awebooking-' into given booking status.
  *
- * @param  string $status The booking  status.
+ * @param string $status The booking  status.
  * @return string
  */
 function abrs_prefix_booking_status( $status ) {
@@ -81,7 +105,7 @@ function abrs_prefix_booking_status( $status ) {
 /**
  * Retrieves the booking item.
  *
- * @param  mixed $item The item ID or item array.
+ * @param mixed $item The item ID or item array.
  * @return \AweBooking\Model\Booking\Item|false|null
  */
 function abrs_get_booking_item( $item ) {
@@ -112,7 +136,7 @@ function abrs_get_booking_item( $item ) {
 	// Apply filters allow users can overwrite the class name.
 	$classname = apply_filters( 'abrs_get_booking_item_classname', $classmap[ $item_type ], $item_type, $item_id );
 
-	return abrs_rescue( function() use ( $classname, $item_id ) {
+	return abrs_rescue( function () use ( $classname, $item_id ) {
 		$item = new $classname( $item_id );
 
 		if ( ! $item instanceof Item ) {
@@ -126,7 +150,7 @@ function abrs_get_booking_item( $item ) {
 /**
  * Delete a booking item.
  *
- * @param  mixed $item The item ID or item array.
+ * @param mixed $item The item ID or item array.
  * @return boolean
  */
 function abrs_delete_booking_item( $item ) {
@@ -161,14 +185,14 @@ function abrs_booking_item_classmap() {
 		'service_item' => \AweBooking\Model\Booking\Service_Item::class,
 		'fee_item'     => \AweBooking\Model\Booking\Fee_Item::class,
 		'tax_item'     => \AweBooking\Model\Booking\Tax_Item::class,
-	]);
+	] );
 }
 
 /**
  * Get a booking item by ID in database.
  *
- * @param  int    $item The booking item ID.
- * @param  string $type Get only matching booking item type.
+ * @param int    $item The booking item ID.
+ * @param string $type Get only matching booking item type.
  * @return array|null
  */
 function abrs_get_raw_booking_item( $item, $type = null ) {
@@ -180,7 +204,8 @@ function abrs_get_raw_booking_item( $item, $type = null ) {
 
 		$where = $type ? ' AND booking_item_type = "' . esc_sql( $type ) . '"' : '';
 		// @codingStandardsIgnoreLine
-		$db_item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}awebooking_booking_items WHERE booking_item_id = %d " . $where . ' LIMIT 1', $item ), ARRAY_A );
+		$db_item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}awebooking_booking_items WHERE booking_item_id = %d " . $where . ' LIMIT 1',
+			$item ), ARRAY_A );
 
 		wp_cache_add( (int) $db_item['booking_item_id'], $db_item, 'awebooking_db_booking_item' );
 	}
@@ -191,8 +216,8 @@ function abrs_get_raw_booking_item( $item, $type = null ) {
 /**
  * Get the booking items by given a type.
  *
- * @param  int    $booking The booking ID.
- * @param  string $type    Optional, filter only item type.
+ * @param int    $booking The booking ID.
+ * @param string $type    Optional, filter only item type.
  * @return array|null
  */
 function abrs_get_raw_booking_items( $booking, $type = 'all' ) {
@@ -210,7 +235,8 @@ function abrs_get_raw_booking_items( $booking, $type = 'all' ) {
 		global $wpdb;
 
 		$items = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`", $booking ), ARRAY_A
+			$wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d ORDER BY `booking_item_id`",
+				$booking ), ARRAY_A
 		);
 
 		// Cache each item in results.
@@ -233,7 +259,7 @@ function abrs_get_raw_booking_items( $booking, $type = 'all' ) {
 /**
  * Gets the last payment item in a booking.
  *
- * @param  \AweBooking\Model\Booking|int $booking The booking ID.
+ * @param \AweBooking\Model\Booking|int $booking The booking ID.
  * @return Payment_Item|WP_Error|null
  */
 function abrs_get_last_booking_payment( $booking ) {
@@ -245,7 +271,11 @@ function abrs_get_last_booking_payment( $booking ) {
 	}
 
 	$db_item = $wpdb->get_row(
-		$wpdb->prepare( "SELECT `booking_item_id` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d AND `booking_item_type` = 'payment_item' ORDER BY `booking_item_id` DESC LIMIT 1", $booking ), ARRAY_A
+		$wpdb->prepare(
+			"SELECT `booking_item_id` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_id` = %d AND `booking_item_type` = 'payment_item' ORDER BY `booking_item_id` DESC LIMIT 1",
+			$booking
+		),
+		ARRAY_A
 	);
 
 	if ( ! $db_item || empty( $db_item['booking_item_id'] ) ) {
@@ -258,7 +288,7 @@ function abrs_get_last_booking_payment( $booking ) {
 /**
  * Will clean the booking item in the cache.
  *
- * @param  int $item The booking item ID or booking item model.
+ * @param int $item The booking item ID or booking item model.
  * @return void
  */
 function abrs_flush_booking_item_cache( $item ) {
@@ -272,7 +302,7 @@ function abrs_flush_booking_item_cache( $item ) {
 /**
  * Gets a booking note.
  *
- * @param  int|WP_Comment $data Note ID (or WP_Comment instance for internal use only).
+ * @param int|WP_Comment $data Note ID (or WP_Comment instance for internal use only).
  * @return \AweBooking\Model\Booking\Note|null
  */
 function abrs_get_booking_note( $data ) {
@@ -286,13 +316,14 @@ function abrs_get_booking_note( $data ) {
 		return null;
 	}
 
-	$booking_note = new Booking_Note([
+	$booking_note = new Booking_Note( [
 		'id'            => (int) $data->comment_ID,
 		'content'       => make_clickable( $data->comment_content ),
 		'date_created'  => abrs_date_time( $data->comment_date ),
 		'customer_note' => (bool) get_comment_meta( $data->comment_ID, 'is_customer_note', true ),
-		'added_by'      => esc_html__( 'AweBooking', 'awebooking' ) === $data->comment_author ? 'system' : $data->comment_author,
-	]);
+		'added_by'      => esc_html__( 'AweBooking',
+			'awebooking' ) === $data->comment_author ? 'system' : $data->comment_author,
+	] );
 
 	return apply_filters( 'abrs_get_booking_note', $booking_note, $data );
 }
@@ -300,24 +331,24 @@ function abrs_get_booking_note( $data ) {
 /**
  * Gets the booking notes.
  *
- * @param  array $args {
- *     Array of query parameters.
+ * @param array $args            {
+ *                               Array of query parameters.
  *
- *     @type string $limit           Maximum number of notes to retrieve.
+ * @type string $limit           Maximum number of notes to retrieve.
  *                                   Default empty (no limit).
- *     @type int    $booking_id      Limit results to those affiliated with a given booking ID.
+ * @type int    $booking_id      Limit results to those affiliated with a given booking ID.
  *                                   Default 0.
- *     @type array  $booking__in     Array of booking IDs to include affiliated notes for.
+ * @type array  $booking__in     Array of booking IDs to include affiliated notes for.
  *                                   Default empty.
- *     @type array  $booking__not_in Array of booking IDs to exclude affiliated notes for.
+ * @type array  $booking__not_in Array of booking IDs to exclude affiliated notes for.
  *                                   Default empty.
- *     @type string $bookingby       Define how should sort notes.
+ * @type string $bookingby       Define how should sort notes.
  *                                   Accepts 'date_created', 'date_created_gmt' or 'id'.
  *                                   Default: 'id'.
- *     @type string $booking         How to booking retrieved notes.
+ * @type string $booking         How to booking retrieved notes.
  *                                   Accepts 'ASC' or 'DESC'.
  *                                   Default: 'DESC'.
- *     @type string $type            Define what type of note should retrieve.
+ * @type string $type            Define what type of note should retrieve.
  *                                   Accepts 'customer', 'internal' or empty for both.
  *                                   Default empty.
  * }
@@ -352,16 +383,20 @@ function abrs_get_booking_notes( $args ) {
 
 	// Set the booking note type.
 	if ( isset( $args['type'] ) && 'customer' === $args['type'] ) {
-		$args['meta_query'] = [[ // @codingStandardsIgnoreLine
-			'key'     => 'is_customer_note',
-			'value'   => 1,
-			'compare' => '=',
-		]]; // @codingStandardsIgnoreLine
+		$args['meta_query'] = [
+			[ // @codingStandardsIgnoreLine
+				'key'     => 'is_customer_note',
+				'value'   => 1,
+				'compare' => '=',
+			],
+		]; // @codingStandardsIgnoreLine
 	} elseif ( isset( $args['type'] ) && 'internal' === $args['type'] ) {
-		$args['meta_query'] = [[ // @codingStandardsIgnoreLine
-			'key'     => 'is_customer_note',
-			'compare' => 'NOT EXISTS',
-		]]; // @codingStandardsIgnoreLine
+		$args['meta_query'] = [
+			[ // @codingStandardsIgnoreLine
+				'key'     => 'is_customer_note',
+				'compare' => 'NOT EXISTS',
+			],
+		]; // @codingStandardsIgnoreLine
 	}
 
 	// Set correct comment type.
@@ -386,10 +421,10 @@ function abrs_get_booking_notes( $args ) {
 /**
  * Adds a note (comment) to the booking.
  *
- * @param  int    $booking           The booking ID.
- * @param  string $note              Note to add.
- * @param  false  $is_customer_note  Is this a note for the customer?.
- * @param  bool   $added_by_user     Was the note added by a user?.
+ * @param int    $booking          The booking ID.
+ * @param string $note             Note to add.
+ * @param false  $is_customer_note Is this a note for the customer?.
+ * @param bool   $added_by_user    Was the note added by a user?.
  * @return int|false|WP_Error
  */
 function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $added_by_user = false ) {
@@ -399,7 +434,8 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 
 	$booking = abrs_get_booking( $booking );
 	if ( ! $booking ) {
-		return new WP_Error( 'invalid_booking_id', esc_html__( 'Invalid Booking ID.', 'awebooking' ), [ 'status' => 400 ] );
+		return new WP_Error( 'invalid_booking_id', esc_html__( 'Invalid Booking ID.', 'awebooking' ),
+			[ 'status' => 400 ] );
 	}
 
 	// In case note added by user, we will load comment data from current user.
@@ -410,10 +446,11 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 	} else {
 		$host_name = abrs_rescue( function () {
 			abrs_http_request()->getHttpHost();
-		});
+		} );
 
 		$comment_author       = esc_html__( 'AweBooking', 'awebooking' );
-		$comment_author_email = strtolower( esc_html__( 'AweBooking', 'awebooking' ) ) . '@' . ( $host_name ? str_replace( 'www.', '', $host_name ) : 'noreply.com' );
+		$comment_author_email = strtolower( esc_html__( 'AweBooking',
+				'awebooking' ) ) . '@' . ( $host_name ? str_replace( 'www.', '', $host_name ) : 'noreply.com' );
 		$comment_author_email = sanitize_email( $comment_author_email );
 	}
 
@@ -453,7 +490,7 @@ function abrs_add_booking_note( $booking, $note, $is_customer_note = false, $add
 /**
  * Delete a booking note by ID.
  *
- * @param  int $note_id The note ID.
+ * @param int $note_id The note ID.
  * @return bool
  */
 function abrs_delete_booking_note( $note_id ) {
@@ -466,7 +503,7 @@ function abrs_delete_booking_note( $note_id ) {
  * This code should exclude 'booking_note' comments from queries.
  * Some queries (like the recent comments widget on the dashboard) are hardcoded.
  *
- * @param  array $clauses The query clauses.
+ * @param array $clauses The query clauses.
  * @return array
  */
 function _abrs_exclude_booking_comments( $clauses ) {
@@ -474,6 +511,7 @@ function _abrs_exclude_booking_comments( $clauses ) {
 
 	return $clauses;
 }
+
 add_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
 
 /**
@@ -481,7 +519,7 @@ add_filter( 'comments_clauses', '_abrs_exclude_booking_comments', 10, 1 );
  *
  * Use for 'post__in' in WP_Query.
  *
- * @param  string $term The term to search.
+ * @param string $term The term to search.
  * @return array
  */
 function abrs_search_booking_by_term( $term ) {
@@ -495,7 +533,7 @@ function abrs_search_booking_by_term( $term ) {
 		'_customer_company',
 		'_customer_email',
 		'_customer_phone',
-	]));
+	] ) );
 
 	// Prepare search bookings.
 	$booking_ids = [];
@@ -505,15 +543,16 @@ function abrs_search_booking_by_term( $term ) {
 	}
 
 	if ( ! empty( $search_fields ) ) {
-		$search1 = $wpdb->get_col($wpdb->prepare(
-			"SELECT DISTINCT `p1`.`post_id` FROM {$wpdb->postmeta} AS `p1` WHERE `p1`.`meta_value` LIKE %s AND `p1`.`meta_key` IN ('" . implode( "','", array_map( 'esc_sql', $search_fields ) ) . "')", // @codingStandardsIgnoreLine
+		$search1 = $wpdb->get_col( $wpdb->prepare(
+			"SELECT DISTINCT `p1`.`post_id` FROM {$wpdb->postmeta} AS `p1` WHERE `p1`.`meta_value` LIKE %s AND `p1`.`meta_key` IN ('" . implode( "','",
+				array_map( 'esc_sql', $search_fields ) ) . "')", // @codingStandardsIgnoreLine
 			'%' . $wpdb->esc_like( abrs_clean( $term ) ) . '%'
-		));
+		) );
 
 		$search2 = $wpdb->get_col( $wpdb->prepare(
 			"SELECT `booking_id` FROM `{$wpdb->prefix}awebooking_booking_items` WHERE `booking_item_name` LIKE %s",
 			'%' . $wpdb->esc_like( abrs_clean( $term ) ) . '%'
-		));
+		) );
 
 		$booking_ids = array_unique( array_merge( $booking_ids, $search1, $search2 ) );
 	}
@@ -524,8 +563,8 @@ function abrs_search_booking_by_term( $term ) {
 /**
  * Get all booking IDs booked by given a room ID.
  *
- * @param  int   $room_id  The Room ID.
- * @param  array $statuses Optional, filter by booking statuses.
+ * @param int   $room_id  The Room ID.
+ * @param array $statuses Optional, filter by booking statuses.
  * @return array
  */
 function abrs_get_booking_booked_by_room( $room_id, $statuses = [] ) {
@@ -541,7 +580,7 @@ function abrs_get_booking_booked_by_room( $room_id, $statuses = [] ) {
 		INNER JOIN `{$wpdb->prefix}awebooking_booking_itemmeta` AS itemmeta ON (`item`.`booking_item_id` = `itemmeta`.`booking_item_id` AND `itemmeta`.`meta_key` = '_room_id' )
 		WHERE CAST(`itemmeta`.`meta_value` AS SIGNED) = %d {$where_clause}",
 		$room_id
-	)); // @codingStandardsIgnoreEnd
+	) ); // @codingStandardsIgnoreEnd
 
 	return $results
 		? array_map( 'absint', array_column( $results, 'ID' ) )
