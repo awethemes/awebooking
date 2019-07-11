@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.2
 Requires PHP:      5.6
-Stable tag:        3.2.16
+Stable tag:        3.2.17
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,13 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.17] - [2019-07-11]
+- Break changes: Split the checkout and payment step, guest will be "place booking" first then process payment on next step.
+- Template: Added `templates/payment.php` to display the payment page.
+- API: Added `abrs_get_booking_by_public_token($token)`, `abrs_is_payment_page()` functions.
+- API: Added `AweBooking\Gateway\Gateway::isOfflinePayment()` method.
+- Minor bug fixes.
+
 ### [v3.2.16] - [2019-4-13]
 - Fixed "no-results" displaying even when rooms available.
 
