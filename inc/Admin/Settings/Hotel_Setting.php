@@ -5,7 +5,7 @@ namespace AweBooking\Admin\Settings;
 use WPLibs\Http\Request;
 use AweBooking\Model\Hotel;
 use AweBooking\Support\WP_Data;
-use AweBooking\Admin\Forms\Hotel_Information_Form;
+use AweBooking\Admin\Forms\Global_Hotel_Information_Form;
 
 class Hotel_Setting extends Abstract_Setting {
 	/**
@@ -46,7 +46,7 @@ class Hotel_Setting extends Abstract_Setting {
 		]);
 
 		if ( ! abrs_multiple_hotels() ) {
-			foreach ( ( new Hotel_Information_Form )->prop( 'fields' ) as $args ) {
+			foreach ( ( new Global_Hotel_Information_Form )->prop( 'fields' ) as $args ) {
 				$this->add_field( $args );
 			}
 		} else {
