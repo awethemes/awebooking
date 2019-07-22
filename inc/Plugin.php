@@ -24,7 +24,7 @@ final class Plugin extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.2.18';
+	const VERSION = '3.2.19';
 
 	/**
 	 * The plugin file path.

@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.2
 Requires PHP:      5.6
-Stable tag:        3.2.18
+Stable tag:        3.2.19
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.19] - [2019-07-22]
+- Fixed cannot saved some hotel attributes.
+
 ### [v3.2.18] - [2019-07-11]
 - Hotfix: Missing payment.min.js file
 
