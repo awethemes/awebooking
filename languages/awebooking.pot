@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the AweBooking package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AweBooking 3.2.0\n"
+"Project-Id-Version: AweBooking 3.2.15\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/awebooking\n"
-"POT-Creation-Date: 2019-01-23 11:21:40+00:00\n"
+"POT-Creation-Date: 2019-05-10 11:04:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,8 +23,1624 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
+#: component/Country/dataset.php:9
+msgid "Afghanistan"
+msgstr ""
+
+#: component/Country/dataset.php:18
+msgid "Åland Islands"
+msgstr ""
+
+#: component/Country/dataset.php:27
+msgid "Albania"
+msgstr ""
+
+#: component/Country/dataset.php:36
+msgid "Algeria"
+msgstr ""
+
+#: component/Country/dataset.php:45
+msgid "American Samoa"
+msgstr ""
+
+#: component/Country/dataset.php:54
+msgid "Andorra"
+msgstr ""
+
+#: component/Country/dataset.php:63
+msgid "Angola"
+msgstr ""
+
+#: component/Country/dataset.php:72
+msgid "Anguilla"
+msgstr ""
+
+#: component/Country/dataset.php:81
+msgid "Antarctica"
+msgstr ""
+
+#: component/Country/dataset.php:114
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: component/Country/dataset.php:123
+msgid "Argentina"
+msgstr ""
+
+#: component/Country/dataset.php:132
+msgid "Armenia"
+msgstr ""
+
+#: component/Country/dataset.php:141
+msgid "Aruba"
+msgstr ""
+
+#: component/Country/dataset.php:150
+msgid "Australia"
+msgstr ""
+
+#: component/Country/dataset.php:159
+msgid "Austria"
+msgstr ""
+
+#: component/Country/dataset.php:168
+msgid "Azerbaijan"
+msgstr ""
+
+#: component/Country/dataset.php:177
+msgid "Bahamas"
+msgstr ""
+
+#: component/Country/dataset.php:186
+msgid "Bahrain"
+msgstr ""
+
+#: component/Country/dataset.php:195
+msgid "Bangladesh"
+msgstr ""
+
+#: component/Country/dataset.php:204
+msgid "Barbados"
+msgstr ""
+
+#: component/Country/dataset.php:213
+msgid "Belarus"
+msgstr ""
+
+#: component/Country/dataset.php:222
+msgid "Belgium"
+msgstr ""
+
+#: component/Country/dataset.php:231
+msgid "Belize"
+msgstr ""
+
+#: component/Country/dataset.php:240
+msgid "Benin"
+msgstr ""
+
+#: component/Country/dataset.php:249
+msgid "Bermuda"
+msgstr ""
+
+#: component/Country/dataset.php:258
+msgid "Bhutan"
+msgstr ""
+
+#: component/Country/dataset.php:267
+msgid "Bolivia (Plurinational State of)"
+msgstr ""
+
+#: component/Country/dataset.php:276
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: component/Country/dataset.php:285
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: component/Country/dataset.php:294
+msgid "Botswana"
+msgstr ""
+
+#: component/Country/dataset.php:303
+msgid "Bouvet Island"
+msgstr ""
+
+#: component/Country/dataset.php:312
+msgid "Brazil"
+msgstr ""
+
+#: component/Country/dataset.php:321
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: component/Country/dataset.php:330
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: component/Country/dataset.php:340
+msgid "Bulgaria"
+msgstr ""
+
+#: component/Country/dataset.php:349
+msgid "Burkina Faso"
+msgstr ""
+
+#: component/Country/dataset.php:358
+msgid "Burundi"
+msgstr ""
+
+#: component/Country/dataset.php:367
+msgid "Cabo Verde"
+msgstr ""
+
+#: component/Country/dataset.php:376
+msgid "Cambodia"
+msgstr ""
+
+#: component/Country/dataset.php:385
+msgid "Cameroon"
+msgstr ""
+
+#: component/Country/dataset.php:394
+msgid "Canada"
+msgstr ""
+
+#: component/Country/dataset.php:403
+msgid "Cayman Islands"
+msgstr ""
+
+#: component/Country/dataset.php:412
+msgid "Central African Republic"
+msgstr ""
+
+#: component/Country/dataset.php:421
+msgid "Chad"
+msgstr ""
+
+#: component/Country/dataset.php:430
+msgid "Chile"
+msgstr ""
+
+#: component/Country/dataset.php:439
+msgid "China"
+msgstr ""
+
+#: component/Country/dataset.php:448
+msgid "Christmas Island"
+msgstr ""
+
+#: component/Country/dataset.php:457
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: component/Country/dataset.php:466
+msgid "Colombia"
+msgstr ""
+
+#: component/Country/dataset.php:475
+msgid "Comoros"
+msgstr ""
+
+#: component/Country/dataset.php:484
+msgid "Congo"
+msgstr ""
+
+#: component/Country/dataset.php:493
+msgid "Congo (Democratic Republic of the)"
+msgstr ""
+
+#: component/Country/dataset.php:502
+msgid "Cook Islands"
+msgstr ""
+
+#: component/Country/dataset.php:511
+msgid "Costa Rica"
+msgstr ""
+
+#: component/Country/dataset.php:520
+msgid "Côte d'Ivoire"
+msgstr ""
+
+#: component/Country/dataset.php:529
+msgid "Croatia"
+msgstr ""
+
+#: component/Country/dataset.php:538
+msgid "Cuba"
+msgstr ""
+
+#: component/Country/dataset.php:548
+msgid "Curaçao"
+msgstr ""
+
+#: component/Country/dataset.php:557
+msgid "Cyprus"
+msgstr ""
+
+#: component/Country/dataset.php:566
+msgid "Czechia"
+msgstr ""
+
+#: component/Country/dataset.php:575
+msgid "Denmark"
+msgstr ""
+
+#: component/Country/dataset.php:584
+msgid "Djibouti"
+msgstr ""
+
+#: component/Country/dataset.php:593
+msgid "Dominica"
+msgstr ""
+
+#: component/Country/dataset.php:602
+msgid "Dominican Republic"
+msgstr ""
+
+#: component/Country/dataset.php:611
+msgid "Ecuador"
+msgstr ""
+
+#: component/Country/dataset.php:620
+msgid "Egypt"
+msgstr ""
+
+#: component/Country/dataset.php:629
+msgid "El Salvador"
+msgstr ""
+
+#: component/Country/dataset.php:638
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:647
+msgid "Eritrea"
+msgstr ""
+
+#: component/Country/dataset.php:656
+msgid "Estonia"
+msgstr ""
+
+#: component/Country/dataset.php:665
+msgid "Ethiopia"
+msgstr ""
+
+#: component/Country/dataset.php:674
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: component/Country/dataset.php:683
+msgid "Faroe Islands"
+msgstr ""
+
+#: component/Country/dataset.php:692
+msgid "Fiji"
+msgstr ""
+
+#: component/Country/dataset.php:701
+msgid "Finland"
+msgstr ""
+
+#: component/Country/dataset.php:710
+msgid "France"
+msgstr ""
+
+#: component/Country/dataset.php:719
+msgid "French Guiana"
+msgstr ""
+
+#: component/Country/dataset.php:728
+msgid "French Polynesia"
+msgstr ""
+
+#: component/Country/dataset.php:737
+msgid "French Southern Territories"
+msgstr ""
+
+#: component/Country/dataset.php:746
+msgid "Gabon"
+msgstr ""
+
+#: component/Country/dataset.php:755
+msgid "Gambia"
+msgstr ""
+
+#: component/Country/dataset.php:764
+msgid "Georgia"
+msgstr ""
+
+#: component/Country/dataset.php:773
+msgid "Germany"
+msgstr ""
+
+#: component/Country/dataset.php:782
+msgid "Ghana"
+msgstr ""
+
+#: component/Country/dataset.php:791
+msgid "Gibraltar"
+msgstr ""
+
+#: component/Country/dataset.php:800
+msgid "Greece"
+msgstr ""
+
+#: component/Country/dataset.php:809
+msgid "Greenland"
+msgstr ""
+
+#: component/Country/dataset.php:818
+msgid "Grenada"
+msgstr ""
+
+#: component/Country/dataset.php:827
+msgid "Guadeloupe"
+msgstr ""
+
+#: component/Country/dataset.php:836
+msgid "Guam"
+msgstr ""
+
+#: component/Country/dataset.php:845
+msgid "Guatemala"
+msgstr ""
+
+#: component/Country/dataset.php:854
+msgid "Guernsey"
+msgstr ""
+
+#: component/Country/dataset.php:863
+msgid "Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:872
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: component/Country/dataset.php:881
+msgid "Guyana"
+msgstr ""
+
+#: component/Country/dataset.php:890
+msgid "Haiti"
+msgstr ""
+
+#: component/Country/dataset.php:899
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: component/Country/dataset.php:908
+msgid "Holy See"
+msgstr ""
+
+#: component/Country/dataset.php:917
+msgid "Honduras"
+msgstr ""
+
+#: component/Country/dataset.php:926
+msgid "Hong Kong"
+msgstr ""
+
+#: component/Country/dataset.php:935
+msgid "Hungary"
+msgstr ""
+
+#: component/Country/dataset.php:944
+msgid "Iceland"
+msgstr ""
+
+#: component/Country/dataset.php:953
+msgid "India"
+msgstr ""
+
+#: component/Country/dataset.php:962
+msgid "Indonesia"
+msgstr ""
+
+#: component/Country/dataset.php:971
+msgid "Iran (Islamic Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:980
+msgid "Iraq"
+msgstr ""
+
+#: component/Country/dataset.php:989
+msgid "Ireland"
+msgstr ""
+
+#: component/Country/dataset.php:998
+msgid "Isle of Man"
+msgstr ""
+
+#: component/Country/dataset.php:1007
+msgid "Israel"
+msgstr ""
+
+#: component/Country/dataset.php:1016
+msgid "Italy"
+msgstr ""
+
+#: component/Country/dataset.php:1025
+msgid "Jamaica"
+msgstr ""
+
+#: component/Country/dataset.php:1034
+msgid "Japan"
+msgstr ""
+
+#: component/Country/dataset.php:1043
+msgid "Jersey"
+msgstr ""
+
+#: component/Country/dataset.php:1052
+msgid "Jordan"
+msgstr ""
+
+#: component/Country/dataset.php:1061
+msgid "Kazakhstan"
+msgstr ""
+
+#: component/Country/dataset.php:1070
+msgid "Kenya"
+msgstr ""
+
+#: component/Country/dataset.php:1079
+msgid "Kiribati"
+msgstr ""
+
+#: component/Country/dataset.php:1088
+msgid "Korea (Democratic People's Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1097
+msgid "Korea (Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1106
+msgid "Kuwait"
+msgstr ""
+
+#: component/Country/dataset.php:1115
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: component/Country/dataset.php:1124
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: component/Country/dataset.php:1133
+msgid "Latvia"
+msgstr ""
+
+#: component/Country/dataset.php:1142
+msgid "Lebanon"
+msgstr ""
+
+#: component/Country/dataset.php:1151
+msgid "Lesotho"
+msgstr ""
+
+#: component/Country/dataset.php:1161
+msgid "Liberia"
+msgstr ""
+
+#: component/Country/dataset.php:1170
+msgid "Libya"
+msgstr ""
+
+#: component/Country/dataset.php:1179
+msgid "Liechtenstein"
+msgstr ""
+
+#: component/Country/dataset.php:1188
+msgid "Lithuania"
+msgstr ""
+
+#: component/Country/dataset.php:1197
+msgid "Luxembourg"
+msgstr ""
+
+#: component/Country/dataset.php:1206
+msgid "Macao"
+msgstr ""
+
+#: component/Country/dataset.php:1215
+msgid "Macedonia (the former Yugoslav Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1224
+msgid "Madagascar"
+msgstr ""
+
+#: component/Country/dataset.php:1233
+msgid "Malawi"
+msgstr ""
+
+#: component/Country/dataset.php:1242
+msgid "Malaysia"
+msgstr ""
+
+#: component/Country/dataset.php:1251
+msgid "Maldives"
+msgstr ""
+
+#: component/Country/dataset.php:1260
+msgid "Mali"
+msgstr ""
+
+#: component/Country/dataset.php:1269
+msgid "Malta"
+msgstr ""
+
+#: component/Country/dataset.php:1278
+msgid "Marshall Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1287
+msgid "Martinique"
+msgstr ""
+
+#: component/Country/dataset.php:1296
+msgid "Mauritania"
+msgstr ""
+
+#: component/Country/dataset.php:1305
+msgid "Mauritius"
+msgstr ""
+
+#: component/Country/dataset.php:1314
+msgid "Mayotte"
+msgstr ""
+
+#: component/Country/dataset.php:1323
+msgid "Mexico"
+msgstr ""
+
+#: component/Country/dataset.php:1332
+msgid "Micronesia (Federated States of)"
+msgstr ""
+
+#: component/Country/dataset.php:1341
+msgid "Moldova (Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:1350
+msgid "Monaco"
+msgstr ""
+
+#: component/Country/dataset.php:1359
+msgid "Mongolia"
+msgstr ""
+
+#: component/Country/dataset.php:1368
+msgid "Montenegro"
+msgstr ""
+
+#: component/Country/dataset.php:1377
+msgid "Montserrat"
+msgstr ""
+
+#: component/Country/dataset.php:1386
+msgid "Morocco"
+msgstr ""
+
+#: component/Country/dataset.php:1395
+msgid "Mozambique"
+msgstr ""
+
+#: component/Country/dataset.php:1404
+msgid "Myanmar"
+msgstr ""
+
+#: component/Country/dataset.php:1413
+msgid "Namibia"
+msgstr ""
+
+#: component/Country/dataset.php:1423
+msgid "Nauru"
+msgstr ""
+
+#: component/Country/dataset.php:1432
+msgid "Nepal"
+msgstr ""
+
+#: component/Country/dataset.php:1441
+msgid "Netherlands"
+msgstr ""
+
+#: component/Country/dataset.php:1450
+msgid "New Caledonia"
+msgstr ""
+
+#: component/Country/dataset.php:1459
+msgid "New Zealand"
+msgstr ""
+
+#: component/Country/dataset.php:1468
+msgid "Nicaragua"
+msgstr ""
+
+#: component/Country/dataset.php:1477
+msgid "Niger"
+msgstr ""
+
+#: component/Country/dataset.php:1486
+msgid "Nigeria"
+msgstr ""
+
+#: component/Country/dataset.php:1495
+msgid "Niue"
+msgstr ""
+
+#: component/Country/dataset.php:1504
+msgid "Norfolk Island"
+msgstr ""
+
+#: component/Country/dataset.php:1513
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1522
+msgid "Norway"
+msgstr ""
+
+#: component/Country/dataset.php:1531
+msgid "Oman"
+msgstr ""
+
+#: component/Country/dataset.php:1540
+msgid "Pakistan"
+msgstr ""
+
+#: component/Country/dataset.php:1549
+msgid "Palau"
+msgstr ""
+
+#: component/Country/dataset.php:1558
+msgid "Palestine, State of"
+msgstr ""
+
+#: component/Country/dataset.php:1567
+msgid "Panama"
+msgstr ""
+
+#: component/Country/dataset.php:1576
+msgid "Papua New Guinea"
+msgstr ""
+
+#: component/Country/dataset.php:1585
+msgid "Paraguay"
+msgstr ""
+
+#: component/Country/dataset.php:1594
+msgid "Peru"
+msgstr ""
+
+#: component/Country/dataset.php:1603
+msgid "Philippines"
+msgstr ""
+
+#: component/Country/dataset.php:1612
+msgid "Pitcairn"
+msgstr ""
+
+#: component/Country/dataset.php:1621
+msgid "Poland"
+msgstr ""
+
+#: component/Country/dataset.php:1630
+msgid "Portugal"
+msgstr ""
+
+#: component/Country/dataset.php:1639
+msgid "Puerto Rico"
+msgstr ""
+
+#: component/Country/dataset.php:1648
+msgid "Qatar"
+msgstr ""
+
+#: component/Country/dataset.php:1657
+msgid "Réunion"
+msgstr ""
+
+#: component/Country/dataset.php:1666
+msgid "Romania"
+msgstr ""
+
+#: component/Country/dataset.php:1675
+msgid "Russian Federation"
+msgstr ""
+
+#: component/Country/dataset.php:1684
+msgid "Rwanda"
+msgstr ""
+
+#: component/Country/dataset.php:1693
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: component/Country/dataset.php:1702
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr ""
+
+#: component/Country/dataset.php:1711
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: component/Country/dataset.php:1720
+msgid "Saint Lucia"
+msgstr ""
+
+#: component/Country/dataset.php:1729
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: component/Country/dataset.php:1739
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: component/Country/dataset.php:1748
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: component/Country/dataset.php:1757
+msgid "Samoa"
+msgstr ""
+
+#: component/Country/dataset.php:1766
+msgid "San Marino"
+msgstr ""
+
+#: component/Country/dataset.php:1775
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: component/Country/dataset.php:1784
+msgid "Saudi Arabia"
+msgstr ""
+
+#: component/Country/dataset.php:1793
+msgid "Senegal"
+msgstr ""
+
+#: component/Country/dataset.php:1802
+msgid "Serbia"
+msgstr ""
+
+#: component/Country/dataset.php:1811
+msgid "Seychelles"
+msgstr ""
+
+#: component/Country/dataset.php:1820
+msgid "Sierra Leone"
+msgstr ""
+
+#: component/Country/dataset.php:1829
+msgid "Singapore"
+msgstr ""
+
+#: component/Country/dataset.php:1838
+msgid "Sint Maarten (Dutch part)"
+msgstr ""
+
+#: component/Country/dataset.php:1847
+msgid "Slovakia"
+msgstr ""
+
+#: component/Country/dataset.php:1856
+msgid "Slovenia"
+msgstr ""
+
+#: component/Country/dataset.php:1865
+msgid "Solomon Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1874
+msgid "Somalia"
+msgstr ""
+
+#: component/Country/dataset.php:1883
+msgid "South Africa"
+msgstr ""
+
+#: component/Country/dataset.php:1892
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: component/Country/dataset.php:1901
+msgid "South Sudan"
+msgstr ""
+
+#: component/Country/dataset.php:1910
+msgid "Spain"
+msgstr ""
+
+#: component/Country/dataset.php:1919
+msgid "Sri Lanka"
+msgstr ""
+
+#: component/Country/dataset.php:1928
+msgid "Sudan"
+msgstr ""
+
+#: component/Country/dataset.php:1937
+msgid "Suriname"
+msgstr ""
+
+#: component/Country/dataset.php:1946
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: component/Country/dataset.php:1955
+msgid "Swaziland"
+msgstr ""
+
+#: component/Country/dataset.php:1965
+msgid "Sweden"
+msgstr ""
+
+#: component/Country/dataset.php:1974
+msgid "Switzerland"
+msgstr ""
+
+#: component/Country/dataset.php:1983
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: component/Country/dataset.php:1992
+msgid "Taiwan (Province of China)"
+msgstr ""
+
+#: component/Country/dataset.php:2001
+msgid "Tajikistan"
+msgstr ""
+
+#: component/Country/dataset.php:2010
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: component/Country/dataset.php:2019
+msgid "Thailand"
+msgstr ""
+
+#: component/Country/dataset.php:2028
+msgid "Timor-Leste"
+msgstr ""
+
+#: component/Country/dataset.php:2037
+msgid "Togo"
+msgstr ""
+
+#: component/Country/dataset.php:2046
+msgid "Tokelau"
+msgstr ""
+
+#: component/Country/dataset.php:2055
+msgid "Tonga"
+msgstr ""
+
+#: component/Country/dataset.php:2064
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: component/Country/dataset.php:2073
+msgid "Tunisia"
+msgstr ""
+
+#: component/Country/dataset.php:2082
+msgid "Turkey"
+msgstr ""
+
+#: component/Country/dataset.php:2091
+msgid "Turkmenistan"
+msgstr ""
+
+#: component/Country/dataset.php:2100
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: component/Country/dataset.php:2109
+msgid "Tuvalu"
+msgstr ""
+
+#: component/Country/dataset.php:2118
+msgid "Uganda"
+msgstr ""
+
+#: component/Country/dataset.php:2127
+msgid "Ukraine"
+msgstr ""
+
+#: component/Country/dataset.php:2136
+msgid "United Arab Emirates"
+msgstr ""
+
+#: component/Country/dataset.php:2145
+msgid "United Kingdom of Great Britain and Northern Ireland"
+msgstr ""
+
+#: component/Country/dataset.php:2154
+msgid "United States of America"
+msgstr ""
+
+#: component/Country/dataset.php:2163
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: component/Country/dataset.php:2172
+msgid "Uruguay"
+msgstr ""
+
+#: component/Country/dataset.php:2181
+msgid "Uzbekistan"
+msgstr ""
+
+#: component/Country/dataset.php:2190
+msgid "Vanuatu"
+msgstr ""
+
+#: component/Country/dataset.php:2199
+msgid "Venezuela (Bolivarian Republic of)"
+msgstr ""
+
+#: component/Country/dataset.php:2208
+msgid "Viet Nam"
+msgstr ""
+
+#: component/Country/dataset.php:2217
+msgid "Virgin Islands (British)"
+msgstr ""
+
+#: component/Country/dataset.php:2226
+msgid "Virgin Islands (U.S.)"
+msgstr ""
+
+#: component/Country/dataset.php:2235
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: component/Country/dataset.php:2244
+msgid "Western Sahara"
+msgstr ""
+
+#: component/Country/dataset.php:2253
+msgid "Yemen"
+msgstr ""
+
+#: component/Country/dataset.php:2262
+msgid "Zambia"
+msgstr ""
+
+#: component/Country/dataset.php:2271
+msgid "Zimbabwe"
+msgstr ""
+
+#: component/Currency/dataset.php:10
+msgid "UAE Dirham"
+msgstr ""
+
+#: component/Currency/dataset.php:17
+msgid "Afghan Afghani"
+msgstr ""
+
+#: component/Currency/dataset.php:24
+msgid "Albanian Lek"
+msgstr ""
+
+#: component/Currency/dataset.php:31
+msgid "Armenian Dram"
+msgstr ""
+
+#: component/Currency/dataset.php:38
+msgid "Netherlands Antillean Guilder"
+msgstr ""
+
+#: component/Currency/dataset.php:45
+msgid "Angolan Kwanza"
+msgstr ""
+
+#: component/Currency/dataset.php:52
+msgid "Argentine Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:59
+msgid "Australian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:66
+msgid "Aruban Florin"
+msgstr ""
+
+#: component/Currency/dataset.php:73
+msgid "Azerbaijani Manat"
+msgstr ""
+
+#: component/Currency/dataset.php:80
+msgid "Bosnia and Herzegovina Convertible Mark"
+msgstr ""
+
+#: component/Currency/dataset.php:87
+msgid "Barbados Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:94
+msgid "Bangladeshi Taka"
+msgstr ""
+
+#: component/Currency/dataset.php:101
+msgid "Bulgarian Lev"
+msgstr ""
+
+#: component/Currency/dataset.php:108
+msgid "Bahraini Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:115
+msgid "Burundian Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:122
+msgid "Bermudian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:129
+msgid "Brunei Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:136
+msgid "Boliviano"
+msgstr ""
+
+#: component/Currency/dataset.php:143
+msgid "Brazilian Real"
+msgstr ""
+
+#: component/Currency/dataset.php:150
+msgid "Bahamian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:157
+msgid "Bhutanese Ngultrum"
+msgstr ""
+
+#: component/Currency/dataset.php:164
+msgid "Botswana Pula"
+msgstr ""
+
+#: component/Currency/dataset.php:171
+msgid "Belarussian Ruble"
+msgstr ""
+
+#: component/Currency/dataset.php:178
+msgid "Belize Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:185
+msgid "Canadian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:192
+msgid "Congolese Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:199
+msgid "Swiss Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:206
+msgid "Chilean Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:213
+msgid "Chinese Yuan"
+msgstr ""
+
+#: component/Currency/dataset.php:220
+msgid "Colombian Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:227
+msgid "Costa Rican Colon"
+msgstr ""
+
+#: component/Currency/dataset.php:234
+msgid "Cuban Convertible Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:241
+msgid "Cuban Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:248
+msgid "Cape Verde Escudo"
+msgstr ""
+
+#: component/Currency/dataset.php:255
+msgid "Czech Koruna"
+msgstr ""
+
+#: component/Currency/dataset.php:262
+msgid "Djiboutian Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:269
+msgid "Danish Krone"
+msgstr ""
+
+#: component/Currency/dataset.php:276
+msgid "Dominican Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:283
+msgid "Algerian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:290
+msgid "Egyptian Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:297
+msgid "Eritrean Nakfa"
+msgstr ""
+
+#: component/Currency/dataset.php:304
+msgid "Ethiopian Birr"
+msgstr ""
+
+#: component/Currency/dataset.php:311
+msgid "Euro"
+msgstr ""
+
+#: component/Currency/dataset.php:318
+msgid "Fiji Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:325
+msgid "Falkland Islands Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:332
+msgid "Pound Sterling"
+msgstr ""
+
+#: component/Currency/dataset.php:339
+msgid "Georgian Lari"
+msgstr ""
+
+#: component/Currency/dataset.php:346
+msgid "Ghanaian Cedi"
+msgstr ""
+
+#: component/Currency/dataset.php:353
+msgid "Gibraltar Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:360
+msgid "Gambian Dalasi"
+msgstr ""
+
+#: component/Currency/dataset.php:367
+msgid "Guinean Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:374
+msgid "Guatemalan Quetzal"
+msgstr ""
+
+#: component/Currency/dataset.php:381
+msgid "Guyanese Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:388
+msgid "Hong Kong Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:395
+msgid "Honduran Lempira"
+msgstr ""
+
+#: component/Currency/dataset.php:402
+msgid "Croatian Kuna"
+msgstr ""
+
+#: component/Currency/dataset.php:409
+msgid "Haitian Gourde"
+msgstr ""
+
+#: component/Currency/dataset.php:416
+msgid "Hungarian Forint"
+msgstr ""
+
+#: component/Currency/dataset.php:423
+msgid "Indonesian Rupiah"
+msgstr ""
+
+#: component/Currency/dataset.php:430
+msgid "Israeli New Sheqel"
+msgstr ""
+
+#: component/Currency/dataset.php:437
+msgid "Indian Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:444
+msgid "Iraqi Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:451
+msgid "Iranian Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:458
+msgid "Icelandic Króna"
+msgstr ""
+
+#: component/Currency/dataset.php:465
+msgid "Jamaican Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:472
+msgid "Jordanian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:479
+msgid "Japanese Yen"
+msgstr ""
+
+#: component/Currency/dataset.php:486
+msgid "Kenyan Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:493
+msgid "Kyrgyzstani Som"
+msgstr ""
+
+#: component/Currency/dataset.php:500
+msgid "Cambodian Riel"
+msgstr ""
+
+#: component/Currency/dataset.php:507
+msgid "Comoro Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:514
+msgid "North Korean Won"
+msgstr ""
+
+#: component/Currency/dataset.php:521
+msgid "South Korean Won"
+msgstr ""
+
+#: component/Currency/dataset.php:528
+msgid "Kuwaiti Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:535
+msgid "Cayman Islands Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:542
+msgid "Kazakhstani Tenge"
+msgstr ""
+
+#: component/Currency/dataset.php:549
+msgid "Lao Kip"
+msgstr ""
+
+#: component/Currency/dataset.php:556
+msgid "Lebanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:563
+msgid "Sri Lankan Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:570
+msgid "Liberian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:577
+msgid "Lesotho Loti"
+msgstr ""
+
+#: component/Currency/dataset.php:584
+msgid "Libyan Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:591
+msgid "Moroccan Dirham"
+msgstr ""
+
+#: component/Currency/dataset.php:598
+msgid "Moldovan Leu"
+msgstr ""
+
+#: component/Currency/dataset.php:605
+msgid "Malagasy Ariary"
+msgstr ""
+
+#: component/Currency/dataset.php:612
+msgid "Macedonian Denar"
+msgstr ""
+
+#: component/Currency/dataset.php:619
+msgid "Myanmar Kyat"
+msgstr ""
+
+#: component/Currency/dataset.php:626
+msgid "Mongolian Tugrik"
+msgstr ""
+
+#: component/Currency/dataset.php:633
+msgid "Macanese Pataca"
+msgstr ""
+
+#: component/Currency/dataset.php:640
+msgid "Mauritanian Ouguiya"
+msgstr ""
+
+#: component/Currency/dataset.php:647
+msgid "Mauritian Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:654
+msgid "Maldivian Rufiyaa"
+msgstr ""
+
+#: component/Currency/dataset.php:661
+msgid "Malawian Kwacha"
+msgstr ""
+
+#: component/Currency/dataset.php:668
+msgid "Mexican Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:675
+msgid "Malaysian Ringgit"
+msgstr ""
+
+#: component/Currency/dataset.php:682
+msgid "Mozambican Metical"
+msgstr ""
+
+#: component/Currency/dataset.php:689
+msgid "Namibian Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:696
+msgid "Nigerian Naira"
+msgstr ""
+
+#: component/Currency/dataset.php:703
+msgid "Nicaraguan Córdoba"
+msgstr ""
+
+#: component/Currency/dataset.php:710
+msgid "Norwegian Krone"
+msgstr ""
+
+#: component/Currency/dataset.php:717
+msgid "Nepalese Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:724
+msgid "New Zealand Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:731
+msgid "Omani Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:738
+msgid "Panamanian Balboa"
+msgstr ""
+
+#: component/Currency/dataset.php:745
+msgid "Peruvian Nuevo Sol"
+msgstr ""
+
+#: component/Currency/dataset.php:752
+msgid "Papua New Guinean Kina"
+msgstr ""
+
+#: component/Currency/dataset.php:759
+msgid "Philippine Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:766
+msgid "Pakistani Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:773
+msgid "Polish Zloty"
+msgstr ""
+
+#: component/Currency/dataset.php:780
+msgid "Paraguayan Guarani"
+msgstr ""
+
+#: component/Currency/dataset.php:787
+msgid "Qatari Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:794
+msgid "Romanian New Leu"
+msgstr ""
+
+#: component/Currency/dataset.php:801
+msgid "Serbian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:808
+msgid "Russian Ruble"
+msgstr ""
+
+#: component/Currency/dataset.php:815
+msgid "Rwandan Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:822
+msgid "Saudi Riyal"
+msgstr ""
+
+#: component/Currency/dataset.php:829
+msgid "Solomon Islands Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:836
+msgid "Seychelles Rupee"
+msgstr ""
+
+#: component/Currency/dataset.php:843
+msgid "Sudanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:850
+msgid "Swedish Krona"
+msgstr ""
+
+#: component/Currency/dataset.php:857
+msgid "Singapore Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:864
+msgid "Saint Helena Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:871
+msgid "Sierra Leonean Leone"
+msgstr ""
+
+#: component/Currency/dataset.php:878
+msgid "Somali Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:885
+msgid "Surinamese Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:892
+msgid "South Sudanese Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:899
+msgid "São Tomé and Principe Dobra"
+msgstr ""
+
+#: component/Currency/dataset.php:906
+msgid "Syrian Pound"
+msgstr ""
+
+#: component/Currency/dataset.php:913
+msgid "Swazi Lilangeni"
+msgstr ""
+
+#: component/Currency/dataset.php:920
+msgid "Thai Baht"
+msgstr ""
+
+#: component/Currency/dataset.php:927
+msgid "Tajikistani Somoni"
+msgstr ""
+
+#: component/Currency/dataset.php:934
+msgid "Turkmenistani Manat"
+msgstr ""
+
+#: component/Currency/dataset.php:941
+msgid "Tunisian Dinar"
+msgstr ""
+
+#: component/Currency/dataset.php:948
+msgid "Tongan Paʻanga"
+msgstr ""
+
+#: component/Currency/dataset.php:955
+msgid "Turkish Lira"
+msgstr ""
+
+#: component/Currency/dataset.php:962
+msgid "Trinidad and Tobago Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:969
+msgid "New Taiwan Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:976
+msgid "Tanzanian Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:983
+msgid "Ukrainian Hryvnia"
+msgstr ""
+
+#: component/Currency/dataset.php:990
+msgid "Ugandan Shilling"
+msgstr ""
+
+#: component/Currency/dataset.php:997
+msgid "US Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:1004
+msgid "Uruguayan Peso"
+msgstr ""
+
+#: component/Currency/dataset.php:1011
+msgid "Uzbekistan Som"
+msgstr ""
+
+#: component/Currency/dataset.php:1018
+msgid "Venezuelan Bolivar"
+msgstr ""
+
+#: component/Currency/dataset.php:1025
+msgid "Vietnamese Dong"
+msgstr ""
+
+#: component/Currency/dataset.php:1032
+msgid "Vanuatu Vatu"
+msgstr ""
+
+#: component/Currency/dataset.php:1039
+msgid "Samoan Tala"
+msgstr ""
+
+#: component/Currency/dataset.php:1046
+msgid "CFA Franc BEAC"
+msgstr ""
+
+#: component/Currency/dataset.php:1053
+msgid "East Caribbean Dollar"
+msgstr ""
+
+#: component/Currency/dataset.php:1060
+msgid "CFA Franc BCEAO"
+msgstr ""
+
+#: component/Currency/dataset.php:1067
+msgid "CFP Franc"
+msgstr ""
+
+#: component/Currency/dataset.php:1074
+msgid "Yemeni Rial"
+msgstr ""
+
+#: component/Currency/dataset.php:1081
+msgid "South African Rand"
+msgstr ""
+
+#: component/Currency/dataset.php:1088
+msgid "Zambian Kwacha"
+msgstr ""
+
 #: component/Form/fields/abrs_dates.php:23
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:26
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:34
 #: templates/reservation/dates.php:40 templates/search-form/dates.php:22
 #: templates/search-form/default/dates.php:24
 #: templates/search-form/horizontal/dates.php:26
@@ -32,7 +1648,7 @@ msgid "Check In"
 msgstr ""
 
 #: component/Form/fields/abrs_dates.php:32
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:27
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:35
 #: templates/reservation/dates.php:63 templates/search-form/dates.php:35
 #: templates/search-form/default/dates.php:36
 #: templates/search-form/horizontal/dates.php:38
@@ -60,69 +1676,69 @@ msgstr ""
 msgid "Your settings have been saved."
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:112
+#: inc/Admin/Calendar/Booking_Scheduler.php:104
 msgid "Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:113
+#: inc/Admin/Calendar/Booking_Scheduler.php:105
 msgid "Pending"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:114
+#: inc/Admin/Calendar/Booking_Scheduler.php:106
 #: inc/Email/Templates/Processing.php:13
 msgid "Processing"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:115
+#: inc/Admin/Calendar/Booking_Scheduler.php:107
 #: inc/Email/Templates/Reserved.php:13
 msgid "Reserved"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:116
+#: inc/Admin/Calendar/Booking_Scheduler.php:108
 #: inc/Admin/Forms/Booking_Payment_Form.php:48
 msgid "Deposit"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:117
+#: inc/Admin/Calendar/Booking_Scheduler.php:109
 #: inc/Admin/List_Tables/Booking_List_Table.php:64
-#: templates/emails/partials/line-booking.php:96
+#: templates/emails/partials/line-booking.php:127
 msgid "Paid"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:118
+#: inc/Admin/Calendar/Booking_Scheduler.php:110
 msgid "Checked In"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:119
+#: inc/Admin/Calendar/Booking_Scheduler.php:111
 msgid "Checked Out"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:148
+#: inc/Admin/Calendar/Booking_Scheduler.php:120
 msgid "Set as Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:149
+#: inc/Admin/Calendar/Booking_Scheduler.php:121
 msgid "Clear Blocked"
 msgstr ""
 
-#: inc/Admin/Calendar/Pricing_Scheduler.php:42
+#: inc/Admin/Calendar/Pricing_Scheduler.php:35
 msgid "Not Modified"
 msgstr ""
 
-#: inc/Admin/Calendar/Pricing_Scheduler.php:43
+#: inc/Admin/Calendar/Pricing_Scheduler.php:36
 msgid "Modified Higher"
 msgstr ""
 
-#: inc/Admin/Calendar/Pricing_Scheduler.php:44
+#: inc/Admin/Calendar/Pricing_Scheduler.php:37
 msgid "Modified Lower"
 msgstr ""
 
-#: inc/Admin/Calendar/Pricing_Scheduler.php:74
+#: inc/Admin/Calendar/Pricing_Scheduler.php:47
 #: inc/Admin/views/rates/html-adjust-price.php:11
 msgid "Adjust Price"
 msgstr ""
 
-#: inc/Admin/Calendar/Pricing_Scheduler.php:75
+#: inc/Admin/Calendar/Pricing_Scheduler.php:48
 msgid "Revert Price"
 msgstr ""
 
@@ -155,33 +1771,33 @@ msgstr ""
 msgid "Next Date"
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:21
+#: inc/Admin/Controllers/Ajax_Controller.php:22
 #: inc/Admin/Providers/Scripts_Service_Provider.php:82
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:35
+#: inc/Admin/Controllers/Ajax_Controller.php:36
 msgid "Room successfully deleted"
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:38
+#: inc/Admin/Controllers/Ajax_Controller.php:39
 msgid "This room cannot delete, because it contained by another booking."
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:51
-#: inc/Admin/Controllers/Ajax_Controller.php:87
+#: inc/Admin/Controllers/Ajax_Controller.php:52
+#: inc/Admin/Controllers/Ajax_Controller.php:88
 msgid "Something went wrong."
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:59
+#: inc/Admin/Controllers/Ajax_Controller.php:60
 msgid "Please enter some content to note."
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:66
+#: inc/Admin/Controllers/Ajax_Controller.php:67
 msgid "Could not create note, please try again."
 msgstr ""
 
-#: inc/Admin/Controllers/Ajax_Controller.php:149
+#: inc/Admin/Controllers/Ajax_Controller.php:150
 #: inc/Admin/List_Tables/Booking_List_Table.php:307
 #: inc/Admin/Metaboxes/Booking_Main_Metabox.php:172
 #. translators: 1: user display name 2: user ID 3: user email
@@ -223,20 +1839,19 @@ msgid ""
 "deleted?"
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Room_Controller.php:28
-#: inc/Admin/Controllers/Booking_Room_Controller.php:62
-msgid "The booking reference is does not exist."
-msgstr ""
-
-#: inc/Admin/Controllers/Booking_Room_Controller.php:32
-msgid "This booking is no longer editable."
-msgstr ""
-
-#: inc/Admin/Controllers/Booking_Room_Controller.php:41
+#: inc/Admin/Controllers/Booking_Room_Controller.php:43
 msgid "ERR."
 msgstr ""
 
-#: inc/Admin/Controllers/Booking_Room_Controller.php:187
+#: inc/Admin/Controllers/Booking_Room_Controller.php:64
+msgid "The booking reference is does not exist."
+msgstr ""
+
+#: inc/Admin/Controllers/Booking_Room_Controller.php:68
+msgid "This booking is no longer editable."
+msgstr ""
+
+#: inc/Admin/Controllers/Booking_Room_Controller.php:229
 msgid "The booking room has been destroyed"
 msgstr ""
 
@@ -274,7 +1889,7 @@ msgstr ""
 #: inc/Admin/Forms/Service_Data_Form.php:38
 #: inc/Admin/Metaboxes/views/html-booking-payments.php:22
 #: inc/Admin/views/rates/html-adjust-price.php:47
-#: inc/Admin/views/rates/html-bulk-update.php:53
+#: inc/Admin/views/rates/html-bulk-update.php:83
 msgid "Amount"
 msgstr ""
 
@@ -307,7 +1922,7 @@ msgid "Change timespan to:"
 msgstr ""
 
 #: inc/Admin/Forms/Edit_Booking_Room_Form.php:36
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:28
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:36
 #: inc/Admin/views/booking/html-avai-row.php:64
 #: templates/search-form/default/occupancy.php:24
 #: templates/search-form/horizontal/occupancy.php:25
@@ -316,7 +1931,7 @@ msgid "Adults"
 msgstr ""
 
 #: inc/Admin/Forms/Edit_Booking_Room_Form.php:46
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:31
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:39
 #: inc/Admin/views/booking/html-avai-row.php:72
 #: templates/search-form/default/occupancy.php:37
 #: templates/search-form/horizontal/occupancy.php:38
@@ -325,7 +1940,7 @@ msgid "Children"
 msgstr ""
 
 #: inc/Admin/Forms/Edit_Booking_Room_Form.php:57
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:35
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:43
 #: inc/Admin/views/booking/html-avai-row.php:81
 #: templates/search-form/default/occupancy.php:51
 #: templates/search-form/horizontal/occupancy.php:52
@@ -338,11 +1953,26 @@ msgid "Subtotal (pre-discount)"
 msgstr ""
 
 #: inc/Admin/Forms/Edit_Booking_Room_Form.php:74
+#: inc/Admin/Forms/Room_Type_Data_Form.php:119
+#: inc/Admin/Settings/Taxes_Setting.php:13 inc/Core/taxes.php:253
+#: templates/reservation/selected-room.php:77
+msgid "Tax"
+msgstr ""
+
+#: inc/Admin/Forms/Edit_Booking_Room_Form.php:81
 #: inc/Admin/List_Tables/Booking_List_Table.php:63
 #: inc/Admin/Settings/Appearance_Setting.php:131
-#: templates/emails/partials/line-booking.php:91
-#: templates/reservation/totals.php:30
+#: templates/emails/partials/line-booking.php:122
+#: templates/reservation/totals.php:37
 msgid "Total"
+msgstr ""
+
+#: inc/Admin/Forms/Edit_Booking_Room_Form.php:88
+msgid "Select room"
+msgstr ""
+
+#: inc/Admin/Forms/Edit_Booking_Room_Form.php:89
+msgid "Swap To"
 msgstr ""
 
 #: inc/Admin/Forms/Hotel_Information_Form.php:25
@@ -480,12 +2110,6 @@ msgstr ""
 msgid "Rack rate is the regular everyday rate."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:119
-#: inc/Admin/Settings/Taxes_Setting.php:13 inc/Core/taxes.php:253
-#: templates/reservation/selected-room.php:61
-msgid "Tax"
-msgstr ""
-
 #: inc/Admin/Forms/Room_Type_Data_Form.php:122
 msgid "No Tax"
 msgstr ""
@@ -520,7 +2144,7 @@ msgstr ""
 
 #: inc/Admin/Forms/Room_Type_Data_Form.php:167
 #: inc/Admin/Forms/Room_Type_Data_Form.php:178
-#: inc/Admin/Forms/Room_Type_Data_Form.php:232
+#: inc/Admin/Forms/Room_Type_Data_Form.php:265
 msgid "Add More"
 msgstr ""
 
@@ -534,53 +2158,53 @@ msgid ""
 "Non-refundable., etc."
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:188
+#: inc/Admin/Forms/Room_Type_Data_Form.php:221
 msgid "Rooms & Amenities"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:193
+#: inc/Admin/Forms/Room_Type_Data_Form.php:226
 msgid "Area size"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:206
+#: inc/Admin/Forms/Room_Type_Data_Form.php:239
 msgid "View"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:216
+#: inc/Admin/Forms/Room_Type_Data_Form.php:249
 msgid "Bedrooms"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:220
+#: inc/Admin/Forms/Room_Type_Data_Form.php:253
 msgid "Single bedroom"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:221
+#: inc/Admin/Forms/Room_Type_Data_Form.php:254
 msgid "Double bedrooms"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:222
+#: inc/Admin/Forms/Room_Type_Data_Form.php:255
 msgid "3 bedrooms"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:223
+#: inc/Admin/Forms/Room_Type_Data_Form.php:256
 msgid "4 bedrooms"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:224
+#: inc/Admin/Forms/Room_Type_Data_Form.php:257
 msgid "5 bedrooms"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:231
+#: inc/Admin/Forms/Room_Type_Data_Form.php:264
 msgid "Beds"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:243
+#: inc/Admin/Forms/Room_Type_Data_Form.php:276
 #: templates/search/result/detail.php:39
 #: templates/template-parts/single/amenities.php:27
 msgid "Amenities"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:254
+#: inc/Admin/Forms/Room_Type_Data_Form.php:287
 #: inc/Admin/Forms/Service_Data_Form.php:46 inc/Gateway/BACS_Gateway.php:84
 #: inc/Gateway/Direct_Payment_Gateway.php:84
 #: templates/template-parts/hotel/description.php:20
@@ -588,116 +2212,116 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:261
+#: inc/Admin/Forms/Room_Type_Data_Form.php:294
 msgid "Short Description"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:275
+#: inc/Admin/Forms/Room_Type_Data_Form.php:308
 #: templates/template-parts/single/gallery.php:27
 msgid "Gallery"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:277
+#: inc/Admin/Forms/Room_Type_Data_Form.php:310
 msgid "Select Images"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:324
+#: inc/Admin/Forms/Room_Type_Data_Form.php:357
 msgid "Airport view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:325
+#: inc/Admin/Forms/Room_Type_Data_Form.php:358
 msgid "Bay view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:326
+#: inc/Admin/Forms/Room_Type_Data_Form.php:359
 msgid "City view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:327
+#: inc/Admin/Forms/Room_Type_Data_Form.php:360
 msgid "Courtyard view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:328
+#: inc/Admin/Forms/Room_Type_Data_Form.php:361
 msgid "Golf view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:329
+#: inc/Admin/Forms/Room_Type_Data_Form.php:362
 msgid "Harbor view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:330
+#: inc/Admin/Forms/Room_Type_Data_Form.php:363
 msgid "Intercoastal view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:331
+#: inc/Admin/Forms/Room_Type_Data_Form.php:364
 msgid "Lake view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:332
+#: inc/Admin/Forms/Room_Type_Data_Form.php:365
 msgid "Marina view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:333
+#: inc/Admin/Forms/Room_Type_Data_Form.php:366
 msgid "Mountain view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:334
+#: inc/Admin/Forms/Room_Type_Data_Form.php:367
 msgid "Ocean view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:335
+#: inc/Admin/Forms/Room_Type_Data_Form.php:368
 msgid "Pool view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:336
+#: inc/Admin/Forms/Room_Type_Data_Form.php:369
 msgid "River view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:337
+#: inc/Admin/Forms/Room_Type_Data_Form.php:370
 msgid "Water view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:338
+#: inc/Admin/Forms/Room_Type_Data_Form.php:371
 msgid "Beach view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:339
+#: inc/Admin/Forms/Room_Type_Data_Form.php:372
 msgid "Garden view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:340
+#: inc/Admin/Forms/Room_Type_Data_Form.php:373
 msgid "Park view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:341
+#: inc/Admin/Forms/Room_Type_Data_Form.php:374
 msgid "Forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:342
+#: inc/Admin/Forms/Room_Type_Data_Form.php:375
 msgid "Rain forest view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:343
+#: inc/Admin/Forms/Room_Type_Data_Form.php:376
 msgid "Various views"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:344
+#: inc/Admin/Forms/Room_Type_Data_Form.php:377
 msgid "Limited view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:345
+#: inc/Admin/Forms/Room_Type_Data_Form.php:378
 msgid "Slope view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:346
+#: inc/Admin/Forms/Room_Type_Data_Form.php:379
 msgid "Strip view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:347
+#: inc/Admin/Forms/Room_Type_Data_Form.php:380
 msgid "Countryside view"
 msgstr ""
 
-#: inc/Admin/Forms/Room_Type_Data_Form.php:348
+#: inc/Admin/Forms/Room_Type_Data_Form.php:381
 msgid "Sea view"
 msgstr ""
 
@@ -733,7 +2357,7 @@ msgid "Status"
 msgstr ""
 
 #: inc/Admin/List_Tables/Booking_List_Table.php:59
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:25
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:33
 msgid "Nights"
 msgstr ""
 
@@ -752,6 +2376,7 @@ msgstr ""
 
 #: inc/Admin/List_Tables/Booking_List_Table.php:65
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:45
+#: inc/Admin/views/booking/add-room.php:181
 msgid "Date"
 msgstr ""
 
@@ -802,7 +2427,7 @@ msgid "Query for a customer&hellip;"
 msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:35
-#: inc/Admin/views/booking/add-room.php:76
+#: inc/Admin/views/booking/add-room.php:82
 msgid "Image"
 msgstr ""
 
@@ -820,7 +2445,7 @@ msgid "Hotel"
 msgstr ""
 
 #: inc/Admin/List_Tables/Room_Type_List_Table.php:44
-#: inc/Admin/views/booking/add-room.php:79
+#: inc/Admin/views/booking/add-room.php:85
 msgid "Occupancy"
 msgstr ""
 
@@ -883,8 +2508,8 @@ msgstr ""
 msgid "Room Type Data"
 msgstr ""
 
-#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:153
-#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:175
+#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:157
+#: inc/Admin/Metaboxes/Room_Type_Data_Metabox.php:179
 #. translators: 1: Room type name, 2: Room item order
 msgid "%1$s - %2$d"
 msgstr ""
@@ -933,52 +2558,62 @@ msgid "Fee"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-fees.php:18
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:38
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:46
 #: inc/Admin/Metaboxes/views/html-booking-services.php:14
-#: inc/Admin/views/booking/add-room.php:80
-#: templates/emails/partials/line-booking.php:24
-#: templates/reservation/selected-room.php:47
+#: inc/Admin/views/booking/add-room.php:86
+#: templates/emails/partials/line-booking.php:25
+#: templates/reservation/selected-room.php:48
 #: templates/reservation/services.php:27 templates/search/result/price.php:25
 #: templates/search/result-item.php:50
 msgid "Price"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:26
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:129
+#: inc/Admin/Metaboxes/views/html-booking-items.php:24
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:139
+msgid "Subtotal:"
+msgstr ""
+
+#: inc/Admin/Metaboxes/views/html-booking-items.php:32
+#: templates/emails/partials/line-booking.php:116
+msgid "Total Tax:"
+msgstr ""
+
+#: inc/Admin/Metaboxes/views/html-booking-items.php:38
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:149
 #: inc/Admin/views/calendar/html-booking-state.php:56
 #: templates/checkout/thankyou.php:65
 msgid "Total:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:31
+#: inc/Admin/Metaboxes/views/html-booking-items.php:43
 #: inc/Admin/views/calendar/html-booking-state.php:61
 msgid "Paid:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:36
+#: inc/Admin/Metaboxes/views/html-booking-items.php:48
 #: inc/Admin/views/calendar/html-booking-state.php:66
 msgid "Balance Due:"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:47
+#: inc/Admin/Metaboxes/views/html-booking-items.php:59
 #: inc/Admin/Metaboxes/views/html-room-type-rooms.php:73
 msgid "Add room"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:51
+#: inc/Admin/Metaboxes/views/html-booking-items.php:63
 #: inc/Core/Bootstrap/Setup_Environment.php:232
 msgid "Add service"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:57
+#: inc/Admin/Metaboxes/views/html-booking-items.php:69
 msgid "Recalculate"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:62
+#: inc/Admin/Metaboxes/views/html-booking-items.php:74
 msgid "Change the booking status back to \"Pending\" to edit this"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-items.php:62
+#: inc/Admin/Metaboxes/views/html-booking-items.php:74
 msgid "This booking is no longer editable"
 msgstr ""
 
@@ -999,7 +2634,7 @@ msgstr ""
 #: inc/Admin/Metaboxes/views/html-booking-main.php:73
 #: inc/Admin/Metaboxes/views/html-booking-main.php:121
 #: inc/Admin/Metaboxes/views/html-booking-payments.php:66
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:121
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:129
 #: inc/Core/Bootstrap/Setup_Environment.php:150
 #: inc/Core/Bootstrap/Setup_Environment.php:198
 #: inc/Core/Bootstrap/Setup_Environment.php:234
@@ -1099,7 +2734,7 @@ msgid "Payment comment"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-payments.php:67
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:122
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:131
 #: inc/Admin/Metaboxes/views/html-booking-services.php:57
 #: inc/Admin/Metaboxes/views/html-room-type-rooms.php:66
 msgid "Delete"
@@ -1111,35 +2746,34 @@ msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-payments.php:99
 #: inc/Admin/views/booking/payment-form.php:52
-#: templates/emails/partials/line-booking.php:101
 msgid "Balance Due"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:23
-#: inc/Admin/views/booking/add-room.php:77
-#: inc/Admin/views/booking/page-edit-room.php:37
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:31
+#: inc/Admin/views/booking/add-room.php:83
+#: inc/Admin/views/booking/page-edit-room.php:83
 msgid "Room Type"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:24
-#: inc/Admin/views/booking/page-edit-room.php:46
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:32
+#: inc/Admin/views/booking/page-edit-room.php:92
 msgid "Rate Plan"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:47
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:55
 msgid "No rooms"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:82
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:90
 msgid "-"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:127
-msgid "Subtotal:"
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:130
+msgid "Swap"
 msgstr ""
 
-#: inc/Admin/Metaboxes/views/html-booking-rooms.php:131
-#: templates/emails/partials/line-booking.php:50
+#: inc/Admin/Metaboxes/views/html-booking-rooms.php:144
+#: templates/emails/partials/line-booking.php:51
 msgid "TAX:"
 msgstr ""
 
@@ -1260,159 +2894,159 @@ msgstr ""
 msgid "Hotel base"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:69
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:64
 #. translators: %s: The Room type url
 msgid "Room type updated. <a href=\"%s\">View</a>"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:70
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:88
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:65
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:83
 msgid "Custom field updated."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:71
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:89
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:66
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:84
 msgid "Custom field deleted."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:72
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:67
 msgid "Room type updated."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:73
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:91
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:68
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:86
 msgid "Revision restored."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:75
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:70
 #. translators: %s: The room type url
 msgid "Room type published. <a href=\"%s\">View</a>"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:76
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:71
 msgid "Room type saved."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:78
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:73
 #. translators: %s: The room type url
 msgid "Room type submitted. <a target=\"_blank\" href=\"%s\">Preview</a>"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:80
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:75
 #. translators: 1: Date 2: The room type url
 msgid ""
 "Room type scheduled for: %1$s. <a target=\"_blank\" "
 "href=\"%2$s\">Preview</a>"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:80
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:96
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:75
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:91
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:82
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:77
 #. translators: %s: The room type url
 msgid "Room type draft updated. <a target=\"_blank\" href=\"%s\">Preview</a>"
 msgstr ""
 
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:82
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:85
 #: inc/Admin/Providers/Post_Types_Service_Provider.php:87
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:90
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:92
 msgid "Booking updated."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:93
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:88
 msgid "Booking saved."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:94
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:89
 msgid "Booking submitted."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:96
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:91
 #. translators: %s: date
 msgid "Booking scheduled for: %s."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:97
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:92
 msgid "Booking draft updated."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:98
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:93
 msgid "Booking updated and sent."
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:114
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:109
 #. translators: %s: The room type count
 msgid "%s room type updated."
 msgid_plural "%s room types updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:116
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:111
 #. translators: %s: The room type count
 msgid "%s room type not updated, somebody is editing it."
 msgid_plural "%s room types not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:118
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:113
 #. translators: %s: The room type count
 msgid "%s room type permanently deleted."
 msgid_plural "%s room types permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:120
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:115
 #. translators: %s: The room type count
 msgid "%s room type moved to the Trash."
 msgid_plural "%s room types moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:122
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:117
 #. translators: %s: The room type count
 msgid "%s room type restored from the Trash."
 msgid_plural "%s room types restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:127
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:122
 #. translators: %s: The booking count
 msgid "%s booking updated."
 msgid_plural "%s bookings updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:129
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:124
 #. translators: %s: The booking count
 msgid "%s booking not updated, somebody is editing it."
 msgid_plural "%s bookings not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:131
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:126
 #. translators: %s: The booking count
 msgid "%s booking permanently deleted."
 msgid_plural "%s bookings permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:133
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:128
 #. translators: %s: The booking count
 msgid "%s booking moved to the Trash."
 msgid_plural "%s bookings moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:135
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:130
 #. translators: %s: The booking count
 msgid "%s booking restored from the Trash."
 msgid_plural "%s bookings restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:166
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:161
 msgid "Room Type Name"
 msgstr ""
 
@@ -1421,7 +3055,7 @@ msgid "OK"
 msgstr ""
 
 #: inc/Admin/Providers/Scripts_Service_Provider.php:80
-#: inc/Admin/views/booking/page-edit-room.php:94
+#: inc/Admin/views/booking/page-edit-room.php:161
 #: inc/Admin/views/booking/payment-form.php:69
 #: inc/Admin/views/booking/service-form.php:79
 msgid "Cancel"
@@ -1531,10 +3165,12 @@ msgid "Price displayed on search"
 msgstr ""
 
 #: inc/Admin/Settings/Appearance_Setting.php:132
+#: inc/Admin/views/booking/add-room.php:220
 msgid "Average"
 msgstr ""
 
 #: inc/Admin/Settings/Appearance_Setting.php:133
+#: inc/Admin/views/booking/add-room.php:215
 msgid "First night"
 msgstr ""
 
@@ -1600,71 +3236,65 @@ msgid "Date Picker"
 msgstr ""
 
 #: inc/Admin/Settings/Appearance_Setting.php:223
-msgid "Minimum nights"
+msgid "Months displayed"
 msgstr ""
 
 #: inc/Admin/Settings/Appearance_Setting.php:224
+msgid "Number of months show in date picker."
+msgstr ""
+
+#: inc/Admin/Settings/Availability_Setting.php:10
+#: inc/Admin/Settings/Availability_Setting.php:23
+msgid "Availability"
+msgstr ""
+
+#: inc/Admin/Settings/Availability_Setting.php:29
+msgid "Minimum nights"
+msgstr ""
+
+#: inc/Admin/Settings/Availability_Setting.php:30
 msgid "Minimum nights required to select a range of dates."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:238
+#: inc/Admin/Settings/Availability_Setting.php:44
 msgid "Maximum nights"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:239
+#: inc/Admin/Settings/Availability_Setting.php:45
 msgid "Maximum nights required to select a range of dates."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:252
-msgid "Minimum dates"
+#: inc/Admin/Settings/Availability_Setting.php:58
+msgid "Limit available days from today"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:253
+#: inc/Admin/Settings/Availability_Setting.php:59
 msgid ""
-"The minimum selectable date. When set to \"0\", there is no minimum. A "
-"number of days from today. For example 2 represents two days from today. "
-"All the dates before the additional date will be disabled."
+"A number of days from today are available for making the reservation. For "
+"example 2 represents two days from today. All the dates before the "
+"additional date will be disabled. When set to \"0\", there is no minimum."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:265
-msgid "Maximum dates"
-msgstr ""
-
-#: inc/Admin/Settings/Appearance_Setting.php:266
-msgid ""
-"The maximum selectable date. When set to \"0\", there is no maximum. A "
-"number of days from today. For example 2 represents two days from today. "
-"All the dates after the additional date will be disabled."
-msgstr ""
-
-#: inc/Admin/Settings/Appearance_Setting.php:278
+#: inc/Admin/Settings/Availability_Setting.php:71
 msgid "Disabled dates"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:279
+#: inc/Admin/Settings/Availability_Setting.php:72
 msgid ""
 "Enter dates by \", \" separating values in this format: `Y-m-d`. All the "
 "dates passed to the list will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:285
+#: inc/Admin/Settings/Availability_Setting.php:78
 msgid "Disabled week days"
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:286
+#: inc/Admin/Settings/Availability_Setting.php:79
 msgid "All the days passed to the list will be disabled."
 msgstr ""
 
-#: inc/Admin/Settings/Appearance_Setting.php:295
-msgid "Months displayed"
-msgstr ""
-
-#: inc/Admin/Settings/Appearance_Setting.php:296
-msgid "Number of months show in date picker."
-msgstr ""
-
 #: inc/Admin/Settings/Checkout_Setting.php:14
-#: inc/Admin/Settings/Checkout_Setting.php:49 templates/search/results.php:61
+#: inc/Admin/Settings/Checkout_Setting.php:49 templates/search/results.php:74
 msgid "Checkout"
 msgstr ""
 
@@ -2045,31 +3675,44 @@ msgstr ""
 msgid "%d room type(s) has been updated!"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:16
+#: inc/Admin/views/booking/add-room.php:22
 msgid "Add Room"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:17
-#: inc/Admin/views/booking/page-edit-room.php:31
+#: inc/Admin/views/booking/add-room.php:23
+#: inc/Admin/views/booking/page-edit-room.php:77
 #: inc/Admin/views/booking/payment-form.php:30
 #: inc/Admin/views/booking/service-form.php:35
 msgid "Reference"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:50
+#: inc/Admin/views/booking/add-room.php:56
 msgid "Query"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:58
+#: inc/Admin/views/booking/add-room.php:64
 msgid "Enter dates to search rooms"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:62
+#: inc/Admin/views/booking/add-room.php:68
 msgid "Sorry, no room found"
 msgstr ""
 
-#: inc/Admin/views/booking/add-room.php:78
+#: inc/Admin/views/booking/add-room.php:84
 msgid "Assign Room"
+msgstr ""
+
+#: inc/Admin/views/booking/add-room.php:182
+#: inc/Admin/views/booking/add-room.php:205 inc/Availability/Room_Rate.php:303
+msgid "Room Only"
+msgstr ""
+
+#: inc/Admin/views/booking/add-room.php:210 inc/Checkout/Form_Controls.php:213
+msgid "Additionals"
+msgstr ""
+
+#: inc/Admin/views/booking/add-room.php:225
+msgid "Cost"
 msgstr ""
 
 #: inc/Admin/views/booking/html-avai-row.php:41
@@ -2091,7 +3734,7 @@ msgstr ""
 msgid "Select infants"
 msgstr ""
 
-#: inc/Admin/views/booking/html-avai-row.php:98
+#: inc/Admin/views/booking/html-avai-row.php:96
 msgid "Book"
 msgstr ""
 
@@ -2124,28 +3767,41 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: inc/Admin/views/booking/page-edit-room.php:19
-#: inc/Admin/views/booking/page-edit-room.php:30
+#: inc/Admin/views/booking/page-edit-room.php:53
+#: inc/Admin/views/booking/page-edit-room.php:71
+msgid "Swap Room"
+msgstr ""
+
+#: inc/Admin/views/booking/page-edit-room.php:55
+#: inc/Admin/views/booking/page-edit-room.php:73
 msgid "Update Room Stay"
 msgstr ""
 
-#: inc/Admin/views/booking/page-edit-room.php:56
-#: templates/reservation/selected-room.php:33
+#: inc/Admin/views/booking/page-edit-room.php:102
+#: templates/reservation/selected-room.php:34
 msgid "Stay"
 msgstr ""
 
-#: inc/Admin/views/booking/page-edit-room.php:62
+#: inc/Admin/views/booking/page-edit-room.php:108
 #. translators: %s number of night
 msgid "one night"
 msgid_plural "%s nights"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Admin/views/booking/page-edit-room.php:70
+#: inc/Admin/views/booking/page-edit-room.php:116
 msgid "Change"
 msgstr ""
 
-#: inc/Admin/views/booking/page-edit-room.php:95
+#: inc/Admin/views/booking/page-edit-room.php:146
+msgid "Detect new price:"
+msgstr ""
+
+#: inc/Admin/views/booking/page-edit-room.php:147
+msgid "Click to apply new price"
+msgstr ""
+
+#: inc/Admin/views/booking/page-edit-room.php:162
 #: inc/Admin/views/booking/payment-form.php:70
 #: inc/Admin/views/booking/service-form.php:80
 msgid "Save"
@@ -2174,7 +3830,7 @@ msgstr ""
 
 #: inc/Admin/views/calendar/html-bulk-update.php:45
 #: inc/Admin/views/rates/html-adjust-price.php:38
-#: inc/Admin/views/rates/html-bulk-update.php:44
+#: inc/Admin/views/rates/html-bulk-update.php:74
 msgid "Select dates"
 msgstr ""
 
@@ -2193,13 +3849,13 @@ msgstr ""
 
 #: inc/Admin/views/calendar/html-bulk-update.php:77
 #: inc/Admin/views/rates/html-adjust-price.php:68
-#: inc/Admin/views/rates/html-bulk-update.php:74
+#: inc/Admin/views/rates/html-bulk-update.php:104
 msgid "Apply on days"
 msgstr ""
 
 #: inc/Admin/views/calendar/html-bulk-update.php:93
 #: inc/Admin/views/rates/html-adjust-price.php:20
-#: inc/Admin/views/rates/html-bulk-update.php:88
+#: inc/Admin/views/rates/html-bulk-update.php:118
 msgid "Submit"
 msgstr ""
 
@@ -2211,66 +3867,66 @@ msgstr ""
 msgid "Bulk Update"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:41
+#: inc/Admin/views/misc/about.php:47
 msgid "Welcome to AweBooking"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:43
+#: inc/Admin/views/misc/about.php:49
 msgid ""
 "AweBooking is both simple and powerful when it comes to its purpose: "
 "booking hotel room. It allows you to setup any reservations quickly, "
 "pleasantly and easily."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:44
+#: inc/Admin/views/misc/about.php:50
 msgid "Version %s"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:48
+#: inc/Admin/views/misc/about.php:54
 msgid "What' news"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:49
+#: inc/Admin/views/misc/about.php:55
 msgid ""
 "Always stay up-to-date with the latest version of AweBooking by checking "
 "our <a href=\"%s\">change log</a> regularly."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:51
+#: inc/Admin/views/misc/about.php:57
 msgid "How to use"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:52
+#: inc/Admin/views/misc/about.php:58
 msgid ""
 "Check out <a href=\"%s\">the plugin's documentation</a> if you need more "
 "information on how to use AweBooking."
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:56
+#: inc/Admin/views/misc/about.php:62
 msgid "Get Support and Pro Features?"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:57
+#: inc/Admin/views/misc/about.php:63
 msgid ""
 "Find help in our forum and get free updates when purchasing the PRO version "
 "which boats a lot more advanced features"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:64
+#: inc/Admin/views/misc/about.php:70
 msgid "Premium addons"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:65
+#: inc/Admin/views/misc/about.php:71
 msgid ""
 "The PRO version will never fail to impress you. With a bunch of premium "
 "features added, your online booking system will be pushed to the next level"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:87
+#: inc/Admin/views/misc/about.php:93
 msgid "AweBooking themes"
 msgstr ""
 
-#: inc/Admin/views/misc/about.php:108
+#: inc/Admin/views/misc/about.php:114
 msgid "Go to Settings &rarr;"
 msgstr ""
 
@@ -2298,16 +3954,17 @@ msgid "Set room price"
 msgstr ""
 
 #: inc/Admin/views/rates/html-adjust-price.php:60
-#: inc/Admin/views/rates/html-bulk-update.php:66
+#: inc/Admin/views/rates/html-bulk-update.php:96
 msgid "Note: Replace with zero will be reset custom price."
 msgstr ""
 
-#: inc/Admin/views/rates/html-bulk-update.php:19
+#: inc/Admin/views/rates/html-bulk-update.php:23
 #: inc/Admin/views/rates/index.php:18
 msgid "Bulk Adjust Price"
 msgstr ""
 
-#: inc/Admin/views/rates/html-bulk-update.php:32
+#: inc/Admin/views/rates/html-bulk-update.php:36
+#: inc/Admin/views/rates/html-bulk-update.php:61
 msgid "Select Rates"
 msgstr ""
 
@@ -2415,28 +4072,40 @@ msgstr ""
 msgid "Booked in the current session."
 msgstr ""
 
-#: inc/Availability/Request.php:165
+#: inc/Availability/Request.php:187
 msgid "Please enter a valid arrival date."
 msgstr ""
 
-#: inc/Availability/Request.php:169
+#: inc/Availability/Request.php:191
 msgid "Please enter a valid departure date."
 msgstr ""
 
-#: inc/Availability/Request.php:175
+#: inc/Availability/Request.php:197
 #: inc/Reservation/Traits/With_Room_Stays.php:254
 msgid "You cannot perform reservation in the past! Please re-enter dates."
 msgstr ""
 
-#: inc/Availability/Request.php:573
+#: inc/Availability/Request.php:204 inc/Availability/Request.php:224
+#: inc/Availability/Request.php:231
+msgid ""
+"You cannot perform reservation at current dates. Please choose other valid "
+"dates."
+msgstr ""
+
+#: inc/Availability/Request.php:217
+#. translators: %d: Number of max nights
+msgid "The reservation has a limit for %d nights"
+msgstr ""
+
+#: inc/Availability/Request.php:655
 msgid "The hash must be have 40 characters of length."
 msgstr ""
 
-#: inc/Availability/Room_Rate.php:139
+#: inc/Availability/Room_Rate.php:176
 msgid "Error: maximum occupancy."
 msgstr ""
 
-#: inc/Availability/Room_Rate.php:251
+#: inc/Availability/Room_Rate.php:290
 msgid "Invalid single rate."
 msgstr ""
 
@@ -2452,20 +4121,20 @@ msgstr ""
 msgid "Invalid gateway response."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:544
+#: inc/Checkout/Checkout.php:546
 #. translators: %s Field name
 msgid "%s is a required field."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:570
+#: inc/Checkout/Checkout.php:572
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:582
+#: inc/Checkout/Checkout.php:584
 msgid "Sorry, there was an error processing your payment. Please try again later."
 msgstr ""
 
-#: inc/Checkout/Checkout.php:585
+#: inc/Checkout/Checkout.php:587
 msgid "Please choose a payment method."
 msgstr ""
 
@@ -2507,10 +4176,6 @@ msgstr ""
 
 #: inc/Checkout/Form_Controls.php:201
 msgid "Email address"
-msgstr ""
-
-#: inc/Checkout/Form_Controls.php:213
-msgid "Additionals"
 msgstr ""
 
 #: inc/Checkout/Form_Controls.php:223
@@ -2879,60 +4544,60 @@ msgstr ""
 msgid "Invalid Booking ID."
 msgstr ""
 
-#: inc/Core/concierge.php:28
+#: inc/Core/concierge.php:29
 msgid "Sync"
 msgstr ""
 
-#: inc/Core/concierge.php:32
+#: inc/Core/concierge.php:33
 msgid "Unavailable"
 msgstr ""
 
-#: inc/Core/concierge.php:44
+#: inc/Core/concierge.php:45
 msgid "Replace"
 msgstr ""
 
-#: inc/Core/concierge.php:45
+#: inc/Core/concierge.php:46
 msgid "Add"
 msgstr ""
 
-#: inc/Core/concierge.php:46
+#: inc/Core/concierge.php:47
 msgid "Subtract"
 msgstr ""
 
-#: inc/Core/concierge.php:47
+#: inc/Core/concierge.php:48
 msgid "Multiply"
 msgstr ""
 
-#: inc/Core/concierge.php:48
+#: inc/Core/concierge.php:49
 msgid "Divide"
 msgstr ""
 
-#: inc/Core/concierge.php:49
+#: inc/Core/concierge.php:50
 msgid "Increase"
 msgstr ""
 
-#: inc/Core/concierge.php:50
+#: inc/Core/concierge.php:51
 msgid "Decrease"
 msgstr ""
 
-#: inc/Core/concierge.php:178 inc/Core/concierge.php:555
-#: inc/Core/concierge.php:605
+#: inc/Core/concierge.php:181 inc/Core/concierge.php:590
+#: inc/Core/concierge.php:640
 msgid "Invalid Room ID"
 msgstr ""
 
-#: inc/Core/concierge.php:265 inc/Core/concierge.php:313
+#: inc/Core/concierge.php:268 inc/Core/concierge.php:316
 msgid "Invalid rate ID"
 msgstr ""
 
-#: inc/Core/concierge.php:458
+#: inc/Core/concierge.php:481
 msgid "Invalid room type."
 msgstr ""
 
-#: inc/Core/concierge.php:467
+#: inc/Core/concierge.php:490
 msgid "Invalid rate plan."
 msgstr ""
 
-#: inc/Core/concierge.php:477
+#: inc/Core/concierge.php:500
 msgid "Unable to create the reservation request."
 msgstr ""
 
@@ -2988,31 +4653,31 @@ msgstr ""
 msgid "Cash"
 msgstr ""
 
-#: inc/Core/functions.php:499
+#: inc/Core/functions.php:501
 msgid "Mr."
 msgstr ""
 
-#: inc/Core/functions.php:500
+#: inc/Core/functions.php:502
 msgid "Ms."
 msgstr ""
 
-#: inc/Core/functions.php:501
+#: inc/Core/functions.php:503
 msgid "Mrs."
 msgstr ""
 
-#: inc/Core/functions.php:502
+#: inc/Core/functions.php:504
 msgid "Miss."
 msgstr ""
 
-#: inc/Core/functions.php:503
+#: inc/Core/functions.php:505
 msgid "Dr."
 msgstr ""
 
-#: inc/Core/functions.php:504
+#: inc/Core/functions.php:506
 msgid "Prof."
 msgstr ""
 
-#: inc/Core/functions.php:575 inc/Email/Mailable.php:353
+#: inc/Core/functions.php:583 inc/Email/Mailable.php:353
 #. translators: %s template
 msgid "%s does not exist."
 msgstr ""
@@ -3034,7 +4699,7 @@ msgstr ""
 msgid "Increase price by % amount of room prices"
 msgstr ""
 
-#: inc/Core/templates.php:121 inc/Frontend/template-functions.php:115
+#: inc/Core/templates.php:120 inc/Frontend/template-functions.php:115
 msgid "Book Now"
 msgstr ""
 
@@ -3163,7 +4828,7 @@ msgstr ""
 msgid "We were unable to process your reservation, please try again."
 msgstr ""
 
-#: inc/Frontend/Controllers/Reservation_Controller.php:94
+#: inc/Frontend/Controllers/Reservation_Controller.php:102
 #. translators: Item name in quotes
 msgid "The room &ldquo;%s&rdquo; has been removed from your reservation"
 msgstr ""
@@ -3267,17 +4932,25 @@ msgstr ""
 msgid "Default Hotel"
 msgstr ""
 
-#: inc/Model/Booking/Room_Item.php:61
+#: inc/Model/Booking/Room_Item.php:62
 msgid "Out of bounds occupancy."
 msgstr ""
 
-#: inc/Model/Booking/Room_Item.php:139
+#: inc/Model/Booking/Room_Item.php:140
 msgid ""
 "Dates could not be changed because at least one of the rooms is occupied on "
 "the selected dates."
 msgstr ""
 
-#: inc/Model/Booking/Room_Item.php:300
+#: inc/Model/Booking/Room_Item.php:217
+msgid "Can not swap to diffrent room type."
+msgstr ""
+
+#: inc/Model/Booking/Room_Item.php:224
+msgid "Can not swap to selected room type."
+msgstr ""
+
+#: inc/Model/Booking/Room_Item.php:345
 #. translators: 1 Room name, 2 change from date, 3 to date.
 msgid "[%1$s] Timespan change from \"%2$s\" to \"%3$s\"."
 msgstr ""
@@ -3298,7 +4971,7 @@ msgstr ""
 
 #: inc/Model/Common/Timespan.php:158
 #. translators: %d: Number of nights
-msgid "The timespan requires at least %d nights"
+msgid "The reservation requires at least %d nights"
 msgstr ""
 
 #: inc/Model/Pricing/Base_Rate.php:51
@@ -3425,7 +5098,7 @@ msgid "Guest details"
 msgstr ""
 
 #: templates/checkout/services.php:25
-#: templates/emails/partials/line-booking.php:61
+#: templates/emails/partials/line-booking.php:62
 msgid "Services"
 msgstr ""
 
@@ -3453,13 +5126,18 @@ msgstr ""
 msgid "Payment method:"
 msgstr ""
 
-#: templates/emails/partials/line-booking.php:22
-#: templates/reservation/selected-room.php:30
+#: templates/emails/partials/line-booking.php:23
+#: templates/reservation/selected-room.php:31
 msgid "Room"
 msgstr ""
 
-#: templates/emails/partials/line-booking.php:23
+#: templates/emails/partials/line-booking.php:24
 msgid "Reservation"
+msgstr ""
+
+#: templates/emails/partials/line-booking.php:108
+#: templates/reservation/totals.php:23
+msgid "Subtotal"
 msgstr ""
 
 #: templates/emails/partials/line-hotel.php:27
@@ -3474,12 +5152,17 @@ msgstr ""
 msgid "No rooms selected"
 msgstr ""
 
-#: templates/reservation/selected-room.php:68
+#: templates/reservation/selected-room.php:77
+#. translators: %1$s rooms, %2$s nights
+msgid "Tax (%s)"
+msgstr ""
+
+#: templates/reservation/selected-room.php:85
 msgid "Remove"
 msgstr ""
 
-#: templates/reservation/totals.php:23
-msgid "Subtotal"
+#: templates/reservation/totals.php:31
+msgid "Total Tax"
 msgstr ""
 
 #: templates/search/filter-form.php:34
@@ -3626,7 +5309,7 @@ msgstr ""
 msgid "https://awethemes.com"
 msgstr ""
 
-#: inc/Admin/Calendar/Booking_Scheduler.php:178
+#: inc/Admin/Calendar/Booking_Scheduler.php:150
 #. translators: Available rooms
 msgctxt "awebooking"
 msgid "%s room available"
@@ -3671,7 +5354,7 @@ msgid "Deposit"
 msgstr ""
 
 #: inc/Admin/Metaboxes/views/html-booking-services.php:65
-#: templates/emails/partials/line-booking.php:75
+#: templates/emails/partials/line-booking.php:76
 #. translators: %1$s quantity, %2$s unit price
 msgctxt "admin booking service price"
 msgid "%1$s x %2$s"
@@ -3687,17 +5370,22 @@ msgctxt "dashboard menu"
 msgid "Pricing"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:185
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:180
 msgctxt "Page states"
 msgid "Query Results"
 msgstr ""
 
-#: inc/Admin/Providers/Post_Types_Service_Provider.php:189
+#: inc/Admin/Providers/Post_Types_Service_Provider.php:184
 msgctxt "Page states"
 msgid "Checkout"
 msgstr ""
 
-#: inc/Admin/views/booking/page-edit-room.php:66
+#: inc/Admin/views/booking/html-avai-row.php:92
+msgctxt "modify room price"
+msgid "Modify"
+msgstr ""
+
+#: inc/Admin/views/booking/page-edit-room.php:112
 msgctxt "separator between dates"
 msgid "to"
 msgstr ""
@@ -3839,7 +5527,7 @@ msgctxt "Booking date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: templates/emails/partials/line-booking.php:36
+#: templates/emails/partials/line-booking.php:37
 #. translators: %1$s check-in, %2$s check-out
 msgctxt "booking dates"
 msgid "%1$s - %2$s"
@@ -3857,13 +5545,13 @@ msgctxt "check-out time"
 msgid "until %s"
 msgstr ""
 
-#: templates/reservation/selected-room.php:37
+#: templates/reservation/selected-room.php:38
 #. translators: %1$s nights, %2$s guest
 msgctxt "room stay"
 msgid "%1$s, %2$s"
 msgstr ""
 
-#: templates/reservation/selected-room.php:51
+#: templates/reservation/selected-room.php:52
 #. translators: %1$s rooms, %2$s nights
 msgctxt "price details rooms x nights"
 msgid "(%1$s x %2$s)"

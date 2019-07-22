@@ -47,23 +47,35 @@ plugin.route = function (route) {
 plugin.datepicker = function (instance, options) {
   const i18n = plugin.i18n
   const defaults = plugin.config.datepicker
-  const disable = Array.isArray(defaults.disable) ? defaults.disable : []
 
-  if (Array.isArray(defaults.disableDays)) {
+  let { disableDays, disableDates } = defaults
+  const disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates
+
+  if (Array.isArray(disableDays) && disableDays.length > 0) {
     disable.push(function (date) {
-      return defaults.disableDays.indexOf(date.getDay()) !== -1
+      return disableDays.includes(date.getDay())
     })
   }
 
-  // const minDate = new Date().fp_incr(defaults.min_date);
-  // const maxDate = (defaults.max_date && defaults.max_date !== 0) ? new Date().fp_incr(defaults.max_date) : '';
+  let minDate = new Date
+  let maxDate = null
+
+  // Limit available days from today
+  if (Date.prototype.fp_incr && defaults.minDate > 0) {
+    minDate = minDate.fp_incr(defaults.minDate || 0)
+  }
+
+  // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
+  if (Date.prototype.fp_incr && defaults.maxNights > 0) {
+    // maxDate = minDate.fp_incr(defaults.maxNights)
+  }
 
   const _defaults = {
     dateFormat: 'Y-m-d',
     ariaDateFormat: i18n.dateFormat,
-    minDate: 'today',
-    // maxDate: max_date,
-    // disable: disable,
+    minDate: minDate,
+    maxDate: maxDate,
+    disable: disable,
     showMonths: defaults.showMonths || 1,
     enableTime: false,
     enableSeconds: false,

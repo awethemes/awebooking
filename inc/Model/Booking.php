@@ -88,7 +88,7 @@ class Booking extends Model {
 			isset( $titles[ $title ] ) ? $titles[ $title ] : '',
 			$this->get( 'customer_first_name' ),
 			$this->get( 'customer_last_name' )
-		));
+		) );
 
 		return apply_filters( $this->prefix( 'get_customer_fullname' ), $customer_name, $this );
 	}
@@ -96,7 +96,7 @@ class Booking extends Model {
 	/**
 	 * Return an array of items within this booking.
 	 *
-	 * @param  string $type Type of line items to get.
+	 * @param string $type Type of line items to get.
 	 * @return \AweBooking\Support\Collection|null
 	 */
 	public function get_items( $type = 'line_item' ) {
@@ -200,7 +200,7 @@ class Booking extends Model {
 	/**
 	 * [force_calculate_totals description]
 	 *
-	 * @param  boolean $force [description]
+	 * @param boolean $force [description]
 	 * @return [type]
 	 */
 	public function force_calculate_totals( $force = true ) {
@@ -212,28 +212,29 @@ class Booking extends Model {
 	/**
 	 * Calculate totals by looking at the contents of the booking.
 	 *
-	 * @param  bool $and_taxes Calc taxes if true.
+	 * @param bool $and_taxes Calc taxes if true.
 	 * @return void
 	 */
 	public function calculate_totals( $with_taxes = true ) {
 		do_action( $this->prefix( 'before_calculate_totals' ), $with_taxes, $this );
 
-		$room_subtotal    = 0;
-		$room_total       = 0;
-		$service_subtotal = 0;
-		$service_total    = 0;
-		$fee_total        = 0;
+		$subtotal  = 0;
+		$total     = 0;
+		$total_tax = 0;
+		$fee_total = 0;
 
 		// Sum the room costs.
 		foreach ( $this->get_rooms() as $room ) {
-			$room_subtotal += $room->get( 'subtotal' );
-			$room_total    += $room->get( 'total' );
+			$subtotal  += $room->get( 'subtotal' );
+			$total     += $room->get( 'total' );
+			$total_tax += $room->get( 'total_tax' );
 		}
 
 		// Sum the service costs.
 		foreach ( $this->get_services() as $service ) {
-			$service_subtotal += $service->get( 'subtotal' );
-			$service_total    += $service->get( 'total' );
+			$subtotal  += $service->get( 'subtotal' );
+			$total     += $service->get( 'total' );
+			$total_tax += $service->get( 'total_tax' );
 		}
 
 		// Sun the fees.
@@ -241,11 +242,10 @@ class Booking extends Model {
 			$fee_total += $fee->get( 'amount' );
 		}
 
-		$this->set_attribute( 'subtotal', $room_subtotal + $service_total + $fee_total );
-		$this->set_attribute( 'discount_total', $room_subtotal - $room_total );
-		$this->set_attribute( 'total', $this->get( 'subtotal' ) - $this->get( 'discount_total' ) );
-
-		$this->set_attribute( 'tax_total', $this->get_rooms()->sum( 'total_tax' ) );
+		$this->set_attribute( 'subtotal', $subtotal );
+		$this->set_attribute( 'total_tax', $total_tax );
+		$this->set_attribute( 'discount_total', $subtotal - $total );
+		$this->set_attribute( 'total', ( $subtotal + $fee_total + $total_tax ) - $this->get( 'discount_total' ) );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );
@@ -293,7 +293,7 @@ class Booking extends Model {
 	/**
 	 * Sets the booking status.
 	 *
-	 * @param  string $new_status Status to change the booking to.
+	 * @param string $new_status Status to change the booking to.
 	 * @return array
 	 */
 	public function set_status( $new_status ) {
@@ -328,8 +328,8 @@ class Booking extends Model {
 	/**
 	 * Updates status of booking immediately.
 	 *
-	 * @param  string $new_status Status to change the booking to.
-	 * @param  string $note       Optional note to add.
+	 * @param string $new_status Status to change the booking to.
+	 * @param string $note       Optional note to add.
 	 * @return bool
 	 */
 	public function update_status( $new_status, $note = '' ) {
@@ -345,7 +345,9 @@ class Booking extends Model {
 
 			return true;
 		} catch ( \Exception $e ) {
-			abrs_logger()->error( sprintf( 'Update status of booking #%d failed!', $this->get_id() ), [ 'exception' => $e ] );
+			abrs_logger()->error( sprintf( 'Update status of booking #%d failed!', $this->get_id() ),
+				[ 'exception' => $e ] );
+
 			return false;
 		}
 	}
@@ -367,12 +369,18 @@ class Booking extends Model {
 
 		if ( ! empty( $old_status ) ) {
 			/* translators: 1: Old booking status 2: New booking status */
-			$transition_note = sprintf( __( 'Booking status changed from %1$s to %2$s.', 'awebooking' ), abrs_get_booking_status_name( $old_status ), abrs_get_booking_status_name( $new_status ) );
+			$transition_note = sprintf(
+				__( 'Booking status changed from %1$s to %2$s.', 'awebooking' ),
+				abrs_get_booking_status_name( $old_status ), abrs_get_booking_status_name( $new_status )
+			);
 
 			do_action( $this->prefix( 'status_changed' ), $new_status, $old_status, $this );
 		} else {
 			/* translators: %s: new booking status */
-			$transition_note = sprintf( __( 'Booking status set to %s.', 'awebooking' ), abrs_get_booking_status_name( $new_status ) );
+			$transition_note = sprintf(
+				__( 'Booking status set to %s.', 'awebooking' ),
+				abrs_get_booking_status_name( $new_status )
+			);
 		}
 
 		// Log the transition occurred in the notes.
@@ -417,9 +425,11 @@ class Booking extends Model {
 			$this->attributes['currency'] = abrs_current_currency();
 		}
 
-		$insert_id = wp_insert_post([
+		$insert_id = wp_insert_post( [
 			'post_type'     => $this->object_type,
-			'post_title'    => sprintf( esc_html__( 'Booking &ndash; %s', 'awebooking' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) ), // @codingStandardsIgnoreLine
+			'post_title'    => sprintf( esc_html__( 'Booking &ndash; %s', 'awebooking' ),
+				strftime( _x( '%b %d, %Y @ %I:%M %p', 'Booking date parsed by strftime', 'awebooking' ) ) ),
+			// @codingStandardsIgnoreLine
 			'post_excerpt'  => $this->get( 'customer_note' ),
 			'post_status'   => $this['status'] ? $this->get( 'status' ) : 'awebooking-pending',
 			'post_date'     => $this['post_date'] ? (string) abrs_date_time( $this['post_date'] ) : current_time( 'mysql' ),
@@ -440,12 +450,12 @@ class Booking extends Model {
 	 */
 	protected function perform_update( array $dirty ) {
 		if ( $this->get_changes_only( $dirty, [ 'date_created', 'date_modified', 'status', 'customer_note' ] ) ) {
-			$this->update_the_post([
+			$this->update_the_post( [
 				'post_excerpt'  => $this->get( 'customer_note' ),
 				'post_status'   => $this['status'] ? $this->get( 'status' ) : 'awebooking-pending',
 				'post_date'     => $this['date_created'] ? (string) abrs_date_time( $this->get( 'date_created' ) ) : '',
 				'post_modified' => $this['date_modified'] ? (string) abrs_date_time( $this->get( 'date_modified' ) ) : '',
-			]);
+			] );
 		}
 	}
 
@@ -477,9 +487,9 @@ class Booking extends Model {
 	 * @return void
 	 */
 	public function setup_dates() {
-		$periods = $this->get_line_items()->map(function( Item $item ) {
+		$periods = $this->get_line_items()->map( function ( Item $item ) {
 			return $item->get_timespan()->get_period();
-		});
+		} );
 
 		if ( 0 === count( $periods ) ) {
 			$this->attributes['nights_stay']    = 0;
@@ -512,43 +522,44 @@ class Booking extends Model {
 	 */
 	protected function setup_attributes() {
 		$this->attributes = apply_filters( $this->prefix( 'attributes' ), [
-			'status'                  => '',
-			'source'                  => '',
-			'hotel_id'                => 0,
-			'created_via'             => '',
-			'date_created'            => null,
-			'date_modified'           => null,
-			'arrival_time'            => '',
-			'nights_stay'             => 0,
-			'customer_note'           => '',
-			'check_in_date'           => '',
-			'check_out_date'          => '',
-			'discount_tax'            => 0,
-			'total_tax'               => 0,
-			'discount_total'          => 0,
-			'total'                   => 0,
-			'subtotal'                => 0,
-			'paid'                    => 0,
-			'balance_due'             => 0,
-			'customer_id'             => 0,
-			'customer_title'          => '',
-			'customer_first_name'     => '',
-			'customer_last_name'      => '',
-			'customer_address'        => '',
-			'customer_address_2'      => '',
-			'customer_city'           => '',
-			'customer_state'          => '',
-			'customer_postal_code'    => '',
-			'customer_country'        => '',
-			'customer_company'        => '',
-			'customer_phone'          => '',
-			'customer_email'          => '',
-			'language'                => '',
-			'currency'                => '',
-			'customer_ip_address'     => '',
-			'customer_user_agent'     => '',
-			'version'                 => '',
-		]);
+			'status'               => '',
+			'source'               => '',
+			'hotel_id'             => 0,
+			'created_via'          => '',
+			'date_created'         => null,
+			'date_modified'        => null,
+			'arrival_time'         => '',
+			'nights_stay'          => 0,
+			'customer_note'        => '',
+			'check_in_date'        => '',
+			'check_out_date'       => '',
+			'discount_tax'         => 0,
+			'total_tax'            => 0,
+			'discount_total'       => 0,
+			'total'                => 0,
+			'subtotal'             => 0,
+			'paid'                 => 0,
+			'balance_due'          => 0,
+			'customer_id'          => 0,
+			'customer_title'       => '',
+			'customer_first_name'  => '',
+			'customer_last_name'   => '',
+			'customer_address'     => '',
+			'customer_address_2'   => '',
+			'customer_city'        => '',
+			'customer_state'       => '',
+			'customer_postal_code' => '',
+			'customer_country'     => '',
+			'customer_company'     => '',
+			'customer_phone'       => '',
+			'customer_email'       => '',
+			'language'             => '',
+			'currency'             => '',
+			'customer_ip_address'  => '',
+			'customer_user_agent'  => '',
+			'version'              => '',
+			'payment_method'       => '',
+		] );
 	}
 
 	/**
@@ -556,38 +567,39 @@ class Booking extends Model {
 	 */
 	protected function map_attributes() {
 		$this->maps = apply_filters( $this->prefix( 'map_attributes' ), [
-			'source'                  => '_source',
-			'hotel_id'                => '_hotel_id',
-			'created_via'             => '_created_via',
-			'arrival_time'            => '_arrival_time',
-			'nights_stay'             => '_nights_stay',
-			'check_in_date'           => '_check_in_date',
-			'check_out_date'          => '_check_out_date',
-			'discount_total'          => '_discount_total',
-			'discount_tax'            => '_discount_tax',
-			'total'                   => '_total',
-			'subtotal'                => '_subtotal',
-			'total_tax'               => '_total_tax',
-			'paid'                    => '_paid',
-			'balance_due'             => '_balance_due',
-			'customer_id'             => '_customer_id',
-			'customer_title'          => '_customer_title',
-			'customer_first_name'     => '_customer_first_name',
-			'customer_last_name'      => '_customer_last_name',
-			'customer_address'        => '_customer_address',
-			'customer_address_2'      => '_customer_address_2',
-			'customer_city'           => '_customer_city',
-			'customer_state'          => '_customer_state',
-			'customer_postal_code'    => '_customer_postal_code',
-			'customer_country'        => '_customer_country',
-			'customer_company'        => '_customer_company',
-			'customer_phone'          => '_customer_phone',
-			'customer_email'          => '_customer_email',
-			'version'                 => '_version',
-			'currency'                => '_currency',
-			'customer_ip_address'     => '_customer_ip_address',
-			'customer_user_agent'     => '_customer_user_agent',
-		]);
+			'source'               => '_source',
+			'hotel_id'             => '_hotel_id',
+			'created_via'          => '_created_via',
+			'arrival_time'         => '_arrival_time',
+			'nights_stay'          => '_nights_stay',
+			'check_in_date'        => '_check_in_date',
+			'check_out_date'       => '_check_out_date',
+			'discount_total'       => '_discount_total',
+			'discount_tax'         => '_discount_tax',
+			'total'                => '_total',
+			'subtotal'             => '_subtotal',
+			'total_tax'            => '_total_tax',
+			'paid'                 => '_paid',
+			'balance_due'          => '_balance_due',
+			'customer_id'          => '_customer_id',
+			'customer_title'       => '_customer_title',
+			'customer_first_name'  => '_customer_first_name',
+			'customer_last_name'   => '_customer_last_name',
+			'customer_address'     => '_customer_address',
+			'customer_address_2'   => '_customer_address_2',
+			'customer_city'        => '_customer_city',
+			'customer_state'       => '_customer_state',
+			'customer_postal_code' => '_customer_postal_code',
+			'customer_country'     => '_customer_country',
+			'customer_company'     => '_customer_company',
+			'customer_phone'       => '_customer_phone',
+			'customer_email'       => '_customer_email',
+			'version'              => '_version',
+			'currency'             => '_currency',
+			'customer_ip_address'  => '_customer_ip_address',
+			'customer_user_agent'  => '_customer_user_agent',
+			'payment_method'       => '_payment_method',
+		] );
 	}
 
 	/**

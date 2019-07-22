@@ -69,6 +69,13 @@ class Edit_Booking_Room_Form extends Form {
 		] );
 
 		$this->add_field( [
+			'id'       => 'total_tax',
+			'type'     => 'abrs_amount',
+			'name'     => esc_html__( 'Tax', 'awebooking' ),
+			'currency' => abrs_optional( $booking )->get( 'currency' ),
+		] );
+
+		$this->add_field( [
 			'id'       => 'total',
 			'type'     => 'abrs_amount',
 			'name'     => esc_html__( 'Total', 'awebooking' ),

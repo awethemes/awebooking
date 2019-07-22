@@ -6,6 +6,8 @@ use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
 use AweBooking\Model\Pricing\Contracts\Rate;
 use AweBooking\Model\Pricing\Contracts\Rate_Interval;
+use AweBooking\Model\Season;
+use AweBooking\Support\Period;
 use AweBooking\Support\Traits\Fluent_Getter;
 
 class Room_Rate {
@@ -32,6 +34,13 @@ class Room_Rate {
 	 * @var \AweBooking\Model\Pricing\Contracts\Rate
 	 */
 	protected $rate_plan;
+
+	/**
+	 * //
+	 *
+	 * @var \AweBooking\Model\Season
+	 */
+	protected $session;
 
 	/**
 	 * The room availability.
@@ -114,8 +123,11 @@ class Room_Rate {
 		$room_response = abrs_check_room_states( $this->room_type->get_rooms(), $this->get_timespan(), Constants::STATE_AVAILABLE, $constraints );
 		$this->rooms_availability = new Availability( $this->room_type, $room_response );
 
+		$timespan  = $this->get_timespan();
+		$intervals = $this->rate_plan->get_rate_intervals();
+
 		// Check the rates availability.
-		$rate_response = abrs_filter_rate_intervals( $this->rate_plan->get_rate_intervals(), $this->get_timespan() );
+		$rate_response = abrs_filter_rate_intervals( $intervals, $timespan );
 		$this->rates_availability = new Availability( $this->rate_plan, $rate_response );
 
 		if ( count( $this->rates_availability->remains() ) > 0 ) {
@@ -125,6 +137,31 @@ class Room_Rate {
 
 			$this->calculate_costs();
 		}
+	}
+
+	/**
+	 * //
+	 *
+	 * @return Season|null
+	 */
+	protected function find_matches_seasons() {
+		$sessions = abrs_get_seasons();
+
+		return $sessions->first( function ( Season $session ) {
+			if ( ! $session->get_start_date() || ! $session->get_end_date() ) {
+				return false;
+			}
+
+			try {
+				$session_period = new Period( $session->get_start_date(), $session->get_end_date() );
+			} catch ( \Exception $e ) {
+				return false;
+			}
+
+			return $session_period->contains(
+				abrs_date( $this->get_timespan()->get_start_date() )
+			);
+		} );
 	}
 
 	/**
@@ -247,21 +284,113 @@ class Room_Rate {
 	 * @return $this
 	 */
 	public function using( Rate_Interval $rate ) {
-		if ( ! $this->rates_availability->remain( $rate->get_id() ) ) {
+		$availability = $this->rates_availability;
+
+		if ( ! $availability->remain( $rate->get_id() ) ) {
 			throw new \InvalidArgumentException( esc_html__( 'Invalid single rate.', 'awebooking' ) );
 		}
 
-		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
-		if ( is_wp_error( $breakdown ) ) {
-			throw new \RuntimeException( $breakdown->get_error_message() );
+		$this->room_rate = $rate;
+
+		if ( 1 === $availability->remains()->count() ) {
+			$breakdown = $this->retrieve_rate_breakdown( $rate );
+		} else {
+			$breakdown = $this->get_mixed_rates_breakdown( $rate,
+				$availability->remains()->except( $rate->get_id() )
+			);
 		}
 
-		$this->room_rate = $rate;
+		$breakdown->set_label( esc_html__( 'Room Only', 'awebooking' ) );
 		$this->breakdown = $breakdown;
 
 		$this->calculate_costs();
 
 		return $this;
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $main_rate
+	 * @param  \AweBooking\Support\Collection                    $valid_rates
+	 * @return \AweBooking\Model\Pricing\Breakdown
+	 */
+	public function get_mixed_rates_breakdown( Rate_Interval $main_rate, $valid_rates ) {
+		// Start with main breakdown.
+		$breakdown = $this->retrieve_rate_breakdown( $main_rate );
+
+		$end_date     = abrs_date( $this->request->get_check_out() );
+		$expires_date = $main_rate->get_expires_date();
+
+		if ( ! $expires_date || $end_date->lte( abrs_date( $expires_date ) ) ) {
+			return $breakdown;
+		}
+
+		foreach ( $breakdown as $day => $amount ) {
+			$loop_day = abrs_date( $day );
+
+			if ( $loop_day->lte( abrs_date( $expires_date ) ) ) {
+				continue;
+			}
+
+			if ( $overlap_price = $this->find_overlaps_day_price( $loop_day, $valid_rates ) ) {
+				$breakdown->set( $loop_day, $overlap_price );
+			}
+		}
+
+		return apply_filters( 'abrs_get_mixed_rates_breakdown', $breakdown, $main_rate, $valid_rates, $this );
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  \AweBooking\Support\Carbonate  $loop_day
+	 * @param  \AweBooking\Support\Collection $valid_rates
+	 * @return float|null
+	 */
+	protected function find_overlaps_day_price( $loop_day, $valid_rates ) {
+		// Cache the breakdown results.
+		$cache_breakdowns = [];
+
+		foreach ( $valid_rates as $rate_response ) {
+			/* @var Rate_Interval $rate */
+			$rate = $rate_response['resource'];
+
+			// Checking the expires_date.
+			$expires_date = $rate->get_expires_date();
+			if ( $expires_date && $loop_day->gt( abrs_date( $expires_date ) ) ) {
+				continue;
+			}
+
+			// Get the breakdown then put it into the cache to better performance.
+			if ( ! isset( $cache_breakdowns[ $rate->get_id() ] ) ) {
+				$cache_breakdowns[ $rate->get_id() ] = $this->retrieve_rate_breakdown( $rate );
+			}
+
+			$_breakdown = $cache_breakdowns[ $rate->get_id() ];
+
+			if ( $price = $_breakdown->get( $loop_day ) ) {
+				return $price;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * //
+	 *
+	 * @param  \AweBooking\Model\Pricing\Contracts\Rate_Interval $rate
+	 * @return \AweBooking\Model\Pricing\Breakdown
+	 */
+	public function retrieve_rate_breakdown( Rate_Interval $rate ) {
+		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
+
+		if ( is_wp_error( $breakdown ) ) {
+			throw new \RuntimeException( $breakdown->get_error_message() );
+		}
+
+		return $breakdown;
 	}
 
 	/**
@@ -283,9 +412,16 @@ class Room_Rate {
 		}
 
 		$breakdown = $rate->get_breakdown( $this->request->get_timespan() );
+
 		if ( is_wp_error( $breakdown ) ) {
 			throw new \RuntimeException( $breakdown->get_error_message() );
 		}
+
+		if ( ! $breakdown->get_label() ) {
+			$breakdown->set_label( $reason );
+		}
+
+		$breakdown = apply_filters( 'abrs_setup_additional_rate_breakdown', $breakdown, $rate, $reason, $this );
 
 		$this->additional_rates[ $key ]      = compact( 'reason', 'rate' );
 		$this->additional_breakdowns[ $key ] = $breakdown;

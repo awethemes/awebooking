@@ -449,7 +449,7 @@ class Installer {
 	protected function create_tables() {
 		global $wpdb;
 
-		$wpdb->show_errors();
+		$wpdb->hide_errors();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 

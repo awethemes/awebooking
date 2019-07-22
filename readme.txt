@@ -3,9 +3,9 @@ Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
-Tested up to:      5.0
+Tested up to:      5.2
 Requires PHP:      5.6
-Stable tag:        3.2.6
+Stable tag:        3.2.18
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,58 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.18] - [2019-07-11]
+- Hotfix: Missing payment.min.js file
+
+### [v3.2.17] - [2019-07-11]
+- Break changes: Split the checkout and payment step, guest will be "place booking" first then process payment on next step.
+- Template: Added `templates/payment.php` to display the payment page.
+- API: Added `abrs_get_booking_by_public_token($token)`, `abrs_is_payment_page()` functions.
+- API: Added `AweBooking\Gateway\Gateway::isOfflinePayment()` method.
+- Minor bug fixes.
+
+### [v3.2.16] - [2019-4-13]
+- Fixed "no-results" displaying even when rooms available.
+
+### [v3.2.15] - [2019-4-10]
+- Fixed autoscroll to the payment section in the checkout page on Safari and Firefox.
+- Minor bug fixes.
+
+### [v3.2.14] - [2019-04-27]
+- Auto recalculate cost when made booking from admin.
+
+### [v3.2.13] - [2019-04-22]
+- Translatable the country name and currency dataset.
+- Updated some JS libraries.
+
+### [v3.2.12] - [2019-04-11]
+- Fixed admin Calendar in RTL
+- Fixed display issues of the datepicker on mobile.
+- Minor bug fixes
+
+### [v3.2.11] - [2019-03-27]
+- Correct checking rate intervals
+- Minor bug fixes
+
+### [v3.2.10] - [2019-03-22]
+- Minor bug fixes
+
+### [v3.2.9] - [2019-03-18]
+- Improve code API
+- Minor bug fixes
+
+### [v3.2.8] - [2019-02-27]
+- Improve price calculation.
+- Fixed: Swap a room not change the room name.
+- Minor bug fixes
+
+### [v3.2.7] - [2019-02-18]
+- Added: **Settings > Availability** to controls the availability dates.
+- Improve the front-end Calendar availability.
+- Fixed: Support RTL in the front-end Calendar.
+- Fixed: Correct the rate calculation when overlaps rates.
+- Minor bug fixes
+
 ### [v3.2.6] - [2019-02-11]
 - Added: Calendar now pagination 15 room types per page to better performance.
 - Fixed: Guests count not work correctly since v3.2

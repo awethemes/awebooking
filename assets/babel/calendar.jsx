@@ -26,6 +26,7 @@ const defaultProps = {
   disablePastDates: true,
   disableFutureDates: false,
 
+  isRTL: false,
   withFullScreenPortal: false,
   displayFormat: 'DD MM YY',
 
@@ -387,6 +388,7 @@ export class DatePicker extends React.Component {
       keepOpenOnDateSelect,
       isDayBlocked,
       isDayHighlighted,
+      isRTL
     } = this.props
 
     const modifiers = {
@@ -417,6 +419,7 @@ export class DatePicker extends React.Component {
                 <div className="DayPickerPopper__Arrow" ref={arrowProps.ref} style={arrowProps.style}/>
 
 								<DayPickerRangeController
+                  isRTL={isRTL}
 									endDate={endDate}
 									startDate={startDate}
 									focusedInput={focusedInput}

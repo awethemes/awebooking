@@ -25,7 +25,7 @@ class Fee_Item extends Item {
 			'amount'    => 0,
 			'total'     => 0,
 			'total_tax' => 0,
-		]));
+		] ) );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Fee_Item extends Item {
 			'amount'    => '_fee_amount',
 			'total'     => '_fee_total',
 			'total_tax' => '_fee_total_tax',
-		]);
+		] );
 	}
 
 	/**

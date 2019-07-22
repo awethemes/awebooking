@@ -27,14 +27,18 @@ class Totals {
 	protected $totals = [
 		'total'              => 0,
 		'subtotal'           => 0,
+
 		'rooms_total'        => 0,
 		'rooms_subtotal'     => 0,
 		'rooms_total_tax'    => 0,
+
 		'services_total'     => 0,
 		'services_subtotal'  => 0,
 		'services_total_tax' => 0,
-		'fees_total'         => 0,
+
 		'fees_tax'           => 0,
+		'fees_total'         => 0,
+		'discounts_total'    => 0,
 	];
 
 	/**
@@ -128,7 +132,9 @@ class Totals {
 					apply_filters( 'abrs_room_stay_tax_rates', [ $tax_rate_id ], $room_stay )
 				);
 
-				$total_taxes = abrs_calc_tax( $room_stay->get( 'price' ), $taxes, $room_stay->is_price_includes_tax() );
+				$total_taxes = abrs_calc_tax(
+					$room_stay->get_price_discounted(), $taxes, $room_stay->is_price_includes_tax()
+				);
 
 				$room_stay->set( 'tax_rates', $total_taxes );
 				$room_stay->set( 'tax', array_sum( array_map( 'abrs_round_tax', $total_taxes ) ) );
@@ -167,7 +173,9 @@ class Totals {
 
 			$item->set( 'price', $price );
 		}
+
 		$this->set_total( 'services_total', $this->sum_items( $services, 'total' ) );
+		$this->set_total( 'services_subtotal', $this->sum_items( $services, 'subtotal' ) );
 		$this->set_total( 'services_total_tax', $this->sum_items( $services, 'total_tax' ) );
 	}
 
@@ -209,8 +217,13 @@ class Totals {
 	 * @return void
 	 */
 	protected function calculate_totals() {
+		$room_stays = $this->reservation->get_room_stays();
+		$this->set_total( 'discounts_total', $this->sum_items( $room_stays, 'discounted' ) );
+
 		$this->set_total( 'subtotal', $this->get( 'rooms_subtotal' ) + $this->get( 'services_subtotal' ) + $this->get( 'fees_total' ) );
-		$this->set_total( 'total', $this->get( 'rooms_total' ) + $this->get( 'services_total' ) + $this->get( 'fees_total' ) );
+		$this->set_total( 'total_tax', $this->get( 'rooms_total_tax' ) + $this->get( 'services_total_tax' ) + $this->get( 'fees_total_tax' ) );
+
+		$this->set_total( 'total', $this->get( 'subtotal' ) - $this->get( 'discounts_total' ) + $this->get( 'total_tax' ) );
 	}
 
 	/**

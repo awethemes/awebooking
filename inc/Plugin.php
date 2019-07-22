@@ -4,6 +4,7 @@ namespace AweBooking;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\LineFormatter;
@@ -12,6 +13,7 @@ use Illuminate\Container\Container;
 use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
 use Awethemes\Http\Request;
+use WPLibs\View\Factory;
 
 final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
@@ -22,7 +24,7 @@ final class Plugin extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.2.6';
+	const VERSION = '3.2.18';
 
 	/**
 	 * The plugin file path.
@@ -118,9 +120,19 @@ final class Plugin extends Container {
 			return new Multilingual;
 		});
 
+		$this->singleton( 'view', function () {
+			$view = Factory::create( $this->configuration['view'] );
+
+			// TODO: Consider this case.
+			$view->get_finder()->prepend_location( TEMPLATEPATH . '/' . $this->template_path() );
+			$view->get_finder()->prepend_location( STYLESHEETPATH . '/' . $this->template_path() );
+
+			return $view;
+		} );
+
 		$this->singleton( 'logger', function () {
-			return new Logger( 'awebooking', [ new BufferHandler( $this->get_monolog_handler() ) ] );
-		});
+			return new Logger( 'awebooking', [ $this->get_monolog_handler() ] );
+		} );
 
 		if ( class_exists( Relationships::class ) ) {
 			$this->singleton( 'relationships', function () {
@@ -143,8 +155,14 @@ final class Plugin extends Container {
 	 * @throws \Exception
 	 */
 	protected function get_monolog_handler() {
-		return ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )
-					->setFormatter( new LineFormatter( null, null, true, true ) );
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			return new NullHandler;
+		}
+
+		$stream = ( new StreamHandler( WP_CONTENT_DIR . '/awebooking.log', Logger::DEBUG ) )
+			->setFormatter( new LineFormatter( null, null, true, true ) );
+
+		return new BufferHandler( $stream );
 	}
 
 	/**

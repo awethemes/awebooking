@@ -2,7 +2,7 @@
 
 $rooms_avai = $room_rate->get_availability();
 
-?><table class="debug-rooms__table">
+?><table class="debug-rooms__table" style="min-width: 350px;">
 	<?php
 	foreach ( $rooms_avai->remains() as $room_info ) {
 		echo '<tr class="debug-rooms--success">';

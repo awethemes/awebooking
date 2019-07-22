@@ -136,6 +136,15 @@ class Reservation {
 	}
 
 	/**
+	 * //
+	 *
+	 * @return float
+	 */
+	public function get_total_tax() {
+		return $this->totals->get( 'rooms_total_tax' ) + $this->totals->get( 'services_total_tax' ) + $this->totals->get( 'fees_total_tax' );
+	}
+
+	/**
 	 * Gets the totals instance.
 	 *
 	 * @return Totals

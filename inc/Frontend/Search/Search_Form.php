@@ -36,8 +36,9 @@ class Search_Form extends Form {
 	public function __construct( $atts = [] ) {
 		parent::__construct();
 
+		$this->atts = $atts;
+
 		$this->builder = new Html_Form;
-		$this->atts    = $atts;
 	}
 
 	/**
@@ -191,6 +192,7 @@ class Search_Form extends Form {
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
+			'readonly'      => 'readonly',
 		] );
 	}
 
@@ -213,6 +215,7 @@ class Search_Form extends Form {
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
+			'readonly'      => 'readonly',
 		] ) );
 	}
 

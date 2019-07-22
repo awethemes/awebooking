@@ -59,13 +59,4 @@ class Checkin_Days_Constraint extends Constraint {
 			}
 		}
 	}
-
-	/**
-	 * Returns a text describing for this constraint.
-	 *
-	 * @return string
-	 */
-	public function as_string() {
-		return '';
-	}
 }

@@ -1,4 +1,16 @@
 {
-    "/assets/js/scheduler.js": "/assets/js/scheduler.js?id=a5817e4903c429ee811b",
-    "/assets/css/scheduler.css": "/assets/css/scheduler.css?id=d41d8cd98f00b204e980"
+    "/assets/js/admin/admin.js": "/assets/js/admin/admin.js?id=75efa3a285429c6087ce",
+    "/assets/js/admin/edit-booking.js": "/assets/js/admin/edit-booking.js?id=62725cd8bc6cc9c9bacd",
+    "/assets/js/admin/edit-room-type.js": "/assets/js/admin/edit-room-type.js?id=e1ef5830a72d2a86e902",
+    "/assets/js/admin/page-calendar.js": "/assets/js/admin/page-calendar.js?id=4ebed546a19810daf863",
+    "/assets/js/admin/page-pricing.js": "/assets/js/admin/page-pricing.js?id=146f2fab50bf07d9e5de",
+    "/assets/js/admin/schedule-calendar.js": "/assets/js/admin/schedule-calendar.js?id=6c33f0e04f54d27c08cc",
+    "/assets/js/admin/settings.js": "/assets/js/admin/settings.js?id=455a1e1b2413e5da80f4",
+    "/assets/js/awebooking.js": "/assets/js/awebooking.js?id=395a9750f847af66e674",
+    "/assets/css/scheduler.css": "/assets/css/scheduler.css?id=d41d8cd98f00b204e980",
+    "/assets/js/calendar.js": "/assets/js/calendar.js?id=f58b6d37ae3cfc8cc540",
+    "/assets/js/checkout.js": "/assets/js/checkout.js?id=bcf97b80196173bef672",
+    "/assets/js/payment.js": "/assets/js/payment.js?id=3fa2c430599e5c3781ec",
+    "/assets/js/scheduler.js": "/assets/js/scheduler.js?id=5797035cc10edbfa53ba",
+    "/assets/js/search-form.js": "/assets/js/search-form.js?id=2b3f53ff23147842f4e7"
 }

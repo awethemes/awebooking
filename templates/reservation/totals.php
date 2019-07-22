@@ -26,6 +26,13 @@ $reservation = abrs_reservation();
 
 	<?php do_action( 'abrs_reservation_before_total' ); ?>
 
+	<?php if ( $reservation->get_total_tax() ) : ?>
+		<dl>
+			<dt><?php esc_html_e( 'Total Tax', 'awebooking' ); ?></dt>
+			<dd><?php abrs_price( $reservation->get_total_tax() ); ?></dd>
+		</dl>
+	<?php endif; ?>
+
 	<dl>
 		<dt><strong><?php esc_html_e( 'Total', 'awebooking' ); ?></strong></dt>
 		<dd><?php abrs_price( $reservation->get_total() ); ?></dd>

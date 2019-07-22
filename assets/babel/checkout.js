@@ -64,6 +64,6 @@ $(function () {
   setTimeout(() => {
     $el.find(`${Selector.INPUT}:checked`)
        .closest(Selector.ITEM)
-       .trigger('click')
+       .addClass(SELECTED)
   }, 0)
 })

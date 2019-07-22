@@ -78,7 +78,7 @@ class Payment_Item extends Item {
 			'date_paid'       => null,
 			'transaction_id'  => '',
 			'transaction_log' => [],
-		]));
+		] ) );
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Payment_Item extends Item {
 			'date_paid'       => '_payment_date_paid',
 			'transaction_id'  => '_payment_transaction_id',
 			'transaction_log' => '_payment_transaction_log',
-		]);
+		] );
 	}
 
 	/**

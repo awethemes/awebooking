@@ -106,22 +106,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<tbody>
 		<tr>
 			<th><?php esc_html_e( 'Subtotal', 'awebooking' ); ?></th>
-			<td class="total-column"><?php abrs_price( $booking->get_subtotal() ); ?></td>
+			<td class="total-column"><?php abrs_price( $booking->get_subtotal(), $booking->get( 'currency' ) ); ?></td>
 		</tr>
+
+		<?php do_action( 'abrs_before_email_total', $booking ); ?>
+
+		<?php if ( $booking->get( 'total_tax' ) ) : ?>
+			<tr>
+				<th><?php echo esc_html__( 'Total Tax:', 'awebooking' ); ?></th>
+				<td class="total-column"><?php abrs_price( $booking->get( 'total_tax' ), $booking->get( 'currency' ) ); ?></td>
+			</tr>
+		<?php endif; ?>
 
 		<tr>
 			<th><?php esc_html_e( 'Total', 'awebooking' ); ?></th>
-			<td class="total-column"><?php abrs_price( $booking->get_total() ); ?></td>
+			<td class="total-column"><?php abrs_price( $booking->get_total(), $booking->get( 'currency' ) ); ?></td>
 		</tr>
 
 		<tr>
 			<th><?php esc_html_e( 'Paid', 'awebooking' ); ?></th>
-			<td class="total-column"><?php abrs_price( $booking->get_paid() ); ?></td>
-		</tr>
-
-		<tr>
-			<th><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></th>
-			<td class="total-column"><?php abrs_price( $booking->get_balance_due() ); ?></td>
+			<td class="total-column"><?php abrs_price( $booking->get_paid(), $booking->get( 'currency' ) ); ?></td>
 		</tr>
 	</tbody>
 </table>

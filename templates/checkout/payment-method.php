@@ -30,9 +30,7 @@ if ( empty( $selected_gateway ) ) {
 		</label>
 	</div>
 
-	<?php if ( $gateway->has_fields() || $gateway->get_description() ) : ?>
-		<div class="payment-method__description payment_method_<?php echo esc_attr( $gateway->get_method() ); ?>">
-			<?php $gateway->display_fields(); ?>
-		</div>
+	<?php if ( $description = $gateway->get_description() ) : ?>
+		<?php echo wp_kses_post( wpautop( wptexturize( $description ) ) ); ?>
 	<?php endif; ?>
 </li>

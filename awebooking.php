@@ -7,7 +7,7 @@
  * Author URI:      https://awethemes.com
  * Text Domain:     awebooking
  * Domain Path:     /languages
- * Version:         3.2.6
+ * Version:         3.2.18
  *
  * @package         AweBooking
  */
@@ -45,7 +45,7 @@ $awebooking = new AweBooking( __FILE__ );
 // Load the static config.
 $awebooking->load_config( dirname( __FILE__ ) . '/config.php' );
 
-/* @var $installer \AweBooking\Installer */
+/* @var \AweBooking\Installer $installer */
 $installer = $awebooking->make( 'installer' );
 $installer->init();
 

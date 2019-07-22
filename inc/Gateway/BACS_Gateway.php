@@ -31,6 +31,13 @@ class BACS_Gateway extends Gateway {
 	/**
 	 * {@inheritdoc}
 	 */
+	public function isOfflinePayment() {
+		return true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function setup() {
 		$this->setting_fields();
 
@@ -46,19 +53,14 @@ class BACS_Gateway extends Gateway {
 	 * {@inheritdoc}
 	 */
 	public function process( Booking $booking, Request $request ) {
+		$this->create_new_payment( $booking );
+
 		$booking->update_status( 'on-hold', esc_html__( 'Awaiting BACS payment', 'awebooking' ) );
 
 		// Flush the reservation data.
 		abrs_reservation()->flush();
 
 		return ( new Response( 'success' ) )->data( $booking );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function new_payment( $booking, $data ) {
-		$this->create_new_payment( $booking, $data );
 	}
 
 	/**

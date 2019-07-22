@@ -38,7 +38,7 @@ class Query {
 	 * @return \AweBooking\Availability\Query_Results
 	 */
 	public function search() {
-		$results = [];
+		$items = $invalid_items = [];
 
 		$room_types = $this->query_rooms();
 
@@ -53,16 +53,20 @@ class Query {
 
 			// This filter let users modify the room rate before it can be rejected.
 			$room_rate = apply_filters( 'abrs_search_room_rate', $room_rate, $this->request );
-
-			// Ignore invalid room rates.
-			if ( is_wp_error( $room_rate ) || ! $room_rate->is_visible() ) {
+			if ( ! $room_rate instanceof Room_Rate ) {
 				continue;
 			}
 
-			$results[] = apply_filters( 'abrs_search_result_item', compact( 'room_type', 'room_rate' ), $this->request );
+			$item = compact( 'room_type', 'room_rate' );
+
+			if ( $room_rate->is_visible() ) {
+				$items[] = apply_filters( 'abrs_search_result_item', $item, $this->request );
+			} else {
+				$invalid_items[] = apply_filters( 'abrs_search_result_invalid_item', $item, $this->request );
+			}
 		}
 
-		return apply_filters( 'abrs_search_results', new Query_Results( $this->request, $results ), $this->request );
+		return apply_filters( 'abrs_search_results', new Query_Results( $this->request, $items, $invalid_items ), $this->request );
 	}
 
 	/**

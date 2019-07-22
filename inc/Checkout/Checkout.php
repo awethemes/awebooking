@@ -74,11 +74,13 @@ class Checkout {
 
 		if ( $request->filled( 'booking-received' ) ) {
 			$this->output_received( $request );
+
 			return;
 		}
 
 		if ( $this->reservation->is_empty() ) {
 			abrs_get_template( 'checkout/empty.php' );
+
 			return;
 		}
 
@@ -103,7 +105,8 @@ class Checkout {
 			return;
 		}
 
-		if ( ! $request->has( 'token' ) || ! hash_equals( (string) $request->token, (string) $booking->get_public_token() ) ) {
+		if ( ! $request->has( 'token' ) ||
+		     ! hash_equals( (string) $request->token, (string) $booking->get_public_token() ) ) {
 			return;
 		}
 
@@ -119,7 +122,7 @@ class Checkout {
 	/**
 	 * Process the checkout request.
 	 *
-	 * @param  \WPLibs\Http\Request $request The http request.
+	 * @param \WPLibs\Http\Request $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
@@ -165,7 +168,9 @@ class Checkout {
 		$booking_id = $this->create_booking( $data );
 
 		if ( ! $booking_id || is_wp_error( $booking_id ) || ! $booking = abrs_get_booking( $booking_id ) ) {
-			throw new RuntimeException( esc_html__( 'Sorry, we cannot serve your reservation request at this moment.', 'awebooking' ) );
+			throw new RuntimeException(
+				esc_html__( 'Sorry, we cannot serve your reservation request at this moment.', 'awebooking' )
+			);
 		}
 
 		// Fire checkout processed action.
@@ -196,9 +201,9 @@ class Checkout {
 	/**
 	 * Process a booking that does require payment.
 	 *
-	 * @param  \AweBooking\Model\Booking   $booking The booking instance.
-	 * @param  \AweBooking\Gateway\Gateway $gateway The payment gateway.
-	 * @param  \WPLibs\Http\Request        $request The http request.
+	 * @param \AweBooking\Model\Booking   $booking The booking instance.
+	 * @param \AweBooking\Gateway\Gateway $gateway The payment gateway.
+	 * @param \WPLibs\Http\Request        $request The http request.
 	 *
 	 * @return \AweBooking\Gateway\Response
 	 *
@@ -208,27 +213,36 @@ class Checkout {
 		// Store the booking ID in session so it can be re-used after payment failure.
 		$this->session->put( 'booking_awaiting_payment', $booking->get_id() );
 
-		do_action( 'abrs_payment_processing', $booking, $gateway, $request );
+		// Process offline payment immediately.
+		if ( $gateway->isOfflinePayment() ) {
+			do_action( 'abrs_payment_processing', $booking, $gateway, $request );
 
-		// Perform process the payment.
-		$response = $gateway->process( $booking, $request );
+			$response = $gateway->process( $booking, $request );
 
-		if ( ! $response instanceof Gateway_Response ) {
-			throw new GatewayException( esc_html__( 'Invalid gateway response.', 'awebooking' ) );
+			do_action( 'abrs_payment_processed', $response, $booking, $gateway, $request );
+
+			return $response->withData( $booking );
 		}
 
-		do_action( 'abrs_payment_processed', $response, $booking, $gateway, $request );
+		// Store the payment method name, using for next step.
+		$booking->update( [ 'payment_method' => $gateway->get_method() ] );
 
-		return $response->data( $booking );
+		abrs_reservation()->flush();
+
+		return Gateway_Response::pending(
+			abrs_route( sprintf( 'payment/%s', $booking->get_public_token() ) )
+		)->withData( $booking );
 	}
 
 	/**
 	 * Process a booking that doesn't require payment.
 	 *
-	 * @param  \AweBooking\Model\Booking $booking The booking instance.
+	 * @param \AweBooking\Model\Booking $booking The booking instance.
 	 * @return \AweBooking\Gateway\Response
 	 */
 	protected function process_without_payment( Booking $booking ) {
+		abrs_reservation()->flush();
+
 		$booking->update_status( apply_filters( 'abrs_booking_status_without_payment', 'on-hold' ) );
 
 		return ( new Gateway_Response( 'success' ) )->data( $booking );
@@ -237,7 +251,7 @@ class Checkout {
 	/**
 	 * Create a booking from trusted data.
 	 *
-	 * @param  \AweBooking\Support\Fluent $data The posted data.
+	 * @param \AweBooking\Support\Fluent $data The posted data.
 	 * @return int
 	 */
 	public function create_booking( $data ) {
@@ -256,7 +270,7 @@ class Checkout {
 		}
 
 		// Fill the booking data.
-		$booking->fill([
+		$booking->fill( [
 			'created_via'          => 'checkout',
 			'customer_id'          => apply_filters( 'abrs_checkout_customer_id', get_current_user_id() ),
 			'arrival_time'         => $data->get( 'arrival_time', '' ),
@@ -277,7 +291,7 @@ class Checkout {
 			'hotel_id'             => $this->reservation->hotel,
 			'customer_ip_address'  => abrs_http_request()->ip(),
 			'customer_user_agent'  => abrs_http_request()->get_user_agent(),
-		]);
+		] );
 
 		do_action( 'abrs_checkout_creating_booking', $booking, $data, $this );
 
@@ -294,7 +308,6 @@ class Checkout {
 		$this->create_service_items( $booking, $data );
 		$this->create_fees_items( $booking, $data );
 		$this->create_taxes_items( $booking, $data );
-		$this->create_payment_item( $booking, $data );
 
 		// Re-calculate the totals.
 		$booking->calculate_totals();
@@ -344,7 +357,7 @@ class Checkout {
 	/**
 	 * Perform resume awating booking in the session.
 	 *
-	 * @param  \AweBooking\Model\Booking $booking The awating booking instance.
+	 * @param \AweBooking\Model\Booking $booking The awating booking instance.
 	 * @return void
 	 */
 	protected function resume_awating_booking( $booking ) {
@@ -356,12 +369,13 @@ class Checkout {
 	/**
 	 * Create the booking items.
 	 *
-	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
 	public function create_booking_items( $booking, $data ) {
 		foreach ( $this->reservation->get_room_stays() as $item_key => $room_stay ) {
+			/* @var $room_stay \AweBooking\Reservation\Item */
 			$room_rate = $room_stay->get_data();
 
 			if ( ! $room_rate || ! $room_rate instanceof Room_Rate ) {
@@ -374,12 +388,12 @@ class Checkout {
 				->pluck( 'resource' )
 				->values();
 
-			$i = 1;
+			$i       = 1;
 			$request = $room_rate->get_request();
 
 			/* @var \AweBooking\Model\Room $room */
 			foreach ( $assign_rooms as $room ) {
-				$item = ( new Room_Item )->fill([
+				$item = ( new Room_Item )->fill( [
 					'booking_id'   => $booking->get_id(),
 					/* translators: The room number */
 					'name'         => $room->get( 'name' ),
@@ -392,10 +406,10 @@ class Checkout {
 					'children'     => $request->children ?: 0,
 					'infants'      => $request->infants ?: 0,
 					'subtotal'     => $room_stay->get_subtotal(),
-					'total_tax'    => $room_stay->get_tax(),
-					'total'        => $room_stay->get_price_tax(),
+					'total_tax'    => $room_stay->get_total_tax(),
+					'total'        => $room_stay->get_price_discounted(),
 					'taxes'        => [ 'total' => $room_stay->get_tax_rates() ],
-				]);
+				] );
 
 				do_action( 'abrs_checkout_creating_booking_room_item', $item, $room_stay, $item_key, $booking );
 
@@ -415,8 +429,8 @@ class Checkout {
 	/**
 	 * Create the booking items.
 	 *
-	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
 	public function create_service_items( $booking, $data ) {
@@ -427,14 +441,15 @@ class Checkout {
 				continue;
 			}
 
-			$item = ( new Service_item )->fill([
+			$item = ( new Service_item )->fill( [
 				'name'       => $service->get( 'name' ),
 				'booking_id' => $booking->get_id(),
 				'service_id' => $service->get_id(),
 				'quantity'   => $res_item->get_quantity(),
 				'subtotal'   => $res_item->get_subtotal(),
-				'total'      => $res_item->get_total(),
-			]);
+				'total_tax'  => $res_item->get_total_tax(),
+				'total'      => $res_item->get_price_discounted(),
+			] );
 
 			try {
 				$item->save();
@@ -447,19 +462,19 @@ class Checkout {
 	/**
 	 * Create the booking fee items.
 	 *
-	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
 	public function create_fees_items( $booking, $data ) {
 		/* @var \AweBooking\Reservation\Item $res_item */
 		foreach ( $this->reservation->get_fees() as $item_key => $res_item ) {
-			$item = ( new Fee_Item )->fill([
+			$item = ( new Fee_Item )->fill( [
 				'name'       => $res_item->get_name(),
 				'booking_id' => $booking->get_id(),
 				'total'      => $res_item->get_total(),
 				'amount'     => $res_item->get_price(),
-			]);
+			] );
 
 			try {
 				$item->save();
@@ -472,51 +487,32 @@ class Checkout {
 	/**
 	 * Create the booking tax items.
 	 *
-	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \AweBooking\Model\Booking  $booking The booking instance.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
 	 * @return void
 	 */
 	public function create_taxes_items( $booking, $data ) {
 		foreach ( $this->reservation->get_taxes() as $tax_rate ) {
-			$item = ( new Tax_Item )->fill([
+			$item = ( new Tax_Item )->fill( [
 				'name'          => $tax_rate['name'],
 				'booking_id'    => $booking->get_id(),
 				'rate_id'       => $tax_rate['id'],
 				'rate_amount'   => $tax_rate['rate'],
 				'rate_compound' => $tax_rate['compound'],
-			]);
+			] );
 
 			try {
 				$item->save();
 			} catch ( \Exception $e ) {
 				abrs_report( $e );
 			}
-		}
-	}
-
-	/**
-	 * Create the booking tax items.
-	 *
-	 * @param  \AweBooking\Model\Booking  $booking The booking instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
-	 * @return void
-	 */
-	public function create_payment_item( $booking, $data ) {
-		if ( empty( $data['payment_method'] ) ) {
-			return;
-		}
-
-		$gateway = $this->gateways->get( $data['payment_method'] );
-
-		if ( $gateway && method_exists( $gateway, 'new_payment' ) ) {
-			$gateway->new_payment( $booking, $data );
 		}
 	}
 
 	/**
 	 * Create a new customer account if needed.
 	 *
-	 * @param  \AweBooking\Support\Fluent $data The posted data.
+	 * @param \AweBooking\Support\Fluent $data The posted data.
 	 *
 	 * @throws \Exception
 	 */
@@ -527,8 +523,8 @@ class Checkout {
 	/**
 	 * Validates the posted checkout data based on field properties.
 	 *
-	 * @param  \WP_Error                  $errors WP_Error instance.
-	 * @param  \AweBooking\Support\Fluent $data   The posted data.
+	 * @param \WP_Error                  $errors WP_Error instance.
+	 * @param \AweBooking\Support\Fluent $data   The posted data.
 	 */
 	protected function validate_posted_data( &$errors, $data ) {
 		$controls = $this->get_controls();
@@ -541,7 +537,13 @@ class Checkout {
 
 			if ( $control->prop( 'required' ) && abrs_blank( $data[ $key ] ) ) {
 				/* translators: %s Field name */
-				$errors->add( 'required', sprintf( __( '%s is a required field.', 'awebooking' ), '<strong>' . esc_html( $control->prop( 'name' ) ) . '</strong>' ) );
+				$errors->add(
+					'required',
+					sprintf(
+						__( '%s is a required field.', 'awebooking' ),
+						'<strong>' . esc_html( $control->prop( 'name' ) ) . '</strong>'
+					)
+				);
 			}
 
 			if ( $control->prop( 'validate' ) ) {
@@ -561,9 +563,9 @@ class Checkout {
 	/**
 	 * Validates that the checkout has enough info to proceed.
 	 *
-	 * @param  \WP_Error                  $errors  WP_Error instance.
-	 * @param  \AweBooking\Support\Fluent $data    The posted data.
-	 * @param  \WPLibs\Http\Request    $request The http request.
+	 * @param \WP_Error                  $errors  WP_Error instance.
+	 * @param \AweBooking\Support\Fluent $data    The posted data.
+	 * @param \WPLibs\Http\Request       $request The http request.
 	 */
 	protected function validate_checkout( &$errors, $data, $request ) {
 		if ( empty( $data['terms'] ) && apply_filters( 'abrs_checkout_show_terms', abrs_get_page_id( 'terms' ) > 0 ) ) {
@@ -571,17 +573,7 @@ class Checkout {
 		}
 
 		if ( ! empty( $data['payment_method'] ) ) {
-			$gateway = $this->gateways->get( $data['payment_method'] );
-
-			if ( $gateway ) {
-				$response = $gateway->validate_fields( $data, $request );
-
-				if ( is_wp_error( $response ) ) {
-					$errors->add( 'gateway', $response->get_error_message() );
-				} elseif ( false === $response ) {
-					$errors->add( 'gateway', esc_html__( 'Sorry, there was an error processing your payment. Please try again later.', 'awebooking' ) );
-				}
-			} else {
+			if ( ! $gateway = $this->gateways->get( $data['payment_method'] ) ) {
 				$errors->add( 'payment', esc_html__( 'Please choose a payment method.', 'awebooking' ) );
 			}
 		}
@@ -592,14 +584,14 @@ class Checkout {
 	/**
 	 * Get posted data from the checkout form.
 	 *
-	 * @param  \WPLibs\Http\Request $request The http request.
+	 * @param \WPLibs\Http\Request $request The http request.
 	 * @return \AweBooking\Support\Fluent
 	 */
 	public function get_posted_data( $request ) {
 		// Get all sanitized of controls data.
 		$data = $this->get_controls()->handle( $request );
 
-		$data['terms'] = $request->filled( 'terms' );
+		$data['terms']          = $request->filled( 'terms' );
 		$data['payment_method'] = abrs_clean( $request->get( 'payment_method' ) );
 
 		return apply_filters( 'abrs_checkout_posted_data', $data, $request );
@@ -612,7 +604,11 @@ class Checkout {
 	 */
 	public function get_controls() {
 		if ( is_null( $this->controls ) ) {
-			$this->controls = apply_filters( 'abrs_checkout_controls', new Form_Controls( new Fluent( $this->session->get_old_input() ) ) );
+			$this->controls = apply_filters(
+				'abrs_checkout_controls',
+				new Form_Controls( new Fluent( $this->session->get_old_input() ) )
+			);
+
 			$this->controls->enabled()->prepare_fields();
 		}
 

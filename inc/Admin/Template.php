@@ -118,4 +118,13 @@ class Template {
 			return $page_title . $admin_title;
 		} );
 	}
+
+	/**
+	 * //
+	 *
+	 * @return \WPLibs\View\View_Factory
+	 */
+	public function get_factory() {
+		return $this->factory;
+	}
 }

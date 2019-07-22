@@ -132,6 +132,34 @@ class Request implements \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Initialize default parameters.
+	 *
+	 * @return void
+	 */
+	public function maybe_initialize_default() {
+		if ( $this->get_check_in() || $this->get_check_out() ) {
+			return;
+		}
+
+		/* Default check-in is today */
+		$check_in = abrs_date( 'today' );
+
+		$begin_available_days = abrs_get_restriction_begin_available_days();
+
+		// Add next available days if possible.
+		if ( $begin_available_days > 0 ) {
+			$check_in = $check_in->addDay( $begin_available_days );
+		}
+
+		$check_out = $check_in->copy()->addDays(
+			abrs_get_restriction_minimum_nights()
+		);
+
+		$this->set_check_in( $check_in );
+		$this->set_check_out( $check_out );
+	}
+
+	/**
 	 * Validate the request.
 	 *
 	 * @return \WP_Error|bool
@@ -169,7 +197,39 @@ class Request implements \ArrayAccess, \JsonSerializable {
 			throw new \LogicException( esc_html__( 'You cannot perform reservation in the past! Please re-enter dates.', 'awebooking' ) );
 		}
 
-		$timespan->requires_minimum_nights( 1 );
+		// Begin available days.
+		$begin_available_days = abrs_get_restriction_begin_available_days();
+
+		if ( $begin_available_days && abrs_date( $check_in )->lt( abrs_date( 'today' )->addDays( $begin_available_days ) ) ) {
+			throw new \LogicException( esc_html__( 'You cannot perform reservation at current dates. Please choose other valid dates.', 'awebooking' ) );
+		}
+
+		// Minimum nights.
+		$timespan->requires_minimum_nights(
+			abrs_get_restriction_minimum_nights()
+		);
+
+		// Maximum nights.
+		$max_nights = abrs_get_restriction_maximum_nights();
+
+		if ( $max_nights > 0 && $timespan->get_nights() > $max_nights ) {
+			/* translators: %d: Number of max nights */
+			throw new \LogicException( sprintf( esc_html__( 'The reservation has a limit for %d nights', 'awebooking' ), esc_html( $max_nights ) ) );
+		}
+
+		// Disable dates and week-days.
+		$disable_week_days = abrs_get_restriction_disable_week_days();
+
+		if ( count( $disable_week_days ) > 0 && in_array( abrs_date( $check_in )->dayOfWeek, $disable_week_days ) ) {
+			throw new \LogicException( esc_html__( 'You cannot perform reservation at current dates. Please choose other valid dates.', 'awebooking' ) );
+		}
+
+		// Disable days.
+		$disable_days = abrs_get_restriction_disable_days();
+
+		if ( count( $disable_days ) > 0 && in_array( $check_in, $disable_days ) ) {
+			throw new \LogicException( esc_html__( 'You cannot perform reservation at current dates. Please choose other valid dates.', 'awebooking' ) );
+		}
 	}
 
 	/**

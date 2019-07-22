@@ -12,11 +12,10 @@ use AweBooking\Calendar\Event\Core\Booking_Event;
 use AweBooking\Availability\Request;
 use AweBooking\Availability\Room_Rate;
 use AweBooking\Availability\Constraints\Night_Stay_Constraint;
+use AweBooking\Availability\Constraints\Rate_Constraint;
 use WPLibs\Http\Request as Http_Request;
 use AweBooking\Support\Collection;
 use Illuminate\Support\Arr;
-use AweBooking\Availability\Constraints\Checkin_Days_Constraint;
-use AweBooking\Availability\Constraints\Period_Bookable_Constraint;
 
 /**
  * Returns list of states represent for blocked.
@@ -107,9 +106,7 @@ function abrs_check_room_states( $room, Timespan $timespan, $states = Constants:
 		->filter()
 		->all();
 
-	$constraints   = apply_filters( 'abrs_room_contraints', $constraints, $room, $timespan );
-	// $constraints[] = new Checkin_Days_Constraint( $resources, $timespan );
-	// $constraints[] = new Period_Bookable_Constraint( $resources, $timespan );
+	$constraints = apply_filters( 'abrs_room_contraints', $constraints, $resources, $timespan );
 
 	$response = ( new State_Finder( $resources, abrs_calendar_provider( 'state', $resources, true ) ) )
 		->filter( $comparison, $states )
@@ -207,7 +204,7 @@ function abrs_apply_room_state( $room, Timespan $timespan, $state, $options = []
 	// We will perform set the state on each piece of events,
 	// this make sure we can't touch to "booking" state in some case.
 	foreach ( $events as $event ) {
-		/* @var $event \AweBooking\Calendar\Event\Event|\AweBooking\Calendar\Event\Core\State_Event */
+		/* @var \AweBooking\Calendar\Event\Event|\AweBooking\Calendar\Event\Core\State_Event $event */
 		$event_state = (int) $event->get_value();
 
 		// Ignore update same state.
@@ -342,7 +339,7 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
 
 	// We will perform set the price on each piece of events.
 	foreach ( $events as $event ) {
-		/* @var $event \AweBooking\Calendar\Event\Core\Pricing_Event */
+		/* @var \AweBooking\Calendar\Event\Core\Pricing_Event $event */
 
 		// Apply filters for another custom the evaluate room price.
 		$evaluated = apply_filters( 'abrs_evaluate_room_price', null, $event->get_amount(), $amount, $operation, $rate, $timespan, $options );
@@ -381,6 +378,28 @@ function abrs_apply_rate( $rate, Timespan $timespan, $amount, $operation = 'repl
  *
  * @param  Collection|array|int $rates       The rates.
  * @param  Timespan             $timespan    The timespan.
+ * @return \AweBooking\Calendar\Finder\Response
+ */
+function abrs_filter_valid_date_rate_intervals( $rates, Timespan $timespan ) {
+	$resources = abrs_collect( $rates )
+		->transform( 'abrs_resource_rate' )
+		->filter( /* Remove empty items */ )
+		->each( function ( Resource $r ) use ( $timespan ) {
+			$r->set_constraints( [ new Rate_Constraint( $timespan ) ] );
+		} );
+
+	$response = ( new Finder( $resources->all() ) )
+		->callback( '_abrs_filter_rates_callback' )
+		->find( $timespan->to_period( Constants::GL_NIGHTLY ) );
+
+	return apply_filters( 'abrs_filter_valid_date_rate_intervals', $response, $timespan, $resources );
+}
+
+/**
+ * Filter given rates by request.
+ *
+ * @param  Collection|array|int $rates       The rates.
+ * @param  Timespan             $timespan    The timespan.
  * @param  array                $constraints Array of constraints.
  * @return \AweBooking\Calendar\Finder\Response
  */
@@ -408,24 +427,13 @@ function abrs_filter_rate_intervals( $rates, Timespan $timespan, $constraints = 
  * @return void
  */
 function _abrs_filter_rates_callback( $resource, $response ) {
-	$effective_date = $resource->get_reference()->get_effective_date();
-	$expires_date   = $resource->get_reference()->get_expires_date();
+	$rack_rate = $resource->get_reference()->get_rack_rate();
 
-	$today = abrs_date_time( 'today' );
-
-	if ( $effective_date && $today < abrs_date_time( $effective_date ) ) {
-		$response->add_miss( $resource, 'rate_effective_date' );
-
-		return;
+	if ( $rack_rate && $rack_rate > 0 ) {
+		$response->add_match( $resource, 'rate_valid' );
+	} else {
+		$response->add_miss( $resource, 'rate_invalid' );
 	}
-
-	if ( $expires_date && $today > abrs_date_time( $expires_date ) ) {
-		$response->add_miss( $resource, 'rate_expired_date' );
-
-		return;
-	}
-
-	$response->add_match( $resource, 'rate_valid_dates' );
 }
 
 /**
@@ -436,10 +444,13 @@ function _abrs_filter_rates_callback( $resource, $response ) {
  * @return array
  */
 function abrs_build_rate_constraints( Rate_Interval $rate, Timespan $timespan ) {
+	$constraints = [];
+
 	// Get rate restrictions.
 	$restrictions = $rate->get_restrictions();
 
-	$constraints = [];
+	$constraints[] = new Rate_Constraint( $timespan );
+
 	if ( $restrictions['min_los'] || $restrictions['max_los'] ) {
 		$constraints[] = new Night_Stay_Constraint( $rate->get_id(), $timespan, $restrictions['min_los'], $restrictions['max_los'] );
 	}
@@ -636,7 +647,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	$bookingcal = abrs_calendar( $room, 'booking' );
 
 	foreach ( $bookingcal->get_events( $period ) as $event ) {
-		/* @var $event \AweBooking\Calendar\Event\Event */
+		/* @var \AweBooking\Calendar\Event\Event $event */
 		if ( $event->get_value() === (int) $booking ) {
 			$event->set_value( 0 );
 			$bookingcal->store( $event );
@@ -644,7 +655,7 @@ function abrs_clear_booking_event( $room, $booking, Timespan $timespan ) {
 	}
 
 	foreach ( $statecal->get_events( $period ) as $event ) {
-		/* @var $event \AweBooking\Calendar\Event\Core\State_Event */
+		/* @var \AweBooking\Calendar\Event\Core\State_Event $event */
 		if ( $event->get_state() === Constants::STATE_BOOKING ) {
 			$event->set_value( Constants::STATE_AVAILABLE );
 			$statecal->store( $event );

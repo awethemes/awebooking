@@ -20,7 +20,19 @@
 	<div class="booking-section booking-section--totals abrs-clearfix">
 		<table class="awebooking-table abrs-booking-totals">
 			<tbody>
+				<tr>
+					<th><?php echo esc_html__( 'Subtotal:', 'awebooking' ); ?></th>
+					<td><?php abrs_price( $the_booking->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?></td>
+				</tr>
+
 				<?php do_action( 'abrs_before_booking_total', $the_booking ); ?>
+
+				<?php if ( $the_booking->get( 'total_tax' ) ) : ?>
+					<tr>
+						<th><?php echo esc_html__( 'Total Tax:', 'awebooking' ); ?></th>
+						<td><?php abrs_price( $the_booking->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?></td>
+					</tr>
+				<?php endif; ?>
 
 				<tr>
 					<th><?php echo esc_html__( 'Total:', 'awebooking' ); ?></th>

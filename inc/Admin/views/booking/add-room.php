@@ -5,12 +5,18 @@ use AweBooking\Support\WP_Data;
 $controls = abrs_create_form( 'search-rooms' );
 
 $selected_dates = [];
-
 if ( $request->filled( 'check-in', 'check-out' ) ) {
 	$selected_dates = array_values( $request->only( 'check-in', 'check-out' ) );
 }
 
 ?>
+<style>
+.min_inputprice {
+	width: 60px;
+	padding: 1px 5px;
+	vertical-align: middle;
+}
+</style>
 
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Add Room', 'awebooking' ); ?></h1>
@@ -94,3 +100,131 @@ if ( $request->filled( 'check-in', 'check-out' ) ) {
 
 	</div>
 </div>
+
+<script>
+	(function ($) {
+		$('.js-editprice').on('click', function () {
+			$(this).parent().find('input').show();
+			$(this).hide();
+		});
+
+		var xhr, breakdowns = [];
+		function refreshCosts(form, update) {
+			if (xhr && xhr.readyState !== 4) {
+				xhr.abort()
+			}
+
+			var roomType = $('[name="submit"]', form).val();
+			return xhr = awebooking.ajax('GET', '/ajax/rates/check', {
+				room_type: roomType,
+				adults: $('.js-select-adults', form).val(),
+				children: $('.js-select-children', form).val(),
+				infants: $('.js-select-infants', form).val(),
+				check_in: $('#date_start').val(),
+				check_out: $('#date_end').val(),
+			}, function (response) {
+				var data = response.data;
+				breakdowns[roomType] = data;
+
+				var subtotal = data.prices.rate;
+				var currentSubtotal = $('input.min_inputprice', form).val();
+				if (update && currentSubtotal != subtotal) {
+					$('input.min_inputprice', form).val(subtotal).show();
+				}
+			});
+		}
+
+		function showBreakdown(data, title) {
+			if (!data.prices || !data.breakdown) {
+				alert('Something wrong!')
+				return;
+			}
+
+			swal({
+				title: title,
+				html: wp.template('price-breakdown')(data),
+				animation: false,
+				showCloseButton: true,
+				showCancelButton: false,
+			});
+		}
+
+		$('.availability-table tbody tr').each(function () {
+			var element = $(this);
+
+			element.find('select').on('change', function() {
+				refreshCosts(element, true)
+			});
+
+			element.find('.js-show-breakdown').on('click', function(e) {
+				e.preventDefault();
+
+				var title = $(this).data('title');
+				var roomType = $('[name="submit"]', element).val();
+
+				if (!breakdowns.hasOwnProperty(roomType)) {
+					refreshCosts(element, false).then(function () {
+						showBreakdown(breakdowns[roomType], title);
+					});
+				} else {
+					showBreakdown(breakdowns[roomType], title);
+				}
+			});
+		});
+	})(jQuery);
+</script>
+
+<script type="text/html" id="tmpl-price-breakdown">
+	<table class="widefat fixed stripe" style="margin-bottom: 15px;">
+		<thead>
+			<tr>
+				<th style="width: 100px;"><?php echo esc_html__( 'Date', 'awebooking' ); ?></th>
+				<th><?php echo esc_html__( 'Room Only', 'awebooking' ); ?></th>
+				<# _.each(data.additional_rates || {}, function(rate, key) { #>
+					<th>{{ rate.reason }}</th>
+				<# }) #>
+			</tr>
+		</thead>
+		<tbody>
+			<# _.each(data.breakdown || {}, function(value, date) { #>
+				<tr>
+					<th><span class="abrs-badge">{{ date }}</span></th>
+					<td style="text-align: left"><strong>{{{ awebooking.formatPrice(value) }}}</strong></td>
+
+					<# _.each(data.additional_breakdowns || {}, function(breakdown) { #>
+						<td style="text-align: left">{{{ breakdown[date] ? awebooking.formatPrice(breakdown[date]) : '' }}}</td>
+					<# }) #>
+				</tr>
+			<# }) #>
+		</tbody>
+	</table>
+
+	<table class="widefat fixed stripe">
+		<tbody>
+			<tr>
+				<th style="width: 120px; text-align: left;"><?php echo esc_html__( 'Room Only', 'awebooking' ); ?></th>
+				<td style="text-align: right;">{{{ awebooking.formatPrice(data.prices.room_only) }}}</td>
+			</tr>
+
+			<tr>
+				<th style="width: 120px; text-align: left;"><?php echo esc_html__( 'Additionals', 'awebooking' ); ?></th>
+				<td style="text-align: right;">{{{ awebooking.formatPrice(data.prices.additionals) }}}</td>
+			</tr>
+
+			<tr>
+				<th style="width: 120px; text-align: left;"><?php echo esc_html__( 'First night', 'awebooking' ); ?></th>
+				<td style="text-align: right;">{{{ awebooking.formatPrice(data.prices.rate_first_night) }}}</td>
+			</tr>
+
+			<tr>
+				<th style="width: 120px; text-align: left;"><?php echo esc_html__( 'Average', 'awebooking' ); ?></th>
+				<td style="text-align: right;">{{{ awebooking.formatPrice(data.prices.rate_average) }}}</td>
+			</tr>
+
+			<tr>
+				<th style="width: 120px; text-align: left;"><?php echo esc_html__( 'Cost', 'awebooking' ); ?></th>
+				<td style="text-align: right;"><strong>{{{ awebooking.formatPrice(data.prices.rate) }}}</strong></td>
+			</tr>
+		</tbody>
+	</table>
+</script>

@@ -11,6 +11,14 @@ use AweBooking\Support\Carbonate;
 use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
 
+/**
+ * Class Abstract_Scheduler
+ *
+ * @property-read \AweBooking\Calendar\Scheduler             $scheduler
+ * @property-read \AweBooking\Support\Collection|Room_Type[] $room_types
+ *
+ * @package AweBooking\Admin\Calendar
+ */
 abstract class Abstract_Scheduler {
 	use Concerns\Calendar_Creator;
 
@@ -181,6 +189,21 @@ abstract class Abstract_Scheduler {
 	 */
 	public function get_wrapper_classes() {
 		return '';
+	}
+
+	/**
+	 * //
+	 *
+	 * @return bool
+	 */
+	public function is_nested() {
+		foreach ( $this->scheduler as $item ) {
+			if ( $item instanceof Scheduler ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label class="searchbox__box-label"><span><?php esc_html_e( 'Check In', 'awebooking' ); ?></span></label>
 
 			<div class="searchbox__box-input">
-				<input type="text" data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="" autocomplete="off" aria-haspopup="true">
+				<input type="text" readonly data-bind="value: checkInFormatted()" class="searchbox__input searchbox__input--checkin input-transparent" placeholder="<?php echo esc_attr( $res_request['check_in'] ?: abrs_get_date_format() ); ?>" autocomplete="off" aria-haspopup="true">
 				<input type="hidden" data-bind="value: checkInDate" name="check_in" value="<?php echo esc_attr( $res_request['check_in'] ); ?>">
 			</div>
 		</div>
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label class="searchbox__box-label"><span><?php esc_html_e( 'Check Out', 'awebooking' ); ?></span></label>
 
 			<div class="searchbox__box-input">
-				<input type="text" data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="" autocomplete="off" aria-haspopup="true">
+				<input type="text" readonly data-bind="value: checkOutFormatted()" class="searchbox__input searchbox__input--checkout input-transparent" placeholder="<?php echo esc_attr( $res_request['check_out'] ?: abrs_get_date_format() ); ?>" autocomplete="off" aria-haspopup="true">
 				<input type="hidden" data-bind="value: checkOutDate" name="check_out" value="<?php echo esc_attr( $res_request['check_out'] ); ?>">
 			</div>
 		</div>

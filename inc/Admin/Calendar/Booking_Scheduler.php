@@ -264,15 +264,17 @@ class Booking_Scheduler extends Abstract_Scheduler {
 	 * @return string
 	 */
 	protected function calculate_event_styles( $total_days, $classes ) {
+		$is_rtl = is_rtl();
+
 		$width = ( $total_days * 100 ) . '%';
 
 		$style = '';
 		if ( in_array( 'continues-prior', $classes ) ) {
 			$style .= "width: calc({$width} + 50%); left: 0;";
 		} elseif ( in_array( 'continues-after', $classes ) ) {
-			$style .= "width: calc({$width} - 50%); left: 50%;";
+			$style .= $is_rtl ? "width: calc({$width} - 50%); left: -50%;" : "width: calc({$width} - 50%); left: 50%;";
 		} else {
-			$style .= "width: {$width}; left: 50%;";
+			$style .= $is_rtl ? "width: {$width}; left: -50%;" : "width: {$width}; left: 50%;";
 		}
 
 		return $style;

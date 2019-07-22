@@ -34,6 +34,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_style( 'awebooking-colour', abrs_asset_url( 'css/awebooking-colour.css' ), [ 'awebooking-iconfont', 'awebooking' ], $version );
 		wp_register_script( 'awebooking', abrs_asset_url( 'js/awebooking' . $suffix . '.js' ), [ 'jquery', 'flatpickr', 'tippy', 'a11y-dialog' ], $version, true );
 		wp_register_script( 'awebooking-checkout', abrs_asset_url( 'js/checkout' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
+		wp_register_script( 'awebooking-payment', abrs_asset_url( 'js/payment' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
 
 		$deps = [ 'awebooking', 'knockout', 'moment' ];
 		if ( 'on' === abrs_get_option( 'use_experiment_style', 'off' ) ) {
@@ -75,20 +76,23 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_localize_script( 'awebooking', '_awebooking', [
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
 			'route'      => abrs_route( '/' ),
-			'datepicker' => [
-				'minNights'    => abrs_get_option( 'display_datepicker_minnights', 1 ),
-				'maxNights'    => abrs_get_option( 'display_datepicker_maxnights', 0 ),
-				'minDate'      => abrs_get_option( 'display_datepicker_mindate', 0 ),
-				'maxDate'      => abrs_get_option( 'display_datepicker_maxdate', 0 ),
-				'disableDates' => abrs_get_option( 'display_datepicker_disabledates', '' ),
-				'disableDays'  => abrs_get_option( 'display_datepicker_disabledays', [] ),
+			'datepicker' => apply_filters( 'abrs_datepicker_localize_js', [
+				'minNights'    => abrs_get_restriction_minimum_nights(),
+				'maxNights'    => abrs_get_restriction_maximum_nights(),
+				'minDate'      => abrs_get_restriction_begin_available_days(),
+				'disableDays'  => abrs_get_restriction_disable_week_days(),
+				'disableDates' => abrs_get_restriction_disable_days(),
 				'showMonths'   => abrs_get_option( 'display_datepicker_showmonths', 1 ),
-			],
+			] ),
 		]);
 
 		switch ( true ) {
 			case abrs_is_checkout_page():
 				wp_enqueue_script( 'awebooking-checkout' );
+				break;
+
+			case abrs_is_payment_page():
+				wp_enqueue_script( 'awebooking-payment' );
 				break;
 		}
 	}

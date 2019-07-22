@@ -37,6 +37,13 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected $price = 0;
 
 	/**
+	 * The amount to discount.
+	 *
+	 * @var int|float
+	 */
+	protected $discount = 0;
+
+	/**
 	 * The single tax (after calculate).
 	 *
 	 * @var int
@@ -253,6 +260,24 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
+	 * Returns the discount amount.
+	 *
+	 * @return float|int
+	 */
+	public function get_discount() {
+		return $this->discount;
+	}
+
+	/**
+	 * Returns the total of discount amount.
+	 *
+	 * @return float|int
+	 */
+	public function get_discounted() {
+		return $this->get_discount() * $this->get_quantity();
+	}
+
+	/**
 	 * Gets the single price of the item excluding tax.
 	 *
 	 * @return float
@@ -266,16 +291,29 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	}
 
 	/**
-	 * Gets the single price of the item including tax.
+	 * Gets the single price of the item excluding tax and discounted.
 	 *
-	 * @return float
+	 * @return float|int
 	 */
-	public function get_price_tax() {
-		if ( $this->price_includes_tax ) {
-			return $this->price;
+	public function get_price_discounted() {
+		if ( ! $this->price_includes_tax ) {
+			return $this->price - $this->discount;
 		}
 
-		return $this->price + $this->get_tax();
+		return ( $this->price - $this->discount ) - $this->get_tax();
+	}
+
+	/**
+	 * //
+	 *
+	 * @return float|int
+	 */
+	public function get_price_discounted_with_tax() {
+		if ( $this->price_includes_tax ) {
+			return $this->price - $this->discount;
+		}
+
+		return ( $this->price - $this->discount ) + $this->get_tax();
 	}
 
 	/**
@@ -293,7 +331,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return float
 	 */
 	public function get_total() {
-		return $this->get_price_tax() * $this->get_quantity();
+		return $this->get_price_discounted_with_tax() * $this->get_quantity();
 	}
 
 	/**
@@ -416,6 +454,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	protected function sanitize_prop( $value, $key ) {
 		switch ( $key ) {
 			case 'price':
+			case 'dicount':
 				return abrs_sanitize_decimal( $value );
 			case 'model':
 			case 'associated_model':
@@ -456,7 +495,7 @@ class Item implements Arrayable, \ArrayAccess, \JsonSerializable {
 	 * @return array
 	 */
 	public function get_virtual_attributes() {
-		return [ 'tax', 'total_tax', 'price_tax', 'subtotal', 'total' ];
+		return [ 'tax', 'total_tax', 'subtotal', 'total', 'discount', 'discounted' ];
 	}
 
 	/**

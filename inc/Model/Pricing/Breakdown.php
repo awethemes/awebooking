@@ -37,6 +37,13 @@ class Breakdown implements \ArrayAccess, \IteratorAggregate {
 	protected $data = [];
 
 	/**
+	 * The label represent for the breakdown
+	 *
+	 * @var string
+	 */
+	protected $label = '';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \AweBooking\Model\Common\Timespan $timespan    The timespan.
@@ -47,6 +54,24 @@ class Breakdown implements \ArrayAccess, \IteratorAggregate {
 		$this->timespan    = $timespan;
 		$this->rack_rate   = $rack_rate;
 		$this->granularity = $granularity;
+	}
+
+	/**
+	 * Gets the breakdown label.
+	 *
+	 * @return string
+	 */
+	public function get_label() {
+		return $this->label;
+	}
+
+	/**
+	 * Sets the breakdown label.
+	 *
+	 * @param string $label
+	 */
+	public function set_label( $label ) {
+		$this->label = $label;
 	}
 
 	/**

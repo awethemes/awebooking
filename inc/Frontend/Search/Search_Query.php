@@ -63,6 +63,8 @@ class Search_Query {
 	 * @return void
 	 */
 	public function setup_res_request() {
+		do_action( 'setup_res_request', $this->res_request );
+
 		$validate = $this->res_request->validate();
 
 		if ( is_wp_error( $validate ) ) {
@@ -74,8 +76,6 @@ class Search_Query {
 		abrs_reservation()->set_current_request( $this->res_request );
 
 		awebooking()->instance( Request::class, $this->res_request );
-
-		do_action( 'setup_res_request', $this->res_request );
 	}
 
 	/**
