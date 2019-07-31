@@ -128,7 +128,7 @@ function abrs_format_date_time( $date_time, $format = null ) {
 	$date_time = abrs_date_time( $date_time );
 
 	return ! is_null( $date_time )
-		? $date_time->date_i18n( $format )
+		? $date_time->format( $format )
 		: '';
 }
 

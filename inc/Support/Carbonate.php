@@ -72,11 +72,13 @@ class Carbonate extends MutableDateTime {
 	/**
 	 * Format datetime use `date_i18n`.
 	 *
-	 * @param  string $fomrat A valid date format string.
+	 * @param string $fomrat A valid date format string.
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public function date_i18n( $fomrat ) {
-		return date_i18n( $fomrat, $this->getTimestamp() );
+		return date_i18n( $fomrat, $this->getTimestamp() + $this->getOffset() );
 	}
 
 	/**
