@@ -12,10 +12,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
 use AweBooking\Support\Fluent;
 use Awethemes\Relationships\Manager as Relationships;
-use Awethemes\Http\Request;
 use WPLibs\View\Factory;
 
-final class Plugin {
+final class Plugin extends Container {
 	use Core\Concerns\Plugin_Provider,
 		Core\Concerns\Plugin_Options;
 
@@ -67,7 +66,7 @@ final class Plugin {
 		$this->binding_paths();
 		$this->register_base_bindings();
 
-		// Constants::defines( $this );
+		Constants::defines( $this );
 	}
 
 	/**
@@ -192,11 +191,11 @@ final class Plugin {
 	 * @throws \Exception
 	 */
 	public function initialize() {
-		/*try {
+		try {
 			$this->bootstrap();
 		} catch ( \Exception $e ) {
 			$this->catch_exception( $e );
-		}*/
+		}
 	}
 
 	/**
