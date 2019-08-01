@@ -5,7 +5,7 @@ namespace AweBooking\Admin\Forms;
 use AweBooking\Support\Fluent;
 use AweBooking\Component\Form\Form;
 
-class Hotel_Information_Form extends Form {
+class Global_Hotel_Information_Form extends Form {
 	/**
 	 * Constructor.
 	 *
@@ -20,7 +20,7 @@ class Hotel_Information_Form extends Form {
 	 */
 	protected function setup_fields() {
 		$this->add_field([
-			'id'          => 'check_in_time',
+			'id'          => 'hotel_check_in',
 			'type'        => 'text_time',
 			'name'        => esc_html__( 'Check-in time', 'awebooking' ),
 			'desc'        => esc_html__( 'Guest arrival time', 'awebooking' ),
@@ -30,7 +30,7 @@ class Hotel_Information_Form extends Form {
 		]);
 
 		$this->add_field([
-			'id'          => 'check_out_time',
+			'id'          => 'hotel_check_out',
 			'type'        => 'text_time',
 			'name'        => esc_html__( 'Check-out time', 'awebooking' ),
 			'desc'        => esc_html__( 'Guest departure time.', 'awebooking' ),
@@ -39,7 +39,7 @@ class Hotel_Information_Form extends Form {
 		]);
 
 		$this->add_field([
-			'id'      => 'star_rating',
+			'id'      => 'hotel_star_rating',
 			'type'    => 'select',
 			'name'    => esc_html__( 'Star Rating', 'awebooking' ),
 			'classes' => 'with-selectize',

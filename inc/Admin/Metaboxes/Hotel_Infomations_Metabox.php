@@ -13,9 +13,9 @@ class Hotel_Infomations_Metabox extends Metabox {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id      = 'awebooking-hotel-info';
-		$this->title   = esc_html__( 'Hotel Information', 'awebooking' );
-		$this->screen  = Constants::HOTEL_LOCATION;
+		$this->id     = 'awebooking-hotel-info';
+		$this->title  = esc_html__( 'Hotel Information', 'awebooking' );
+		$this->screen = Constants::HOTEL_LOCATION;
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Hotel_Infomations_Metabox extends Metabox {
 	/**
 	 * Handle save the the metabox.
 	 *
-	 * @param \WP_Post                $post    The WP_Post object instance.
+	 * @param \WP_Post             $post    The WP_Post object instance.
 	 * @param \WPLibs\Http\Request $request The HTTP Request.
 	 */
 	public function save( $post, Request $request ) {
