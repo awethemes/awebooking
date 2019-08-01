@@ -15,7 +15,7 @@ use Awethemes\Relationships\Manager as Relationships;
 use Awethemes\Http\Request;
 use WPLibs\View\Factory;
 
-final class Plugin extends Container {
+final class Plugin {
 	use Core\Concerns\Plugin_Provider,
 		Core\Concerns\Plugin_Options;
 
@@ -67,7 +67,7 @@ final class Plugin extends Container {
 		$this->binding_paths();
 		$this->register_base_bindings();
 
-		Constants::defines( $this );
+		// Constants::defines( $this );
 	}
 
 	/**
@@ -110,6 +110,7 @@ final class Plugin extends Container {
 	 */
 	protected function register_base_bindings() {
 		static::setInstance( $this );
+
 		$this->instance( static::class, $this );
 
 		$this->bind( 'installer', function() {
@@ -191,11 +192,11 @@ final class Plugin extends Container {
 	 * @throws \Exception
 	 */
 	public function initialize() {
-		try {
+		/*try {
 			$this->bootstrap();
 		} catch ( \Exception $e ) {
 			$this->catch_exception( $e );
-		}
+		}*/
 	}
 
 	/**

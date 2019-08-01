@@ -1,1 +1,1199 @@
-!function(e,t){for(var n in t)e[n]=t[n]}(this,function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=2)}({"+qE3":function(e,t,n){"use strict";var r,o="object"==typeof Reflect?Reflect:null,i=o&&"function"==typeof o.apply?o.apply:function(e,t,n){return Function.prototype.apply.call(e,t,n)};r=o&&"function"==typeof o.ownKeys?o.ownKeys:Object.getOwnPropertySymbols?function(e){return Object.getOwnPropertyNames(e).concat(Object.getOwnPropertySymbols(e))}:function(e){return Object.getOwnPropertyNames(e)};var s=Number.isNaN||function(e){return e!=e};function u(){u.init.call(this)}e.exports=u,u.EventEmitter=u,u.prototype._events=void 0,u.prototype._eventsCount=0,u.prototype._maxListeners=void 0;var c=10;function f(e){return void 0===e._maxListeners?u.defaultMaxListeners:e._maxListeners}function a(e,t,n,r){var o,i,s,u;if("function"!=typeof n)throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof n);if(void 0===(i=e._events)?(i=e._events=Object.create(null),e._eventsCount=0):(void 0!==i.newListener&&(e.emit("newListener",t,n.listener?n.listener:n),i=e._events),s=i[t]),void 0===s)s=i[t]=n,++e._eventsCount;else if("function"==typeof s?s=i[t]=r?[n,s]:[s,n]:r?s.unshift(n):s.push(n),(o=f(e))>0&&s.length>o&&!s.warned){s.warned=!0;var c=new Error("Possible EventEmitter memory leak detected. "+s.length+" "+String(t)+" listeners added. Use emitter.setMaxListeners() to increase limit");c.name="MaxListenersExceededWarning",c.emitter=e,c.type=t,c.count=s.length,u=c,console&&console.warn&&console.warn(u)}return e}function d(e,t,n){var r={fired:!1,wrapFn:void 0,target:e,type:t,listener:n},o=function(){for(var e=[],t=0;t<arguments.length;t++)e.push(arguments[t]);this.fired||(this.target.removeListener(this.type,this.wrapFn),this.fired=!0,i(this.listener,this.target,e))}.bind(r);return o.listener=n,r.wrapFn=o,o}function h(e,t,n){var r=e._events;if(void 0===r)return[];var o=r[t];return void 0===o?[]:"function"==typeof o?n?[o.listener||o]:[o]:n?function(e){for(var t=new Array(e.length),n=0;n<t.length;++n)t[n]=e[n].listener||e[n];return t}(o):l(o,o.length)}function p(e){var t=this._events;if(void 0!==t){var n=t[e];if("function"==typeof n)return 1;if(void 0!==n)return n.length}return 0}function l(e,t){for(var n=new Array(t),r=0;r<t;++r)n[r]=e[r];return n}Object.defineProperty(u,"defaultMaxListeners",{enumerable:!0,get:function(){return c},set:function(e){if("number"!=typeof e||e<0||s(e))throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received '+e+".");c=e}}),u.init=function(){void 0!==this._events&&this._events!==Object.getPrototypeOf(this)._events||(this._events=Object.create(null),this._eventsCount=0),this._maxListeners=this._maxListeners||void 0},u.prototype.setMaxListeners=function(e){if("number"!=typeof e||e<0||s(e))throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received '+e+".");return this._maxListeners=e,this},u.prototype.getMaxListeners=function(){return f(this)},u.prototype.emit=function(e){for(var t=[],n=1;n<arguments.length;n++)t.push(arguments[n]);var r="error"===e,o=this._events;if(void 0!==o)r=r&&void 0===o.error;else if(!r)return!1;if(r){var s;if(t.length>0&&(s=t[0]),s instanceof Error)throw s;var u=new Error("Unhandled error."+(s?" ("+s.message+")":""));throw u.context=s,u}var c=o[e];if(void 0===c)return!1;if("function"==typeof c)i(c,this,t);else{var f=c.length,a=l(c,f);for(n=0;n<f;++n)i(a[n],this,t)}return!0},u.prototype.addListener=function(e,t){return a(this,e,t,!1)},u.prototype.on=u.prototype.addListener,u.prototype.prependListener=function(e,t){return a(this,e,t,!0)},u.prototype.once=function(e,t){if("function"!=typeof t)throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof t);return this.on(e,d(this,e,t)),this},u.prototype.prependOnceListener=function(e,t){if("function"!=typeof t)throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof t);return this.prependListener(e,d(this,e,t)),this},u.prototype.removeListener=function(e,t){var n,r,o,i,s;if("function"!=typeof t)throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof t);if(void 0===(r=this._events))return this;if(void 0===(n=r[e]))return this;if(n===t||n.listener===t)0==--this._eventsCount?this._events=Object.create(null):(delete r[e],r.removeListener&&this.emit("removeListener",e,n.listener||t));else if("function"!=typeof n){for(o=-1,i=n.length-1;i>=0;i--)if(n[i]===t||n[i].listener===t){s=n[i].listener,o=i;break}if(o<0)return this;0===o?n.shift():function(e,t){for(;t+1<e.length;t++)e[t]=e[t+1];e.pop()}(n,o),1===n.length&&(r[e]=n[0]),void 0!==r.removeListener&&this.emit("removeListener",e,s||t)}return this},u.prototype.off=u.prototype.removeListener,u.prototype.removeAllListeners=function(e){var t,n,r;if(void 0===(n=this._events))return this;if(void 0===n.removeListener)return 0===arguments.length?(this._events=Object.create(null),this._eventsCount=0):void 0!==n[e]&&(0==--this._eventsCount?this._events=Object.create(null):delete n[e]),this;if(0===arguments.length){var o,i=Object.keys(n);for(r=0;r<i.length;++r)"removeListener"!==(o=i[r])&&this.removeAllListeners(o);return this.removeAllListeners("removeListener"),this._events=Object.create(null),this._eventsCount=0,this}if("function"==typeof(t=n[e]))this.removeListener(e,t);else if(void 0!==t)for(r=t.length-1;r>=0;r--)this.removeListener(e,t[r]);return this},u.prototype.listeners=function(e){return h(this,e,!0)},u.prototype.rawListeners=function(e){return h(this,e,!1)},u.listenerCount=function(e,t){return"function"==typeof e.listenerCount?e.listenerCount(t):p.call(e,t)},u.prototype.listenerCount=p,u.prototype.eventNames=function(){return this._eventsCount>0?r(this._events):[]}},2:function(e,t,n){e.exports=n("Ifss")},Ifss:function(e,t,n){"use strict";n.r(t);var r=n("xeH2"),o=n.n(r),i=n("MC/M"),s=n.n(i);o()(function(){!function(){var e=document.getElementById("timer-countdown");if(e){var t=new s.a,n=e.querySelector("strong");n||(n=e),t.start({countdown:!0,precision:"seconds",startValues:{seconds:parseInt(e.getAttribute("data-seconds"),10)}}),t.addEventListener("secondsUpdated",function(e){n.innerHTML=t.getTimeValues().toString()}),t.addEventListener("targetAchieved",function(e){setTimeout(function(){window.location.reload()},100)})}}();var e=o()("#payment-methods"),t=e.find('input[type="radio"]')[0];setTimeout(function(){var n=o.a.Event("selected.awebooking.gateway",{relatedTarget:t});e.trigger(n,t.value)},50)})},"MC/M":function(e,t,n){var r;!function(e){"use strict";var o="undefined"!=typeof window?window.CustomEvent:void 0;"undefined"!=typeof window&&"function"!=typeof o&&((o=function(e,t){t=t||{bubbles:!1,cancelable:!1,detail:void 0};var n=document.createEvent("CustomEvent");return n.initCustomEvent(e,t.bubbles,t.cancelable,t.detail),n}).prototype=window.Event.prototype,window.CustomEvent=o);var i=10,s=60,u=600,c=60,f=3600,a=36e3,d=24,h=0,p=1,l=2,v=3,y=4,m="secondTenths",g="seconds",w="minutes",b="hours",L="days",_={secondTenths:100,seconds:1e3,minutes:6e4,hours:36e5,days:864e5},E=e&&e.exports?n("+qE3"):void 0;function T(){return"undefined"!=typeof document}function x(){return E}function O(e,t){return(e%t+t)%t}function j(e,t,n){var r,o="";for(r=0;r<t;r+=1)o+=String(n);return(o+e).slice(-o.length)}function C(){this.secondTenths=0,this.seconds=0,this.minutes=0,this.hours=0,this.days=0,this.toString=function(e,t,n){e=e||["hours","minutes","seconds"],t=t||":",n=n||2;var r,o=[];for(r=0;r<n;r+=1)"0";for(r=0;r<e.length;r+=1)void 0!==this[e[r]]&&o.push(j(this[e[r]],n,"0"));return o.join(t)}}function M(){var e,t,n,r,j,M,P,R=new C,S=new C,k=T()?document.createElement("span"):x()?new E.EventEmitter:void 0,A=!1,F=!1,I={};function U(){return I.countdown}function V(e,t){R[e]+=t,S[e]+=t}function N(e){V(L,e),J("daysUpdated")}function q(e){V(b,e),R.hours=O(R.hours,d),(U()&&R.hours===d-1||!U()&&0===R.hours)&&N(e),t===b&&(S[w]+=U()?-c:c,S[g]+=U()?-f:f,S[m]+=U()?-a:a),J("hoursUpdated")}function H(e){V(w,e),R.minutes=O(R.minutes,c),(U()&&R.minutes===c-1||!U()&&0===R.minutes)&&q(e),t===w&&(S[g]+=U()?-s:s,S[m]+=U()?-u:u),J("minutesUpdated")}function K(e){V(g,e),R.seconds=O(R.seconds,s),(U()&&R.seconds===s-1||!U()&&0===R.seconds)&&H(e),t===g&&(S[m]+=U()?-i:i),J("secondsUpdated")}function z(e){V(m,e),R.secondTenths=O(R.secondTenths,i),(U()&&R.secondTenths===i-1||!U()&&0===R.secondTenths)&&K(e),J("secondTenthsUpdated")}function B(){clearInterval(e),e=void 0,A=!1,F=!1}function Q(){return j instanceof Array&&(I.countdown&&(R.hours<j[v]||R.hours===j[v]&&(R.minutes<j[l]||R.minutes===j[l]&&(R.seconds<j[p]||R.seconds===j[p]&&(R.secondTenths<j[h]||R.secondTenths===j[h]))))||!I.countdown&&(R.hours>j[v]||R.hours===j[v]&&(R.minutes>j[l]||R.minutes===j[l]&&R.seconds>=j[p])))}function W(e){var o,u;t=e&&"string"==typeof e.precision?e.precision:g,r=e&&"function"==typeof e.callback?e.callback:function(){},n=e&&!0===e.countdown?-1:1,P=e&&1==e.countdown,e&&"object"==typeof e.target&&(o=e.target,j=D(o)),e&&"object"==typeof e.startValues&&(u=e.startValues,M=D(u),R.secondTenths=M[h],R.seconds=M[p],R.minutes=M[l],R.hours=M[v],R.days=M[y],S.days=R.days,S.hours=S.days*d+R.hours,S.minutes=S.hours*c+R.minutes,S.seconds=S.minutes*s+R.seconds,S.secondTenths=S.seconds*i+R.secondTenths),j=j||!P?j:[0,0,0,0,0],I={precision:t,callback:r,countdown:"object"==typeof e&&1==e.countdown,target:j,startValues:M}}function D(e){var t,n,r,o,u,f;if("object"==typeof e)if(e instanceof Array){if(5!=e.length)throw new Error("Array size not valid");f=e}else f=[e.secondTenths||0,e.seconds||0,e.minutes||0,e.hours||0,e.days||0];for(var a=0;a<e.length;a+=1)e[a]<0&&(e[a]=0);return t=f[h],n=f[p]+Math.floor(t/i),r=f[l]+Math.floor(n/s),o=f[v]+Math.floor(r/c),u=f[y]+Math.floor(o/d),f[h]=t%i,f[p]=n%s,f[l]=r%c,f[v]=o%d,f[y]=u,f}function G(){B(),function(){for(var e in R)R.hasOwnProperty(e)&&"number"==typeof R[e]&&(R[e]=0);for(var e in S)S.hasOwnProperty(e)&&"number"==typeof S[e]&&(S[e]=0)}(),J("stopped")}function J(e){T()?k.dispatchEvent(new o(e)):x()&&k.emit(e)}void 0!==this&&(this.start=function(o){if(this.isRunning())throw new Error("Timer already running");this.isPaused()||W(o),Q()||(function(){var o,i=_[t];switch(t){case L:o=N;break;case b:o=q;break;case w:o=H;break;case m:o=z;break;default:o=K}e=setInterval(function(){o(n),r(R),Q()&&(J("targetAchieved"),G())},i),A=!0,F=!1}(),J("started"))},this.pause=function(){B(),F=!0,J("paused")},this.stop=G,this.isRunning=function(){return A},this.isPaused=function(){return F},this.getTimeValues=function(){return R},this.getTotalTimeValues=function(){return S},this.getConfig=function(){return I},this.addEventListener=function(e,t){T()?k.addEventListener(e,t):x()&&k.on(e,t)},this.removeEventListener=function(e,t){T()?k.removeEventListener(e,t):x()&&k.removeListener(e,t)})}e&&e.exports?e.exports=M:void 0===(r=function(){return M}.apply(t,[]))||(e.exports=r)}(e)},xeH2:function(e,t){!function(){e.exports=this.jQuery}()}}));
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./assets/babel/payment.js":
+/*!*********************************!*\
+  !*** ./assets/babel/payment.js ***!
+  \*********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var easytimer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! easytimer */ "./node_modules/easytimer/src/easytimer.js");
+/* harmony import */ var easytimer__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(easytimer__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function initTimerCountdown() {
+  var element = document.getElementById('timer-countdown');
+
+  if (!element) {
+    return;
+  }
+
+  var timer = new easytimer__WEBPACK_IMPORTED_MODULE_1___default.a();
+  var elementDisplay = element.querySelector('strong');
+
+  if (!elementDisplay) {
+    elementDisplay = element;
+  }
+
+  timer.start({
+    countdown: true,
+    precision: 'seconds',
+    startValues: {
+      seconds: parseInt(element.getAttribute('data-seconds'), 10)
+    }
+  });
+  timer.addEventListener('secondsUpdated', function (e) {
+    elementDisplay.innerHTML = timer.getTimeValues().toString();
+  });
+  timer.addEventListener('targetAchieved', function (e) {
+    setTimeout(function () {
+      window.location.reload();
+    }, 100);
+  });
+}
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  initTimerCountdown();
+  var root = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#payment-methods');
+  var input = root.find('input[type="radio"]')[0];
+  setTimeout(function () {
+    var event = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.Event('selected.awebooking.gateway', {
+      relatedTarget: input
+    });
+    root.trigger(event, input.value);
+  }, 50);
+});
+
+/***/ }),
+
+/***/ "./node_modules/easytimer/src/easytimer.js":
+/*!*************************************************!*\
+  !*** ./node_modules/easytimer/src/easytimer.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @license easytimer.js v1.0
+ * Created by Albert González
+ * Licensed under The MIT License.
+ *
+* @class Timer
+*/
+
+var module;
+
+var Timer = (
+
+    function (module) {
+        'use strict';
+
+        /*
+         * Polyfill por IE9, IE10 and IE11
+         */
+        var CustomEvent = typeof window !== 'undefined' ? window.CustomEvent : undefined;
+
+        if (typeof window !== 'undefined' && typeof CustomEvent !== "function" ) {
+            CustomEvent = function ( event, params ) {
+                params = params || { bubbles: false, cancelable: false, detail: undefined };
+                var evt = document.createEvent( 'CustomEvent' );
+                evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+                return evt;
+            };
+
+            CustomEvent.prototype = window.Event.prototype;
+
+            window.CustomEvent = CustomEvent;
+        }
+
+        /*
+         * General functions, variables and constants
+         */
+        var SECOND_TENTHS_PER_SECOND = 10,
+            SECONDS_PER_MINUTE = 60,
+            SECOND_TENTHS_PER_MINUTE = 600,
+            MINUTES_PER_HOUR = 60,
+            SECONDS_PER_HOUR = 3600,
+            SECOND_TENTHS_PER_HOUR = 36000,
+            HOURS_PER_DAY = 24,
+
+            SECOND_TENTHS_POSITION = 0,
+            SECONDS_POSITION = 1,
+            MINUTES_POSITION = 2,
+            HOURS_POSITION = 3,
+            DAYS_POSITION = 4,
+
+            SECOND_TENTHS = 'secondTenths',
+            SECONDS = 'seconds',
+            MINUTES = 'minutes',
+            HOURS = 'hours',
+            DAYS = 'days',
+
+            unitsInMilliseconds = {
+                secondTenths: 100,
+                seconds: 1000,
+                minutes: 60000,
+                hours: 3600000,
+                days: 86400000
+            },
+
+            events = module && module.exports? __webpack_require__(/*! events */ "./node_modules/events/events.js") : undefined,
+
+            prototype;
+
+        function hasDOM() {
+            return typeof document !== 'undefined';
+        }
+
+        function hasEventEmitter() {
+            return events;
+        }
+
+        function mod(number, module) {
+            return ((number % module) + module) % module;
+        }
+
+        function leftPadding(string, padLength, character) {
+            var i,
+                characters = '';
+
+            for (i = 0; i < padLength; i = i + 1) {
+                characters += String(character);
+            }
+
+            return (characters + string).slice(-characters.length);
+        }
+
+        /**
+         * [TimeCounter Stores the units counted by the timer]
+         */
+        function TimeCounter() {
+            this.secondTenths = 0;
+            this.seconds = 0;
+            this.minutes = 0;
+            this.hours = 0;
+            this.days = 0;
+
+            /**
+             * [toString convert the counted values on a string]
+             * @param  {[array]} units           [array with the units to display]
+             * @param  {[string]} separator       [separator of the units]
+             * @param  {[integer]} leftZeroPadding [number of zero padding]
+             * @return {[string]}                 [result string]
+             */
+            this.toString = function(units, separator, leftZeroPadding) {
+                units = units || ['hours', 'minutes', 'seconds'];
+                separator = separator || ':';
+                leftZeroPadding = leftZeroPadding || 2;
+
+                var stringTime,
+                    arrayTime = [],
+                    i,
+                    zeros = '';
+
+                for (i = 0; i < leftZeroPadding; i = i + 1) {
+                    zeros += '0';
+                }
+
+                for (i = 0; i < units.length; i = i + 1) {
+                    if (this[units[i]] !== undefined) {
+                        arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+                    }
+                }
+                stringTime = arrayTime.join(separator);
+
+                return stringTime;
+            };
+        }
+
+        /**
+         * [Timer Timer/Chronometer/Countdown compatible with AMD and NodeJS.
+         * Can update time values with different time intervals: tenth of seconds,
+         * seconds, minutes and hours.]
+         */
+        function Timer() {
+
+            /*
+             * PRIVATE Variables and Functions
+             */
+            var counters = new TimeCounter(),
+                totalCounters =new TimeCounter(),
+
+                intervalId,
+                eventEmitter = hasDOM()? document.createElement('span') :
+                    hasEventEmitter()? new events.EventEmitter() : undefined,
+                running = false,
+                paused = false,
+                precision,
+                valueToAdd,
+                customCallback,
+                timerConfig = {},
+                target,
+                startValues,
+                countdown;
+
+            function isCountdownTimer() {
+                return timerConfig.countdown;
+            }
+
+            function updateCounters(counter, value) {
+                counters[counter] += value;
+                totalCounters[counter] += value;
+            }
+
+            function updateDays(value) {
+                updateCounters(DAYS, value);
+
+                dispatchEvent('daysUpdated');
+            }
+
+            function updateHours(value) {
+                updateCounters(HOURS, value);
+
+                counters.hours = mod(counters.hours, HOURS_PER_DAY);
+
+                if ((isCountdownTimer() && counters.hours === HOURS_PER_DAY - 1) ||
+                        (!isCountdownTimer() && counters.hours === 0)) {
+                    updateDays(value);
+                }
+
+                if (precision === HOURS) {
+                    totalCounters[MINUTES] += isCountdownTimer() ? -MINUTES_PER_HOUR : MINUTES_PER_HOUR;
+                    totalCounters[SECONDS] += isCountdownTimer() ? -SECONDS_PER_HOUR : SECONDS_PER_HOUR;
+                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_HOUR : SECOND_TENTHS_PER_HOUR;
+                }
+
+                dispatchEvent('hoursUpdated');
+            }
+
+            function updateMinutes(value) {
+                updateCounters(MINUTES, value);
+
+                counters.minutes = mod(counters.minutes, MINUTES_PER_HOUR);
+
+                if ((isCountdownTimer() && counters.minutes === MINUTES_PER_HOUR - 1) ||
+                    (!isCountdownTimer() && counters.minutes === 0)) {
+                    updateHours(value);
+                }
+
+                if (precision === MINUTES) {
+                    totalCounters[SECONDS] += isCountdownTimer() ? -SECONDS_PER_MINUTE : SECONDS_PER_MINUTE;
+                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_MINUTE : SECOND_TENTHS_PER_MINUTE;
+                }
+
+                dispatchEvent('minutesUpdated');
+            }
+
+            function updateSeconds(value) {
+                updateCounters(SECONDS, value);
+
+                counters.seconds = mod(counters.seconds, SECONDS_PER_MINUTE);
+
+                if ((isCountdownTimer() && counters.seconds === SECONDS_PER_MINUTE - 1) ||
+                    (!isCountdownTimer() && counters.seconds === 0)) {
+                    updateMinutes(value);
+                }
+
+                if (precision === SECONDS) {
+                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_SECOND : SECOND_TENTHS_PER_SECOND;
+                }
+
+                dispatchEvent('secondsUpdated');
+            }
+
+            function updateSecondTenths(value) {
+                updateCounters(SECOND_TENTHS, value);
+
+                counters.secondTenths = mod(counters.secondTenths, SECOND_TENTHS_PER_SECOND);
+
+                if ((isCountdownTimer() && counters.secondTenths === SECOND_TENTHS_PER_SECOND - 1) ||
+                    (!isCountdownTimer() && counters.secondTenths === 0)) {
+                    updateSeconds(value);
+                }
+
+                dispatchEvent('secondTenthsUpdated');
+            }
+
+            function stopTimer() {
+                clearInterval(intervalId);
+                intervalId = undefined;
+                running = false;
+                paused = false;
+            }
+
+            function startTimer() {
+                var callback,
+                    interval = unitsInMilliseconds[precision];
+
+                switch (precision) {
+                case DAYS:
+                    callback = updateDays;
+                    break;
+                case HOURS:
+                    callback = updateHours;
+                    break;
+                case MINUTES:
+                    callback =  updateMinutes;
+                    break;
+                case SECOND_TENTHS:
+                    callback =  updateSecondTenths;
+                    break;
+                default:
+                    callback = updateSeconds;
+                }
+
+                intervalId = setInterval(
+                    function () {
+                        callback(valueToAdd);
+                        customCallback(counters);
+                        if (isTargetAchieved()) {
+                            dispatchEvent('targetAchieved');
+                            stop();
+                        }
+                    },
+                    interval
+                );
+
+                running = true;
+                paused = false;
+            }
+
+            function isRegularTimerTargetAchieved() {
+                return counters.hours > target[HOURS_POSITION]
+                    || (counters.hours === target[HOURS_POSITION] && (counters.minutes > target[MINUTES_POSITION]
+                        || (counters.minutes === target[MINUTES_POSITION]) && counters.seconds >= target[SECONDS_POSITION]));
+            }
+
+            function isCountdownTimerTargetAchieved() {
+                return counters.hours < target[HOURS_POSITION]
+                    || (counters.hours === target[HOURS_POSITION] && (counters.minutes < target[MINUTES_POSITION]
+                    || (counters.minutes === target[MINUTES_POSITION] && (counters.seconds < target[SECONDS_POSITION]
+                    || (counters.seconds === target[SECONDS_POSITION] && (counters.secondTenths < target[SECOND_TENTHS_POSITION]
+                    || counters.secondTenths === target[SECOND_TENTHS_POSITION] ))))));
+            }
+
+            function isTargetAchieved() {
+                return target instanceof Array &&
+                    (timerConfig.countdown && isCountdownTimerTargetAchieved() || !timerConfig.countdown && isRegularTimerTargetAchieved());
+            }
+
+            function resetCounters() {
+                for (var counter in counters) {
+                    if(counters.hasOwnProperty(counter) && typeof counters[counter] === 'number'){
+                        counters[counter] = 0;
+                    }
+                }
+
+                for (var counter in totalCounters) {
+                    if(totalCounters.hasOwnProperty(counter) && typeof totalCounters[counter] === 'number'){
+                        totalCounters[counter] = 0;
+                    }
+                }
+            }
+
+            function setParams(params) {
+                precision = params && typeof params.precision === 'string' ? params.precision : SECONDS;
+                customCallback = params && typeof params.callback === 'function'? params.callback : function () {};
+                valueToAdd = params && params.countdown === true? -1 : 1;
+                countdown = params && params.countdown == true;
+                if (params && (typeof params.target === 'object')) { setTarget(params.target)};
+                if (params && (typeof params.startValues === 'object')) { setStartValues(params.startValues)};
+                target = target || !countdown? target : [0, 0, 0, 0, 0];
+
+                timerConfig = {
+                    precision: precision,
+                    callback: customCallback,
+                    countdown: typeof params === 'object' && params.countdown == true,
+                    target: target,
+                    startValues: startValues
+                }
+            }
+
+            function configInputValues(inputValues) {
+                var secondTenths, seconds, minutes, hours, days, values;
+                if (typeof inputValues === 'object') {
+                    if (inputValues instanceof Array) {
+                        if (inputValues.length != 5) {
+                            throw new Error('Array size not valid');
+                        }
+                        values = inputValues;
+                    } else {
+                        values = [
+                            inputValues.secondTenths || 0, inputValues.seconds || 0,
+                            inputValues.minutes || 0, inputValues.hours || 0,
+                            inputValues.days || 0
+                        ];
+                    }
+                }
+
+                for (var i = 0; i < inputValues.length; i = i + 1) {
+                    if (inputValues[i] < 0) {
+                        inputValues[i] = 0;
+                    }
+                }
+
+                secondTenths = values[SECOND_TENTHS_POSITION];
+                seconds = values[SECONDS_POSITION] + Math.floor(secondTenths / SECOND_TENTHS_PER_SECOND);
+                minutes = values[MINUTES_POSITION] + Math.floor(seconds / SECONDS_PER_MINUTE);
+                hours = values[HOURS_POSITION] + Math.floor(minutes / MINUTES_PER_HOUR);
+                days = values[DAYS_POSITION] +  Math.floor(hours / HOURS_PER_DAY);
+
+                values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
+                values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;
+                values[MINUTES_POSITION] = minutes % MINUTES_PER_HOUR;
+                values[HOURS_POSITION] = hours % HOURS_PER_DAY;
+                values[DAYS_POSITION] = days;
+
+                return values;
+            }
+
+            function setTarget(inputTarget) {
+                target = configInputValues(inputTarget);
+
+            }
+
+            function setStartValues(inputStartValues) {
+                startValues = configInputValues(inputStartValues);
+                counters.secondTenths = startValues[SECOND_TENTHS_POSITION];
+                counters.seconds = startValues[SECONDS_POSITION];
+                counters.minutes = startValues[MINUTES_POSITION];
+                counters.hours = startValues[HOURS_POSITION]
+                counters.days = startValues[DAYS_POSITION]
+
+                totalCounters.days = counters.days;
+                totalCounters.hours = totalCounters.days * HOURS_PER_DAY + counters.hours;
+                totalCounters.minutes = totalCounters.hours * MINUTES_PER_HOUR + counters.minutes;
+                totalCounters.seconds = totalCounters.minutes * SECONDS_PER_MINUTE + counters.seconds;
+                totalCounters.secondTenths = totalCounters.seconds * SECOND_TENTHS_PER_SECOND + counters.secondTenths;
+            }
+
+            /*
+             * PUBLIC functions
+             */
+
+            /**
+             * [stop stops the timer and resets the counters. Dispatch stopped event]
+             */
+            function stop() {
+                stopTimer();
+                resetCounters();
+                dispatchEvent('stopped');
+            }
+
+            /**
+             * [start starts the timer configured by the params object. Dispatch started event]
+             * @param  {[object]} params [Configuration parameters]
+             */
+            function start(params) {
+                if (this.isRunning()) {
+                    throw new Error('Timer already running');
+                }
+
+                if (!this.isPaused()) {
+                    setParams(params);
+                }
+                if (!isTargetAchieved()) {
+                    startTimer();
+                    dispatchEvent('started');
+                }
+            }
+
+            /**
+             * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
+             * Dispatch paused event]
+             * @return {[type]} [description]
+             */
+            function pause() {
+                stopTimer();
+                paused = true;
+                dispatchEvent('paused');
+            }
+
+            /**
+             * [addEventListener Adds event listener to the timer]
+             * @param {[string]} event      [event to listen]
+             * @param {[function]} listener   [the event listener function]
+             */
+            function addEventListener(event, listener) {
+                if (hasDOM()) {
+                    eventEmitter.addEventListener(event, listener);
+                } else if (hasEventEmitter()) {
+                    eventEmitter.on(event, listener)
+                }
+            }
+
+            /**
+             * [removeEventListener Removes event listener to the timer]
+             * @param  {[string]} event    [event to remove listener]
+             * @param  {[function]} listener [listener to remove]
+             */
+            function removeEventListener(event, listener) {
+                if (hasDOM()) {
+                    eventEmitter.removeEventListener(event, listener);
+                } else if (hasEventEmitter()) {
+                    eventEmitter.removeListener(event, listener);
+                }
+            }
+
+            /**
+             * [dispatchEvent dispatchs an event]
+             * @param  {string} event [event to dispatch]
+             */
+            function dispatchEvent(event) {
+                if (hasDOM()) {
+                    eventEmitter.dispatchEvent(new CustomEvent(event));
+                } else if (hasEventEmitter()) {
+                    eventEmitter.emit(event)
+                }
+            }
+
+            /**
+             * [isRunning return true if the timer is running]
+             * @return {Boolean}
+             */
+            function isRunning() {
+                return running;
+            }
+
+            /**
+             * [isPaused returns true if the timer is paused]
+             * @return {Boolean}
+             */
+            function isPaused() {
+                return paused;
+            }
+
+            /**
+             * [getTimeValues returns the counter with the current timer values]
+             * @return {[TimeCounter]}
+             */
+            function getTimeValues() {
+                return counters;
+            };
+
+            /**
+             * [getTotalTimeValues returns the counter with the current timer total values]
+             * @return {[TimeCounter]}
+             */
+            function getTotalTimeValues() {
+                return totalCounters;
+            };
+
+            /**
+             * [getConfig returns the configuration paramameters]
+             * @return {[type]}
+             */
+            function getConfig () {
+                return timerConfig;
+            };
+
+            /**
+             * Public API
+             * Definition of Timer instance public functions
+             */
+            if (typeof this !== 'undefined') {
+                this.start= start;
+
+                this.pause = pause;
+
+                this.stop = stop;
+
+                this.isRunning = isRunning;
+
+                this.isPaused = isPaused;
+
+                this.getTimeValues = getTimeValues;
+
+                this.getTotalTimeValues = getTotalTimeValues;
+
+                this.getConfig = getConfig;
+
+                this.addEventListener = addEventListener
+
+                this.removeEventListener = removeEventListener;
+            }
+
+        };
+
+        if (module && module.exports) {
+            module.exports = Timer;
+        } else if (true) {
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+                return Timer;
+            }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+        }
+
+        return  Timer;
+    }(module)
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var R = typeof Reflect === 'object' ? Reflect : null
+var ReflectApply = R && typeof R.apply === 'function'
+  ? R.apply
+  : function ReflectApply(target, receiver, args) {
+    return Function.prototype.apply.call(target, receiver, args);
+  }
+
+var ReflectOwnKeys
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target)
+      .concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+}
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+var defaultMaxListeners = 10;
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function() {
+    return defaultMaxListeners;
+  },
+  set: function(arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function() {
+
+  if (this._events === undefined ||
+      this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+};
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+  this._maxListeners = n;
+  return this;
+};
+
+function $getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return $getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+  var doError = (type === 'error');
+
+  var events = this._events;
+  if (events !== undefined)
+    doError = (doError && events.error === undefined);
+  else if (!doError)
+    return false;
+
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    var er;
+    if (args.length > 0)
+      er = args[0];
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    }
+    // At least give some kind of context to the user
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+
+  if (handler === undefined)
+    return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+
+  events = target._events;
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type,
+                  listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+        prepend ? [listener, existing] : [existing, listener];
+      // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    m = $getMaxListeners(target);
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true;
+      // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+      var w = new Error('Possible EventEmitter memory leak detected. ' +
+                          existing.length + ' ' + String(type) + ' listeners ' +
+                          'added. Use emitter.setMaxListeners() to ' +
+                          'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
+
+function onceWrapper() {
+  var args = [];
+  for (var i = 0; i < arguments.length; i++) args.push(arguments[i]);
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    ReflectApply(this.listener, this.target, args);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      if (typeof listener !== 'function') {
+        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+      }
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
+
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
+
+      if (typeof listener !== 'function') {
+        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+      }
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      list = events[type];
+      if (list === undefined)
+        return this;
+
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          this._events = Object.create(null);
+        else {
+          delete events[type];
+          if (events.removeListener)
+            this.emit('removeListener', type, list.listener || listener);
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          return this;
+
+        if (position === 0)
+          list.shift();
+        else {
+          spliceOne(list, position);
+        }
+
+        if (list.length === 1)
+          events[type] = list[0];
+
+        if (events.removeListener !== undefined)
+          this.emit('removeListener', type, originalListener || listener);
+      }
+
+      return this;
+    };
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var listeners, events, i;
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      // not listening for removeListener, no need to emit
+      if (events.removeListener === undefined) {
+        if (arguments.length === 0) {
+          this._events = Object.create(null);
+          this._eventsCount = 0;
+        } else if (events[type] !== undefined) {
+          if (--this._eventsCount === 0)
+            this._events = Object.create(null);
+          else
+            delete events[type];
+        }
+        return this;
+      }
+
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = Object.keys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = Object.create(null);
+        this._eventsCount = 0;
+        return this;
+      }
+
+      listeners = events[type];
+
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners !== undefined) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this.removeListener(type, listeners[i]);
+        }
+      }
+
+      return this;
+    };
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+
+  if (events === undefined)
+    return [];
+
+  var evlistener = events[type];
+  if (evlistener === undefined)
+    return [];
+
+  if (typeof evlistener === 'function')
+    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+
+  return unwrap ?
+    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    copy[i] = arr[i];
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++)
+    list[index] = list[index + 1];
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+
+/***/ }),
+
+/***/ 2:
+/*!***************************************!*\
+  !*** multi ./assets/babel/payment.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /web/www/awebooking.local/wp-content/plugins/awebooking/assets/babel/payment.js */"./assets/babel/payment.js");
+
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["jQuery"]; }());
+
+/***/ })
+
+/******/ })));
+//# sourceMappingURL=payment.js.map

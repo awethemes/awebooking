@@ -1,1 +1,265 @@
-!function(e,t){for(var n in t)e[n]=t[n]}(this,function(e){var t={};function n(o){if(t[o])return t[o].exports;var r=t[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,n),r.l=!0,r.exports}return n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:o})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var o=Object.create(null);if(n.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)n.d(o,r,function(t){return e[t]}.bind(null,r));return o},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=6)}({6:function(e,t,n){e.exports=n("ahWw")},ahWw:function(e,t){function n(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}!function(e,t,o){"use strict";var r=window._awebookingRooms||{},i=function(){function i(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,i),this.rooms=ko.observableArray(r.rooms||[]),this.scaffoldNumber=ko.observable(0)}var a,c,s;return a=i,(c=[{key:"add",value:function(){var e=this.getCurrentTitle(),t=this.rooms().length;this.rooms.push({id:-1,name:"".concat(e," ").concat(t+1)})}},{key:"remove",value:function(e,n){var o=this;if(e.id<0)this._removeItemEffect(e,n);else{t.confirm(t.i18n.warning,function(){t.ajax("DELETE","/ajax/delete-room/".concat(e.id),{_method:"DELETE",_wpnonce:r.deleteNonce},function(r){o._removeItemEffect(e,n),t.alert(r.message,"success")})})}}},{key:"_removeItemEffect",value:function(t,n){var o=this;e(n.currentTarget).closest("li").effect("highlight",{},150,function(){o.rooms.remove(t)})}},{key:"scaffold",value:function(){var e=this.getCurrentTitle(),t=parseInt(this.scaffoldNumber(),10)||1;this.rooms([]);for(var n=0;n<t;n++)this.rooms.push({id:-1,name:"".concat(e," ").concat(n+1)})}},{key:"getCurrentTitle",value:function(){var e=o.getElementById("title");return e?e.value.trim():"R"}}])&&n(a.prototype,c),s&&n(a,s),i}();e(function(){var t=this;ko.applyBindings(new i,o.getElementById("js-rooms-list"));var n=e(".js-sorting-rooms");n.length>0&&new Sortable(n[0],{handle:".abrs-sortable__handle",animation:150});var r=e("#awebooking-room-type-data");e(".awebooking-tabs > li:first > a",r).trigger("click"),r.on("click",".awebooking-tabs a",function(n){n.preventDefault();var o=e(n.target);e(".awebooking-tabs > li.active",r).removeClass("active"),o.parent().addClass("active"),e(".awebooking-tabs-panels > div",r).hide(),e(o.attr("href"),t.$metabox).show()}),e('[id$="-all"] > ul.categorychecklist').each(function(){var t=e(this),n=t.find(":checked").first();if(n.length){var o=t.find("input").position().top,r=n.position().top;t.closest(".tabs-panel").scrollTop(r-o+5)}})})}(jQuery,window.awebooking,document)}}));
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./assets/babel/admin/edit-room-type.js":
+/*!**********************************************!*\
+  !*** ./assets/babel/admin/edit-room-type.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+(function ($, plugin, document) {
+  'use strict';
+
+  var data = window._awebookingRooms || {};
+
+  var RoomsGenerator =
+  /*#__PURE__*/
+  function () {
+    function RoomsGenerator() {
+      _classCallCheck(this, RoomsGenerator);
+
+      this.rooms = ko.observableArray(data.rooms || []);
+      this.scaffoldNumber = ko.observable(0);
+    }
+
+    _createClass(RoomsGenerator, [{
+      key: "add",
+      value: function add() {
+        var title = this.getCurrentTitle();
+        var length = this.rooms().length;
+        this.rooms.push({
+          id: -1,
+          name: "".concat(title, " ").concat(length + 1)
+        });
+      }
+    }, {
+      key: "remove",
+      value: function remove(item, e) {
+        var self = this;
+
+        if (item.id < 0) {
+          this._removeItemEffect(item, e);
+
+          return;
+        }
+
+        var ajaxDelete = function ajaxDelete() {
+          return plugin.ajax('DELETE', "/ajax/delete-room/".concat(item.id), {
+            _method: 'DELETE',
+            _wpnonce: data.deleteNonce
+          }, function (data) {
+            self._removeItemEffect(item, e);
+
+            plugin.alert(data.message, 'success');
+          });
+        };
+
+        plugin.confirm(plugin.i18n.warning, function () {
+          ajaxDelete();
+        });
+      }
+    }, {
+      key: "_removeItemEffect",
+      value: function _removeItemEffect(item, e) {
+        var _this = this;
+
+        $(e.currentTarget).closest('li').effect('highlight', {}, 150, function () {
+          _this.rooms.remove(item);
+        });
+      }
+    }, {
+      key: "scaffold",
+      value: function scaffold() {
+        var title = this.getCurrentTitle();
+        var total = parseInt(this.scaffoldNumber(), 10) || 1; // Clear the rooms.
+
+        this.rooms([]);
+
+        for (var i = 0; i < total; i++) {
+          this.rooms.push({
+            id: -1,
+            name: "".concat(title, " ").concat(i + 1)
+          });
+        }
+      }
+    }, {
+      key: "getCurrentTitle",
+      value: function getCurrentTitle() {
+        var titleEl = document.getElementById('title');
+        return titleEl ? titleEl.value.trim() : 'R';
+      }
+    }]);
+
+    return RoomsGenerator;
+  }();
+
+  $(function () {
+    var _this2 = this; // Apply rooms generator binding.
+
+
+    ko.applyBindings(new RoomsGenerator(), document.getElementById('js-rooms-list'));
+    var $roomSortable = $('.js-sorting-rooms');
+
+    if ($roomSortable.length > 0) {
+      new Sortable($roomSortable[0], {
+        handle: '.abrs-sortable__handle',
+        animation: 150
+      });
+    } // Handle click on tabs.
+
+
+    var $metabox = $('#awebooking-room-type-data');
+    $('.awebooking-tabs > li:first > a', $metabox).trigger('click');
+    $metabox.on('click', '.awebooking-tabs a', function (e) {
+      e.preventDefault();
+      var $target = $(e.target);
+      $('.awebooking-tabs > li.active', $metabox).removeClass('active');
+      $target.parent().addClass('active');
+      $('.awebooking-tabs-panels > div', $metabox).hide();
+      $($target.attr('href'), _this2.$metabox).show();
+    });
+    /**
+     * Scroll to first checked category.
+     *
+     * @link https://github.com/scribu/wp-category-checklist-tree/blob/master/category-checklist-tree.php
+     */
+
+    $('[id$="-all"] > ul.categorychecklist').each(function () {
+      var $list = $(this);
+      var $firstChecked = $list.find(':checked').first();
+
+      if (!$firstChecked.length) {
+        return;
+      }
+
+      var posFirst = $list.find('input').position().top;
+      var posChecked = $firstChecked.position().top;
+      $list.closest('.tabs-panel').scrollTop(posChecked - posFirst + 5);
+    });
+  });
+})(jQuery, window.awebooking, document);
+
+/***/ }),
+
+/***/ 6:
+/*!****************************************************!*\
+  !*** multi ./assets/babel/admin/edit-room-type.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /web/www/awebooking.local/wp-content/plugins/awebooking/assets/babel/admin/edit-room-type.js */"./assets/babel/admin/edit-room-type.js");
+
+
+/***/ })
+
+/******/ })));
+//# sourceMappingURL=edit-room-type.js.map

@@ -40,13 +40,13 @@ const adminScripts = glob.sync('assets/babel/admin/*.js')
  */
 // styles.forEach(name => mix.sass(name, 'assets/css'))
 
-scripts.forEach(name => mix.js(name, 'assets/js'))
+// scripts.forEach(name => mix.js(name, 'assets/js'))
 
-adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
+// adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
 
-mix.react('assets/babel/calendar.jsx', 'assets/js')
+// mix.react('assets/babel/calendar.jsx', 'assets/js')
 
-mix.sass('assets/scss/scheduler.scss', 'assets/css')
+// mix.sass('assets/scss/scheduler.scss', 'assets/css')
 mix.react('assets/babel/scheduler/index.jsx', 'assets/js/scheduler.js')
 
 if (mix.inProduction()) {

@@ -1,1 +1,288 @@
-!function(e,n){for(var t in n)e[t]=n[t]}(this,function(e){var n={};function t(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,t),r.l=!0,r.exports}return t.m=e,t.c=n,t.d=function(e,n,o){t.o(e,n)||Object.defineProperty(e,n,{enumerable:!0,get:o})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,n){if(1&n&&(e=t(e)),8&n)return e;if(4&n&&"object"==typeof e&&e&&e.__esModule)return e;var o=Object.create(null);if(t.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:e}),2&n&&"string"!=typeof e)for(var r in e)t.d(o,r,function(n){return e[n]}.bind(null,r));return o},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},t.p="/",t(t.s=5)}({"/axs":function(e,n){function t(e,n){for(var t=0;t<n.length;t++){var o=n[t];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}!function(e,n){"use strict";var o=window._awebookingEditBooking||{},r=o.i18n||{},i=function(t){t.fail(function(t){var o=t.responseJSON||e.parseJSON(t.responseText);o.message&&n.alert(o.message,o.status),n.debug&&console.log(t)})},a=function(){function a(){!function(e,n){if(!(e instanceof n))throw new TypeError("Cannot call a class as a function")}(this,a),e(".js-editnow").click(this.handleEditAddress),e("#js-add-note").click(this.handleAddNote),e(document).on("click",".js-delete-note",this.handleDeleteNote)}var u,l,s;return u=a,(l=[{key:"handleEditAddress",value:function(n){n.preventDefault();var t=e(this).data("focus"),o=e(this).closest(".js-booking-column");o.find("h3 > a.button-editnow").hide(),o.find("div.js-booking-data").hide(),o.find("div.js-edit-booking-data").show(),t&&e(t,o).length&&e(t,o).focus()}},{key:"handleAddNote",value:function(t){t.preventDefault();var a=e("#js-booking-notes"),u=e("#js-booking-note"),l=new String(u.val()).trim();if(0!==l.length){var s="";!0===e("#js-customer-note").prop("checked")&&(s="customer");var c=e.ajax({type:"POST",url:n.route("/ajax/booking-note"),data:{note:l,note_type:s,booking:parseInt(e("#post_ID").val(),10),_ajax_nonce:o.add_note_nonce}});c.done(function(n){u.val(""),e(n.data).prependTo(a),a.find(".awebooking-no-items").length&&a.find(".awebooking-no-items").closest("li").remove()}),i(c)}else n.alert(r.empty_note_warning,"warning")}},{key:"handleDeleteNote",value:function(t){t.preventDefault();var a=e(this).closest(".booking-note");a.length&&a.attr("rel")&&n.confirm(r.delete_note_warning,function(){var t=parseInt(a.attr("rel"),10),r=e.ajax({type:"POST",url:n.route("/ajax/booking-note/"+t),data:{_method:"DELETE",_ajax_nonce:o.delete_note_nonce}});r.done(function(){a.slideUp(100,function(){a.remove()})}),i(r)})}}])&&t(u.prototype,l),s&&t(u,s),a}();e(function(){n.instances.editBooking=new a})}(jQuery,window.awebooking||{})},5:function(e,n,t){e.exports=t("/axs")}}));
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./assets/babel/admin/edit-booking.js":
+/*!********************************************!*\
+  !*** ./assets/babel/admin/edit-booking.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+(function ($, plugin) {
+  'use strict';
+
+  var localize = window._awebookingEditBooking || {};
+  var i18n = localize.i18n || {};
+  /**
+   * Handle the xhr fail.
+   *
+   * @param  {jqXHR} xhr
+   * @return {void}
+   */
+
+  var handleXhrFail = function handleXhrFail(xhr) {
+    xhr.fail(function (xhr) {
+      var res = xhr.responseJSON || $.parseJSON(xhr.responseText);
+
+      if (res.message) {
+        plugin.alert(res.message, res.status);
+      }
+
+      if (plugin.debug) {
+        console.log(xhr);
+      }
+    });
+  };
+
+  var EditBooking =
+  /*#__PURE__*/
+  function () {
+    /**
+     * Constructor.
+     *
+     * @return {void}
+     */
+    function EditBooking() {
+      _classCallCheck(this, EditBooking);
+
+      $('.js-editnow').click(this.handleEditAddress);
+      $('#js-add-note').click(this.handleAddNote);
+      $(document).on('click', '.js-delete-note', this.handleDeleteNote);
+    }
+    /**
+     * Handle toggle edit address.
+     *
+     * @param  {Event} e
+     * @return {void}
+     */
+
+
+    _createClass(EditBooking, [{
+      key: "handleEditAddress",
+      value: function handleEditAddress(e) {
+        e.preventDefault();
+        var focus = $(this).data('focus');
+        var $wrapper = $(this).closest('.js-booking-column');
+        $wrapper.find('h3 > a.button-editnow').hide();
+        $wrapper.find('div.js-booking-data').hide();
+        $wrapper.find('div.js-edit-booking-data').show();
+
+        if (focus && $(focus, $wrapper).length) {
+          $(focus, $wrapper).focus();
+        }
+      }
+      /**
+       * Handle click add note button.
+       *
+       * @param  {Event} e
+       * @return {void}
+       */
+
+    }, {
+      key: "handleAddNote",
+      value: function handleAddNote(e) {
+        e.preventDefault();
+        var $notes = $('#js-booking-notes');
+        var $noteInput = $('#js-booking-note');
+        var content = new String($noteInput.val()).trim();
+
+        if (content.length === 0) {
+          plugin.alert(i18n.empty_note_warning, 'warning');
+          return;
+        }
+
+        var noteType = '';
+
+        if ($('#js-customer-note').prop('checked') === true) {
+          noteType = 'customer';
+        }
+
+        var xhr = $.ajax({
+          type: 'POST',
+          url: plugin.route('/ajax/booking-note'),
+          data: {
+            note: content,
+            note_type: noteType,
+            booking: parseInt($('#post_ID').val(), 10),
+            _ajax_nonce: localize.add_note_nonce
+          }
+        });
+        xhr.done(function (res) {
+          $noteInput.val('');
+          $(res.data).prependTo($notes);
+
+          if ($notes.find('.awebooking-no-items').length) {
+            $notes.find('.awebooking-no-items').closest('li').remove();
+          }
+        });
+        handleXhrFail(xhr);
+      }
+      /**
+       * Handle delete note.
+       *
+       * @param  {Event} e
+       * @return {void}
+       */
+
+    }, {
+      key: "handleDeleteNote",
+      value: function handleDeleteNote(e) {
+        e.preventDefault();
+        var $el = $(this).closest('.booking-note');
+
+        if (!$el.length || !$el.attr('rel')) {
+          return;
+        }
+
+        plugin.confirm(i18n.delete_note_warning, function () {
+          var noteID = parseInt($el.attr('rel'), 10);
+          var xhr = $.ajax({
+            type: 'POST',
+            url: plugin.route('/ajax/booking-note/' + noteID),
+            data: {
+              _method: 'DELETE',
+              _ajax_nonce: localize.delete_note_nonce
+            }
+          });
+          xhr.done(function () {
+            $el.slideUp(100, function () {
+              $el.remove();
+            });
+          });
+          handleXhrFail(xhr);
+        });
+      }
+    }]);
+
+    return EditBooking;
+  }(); // Document ready!
+
+
+  $(function () {
+    plugin.instances.editBooking = new EditBooking();
+  });
+})(jQuery, window.awebooking || {});
+
+/***/ }),
+
+/***/ 5:
+/*!**************************************************!*\
+  !*** multi ./assets/babel/admin/edit-booking.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /web/www/awebooking.local/wp-content/plugins/awebooking/assets/babel/admin/edit-booking.js */"./assets/babel/admin/edit-booking.js");
+
+
+/***/ })
+
+/******/ })));
+//# sourceMappingURL=edit-booking.js.map

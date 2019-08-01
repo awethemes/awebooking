@@ -9,9 +9,6 @@
  * First, we need autoload via Composer to make everything works.
  */
 require __DIR__ . '/vendor/autoload.php';
-
-require_once __DIR__ . '/vendor/wplibs/form/functions.php';
-require_once __DIR__ . '/vendor/wplibs/http/functions.php';
 require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 // For dev only, will be remove in the future when packages stable.
@@ -40,7 +37,7 @@ require_once trailingslashit( __DIR__ ) . 'inc/Plugin.php';
 class_alias( \AweBooking\Plugin::class, 'AweBooking', false );
 
 // Back-compat.
-class_alias( \WPLibs\Http\Request::class, \Awethemes\Http\Request::class );
+/*class_alias( \WPLibs\Http\Request::class, \Awethemes\Http\Request::class );
 class_alias( \WPLibs\Http\Response::class, \Awethemes\Http\Response::class );
 class_alias( \WPLibs\Http\Json_Response::class, \Awethemes\Http\Json_Response::class );
 class_alias( \WPLibs\Http\Exception\HttpException::class, \Awethemes\Http\Exception\HttpException::class );
@@ -68,4 +65,4 @@ class_alias( \WPLibs\Rules\Operator\Not_Ends_With::class, \AweBooking\Component\
 class_alias( \WPLibs\Rules\Operator\Is_Empty::class, \AweBooking\Component\Ruler\Operator\Is_Empty::class );
 class_alias( \WPLibs\Rules\Operator\Is_Not_Empty::class, \AweBooking\Component\Ruler\Operator\Is_Not_Empty::class );
 class_alias( \WPLibs\Rules\Operator\Is_Null::class, \AweBooking\Component\Ruler\Operator\Is_Null::class );
-class_alias( \WPLibs\Rules\Operator\Is_Not_Null::class, \AweBooking\Component\Ruler\Operator\Is_Not_Null::class );
+class_alias( \WPLibs\Rules\Operator\Is_Not_Null::class, \AweBooking\Component\Ruler\Operator\Is_Not_Null::class );*/

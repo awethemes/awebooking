@@ -1,1 +1,259 @@
-!function(e,t){for(var n in t)e[n]=t[n]}(this,function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=10)}({10:function(e,t,n){e.exports=n("3ux1")},"3ux1":function(e,t){!function(e,t){"use strict";var n=window._awebookingSettings||{};function r(){var t,n,r,o=e(".awebooking-input-table");t=n=r=!1,e(document).bind("keyup keydown",function(e){t=e.shiftKey,n=e.ctrlKey||e.metaKey});o.on("blur","input",function(){r=!1}).on("focus click","input",function(o){!function(o,s){var l=e(o).closest("tr"),i=e(o).closest("table, tbody");("focus"===s.type&&r!==l.index()||"click"===s.type&&e(o).is(":focus"))&&(r=l.index(),t||n?t?(e("tr",i).removeClass("current"),l.addClass("selected-now").addClass("current"),e("tr.last-selected",i).length>0&&(l.index()>e("tr.last-selected",i).index()?e("tr",i).slice(e("tr.last-selected",i).index(),l.index()).addClass("current"):e("tr",i).slice(l.index(),e("tr.last-selected",i).index()+1).addClass("current")),e("tr",i).removeClass("last-selected"),l.addClass("last-selected")):(e("tr",i).removeClass("last-selected"),n&&e(o).closest("tr").is(".current")?l.removeClass("current"):l.addClass("current").addClass("last-selected")):(e("tr",i).removeClass("current").removeClass("last-selected"),l.addClass("current").addClass("last-selected")),e("tr",i).removeClass("selected-now"))}(this,o)}).on("click",".remove_rows",function(t){var n;t.preventDefault(),(n=e(this).closest("table").find("tbody")).find("tr.current").length>0&&n.find("tr.current").each(function(){e(this).remove()})})}e(function(){var t;t=!1,e("input, textarea, select").on("change",function(){t=!0}),e(".awebooking-settings").on("click",".nav-tab-wrapper a",function(){window.onbeforeunload=t?function(){return n.i18n.nav_warning}:null}).on("click",".submit button",function(){window.onbeforeunload=null}),e("#display_datepicker_disabledates").flatpickr({mode:"multiple",dateFormat:"Y-m-d"}),r()})}(jQuery,window.awebooking)}}));
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./assets/babel/admin/settings.js":
+/*!****************************************!*\
+  !*** ./assets/babel/admin/settings.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($, plugin) {
+  'use strict';
+
+  var settings = window._awebookingSettings || {};
+  /**
+   * Handle leaving using window.onbeforeunload.
+   *
+   * @return {void}
+   */
+
+  function handleLeaving() {
+    var changed = false; // Set the changed if any controls fire change.
+
+    $('input, textarea, select').on('change', function () {
+      changed = true;
+    });
+    $('.awebooking-settings').on('click', '.nav-tab-wrapper a', function () {
+      if (changed) {
+        window.onbeforeunload = function () {
+          return settings.i18n.nav_warning;
+        };
+      } else {
+        window.onbeforeunload = null;
+      }
+    }).on('click', '.submit button', function () {
+      window.onbeforeunload = null;
+    });
+  }
+  /**
+   * Init the datepicker.
+   *
+   * @return {void}
+   */
+
+
+  function initDatepicker() {
+    $('#display_datepicker_disabledates').flatpickr({
+      mode: 'multiple',
+      dateFormat: 'Y-m-d'
+    });
+  }
+  /**
+   * Setup input table bindings.
+   *
+   * @return {void}
+   */
+
+
+  function setupInputTable() {
+    var $table = $('.awebooking-input-table');
+    var shifted, controlled, hasFocus;
+    shifted = controlled = hasFocus = false;
+    $(document).bind('keyup keydown', function (e) {
+      shifted = e.shiftKey;
+      controlled = e.ctrlKey || e.metaKey;
+    });
+
+    var handleClickInputTable = function handleClickInputTable(el, e) {
+      var $elRow = $(el).closest('tr');
+      var $elTable = $(el).closest('table, tbody');
+
+      if (e.type === 'focus' && hasFocus !== $elRow.index() || e.type === 'click' && $(el).is(':focus')) {
+        hasFocus = $elRow.index();
+
+        if (!shifted && !controlled) {
+          $('tr', $elTable).removeClass('current').removeClass('last-selected');
+          $elRow.addClass('current').addClass('last-selected');
+        } else if (shifted) {
+          $('tr', $elTable).removeClass('current');
+          $elRow.addClass('selected-now').addClass('current');
+
+          if ($('tr.last-selected', $elTable).length > 0) {
+            if ($elRow.index() > $('tr.last-selected', $elTable).index()) {
+              $('tr', $elTable).slice($('tr.last-selected', $elTable).index(), $elRow.index()).addClass('current');
+            } else {
+              $('tr', $elTable).slice($elRow.index(), $('tr.last-selected', $elTable).index() + 1).addClass('current');
+            }
+          }
+
+          $('tr', $elTable).removeClass('last-selected');
+          $elRow.addClass('last-selected');
+        } else {
+          $('tr', $elTable).removeClass('last-selected');
+
+          if (controlled && $(el).closest('tr').is('.current')) {
+            $elRow.removeClass('current');
+          } else {
+            $elRow.addClass('current').addClass('last-selected');
+          }
+        }
+
+        $('tr', $elTable).removeClass('selected-now');
+      }
+    };
+
+    var handleRemoveRows = function handleRemoveRows(el, e) {
+      var $tbody = $(el).closest('table').find('tbody');
+
+      if ($tbody.find('tr.current').length > 0) {
+        var $current = $tbody.find('tr.current');
+        $current.each(function () {
+          $(this).remove();
+        });
+      }
+    };
+
+    $table.on('blur', 'input', function () {
+      hasFocus = false;
+    }).on('focus click', 'input', function (e) {
+      handleClickInputTable(this, e);
+    }).on('click', '.remove_rows', function (e) {
+      e.preventDefault();
+      handleRemoveRows(this, e);
+    });
+  }
+
+  function setupInputTableSortable() {}
+  /*$('.wc_input_table.sortable tbody').sortable({
+   items: 'tr',
+   cursor: 'move',
+   axis: 'y',
+   scrollSensitivity: 40,
+   forcePlaceholderSize: true,
+   helper: 'clone',
+   opacity: 0.65,
+   placeholder: 'wc-metabox-sortable-placeholder',
+   start: function (event, ui) {
+   ui.item.css('background-color', '#f6f6f6');
+   },
+   stop: function (event, ui) {
+   ui.item.removeAttr('style');
+   }
+   });
+    // Focus on inputs within the table if clicked instead of trying to sort.
+   $('.wc_input_table.sortable tbody input').on('click', function () {
+   $(this).focus();
+   });*/
+
+  /** Document ready */
+
+
+  $(function () {
+    handleLeaving();
+    initDatepicker();
+    setupInputTable(); // setupInputTableSortable();
+  });
+})(jQuery, window.awebooking);
+
+/***/ }),
+
+/***/ 10:
+/*!**********************************************!*\
+  !*** multi ./assets/babel/admin/settings.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /web/www/awebooking.local/wp-content/plugins/awebooking/assets/babel/admin/settings.js */"./assets/babel/admin/settings.js");
+
+
+/***/ })
+
+/******/ })));
+//# sourceMappingURL=settings.js.map

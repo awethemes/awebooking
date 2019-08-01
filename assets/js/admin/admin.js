@@ -1,1 +1,1986 @@
-!function(e,t){for(var n in t)e[n]=t[n]}(this,function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=4)}({4:function(e,t,n){e.exports=n("rBQX")},"7l0f":function(e,t,n){"use strict";var r=n("9T72");function o(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}var i=function(e,t){var n=function(){function n(e,r){if(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,n),this.element=e,this.options=Object.assign({},n.defaults,r),this.drop=this._getDropElement(),this.popper=null,!this.drop||void 0===this.drop)throw new Error("Drop Error: Cannot find the drop element.");if(void 0!==t&&!this.popper){var o=this.element;this.popper=new t(o,this.drop,this._getPopperConfig())}this._addEventListeners(),n.allDrops.push(this)}var i,a,s;return i=n,(a=[{key:"isOpened",value:function(){return this.drop.classList.contains("open")}},{key:"isDisabled",value:function(){return this.element.disabled||this.element.classList.contains("disabled")}},{key:"toggle",value:function(){this.isOpened()?this.close():this.open()}},{key:"open",value:function(){var t=this;this.isDisabled()||this.isOpened()||(this.element.focus(),this.element.setAttribute("aria-expanded",!0),"ontouchstart"in document.documentElement&&e(document.body).children().on("mouseover",null,e.noop),this.drop.classList.add("open"),this.drop.setAttribute("aria-hidden",!0),this.popper&&this.popper.update(),setTimeout(function(){t.drop.classList.add("open--transition")}))}},{key:"close",value:function(){var t=this;!this.isDisabled()&&this.isOpened()&&("ontouchstart"in document.documentElement&&e(document.body).children().off("mouseover",null,e.noop),this.element.setAttribute("aria-expanded",!1),this.drop.removeAttribute("aria-hidden"),this.drop.classList.remove("open--transition"),r.a.onTransitionEnd(this.drop,function(){t.drop.classList.remove("open")}))}},{key:"_addEventListeners",value:function(){var t=this;if(this.options.openOn)if("always"!==this.options.openOn){var n=this.options.openOn.split(" ");n.indexOf("click")>=0&&(e(this.element).on("click",function(e){e.preventDefault(),t.toggle()}),e(document).on("click",function(e){t.isOpened()&&(e.target===t.drop||t.drop.contains(e.target)||e.target===t.element||t.element.contains(e.target)||t.close(e))})),n.indexOf("hover"),n.indexOf("focus")}else setTimeout(this.open.bind(this))}},{key:"_getDropElement",value:function(){if(!this.drop){var e=this.element.parentNode,t=r.a.getTargetFromElement(this.element);this.drop=t?document.querySelector(t):e?e.querySelector(this.options.drop):null}return this.drop}},{key:"_getPopperConfig",value:function(){var e=this,t={};"function"==typeof this.options.offset?t.fn=function(t){return t.offsets=Object.assign({},t.offsets,e.options.offset(t.offsets)||{}),t}:t.offset=this.options.offset;var n={placement:this._getPlacement(),modifiers:{offset:t,flip:{enabled:this.options.flip},preventOverflow:{boundariesElement:this.options.boundary}}};return"static"===this.options.display&&(n.modifiers.applyStyle={enabled:!1}),n}},{key:"_getPlacement",value:function(){return"bottom-start"}}])&&o(i.prototype,a),s&&o(i,s),n}();return n.allDrops=[],n.defaults={drop:"[data-drop]",offset:0,flip:!0,openOn:"click",boundary:"scrollParent",reference:"toggle",display:"dynamic"},n}(jQuery,window.Popper);t.a=i},"8jRI":function(e,t,n){"use strict";var r=new RegExp("%[a-f0-9]{2}","gi"),o=new RegExp("(%[a-f0-9]{2})+","gi");function i(e,t){try{return decodeURIComponent(e.join(""))}catch(e){}if(1===e.length)return e;t=t||1;var n=e.slice(0,t),r=e.slice(t);return Array.prototype.concat.call([],i(n),i(r))}function a(e){try{return decodeURIComponent(e)}catch(o){for(var t=e.match(r),n=1;n<t.length;n++)t=(e=i(t,n).join("")).match(r);return e}}e.exports=function(e){if("string"!=typeof e)throw new TypeError("Expected `encodedURI` to be of type `string`, got `"+typeof e+"`");try{return e=e.replace(/\+/g," "),decodeURIComponent(e)}catch(t){return function(e){for(var t={"%FE%FF":"��","%FF%FE":"��"},n=o.exec(e);n;){try{t[n[0]]=decodeURIComponent(n[0])}catch(e){var r=a(n[0]);r!==n[0]&&(t[n[0]]=r)}n=o.exec(e)}t["%C2"]="�";for(var i=Object.keys(t),s=0;s<i.length;s++){var u=i[s];e=e.replace(new RegExp(u,"g"),t[u])}return e}(e)}}},"9T72":function(e,t,n){"use strict";var r=n("sBL/"),o=n.n(r),i=n("jfjY"),a=n.n(i),s=n("cr+I"),u=function(e){return{isMobile:a.a,debounce:o.a,queryString:s,TRANSITION_END:function(){var e="",t={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"otransitionend",transition:"transitionend"};for(var n in t)({}).hasOwnProperty.call(t,n)&&void 0!==document.createElement("p").style[n]&&(e=t[n]);return e}(),onTransitionEnd:function(t,n){var r=this,o=!1;e(t).one(this.TRANSITION_END,function(){n(),o=!0}),setTimeout(function(){o||e(t).trigger(r.TRANSITION_END)},this.getTransitionDurationFromElement(t))},getTransitionDurationFromElement:function(t){if(!t)return 0;var n=e(t).css("transition-duration");return parseFloat(n)?(n=n.split(",")[0],1e3*parseFloat(n)):0},getTargetFromElement:function(e){var t=e.getAttribute("data-target");t&&"#"!==t||(t=e.getAttribute("href")||"");try{return document.querySelector(t)?t:null}catch(e){return null}}}}(jQuery);t.a=u},"9UV2":function(e,t,n){!function(n,r){var o={version:"0.4.1",settings:{currency:{symbol:"$",format:"%s%v",decimal:".",thousand:",",precision:2,grouping:3},number:{precision:0,grouping:3,thousand:",",decimal:"."}}},i=Array.prototype.map,a=Array.isArray,s=Object.prototype.toString;function u(e){return!!(""===e||e&&e.charCodeAt&&e.substr)}function c(e){return a?a(e):"[object Array]"===s.call(e)}function l(e){return e&&"[object Object]"===s.call(e)}function p(e,t){var n;for(n in e=e||{},t=t||{})t.hasOwnProperty(n)&&null==e[n]&&(e[n]=t[n]);return e}function f(e,t,n){var r,o,a=[];if(!e)return a;if(i&&e.map===i)return e.map(t,n);for(r=0,o=e.length;r<o;r++)a[r]=t.call(n,e[r],r,e);return a}function d(e,t){return e=Math.round(Math.abs(e)),isNaN(e)?t:e}function m(e){var t=o.settings.currency.format;return"function"==typeof e&&(e=e()),u(e)&&e.match("%v")?{pos:e,neg:e.replace("-","").replace("%v","-%v"),zero:e}:e&&e.pos&&e.pos.match("%v")?e:u(t)?o.settings.currency.format={pos:t,neg:t.replace("%v","-%v"),zero:t}:t}var h=o.unformat=o.parse=function(e,t){if(c(e))return f(e,function(e){return h(e,t)});if("number"==typeof(e=e||0))return e;t=t||o.settings.number.decimal;var n=new RegExp("[^0-9-"+t+"]",["g"]),r=parseFloat((""+e).replace(/\((.*)\)/,"-$1").replace(n,"").replace(t,"."));return isNaN(r)?0:r},g=o.toFixed=function(e,t){t=d(t,o.settings.number.precision);var n=Math.pow(10,t);return(Math.round(o.unformat(e)*n)/n).toFixed(t)},b=o.formatNumber=o.format=function(e,t,n,r){if(c(e))return f(e,function(e){return b(e,t,n,r)});e=h(e);var i=p(l(t)?t:{precision:t,thousand:n,decimal:r},o.settings.number),a=d(i.precision),s=e<0?"-":"",u=parseInt(g(Math.abs(e||0),a),10)+"",m=u.length>3?u.length%3:0;return s+(m?u.substr(0,m)+i.thousand:"")+u.substr(m).replace(/(\d{3})(?=\d)/g,"$1"+i.thousand)+(a?i.decimal+g(Math.abs(e),a).split(".")[1]:"")},v=o.formatMoney=function(e,t,n,r,i,a){if(c(e))return f(e,function(e){return v(e,t,n,r,i,a)});e=h(e);var s=p(l(t)?t:{symbol:t,precision:n,thousand:r,decimal:i,format:a},o.settings.currency),u=m(s.format);return(e>0?u.pos:e<0?u.neg:u.zero).replace("%s",s.symbol).replace("%v",b(Math.abs(e),d(s.precision),s.thousand,s.decimal))};o.formatColumn=function(e,t,n,r,i,a){if(!e)return[];var s=p(l(t)?t:{symbol:t,precision:n,thousand:r,decimal:i,format:a},o.settings.currency),g=m(s.format),v=g.pos.indexOf("%s")<g.pos.indexOf("%v"),y=0,w=f(e,function(e,t){if(c(e))return o.formatColumn(e,s);var n=((e=h(e))>0?g.pos:e<0?g.neg:g.zero).replace("%s",s.symbol).replace("%v",b(Math.abs(e),d(s.precision),s.thousand,s.decimal));return n.length>y&&(y=n.length),n});return f(w,function(e,t){return u(e)&&e.length<y?v?e.replace(s.symbol,s.symbol+new Array(y-e.length+1).join(" ")):new Array(y-e.length+1).join(" ")+e:e})},e.exports&&(t=e.exports=o),t.accounting=o}()},MgzW:function(e,t,n){"use strict";var r=Object.getOwnPropertySymbols,o=Object.prototype.hasOwnProperty,i=Object.prototype.propertyIsEnumerable;e.exports=function(){try{if(!Object.assign)return!1;var e=new String("abc");if(e[5]="de","5"===Object.getOwnPropertyNames(e)[0])return!1;for(var t={},n=0;n<10;n++)t["_"+String.fromCharCode(n)]=n;if("0123456789"!==Object.getOwnPropertyNames(t).map(function(e){return t[e]}).join(""))return!1;var r={};return"abcdefghijklmnopqrst".split("").forEach(function(e){r[e]=e}),"abcdefghijklmnopqrst"===Object.keys(Object.assign({},r)).join("")}catch(e){return!1}}()?Object.assign:function(e,t){for(var n,a,s=function(e){if(null==e)throw new TypeError("Object.assign cannot be called with null or undefined");return Object(e)}(e),u=1;u<arguments.length;u++){for(var c in n=Object(arguments[u]))o.call(n,c)&&(s[c]=n[c]);if(r){a=r(n);for(var l=0;l<a.length;l++)i.call(n,a[l])&&(s[a[l]]=n[a[l]])}}return s}},ZFOp:function(e,t,n){"use strict";e.exports=function(e){return encodeURIComponent(e).replace(/[!'()*]/g,function(e){return"%"+e.charCodeAt(0).toString(16).toUpperCase()})}},"cr+I":function(e,t,n){"use strict";var r=n("ZFOp"),o=n("MgzW"),i=n("8jRI");function a(e,t){return t.encode?t.strict?r(e):encodeURIComponent(e):e}function s(e){var t=e.indexOf("?");return-1===t?"":e.slice(t+1)}function u(e,t){var n=function(e){var t;switch(e.arrayFormat){case"index":return function(e,n,r){t=/\[(\d*)\]$/.exec(e),e=e.replace(/\[\d*\]$/,""),t?(void 0===r[e]&&(r[e]={}),r[e][t[1]]=n):r[e]=n};case"bracket":return function(e,n,r){t=/(\[\])$/.exec(e),e=e.replace(/\[\]$/,""),t?void 0!==r[e]?r[e]=[].concat(r[e],n):r[e]=[n]:r[e]=n};default:return function(e,t,n){void 0!==n[e]?n[e]=[].concat(n[e],t):n[e]=t}}}(t=o({arrayFormat:"none"},t)),r=Object.create(null);return"string"!=typeof e?r:(e=e.trim().replace(/^[?#&]/,""))?(e.split("&").forEach(function(e){var t=e.replace(/\+/g," ").split("="),o=t.shift(),a=t.length>0?t.join("="):void 0;a=void 0===a?null:i(a),n(i(o),a,r)}),Object.keys(r).sort().reduce(function(e,t){var n=r[t];return Boolean(n)&&"object"==typeof n&&!Array.isArray(n)?e[t]=function e(t){return Array.isArray(t)?t.sort():"object"==typeof t?e(Object.keys(t)).sort(function(e,t){return Number(e)-Number(t)}).map(function(e){return t[e]}):t}(n):e[t]=n,e},Object.create(null))):r}t.extract=s,t.parse=u,t.stringify=function(e,t){!1===(t=o({encode:!0,strict:!0,arrayFormat:"none"},t)).sort&&(t.sort=function(){});var n=function(e){switch(e.arrayFormat){case"index":return function(t,n,r){return null===n?[a(t,e),"[",r,"]"].join(""):[a(t,e),"[",a(r,e),"]=",a(n,e)].join("")};case"bracket":return function(t,n){return null===n?a(t,e):[a(t,e),"[]=",a(n,e)].join("")};default:return function(t,n){return null===n?a(t,e):[a(t,e),"=",a(n,e)].join("")}}}(t);return e?Object.keys(e).sort(t.sort).map(function(r){var o=e[r];if(void 0===o)return"";if(null===o)return a(r,t);if(Array.isArray(o)){var i=[];return o.slice().forEach(function(e){void 0!==e&&i.push(n(r,e,i.length))}),i.join("&")}return a(r,t)+"="+a(o,t)}).filter(function(e){return e.length>0}).join("&"):""},t.parseUrl=function(e,t){return{url:e.split("?")[0]||"",query:u(s(e),t)}}},jfjY:function(e,t,n){"use strict";e.exports=i,e.exports.isMobile=i;var r=/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i,o=/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;function i(e){e||(e={});var t=e.ua;return t||"undefined"==typeof navigator||(t=navigator.userAgent),t&&t.headers&&"string"==typeof t.headers["user-agent"]&&(t=t.headers["user-agent"]),"string"==typeof t&&(e.tablet?o.test(t):r.test(t))}},rBQX:function(e,t,n){"use strict";n.r(t);var r=n("xeH2"),o=n.n(r),i=n("sBL/"),a=n.n(i),s=n("jfjY"),u=n.n(s),c=n("cr+I"),l=n("7l0f");function p(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){var n=[],r=!0,o=!1,i=void 0;try{for(var a,s=e[Symbol.iterator]();!(r=(a=s.next()).done)&&(n.push(a.value),!t||n.length!==t);r=!0);}catch(e){o=!0,i=e}finally{try{r||null==s.return||s.return()}finally{if(o)throw i}}return n}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}()}var f=jQuery,d=window.awebooking,m=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"customers",t=arguments.length>1?arguments[1]:void 0,n=arguments.length>2?arguments[2]:void 0;f.ajax({type:"GET",url:d.route("/search/".concat(e)),data:{term:encodeURIComponent(t)},error:function(){n()},success:function(e){n(e)}})},h=function(){f("select.awebooking-search-customer, .selectize-search-customer .cmb2_select").each(function(){!function(e){f(e).selectize({valueField:"id",labelField:"display",searchField:"display",dropdownParent:"body",placeholder:f(this).data("placeholder"),load:function(e,t){if(!e.length)return t();m("customers",e,t)}})}(this)}),f(".selectize-search-services").each(function(){!function(e){f(e).selectize({plugins:["remove_button","drag_drop"],valueField:"id",labelField:"name",searchField:["name","id"],dropdownParent:"body",placeholder:f(this).data("placeholder"),load:function(e,t){if(!e.length)return t();m("services",e,t)}})}(this)})},g=n("9UV2"),b=n.n(g),v=window.awebooking||{},y=v.i18n||{};v.utils={},v.instances={},v.isMobile=u.a,v.utils.flatpickrRangePlugin=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return function(t){var n,r,o="",i={onParseConfig:function(){t.config.mode="range",o=t.config.altInput?t.config.altFormat:t.config.dateFormat},onReady:function(){!function(){if(e.input?n=e.input instanceof Element?e.input:window.document.querySelector(e.input):((n=t._input.cloneNode()).removeAttribute("id"),n._flatpickr=void 0),n.value){var i=t.parseDate(n.value);i&&t.selectedDates.push(i)}n.setAttribute("data-fp-omit",""),t._bind(n,["focus","click"],function(){t.selectedDates[1]&&(t.latestSelectedDateObj=t.selectedDates[1],t._setHoursFromDate(t.selectedDates[1]),t.jumpToDate(t.selectedDates[1])),r=!0,t.isOpen=!1,t.open(void 0,n)}),t._bind(t._input,["focus","click"],function(e){e.preventDefault(),t.isOpen=!1,t.open()}),t.config.allowInput&&t._bind(n,"keydown",function(e){"Enter"===e.key&&(t.setDate([t.selectedDates[0],n.value],!0,o),n.click())}),e.input||t._input.parentNode&&t._input.parentNode.insertBefore(n,t._input.nextSibling)}(),t.config.ignoredFocusElements.push(n),t.config.allowInput?(t._input.removeAttribute("readonly"),n.removeAttribute("readonly")):n.setAttribute("readonly","readonly"),t._bind(t._input,"focus",function(){t.latestSelectedDateObj=t.selectedDates[0],t._setHoursFromDate(t.selectedDates[0]),r=!1}),t.config.allowInput&&t._bind(t._input,"keydown",function(e){"Enter"===e.key&&t.setDate([t._input.value,t.selectedDates[1]],!0,o)}),t.setDate(t.selectedDates,!1),i.onValueUpdate(t.selectedDates),t.loadedPlugins.push("range")},onPreCalendarPosition:function(){r&&(t._positionElement=n,setTimeout(function(){t._positionElement=t._input},0))},onValueUpdate:function(){if(n){var e=p(t.selectedDates.map(function(e){return t.formatDate(e,o)}),2),r=e[0];t._input.value=void 0===r?"":r;var i=e[1];n.value=void 0===i?"":i}},onChange:function(){t.selectedDates.length||setTimeout(function(){t.selectedDates.length||(n.value="")},10),r&&setTimeout(function(){n.focus()},0)},onDestroy:function(){e.input||n.parentNode&&n.parentNode.removeChild(n)}};return i}},v.route=function(e){return this.admin_route+e.replace(/^\//g,"")},v.alert=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"error";return swal({text:e,type:t,toast:!0,buttonsStyling:!1,showCancelButton:!1,showConfirmButton:!0,confirmButtonClass:"button"})},v.confirm=function(e,t){if(!window.swal)return window.confirm(e||y.warning)&&t();var n=window.swal({text:e||this.i18n.warning,customClass:"awebooking-confirm-dialog",position:"center",animation:!1,backdrop:"rgba(0,0,0,.8)",reverseButtons:!0,buttonsStyling:!1,showCancelButton:!0,cancelButtonClass:"",confirmButtonClass:"",cancelButtonText:this.i18n.cancel,confirmButtonText:this.i18n.ok});return t?n.then(function(e){e.value&&t(e)}):n},v.dialog=function(e){var t=o()(e).dialog({modal:!0,width:"auto",height:"auto",autoOpen:!1,draggable:!1,resizable:!1,closeOnEscape:!0,dialogClass:"wp-dialog awebooking-dialog",position:{my:"center",at:"center center-15%",of:window}});return o()(window).on("resize",a()(function(){t.dialog("option","position",{my:"center",at:"center center-15%",of:window})},150)),t},v.ajax=function(e,t,n,r){return o.a.ajax({url:v.route(t),data:n,method:e,dataType:"json"}).done(function(e){r&&r(e)}).fail(function(e){var t=e.responseJSON;t&&t.message?v.alert(t.message,"error"):v.alert(y.error,"error")})},v.createForm=function(e,t){var n=o()("<form>",{method:"POST",action:e}),r=o()("<input>",{name:"_method",type:"hidden",value:t});return n.append(r).appendTo("body")},v.formatPrice=function(e){return b.a.formatMoney(e,{format:y.priceFormat,symbol:y.currencySymbol,decimal:y.decimalSeparator,thousand:y.priceThousandSeparator,precision:y.numberDecimals})},v.utils.addQueryArgs=function(e,t){void 0===t&&(t=window.location.href);var n=c.parseUrl(t),r=o.a.extend({},n.query,e);return n.url+"?"+c.stringify(r,{sort:!1})},o()(function(){window.tippy&&tippy(".tippy",{arrow:!0,animation:"shift-toward",duration:[200,150]}),o.a.fn.selectize&&(h(),o()("select.selectize, .with-selectize .cmb2_select").selectize({allowEmptyOption:!0,searchField:["value","text"]})),o()('[data-method="abrs-delete"]').on("click",function(e){e.preventDefault();var t=o()(this).attr("href"),n=o()(this).data("warning");v.confirm(n,function(){v.createForm(t,"DELETE").submit()})}),o()('[data-init="abrs-dropdown"]').each(function(){o()(this).data("abrs-dropdown",new l.a(this,{drop:".abrs-drop"}))})})},"sBL/":function(e,t){function n(e,t,n){var r,o,i,a,s;function u(){var c=Date.now()-a;c<t&&c>=0?r=setTimeout(u,t-c):(r=null,n||(s=e.apply(i,o),i=o=null))}null==t&&(t=100);var c=function(){i=this,o=arguments,a=Date.now();var c=n&&!r;return r||(r=setTimeout(u,t)),c&&(s=e.apply(i,o),i=o=null),s};return c.clear=function(){r&&(clearTimeout(r),r=null)},c.flush=function(){r&&(s=e.apply(i,o),i=o=null,clearTimeout(r),r=null)},c}n.debounce=n,e.exports=n},xeH2:function(e,t){!function(){e.exports=this.jQuery}()}}));
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./assets/babel/admin/admin.js":
+/*!*************************************!*\
+  !*** ./assets/babel/admin/admin.js ***!
+  \*************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! debounce */ "./node_modules/debounce/index.js");
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! is-mobile */ "./node_modules/is-mobile/index.js");
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! query-string */ "./node_modules/query-string/index.js");
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/dropdown */ "./assets/babel/core/dropdown.js");
+/* harmony import */ var _core_range_dates__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/range-dates */ "./assets/babel/core/range-dates.js");
+/* harmony import */ var _utils_search_customer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/search-customer */ "./assets/babel/admin/utils/search-customer.js");
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! accounting */ "./node_modules/accounting/accounting.js");
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_7__);
+
+
+
+
+
+
+
+ // Instance the awebooking object.
+
+var awebooking = window.awebooking || {};
+var i18n = awebooking.i18n || {}; // Create the properties.
+
+awebooking.utils = {};
+awebooking.instances = {};
+awebooking.isMobile = is_mobile__WEBPACK_IMPORTED_MODULE_2___default.a;
+awebooking.utils.flatpickrRangePlugin = _core_range_dates__WEBPACK_IMPORTED_MODULE_5__["default"];
+/**
+ * The admin route.
+ *
+ * @param  {string} route
+ * @return {string}
+ */
+
+awebooking.route = function (route) {
+  return this.admin_route + route.replace(/^\//g, '');
+};
+/**
+ * Show the alert dialog.
+ *
+ * @return {SweetAlert}
+ */
+
+
+awebooking.alert = function (message) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'error';
+  return swal({
+    text: message,
+    type: type,
+    toast: true,
+    buttonsStyling: false,
+    showCancelButton: false,
+    showConfirmButton: true,
+    confirmButtonClass: 'button'
+  });
+};
+/**
+ * Show the confirm message.
+ *
+ * @return {SweetAlert}
+ */
+
+
+awebooking.confirm = function (message, callback) {
+  if (!window.swal) {
+    return window.confirm(message || i18n.warning) && callback();
+  }
+
+  var confirm = window.swal({
+    text: message || this.i18n.warning,
+    customClass: 'awebooking-confirm-dialog',
+    position: 'center',
+    animation: false,
+    backdrop: 'rgba(0,0,0,.8)',
+    reverseButtons: true,
+    buttonsStyling: false,
+    showCancelButton: true,
+    cancelButtonClass: '',
+    confirmButtonClass: '',
+    cancelButtonText: this.i18n.cancel,
+    confirmButtonText: this.i18n.ok
+  });
+
+  if (callback) {
+    return confirm.then(function (result) {
+      if (result.value) callback(result);
+    });
+  }
+
+  return confirm;
+};
+/**
+ * Create the dialog.
+ *
+ * @param  {string} selector
+ * @return {Object}
+ */
+
+
+awebooking.dialog = function (selector) {
+  var $dialog = jquery__WEBPACK_IMPORTED_MODULE_0___default()(selector).dialog({
+    modal: true,
+    width: 'auto',
+    height: 'auto',
+    autoOpen: false,
+    draggable: false,
+    resizable: false,
+    closeOnEscape: true,
+    dialogClass: 'wp-dialog awebooking-dialog',
+    position: {
+      my: 'center',
+      at: 'center center-15%',
+      of: window
+    }
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('resize', debounce__WEBPACK_IMPORTED_MODULE_1___default()(function () {
+    $dialog.dialog('option', 'position', {
+      my: 'center',
+      at: 'center center-15%',
+      of: window
+    });
+  }, 150));
+  return $dialog;
+};
+/**
+ * Send a ajax request to a route.
+ *
+ * @param  {String}   method
+ * @param  {String}   route
+ * @param  {Object}   data
+ * @param  {Function} callback
+ * @return {JQuery.jqXHR}
+ */
+
+
+awebooking.ajax = function (method, route, data, callback) {
+  var xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    url: awebooking.route(route),
+    data: data,
+    method: method,
+    dataType: 'json'
+  });
+  return xhr.done(function (data) {
+    if (callback) callback(data);
+  }).fail(function (xhr) {
+    var json = xhr.responseJSON;
+
+    if (json && json.message) {
+      awebooking.alert(json.message, 'error');
+    } else {
+      awebooking.alert(i18n.error, 'error');
+    }
+  });
+};
+/**
+ * Create a form then append to body.
+ *
+ * @param  {String} action The form action.
+ * @param  {String} method The form method.
+ * @return {Object}
+ */
+
+
+awebooking.createForm = function (action, method) {
+  var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<form>', {
+    'method': 'POST',
+    'action': action
+  });
+  var hiddenInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<input>', {
+    'name': '_method',
+    'type': 'hidden',
+    'value': method
+  });
+  return $form.append(hiddenInput).appendTo('body');
+};
+/**
+ * Format the price.
+ *
+ * @param amount
+ * @returns {string}
+ */
+
+
+awebooking.formatPrice = function (amount) {
+  return accounting__WEBPACK_IMPORTED_MODULE_7___default.a.formatMoney(amount, {
+    format: i18n.priceFormat,
+    symbol: i18n.currencySymbol,
+    decimal: i18n.decimalSeparator,
+    thousand: i18n.priceThousandSeparator,
+    precision: i18n.numberDecimals
+  });
+};
+/**
+ * Retrieves a modified URL query string.
+ *
+ * @param {object} args
+ * @param {string} url
+ */
+
+
+awebooking.utils.addQueryArgs = function (args, url) {
+  if (typeof url === 'undefined') {
+    url = window.location.href;
+  }
+
+  var parsed = query_string__WEBPACK_IMPORTED_MODULE_3__["parseUrl"](url);
+  var query = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, parsed.query, args);
+  return parsed.url + '?' + query_string__WEBPACK_IMPORTED_MODULE_3__["stringify"](query, {
+    sort: false
+  });
+};
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  if (window.tippy) {
+    tippy('.tippy', {
+      arrow: true,
+      animation: 'shift-toward',
+      duration: [200, 150]
+    });
+  } // Init the selectize.
+
+
+  if (jquery__WEBPACK_IMPORTED_MODULE_0___default.a.fn.selectize) {
+    Object(_utils_search_customer__WEBPACK_IMPORTED_MODULE_6__["default"])();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('select.selectize, .with-selectize .cmb2_select').selectize({
+      allowEmptyOption: true,
+      searchField: ['value', 'text']
+    });
+  } // Init warning before delete.
+
+
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-method="abrs-delete"]').on('click', function (e) {
+    e.preventDefault();
+    var link = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('href');
+    var message = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('warning');
+    awebooking.confirm(message, function () {
+      awebooking.createForm(link, 'DELETE').submit();
+    });
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="abrs-dropdown"]').each(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_4__["default"](this, {
+      drop: '.abrs-drop'
+    }));
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/babel/admin/utils/search-customer.js":
+/*!*****************************************************!*\
+  !*** ./assets/babel/admin/utils/search-customer.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var $ = jQuery;
+var plugin = window.awebooking;
+
+var ajaxSearch = function ajaxSearch() {
+  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'customers';
+  var query = arguments.length > 1 ? arguments[1] : undefined;
+  var callback = arguments.length > 2 ? arguments[2] : undefined;
+  $.ajax({
+    type: 'GET',
+    url: plugin.route("/search/".concat(type)),
+    data: {
+      term: encodeURIComponent(query)
+    },
+    error: function error() {
+      callback();
+    },
+    success: function success(res) {
+      callback(res);
+    }
+  });
+};
+
+var initSelectize = function initSelectize(select) {
+  $(select).selectize({
+    valueField: 'id',
+    labelField: 'display',
+    searchField: 'display',
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch('customers', query, callback);
+      }
+    }
+  });
+};
+
+var initSelectizeServices = function initSelectizeServices(select) {
+  $(select).selectize({
+    plugins: ['remove_button', 'drag_drop'],
+    valueField: 'id',
+    labelField: 'name',
+    searchField: ['name', 'id'],
+    dropdownParent: 'body',
+    placeholder: $(this).data('placeholder'),
+    load: function load(query, callback) {
+      if (!query.length) {
+        return callback();
+      } else {
+        ajaxSearch('services', query, callback);
+      }
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  $('select.awebooking-search-customer, .selectize-search-customer .cmb2_select').each(function () {
+    initSelectize(this);
+  });
+  $('.selectize-search-services').each(function () {
+    initSelectizeServices(this);
+  });
+});
+;
+
+/***/ }),
+
+/***/ "./assets/babel/core/dropdown.js":
+/*!***************************************!*\
+  !*** ./assets/babel/core/dropdown.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./assets/babel/core/util.js");
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+
+
+var Dropdown = function ($, Popper) {
+  'use strict';
+
+  var Dropdown =
+  /*#__PURE__*/
+  function () {
+    function Dropdown(element, options) {
+      _classCallCheck(this, Dropdown);
+
+      this.element = element;
+      this.options = Object.assign({}, Dropdown.defaults, options);
+      this.drop = this._getDropElement();
+      this.popper = null;
+
+      if (!this.drop || typeof this.drop === 'undefined') {
+        throw new Error('Drop Error: Cannot find the drop element.');
+      }
+
+      if (typeof Popper !== 'undefined' && !this.popper) {
+        var referenceElement = this.element;
+        this.popper = new Popper(referenceElement, this.drop, this._getPopperConfig());
+      }
+
+      this._addEventListeners();
+
+      Dropdown.allDrops.push(this);
+    }
+
+    _createClass(Dropdown, [{
+      key: "isOpened",
+      value: function isOpened() {
+        return this.drop.classList.contains('open');
+      }
+    }, {
+      key: "isDisabled",
+      value: function isDisabled() {
+        return this.element.disabled || this.element.classList.contains('disabled');
+      }
+    }, {
+      key: "toggle",
+      value: function toggle() {
+        if (this.isOpened()) {
+          this.close();
+        } else {
+          this.open();
+        }
+      }
+    }, {
+      key: "open",
+      value: function open() {
+        var _this = this;
+
+        if (this.isDisabled() || this.isOpened()) {
+          return;
+        }
+
+        this.element.focus();
+        this.element.setAttribute('aria-expanded', true); // If this is a touch-enabled device we add extra
+        // empty mouseover listeners to the body's immediate children;
+        // only needed because of broken event delegation on iOS
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().on('mouseover', null, $.noop);
+        }
+
+        this.drop.classList.add('open');
+        this.drop.setAttribute('aria-hidden', true);
+
+        if (this.popper) {
+          this.popper.update();
+        }
+
+        setTimeout(function () {
+          _this.drop.classList.add('open--transition');
+        });
+      }
+    }, {
+      key: "close",
+      value: function close() {
+        var _this2 = this;
+
+        if (this.isDisabled() || !this.isOpened()) {
+          return;
+        } // If this is a touch-enabled device we remove the extra
+        // empty mouseover listeners we added for iOS support
+
+
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().off('mouseover', null, $.noop);
+        }
+
+        this.element.setAttribute('aria-expanded', false);
+        this.drop.removeAttribute('aria-hidden');
+        this.drop.classList.remove('open--transition');
+        _util__WEBPACK_IMPORTED_MODULE_0__["default"].onTransitionEnd(this.drop, function () {
+          _this2.drop.classList.remove('open');
+        });
+      }
+    }, {
+      key: "_addEventListeners",
+      value: function _addEventListeners() {
+        var _this3 = this;
+
+        if (!this.options.openOn) {
+          return;
+        }
+
+        if (this.options.openOn === 'always') {
+          setTimeout(this.open.bind(this));
+          return;
+        }
+
+        var events = this.options.openOn.split(' ');
+
+        if (events.indexOf('click') >= 0) {
+          $(this.element).on('click', function (e) {
+            e.preventDefault(); // e.stopPropagation();
+
+            _this3.toggle();
+          });
+          $(document).on('click', function (e) {
+            if (!_this3.isOpened()) {
+              return;
+            } // Clicking inside dropdown
+
+
+            if (e.target === _this3.drop || _this3.drop.contains(e.target)) {
+              return;
+            } // Clicking target
+
+
+            if (e.target === _this3.element || _this3.element.contains(e.target)) {
+              return;
+            }
+
+            _this3.close(e);
+          });
+        }
+
+        if (events.indexOf('hover') >= 0) {// TODO: ...
+        }
+
+        if (events.indexOf('focus') >= 0) {// TODO: ...
+        }
+      }
+    }, {
+      key: "_getDropElement",
+      value: function _getDropElement() {
+        if (!this.drop) {
+          var parent = this.element.parentNode;
+          var target = _util__WEBPACK_IMPORTED_MODULE_0__["default"].getTargetFromElement(this.element);
+
+          if (target) {
+            this.drop = document.querySelector(target);
+          } else {
+            this.drop = parent ? parent.querySelector(this.options.drop) : null;
+          }
+        }
+
+        return this.drop;
+      }
+    }, {
+      key: "_getPopperConfig",
+      value: function _getPopperConfig() {
+        var _this4 = this;
+
+        var offset = {};
+
+        if (typeof this.options.offset === 'function') {
+          offset.fn = function (data) {
+            data.offsets = Object.assign({}, data.offsets, _this4.options.offset(data.offsets) || {});
+            return data;
+          };
+        } else {
+          offset.offset = this.options.offset;
+        }
+
+        var config = {
+          placement: this._getPlacement(),
+          modifiers: {
+            offset: offset,
+            flip: {
+              enabled: this.options.flip
+            },
+            preventOverflow: {
+              boundariesElement: this.options.boundary
+            } // Disable Popper.js if we have a static display.
+
+          }
+        };
+
+        if (this.options.display === 'static') {
+          config.modifiers.applyStyle = {
+            enabled: false
+          };
+        }
+
+        return config;
+      }
+    }, {
+      key: "_getPlacement",
+      value: function _getPlacement() {
+        return 'bottom-start';
+      }
+    }]);
+
+    return Dropdown;
+  }(); // Store dropdown instances.
+
+
+  Dropdown.allDrops = [];
+  Dropdown.defaults = {
+    drop: '[data-drop]',
+    offset: 0,
+    flip: true,
+    openOn: 'click',
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic'
+  };
+  return Dropdown;
+}(jQuery, window.Popper);
+
+/* harmony default export */ __webpack_exports__["default"] = (Dropdown);
+
+/***/ }),
+
+/***/ "./assets/babel/core/range-dates.js":
+/*!******************************************!*\
+  !*** ./assets/babel/core/range-dates.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return rangePlugin; });
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function rangePlugin() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return function (fp) {
+    var dateFormat = '',
+        secondInput,
+        _firstInputFocused,
+        _secondInputFocused;
+
+    var createSecondInput = function createSecondInput() {
+      if (config.input) {
+        secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+      } else {
+        secondInput = fp._input.cloneNode();
+        secondInput.removeAttribute('id');
+        secondInput._flatpickr = undefined;
+      }
+
+      if (secondInput.value) {
+        var parsedDate = fp.parseDate(secondInput.value);
+
+        if (parsedDate) {
+          fp.selectedDates.push(parsedDate);
+        }
+      }
+
+      secondInput.setAttribute('data-fp-omit', '');
+
+      fp._bind(secondInput, ['focus', 'click'], function () {
+        if (fp.selectedDates[1]) {
+          fp.latestSelectedDateObj = fp.selectedDates[1];
+
+          fp._setHoursFromDate(fp.selectedDates[1]);
+
+          fp.jumpToDate(fp.selectedDates[1]);
+        }
+
+        _firstInputFocused = false;
+        _secondInputFocused = true;
+        fp.isOpen = false;
+        fp.open(undefined, secondInput);
+      });
+
+      fp._bind(fp._input, ['focus', 'click'], function (e) {
+        e.preventDefault();
+        fp.isOpen = false;
+        fp.open();
+      });
+
+      if (fp.config.allowInput) {
+        fp._bind(secondInput, 'keydown', function (e) {
+          if (e.key === 'Enter') {
+            fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
+            secondInput.click();
+          }
+        });
+      }
+
+      if (!config.input) {
+        fp._input.parentNode && fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+      }
+    };
+
+    var plugin = {
+      onParseConfig: function onParseConfig() {
+        fp.config.mode = 'range';
+        dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
+      },
+      onReady: function onReady() {
+        createSecondInput();
+        fp.config.ignoredFocusElements.push(secondInput);
+
+        if (fp.config.allowInput) {
+          fp._input.removeAttribute('readonly');
+
+          secondInput.removeAttribute('readonly');
+        } else {
+          secondInput.setAttribute('readonly', 'readonly');
+        }
+
+        fp._bind(fp._input, 'focus', function () {
+          fp.latestSelectedDateObj = fp.selectedDates[0];
+
+          fp._setHoursFromDate(fp.selectedDates[0]);
+
+          _firstInputFocused = true;
+          _secondInputFocused = false;
+        });
+
+        if (fp.config.allowInput) {
+          fp._bind(fp._input, 'keydown', function (e) {
+            if (e.key === 'Enter') {
+              fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
+            }
+          });
+        }
+
+        fp.setDate(fp.selectedDates, false);
+        plugin.onValueUpdate(fp.selectedDates);
+        fp.loadedPlugins.push('range');
+      },
+      onPreCalendarPosition: function onPreCalendarPosition() {
+        if (_secondInputFocused) {
+          fp._positionElement = secondInput;
+          setTimeout(function () {
+            fp._positionElement = fp._input;
+          }, 0);
+        }
+      },
+      onValueUpdate: function onValueUpdate() {
+        if (!secondInput) {
+          return;
+        }
+
+        var _fp$selectedDates$map = fp.selectedDates.map(function (d) {
+          return fp.formatDate(d, dateFormat);
+        });
+
+        var _fp$selectedDates$map2 = _slicedToArray(_fp$selectedDates$map, 2);
+
+        var _fp$selectedDates$map3 = _fp$selectedDates$map2[0];
+        fp._input.value = _fp$selectedDates$map3 === void 0 ? '' : _fp$selectedDates$map3;
+        var _fp$selectedDates$map4 = _fp$selectedDates$map2[1];
+        secondInput.value = _fp$selectedDates$map4 === void 0 ? '' : _fp$selectedDates$map4;
+      },
+      onChange: function onChange() {
+        if (!fp.selectedDates.length) {
+          setTimeout(function () {
+            if (fp.selectedDates.length) {
+              return;
+            }
+
+            secondInput.value = '';
+          }, 10);
+        }
+
+        if (_secondInputFocused) {
+          setTimeout(function () {
+            secondInput.focus();
+          }, 0);
+        }
+      },
+      onDestroy: function onDestroy() {
+        if (!config.input) {
+          secondInput.parentNode && secondInput.parentNode.removeChild(secondInput);
+        }
+      }
+    };
+    return plugin;
+  };
+}
+
+/***/ }),
+
+/***/ "./assets/babel/core/util.js":
+/*!***********************************!*\
+  !*** ./assets/babel/core/util.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! debounce */ "./node_modules/debounce/index.js");
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! is-mobile */ "./node_modules/is-mobile/index.js");
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! query-string */ "./node_modules/query-string/index.js");
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var Utils = function ($) {
+  function getTransitionEndEvent() {
+    var transitionEndEvent = '';
+    var transitionEndEvents = {
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend',
+      'transition': 'transitionend'
+    };
+
+    for (var name in transitionEndEvents) {
+      if ({}.hasOwnProperty.call(transitionEndEvents, name)) {
+        var tempEl = document.createElement('p');
+
+        if (typeof tempEl.style[name] !== 'undefined') {
+          transitionEndEvent = transitionEndEvents[name];
+        }
+      }
+    }
+
+    return transitionEndEvent;
+  }
+
+  return {
+    isMobile: is_mobile__WEBPACK_IMPORTED_MODULE_1___default.a,
+    debounce: debounce__WEBPACK_IMPORTED_MODULE_0___default.a,
+    queryString: query_string__WEBPACK_IMPORTED_MODULE_2__,
+    TRANSITION_END: getTransitionEndEvent(),
+    onTransitionEnd: function onTransitionEnd(el, callback) {
+      var _this = this;
+
+      var called = false;
+      $(el).one(this.TRANSITION_END, function () {
+        callback();
+        called = true;
+      });
+      setTimeout(function () {
+        if (!called) $(el).trigger(_this.TRANSITION_END);
+      }, this.getTransitionDurationFromElement(el));
+    },
+    getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+      if (!element) {
+        return 0;
+      } // Get transition-duration of the element.
+
+
+      var transitionDuration = $(element).css('transition-duration');
+      var floatTransitionDuration = parseFloat(transitionDuration); // Return 0 if element or transition duration is not found.
+
+      if (!floatTransitionDuration) {
+        return 0;
+      } // If multiple durations are defined, take the first.
+
+
+      transitionDuration = transitionDuration.split(',')[0];
+      return parseFloat(transitionDuration) * 1000;
+    },
+    getTargetFromElement: function getTargetFromElement(element) {
+      var selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        selector = element.getAttribute('href') || '';
+      }
+
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
+    }
+  };
+}(jQuery);
+
+/* harmony default export */ __webpack_exports__["default"] = (Utils);
+
+/***/ }),
+
+/***/ "./node_modules/accounting/accounting.js":
+/*!***********************************************!*\
+  !*** ./node_modules/accounting/accounting.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
+ *
+ * Freely distributable under the MIT license.
+ * Portions of accounting.js are inspired or borrowed from underscore.js
+ *
+ * Full details and documentation:
+ * http://openexchangerates.github.io/accounting.js/
+ */
+
+(function(root, undefined) {
+
+	/* --- Setup --- */
+
+	// Create the local library object, to be exported or referenced globally later
+	var lib = {};
+
+	// Current version
+	lib.version = '0.4.1';
+
+
+	/* --- Exposed settings --- */
+
+	// The library's settings configuration object. Contains default parameters for
+	// currency and number formatting
+	lib.settings = {
+		currency: {
+			symbol : "$",		// default currency symbol is '$'
+			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)
+			decimal : ".",		// decimal point separator
+			thousand : ",",		// thousands separator
+			precision : 2,		// decimal places
+			grouping : 3		// digit grouping (not implemented yet)
+		},
+		number: {
+			precision : 0,		// default precision on numbers is 0
+			grouping : 3,		// digit grouping (not implemented yet)
+			thousand : ",",
+			decimal : "."
+		}
+	};
+
+
+	/* --- Internal Helper Methods --- */
+
+	// Store reference to possibly-available ECMAScript 5 methods for later
+	var nativeMap = Array.prototype.map,
+		nativeIsArray = Array.isArray,
+		toString = Object.prototype.toString;
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js
+	 */
+	function isString(obj) {
+		return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+	}
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js, delegates to ECMA5's native Array.isArray
+	 */
+	function isArray(obj) {
+		return nativeIsArray ? nativeIsArray(obj) : toString.call(obj) === '[object Array]';
+	}
+
+	/**
+	 * Tests whether supplied parameter is a true object
+	 */
+	function isObject(obj) {
+		return obj && toString.call(obj) === '[object Object]';
+	}
+
+	/**
+	 * Extends an object with a defaults object, similar to underscore's _.defaults
+	 *
+	 * Used for abstracting parameter handling from API methods
+	 */
+	function defaults(object, defs) {
+		var key;
+		object = object || {};
+		defs = defs || {};
+		// Iterate over object non-prototype properties:
+		for (key in defs) {
+			if (defs.hasOwnProperty(key)) {
+				// Replace values with defaults only if undefined (allow empty/zero values):
+				if (object[key] == null) object[key] = defs[key];
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * Implementation of `Array.map()` for iteration loops
+	 *
+	 * Returns a new Array as a result of calling `iterator` on each array value.
+	 * Defers to native Array.map if available
+	 */
+	function map(obj, iterator, context) {
+		var results = [], i, j;
+
+		if (!obj) return results;
+
+		// Use native .map method if it exists:
+		if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+
+		// Fallback for native .map:
+		for (i = 0, j = obj.length; i < j; i++ ) {
+			results[i] = iterator.call(context, obj[i], i, obj);
+		}
+		return results;
+	}
+
+	/**
+	 * Check and normalise the value of precision (must be positive integer)
+	 */
+	function checkPrecision(val, base) {
+		val = Math.round(Math.abs(val));
+		return isNaN(val)? base : val;
+	}
+
+
+	/**
+	 * Parses a format string or object and returns format obj for use in rendering
+	 *
+	 * `format` is either a string with the default (positive) format, or object
+	 * containing `pos` (required), `neg` and `zero` values (or a function returning
+	 * either a string or object)
+	 *
+	 * Either string or format.pos must contain "%v" (value) to be valid
+	 */
+	function checkCurrencyFormat(format) {
+		var defaults = lib.settings.currency.format;
+
+		// Allow function as format parameter (should return string or object):
+		if ( typeof format === "function" ) format = format();
+
+		// Format can be a string, in which case `value` ("%v") must be present:
+		if ( isString( format ) && format.match("%v") ) {
+
+			// Create and return positive, negative and zero formats:
+			return {
+				pos : format,
+				neg : format.replace("-", "").replace("%v", "-%v"),
+				zero : format
+			};
+
+		// If no format, or object is missing valid positive value, use defaults:
+		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
+
+			// If defaults is a string, casts it to an object for faster checking next time:
+			return ( !isString( defaults ) ) ? defaults : lib.settings.currency.format = {
+				pos : defaults,
+				neg : defaults.replace("%v", "-%v"),
+				zero : defaults
+			};
+
+		}
+		// Otherwise, assume format was fine:
+		return format;
+	}
+
+
+	/* --- API Methods --- */
+
+	/**
+	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
+	 * Alias: `accounting.parse(string)`
+	 *
+	 * Decimal must be included in the regular expression to match floats (defaults to
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * separator, provide it as the second argument.
+	 *
+	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
+	 *
+	 * Doesn't throw any errors (`NaN`s become 0) but this may change in future
+	 */
+	var unformat = lib.unformat = lib.parse = function(value, decimal) {
+		// Recursively unformat arrays:
+		if (isArray(value)) {
+			return map(value, function(val) {
+				return unformat(val, decimal);
+			});
+		}
+
+		// Fails silently (need decent errors):
+		value = value || 0;
+
+		// Return the value as-is if it's already a number:
+		if (typeof value === "number") return value;
+
+		// Default decimal point comes from settings, but could be set to eg. "," in opts:
+		decimal = decimal || lib.settings.number.decimal;
+
+		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
+			unformatted = parseFloat(
+				("" + value)
+				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+				.replace(regex, '')         // strip out any cruft
+				.replace(decimal, '.')      // make sure decimal point is standard
+			);
+
+		// This will fail silently which may cause trouble, let's wait and see:
+		return !isNaN(unformatted) ? unformatted : 0;
+	};
+
+
+	/**
+	 * Implementation of toFixed() that treats floats more like decimals
+	 *
+	 * Fixes binary rounding issues (eg. (0.615).toFixed(2) === "0.61") that present
+	 * problems for accounting- and finance-related software.
+	 */
+	var toFixed = lib.toFixed = function(value, precision) {
+		precision = checkPrecision(precision, lib.settings.number.precision);
+		var power = Math.pow(10, precision);
+
+		// Multiply up by precision, round accurately, then divide and use native toFixed():
+		return (Math.round(lib.unformat(value) * power) / power).toFixed(precision);
+	};
+
+
+	/**
+	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
+	 *
+	 * Localise by overriding the precision and thousand / decimal separators
+	 * 2nd parameter `precision` can be an object matching `settings.number`
+	 */
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val) {
+				return formatNumber(val, precision, thousand, decimal);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(precision) ? precision : {
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal
+				}),
+				lib.settings.number
+			),
+
+			// Clean up precision
+			usePrecision = checkPrecision(opts.precision),
+
+			// Do some calc:
+			negative = number < 0 ? "-" : "",
+			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
+			mod = base.length > 3 ? base.length % 3 : 0;
+
+		// Format the number:
+		return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(/(\d{3})(?=\d)/g, "$1" + opts.thousand) + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
+	};
+
+
+	/**
+	 * Format a number into currency
+	 *
+	 * Usage: accounting.formatMoney(number, symbol, precision, thousandsSep, decimalSep, format)
+	 * defaults: (0, "$", 2, ",", ".", "%s%v")
+	 *
+	 * Localise by overriding the symbol, precision, thousand / decimal separators and format
+	 * Second param can be an object matching `settings.currency` which is the easiest way.
+	 *
+	 * To do: tidy up the parameters
+	 */
+	var formatMoney = lib.formatMoney = function(number, symbol, precision, thousand, decimal, format) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val){
+				return formatMoney(val, symbol, precision, thousand, decimal, format);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero):
+			formats = checkCurrencyFormat(opts.format),
+
+			// Choose which format to use for this value:
+			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
+
+		// Return with currency symbol added:
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+	};
+
+
+	/**
+	 * Format a list of numbers into an accounting column, padding with whitespace
+	 * to line up currency symbols, thousand separators and decimals places
+	 *
+	 * List should be an array of numbers
+	 * Second parameter can be an object containing keys that match the params
+	 *
+	 * Returns array of accouting-formatted number strings of same length
+	 *
+	 * NB: `white-space:pre` CSS rule is required on the list container to prevent
+	 * browsers from collapsing the whitespace in the output strings.
+	 */
+	lib.formatColumn = function(list, symbol, precision, thousand, decimal, format) {
+		if (!list) return [];
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero), only need pos for now:
+			formats = checkCurrencyFormat(opts.format),
+
+			// Whether to pad at start of string or after currency symbol:
+			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
+
+			// Store value for the length of the longest string in the column:
+			maxLength = 0,
+
+			// Format the list according to options, store the length of the longest string:
+			formatted = map(list, function(val, i) {
+				if (isArray(val)) {
+					// Recursively format columns if list is a multi-dimensional array:
+					return lib.formatColumn(val, opts);
+				} else {
+					// Clean up the value
+					val = unformat(val);
+
+					// Choose which format to use for this value (pos, neg or zero):
+					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
+
+						// Format this value, push into formatted list and save the length:
+						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+
+					if (fVal.length > maxLength) maxLength = fVal.length;
+					return fVal;
+				}
+			});
+
+		// Pad each number in the list and send back the column of numbers:
+		return map(formatted, function(val, i) {
+			// Only if this is a string (not a nested array, which would have already been padded):
+			if (isString(val) && val.length < maxLength) {
+				// Depending on symbol position, pad after symbol or at index 0:
+				return padAfterSymbol ? val.replace(opts.symbol, opts.symbol+(new Array(maxLength - val.length + 1).join(" "))) : (new Array(maxLength - val.length + 1).join(" ")) + val;
+			}
+			return val;
+		});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export accounting for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `accounting` to the global object
+	if (true) {
+		if ( true && module.exports) {
+			exports = module.exports = lib;
+		}
+		exports.accounting = lib;
+	} else {}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
+
+
+/***/ }),
+
+/***/ "./node_modules/debounce/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/debounce/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
+
+
+/***/ }),
+
+/***/ "./node_modules/decode-uri-component/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/decode-uri-component/index.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
+}
+
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
+
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
+
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
+
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
+}
+
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
+
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
+
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/is-mobile/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/is-mobile/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = isMobile
+module.exports.isMobile = isMobile
+
+var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
+
+var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i
+
+function isMobile (opts) {
+  if (!opts) opts = {}
+  var ua = opts.ua
+  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent
+  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
+    ua = ua.headers['user-agent']
+  }
+  if (typeof ua !== 'string') return false
+
+  return opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua)
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/object-assign/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/object-assign/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/query-string/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/query-string/index.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var strictUriEncode = __webpack_require__(/*! strict-uri-encode */ "./node_modules/strict-uri-encode/index.js");
+var objectAssign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
+var decodeComponent = __webpack_require__(/*! decode-uri-component */ "./node_modules/decode-uri-component/index.js");
+
+function encoderForArrayFormat(opts) {
+	switch (opts.arrayFormat) {
+		case 'index':
+			return function (key, value, index) {
+				return value === null ? [
+					encode(key, opts),
+					'[',
+					index,
+					']'
+				].join('') : [
+					encode(key, opts),
+					'[',
+					encode(index, opts),
+					']=',
+					encode(value, opts)
+				].join('');
+			};
+
+		case 'bracket':
+			return function (key, value) {
+				return value === null ? encode(key, opts) : [
+					encode(key, opts),
+					'[]=',
+					encode(value, opts)
+				].join('');
+			};
+
+		default:
+			return function (key, value) {
+				return value === null ? encode(key, opts) : [
+					encode(key, opts),
+					'=',
+					encode(value, opts)
+				].join('');
+			};
+	}
+}
+
+function parserForArrayFormat(opts) {
+	var result;
+
+	switch (opts.arrayFormat) {
+		case 'index':
+			return function (key, value, accumulator) {
+				result = /\[(\d*)\]$/.exec(key);
+
+				key = key.replace(/\[\d*\]$/, '');
+
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				}
+
+				if (accumulator[key] === undefined) {
+					accumulator[key] = {};
+				}
+
+				accumulator[key][result[1]] = value;
+			};
+
+		case 'bracket':
+			return function (key, value, accumulator) {
+				result = /(\[\])$/.exec(key);
+				key = key.replace(/\[\]$/, '');
+
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				} else if (accumulator[key] === undefined) {
+					accumulator[key] = [value];
+					return;
+				}
+
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+
+		default:
+			return function (key, value, accumulator) {
+				if (accumulator[key] === undefined) {
+					accumulator[key] = value;
+					return;
+				}
+
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+	}
+}
+
+function encode(value, opts) {
+	if (opts.encode) {
+		return opts.strict ? strictUriEncode(value) : encodeURIComponent(value);
+	}
+
+	return value;
+}
+
+function keysSorter(input) {
+	if (Array.isArray(input)) {
+		return input.sort();
+	} else if (typeof input === 'object') {
+		return keysSorter(Object.keys(input)).sort(function (a, b) {
+			return Number(a) - Number(b);
+		}).map(function (key) {
+			return input[key];
+		});
+	}
+
+	return input;
+}
+
+function extract(str) {
+	var queryStart = str.indexOf('?');
+	if (queryStart === -1) {
+		return '';
+	}
+	return str.slice(queryStart + 1);
+}
+
+function parse(str, opts) {
+	opts = objectAssign({arrayFormat: 'none'}, opts);
+
+	var formatter = parserForArrayFormat(opts);
+
+	// Create an object with no prototype
+	// https://github.com/sindresorhus/query-string/issues/47
+	var ret = Object.create(null);
+
+	if (typeof str !== 'string') {
+		return ret;
+	}
+
+	str = str.trim().replace(/^[?#&]/, '');
+
+	if (!str) {
+		return ret;
+	}
+
+	str.split('&').forEach(function (param) {
+		var parts = param.replace(/\+/g, ' ').split('=');
+		// Firefox (pre 40) decodes `%3D` to `=`
+		// https://github.com/sindresorhus/query-string/pull/37
+		var key = parts.shift();
+		var val = parts.length > 0 ? parts.join('=') : undefined;
+
+		// missing `=` should be `null`:
+		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+		val = val === undefined ? null : decodeComponent(val);
+
+		formatter(decodeComponent(key), val, ret);
+	});
+
+	return Object.keys(ret).sort().reduce(function (result, key) {
+		var val = ret[key];
+		if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
+			// Sort object keys, not values
+			result[key] = keysSorter(val);
+		} else {
+			result[key] = val;
+		}
+
+		return result;
+	}, Object.create(null));
+}
+
+exports.extract = extract;
+exports.parse = parse;
+
+exports.stringify = function (obj, opts) {
+	var defaults = {
+		encode: true,
+		strict: true,
+		arrayFormat: 'none'
+	};
+
+	opts = objectAssign(defaults, opts);
+
+	if (opts.sort === false) {
+		opts.sort = function () {};
+	}
+
+	var formatter = encoderForArrayFormat(opts);
+
+	return obj ? Object.keys(obj).sort(opts.sort).map(function (key) {
+		var val = obj[key];
+
+		if (val === undefined) {
+			return '';
+		}
+
+		if (val === null) {
+			return encode(key, opts);
+		}
+
+		if (Array.isArray(val)) {
+			var result = [];
+
+			val.slice().forEach(function (val2) {
+				if (val2 === undefined) {
+					return;
+				}
+
+				result.push(formatter(key, val2, result.length));
+			});
+
+			return result.join('&');
+		}
+
+		return encode(key, opts) + '=' + encode(val, opts);
+	}).filter(function (x) {
+		return x.length > 0;
+	}).join('&') : '';
+};
+
+exports.parseUrl = function (str, opts) {
+	return {
+		url: str.split('?')[0] || '',
+		query: parse(extract(str), opts)
+	};
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/strict-uri-encode/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/strict-uri-encode/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
+
+/***/ }),
+
+/***/ 4:
+/*!*******************************************!*\
+  !*** multi ./assets/babel/admin/admin.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /web/www/awebooking.local/wp-content/plugins/awebooking/assets/babel/admin/admin.js */"./assets/babel/admin/admin.js");
+
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["jQuery"]; }());
+
+/***/ })
+
+/******/ })));
+//# sourceMappingURL=admin.js.map
