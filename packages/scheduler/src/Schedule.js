@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { momentString } from 'react-moment-proptypes';
-import { AutoSizer } from 'react-virtualized';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import { range } from './utils/dates';
 import Calendar from './Calendar';
 import Day from './Day';

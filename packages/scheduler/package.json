@@ -22,9 +22,9 @@
   "react-native": "src/index",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@wordpress/components": "7.4.0",
     "@awebooking/components": "^0.1",
     "clsx": "^1.0.4",
+    "moment": "^2.24.0",
     "lodash": "4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

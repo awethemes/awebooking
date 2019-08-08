@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MomentPropTypes from 'react-moment-proptypes';
+import moment from 'moment';
 
 export default class Day extends React.Component {
   static propTypes = {

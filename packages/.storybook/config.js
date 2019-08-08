@@ -3,6 +3,7 @@ import { withInfo } from '@storybook/addon-info';
 
 import '@wordpress/components/build-style/style.css';
 import '../components/src/styles.scss';
+import '../scheduler/src/style.scss';
 
 // automatically import all files ending in *.stories.js
 const req = require.context('../components', true, /\.stories\.js$/);

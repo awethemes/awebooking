@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function DayWrapper({
   className,
   columns,
@@ -11,7 +13,7 @@ export default function DayWrapper({
   rowData,
   style,
 }) {
-  let a11yProps = {'aria-rowindex': index + 1};
+  let a11yProps = { 'aria-rowindex': index + 1 };
 
   if (
     onRowClick ||
@@ -24,25 +26,25 @@ export default function DayWrapper({
     a11yProps.tabIndex = 0;
 
     if (onRowClick) {
-      a11yProps.onClick = event => onRowClick({event, index, rowData});
+      a11yProps.onClick = event => onRowClick({ event, index, rowData });
     }
 
     if (onRowDoubleClick) {
       a11yProps.onDoubleClick = event =>
-        onRowDoubleClick({event, index, rowData});
+        onRowDoubleClick({ event, index, rowData });
     }
 
     if (onRowMouseOut) {
-      a11yProps.onMouseOut = event => onRowMouseOut({event, index, rowData});
+      a11yProps.onMouseOut = event => onRowMouseOut({ event, index, rowData });
     }
 
     if (onRowMouseOver) {
-      a11yProps.onMouseOver = event => onRowMouseOver({event, index, rowData});
+      a11yProps.onMouseOver = event => onRowMouseOver({ event, index, rowData });
     }
 
     if (onRowRightClick) {
       a11yProps.onContextMenu = event =>
-        onRowRightClick({event, index, rowData});
+        onRowRightClick({ event, index, rowData });
     }
   }
 

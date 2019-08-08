@@ -1,3 +1,695 @@
+// Variables
+$schedule-color:               #2196f3;
+$schedule-hover-bg:            #eaf7ff;
+$schedule-sidebar-width:       320px;
+$schedule-item-width:          60px;
+$schedule-item-height:         60px;
+$schedule-nested-item-height:  35px;
+$schedule-border-color:        #eee;
+$schedule-border-color2:       #ccc;
+
+/* Schedule Layout */
+.scheduler {
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(#000, 0.1);
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  .aficon,
+  .dashicons {
+    width: auto;
+    height: auto;
+    display: inline-block;
+
+    text-decoration: none;
+    vertical-align: middle;
+  }
+}
+
+.scheduler-flex {
+  display: flex;
+}
+
+.scheduler-flexspace {
+  flex-grow: 1;
+}
+
+.scheduler-flex--center {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.scheduler--empty {
+  padding: 1rem;
+  margin-top: 1rem;
+
+  p {
+    color: #666;
+    font-size: 16px;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  i {
+    font-size: 3rem;
+    background: #f7f7f7;
+    line-height: 72px;
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+
+  span {
+    display: block;
+  }
+}
+
+// Main layouts
+.scheduler__header,
+.scheduler__container {
+  display: flex;
+}
+
+.scheduler__header {
+  height: 60px;
+  border-bottom: solid 1px $schedule-border-color2;
+  align-items: center;
+}
+
+.scheduler__header-aside,
+.scheduler__aside {
+  flex: 0 0 $schedule-sidebar-width;
+  max-width: $schedule-sidebar-width;
+}
+
+.scheduler__main,
+.scheduler__header-toolbar {
+  flex: 1 1 0%;
+}
+
+.scheduler__aside {
+  box-shadow: 3px 0px 0 rgba(0, 0, 0, 0.03);
+  border-right: solid 1px $schedule-border-color2;
+  position: relative;
+  z-index: 110;
+
+  ul,
+  li {
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.scheduler__main {
+  overflow-y: hidden !important;
+  overflow-x: visible !important;
+}
+
+// Childs of .scheduler__aside
+.scheduler__aside-heading {
+  top: 0;
+  left: 0;
+  position: absolute;
+
+  width: 100%;
+  height: $schedule-item-height;
+  border-bottom: solid 1px $schedule-border-color2;
+
+  > h2,
+  > h3 {
+    font-size: 16px;
+    font-weight: normal;
+
+    margin: 0;
+    padding: 0 1.5em;
+    line-height: $schedule-item-height;
+  }
+}
+
+.scheduler__menus {
+  padding-top: $schedule-item-height !important;
+}
+
+.scheduler__menu {
+  display: flex;
+  align-items: center;
+
+  padding: 8px 1.5em;
+  position: relative;
+  height: $schedule-item-height;
+  border-bottom: solid 1px $schedule-border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .aficon {
+    color: #666;
+    font-size: 11px;
+    text-align: center;
+    background-color: #eee;
+
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 50%;
+    margin-right: 1em;
+  }
+}
+
+.scheduler__menu > .scheduler__nav-actions {
+  top: auto;
+  right: 1em;
+  position: absolute;
+
+  opacity: 0;
+  visibility: hidden;
+}
+.scheduler__menu:hover > .scheduler__nav-actions {
+  opacity: 1;
+  visibility: visible;
+}
+
+// Childs of .scheduler__main
+.scheduler__heading {
+}
+
+.scheduler__body {
+  z-index: 100;
+  position: relative;
+}
+
+// Row and columns
+.scheduler__row {
+  flex: 1 1 0%;
+  display: flex;
+  position: relative;
+  height: $schedule-item-height;
+}
+
+.scheduler__days {
+  display: flex;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 110;
+}
+
+.scheduler__events {
+  flex: 1 1 0%;
+  pointer-events: none;
+}
+
+.scheduler__events-row {
+  display: flex;
+  z-index: 115;
+  position: relative;
+  overflow: hidden;
+}
+
+.scheduler__column {
+  flex: 1 1 0%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+
+  width: $schedule-item-width;
+  height: $schedule-item-height;
+  min-width: $schedule-item-width;
+}
+
+.scheduler__days .scheduler__column,
+.scheduler__heading .scheduler__column {
+  font-size: 12px;
+  border-right: 1px solid $schedule-border-color;
+  border-bottom: 1px solid $schedule-border-color;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &.lastmonth {
+    border-right-color: $schedule-border-color2;
+  }
+
+  &.weekend {
+    background-color: #fafafa;
+  }
+
+  &.today {
+    background-color: #fffded;
+  }
+}
+
+.scheduler__heading .scheduler__column {
+  padding-top: 12px;
+  border-bottom: solid 1px $schedule-border-color2;
+
+  .day,
+  .weekday {
+    display: block;
+    text-align: center;
+  }
+
+  .weekday {
+    color: #313131;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+}
+
+// Miscs
+.scheduler__legends {
+  padding: 0 1.5em;
+}
+
+.scheduler__toolbar {
+  padding-right: 1.5em;
+}
+
+.scheduler__datehover {
+  opacity: 0;
+  visibility: hidden;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 120;
+  position: absolute;
+
+  width: auto;
+  height: auto;
+  border: 1px solid rgba(56,153,236,.5);
+  pointer-events: none;
+
+  &:after,
+  &:before {
+    content: '';
+    display: block;
+    background-color: rgba(56,153,236,.5);
+
+    top: 50%;
+    left: 50%;
+    position: absolute;
+  }
+
+  &:before {
+    width: 1px;
+    height: 20px;
+    margin-top: -10px;
+  }
+
+  &:after {
+    width: 20px;
+    height: 1px;
+    margin-left: -10px;
+  }
+
+  .scheduler__date:hover > & {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.scheduler__month-label {
+  z-index: 150;
+  position: absolute;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #333;
+  background: #fff;
+  padding: 0 5px;
+  display: inline-block;
+  width: $schedule-item-width;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  .scheduler__column & {
+    top: 50px;
+    left: 0;
+    color: #ffffff;
+    margin-left: -1px;
+    background-color: #9E9E9E;
+  }
+
+  .scheduler__aside & {
+    top: 50px;
+    right: 0;
+  }
+}
+
+.scheduler__marker {
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 150;
+
+  width: $schedule-item-width;
+  height: $schedule-item-height;
+  min-width: $schedule-item-width;
+  pointer-events: none;
+
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-left: solid 2px #2196F3;
+  border-right: solid 2px #2196F3;
+  background-color: rgba(33, 150, 243, 0.25);
+
+  > span {
+    color: #333;
+    font-size: 12px;
+    font-weight: 700;
+    background: #fff;
+
+    left: 7px;
+    bottom: 7px;
+    position: absolute;
+
+    padding: 3px 9px;
+    display: inline-block;
+    border-radius: 15px;
+  }
+}
+
+.tippy-popper .scheduler__popper {
+  display: block !important;
+}
+
+.scheduler__actions {
+  margin: 0;
+  display: block;
+  text-align: left;
+  list-style: none;
+
+  > li {
+    margin: 0;
+    display: block;
+
+    & + li {
+      border-top: solid 1px #f1f1f1;
+    }
+  }
+
+  > li > a {
+    color: #666;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+
+    display: block;
+    position: relative;
+    padding: 10px 15px 10px 40px;
+    transition: all 0.2s ease;
+
+    &:focus {
+      z-index: 1;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .aficon,
+  .dashicons {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    border-radius: 50%;
+
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    background-color: #eee;
+
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    transition: all 0.1s ease;
+  }
+
+  a:hover > .aficon,
+  a:hover > .dashicons {
+    color: #fff;
+    background-color: #666;
+  }
+}
+
+.scheduler__legends {
+  > span {
+    width: 14px;
+    height: 14px;
+    font-size: 0;
+    float: left;
+
+    border: solid 1px rgba(#000, .15);
+    background-color: #eee;
+    border-radius: 2px;
+
+    margin-right: 7px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.scheduler__arrow {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  vertical-align: middle;
+
+  font-size: 0;
+  color: $schedule-color;
+
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+
+  &:hover {
+    background-color: $schedule-hover-bg;
+  }
+
+  &:focus,
+  &:active {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .aficon,
+  .dashicons {
+    font-size: 16px;
+  }
+}
+
+.scheduler__datepicker > input {
+  color: #616161;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+
+  width: 180px;
+  height: 36px;
+  line-height: 36px;
+
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  &[readonly] {
+    opacity: 1 !important;
+  }
+}
+
+// Nested scheduler.
+.nested-scheduler {
+  .scheduler__marker,
+  .scheduler__submenu > .scheduler__menu,
+  .scheduler__section > .scheduler__row,
+  .scheduler__section .scheduler__column {
+    height: $schedule-nested-item-height !important;
+  }
+
+  .scheduler__submenu .scheduler__menu {
+    padding-left: 52px;
+  }
+
+  .scheduler__menus > li > .scheduler__menu,
+  .scheduler__body > .scheduler__row .scheduler__column,
+  .scheduler__section > .scheduler__row:last-child .scheduler__column {
+    border-bottom-color: $schedule-border-color2;
+  }
+
+  .scheduler__menu:last-child {
+    border-bottom: solid 1px $schedule-border-color2;
+  }
+
+  .scheduler__menus > li:last-child .scheduler__menu:last-child {
+    border-bottom: none;
+  }
+}
+
+// Extra css
+.scheduler__row--divider .scheduler-flex--center {
+  background-color: rgba(#eee, 0.25);
+}
+
+.scheduler__rate-amount {
+  color: #444;
+  font-size: 11px;
+  font-weight: 500;
+
+  width: 100%;
+  padding: 5px 7px;
+  text-align: right;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+  position: absolute;
+
+  &.stateup {
+    color: #1565c0;
+  }
+
+  &.statedown {
+    color: #d40e00;
+  }
+}
+
+.scheduler__state-event,
+.scheduler__booking-event {
+  top: 0;
+  left: 0;
+  z-index: 150;
+  position: absolute;
+  height: 100%;
+  background: rgba(#000, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+[dir="rtl"] .scheduler__state-event,
+[dir="rtl"] .scheduler__booking-event  {
+  position: relative !important;
+}
+
+.scheduler__state-event.unavailable {
+  color: #444;
+  background: url('./img/blocked-pattern.png') rgba(black, .01);
+
+  &:hover { background-color: rgba(black, .03); }
+}
+
+.scheduler__state-event.sync {
+  background: url('./img/blocked-pattern.png') rgba(154, 222, 253, 0.5);
+}
+
+.scheduler__booking-event {
+  &.pending,
+  &.awebooking-pending {
+    color: darken(#ffc107, 25%);
+    background-color: rgba(#ffc107, 0.5);
+
+    &:hover { background-color: rgba(#ffc107, 0.7); }
+  }
+
+  &.inprocess,
+  &.awebooking-inprocess {
+    background-color: rgba(#607d8b, 0.5);
+
+    &:hover { background-color: rgba(#607d8b, 0.4); }
+  }
+
+  &.on-hold,
+  &.awebooking-on-hold {
+    background-color: rgba(#673ab7, 0.4);
+
+    &:hover { background-color: rgba(#673ab7, 0.5); }
+  }
+
+  &.deposit,
+  &.awebooking-deposit {
+    background-color: rgba(#9c27b0, 0.4);
+
+    &:hover { background-color: rgba(#9c27b0, 0.4); }
+  }
+
+  &.completed,
+  &.awebooking-completed {
+    color: darken(#03a9f4, 27%);
+    background-color: rgba(#03a9f4, 0.4);
+
+    &:hover { background-color: rgba(#03a9f4, 0.5); }
+  }
+
+  &.checked-in,
+  &.awebooking-checked-in {
+    color: darken(#cddc39, 30%);
+    background-color: rgba(#cddc39, 0.4);
+
+    &:hover { background-color: rgba(#cddc39, 0.5); }
+  }
+
+  &.checked-out,
+  &.awebooking-checked-out {
+    color: darken(#8bc34a, 30%);
+    background-color: rgba(#8bc34a, 0.4);
+
+    &:hover { background-color: rgba(#8bc34a, 0.5); }
+  }
+}
+
+.scheduler-inline-text {
+  display: block;
+  height: 100%;
+  line-height: 35px;
+  padding: 0 7px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+
+  &:hover,
+  &:focus {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: none;
+  }
+}
+
 /* Table default theme */
 .ReactVirtualized__Table {
 }
