@@ -52,7 +52,7 @@ class Simple_Resolver implements Resolver {
 	 * @return mixed
 	 */
 	public function call_controller( $controller, array $parameters ) {
-		if ( false !== strpos( $controller, '@' ) ) {
+		if ( false === strpos( $controller, '@' ) ) {
 			$controller .= '@__invoke';
 		}
 
