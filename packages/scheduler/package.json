@@ -1,0 +1,38 @@
+{
+  "name": "@awebooking/scheduler",
+  "version": "0.1.0",
+  "description": "UI scheduler for AweBooking.",
+  "author": "awethemes",
+  "license": "GPL-3.0-or-later",
+  "keywords": [
+    "wordpress",
+    "awebooking",
+    "scheduler"
+  ],
+  "homepage": "https://github.com/awethemes/awebooking/tree/master/packages/scheduler/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awethemes/awebooking.git"
+  },
+  "bugs": {
+    "url": "https://github.com/awethemes/awebooking/issues"
+  },
+  "main": "build/index.js",
+  "module": "build-module/index.js",
+  "react-native": "src/index",
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@wordpress/components": "7.4.0",
+    "@awebooking/components": "^0.1",
+    "clsx": "^1.0.4",
+    "lodash": "4.17.15",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-virtualized": "^9.21.1",
+    "react-moment-proptypes": "^1.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
