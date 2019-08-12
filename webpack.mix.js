@@ -1,4 +1,4 @@
-const mix = require('laravel-mix')
+const mix = require('laravel-mix');
 
 /**
  * The webpack externals library.
@@ -24,16 +24,16 @@ const externals = {
   '@wordpress/editor': { this: ['wp', 'editor'] },
   '@wordpress/i18n': { this: ['wp', 'i18n'] },
   '@wordpress/url': { this: ['wp', 'url'] },
-}
+};
 
 /**
  * File paths.
  */
-const glob = require('glob')
+const glob = require('glob');
 
-const styles = glob.sync('assets/scss/*.scss')
-const scripts = glob.sync('assets/babel/*.js')
-const adminScripts = glob.sync('assets/babel/admin/*.js')
+const styles = glob.sync('assets/scss/*.scss');
+const scripts = glob.sync('assets/babel/*.js');
+const adminScripts = glob.sync('assets/babel/admin/*.js');
 
 /**
  * Styles and scripts
@@ -41,16 +41,13 @@ const adminScripts = glob.sync('assets/babel/admin/*.js')
 // styles.forEach(name => mix.sass(name, 'assets/css'))
 
 // scripts.forEach(name => mix.js(name, 'assets/js'))
-
 // adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
 
 // mix.react('assets/babel/calendar.jsx', 'assets/js')
-
-// mix.sass('assets/scss/scheduler.scss', 'assets/css')
-mix.react('assets/babel/scheduler/index.jsx', 'assets/js/scheduler.js')
+mix.react('resources/js/dashboard/index.js', 'assets/js/dashboard.js');
 
 if (mix.inProduction()) {
-  mix.version()
+  mix.version();
 }
 
 /**
@@ -61,22 +58,22 @@ if (mix.inProduction()) {
 mix.browserSync({
   proxy: process.env.MIX_BROWSER_SYNC_PROXY || 'awebooking.local',
   // files: ['assets/js/**/*.js', 'assets/css/*.css']
-})
+});
 
 mix.webpackConfig({
   externals,
   output: {
     libraryTarget: 'this',
-  }
-})
+  },
+});
 
 mix.options({
   processCssUrls: false,
   postCss: [
-    require('css-mqpacker')()
-  ]
-})
+    require('css-mqpacker')(),
+  ],
+});
 
-mix.setPublicPath('./')
-mix.sourceMaps(false, 'source-map')
-mix.disableSuccessNotifications()
+mix.setPublicPath('assets');
+mix.sourceMaps(false, 'source-map');
+mix.disableSuccessNotifications();

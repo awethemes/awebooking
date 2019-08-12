@@ -1,1 +1,1 @@
-<div class="awebooking-root"></div>
+<div id="awebooking-root"></div>

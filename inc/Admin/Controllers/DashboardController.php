@@ -9,6 +9,12 @@ class DashboardController extends Controller
 	 */
 	public function __invoke()
 	{
+		add_action('admin_enqueue_scripts', function () {
+			$deps = ['wp-element', 'wp-components'];
+
+			wp_enqueue_script('awebooking-dashboard', abrs_asset_url('js/dashboard.js'), $deps, time(), true);
+		});
+
 		return $this->response('dashboard');
 	}
 }

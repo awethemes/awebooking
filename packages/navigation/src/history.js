@@ -1,12 +1,7 @@
-/** @format */
-/**
- * External dependencies
- */
-import { createBrowserHistory } from 'history';
 import { parse } from 'qs';
+import { createBrowserHistory } from 'history';
 
 // See https://github.com/ReactTraining/react-router/blob/master/FAQ.md#how-do-i-access-the-history-object-outside-of-components
-
 let _history;
 
 /**
@@ -21,43 +16,46 @@ let _history;
  * @returns {object} React-router history object with `get location` modified.
  */
 function getHistory() {
-	if ( ! _history ) {
-		const path = document.location.pathname;
-		const browserHistory = createBrowserHistory( {
-			basename: path.substring( 0, path.lastIndexOf( '/' ) ),
-		} );
-		_history = {
-			get length() {
-				return browserHistory.length;
-			},
-			get action() {
-				return browserHistory.action;
-			},
-			get location() {
-				const { location } = browserHistory;
-				const query = parse( location.search.substring( 1 ) );
-				const pathname = query.path || '/';
+  if (!_history) {
+    const path = document.location.pathname;
 
-				return {
-					...location,
-					pathname,
-				};
-			},
-			createHref: ( ...args ) => browserHistory.createHref.apply( browserHistory, args ),
-			push: ( ...args ) => browserHistory.push.apply( browserHistory, args ),
-			replace: ( ...args ) => browserHistory.replace.apply( browserHistory, args ),
-			go: ( ...args ) => browserHistory.go.apply( browserHistory, args ),
-			goBack: ( ...args ) => browserHistory.goBack.apply( browserHistory, args ),
-			goForward: ( ...args ) => browserHistory.goForward.apply( browserHistory, args ),
-			block: ( ...args ) => browserHistory.block.apply( browserHistory, args ),
-			listen: function( listener ) {
-				return browserHistory.listen( () => {
-					listener( this.location, this.action );
-				} );
-			},
-		};
-	}
-	return _history;
+    const browserHistory = createBrowserHistory({
+      basename: path.substring(0, path.lastIndexOf('/')),
+    });
+
+    _history = {
+      get length() {
+        return browserHistory.length;
+      },
+      get action() {
+        return browserHistory.action;
+      },
+      get location() {
+        const { location } = browserHistory;
+        const query = parse(location.search.substring(1));
+        const pathname = query.path || '/';
+
+        return {
+          ...location,
+          pathname,
+        };
+      },
+      createHref: (...args) => browserHistory.createHref.apply(browserHistory, args),
+      push: (...args) => browserHistory.push.apply(browserHistory, args),
+      replace: (...args) => browserHistory.replace.apply(browserHistory, args),
+      go: (...args) => browserHistory.go.apply(browserHistory, args),
+      goBack: (...args) => browserHistory.goBack.apply(browserHistory, args),
+      goForward: (...args) => browserHistory.goForward.apply(browserHistory, args),
+      block: (...args) => browserHistory.block.apply(browserHistory, args),
+      listen: function(listener) {
+        return browserHistory.listen(() => {
+          listener(this.location, this.action);
+        });
+      },
+    };
+  }
+
+  return _history;
 }
 
 export { getHistory };
