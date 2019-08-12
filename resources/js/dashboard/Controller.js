@@ -1,7 +1,7 @@
 import React, { createElement } from 'react';
 import { isEqual, last, omit } from 'lodash';
-import { getPersistedQuery } from '@awebooking/navigation';
-import { parse } from 'qs';
+import { getHistory, getPersistedQuery } from '@awebooking/navigation';
+import { parse, stringify } from 'qs';
 
 const { document } = window;
 

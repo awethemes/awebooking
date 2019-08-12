@@ -33,7 +33,7 @@ function getHistory() {
       get location() {
         const { location } = browserHistory;
         const query = parse(location.search.substring(1));
-        const pathname = query.path || '/';
+        const pathname = query.awebooking.replace('/dashboard', '') || '/';
 
         return {
           ...location,

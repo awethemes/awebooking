@@ -7294,7 +7294,7 @@ function getHistory() {
       get location() {
         var location = browserHistory.location;
         var query = Object(qs__WEBPACK_IMPORTED_MODULE_0__["parse"])(location.search.substring(1));
-        var pathname = query.path || '/';
+        var pathname = query.awebooking.replace('/dashboard', '') || '/';
         return _objectSpread({}, location, {
           pathname: pathname
         });
@@ -26315,7 +26315,7 @@ function (_React$Component) {
       var baseQuery = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["omit"])(this.getQuery(this.props.location.search), 'paged');
 
       if (prevQuery.paged > 1 && !Object(lodash__WEBPACK_IMPORTED_MODULE_1__["isEqual"])(prevBaseQuery, baseQuery)) {
-        getHistory().replace(getNewPath({
+        Object(_awebooking_navigation__WEBPACK_IMPORTED_MODULE_2__["getHistory"])().replace(getNewPath({
           paged: 1
         }));
       }
@@ -26378,13 +26378,13 @@ function updateLinkHref(item, nextQuery, excludedScreens) {
     var path = query.path || 'dashboard';
     var screen = path.replace('/analytics', '').replace('/', '');
     var isExcludedScreen = excludedScreens.includes(screen);
-    var href = 'admin.php?' + stringify(Object.assign(query, isExcludedScreen ? {} : nextQuery)); // Replace the href so you can see the url on hover.
+    var href = 'admin.php?' + Object(qs__WEBPACK_IMPORTED_MODULE_3__["stringify"])(Object.assign(query, isExcludedScreen ? {} : nextQuery)); // Replace the href so you can see the url on hover.
 
     item.href = href;
 
     item.onclick = function (e) {
       e.preventDefault();
-      getHistory().push(href);
+      Object(_awebooking_navigation__WEBPACK_IMPORTED_MODULE_2__["getHistory"])().push(href);
     };
   }
 } // Update's admin links in wp-admin menu
@@ -26660,20 +26660,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/hooks */ "./node_modules/@wordpress/hooks/build-module/index.js");
-/* harmony import */ var _dashboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dashboard */ "./resources/js/dashboard/dashboard/index.js");
+/* harmony import */ var _reports__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reports */ "./resources/js/dashboard/reports/index.js");
+/* harmony import */ var _dashboard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dashboard */ "./resources/js/dashboard/dashboard/index.js");
+
 
 
 
 var getPages = function getPages() {
   var pages = [];
   pages.push({
-    container: _dashboard__WEBPACK_IMPORTED_MODULE_2__["default"],
+    container: _dashboard__WEBPACK_IMPORTED_MODULE_3__["default"],
     path: '/',
     breadcrumbs: [Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Dashboard', 'awebooking')],
     wpOpenMenu: 'toplevel_page_awebooking'
   });
+  pages.push({
+    container: _reports__WEBPACK_IMPORTED_MODULE_2__["default"],
+    path: '/reports',
+    breadcrumbs: [Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Dashboard', 'awebooking'), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Reports', 'awebooking')]
+  });
   return Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])('awebooking_admin_pages', pages);
 };
+
+/***/ }),
+
+/***/ "./resources/js/dashboard/reports/index.js":
+/*!*************************************************!*\
+  !*** ./resources/js/dashboard/reports/index.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Reports; });
+function Reports() {
+  return React.createElement("div", null, React.createElement("h2", null, "Reports"));
+}
 
 /***/ }),
 
