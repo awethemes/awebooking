@@ -40,8 +40,8 @@ class Menu_Service_Provider extends Service_Provider {
 
 		add_menu_page( esc_html__( 'AweBooking', 'awebooking' ), esc_html__( 'AweBooking', 'awebooking' ), 'manage_awebooking', Constants::PARENT_MENU_SLUG, null, 'dashicons-calendar', '53.321' );
 
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Dashboard', 'awebooking' ), esc_html__( 'Dashboard', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/dashboard' );
 		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Reports', 'awebooking' ), esc_html__( 'Reports', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/dashboard/reports' );
-		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
 	}
 
 	/**
@@ -64,6 +64,8 @@ class Menu_Service_Provider extends Service_Provider {
 		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Settings', 'awebooking' ), esc_html__( 'Settings', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/settings' );
 
 		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'Tools', 'awebooking' ), esc_html__( 'Tools', 'awebooking' ), 'manage_awebooking_settings', 'admin.php?awebooking=/tools' );
+
+		add_submenu_page( Constants::PARENT_MENU_SLUG, esc_html__( 'About', 'awebooking' ), esc_html__( 'About', 'awebooking' ), 'manage_awebooking', 'admin.php?awebooking=/about' );
 	}
 
 	/**

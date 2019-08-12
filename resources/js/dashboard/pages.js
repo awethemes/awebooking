@@ -18,6 +18,7 @@ export const getPages = () => {
     container: Reports,
     path: '/reports',
     breadcrumbs: [__('Dashboard', 'awebooking'), __('Reports', 'awebooking')],
+    wpOpenMenu: 'toplevel_page_awebooking',
   });
 
   return applyFilters('awebooking_admin_pages', pages);

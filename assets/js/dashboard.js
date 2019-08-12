@@ -26677,7 +26677,8 @@ var getPages = function getPages() {
   pages.push({
     container: _reports__WEBPACK_IMPORTED_MODULE_2__["default"],
     path: '/reports',
-    breadcrumbs: [Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Dashboard', 'awebooking'), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Reports', 'awebooking')]
+    breadcrumbs: [Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Dashboard', 'awebooking'), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Reports', 'awebooking')],
+    wpOpenMenu: 'toplevel_page_awebooking'
   });
   return Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])('awebooking_admin_pages', pages);
 };
