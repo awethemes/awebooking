@@ -112,10 +112,10 @@ function abrs_timespan( $start_date, $end_date, $min_nights = 0, $strict = false
  * @return int
  */
 function abrs_days_in_month( $month, $year = 'this year' ) {
-	if ( ! is_int( $year ) ) {
-		$carbon = ( new Carbonate( $year ) )->month( $month );
+	if ( ! is_numeric( $year ) ) {
+		$carbon = ( new Carbonate( $year ) )->month( $month )->day( 1 );
 	} else {
-		$carbon = Carbonate::createFromDate( $year, $month );
+		$carbon = Carbonate::createFromDate( (int) $year, (int) $month, 1 );
 	}
 
 	// @codingStandardsIgnoreLine
