@@ -63,6 +63,8 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 
 		// Call the register controls.
 		$this->setup_fields();
+
+		do_action('abrs_init_form_'.$this->form_id, $this);
 	}
 
 	/**

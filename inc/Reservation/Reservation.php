@@ -163,9 +163,11 @@ class Reservation {
 			return;
 		}
 
+		$this->totals->calculate();
+
 		do_action( 'abrs_calculate_totals', $this );
 
-		$this->totals->calculate();
+		$this->totals->calculate_totals();
 
 		do_action( 'abrs_complete_calculate_totals', $this );
 	}

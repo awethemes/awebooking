@@ -97,8 +97,9 @@ class Search_Form extends Form {
 	 * Load a single component.
 	 *
 	 * @param string $name The template name without .php suffix.
+	 * @param string|null $namespace
 	 */
-	public function component( $name ) {
+	public function component( $name, $namespace = null ) {
 		$name = rtrim( $name, '.php' ) . '.php';
 
 		$template = 'search-form/' . $name;
@@ -109,6 +110,10 @@ class Search_Form extends Form {
 			if ( ! file_exists( abrs_locate_template( $template ) ) ) {
 				$template = 'search-form/default/' . $name;
 			}
+		}
+
+		if ($namespace) {
+			$template = $namespace.'::'.$template;
 		}
 
 		abrs_get_template( $template, $this->get_template_data() );
@@ -296,11 +301,14 @@ class Search_Form extends Form {
 	 * @return array
 	 */
 	protected function prepare_attributes( $name, $defaults = [] ) {
-		$attributes          = [];
-		$attributes['id']    = $this->id( $name );
-		$attributes['class'] = 'form-input abrs-searchbox__input abrs-searchbox__input--' . $name;
+		$attributes = [];
 
-		if ( $this->request->is_locked( $name ) ) {
+		$class = 'form-input abrs-searchbox__input abrs-searchbox__input--'.$name;
+
+		$attributes['id']    = $this->id($name);
+		$attributes['class'] = isset($defaults['class']) ? $class.' '.$defaults['class'] : $class;
+
+		if ($this->request->is_locked($name)) {
 			$attributes['readonly'] = 'readonly';
 		}
 

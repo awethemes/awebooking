@@ -52,8 +52,6 @@ class Totals {
 	}
 
 	/**
-	 * //
-	 *
 	 * @return \AweBooking\Reservation\Reservation
 	 */
 	public function get_reservation() {
@@ -87,20 +85,9 @@ class Totals {
 	 * @return void
 	 */
 	public function calculate() {
-		$this->prepare_calculate();
 		$this->calculate_rooms();
 		$this->calculate_services();
 		$this->calculate_fees();
-		$this->calculate_totals();
-	}
-
-	/**
-	 * Prepare calculate.
-	 *
-	 * @return void
-	 */
-	protected function prepare_calculate() {
-		// ...
 	}
 
 	/**
@@ -110,7 +97,7 @@ class Totals {
 	 *
 	 * @return void
 	 */
-	protected function calculate_rooms() {
+	public function calculate_rooms() {
 		$room_stays = $this->reservation->get_room_stays();
 
 		/* @var \AweBooking\Reservation\Item $room_stay */
@@ -151,7 +138,7 @@ class Totals {
 	 *
 	 * @return void
 	 */
-	protected function calculate_services() {
+	public function calculate_services() {
 		$services = $this->reservation->get_services();
 
 		$res_request = $this->reservation->get_previous_request();
@@ -184,7 +171,7 @@ class Totals {
 	 *
 	 * @return void
 	 */
-	protected function calculate_fees() {
+	public function calculate_fees() {
 		$this->reservation->calculate_fees();
 		$fees = $this->reservation->get_fees();
 
@@ -216,7 +203,7 @@ class Totals {
 	 *
 	 * @return void
 	 */
-	protected function calculate_totals() {
+	public function calculate_totals() {
 		$room_stays = $this->reservation->get_room_stays();
 		$this->set_total( 'discounts_total', $this->sum_items( $room_stays, 'discounted' ) );
 
@@ -248,7 +235,7 @@ class Totals {
 	 *
 	 * @return int|float
 	 */
-	protected function sum_items( $items, $key = 'total' ) {
+	public function sum_items( $items, $key = 'total' ) {
 		if ( $items->isEmpty() ) {
 			return 0;
 		}
@@ -267,7 +254,7 @@ class Totals {
 	 * @param  array $rates The rates.
 	 * @return array
 	 */
-	protected function filter_tax_rates( $rates ) {
+	public function filter_tax_rates( $rates ) {
 		return abrs_collect( $rates )
 			->map( function ( $rate ) {
 				return is_numeric( $rate ) ? abrs_get_tax_rate( $rate ) : $rate;
