@@ -349,17 +349,17 @@
 .CalendarDay__default {
   border: 1px solid #e4e7e7;
   color: #484848;
-  background: #fff;
+  background-color: #fff;
 }
 
 .CalendarDay__default:hover {
-  background: #e4e7e7;
+  background-color: #e4e7e7;
   border: 1px solid #e4e7e7;
   color: inherit;
 }
 
 .CalendarDay__hovered_offset {
-  background: #f4f5f5;
+  background-color: #f4f5f5 !important;
   border: 1px double #e4e7e7;
   color: inherit;
 }
@@ -375,19 +375,19 @@
 }
 
 .CalendarDay__blocked_minimum_nights {
-  background: #fff;
+  background-color: #fff;
   border: 1px solid #eceeee;
   color: #cacccd;
 }
 
 .CalendarDay__blocked_minimum_nights:active,
 .CalendarDay__blocked_minimum_nights:hover {
-  background: #fff;
+  background-color: #fff;
   color: #cacccd;
 }
 
 .CalendarDay__highlighted_calendar {
-  background: #ffe8bc;
+  background-color: #ffe8bc;
   color: #484848;
 }
 
@@ -1023,3 +1023,21 @@
   width: 15px;
   fill: #cacccd;
 }
+
+/*
+.CalendarDay {
+  position: relative;
+}
+
+.CalendarDay .CalendarDayWeekNumber {
+  position: absolute;
+  left: 0.2em;
+  top: 0;
+  font-size: 0.5em;
+  display: none;
+}
+
+.CalendarMonth_table tr td.CalendarDay:first-child .CalendarDayWeekNumber {
+  display: block;
+}
+*/

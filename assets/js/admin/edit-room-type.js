@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -253,4 +253,4 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 /***/ })
 
-/******/ });
+/******/ })));

@@ -1,5 +1,5 @@
-const glob = require('glob')
-const mix = require('laravel-mix')
+const glob = require('glob');
+const mix = require('laravel-mix');
 
 /**
  * The webpack externals library.
@@ -14,28 +14,30 @@ const externals = {
   'moment': 'moment',
   'lodash': 'lodash',
   'popper.js': 'Popper',
-}
+  '@wordpress/date': {this: ['wp', 'date']},
+  '@wordpress/hooks': {this: ['wp', 'hooks']},
+};
 
 /**
  * File paths.
  */
-const styles = glob.sync('assets/scss/*.scss')
-const scripts = glob.sync('assets/babel/*.js')
-const adminScripts = glob.sync('assets/babel/admin/*.js')
+const styles = glob.sync('assets/scss/*.scss');
+const scripts = glob.sync('assets/babel/*.js');
+const adminScripts = glob.sync('assets/babel/admin/*.js');
 
 /**
  * Styles and scripts
  */
-styles.forEach(name => mix.sass(name, 'assets/css'))
+styles.forEach(name => mix.sass(name, 'assets/css'));
 
-scripts.forEach(name => mix.js(name, 'assets/js'))
+scripts.forEach(name => mix.js(name, 'assets/js'));
 
-adminScripts.forEach(name => mix.js(name, 'assets/js/admin'))
+adminScripts.forEach(name => mix.js(name, 'assets/js/admin'));
 
-mix.react('assets/babel/calendar.jsx', 'assets/js')
+mix.react('assets/babel/calendar.jsx', 'assets/js');
 
 if (mix.inProduction()) {
-  mix.version()
+  mix.version();
 }
 
 /**
@@ -45,26 +47,27 @@ if (mix.inProduction()) {
  */
 mix.browserSync({
   proxy: process.env.MIX_BROWSER_SYNC_PROXY || 'awebooking.local',
-  files: ['assets/js/**/*.js', 'assets/css/*.css']
-})
+  files: ['assets/js/**/*.js', 'assets/css/*.css'],
+});
 
 mix.webpackConfig({
   externals,
   optimization: {
-    minimize: false
+    minimize: false,
   },
   output: {
-    pathinfo: false
-  }
-})
+    pathinfo: false,
+    libraryTarget: 'this',
+  },
+});
 
 mix.options({
   processCssUrls: false,
   postCss: [
-    require('css-mqpacker')()
-  ]
-})
+    require('css-mqpacker')(),
+  ],
+});
 
-mix.setPublicPath('./')
-mix.sourceMaps(false, 'source-map')
-mix.disableSuccessNotifications()
+mix.setPublicPath('./');
+mix.sourceMaps(false, 'source-map');
+mix.disableSuccessNotifications();

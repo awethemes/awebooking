@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -1171,8 +1171,8 @@ var Timer = (
 /***/ "xeH2":
 /***/ (function(module, exports) {
 
-module.exports = jQuery;
+(function() { module.exports = this["jQuery"]; }());
 
 /***/ })
 
-/******/ });
+/******/ })));

@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -100,6 +100,63 @@ exports["default"] = getActiveElement;
 function getActiveElement() {
   return typeof document !== 'undefined' && document.activeElement;
 }
+
+/***/ }),
+
+/***/ "+D8X":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "DIRECTIONS", {
+  enumerable: true,
+  get: function get() {
+    return _reactWithDirection.DIRECTIONS;
+  }
+});
+exports["default"] = void 0;
+
+var _react = __webpack_require__("cDcd");
+
+var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
+
+var _reactWithDirection = __webpack_require__("fHbK");
+
+function detectAndCreateContext(defaultValue) {
+  if (_react.createContext) {
+    return (0, _react.createContext)(defaultValue);
+  }
+
+  return {
+    Provider: function Provider() {
+      throw new ReferenceError('WithStylesContext requires React 16.3 or later');
+    },
+    Consumer: function Consumer() {
+      throw new ReferenceError('WithStylesContext requires React 16.3 or later');
+    }
+  };
+}
+
+var WithStylesContext = detectAndCreateContext({
+  stylesInterface: null,
+  stylesTheme: null,
+  direction: null
+});
+WithStylesContext.Provider.propTypes = {
+  stylesInterface: _propTypes["default"].object,
+  // eslint-disable-line react/forbid-prop-types
+  stylesTheme: _propTypes["default"].object,
+  // eslint-disable-line react/forbid-prop-types
+  direction: _propTypes["default"].oneOf([_reactWithDirection.DIRECTIONS.LTR, _reactWithDirection.DIRECTIONS.RTL])
+};
+var _default = WithStylesContext;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -238,6 +295,8 @@ module.exports = exports['default'];
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -246,8 +305,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOf([_constants.ANCHOR_LEFT, _constants.ANCHOR_RIGHT]);
 
@@ -258,11 +315,20 @@ exports["default"] = _default;
 /***/ "030x":
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var styleInterface = void 0;
-var styleTheme = void 0;
+exports._getInterface = _getInterface;
+exports._getTheme = get;
+exports["default"] = void 0;
+var styleInterface;
+var styleTheme;
+var START_MARK = 'react-with-styles.resolve.start';
+var END_MARK = 'react-with-styles.resolve.end';
+var MEASURE_MARK = "\uD83D\uDC69\u200D\uD83C\uDFA8 [resolve]";
 
 function registerTheme(theme) {
   styleTheme = theme;
@@ -294,7 +360,7 @@ function get() {
 function resolve() {
   if (false) {}
 
-  for (var _len = arguments.length, styles = Array(_len), _key = 0; _key < _len; _key++) {
+  for (var _len = arguments.length, styles = new Array(_len), _key = 0; _key < _len; _key++) {
     styles[_key] = arguments[_key];
   }
 
@@ -306,7 +372,7 @@ function resolve() {
 }
 
 function resolveLTR() {
-  for (var _len2 = arguments.length, styles = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+  for (var _len2 = arguments.length, styles = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
     styles[_key2] = arguments[_key2];
   }
 
@@ -318,7 +384,7 @@ function resolveLTR() {
 }
 
 function resolveRTL() {
-  for (var _len3 = arguments.length, styles = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+  for (var _len3 = arguments.length, styles = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
     styles[_key3] = arguments[_key3];
   }
 
@@ -333,9 +399,16 @@ function flush() {
   if (styleInterface.flush) {
     styleInterface.flush();
   }
-}
+} // Exported until we deprecate this API completely
+// eslint-disable-next-line no-underscore-dangle
 
-exports['default'] = {
+
+function _getInterface() {
+  return styleInterface;
+} // Exported until we deprecate this API completely
+
+
+var _default = {
   registerTheme: registerTheme,
   registerInterface: registerInterface,
   create: createLTR,
@@ -347,6 +420,7 @@ exports['default'] = {
   resolveRTL: resolveRTL,
   flush: flush
 };
+exports["default"] = _default;
 
 /***/ }),
 
@@ -356,14 +430,14 @@ exports['default'] = {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = getNumberOfCalendarMonthWeeks;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getBlankDaysBeforeFirstDay(firstDayOfMonth, firstDayOfWeek) {
   var weekDayDiff = firstDayOfMonth.day() - firstDayOfWeek;
@@ -385,6 +459,8 @@ function getNumberOfCalendarMonthWeeks(month) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -392,11 +468,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var LeftArrow = function LeftArrow(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-    d: "M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7l-249.1-249c-11-11-11-21 0-32l249.1-249.1c21-21.1 53 10.9 32 32z"
+    d: "M336 275L126 485h806c13 0 23 10 23 23s-10 23-23 23H126l210 210c11 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7L55 524c-11-11-11-21 0-32l249-249c21-22 53 10 32 32z"
   }));
 };
 
@@ -415,12 +489,22 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.BOTTOM_RIGHT = exports.TOP_RIGHT = exports.TOP_LEFT = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -438,17 +522,9 @@ var _KeyboardShortcutRow = _interopRequireDefault(__webpack_require__("zN8g"));
 
 var _CloseButton = _interopRequireDefault(__webpack_require__("xEte"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var TOP_LEFT = 'top-left';
 exports.TOP_LEFT = TOP_LEFT;
@@ -456,7 +532,7 @@ var TOP_RIGHT = 'top-right';
 exports.TOP_RIGHT = TOP_RIGHT;
 var BOTTOM_RIGHT = 'bottom-right';
 exports.BOTTOM_RIGHT = BOTTOM_RIGHT;
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   block: false,
   buttonLocation: BOTTOM_RIGHT,
@@ -502,12 +578,11 @@ function getKeyboardShortcuts(phrases) {
 var DayPickerKeyboardShortcuts =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DayPickerKeyboardShortcuts, _ref);
-
+  (0, _inheritsLoose2["default"])(DayPickerKeyboardShortcuts, _ref);
   var _proto = DayPickerKeyboardShortcuts.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DayPickerKeyboardShortcuts() {
@@ -520,11 +595,11 @@ function (_ref) {
     _this = _ref.call.apply(_ref, [this].concat(args)) || this;
     var phrases = _this.props.phrases;
     _this.keyboardShortcuts = getKeyboardShortcuts(phrases);
-    _this.onShowKeyboardShortcutsButtonClick = _this.onShowKeyboardShortcutsButtonClick.bind(_assertThisInitialized(_this));
-    _this.setShowKeyboardShortcutsButtonRef = _this.setShowKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_this));
-    _this.setHideKeyboardShortcutsButtonRef = _this.setHideKeyboardShortcutsButtonRef.bind(_assertThisInitialized(_this));
-    _this.handleFocus = _this.handleFocus.bind(_assertThisInitialized(_this));
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
+    _this.onShowKeyboardShortcutsButtonClick = _this.onShowKeyboardShortcutsButtonClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setShowKeyboardShortcutsButtonRef = _this.setShowKeyboardShortcutsButtonRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setHideKeyboardShortcutsButtonRef = _this.setHideKeyboardShortcutsButtonRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onKeyDown = _this.onKeyDown.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -604,6 +679,7 @@ function (_ref) {
     var _this$props = this.props,
         block = _this$props.block,
         buttonLocation = _this$props.buttonLocation,
+        css = _this$props.css,
         showKeyboardShortcutsPanel = _this$props.showKeyboardShortcutsPanel,
         closeKeyboardShortcutsPanel = _this$props.closeKeyboardShortcutsPanel,
         styles = _this$props.styles,
@@ -618,30 +694,30 @@ function (_ref) {
       ref: this.setShowKeyboardShortcutsButtonRef,
       onClick: this.onShowKeyboardShortcutsButtonClick,
       ariaLabel: toggleButtonText
-    }), renderKeyboardShortcutsButton || _react["default"].createElement("button", _extends({
+    }), renderKeyboardShortcutsButton || _react["default"].createElement("button", (0, _extends2["default"])({
       ref: this.setShowKeyboardShortcutsButtonRef
-    }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
+    }, css(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
       type: "button",
       "aria-label": toggleButtonText,
       onClick: this.onShowKeyboardShortcutsButtonClick,
       onMouseUp: function onMouseUp(e) {
         e.currentTarget.blur();
       }
-    }), _react["default"].createElement("span", (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_showSpan, bottomRight && styles.DayPickerKeyboardShortcuts_showSpan__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_showSpan__topRight, topLeft && styles.DayPickerKeyboardShortcuts_showSpan__topLeft), "?")), showKeyboardShortcutsPanel && _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_panel), {
+    }), _react["default"].createElement("span", css(styles.DayPickerKeyboardShortcuts_showSpan, bottomRight && styles.DayPickerKeyboardShortcuts_showSpan__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_showSpan__topRight, topLeft && styles.DayPickerKeyboardShortcuts_showSpan__topLeft), "?")), showKeyboardShortcutsPanel && _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPickerKeyboardShortcuts_panel), {
       role: "dialog",
       "aria-labelledby": "DayPickerKeyboardShortcuts_title",
       "aria-describedby": "DayPickerKeyboardShortcuts_description"
-    }), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_title), {
+    }), _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPickerKeyboardShortcuts_title), {
       id: "DayPickerKeyboardShortcuts_title"
-    }), phrases.keyboardShortcuts), _react["default"].createElement("button", _extends({
+    }), phrases.keyboardShortcuts), _react["default"].createElement("button", (0, _extends2["default"])({
       ref: this.setHideKeyboardShortcutsButtonRef
-    }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_close), {
+    }, css(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_close), {
       type: "button",
       tabIndex: "0",
       "aria-label": phrases.hideKeyboardShortcutsPanel,
       onClick: closeKeyboardShortcutsPanel,
       onKeyDown: this.onKeyDown
-    }), _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_closeSvg))), _react["default"].createElement("ul", _extends({}, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_list), {
+    }), _react["default"].createElement(_CloseButton["default"], css(styles.DayPickerKeyboardShortcuts_closeSvg))), _react["default"].createElement("ul", (0, _extends2["default"])({}, css(styles.DayPickerKeyboardShortcuts_list), {
       id: "DayPickerKeyboardShortcuts_description"
     }), this.keyboardShortcuts.map(function (_ref2) {
       var unicode = _ref2.unicode,
@@ -2110,7 +2186,39 @@ module.exports = function getPolyfill() {
 /***/ "27z4":
 /***/ (function(module, exports) {
 
-module.exports = Popper;
+(function() { module.exports = this["Popper"]; }());
+
+/***/ }),
+
+/***/ "284h":
+/***/ (function(module, exports) {
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  } else {
+    var newObj = {};
+
+    if (obj != null) {
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+
+          if (desc.get || desc.set) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+    }
+
+    newObj["default"] = obj;
+    return newObj;
+  }
+}
+
+module.exports = _interopRequireWildcard;
 
 /***/ }),
 
@@ -2167,6 +2275,8 @@ module.exports = function isRegex(value) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -2180,9 +2290,7 @@ var _CalendarDay = _interopRequireDefault(__webpack_require__("N3k4"));
 
 var _CustomizableCalendarDay = _interopRequireDefault(__webpack_require__("GET3"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 
 function CalendarWeek(_ref) {
   var children = _ref.children;
@@ -2199,6 +2307,8 @@ CalendarWeek.propTypes =  false ? undefined : {};
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -2207,8 +2317,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOf(_constants.WEEKDAYS);
 
@@ -2373,12 +2481,15 @@ module.exports = warning;
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
+var ReactIs = __webpack_require__("TOwV");
 var REACT_STATICS = {
     childContextTypes: true,
+    contextType: true,
     contextTypes: true,
     defaultProps: true,
     displayName: true,
     getDefaultProps: true,
+    getDerivedStateFromError: true,
     getDerivedStateFromProps: true,
     mixins: true,
     propTypes: true,
@@ -2395,15 +2506,43 @@ var KNOWN_STATICS = {
     arity: true
 };
 
+var FORWARD_REF_STATICS = {
+    '$$typeof': true,
+    render: true,
+    defaultProps: true,
+    displayName: true,
+    propTypes: true
+};
+
+var MEMO_STATICS = {
+    '$$typeof': true,
+    compare: true,
+    defaultProps: true,
+    displayName: true,
+    propTypes: true,
+    type: true
+};
+
+var TYPE_STATICS = {};
+TYPE_STATICS[ReactIs.ForwardRef] = FORWARD_REF_STATICS;
+
+function getStatics(component) {
+    if (ReactIs.isMemo(component)) {
+        return MEMO_STATICS;
+    }
+    return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
+}
+
 var defineProperty = Object.defineProperty;
 var getOwnPropertyNames = Object.getOwnPropertyNames;
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 var getPrototypeOf = Object.getPrototypeOf;
-var objectPrototype = getPrototypeOf && getPrototypeOf(Object);
+var objectPrototype = Object.prototype;
 
 function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+    if (typeof sourceComponent !== 'string') {
+        // don't hoist over string (html) components
 
         if (objectPrototype) {
             var inheritedComponent = getPrototypeOf(sourceComponent);
@@ -2418,11 +2557,15 @@ function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
             keys = keys.concat(getOwnPropertySymbols(sourceComponent));
         }
 
+        var targetStatics = getStatics(targetComponent);
+        var sourceStatics = getStatics(sourceComponent);
+
         for (var i = 0; i < keys.length; ++i) {
             var key = keys[i];
-            if (!REACT_STATICS[key] && !KNOWN_STATICS[key] && (!blacklist || !blacklist[key])) {
+            if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
                 var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
-                try { // Avoid failures from read-only properties
+                try {
+                    // Avoid failures from read-only properties
                     defineProperty(targetComponent, key, descriptor);
                 } catch (e) {}
             }
@@ -2440,33 +2583,35 @@ module.exports = hoistNonReactStatics;
 /***/ }),
 
 /***/ "3HjQ":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
+
 // This function takes an array of styles and separates them into styles that
 // are handled by Aphrodite and inline styles.
 function separateStyles(stylesArray) {
-  var classNames = [];
-
-  // Since determining if an Object is empty requires collecting all of its
+  var classNames = []; // Since determining if an Object is empty requires collecting all of its
   // keys, and we want the best performance in this code because we are in the
   // render path, we are going to do a little bookkeeping ourselves.
-  var hasInlineStyles = false;
-  var inlineStyles = {};
 
-  // This is run on potentially every node in the tree when rendering, where
+  var hasInlineStyles = false;
+  var inlineStyles = {}; // This is run on potentially every node in the tree when rendering, where
   // performance is critical. Normally we would prefer using `forEach`, but
   // old-fashioned for loops are faster so that's what we have chosen here.
+
   for (var i = 0; i < stylesArray.length; i++) {
     // eslint-disable-line no-plusplus
-    var style = stylesArray[i];
-
-    // If this  style is falsy, we just want to disregard it. This allows for
+    var style = stylesArray[i]; // If this  style is falsy, we just want to disregard it. This allows for
     // syntax like:
     //
     //   css(isFoo && styles.foo)
+
     if (style) {
       if (typeof style === 'string') {
         classNames.push(style);
@@ -2484,7 +2629,8 @@ function separateStyles(stylesArray) {
   };
 }
 
-exports['default'] = separateStyles;
+var _default = separateStyles;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2503,12 +2649,22 @@ module.exports = __webpack_require__("50qU");
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.PureSingleDatePicker = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -2550,19 +2706,11 @@ var _CloseButton = _interopRequireDefault(__webpack_require__("xEte"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   // required props for a functional interactive SingleDatePicker
   date: null,
@@ -2641,12 +2789,11 @@ var defaultProps = {
 var SingleDatePicker =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(SingleDatePicker, _ref);
-
+  (0, _inheritsLoose2["default"])(SingleDatePicker, _ref);
   var _proto = SingleDatePicker.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function SingleDatePicker(props) {
@@ -2660,16 +2807,16 @@ function (_ref) {
       isInputFocused: false,
       showKeyboardShortcuts: false
     };
-    _this.onFocusOut = _this.onFocusOut.bind(_assertThisInitialized(_this));
-    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_this));
-    _this.onInputFocus = _this.onInputFocus.bind(_assertThisInitialized(_this));
-    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_this));
-    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_this));
-    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
-    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_this));
-    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_this));
-    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_this));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
+    _this.onFocusOut = _this.onFocusOut.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onOutsideClick = _this.onOutsideClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onInputFocus = _this.onInputFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayPickerFocus = _this.onDayPickerFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayPickerBlur = _this.onDayPickerBlur.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.disableScroll = _this.disableScroll.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setContainerRef = _this.setContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
   /* istanbul ignore next */
@@ -2716,8 +2863,7 @@ function (_ref) {
         focused = _this$props.focused,
         onFocusChange = _this$props.onFocusChange,
         onClose = _this$props.onClose,
-        startDate = _this$props.startDate,
-        endDate = _this$props.endDate,
+        date = _this$props.date,
         appendToBody = _this$props.appendToBody;
     if (!focused) return;
     if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
@@ -2730,8 +2876,7 @@ function (_ref) {
       focused: false
     });
     onClose({
-      startDate: startDate,
-      endDate: endDate
+      date: date
     });
   };
 
@@ -2856,7 +3001,7 @@ function (_ref) {
       var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
       var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
       this.setState({
-        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
+        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), {}, appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
       });
     }
   };
@@ -2890,6 +3035,7 @@ function (_ref) {
   _proto.renderDayPicker = function renderDayPicker() {
     var _this$props6 = this.props,
         anchorDirection = _this$props6.anchorDirection,
+        css = _this$props6.css,
         openDirection = _this$props6.openDirection,
         onDateChange = _this$props6.onDateChange,
         date = _this$props6.date,
@@ -2942,10 +3088,10 @@ function (_ref) {
 
     var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
     var withAnyPortal = withPortal || withFullScreenPortal;
-    return _react["default"].createElement("div", _extends({
+    return _react["default"].createElement("div", (0, _extends2["default"])({
       // eslint-disable-line jsx-a11y/no-static-element-interactions
       ref: this.setDayPickerContainerRef
-    }, (0, _reactWithStyles.css)(styles.SingleDatePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.SingleDatePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight, openDirection === _constants.OPEN_DOWN && styles.SingleDatePicker_picker__openDown, openDirection === _constants.OPEN_UP && styles.SingleDatePicker_picker__openUp, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
+    }, css(styles.SingleDatePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.SingleDatePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight, openDirection === _constants.OPEN_DOWN && styles.SingleDatePicker_picker__openDown, openDirection === _constants.OPEN_UP && styles.SingleDatePicker_picker__openUp, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
       top: inputHeight + verticalSpacing
     }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
       bottom: inputHeight + verticalSpacing
@@ -2990,15 +3136,16 @@ function (_ref) {
       verticalHeight: verticalHeight,
       transitionDuration: transitionDuration,
       horizontalMonthPadding: horizontalMonthPadding
-    }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton), {
+    }), withFullScreenPortal && _react["default"].createElement("button", (0, _extends2["default"])({}, css(styles.SingleDatePicker_closeButton), {
       "aria-label": phrases.closeDatePicker,
       type: "button",
       onClick: this.onOutsideClick
-    }), _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.SingleDatePicker_closeButton_svg), closeIcon)));
+    }), _react["default"].createElement("div", css(styles.SingleDatePicker_closeButton_svg), closeIcon)));
   };
 
   _proto.render = function render() {
     var _this$props7 = this.props,
+        css = _this$props7.css,
         id = _this$props7.id,
         placeholder = _this$props7.placeholder,
         ariaLabel = _this$props7.ariaLabel,
@@ -3068,9 +3215,9 @@ function (_ref) {
       keepOpenOnDateSelect: keepOpenOnDateSelect
     }, this.maybeRenderDayPickerWithPortal());
 
-    return _react["default"].createElement("div", _extends({
+    return _react["default"].createElement("div", (0, _extends2["default"])({
       ref: this.setContainerRef
-    }, (0, _reactWithStyles.css)(styles.SingleDatePicker, block && styles.SingleDatePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
+    }, css(styles.SingleDatePicker, block && styles.SingleDatePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
       onOutsideClick: this.onOutsideClick
     }, input), enableOutsideClick || input);
   };
@@ -3319,6 +3466,10 @@ var OutsideClickHandler = function (_React$Component) {
 
         var isDescendantOfRoot = this.childNode && (0, _document2['default'])(this.childNode, e.target);
         if (!isDescendantOfRoot) {
+          if (this.removeMouseUp) {
+            this.removeMouseUp();
+            this.removeMouseUp = null;
+          }
           this.removeMouseUp = (0, _consolidatedEvents.addEventListener)(document, 'mouseup', this.onMouseUp, { capture: useCapture });
         }
       }
@@ -3338,8 +3489,10 @@ var OutsideClickHandler = function (_React$Component) {
 
 
         var isDescendantOfRoot = this.childNode && (0, _document2['default'])(this.childNode, e.target);
-        if (this.removeMouseUp) this.removeMouseUp();
-        this.removeMouseUp = null;
+        if (this.removeMouseUp) {
+          this.removeMouseUp();
+          this.removeMouseUp = null;
+        }
 
         if (!isDescendantOfRoot) {
           onOutsideClick(e);
@@ -3416,6 +3569,8 @@ OutsideClickHandler.defaultProps = defaultProps;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -3424,8 +3579,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOfType([_propTypes["default"].bool, _propTypes["default"].oneOf([_constants.START_DATE, _constants.END_DATE])]);
 
@@ -3439,6 +3592,8 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -3447,8 +3602,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOf([_constants.START_DATE, _constants.END_DATE]);
 
@@ -3494,6 +3647,8 @@ module.exports = function getPolyfill() {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -3502,8 +3657,6 @@ exports["default"] = isNextMonth;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _isSameMonth = _interopRequireDefault(__webpack_require__("ulUS"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isNextMonth(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
@@ -4106,107 +4259,193 @@ module.exports = _objectWithoutPropertiesLoose;
 
 /***/ }),
 
-/***/ "9TKr":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "8oxB":
+/***/ (function(module, exports) {
 
-"use strict";
+// shim for using process in browser
+var process = module.exports = {};
 
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
 
-var isMergeableObject = function isMergeableObject(value) {
-	return isNonNullObject(value)
-		&& !isSpecial(value)
-};
+var cachedSetTimeout;
+var cachedClearTimeout;
 
-function isNonNullObject(value) {
-	return !!value && typeof value === 'object'
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
 }
-
-function isSpecial(value) {
-	var stringValue = Object.prototype.toString.call(value);
-
-	return stringValue === '[object RegExp]'
-		|| stringValue === '[object Date]'
-		|| isReactElement(value)
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
 }
-
-// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
-var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
-
-function isReactElement(value) {
-	return value.$$typeof === REACT_ELEMENT_TYPE
-}
-
-function emptyTarget(val) {
-    return Array.isArray(val) ? [] : {}
-}
-
-function cloneIfNecessary(value, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.clone === true;
-    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
-}
-
-function defaultArrayMerge(target, source, optionsArgument) {
-    var destination = target.slice();
-    source.forEach(function(e, i) {
-        if (typeof destination[i] === 'undefined') {
-            destination[i] = cloneIfNecessary(e, optionsArgument);
-        } else if (isMergeableObject(e)) {
-            destination[i] = deepmerge(target[i], e, optionsArgument);
-        } else if (target.indexOf(e) === -1) {
-            destination.push(cloneIfNecessary(e, optionsArgument));
-        }
-    });
-    return destination
-}
-
-function mergeObject(target, source, optionsArgument) {
-    var destination = {};
-    if (isMergeableObject(target)) {
-        Object.keys(target).forEach(function(key) {
-            destination[key] = cloneIfNecessary(target[key], optionsArgument);
-        });
-    }
-    Object.keys(source).forEach(function(key) {
-        if (!isMergeableObject(source[key]) || !target[key]) {
-            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
         } else {
-            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+            cachedSetTimeout = defaultSetTimout;
         }
-    });
-    return destination
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
 }
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
 
-function deepmerge(target, source, optionsArgument) {
-    var sourceIsArray = Array.isArray(source);
-    var targetIsArray = Array.isArray(target);
-    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
-    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
 
-    if (!sourceAndTargetTypesMatch) {
-        return cloneIfNecessary(source, optionsArgument)
-    } else if (sourceIsArray) {
-        var arrayMerge = options.arrayMerge || defaultArrayMerge;
-        return arrayMerge(target, source, optionsArgument)
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
     } else {
-        return mergeObject(target, source, optionsArgument)
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
     }
 }
 
-deepmerge.all = function deepmergeAll(array, optionsArgument) {
-    if (!Array.isArray(array) || array.length < 2) {
-        throw new Error('first argument should be an array with at least two elements')
+function drainQueue() {
+    if (draining) {
+        return;
     }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
 
-    // we are sure there are at least 2 values, so it is safe to have no initial value
-    return array.reduce(function(prev, next) {
-        return deepmerge(prev, next, optionsArgument)
-    })
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
 };
 
-var deepmerge_1 = deepmerge;
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
 
-module.exports = deepmerge_1;
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ }),
@@ -4217,12 +4456,22 @@ module.exports = deepmerge_1;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.PureDateRangePicker = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -4264,19 +4513,11 @@ var _CloseButton = _interopRequireDefault(__webpack_require__("xEte"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   // required props for a functional interactive DateRangePicker
   startDate: null,
@@ -4362,12 +4603,11 @@ var defaultProps = {
 var DateRangePicker =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DateRangePicker, _ref);
-
+  (0, _inheritsLoose2["default"])(DateRangePicker, _ref);
   var _proto = DateRangePicker.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DateRangePicker(props) {
@@ -4381,16 +4621,16 @@ function (_ref) {
       showKeyboardShortcuts: false
     };
     _this.isTouchDevice = false;
-    _this.onOutsideClick = _this.onOutsideClick.bind(_assertThisInitialized(_this));
-    _this.onDateRangePickerInputFocus = _this.onDateRangePickerInputFocus.bind(_assertThisInitialized(_this));
-    _this.onDayPickerFocus = _this.onDayPickerFocus.bind(_assertThisInitialized(_this));
-    _this.onDayPickerFocusOut = _this.onDayPickerFocusOut.bind(_assertThisInitialized(_this));
-    _this.onDayPickerBlur = _this.onDayPickerBlur.bind(_assertThisInitialized(_this));
-    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
-    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind(_assertThisInitialized(_this));
-    _this.disableScroll = _this.disableScroll.bind(_assertThisInitialized(_this));
-    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind(_assertThisInitialized(_this));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
+    _this.onOutsideClick = _this.onOutsideClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDateRangePickerInputFocus = _this.onDateRangePickerInputFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayPickerFocus = _this.onDayPickerFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayPickerFocusOut = _this.onDayPickerFocusOut.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayPickerBlur = _this.onDayPickerBlur.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.showKeyboardShortcutsPanel = _this.showKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.responsivizePickerPosition = _this.responsivizePickerPosition.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.disableScroll = _this.disableScroll.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setDayPickerContainerRef = _this.setDayPickerContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setContainerRef = _this.setContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -4551,9 +4791,13 @@ function (_ref) {
   _proto.responsivizePickerPosition = function responsivizePickerPosition() {
     // It's possible the portal props have been changed in response to window resizes
     // So let's ensure we reset this back to the base state each time
-    this.setState({
-      dayPickerContainerStyles: {}
-    });
+    var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
+
+    if (Object.keys(dayPickerContainerStyles).length > 0) {
+      this.setState({
+        dayPickerContainerStyles: {}
+      });
+    }
 
     if (!this.isOpened()) {
       return;
@@ -4566,7 +4810,6 @@ function (_ref) {
         withPortal = _this$props5.withPortal,
         withFullScreenPortal = _this$props5.withFullScreenPortal,
         appendToBody = _this$props5.appendToBody;
-    var dayPickerContainerStyles = this.state.dayPickerContainerStyles;
     var isAnchoredLeft = anchorDirection === _constants.ANCHOR_LEFT;
 
     if (!withPortal && !withFullScreenPortal) {
@@ -4574,7 +4817,7 @@ function (_ref) {
       var currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
       var containerEdge = isAnchoredLeft ? containerRect[_constants.ANCHOR_RIGHT] : containerRect[_constants.ANCHOR_LEFT];
       this.setState({
-        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
+        dayPickerContainerStyles: _objectSpread({}, (0, _getResponsiveContainerStyles["default"])(anchorDirection, currentOffset, containerEdge, horizontalMargin), {}, appendToBody && (0, _getDetachedContainerStyles["default"])(openDirection, anchorDirection, this.container))
       });
     }
   };
@@ -4607,6 +4850,7 @@ function (_ref) {
   _proto.renderDayPicker = function renderDayPicker() {
     var _this$props7 = this.props,
         anchorDirection = _this$props7.anchorDirection,
+        css = _this$props7.css,
         openDirection = _this$props7.openDirection,
         isDayBlocked = _this$props7.isDayBlocked,
         isDayHighlighted = _this$props7.isDayHighlighted,
@@ -4664,14 +4908,14 @@ function (_ref) {
       return startDate || endDate || (0, _moment["default"])();
     };
 
-    var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton_svg));
+    var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], css(styles.DateRangePicker_closeButton_svg));
 
     var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
     var withAnyPortal = withPortal || withFullScreenPortal;
-    return _react["default"].createElement("div", _extends({
+    return _react["default"].createElement("div", (0, _extends2["default"])({
       // eslint-disable-line jsx-a11y/no-static-element-interactions
       ref: this.setDayPickerContainerRef
-    }, (0, _reactWithStyles.css)(styles.DateRangePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.DateRangePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight, orientation === _constants.HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
+    }, css(styles.DateRangePicker_picker, anchorDirection === _constants.ANCHOR_LEFT && styles.DateRangePicker_picker__directionLeft, anchorDirection === _constants.ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight, orientation === _constants.HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal, orientation === _constants.VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical, !withAnyPortal && openDirection === _constants.OPEN_DOWN && {
       top: inputHeight + verticalSpacing
     }, !withAnyPortal && openDirection === _constants.OPEN_UP && {
       bottom: inputHeight + verticalSpacing
@@ -4721,7 +4965,7 @@ function (_ref) {
       transitionDuration: transitionDuration,
       disabled: disabled,
       horizontalMonthPadding: horizontalMonthPadding
-    }), withFullScreenPortal && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePicker_closeButton), {
+    }), withFullScreenPortal && _react["default"].createElement("button", (0, _extends2["default"])({}, css(styles.DateRangePicker_closeButton), {
       type: "button",
       onClick: this.onOutsideClick,
       "aria-label": phrases.closeDatePicker
@@ -4730,6 +4974,7 @@ function (_ref) {
 
   _proto.render = function render() {
     var _this$props8 = this.props,
+        css = _this$props8.css,
         startDate = _this$props8.startDate,
         startDateId = _this$props8.startDateId,
         startDatePlaceholderText = _this$props8.startDatePlaceholderText,
@@ -4815,9 +5060,9 @@ function (_ref) {
       verticalSpacing: verticalSpacing
     }, this.maybeRenderDayPickerWithPortal());
 
-    return _react["default"].createElement("div", _extends({
+    return _react["default"].createElement("div", (0, _extends2["default"])({
       ref: this.setContainerRef
-    }, (0, _reactWithStyles.css)(styles.DateRangePicker, block && styles.DateRangePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
+    }, css(styles.DateRangePicker, block && styles.DateRangePicker__block)), enableOutsideClick && _react["default"].createElement(_reactOutsideClickHandler["default"], {
       onOutsideClick: this.onOutsideClick
     }, input), enableOutsideClick || input);
   };
@@ -4908,6 +5153,8 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -4915,11 +5162,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var ChevronUp = function ChevronUp(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-    d: "M32.1 712.6l453.2-452.2c11-11 21-11 32 0l453.2 452.2c4 5 6 10 6 16 0 13-10 23-22 23-7 0-12-2-16-7L501.3 308.5 64.1 744.7c-4 5-9 7-15 7-7 0-12-2-17-7-9-11-9-21 0-32.1z"
+    d: "M32 713l453-453c11-11 21-11 32 0l453 453c5 5 7 10 7 16 0 13-10 23-22 23-7 0-12-2-16-7L501 309 64 745c-4 5-9 7-15 7-7 0-12-2-17-7-9-11-9-21 0-32z"
   }));
 };
 
@@ -5091,6 +5336,8 @@ module.exports = getRawTag;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -5099,8 +5346,6 @@ exports["default"] = getCalendarDaySettings;
 var _getPhrase = _interopRequireDefault(__webpack_require__("oOcr"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isSelected(modifiers) {
   return modifiers.has('selected') || modifiers.has('selected-span') || modifiers.has('selected-start') || modifiers.has('selected-end');
@@ -5160,11 +5405,39 @@ function getCalendarDaySettings(day, ariaLabelFormat, daySize, modifiers, phrase
 
 /***/ }),
 
+/***/ "AoOu":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = exports.withStylesPropTypes = void 0;
+
+var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
+
+var withStylesPropTypes = {
+  styles: _propTypes["default"].object.isRequired,
+  theme: _propTypes["default"].object.isRequired,
+  css: _propTypes["default"].func.isRequired
+};
+exports.withStylesPropTypes = withStylesPropTypes;
+var _default = withStylesPropTypes;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "Bh6R":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -5175,11 +5448,20 @@ var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _default = _propTypes["default"].oneOf([_constants.ICON_BEFORE_POSITION, _constants.ICON_AFTER_POSITION]);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "Bnag":
+/***/ (function(module, exports) {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
 
 /***/ }),
 
@@ -5189,12 +5471,22 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__("J4zp"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -5232,7 +5524,7 @@ var _getSelectedDateOffset = _interopRequireDefault(__webpack_require__("JORM"))
 
 var _toISODateString = _interopRequireDefault(__webpack_require__("pYxT"));
 
-var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
+var _modifiers = __webpack_require__("kpKt");
 
 var _DisabledShape = _interopRequireDefault(__webpack_require__("5Fvu"));
 
@@ -5248,29 +5540,13 @@ var _constants = __webpack_require__("Fv1B");
 
 var _DayPicker = _interopRequireDefault(__webpack_require__("Nloh"));
 
-var _getPreviousMonthMemoLast = _interopRequireDefault(__webpack_require__("qkIn"));
-
 var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   startDate: undefined,
   // TODO: use null
@@ -5347,12 +5623,11 @@ var getChooseAvailableDatePhrase = function getChooseAvailableDatePhrase(phrases
 var DayPickerRangeController =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DayPickerRangeController, _ref);
-
+  (0, _inheritsLoose2["default"])(DayPickerRangeController, _ref);
   var _proto = DayPickerRangeController.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DayPickerRangeController(props) {
@@ -5438,15 +5713,15 @@ function (_ref) {
       disablePrev: _this.shouldDisableMonthNavigation(props.minDate, currentMonth),
       disableNext: _this.shouldDisableMonthNavigation(props.maxDate, currentMonth)
     };
-    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_this));
-    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_this));
-    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_this));
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
-    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind(_assertThisInitialized(_this));
-    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_this));
+    _this.onDayClick = _this.onDayClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayMouseEnter = _this.onDayMouseEnter.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayMouseLeave = _this.onDayMouseLeave.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -5638,7 +5913,7 @@ function (_ref) {
 
     if (Object.keys(modifiers).length > 0) {
       this.setState({
-        visibleDays: _objectSpread({}, visibleDays, modifiers)
+        visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
       });
     }
 
@@ -5866,7 +6141,7 @@ function (_ref) {
       this.setState({
         hoverDate: day,
         dateOffset: nextDateOffset,
-        visibleDays: _objectSpread({}, visibleDays, modifiers)
+        visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
       });
     }
   };
@@ -5918,7 +6193,7 @@ function (_ref) {
 
     this.setState({
       hoverDate: null,
-      visibleDays: _objectSpread({}, visibleDays, modifiers)
+      visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
     });
   };
 
@@ -5943,7 +6218,7 @@ function (_ref) {
       currentMonth: newCurrentMonth,
       disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
       disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
-      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
+      visibleDays: _objectSpread({}, newVisibleDays, {}, this.getModifiers(prevMonthVisibleDays))
     }, function () {
       onPrevMonthClick(newCurrentMonth.clone());
     });
@@ -5970,7 +6245,7 @@ function (_ref) {
       currentMonth: newCurrentMonth,
       disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
       disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
-      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
+      visibleDays: _objectSpread({}, newVisibleDays, {}, this.getModifiers(nextMonthVisibleDays))
     }, function () {
       onNextMonthClick(newCurrentMonth.clone());
     });
@@ -6013,7 +6288,7 @@ function (_ref) {
     var nextMonth = currentMonth.clone().add(numberOfVisibleMonths, 'month');
     var newVisibleDays = (0, _getVisibleDays["default"])(nextMonth, numberOfMonths, enableOutsideDays, true);
     this.setState({
-      visibleDays: _objectSpread({}, visibleDays, this.getModifiers(newVisibleDays))
+      visibleDays: _objectSpread({}, visibleDays, {}, this.getModifiers(newVisibleDays))
     });
   };
 
@@ -6051,7 +6326,7 @@ function (_ref) {
       });
 
       if (viableDays.length > 0) {
-        var _viableDays = _slicedToArray(viableDays, 1);
+        var _viableDays = (0, _slicedToArray2["default"])(viableDays, 1);
 
         focusedDate = _viableDays[0];
       }
@@ -6112,58 +6387,7 @@ function (_ref) {
   };
 
   _proto.addModifier = function addModifier(updatedDays, day, modifier) {
-    var _this$props13 = this.props,
-        numberOfVisibleMonths = _this$props13.numberOfMonths,
-        enableOutsideDays = _this$props13.enableOutsideDays,
-        orientation = _this$props13.orientation;
-    var _this$state6 = this.state,
-        firstVisibleMonth = _this$state6.currentMonth,
-        visibleDays = _this$state6.visibleDays;
-    var currentMonth = firstVisibleMonth;
-    var numberOfMonths = numberOfVisibleMonths;
-
-    if (orientation === _constants.VERTICAL_SCROLLABLE) {
-      numberOfMonths = Object.keys(visibleDays).length;
-    } else {
-      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
-      numberOfMonths += 2;
-    }
-
-    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-      return updatedDays;
-    }
-
-    var iso = (0, _toISODateString["default"])(day);
-
-    var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
-
-    if (enableOutsideDays) {
-      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-      });
-      updatedDaysAfterAddition = monthsToUpdate.reduce(function (acc, monthIso) {
-        var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-        if (!month[iso] || !month[iso].has(modifier)) {
-          var modifiers = new Set(month[iso]);
-          modifiers.add(modifier);
-          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-        }
-
-        return acc;
-      }, updatedDaysAfterAddition);
-    } else {
-      var monthIso = (0, _toISOMonthString["default"])(day);
-      var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
-
-      if (!month[iso] || !month[iso].has(modifier)) {
-        var modifiers = new Set(month[iso]);
-        modifiers.add(modifier);
-        updatedDaysAfterAddition[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-      }
-    }
-
-    return updatedDaysAfterAddition;
+    return (0, _modifiers.addModifier)(updatedDays, day, modifier, this.props, this.state);
   };
 
   _proto.addModifierToRange = function addModifierToRange(updatedDays, start, end, modifier) {
@@ -6179,58 +6403,7 @@ function (_ref) {
   };
 
   _proto.deleteModifier = function deleteModifier(updatedDays, day, modifier) {
-    var _this$props14 = this.props,
-        numberOfVisibleMonths = _this$props14.numberOfMonths,
-        enableOutsideDays = _this$props14.enableOutsideDays,
-        orientation = _this$props14.orientation;
-    var _this$state7 = this.state,
-        firstVisibleMonth = _this$state7.currentMonth,
-        visibleDays = _this$state7.visibleDays;
-    var currentMonth = firstVisibleMonth;
-    var numberOfMonths = numberOfVisibleMonths;
-
-    if (orientation === _constants.VERTICAL_SCROLLABLE) {
-      numberOfMonths = Object.keys(visibleDays).length;
-    } else {
-      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
-      numberOfMonths += 2;
-    }
-
-    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-      return updatedDays;
-    }
-
-    var iso = (0, _toISODateString["default"])(day);
-
-    var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
-
-    if (enableOutsideDays) {
-      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-      });
-      updatedDaysAfterDeletion = monthsToUpdate.reduce(function (acc, monthIso) {
-        var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-        if (month[iso] && month[iso].has(modifier)) {
-          var modifiers = new Set(month[iso]);
-          modifiers["delete"](modifier);
-          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-        }
-
-        return acc;
-      }, updatedDaysAfterDeletion);
-    } else {
-      var monthIso = (0, _toISOMonthString["default"])(day);
-      var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-      if (month[iso] && month[iso].has(modifier)) {
-        var modifiers = new Set(month[iso]);
-        modifiers["delete"](modifier);
-        updatedDaysAfterDeletion[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-      }
-    }
-
-    return updatedDaysAfterDeletion;
+    return (0, _modifiers.deleteModifier)(updatedDays, day, modifier, this.props, this.state);
   };
 
   _proto.deleteModifierFromRange = function deleteModifierFromRange(updatedDays, start, end, modifier) {
@@ -6246,11 +6419,11 @@ function (_ref) {
   };
 
   _proto.doesNotMeetMinimumNights = function doesNotMeetMinimumNights(day) {
-    var _this$props15 = this.props,
-        startDate = _this$props15.startDate,
-        isOutsideRange = _this$props15.isOutsideRange,
-        focusedInput = _this$props15.focusedInput,
-        minimumNights = _this$props15.minimumNights;
+    var _this$props13 = this.props,
+        startDate = _this$props13.startDate,
+        isOutsideRange = _this$props13.isOutsideRange,
+        focusedInput = _this$props13.focusedInput,
+        minimumNights = _this$props13.minimumNights;
     if (focusedInput !== _constants.END_DATE) return false;
 
     if (startDate) {
@@ -6262,9 +6435,9 @@ function (_ref) {
   };
 
   _proto.doesNotMeetMinNightsForHoveredStartDate = function doesNotMeetMinNightsForHoveredStartDate(day, hoverDate) {
-    var _this$props16 = this.props,
-        focusedInput = _this$props16.focusedInput,
-        getMinNightsForHoverDate = _this$props16.getMinNightsForHoverDate;
+    var _this$props14 = this.props,
+        focusedInput = _this$props14.focusedInput,
+        getMinNightsForHoverDate = _this$props14.getMinNightsForHoverDate;
     if (focusedInput !== _constants.END_DATE) return false;
 
     if (hoverDate && !this.isBlocked(hoverDate)) {
@@ -6277,10 +6450,10 @@ function (_ref) {
   };
 
   _proto.isDayAfterHoveredStartDate = function isDayAfterHoveredStartDate(day) {
-    var _this$props17 = this.props,
-        startDate = _this$props17.startDate,
-        endDate = _this$props17.endDate,
-        minimumNights = _this$props17.minimumNights;
+    var _this$props15 = this.props,
+        startDate = _this$props15.startDate,
+        endDate = _this$props15.endDate,
+        minimumNights = _this$props15.minimumNights;
 
     var _ref2 = this.state || {},
         hoverDate = _ref2.hoverDate;
@@ -6302,9 +6475,9 @@ function (_ref) {
   };
 
   _proto.isInHoveredSpan = function isInHoveredSpan(day) {
-    var _this$props18 = this.props,
-        startDate = _this$props18.startDate,
-        endDate = _this$props18.endDate;
+    var _this$props16 = this.props,
+        startDate = _this$props16.startDate,
+        endDate = _this$props16.endDate;
 
     var _ref4 = this.state || {},
         hoverDate = _ref4.hoverDate;
@@ -6316,10 +6489,10 @@ function (_ref) {
   };
 
   _proto.isInSelectedSpan = function isInSelectedSpan(day) {
-    var _this$props19 = this.props,
-        startDate = _this$props19.startDate,
-        endDate = _this$props19.endDate;
-    return day.isBetween(startDate, endDate);
+    var _this$props17 = this.props,
+        startDate = _this$props17.startDate,
+        endDate = _this$props17.endDate;
+    return day.isBetween(startDate, endDate, 'days');
   };
 
   _proto.isLastInRange = function isLastInRange(day) {
@@ -6333,9 +6506,9 @@ function (_ref) {
   };
 
   _proto.isBlocked = function isBlocked(day) {
-    var _this$props20 = this.props,
-        isDayBlocked = _this$props20.isDayBlocked,
-        isOutsideRange = _this$props20.isOutsideRange;
+    var _this$props18 = this.props,
+        isDayBlocked = _this$props18.isDayBlocked,
+        isOutsideRange = _this$props18.isOutsideRange;
     return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
   };
 
@@ -6354,9 +6527,9 @@ function (_ref) {
   };
 
   _proto.isFirstPossibleEndDateForHoveredStartDate = function isFirstPossibleEndDateForHoveredStartDate(day, hoverDate) {
-    var _this$props21 = this.props,
-        focusedInput = _this$props21.focusedInput,
-        getMinNightsForHoverDate = _this$props21.getMinNightsForHoverDate;
+    var _this$props19 = this.props,
+        focusedInput = _this$props19.focusedInput,
+        getMinNightsForHoverDate = _this$props19.getMinNightsForHoverDate;
     if (focusedInput !== _constants.END_DATE || !hoverDate || this.isBlocked(hoverDate)) return false;
     var minNights = getMinNightsForHoverDate(hoverDate);
     var firstAvailableEndDate = hoverDate.clone().add(minNights, 'days');
@@ -6364,46 +6537,46 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this$props22 = this.props,
-        numberOfMonths = _this$props22.numberOfMonths,
-        orientation = _this$props22.orientation,
-        monthFormat = _this$props22.monthFormat,
-        renderMonthText = _this$props22.renderMonthText,
-        navPrev = _this$props22.navPrev,
-        navNext = _this$props22.navNext,
-        noNavButtons = _this$props22.noNavButtons,
-        onOutsideClick = _this$props22.onOutsideClick,
-        withPortal = _this$props22.withPortal,
-        enableOutsideDays = _this$props22.enableOutsideDays,
-        firstDayOfWeek = _this$props22.firstDayOfWeek,
-        renderKeyboardShortcutsButton = _this$props22.renderKeyboardShortcutsButton,
-        hideKeyboardShortcutsPanel = _this$props22.hideKeyboardShortcutsPanel,
-        daySize = _this$props22.daySize,
-        focusedInput = _this$props22.focusedInput,
-        renderCalendarDay = _this$props22.renderCalendarDay,
-        renderDayContents = _this$props22.renderDayContents,
-        renderCalendarInfo = _this$props22.renderCalendarInfo,
-        renderMonthElement = _this$props22.renderMonthElement,
-        calendarInfoPosition = _this$props22.calendarInfoPosition,
-        onBlur = _this$props22.onBlur,
-        onShiftTab = _this$props22.onShiftTab,
-        onTab = _this$props22.onTab,
-        isFocused = _this$props22.isFocused,
-        showKeyboardShortcuts = _this$props22.showKeyboardShortcuts,
-        isRTL = _this$props22.isRTL,
-        weekDayFormat = _this$props22.weekDayFormat,
-        dayAriaLabelFormat = _this$props22.dayAriaLabelFormat,
-        verticalHeight = _this$props22.verticalHeight,
-        noBorder = _this$props22.noBorder,
-        transitionDuration = _this$props22.transitionDuration,
-        verticalBorderSpacing = _this$props22.verticalBorderSpacing,
-        horizontalMonthPadding = _this$props22.horizontalMonthPadding;
-    var _this$state8 = this.state,
-        currentMonth = _this$state8.currentMonth,
-        phrases = _this$state8.phrases,
-        visibleDays = _this$state8.visibleDays,
-        disablePrev = _this$state8.disablePrev,
-        disableNext = _this$state8.disableNext;
+    var _this$props20 = this.props,
+        numberOfMonths = _this$props20.numberOfMonths,
+        orientation = _this$props20.orientation,
+        monthFormat = _this$props20.monthFormat,
+        renderMonthText = _this$props20.renderMonthText,
+        navPrev = _this$props20.navPrev,
+        navNext = _this$props20.navNext,
+        noNavButtons = _this$props20.noNavButtons,
+        onOutsideClick = _this$props20.onOutsideClick,
+        withPortal = _this$props20.withPortal,
+        enableOutsideDays = _this$props20.enableOutsideDays,
+        firstDayOfWeek = _this$props20.firstDayOfWeek,
+        renderKeyboardShortcutsButton = _this$props20.renderKeyboardShortcutsButton,
+        hideKeyboardShortcutsPanel = _this$props20.hideKeyboardShortcutsPanel,
+        daySize = _this$props20.daySize,
+        focusedInput = _this$props20.focusedInput,
+        renderCalendarDay = _this$props20.renderCalendarDay,
+        renderDayContents = _this$props20.renderDayContents,
+        renderCalendarInfo = _this$props20.renderCalendarInfo,
+        renderMonthElement = _this$props20.renderMonthElement,
+        calendarInfoPosition = _this$props20.calendarInfoPosition,
+        onBlur = _this$props20.onBlur,
+        onShiftTab = _this$props20.onShiftTab,
+        onTab = _this$props20.onTab,
+        isFocused = _this$props20.isFocused,
+        showKeyboardShortcuts = _this$props20.showKeyboardShortcuts,
+        isRTL = _this$props20.isRTL,
+        weekDayFormat = _this$props20.weekDayFormat,
+        dayAriaLabelFormat = _this$props20.dayAriaLabelFormat,
+        verticalHeight = _this$props20.verticalHeight,
+        noBorder = _this$props20.noBorder,
+        transitionDuration = _this$props20.transitionDuration,
+        verticalBorderSpacing = _this$props20.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props20.horizontalMonthPadding;
+    var _this$state6 = this.state,
+        currentMonth = _this$state6.currentMonth,
+        phrases = _this$state6.phrases,
+        visibleDays = _this$state6.visibleDays,
+        disablePrev = _this$state6.disablePrev,
+        disableNext = _this$state6.disableNext;
     return _react["default"].createElement(_DayPicker["default"], {
       orientation: orientation,
       enableOutsideDays: enableOutsideDays,
@@ -6509,6 +6682,8 @@ module.exports = function assign(target, source) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -6516,11 +6691,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var ChevronDown = function ChevronDown(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-    d: "M967.5 288.5L514.3 740.7c-11 11-21 11-32 0L29.1 288.5c-4-5-6-11-6-16 0-13 10-23 23-23 6 0 11 2 15 7l437.2 436.2 437.2-436.2c4-5 9-7 16-7 6 0 11 2 16 7 9 10.9 9 21 0 32z"
+    d: "M968 289L514 741c-11 11-21 11-32 0L29 289c-4-5-6-11-6-16 0-13 10-23 23-23 6 0 11 2 15 7l437 436 438-436c4-5 9-7 16-7 6 0 11 2 16 7 9 10 9 21 0 32z"
   }));
 };
 
@@ -6579,6 +6752,7 @@ module.exports = {
   restrictedProp: noopThunk,
   sequenceOf: noopThunk,
   shape: noopThunk,
+  stringEndsWith: noopThunk,
   stringStartsWith: noopThunk,
   uniqueArray: noopThunk,
   uniqueArrayOf: noopThunk,
@@ -6586,6 +6760,54 @@ module.exports = {
   withShape: noopThunk
 };
 //# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "Ddh5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.perfStart = perfStart;
+exports.perfEnd = perfEnd;
+exports["default"] = withPerf;
+
+function perfStart(startMark) {
+  if (typeof performance !== 'undefined' && performance.mark !== undefined && typeof performance.clearMarks === 'function' && startMark) {
+    performance.clearMarks(startMark);
+    performance.mark(startMark);
+  }
+}
+
+function perfEnd(startMark, endMark, measureName) {
+  if (typeof performance !== 'undefined' && performance.mark !== undefined && typeof performance.clearMarks === 'function') {
+    performance.clearMarks(endMark);
+    performance.mark(endMark);
+    performance.measure(measureName, startMark, endMark);
+    performance.clearMarks(measureName);
+  }
+}
+
+function withPerf(methodName) {
+  var startMark = "react-with-styles.".concat(methodName, ".start");
+  var endMark = "react-with-styles.".concat(methodName, ".end");
+  var measureName = "\uD83D\uDC69\u200D\uD83C\uDFA8 [".concat(methodName, "]");
+  return function (fn) {
+    return function () {
+      if (false) {}
+
+      var result = fn.apply(void 0, arguments);
+
+      if (false) {}
+
+      return result;
+    };
+  };
+}
 
 /***/ }),
 
@@ -6623,12 +6845,22 @@ module.exports = function isDateObject(value) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -6650,23 +6882,15 @@ var _OpenDirectionShape = _interopRequireDefault(__webpack_require__("iuLr"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var FANG_PATH_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX, ",").concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX / 2, ",0z");
 var FANG_STROKE_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX / 2, ",0 ").concat(_constants.FANG_WIDTH_PX, ",").concat(_constants.FANG_HEIGHT_PX);
 var FANG_PATH_BOTTOM = "M0,0 ".concat(_constants.FANG_WIDTH_PX, ",0 ").concat(_constants.FANG_WIDTH_PX / 2, ",").concat(_constants.FANG_HEIGHT_PX, "z");
 var FANG_STROKE_BOTTOM = "M0,0 ".concat(_constants.FANG_WIDTH_PX / 2, ",").concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX, ",0");
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   placeholder: 'Select Date',
   displayValue: '',
@@ -6695,12 +6919,11 @@ var defaultProps = {
 var DateInput =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DateInput, _ref);
-
+  (0, _inheritsLoose2["default"])(DateInput, _ref);
   var _proto = DateInput.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DateInput(props) {
@@ -6711,9 +6934,9 @@ function (_ref) {
       dateString: '',
       isTouchDevice: false
     };
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
-    _this.setInputRef = _this.setInputRef.bind(_assertThisInitialized(_this));
+    _this.onChange = _this.onChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onKeyDown = _this.onKeyDown.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setInputRef = _this.setInputRef.bind((0, _assertThisInitialized2["default"])(_this));
     _this.throttledKeyDown = (0, _throttle["default"])(_this.onFinalKeyDown, 300, {
       trailing: false
     });
@@ -6822,12 +7045,13 @@ function (_ref) {
         regular = _this$props4.regular,
         block = _this$props4.block,
         styles = _this$props4.styles,
-        reactDates = _this$props4.theme.reactDates;
+        reactDates = _this$props4.theme.reactDates,
+        css = _this$props4.css;
     var value = dateString || displayValue || '';
     var screenReaderMessageId = "DateInput__screen-reader-message-".concat(id);
     var withFang = showCaret && focused;
     var inputHeight = (0, _getInputHeight["default"])(reactDates, small);
-    return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.DateInput, small && styles.DateInput__small, block && styles.DateInput__block, withFang && styles.DateInput__withFang, disabled && styles.DateInput__disabled, withFang && openDirection === _constants.OPEN_DOWN && styles.DateInput__openDown, withFang && openDirection === _constants.OPEN_UP && styles.DateInput__openUp), _react["default"].createElement("input", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_input, small && styles.DateInput_input__small, regular && styles.DateInput_input__regular, readOnly && styles.DateInput_input__readOnly, focused && styles.DateInput_input__focused, disabled && styles.DateInput_input__disabled), {
+    return _react["default"].createElement("div", css(styles.DateInput, small && styles.DateInput__small, block && styles.DateInput__block, withFang && styles.DateInput__withFang, disabled && styles.DateInput__disabled, withFang && openDirection === _constants.OPEN_DOWN && styles.DateInput__openDown, withFang && openDirection === _constants.OPEN_UP && styles.DateInput__openUp), _react["default"].createElement("input", (0, _extends2["default"])({}, css(styles.DateInput_input, small && styles.DateInput_input__small, regular && styles.DateInput_input__regular, readOnly && styles.DateInput_input__readOnly, focused && styles.DateInput_input__focused, disabled && styles.DateInput_input__disabled), {
       "aria-label": ariaLabel === undefined ? placeholder : ariaLabel,
       type: "text",
       id: id,
@@ -6843,18 +7067,18 @@ function (_ref) {
       readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
       required: required,
       "aria-describedby": screenReaderMessage && screenReaderMessageId
-    })), withFang && _react["default"].createElement("svg", _extends({
+    })), withFang && _react["default"].createElement("svg", (0, _extends2["default"])({
       role: "presentation",
       focusable: "false"
-    }, (0, _reactWithStyles.css)(styles.DateInput_fang, openDirection === _constants.OPEN_DOWN && {
+    }, css(styles.DateInput_fang, openDirection === _constants.OPEN_DOWN && {
       top: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
     }, openDirection === _constants.OPEN_UP && {
       bottom: inputHeight + verticalSpacing - _constants.FANG_HEIGHT_PX - 1
-    })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangShape), {
+    })), _react["default"].createElement("path", (0, _extends2["default"])({}, css(styles.DateInput_fangShape), {
       d: openDirection === _constants.OPEN_DOWN ? FANG_PATH_TOP : FANG_PATH_BOTTOM
-    })), _react["default"].createElement("path", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_fangStroke), {
+    })), _react["default"].createElement("path", (0, _extends2["default"])({}, css(styles.DateInput_fangStroke), {
       d: openDirection === _constants.OPEN_DOWN ? FANG_STROKE_TOP : FANG_STROKE_BOTTOM
-    }))), screenReaderMessage && _react["default"].createElement("p", _extends({}, (0, _reactWithStyles.css)(styles.DateInput_screenReaderMessage), {
+    }))), screenReaderMessage && _react["default"].createElement("p", (0, _extends2["default"])({}, css(styles.DateInput_screenReaderMessage), {
       id: screenReaderMessageId
     }), screenReaderMessage));
   };
@@ -7304,6 +7528,17 @@ module.exports = function isPrimitive(value) {
 
 /***/ }),
 
+/***/ "EbDI":
+/***/ (function(module, exports) {
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+
+/***/ }),
+
 /***/ "ExA7":
 /***/ (function(module, exports) {
 
@@ -7346,6 +7581,8 @@ module.exports = isObjectLike;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -7354,8 +7591,6 @@ exports["default"] = getCalendarMonthWeeks;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getCalendarMonthWeeks(month, enableOutsideDays) {
   var firstDayOfWeek = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _moment["default"].localeData().firstDayOfWeek();
@@ -8068,6 +8303,8 @@ var defaultProps = {
   isOutsideRange: function isOutsideRange(day) {
     return !Object(react_dates["isInclusivelyAfterDay"])(day, external_moment_default()());
   },
+  endDateOffset: undefined,
+  getMinNightsForHoverDate: undefined,
   // Internationalization
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
@@ -8448,7 +8685,9 @@ function (_React$Component) {
           keepOpenOnDateSelect = _this$props6.keepOpenOnDateSelect,
           isDayBlocked = _this$props6.isDayBlocked,
           isDayHighlighted = _this$props6.isDayHighlighted,
-          isRTL = _this$props6.isRTL;
+          isRTL = _this$props6.isRTL,
+          endDateOffset = _this$props6.endDateOffset,
+          getMinNightsForHoverDate = _this$props6.getMinNightsForHoverDate;
       var modifiers = {
         preventOverflow: {
           enabled: false
@@ -8463,6 +8702,13 @@ function (_React$Component) {
           behavior: 'flip'
         }
       };
+
+      var renderDayContents = function renderDayContents(day) {
+        return external_React_default.a.createElement(external_React_default.a.Fragment, null, external_React_default.a.createElement("span", {
+          className: "CalendarDayWeekNumber"
+        }, day.format('W')), external_React_default.a.createElement("span", null, day.format('D')));
+      };
+
       return focusedInput && external_React_default.a.createElement(react_outside_click_handler_default.a, {
         onOutsideClick: this.onOutsideClick
       }, external_React_default.a.createElement(Popper, {
@@ -8499,7 +8745,10 @@ function (_React$Component) {
           isOutsideRange: _this3.isOutsideRange,
           isFocused: isDayPickerFocused,
           onBlur: _this3.onDayPickerBlur,
-          hideKeyboardShortcutsPanel: true // onClose={onClose}
+          hideKeyboardShortcutsPanel: true,
+          endDateOffset: endDateOffset,
+          getMinNightsForHoverDate: getMinNightsForHoverDate // renderDayContents={renderDayContents}
+          // onClose={onClose}
 
         }));
       }));
@@ -8528,12 +8777,22 @@ function createDatePicker(searchform, props) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.PureCustomizableCalendarDay = exports.selectedStyles = exports.lastInRangeStyles = exports.selectedSpanStyles = exports.hoveredSpanStyles = exports.blockedOutOfRangeStyles = exports.blockedCalendarStyles = exports.blockedMinNightsStyles = exports.highlightedCalendarStyles = exports.outsideStyles = exports.defaultStyles = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -8547,6 +8806,8 @@ var _reactWithStyles = __webpack_require__("TG4+");
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
+var _raf = _interopRequireDefault(__webpack_require__("xEkU"));
+
 var _defaultPhrases = __webpack_require__("vV+G");
 
 var _getPhrasePropTypes = _interopRequireDefault(__webpack_require__("yc2e"));
@@ -8557,17 +8818,9 @@ var _constants = __webpack_require__("Fv1B");
 
 var _DefaultTheme = _interopRequireDefault(__webpack_require__("xOhs"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var color = _DefaultTheme["default"].reactDates.color;
 
@@ -8582,8 +8835,8 @@ function getStyles(stylesObj, isHovered) {
   return stylesObj;
 }
 
-var DayStyleShape =  false ? undefined : {};;
-var propTypes =  false ? undefined : {};;
+var DayStyleShape =  false ? undefined : {};
+var propTypes =  false ? undefined : {};
 var defaultStyles = {
   border: "1px solid ".concat(color.core.borderLight),
   color: color.text,
@@ -8715,12 +8968,11 @@ var defaultProps = {
 var CustomizableCalendarDay =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(CustomizableCalendarDay, _ref);
-
+  (0, _inheritsLoose2["default"])(CustomizableCalendarDay, _ref);
   var _proto = CustomizableCalendarDay.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function CustomizableCalendarDay() {
@@ -8734,18 +8986,24 @@ function (_ref) {
     _this.state = {
       isHovered: false
     };
-    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_this));
+    _this.setButtonRef = _this.setButtonRef.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
   _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this2 = this;
+
     var _this$props = this.props,
         isFocused = _this$props.isFocused,
         tabIndex = _this$props.tabIndex;
 
     if (tabIndex === 0) {
       if (isFocused || tabIndex !== prevProps.tabIndex) {
-        this.buttonRef.focus();
+        (0, _raf["default"])(function () {
+          if (_this2.buttonRef) {
+            _this2.buttonRef.focus();
+          }
+        });
       }
     }
   };
@@ -8785,9 +9043,10 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this2 = this;
+    var _this3 = this;
 
     var _this$props2 = this.props,
+        css = _this$props2.css,
         day = _this$props2.day,
         ariaLabelFormat = _this$props2.ariaLabelFormat,
         daySize = _this$props2.daySize,
@@ -8826,26 +9085,26 @@ function (_ref) {
         isOutsideRange = _getCalendarDaySettin.isOutsideRange,
         ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-    return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered), modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
+    return _react["default"].createElement("td", (0, _extends2["default"])({}, css(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, daySizeStyles, getStyles(defaultStylesWithHover, isHovered), isOutsideDay && getStyles(outsideStylesWithHover, isHovered), modifiers.has('today') && getStyles(todayStylesWithHover, isHovered), modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered), modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered), modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered), modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered), modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered), modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered), modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered), hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered), modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered), modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered), modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered), selected && getStyles(selectedStylesWithHover, isHovered), modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered), modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered), isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)), {
       role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
       ,
       ref: this.setButtonRef,
       "aria-disabled": modifiers.has('blocked'),
       "aria-label": ariaLabel,
       onMouseEnter: function onMouseEnter(e) {
-        _this2.onDayMouseEnter(day, e);
+        _this3.onDayMouseEnter(day, e);
       },
       onMouseLeave: function onMouseLeave(e) {
-        _this2.onDayMouseLeave(day, e);
+        _this3.onDayMouseLeave(day, e);
       },
       onMouseUp: function onMouseUp(e) {
         e.currentTarget.blur();
       },
       onClick: function onClick(e) {
-        _this2.onDayClick(day, e);
+        _this3.onDayClick(day, e);
       },
       onKeyDown: function onKeyDown(e) {
-        _this2.onKeyDown(day, e);
+        _this3.onKeyDown(day, e);
       },
       tabIndex: tabIndex
     }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
@@ -8966,9 +9225,9 @@ module.exports = isObject;
 "use strict";
 
 
-var _registerCSSInterfaceWithDefaultTheme = _interopRequireDefault(__webpack_require__("TUyu"));
+var _interopRequireDefault = __webpack_require__("TqRt");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _registerCSSInterfaceWithDefaultTheme = _interopRequireDefault(__webpack_require__("TUyu"));
 
 (0, _registerCSSInterfaceWithDefaultTheme["default"])();
 
@@ -8980,10 +9239,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -9011,15 +9276,11 @@ var _OpenDirectionShape = _interopRequireDefault(__webpack_require__("iuLr"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   children: null,
   placeholder: 'Select Date',
@@ -9058,6 +9319,7 @@ var defaultProps = {
 function SingleDatePickerInput(_ref) {
   var id = _ref.id,
       children = _ref.children,
+      css = _ref.css,
       placeholder = _ref.placeholder,
       ariaLabel = _ref.ariaLabel,
       displayValue = _ref.displayValue,
@@ -9090,20 +9352,20 @@ function SingleDatePickerInput(_ref) {
       verticalSpacing = _ref.verticalSpacing,
       styles = _ref.styles;
 
-  var calendarIcon = customInputIcon || _react["default"].createElement(_CalendarIcon["default"], (0, _reactWithStyles.css)(styles.SingleDatePickerInput_calendarIcon_svg));
+  var calendarIcon = customInputIcon || _react["default"].createElement(_CalendarIcon["default"], css(styles.SingleDatePickerInput_calendarIcon_svg));
 
-  var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.SingleDatePickerInput_clearDate_svg, small && styles.SingleDatePickerInput_clearDate_svg__small));
+  var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], css(styles.SingleDatePickerInput_clearDate_svg, small && styles.SingleDatePickerInput_clearDate_svg__small));
 
-  var screenReaderText = screenReaderMessage || phrases.keyboardNavigationInstructions;
+  var screenReaderText = screenReaderMessage || phrases.keyboardForwardNavigationInstructions;
 
-  var inputIcon = (showDefaultInputIcon || customInputIcon !== null) && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePickerInput_calendarIcon), {
+  var inputIcon = (showDefaultInputIcon || customInputIcon !== null) && _react["default"].createElement("button", (0, _extends2["default"])({}, css(styles.SingleDatePickerInput_calendarIcon), {
     type: "button",
     disabled: disabled,
     "aria-label": phrases.focusStartDate,
     onClick: onFocus
   }), calendarIcon);
 
-  return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.SingleDatePickerInput, disabled && styles.SingleDatePickerInput__disabled, isRTL && styles.SingleDatePickerInput__rtl, !noBorder && styles.SingleDatePickerInput__withBorder, block && styles.SingleDatePickerInput__block, showClearDate && styles.SingleDatePickerInput__showClearDate), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
+  return _react["default"].createElement("div", css(styles.SingleDatePickerInput, disabled && styles.SingleDatePickerInput__disabled, isRTL && styles.SingleDatePickerInput__rtl, !noBorder && styles.SingleDatePickerInput__withBorder, block && styles.SingleDatePickerInput__block, showClearDate && styles.SingleDatePickerInput__showClearDate), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
     id: id,
     placeholder: placeholder,
     ariaLabel: ariaLabel,
@@ -9126,7 +9388,7 @@ function SingleDatePickerInput(_ref) {
     small: small,
     regular: regular,
     block: block
-  }), children, showClearDate && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.SingleDatePickerInput_clearDate, small && styles.SingleDatePickerInput_clearDate__small, !customCloseIcon && styles.SingleDatePickerInput_clearDate__default, !displayValue && styles.SingleDatePickerInput_clearDate__hide), {
+  }), children, showClearDate && _react["default"].createElement("button", (0, _extends2["default"])({}, css(styles.SingleDatePickerInput_clearDate, small && styles.SingleDatePickerInput_clearDate__small, !customCloseIcon && styles.SingleDatePickerInput_clearDate__default, !displayValue && styles.SingleDatePickerInput_clearDate__hide), {
     type: "button",
     "aria-label": phrases.clearDate,
     disabled: disabled,
@@ -9236,6 +9498,58 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "HWoq":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _object = __webpack_require__("4cSd");
+
+var _object2 = _interopRequireDefault(_object);
+
+var _propTypes = __webpack_require__("17x9");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__("QEu6");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+exports['default'] = _propTypes2['default'].oneOf((0, _object2['default'])(_constants.DIRECTIONS));
+
+/***/ }),
+
+/***/ "Hi9J":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var define = __webpack_require__("82c2");
+var bind = __webpack_require__("D3zA");
+
+var implementation = __webpack_require__("l4Qr");
+var getPolyfill = __webpack_require__("gaAG");
+var shim = __webpack_require__("NUgV");
+
+var bound = bind.call(Function.call, implementation);
+
+define(bound, {
+	getPolyfill: getPolyfill,
+	implementation: implementation,
+	shim: shim
+});
+
+module.exports = bound;
+
+
+/***/ }),
+
 /***/ "Hsqg":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9306,6 +9620,8 @@ module.exports = function isCallable(value) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -9318,8 +9634,6 @@ var _isBeforeDay = _interopRequireDefault(__webpack_require__("h6xH"));
 var _isAfterDay = _interopRequireDefault(__webpack_require__("Nho6"));
 
 var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var startCacheOutsideDays = new Map();
 var endCacheOutsideDays = new Map();
@@ -9363,32 +9677,60 @@ function isDayVisible(day, month, numberOfMonths, enableOutsideDays) {
 
 /***/ }),
 
+/***/ "Ijbi":
+/***/ (function(module, exports) {
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
+
+/***/ }),
+
+/***/ "J4zp":
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__("wTVA");
+
+var iterableToArrayLimit = __webpack_require__("m0LI");
+
+var nonIterableRest = __webpack_require__("wkBT");
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
+
+/***/ }),
+
 /***/ "J7JS":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("RIqP"));
+
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _airbnbPropTypes = __webpack_require__("Hsqg");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 var _default = (0, _airbnbPropTypes.and)([_propTypes["default"].instanceOf(Set), function modifiers(props, propName) {
   for (var _len = arguments.length, rest = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
@@ -9397,15 +9739,13 @@ var _default = (0, _airbnbPropTypes.and)([_propTypes["default"].instanceOf(Set),
 
   var propValue = props[propName];
   var firstError;
-
-  _toConsumableArray(propValue).some(function (v, i) {
+  (0, _toConsumableArray2["default"])(propValue).some(function (v, i) {
     var _PropTypes$string;
 
     var fakePropName = "".concat(propName, ": index ").concat(i);
-    firstError = (_PropTypes$string = _propTypes["default"].string).isRequired.apply(_PropTypes$string, [_defineProperty({}, fakePropName, v), fakePropName].concat(rest));
+    firstError = (_PropTypes$string = _propTypes["default"].string).isRequired.apply(_PropTypes$string, [(0, _defineProperty2["default"])({}, fakePropName, v), fakePropName].concat(rest));
     return firstError != null;
   });
-
   return firstError == null ? null : firstError;
 }], 'Modifiers (Set of Strings)');
 
@@ -9433,6 +9773,27 @@ function getSelectedDateOffset(fn, day) {
   if (!fn) return day;
   return modifier(fn(day.clone()));
 }
+
+/***/ }),
+
+/***/ "JQAW":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var functionsHaveNames = function functionsHaveNames() {
+	return typeof function f() {}.name === 'string';
+};
+
+var gOPD = Object.getOwnPropertyDescriptor;
+
+functionsHaveNames.functionsHaveConfigurableNames = function functionsHaveConfigurableNames() {
+	return functionsHaveNames() && gOPD && !!gOPD(function () {}, 'name').configurable;
+};
+
+module.exports = functionsHaveNames;
+
 
 /***/ }),
 
@@ -9501,6 +9862,8 @@ module.exports = exports['default'];
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -9508,11 +9871,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var CalendarIcon = function CalendarIcon(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-    d: "M107.2 1392.9h241.1v-241.1H107.2v241.1zm294.7 0h267.9v-241.1H401.9v241.1zm-294.7-294.7h241.1V830.4H107.2v267.8zm294.7 0h267.9V830.4H401.9v267.8zM107.2 776.8h241.1V535.7H107.2v241.1zm616.2 616.1h267.9v-241.1H723.4v241.1zM401.9 776.8h267.9V535.7H401.9v241.1zm642.9 616.1H1286v-241.1h-241.1v241.1zm-321.4-294.7h267.9V830.4H723.4v267.8zM428.7 375V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.3-5.3 8-11.5 8-18.8zm616.1 723.2H1286V830.4h-241.1v267.8zM723.4 776.8h267.9V535.7H723.4v241.1zm321.4 0H1286V535.7h-241.1v241.1zm26.8-401.8V133.9c0-7.3-2.7-13.5-8-18.8-5.3-5.3-11.6-8-18.8-8h-53.6c-7.3 0-13.5 2.7-18.8 8-5.3 5.3-8 11.6-8 18.8V375c0 7.3 2.7 13.5 8 18.8 5.3 5.3 11.6 8 18.8 8h53.6c7.3 0 13.5-2.7 18.8-8 5.4-5.3 8-11.5 8-18.8zm321.5-53.6v1071.4c0 29-10.6 54.1-31.8 75.3-21.2 21.2-46.3 31.8-75.3 31.8H107.2c-29 0-54.1-10.6-75.3-31.8C10.6 1447 0 1421.9 0 1392.9V321.4c0-29 10.6-54.1 31.8-75.3s46.3-31.8 75.3-31.8h107.2v-80.4c0-36.8 13.1-68.4 39.3-94.6S311.4 0 348.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3 26.2 26.2 39.3 57.8 39.3 94.6v80.4h321.5v-80.4c0-36.8 13.1-68.4 39.3-94.6C922.9 13.1 954.4 0 991.3 0h53.6c36.8 0 68.4 13.1 94.6 39.3s39.3 57.8 39.3 94.6v80.4H1286c29 0 54.1 10.6 75.3 31.8 21.2 21.2 31.8 46.3 31.8 75.3z"
+    d: "m107 1393h241v-241h-241zm295 0h268v-241h-268zm-295-295h241v-268h-241zm295 0h268v-268h-268zm-295-321h241v-241h-241zm616 616h268v-241h-268zm-321-616h268v-241h-268zm643 616h241v-241h-241zm-322-295h268v-268h-268zm-294-723v-241c0-7-3-14-8-19-6-5-12-8-19-8h-54c-7 0-13 3-19 8-5 5-8 12-8 19v241c0 7 3 14 8 19 6 5 12 8 19 8h54c7 0 13-3 19-8 5-5 8-12 8-19zm616 723h241v-268h-241zm-322-321h268v-241h-268zm322 0h241v-241h-241zm27-402v-241c0-7-3-14-8-19-6-5-12-8-19-8h-54c-7 0-13 3-19 8-5 5-8 12-8 19v241c0 7 3 14 8 19 6 5 12 8 19 8h54c7 0 13-3 19-8 5-5 8-12 8-19zm321-54v1072c0 29-11 54-32 75s-46 32-75 32h-1179c-29 0-54-11-75-32s-32-46-32-75v-1072c0-29 11-54 32-75s46-32 75-32h107v-80c0-37 13-68 40-95s57-39 94-39h54c37 0 68 13 95 39 26 26 39 58 39 95v80h321v-80c0-37 13-69 40-95 26-26 57-39 94-39h54c37 0 68 13 94 39s40 58 40 95v80h107c29 0 54 11 75 32s32 46 32 75z"
   }));
 };
 
@@ -9584,12 +9945,22 @@ module.exports = function ToPrimitive(input) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.PureCalendarDay = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -9603,6 +9974,8 @@ var _reactWithStyles = __webpack_require__("TG4+");
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
+var _raf = _interopRequireDefault(__webpack_require__("xEkU"));
+
 var _defaultPhrases = __webpack_require__("vV+G");
 
 var _getPhrasePropTypes = _interopRequireDefault(__webpack_require__("yc2e"));
@@ -9613,19 +9986,11 @@ var _ModifiersShape = _interopRequireDefault(__webpack_require__("J7JS"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   day: (0, _moment["default"])(),
   daySize: _constants.DAY_SIZE,
@@ -9645,12 +10010,11 @@ var defaultProps = {
 var CalendarDay =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(CalendarDay, _ref);
-
+  (0, _inheritsLoose2["default"])(CalendarDay, _ref);
   var _proto = CalendarDay.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function CalendarDay() {
@@ -9661,18 +10025,24 @@ function (_ref) {
     }
 
     _this = _ref.call.apply(_ref, [this].concat(args)) || this;
-    _this.setButtonRef = _this.setButtonRef.bind(_assertThisInitialized(_this));
+    _this.setButtonRef = _this.setButtonRef.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
   _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this2 = this;
+
     var _this$props = this.props,
         isFocused = _this$props.isFocused,
         tabIndex = _this$props.tabIndex;
 
     if (tabIndex === 0) {
       if (isFocused || tabIndex !== prevProps.tabIndex) {
-        this.buttonRef.focus();
+        (0, _raf["default"])(function () {
+          if (_this2.buttonRef) {
+            _this2.buttonRef.focus();
+          }
+        });
       }
     }
   };
@@ -9706,7 +10076,7 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this2 = this;
+    var _this3 = this;
 
     var _this$props2 = this.props,
         day = _this$props2.day,
@@ -9717,7 +10087,8 @@ function (_ref) {
         renderDayContents = _this$props2.renderDayContents,
         tabIndex = _this$props2.tabIndex,
         styles = _this$props2.styles,
-        phrases = _this$props2.phrases;
+        phrases = _this$props2.phrases,
+        css = _this$props2.css;
     if (!day) return _react["default"].createElement("td", null);
 
     var _getCalendarDaySettin = (0, _getCalendarDaySettings["default"])(day, ariaLabelFormat, daySize, modifiers, phrases),
@@ -9728,26 +10099,26 @@ function (_ref) {
         isOutsideRange = _getCalendarDaySettin.isOutsideRange,
         ariaLabel = _getCalendarDaySettin.ariaLabel;
 
-    return _react["default"].createElement("td", _extends({}, (0, _reactWithStyles.css)(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('hovered-start-first-possible-end') && styles.CalendarDay__hovered_start_first_possible_end, modifiers.has('hovered-start-blocked-minimum-nights') && styles.CalendarDay__hovered_start_blocked_min_nights, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && !modifiers.has('selected-span') && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
+    return _react["default"].createElement("td", (0, _extends2["default"])({}, css(styles.CalendarDay, useDefaultCursor && styles.CalendarDay__defaultCursor, styles.CalendarDay__default, isOutsideDay && styles.CalendarDay__outside, modifiers.has('today') && styles.CalendarDay__today, modifiers.has('first-day-of-week') && styles.CalendarDay__firstDayOfWeek, modifiers.has('last-day-of-week') && styles.CalendarDay__lastDayOfWeek, modifiers.has('hovered-offset') && styles.CalendarDay__hovered_offset, modifiers.has('hovered-start-first-possible-end') && styles.CalendarDay__hovered_start_first_possible_end, modifiers.has('hovered-start-blocked-minimum-nights') && styles.CalendarDay__hovered_start_blocked_min_nights, modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar, modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights, modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar, hoveredSpan && styles.CalendarDay__hovered_span, modifiers.has('selected-span') && styles.CalendarDay__selected_span, modifiers.has('selected-start') && styles.CalendarDay__selected_start, modifiers.has('selected-end') && styles.CalendarDay__selected_end, selected && !modifiers.has('selected-span') && styles.CalendarDay__selected, isOutsideRange && styles.CalendarDay__blocked_out_of_range, daySizeStyles), {
       role: "button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
       ,
       ref: this.setButtonRef,
       "aria-disabled": modifiers.has('blocked'),
       "aria-label": ariaLabel,
       onMouseEnter: function onMouseEnter(e) {
-        _this2.onDayMouseEnter(day, e);
+        _this3.onDayMouseEnter(day, e);
       },
       onMouseLeave: function onMouseLeave(e) {
-        _this2.onDayMouseLeave(day, e);
+        _this3.onDayMouseLeave(day, e);
       },
       onMouseUp: function onMouseUp(e) {
         e.currentTarget.blur();
       },
       onClick: function onClick(e) {
-        _this2.onDayClick(day, e);
+        _this3.onDayClick(day, e);
       },
       onKeyDown: function onKeyDown(e) {
-        _this2.onKeyDown(day, e);
+        _this3.onKeyDown(day, e);
       },
       tabIndex: tabIndex
     }), renderDayContents ? renderDayContents(day, modifiers) : day.format('D'));
@@ -9922,11 +10293,114 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "NE9H":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports['default'] = shallowEqual;
+
+var _objectIs = __webpack_require__("bbcx");
+
+var _objectIs2 = _interopRequireDefault(_objectIs);
+
+var _has = __webpack_require__("oNNP");
+
+var _has2 = _interopRequireDefault(_has);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+// adapted from https://github.com/facebook/react/blob/144328fe81719e916b946e22660479e31561bb0b/packages/shared/shallowEqual.js#L36-L68
+function shallowEqual(objA, objB) {
+  if ((0, _objectIs2['default'])(objA, objB)) {
+    return true;
+  }
+
+  if (!objA || !objB || (typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object') {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  keysA.sort();
+  keysB.sort();
+
+  // Test for A's keys different from B.
+  for (var i = 0; i < keysA.length; i += 1) {
+    if (!(0, _has2['default'])(objB, keysA[i]) || !(0, _objectIs2['default'])(objA[keysA[i]], objB[keysA[i]])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9pbmRleC5qcyJdLCJuYW1lcyI6WyJzaGFsbG93RXF1YWwiLCJvYmpBIiwib2JqQiIsImtleXNBIiwiT2JqZWN0Iiwia2V5cyIsImtleXNCIiwibGVuZ3RoIiwic29ydCIsImkiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7O3FCQUl3QkEsWTs7QUFKeEI7Ozs7QUFDQTs7Ozs7O0FBRUE7QUFDZSxTQUFTQSxZQUFULENBQXNCQyxJQUF0QixFQUE0QkMsSUFBNUIsRUFBa0M7QUFDL0MsTUFBSSwyQkFBR0QsSUFBSCxFQUFTQyxJQUFULENBQUosRUFBb0I7QUFDbEIsV0FBTyxJQUFQO0FBQ0Q7O0FBRUQsTUFBSSxDQUFDRCxJQUFELElBQVMsQ0FBQ0MsSUFBVixJQUFrQixRQUFPRCxJQUFQLHlDQUFPQSxJQUFQLE9BQWdCLFFBQWxDLElBQThDLFFBQU9DLElBQVAseUNBQU9BLElBQVAsT0FBZ0IsUUFBbEUsRUFBNEU7QUFDMUUsV0FBTyxLQUFQO0FBQ0Q7O0FBRUQsTUFBTUMsUUFBUUMsT0FBT0MsSUFBUCxDQUFZSixJQUFaLENBQWQ7QUFDQSxNQUFNSyxRQUFRRixPQUFPQyxJQUFQLENBQVlILElBQVosQ0FBZDs7QUFFQSxNQUFJQyxNQUFNSSxNQUFOLEtBQWlCRCxNQUFNQyxNQUEzQixFQUFtQztBQUNqQyxXQUFPLEtBQVA7QUFDRDs7QUFFREosUUFBTUssSUFBTjtBQUNBRixRQUFNRSxJQUFOOztBQUVBO0FBQ0EsT0FBSyxJQUFJQyxJQUFJLENBQWIsRUFBZ0JBLElBQUlOLE1BQU1JLE1BQTFCLEVBQWtDRSxLQUFLLENBQXZDLEVBQTBDO0FBQ3hDLFFBQUksQ0FBQyxzQkFBSVAsSUFBSixFQUFVQyxNQUFNTSxDQUFOLENBQVYsQ0FBRCxJQUF3QixDQUFDLDJCQUFHUixLQUFLRSxNQUFNTSxDQUFOLENBQUwsQ0FBSCxFQUFtQlAsS0FBS0MsTUFBTU0sQ0FBTixDQUFMLENBQW5CLENBQTdCLEVBQWlFO0FBQy9ELGFBQU8sS0FBUDtBQUNEO0FBQ0Y7O0FBRUQsU0FBTyxJQUFQO0FBQ0QiLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgaXMgZnJvbSAnb2JqZWN0LWlzJztcbmltcG9ydCBoYXMgZnJvbSAnaGFzJztcblxuLy8gYWRhcHRlZCBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9mYWNlYm9vay9yZWFjdC9ibG9iLzE0NDMyOGZlODE3MTllOTE2Yjk0NmUyMjY2MDQ3OWUzMTU2MWJiMGIvcGFja2FnZXMvc2hhcmVkL3NoYWxsb3dFcXVhbC5qcyNMMzYtTDY4XG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBzaGFsbG93RXF1YWwob2JqQSwgb2JqQikge1xuICBpZiAoaXMob2JqQSwgb2JqQikpIHtcbiAgICByZXR1cm4gdHJ1ZTtcbiAgfVxuXG4gIGlmICghb2JqQSB8fCAhb2JqQiB8fCB0eXBlb2Ygb2JqQSAhPT0gJ29iamVjdCcgfHwgdHlwZW9mIG9iakIgIT09ICdvYmplY3QnKSB7XG4gICAgcmV0dXJuIGZhbHNlO1xuICB9XG5cbiAgY29uc3Qga2V5c0EgPSBPYmplY3Qua2V5cyhvYmpBKTtcbiAgY29uc3Qga2V5c0IgPSBPYmplY3Qua2V5cyhvYmpCKTtcblxuICBpZiAoa2V5c0EubGVuZ3RoICE9PSBrZXlzQi5sZW5ndGgpIHtcbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cblxuICBrZXlzQS5zb3J0KCk7XG4gIGtleXNCLnNvcnQoKTtcblxuICAvLyBUZXN0IGZvciBBJ3Mga2V5cyBkaWZmZXJlbnQgZnJvbSBCLlxuICBmb3IgKGxldCBpID0gMDsgaSA8IGtleXNBLmxlbmd0aDsgaSArPSAxKSB7XG4gICAgaWYgKCFoYXMob2JqQiwga2V5c0FbaV0pIHx8ICFpcyhvYmpBW2tleXNBW2ldXSwgb2JqQltrZXlzQVtpXV0pKSB7XG4gICAgICByZXR1cm4gZmFsc2U7XG4gICAgfVxuICB9XG5cbiAgcmV0dXJuIHRydWU7XG59XG4iXX0=
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "NUgV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var supportsDescriptors = __webpack_require__("82c2").supportsDescriptors;
+var functionsHaveNames = __webpack_require__("JQAW")();
+var getPolyfill = __webpack_require__("gaAG");
+var defineProperty = Object.defineProperty;
+var TypeErr = TypeError;
+
+module.exports = function shimName() {
+	var polyfill = getPolyfill();
+	if (functionsHaveNames) {
+		return polyfill;
+	}
+	if (!supportsDescriptors) {
+		throw new TypeErr('Shimming Function.prototype.name support requires ES5 property descriptor support.');
+	}
+	var functionProto = Function.prototype;
+	defineProperty(functionProto, 'name', {
+		configurable: true,
+		enumerable: false,
+		get: function () {
+			var name = polyfill.call(this);
+			if (this !== functionProto) {
+				defineProperty(this, 'name', {
+					configurable: true,
+					enumerable: false,
+					value: name,
+					writable: false
+				});
+			}
+			return name;
+		}
+	});
+	return polyfill;
+};
+
+
+/***/ }),
+
 /***/ "Nho6":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9938,8 +10412,6 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 var _isBeforeDay = _interopRequireDefault(__webpack_require__("h6xH"));
 
 var _isSameDay = _interopRequireDefault(__webpack_require__("pRvc"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isAfterDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
@@ -9954,12 +10426,18 @@ function isAfterDay(a, b) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -9991,13 +10469,7 @@ var _isInclusivelyAfterDay = _interopRequireDefault(__webpack_require__("rit9"))
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   children: null,
   date: null,
@@ -10041,22 +10513,21 @@ var defaultProps = {
 var SingleDatePickerInputController =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(SingleDatePickerInputController, _ref);
-
+  (0, _inheritsLoose2["default"])(SingleDatePickerInputController, _ref);
   var _proto = SingleDatePickerInputController.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function SingleDatePickerInputController(props) {
     var _this;
 
     _this = _ref.call(this, props) || this;
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
-    _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_this));
-    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_this));
-    _this.clearDate = _this.clearDate.bind(_assertThisInitialized(_this));
+    _this.onChange = _this.onChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onFocus = _this.onFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onClearFocus = _this.onClearFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.clearDate = _this.clearDate.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -10221,12 +10692,26 @@ SingleDatePickerInputController.defaultProps = defaultProps;
 "use strict";
 
 
+var _interopRequireWildcard = __webpack_require__("284h");
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.PureDayPicker = exports.defaultProps = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("RIqP"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -10276,34 +10761,16 @@ var _CalendarInfoPositionShape = _interopRequireDefault(__webpack_require__("oR9
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var MONTH_PADDING = 23;
 var PREV_TRANSITION = 'prev';
 var NEXT_TRANSITION = 'next';
 var MONTH_SELECTION_TRANSITION = 'month_selection';
 var YEAR_SELECTION_TRANSITION = 'year_selection';
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   // calendar presentation props
   enableOutsideDays: false,
@@ -10366,12 +10833,11 @@ exports.defaultProps = defaultProps;
 var DayPicker =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DayPicker, _ref);
-
+  (0, _inheritsLoose2["default"])(DayPicker, _ref);
   var _proto = DayPicker.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DayPicker(props) {
@@ -10410,24 +10876,24 @@ function (_ref) {
     _this.calendarMonthGridHeight = 0;
     _this.setCalendarInfoWidthTimeout = null;
     _this.setCalendarMonthGridHeightTimeout = null;
-    _this.onKeyDown = _this.onKeyDown.bind(_assertThisInitialized(_this));
+    _this.onKeyDown = _this.onKeyDown.bind((0, _assertThisInitialized2["default"])(_this));
     _this.throttledKeyDown = (0, _throttle["default"])(_this.onFinalKeyDown, 200, {
       trailing: false
     });
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
-    _this.onPrevMonthTransition = _this.onPrevMonthTransition.bind(_assertThisInitialized(_this));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
-    _this.onNextMonthTransition = _this.onNextMonthTransition.bind(_assertThisInitialized(_this));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
-    _this.multiplyScrollableMonths = _this.multiplyScrollableMonths.bind(_assertThisInitialized(_this));
-    _this.updateStateAfterMonthTransition = _this.updateStateAfterMonthTransition.bind(_assertThisInitialized(_this));
-    _this.openKeyboardShortcutsPanel = _this.openKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
-    _this.closeKeyboardShortcutsPanel = _this.closeKeyboardShortcutsPanel.bind(_assertThisInitialized(_this));
-    _this.setCalendarInfoRef = _this.setCalendarInfoRef.bind(_assertThisInitialized(_this));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
-    _this.setTransitionContainerRef = _this.setTransitionContainerRef.bind(_assertThisInitialized(_this));
-    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_this));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onPrevMonthTransition = _this.onPrevMonthTransition.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onNextMonthTransition = _this.onNextMonthTransition.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.multiplyScrollableMonths = _this.multiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.updateStateAfterMonthTransition = _this.updateStateAfterMonthTransition.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.openKeyboardShortcutsPanel = _this.openKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.closeKeyboardShortcutsPanel = _this.closeKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setCalendarInfoRef = _this.setCalendarInfoRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setContainerRef = _this.setContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setTransitionContainerRef = _this.setTransitionContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -10540,7 +11006,7 @@ function (_ref) {
 
     if (this.isHorizontal() && (orientation !== prevProps.orientation || daySize !== prevProps.daySize)) {
       var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
-      var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+      var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat((0, _toConsumableArray2["default"])(visibleCalendarWeeks))) * (daySize - 1);
       var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
       this.adjustDayPickerHeight(newMonthHeight);
     }
@@ -10710,7 +11176,7 @@ function (_ref) {
 
       var visibleCalendarWeeks = this.calendarMonthWeeks.slice(0, numberOfMonths);
 
-      var _calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+      var _calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat((0, _toConsumableArray2["default"])(visibleCalendarWeeks))) * (daySize - 1);
 
       var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight + 1;
       this.adjustDayPickerHeight(newMonthHeight);
@@ -10782,7 +11248,7 @@ function (_ref) {
 
       var visibleCalendarWeeks = this.calendarMonthWeeks.slice(2, numberOfMonths + 2);
 
-      var _calendarMonthWeeksHeight2 = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+      var _calendarMonthWeeksHeight2 = Math.max.apply(Math, [0].concat((0, _toConsumableArray2["default"])(visibleCalendarWeeks))) * (daySize - 1);
 
       var newMonthHeight = monthTitleHeight + _calendarMonthWeeksHeight2 + 1;
       this.adjustDayPickerHeight(newMonthHeight);
@@ -10955,7 +11421,7 @@ function (_ref) {
       if (onPrevMonthClick) onPrevMonthClick(newMonth);
       var newInvisibleMonth = newMonth.clone().subtract(1, 'month');
       var numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(newInvisibleMonth, firstDayOfWeek);
-      this.calendarMonthWeeks = [numberOfWeeks].concat(_toConsumableArray(this.calendarMonthWeeks.slice(0, -1)));
+      this.calendarMonthWeeks = [numberOfWeeks].concat((0, _toConsumableArray2["default"])(this.calendarMonthWeeks.slice(0, -1)));
     } else if (monthTransition === NEXT_TRANSITION) {
       newMonth.add(1, 'month');
       if (onNextMonthClick) onNextMonthClick(newMonth);
@@ -10964,7 +11430,7 @@ function (_ref) {
 
       var _numberOfWeeks = (0, _getNumberOfCalendarMonthWeeks["default"])(_newInvisibleMonth, firstDayOfWeek);
 
-      this.calendarMonthWeeks = [].concat(_toConsumableArray(this.calendarMonthWeeks.slice(1)), [_numberOfWeeks]);
+      this.calendarMonthWeeks = [].concat((0, _toConsumableArray2["default"])(this.calendarMonthWeeks.slice(1)), [_numberOfWeeks]);
     } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
       if (onMonthChange) onMonthChange(newMonth);
     } else if (monthTransition === YEAR_SELECTION_TRANSITION) {
@@ -11024,7 +11490,7 @@ function (_ref) {
         numberOfMonths = _this$props8.numberOfMonths;
     var monthTitleHeight = this.state.monthTitleHeight;
     var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
-    var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat(_toConsumableArray(visibleCalendarWeeks))) * (daySize - 1);
+    var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat((0, _toConsumableArray2["default"])(visibleCalendarWeeks))) * (daySize - 1);
     var newMonthHeight = monthTitleHeight + calendarMonthWeeksHeight + 1;
 
     if (this.isHorizontal()) {
@@ -11087,7 +11553,8 @@ function (_ref) {
         horizontalMonthPadding = _this$props10.horizontalMonthPadding,
         orientation = _this$props10.orientation,
         weekDayFormat = _this$props10.weekDayFormat,
-        styles = _this$props10.styles;
+        styles = _this$props10.styles,
+        css = _this$props10.css;
     var calendarMonthWidth = this.state.calendarMonthWidth;
     var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
     var horizontalStyle = {
@@ -11108,18 +11575,18 @@ function (_ref) {
     var header = [];
 
     for (var i = 0; i < 7; i += 1) {
-      header.push(_react["default"].createElement("li", _extends({
+      header.push(_react["default"].createElement("li", (0, _extends2["default"])({
         key: i
-      }, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_li, {
+      }, css(styles.DayPicker_weekHeader_li, {
         width: daySize
       })), _react["default"].createElement("small", null, (0, _moment["default"])().day((i + firstDayOfWeek) % 7).format(weekDayFormat))));
     }
 
-    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeader, this.isVertical() && styles.DayPicker_weekHeader__vertical, verticalScrollable && styles.DayPicker_weekHeader__verticalScrollable, weekHeaderStyle, {
+    return _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPicker_weekHeader, this.isVertical() && styles.DayPicker_weekHeader__vertical, verticalScrollable && styles.DayPicker_weekHeader__verticalScrollable, weekHeaderStyle, {
       padding: "0 ".concat(horizontalMonthPadding, "px")
     }), {
       key: "week-".concat(index)
-    }), _react["default"].createElement("ul", (0, _reactWithStyles.css)(styles.DayPicker_weekHeader_ul), header));
+    }), _react["default"].createElement("ul", css(styles.DayPicker_weekHeader_ul), header));
   };
 
   _proto.render = function render() {
@@ -11138,6 +11605,7 @@ function (_ref) {
         calendarInfoWidth = _this$state8.calendarInfoWidth,
         monthTitleHeight = _this$state8.monthTitleHeight;
     var _this$props11 = this.props,
+        css = _this$props11.css,
         enableOutsideDays = _this$props11.enableOutsideDays,
         numberOfMonths = _this$props11.numberOfMonths,
         orientation = _this$props11.orientation,
@@ -11204,9 +11672,9 @@ function (_ref) {
     var calendarInfoPositionAfter = calendarInfoPosition === _constants.INFO_POSITION_AFTER;
     var calendarInfoIsInline = calendarInfoPositionBefore || calendarInfoPositionAfter;
 
-    var calendarInfo = renderCalendarInfo && _react["default"].createElement("div", _extends({
+    var calendarInfo = renderCalendarInfo && _react["default"].createElement("div", (0, _extends2["default"])({
       ref: this.setCalendarInfoRef
-    }, (0, _reactWithStyles.css)(calendarInfoIsInline && styles.DayPicker_calendarInfo__horizontal)), renderCalendarInfo());
+    }, css(calendarInfoIsInline && styles.DayPicker_calendarInfo__horizontal)), renderCalendarInfo());
 
     var calendarInfoPanelWidth = renderCalendarInfo && calendarInfoIsInline ? calendarInfoWidth : 0;
     var firstVisibleMonthIndex = this.getFirstVisibleIndex();
@@ -11226,15 +11694,16 @@ function (_ref) {
       marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
       marginTop: isHorizontal && withPortal ? -calendarMonthWidth / 2 : null
     };
-    return _react["default"].createElement("div", _extends({
+    return _react["default"].createElement("div", (0, _extends2["default"])({
       role: "application",
+      "aria-roledescription": phrases.roleDescription,
       "aria-label": phrases.calendarLabel
-    }, (0, _reactWithStyles.css)(styles.DayPicker, isHorizontal && styles.DayPicker__horizontal, verticalScrollable && styles.DayPicker__verticalScrollable, isHorizontal && withPortal && styles.DayPicker_portal__horizontal, this.isVertical() && withPortal && styles.DayPicker_portal__vertical, dayPickerStyle, !monthTitleHeight && styles.DayPicker__hidden, !noBorder && styles.DayPicker__withBorder)), _react["default"].createElement(_reactOutsideClickHandler["default"], {
+    }, css(styles.DayPicker, isHorizontal && styles.DayPicker__horizontal, verticalScrollable && styles.DayPicker__verticalScrollable, isHorizontal && withPortal && styles.DayPicker_portal__horizontal, this.isVertical() && withPortal && styles.DayPicker_portal__vertical, dayPickerStyle, !monthTitleHeight && styles.DayPicker__hidden, !noBorder && styles.DayPicker__withBorder)), _react["default"].createElement(_reactOutsideClickHandler["default"], {
       onOutsideClick: onOutsideClick
-    }, (calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo, _react["default"].createElement("div", (0, _reactWithStyles.css)(dayPickerWrapperStyle, calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_weekHeaders, isHorizontal && styles.DayPicker_weekHeaders__horizontal), {
+    }, (calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo, _react["default"].createElement("div", css(dayPickerWrapperStyle, calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal), _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPicker_weekHeaders, isHorizontal && styles.DayPicker_weekHeaders__horizontal), {
       "aria-hidden": "true",
       role: "presentation"
-    }), weekHeaders), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_focusRegion), {
+    }), weekHeaders), _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPicker_focusRegion), {
       ref: this.setContainerRef,
       onClick: function onClick(e) {
         e.stopPropagation();
@@ -11247,7 +11716,7 @@ function (_ref) {
       },
       role: "region",
       tabIndex: -1
-    }), !verticalScrollable && this.renderNavigation(), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DayPicker_transitionContainer, shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal, this.isVertical() && styles.DayPicker_transitionContainer__vertical, verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable, transitionContainerStyle), {
+    }), !verticalScrollable && this.renderNavigation(), _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DayPicker_transitionContainer, shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal, this.isVertical() && styles.DayPicker_transitionContainer__vertical, verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable, transitionContainerStyle), {
       ref: this.setTransitionContainerRef
     }), _react["default"].createElement(_CalendarMonthGrid["default"], {
       setMonthTitleHeight: !monthTitleHeight ? this.setMonthTitleHeight : undefined,
@@ -11473,6 +11942,8 @@ module.exports = _assertThisInitialized;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -11482,8 +11953,6 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _isSameMonth = _interopRequireDefault(__webpack_require__("ulUS"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function isPrevMonth(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
   return (0, _isSameMonth["default"])(a.clone().subtract(1, 'month'), b);
@@ -11492,7 +11961,10 @@ function isPrevMonth(a, b) {
 /***/ }),
 
 /***/ "QEu6":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -11536,252 +12008,322 @@ module.exports = now;
 
 /***/ }),
 
+/***/ "RIqP":
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__("Ijbi");
+
+var iterableToArray = __webpack_require__("EbDI");
+
+var nonIterableSpread = __webpack_require__("Bnag");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+
 /***/ "TG4+":
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("284h");
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.withStylesPropTypes = exports.css = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 exports.withStyles = withStyles;
-
-var _react = __webpack_require__("cDcd");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("17x9");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _hoistNonReactStatics = __webpack_require__("2mql");
-
-var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
-
-var _deepmerge = __webpack_require__("9TKr");
-
-var _deepmerge2 = _interopRequireDefault(_deepmerge);
-
-var _constants = __webpack_require__("QEu6");
-
-var _brcast = __webpack_require__("sDMB");
-
-var _brcast2 = _interopRequireDefault(_brcast);
-
-var _ThemedStyleSheet = __webpack_require__("030x");
-
-var _ThemedStyleSheet2 = _interopRequireDefault(_ThemedStyleSheet);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-// Add some named exports to assist in upgrading and for convenience
-var css = exports.css = _ThemedStyleSheet2['default'].resolveLTR;
-var withStylesPropTypes = exports.withStylesPropTypes = {
-  styles: _propTypes2['default'].object.isRequired, // eslint-disable-line react/forbid-prop-types
-  theme: _propTypes2['default'].object.isRequired, // eslint-disable-line react/forbid-prop-types
-  css: _propTypes2['default'].func.isRequired
-};
-
-var EMPTY_STYLES = {};
-var EMPTY_STYLES_FN = function EMPTY_STYLES_FN() {
-  return EMPTY_STYLES;
-};
-
-function baseClass(pureComponent) {
-  if (pureComponent) {
-    if (!_react2['default'].PureComponent) {
-      throw new ReferenceError('withStyles() pureComponent option requires React 15.3.0 or later');
-    }
-
-    return _react2['default'].PureComponent;
+Object.defineProperty(exports, "withStylesPropTypes", {
+  enumerable: true,
+  get: function get() {
+    return _withStylesPropTypes.withStylesPropTypes;
   }
+});
+exports.css = exports["default"] = void 0;
 
-  return _react2['default'].Component;
-}
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
 
-var contextTypes = _defineProperty({}, _constants.CHANNEL, _brcast2['default']);
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
-var defaultDirection = _constants.DIRECTIONS.LTR;
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
-function withStyles(styleFn) {
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _hoistNonReactStatics = _interopRequireDefault(__webpack_require__("2mql"));
+
+var _getComponentName = _interopRequireDefault(__webpack_require__("e4Aj"));
+
+var _emptyStylesFn = _interopRequireDefault(__webpack_require__("vg41"));
+
+var _perf = _interopRequireDefault(__webpack_require__("Ddh5"));
+
+var _WithStylesContext = _interopRequireWildcard(__webpack_require__("+D8X"));
+
+var _ThemedStyleSheet = _interopRequireWildcard(__webpack_require__("030x"));
+
+var _withStylesPropTypes = __webpack_require__("AoOu");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+/**
+ * A higher order function that returns a higher order class component that injects
+ * CSS-in-JS props derived from the react-with-styles theme, interface, and
+ * direction provided through the WithStylesContext provider.
+ *
+ * The function should be used as follows:
+ * `withStyles((theme) => styles, options)(Component)`
+ *
+ * Options can be used to rename the injected props, memoize the component, and flush
+ * the styles to the styles tag (or whatever the interface implements as flush) before
+ * rendering.
+ *
+ * @export
+ * @param {Function|null|undefined} [stylesFn=EMPTY_STYLES_FN]
+ * @param {Object} [{
+ *     stylesPropName = 'styles',
+ *     themePropName = 'theme',
+ *     cssPropName = 'css',
+ *     flushBefore = false,
+ *     pureComponent = false,
+ *   }={}]
+ * @returns a higher order component that wraps the provided component and injects
+ * the react-with-styles css, styles, and theme props.
+ */
+function withStyles() {
+  var stylesFn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _emptyStylesFn["default"];
+
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       _ref$stylesPropName = _ref.stylesPropName,
-      stylesPropName = _ref$stylesPropName === undefined ? 'styles' : _ref$stylesPropName,
+      stylesPropName = _ref$stylesPropName === void 0 ? 'styles' : _ref$stylesPropName,
       _ref$themePropName = _ref.themePropName,
-      themePropName = _ref$themePropName === undefined ? 'theme' : _ref$themePropName,
+      themePropName = _ref$themePropName === void 0 ? 'theme' : _ref$themePropName,
       _ref$cssPropName = _ref.cssPropName,
-      cssPropName = _ref$cssPropName === undefined ? 'css' : _ref$cssPropName,
+      cssPropName = _ref$cssPropName === void 0 ? 'css' : _ref$cssPropName,
       _ref$flushBefore = _ref.flushBefore,
-      flushBefore = _ref$flushBefore === undefined ? false : _ref$flushBefore,
+      flushBefore = _ref$flushBefore === void 0 ? false : _ref$flushBefore,
       _ref$pureComponent = _ref.pureComponent,
-      pureComponent = _ref$pureComponent === undefined ? false : _ref$pureComponent;
+      pureComponent = _ref$pureComponent === void 0 ? false : _ref$pureComponent;
 
-  var styleDefLTR = void 0;
-  var styleDefRTL = void 0;
-  var currentThemeLTR = void 0;
-  var currentThemeRTL = void 0;
-  var BaseClass = baseClass(pureComponent);
+  stylesFn = stylesFn || _emptyStylesFn["default"];
+  var BaseClass = pureComponent ? _react["default"].PureComponent : _react["default"].Component;
+  /** Cache for storing the result of stylesFn(theme) for all themes. */
 
-  function getResolveMethod(direction) {
-    return direction === _constants.DIRECTIONS.LTR ? _ThemedStyleSheet2['default'].resolveLTR : _ThemedStyleSheet2['default'].resolveRTL;
-  }
+  var stylesFnResultCacheMap = new Map(); // The function that wraps the provided component in a wrapper
+  // component that injects the withStyles props
 
-  function getCurrentTheme(direction) {
-    return direction === _constants.DIRECTIONS.LTR ? currentThemeLTR : currentThemeRTL;
-  }
+  return function withStylesHOC(WrappedComponent) {
+    var wrappedComponentName = (0, _getComponentName["default"])(WrappedComponent); // The wrapper component that injects the withStyles props
 
-  function getStyleDef(direction, wrappedComponentName) {
-    var currentTheme = getCurrentTheme(direction);
-    var styleDef = direction === _constants.DIRECTIONS.LTR ? styleDefLTR : styleDefRTL;
+    var WithStyles =
+    /*#__PURE__*/
+    function (_BaseClass) {
+      (0, _inheritsLoose2["default"])(WithStyles, _BaseClass);
 
-    var registeredTheme = _ThemedStyleSheet2['default'].get();
+      function WithStyles(props, context) {
+        var _this;
 
-    // Return the existing styles if they've already been defined
-    // and if the theme used to create them corresponds to the theme
-    // registered with ThemedStyleSheet
-    if (styleDef && currentTheme === registeredTheme) {
-      return styleDef;
-    }
+        _this = _BaseClass.call(this, props, context) || this;
+        /** Cache for storing the current props and objects used to derive them */
 
-    if (false) {}
+        _this.cache = {
+          rtl: {},
+          ltr: {}
+        };
+        return _this;
+      }
 
-    var isRTL = direction === _constants.DIRECTIONS.RTL;
+      var _proto = WithStyles.prototype;
 
-    if (isRTL) {
-      styleDefRTL = styleFn ? _ThemedStyleSheet2['default'].createRTL(styleFn) : EMPTY_STYLES_FN;
+      _proto.getCache = function getCache(direction) {
+        return this.cache[direction];
+      };
 
-      currentThemeRTL = registeredTheme;
-      styleDef = styleDefRTL;
-    } else {
-      styleDefLTR = styleFn ? _ThemedStyleSheet2['default'].createLTR(styleFn) : EMPTY_STYLES_FN;
+      _proto.updateCache = function updateCache(direction, results) {
+        this.cache[direction] = results;
+      };
 
-      currentThemeLTR = registeredTheme;
-      styleDef = styleDefLTR;
-    }
+      _proto.getCurrentInterface = function getCurrentInterface() {
+        // Fallback to the singleton implementation
+        return this.context && this.context.stylesInterface || (0, _ThemedStyleSheet._getInterface)();
+      };
 
-    if (false) {}
+      _proto.getCurrentTheme = function getCurrentTheme() {
+        // Fallback to the singleton implementation
+        return this.context && this.context.stylesTheme || (0, _ThemedStyleSheet._getTheme)();
+      };
 
-    return styleDef;
-  }
+      _proto.getCurrentDirection = function getCurrentDirection() {
+        return this.context && this.context.direction || _WithStylesContext.DIRECTIONS.LTR;
+      };
 
-  function getState(direction, wrappedComponentName) {
-    return {
-      resolveMethod: getResolveMethod(direction),
-      styleDef: getStyleDef(direction, wrappedComponentName)
-    };
-  }
+      _proto.makeCreate = function makeCreate(direction, stylesInterface) {
+        var directionSelector = direction === _WithStylesContext.DIRECTIONS.RTL ? 'RTL' : 'LTR';
+        var create = stylesInterface["create".concat(directionSelector)] || stylesInterface.create;
 
-  return function () {
-    function withStylesHOC(WrappedComponent) {
-      var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+        if (false) {}
 
-      // NOTE: Use a class here so components are ref-able if need be:
-      // eslint-disable-next-line react/prefer-stateless-function
+        return create;
+      };
 
-      var WithStyles = function (_BaseClass) {
-        _inherits(WithStyles, _BaseClass);
+      _proto.makeResolve = function makeResolve(direction, stylesInterface) {
+        var directionSelector = direction === _WithStylesContext.DIRECTIONS.RTL ? 'RTL' : 'LTR';
+        var resolve = stylesInterface["resolve".concat(directionSelector)] || stylesInterface.resolve;
 
-        function WithStyles(props, context) {
-          _classCallCheck(this, WithStyles);
+        if (false) {}
 
-          var _this = _possibleConstructorReturn(this, (WithStyles.__proto__ || Object.getPrototypeOf(WithStyles)).call(this, props, context));
+        return resolve;
+      };
 
-          var direction = _this.context[_constants.CHANNEL] ? _this.context[_constants.CHANNEL].getState() : defaultDirection;
+      _proto.stylesFnResult = function stylesFnResult(theme) {
+        // Get and store the result in the stylesFnResultsCache for the component
+        // -- not the instance -- so we only apply the theme to the stylesFn
+        // once per theme for this component.
+        var cachedResultForTheme = stylesFnResultCacheMap.get(theme);
+        var stylesFnResult = cachedResultForTheme || stylesFn(theme) || {};
+        stylesFnResultCacheMap.set(theme, stylesFnResult); // cache the result of stylesFn(theme)
 
-          _this.state = getState(direction, wrappedComponentName);
-          return _this;
+        return stylesFnResult;
+      };
+
+      _proto.getProps = function getProps() {
+        // Get the styles interface, theme, and direction from context
+        var stylesInterface = this.getCurrentInterface();
+        var theme = this.getCurrentTheme();
+        var direction = this.getCurrentDirection(); // Use a cache to store the interface methods and created styles by direction.
+        // This way, if the theme and the interface don't change, we do not recalculate
+        // styles or any other interface derivations. They are effectively only calculated
+        // once per direction, until the theme or interface change.
+        // Assume: always an object.
+
+        var cache = this.getCache(direction); // Determine what's changed
+
+        var interfaceChanged = !cache.stylesInterface || stylesInterface && cache.stylesInterface !== stylesInterface;
+        var themeChanged = cache.theme !== theme; // If the interface and theme haven't changed for this direction,
+        // we return the cached props immediately.
+
+        if (!interfaceChanged && !themeChanged) {
+          return cache.props;
+        } // If the theme or the interface changed, then there are some values
+        // we need to recalculate. We avoid recalculating the ones we already
+        // calculated in the past if the objects they're derived from have not
+        // changed.
+
+
+        var create = interfaceChanged && this.makeCreate(direction, stylesInterface) || cache.create;
+        var resolve = interfaceChanged && this.makeResolve(direction, stylesInterface) || cache.resolve; // Derive the css function prop
+
+        var css = interfaceChanged && function () {
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          return resolve(args);
+        } || cache.props.css; // Get or calculate the themed styles from the stylesFn:
+        // Uses a separate cache at the component level, not at the instance level,
+        // to only apply the theme to the stylesFn once per component class per theme.
+
+
+        var stylesFnResult = this.stylesFnResult(theme); // Derive the styles prop: recalculate it if create changed, or stylesFnResult changed
+
+        var styles = (interfaceChanged || stylesFnResult !== cache.stylesFnResult) && create(stylesFnResult) || cache.props.styles; // Put the new props together
+
+        var props = {
+          css: css,
+          styles: styles,
+          theme: theme
+        }; // Update the cache with all the new values
+
+        this.updateCache(direction, {
+          stylesInterface: stylesInterface,
+          theme: theme,
+          create: create,
+          resolve: resolve,
+          stylesFnResult: stylesFnResult,
+          props: props
+        });
+        return props;
+      };
+
+      _proto.flush = function flush() {
+        var stylesInterface = this.getCurrentInterface();
+
+        if (stylesInterface && stylesInterface.flush) {
+          stylesInterface.flush();
+        }
+      };
+
+      _proto.render = function render() {
+        var _ref2;
+
+        // We only want to re-render if the theme, stylesInterface, or direction change.
+        // These values are in context so we're listening for their updates.
+        // this.getProps() derives the props from the theme, stylesInterface, and direction in
+        // context, and memoizes them on the instance per direction.
+        var _this$getProps = this.getProps(),
+            theme = _this$getProps.theme,
+            styles = _this$getProps.styles,
+            css = _this$getProps.css; // Flush if specified
+
+
+        if (flushBefore) {
+          this.flush();
         }
 
-        _createClass(WithStyles, [{
-          key: 'componentDidMount',
-          value: function () {
-            function componentDidMount() {
-              var _this2 = this;
+        return _react["default"].createElement(WrappedComponent, (0, _extends2["default"])({}, this.props, (_ref2 = {}, (0, _defineProperty2["default"])(_ref2, themePropName, theme), (0, _defineProperty2["default"])(_ref2, stylesPropName, styles), (0, _defineProperty2["default"])(_ref2, cssPropName, css), _ref2)));
+      };
 
-              if (this.context[_constants.CHANNEL]) {
-                // subscribe to future direction changes
-                this.channelUnsubscribe = this.context[_constants.CHANNEL].subscribe(function (direction) {
-                  _this2.setState(getState(direction, wrappedComponentName));
-                });
-              }
-            }
-
-            return componentDidMount;
-          }()
-        }, {
-          key: 'componentWillUnmount',
-          value: function () {
-            function componentWillUnmount() {
-              if (this.channelUnsubscribe) {
-                this.channelUnsubscribe();
-              }
-            }
-
-            return componentWillUnmount;
-          }()
-        }, {
-          key: 'render',
-          value: function () {
-            function render() {
-              var _ref2;
-
-              // As some components will depend on previous styles in
-              // the component tree, we provide the option of flushing the
-              // buffered styles (i.e. to a style tag) **before** the rendering
-              // cycle begins.
-              //
-              // The interfaces provide the optional "flush" method which
-              // is run in turn by ThemedStyleSheet.flush.
-              if (flushBefore) {
-                _ThemedStyleSheet2['default'].flush();
-              }
-
-              var _state = this.state,
-                  resolveMethod = _state.resolveMethod,
-                  styleDef = _state.styleDef;
+      return WithStyles;
+    }(BaseClass); // Copy the wrapped component's prop types and default props on WithStyles
 
 
-              return _react2['default'].createElement(WrappedComponent, _extends({}, this.props, (_ref2 = {}, _defineProperty(_ref2, themePropName, _ThemedStyleSheet2['default'].get()), _defineProperty(_ref2, stylesPropName, styleDef()), _defineProperty(_ref2, cssPropName, resolveMethod), _ref2)));
-            }
-
-            return render;
-          }()
-        }]);
-
-        return WithStyles;
-      }(BaseClass);
-
-      WithStyles.WrappedComponent = WrappedComponent;
-      WithStyles.displayName = 'withStyles(' + String(wrappedComponentName) + ')';
-      WithStyles.contextTypes = contextTypes;
-      if (WrappedComponent.propTypes) {
-        WithStyles.propTypes = (0, _deepmerge2['default'])({}, WrappedComponent.propTypes);
-        delete WithStyles.propTypes[stylesPropName];
-        delete WithStyles.propTypes[themePropName];
-        delete WithStyles.propTypes[cssPropName];
-      }
-      if (WrappedComponent.defaultProps) {
-        WithStyles.defaultProps = (0, _deepmerge2['default'])({}, WrappedComponent.defaultProps);
-      }
-
-      return (0, _hoistNonReactStatics2['default'])(WithStyles, WrappedComponent);
+    if (WrappedComponent.propTypes) {
+      WithStyles.propTypes = _objectSpread({}, WrappedComponent.propTypes);
+      delete WithStyles.propTypes[stylesPropName];
+      delete WithStyles.propTypes[themePropName];
+      delete WithStyles.propTypes[cssPropName];
     }
 
-    return withStylesHOC;
-  }();
+    if (WrappedComponent.defaultProps) {
+      WithStyles.defaultProps = _objectSpread({}, WrappedComponent.defaultProps);
+    }
+
+    WithStyles.contextType = _WithStylesContext["default"];
+    WithStyles.WrappedComponent = WrappedComponent;
+    WithStyles.displayName = "withStyles(".concat(wrappedComponentName, ")");
+    return (0, _hoistNonReactStatics["default"])(WithStyles, WrappedComponent);
+  };
 }
+
+var _default = withStyles;
+/**
+* Deprecated: Do not use directly. Please wrap your component in `withStyles` and use the `css`
+* prop injected via props instead.
+*/
+
+exports["default"] = _default;
+var css = _ThemedStyleSheet["default"].resolveLTR;
+exports.css = css;
+
+/***/ }),
+
+/***/ "TOwV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (true) {
+  module.exports = __webpack_require__("qT12");
+} else {}
+
 
 /***/ }),
 
@@ -11790,6 +12332,8 @@ function withStyles(styleFn) {
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -11817,8 +12361,6 @@ var _OpenDirectionShape = _interopRequireDefault(__webpack_require__("iuLr"));
 var _DayOfWeekShape = _interopRequireDefault(__webpack_require__("2S2E"));
 
 var _CalendarInfoPositionShape = _interopRequireDefault(__webpack_require__("oR9Z"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = {
   // required props for a functional interactive SingleDatePicker
@@ -11899,6 +12441,8 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -11907,8 +12451,6 @@ exports["default"] = registerCSSInterfaceWithDefaultTheme;
 var _reactWithStylesInterfaceCss = _interopRequireDefault(__webpack_require__("lzPt"));
 
 var _registerInterfaceWithDefaultTheme = _interopRequireDefault(__webpack_require__("WI5Z"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function registerCSSInterfaceWithDefaultTheme() {
   (0, _registerInterfaceWithDefaultTheme["default"])(_reactWithStylesInterfaceCss["default"]);
@@ -11932,12 +12474,22 @@ module.exports = function isPrimitive(value) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -11981,19 +12533,11 @@ var _DayOfWeekShape = _interopRequireDefault(__webpack_require__("2S2E"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   enableOutsideDays: false,
   firstVisibleMonthIndex: 0,
@@ -12045,12 +12589,11 @@ function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
 var CalendarMonthGrid =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(CalendarMonthGrid, _ref);
-
+  (0, _inheritsLoose2["default"])(CalendarMonthGrid, _ref);
   var _proto = CalendarMonthGrid.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function CalendarMonthGrid(props) {
@@ -12062,11 +12605,11 @@ function (_ref) {
       months: getMonths(props.initialMonth, props.numberOfMonths, withoutTransitionMonths)
     };
     _this.isTransitionEndSupported = (0, _isTransitionEndSupported["default"])();
-    _this.onTransitionEnd = _this.onTransitionEnd.bind(_assertThisInitialized(_this));
-    _this.setContainerRef = _this.setContainerRef.bind(_assertThisInitialized(_this));
+    _this.onTransitionEnd = _this.onTransitionEnd.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setContainerRef = _this.setContainerRef.bind((0, _assertThisInitialized2["default"])(_this));
     _this.locale = _moment["default"].locale();
-    _this.onMonthSelect = _this.onMonthSelect.bind(_assertThisInitialized(_this));
-    _this.onYearSelect = _this.onYearSelect.bind(_assertThisInitialized(_this));
+    _this.onMonthSelect = _this.onMonthSelect.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onYearSelect = _this.onYearSelect.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -12212,7 +12755,8 @@ function (_ref) {
         dayAriaLabelFormat = _this$props5.dayAriaLabelFormat,
         transitionDuration = _this$props5.transitionDuration,
         verticalBorderSpacing = _this$props5.verticalBorderSpacing,
-        setMonthTitleHeight = _this$props5.setMonthTitleHeight;
+        setMonthTitleHeight = _this$props5.setMonthTitleHeight,
+        css = _this$props5.css;
     var months = this.state.months;
     var isVertical = orientation === _constants.VERTICAL_ORIENTATION;
     var isVerticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
@@ -12221,7 +12765,7 @@ function (_ref) {
     var width = isVertical || isVerticalScrollable ? calendarMonthWidth : (numberOfMonths + 2) * calendarMonthWidth;
     var transformType = isVertical || isVerticalScrollable ? 'translateY' : 'translateX';
     var transformValue = "".concat(transformType, "(").concat(translationValue, "px)");
-    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonthGrid, isHorizontal && styles.CalendarMonthGrid__horizontal, isVertical && styles.CalendarMonthGrid__vertical, isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable, isAnimating && styles.CalendarMonthGrid__animating, isAnimating && transitionDuration && {
+    return _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.CalendarMonthGrid, isHorizontal && styles.CalendarMonthGrid__horizontal, isVertical && styles.CalendarMonthGrid__vertical, isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable, isAnimating && styles.CalendarMonthGrid__animating, isAnimating && transitionDuration && {
       transition: "transform ".concat(transitionDuration, "ms ease-in-out")
     }, _objectSpread({}, (0, _getTransformStyles["default"])(transformValue), {
       width: width
@@ -12233,9 +12777,9 @@ function (_ref) {
       var hideForAnimation = i === 0 && !isVisible;
       var showForAnimation = i === 0 && isAnimating && isVisible;
       var monthString = (0, _toISOMonthString["default"])(month);
-      return _react["default"].createElement("div", _extends({
+      return _react["default"].createElement("div", (0, _extends2["default"])({
         key: monthString
-      }, (0, _reactWithStyles.css)(isHorizontal && styles.CalendarMonthGrid_month__horizontal, hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation, showForAnimation && !isVertical && !isRTL && {
+      }, css(isHorizontal && styles.CalendarMonthGrid_month__horizontal, hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation, showForAnimation && !isVertical && !isRTL && {
         position: 'absolute',
         left: -calendarMonthWidth
       }, showForAnimation && !isVertical && isRTL && {
@@ -12334,6 +12878,19 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "TqRt":
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+
 /***/ "UVaH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12362,6 +12919,8 @@ module.exports = function hasNativeSymbols() {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -12372,8 +12931,6 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toLocalizedDateString(date, currentFormat) {
   var dateObj = _moment["default"].isMoment(date) ? date : (0, _toMomentObject["default"])(date, currentFormat);
@@ -12386,29 +12943,25 @@ function toLocalizedDateString(date, currentFormat) {
 /***/ "VDVV":
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _arrayPrototype = __webpack_require__("/ZKw");
+var _arrayPrototype = _interopRequireDefault(__webpack_require__("/ZKw"));
 
-var _arrayPrototype2 = _interopRequireDefault(_arrayPrototype);
-
-var _globalCache = __webpack_require__("9pTB");
-
-var _globalCache2 = _interopRequireDefault(_globalCache);
+var _globalCache = _interopRequireDefault(__webpack_require__("9pTB"));
 
 var _constants = __webpack_require__("kFtd");
 
-var _getClassName = __webpack_require__("nLTY");
+var _getClassName = _interopRequireDefault(__webpack_require__("nLTY"));
 
-var _getClassName2 = _interopRequireDefault(_getClassName);
-
-var _separateStyles2 = __webpack_require__("3HjQ");
-
-var _separateStyles3 = _interopRequireDefault(_separateStyles2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _separateStyles2 = _interopRequireDefault(__webpack_require__("3HjQ"));
 
 /**
  * Function required as part of the react-with-styles interface. Parses the styles provided by
@@ -12422,17 +12975,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 function create(stylesObject) {
   var stylesToClasses = {};
   var styleNames = Object.keys(stylesObject);
-  var sharedState = _globalCache2['default'].get(_constants.GLOBAL_CACHE_KEY) || {};
+  var sharedState = _globalCache["default"].get(_constants.GLOBAL_CACHE_KEY) || {};
   var _sharedState$namespac = sharedState.namespace,
-      namespace = _sharedState$namespac === undefined ? '' : _sharedState$namespac;
-
+      namespace = _sharedState$namespac === void 0 ? '' : _sharedState$namespac;
   styleNames.forEach(function (styleName) {
-    var className = (0, _getClassName2['default'])(namespace, styleName);
+    var className = (0, _getClassName["default"])(namespace, styleName);
     stylesToClasses[styleName] = className;
   });
   return stylesToClasses;
 }
-
 /**
  * Process styles to be consumed by a component.
  *
@@ -12441,25 +12992,32 @@ function create(stylesObject) {
  *
  * Return an object with optional className and style properties to be spread on a component.
  */
-function resolve(stylesArray) {
-  var flattenedStyles = (0, _arrayPrototype2['default'])(stylesArray, Infinity);
 
-  var _separateStyles = (0, _separateStyles3['default'])(flattenedStyles),
+
+function resolve(stylesArray) {
+  var flattenedStyles = (0, _arrayPrototype["default"])(stylesArray, Infinity);
+
+  var _separateStyles = (0, _separateStyles2["default"])(flattenedStyles),
       classNames = _separateStyles.classNames,
       hasInlineStyles = _separateStyles.hasInlineStyles,
       inlineStyles = _separateStyles.inlineStyles;
 
   var specificClassNames = classNames.map(function (name, index) {
-    return String(name) + ' ' + String(name) + '_' + String(index + 1);
+    return "".concat(name, " ").concat(name, "_").concat(index + 1);
   });
   var className = specificClassNames.join(' ');
-
-  var result = { className: className };
+  var result = {
+    className: className
+  };
   if (hasInlineStyles) result.style = inlineStyles;
   return result;
 }
 
-exports['default'] = { create: create, resolve: resolve };
+var _default = {
+  create: create,
+  resolve: resolve
+};
+exports["default"] = _default;
 
 /***/ }),
 
@@ -12494,6 +13052,8 @@ module.exports = freeGlobal;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -12502,8 +13062,6 @@ exports["default"] = registerInterfaceWithDefaultTheme;
 var _ThemedStyleSheet = _interopRequireDefault(__webpack_require__("030x"));
 
 var _DefaultTheme = _interopRequireDefault(__webpack_require__("xOhs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function registerInterfaceWithDefaultTheme(reactWithStylesInterface) {
   _ThemedStyleSheet["default"].registerInterface(reactWithStylesInterface);
@@ -12632,6 +13190,8 @@ module.exports = ReactPropTypesSecret;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -12640,8 +13200,6 @@ exports["default"] = toMomentObject;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toMomentObject(dateString, customFormat) {
   var dateFormats = customFormat ? [customFormat, _constants.DISPLAY_FORMAT, _constants.ISO_FORMAT] : [_constants.DISPLAY_FORMAT, _constants.ISO_FORMAT];
@@ -12704,12 +13262,22 @@ module.exports = {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__("J4zp"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -12735,11 +13303,9 @@ var _isAfterDay = _interopRequireDefault(__webpack_require__("Nho6"));
 
 var _getVisibleDays = _interopRequireDefault(__webpack_require__("u5Fq"));
 
-var _isDayVisible = _interopRequireDefault(__webpack_require__("IgE5"));
-
 var _toISODateString = _interopRequireDefault(__webpack_require__("pYxT"));
 
-var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
+var _modifiers = __webpack_require__("kpKt");
 
 var _ScrollableOrientationShape = _interopRequireDefault(__webpack_require__("aE6U"));
 
@@ -12751,29 +13317,13 @@ var _constants = __webpack_require__("Fv1B");
 
 var _DayPicker = _interopRequireDefault(__webpack_require__("Nloh"));
 
-var _getPreviousMonthMemoLast = _interopRequireDefault(__webpack_require__("qkIn"));
-
 var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   date: undefined,
   // TODO: use null
@@ -12827,12 +13377,11 @@ var defaultProps = {
 var DayPickerSingleDateController =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DayPickerSingleDateController, _ref);
-
+  (0, _inheritsLoose2["default"])(DayPickerSingleDateController, _ref);
   var _proto = DayPickerSingleDateController.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DayPickerSingleDateController(props) {
@@ -12883,14 +13432,15 @@ function (_ref) {
       currentMonth: currentMonth,
       visibleDays: visibleDays
     };
-    _this.onDayMouseEnter = _this.onDayMouseEnter.bind(_assertThisInitialized(_this));
-    _this.onDayMouseLeave = _this.onDayMouseLeave.bind(_assertThisInitialized(_this));
-    _this.onDayClick = _this.onDayClick.bind(_assertThisInitialized(_this));
-    _this.onPrevMonthClick = _this.onPrevMonthClick.bind(_assertThisInitialized(_this));
-    _this.onNextMonthClick = _this.onNextMonthClick.bind(_assertThisInitialized(_this));
-    _this.onMonthChange = _this.onMonthChange.bind(_assertThisInitialized(_this));
-    _this.onYearChange = _this.onYearChange.bind(_assertThisInitialized(_this));
-    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind(_assertThisInitialized(_this));
+    _this.onDayMouseEnter = _this.onDayMouseEnter.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayMouseLeave = _this.onDayMouseLeave.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onDayClick = _this.onDayClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onPrevMonthClick = _this.onPrevMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onNextMonthClick = _this.onNextMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -13016,7 +13566,7 @@ function (_ref) {
 
     if (Object.keys(modifiers).length > 0) {
       this.setState({
-        visibleDays: _objectSpread({}, visibleDays, modifiers)
+        visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
       });
     }
   };
@@ -13054,7 +13604,7 @@ function (_ref) {
     modifiers = this.addModifier(modifiers, day, 'hovered');
     this.setState({
       hoverDate: day,
-      visibleDays: _objectSpread({}, visibleDays, modifiers)
+      visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
     });
   };
 
@@ -13066,7 +13616,7 @@ function (_ref) {
     var modifiers = this.deleteModifier({}, hoverDate, 'hovered');
     this.setState({
       hoverDate: null,
-      visibleDays: _objectSpread({}, visibleDays, modifiers)
+      visibleDays: _objectSpread({}, visibleDays, {}, modifiers)
     });
   };
 
@@ -13086,7 +13636,7 @@ function (_ref) {
     var prevMonthVisibleDays = (0, _getVisibleDays["default"])(prevMonth, 1, enableOutsideDays);
     this.setState({
       currentMonth: prevMonth,
-      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(prevMonthVisibleDays))
+      visibleDays: _objectSpread({}, newVisibleDays, {}, this.getModifiers(prevMonthVisibleDays))
     }, function () {
       onPrevMonthClick(prevMonth.clone());
     });
@@ -13109,7 +13659,7 @@ function (_ref) {
     var newCurrentMonth = currentMonth.clone().add(1, 'month');
     this.setState({
       currentMonth: newCurrentMonth,
-      visibleDays: _objectSpread({}, newVisibleDays, this.getModifiers(nextMonthVisibleDays))
+      visibleDays: _objectSpread({}, newVisibleDays, {}, this.getModifiers(nextMonthVisibleDays))
     }, function () {
       onNextMonthClick(newCurrentMonth.clone());
     });
@@ -13141,12 +13691,27 @@ function (_ref) {
     });
   };
 
+  _proto.onMultiplyScrollableMonths = function onMultiplyScrollableMonths() {
+    var _this$props7 = this.props,
+        numberOfMonths = _this$props7.numberOfMonths,
+        enableOutsideDays = _this$props7.enableOutsideDays;
+    var _this$state5 = this.state,
+        currentMonth = _this$state5.currentMonth,
+        visibleDays = _this$state5.visibleDays;
+    var numberOfVisibleMonths = Object.keys(visibleDays).length;
+    var nextMonth = currentMonth.clone().add(numberOfVisibleMonths, 'month');
+    var newVisibleDays = (0, _getVisibleDays["default"])(nextMonth, numberOfMonths, enableOutsideDays, true);
+    this.setState({
+      visibleDays: _objectSpread({}, visibleDays, {}, this.getModifiers(newVisibleDays))
+    });
+  };
+
   _proto.getFirstFocusableDay = function getFirstFocusableDay(newMonth) {
     var _this3 = this;
 
-    var _this$props7 = this.props,
-        date = _this$props7.date,
-        numberOfMonths = _this$props7.numberOfMonths;
+    var _this$props8 = this.props,
+        date = _this$props8.date,
+        numberOfMonths = _this$props8.numberOfMonths;
     var focusedDate = newMonth.clone().startOf('month');
 
     if (date) {
@@ -13168,7 +13733,7 @@ function (_ref) {
       });
 
       if (viableDays.length > 0) {
-        var _viableDays = _slicedToArray(viableDays, 1);
+        var _viableDays = (0, _slicedToArray2["default"])(viableDays, 1);
 
         focusedDate = _viableDays[0];
       }
@@ -13204,6 +13769,7 @@ function (_ref) {
     var initialVisibleMonth = nextProps.initialVisibleMonth,
         date = nextProps.date,
         numberOfMonths = nextProps.numberOfMonths,
+        orientation = nextProps.orientation,
         enableOutsideDays = nextProps.enableOutsideDays;
     var initialVisibleMonthThunk = initialVisibleMonth || (date ? function () {
       return date;
@@ -13211,7 +13777,8 @@ function (_ref) {
       return _this6.today;
     });
     var currentMonth = initialVisibleMonthThunk();
-    var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays));
+    var withoutTransitionMonths = orientation === _constants.VERTICAL_SCROLLABLE;
+    var visibleDays = this.getModifiers((0, _getVisibleDays["default"])(currentMonth, numberOfMonths, enableOutsideDays, withoutTransitionMonths));
     return {
       currentMonth: currentMonth,
       visibleDays: visibleDays
@@ -13219,119 +13786,17 @@ function (_ref) {
   };
 
   _proto.addModifier = function addModifier(updatedDays, day, modifier) {
-    var _this$props8 = this.props,
-        numberOfVisibleMonths = _this$props8.numberOfMonths,
-        enableOutsideDays = _this$props8.enableOutsideDays,
-        orientation = _this$props8.orientation;
-    var _this$state5 = this.state,
-        firstVisibleMonth = _this$state5.currentMonth,
-        visibleDays = _this$state5.visibleDays;
-    var currentMonth = firstVisibleMonth;
-    var numberOfMonths = numberOfVisibleMonths;
-
-    if (orientation === _constants.VERTICAL_SCROLLABLE) {
-      numberOfMonths = Object.keys(visibleDays).length;
-    } else {
-      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
-      numberOfMonths += 2;
-    }
-
-    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-      return updatedDays;
-    }
-
-    var iso = (0, _toISODateString["default"])(day);
-
-    var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
-
-    if (enableOutsideDays) {
-      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-      });
-      updatedDaysAfterAddition = monthsToUpdate.reduce(function (acc, monthIso) {
-        var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-        if (!month[iso] || !month[iso].has(modifier)) {
-          var modifiers = new Set(month[iso]);
-          modifiers.add(modifier);
-          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-        }
-
-        return acc;
-      }, updatedDaysAfterAddition);
-    } else {
-      var monthIso = (0, _toISOMonthString["default"])(day);
-      var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
-
-      if (!month[iso] || !month[iso].has(modifier)) {
-        var modifiers = new Set(month[iso]);
-        modifiers.add(modifier);
-        updatedDaysAfterAddition[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-      }
-    }
-
-    return updatedDaysAfterAddition;
+    return (0, _modifiers.addModifier)(updatedDays, day, modifier, this.props, this.state);
   };
 
   _proto.deleteModifier = function deleteModifier(updatedDays, day, modifier) {
-    var _this$props9 = this.props,
-        numberOfVisibleMonths = _this$props9.numberOfMonths,
-        enableOutsideDays = _this$props9.enableOutsideDays,
-        orientation = _this$props9.orientation;
-    var _this$state6 = this.state,
-        firstVisibleMonth = _this$state6.currentMonth,
-        visibleDays = _this$state6.visibleDays;
-    var currentMonth = firstVisibleMonth;
-    var numberOfMonths = numberOfVisibleMonths;
-
-    if (orientation === _constants.VERTICAL_SCROLLABLE) {
-      numberOfMonths = Object.keys(visibleDays).length;
-    } else {
-      currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
-      numberOfMonths += 2;
-    }
-
-    if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
-      return updatedDays;
-    }
-
-    var iso = (0, _toISODateString["default"])(day);
-
-    var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
-
-    if (enableOutsideDays) {
-      var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
-        return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
-      });
-      updatedDaysAfterDeletion = monthsToUpdate.reduce(function (acc, monthIso) {
-        var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-        if (month[iso] && month[iso].has(modifier)) {
-          var modifiers = new Set(month[iso]);
-          modifiers["delete"](modifier);
-          acc[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-        }
-
-        return acc;
-      }, updatedDaysAfterDeletion);
-    } else {
-      var monthIso = (0, _toISOMonthString["default"])(day);
-      var month = updatedDays[monthIso] || visibleDays[monthIso];
-
-      if (month[iso] && month[iso].has(modifier)) {
-        var modifiers = new Set(month[iso]);
-        modifiers["delete"](modifier);
-        updatedDaysAfterDeletion[monthIso] = _objectSpread({}, month, _defineProperty({}, iso, modifiers));
-      }
-    }
-
-    return updatedDaysAfterDeletion;
+    return (0, _modifiers.deleteModifier)(updatedDays, day, modifier, this.props, this.state);
   };
 
   _proto.isBlocked = function isBlocked(day) {
-    var _this$props10 = this.props,
-        isDayBlocked = _this$props10.isDayBlocked,
-        isOutsideRange = _this$props10.isOutsideRange;
+    var _this$props9 = this.props,
+        isDayBlocked = _this$props9.isDayBlocked,
+        isOutsideRange = _this$props9.isOutsideRange;
     return isDayBlocked(day) || isOutsideRange(day);
   };
 
@@ -13362,42 +13827,42 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this$props11 = this.props,
-        numberOfMonths = _this$props11.numberOfMonths,
-        orientation = _this$props11.orientation,
-        monthFormat = _this$props11.monthFormat,
-        renderMonthText = _this$props11.renderMonthText,
-        navPrev = _this$props11.navPrev,
-        navNext = _this$props11.navNext,
-        onOutsideClick = _this$props11.onOutsideClick,
-        onShiftTab = _this$props11.onShiftTab,
-        onTab = _this$props11.onTab,
-        withPortal = _this$props11.withPortal,
-        focused = _this$props11.focused,
-        enableOutsideDays = _this$props11.enableOutsideDays,
-        hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
-        daySize = _this$props11.daySize,
-        firstDayOfWeek = _this$props11.firstDayOfWeek,
-        renderCalendarDay = _this$props11.renderCalendarDay,
-        renderDayContents = _this$props11.renderDayContents,
-        renderCalendarInfo = _this$props11.renderCalendarInfo,
-        renderMonthElement = _this$props11.renderMonthElement,
-        calendarInfoPosition = _this$props11.calendarInfoPosition,
-        isFocused = _this$props11.isFocused,
-        isRTL = _this$props11.isRTL,
-        phrases = _this$props11.phrases,
-        dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
-        onBlur = _this$props11.onBlur,
-        showKeyboardShortcuts = _this$props11.showKeyboardShortcuts,
-        weekDayFormat = _this$props11.weekDayFormat,
-        verticalHeight = _this$props11.verticalHeight,
-        noBorder = _this$props11.noBorder,
-        transitionDuration = _this$props11.transitionDuration,
-        verticalBorderSpacing = _this$props11.verticalBorderSpacing,
-        horizontalMonthPadding = _this$props11.horizontalMonthPadding;
-    var _this$state7 = this.state,
-        currentMonth = _this$state7.currentMonth,
-        visibleDays = _this$state7.visibleDays;
+    var _this$props10 = this.props,
+        numberOfMonths = _this$props10.numberOfMonths,
+        orientation = _this$props10.orientation,
+        monthFormat = _this$props10.monthFormat,
+        renderMonthText = _this$props10.renderMonthText,
+        navPrev = _this$props10.navPrev,
+        navNext = _this$props10.navNext,
+        onOutsideClick = _this$props10.onOutsideClick,
+        onShiftTab = _this$props10.onShiftTab,
+        onTab = _this$props10.onTab,
+        withPortal = _this$props10.withPortal,
+        focused = _this$props10.focused,
+        enableOutsideDays = _this$props10.enableOutsideDays,
+        hideKeyboardShortcutsPanel = _this$props10.hideKeyboardShortcutsPanel,
+        daySize = _this$props10.daySize,
+        firstDayOfWeek = _this$props10.firstDayOfWeek,
+        renderCalendarDay = _this$props10.renderCalendarDay,
+        renderDayContents = _this$props10.renderDayContents,
+        renderCalendarInfo = _this$props10.renderCalendarInfo,
+        renderMonthElement = _this$props10.renderMonthElement,
+        calendarInfoPosition = _this$props10.calendarInfoPosition,
+        isFocused = _this$props10.isFocused,
+        isRTL = _this$props10.isRTL,
+        phrases = _this$props10.phrases,
+        dayAriaLabelFormat = _this$props10.dayAriaLabelFormat,
+        onBlur = _this$props10.onBlur,
+        showKeyboardShortcuts = _this$props10.showKeyboardShortcuts,
+        weekDayFormat = _this$props10.weekDayFormat,
+        verticalHeight = _this$props10.verticalHeight,
+        noBorder = _this$props10.noBorder,
+        transitionDuration = _this$props10.transitionDuration,
+        verticalBorderSpacing = _this$props10.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props10.horizontalMonthPadding;
+    var _this$state6 = this.state,
+        currentMonth = _this$state6.currentMonth,
+        visibleDays = _this$state6.visibleDays;
     return _react["default"].createElement(_DayPicker["default"], {
       orientation: orientation,
       enableOutsideDays: enableOutsideDays,
@@ -13410,6 +13875,7 @@ function (_ref) {
       onNextMonthClick: this.onNextMonthClick,
       onMonthChange: this.onMonthChange,
       onYearChange: this.onYearChange,
+      onMultiplyScrollableMonths: this.onMultiplyScrollableMonths,
       monthFormat: monthFormat,
       withPortal: withPortal,
       hidden: !focused,
@@ -13461,6 +13927,8 @@ DayPickerSingleDateController.defaultProps = defaultProps;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -13469,8 +13937,6 @@ exports["default"] = isNextDay;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _isSameDay = _interopRequireDefault(__webpack_require__("pRvc"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isNextDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
@@ -13486,6 +13952,8 @@ function isNextDay(a, b) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -13495,46 +13963,10 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _isAfterDay = _interopRequireDefault(__webpack_require__("Nho6"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function isInclusivelyBeforeDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
   return !(0, _isAfterDay["default"])(a, b);
 }
-
-/***/ }),
-
-/***/ "YZDV":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @providesModule shallowCompare
- */
-
-
-
-var shallowEqual = __webpack_require__("rzV7");
-
-/**
- * Does a shallow comparison for props and state.
- * See ReactComponentWithPureRenderMixin
- * See also https://facebook.github.io/react/docs/shallow-compare.html
- */
-function shallowCompare(instance, nextProps, nextState) {
-  return (
-    !shallowEqual(instance.props, nextProps) ||
-    !shallowEqual(instance.state, nextState)
-  );
-}
-
-module.exports = shallowCompare;
-
 
 /***/ }),
 
@@ -13544,6 +13976,8 @@ module.exports = shallowCompare;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -13552,8 +13986,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOf([_constants.HORIZONTAL_ORIENTATION, _constants.VERTICAL_ORIENTATION, _constants.VERTICAL_SCROLLABLE]);
 
@@ -13822,6 +14254,77 @@ module.exports = exports['default'];
 
 /***/ }),
 
+/***/ "bQgK":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.12.2
+(function() {
+  var getNanoSeconds, hrtime, loadTime, moduleLoadTime, nodeLoadTime, upTime;
+
+  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
+    module.exports = function() {
+      return performance.now();
+    };
+  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
+    module.exports = function() {
+      return (getNanoSeconds() - nodeLoadTime) / 1e6;
+    };
+    hrtime = process.hrtime;
+    getNanoSeconds = function() {
+      var hr;
+      hr = hrtime();
+      return hr[0] * 1e9 + hr[1];
+    };
+    moduleLoadTime = getNanoSeconds();
+    upTime = process.uptime() * 1e9;
+    nodeLoadTime = moduleLoadTime - upTime;
+  } else if (Date.now) {
+    module.exports = function() {
+      return Date.now() - loadTime;
+    };
+    loadTime = Date.now();
+  } else {
+    module.exports = function() {
+      return new Date().getTime() - loadTime;
+    };
+    loadTime = new Date().getTime();
+  }
+
+}).call(this);
+
+//# sourceMappingURL=performance-now.js.map
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+
+/***/ }),
+
+/***/ "bbcx":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/* https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.is */
+
+var NumberIsNaN = function (value) {
+	return value !== value;
+};
+
+module.exports = function is(a, b) {
+	if (a === 0 && b === 0) {
+		return 1 / a === 1 / b;
+	} else if (a === b) {
+		return true;
+	} else if (NumberIsNaN(a) && NumberIsNaN(b)) {
+		return true;
+	}
+	return false;
+};
+
+
+
+/***/ }),
+
 /***/ "c6aN":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13852,7 +14355,7 @@ module.exports = {
 /***/ "cDcd":
 /***/ (function(module, exports) {
 
-module.exports = React;
+(function() { module.exports = this["React"]; }());
 
 /***/ }),
 
@@ -13869,6 +14372,198 @@ exports["default"] = isTransitionEndSupported;
 
 function isTransitionEndSupported() {
   return !!(typeof window !== 'undefined' && 'TransitionEvent' in window);
+}
+
+/***/ }),
+
+/***/ "e4Aj":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = getComponentName;
+
+var _functionPrototype = _interopRequireDefault(__webpack_require__("Hi9J"));
+
+var _reactIs = __webpack_require__("jpOL");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function getComponentName(Component) {
+  if (typeof Component === 'string') {
+    return Component;
+  }
+
+  if (typeof Component === 'function') {
+    return Component.displayName || (0, _functionPrototype["default"])(Component);
+  }
+
+  if ((0, _reactIs.isForwardRef)({
+    type: Component,
+    $$typeof: _reactIs.Element
+  })) {
+    return Component.displayName;
+  }
+
+  if ((0, _reactIs.isMemo)(Component)) {
+    return getComponentName(Component.type);
+  }
+
+  return null;
+}
+//# sourceMappingURL=getComponentName.js.map
+
+/***/ }),
+
+/***/ "fHbK":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.withDirectionPropTypes = exports.DIRECTIONS = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports['default'] = withDirection;
+
+var _react = __webpack_require__("cDcd");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _hoistNonReactStatics = __webpack_require__("2mql");
+
+var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+
+var _deepmerge = __webpack_require__("ocq3");
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
+var _getComponentName = __webpack_require__("e4Aj");
+
+var _getComponentName2 = _interopRequireDefault(_getComponentName);
+
+var _constants = __webpack_require__("QEu6");
+
+var _brcast = __webpack_require__("sDMB");
+
+var _brcast2 = _interopRequireDefault(_brcast);
+
+var _direction = __webpack_require__("HWoq");
+
+var _direction2 = _interopRequireDefault(_direction);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /* eslint-disable react/forbid-foreign-prop-types */
+// This higher-order component consumes a string from React context that is
+// provided by the DirectionProvider component.
+// We can use this to conditionally switch layout/direction for right-to-left layouts.
+
+var contextTypes = _defineProperty({}, _constants.CHANNEL, _brcast2['default']);
+
+exports.DIRECTIONS = _constants.DIRECTIONS;
+
+// set a default direction so that a component wrapped with this HOC can be
+// used even without a DirectionProvider ancestor in its react tree.
+
+var defaultDirection = _constants.DIRECTIONS.LTR;
+
+// export for convenience, in order for components to spread these onto their propTypes
+var withDirectionPropTypes = exports.withDirectionPropTypes = {
+  direction: _direction2['default'].isRequired
+};
+
+function withDirection(WrappedComponent) {
+  var WithDirection = function (_React$Component) {
+    _inherits(WithDirection, _React$Component);
+
+    function WithDirection(props, context) {
+      _classCallCheck(this, WithDirection);
+
+      var _this = _possibleConstructorReturn(this, (WithDirection.__proto__ || Object.getPrototypeOf(WithDirection)).call(this, props, context));
+
+      _this.state = {
+        direction: context[_constants.CHANNEL] ? context[_constants.CHANNEL].getState() : defaultDirection
+      };
+      return _this;
+    }
+
+    _createClass(WithDirection, [{
+      key: 'componentDidMount',
+      value: function () {
+        function componentDidMount() {
+          var _this2 = this;
+
+          if (this.context[_constants.CHANNEL]) {
+            // subscribe to future direction changes
+            this.channelUnsubscribe = this.context[_constants.CHANNEL].subscribe(function (direction) {
+              _this2.setState({ direction: direction });
+            });
+          }
+        }
+
+        return componentDidMount;
+      }()
+    }, {
+      key: 'componentWillUnmount',
+      value: function () {
+        function componentWillUnmount() {
+          if (this.channelUnsubscribe) {
+            this.channelUnsubscribe();
+          }
+        }
+
+        return componentWillUnmount;
+      }()
+    }, {
+      key: 'render',
+      value: function () {
+        function render() {
+          var direction = this.state.direction;
+
+
+          return _react2['default'].createElement(WrappedComponent, _extends({}, this.props, {
+            direction: direction
+          }));
+        }
+
+        return render;
+      }()
+    }]);
+
+    return WithDirection;
+  }(_react2['default'].Component);
+
+  var wrappedComponentName = (0, _getComponentName2['default'])(WrappedComponent) || 'Component';
+
+  WithDirection.WrappedComponent = WrappedComponent;
+  WithDirection.contextTypes = contextTypes;
+  WithDirection.displayName = 'withDirection(' + String(wrappedComponentName) + ')';
+  if (WrappedComponent.propTypes) {
+    WithDirection.propTypes = (0, _deepmerge2['default'])({}, WrappedComponent.propTypes);
+    delete WithDirection.propTypes.direction;
+  }
+  if (WrappedComponent.defaultProps) {
+    WithDirection.defaultProps = (0, _deepmerge2['default'])({}, WrappedComponent.defaultProps);
+  }
+
+  return (0, _hoistNonReactStatics2['default'])(WithDirection, WrappedComponent);
 }
 
 /***/ }),
@@ -13893,7 +14588,7 @@ module.exports = function() {
 /***/ "faye":
 /***/ (function(module, exports) {
 
-module.exports = ReactDOM;
+(function() { module.exports = this["ReactDOM"]; }());
 
 /***/ }),
 
@@ -13903,6 +14598,8 @@ module.exports = ReactDOM;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -13910,11 +14607,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var RightArrow = function RightArrow(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
-    d: "M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z"
+    d: "M694 242l249 250c12 11 12 21 1 32L694 773c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210-210H68c-13 0-23-10-23-23s10-23 23-23h806L662 275c-21-22 11-54 32-33z"
   }));
 };
 
@@ -13927,11 +14622,28 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "gaAG":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var implementation = __webpack_require__("l4Qr");
+
+module.exports = function getPolyfill() {
+	return implementation;
+};
+
+
+/***/ }),
+
 /***/ "gtaZ":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -13939,8 +14651,6 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = getPooledMoment;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var momentPool = new Map();
 
@@ -13960,14 +14670,14 @@ function getPooledMoment(dayString) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = isBeforeDay;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isBeforeDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
@@ -14053,10 +14763,16 @@ function getInputHeight(_ref, small) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -14090,15 +14806,11 @@ var _CalendarIcon = _interopRequireDefault(__webpack_require__("LfrC"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   children: null,
   startDateId: _constants.START_DATE,
@@ -14146,6 +14858,7 @@ var defaultProps = {
 
 function DateRangePickerInput(_ref) {
   var children = _ref.children,
+      css = _ref.css,
       startDate = _ref.startDate,
       startDateId = _ref.startDateId,
       startDatePlaceholderText = _ref.startDatePlaceholderText,
@@ -14187,18 +14900,19 @@ function DateRangePickerInput(_ref) {
       regular = _ref.regular,
       styles = _ref.styles;
 
-  var calendarIcon = customInputIcon || _react["default"].createElement(_CalendarIcon["default"], (0, _reactWithStyles.css)(styles.DateRangePickerInput_calendarIcon_svg));
+  var calendarIcon = customInputIcon || _react["default"].createElement(_CalendarIcon["default"], css(styles.DateRangePickerInput_calendarIcon_svg));
 
-  var arrowIcon = customArrowIcon || _react["default"].createElement(_RightArrow["default"], (0, _reactWithStyles.css)(styles.DateRangePickerInput_arrow_svg));
+  var arrowIcon = customArrowIcon || _react["default"].createElement(_RightArrow["default"], css(styles.DateRangePickerInput_arrow_svg));
 
-  if (isRTL) arrowIcon = _react["default"].createElement(_LeftArrow["default"], (0, _reactWithStyles.css)(styles.DateRangePickerInput_arrow_svg));
+  if (isRTL) arrowIcon = _react["default"].createElement(_LeftArrow["default"], css(styles.DateRangePickerInput_arrow_svg));
   if (small) arrowIcon = '-';
 
-  var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], (0, _reactWithStyles.css)(styles.DateRangePickerInput_clearDates_svg, small && styles.DateRangePickerInput_clearDates_svg__small));
+  var closeIcon = customCloseIcon || _react["default"].createElement(_CloseButton["default"], css(styles.DateRangePickerInput_clearDates_svg, small && styles.DateRangePickerInput_clearDates_svg__small));
 
-  var screenReaderText = screenReaderMessage || phrases.keyboardNavigationInstructions;
+  var screenReaderStartDateText = screenReaderMessage || phrases.keyboardForwardNavigationInstructions;
+  var screenReaderEndDateText = screenReaderMessage || phrases.keyboardBackwardNavigationInstructions;
 
-  var inputIcon = (showDefaultInputIcon || customInputIcon !== null) && _react["default"].createElement("button", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePickerInput_calendarIcon), {
+  var inputIcon = (showDefaultInputIcon || customInputIcon !== null) && _react["default"].createElement("button", (0, _extends2["default"])({}, css(styles.DateRangePickerInput_calendarIcon), {
     type: "button",
     disabled: disabled,
     "aria-label": phrases.focusStartDate,
@@ -14207,12 +14921,12 @@ function DateRangePickerInput(_ref) {
 
   var startDateDisabled = disabled === _constants.START_DATE || disabled === true;
   var endDateDisabled = disabled === _constants.END_DATE || disabled === true;
-  return _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.DateRangePickerInput, disabled && styles.DateRangePickerInput__disabled, isRTL && styles.DateRangePickerInput__rtl, !noBorder && styles.DateRangePickerInput__withBorder, block && styles.DateRangePickerInput__block, showClearDates && styles.DateRangePickerInput__showClearDates), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
+  return _react["default"].createElement("div", css(styles.DateRangePickerInput, disabled && styles.DateRangePickerInput__disabled, isRTL && styles.DateRangePickerInput__rtl, !noBorder && styles.DateRangePickerInput__withBorder, block && styles.DateRangePickerInput__block, showClearDates && styles.DateRangePickerInput__showClearDates), inputIconPosition === _constants.ICON_BEFORE_POSITION && inputIcon, _react["default"].createElement(_DateInput["default"], {
     id: startDateId,
     placeholder: startDatePlaceholderText,
     ariaLabel: startDateAriaLabel,
     displayValue: startDate,
-    screenReaderMessage: screenReaderText,
+    screenReaderMessage: screenReaderStartDateText,
     focused: isStartDateFocused,
     isFocused: isFocused,
     disabled: startDateDisabled,
@@ -14228,15 +14942,15 @@ function DateRangePickerInput(_ref) {
     verticalSpacing: verticalSpacing,
     small: small,
     regular: regular
-  }), _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.DateRangePickerInput_arrow), {
+  }), children, _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.DateRangePickerInput_arrow), {
     "aria-hidden": "true",
     role: "presentation"
-  }), arrowIcon), isStartDateFocused && children, _react["default"].createElement(_DateInput["default"], {
+  }), arrowIcon), _react["default"].createElement(_DateInput["default"], {
     id: endDateId,
     placeholder: endDatePlaceholderText,
     ariaLabel: endDateAriaLabel,
     displayValue: endDate,
-    screenReaderMessage: screenReaderText,
+    screenReaderMessage: screenReaderEndDateText,
     focused: isEndDateFocused,
     isFocused: isFocused,
     disabled: endDateDisabled,
@@ -14252,10 +14966,10 @@ function DateRangePickerInput(_ref) {
     verticalSpacing: verticalSpacing,
     small: small,
     regular: regular
-  }), isEndDateFocused && children, showClearDates && _react["default"].createElement("button", _extends({
+  }), showClearDates && _react["default"].createElement("button", (0, _extends2["default"])({
     type: "button",
     "aria-label": phrases.clearDates
-  }, (0, _reactWithStyles.css)(styles.DateRangePickerInput_clearDates, small && styles.DateRangePickerInput_clearDates__small, !customCloseIcon && styles.DateRangePickerInput_clearDates_default, !(startDate || endDate) && styles.DateRangePickerInput_clearDates__hide), {
+  }, css(styles.DateRangePickerInput_clearDates, small && styles.DateRangePickerInput_clearDates__small, !customCloseIcon && styles.DateRangePickerInput_clearDates_default, !(startDate || endDate) && styles.DateRangePickerInput_clearDates__hide), {
     onClick: onClearDates,
     disabled: disabled
   }), closeIcon), inputIconPosition === _constants.ICON_AFTER_POSITION && inputIcon);
@@ -14540,6 +15254,8 @@ module.exports = function shimValues() {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -14548,8 +15264,6 @@ exports["default"] = void 0;
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = _propTypes["default"].oneOf([_constants.OPEN_DOWN, _constants.OPEN_UP]);
 
@@ -14605,6 +15319,8 @@ function calculateDimension(el, axis) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -14613,8 +15329,6 @@ exports["default"] = toISOMonthString;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toISOMonthString(date, currentFormat) {
   var dateObj = _moment["default"].isMoment(date) ? date : (0, _toMomentObject["default"])(date, currentFormat);
@@ -14628,16 +15342,32 @@ function toISOMonthString(date, currentFormat) {
 
 /***/ }),
 
+/***/ "jpOL":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (true) {
+  module.exports = __webpack_require__("lPsR");
+} else {}
+
+
+/***/ }),
+
 /***/ "kFtd":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.MAX_SPECIFICITY = exports.GLOBAL_CACHE_KEY = void 0;
 var GLOBAL_CACHE_KEY = 'reactWithStylesInterfaceCSS';
-var MAX_SPECIFICITY = 20;
-
 exports.GLOBAL_CACHE_KEY = GLOBAL_CACHE_KEY;
+var MAX_SPECIFICITY = 20;
 exports.MAX_SPECIFICITY = MAX_SPECIFICITY;
 
 /***/ }),
@@ -14647,6 +15377,8 @@ exports.MAX_SPECIFICITY = MAX_SPECIFICITY;
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -14812,7 +15544,217 @@ var _toLocalizedDateString = _interopRequireDefault(__webpack_require__("UyxP"))
 
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+/***/ }),
+
+/***/ "kpKt":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addModifier = addModifier;
+exports.deleteModifier = deleteModifier;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
+var _isDayVisible = _interopRequireDefault(__webpack_require__("IgE5"));
+
+var _toISODateString = _interopRequireDefault(__webpack_require__("pYxT"));
+
+var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
+
+var _getPreviousMonthMemoLast = _interopRequireDefault(__webpack_require__("qkIn"));
+
+var _constants = __webpack_require__("Fv1B");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function addModifier(updatedDays, day, modifier, props, state) {
+  var numberOfVisibleMonths = props.numberOfMonths,
+      enableOutsideDays = props.enableOutsideDays,
+      orientation = props.orientation;
+  var firstVisibleMonth = state.currentMonth,
+      visibleDays = state.visibleDays;
+  var currentMonth = firstVisibleMonth;
+  var numberOfMonths = numberOfVisibleMonths;
+
+  if (orientation === _constants.VERTICAL_SCROLLABLE) {
+    numberOfMonths = Object.keys(visibleDays).length;
+  } else {
+    currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+    numberOfMonths += 2;
+  }
+
+  if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+    return updatedDays;
+  }
+
+  var iso = (0, _toISODateString["default"])(day);
+
+  var updatedDaysAfterAddition = _objectSpread({}, updatedDays);
+
+  if (enableOutsideDays) {
+    var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+      return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+    });
+    updatedDaysAfterAddition = monthsToUpdate.reduce(function (acc, monthIso) {
+      var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+      if (!month[iso] || !month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers.add(modifier);
+        acc[monthIso] = _objectSpread({}, month, (0, _defineProperty2["default"])({}, iso, modifiers));
+      }
+
+      return acc;
+    }, updatedDaysAfterAddition);
+  } else {
+    var monthIso = (0, _toISOMonthString["default"])(day);
+    var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
+
+    if (!month[iso] || !month[iso].has(modifier)) {
+      var modifiers = new Set(month[iso]);
+      modifiers.add(modifier);
+      updatedDaysAfterAddition[monthIso] = _objectSpread({}, month, (0, _defineProperty2["default"])({}, iso, modifiers));
+    }
+  }
+
+  return updatedDaysAfterAddition;
+}
+
+function deleteModifier(updatedDays, day, modifier, props, state) {
+  var numberOfVisibleMonths = props.numberOfMonths,
+      enableOutsideDays = props.enableOutsideDays,
+      orientation = props.orientation;
+  var firstVisibleMonth = state.currentMonth,
+      visibleDays = state.visibleDays;
+  var currentMonth = firstVisibleMonth;
+  var numberOfMonths = numberOfVisibleMonths;
+
+  if (orientation === _constants.VERTICAL_SCROLLABLE) {
+    numberOfMonths = Object.keys(visibleDays).length;
+  } else {
+    currentMonth = (0, _getPreviousMonthMemoLast["default"])(currentMonth);
+    numberOfMonths += 2;
+  }
+
+  if (!day || !(0, _isDayVisible["default"])(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+    return updatedDays;
+  }
+
+  var iso = (0, _toISODateString["default"])(day);
+
+  var updatedDaysAfterDeletion = _objectSpread({}, updatedDays);
+
+  if (enableOutsideDays) {
+    var monthsToUpdate = Object.keys(visibleDays).filter(function (monthKey) {
+      return Object.keys(visibleDays[monthKey]).indexOf(iso) > -1;
+    });
+    updatedDaysAfterDeletion = monthsToUpdate.reduce(function (acc, monthIso) {
+      var month = updatedDays[monthIso] || visibleDays[monthIso];
+
+      if (month[iso] && month[iso].has(modifier)) {
+        var modifiers = new Set(month[iso]);
+        modifiers["delete"](modifier);
+        acc[monthIso] = _objectSpread({}, month, (0, _defineProperty2["default"])({}, iso, modifiers));
+      }
+
+      return acc;
+    }, updatedDaysAfterDeletion);
+  } else {
+    var monthIso = (0, _toISOMonthString["default"])(day);
+    var month = updatedDays[monthIso] || visibleDays[monthIso] || {};
+
+    if (month[iso] && month[iso].has(modifier)) {
+      var modifiers = new Set(month[iso]);
+      modifiers["delete"](modifier);
+      updatedDaysAfterDeletion[monthIso] = _objectSpread({}, month, (0, _defineProperty2["default"])({}, iso, modifiers));
+    }
+  }
+
+  return updatedDaysAfterDeletion;
+}
+
+/***/ }),
+
+/***/ "l4Qr":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__("IdCN");
+var functionsHaveNames = __webpack_require__("JQAW")();
+var bind = __webpack_require__("D3zA");
+var functionToString = bind.call(Function.call, Function.prototype.toString);
+var stringMatch = bind.call(Function.call, String.prototype.match);
+
+var classRegex = /^class /;
+
+var isClass = function isClassConstructor(fn) {
+	if (isCallable(fn)) {
+		return false;
+	}
+	if (typeof fn !== 'function') {
+		return false;
+	}
+	try {
+		var match = stringMatch(functionToString(fn), classRegex);
+		return !!match;
+	} catch (e) {}
+	return false;
+};
+
+var regex = /\s*function\s+([^(\s]*)\s*/;
+
+var functionProto = Function.prototype;
+
+module.exports = function getName() {
+	if (!isClass(this) && !isCallable(this)) {
+		throw new TypeError('Function.prototype.name sham getter called on non-function');
+	}
+	if (functionsHaveNames) {
+		return this.name;
+	}
+	if (this === functionProto) {
+		return '';
+	}
+	var str = functionToString(this);
+	var match = stringMatch(str, regex);
+	var name = match && match[1];
+	return name;
+};
+
+
+/***/ }),
+
+/***/ "lPsR":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v16.9.0
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+Object.defineProperty(exports,"__esModule",{value:!0});
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?Symbol.for("react.suspense_list"):
+60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.fundamental"):60117,w=b?Symbol.for("react.responder"):60118;function x(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case h:return a;default:return u}}case t:case r:case d:return u}}}function y(a){return x(a)===m}exports.typeOf=x;exports.AsyncMode=l;
+exports.ConcurrentMode=m;exports.ContextConsumer=k;exports.ContextProvider=h;exports.Element=c;exports.ForwardRef=n;exports.Fragment=e;exports.Lazy=t;exports.Memo=r;exports.Portal=d;exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;
+exports.isValidElementType=function(a){return"string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===v||a.$$typeof===w)};exports.isAsyncMode=function(a){return y(a)||x(a)===l};exports.isConcurrentMode=y;exports.isContextConsumer=function(a){return x(a)===k};exports.isContextProvider=function(a){return x(a)===h};
+exports.isElement=function(a){return"object"===typeof a&&null!==a&&a.$$typeof===c};exports.isForwardRef=function(a){return x(a)===n};exports.isFragment=function(a){return x(a)===e};exports.isLazy=function(a){return x(a)===t};exports.isMemo=function(a){return x(a)===r};exports.isPortal=function(a){return x(a)===d};exports.isProfiler=function(a){return x(a)===g};exports.isStrictMode=function(a){return x(a)===f};exports.isSuspense=function(a){return x(a)===p};
+
 
 /***/ }),
 
@@ -14847,6 +15789,39 @@ module.exports = __webpack_require__("VDVV").default;
 
 /***/ }),
 
+/***/ "m0LI":
+/***/ (function(module, exports) {
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+
+/***/ }),
+
 /***/ "m2ax":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14871,12 +15846,22 @@ function getCalendarMonthWidth(daySize) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -14914,19 +15899,11 @@ var _DayOfWeekShape = _interopRequireDefault(__webpack_require__("2S2E"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   month: (0, _moment["default"])(),
   horizontalMonthPadding: 13,
@@ -14961,12 +15938,11 @@ var defaultProps = {
 var CalendarMonth =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(CalendarMonth, _ref);
-
+  (0, _inheritsLoose2["default"])(CalendarMonth, _ref);
   var _proto = CalendarMonth.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function CalendarMonth(props) {
@@ -14976,8 +15952,8 @@ function (_ref) {
     _this.state = {
       weeks: (0, _getCalendarMonthWeeks["default"])(props.month, props.enableOutsideDays, props.firstDayOfWeek == null ? _moment["default"].localeData().firstDayOfWeek() : props.firstDayOfWeek)
     };
-    _this.setCaptionRef = _this.setCaptionRef.bind(_assertThisInitialized(_this));
-    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind(_assertThisInitialized(_this));
+    _this.setCaptionRef = _this.setCaptionRef.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.setMonthTitleHeight = _this.setMonthTitleHeight.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -15022,6 +15998,7 @@ function (_ref) {
 
   _proto.render = function render() {
     var _this$props2 = this.props,
+        css = _this$props2.css,
         dayAriaLabelFormat = _this$props2.dayAriaLabelFormat,
         daySize = _this$props2.daySize,
         focusedDate = _this$props2.focusedDate,
@@ -15047,18 +16024,18 @@ function (_ref) {
     var weeks = this.state.weeks;
     var monthTitle = renderMonthText ? renderMonthText(month) : month.format(monthFormat);
     var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-    return _react["default"].createElement("div", _extends({}, (0, _reactWithStyles.css)(styles.CalendarMonth, {
+    return _react["default"].createElement("div", (0, _extends2["default"])({}, css(styles.CalendarMonth, {
       padding: "0 ".concat(horizontalMonthPadding, "px")
     }), {
       "data-visible": isVisible
-    }), _react["default"].createElement("div", _extends({
+    }), _react["default"].createElement("div", (0, _extends2["default"])({
       ref: this.setCaptionRef
-    }, (0, _reactWithStyles.css)(styles.CalendarMonth_caption, verticalScrollable && styles.CalendarMonth_caption__verticalScrollable)), renderMonthElement ? renderMonthElement({
+    }, css(styles.CalendarMonth_caption, verticalScrollable && styles.CalendarMonth_caption__verticalScrollable)), renderMonthElement ? renderMonthElement({
       month: month,
       onMonthSelect: onMonthSelect,
       onYearSelect: onYearSelect,
       isVisible: isVisible
-    }) : _react["default"].createElement("strong", null, monthTitle)), _react["default"].createElement("table", _extends({}, (0, _reactWithStyles.css)(!verticalBorderSpacing && styles.CalendarMonth_table, verticalBorderSpacing && styles.CalendarMonth_verticalSpacing, verticalBorderSpacing && {
+    }) : _react["default"].createElement("strong", null, monthTitle)), _react["default"].createElement("table", (0, _extends2["default"])({}, css(!verticalBorderSpacing && styles.CalendarMonth_table, verticalBorderSpacing && styles.CalendarMonth_verticalSpacing, verticalBorderSpacing && {
       borderSpacing: "0px ".concat(verticalBorderSpacing, "px")
     }), {
       role: "presentation"
@@ -15160,12 +16137,16 @@ module.exports = boundContains;
 /***/ }),
 
 /***/ "nLTY":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = getClassName;
+exports["default"] = getClassName;
+
 /**
  * Construct a class name.
  *
@@ -15175,8 +16156,8 @@ exports['default'] = getClassName;
  * Return the class name.
  */
 function getClassName(namespace, styleName) {
-  var namespaceSegment = namespace.length > 0 ? String(namespace) + '__' : '';
-  return '' + namespaceSegment + String(styleName);
+  var namespaceSegment = namespace.length > 0 ? "".concat(namespace, "__") : '';
+  return "".concat(namespaceSegment).concat(styleName);
 }
 
 /***/ }),
@@ -15217,12 +16198,18 @@ module.exports = function contains(other) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _reactAddonsShallowCompare = _interopRequireDefault(__webpack_require__("YZDV"));
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("PJYZ"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -15256,13 +16243,7 @@ var _isBeforeDay = _interopRequireDefault(__webpack_require__("h6xH"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   children: null,
   startDate: null,
@@ -15317,24 +16298,23 @@ var defaultProps = {
 var DateRangePickerInputController =
 /*#__PURE__*/
 function (_ref) {
-  _inheritsLoose(DateRangePickerInputController, _ref);
-
+  (0, _inheritsLoose2["default"])(DateRangePickerInputController, _ref);
   var _proto = DateRangePickerInputController.prototype;
 
   _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
-    return (0, _reactAddonsShallowCompare["default"])(this, nextProps, nextState);
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
   };
 
   function DateRangePickerInputController(props) {
     var _this;
 
     _this = _ref.call(this, props) || this;
-    _this.onClearFocus = _this.onClearFocus.bind(_assertThisInitialized(_this));
-    _this.onStartDateChange = _this.onStartDateChange.bind(_assertThisInitialized(_this));
-    _this.onStartDateFocus = _this.onStartDateFocus.bind(_assertThisInitialized(_this));
-    _this.onEndDateChange = _this.onEndDateChange.bind(_assertThisInitialized(_this));
-    _this.onEndDateFocus = _this.onEndDateFocus.bind(_assertThisInitialized(_this));
-    _this.clearDates = _this.clearDates.bind(_assertThisInitialized(_this));
+    _this.onClearFocus = _this.onClearFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onStartDateChange = _this.onStartDateChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onStartDateFocus = _this.onStartDateFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onEndDateChange = _this.onEndDateChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onEndDateFocus = _this.onEndDateFocus.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.clearDates = _this.clearDates.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
 
@@ -15616,6 +16596,8 @@ function getPhrase(phrase, args) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -15625,11 +16607,114 @@ var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _default = _propTypes["default"].oneOf([_constants.INFO_POSITION_TOP, _constants.INFO_POSITION_BOTTOM, _constants.INFO_POSITION_BEFORE, _constants.INFO_POSITION_AFTER]);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "ocq3":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isMergeableObject = function isMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+		|| isReactElement(value)
+}
+
+// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
+
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
+function cloneIfNecessary(value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice();
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = cloneIfNecessary(e, optionsArgument);
+        } else if (isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument);
+        } else if (target.indexOf(e) === -1) {
+            destination.push(cloneIfNecessary(e, optionsArgument));
+        }
+    });
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {};
+    if (isMergeableObject(target)) {
+        Object.keys(target).forEach(function(key) {
+            destination[key] = cloneIfNecessary(target[key], optionsArgument);
+        });
+    }
+    Object.keys(source).forEach(function(key) {
+        if (!isMergeableObject(source[key]) || !target[key]) {
+            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+        }
+    });
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+    var sourceIsArray = Array.isArray(source);
+    var targetIsArray = Array.isArray(target);
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
+
+    if (!sourceAndTargetTypesMatch) {
+        return cloneIfNecessary(source, optionsArgument)
+    } else if (sourceIsArray) {
+        var arrayMerge = options.arrayMerge || defaultArrayMerge;
+        return arrayMerge(target, source, optionsArgument)
+    } else {
+        return mergeObject(target, source, optionsArgument)
+    }
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+    if (!Array.isArray(array) || array.length < 2) {
+        throw new Error('first argument should be an array with at least two elements')
+    }
+
+    // we are sure there are at least 2 values, so it is safe to have no initial value
+    return array.reduce(function(prev, next) {
+        return deepmerge(prev, next, optionsArgument)
+    })
+};
+
+var deepmerge_1 = deepmerge;
+
+module.exports = deepmerge_1;
+
 
 /***/ }),
 
@@ -15682,14 +16767,14 @@ module.exports = emptyFunction;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = isSameDay;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isSameDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false; // Compare least significant, most likely to change units first
@@ -15731,6 +16816,8 @@ module.exports = _extends;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -15739,8 +16826,6 @@ exports["default"] = toISODateString;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function toISODateString(date, currentFormat) {
   var dateObj = _moment["default"].isMoment(date) ? date : (0, _toMomentObject["default"])(date, currentFormat);
@@ -15791,6 +16876,8 @@ module.exports = __webpack_require__("kfJL");
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -15800,11 +16887,32 @@ var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _default = _propTypes["default"].oneOf([_constants.HORIZONTAL_ORIENTATION, _constants.VERTICAL_ORIENTATION]);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "qT12":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v16.8.6
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+Object.defineProperty(exports,"__esModule",{value:!0});
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?Symbol.for("react.memo"):
+60115,r=b?Symbol.for("react.lazy"):60116;function t(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case h:return a;default:return u}}case r:case q:case d:return u}}}function v(a){return t(a)===m}exports.typeOf=t;exports.AsyncMode=l;exports.ConcurrentMode=m;exports.ContextConsumer=k;exports.ContextProvider=h;exports.Element=c;exports.ForwardRef=n;
+exports.Fragment=e;exports.Lazy=r;exports.Memo=q;exports.Portal=d;exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;exports.isValidElementType=function(a){return"string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||"object"===typeof a&&null!==a&&(a.$$typeof===r||a.$$typeof===q||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n)};exports.isAsyncMode=function(a){return v(a)||t(a)===l};exports.isConcurrentMode=v;exports.isContextConsumer=function(a){return t(a)===k};
+exports.isContextProvider=function(a){return t(a)===h};exports.isElement=function(a){return"object"===typeof a&&null!==a&&a.$$typeof===c};exports.isForwardRef=function(a){return t(a)===n};exports.isFragment=function(a){return t(a)===e};exports.isLazy=function(a){return t(a)===r};exports.isMemo=function(a){return t(a)===q};exports.isPortal=function(a){return t(a)===d};exports.isProfiler=function(a){return t(a)===g};exports.isStrictMode=function(a){return t(a)===f};
+exports.isSuspense=function(a){return t(a)===p};
+
 
 /***/ }),
 
@@ -15863,6 +16971,8 @@ module.exports = function values(O) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -15872,8 +16982,6 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _isBeforeDay = _interopRequireDefault(__webpack_require__("h6xH"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function isInclusivelyAfterDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false;
   return !(0, _isBeforeDay["default"])(a, b);
@@ -15881,80 +16989,11 @@ function isInclusivelyAfterDay(a, b) {
 
 /***/ }),
 
-/***/ "rzV7":
+/***/ "sDMB":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- * 
- */
 
-/*eslint-disable no-self-compare */
-
-
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-/**
- * inlined Object.is polyfill to avoid requiring consumers ship their own
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
- */
-function is(x, y) {
-  // SameValue algorithm
-  if (x === y) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    // Added the nonzero y check to make Flow happy, but it is redundant
-    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-  } else {
-    // Step 6.a: NaN == NaN
-    return x !== x && y !== y;
-  }
-}
-
-/**
- * Performs equality by iterating through keys on an object and returning false
- * when any key has values which are not strictly equal between the arguments.
- * Returns true when the values of all keys are strictly equal.
- */
-function shallowEqual(objA, objB) {
-  if (is(objA, objB)) {
-    return true;
-  }
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  for (var i = 0; i < keysA.length; i++) {
-    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-module.exports = shallowEqual;
-
-/***/ }),
-
-/***/ "sDMB":
-/***/ (function(module, exports, __webpack_require__) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -16323,6 +17362,8 @@ module.exports = function mod(number, modulo) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -16331,8 +17372,6 @@ exports["default"] = getVisibleDays;
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _toISOMonthString = _interopRequireDefault(__webpack_require__("jenk"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getVisibleDays(month, numberOfMonths, enableOutsideDays, withoutTransitionMonths) {
   if (!_moment["default"].isMoment(month)) return {};
@@ -16386,14 +17425,14 @@ function getVisibleDays(month, numberOfMonths, enableOutsideDays, withoutTransit
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = isSameMonth;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isSameMonth(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false; // Compare least significant, most likely to change units first
@@ -16437,6 +17476,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CalendarDayPhrases = exports.DayPickerNavigationPhrases = exports.DayPickerKeyboardShortcutsPhrases = exports.DayPickerPhrases = exports.SingleDatePickerInputPhrases = exports.SingleDatePickerPhrases = exports.DateRangePickerInputPhrases = exports.DateRangePickerPhrases = exports["default"] = void 0;
 var calendarLabel = 'Calendar';
+var roleDescription = 'datepicker';
 var closeDatePicker = 'Close';
 var focusStartDate = 'Interact with the calendar and add the check-in date for your trip.';
 var clearDate = 'Clear Date';
@@ -16460,7 +17500,8 @@ var moveFocusByOneWeek = 'Move backward (up) and forward (down) by one week.';
 var moveFocusByOneMonth = 'Switch months.';
 var moveFocustoStartAndEndOfWeek = 'Go to the first or last day of a week.';
 var returnFocusToInput = 'Return to the date input field.';
-var keyboardNavigationInstructions = "Press the down arrow key to interact with the calendar and\n  select a date. Press the question mark key to get the keyboard shortcuts for changing dates.";
+var keyboardForwardNavigationInstructions = 'Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.';
+var keyboardBackwardNavigationInstructions = 'Navigate backward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.';
 
 var chooseAvailableStartDate = function chooseAvailableStartDate(_ref) {
   var date = _ref.date;
@@ -16499,6 +17540,7 @@ var dateIsSelectedAsEndDate = function dateIsSelectedAsEndDate(_ref7) {
 
 var _default = {
   calendarLabel: calendarLabel,
+  roleDescription: roleDescription,
   closeDatePicker: closeDatePicker,
   focusStartDate: focusStartDate,
   clearDate: clearDate,
@@ -16522,7 +17564,8 @@ var _default = {
   moveFocusByOneMonth: moveFocusByOneMonth,
   moveFocustoStartAndEndOfWeek: moveFocustoStartAndEndOfWeek,
   returnFocusToInput: returnFocusToInput,
-  keyboardNavigationInstructions: keyboardNavigationInstructions,
+  keyboardForwardNavigationInstructions: keyboardForwardNavigationInstructions,
+  keyboardBackwardNavigationInstructions: keyboardBackwardNavigationInstructions,
   chooseAvailableStartDate: chooseAvailableStartDate,
   chooseAvailableEndDate: chooseAvailableEndDate,
   dateIsUnavailable: dateIsUnavailable,
@@ -16533,6 +17576,7 @@ var _default = {
 exports["default"] = _default;
 var DateRangePickerPhrases = {
   calendarLabel: calendarLabel,
+  roleDescription: roleDescription,
   closeDatePicker: closeDatePicker,
   clearDates: clearDates,
   focusStartDate: focusStartDate,
@@ -16555,7 +17599,8 @@ var DateRangePickerPhrases = {
   moveFocusByOneMonth: moveFocusByOneMonth,
   moveFocustoStartAndEndOfWeek: moveFocustoStartAndEndOfWeek,
   returnFocusToInput: returnFocusToInput,
-  keyboardNavigationInstructions: keyboardNavigationInstructions,
+  keyboardForwardNavigationInstructions: keyboardForwardNavigationInstructions,
+  keyboardBackwardNavigationInstructions: keyboardBackwardNavigationInstructions,
   chooseAvailableStartDate: chooseAvailableStartDate,
   chooseAvailableEndDate: chooseAvailableEndDate,
   dateIsUnavailable: dateIsUnavailable,
@@ -16567,11 +17612,13 @@ exports.DateRangePickerPhrases = DateRangePickerPhrases;
 var DateRangePickerInputPhrases = {
   focusStartDate: focusStartDate,
   clearDates: clearDates,
-  keyboardNavigationInstructions: keyboardNavigationInstructions
+  keyboardForwardNavigationInstructions: keyboardForwardNavigationInstructions,
+  keyboardBackwardNavigationInstructions: keyboardBackwardNavigationInstructions
 };
 exports.DateRangePickerInputPhrases = DateRangePickerInputPhrases;
 var SingleDatePickerPhrases = {
   calendarLabel: calendarLabel,
+  roleDescription: roleDescription,
   closeDatePicker: closeDatePicker,
   clearDate: clearDate,
   jumpToPrevMonth: jumpToPrevMonth,
@@ -16593,7 +17640,8 @@ var SingleDatePickerPhrases = {
   moveFocusByOneMonth: moveFocusByOneMonth,
   moveFocustoStartAndEndOfWeek: moveFocustoStartAndEndOfWeek,
   returnFocusToInput: returnFocusToInput,
-  keyboardNavigationInstructions: keyboardNavigationInstructions,
+  keyboardForwardNavigationInstructions: keyboardForwardNavigationInstructions,
+  keyboardBackwardNavigationInstructions: keyboardBackwardNavigationInstructions,
   chooseAvailableDate: chooseAvailableDate,
   dateIsUnavailable: dateIsUnavailable,
   dateIsSelected: dateIsSelected
@@ -16601,11 +17649,13 @@ var SingleDatePickerPhrases = {
 exports.SingleDatePickerPhrases = SingleDatePickerPhrases;
 var SingleDatePickerInputPhrases = {
   clearDate: clearDate,
-  keyboardNavigationInstructions: keyboardNavigationInstructions
+  keyboardForwardNavigationInstructions: keyboardForwardNavigationInstructions,
+  keyboardBackwardNavigationInstructions: keyboardBackwardNavigationInstructions
 };
 exports.SingleDatePickerInputPhrases = SingleDatePickerInputPhrases;
 var DayPickerPhrases = {
   calendarLabel: calendarLabel,
+  roleDescription: roleDescription,
   jumpToPrevMonth: jumpToPrevMonth,
   jumpToNextMonth: jumpToNextMonth,
   keyboardShortcuts: keyboardShortcuts,
@@ -16670,38 +17720,7 @@ exports.CalendarDayPhrases = CalendarDayPhrases;
 
 /***/ }),
 
-/***/ "w0iJ":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = getResponsiveContainerStyles;
-
-var _constants = __webpack_require__("Fv1B");
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function getResponsiveContainerStyles(anchorDirection, currentOffset, containerEdge, margin) {
-  var windowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
-  var calculatedOffset = anchorDirection === _constants.ANCHOR_LEFT ? windowWidth - containerEdge : containerEdge;
-  var calculatedMargin = margin || 0;
-  return _defineProperty({}, anchorDirection, Math.min(currentOffset + calculatedOffset - calculatedMargin, 0));
-}
-
-/***/ }),
-
-/***/ "wy2R":
-/***/ (function(module, exports) {
-
-module.exports = moment;
-
-/***/ }),
-
-/***/ "xEte":
+/***/ "vg41":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16711,10 +17730,169 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+var EMPTY_STYLES = {};
+
+var EMPTY_STYLES_FN = function EMPTY_STYLES_FN() {
+  return EMPTY_STYLES;
+};
+
+var _default = EMPTY_STYLES_FN;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "w0iJ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = getResponsiveContainerStyles;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
+var _constants = __webpack_require__("Fv1B");
+
+function getResponsiveContainerStyles(anchorDirection, currentOffset, containerEdge, margin) {
+  var windowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+  var calculatedOffset = anchorDirection === _constants.ANCHOR_LEFT ? windowWidth - containerEdge : containerEdge;
+  var calculatedMargin = margin || 0;
+  return (0, _defineProperty2["default"])({}, anchorDirection, Math.min(currentOffset + calculatedOffset - calculatedMargin, 0));
+}
+
+/***/ }),
+
+/***/ "wTVA":
+/***/ (function(module, exports) {
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+
+/***/ }),
+
+/***/ "wkBT":
+/***/ (function(module, exports) {
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+module.exports = _nonIterableRest;
+
+/***/ }),
+
+/***/ "wy2R":
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["moment"]; }());
+
+/***/ }),
+
+/***/ "xEkU":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__("bQgK")
+  , root = typeof window === 'undefined' ? global : window
+  , vendors = ['moz', 'webkit']
+  , suffix = 'AnimationFrame'
+  , raf = root['request' + suffix]
+  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
+
+for(var i = 0; !raf && i < vendors.length; i++) {
+  raf = root[vendors[i] + 'Request' + suffix]
+  caf = root[vendors[i] + 'Cancel' + suffix]
+      || root[vendors[i] + 'CancelRequest' + suffix]
+}
+
+// Some versions of FF have rAF but not cAF
+if(!raf || !caf) {
+  var last = 0
+    , id = 0
+    , queue = []
+    , frameDuration = 1000 / 60
+
+  raf = function(callback) {
+    if(queue.length === 0) {
+      var _now = now()
+        , next = Math.max(0, frameDuration - (_now - last))
+      last = next + _now
+      setTimeout(function() {
+        var cp = queue.slice(0)
+        // Clear queue here to prevent
+        // callbacks from appending listeners
+        // to the current frame's queue
+        queue.length = 0
+        for(var i = 0; i < cp.length; i++) {
+          if(!cp[i].cancelled) {
+            try{
+              cp[i].callback(last)
+            } catch(e) {
+              setTimeout(function() { throw e }, 0)
+            }
+          }
+        }
+      }, Math.round(next))
+    }
+    queue.push({
+      handle: ++id,
+      callback: callback,
+      cancelled: false
+    })
+    return id
+  }
+
+  caf = function(handle) {
+    for(var i = 0; i < queue.length; i++) {
+      if(queue[i].handle === handle) {
+        queue[i].cancelled = true
+      }
+    }
+  }
+}
+
+module.exports = function(fn) {
+  // Wrap in a new function to prevent
+  // `cancel` potentially being assigned
+  // to the native rAF function
+  return raf.call(root, fn)
+}
+module.exports.cancel = function() {
+  caf.apply(root, arguments)
+}
+module.exports.polyfill = function(object) {
+  if (!object) {
+    object = root;
+  }
+  object.requestAnimationFrame = raf
+  object.cancelAnimationFrame = caf
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj")))
+
+/***/ }),
+
+/***/ "xEte":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("TqRt");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var CloseButton = function CloseButton(props) {
   return _react["default"].createElement("svg", props, _react["default"].createElement("path", {
@@ -17009,6 +18187,8 @@ module.exports = function getPolyfill() {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -17039,8 +18219,6 @@ var _OpenDirectionShape = _interopRequireDefault(__webpack_require__("iuLr"));
 var _DayOfWeekShape = _interopRequireDefault(__webpack_require__("2S2E"));
 
 var _CalendarInfoPositionShape = _interopRequireDefault(__webpack_require__("oR9Z"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = {
   // required props for a functional interactive DateRangePicker
@@ -17282,22 +18460,24 @@ function getDetachedContainerStyles(openDirection, anchorDirection, referenceEl)
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = getPhrasePropTypes;
 
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
+
 var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function getPhrasePropTypes(defaultPhrases) {
   return Object.keys(defaultPhrases).reduce(function (phrases, key) {
-    return _objectSpread({}, phrases, _defineProperty({}, key, _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].func, _propTypes["default"].node])));
+    return _objectSpread({}, phrases, (0, _defineProperty2["default"])({}, key, _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].func, _propTypes["default"].node])));
   }, {});
 }
 
@@ -17324,10 +18504,16 @@ module.exports = function forEach(array, callback) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -17337,30 +18523,27 @@ var _airbnbPropTypes = __webpack_require__("Hsqg");
 
 var _reactWithStyles = __webpack_require__("TG4+");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   block: false
 };
 
 function KeyboardShortcutRow(_ref) {
-  var unicode = _ref.unicode,
+  var css = _ref.css,
+      unicode = _ref.unicode,
       label = _ref.label,
       action = _ref.action,
       block = _ref.block,
       styles = _ref.styles;
-  return _react["default"].createElement("li", (0, _reactWithStyles.css)(styles.KeyboardShortcutRow, block && styles.KeyboardShortcutRow__block), _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.KeyboardShortcutRow_keyContainer, block && styles.KeyboardShortcutRow_keyContainer__block), _react["default"].createElement("span", _extends({}, (0, _reactWithStyles.css)(styles.KeyboardShortcutRow_key), {
+  return _react["default"].createElement("li", css(styles.KeyboardShortcutRow, block && styles.KeyboardShortcutRow__block), _react["default"].createElement("div", css(styles.KeyboardShortcutRow_keyContainer, block && styles.KeyboardShortcutRow_keyContainer__block), _react["default"].createElement("span", (0, _extends2["default"])({}, css(styles.KeyboardShortcutRow_key), {
     role: "img",
     "aria-label": "".concat(label, ",") // add comma so screen readers will pause before reading action
 
-  }), unicode)), _react["default"].createElement("div", (0, _reactWithStyles.css)(styles.KeyboardShortcutRow_action), action));
+  }), unicode)), _react["default"].createElement("div", css(styles.KeyboardShortcutRow_action), action));
 }
 
 KeyboardShortcutRow.propTypes =  false ? undefined : {};
@@ -17509,10 +18692,18 @@ function disableScroll(node) {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("RIqP"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -17540,23 +18731,11 @@ var _ScrollableOrientationShape = _interopRequireDefault(__webpack_require__("aE
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var propTypes =  false ? undefined : {};;
+var propTypes =  false ? undefined : {};
 var defaultProps = {
   disablePrev: false,
   disableNext: false,
@@ -17571,7 +18750,8 @@ var defaultProps = {
 };
 
 function DayPickerNavigation(_ref) {
-  var disablePrev = _ref.disablePrev,
+  var css = _ref.css,
+      disablePrev = _ref.disablePrev,
       disableNext = _ref.disableNext,
       navPrev = _ref.navPrev,
       navNext = _ref.navNext,
@@ -17602,7 +18782,7 @@ function DayPickerNavigation(_ref) {
       Icon = _RightArrow["default"];
     }
 
-    navPrevIcon = _react["default"].createElement(Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disablePrev && styles.DayPickerNavigation_svg__disabled));
+    navPrevIcon = _react["default"].createElement(Icon, css(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disablePrev && styles.DayPickerNavigation_svg__disabled));
   }
 
   if (!navNextIcon) {
@@ -17617,14 +18797,14 @@ function DayPickerNavigation(_ref) {
       _Icon = _LeftArrow["default"];
     }
 
-    navNextIcon = _react["default"].createElement(_Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disableNext && styles.DayPickerNavigation_svg__disabled));
+    navNextIcon = _react["default"].createElement(_Icon, css(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disableNext && styles.DayPickerNavigation_svg__disabled));
   }
 
   var isDefaultNav = isVerticalScrollable ? isDefaultNavNext : isDefaultNavNext || isDefaultNavPrev;
-  return _react["default"].createElement("div", _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation, isHorizontal && styles.DayPickerNavigation__horizontal].concat(_toConsumableArray(isVertical ? [styles.DayPickerNavigation__vertical, isDefaultNav && styles.DayPickerNavigation__verticalDefault] : []), _toConsumableArray(isVerticalScrollable ? [styles.DayPickerNavigation__verticalScrollable, isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault] : []))), !isVerticalScrollable && _react["default"].createElement("div", _extends({
+  return _react["default"].createElement("div", css.apply(void 0, [styles.DayPickerNavigation, isHorizontal && styles.DayPickerNavigation__horizontal].concat((0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation__vertical, isDefaultNav && styles.DayPickerNavigation__verticalDefault] : []), (0, _toConsumableArray2["default"])(isVerticalScrollable ? [styles.DayPickerNavigation__verticalScrollable, isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault] : []))), !isVerticalScrollable && _react["default"].createElement("div", (0, _extends2["default"])({
     // eslint-disable-line jsx-a11y/interactive-supports-focus
     role: "button"
-  }, navPrevTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical].concat(_toConsumableArray(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault] : [])) : []))), {
+  }, navPrevTabIndex, css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault] : [])) : []))), {
     "aria-disabled": disablePrev ? true : undefined,
     "aria-label": phrases.jumpToPrevMonth,
     onClick: disablePrev ? undefined : onPrevMonthClick,
@@ -17635,10 +18815,10 @@ function DayPickerNavigation(_ref) {
     onMouseUp: disablePrev ? undefined : function (e) {
       e.currentTarget.blur();
     }
-  }), navPrevIcon), _react["default"].createElement("div", _extends({
+  }), navPrevIcon), _react["default"].createElement("div", (0, _extends2["default"])({
     // eslint-disable-line jsx-a11y/interactive-supports-focus
     role: "button"
-  }, navNextTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat(_toConsumableArray(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), _toConsumableArray(isVertical ? [styles.DayPickerNavigation_button__vertical, styles.DayPickerNavigation_nextButton__vertical].concat(_toConsumableArray(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
+  }, navNextTabIndex, css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical, styles.DayPickerNavigation_nextButton__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
     "aria-disabled": disableNext ? true : undefined,
     "aria-label": phrases.jumpToNextMonth,
     onClick: disableNext ? undefined : onNextMonthClick,
@@ -17768,4 +18948,4 @@ exports["default"] = _default;
 
 /***/ })
 
-/******/ });
+/******/ })));

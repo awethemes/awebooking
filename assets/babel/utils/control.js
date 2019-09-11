@@ -1,10 +1,5 @@
 import $ from 'jquery'
 
-/**
- * //
- *
- * @type {*}
- */
 const Synchronizer = {
   val: {
     update(to) {
