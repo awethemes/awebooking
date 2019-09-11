@@ -48,6 +48,13 @@ final class Plugin extends Container {
 	protected $booted = false;
 
 	/**
+	 * The current globally available container (if any).
+	 *
+	 * @var static
+	 */
+	protected static $instance;
+
+	/**
 	 * Get the instance of the plugin.
 	 *
 	 * @return static
