@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -313,8 +313,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
 /***/ "xeH2":
 /***/ (function(module, exports) {
 
-module.exports = jQuery;
+(function() { module.exports = this["jQuery"]; }());
 
 /***/ })
 
-/******/ });
+/******/ })));

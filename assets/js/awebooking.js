@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -315,10 +315,9 @@ var Dropdown = function ($, Popper) {
             },
             preventOverflow: {
               boundariesElement: this.options.boundary
-            } // Disable Popper.js if we have a static display.
-
+            }
           }
-        };
+        }; // Disable Popper.js if we have a static display.
 
         if (this.options.display === 'static') {
           config.modifiers.applyStyle = {
@@ -1379,11 +1378,6 @@ awebooking_plugin.config = Object.assign({}, {
   route: window.location.origin + '?awebooking_route=/',
   ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
 }, window._awebooking);
-awebooking_plugin.utils.dates = date_utils;
-
-if (typeof window.flatpickr !== 'undefined') {
-  awebooking_plugin.utils.dates.l10n = flatpickr.l10ns["default"];
-}
 
 awebooking_plugin.utils.dropdown = function (el, config) {
   external_jQuery_default()(el).each(function () {
@@ -1773,6 +1767,7 @@ exports.parseUrl = function (str, opts) {
 
 module.exports = isMobile
 module.exports.isMobile = isMobile
+module.exports.default = isMobile
 
 var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
 
@@ -1880,7 +1875,7 @@ module.exports = debounce;
 /***/ "xeH2":
 /***/ (function(module, exports) {
 
-module.exports = jQuery;
+(function() { module.exports = this["jQuery"]; }());
 
 /***/ }),
 
@@ -1891,4 +1886,4 @@ module.exports = jQuery;
 
 /***/ })
 
-/******/ });
+/******/ })));

@@ -1,4 +1,4 @@
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(this, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -94,6 +94,13 @@ module.exports = __webpack_require__("oNlh");
 
 /***/ }),
 
+/***/ "FqII":
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["date"]; }());
+
+/***/ }),
+
 /***/ "Fv1B":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -158,11 +165,26 @@ exports.MODIFIER_KEY_NAMES = MODIFIER_KEY_NAMES;
 
 /***/ }),
 
+/***/ "TqRt":
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+
 /***/ "WmS1":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _interopRequireDefault = __webpack_require__("TqRt");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -173,8 +195,6 @@ var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
 
 var _constants = __webpack_require__("Fv1B");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function toMomentObject(dateString, customFormat) {
   var dateFormats = customFormat ? [customFormat, _constants.DISPLAY_FORMAT, _constants.ISO_FORMAT] : [_constants.DISPLAY_FORMAT, _constants.ISO_FORMAT];
   var date = (0, _moment["default"])(dateString, dateFormats, true);
@@ -183,10 +203,17 @@ function toMomentObject(dateString, customFormat) {
 
 /***/ }),
 
+/***/ "g56x":
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["hooks"]; }());
+
+/***/ }),
+
 /***/ "nGjC":
 /***/ (function(module, exports) {
 
-module.exports = window.ko;
+(function() { module.exports = this["window.ko"]; }());
 
 /***/ }),
 
@@ -199,6 +226,17 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external "jQuery"
 var external_jQuery_ = __webpack_require__("xeH2");
 var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
+
+// EXTERNAL MODULE: external {"this":["wp","hooks"]}
+var external_this_wp_hooks_ = __webpack_require__("g56x");
+
+// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/isSameDay.js
+var isSameDay = __webpack_require__("pRvc");
+var isSameDay_default = /*#__PURE__*/__webpack_require__.n(isSameDay);
+
+// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/toMomentObject.js
+var toMomentObject = __webpack_require__("WmS1");
+var toMomentObject_default = /*#__PURE__*/__webpack_require__.n(toMomentObject);
 
 // CONCATENATED MODULE: ./assets/babel/utils/control.js
 function _classCallCheck(instance, Constructor) {
@@ -223,12 +261,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-
-/**
- * //
- *
- * @type {*}
- */
 
 var Synchronizer = {
   val: {
@@ -264,14 +296,13 @@ var Synchronizer = {
     refresh: function refresh() {
       return this.element.html();
     }
-    /**
-     * Cast a string to a jQuery collection if it isn't already.
-     *
-     * @param {string|jQuery} element
-     */
-
   }
 };
+/**
+ * Cast a string to a jQuery collection if it isn't already.
+ *
+ * @param {string|jQuery} element
+ */
 
 function ensureElement(element) {
   return typeof element == 'string' ? external_jQuery_default()(element) : element;
@@ -533,28 +564,17 @@ function () {
 }();
 
 
+// EXTERNAL MODULE: external {"this":["wp","date"]}
+var external_this_wp_date_ = __webpack_require__("FqII");
+
 // CONCATENATED MODULE: ./assets/babel/utils/date-utils.js
+
 function formatDateString(dateString, format) {
   var _ref = window.awebooking || {},
-      i18n = _ref.i18n,
-      utils = _ref.utils;
+      i18n = _ref.i18n;
 
-  var date = utils.dates.parse(dateString, 'Y-m-d');
-
-  if (!date) {
-    return '';
-  }
-
-  return utils.dates.format(date, format || i18n.dateFormat);
+  return Object(external_this_wp_date_["date"])(format || i18n.dateFormat, dateString);
 }
-// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/isSameDay.js
-var isSameDay = __webpack_require__("pRvc");
-var isSameDay_default = /*#__PURE__*/__webpack_require__.n(isSameDay);
-
-// EXTERNAL MODULE: ./node_modules/react-dates/lib/utils/toMomentObject.js
-var toMomentObject = __webpack_require__("WmS1");
-var toMomentObject_default = /*#__PURE__*/__webpack_require__.n(toMomentObject);
-
 // CONCATENATED MODULE: ./assets/babel/search-form/SearchForm.js
 function SearchForm_classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -577,6 +597,7 @@ function SearchForm_createClass(Constructor, protoProps, staticProps) {
   if (staticProps) SearchForm_defineProperties(Constructor, staticProps);
   return Constructor;
 }
+
 
 
 
@@ -644,7 +665,7 @@ function () {
         return disabled;
       };
 
-      window.createReactDatePicker(this, {
+      var options = Object(external_this_wp_hooks_["applyFilters"])('awebookingCreateReactDatePickerArgs', {
         isRTL: 'rtl' === external_jQuery_default()('html').attr('dir'),
         isDayBlocked: isDayBlocked,
         minimumNights: config.minNights || 1,
@@ -653,6 +674,7 @@ function () {
         // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
         numberOfMonths: config.showMonths || 1
       });
+      window.createReactDatePicker(this, options);
     }
   }, {
     key: "_registerBindings",
@@ -905,14 +927,14 @@ external_jQuery_default()(function () {
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__("TqRt");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = isSameDay;
 
 var _moment = _interopRequireDefault(__webpack_require__("wy2R"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function isSameDay(a, b) {
   if (!_moment["default"].isMoment(a) || !_moment["default"].isMoment(b)) return false; // Compare least significant, most likely to change units first
@@ -926,15 +948,15 @@ function isSameDay(a, b) {
 /***/ "wy2R":
 /***/ (function(module, exports) {
 
-module.exports = moment;
+(function() { module.exports = this["moment"]; }());
 
 /***/ }),
 
 /***/ "xeH2":
 /***/ (function(module, exports) {
 
-module.exports = jQuery;
+(function() { module.exports = this["jQuery"]; }());
 
 /***/ })
 
-/******/ });
+/******/ })));

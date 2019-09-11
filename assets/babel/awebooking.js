@@ -1,31 +1,26 @@
-import $ from 'jquery'
-import accounting from 'accounting'
-import Dropdown from './core/dropdown'
-import Utils from './core/util'
-import DateUtils from './core/date-utils'
+import $ from 'jquery';
+import accounting from 'accounting';
+import Dropdown from './core/dropdown';
+import Utils from './core/util';
+import DateUtils from './core/date-utils';
 
-let plugin = window.awebooking = {}
+let plugin = window.awebooking = {};
 
 // Main objects
-plugin.utils = {}
-plugin.instances = {}
-plugin.i18n = window._awebooking_i18n || {}
+plugin.utils = {};
+plugin.instances = {};
+plugin.i18n = window._awebooking_i18n || {};
 
 plugin.config = Object.assign({}, {
   route: window.location.origin + '?awebooking_route=/',
   ajax_url: window.location.origin + '/wp-admin/admin-ajax.php',
-}, window._awebooking)
+}, window._awebooking);
 
-plugin.utils.dates = DateUtils
-if (typeof window.flatpickr !== 'undefined') {
-  plugin.utils.dates.l10n = flatpickr.l10ns.default
-}
-
-plugin.utils.dropdown = function (el, config) {
-  $(el).each(function () {
-    $(this).data('abrs-dropdown', new Dropdown(this, config))
-  })
-}
+plugin.utils.dropdown = function(el, config) {
+  $(el).each(function() {
+    $(this).data('abrs-dropdown', new Dropdown(this, config));
+  });
+};
 
 /**
  * The admin route.
@@ -33,9 +28,9 @@ plugin.utils.dropdown = function (el, config) {
  * @param  {string} route
  * @return {string}
  */
-plugin.route = function (route) {
-  return this.config.route + (route || '').replace(/^\//g, '')
-}
+plugin.route = function(route) {
+  return this.config.route + (route || '').replace(/^\//g, '');
+};
 
 /**
  * Create new datepicker.
@@ -44,25 +39,25 @@ plugin.route = function (route) {
  *
  * @return {flatpickr}
  */
-plugin.datepicker = function (instance, options) {
-  const i18n = plugin.i18n
-  const defaults = plugin.config.datepicker
+plugin.datepicker = function(instance, options) {
+  const i18n = plugin.i18n;
+  const defaults = plugin.config.datepicker;
 
-  let { disableDays, disableDates } = defaults
-  const disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates
+  let { disableDays, disableDates } = defaults;
+  const disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates;
 
   if (Array.isArray(disableDays) && disableDays.length > 0) {
-    disable.push(function (date) {
-      return disableDays.includes(date.getDay())
-    })
+    disable.push(function(date) {
+      return disableDays.includes(date.getDay());
+    });
   }
 
-  let minDate = new Date
-  let maxDate = null
+  let minDate = new Date;
+  let maxDate = null;
 
   // Limit available days from today
   if (Date.prototype.fp_incr && defaults.minDate > 0) {
-    minDate = minDate.fp_incr(defaults.minDate || 0)
+    minDate = minDate.fp_incr(defaults.minDate || 0);
   }
 
   // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
@@ -81,16 +76,16 @@ plugin.datepicker = function (instance, options) {
     enableSeconds: false,
     disableMobile: false,
     onReady(_, __, fp) {
-      fp.calendarContainer.classList.add('awebooking-datepicker')
+      fp.calendarContainer.classList.add('awebooking-datepicker');
     },
-  }
+  };
 
   if (Utils.isMobile()) {
-    _defaults.showMonths = 1
+    _defaults.showMonths = 1;
   }
 
-  return flatpickr(instance, $.extend({}, _defaults, options))
-}
+  return flatpickr(instance, $.extend({}, _defaults, options));
+};
 
 /**
  * Format the price.
@@ -98,38 +93,38 @@ plugin.datepicker = function (instance, options) {
  * @param amount
  * @returns {string}
  */
-plugin.formatPrice = function (amount) {
+plugin.formatPrice = function(amount) {
   return accounting.formatMoney(amount, {
     format: plugin.i18n.priceFormat,
     symbol: plugin.i18n.currencySymbol,
     decimal: plugin.i18n.decimalSeparator,
     thousand: plugin.i18n.priceThousandSeparator,
     precision: plugin.i18n.numberDecimals,
-  })
-}
+  });
+};
 
 /**
  * Document ready.
  *
  * @return {void}
  */
-$(function () {
+$(function() {
   tippy('[data-awebooking="tooltip"]', {
-    theme: 'awebooking-tooltip'
-  })
+    theme: 'awebooking-tooltip',
+  });
 
   $('[data-init="awebooking-dialog"]').each((e, el) => {
-    const dialog = new window.A11yDialog(el)
+    const dialog = new window.A11yDialog(el);
 
     dialog.on('show', () => {
-      el.classList.add('open')
-      el.removeAttribute('aria-hidden')
-    })
+      el.classList.add('open');
+      el.removeAttribute('aria-hidden');
+    });
 
     dialog.on('hide', () => {
-      el.classList.remove('open')
-      el.setAttribute('aria-hidden', true)
-    })
-  })
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', true);
+    });
+  });
 
-})
+});
