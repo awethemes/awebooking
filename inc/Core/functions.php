@@ -903,6 +903,8 @@ function abrs_register_vendor_js() {
 			'moment'      => '2.22.2',
 			'lodash'      => '4.17.11',
 			'wp-polyfill' => '7.0.0',
+			'date'        => '3.2.0',
+			'hooks'       => '2.2.0',
 		];
 
 		foreach ( $fallback_vendors as $handle => $dependencies ) {
