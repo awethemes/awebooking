@@ -45,8 +45,7 @@ $room_items = $the_booking->get_rooms();
 		<tr>
 			<th><?php echo esc_html__( 'Room Type', 'awebooking' ); ?></th>
 			<th><?php echo esc_html__( 'Rate Plan', 'awebooking' ); ?></th>
-			<th style="width: 10%;"><?php echo esc_html__( 'Check In', 'awebooking' ); ?></th>
-			<th style="width: 10%;"><?php echo esc_html__( 'Check Out', 'awebooking' ); ?></th>
+			<th><?php echo esc_html__( 'Stay', 'awebooking' ); ?></th>
 			<th style="width: 7%;"><?php echo esc_html__( 'Adults', 'awebooking' ); ?></th>
 
 			<?php if ( abrs_children_bookable() ) : ?>
@@ -58,12 +57,11 @@ $room_items = $the_booking->get_rooms();
 			<?php endif ?>
 
 			<th class="abrs-text-right price-area" style="width: 80px;">
-				<span><?php esc_html_e( 'Unit Price', 'awebooking' ); ?></span>
+				<span><?php esc_html_e( 'Price', 'awebooking' ); ?></span>
 			</th>
 
 			<th class="abrs-text-right price-area" style="width: 60px;">
-				<span class="aficon aficon-moon tippy" style="font-size: 13px;" title="<?php echo esc_html__( 'Nights', 'awebooking' ); ?>"></span>
-				<span class="screen-reader-text"><?php echo esc_html__( 'Nights', 'awebooking' ); ?></span>
+				<span><?php esc_html_e( 'Qty', 'awebooking' ); ?></span>
 			</th>
 
 			<th class="abrs-text-right price-area" style="width: 80px;">
@@ -124,15 +122,22 @@ $room_items = $the_booking->get_rooms();
 				</td>
 
 				<td>
-					<?php if ($timespan !== null) : ?>
-						<?php echo esc_html( abrs_format_date( $timespan->get_start_date() ) ); ?>
-					<?php endif ?>
-				</td>
+					<p>
+						<?php if ($timespan !== null) : ?>
+							<?php echo esc_html( abrs_format_date( $timespan->get_start_date() ) ); ?>
+						<?php endif ?>
 
-				<td>
-					<?php if ($timespan !== null) : ?>
-						<?php echo esc_html( abrs_format_date( $timespan->get_end_date() ) ); ?>
-					<?php endif ?>
+						<span>-</span>
+
+						<?php if ($timespan !== null) : ?>
+							<?php echo esc_html( abrs_format_date( $timespan->get_end_date() ) ); ?>
+						<?php endif ?>
+					</p>
+
+					<span>
+						<span class=""><?php echo esc_html( abrs_optional( $timespan )->get_nights() ); ?></span>
+						<span class=""><?php echo esc_html__( 'night(s)', 'awebooking' ); ?></span>
+					</span>
 				</td>
 
 				<td>
@@ -153,11 +158,10 @@ $room_items = $the_booking->get_rooms();
 
 				<td class="abrs-text-right price-area">
 					<?php abrs_price( $item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
-					<?php abrs_price( $item->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?>
 				</td>
 
 				<td class="abrs-text-right price-area">
-					<span class="abrs-badge"><?php echo esc_html( abrs_optional( $timespan )->get_nights() ); ?></span>
+					<span class="abrs-badge">1</span>
 				</td>
 
 				<td class="abrs-text-right price-area">
