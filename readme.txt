@@ -91,7 +91,7 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
-### [v3.2.23] - [2019-10-14]
+### [v3.2.23] - [2019-09-14]
 - JS: Using wp-date to parse the date format.
 - Minor bug fixes.
 
