@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.2
 Requires PHP:      5.6
-Stable tag:        3.2.22
+Stable tag:        3.2.23
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,10 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.23] - [2019-09-14]
+- JS: Using wp-date to parse the date format.
+- Minor bug fixes.
+
 ### [v3.2.22] - [2019-09-05]
 - Imporve code API.
 
