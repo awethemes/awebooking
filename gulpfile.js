@@ -31,4 +31,4 @@ function copyVendor(cb) {
 
 exports.copy = copyVendor;
 exports.minify = parallel(minifyJs, minifyCss);
-exports.default = parallel(minifyJs, minifyCss, copyVendor);
+exports.default = parallel(minifyJs, minifyCss);
