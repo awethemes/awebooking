@@ -62,7 +62,7 @@ export default class SearchForm {
 
     let options = applyFilters('awebookingCreateReactDatePickerArgs', {
       isRTL: 'rtl' === $('html').attr('dir'),
-      isDayBlocked: isDayBlocked,
+      isDayBlocked: isDayBlockeds,
       minimumNights: config.minNights || 1,
       maximumNights: config.maxNights || 0,
       minimumDateRange: config.minDate || 0,
@@ -70,7 +70,7 @@ export default class SearchForm {
       numberOfMonths: config.showMonths || 1,
     });
 
-    window.createReactDatePicker(this, options);
+    window._awebookingReactDatePicker = window.createReactDatePicker(this, options);
   }
 
   _registerBindings() {
