@@ -17,6 +17,7 @@ export default class SearchForm {
 
     this._registerBindings();
 
+    this.reactDatePicker = undefined;
     if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
       this._createDatePicker();
     }
@@ -62,15 +63,15 @@ export default class SearchForm {
 
     let options = applyFilters('awebookingCreateReactDatePickerArgs', {
       isRTL: 'rtl' === $('html').attr('dir'),
-      isDayBlocked: isDayBlockeds,
+      isDayBlocked: isDayBlocked,
       minimumNights: config.minNights || 1,
       maximumNights: config.maxNights || 0,
       minimumDateRange: config.minDate || 0,
       // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
       numberOfMonths: config.showMonths || 1,
-    });
+    }, this);
 
-    window._awebookingReactDatePicker = window.createReactDatePicker(this, options);
+    this.reactDatePicker = window.createReactDatePicker(this, options);
   }
 
   _registerBindings() {
