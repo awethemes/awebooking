@@ -8347,14 +8347,18 @@ function (_React$Component) {
   _createClass(DatePicker, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.getFormElement('check_in_alt').on('change', this._onStartDateChange.bind(this)).on('focus', this._onStartDateFocus.bind(this)).on('keydown', this._clearInputValues.bind(this, 'startDate'));
-      this.getFormElement('check_out_alt').on('focus', this._onEndDateFocus.bind(this)).on('change', this._onEndDateChange.bind(this)).on('keydown', this._clearInputValues.bind(this, 'endDate'));
+      this.getFormElement('check_in_alt').on('change', this.onStartDateChange.bind(this));
+      this.getFormElement('check_out_alt').on('change', this.onEndDateChange.bind(this));
+      this.getFormElement('check_in_alt').on('focus', this.onStartDateFocus.bind(this));
+      this.getFormElement('check_out_alt').on('focus', this.onEndDateFocus.bind(this));
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      this.getFormElement('check_in_alt').off('change focus keydown');
-      this.getFormElement('check_out_alt').off('change focus keydown');
+      this.getFormElement('check_in').off('change');
+      this.getFormElement('check_out').off('change');
+      this.getFormElement('check_in_alt').off('focus');
+      this.getFormElement('check_out_alt').off('focus');
     }
   }, {
     key: "open",
@@ -8427,8 +8431,8 @@ function (_React$Component) {
       return focusedInput === constants["START_DATE"] || focusedInput === constants["END_DATE"];
     }
   }, {
-    key: "_onStartDateChange",
-    value: function _onStartDateChange(e) {
+    key: "onStartDateChange",
+    value: function onStartDateChange(e) {
       var startDateString = e.target.value;
       var endDate = this.state.endDate;
       var _this$props = this.props,
@@ -8458,8 +8462,8 @@ function (_React$Component) {
       }
     }
   }, {
-    key: "_onEndDateChange",
-    value: function _onEndDateChange(e) {
+    key: "onEndDateChange",
+    value: function onEndDateChange(e) {
       var endDateString = e.target.value;
       var startDate = this.state.startDate;
       var _this$props2 = this.props,
@@ -8483,8 +8487,8 @@ function (_React$Component) {
       }
     }
   }, {
-    key: "_onStartDateFocus",
-    value: function _onStartDateFocus() {
+    key: "onStartDateFocus",
+    value: function onStartDateFocus() {
       var _this$props3 = this.props,
           disabled = _this$props3.disabled,
           focusedInput = _this$props3.focusedInput;
@@ -8498,8 +8502,8 @@ function (_React$Component) {
       }
     }
   }, {
-    key: "_onEndDateFocus",
-    value: function _onEndDateFocus() {
+    key: "onEndDateFocus",
+    value: function onEndDateFocus() {
       var _this$state = this.state,
           startDate = _this$state.startDate,
           focusedInput = _this$state.focusedInput;
@@ -8518,20 +8522,6 @@ function (_React$Component) {
         this.onFocusChange(constants["START_DATE"]);
       } else if (!disabled || disabled === constants["START_DATE"]) {
         this.onFocusChange(constants["END_DATE"]);
-      }
-    }
-  }, {
-    key: "_clearInputValues",
-    value: function _clearInputValues(type, event) {
-      if (event.which === 8 || event.which === 46) {
-        if (type === 'endDate') {
-          this.onDatesChange({
-            startDate: this.state.startDate,
-            endDate: null
-          });
-        } else {
-          this.clearDates();
-        }
       }
     }
   }, {
@@ -8712,6 +8702,13 @@ function (_React$Component) {
           behavior: 'flip'
         }
       };
+
+      var renderDayContents = function renderDayContents(day) {
+        return external_React_default.a.createElement(external_React_default.a.Fragment, null, external_React_default.a.createElement("span", {
+          className: "CalendarDayWeekNumber"
+        }, day.format('W')), external_React_default.a.createElement("span", null, day.format('D')));
+      };
+
       return focusedInput && external_React_default.a.createElement(react_outside_click_handler_default.a, {
         onOutsideClick: this.onOutsideClick
       }, external_React_default.a.createElement(Popper, {
@@ -8750,7 +8747,9 @@ function (_React$Component) {
           onBlur: _this3.onDayPickerBlur,
           hideKeyboardShortcutsPanel: true,
           endDateOffset: endDateOffset,
-          getMinNightsForHoverDate: getMinNightsForHoverDate
+          getMinNightsForHoverDate: getMinNightsForHoverDate // renderDayContents={renderDayContents}
+          // onClose={onClose}
+
         }));
       }));
     }

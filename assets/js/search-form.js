@@ -619,8 +619,6 @@ function () {
 
     this._registerBindings();
 
-    this.reactDatePicker = undefined;
-
     if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
       this._createDatePicker();
     }
@@ -675,8 +673,8 @@ function () {
         minimumDateRange: config.minDate || 0,
         // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
         numberOfMonths: config.showMonths || 1
-      }, this);
-      this.reactDatePicker = window.createReactDatePicker(this, options);
+      });
+      window.createReactDatePicker(this, options);
     }
   }, {
     key: "_registerBindings",

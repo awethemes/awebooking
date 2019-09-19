@@ -17,7 +17,6 @@ export default class SearchForm {
 
     this._registerBindings();
 
-    this.reactDatePicker = undefined;
     if (window.createReactDatePicker && this.root.find('.abrs-searchbox__dates').length > 0) {
       this._createDatePicker();
     }
@@ -69,8 +68,9 @@ export default class SearchForm {
       minimumDateRange: config.minDate || 0,
       // maximumDateRange: config.maxNights ? (config.maxNights + config.minDate + 1) : 0,
       numberOfMonths: config.showMonths || 1,
+    });
 
-    this.reactDatePicker = window.createReactDatePicker(this, options);
+    window.createReactDatePicker(this, options);
   }
 
   _registerBindings() {
