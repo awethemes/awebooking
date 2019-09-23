@@ -9,7 +9,7 @@ const mix = require('laravel-mix');
 const externals = {
   'react': 'React',
   'react-dom': 'ReactDOM',
-  'ko': 'window.ko',
+  'ko': 'ko',
   'jquery': 'jQuery',
   'moment': 'moment',
   'lodash': 'lodash',

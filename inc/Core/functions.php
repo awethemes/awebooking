@@ -944,7 +944,7 @@ function abrs_register_vendor_js() {
 	wp_register_script( 'jquery-waypoints', abrs_asset_url( 'vendor/waypoints/jquery.waypoints' . $min . '.js' ), [ 'jquery' ], '4.0.1', true );
 
 	wp_register_style( 'react-calendar', abrs_asset_url( 'css/react-datepicker' . $min . '.css' ), [], '1.0.0' );
-	wp_register_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'wp-date', 'wp-hooks', 'lodash' ], '1.0.0', true );
+	wp_register_script( 'react-calendar', abrs_asset_url( 'js/calendar' . $min . '.js' ), [ 'react', 'react-dom', 'moment', 'lodash' ], '1.0.0', true );
 }
 
 /**

@@ -36,7 +36,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_script( 'awebooking-checkout', abrs_asset_url( 'js/checkout' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
 		wp_register_script( 'awebooking-payment', abrs_asset_url( 'js/payment' . $suffix . '.js' ), [ 'awebooking', 'knockout' ], $version, true );
 
-		$deps = [ 'awebooking', 'knockout', 'moment' ];
+		$deps = [ 'awebooking', 'knockout', 'moment', 'wp-date', 'wp-hooks' ];
 		if ( 'on' === abrs_get_option( 'use_experiment_style', 'off' ) ) {
 			$deps[] = 'react-calendar';
 		}
