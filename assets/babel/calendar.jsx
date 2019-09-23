@@ -76,19 +76,20 @@ export class DatePicker extends React.Component {
   }
 
   componentDidMount() {
-    this.getFormElement('check_in_alt').on('change', this.onStartDateChange.bind(this));
-    this.getFormElement('check_out_alt').on('change', this.onEndDateChange.bind(this));
+    this.getFormElement('check_in_alt')
+      .on('change', this._onStartDateChange.bind(this))
+      .on('focus', this._onStartDateFocus.bind(this))
+      .on('keydown', this._clearInputValues.bind(this, 'startDate'));
 
-    this.getFormElement('check_in_alt').on('focus', this.onStartDateFocus.bind(this));
-    this.getFormElement('check_out_alt').on('focus', this.onEndDateFocus.bind(this));
+    this.getFormElement('check_out_alt')
+      .on('focus', this._onEndDateFocus.bind(this))
+      .on('change', this._onEndDateChange.bind(this))
+      .on('keydown', this._clearInputValues.bind(this, 'endDate'));
   }
 
   componentWillUnmount() {
-    this.getFormElement('check_in').off('change');
-    this.getFormElement('check_out').off('change');
-
-    this.getFormElement('check_in_alt').off('focus');
-    this.getFormElement('check_out_alt').off('focus');
+    this.getFormElement('check_in_alt').off('change focus keydown');
+    this.getFormElement('check_out_alt').off('change focus keydown');
   }
 
   open(focusedInput) {
@@ -144,7 +145,7 @@ export class DatePicker extends React.Component {
     return focusedInput === START_DATE || focusedInput === END_DATE;
   }
 
-  onStartDateChange(e) {
+  _onStartDateChange(e) {
     let startDateString = e.target.value;
 
     let { endDate } = this.state;
@@ -175,7 +176,7 @@ export class DatePicker extends React.Component {
     }
   }
 
-  onEndDateChange(e) {
+  _onEndDateChange(e) {
     const endDateString = e.target.value;
 
     const { startDate } = this.state;
@@ -198,7 +199,7 @@ export class DatePicker extends React.Component {
     }
   }
 
-  onStartDateFocus() {
+  _onStartDateFocus() {
     const { disabled, focusedInput } = this.props;
 
     if (this.isOpened() && focusedInput === START_DATE) {
@@ -210,7 +211,7 @@ export class DatePicker extends React.Component {
     }
   }
 
-  onEndDateFocus() {
+  _onEndDateFocus() {
     const { startDate, focusedInput } = this.state;
     const { disabled, withFullScreenPortal } = this.props;
 
@@ -225,6 +226,16 @@ export class DatePicker extends React.Component {
       this.onFocusChange(START_DATE);
     } else if (!disabled || disabled === START_DATE) {
       this.onFocusChange(END_DATE);
+    }
+  }
+
+  _clearInputValues(type, event) {
+    if (event.which === 8 || event.which === 46) {
+      if (type === 'endDate') {
+        this.onDatesChange({ startDate: this.state.startDate, endDate: null });
+      } else {
+        this.clearDates();
+      }
     }
   }
 
@@ -392,7 +403,7 @@ export class DatePicker extends React.Component {
       isDayHighlighted,
       isRTL,
       endDateOffset,
-      getMinNightsForHoverDate
+      getMinNightsForHoverDate,
     } = this.props;
 
     const modifiers = {
@@ -408,15 +419,6 @@ export class DatePicker extends React.Component {
       flip: {
         behavior: 'flip',
       },
-    };
-
-    const renderDayContents = (day) => {
-      return (
-        <React.Fragment>
-          <span className="CalendarDayWeekNumber">{day.format('W')}</span>
-          <span>{day.format('D')}</span>
-        </React.Fragment>
-      );
     };
 
     return (
@@ -450,8 +452,6 @@ export class DatePicker extends React.Component {
                   hideKeyboardShortcutsPanel={true}
                   endDateOffset={endDateOffset}
                   getMinNightsForHoverDate={getMinNightsForHoverDate}
-                  // renderDayContents={renderDayContents}
-                  // onClose={onClose}
                 />
               </div>
             )}

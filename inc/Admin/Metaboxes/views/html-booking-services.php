@@ -10,8 +10,19 @@ $service_items = $the_booking->get_services();
 <table class="awebooking-table abrs-booking-rooms widefat fixed">
 	<thead>
 		<tr>
-			<th style="width: 80%;"><?php echo esc_html__( 'Service', 'awebooking' ); ?></th>
-			<th class="abrs-text-right"><span><?php esc_html_e( 'Price', 'awebooking' ); ?></span></th>
+			<th><?php esc_html_e( 'Service', 'awebooking' ); ?></th>
+
+			<th class="abrs-text-right price-area" style="width: 80px;">
+				<span><?php esc_html_e( 'Unit Price', 'awebooking' ); ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 60px;">
+				<span><?php esc_html_e('Qty', 'awebooking') ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 80px;">
+				<span><?php esc_html_e( 'Total', 'awebooking' ); ?></span>
+			</th>
 		</tr>
 	</thead>
 
@@ -47,29 +58,26 @@ $service_items = $the_booking->get_services();
 						?>
 
 						<strong class="row-title"><?php echo esc_html( $service_item->get_name() ); ?></strong>
-					</td>
-
-					<td class="abrs-text-right">
 
 						<?php if ( $the_booking->is_editable() ) : ?>
 
-							<div class="row-actions abrs-fleft">
+							<div class="row-actions">
 								<span class="trash"><a href="<?php echo esc_url( wp_nonce_url( $action_link, "delete_service_{$service_item->get_id()}" ) ); ?>" data-method="abrs-delete"><?php esc_html_e( 'Delete', 'awebooking' ); ?></a></span>
 							</div>
 
 						<?php endif; ?>
+					</td>
 
-						<p>
-							<?php
-							printf( /* translators: %1$s quantity, %2$s unit price */
-								esc_html_x( '%1$s x %2$s', 'admin booking service price', 'awebooking' ),
-								absint( $service_item->get( 'quantity' ) ),
-								abrs_format_price( $service_item->get( 'price' ) )
-							); // WPCS: xss ok.
-							?>
-						</p>
+					<td class="abrs-text-right price-area">
+						<?php abrs_price( $service_item->get( 'price' ), $the_booking->get( 'currency' ) ); ?>
+					</td>
 
-						<?php abrs_price( $service_item->get( 'total' ), $the_booking->get( 'currency' ) ); ?>
+					<td class="abrs-text-right price-area">
+						<span class="abrs-badge"><?php echo absint($service_item->get('quantity')); ?></span>
+					</td>
+
+					<td class="abrs-text-right price-area">
+						<?php abrs_price( $service_item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
 					</td>
 				</tr>
 

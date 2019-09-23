@@ -96,8 +96,21 @@ $payment_items = $the_booking->get_payments()
 			</td>
 
 			<th colspan="2">
-				<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
-				<span class="abrs-fright awebooking-label awebooking-label--<?php echo empty( $the_booking['balance_due'] ) ? 'success' : 'danger'; ?>"><?php abrs_price( $the_booking->get( 'balance_due' ), $the_booking->get( 'currency' ) ); // WPCS: XSS OK. ?></span>
+				<div class="dp-flex" style="justify-content: space-between;">
+					<div class="">
+						<strong><?php echo esc_html__( 'Paid', 'awebooking' ); ?></strong>
+						<span class="awebooking-label awebooking-label--warning">
+							<?php abrs_price( $the_booking->get( 'paid' ), $the_booking->get( 'currency' ) ); ?>
+						</span>
+					</div>
+
+					<div>
+						<strong><?php esc_html_e( 'Balance Due', 'awebooking' ); ?></strong>
+						<span class="awebooking-label awebooking-label--<?php echo empty( $the_booking['balance_due'] ) ? 'success' : 'danger'; ?>">
+							<?php abrs_price( $the_booking->get( 'balance_due' ), $the_booking->get( 'currency' ) ); // WPCS: XSS OK. ?>
+						</span>
+					</div>
+				</div>
 			</th>
 		</tr>
 	</tfoot>

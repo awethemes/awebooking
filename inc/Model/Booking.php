@@ -345,8 +345,7 @@ class Booking extends Model {
 
 			return true;
 		} catch ( \Exception $e ) {
-			abrs_logger()->error( sprintf( 'Update status of booking #%d failed!', $this->get_id() ),
-				[ 'exception' => $e ] );
+			abrs_logger()->error( sprintf( 'Update status of booking #%d failed!', $this->get_id() ), [ 'exception' => $e ] );
 
 			return false;
 		}

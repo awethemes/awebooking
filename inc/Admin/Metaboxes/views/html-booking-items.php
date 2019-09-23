@@ -21,7 +21,7 @@
 		<table class="awebooking-table abrs-booking-totals">
 			<tbody>
 				<tr>
-					<th><?php echo esc_html__( 'Subtotal:', 'awebooking' ); ?></th>
+					<th><?php echo esc_html__( 'Subtotal', 'awebooking' ); ?></th>
 					<td><?php abrs_price( $the_booking->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?></td>
 				</tr>
 
@@ -29,24 +29,14 @@
 
 				<?php if ( $the_booking->get( 'total_tax' ) ) : ?>
 					<tr>
-						<th><?php echo esc_html__( 'Total Tax:', 'awebooking' ); ?></th>
+						<th><?php echo esc_html__( 'Total Tax', 'awebooking' ); ?></th>
 						<td><?php abrs_price( $the_booking->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?></td>
 					</tr>
 				<?php endif; ?>
 
 				<tr>
-					<th><?php echo esc_html__( 'Total:', 'awebooking' ); ?></th>
-					<td><?php abrs_price( $the_booking->get( 'total' ), $the_booking->get( 'currency' ) ); ?></td>
-				</tr>
-
-				<tr>
-					<th><?php echo esc_html__( 'Paid:', 'awebooking' ); ?></th>
-					<td><?php abrs_price( $the_booking->get( 'paid' ), $the_booking->get( 'currency' ) ); ?></td>
-				</tr>
-
-				<tr>
-					<th><?php echo esc_html__( 'Balance Due:', 'awebooking' ); ?></th>
-					<td><?php abrs_price( $the_booking->get( 'balance_due' ), $the_booking->get( 'currency' ) ); ?></td>
+					<th><?php echo esc_html__( 'Total', 'awebooking' ); ?></th>
+					<td><strong><?php abrs_price( $the_booking->get( 'total' ), $the_booking->get( 'currency' ) ); ?></strong></td>
 				</tr>
 			</tbody>
 		</table>
@@ -62,7 +52,7 @@
 			<a class="button abrs-button" href="<?php echo esc_url( abrs_admin_route( '/booking-service', [ 'refer' => $the_booking->get_id() ] ) ); ?>">
 				<span><?php esc_html_e( 'Add service', 'awebooking' ); ?></span>
 			</a>
-		
+
 			<?php do_action( 'abrs_booking_room_buttons' ); ?>
 
 			<button class="button abrs-button abrs-fright" name="awebooking-calculate-totals" type="submit">

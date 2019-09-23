@@ -149,10 +149,17 @@ class Search_Form extends Form {
 			$inputs[] = $this->builder->hidden( 'lang', $this->parameter( 'lang' ) ?: abrs_multilingual()->get_current_language() );
 		}
 
-		if ( abrs_is_room_type() && abrs_multiple_hotels() ) {
-			$room_type = abrs_get_room_type( get_the_ID() );
+		if (abrs_multiple_hotels()) {
+			$hotel_id = '';
 
-			$inputs[] = $this->builder->hidden( 'hotel', $room_type ? $room_type->get( 'hotel_id' ) : '' );
+			if ( abrs_is_room_type() ) {
+				$room_type = abrs_get_room_type( get_the_ID() );
+				$hotel_id = $room_type ? $room_type->get( 'hotel_id' ) : '';
+			} elseif ( abrs_is_hotel() ) {
+				$hotel_id = get_the_ID();
+			}
+
+			$inputs[] = $this->builder->hidden( 'hotel', $hotel_id );
 		}
 
 		if ( ! empty( $this->atts['only_room'] ) ) {

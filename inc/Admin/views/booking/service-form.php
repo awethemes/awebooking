@@ -40,7 +40,7 @@ $services_selection = abrs_services_for_reservation(
 					<?php foreach ( $booked_services as $booked ) : ?>
 						<?php $service = abrs_get_service( $booked->get( 'service_id' ) ); ?>
 
-						<?php if ( is_null( $service ) ) : ?>
+						<?php if ($service === null) : ?>
 
 							<?php abrs_admin_template_part( 'booking/html-deleted-service-item.php', compact( 'booked' ) ); ?>
 

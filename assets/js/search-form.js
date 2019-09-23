@@ -213,7 +213,7 @@ function toMomentObject(dateString, customFormat) {
 /***/ "nGjC":
 /***/ (function(module, exports) {
 
-(function() { module.exports = this["window.ko"]; }());
+(function() { module.exports = this["ko"]; }());
 
 /***/ }),
 
@@ -573,6 +573,10 @@ function formatDateString(dateString, format) {
   var _ref = window.awebooking || {},
       i18n = _ref.i18n;
 
+  if (!dateString) {
+    return '';
+  }
+
   return Object(external_this_wp_date_["date"])(format || i18n.dateFormat, dateString);
 }
 // CONCATENATED MODULE: ./assets/babel/search-form/SearchForm.js
@@ -742,9 +746,9 @@ function () {
 }();
 
 
-// EXTERNAL MODULE: external "window.ko"
-var external_window_ko_ = __webpack_require__("nGjC");
-var external_window_ko_default = /*#__PURE__*/__webpack_require__.n(external_window_ko_);
+// EXTERNAL MODULE: external "ko"
+var external_ko_ = __webpack_require__("nGjC");
+var external_ko_default = /*#__PURE__*/__webpack_require__.n(external_ko_);
 
 // CONCATENATED MODULE: ./assets/babel/search-form/old.js
 function old_classCallCheck(instance, Constructor) {
@@ -781,16 +785,16 @@ function () {
 
     old_classCallCheck(this, SearchFormModel);
 
-    this.hotel = external_window_ko_default.a.observable(data.adults || 0);
-    this.adults = external_window_ko_default.a.observable(data.adults || 1);
-    this.children = external_window_ko_default.a.observable(data.children || 0);
-    this.infants = external_window_ko_default.a.observable(data.infants || 0);
-    this.checkIn = external_window_ko_default.a.observable(data.check_in || '');
-    this.checkOut = external_window_ko_default.a.observable(data.check_out || '');
-    this.checkInDate = external_window_ko_default.a.computed(function () {
+    this.hotel = external_ko_default.a.observable(data.adults || 0);
+    this.adults = external_ko_default.a.observable(data.adults || 1);
+    this.children = external_ko_default.a.observable(data.children || 0);
+    this.infants = external_ko_default.a.observable(data.infants || 0);
+    this.checkIn = external_ko_default.a.observable(data.check_in || '');
+    this.checkOut = external_ko_default.a.observable(data.check_out || '');
+    this.checkInDate = external_ko_default.a.computed(function () {
       return formatDateString(_this.checkIn(), 'Y-m-d');
     });
-    this.checkOutDate = external_window_ko_default.a.computed(function () {
+    this.checkOutDate = external_ko_default.a.computed(function () {
       return formatDateString(_this.checkOut(), 'Y-m-d');
     });
   }
@@ -830,7 +834,7 @@ function () {
       external_jQuery_default()(this).find('[data-spin="spinner"]').trigger('change');
     });
     this.model = new old_SearchFormModel(form.getFormData());
-    external_window_ko_default.a.applyBindings(this.model, el);
+    external_ko_default.a.applyBindings(this.model, el);
   }
 
   old_createClass(OldSearchForm, [{

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! abrs_multiple_hotels() || abrs_is_room_type() ) {
+if ( ! abrs_multiple_hotels() || abrs_is_room_type() || abrs_is_hotel() ) {
 	return;
 }
 
