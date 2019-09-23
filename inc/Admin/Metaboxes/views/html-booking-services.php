@@ -16,8 +16,16 @@ $service_items = $the_booking->get_services();
 				<span><?php esc_html_e( 'Unit Price', 'awebooking' ); ?></span>
 			</th>
 
-			<th class="abrs-text-right price-area" style="width: 60px;">
+			<th class="abrs-text-right price-area" style="width: 40px;">
 				<span><?php esc_html_e('Qty', 'awebooking') ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 80px;">
+				<span><?php esc_html_e( 'Subtotal', 'awebooking' ); ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 60px;">
+				<span><?php esc_html_e( 'TAX', 'awebooking' ); ?></span>
 			</th>
 
 			<th class="abrs-text-right price-area" style="width: 80px;">
@@ -78,6 +86,14 @@ $service_items = $the_booking->get_services();
 
 					<td class="abrs-text-right price-area">
 						<?php abrs_price( $service_item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
+					</td>
+
+					<td class="abrs-text-right price-area">
+						<?php abrs_price( $service_item->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?>
+					</td>
+
+					<td class="abrs-text-right price-area">
+						<strong><?php abrs_price( $service_item->get( 'total' ), $the_booking->get( 'currency' ) ); ?></strong>
 					</td>
 				</tr>
 

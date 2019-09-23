@@ -3,7 +3,7 @@
 /* @var $the_booking \AweBooking\Model\Booking */
 global $the_booking;
 
-$columns = 10;
+$columns = 11;
 if ( ! abrs_children_bookable() ) {
 	$columns--;
 }
@@ -60,8 +60,16 @@ $room_items = $the_booking->get_rooms();
 				<span><?php esc_html_e( 'Price', 'awebooking' ); ?></span>
 			</th>
 
-			<th class="abrs-text-right price-area" style="width: 60px;">
+			<th class="abrs-text-right price-area" style="width: 40px;">
 				<span><?php esc_html_e( 'Qty', 'awebooking' ); ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 80px;">
+				<span><?php esc_html_e( 'Subtotal', 'awebooking' ); ?></span>
+			</th>
+
+			<th class="abrs-text-right price-area" style="width: 60px;">
+				<span><?php esc_html_e( 'TAX', 'awebooking' ); ?></span>
 			</th>
 
 			<th class="abrs-text-right price-area" style="width: 80px;">
@@ -162,6 +170,14 @@ $room_items = $the_booking->get_rooms();
 
 				<td class="abrs-text-right price-area">
 					<span class="abrs-badge">1</span>
+				</td>
+
+				<td class="abrs-text-right price-area">
+					<?php abrs_price( $item->get( 'subtotal' ), $the_booking->get( 'currency' ) ); ?>
+				</td>
+
+				<td class="abrs-text-right price-area">
+					<?php abrs_price( $item->get( 'total_tax' ), $the_booking->get( 'currency' ) ); ?>
 				</td>
 
 				<td class="abrs-text-right price-area">

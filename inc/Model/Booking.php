@@ -226,15 +226,15 @@ class Booking extends Model {
 		// Sum the room costs.
 		foreach ( $this->get_rooms() as $room ) {
 			$subtotal  += $room->get( 'subtotal' );
-			$total     += $room->get( 'total' );
 			$total_tax += $room->get( 'total_tax' );
+			$total     += $room->get( 'total' );
 		}
 
 		// Sum the service costs.
 		foreach ( $this->get_services() as $service ) {
 			$subtotal  += $service->get( 'subtotal' );
-			$total     += $service->get( 'total' );
 			$total_tax += $service->get( 'total_tax' );
+			$total     += $service->get( 'total' );
 		}
 
 		// Sun the fees.
@@ -245,7 +245,7 @@ class Booking extends Model {
 		$this->set_attribute( 'subtotal', $subtotal );
 		$this->set_attribute( 'total_tax', $total_tax );
 		$this->set_attribute( 'discount_total', $subtotal - $total );
-		$this->set_attribute( 'total', ( $subtotal + $fee_total + $total_tax ) - $this->get( 'discount_total' ) );
+		$this->set_attribute( 'total', $total + $fee_total );
 
 		$this->set_attribute( 'paid', $this->get_payments()->sum( 'amount' ) );
 		$this->set_attribute( 'balance_due', $this->attributes['total'] - $this->attributes['paid'] );
