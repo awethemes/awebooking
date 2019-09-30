@@ -34,6 +34,19 @@ if ( ! function_exists('collect') ) {
 	}
 }
 
+if ( ! function_exists('wpml_collect') ) {
+	/**
+	 * Create a collection from the given value.
+	 *
+	 * @param  mixed  $value
+	 * @return \Illuminate\Support\Collection
+	 */
+	function wpml_collect( $value = null )
+	{
+		return new \Illuminate\Support\Collection( $value );
+	}
+}
+
 /**
  * Determine if the given value is "blank".
  *
