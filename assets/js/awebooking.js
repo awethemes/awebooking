@@ -946,6 +946,13 @@ var Utils = function ($) {
 
 /***/ }),
 
+/***/ "FqII":
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["date"]; }());
+
+/***/ }),
+
 /***/ "MgzW":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1049,340 +1056,36 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: external "jQuery"
-var external_jQuery_ = __webpack_require__("xeH2");
-var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
-
-// EXTERNAL MODULE: ./node_modules/accounting/accounting.js
-var accounting = __webpack_require__("9UV2");
-var accounting_default = /*#__PURE__*/__webpack_require__.n(accounting);
-
-// EXTERNAL MODULE: ./assets/babel/core/dropdown.js
-var dropdown = __webpack_require__("7l0f");
-
-// EXTERNAL MODULE: ./assets/babel/core/util.js
-var util = __webpack_require__("9T72");
-
-// CONCATENATED MODULE: ./assets/babel/core/date-utils.js
-var DateUtils = function () {
-  var pad = function pad(number) {
-    return "0".concat(number).slice(-2);
-  };
-
-  var _int = function _int(bool) {
-    return bool === true ? 1 : 0;
-  };
-
-  var monthToStr = function monthToStr(monthNumber, shorthand, locale) {
-    return locale.months[shorthand ? 'shorthand' : 'longhand'][monthNumber];
-  };
-
-  var tokenRegex = {
-    D: "(\\w+)",
-    F: "(\\w+)",
-    G: "(\\d\\d|\\d)",
-    H: "(\\d\\d|\\d)",
-    J: "(\\d\\d|\\d)\\w+",
-    K: "",
-    M: "(\\w+)",
-    S: "(\\d\\d|\\d)",
-    U: "(.+)",
-    W: "(\\d\\d|\\d)",
-    Y: "(\\d{4})",
-    Z: "(.+)",
-    d: "(\\d\\d|\\d)",
-    h: "(\\d\\d|\\d)",
-    i: "(\\d\\d|\\d)",
-    j: "(\\d\\d|\\d)",
-    l: "(\\w+)",
-    m: "(\\d\\d|\\d)",
-    n: "(\\d\\d|\\d)",
-    s: "(\\d\\d|\\d)",
-    w: "(\\d\\d|\\d)",
-    y: "(\\d{2})"
-  };
-  var revFormat = {
-    D: function D() {
-      return undefined;
-    },
-    F: function F(date, monthName, locale) {
-      date.setMonth(locale.months.longhand.indexOf(monthName));
-    },
-    G: function G(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    H: function H(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    J: function J(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    K: function K(date, amPM, locale) {
-      date.setHours(date.getHours() % 12 + 12 * _int(new RegExp(locale.amPM[1], 'i').test(amPM)));
-    },
-    M: function M(date, shortMonth, locale) {
-      date.setMonth(locale.months.shorthand.indexOf(shortMonth));
-    },
-    S: function S(date, seconds) {
-      date.setSeconds(parseFloat(seconds));
-    },
-    U: function U(_, unixSeconds) {
-      return new Date(parseFloat(unixSeconds) * 1000);
-    },
-    W: function W(date, weekNum) {
-      var weekNumber = parseInt(weekNum);
-      return new Date(date.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
-    },
-    Y: function Y(date, year) {
-      date.setFullYear(parseFloat(year));
-    },
-    Z: function Z(_, ISODate) {
-      return new Date(ISODate);
-    },
-    d: function d(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    h: function h(date, hour) {
-      date.setHours(parseFloat(hour));
-    },
-    i: function i(date, minutes) {
-      date.setMinutes(parseFloat(minutes));
-    },
-    j: function j(date, day) {
-      date.setDate(parseFloat(day));
-    },
-    l: function l() {
-      return undefined;
-    },
-    m: function m(date, month) {
-      date.setMonth(parseFloat(month) - 1);
-    },
-    n: function n(date, month) {
-      date.setMonth(parseFloat(month) - 1);
-    },
-    s: function s(date, seconds) {
-      date.setSeconds(parseFloat(seconds));
-    },
-    w: function w() {
-      return undefined;
-    },
-    y: function y(date, year) {
-      date.setFullYear(2000 + parseFloat(year));
-    }
-  };
-  var formats = {
-    // Get the date in UTC
-    Z: function Z(date) {
-      return date.toISOString();
-    },
-    // Weekday name, short, e.g. Thu
-    D: function D(date, locale) {
-      return locale.weekdays.shorthand[formats.w(date, locale)];
-    },
-    // Full month name e.g. January
-    F: function F(date, locale) {
-      return monthToStr(formats.n(date, locale) - 1, false, locale);
-    },
-    // Padded hour 1-12
-    G: function G(date, locale) {
-      return pad(formats.h(date, locale));
-    },
-    // Hours with leading zero e.g. 03
-    H: function H(date) {
-      return pad(date.getHours());
-    },
-    // Day (1-30) with ordinal suffix e.g. 1st, 2nd
-    J: function J(date, locale) {
-      return locale.ordinal !== undefined ? date.getDate() + locale.ordinal(date.getDate()) : date.getDate();
-    },
-    // AM/PM
-    K: function K(date, locale) {
-      return locale.amPM[_int(date.getHours() > 11)];
-    },
-    // Shorthand month e.g. Jan, Sep, Oct, etc
-    M: function M(date, locale) {
-      return monthToStr(date.getMonth(), true, locale);
-    },
-    // Seconds 00-59
-    S: function S(date) {
-      return pad(date.getSeconds());
-    },
-    // Unix timestamp
-    U: function U(date) {
-      return date.getTime() / 1000;
-    },
-    // ISO-8601 week number of year
-    W: function W(date) {
-      return DateUtils.getWeek(date);
-    },
-    // Full year e.g. 2016
-    Y: function Y(date) {
-      return date.getFullYear();
-    },
-    // Day in month, padded (01-30)
-    d: function d(date) {
-      return pad(date.getDate());
-    },
-    // Hour from 1-12 (am/pm)
-    h: function h(date) {
-      return date.getHours() % 12 ? date.getHours() % 12 : 12;
-    },
-    // Minutes, padded with leading zero e.g. 09
-    i: function i(date) {
-      return pad(date.getMinutes());
-    },
-    // Day in month (1-30)
-    j: function j(date) {
-      return date.getDate();
-    },
-    // Weekday name, full, e.g. Thursday
-    l: function l(date, locale) {
-      return locale.weekdays.longhand[date.getDay()];
-    },
-    // Padded month number (01-12)
-    m: function m(date) {
-      return pad(date.getMonth() + 1);
-    },
-    // The month number (1-12)
-    n: function n(date) {
-      return date.getMonth() + 1;
-    },
-    // Seconds 0-59
-    s: function s(date) {
-      return date.getSeconds();
-    },
-    // Number of the day of the week
-    w: function w(date) {
-      return date.getDay();
-    },
-    // Last two digits of year e.g. 16 for 2016
-    y: function y(date) {
-      return String(date.getFullYear()).substring(2);
-    }
-  };
-  return {
-    l10n: {
-      amPM: ['AM', 'PM'],
-      weekdays: {
-        shorthand: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        longhand: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      },
-      months: {
-        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        longhand: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      }
-    },
-    getWeek: function getWeek(givenDate) {
-      var date = new Date(givenDate.getTime());
-      date.setHours(0, 0, 0, 0); // Thursday in current week decides the year.
-
-      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7); // January 4 is always in week 1.
-
-      var week1 = new Date(date.getFullYear(), 0, 4); // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-
-      return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    },
-    format: function format(date, _format, locale) {
-      locale = locale || this.l10n;
-      return _format.split('').map(function (c, i, arr) {
-        return formats[c] && arr[i - 1] !== '\\' ? formats[c](date, locale) : c !== '\\' ? c : '';
-      }).join('');
-    },
-    parse: function parse(date, format, timeless, locale) {
-      locale = locale || this.l10n;
-
-      if (date !== 0 && !date) {
-        return undefined;
-      }
-
-      var parsedDate;
-      var dateOrig = date;
-
-      if (date instanceof Date) {
-        parsedDate = new Date(date.getTime());
-      } else if (typeof date !== 'string' && date.toFixed !== undefined) {
-        parsedDate = new Date(date);
-      } else if (typeof date === 'string') {
-        var datestr = String(date).trim();
-
-        if (datestr === 'today') {
-          parsedDate = new Date();
-          timeless = true;
-        } else if (/Z$/.test(datestr) || /GMT$/.test(datestr)) {
-          parsedDate = new Date(date);
-        } else {
-          parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
-          var matched,
-              ops = [];
-
-          for (var i = 0, matchIndex = 0, regexStr = ''; i < format.length; i++) {
-            var token = format[i];
-            var isBackSlash = token === '\\';
-            var escaped = format[i - 1] === '\\' || isBackSlash;
-
-            if (tokenRegex[token] && !escaped) {
-              regexStr += tokenRegex[token];
-              var match = new RegExp(regexStr).exec(date);
-
-              if (match && (matched = true)) {
-                ops[token !== 'Y' ? 'push' : 'unshift']({
-                  fn: revFormat[token],
-                  val: match[++matchIndex]
-                });
-              }
-            } else if (!isBackSlash) {
-              regexStr += '.'; // don't really care
-            }
-
-            ops.forEach(function (_ref) {
-              var fn = _ref.fn,
-                  val = _ref.val;
-              return parsedDate = fn(parsedDate, val, locale) || parsedDate;
-            });
-          }
-
-          parsedDate = matched ? parsedDate : undefined;
-        }
-      }
-      /* istanbul ignore next */
-
-
-      if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
-        // config.errorHandler(new Error(`Invalid date provided: ${dateOrig}`))
-        return undefined;
-      }
-
-      if (timeless === true) {
-        parsedDate.setHours(0, 0, 0, 0);
-      }
-
-      return parsedDate;
-    }
-  };
-}();
-
-/* harmony default export */ var date_utils = (DateUtils);
-// CONCATENATED MODULE: ./assets/babel/awebooking.js
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("9UV2");
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("7l0f");
+/* harmony import */ var _core_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("9T72");
+/* harmony import */ var _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("a00X");
 
 
 
 
 
-var awebooking_plugin = window.awebooking = {}; // Main objects
+var plugin = window.awebooking = {}; // Main objects
 
-awebooking_plugin.utils = {};
-awebooking_plugin.instances = {};
-awebooking_plugin.i18n = window._awebooking_i18n || {};
-awebooking_plugin.config = Object.assign({}, {
+plugin.utils = {};
+plugin.instances = {};
+plugin.i18n = window._awebooking_i18n || {};
+plugin.config = Object.assign({}, {
   route: window.location.origin + '?awebooking_route=/',
   ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
 }, window._awebooking);
 
-awebooking_plugin.utils.dropdown = function (el, config) {
-  external_jQuery_default()(el).each(function () {
-    external_jQuery_default()(this).data('abrs-dropdown', new dropdown["a" /* default */](this, config));
+plugin.utils.dropdown = function (el, config) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(el).each(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"](this, config));
   });
+};
+
+plugin.utils.dates = {
+  format: _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__[/* formatDateString */ "a"]
 };
 /**
  * The admin route.
@@ -1391,8 +1094,7 @@ awebooking_plugin.utils.dropdown = function (el, config) {
  * @return {string}
  */
 
-
-awebooking_plugin.route = function (route) {
+plugin.route = function (route) {
   return this.config.route + (route || '').replace(/^\//g, '');
 };
 /**
@@ -1404,9 +1106,9 @@ awebooking_plugin.route = function (route) {
  */
 
 
-awebooking_plugin.datepicker = function (instance, options) {
-  var i18n = awebooking_plugin.i18n;
-  var defaults = awebooking_plugin.config.datepicker;
+plugin.datepicker = function (instance, options) {
+  var i18n = plugin.i18n;
+  var defaults = plugin.config.datepicker;
   var disableDays = defaults.disableDays,
       disableDates = defaults.disableDates;
   var disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates;
@@ -1443,11 +1145,11 @@ awebooking_plugin.datepicker = function (instance, options) {
     }
   };
 
-  if (util["a" /* default */].isMobile()) {
+  if (_core_util__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"].isMobile()) {
     _defaults.showMonths = 1;
   }
 
-  return flatpickr(instance, external_jQuery_default.a.extend({}, _defaults, options));
+  return flatpickr(instance, jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, _defaults, options));
 };
 /**
  * Format the price.
@@ -1457,13 +1159,13 @@ awebooking_plugin.datepicker = function (instance, options) {
  */
 
 
-awebooking_plugin.formatPrice = function (amount) {
-  return accounting_default.a.formatMoney(amount, {
-    format: awebooking_plugin.i18n.priceFormat,
-    symbol: awebooking_plugin.i18n.currencySymbol,
-    decimal: awebooking_plugin.i18n.decimalSeparator,
-    thousand: awebooking_plugin.i18n.priceThousandSeparator,
-    precision: awebooking_plugin.i18n.numberDecimals
+plugin.formatPrice = function (amount) {
+  return accounting__WEBPACK_IMPORTED_MODULE_1___default.a.formatMoney(amount, {
+    format: plugin.i18n.priceFormat,
+    symbol: plugin.i18n.currencySymbol,
+    decimal: plugin.i18n.decimalSeparator,
+    thousand: plugin.i18n.priceThousandSeparator,
+    precision: plugin.i18n.numberDecimals
   });
 };
 /**
@@ -1473,11 +1175,11 @@ awebooking_plugin.formatPrice = function (amount) {
  */
 
 
-external_jQuery_default()(function () {
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   tippy('[data-awebooking="tooltip"]', {
     theme: 'awebooking-tooltip'
   });
-  external_jQuery_default()('[data-init="awebooking-dialog"]').each(function (e, el) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="awebooking-dialog"]').each(function (e, el) {
     var dialog = new window.A11yDialog(el);
     dialog.on('show', function () {
       el.classList.add('open');
@@ -1517,6 +1219,27 @@ module.exports = function (str) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "a00X":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return formatDateString; });
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("FqII");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__);
+
+function formatDateString(dateString, format) {
+  var _ref = window.awebooking || {},
+      i18n = _ref.i18n;
+
+  if (!dateString) {
+    return '';
+  }
+
+  return Object(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__["date"])(format || i18n.dateFormat, dateString);
+}
 
 /***/ }),
 

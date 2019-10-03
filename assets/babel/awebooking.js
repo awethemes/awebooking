@@ -2,7 +2,7 @@ import $ from 'jquery';
 import accounting from 'accounting';
 import Dropdown from './core/dropdown';
 import Utils from './core/util';
-import DateUtils from './core/date-utils';
+import { formatDateString } from './utils/date-utils';
 
 let plugin = window.awebooking = {};
 
@@ -20,6 +20,10 @@ plugin.utils.dropdown = function(el, config) {
   $(el).each(function() {
     $(this).data('abrs-dropdown', new Dropdown(this, config));
   });
+};
+
+plugin.utils.dates = {
+  format: formatDateString,
 };
 
 /**

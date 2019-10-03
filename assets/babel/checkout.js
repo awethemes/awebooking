@@ -1,69 +1,69 @@
-import $ from 'jquery'
+import $ from 'jquery';
 
-const SELECTED = 'selected'
+const SELECTED = 'selected';
 
 const Selector = {
   ROOT: '.payment-methods',
   ITEM: '.payment-method',
   INPUT: 'input[type="radio"]',
   SELECTED: '.selected',
-}
+};
 
-const _handleLabelClick = function (e) {
-  const element = e.currentTarget
-  const input = element.querySelector(Selector.INPUT)
+const _handleLabelClick = function(e) {
+  const element = e.currentTarget;
+  const input = element.querySelector(Selector.INPUT);
 
   // Prevent action on non-input.
   if (!input) {
-    return
+    return;
   }
 
-  let triggerChange = true
-  const rootElement = $(element).closest(Selector.ROOT)[0]
+  let triggerChange = true;
+  const rootElement = $(element).closest(Selector.ROOT)[0];
 
   if (input.checked && $(element).hasClass(SELECTED)) {
-    triggerChange = false
+    triggerChange = false;
   } else {
-    $(rootElement).children(Selector.SELECTED).removeClass(SELECTED)
+    $(rootElement).children(Selector.SELECTED).removeClass(SELECTED);
   }
 
   if (triggerChange) {
     if (input.hasAttribute('disabled') || input.classList.contains('disabled')) {
-      e.preventDefault()
-      return
+      e.preventDefault();
+      return;
     }
 
-    input.checked = !element.classList.contains(SELECTED)
+    input.checked = !element.classList.contains(SELECTED);
 
-    input.focus({ preventScroll: true })
-    $(input).trigger('change')
+    input.focus({ preventScroll: true });
+    $(input).trigger('change');
 
-    $(element).addClass(SELECTED)
+    $(element).addClass(SELECTED);
   }
-}
+};
 
-const _triggerPaymentMethod = function (e) {
-  const input = e.currentTarget
+const _triggerPaymentMethod = function(e) {
+  const input = e.currentTarget;
   if (!input.checked) {
-    return
+    return;
   }
 
-  const root = $(input).closest(Selector.ROOT)[0]
+  const root = $(input).closest(Selector.ROOT)[0];
   const event = $.Event('selected.awebooking.gateway', {
-    relatedTarget: input
-  })
+    relatedTarget: input,
+  });
 
-  $(root).trigger(event, input.value)
-}
+  $(root).trigger(event, input.value);
+};
 
-$(function () {
+$(function() {
   const $el = $('#payment-methods')
     .on('click', Selector.ITEM, _handleLabelClick)
-    .on('change', Selector.INPUT, _triggerPaymentMethod)
+    .on('change', Selector.INPUT, _triggerPaymentMethod);
 
   setTimeout(() => {
     $el.find(`${Selector.INPUT}:checked`)
-       .closest(Selector.ITEM)
-       .addClass(SELECTED)
-  }, 0)
-})
+      .closest(Selector.ITEM)
+      .addClass(SELECTED);
+  }, 0);
+});

@@ -1,45 +1,45 @@
-import $ from 'jquery'
-import Timer from 'easytimer'
+import $ from 'jquery';
+import Timer from 'easytimer';
 
 function initTimerCountdown() {
-  const element = document.getElementById('timer-countdown')
+  const element = document.getElementById('timer-countdown');
   if (!element) {
-    return
+    return;
   }
 
-  const timer = new Timer()
+  const timer = new Timer();
 
-  let elementDisplay = element.querySelector('strong')
+  let elementDisplay = element.querySelector('strong');
   if (!elementDisplay) {
-    elementDisplay = element
+    elementDisplay = element;
   }
 
   timer.start({
     countdown: true,
     precision: 'seconds',
-    startValues: { seconds: parseInt(element.getAttribute('data-seconds'), 10) }
-  })
+    startValues: { seconds: parseInt(element.getAttribute('data-seconds'), 10) },
+  });
 
-  timer.addEventListener('secondsUpdated', function (e) {
-    elementDisplay.innerHTML = timer.getTimeValues().toString()
-  })
+  timer.addEventListener('secondsUpdated', function(e) {
+    elementDisplay.innerHTML = timer.getTimeValues().toString();
+  });
 
-  timer.addEventListener('targetAchieved', function (e) {
-    setTimeout(() => { window.location.reload() }, 100)
-  })
+  timer.addEventListener('targetAchieved', function(e) {
+    setTimeout(() => { window.location.reload(); }, 100);
+  });
 }
 
-$(function () {
-  initTimerCountdown()
+$(function() {
+  initTimerCountdown();
 
-  const root = $('#payment-methods')
-  const input = root.find('input[type="radio"]')[0]
+  const root = $('#payment-methods');
+  const input = root.find('input[type="radio"]')[0];
 
   setTimeout(() => {
     const event = $.Event('selected.awebooking.gateway', {
-      relatedTarget: input
-    })
+      relatedTarget: input,
+    });
 
-    root.trigger(event, input.value)
-  }, 50)
-})
+    root.trigger(event, input.value);
+  }, 50);
+});
