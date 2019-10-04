@@ -191,7 +191,7 @@ class Reservation_Controller {
 		// Remove diff services.
 		$this->reservation
 			->get_services( true )->pluck( 'id' )
-			->diff( $services->pluck( 'id' ) )
+			->diff( $services->pluck( 'id' )->map('absint') )
 			->each( function ( $id ) {
 				$this->reservation->remove_service( $id );
 			});
@@ -199,7 +199,7 @@ class Reservation_Controller {
 		// Add new services.
 		foreach ( $services as $s ) {
 			try {
-				$response = $this->reservation->add_service( $s['id'], $s['quantity'] );
+				$this->reservation->add_service( $s['id'], $s['quantity'] );
 			} catch ( \Exception $e ) {
 				continue;
 			}

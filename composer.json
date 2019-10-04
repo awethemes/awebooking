@@ -34,7 +34,8 @@
     },
     "require-dev": {
         "10up/wp_mock": "0.2.0",
-        "phpunit/phpunit": "5.7.*"
+        "phpunit/phpunit": "5.7.*",
+        "symfony/var-dumper": "^3.4"
     },
     "autoload": {
         "psr-4": {

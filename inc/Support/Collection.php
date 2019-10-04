@@ -2,7 +2,6 @@
 
 namespace AweBooking\Support;
 
-use AweBooking\Support\Debug\Dumper;
 use Illuminate\Support\Collection as Illuminate_Collection;
 
 class Collection extends Illuminate_Collection {
@@ -28,7 +27,7 @@ class Collection extends Illuminate_Collection {
 		( new static( func_get_args() ) )
 			->push( $this )
 			->each( function ( $item ) {
-				( new Dumper )->dump( $item );
+				dump( $item );
 			});
 
 		return $this;
