@@ -126,7 +126,7 @@ trait With_Services {
 
 		if ( $this->services->has( $row_id ) ) {
 			$item = $this->services->get( $row_id );
-			$item->set( 'quantity', $selectable ? $item->get( 'quantity' ) + $quantity : 1 );
+			$item->set( 'quantity', $quantity );
 		} else {
 			$item = new Item([
 				'id'               => $service->get_id(),
