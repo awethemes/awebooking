@@ -5,7 +5,7 @@ Tags:              booking, hotel, hotel booking, reservations, reservation, awe
 Requires at least: 4.6
 Tested up to:      5.2
 Requires PHP:      5.6
-Stable tag:        3.2.25
+Stable tag:        3.2.26
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,11 @@ You can check [plugin description page here](https://awethemes.com/plugins/awebo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UqRMIl9ISLw?rel=0" frameborder="0" allowfullscreen></iframe>
 
 == Changelog ==
+### [v3.2.26] - [2019-10-07]
+- Fixed: Invoice email not sending to the customer.
+- Fixed: Increment services when re-applied.
+- Minor bug fixes.
+
 ### [v3.2.25] - [2019-09-30]
 - Fixed WPML compatibility issues.
 
