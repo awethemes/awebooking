@@ -24,29 +24,6 @@ Awebooking is a WordPress plugin that helps you to setup hotel booking system qu
 * Developer Friendly
 * More features are on the way!
 
-### Premium features
-
-* [Online payment](https://awethemes.com/awebooking/addon/online-payment)
-* [Booking form builder](https://awethemes.com/awebooking/addon/booking-form-builder)
-* [Price breakdown](https://awethemes.com/awebooking/addon/price-breakdown)
-* [Enhanced calendar](https://awethemes.com/awebooking/addon/enhanced-calendar)
-* [Image gallery](https://awethemes.com/awebooking/addon/image-gallery)
-* [iCalendar](https://awethemes.com/awebooking/addon/icalendar)
-* [Simple reservation](https://awethemes.com/awebooking/addon/simple-reservation)
-* [reCAPTCHA](https://awethemes.com/awebooking/addon/recaptcha)
-* [Fast book](https://awethemes.com/awebooking/addon/fast-book)
-* [User profile](https://awethemes.com/awebooking/addon/user-profile)
-* [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
-* [Fees](https://awethemes.com/awebooking/addon/fees)
-* [Rules](https://awethemes.com/awebooking/addon/rules)
-* [Elementor integration](https://wordpress.org/plugins/awebooking-elementor-integration/)
-
-### Premium themes
-
-* [The Chains](https://awethemes.com/themes/the-chains)
-* [Awemotel](https://awethemes.com/themes/awemotel)
-* [Rosewood](https://awethemes.com/themes/rosewood)
-
 ### Intro video
 
 https://www.youtube.com/embed/UqRMIl9ISLw

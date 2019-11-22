@@ -30,8 +30,6 @@ class Checkout_Setting extends Abstract_Setting {
 			'id'   => '__payments_title',
 			'type' => 'title',
 			'name' => esc_html__( 'Payment Gateways', 'awebooking' ),
-			'desc' => abrs_esc_text( __( 'Installed gateways are listed below. You can find more payment gateways on <a href="https://awethemes.com/plugins/awebooking#premiumaddons">Premium addons</a>.',
-				'awebooking' ) ),
 		] );
 
 		$options->add_field( [

@@ -3,7 +3,7 @@ Contributors:      awethemes, anhskohbo, ndoublehwp
 Donate link:       http://awethemes.com
 Tags:              booking, hotel, hotel booking, reservations, reservation, awebooking
 Requires at least: 4.6
-Tested up to:      5.2
+Tested up to:      5.3
 Requires PHP:      5.6
 Stable tag:        3.2.26
 License:           GPLv2 or later
@@ -12,8 +12,6 @@ License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Awebooking helps you to setup hotel booking system quickly, pleasantly and easily.
 
 == Description ==
-
-> Extend AweBooking's features with [premium add-ons](https://awethemes.com/awebooking) and high quality [themes](https://awethemes.com/themes) by joining [our Membership program](https://awethemes.com/join).
 
 Awebooking is a well-coded plugin with an excellent user interface, perfect for any hotel, hostel, motel, BnB or any kind of accommodation website. Awebooking brings you easiest way to setup any reservations quickly, pleasantly and easily, rent accommodations with detail services, receive online reservations.
 
@@ -42,32 +40,6 @@ You can see [plugin demo here](http://demo.awethemes.com/awebooking/). We also p
 * Fit With Your Theme
 * Developer Friendly
 * More features are on the way!
-
-== Premium features ==
-
-* [Online payment](https://awethemes.com/awebooking/addon/online-payment)
-* [Booking form builder](https://awethemes.com/awebooking/addon/booking-form-builder)
-* [Price breakdown](https://awethemes.com/awebooking/addon/price-breakdown)
-* [Enhanced calendar](https://awethemes.com/awebooking/addon/enhanced-calendar)
-* [Image gallery](https://awethemes.com/awebooking/addon/image-gallery)
-* [iCalendar](https://awethemes.com/awebooking/addon/icalendar)
-* [Simple reservation](https://awethemes.com/awebooking/addon/simple-reservation)
-* [reCAPTCHA](https://awethemes.com/awebooking/addon/recaptcha)
-* [Fast book](https://awethemes.com/awebooking/addon/fast-book)
-* [User profile](https://awethemes.com/awebooking/addon/user-profile)
-* [MailChimp](https://awethemes.com/awebooking/addon/mailchimp)
-* [Fees](https://awethemes.com/awebooking/addon/fees)
-* [Rules](https://awethemes.com/awebooking/addon/rules)
-* [Elementor integration](https://wordpress.org/plugins/awebooking-elementor-integration/)
-
-You can check [plugin description page here](https://awethemes.com/plugins/awebooking) for detail features.
-
-== Premium themes ==
-
-* [The Chains](https://awethemes.com/themes/the-chains)
-* [Awemotel](https://awethemes.com/themes/awemotel)
-* [Rosewood](https://awethemes.com/themes/rosewood)
-
 
 == Screenshots ==
 
