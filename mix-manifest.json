@@ -1,5 +1,5 @@
 {
-    "/assets/js/admin/admin.js": "/assets/js/admin/admin.js?id=d1f2900dc35c2c0fee88",
+    "/assets/js/admin/admin.js": "/assets/js/admin/admin.js?id=166c05dbd45b42547c6e",
     "/assets/js/admin/edit-booking.js": "/assets/js/admin/edit-booking.js?id=35698344c8c327eb4c12",
     "/assets/js/admin/edit-room-type.js": "/assets/js/admin/edit-room-type.js?id=df455c7b7488e18dcadf",
     "/assets/js/admin/page-calendar.js": "/assets/js/admin/page-calendar.js?id=968b544ab767effaa1e0",
@@ -7,13 +7,13 @@
     "/assets/js/admin/schedule-calendar.js": "/assets/js/admin/schedule-calendar.js?id=8f539201b563fa31826b",
     "/assets/js/admin/settings.js": "/assets/js/admin/settings.js?id=d76a505028f22e99d29f",
     "/assets/js/awebooking.js": "/assets/js/awebooking.js?id=0a29adcfe6db9bf6d346",
-    "/assets/css/admin.css": "/assets/css/admin.css?id=bca735ca6ccfde1b5165",
-    "/assets/css/awebooking-colour.css": "/assets/css/awebooking-colour.css?id=8fe086bad58052d40065",
-    "/assets/css/awebooking.css": "/assets/css/awebooking.css?id=4f7ef62ccd5e1e1f1e04",
-    "/assets/css/react-datepicker.css": "/assets/css/react-datepicker.css?id=d54b84d090a10e52d386",
-    "/assets/css/schedule-calendar.css": "/assets/css/schedule-calendar.css?id=14964a7c7f2faa7af9c0",
-    "/assets/js/calendar.js": "/assets/js/calendar.js?id=c788ac59eb8e8e80334c",
+    "/assets/css/admin.css": "/assets/css/admin.css?id=2d2c52a11fa30467a5cc",
+    "/assets/css/awebooking-colour.css": "/assets/css/awebooking-colour.css?id=078159345c5637903ee6",
+    "/assets/css/awebooking.css": "/assets/css/awebooking.css?id=98f98b92c298ac2d54dd",
+    "/assets/css/react-datepicker.css": "/assets/css/react-datepicker.css?id=16c2ae94f2ca7932eef4",
+    "/assets/css/schedule-calendar.css": "/assets/css/schedule-calendar.css?id=76a38fc86f8aed061a95",
+    "/assets/js/calendar.js": "/assets/js/calendar.js?id=0af7f88ec92b51897dd3",
     "/assets/js/checkout.js": "/assets/js/checkout.js?id=9e6fa1b24433bee1175a",
     "/assets/js/payment.js": "/assets/js/payment.js?id=cf431d88550a1160e526",
-    "/assets/js/search-form.js": "/assets/js/search-form.js?id=ee6df42567ff7441806e"
+    "/assets/js/search-form.js": "/assets/js/search-form.js?id=5ca137d30a26774d15dd"
 }

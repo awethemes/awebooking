@@ -110,7 +110,7 @@ module.exports = __webpack_require__("oNlh");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MODIFIER_KEY_NAMES = exports.DEFAULT_VERTICAL_SPACING = exports.FANG_HEIGHT_PX = exports.FANG_WIDTH_PX = exports.WEEKDAYS = exports.BLOCKED_MODIFIER = exports.DAY_SIZE = exports.OPEN_UP = exports.OPEN_DOWN = exports.ANCHOR_RIGHT = exports.ANCHOR_LEFT = exports.INFO_POSITION_AFTER = exports.INFO_POSITION_BEFORE = exports.INFO_POSITION_BOTTOM = exports.INFO_POSITION_TOP = exports.ICON_AFTER_POSITION = exports.ICON_BEFORE_POSITION = exports.VERTICAL_SCROLLABLE = exports.VERTICAL_ORIENTATION = exports.HORIZONTAL_ORIENTATION = exports.END_DATE = exports.START_DATE = exports.ISO_MONTH_FORMAT = exports.ISO_FORMAT = exports.DISPLAY_FORMAT = void 0;
+exports.MODIFIER_KEY_NAMES = exports.DEFAULT_VERTICAL_SPACING = exports.FANG_HEIGHT_PX = exports.FANG_WIDTH_PX = exports.WEEKDAYS = exports.BLOCKED_MODIFIER = exports.DAY_SIZE = exports.OPEN_UP = exports.OPEN_DOWN = exports.ANCHOR_RIGHT = exports.ANCHOR_LEFT = exports.INFO_POSITION_AFTER = exports.INFO_POSITION_BEFORE = exports.INFO_POSITION_BOTTOM = exports.INFO_POSITION_TOP = exports.ICON_AFTER_POSITION = exports.ICON_BEFORE_POSITION = exports.NAV_POSITION_TOP = exports.NAV_POSITION_BOTTOM = exports.VERTICAL_SCROLLABLE = exports.VERTICAL_ORIENTATION = exports.HORIZONTAL_ORIENTATION = exports.END_DATE = exports.START_DATE = exports.ISO_MONTH_FORMAT = exports.ISO_FORMAT = exports.DISPLAY_FORMAT = void 0;
 var DISPLAY_FORMAT = 'L';
 exports.DISPLAY_FORMAT = DISPLAY_FORMAT;
 var ISO_FORMAT = 'YYYY-MM-DD';
@@ -128,6 +128,10 @@ var VERTICAL_ORIENTATION = 'vertical';
 exports.VERTICAL_ORIENTATION = VERTICAL_ORIENTATION;
 var VERTICAL_SCROLLABLE = 'verticalScrollable';
 exports.VERTICAL_SCROLLABLE = VERTICAL_SCROLLABLE;
+var NAV_POSITION_BOTTOM = 'navPositionBottom';
+exports.NAV_POSITION_BOTTOM = NAV_POSITION_BOTTOM;
+var NAV_POSITION_TOP = 'navPositionTop';
+exports.NAV_POSITION_TOP = NAV_POSITION_TOP;
 var ICON_BEFORE_POSITION = 'before';
 exports.ICON_BEFORE_POSITION = ICON_BEFORE_POSITION;
 var ICON_AFTER_POSITION = 'after';

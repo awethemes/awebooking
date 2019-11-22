@@ -67,6 +67,7 @@
   position: absolute;
   right: 0;
   top: 50%;
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 
@@ -738,6 +739,7 @@
 }
 
 .DayPicker_transitionContainer__horizontal {
+  -webkit-transition: height 0.2s ease-in-out;
   transition: height 0.2s ease-in-out;
 }
 
@@ -908,6 +910,7 @@
   position: absolute;
   right: 0;
   top: 50%;
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 

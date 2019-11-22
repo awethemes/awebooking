@@ -18,18 +18,23 @@
 }
 
 .scheduler-flex {
+  display: -webkit-box;
   display: flex;
 }
 
 .scheduler-flexspace {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
 }
 
 .scheduler-flex--center {
+  display: -webkit-box;
   display: flex;
   height: 100%;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .scheduler--empty {
@@ -58,24 +63,28 @@
 
 .scheduler__header,
 .scheduler__container {
+  display: -webkit-box;
   display: flex;
 }
 
 .scheduler__header {
   height: 60px;
   border-bottom: solid 1px #ccc;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .scheduler__header-aside,
 .scheduler__aside {
-  flex: 0 0 320px;
+  -webkit-box-flex: 0;
+          flex: 0 0 320px;
   max-width: 320px;
 }
 
 .scheduler__main,
 .scheduler__header-toolbar {
-  flex: 1 1 0%;
+  -webkit-box-flex: 1;
+          flex: 1 1 0%;
 }
 
 .scheduler__aside {
@@ -117,8 +126,10 @@
 }
 
 .scheduler__menu {
+  display: -webkit-box;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
   padding: 8px 1.5em;
   position: relative;
   height: 60px;
@@ -158,13 +169,16 @@
 }
 
 .scheduler__row {
-  flex: 1 1 0%;
+  -webkit-box-flex: 1;
+          flex: 1 1 0%;
+  display: -webkit-box;
   display: flex;
   position: relative;
   height: 60px;
 }
 
 .scheduler__days {
+  display: -webkit-box;
   display: flex;
   top: 0;
   left: 0;
@@ -175,11 +189,13 @@
 }
 
 .scheduler__events {
-  flex: 1 1 0%;
+  -webkit-box-flex: 1;
+          flex: 1 1 0%;
   pointer-events: none;
 }
 
 .scheduler__events-row {
+  display: -webkit-box;
   display: flex;
   z-index: 115;
   position: relative;
@@ -187,7 +203,8 @@
 }
 
 .scheduler__column {
-  flex: 1 1 0%;
+  -webkit-box-flex: 1;
+          flex: 1 1 0%;
   position: relative;
   margin: 0;
   padding: 0;
@@ -359,6 +376,7 @@
   display: block;
   position: relative;
   padding: 10px 15px 10px 40px;
+  -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 .scheduler__actions > li > a:focus {
@@ -381,6 +399,7 @@
   top: 10px;
   left: 10px;
   position: absolute;
+  -webkit-transition: all 0.1s ease;
   transition: all 0.1s ease;
 }
 .scheduler__actions a:hover > .aficon,
@@ -503,6 +522,7 @@
   position: absolute;
   height: 100%;
   background: rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
   cursor: pointer;
   pointer-events: auto !important;

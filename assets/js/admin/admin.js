@@ -1478,8 +1478,7 @@ function rangePlugin() {
         }
 
         fp.setDate(fp.selectedDates, false);
-        plugin.onValueUpdate(fp.selectedDates);
-        fp.loadedPlugins.push('range');
+        plugin.onValueUpdate(fp.selectedDates); // fp.loadedPlugins.push('range');
       },
       onPreCalendarPosition: function onPreCalendarPosition() {
         if (_secondInputFocused) {
@@ -1722,7 +1721,7 @@ awebooking.dialog = function (selector) {
  * @param  {String}   method
  * @param  {String}   route
  * @param  {Object}   data
- * @param  {Function} callback
+ * @param callback
  * @return {JQuery.jqXHR}
  */
 

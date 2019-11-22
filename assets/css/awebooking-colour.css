@@ -68,6 +68,7 @@
   background-color: #fff;
   border-radius: 0;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.075);
+  -webkit-transition: border 0.3s ease;
   transition: border 0.3s ease;
 }
 .awebooking .form-input:focus, .awebooking .cmb2_select:focus,
@@ -82,43 +83,19 @@
   border-color: #80bdff;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
-.awebooking .form-input::-webkit-input-placeholder, .awebooking .cmb2_select::-webkit-input-placeholder,
-.awebooking .cmb2_textarea::-webkit-input-placeholder,
-.awebooking .regular-text::-webkit-input-placeholder,
-.awebooking-block .form-input::-webkit-input-placeholder,
-.awebooking-block .cmb2_select::-webkit-input-placeholder,
-.awebooking-block .cmb2_textarea::-webkit-input-placeholder,
-.awebooking-block .regular-text::-webkit-input-placeholder {
+.awebooking .form-input::-webkit-input-placeholder, .awebooking .cmb2_select::-webkit-input-placeholder, .awebooking .cmb2_textarea::-webkit-input-placeholder, .awebooking .regular-text::-webkit-input-placeholder, .awebooking-block .form-input::-webkit-input-placeholder, .awebooking-block .cmb2_select::-webkit-input-placeholder, .awebooking-block .cmb2_textarea::-webkit-input-placeholder, .awebooking-block .regular-text::-webkit-input-placeholder {
   opacity: 0.5;
   color: inherit;
 }
-.awebooking .form-input::-moz-placeholder, .awebooking .cmb2_select::-moz-placeholder,
-.awebooking .cmb2_textarea::-moz-placeholder,
-.awebooking .regular-text::-moz-placeholder,
-.awebooking-block .form-input::-moz-placeholder,
-.awebooking-block .cmb2_select::-moz-placeholder,
-.awebooking-block .cmb2_textarea::-moz-placeholder,
-.awebooking-block .regular-text::-moz-placeholder {
+.awebooking .form-input::-moz-placeholder, .awebooking .cmb2_select::-moz-placeholder, .awebooking .cmb2_textarea::-moz-placeholder, .awebooking .regular-text::-moz-placeholder, .awebooking-block .form-input::-moz-placeholder, .awebooking-block .cmb2_select::-moz-placeholder, .awebooking-block .cmb2_textarea::-moz-placeholder, .awebooking-block .regular-text::-moz-placeholder {
   opacity: 0.5;
   color: inherit;
 }
-.awebooking .form-input:-ms-input-placeholder, .awebooking .cmb2_select:-ms-input-placeholder,
-.awebooking .cmb2_textarea:-ms-input-placeholder,
-.awebooking .regular-text:-ms-input-placeholder,
-.awebooking-block .form-input:-ms-input-placeholder,
-.awebooking-block .cmb2_select:-ms-input-placeholder,
-.awebooking-block .cmb2_textarea:-ms-input-placeholder,
-.awebooking-block .regular-text:-ms-input-placeholder {
+.awebooking .form-input:-ms-input-placeholder, .awebooking .cmb2_select:-ms-input-placeholder, .awebooking .cmb2_textarea:-ms-input-placeholder, .awebooking .regular-text:-ms-input-placeholder, .awebooking-block .form-input:-ms-input-placeholder, .awebooking-block .cmb2_select:-ms-input-placeholder, .awebooking-block .cmb2_textarea:-ms-input-placeholder, .awebooking-block .regular-text:-ms-input-placeholder {
   opacity: 0.5;
   color: inherit;
 }
-.awebooking .form-input::-ms-input-placeholder, .awebooking .cmb2_select::-ms-input-placeholder,
-.awebooking .cmb2_textarea::-ms-input-placeholder,
-.awebooking .regular-text::-ms-input-placeholder,
-.awebooking-block .form-input::-ms-input-placeholder,
-.awebooking-block .cmb2_select::-ms-input-placeholder,
-.awebooking-block .cmb2_textarea::-ms-input-placeholder,
-.awebooking-block .regular-text::-ms-input-placeholder {
+.awebooking .form-input::-ms-input-placeholder, .awebooking .cmb2_select::-ms-input-placeholder, .awebooking .cmb2_textarea::-ms-input-placeholder, .awebooking .regular-text::-ms-input-placeholder, .awebooking-block .form-input::-ms-input-placeholder, .awebooking-block .cmb2_select::-ms-input-placeholder, .awebooking-block .cmb2_textarea::-ms-input-placeholder, .awebooking-block .regular-text::-ms-input-placeholder {
   opacity: 0.5;
   color: inherit;
 }
@@ -217,23 +194,19 @@
 .awebooking-block .input-transparent[readonly] {
   opacity: 1;
 }
-.awebooking .input-transparent::-webkit-input-placeholder,
-.awebooking-block .input-transparent::-webkit-input-placeholder {
+.awebooking .input-transparent::-webkit-input-placeholder, .awebooking-block .input-transparent::-webkit-input-placeholder {
   opacity: 1;
   color: #6c757d;
 }
-.awebooking .input-transparent::-moz-placeholder,
-.awebooking-block .input-transparent::-moz-placeholder {
+.awebooking .input-transparent::-moz-placeholder, .awebooking-block .input-transparent::-moz-placeholder {
   opacity: 1;
   color: #6c757d;
 }
-.awebooking .input-transparent:-ms-input-placeholder,
-.awebooking-block .input-transparent:-ms-input-placeholder {
+.awebooking .input-transparent:-ms-input-placeholder, .awebooking-block .input-transparent:-ms-input-placeholder {
   opacity: 1;
   color: #6c757d;
 }
-.awebooking .input-transparent::-ms-input-placeholder,
-.awebooking-block .input-transparent::-ms-input-placeholder {
+.awebooking .input-transparent::-ms-input-placeholder, .awebooking-block .input-transparent::-ms-input-placeholder {
   opacity: 1;
   color: #6c757d;
 }
@@ -265,6 +238,7 @@
   font-weight: 400;
   border-radius: 1px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.075);
+  -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
   color: #3d4852;
   border: solid 1px #dae1e7;
@@ -539,7 +513,8 @@
   color: red;
   font-size: 16px;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 .awebooking .datepicker__month-day--day-of-week-disabled,
 .awebooking-block .datepicker__month-day--day-of-week-disabled {
@@ -723,9 +698,12 @@
 .awebooking .abrs-searchbox--horizontal .abrs-searchbox__group-wrap,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__wrap,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__group-wrap {
+  display: -webkit-box;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
   width: 100%;
   min-height: 1px;
   position: relative;
@@ -738,7 +716,8 @@
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__wrap > .abrs-searchbox__box,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__wrap > .abrs-searchbox__group,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__group-wrap .abrs-searchbox__box {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   flex-basis: 0;
 }
 .awebooking .abrs-searchbox--horizontal .abrs-searchbox__box-label,
@@ -786,19 +765,21 @@ dialog[open] {
   bottom: 0;
   position: fixed;
   z-index: 9999;
+  display: -webkit-box;
   display: flex;
   overflow: hidden;
   outline: 0;
   opacity: 0;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
   -webkit-animation: fade-in 0.5s forwards;
           animation: fade-in 0.5s forwards;
 }
 .awebooking-dialog:not(.open) {
   display: none !important;
 }
-.awebooking-dialog__overlay,
 .awebooking-dialog dialog::-webkit-backdrop {
   z-index: 9998;
   background-color: rgba(0, 0, 0, 0.35);
@@ -862,20 +843,24 @@ dialog[open] {
 @-webkit-keyframes fade-in-fly-up {
   0% {
     opacity: 0;
+    -webkit-transform: translate3d(0, 130px, 0);
     transform: translate3d(0, 130px, 0);
   }
   to {
     opacity: 1;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
 }
 @keyframes fade-in-fly-up {
   0% {
     opacity: 0;
+    -webkit-transform: translate3d(0, 130px, 0);
     transform: translate3d(0, 130px, 0);
   }
   to {
     opacity: 1;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
 }
@@ -945,6 +930,7 @@ dialog[open] {
 }
 
 .hotel-content {
+  display: -webkit-box;
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
@@ -960,15 +946,19 @@ dialog[open] {
 }
 
 .hotel-content__main {
-  flex: 0 0 100%;
+  -webkit-box-flex: 0;
+          flex: 0 0 100%;
   max-width: 100%;
-  order: 1;
+  -webkit-box-ordinal-group: 2;
+          order: 1;
 }
 
 .hotel-content__aside {
-  flex: 0 0 100%;
+  -webkit-box-flex: 0;
+          flex: 0 0 100%;
   max-width: 100%;
-  order: 0;
+  -webkit-box-ordinal-group: 1;
+          order: 0;
 }
 
 .awebooking-datepicker.flatpickr-calendar {
@@ -1013,6 +1003,7 @@ dialog[open] {
 .awebooking-datepicker .flatpickr-months .flatpickr-prev-month:hover,
 .awebooking-datepicker .flatpickr-months .flatpickr-next-month:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  -webkit-transition: background-color 0.25s ease;
   transition: background-color 0.25s ease;
 }
 .awebooking-datepicker .flatpickr-current-month span.cur-month,
@@ -1149,9 +1140,13 @@ dialog[open] {
 }
 
 .filterbox__wrap {
+  display: -webkit-box;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  -webkit-box-pack: center;
+          justify-content: center;
   width: 100%;
   padding: 1em;
   border-radius: 1px;
@@ -1167,13 +1162,18 @@ dialog[open] {
 }
 
 .filterbox__box-wrap {
+  display: -webkit-box;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  -webkit-box-align: center;
+          align-items: center;
   height: 100%;
 }
 .filterbox__box-wrap > .filterbox__label {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   display: block;
   margin-right: 7px;
   line-height: 1.4;
@@ -1365,11 +1365,13 @@ dialog[open] {
   bottom: -1px;
   height: 3px;
   background-color: #007bff;
+  -webkit-transition: all 0.6s ease;
   transition: all 0.6s ease;
 }
 
 .tabs-main-container {
   white-space: nowrap;
+  -webkit-transition: all 0.6s ease;
   transition: all 0.6s ease;
   box-sizing: border-box;
   font-size: 0;
@@ -1529,6 +1531,7 @@ ul.booking_details {
   margin: 0 0 1em;
   list-style: none;
   padding: 10px;
+  display: -webkit-inline-box;
   display: inline-flex;
   border: dashed 2px #6d6d6d;
 }
@@ -1646,8 +1649,10 @@ ul.booking_details li:last-of-type {
 
 .reservation-dates {
   display: block;
-  align-items: unset;
-  justify-content: unset;
+  -webkit-box-align: unset;
+          align-items: unset;
+  -webkit-box-pack: unset;
+          justify-content: unset;
   text-align: center;
 }
 
@@ -1667,7 +1672,8 @@ ul.booking_details li:last-of-type {
   top: 50%;
   left: 0;
   position: absolute;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
   font-size: 3em;
   line-height: 1;
 }
@@ -1805,9 +1811,12 @@ ul.booking_details li:last-of-type {
 }
 
 .searchbox__wrap {
+  display: -webkit-box;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   position: relative;
@@ -1926,17 +1935,20 @@ ul.booking_details li:last-of-type {
 }
 
 .searchbox__popup-item > label {
+  display: -webkit-box;
   display: flex;
   padding: 12px;
   border-bottom: solid 1px #eee;
 }
 .searchbox__popup-item > label > span {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   display: block;
 }
 .searchbox__popup-item > label > input[type=number] {
   width: 50px;
-  align-items: flex-end;
+  -webkit-box-align: end;
+          align-items: flex-end;
   margin: 0;
   padding: 2px 5px;
   line-height: 1.4;
@@ -1997,6 +2009,7 @@ input[type=number].searchbox__spinner-input {
   border-radius: 50%;
   visibility: visible;
   opacity: 1;
+  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
@@ -2288,13 +2301,20 @@ input[type=number].searchbox__spinner-input {
 .awebooking .abrs-searchbox--horizontal .abrs-searchbox__group-wrap,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__wrap,
 .awebooking-block .abrs-searchbox--horizontal .abrs-searchbox__group-wrap {
-    flex-direction: row;
-    justify-content: left;
-    align-items: flex-end;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
+    -webkit-box-pack: left;
+            justify-content: left;
+    -webkit-box-align: end;
+            align-items: flex-end;
   }
   .filterbox__wrap {
-    flex-direction: row;
-    justify-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
+    -webkit-box-pack: center;
+            justify-content: center;
   }
   .filterbox__box:not(:last-child) {
     margin-bottom: 0;
@@ -2302,7 +2322,9 @@ input[type=number].searchbox__spinner-input {
     border-bottom: none;
   }
   .searchbox--horizontal .searchbox__wrap {
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
   }
   .room-gallery__item {
     width: 50%;
@@ -2311,16 +2333,21 @@ input[type=number].searchbox__spinner-input {
 
 @media (min-width: 992px) {
   .hotel-content__main {
-    flex: 0 0 66.6666666667%;
+    -webkit-box-flex: 0;
+            flex: 0 0 66.6666666667%;
     max-width: 66.6666666667%;
-    order: 0;
+    -webkit-box-ordinal-group: 1;
+            order: 0;
   }
   .hotel-content__aside {
-    flex: 0 0 33.3333333333%;
+    -webkit-box-flex: 0;
+            flex: 0 0 33.3333333333%;
     max-width: 33.3333333333%;
-    order: 1;
+    -webkit-box-ordinal-group: 2;
+            order: 1;
   }
   .columns.roommaster-list__header {
+    display: -webkit-box;
     display: flex;
   }
   .roommaster-box {
@@ -2331,7 +2358,8 @@ input[type=number].searchbox__spinner-input {
   }
   .searchbox--horizontal .searchbox__wrap {
     flex-wrap: nowrap;
-    align-items: center;
+    -webkit-box-align: center;
+            align-items: center;
     border: solid 1px #dae1e7;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
     background-color: #fff;
@@ -2359,7 +2387,8 @@ input[type=number].searchbox__spinner-input {
     flex-basis: 225px;
   }
   .searchbox--horizontal .searchbox__box--occupancy {
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+            flex-grow: 1;
   }
   .searchbox__spinner-button {
     visibility: hidden;
@@ -2396,9 +2425,12 @@ input[type=number].searchbox__spinner-input {
 
 @media (min-width: 1200px) {
   .reservation-dates {
+    display: -webkit-box;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    -webkit-box-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+            justify-content: space-between;
     text-align: left;
   }
   .reservation-date__date {
@@ -2411,17 +2443,20 @@ input[type=number].searchbox__spinner-input {
     padding-right: 1em;
   }
   .searchbox--horizontal .searchbox__box--hotel {
-    flex: 0 0 100%;
+    -webkit-box-flex: 0;
+            flex: 0 0 100%;
   }
   .searchbox--horizontal .searchbox__box--checkin,
 .searchbox--horizontal .searchbox__box--checkout {
-    flex: 0 0 50%;
+    -webkit-box-flex: 0;
+            flex: 0 0 50%;
   }
   .searchbox--horizontal .searchbox__box--checkout {
     left: -1px;
   }
   .searchbox--horizontal .searchbox__box--occupancy,
 .searchbox--horizontal .searchbox__box--button {
-    flex: 0 0 50%;
+    -webkit-box-flex: 0;
+            flex: 0 0 50%;
   }
 }
