@@ -82,15 +82,15 @@
       }
 
       const xhr = $.ajax({
-        type: 'POST',
-        url: plugin.route('/ajax/booking-note'),
-        data: {
-          note: content,
-          note_type: noteType,
-          booking: parseInt($('#post_ID').val(), 10),
-          _ajax_nonce: localize.add_note_nonce,
-        }
-      })
+  type: 'POST',
+  url: plugin.route('/ajax/booking-note'),
+  data: {
+    note: content,
+    note_type: noteType,
+    booking: parseInt($('#post_ID').val(), 10),
+    _ajax_nonce: localize.add_note_nonce,
+  },
+})
 
       xhr.done(function (res) {
         $noteInput.val('')
