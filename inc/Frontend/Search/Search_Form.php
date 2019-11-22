@@ -221,14 +221,14 @@ class Search_Form extends Form {
 			'value' => $value,
 		] );
 
-		$this->input( 'text', 'check_out_alt', array_merge( $alt_attributes, [
+		$this->input( 'text', 'check_out_alt', array_merge( [
 			'name'          => false, // Remove "name" attribute.
 			'value'         => $value ? abrs_format_date( $value ) : '',
 			'placeholder'   => abrs_get_date_format(),
 			'autocomplete'  => 'off',
 			'aria-haspopup' => 'true',
 			'readonly'      => 'readonly',
-		] ) );
+		], $alt_attributes ) );
 	}
 
 	/**

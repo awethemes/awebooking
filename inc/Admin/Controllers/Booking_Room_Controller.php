@@ -39,7 +39,7 @@ class Booking_Room_Controller extends Controller {
 
 			$res_request['query_args'] = $request->only( 'hotel', 'only' );
 
-			if ( is_null( $res_request ) || is_wp_error( $res_request ) ) {
+			if ($res_request === null || is_wp_error( $res_request ) ) {
 				return new WP_Error( 400, esc_html__( 'ERR.', 'awebooking' ) ); // TODO: ...
 			}
 

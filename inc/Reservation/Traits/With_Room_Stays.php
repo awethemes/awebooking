@@ -36,7 +36,7 @@ trait With_Room_Stays {
 	/**
 	 * Gets the room stays.
 	 *
-	 * @return \AweBooking\Support\Collection \AweBooking\Reservation\Item[]
+	 * @return \AweBooking\Support\Collection|\AweBooking\Reservation\Item[]
 	 */
 	public function all() {
 		return $this->get_room_stays();

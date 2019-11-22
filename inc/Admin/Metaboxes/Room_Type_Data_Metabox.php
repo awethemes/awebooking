@@ -80,6 +80,13 @@ class Room_Type_Data_Metabox extends Metabox {
 		// Get the sanitized values.
 		$values = $controls->handle( $request )->all();
 
+		// Fill empty field values.
+		foreach ($controls->prop('fields') as $field_args) {
+			if (!array_key_exists($field_args['id'], $values)) {
+				$values[$field_args['id']] = null;
+			}
+		}
+
 		// Correct the occupancy size.
 		foreach ( [ 'number_adults', 'number_children', 'number_infants' ] as $key ) {
 			if ( isset( $values[ $key ] ) ) {
