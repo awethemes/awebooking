@@ -173,5 +173,5 @@ function abrs_get_room_beds( $room_type, $separator = ', ' ) {
 		$items[] = sprintf( __( '<span>%1$s %2$s</span>', 'awebooking' ), absint( $bed['number'] ), $bed['type'] );
 	}
 
-	return implode( $items, $separator );
+	return implode( $separator, $items );
 }
