@@ -1,0 +1,42 @@
+{
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.2.5",
+        "cakephp/chronos": "^2.3",
+        "illuminate/container": "^7.0",
+        "illuminate/database": "^7.0",
+        "illuminate/events": "^7.0",
+        "illuminate/pagination": "^7.0",
+        "symfony/event-dispatcher-contracts": "^2.5",
+        "symfony/notifier": "5.4.*",
+        "symfony/http-foundation": "5.4.*",
+        "vlucas/valitron": "^1.4",
+        "roomify/bat": "^1.4"
+    },
+    "provide": {
+        "nesbot/carbon": "*",
+        "illuminate/bus": "*",
+        "symfony/console": "*",
+        "voku/portable-ascii": "*"
+    },
+    "scripts": {
+        "prefix-dependencies": [
+            "@composer install --no-dev",
+            "bash ./install-php-scoper.sh",
+            "@php ./php-scoper add-prefix -c scoper.inc.php --output-dir=./_scoped --force",
+            "echo '{ \"autoload\": { \"classmap\": [\"\"] } }' > ./_scoped/composer.json",
+            "@composer dump-autoload --working-dir ./_scoped --no-dev --classmap-authoritative --optimize",
+            "rm -rf ./../../vendor-prefixed/ && mv ./_scoped/vendor ./../../vendor-prefixed/",
+            "rm -rf ./vendor/ && rm -rf ./_scoped"
+        ]
+    },
+    "config": {
+        "platform-check": false,
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.2.5"
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+	"copyFiles": {
+		"knockout": [
+			"knockout/build/output/knockout*.js"
+		],
+		"js-cookie": [
+			"js-cookie/src/js.cookie.js"
+		],
+		"a11y-dialog": [
+			"a11y-dialog/a11y-dialog*.js"
+		],
+		"sortable": [
+			"sortablejs/Sortable*.js"
+		],
+		"waypoints": [
+			"waypoints/lib/jquery.waypoints*.js"
+		],
+		"sweetalert2": [
+			"sweetalert2/dist/sweetalert2*.{js,css}"
+		],
+		"flatpickr": [
+			"flatpickr/dist/flatpickr*.{js,css}"
+		],
+		"jquery-spinner": [
+			"jquery.spinner/dist/js/jquery.spinner*.js"
+		],
+		"moment": [
+			"moment/moment.js",
+			"moment/min/moment.min.js"
+		],
+		"selectize": [
+			"selectize/dist/css/selectize.css",
+			"selectize/dist/js/standalone/selectize*.js"
+		],
+		"popper-js": [
+			"popper.js/dist/umd/popper.js",
+			"popper.js/dist/umd/popper.min.js"
+		],
+		"tippy-js": [
+			"tippy.js/dist/tippy.css",
+			"tippy.js/dist/tippy.standalone.js",
+			"tippy.js/dist/tippy.standalone.min.js"
+		]
+	}
+}

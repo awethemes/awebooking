@@ -2,6 +2,8 @@
 
 namespace AweBooking;
 
+use AweBooking\System\Calendar\CalendarManager;
+use AweBooking\System\Calendar\EventTypeInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\NullHandler;
@@ -55,6 +57,11 @@ final class Plugin extends Container {
 	protected static $instance;
 
 	/**
+	 * @var \AweBooking\Vendor\Illuminate\Container\Container
+	 */
+	private $container;
+
+	/**
 	 * Get the instance of the plugin.
 	 *
 	 * @return static
@@ -70,6 +77,8 @@ final class Plugin extends Container {
 	 */
 	public function __construct( $plugin_file ) {
 		$this->plugin_file = $plugin_file;
+
+		$this->container = new \AweBooking\System\Container();
 
 		$this->binding_paths();
 		$this->register_base_bindings();
@@ -152,6 +161,16 @@ final class Plugin extends Container {
 		$this->alias( 'multilingual', Multilingual::class );
 
 		$this->alias( Request::class, 'Awethemes\\Http\\Request' );
+
+		$this->container->singleton(CalendarManager::class, function () {
+			return new CalendarManager($this->container);
+		});
+
+		/** @var CalendarManager $manager */
+		$manager = $this->container->make(CalendarManager::class);
+
+		$manager->registerDailyEventType('booking', EventTypeInterface::TYPE_FIXED_STATES);
+		$manager->registerDailyEventType('pricing', EventTypeInterface::TYPE_ARBITRARY_STATES);
 	}
 
 	/**
@@ -266,6 +285,10 @@ final class Plugin extends Container {
 				$this->register( $provider );
 			}
 		}
+
+        add_action('admin_menu', function () {
+            \AweBooking\System\Container::getInstance()->make(\AweBooking\PMS\Dashboard\AdminMenu::class);
+        });
 
 		/**
 		 * Fire the loaded action.

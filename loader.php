@@ -5,6 +5,10 @@
  * @package AweBooking
  */
 
+// Load the vendor-prefixed autoloader.
+require __DIR__ . '/vendor-prefixed/scoper-autoload.php';
+require __DIR__ . '/vendor-prefixed/illuminate/support/helpers.php';
+
 /**
  * First, we need autoload via Composer to make everything works.
  */

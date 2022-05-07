@@ -17,6 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+define('AWEBOOKING_PMS_VERSION', '5.0.0-dev');
+define('AWEBOOKING_PMS_PLUGIN_FILE', __FILE__);
+define('AWEBOOKING_PMS_PLUGIN_DIR_PATH', plugin_dir_path(AWEBOOKING_PMS_PLUGIN_FILE));
+define('AWEBOOKING_PMS_PLUGIN_DIR_URL', plugin_dir_url(AWEBOOKING_PMS_PLUGIN_FILE));
+define('AWEBOOKING_PMS_ASSETS_PATH', AWEBOOKING_PMS_PLUGIN_DIR_PATH . 'build');
+define('AWEBOOKING_PMS_ASSETS_URL', AWEBOOKING_PMS_PLUGIN_DIR_URL . 'build');
+
 // Load the pre-check file.
 require_once trailingslashit( dirname( __FILE__ ) ) . 'precheck.php';
 

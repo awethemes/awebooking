@@ -1,0 +1,15 @@
+{
+  "entrypoints": {
+    "dashboard": {
+      "css": [
+        "/dashboard.css"
+      ],
+      "js": [
+        "/dashboard.js"
+      ],
+      "php": [
+        "/dashboard.asset.php"
+      ]
+    }
+  }
+}

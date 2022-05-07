@@ -2,7 +2,7 @@ const { dest, src, parallel } = require('gulp');
 const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const rename = require('gulp-rename');
-const pkg = require('./package.json');
+const pkg = require('./build.json');
 
 function minifyJs() {
   return src(['assets/js/**/*.js', '!assets/js/**/*.min.js'])

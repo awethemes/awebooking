@@ -1,0 +1,125 @@
+*, ::before, ::after {
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  
+}
+.awebooking .relative {
+    position: relative
+}
+.awebooking .flex {
+    display: flex
+}
+.awebooking .table {
+    display: table
+}
+.awebooking .w-full {
+    width: 100%
+}
+.awebooking .flex-grow {
+    flex-grow: 1
+}
+.awebooking .items-center {
+    align-items: center
+}
+.awebooking .justify-between {
+    justify-content: space-between
+}
+.awebooking .gap-4 {
+    gap: 1rem
+}
+.awebooking .rounded {
+    border-radius: 0.25rem
+}
+.awebooking .bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+.awebooking .p-4 {
+    padding: 1rem
+}
+.awebooking .shadow {
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+.table-wrap {
+  width: 100%;
+  display: block;
+  overflow: auto;
+}
+
+.atable {
+  display: table;
+  border-spacing: 0;
+  border: 1px solid #e7e7e7;
+}
+.atable .thead {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.atable .tbody {
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+}
+.atable .tr {
+  border-bottom: 1px solid #e7e7e7;
+}
+.atable .tr :last-child .td {
+  border-bottom: 0;
+}
+.atable .th,
+.atable .td {
+  margin: 0;
+  padding: 0.5rem;
+  border-right: 1px solid #e7e7e7;
+  position: relative;
+  height: 60px;
+}
+.atable .th :last-child,
+.atable .td :last-child {
+  border-right: 0;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGFzaGJvYXJkLmNzcyIsIm1hcHBpbmdzIjoiQUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtJQUFBO0lBQUE7SUFBQTtBQUFBO0FBRUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtBQUFBO0FBQUE7SUFBQTtJQUFBO0FBQUE7QUFBQTtJQUFBO0FBQUE7QUFBQTtJQUFBO0lBQUE7SUFBQTtBQUFBLEM7QUFGQTtFQUNDO0VBQ0E7RUFDQTtBQUNEOztBQUVBO0VBR0M7RUFDQTtFQUNBO0FBREQ7QUFTQztFQUNDO0VBQ0E7RUFDQTtBQVBGO0FBVUM7RUFDQztFQUNBO0VBQ0E7RUFDQTtBQVJGO0FBV0M7RUFPQztBQWZGO0FBVUc7RUFDQztBQVJKO0FBZUM7O0VBRUM7RUFDQTtFQUNBO0VBQ0E7RUFDQTtBQWJGO0FBZUU7O0VBQ0M7QUFaSCxDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vQGF3ZWJvb2tpbmcvcG1zLy4vc3R5bGVzLnNjc3MiXSwic291cmNlc0NvbnRlbnQiOlsiQHRhaWx3aW5kIGJhc2U7XG5AdGFpbHdpbmQgY29tcG9uZW50cztcbkB0YWlsd2luZCB1dGlsaXRpZXM7XG4iXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=*/

@@ -1,0 +1,37 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowSyntheticDefaultImports": true,
+		"noEmit": false,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"jsx": "react",
+		"incremental": true,
+		"baseUrl": "./resources/scripts",
+		"paths": {
+			"~/*": [
+				"./*"
+			]
+		}
+	},
+	"include": [
+		"resources/shims-vue.d.ts",
+		"resources/scripts/**/*.ts",
+		"resources/scripts/**/*.tsx"
+	],
+	"exclude": [
+		"build",
+		"node_modules"
+	]
+}
